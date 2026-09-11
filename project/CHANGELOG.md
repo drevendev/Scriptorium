@@ -34,3 +34,23 @@ code changes remain in Git history and their issues/PRs.
   Scriptorium work unit.
 - Kept other repositories read-only unless inspection is necessary for Scriptorium
   research, provenance, dependency evaluation or comparison.
+
+## 2026-09-11 — FantLab metric contract
+
+- Froze `fantlab-2022-v1` metric identifiers for the first deterministic/public
+  compatibility surface.
+- Separated public definitions, public-only surfaces, inferred candidates and unresolved
+  definition edges so undocumented FantLab behavior cannot silently become a claim of
+  reproduction.
+- Defined stable scalar IDs plus generated POS, POS-bigram, sentence-position POS and
+  punctuation families from the public 2022 analysis surface.
+- Recorded the discrepancy between the article's broader POS vocabulary and the 17
+  buckets observed on a 2022 work page as a morphology research question rather than a
+  guessed mapping.
+- Added a versioned field-by-field benchmark comparison schema with exact reference
+  surface, edition/legal/hash provenance, expected display text, actual raw value,
+  deltas and `pass | fail | unresolved | not_run` outcomes.
+- Defined decimal display comparison by the non-tie rounding interval and left exact tie
+  behavior unresolved instead of assuming a Python/IEEE rounding mode.
+- Required exact source-edition match plus legal basis and immutable digest before a
+  numeric match can count as parity evidence.

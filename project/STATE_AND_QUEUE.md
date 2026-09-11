@@ -1,20 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 3
+STATE_REVISION: 4
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-11T19:40:30Z
-LAST_RESULT: Repository-scope correction from issue #3 was independently reviewed and merged in PR #4; Scriptorium is the sole development target for this worker.
-LAST_VERIFIED_PROGRESS: PR #4 merged as 85bcf9e5d66c7ec7ae9dc8298ad7b97efa3b2852 after exact-head review; issue #3 is satisfied.
+LAST_COMMITTED_RUN_AT: 2026-09-11T19:53:00Z
+LAST_RESULT: SCRIP-REPRO-001 defined the FantLab metric surface and versioned field-by-field benchmark comparison contract; branch is ready for independent review.
+LAST_VERIFIED_PROGRESS: Issue #5 owns the contract; the JSON Schema parses and validates a representative not-run work488 comparison artifact under Draft 2020-12.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-SCOPE-001
-ISSUE:          #3
-STATUS:         DONE
-PR:             #4
-MERGED_COMMIT:  85bcf9e5d66c7ec7ae9dc8298ad7b97efa3b2852
-NEXT_ACTION:    Select SCRIP-REPRO-001, the first unblocked P0 queue unit.
+UNIT_ID:        SCRIP-REPRO-001
+ISSUE:          #5
+STATUS:         REVIEW
+BRANCH:         spec/5-fantlab-metric-contract
+PR:             pending
+NEXT_ACTION:    Independently review the metric contract and schema against issue #5,
+                public FantLab evidence and the existing work488 fixture; merge only if
+                identifiers, unresolved edges and parity-gate semantics remain honest.
 ```
 
 ## Current milestone gate
@@ -25,11 +27,10 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Ordered highest first among unblocked work after the current review closes.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-REPRO-001 | research/spec | Metric contract for FantLab-visible raw statistics and benchmark comparison schema | M0 |
 | P0 | SCRIP-CORPUS-001 | research | Candidate list of legally usable >=300k works that also have FantLab analysis, with source-edition confidence | M0 |
 | P0 | SCRIP-MORPH-001 | research/spike | Reproducible AOT/pylem environment and mapping from AOT tags to FantLab POS buckets | M0 |
 | P1 | SCRIP-TEXT-001 | implementation | Deterministic normalization/tokenization/sentence model with golden tests | SCRIP-REPRO-001 |
@@ -48,14 +49,18 @@ Ordered highest first among unblocked work.
   vocabulary and 3k/10k/100k windows, POS frequencies/bigrams/positions, punctuation,
   character bigrams, inter-word character features and later distinguishing-word
   frequencies.
-- The article says author means and standard deviations are weighted by work word
-  counts and describes feature weight as between-author spread relative to average
-  within-author spread; features above 0.7 were reported as useful for recognition.
-- The same article explicitly says corrective coefficients and some implementation
-  details remain unpublished. Exact parity must therefore be demonstrated, not
-  inferred.
+- A concrete 18 September 2022 work page (`work12625/lp`) exposes the first-wave scalar
+  labels, 17 displayed POS buckets, POS bigrams, POS-by-sentence-position and 14
+  punctuation patterns used by `fantlab-2022-v1`.
+- The methodology article names additional POS labels not observed as separate buckets
+  on that 2022 page; their mapping is explicitly deferred to SCRIP-MORPH-001.
+- FantLab says corrective coefficients and some implementation details remain
+  unpublished. Exact parity must therefore be demonstrated, not inferred.
 - FantLab's 2022 `Шутиха` page is captured as the first numeric reference in
   `benchmarks/fantlab/work488.json`.
+- The public `Шутиха` summary currently displays an approximate page count that differs
+  from the captured detailed-analysis reference, reinforcing the requirement to bind
+  every expected value to its exact FantLab source surface.
 - The maintained AOT repository is LGPL and `pylem` is an MIT-licensed Python wrapper
   around the historical AOT C++ morphology lineage. This makes `pylem` the first
   compatibility candidate, not an already-proven match.
@@ -77,6 +82,9 @@ Ordered highest first among unblocked work.
 6. **External mode controller unverified.** The user-authorized deterministic selection
    ladder is operative, but no independent EndlessZen controller/selection receipt
    mechanism has been bound and proven yet.
+7. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
+   differently rounded or cached values. Benchmark expectations must name the exact
+   source surface and capture display text; cross-surface joining is not parity evidence.
 
 ## Run selection rule
 

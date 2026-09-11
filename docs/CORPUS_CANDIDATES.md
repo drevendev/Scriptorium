@@ -19,10 +19,14 @@ raw digest can be frozen. Numeric resemblance on an unknown edition is diagnosti
 
 ## Legal basis used by the seed catalog
 
-The seed deliberately starts with Russian originals that were first published in the
-Russian Empire before 7 November 1917. Russian Wikisource's copyright policy states that
-works in that category are public domain worldwide, and each retained work page marks the
-literary work as public domain. We use that as the legal basis for source-text analysis.
+The seed deliberately starts with Russian originals first published in the Russian
+Empire before 7 November 1917. Russian Wikisource's copyright policy permits works in
+that category under its public-domain rules, and each retained work page carries an
+explicit public-domain notice for the literary work. We use those source-site rights
+statements as the legal basis for source-text analysis; we do **not** infer rights merely
+from web accessibility or claim a broader jurisdictional rule than the cited policy and
+work pages establish.
+
 Later editorial introductions, notes, commentary, annotations, scans or other protected
 apparatus are outside the corpus input and must not be copied merely because they appear
 beside the public-domain work.

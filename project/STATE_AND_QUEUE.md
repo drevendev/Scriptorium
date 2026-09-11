@@ -1,10 +1,10 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 4
+STATE_REVISION: 5
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-11T19:54:00Z
-LAST_RESULT: SCRIP-REPRO-001 defined the FantLab metric surface and versioned field-by-field benchmark comparison contract; PR #6 is ready for independent review.
-LAST_VERIFIED_PROGRESS: Issue #5 owns the contract; the JSON Schema parses and validates a representative not-run work488 comparison artifact under Draft 2020-12.
+LAST_COMMITTED_RUN_AT: 2026-09-11T19:58:00Z
+LAST_RESULT: SCRIP-REPRO-001 repaired both independent-review blockers in PR #6 and is ready for a fresh exact-head review.
+LAST_VERIFIED_PROGRESS: The benchmark schema now uses the metrics object key as sole identity and requires independently established decimal precision; Draft 2020-12 schema validation passes with an unresolved-precision representative case.
 
 ## Current unit
 
@@ -14,9 +14,10 @@ ISSUE:          #5
 STATUS:         REVIEW
 BRANCH:         spec/5-fantlab-metric-contract
 PR:             #6
-NEXT_ACTION:    Independently review the metric contract and schema against issue #5,
-                public FantLab evidence and the existing work488 fixture; merge only if
-                identifiers, unresolved edges and parity-gate semantics remain honest.
+NEXT_ACTION:    Independently review the repaired PR head. Verify that rendered decimal
+                text cannot supply display precision, unresolved precision cannot pass,
+                and metric identity cannot disagree between key and payload. Merge only
+                if those findings and the original issue #5 acceptance are satisfied.
 ```
 
 ## Current milestone gate
@@ -61,6 +62,9 @@ Ordered highest first among unblocked work after the current review closes.
 - The public `Шутиха` summary currently displays an approximate page count that differs
   from the captured detailed-analysis reference, reinforcing the requirement to bind
   every expected value to its exact FantLab source surface.
+- Rendered decimal text is not treated as proof of decimal precision. A known
+  `display_places` value requires independent field/surface evidence; otherwise the
+  metric remains `unresolved_precision`.
 - The maintained AOT repository is LGPL and `pylem` is an MIT-licensed Python wrapper
   around the historical AOT C++ morphology lineage. This makes `pylem` the first
   compatibility candidate, not an already-proven match.
@@ -85,6 +89,9 @@ Ordered highest first among unblocked work after the current review closes.
 7. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
    differently rounded or cached values. Benchmark expectations must name the exact
    source surface and capture display text; cross-surface joining is not parity evidence.
+8. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
+   a general formatting/tie rule. Unknown precision remains unresolved rather than
+   inferred from rendered text.
 
 ## Run selection rule
 

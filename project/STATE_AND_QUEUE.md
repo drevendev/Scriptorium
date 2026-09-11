@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 1
-PHASE: M0 — Recoverable project
-LAST_COMMITTED_RUN_AT: 2026-09-11T18:49:00Z
-LAST_RESULT: Bootstrap branch prepared for review; project setup is not yet merged.
-LAST_VERIFIED_PROGRESS: Issue #1 defines the setup unit and FantLab/AOT evidence was
-reviewed before the branch was prepared.
+STATE_REVISION: 2
+PHASE: M1 — Deterministic FantLab surface
+LAST_COMMITTED_RUN_AT: 2026-09-11T19:05:40Z
+LAST_RESULT: Bootstrap PR #2 was independently reviewed, corrected for the mode-controller conformance gap, and merged; M0 is complete.
+LAST_VERIFIED_PROGRESS: PR #2 merged at commit d8f069b4035fa5b7c776a1347a86a3f8e821bacd after contract review; issue #1 is satisfied.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-SETUP-001
 ISSUE:          #1
-STATUS:         REVIEW
-BRANCH:         setup/1-bootstrap
-NEXT_ACTION:    Review the bootstrap PR from repository state, fix any contradictions,
-                then merge if it satisfies issue #1.
+STATUS:         DONE
+PR:             #2
+MERGED_COMMIT:  d8f069b4035fa5b7c776a1347a86a3f8e821bacd
+NEXT_ACTION:    Select the first unblocked queue unit on the next wake.
 ```
 
 ## Current milestone gate
 
-M0 closes when the bootstrap project contract is merged and a fresh worker can select
-work from this file without relying on chat history.
+M0 is closed. M1 closes when the benchmark harness can compare expected vs actual
+FantLab-visible deterministic metrics field-by-field while preserving text and
+configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work after M0.
+Ordered highest first among unblocked work.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
@@ -74,6 +74,9 @@ Ordered highest first among unblocked work after M0.
    platform texts as candidates until work-specific rights permit analysis/publication.
 5. **Scheduler serialization unverified.** Re-read refs/state before write and avoid
    same-run author+merge of substantial PRs.
+6. **External mode controller unverified.** The user-authorized deterministic selection
+   ladder is operative, but no independent EndlessZen controller/selection receipt
+   mechanism has been bound and proven yet.
 
 ## Run selection rule
 

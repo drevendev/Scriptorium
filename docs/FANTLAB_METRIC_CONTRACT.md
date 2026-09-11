@@ -191,9 +191,13 @@ Every comparison records:
 - source-edition confidence and legal basis;
 - raw and normalized SHA-256 when source bytes are available;
 - analyzer/profile/dependency versions;
-- per metric: metric ID, definition evidence, expected numeric value **and exact display
-  text**, actual raw value/display text, raw delta when meaningful, numeric match and one
-  terminal result.
+- per metric, keyed by its canonical metric ID: definition evidence, expected numeric
+  value, exact display text, independently established display precision when known,
+  actual raw/display value, raw delta when meaningful, numeric match and terminal result.
+
+The `metrics` object key is the metric identity. The value deliberately does not repeat a
+`metric_id` field, preventing a schema-valid artifact from assigning two different
+identities to one comparison row.
 
 Allowed results:
 
@@ -220,9 +224,20 @@ published integer. Approximate/page fields may still be numerically equal, but t
 
 ### Decimal display values
 
-FantLab publishes decimal display values but does not publicly specify tie-breaking.
-For an expected display with `p` decimal places and numeric display value `d`, define the
-non-tie display interval:
+FantLab publishes decimal values but may omit trailing zeroes, and the public methodology
+does not establish either the field's formatting precision or tie-breaking rule. The
+visible text alone therefore **must not** be used to infer the rounding precision.
+
+Each expected metric stores `display_places` separately from `display_text`:
+
+- an integer `display_places = p` is allowed only when the precision is independently
+  established for that exact field/reference surface;
+- `display_places = null` means precision is unknown. The comparison rule is
+  `unresolved_precision`, `numeric_match` is `null`, and the result remains `unresolved`
+  even if the displayed numbers look identical.
+
+When `p` is independently established and the displayed numeric value is `d`, the
+non-tie interval is:
 
 ```text
 step  = 10 ** (-p)
@@ -231,13 +246,14 @@ upper = d + step / 2
 ```
 
 `display_interval` is a numeric match only when the actual raw value lies strictly inside
-`(lower, upper)`. A value exactly on either boundary is `unresolved` until FantLab's tie
-rule is established; Scriptorium must not silently choose Python/IEEE rounding and call
-that FantLab behavior.
+`(lower, upper)`. A value exactly on either boundary remains `unresolved` until FantLab's
+tie rule is established. Scriptorium must not silently choose Python/IEEE rounding and
+call that FantLab behavior.
 
-The benchmark stores the original display string because JSON numbers do not preserve
-trailing-zero precision. `5.8` and `5.80` therefore have different observed display
-precision even though their numeric values are equal.
+The original display string is still stored as evidence of what FantLab rendered, but it
+is not itself a precision oracle. A rendered `5.8` may represent an internally formatted
+`5.80`; Scriptorium must not widen the accepted interval merely because the trailing zero
+was absent from the page.
 
 ## Gate semantics
 
@@ -264,7 +280,7 @@ fill them with convenient defaults:
 7. AOT dictionary/version, ambiguity resolution and POS mapping;
 8. article-only POS labels versus the 17 observed 2022 page buckets;
 9. punctuation normalization and overlapping pattern rules;
-10. decimal rounding ties.
+10. decimal display precision and rounding ties.
 
 `SCRIP-TEXT-001`, `SCRIP-METRIC-001` and `SCRIP-MORPH-001` should make candidate choices
 explicit and versioned; benchmark evidence decides whether those candidates become

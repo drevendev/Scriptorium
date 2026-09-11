@@ -2,8 +2,8 @@
 
 STATE_REVISION: 4
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-11T19:53:00Z
-LAST_RESULT: SCRIP-REPRO-001 defined the FantLab metric surface and versioned field-by-field benchmark comparison contract; branch is ready for independent review.
+LAST_COMMITTED_RUN_AT: 2026-09-11T19:54:00Z
+LAST_RESULT: SCRIP-REPRO-001 defined the FantLab metric surface and versioned field-by-field benchmark comparison contract; PR #6 is ready for independent review.
 LAST_VERIFIED_PROGRESS: Issue #5 owns the contract; the JSON Schema parses and validates a representative not-run work488 comparison artifact under Draft 2020-12.
 
 ## Current unit
@@ -13,7 +13,7 @@ UNIT_ID:        SCRIP-REPRO-001
 ISSUE:          #5
 STATUS:         REVIEW
 BRANCH:         spec/5-fantlab-metric-contract
-PR:             pending
+PR:             #6
 NEXT_ACTION:    Independently review the metric contract and schema against issue #5,
                 public FantLab evidence and the existing work488 fixture; merge only if
                 identifiers, unresolved edges and parity-gate semantics remain honest.

@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drevendev.github.io/Scriptorium/schemas/fantlab-benchmark-comparison-v1.schema.json",
+  "title": "Scriptorium FantLab benchmark comparison v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "benchmark_id",
+    "metric_contract_id",
+    "reference",
+    "source_text",
+    "analyzer",
+    "metrics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "fantlab-benchmark-comparison-v1"
+    },
+    "benchmark_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "metric_contract_id": {
+      "const": "fantlab-2022-v1"
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["site", "url", "analysis_date", "work_id", "title", "author"],
+      "properties": {
+        "site": {"const": "FantLab"},
+        "url": {"type": "string", "format": "uri"},
+        "analysis_date": {"type": "string", "format": "date"},
+        "work_id": {"type": "integer", "minimum": 1},
+        "title": {"type": "string", "minLength": 1},
+        "author": {"type": "string", "minLength": 1}
+      }
+    },
+    "source_text": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "edition_match",
+        "edition_label",
+        "source_reference",
+        "legal_basis",
+        "raw_sha256",
+        "normalized_sha256"
+      ],
+      "properties": {
+        "edition_match": {
+          "enum": ["exact", "strong", "weak", "unknown"]
+        },
+        "edition_label": {
+          "type": ["string", "null"]
+        },
+        "source_reference": {
+          "type": ["string", "null"]
+        },
+        "legal_basis": {
+          "type": ["string", "null"]
+        },
+        "raw_sha256": {
+          "anyOf": [
+            {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            {"type": "null"}
+          ]
+        },
+        "normalized_sha256": {
+          "anyOf": [
+            {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "analyzer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scriptorium_revision",
+        "compatibility_profile",
+        "normalization_profile"
+      ],
+      "properties": {
+        "scriptorium_revision": {"type": "string", "minLength": 1},
+        "compatibility_profile": {"type": "string", "minLength": 1},
+        "normalization_profile": {"type": "string", "minLength": 1},
+        "morphology_provider": {"type": ["string", "null"]},
+        "morphology_version": {"type": ["string", "null"]},
+        "dictionary_version": {"type": ["string", "null"]}
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^fantlab\\."
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/metricComparison"
+      }
+    }
+  },
+  "$defs": {
+    "metricComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric_id",
+        "definition_evidence",
+        "expected",
+        "actual",
+        "comparison"
+      ],
+      "properties": {
+        "metric_id": {
+          "type": "string",
+          "pattern": "^fantlab\\."
+        },
+        "definition_evidence": {
+          "enum": [
+            "public_definition",
+            "public_surface",
+            "inferred_candidate",
+            "unresolved"
+          ]
+        },
+        "expected": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "numeric_value",
+            "display_text",
+            "source_label"
+          ],
+          "properties": {
+            "numeric_value": {"type": "number"},
+            "display_text": {"type": "string", "minLength": 1},
+            "source_label": {"type": "string", "minLength": 1}
+          }
+        },
+        "actual": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["raw_value", "display_text"],
+          "properties": {
+            "raw_value": {"type": ["number", "null"]},
+            "display_text": {"type": ["string", "null"]}
+          }
+        },
+        "comparison": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "rule",
+            "numeric_match",
+            "raw_delta",
+            "result",
+            "reason"
+          ],
+          "properties": {
+            "rule": {
+              "enum": ["exact_integer", "display_interval"]
+            },
+            "numeric_match": {
+              "type": ["boolean", "null"]
+            },
+            "raw_delta": {
+              "type": ["number", "null"]
+            },
+            "result": {
+              "enum": ["pass", "fail", "unresolved", "not_run"]
+            },
+            "reason": {
+              "type": ["string", "null"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

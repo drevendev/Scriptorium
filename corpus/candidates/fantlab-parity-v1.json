@@ -5,7 +5,7 @@
   "legal_policy": {
     "source": "Russian Wikisource copyright policy",
     "url": "https://ru.wikisource.org/wiki/Викитека:Авторские_права",
-    "rule_used": "Works first published in the Russian Empire before 7 November 1917 are treated by Russian Wikisource as public domain worldwide; only the literary work body is in scope, not later editorial apparatus."
+    "rule_used": "Russian Wikisource permits works first published in the Russian Empire before 7 November 1917 under its public-domain policy; retained work pages also carry an explicit public-domain notice. Only the literary work body is in scope, not later editorial apparatus."
   },
   "status_vocabulary": {
     "eligible_unmatched": "Legal source, FantLab linguistic analysis, and length threshold are confirmed, but the FantLab source edition/bytes are not matched.",
@@ -31,7 +31,7 @@
         "edition_note": "Толстой Л. Н. Анна Каренина. М.: Наука, 1970. С. 5–684 (as cited by the Wikisource work page).",
         "source_provenance_confidence": "strong",
         "legal_basis": "public_domain",
-        "legal_evidence": "The work page marks the work public domain; first publication was 1875–1877 in the Russian Empire."
+        "legal_evidence": "The work page explicitly marks the literary work public domain; first publication was 1875–1877 in the Russian Empire."
       },
       "fantlab_source_edition_match": "unknown",
       "gate_ready": false,
@@ -60,7 +60,7 @@
         "edition_note": "Л. Н. Толстой. Собрание сочинений в восьми томах. Т. 6. М. (as cited by the Wikisource work page; bibliographic detail is incomplete there).",
         "source_provenance_confidence": "moderate",
         "legal_basis": "public_domain",
-        "legal_evidence": "The work page marks the work public domain; the novel was published in 1899 in the Russian Empire."
+        "legal_evidence": "The work page explicitly marks the literary work public domain; the novel was published in 1899 in the Russian Empire."
       },
       "fantlab_source_edition_match": "unknown",
       "gate_ready": false,
@@ -89,7 +89,7 @@
         "edition_note": null,
         "source_provenance_confidence": "weak",
         "legal_basis": "public_domain",
-        "legal_evidence": "The work page marks the work public domain, but explicitly warns that its text source is not identified."
+        "legal_evidence": "The work page explicitly marks the literary work public domain, but separately warns that its transcription source is not identified."
       },
       "fantlab_source_edition_match": "unknown",
       "gate_ready": false,
@@ -118,7 +118,7 @@
         "edition_note": "Достоевский Ф. М. Собрание сочинений: в 15 т. Л.: Наука, 1991. Т. 9–10 (as cited by the Wikisource work page).",
         "source_provenance_confidence": "strong",
         "legal_basis": "public_domain",
-        "legal_evidence": "The work page marks the work public domain; original publication was 1878–1880 in the Russian Empire."
+        "legal_evidence": "The work page explicitly marks the literary work public domain; original publication was 1878–1880 in the Russian Empire."
       },
       "fantlab_source_edition_match": "unknown",
       "gate_ready": false,
@@ -147,7 +147,7 @@
         "edition_note": "Достоевский Ф. М. Собрание сочинений в пятнадцати томах. Л.: Наука, 1990. Т. 7. Бесы. С. 7–664 (as cited by the Wikisource work page).",
         "source_provenance_confidence": "strong",
         "legal_basis": "public_domain",
-        "legal_evidence": "The work page marks the work public domain; original publication was 1871–1872 in the Russian Empire."
+        "legal_evidence": "The work page explicitly marks the literary work public domain; original publication was 1871–1872 in the Russian Empire."
       },
       "fantlab_source_edition_match": "unknown",
       "gate_ready": false,

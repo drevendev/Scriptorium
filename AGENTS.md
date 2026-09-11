@@ -13,6 +13,22 @@ The project uses `drevendev/EndlessZen` as its operating discipline. Every wake 
 stateless: orient from repository state, perform one bounded unit, verify it, and leave
 a recoverable durable result.
 
+## Repository scope
+
+`drevendev/Scriptorium` is this worker's development target. A bounded run advances
+Scriptorium; it does not become a maintenance run for the framework or another project.
+
+`drevendev/EndlessZen` is a read-only operating-model reference for this worker. Do not
+patch it, create branches or pull requests there, review or merge its pull requests, or
+otherwise maintain it from the Scriptorium task. If Scriptorium work exposes a genuine
+EndlessZen defect or reusable framework improvement, check that repository's current
+contributor rules and open/closed issues, then report the finding as an Issue for its own
+maintainers. Reporting that finding does not replace the Scriptorium unit for the run.
+
+Other repositories may be inspected read-only when needed for Scriptorium research,
+source provenance, dependency evaluation, or comparison. Do not turn that inspection
+into unrelated repository development.
+
 ## Durable state
 
 Read these before selecting work:

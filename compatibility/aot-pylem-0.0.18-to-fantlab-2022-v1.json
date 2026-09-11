@@ -1,0 +1,104 @@
+{
+  "contract_id": "aot-pylem-0.0.18-to-fantlab-2022-v1",
+  "status": "compatibility_candidate",
+  "generated_at": "2026-09-11T23:55:00Z",
+  "compatibility_claim": "inferred",
+  "stack": {
+    "pylem": {
+      "version": "0.0.18",
+      "pypi_release_date": "2022-01-16",
+      "pypi_sdist_sha256": "66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515",
+      "repository": "https://github.com/sokirko74/pylem",
+      "source_commit": "68d62ce5452b6b80f2c2ef3345b4160c09e24bdf",
+      "source_commit_evidence": "setup.py at this commit declares version 0.0.18; PyPI metadata does not itself encode a git commit",
+      "morph_dict_commit": "4c5e9b6d048d1ba74e02988593b23fb0cbc87772",
+      "pybind11_commit": "cd176ceeff94ec184abde945ef0867ebe9fb3664"
+    },
+    "aot_reference": {
+      "repository": "https://github.com/sokirko74/aot",
+      "documentation_commit": "ee2c370c65b01fd78b3f366ed23aa1c2ed2d7c93",
+      "pos_inventory_path": "Source/www/wwwroot/concor.html"
+    },
+    "build_requirements": {
+      "python_requires": ">=3.6 (package metadata; current-Python compatibility not proven)",
+      "cmake_minimum": "3.16",
+      "cpp_standard": "C++17",
+      "source_checkout": "recursive submodules required for git-source builds"
+    }
+  },
+  "selection_policy": {
+    "analysis_cardinality": "pylem MorphanHolder.lemmatize yields zero or more LemmaInfo analyses per token",
+    "fantlab_disambiguation": "unresolved",
+    "rule": "Do not choose a winning analysis by list order, weight, or heuristic until benchmark evidence establishes a compatible policy."
+  },
+  "mapping_order": [
+    "unresolved_overrides",
+    "direct_pos"
+  ],
+  "direct_pos": [
+    {"aot_pos": "С", "fantlab_bucket": "noun", "status": "direct"},
+    {"aot_pos": "П", "fantlab_bucket": "adjective", "status": "direct"},
+    {"aot_pos": "Г", "fantlab_bucket": "verb", "status": "direct"},
+    {"aot_pos": "МС", "fantlab_bucket": "pronoun_noun", "status": "direct"},
+    {"aot_pos": "МС-П", "fantlab_bucket": "pronoun_adjective", "status": "direct"},
+    {"aot_pos": "МС-ПРЕДК", "fantlab_bucket": "pronoun_predicative", "status": "direct"},
+    {"aot_pos": "ЧИСЛ", "fantlab_bucket": "cardinal", "status": "direct"},
+    {"aot_pos": "ЧИСЛ-П", "fantlab_bucket": "ordinal", "status": "direct"},
+    {"aot_pos": "Н", "fantlab_bucket": "adverb", "status": "direct"},
+    {"aot_pos": "ПРЕДК", "fantlab_bucket": "predicative", "status": "direct"},
+    {"aot_pos": "ПРЕДЛ", "fantlab_bucket": "preposition", "status": "direct"},
+    {"aot_pos": "СОЮЗ", "fantlab_bucket": "conjunction", "status": "direct"},
+    {"aot_pos": "МЕЖД", "fantlab_bucket": "interjection", "status": "direct"},
+    {"aot_pos": "ВВОДН", "fantlab_bucket": "introductory_word", "status": "direct"},
+    {"aot_pos": "ЧАСТ", "fantlab_bucket": "particle", "status": "direct"},
+    {"aot_pos": "ПРИЧАСТИЕ", "fantlab_bucket": "participle", "status": "direct"},
+    {"aot_pos": "ДЕЕПРИЧАСТИЕ", "fantlab_bucket": "gerund", "status": "direct"}
+  ],
+  "unresolved_overrides": [
+    {
+      "match": {"aot_pos": "ИНФИНИТИВ"},
+      "status": "unresolved",
+      "question": "The 2022 FantLab work surface has no separate infinitive bucket; public evidence does not establish whether infinitives are folded into verb or handled elsewhere."
+    },
+    {
+      "match": {"aot_pos": "П", "required_grammeme": "кр"},
+      "status": "unresolved",
+      "question": "AOT marks short adjectives with grammeme кр, while FantLab methodology names short adjectives separately but the observed 2022 page has no separate bucket."
+    },
+    {
+      "match": {"aot_pos": "ПРИЧАСТИЕ", "required_grammeme": "кр"},
+      "status": "unresolved",
+      "question": "AOT marks short participles with grammeme кр, while FantLab methodology names short participles separately but the observed 2022 page has no separate bucket."
+    }
+  ],
+  "unresolved_derived_categories": [
+    {
+      "name": "postposition",
+      "status": "unresolved",
+      "reason": "Named by FantLab methodology but not a standalone AOT POS in the documented inventory or the observed 2022 bucket surface."
+    },
+    {
+      "name": "phrasal_verb",
+      "status": "unresolved",
+      "reason": "Named by FantLab methodology but not a standalone AOT POS in the documented inventory or the observed 2022 bucket surface."
+    }
+  ],
+  "drift": {
+    "dictionary_equivalence_to_fantlab_2022": "unproven",
+    "pylem_release_equivalence_to_fantlab_2022": "unproven",
+    "required_for_reproduced_status": "source-matched benchmarks showing the mapping and ambiguity policy reproduce FantLab results"
+  },
+  "verification": {
+    "metadata": "verified from PyPI and pinned GitHub source/submodule metadata",
+    "json_parse": "verified",
+    "native_build": "not_run",
+    "native_build_blocker": "Automation execution environment cannot resolve external package hosts; pip download of pylem==0.0.18 failed before source acquisition. This is not evidence of a pylem build failure."
+  },
+  "sources": [
+    "https://pypi.org/project/pylem/",
+    "https://github.com/sokirko74/pylem/tree/68d62ce5452b6b80f2c2ef3345b4160c09e24bdf",
+    "https://github.com/sokirko74/aot/blob/ee2c370c65b01fd78b3f366ed23aa1c2ed2d7c93/Source/www/wwwroot/concor.html",
+    "https://fantlab.ru/article374",
+    "https://fantlab.ru/work12625/lp"
+  ]
+}

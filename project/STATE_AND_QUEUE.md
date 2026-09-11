@@ -1,20 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 6
+STATE_REVISION: 7
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-11T20:53:00Z
-LAST_RESULT: SCRIP-REPRO-001 passed fresh exact-head review and PR #6 was squash-merged; issue #5 is complete.
-LAST_VERIFIED_PROGRESS: PR #6 merged as 7fb1db86adae61d61c6a44827d1f5bd3dd85cd43 after review of repaired head 300619838b7b01f8ae28c1d0161808a64bcb7ad6; the FantLab metric/benchmark contract is now on master.
+LAST_COMMITTED_RUN_AT: 2026-09-11T21:54:00Z
+LAST_RESULT: SCRIP-CORPUS-001 produced a five-work legally usable FantLab parity-candidate seed catalog; PR #8 is ready for independent review.
+LAST_VERIFIED_PROGRESS: Five retained full novels have explicit public-domain source evidence and FantLab /lp analyses above 300,000 characters; all remain gate_ready=false because the exact FantLab source editions/bytes are unknown.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-REPRO-001
-ISSUE:          #5
-STATUS:         DONE
-PR:             #6
-MERGED_COMMIT:  7fb1db86adae61d61c6a44827d1f5bd3dd85cd43
-NEXT_ACTION:    Select SCRIP-CORPUS-001, the first unblocked P0 queue unit.
+UNIT_ID:        SCRIP-CORPUS-001
+ISSUE:          #7
+STATUS:         REVIEW
+BRANCH:         research/7-parity-corpus-candidates
+PR:             #8
+NEXT_ACTION:    Independently review the five retained candidates against their FantLab
+                character counts, source-page rights/provenance evidence and edition-match
+                claims; merge only if candidate eligibility is supported without advancing
+                M2 beyond 0/5 source-matched works.
 ```
 
 ## Current milestone gate
@@ -25,11 +28,10 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Ordered highest first among unblocked work after the current review closes.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-001 | research | Candidate list of legally usable >=300k works that also have FantLab analysis, with source-edition confidence | M0 |
 | P0 | SCRIP-MORPH-001 | research/spike | Reproducible AOT/pylem environment and mapping from AOT tags to FantLab POS buckets | M0 |
 | P1 | SCRIP-TEXT-001 | implementation | Deterministic normalization/tokenization/sentence model with golden tests | SCRIP-REPRO-001 |
 | P1 | SCRIP-METRIC-001 | implementation | Character/word/sentence/punctuation metrics and JSON schema | SCRIP-TEXT-001 |
@@ -62,6 +64,12 @@ Ordered highest first among unblocked work.
 - Rendered decimal text is not treated as proof of decimal precision. A known
   `display_places` value requires independent field/surface evidence; otherwise the
   metric remains `unresolved_precision`.
+- The first parity-corpus seed now has five candidate-eligible full novels: `Анна
+  Каренина`, `Воскресение`, `Идиот`, `Братья Карамазовы` and `Бесы`. Their FantLab
+  analyses report 881,244–1,807,107 characters and their retained source pages carry
+  explicit public-domain notices.
+- Candidate availability has not advanced the M2 gate: all five FantLab source-edition
+  matches remain unknown, so source-matched parity progress is still 0/5.
 - The maintained AOT repository is LGPL and `pylem` is an MIT-licensed Python wrapper
   around the historical AOT C++ morphology lineage. This makes `pylem` the first
   compatibility candidate, not an already-proven match.
@@ -89,6 +97,10 @@ Ordered highest first among unblocked work.
 8. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
    a general formatting/tie rule. Unknown precision remains unresolved rather than
    inferred from rendered text.
+9. **Parity-corpus edition gap.** The seed catalog proves that long, legally usable works
+   with FantLab analyses exist, but none of the five retained candidates has evidence
+   tying its source transcription to FantLab's exact analyzed edition/bytes. M2 remains
+   blocked until that evidence is found or the user explicitly changes the gate.
 
 ## Run selection rule
 

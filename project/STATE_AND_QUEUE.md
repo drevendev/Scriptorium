@@ -1,23 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 7
+STATE_REVISION: 8
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-11T21:54:00Z
-LAST_RESULT: SCRIP-CORPUS-001 produced a five-work legally usable FantLab parity-candidate seed catalog; PR #8 is ready for independent review.
-LAST_VERIFIED_PROGRESS: Five retained full novels have explicit public-domain source evidence and FantLab /lp analyses above 300,000 characters; all remain gate_ready=false because the exact FantLab source editions/bytes are unknown.
+LAST_COMMITTED_RUN_AT: 2026-09-11T22:50:00Z
+LAST_RESULT: SCRIP-CORPUS-001 passed independent exact-head evidence review and PR #8 was squash-merged; issue #7 is complete.
+LAST_VERIFIED_PROGRESS: PR #8 merged as 53ba53fd451512454dcaebcf539b522b39b850c4 after review of head 1eab7727000882e84849e1e54cf812d874476c4f; five legally usable long-work candidates are cataloged, while M2 remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-001
 ISSUE:          #7
-STATUS:         REVIEW
-BRANCH:         research/7-parity-corpus-candidates
+STATUS:         DONE
 PR:             #8
-NEXT_ACTION:    Independently review the five retained candidates against their FantLab
-                character counts, source-page rights/provenance evidence and edition-match
-                claims; merge only if candidate eligibility is supported without advancing
-                M2 beyond 0/5 source-matched works.
+MERGED_COMMIT:  53ba53fd451512454dcaebcf539b522b39b850c4
+NEXT_ACTION:    Select SCRIP-MORPH-001, the first unblocked P0 queue unit.
 ```
 
 ## Current milestone gate
@@ -28,7 +25,7 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work after the current review closes.
+Ordered highest first among unblocked work.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
@@ -64,10 +61,10 @@ Ordered highest first among unblocked work after the current review closes.
 - Rendered decimal text is not treated as proof of decimal precision. A known
   `display_places` value requires independent field/surface evidence; otherwise the
   metric remains `unresolved_precision`.
-- The first parity-corpus seed now has five candidate-eligible full novels: `Анна
-  Каренина`, `Воскресение`, `Идиот`, `Братья Карамазовы` and `Бесы`. Their FantLab
-  analyses report 881,244–1,807,107 characters and their retained source pages carry
-  explicit public-domain notices.
+- The first parity-corpus seed has five candidate-eligible full novels: `Анна Каренина`,
+  `Воскресение`, `Идиот`, `Братья Карамазовы` and `Бесы`. Their FantLab analyses report
+  881,244–1,807,107 characters and their retained source pages carry explicit
+  public-domain notices.
 - Candidate availability has not advanced the M2 gate: all five FantLab source-edition
   matches remain unknown, so source-matched parity progress is still 0/5.
 - The maintained AOT repository is LGPL and `pylem` is an MIT-licensed Python wrapper

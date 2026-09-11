@@ -52,7 +52,7 @@ runs.
 
 ## Mode selection
 
-Selection is deterministic, not random. Priority is:
+The authorized hourly task prompt supplies the current deterministic selection policy:
 
 1. recover interrupted or review-ready work;
 2. fix a failing required check or benchmark regression;
@@ -61,8 +61,12 @@ Selection is deterministic, not random. Priority is:
 5. perform a consumer/corpus/provenance review when its trigger is due;
 6. report no executable work.
 
-The worker may propose a policy change, but a goal or gate change requires a manifest
-amendment with a reason.
+This deployment does **not** yet have an independent external EndlessZen mode controller
+that persists a selection receipt before each run. Until one is bound and verified, the
+worker applies the user-authorized deterministic ladder above and records this as a
+known conformance gap rather than claiming mechanical mode selection. The worker may
+propose a policy change, but it may not silently change this ladder; goal or gate changes
+require a manifest amendment with a reason.
 
 ## Liveness
 
@@ -219,3 +223,4 @@ curation programme until the user stops or changes scope.
 | Date | What changed | Why |
 | --- | --- | --- |
 | 2026-09-11 | Initial manifest | User commissioned the project and hourly autonomous development. |
+| 2026-09-11 | Record mode-controller conformance gap | Bootstrap review found that the deployment has an authorized deterministic ladder but no independently verified external selection receipt mechanism. |

@@ -24,3 +24,13 @@ code changes remain in Git history and their issues/PRs.
 - Bootstrap review corrected the mode-selection claim: the hourly task currently uses
   the user-authorized deterministic ladder, while an independently verified external
   controller/selection receipt remains an explicit EndlessZen conformance gap.
+
+## 2026-09-11 — Repository scope boundary
+
+- Made `drevendev/Scriptorium` the sole development target of this autonomous worker.
+- Kept `drevendev/EndlessZen` as a read-only operating-model reference for Scriptorium.
+- Allowed reusable EndlessZen findings to be reported as Issues for its own maintainers
+  after contributor and duplicate checks, without turning framework maintenance into a
+  Scriptorium work unit.
+- Kept other repositories read-only unless inspection is necessary for Scriptorium
+  research, provenance, dependency evaluation or comparison.

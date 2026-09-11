@@ -21,3 +21,6 @@ code changes remain in Git history and their issues/PRs.
   and genre fiction.
 - Required derived analysis/provenance rather than full copyrighted text in the public
   repository.
+- Bootstrap review corrected the mode-selection claim: the hourly task currently uses
+  the user-authorized deterministic ladder, while an independently verified external
+  controller/selection receipt remains an explicit EndlessZen conformance gap.

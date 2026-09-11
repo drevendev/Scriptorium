@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 2
+STATE_REVISION: 3
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-11T19:05:40Z
-LAST_RESULT: Bootstrap PR #2 was independently reviewed, corrected for the mode-controller conformance gap, and merged; M0 is complete.
-LAST_VERIFIED_PROGRESS: PR #2 merged at commit d8f069b4035fa5b7c776a1347a86a3f8e821bacd after contract review; issue #1 is satisfied.
+LAST_COMMITTED_RUN_AT: 2026-09-11T19:40:30Z
+LAST_RESULT: Repository-scope correction from issue #3 was independently reviewed and merged in PR #4; Scriptorium is the sole development target for this worker.
+LAST_VERIFIED_PROGRESS: PR #4 merged as 85bcf9e5d66c7ec7ae9dc8298ad7b97efa3b2852 after exact-head review; issue #3 is satisfied.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-SETUP-001
-ISSUE:          #1
+UNIT_ID:        SCRIP-SCOPE-001
+ISSUE:          #3
 STATUS:         DONE
-PR:             #2
-MERGED_COMMIT:  d8f069b4035fa5b7c776a1347a86a3f8e821bacd
-NEXT_ACTION:    Select the first unblocked queue unit on the next wake.
+PR:             #4
+MERGED_COMMIT:  85bcf9e5d66c7ec7ae9dc8298ad7b97efa3b2852
+NEXT_ACTION:    Select SCRIP-REPRO-001, the first unblocked P0 queue unit.
 ```
 
 ## Current milestone gate

@@ -57,3 +57,18 @@ code changes remain in Git history and their issues/PRs.
   comparison remains `unresolved_precision` rather than widening the match interval.
 - Required exact source-edition match plus legal basis and immutable digest before a
   numeric match can count as parity evidence.
+
+## 2026-09-11 — FantLab parity-corpus seed
+
+- Added a machine-readable candidate catalog with five full Russian novels whose public
+  FantLab analyses each exceed the 300,000-character corpus threshold and whose source
+  work pages carry explicit public-domain notices.
+- Recorded source-transcription provenance where available instead of treating a generic
+  work title as an edition identity; `Идиот` is deliberately marked weak because its
+  current Wikisource transcription warns that the source edition is unidentified.
+- Kept all five candidates `gate_ready: false`: FantLab's `/lp` surfaces do not identify
+  the exact source edition or immutable bytes used for the published analyses.
+- Recorded held leads separately, including a volume-level `Война и мир` analysis whose
+  independence for the five-work M2 gate is not yet defined.
+- M2 parity progress remains 0/5 source-matched works; candidate availability must not be
+  confused with benchmark admissibility.

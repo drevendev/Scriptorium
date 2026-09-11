@@ -1,0 +1,184 @@
+{
+  "catalog_version": "fantlab-parity-candidates-v1",
+  "research_date": "2026-09-11",
+  "minimum_characters_including_spaces": 300000,
+  "legal_policy": {
+    "source": "Russian Wikisource copyright policy",
+    "url": "https://ru.wikisource.org/wiki/Викитека:Авторские_права",
+    "rule_used": "Russian Wikisource permits works first published in the Russian Empire before 7 November 1917 under its public-domain policy; retained work pages also carry an explicit public-domain notice. Only the literary work body is in scope, not later editorial apparatus."
+  },
+  "status_vocabulary": {
+    "eligible_unmatched": "Legal source, FantLab linguistic analysis, and length threshold are confirmed, but the FantLab source edition/bytes are not matched.",
+    "held": "A promising lead is missing at least one required evidence item and is not admitted as an eligible candidate."
+  },
+  "candidates": [
+    {
+      "candidate_id": "tolstoy-anna-karenina-ru",
+      "author": "Лев Толстой",
+      "title": "Анна Каренина",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 270306,
+        "analysis_url": "https://fantlab.ru/work270306/lp",
+        "analysis_date": "2022-09-19",
+        "characters": 1692647,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Анна_Каренина_(Толстой)",
+        "edition_note": "Толстой Л. Н. Анна Каренина. М.: Наука, 1970. С. 5–684 (as cited by the Wikisource work page).",
+        "source_provenance_confidence": "strong",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The work page explicitly marks the literary work public domain; first publication was 1875–1877 in the Russian Empire."
+      },
+      "fantlab_source_edition_match": "unknown",
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
+        "A raw source digest and edition-to-FantLab match must be established before parity evidence is admissible."
+      ]
+    },
+    {
+      "candidate_id": "tolstoy-resurrection-ru",
+      "author": "Лев Толстой",
+      "title": "Воскресение",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 296603,
+        "analysis_url": "https://fantlab.ru/work296603/lp",
+        "analysis_date": "2022-09-19",
+        "characters": 881244,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Воскресение_(Толстой)",
+        "edition_note": "Л. Н. Толстой. Собрание сочинений в восьми томах. Т. 6. М. (as cited by the Wikisource work page; bibliographic detail is incomplete there).",
+        "source_provenance_confidence": "moderate",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The work page explicitly marks the literary work public domain; the novel was published in 1899 in the Russian Empire."
+      },
+      "fantlab_source_edition_match": "unknown",
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
+        "The Wikisource bibliographic citation should be completed before freezing source identity."
+      ]
+    },
+    {
+      "candidate_id": "dostoevsky-idiot-ru",
+      "author": "Фёдор Достоевский",
+      "title": "Идиот",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 225064,
+        "analysis_url": "https://fantlab.ru/work225064/lp",
+        "analysis_date": "2022-09-18",
+        "characters": 1302414,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Идиот_(Достоевский)",
+        "edition_note": null,
+        "source_provenance_confidence": "weak",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The work page explicitly marks the literary work public domain, but separately warns that its transcription source is not identified."
+      },
+      "fantlab_source_edition_match": "unknown",
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "The current Wikisource transcription has no identified source edition and must not be used as a frozen parity source without replacement or provenance repair.",
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis."
+      ]
+    },
+    {
+      "candidate_id": "dostoevsky-brothers-karamazov-ru",
+      "author": "Фёдор Достоевский",
+      "title": "Братья Карамазовы",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 168951,
+        "analysis_url": "https://fantlab.ru/work168951/lp",
+        "analysis_date": "2022-09-18",
+        "characters": 1807107,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)",
+        "edition_note": "Достоевский Ф. М. Собрание сочинений: в 15 т. Л.: Наука, 1991. Т. 9–10 (as cited by the Wikisource work page).",
+        "source_provenance_confidence": "strong",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The work page explicitly marks the literary work public domain; original publication was 1878–1880 in the Russian Empire."
+      },
+      "fantlab_source_edition_match": "unknown",
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
+        "The 1991 critical-edition transcription is a source candidate, not evidence that FantLab analyzed that edition."
+      ]
+    },
+    {
+      "candidate_id": "dostoevsky-demons-ru",
+      "author": "Фёдор Достоевский",
+      "title": "Бесы",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 281116,
+        "analysis_url": "https://fantlab.ru/work281116/lp",
+        "analysis_date": "2022-09-18",
+        "characters": 1252124,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Бесы_(Достоевский)",
+        "edition_note": "Достоевский Ф. М. Собрание сочинений в пятнадцати томах. Л.: Наука, 1990. Т. 7. Бесы. С. 7–664 (as cited by the Wikisource work page).",
+        "source_provenance_confidence": "strong",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The work page explicitly marks the literary work public domain; original publication was 1871–1872 in the Russian Empire."
+      },
+      "fantlab_source_edition_match": "unknown",
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
+        "The 1990 critical-edition transcription is a source candidate, not evidence that FantLab analyzed that edition."
+      ]
+    }
+  ],
+  "held_leads": [
+    {
+      "title": "Война и мир. Том первый",
+      "author": "Лев Толстой",
+      "fantlab_analysis_url": "https://fantlab.ru/work67755/lp",
+      "fantlab_characters": 710180,
+      "source_url": "https://ru.wikisource.org/wiki/Война_и_мир_(Толстой)",
+      "reason": "Length and legal-source evidence are strong, but FantLab models volume I as a separate analyzed work. M2 requires independent works, so this volume is held rather than counted as one of the five independent seed candidates until the project defines volume-level independence."
+    },
+    {
+      "title": "Преступление и наказание",
+      "author": "Фёдор Достоевский",
+      "fantlab_work_url": "https://fantlab.ru/work242301",
+      "source_url": "https://ru.wikisource.org/wiki/Преступление_и_наказание_(Достоевский)",
+      "reason": "Legal source and FantLab work identity were confirmed, but this run did not obtain an independently retrievable FantLab /lp analysis surface and therefore did not infer analysis availability or length."
+    },
+    {
+      "title": "Обломов",
+      "author": "Иван Гончаров",
+      "source_url": "https://ru.wikisource.org/wiki/Обломов_(Гончаров)",
+      "reason": "Public-domain source is available, but a FantLab /lp linguistic-analysis surface and threshold count were not verified in this run."
+    }
+  ]
+}

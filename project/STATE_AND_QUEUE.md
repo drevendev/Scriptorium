@@ -1,23 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 5
+STATE_REVISION: 6
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-11T19:58:00Z
-LAST_RESULT: SCRIP-REPRO-001 repaired both independent-review blockers in PR #6 and is ready for a fresh exact-head review.
-LAST_VERIFIED_PROGRESS: The benchmark schema now uses the metrics object key as sole identity and requires independently established decimal precision; Draft 2020-12 schema validation passes with an unresolved-precision representative case.
+LAST_COMMITTED_RUN_AT: 2026-09-11T20:53:00Z
+LAST_RESULT: SCRIP-REPRO-001 passed fresh exact-head review and PR #6 was squash-merged; issue #5 is complete.
+LAST_VERIFIED_PROGRESS: PR #6 merged as 7fb1db86adae61d61c6a44827d1f5bd3dd85cd43 after review of repaired head 300619838b7b01f8ae28c1d0161808a64bcb7ad6; the FantLab metric/benchmark contract is now on master.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-REPRO-001
 ISSUE:          #5
-STATUS:         REVIEW
-BRANCH:         spec/5-fantlab-metric-contract
+STATUS:         DONE
 PR:             #6
-NEXT_ACTION:    Independently review the repaired PR head. Verify that rendered decimal
-                text cannot supply display precision, unresolved precision cannot pass,
-                and metric identity cannot disagree between key and payload. Merge only
-                if those findings and the original issue #5 acceptance are satisfied.
+MERGED_COMMIT:  7fb1db86adae61d61c6a44827d1f5bd3dd85cd43
+NEXT_ACTION:    Select SCRIP-CORPUS-001, the first unblocked P0 queue unit.
 ```
 
 ## Current milestone gate
@@ -28,7 +25,7 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work after the current review closes.
+Ordered highest first among unblocked work.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |

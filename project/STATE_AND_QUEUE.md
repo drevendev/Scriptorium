@@ -1,20 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 3
+STATE_REVISION: 5
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-11T19:40:30Z
-LAST_RESULT: Repository-scope correction from issue #3 was independently reviewed and merged in PR #4; Scriptorium is the sole development target for this worker.
-LAST_VERIFIED_PROGRESS: PR #4 merged as 85bcf9e5d66c7ec7ae9dc8298ad7b97efa3b2852 after exact-head review; issue #3 is satisfied.
+LAST_COMMITTED_RUN_AT: 2026-09-11T19:58:00Z
+LAST_RESULT: SCRIP-REPRO-001 repaired both independent-review blockers in PR #6 and is ready for a fresh exact-head review.
+LAST_VERIFIED_PROGRESS: The benchmark schema now uses the metrics object key as sole identity and requires independently established decimal precision; Draft 2020-12 schema validation passes with an unresolved-precision representative case.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-SCOPE-001
-ISSUE:          #3
-STATUS:         DONE
-PR:             #4
-MERGED_COMMIT:  85bcf9e5d66c7ec7ae9dc8298ad7b97efa3b2852
-NEXT_ACTION:    Select SCRIP-REPRO-001, the first unblocked P0 queue unit.
+UNIT_ID:        SCRIP-REPRO-001
+ISSUE:          #5
+STATUS:         REVIEW
+BRANCH:         spec/5-fantlab-metric-contract
+PR:             #6
+NEXT_ACTION:    Independently review the repaired PR head. Verify that rendered decimal
+                text cannot supply display precision, unresolved precision cannot pass,
+                and metric identity cannot disagree between key and payload. Merge only
+                if those findings and the original issue #5 acceptance are satisfied.
 ```
 
 ## Current milestone gate
@@ -25,11 +28,10 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Ordered highest first among unblocked work after the current review closes.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-REPRO-001 | research/spec | Metric contract for FantLab-visible raw statistics and benchmark comparison schema | M0 |
 | P0 | SCRIP-CORPUS-001 | research | Candidate list of legally usable >=300k works that also have FantLab analysis, with source-edition confidence | M0 |
 | P0 | SCRIP-MORPH-001 | research/spike | Reproducible AOT/pylem environment and mapping from AOT tags to FantLab POS buckets | M0 |
 | P1 | SCRIP-TEXT-001 | implementation | Deterministic normalization/tokenization/sentence model with golden tests | SCRIP-REPRO-001 |
@@ -48,14 +50,21 @@ Ordered highest first among unblocked work.
   vocabulary and 3k/10k/100k windows, POS frequencies/bigrams/positions, punctuation,
   character bigrams, inter-word character features and later distinguishing-word
   frequencies.
-- The article says author means and standard deviations are weighted by work word
-  counts and describes feature weight as between-author spread relative to average
-  within-author spread; features above 0.7 were reported as useful for recognition.
-- The same article explicitly says corrective coefficients and some implementation
-  details remain unpublished. Exact parity must therefore be demonstrated, not
-  inferred.
+- A concrete 18 September 2022 work page (`work12625/lp`) exposes the first-wave scalar
+  labels, 17 displayed POS buckets, POS bigrams, POS-by-sentence-position and 14
+  punctuation patterns used by `fantlab-2022-v1`.
+- The methodology article names additional POS labels not observed as separate buckets
+  on that 2022 page; their mapping is explicitly deferred to SCRIP-MORPH-001.
+- FantLab says corrective coefficients and some implementation details remain
+  unpublished. Exact parity must therefore be demonstrated, not inferred.
 - FantLab's 2022 `Шутиха` page is captured as the first numeric reference in
   `benchmarks/fantlab/work488.json`.
+- The public `Шутиха` summary currently displays an approximate page count that differs
+  from the captured detailed-analysis reference, reinforcing the requirement to bind
+  every expected value to its exact FantLab source surface.
+- Rendered decimal text is not treated as proof of decimal precision. A known
+  `display_places` value requires independent field/surface evidence; otherwise the
+  metric remains `unresolved_precision`.
 - The maintained AOT repository is LGPL and `pylem` is an MIT-licensed Python wrapper
   around the historical AOT C++ morphology lineage. This makes `pylem` the first
   compatibility candidate, not an already-proven match.
@@ -77,6 +86,12 @@ Ordered highest first among unblocked work.
 6. **External mode controller unverified.** The user-authorized deterministic selection
    ladder is operative, but no independent EndlessZen controller/selection receipt
    mechanism has been bound and proven yet.
+7. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
+   differently rounded or cached values. Benchmark expectations must name the exact
+   source surface and capture display text; cross-surface joining is not parity evidence.
+8. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
+   a general formatting/tie rule. Unknown precision remains unresolved rather than
+   inferred from rendered text.
 
 ## Run selection rule
 

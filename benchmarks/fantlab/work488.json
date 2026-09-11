@@ -1,0 +1,81 @@
+{
+  "benchmark_id": "fantlab-work488-2022-09-19",
+  "reference": {
+    "site": "FantLab",
+    "url": "https://fantlab.ru/work488/lp",
+    "analysis_date": "2022-09-19",
+    "work_id": 488,
+    "title": "Шутиха",
+    "author": "Генри Лайон Олди"
+  },
+  "status": "reference-only-no-source-text",
+  "source_text": {
+    "available_to_project": false,
+    "edition_matched": false,
+    "legal_basis": null,
+    "raw_sha256": null,
+    "note": "Published FantLab numbers are a regression target only. Do not claim parity until a legally usable, source-matched full text is established."
+  },
+  "expected": {
+    "characters": 357565,
+    "words": 49009,
+    "approx_pages": 188,
+    "mean_word_length_characters": 5.8,
+    "mean_sentence_length_characters": 62.06,
+    "mean_narration_sentence_length_characters": 79.38,
+    "mean_dialogue_sentence_length_characters": 39.53,
+    "dialogue_share_percent": 27.86,
+    "author_text_inside_dialogue_percent": 4.77,
+    "unique_words": 13069,
+    "active_dictionary_vocabulary": 11561,
+    "active_non_dictionary_vocabulary": 1508,
+    "uasz_3000": 1688.66,
+    "uasz_10000": 4341.13,
+    "undefined_pos_words": 8487,
+    "undefined_pos_percent_of_words": 17.32,
+    "defined_pos_words": 40522,
+    "defined_pos_percent_of_words": 82.68,
+    "service_words": 14410,
+    "service_words_percent_of_defined_pos": 35.56,
+    "pos": {
+      "noun": {"count": 15997, "percent_of_defined": 39.48},
+      "adjective": {"count": 5209, "percent_of_defined": 12.85},
+      "verb": {"count": 7794, "percent_of_defined": 19.23},
+      "pronoun_noun": {"count": 2249, "percent_of_defined": 5.55},
+      "pronoun_adjective": {"count": 1243, "percent_of_defined": 3.07},
+      "pronoun_predicative": {"count": 2, "percent_of_defined": 0.0},
+      "cardinal": {"count": 347, "percent_of_defined": 0.86},
+      "ordinal": {"count": 161, "percent_of_defined": 0.4},
+      "adverb": {"count": 1852, "percent_of_defined": 4.57},
+      "predicative": {"count": 264, "percent_of_defined": 0.65},
+      "preposition": {"count": 5142, "percent_of_defined": 12.69},
+      "conjunction": {"count": 2853, "percent_of_defined": 7.04},
+      "interjection": {"count": 696, "percent_of_defined": 1.72},
+      "introductory_word": {"count": 132, "percent_of_defined": 0.33},
+      "particle": {"count": 1923, "percent_of_defined": 4.75},
+      "participle": {"count": 845, "percent_of_defined": 2.09},
+      "gerund": {"count": 170, "percent_of_defined": 0.42}
+    },
+    "punctuation_per_1000_words": {
+      "comma": 131.83,
+      "period": 77.94,
+      "dash": 19.69,
+      "exclamation": 17.34,
+      "question": 10.30,
+      "ellipsis": 9.59,
+      "exclamation_ellipsis": 1.14,
+      "question_ellipsis": 0.14,
+      "triple_exclamation": 0.24,
+      "question_exclamation": 3.18,
+      "quote": 36.61,
+      "parentheses": 1.49,
+      "colon": 14.30,
+      "semicolon": 3.04
+    }
+  },
+  "comparison": {
+    "rule": "exact-after-reference-display-rounding",
+    "result": "not-run",
+    "reason": "No legally usable source-matched full text has been established."
+  }
+}

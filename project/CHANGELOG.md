@@ -50,7 +50,10 @@ code changes remain in Git history and their issues/PRs.
 - Added a versioned field-by-field benchmark comparison schema with exact reference
   surface, edition/legal/hash provenance, expected display text, actual raw value,
   deltas and `pass | fail | unresolved | not_run` outcomes.
-- Defined decimal display comparison by the non-tie rounding interval and left exact tie
-  behavior unresolved instead of assuming a Python/IEEE rounding mode.
+- After independent review, made the metrics object key the sole metric identity so a
+  schema-valid row cannot carry a contradictory nested identifier.
+- After independent review, stopped deriving decimal precision from rendered text.
+  `display_places` must come from independent field/surface evidence; otherwise decimal
+  comparison remains `unresolved_precision` rather than widening the match interval.
 - Required exact source-edition match plus legal basis and immutable digest before a
   numeric match can count as parity evidence.

@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 import unittest
 
+from scriptorium.dialogue import DIALOGUE_PROFILE
 from scriptorium.metrics import (
     METRIC_PROFILE,
     PUNCTUATION_KEYS,
@@ -89,6 +90,7 @@ class DeterministicMetricTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(first["schema_version"], SCHEMA_VERSION)
         self.assertEqual(first["profiles"]["metrics"], METRIC_PROFILE)
+        self.assertEqual(first["profiles"]["dialogue"], DIALOGUE_PROFILE)
         self.assertEqual(first["profiles"]["punctuation"], PUNCTUATION_PROFILE)
         self.assertEqual(
             first["normalized_sha256"],
@@ -96,9 +98,7 @@ class DeterministicMetricTests(unittest.TestCase):
         )
 
     def test_schema_is_valid_json_and_names_same_profile(self):
-        schema_path = Path(__file__).parents[1] / "schemas" / (
-            "scriptorium-deterministic-metrics-v1.schema.json"
-        )
+        schema_path = Path(__file__).parents[1] / "schemas" / f"{SCHEMA_VERSION}.schema.json"
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
@@ -108,6 +108,10 @@ class DeterministicMetricTests(unittest.TestCase):
         self.assertEqual(
             schema["properties"]["profiles"]["properties"]["metrics"]["const"],
             METRIC_PROFILE,
+        )
+        self.assertEqual(
+            schema["properties"]["profiles"]["properties"]["dialogue"]["const"],
+            DIALOGUE_PROFILE,
         )
         self.assertFalse(schema["additionalProperties"])
 

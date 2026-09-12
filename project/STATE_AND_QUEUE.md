@@ -1,21 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 15
+STATE_REVISION: 16
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T12:54:00Z
-LAST_RESULT: SCRIP-TEXT-001 passed repaired exact-head review and PR #15 was squash-merged; issue #11 is complete.
-LAST_VERIFIED_PROGRESS: PR #15 merged as 502bc2134ba32604338e6cae3d48d2846317c12b after review of repaired head 55971a22e4fbe2986168ade199e78da3e416fd49. Exact published text-model/test content passed 11/11 standard-library tests under Python 3.13.5; the architecture now durably names unittest as the initial contract-test runner while the text model remains explicitly inferred rather than FantLab-reproduced.
+LAST_COMMITTED_RUN_AT: 2026-09-12T14:02:00Z
+LAST_RESULT: SCRIP-METRIC-001 implemented the first deterministic general/punctuation metric profile, schema and real-source showcase; PR #17 is ready for independent review.
+LAST_VERIFIED_PROGRESS: Issue #16 owns the first metric slice. The authored candidate passed 17/17 standard-library tests before publication, adds 19 stable metric rows (four FantLab general metrics, one Scriptorium sentence-count extension, and 14 FantLab punctuation fields), and publishes a provenance-bound Anna Karenina excerpt artifact without source prose or parity claims.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-TEXT-001
-ISSUE:          #11
-STATUS:         DONE
-PR:             #15
-MERGED_COMMIT:  502bc2134ba32604338e6cae3d48d2846317c12b
-NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
-                dependency state; SCRIP-METRIC-001 is the first listed candidate.
+UNIT_ID:        SCRIP-METRIC-001
+ISSUE:          #16
+STATUS:         REVIEW
+BRANCH:         feature/16-deterministic-metrics
+PR:             #17
+NEXT_ACTION:    Independently review the final PR #17 head, rerun/inspect all 17 tests,
+                validate the JSON schema and showcase provenance/hash contract, and
+                merge only if metric formulas and inferred punctuation choices are sound.
 ```
 
 ## Current milestone gate
@@ -26,11 +27,10 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Ordered highest first among unblocked work after the current review closes.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-METRIC-001 | implementation | Character/word/sentence/punctuation metrics and JSON schema | SCRIP-TEXT-001 |
 | P1 | SCRIP-REPRO-002 | implementation | CLI benchmark harness reporting expected/actual/delta and provenance | SCRIP-METRIC-001 |
 | P1 | SCRIP-TEXT-002 | implementation | Dialogue segmentation and author-text-in-dialogue metrics | SCRIP-TEXT-001 |
 | P1 | SCRIP-METRIC-002 | implementation | Vocabulary/rolling-window metrics | SCRIP-TEXT-001 |
@@ -79,11 +79,23 @@ Ordered highest first among unblocked work.
 - `scriptorium-text-v1` is the first executable text profile. It normalizes line endings
   and Unicode NFC, emits deterministic word/sentence candidate spans with offsets into
   normalized text, and is explicitly classified as inferred rather than reproduced.
-- Independent review of the final implementation content passed 11/11 standard-library
-  golden tests under Python 3.13.5 before merge.
-- The architecture now names standard-library `unittest` as the initial unit, golden and
+- Independent review of the final text-model implementation content passed 11/11
+  standard-library golden tests under Python 3.13.5 before merge.
+- The architecture names standard-library `unittest` as the initial unit, golden and
   benchmark contract runner. `pytest` is optional future infrastructure, not an implicit
   dependency or a contradictory bootstrap requirement.
+- `scriptorium-metrics-v1` now provides deterministic character/word/mean-length values
+  plus the Scriptorium sentence-count diagnostic; FantLab-namespaced values remain
+  explicitly `inferred`.
+- `scriptorium-punctuation-v1` covers all 14 observed punctuation fields with a declared
+  greedy non-overlap policy, explicit ellipsis/dash/quote mappings and opening-parenthesis
+  candidate counting rather than hidden heuristics.
+- `scriptorium-deterministic-metrics-v1` freezes the first metric artifact surface,
+  units, evidence classes, compatibility statuses and normalized-text SHA-256.
+- The first public showcase is bound to Russian Wikisource `Анна Каренина`, Part I,
+  Chapter I revision `oldid=4929732`. It stores only provenance, a precise four-paragraph
+  selection rule, hashes and derived metrics. The 1,298-character excerpt is explicitly
+  non-corpus and non-benchmark evidence.
 
 ## Known risks / blockers
 
@@ -96,33 +108,38 @@ Ordered highest first among unblocked work.
 3. **Text-boundary inference.** FantLab's exact normalization, tokenization, abbreviation
    and sentence-boundary rules are not public. `scriptorium-text-v1` is a deterministic
    candidate only; benchmark deltas must drive any compatibility revisions.
-4. **Runtime POS collision.** Pinned pylem renders both noun and cardinal numeral as
+4. **General-metric denominator inference.** Character unit, token length and sentence
+   length denominator details are not public enough to call current formulas reproduced.
+5. **Punctuation inference.** FantLab does not publish overlap, Unicode dash/quote,
+   ellipsis normalization or parenthesis-pair rules. `scriptorium-punctuation-v1` is a
+   deterministic candidate whose choices require source-matched benchmark pressure.
+6. **Runtime POS collision.** Pinned pylem renders both noun and cardinal numeral as
    Latin `N`. `LemmaInfo.part_of_speech` cannot recover the distinction; an explicitly
    exposed source POS discriminator plus benchmark validation is required before these
    two FantLab buckets can be produced compatibly.
-5. **Extra-category folding unresolved.** `POSL`, `COLLOC`, `ADJ_SHORT`,
+7. **Extra-category folding unresolved.** `POSL`, `COLLOC`, `ADJ_SHORT`,
    `PARTICIPLE_SHORT` and `INFINITIVE` exist separately in the pinned runtime, while the
    observed FantLab 2022 surface has no matching standalone buckets.
-6. **Morphology drift.** The pinned pylem dictionary/source has not been shown identical
+8. **Morphology drift.** The pinned pylem dictionary/source has not been shown identical
    to FantLab's 2022 production morphology. Source-matched benchmarks must measure drift.
-7. **Morphology ambiguity.** Pylem can expose multiple analyses; FantLab's homonym and
+9. **Morphology ambiguity.** Pylem can expose multiple analyses; FantLab's homonym and
    prediction-selection policy is not public. No first-result/weight heuristic is accepted.
-8. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
-   verified network-enabled runtime. This remains `not_run`, not a package failure.
-9. **Copyright risk.** Author.Today/fanfiction availability is not a license. Treat
-   platform texts as candidates until work-specific rights permit analysis/publication.
-10. **Scheduler serialization unverified.** Re-read refs/state before write and avoid
+10. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
+    verified network-enabled runtime. This remains `not_run`, not a package failure.
+11. **Copyright risk.** Author.Today/fanfiction availability is not a license. Treat
+    platform texts as candidates until work-specific rights permit analysis/publication.
+12. **Scheduler serialization unverified.** Re-read refs/state before write and avoid
     same-run author+merge of substantial PRs.
-11. **External mode controller unverified.** The user-authorized deterministic selection
+13. **External mode controller unverified.** The user-authorized deterministic selection
     ladder is operative, but no independent EndlessZen controller/selection receipt
     mechanism has been bound and proven yet.
-12. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
+14. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
     differently rounded or cached values. Benchmark expectations must name the exact
     source surface and capture display text; cross-surface joining is not parity evidence.
-13. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
+15. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
     a general formatting/tie rule. Unknown precision remains unresolved rather than
     inferred from rendered text.
-14. **Parity-corpus edition gap.** None of the five retained candidates has evidence
+16. **Parity-corpus edition gap.** None of the five retained candidates has evidence
     tying its source transcription to FantLab's exact analyzed edition/bytes. M2 remains
     blocked until that evidence is found or the user explicitly changes the gate.
 

@@ -1,20 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 8
+STATE_REVISION: 11
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-11T22:50:00Z
-LAST_RESULT: SCRIP-CORPUS-001 passed independent exact-head evidence review and PR #8 was squash-merged; issue #7 is complete.
-LAST_VERIFIED_PROGRESS: PR #8 merged as 53ba53fd451512454dcaebcf539b522b39b850c4 after review of head 1eab7727000882e84849e1e54cf812d874476c4f; five legally usable long-work candidates are cataloged, while M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-12T09:52:00Z
+LAST_RESULT: SCRIP-MORPH-001 repaired PR #10 around the actual Latin runtime POS strings exposed by pinned pylem 0.0.18; the contract now enumerates all 22 AOT source slots, preserves the N noun/cardinal collision as unresolved, and is ready for fresh independent review.
+LAST_VERIFIED_PROGRESS: Pinned pylem calls SetUseNationalConstants(false), pylem parses the leading morphInfo token into LemmaInfo.part_of_speech, and pinned morph_dict has 22 source POS slots but 21 unique Latin runtime strings. Fifteen runtime strings have unambiguous FantLab targets, N is ambiguous between noun/cardinal, and five extra runtime categories remain unresolved.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-001
-ISSUE:          #7
-STATUS:         DONE
-PR:             #8
-MERGED_COMMIT:  53ba53fd451512454dcaebcf539b522b39b850c4
-NEXT_ACTION:    Select SCRIP-MORPH-001, the first unblocked P0 queue unit.
+UNIT_ID:        SCRIP-MORPH-001
+ISSUE:          #9
+STATUS:         REVIEW
+BRANCH:         research/9-aot-pylem-contract
+PR:             #10
+REPAIR_BASE:    dcf3dcfdf1deaf4be201c1e1b127ff7c7e34f423
+NEXT_ACTION:    Independently review the repaired runtime mapping against pinned
+                pylem/morph_dict source, especially the 22-slot inventory, the 15 direct
+                runtime mappings, the unresolved N noun/cardinal collision and the five
+                extra runtime POS values; merge only if the repaired contract is honest.
 ```
 
 ## Current milestone gate
@@ -25,11 +29,10 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Ordered highest first among unblocked work after the current review closes.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-MORPH-001 | research/spike | Reproducible AOT/pylem environment and mapping from AOT tags to FantLab POS buckets | M0 |
 | P1 | SCRIP-TEXT-001 | implementation | Deterministic normalization/tokenization/sentence model with golden tests | SCRIP-REPRO-001 |
 | P1 | SCRIP-METRIC-001 | implementation | Character/word/sentence/punctuation metrics and JSON schema | SCRIP-TEXT-001 |
 | P1 | SCRIP-REPRO-002 | implementation | CLI benchmark harness reporting expected/actual/delta and provenance | SCRIP-METRIC-001 |
@@ -50,26 +53,33 @@ Ordered highest first among unblocked work.
   labels, 17 displayed POS buckets, POS bigrams, POS-by-sentence-position and 14
   punctuation patterns used by `fantlab-2022-v1`.
 - The methodology article names additional POS labels not observed as separate buckets
-  on that 2022 page; their mapping is explicitly deferred to SCRIP-MORPH-001.
+  on that 2022 page; their mapping is not guessed.
 - FantLab says corrective coefficients and some implementation details remain
   unpublished. Exact parity must therefore be demonstrated, not inferred.
 - FantLab's 2022 `Шутиха` page is captured as the first numeric reference in
   `benchmarks/fantlab/work488.json`.
-- The public `Шутиха` summary currently displays an approximate page count that differs
-  from the captured detailed-analysis reference, reinforcing the requirement to bind
-  every expected value to its exact FantLab source surface.
 - Rendered decimal text is not treated as proof of decimal precision. A known
   `display_places` value requires independent field/surface evidence; otherwise the
   metric remains `unresolved_precision`.
 - The first parity-corpus seed has five candidate-eligible full novels: `Анна Каренина`,
-  `Воскресение`, `Идиот`, `Братья Карамазовы` and `Бесы`. Their FantLab analyses report
-  881,244–1,807,107 characters and their retained source pages carry explicit
-  public-domain notices.
-- Candidate availability has not advanced the M2 gate: all five FantLab source-edition
-  matches remain unknown, so source-matched parity progress is still 0/5.
-- The maintained AOT repository is LGPL and `pylem` is an MIT-licensed Python wrapper
-  around the historical AOT C++ morphology lineage. This makes `pylem` the first
-  compatibility candidate, not an already-proven match.
+  `Воскресение`, `Идиот`, `Братья Карамазовы` and `Бесы`. Candidate availability has not
+  advanced M2 because every FantLab source-edition match remains unknown.
+- PyPI still exposes pylem 0.0.18 as the selected compatibility candidate; the repository
+  revision pins `morph_dict@4c5e9b6d048d1ba74e02988593b23fb0cbc87772`.
+- Pinned pylem calls `SetUseNationalConstants(false)` after morphology load, therefore
+  runtime POS/grammeme strings exposed through that holder use Latin constants rather
+  than the Cyrillic documentation-facing constants.
+- `pylem/__init__.py` parses the leading `morphInfo` token into
+  `LemmaInfo.part_of_speech`; this is the runtime adapter surface described by the
+  compatibility contract.
+- Pinned morph_dict defines 22 Russian source POS slots but only 21 unique Latin runtime
+  strings. Fifteen runtime strings map unambiguously to one observed FantLab bucket.
+- Both noun `С` and cardinal numeral `ЧИСЛ` render as runtime `N`; the public pylem Python
+  result does not expose the original source POS enum/ancode, so this distinction remains
+  unresolved rather than guessed.
+- `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` are distinct pinned
+  runtime POS values with no standalone bucket on the observed 2022 FantLab surface.
+  Their folding behavior remains unresolved.
 
 ## Known risks / blockers
 
@@ -79,25 +89,35 @@ Ordered highest first among unblocked work.
 2. **Hidden-algorithm risk.** FantLab publicly acknowledges unpublished corrective
    coefficients/know-how. Keep reverse-engineering evidence-based; do not lower the M2
    gate without an explicit manifest amendment.
-3. **Morphology drift.** Current AOT dictionaries/wrappers may not be byte-for-byte the
-   same dictionary/version used by FantLab in 2022. Pin versions and measure drift.
-4. **Copyright risk.** Author.Today/fanfiction availability is not a license. Treat
+3. **Runtime POS collision.** Pinned pylem renders both noun and cardinal numeral as
+   Latin `N`. `LemmaInfo.part_of_speech` cannot recover the distinction; an explicitly
+   exposed source POS discriminator plus benchmark validation is required before these
+   two FantLab buckets can be produced compatibly.
+4. **Extra-category folding unresolved.** `POSL`, `COLLOC`, `ADJ_SHORT`,
+   `PARTICIPLE_SHORT` and `INFINITIVE` exist separately in the pinned runtime, while the
+   observed FantLab 2022 surface has no matching standalone buckets.
+5. **Morphology drift.** The pinned pylem dictionary/source has not been shown identical
+   to FantLab's 2022 production morphology. Source-matched benchmarks must measure drift.
+6. **Morphology ambiguity.** Pylem can expose multiple analyses; FantLab's homonym and
+   prediction-selection policy is not public. No first-result/weight heuristic is accepted.
+7. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
+   verified network-enabled runtime. This remains `not_run`, not a package failure.
+8. **Copyright risk.** Author.Today/fanfiction availability is not a license. Treat
    platform texts as candidates until work-specific rights permit analysis/publication.
-5. **Scheduler serialization unverified.** Re-read refs/state before write and avoid
+9. **Scheduler serialization unverified.** Re-read refs/state before write and avoid
    same-run author+merge of substantial PRs.
-6. **External mode controller unverified.** The user-authorized deterministic selection
-   ladder is operative, but no independent EndlessZen controller/selection receipt
-   mechanism has been bound and proven yet.
-7. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
-   differently rounded or cached values. Benchmark expectations must name the exact
-   source surface and capture display text; cross-surface joining is not parity evidence.
-8. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
-   a general formatting/tie rule. Unknown precision remains unresolved rather than
-   inferred from rendered text.
-9. **Parity-corpus edition gap.** The seed catalog proves that long, legally usable works
-   with FantLab analyses exist, but none of the five retained candidates has evidence
-   tying its source transcription to FantLab's exact analyzed edition/bytes. M2 remains
-   blocked until that evidence is found or the user explicitly changes the gate.
+10. **External mode controller unverified.** The user-authorized deterministic selection
+    ladder is operative, but no independent EndlessZen controller/selection receipt
+    mechanism has been bound and proven yet.
+11. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
+    differently rounded or cached values. Benchmark expectations must name the exact
+    source surface and capture display text; cross-surface joining is not parity evidence.
+12. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
+    a general formatting/tie rule. Unknown precision remains unresolved rather than
+    inferred from rendered text.
+13. **Parity-corpus edition gap.** None of the five retained candidates has evidence
+    tying its source transcription to FantLab's exact analyzed edition/bytes. M2 remains
+    blocked until that evidence is found or the user explicitly changes the gate.
 
 ## Run selection rule
 

@@ -1,12 +1,13 @@
-"""Deterministic first-wave metric extraction.
+"""Deterministic FantLab-shaped metric extraction.
 
 The profiles in this module are explicit *inferred* candidates for FantLab-visible
-general, dialogue and punctuation metrics. Public metric names do not imply reproduced
-parity.
+general, dialogue, vocabulary and punctuation metrics. Public metric names do not imply
+reproduced parity.
 """
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from hashlib import sha256
 from typing import Final
 
@@ -17,11 +18,12 @@ from .dialogue import (
     narration_spans,
 )
 from .text import NORMALIZATION_PROFILE, TextSpan, normalize_text, sentence_spans, word_tokens
+from .vocabulary import VOCABULARY_PROFILE, analyze_vocabulary
 
 
-METRIC_PROFILE: Final = "scriptorium-metrics-v2"
+METRIC_PROFILE: Final = "scriptorium-metrics-v3"
 PUNCTUATION_PROFILE: Final = "scriptorium-punctuation-v1"
-SCHEMA_VERSION: Final = "scriptorium-deterministic-metrics-v2"
+SCHEMA_VERSION: Final = "scriptorium-deterministic-metrics-v3"
 METRIC_CONTRACT_ID: Final = "fantlab-2022-v1"
 
 PUNCTUATION_KEYS: Final = (
@@ -71,6 +73,24 @@ _METRIC_DEFINITIONS: Final = {
         "public_surface",
         "inferred",
     ),
+    "fantlab.vocabulary.unique_words": ("words", "public_definition", "inferred"),
+    "fantlab.vocabulary.active_dictionary": ("words", "public_definition", "inferred"),
+    "fantlab.vocabulary.active_nondictionary": ("words", "public_definition", "inferred"),
+    "fantlab.vocabulary.uasz_3000": (
+        "unique_dictionary_words/window",
+        "public_definition",
+        "inferred",
+    ),
+    "fantlab.vocabulary.uasz_10000": (
+        "unique_dictionary_words/window",
+        "public_definition",
+        "inferred",
+    ),
+    "fantlab.vocabulary.uasz_100000": (
+        "unique_dictionary_words/window",
+        "public_definition",
+        "inferred",
+    ),
 }
 
 _MULTI_PUNCTUATION: Final = (
@@ -106,11 +126,18 @@ _SINGLE_PUNCTUATION: Final = {
 }
 
 
-def analyze_deterministic_metrics(text: str) -> dict[str, object]:
+def analyze_deterministic_metrics(
+    text: str,
+    *,
+    dictionary_words: Iterable[str] | None = None,
+    dictionary_profile: str | None = None,
+) -> dict[str, object]:
     """Return the versioned deterministic metric artifact for ``text``.
 
     All FantLab-namespaced values are compatibility candidates. They remain
     ``inferred`` until source-matched benchmarks satisfy the project gate.
+    Dictionary-dependent vocabulary values are ``None`` unless an explicit
+    dictionary lexeme collection and profile identity are supplied together.
     """
 
     normalized = normalize_text(text)
@@ -130,6 +157,11 @@ def analyze_deterministic_metrics(text: str) -> dict[str, object]:
     dialogue_characters = sum(_non_whitespace_count(span.text) for span in dialogue)
     author_remark_characters = sum(
         _non_whitespace_count(span.text) for span in author_remarks
+    )
+    vocabulary = analyze_vocabulary(
+        normalized,
+        dictionary_words=dictionary_words,
+        dictionary_profile=dictionary_profile,
     )
 
     metrics: dict[str, dict[str, object]] = {
@@ -162,6 +194,24 @@ def analyze_deterministic_metrics(text: str) -> dict[str, object]:
             _percent(author_remark_characters, dialogue_characters),
             "fantlab.dialogue.author_text_inside_dialogue_percent",
         ),
+        "fantlab.vocabulary.unique_words": _metric(
+            vocabulary["unique_words"], "fantlab.vocabulary.unique_words"
+        ),
+        "fantlab.vocabulary.active_dictionary": _metric(
+            vocabulary["active_dictionary"], "fantlab.vocabulary.active_dictionary"
+        ),
+        "fantlab.vocabulary.active_nondictionary": _metric(
+            vocabulary["active_nondictionary"], "fantlab.vocabulary.active_nondictionary"
+        ),
+        "fantlab.vocabulary.uasz_3000": _metric(
+            vocabulary["uasz_3000"], "fantlab.vocabulary.uasz_3000"
+        ),
+        "fantlab.vocabulary.uasz_10000": _metric(
+            vocabulary["uasz_10000"], "fantlab.vocabulary.uasz_10000"
+        ),
+        "fantlab.vocabulary.uasz_100000": _metric(
+            vocabulary["uasz_100000"], "fantlab.vocabulary.uasz_100000"
+        ),
     }
 
     counts = punctuation_counts(normalized)
@@ -181,7 +231,11 @@ def analyze_deterministic_metrics(text: str) -> dict[str, object]:
             "normalization": NORMALIZATION_PROFILE,
             "metrics": METRIC_PROFILE,
             "dialogue": DIALOGUE_PROFILE,
+            "vocabulary": VOCABULARY_PROFILE,
             "punctuation": PUNCTUATION_PROFILE,
+        },
+        "dependencies": {
+            "vocabulary_dictionary": vocabulary["dictionary_profile"],
         },
         "normalized_sha256": sha256(normalized.encode("utf-8")).hexdigest(),
         "metrics": metrics,

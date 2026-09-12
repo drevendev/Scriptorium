@@ -1,10 +1,10 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 21
+STATE_REVISION: 22
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T19:04:00Z
-LAST_RESULT: SCRIP-TEXT-002 implemented the inferred dialogue model, four scalar dialogue metrics, benchmark exposure, v2 schema and a real-source dialogue showcase; PR #21 is ready for independent review.
-LAST_VERIFIED_PROGRESS: Issue #20 owns the dialogue slice. The authored reconstruction passed 33/33 standard-library tests under Python 3.13 and the generated v2 artifact validated against its schema. `scriptorium-dialogue-v1` keeps dash-led paragraph detection, author-remark segmentation and all denominator choices explicit/inferred; the benchmark surface now covers 22 implemented FantLab fields without advancing M2 parity.
+LAST_COMMITTED_RUN_AT: 2026-09-12T20:49:25Z
+LAST_RESULT: SCRIP-TEXT-002 repaired the LF-only paragraph-boundary contract violation found in independent review; PR #21 remains in REVIEW for a fresh exact-head judgement.
+LAST_VERIFIED_PROGRESS: The repair replaces Python splitlines() with literal normalized-LF scanning and adds regression coverage proving U+2028 LINE SEPARATOR, U+0085 NEL and VT do not create false paragraph/dialogue boundaries. Existing CRLF/LF offsets remain stable in focused reconstruction checks; metric/schema/benchmark semantics were not changed.
 
 ## Current unit
 
@@ -14,9 +14,9 @@ ISSUE:          #20
 STATUS:         REVIEW
 BRANCH:         feature/20-dialogue-metrics
 PR:             #21
-NEXT_ACTION:    Independently review the final exact PR #21 head, rerun/inspect the full
-                test suite, validate v2 schema/showcase provenance, and scrutinize the
-                dialogue/author-remark segmentation and denominator choices before merge.
+NEXT_ACTION:    Independently review the repaired exact PR #21 head, rerun/inspect the
+                complete test suite including the Unicode-separator regression, and
+                merge only if the LF-only repair leaves no remaining blocker.
 ```
 
 ## Current milestone gate
@@ -119,8 +119,12 @@ Ordered highest first among unblocked work after the current review closes.
   SHA-256 `2dcd42a6e638809ae17ecb2e250b092e65ac7919701ae0d25cc9cccb5790e7f9` without
   committing the source prose. Its 250 characters are explicitly non-corpus/non-parity.
 - The authored dialogue candidate passed 33/33 reconstructed standard-library tests and
-  an out-of-band JSON Schema validation before publication; independent exact-head review
-  is still required before merge.
+  an out-of-band JSON Schema validation before publication.
+- Independent review found the first dialogue implementation used Python `splitlines()`,
+  which recognizes Unicode separators beyond the frozen LF-only paragraph contract.
+  The repair now scans literal normalized `\n` only; focused checks preserve existing
+  CRLF/LF offsets and prove U+2028, U+0085 and VT remain inside a single paragraph rather
+  than creating false dialogue spans. A fresh exact-head full-suite review remains due.
 
 ## Known risks / blockers
 

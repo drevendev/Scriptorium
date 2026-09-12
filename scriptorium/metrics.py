@@ -235,7 +235,7 @@ def analyze_deterministic_metrics(
             "punctuation": PUNCTUATION_PROFILE,
         },
         "dependencies": {
-            "vocabulary_dictionary": vocabulary["dictionary_profile"],
+            "vocabulary_dictionary": vocabulary["dictionary_dependency"],
         },
         "normalized_sha256": sha256(normalized.encode("utf-8")).hexdigest(),
         "metrics": metrics,

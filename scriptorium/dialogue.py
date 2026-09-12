@@ -23,14 +23,18 @@ def paragraph_spans(text: str) -> tuple[TextSpan, ...]:
 
     normalized = normalize_text(text)
     spans: list[TextSpan] = []
-    offset = 0
+    start = 0
 
-    for line in normalized.splitlines(keepends=True):
-        content_end = offset + len(line.rstrip("\n"))
-        span = _trimmed_span(normalized, offset, content_end)
+    while True:
+        newline = normalized.find("\n", start)
+        end = len(normalized) if newline == -1 else newline
+        span = _trimmed_span(normalized, start, end)
         if span is not None:
             spans.append(span)
-        offset += len(line)
+
+        if newline == -1:
+            break
+        start = newline + 1
 
     return tuple(spans)
 

@@ -128,9 +128,7 @@ class BenchmarkComparisonTests(unittest.TestCase):
 
     def test_source_hashes_bind_raw_bytes_and_normalized_text(self):
         source = "е\u0308\r\nТест.".encode("utf-8")
-        reference = REFERENCE.replace('"characters": 10', '"characters": 7').replace(
-            '"words": 2', '"words": 2'
-        )
+        reference = REFERENCE.replace('"characters": 10', '"characters": 7')
         artifact = build_comparison(
             reference,
             source,
@@ -145,6 +143,75 @@ class BenchmarkComparisonTests(unittest.TestCase):
         self.assertNotEqual(
             artifact["source_text"]["raw_sha256"],
             artifact["source_text"]["normalized_sha256"],
+        )
+
+    def test_unique_vocabulary_can_compare_without_dictionary_dependency(self):
+        reference = json.loads(REFERENCE)
+        reference["expected"]["unique_words"] = 2
+        artifact = build_comparison(
+            json.dumps(reference, ensure_ascii=False),
+            "Кот, кот. Пёс!".encode("utf-8"),
+            scriptorium_revision="abc123",
+            edition_match="exact",
+            edition_label="exact test edition",
+            source_reference="local:test",
+            legal_basis="public_domain",
+        )
+
+        row = artifact["metrics"]["fantlab.vocabulary.unique_words"]
+        self.assertEqual(row["actual"]["raw_value"], 2)
+        self.assertEqual(row["comparison"]["result"], "pass")
+        self.assertIsNone(artifact["analyzer"]["dictionary_version"])
+
+    def test_dictionary_counts_are_not_run_without_dictionary_dependency(self):
+        reference = json.loads(REFERENCE)
+        reference["expected"]["active_dictionary_vocabulary"] = 2
+        reference["expected"]["active_non_dictionary_vocabulary"] = 0
+        reference["expected"]["uasz_3000"] = 2.0
+        artifact = build_comparison(
+            json.dumps(reference, ensure_ascii=False),
+            "Кот Пёс".encode("utf-8"),
+            scriptorium_revision="abc123",
+            edition_match="exact",
+            edition_label="exact test edition",
+            source_reference="local:test",
+            legal_basis="public_domain",
+        )
+
+        active = artifact["metrics"]["fantlab.vocabulary.active_dictionary"]
+        uasz = artifact["metrics"]["fantlab.vocabulary.uasz_3000"]
+        self.assertIsNone(active["actual"]["raw_value"])
+        self.assertEqual(active["comparison"]["result"], "not_run")
+        self.assertIsNone(uasz["actual"]["raw_value"])
+        self.assertEqual(uasz["comparison"]["result"], "unresolved")
+        self.assertIn("no numeric value", uasz["comparison"]["reason"])
+
+    def test_supplied_dictionary_is_reproducible_but_not_fantlab_admissible(self):
+        reference = json.loads(REFERENCE)
+        reference["expected"]["active_dictionary_vocabulary"] = 2
+        reference["expected"]["active_non_dictionary_vocabulary"] = 1
+        artifact = build_comparison(
+            json.dumps(reference, ensure_ascii=False),
+            "Кот кот Пёс дракон".encode("utf-8"),
+            scriptorium_revision="abc123",
+            edition_match="exact",
+            edition_label="exact test edition",
+            source_reference="local:test",
+            legal_basis="public_domain",
+            dictionary_words=["кот", "пёс"],
+            dictionary_profile="test-dictionary-v1",
+        )
+
+        active = artifact["metrics"]["fantlab.vocabulary.active_dictionary"]
+        nondictionary = artifact["metrics"]["fantlab.vocabulary.active_nondictionary"]
+        self.assertEqual(active["actual"]["raw_value"], 2)
+        self.assertEqual(nondictionary["actual"]["raw_value"], 1)
+        self.assertEqual(active["comparison"]["result"], "unresolved")
+        self.assertTrue(active["comparison"]["numeric_match"])
+        self.assertIn("dictionary identity/version", active["comparison"]["reason"])
+        self.assertRegex(
+            artifact["analyzer"]["dictionary_version"],
+            r"^test-dictionary-v1@sha256:[0-9a-f]{64}$",
         )
 
     def test_cli_writes_machine_readable_artifact(self):

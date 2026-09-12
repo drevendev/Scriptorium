@@ -63,6 +63,34 @@ class BenchmarkComparisonTests(unittest.TestCase):
         self.assertEqual(row["comparison"]["result"], "unresolved")
         self.assertIn("provenance", row["comparison"]["reason"])
 
+    def test_exact_match_is_unresolved_without_edition_label(self):
+        artifact = build_comparison(
+            REFERENCE,
+            "Кот, спит.".encode("utf-8"),
+            scriptorium_revision="abc123",
+            edition_match="exact",
+            source_reference="local:test",
+            legal_basis="public_domain",
+        )
+
+        row = artifact["metrics"]["fantlab.general.characters"]
+        self.assertTrue(row["comparison"]["numeric_match"])
+        self.assertEqual(row["comparison"]["result"], "unresolved")
+
+    def test_exact_match_is_unresolved_without_source_reference(self):
+        artifact = build_comparison(
+            REFERENCE,
+            "Кот, спит.".encode("utf-8"),
+            scriptorium_revision="abc123",
+            edition_match="exact",
+            edition_label="exact test edition",
+            legal_basis="public_domain",
+        )
+
+        row = artifact["metrics"]["fantlab.general.characters"]
+        self.assertTrue(row["comparison"]["numeric_match"])
+        self.assertEqual(row["comparison"]["result"], "unresolved")
+
     def test_integer_mismatch_fails_when_provenance_is_admissible(self):
         reference = REFERENCE.replace('"characters": 10', '"characters": 11')
         artifact = build_comparison(
@@ -70,6 +98,8 @@ class BenchmarkComparisonTests(unittest.TestCase):
             "Кот, спит.".encode("utf-8"),
             scriptorium_revision="abc123",
             edition_match="exact",
+            edition_label="exact test edition",
+            source_reference="local:test",
             legal_basis="public_domain",
         )
 
@@ -84,6 +114,8 @@ class BenchmarkComparisonTests(unittest.TestCase):
             "Кот, спит.".encode("utf-8"),
             scriptorium_revision="abc123",
             edition_match="exact",
+            edition_label="exact test edition",
+            source_reference="local:test",
             legal_basis="public_domain",
         )
 
@@ -134,6 +166,10 @@ class BenchmarkComparisonTests(unittest.TestCase):
                     "abc123",
                     "--edition-match",
                     "exact",
+                    "--edition-label",
+                    "exact test edition",
+                    "--source-reference",
+                    "local:test",
                     "--legal-basis",
                     "public_domain",
                     "--output",

@@ -1,21 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 20
+STATE_REVISION: 22
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T17:51:52Z
-LAST_RESULT: SCRIP-REPRO-002 passed repaired exact-head review and PR #19 was squash-merged; issue #18 is complete.
-LAST_VERIFIED_PROGRESS: PR #19 merged as f9cd4fbd5e0de34f9c2df798dab9b7b3f9fe7188 after independent review of repaired head 10d405cc579b446f16c36ba1f493afa5148612ca. The reconstructed complete suite passed 26/26 tests under Python 3.13, comparison artifacts were checked against the frozen schema contract, and pass/fail admission now requires exact edition match plus edition identity, source reference, legal basis and raw digest. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-12T20:49:25Z
+LAST_RESULT: SCRIP-TEXT-002 repaired the LF-only paragraph-boundary contract violation found in independent review; PR #21 remains in REVIEW for a fresh exact-head judgement.
+LAST_VERIFIED_PROGRESS: The repair replaces Python splitlines() with literal normalized-LF scanning and adds regression coverage proving U+2028 LINE SEPARATOR, U+0085 NEL and VT do not create false paragraph/dialogue boundaries. Existing CRLF/LF offsets remain stable in focused reconstruction checks; metric/schema/benchmark semantics were not changed.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-REPRO-002
-ISSUE:          #18
-STATUS:         DONE
-PR:             #19
-MERGED_COMMIT:  f9cd4fbd5e0de34f9c2df798dab9b7b3f9fe7188
-NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
-                dependency state; SCRIP-TEXT-002 is the first listed candidate.
+UNIT_ID:        SCRIP-TEXT-002
+ISSUE:          #20
+STATUS:         REVIEW
+BRANCH:         feature/20-dialogue-metrics
+PR:             #21
+NEXT_ACTION:    Independently review the repaired exact PR #21 head, rerun/inspect the
+                complete test suite including the Unicode-separator regression, and
+                merge only if the LF-only repair leaves no remaining blocker.
 ```
 
 ## Current milestone gate
@@ -26,11 +27,10 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Ordered highest first among unblocked work after the current review closes.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-TEXT-002 | implementation | Dialogue segmentation and author-text-in-dialogue metrics | SCRIP-TEXT-001 |
 | P1 | SCRIP-METRIC-002 | implementation | Vocabulary/rolling-window metrics | SCRIP-TEXT-001 |
 | P1 | SCRIP-MORPH-002 | implementation | POS distributions, bigrams and sentence-position metrics | SCRIP-MORPH-001, SCRIP-TEXT-001 |
 | P2 | SCRIP-SITE-001 | architecture | Static artifact/site contract for GitHub Pages | M1 underway |
@@ -82,40 +82,49 @@ Ordered highest first among unblocked work.
 - The architecture names standard-library `unittest` as the initial unit, golden and
   benchmark contract runner. `pytest` is optional future infrastructure, not an implicit
   dependency or a contradictory bootstrap requirement.
-- `scriptorium-metrics-v1` now provides deterministic character/word/mean-length values
-  plus the Scriptorium sentence-count diagnostic; FantLab-namespaced values remain
-  explicitly `inferred`.
+- `scriptorium-metrics-v1` provides deterministic character/word/mean-length values plus
+  the Scriptorium sentence-count diagnostic; FantLab-namespaced values remain explicitly
+  `inferred`.
 - `scriptorium-punctuation-v1` covers all 14 observed punctuation fields with a declared
   greedy non-overlap policy, explicit ellipsis/dash/quote mappings and opening-parenthesis
   candidate counting rather than hidden heuristics.
-- `scriptorium-deterministic-metrics-v1` freezes the first metric artifact surface,
-  units, evidence classes, compatibility statuses and normalized-text SHA-256.
 - The first public showcase is bound to Russian Wikisource `Анна Каренина`, Part I,
   Chapter I revision `oldid=4929732`. It stores only provenance, a precise four-paragraph
   selection rule, hashes and derived metrics. The 1,298-character excerpt is explicitly
   non-corpus and non-benchmark evidence.
-- Independent review of PR #17 found no semantic/schema/provenance blocker. The new
-  metric cases were rerun against the published implementation; hosted CI is not
-  configured. Wikisource independently confirms the cited Nauka 1970 chapter source
-  and the parent work's public-domain status.
-- `scriptorium-benchmark-v1` executes the frozen comparison contract over the 18
-  FantLab metrics currently emitted by the analyzer, recording raw/normalized hashes,
-  source-edition/legal provenance, expected/actual values and raw deltas.
+- `scriptorium-benchmark-v1` executes the frozen comparison contract over implemented
+  FantLab metrics, recording raw/normalized hashes, source-edition/legal provenance,
+  expected/actual values and raw deltas.
 - Integer character/word comparisons can only pass with exact-edition admissible
   provenance; otherwise numeric matches remain diagnostic `unresolved` results.
 - Decimal mean/rate comparisons remain `unresolved_precision` with `numeric_match: null`.
   The harness preserves captured JSON numeric lexemes (including trailing zeroes) as
   display evidence without treating those lexical digits as a precision oracle.
-- Independent review of the initial benchmark head found the admission gate could trust
-  an `exact` flag without an auditable edition identity/source reference. The repaired
-  gate now requires non-empty `edition_label` and `source_reference` in addition to exact
-  match, legal basis and the harness-computed raw digest.
-- Regression tests now prove that omitting either edition identity or source reference
-  keeps exact integer comparisons `unresolved`; the repair does not change reference
-  lexeme preservation or decimal `unresolved_precision` behavior.
-- Independent review of repaired PR #19 found no remaining semantic/schema/provenance
-  blocker. A reconstructed full suite passed 26/26 tests under Python 3.13, schema-contract
-  assertions passed, and hosted CI remained not configured rather than green.
+- Independent review of the benchmark admission gate required non-empty `edition_label`
+  and `source_reference` in addition to exact match, legal basis and raw digest. Regression
+  tests prove either missing identity field keeps integer comparisons `unresolved`.
+- A reconstructed final benchmark suite passed 26/26 tests under Python 3.13 before merge;
+  hosted CI remained not configured rather than green.
+- `scriptorium-dialogue-v1` classifies LF-delimited paragraphs as dialogue only for an
+  explicit leading `—`, `–` or `-` followed by whitespace and preserves normalized-text
+  offsets for dialogue/narration spans.
+- Candidate author text inside dialogue is exposed as alternating spans after internal
+  whitespace-dash-whitespace separators. This is inspectable inferred behavior, not a
+  recovered FantLab parser.
+- `scriptorium-metrics-v2` adds all four FantLab dialogue scalars with explicit
+  non-whitespace-character denominators and keeps them `inferred`; the benchmark harness
+  now maps 22 implemented FantLab fields in total.
+- The second public showcase binds two *Anna Karenina*, Part I, Chapter II dialogue
+  paragraphs to Russian Wikisource `oldid=4929731`, the cited Nauka 1970 edition, and
+  SHA-256 `2dcd42a6e638809ae17ecb2e250b092e65ac7919701ae0d25cc9cccb5790e7f9` without
+  committing the source prose. Its 250 characters are explicitly non-corpus/non-parity.
+- The authored dialogue candidate passed 33/33 reconstructed standard-library tests and
+  an out-of-band JSON Schema validation before publication.
+- Independent review found the first dialogue implementation used Python `splitlines()`,
+  which recognizes Unicode separators beyond the frozen LF-only paragraph contract.
+  The repair now scans literal normalized `\n` only; focused checks preserve existing
+  CRLF/LF offsets and prove U+2028, U+0085 and VT remain inside a single paragraph rather
+  than creating false dialogue spans. A fresh exact-head full-suite review remains due.
 
 ## Known risks / blockers
 
@@ -133,33 +142,37 @@ Ordered highest first among unblocked work.
 5. **Punctuation inference.** FantLab does not publish overlap, Unicode dash/quote,
    ellipsis normalization or parenthesis-pair rules. `scriptorium-punctuation-v1` is a
    deterministic candidate whose choices require source-matched benchmark pressure.
-6. **Runtime POS collision.** Pinned pylem renders both noun and cardinal numeral as
+6. **Dialogue inference.** FantLab does not publish paragraph markers, embedded
+   author-remark grammar, quoted-speech handling or scalar dialogue denominators.
+   `scriptorium-dialogue-v1` is intentionally narrow and must remain inferred until
+   source-matched deltas discriminate its choices.
+7. **Runtime POS collision.** Pinned pylem renders both noun and cardinal numeral as
    Latin `N`. `LemmaInfo.part_of_speech` cannot recover the distinction; an explicitly
    exposed source POS discriminator plus benchmark validation is required before these
    two FantLab buckets can be produced compatibly.
-7. **Extra-category folding unresolved.** `POSL`, `COLLOC`, `ADJ_SHORT`,
+8. **Extra-category folding unresolved.** `POSL`, `COLLOC`, `ADJ_SHORT`,
    `PARTICIPLE_SHORT` and `INFINITIVE` exist separately in the pinned runtime, while the
    observed FantLab 2022 surface has no matching standalone buckets.
-8. **Morphology drift.** The pinned pylem dictionary/source has not been shown identical
+9. **Morphology drift.** The pinned pylem dictionary/source has not been shown identical
    to FantLab's 2022 production morphology. Source-matched benchmarks must measure drift.
-9. **Morphology ambiguity.** Pylem can expose multiple analyses; FantLab's homonym and
-   prediction-selection policy is not public. No first-result/weight heuristic is accepted.
-10. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
+10. **Morphology ambiguity.** Pylem can expose multiple analyses; FantLab's homonym and
+    prediction-selection policy is not public. No first-result/weight heuristic is accepted.
+11. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
     verified network-enabled runtime. This remains `not_run`, not a package failure.
-11. **Copyright risk.** Author.Today/fanfiction availability is not a license. Treat
+12. **Copyright risk.** Author.Today/fanfiction availability is not a license. Treat
     platform texts as candidates until work-specific rights permit analysis/publication.
-12. **Scheduler serialization unverified.** Re-read refs/state before write and avoid
+13. **Scheduler serialization unverified.** Re-read refs/state before write and avoid
     same-run author+merge of substantial PRs.
-13. **External mode controller unverified.** The user-authorized deterministic selection
+14. **External mode controller unverified.** The user-authorized deterministic selection
     ladder is operative, but no independent EndlessZen controller/selection receipt
     mechanism has been bound and proven yet.
-14. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
+15. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
     differently rounded or cached values. Benchmark expectations must name the exact
     source surface and capture display text; cross-surface joining is not parity evidence.
-15. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
+16. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
     a general formatting/tie rule. Unknown precision remains unresolved rather than
     inferred from rendered text.
-16. **Parity-corpus edition gap.** None of the five retained candidates has evidence
+17. **Parity-corpus edition gap.** None of the five retained candidates has evidence
     tying its source transcription to FantLab's exact analyzed edition/bytes. M2 remains
     blocked until that evidence is found or the user explicitly changes the gate.
 

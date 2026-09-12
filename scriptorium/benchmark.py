@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 from typing import Final, Iterable
 
+from .dialogue import DIALOGUE_PROFILE
 from .metrics import (
     METRIC_CONTRACT_ID,
     METRIC_PROFILE,
@@ -26,7 +27,9 @@ from .text import NORMALIZATION_PROFILE
 
 BENCHMARK_PROFILE: Final = "scriptorium-benchmark-v1"
 BENCHMARK_SCHEMA_VERSION: Final = "fantlab-benchmark-comparison-v1"
-COMPATIBILITY_PROFILE: Final = f"{METRIC_PROFILE}+{PUNCTUATION_PROFILE}"
+COMPATIBILITY_PROFILE: Final = (
+    f"{METRIC_PROFILE}+{DIALOGUE_PROFILE}+{PUNCTUATION_PROFILE}"
+)
 
 _GENERAL_SPECS: Final = (
     (
@@ -51,6 +54,32 @@ _GENERAL_SPECS: Final = (
         "fantlab.general.mean_sentence_length_chars",
         ("mean_sentence_length_characters",),
         "Средняя длина предложения (СДП), знаков",
+        "unresolved_precision",
+    ),
+)
+_DIALOGUE_SPECS: Final = (
+    (
+        "fantlab.dialogue.mean_narration_sentence_length_chars",
+        ("mean_narration_sentence_length_characters",),
+        "СДП авторского текста, знаков",
+        "unresolved_precision",
+    ),
+    (
+        "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+        ("mean_dialogue_sentence_length_characters",),
+        "СДП диалога, знаков",
+        "unresolved_precision",
+    ),
+    (
+        "fantlab.dialogue.share_percent",
+        ("dialogue_share_percent",),
+        "Доля диалогов в тексте",
+        "unresolved_precision",
+    ),
+    (
+        "fantlab.dialogue.author_text_inside_dialogue_percent",
+        ("author_text_inside_dialogue_percent",),
+        "Доля авторского текста в диалогах",
         "unresolved_precision",
     ),
 )
@@ -153,6 +182,7 @@ def build_comparison(
 
 def _reference_specs() -> Iterable[tuple[str, tuple[str, ...], str, str]]:
     yield from _GENERAL_SPECS
+    yield from _DIALOGUE_SPECS
     for key in PUNCTUATION_KEYS:
         yield (
             f"fantlab.punctuation.{key}.per_1000_words",

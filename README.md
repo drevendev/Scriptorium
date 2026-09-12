@@ -18,15 +18,17 @@ Scriptorium now has a standard-library-only deterministic analysis core:
 
 - versioned CRLF/CR → LF and Unicode NFC normalization;
 - deterministic word candidates and sentence spans with normalized-text offsets;
-- first-wave character, word, mean word/sentence length and punctuation metrics;
+- explicit dash-led dialogue paragraphs and candidate author-remark spans;
+- first-wave character, word, mean word/sentence length, dialogue and punctuation metrics;
 - a versioned JSON artifact/schema with explicit `inferred` vs `extension` status;
 - a local-text FantLab benchmark CLI that emits expected/actual/delta plus source hashes
   and refuses to turn incomplete provenance or unknown decimal precision into parity;
-- golden tests for text boundaries, metric formulas, punctuation overlap and benchmark
-  gate behavior.
+- golden tests for text boundaries, dialogue spans, metric formulas, punctuation overlap
+  and benchmark gate behavior.
 
 The FantLab-shaped values are **inferred candidates**, not claimed reproduction.
 See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md),
+[`docs/DIALOGUE_MODEL.md`](docs/DIALOGUE_MODEL.md),
 [`docs/METRIC_PROFILE.md`](docs/METRIC_PROFILE.md), and
 [`docs/BENCHMARKING.md`](docs/BENCHMARKING.md).
 
@@ -43,20 +45,26 @@ python -m scriptorium.benchmark \
 
 The harness never fetches or commits the local text. `Шутиха` currently has no
 source-matched legally usable full text in the project, so this reference remains a
-diagnostic target rather than parity evidence. See
-[`docs/BENCHMARKING.md`](docs/BENCHMARKING.md) for the provenance and comparison rules.
+diagnostic target rather than parity evidence. The harness can now compare the 22
+implemented FantLab fields: four general scalars, four dialogue scalars and fourteen
+punctuation rates. Decimal fields remain unresolved until FantLab display precision is
+independently established. See [`docs/BENCHMARKING.md`](docs/BENCHMARKING.md).
 
-### First public showcase
+### Public showcase
 
-The repository includes a derived metric slice for a real public-domain literary
-source: the opening four prose paragraphs of Tolstoy's *Anna Karenina*, Part I,
-Chapter I, bound to an exact Russian Wikisource revision.
+The repository includes derived metric slices for real public-domain literary sources
+without storing the analyzed prose:
 
-[`showcase/anna-karenina-part1-ch1-opening.json`](showcase/anna-karenina-part1-ch1-opening.json)
-contains source provenance, hashes and the derived metric artifact, but no source prose.
-It is intentionally marked as a **short illustrative excerpt**, not a corpus entry and
-not FantLab parity evidence. Full-work showcase artifacts will follow as ingestion and
-source freezing mature.
+- [`showcase/anna-karenina-part1-ch1-opening.json`](showcase/anna-karenina-part1-ch1-opening.json)
+  shows the first general/punctuation metrics on the opening four prose paragraphs of
+  *Anna Karenina*, Part I, Chapter I.
+- [`showcase/anna-karenina-part1-ch2-dialogue.json`](showcase/anna-karenina-part1-ch2-dialogue.json)
+  shows the inferred dialogue profile on two dash-led dialogue paragraphs from Chapter II.
+
+Both artifacts are bound to exact Russian Wikisource revisions and store provenance,
+hashes and derived metrics only. They are intentionally marked **illustrative excerpts**,
+not corpus entries and not FantLab parity evidence. Full-work showcase artifacts will
+follow as ingestion and source freezing mature.
 
 ## Project state
 

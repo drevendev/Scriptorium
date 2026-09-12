@@ -166,3 +166,22 @@ code changes remain in Git history and their issues/PRs.
 - Added regression coverage proving that either missing identity field keeps exact
   integer comparisons `unresolved`; lexical-display preservation and decimal
   `unresolved_precision` behavior are unchanged.
+
+## 2026-09-12 — Deterministic dialogue profile candidate
+
+- Added `scriptorium-dialogue-v1`, classifying LF-delimited paragraphs as dialogue only
+  when their first content is an explicit dash marker followed by whitespace.
+- Added normalized-text dialogue/narration spans and inspectable candidate author-remark
+  spans based on alternating internal whitespace-dash-whitespace separators.
+- Versioned the metric artifact as `scriptorium-metrics-v2` /
+  `scriptorium-deterministic-metrics-v2` and added the four FantLab dialogue scalars.
+- Made dialogue share and author-text-inside-dialogue denominators explicit as
+  non-whitespace character ratios; all four FantLab-shaped fields remain `inferred`.
+- Extended the benchmark harness from 18 to 22 implemented FantLab fields; dialogue
+  decimal comparisons remain `unresolved_precision` until display precision is proven.
+- Added golden coverage for offsets, marker handling, author remarks, empty denominators,
+  schema identity and benchmark exposure; the authored reconstructed suite passed 33/33.
+- Added a second public derived showcase from two dialogue paragraphs of *Anna Karenina*,
+  Part I, Chapter II, bound to Russian Wikisource `oldid=4929731` and the cited Nauka
+  1970 edition. Source prose is not committed; the 250-character slice is explicitly
+  non-corpus and non-parity evidence.

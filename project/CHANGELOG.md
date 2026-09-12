@@ -159,3 +159,10 @@ code changes remain in Git history and their issues/PRs.
   manufactured as zero or `not_run`.
 - Added CLI/gate tests and public documentation. The existing `Шутиха` reference remains
   source-unmatched, so M2 parity progress remains 0/5.
+- Independent review found that the first admission gate trusted `edition_match=exact`
+  without requiring the artifact to identify the edition/transcription or its source.
+  The repaired gate now also requires non-empty `edition_label` and `source_reference`
+  alongside exact match, legal basis and the harness-computed raw digest.
+- Added regression coverage proving that either missing identity field keeps exact
+  integer comparisons `unresolved`; lexical-display preservation and decimal
+  `unresolved_precision` behavior are unchanged.

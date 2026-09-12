@@ -1,21 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 17
+STATE_REVISION: 19
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T14:20:00Z
-LAST_RESULT: SCRIP-METRIC-001 passed independent exact-head review and PR #17 was squash-merged; issue #16 is complete.
-LAST_VERIFIED_PROGRESS: PR #17 merged as c9799a6e098267384b44716f9423ca1c74842270 after independent review of head 392b5a7581d7ea86d594b7a4e492b16ae84f861e. The first deterministic general/punctuation metric profile, 19-row schema and provenance-bound Anna Karenina illustrative showcase are now on master; FantLab-shaped values remain explicitly inferred and M2 parity progress remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-12T16:48:00Z
+LAST_RESULT: SCRIP-REPRO-002 repaired the provenance-admission defect found in independent review; PR #19 remains in REVIEW for fresh exact-head judgement.
+LAST_VERIFIED_PROGRESS: Pre-repair review found that `edition_match=exact` could admit integer pass/fail without naming the edition/transcription or source reference. The repaired gate now requires exact match plus non-empty edition label, source reference, legal basis and raw digest; two regression tests cover the missing-identity cases while lexical-display and unresolved-decimal behavior remain unchanged. M2 remains 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-METRIC-001
-ISSUE:          #16
-STATUS:         DONE
-PR:             #17
-MERGED_COMMIT:  c9799a6e098267384b44716f9423ca1c74842270
-NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
-                dependency state; SCRIP-REPRO-002 is the first listed candidate.
+UNIT_ID:        SCRIP-REPRO-002
+ISSUE:          #18
+STATUS:         REVIEW
+BRANCH:         feature/18-benchmark-harness
+PR:             #19
+NEXT_ACTION:    Independently review the repaired exact PR #19 head, rerun/inspect the
+                full suite, validate the output against the frozen comparison schema,
+                and merge only if the tightened provenance/pass/fail/unresolved semantics
+                remain sound.
 ```
 
 ## Current milestone gate
@@ -26,11 +28,10 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Ordered highest first among unblocked work after the current review closes.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-REPRO-002 | implementation | CLI benchmark harness reporting expected/actual/delta and provenance | SCRIP-METRIC-001 |
 | P1 | SCRIP-TEXT-002 | implementation | Dialogue segmentation and author-text-in-dialogue metrics | SCRIP-TEXT-001 |
 | P1 | SCRIP-METRIC-002 | implementation | Vocabulary/rolling-window metrics | SCRIP-TEXT-001 |
 | P1 | SCRIP-MORPH-002 | implementation | POS distributions, bigrams and sentence-position metrics | SCRIP-MORPH-001, SCRIP-TEXT-001 |
@@ -69,7 +70,7 @@ Ordered highest first among unblocked work.
   compatibility contract.
 - Pinned morph_dict defines 22 Russian source POS slots but only 21 unique Latin runtime
   strings. Fifteen runtime strings map unambiguously to one observed FantLab bucket.
-- Both noun `С` and cardinal numeral `ЧИСЛ` render as runtime `N`; the public pylem Python
+- Both noun `С` and cardinal numeral `ЧИСЛ` render as runtime `N`. The public pylem Python
   result does not expose the original source POS enum/ancode, so this distinction remains
   unresolved rather than guessed.
 - `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` are distinct pinned
@@ -99,6 +100,21 @@ Ordered highest first among unblocked work.
   metric cases were rerun against the published implementation; hosted CI is not
   configured. Wikisource independently confirms the cited Nauka 1970 chapter source
   and the parent work's public-domain status.
+- `scriptorium-benchmark-v1` executes the frozen comparison contract over the 18
+  FantLab metrics currently emitted by the analyzer, recording raw/normalized hashes,
+  source-edition/legal provenance, expected/actual values and raw deltas.
+- Integer character/word comparisons can only pass with exact-edition admissible
+  provenance; otherwise numeric matches remain diagnostic `unresolved` results.
+- Decimal mean/rate comparisons remain `unresolved_precision` with `numeric_match: null`.
+  The harness preserves captured JSON numeric lexemes (including trailing zeroes) as
+  display evidence without treating those lexical digits as a precision oracle.
+- Independent review of the initial benchmark head found the admission gate could trust
+  an `exact` flag without an auditable edition identity/source reference. The repaired
+  gate now requires non-empty `edition_label` and `source_reference` in addition to exact
+  match, legal basis and the harness-computed raw digest.
+- Regression tests now prove that omitting either edition identity or source reference
+  keeps exact integer comparisons `unresolved`; the repair does not change reference
+  lexeme preservation or decimal `unresolved_precision` behavior.
 
 ## Known risks / blockers
 

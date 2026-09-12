@@ -20,15 +20,35 @@ Scriptorium now has a standard-library-only deterministic analysis core:
 - deterministic word candidates and sentence spans with normalized-text offsets;
 - first-wave character, word, mean word/sentence length and punctuation metrics;
 - a versioned JSON artifact/schema with explicit `inferred` vs `extension` status;
-- golden tests for text boundaries, metric formulas and punctuation overlap.
+- a local-text FantLab benchmark CLI that emits expected/actual/delta plus source hashes
+  and refuses to turn incomplete provenance or unknown decimal precision into parity;
+- golden tests for text boundaries, metric formulas, punctuation overlap and benchmark
+  gate behavior.
 
 The FantLab-shaped values are **inferred candidates**, not claimed reproduction.
-See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md) and
-[`docs/METRIC_PROFILE.md`](docs/METRIC_PROFILE.md).
+See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md),
+[`docs/METRIC_PROFILE.md`](docs/METRIC_PROFILE.md), and
+[`docs/BENCHMARKING.md`](docs/BENCHMARKING.md).
+
+### Benchmark a local text
+
+```bash
+python -m scriptorium.benchmark \
+  --reference benchmarks/fantlab/work488.json \
+  --text /path/to/local-text.txt \
+  --scriptorium-revision <git-sha> \
+  --edition-match unknown \
+  --output comparison.json
+```
+
+The harness never fetches or commits the local text. `Шутиха` currently has no
+source-matched legally usable full text in the project, so this reference remains a
+diagnostic target rather than parity evidence. See
+[`docs/BENCHMARKING.md`](docs/BENCHMARKING.md) for the provenance and comparison rules.
 
 ### First public showcase
 
-The repository now includes a derived metric slice for a real public-domain literary
+The repository includes a derived metric slice for a real public-domain literary
 source: the opening four prose paragraphs of Tolstoy's *Anna Karenina*, Part I,
 Chapter I, bound to an exact Russian Wikisource revision.
 

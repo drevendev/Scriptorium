@@ -140,3 +140,29 @@ code changes remain in Git history and their issues/PRs.
   metrics are stored; the selected prose is not committed.
 - The showcase is explicitly an illustrative 1,298-character excerpt, below the
   300,000-character corpus threshold and inadmissible as FantLab parity evidence.
+
+## 2026-09-12 — Executable FantLab benchmark harness candidate
+
+- Added `scriptorium-benchmark-v1` as a standard-library local-text comparison CLI over
+  the existing `fantlab-benchmark-comparison-v1` schema.
+- Bound every run to raw and normalized SHA-256 plus explicit edition-match, source and
+  legal provenance instead of treating a local filename as source identity.
+- Made exact integer equality eligible for `pass` only when the source edition is exact,
+  legal basis is recorded and immutable raw bytes are hashed; otherwise the result stays
+  `unresolved` even when numbers match.
+- Kept mean-length and punctuation decimal fields at `unresolved_precision` because
+  FantLab display precision and tie-breaking are not independently established.
+- Preserved captured JSON numeric lexemes as display evidence, so values such as `10.30`
+  are not silently rewritten to `10.3` while still refusing to infer precision from them.
+- Limited the first executable comparison to the 18 FantLab metrics actually implemented
+  today; unimplemented page/dialogue/vocabulary/POS fields are omitted rather than
+  manufactured as zero or `not_run`.
+- Added CLI/gate tests and public documentation. The existing `Шутиха` reference remains
+  source-unmatched, so M2 parity progress remains 0/5.
+- Independent review found that the first admission gate trusted `edition_match=exact`
+  without requiring the artifact to identify the edition/transcription or its source.
+  The repaired gate now also requires non-empty `edition_label` and `source_reference`
+  alongside exact match, legal basis and the harness-computed raw digest.
+- Added regression coverage proving that either missing identity field keeps exact
+  integer comparisons `unresolved`; lexical-display preservation and decimal
+  `unresolved_precision` behavior are unchanged.

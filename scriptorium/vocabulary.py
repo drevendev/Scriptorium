@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from collections import Counter
 from collections.abc import Iterable, Sequence
+from hashlib import sha256
+import json
 from typing import Final
 
 from .text import normalize_text, word_tokens
@@ -50,6 +52,17 @@ def normalize_dictionary_lexemes(words: Iterable[str]) -> frozenset[str]:
         if candidate:
             normalized.add(normalize_lexeme(candidate))
     return frozenset(normalized)
+
+
+def dictionary_lexemes_sha256(dictionary_lexemes: Iterable[str]) -> str:
+    """Return a stable digest for a normalized dictionary lexeme set."""
+
+    canonical = json.dumps(
+        sorted(set(dictionary_lexemes)),
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return sha256(canonical).hexdigest()
 
 
 def rolling_unique_dictionary_counts(
@@ -129,12 +142,16 @@ def analyze_vocabulary(
         if dictionary_profile is not None:
             raise ValueError("dictionary_profile requires dictionary_words")
         dictionary = None
-        profile = None
+        dependency = None
     else:
         if dictionary_profile is None or not dictionary_profile.strip():
             raise ValueError("dictionary_words require a non-empty dictionary_profile")
         dictionary = normalize_dictionary_lexemes(dictionary_words)
-        profile = dictionary_profile.strip()
+        dependency = {
+            "profile": dictionary_profile.strip(),
+            "normalized_lexemes_sha256": dictionary_lexemes_sha256(dictionary),
+            "lexeme_count": len(dictionary),
+        }
 
     lexemes = vocabulary_lexemes(text)
     unique = frozenset(lexemes)
@@ -153,7 +170,7 @@ def analyze_vocabulary(
 
     return {
         "profile": VOCABULARY_PROFILE,
-        "dictionary_profile": profile,
+        "dictionary_dependency": dependency,
         "unique_words": len(unique),
         "active_dictionary": active_dictionary,
         "active_nondictionary": active_nondictionary,

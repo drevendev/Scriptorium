@@ -117,3 +117,7 @@ code changes remain in Git history and their issues/PRs.
 - Exposed the first executable capability in the public README and documented that the
   next verified metric slice should publish derived analysis for real legally usable
   books rather than waiting for the complete analyzer.
+- Independent review found a bootstrap architecture drift: the repository still named
+  `pytest` while this slice deliberately uses standard-library `unittest`. The
+  architecture now makes `unittest` the initial unit/golden/benchmark runner and defers
+  `pytest` until a concrete fixture, parametrization or plugin need justifies adding it.

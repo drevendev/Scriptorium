@@ -185,3 +185,34 @@ code changes remain in Git history and their issues/PRs.
   Part I, Chapter II, bound to Russian Wikisource `oldid=4929731` and the cited Nauka
   1970 edition. Source prose is not committed; the 250-character slice is explicitly
   non-corpus and non-parity evidence.
+
+## 2026-09-13 — Deterministic vocabulary profile candidate
+
+- Added `scriptorium-vocabulary-v1` with case-folded lexical identities over the existing
+  deterministic word-token stream; no lemmatization or undocumented `ё` folding is
+  guessed into compatibility behavior.
+- Added six FantLab-shaped vocabulary rows and versioned the aggregate artifact as
+  `scriptorium-metrics-v3` / `scriptorium-deterministic-metrics-v3`; the artifact now
+  contains 29 rows total, including the Scriptorium sentence-count extension.
+- Kept unique vocabulary available without external dependencies while making active
+  dictionary, active non-dictionary and UASZ values `null` unless an explicit dictionary
+  lexeme collection and profile identity are supplied together.
+- Bound supplied dictionaries to a canonical normalized-lexeme SHA-256 and lexeme count,
+  preventing a reused profile label from silently hiding different dependency contents.
+- Implemented inferred UASZ-3000/10000/100000 scalars as arithmetic means over every
+  complete contiguous N-token window at one-token step, using an O(words) rolling
+  frequency counter and excluding incomplete tails.
+- Extended the benchmark mapping from 22 to 28 FantLab metric IDs. Dictionary-free unique
+  vocabulary can use the source-provenance gate; dictionary-dependent rows remain
+  `unresolved` even with a supplied dictionary because FantLab's production dictionary
+  identity/version is still unproven.
+- Preserved the frozen comparison-v1 rule that missing UASZ values remain
+  `unresolved_precision`/`unresolved`, while missing integer dictionary counts are
+  `not_run`.
+- Added vocabulary/window/dependency and benchmark-admission tests plus public docs and
+  README navigation. A local reconstruction covering the branch's existing regression
+  surface plus the new vocabulary cases passed 44/44 checks, and the v3 schema validated
+  artifacts both with and without an explicit dictionary dependency.
+- Existing public showcase artifacts remain versioned historical outputs; no vocabulary
+  values were fabricated from their hashes without re-reading the provenance-bound
+  source selection.

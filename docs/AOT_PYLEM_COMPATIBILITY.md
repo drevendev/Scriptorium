@@ -5,8 +5,8 @@ Contract: `aot-pylem-0.0.18-to-fantlab-2022-v1`
 Status: **inferred compatibility candidate**, not reproduced behavior.
 
 This note fixes the first morphology stack and the POS mapping boundary needed by
-`SCRIP-MORPH-002`. It deliberately separates what is directly documented by AOT/pylem
-from what remains unknown about FantLab's production analyzer.
+`SCRIP-MORPH-002`. It deliberately separates the historical/documentation-facing AOT
+vocabulary from the strings that pinned pylem actually returns at runtime.
 
 ## Pinned stack
 
@@ -24,7 +24,7 @@ Pinned identifiers:
   `4c5e9b6d048d1ba74e02988593b23fb0cbc87772`.
 - `pybind11` submodule at that revision:
   `cd176ceeff94ec184abde945ef0867ebe9fb3664`.
-- AOT documentation snapshot used for the Russian POS inventory:
+- AOT documentation snapshot used as historical terminology reference:
   `sokirko74/aot@ee2c370c65b01fd78b3f366ed23aa1c2ed2d7c93`.
 
 PyPI does not encode a Git commit for the uploaded sdist, so the repository revision is
@@ -33,109 +33,150 @@ that the sdist bytes were built from that Git commit. The sdist hash is the immu
 package identity.
 
 The release source requires Python `>=3.6` in package metadata, CMake `>=3.16`, and
-C++17 (`target_compile_features(... cxx_std_17)`). A source checkout needs the pinned
-submodules. These are build-contract facts, not a claim that pylem supports every modern
-Python/compiler combination.
+C++17. A source checkout needs the pinned submodules. These are build-contract facts,
+not a claim that pylem supports every modern Python/compiler combination.
 
-## What pylem exposes
+## Actual pylem runtime representation
 
-`MorphanHolder.lemmatize()` yields zero or more `LemmaInfo` analyses. Each carries
-`part_of_speech`, a set of morphology features, prediction metadata and optional weights.
-The wrapper does not establish FantLab's homonym/disambiguation policy.
+The Python binding calls `SetUseNationalConstants(false)` immediately after loading the
+morphology holder. Therefore the public Python result uses AOT's **Latin runtime
+constants**, not the Cyrillic documentation labels.
 
-Therefore Scriptorium must preserve all analyses at the morphology-adapter boundary until
-a benchmark-backed selection policy exists. It must not choose the first analysis, the
-highest weight, or any other heuristic and call that FantLab-compatible behavior.
+`MorphanHolder.lemmatize_json()` produces `morphInfo`; `pylem/__init__.py` takes the
+leading token of that string and exposes it as `LemmaInfo.part_of_speech`. That field is
+the adapter input described by this contract.
 
-## Direct POS mapping
+The pinned `morph_dict` source has 22 Russian POS slots but only 21 distinct Latin POS
+strings because two source categories collapse to `N`:
 
-AOT's documented Russian POS inventory contains 18 labels. Seventeen have direct
-name/meaning counterparts on the observed 2022 FantLab work-analysis surface:
-
-| AOT | Meaning | `fantlab-2022-v1` bucket |
-| --- | --- | --- |
-| `С` | noun | `noun` |
-| `П` | adjective | `adjective` |
-| `Г` | finite/personal verb | `verb` |
-| `МС` | pronoun-noun | `pronoun_noun` |
-| `МС-П` | pronominal adjective | `pronoun_adjective` |
-| `МС-ПРЕДК` | pronominal predicative | `pronoun_predicative` |
-| `ЧИСЛ` | cardinal numeral | `cardinal` |
-| `ЧИСЛ-П` | ordinal numeral | `ordinal` |
-| `Н` | adverb | `adverb` |
-| `ПРЕДК` | predicative | `predicative` |
-| `ПРЕДЛ` | preposition | `preposition` |
-| `СОЮЗ` | conjunction | `conjunction` |
-| `МЕЖД` | interjection | `interjection` |
-| `ВВОДН` | introductory word | `introductory_word` |
-| `ЧАСТ` | particle | `particle` |
-| `ПРИЧАСТИЕ` | participle | `participle` |
-| `ДЕЕПРИЧАСТИЕ` | gerund | `gerund` |
+| Slot | AOT Cyrillic | pylem runtime | FantLab 2022 target | Status |
+| ---: | --- | --- | --- | --- |
+| 0 | `С` | `N` | `noun` | runtime collision |
+| 1 | `П` | `A` | `adjective` | direct |
+| 2 | `Г` | `V` | `verb` | direct |
+| 3 | `МС` | `P` | `pronoun_noun` | direct |
+| 4 | `МС-П` | `PA` | `pronoun_adjective` | direct |
+| 5 | `МС-ПРЕДК` | `P-PRED` | `pronoun_predicative` | direct |
+| 6 | `ЧИСЛ` | `N` | `cardinal` | runtime collision |
+| 7 | `ЧИСЛ-П` | `NA` | `ordinal` | direct |
+| 8 | `Н` | `ADV` | `adverb` | direct |
+| 9 | `ПРЕДК` | `PRED` | `predicative` | direct |
+| 10 | `ПРЕДЛ` | `PREP` | `preposition` | direct |
+| 11 | `ПОСЛ` | `POSL` | — | unresolved |
+| 12 | `СОЮЗ` | `CONJ` | `conjunction` | direct |
+| 13 | `МЕЖД` | `INT` | `interjection` | direct |
+| 14 | `ВВОДН` | `INP` | `introductory_word` | direct |
+| 15 | `ФРАЗ` | `COLLOC` | — | unresolved |
+| 16 | `ЧАСТ` | `PARTICLE` | `particle` | direct |
+| 17 | `КР_ПРИЛ` | `ADJ_SHORT` | — | unresolved |
+| 18 | `ПРИЧАСТИЕ` | `PARTICIPLE` | `participle` | direct |
+| 19 | `ДЕЕПРИЧАСТИЕ` | `ADV_PARTICIPLE` | `gerund` | direct |
+| 20 | `КР_ПРИЧАСТИЕ` | `PARTICIPLE_SHORT` | — | unresolved |
+| 21 | `ИНФИНИТИВ` | `INFINITIVE` | — | unresolved |
 
 The machine-readable source of truth is
 `compatibility/aot-pylem-0.0.18-to-fantlab-2022-v1.json`.
 
-"Direct" means that the public labels correspond semantically. It does **not** mean that
-pylem 0.0.18 has been demonstrated to reproduce FantLab's token-level choices.
+## Direct runtime mapping
 
-## Unresolved mapping before direct fallback
+Only 15 runtime strings are directly usable with `LemmaInfo.part_of_speech`:
 
-The adapter must test unresolved overrides before applying the direct POS table.
+```text
+A -> adjective
+V -> verb
+P -> pronoun_noun
+PA -> pronoun_adjective
+P-PRED -> pronoun_predicative
+NA -> ordinal
+ADV -> adverb
+PRED -> predicative
+PREP -> preposition
+CONJ -> conjunction
+INT -> interjection
+INP -> introductory_word
+PARTICLE -> particle
+PARTICIPLE -> participle
+ADV_PARTICIPLE -> gerund
+```
 
-`ИНФИНИТИВ` is a standalone AOT POS, while the observed 2022 FantLab page has no
-standalone infinitive bucket. FantLab's broader methodology names infinitives, but public
-evidence does not establish whether the 2022 surface folds them into `verb`, discards
-them from the displayed table, or handles them another way. It therefore remains
-unresolved.
+"Direct" means only that the runtime code has an unambiguous semantic counterpart on the
+observed 2022 FantLab surface. It does **not** mean pylem 0.0.18 has been demonstrated to
+reproduce FantLab's token-level analysis.
 
-AOT documents `кр` as the short-form grammeme for adjectives or participles. FantLab's
-methodology names short adjectives and short participles separately, but those categories
-are not separately displayed on the observed 2022 work page. `П + кр` and
-`ПРИЧАСТИЕ + кр` therefore remain unresolved instead of silently falling through to the
-ordinary adjective/participle buckets.
+## The `N` noun/cardinal collision
 
-FantLab's methodology also names postpositions and phrasal verbs. They are not standalone
-POS labels in AOT's documented inventory and are not standalone buckets on the observed
-2022 page. They remain derived-category research questions.
+Pinned AOT maps both Cyrillic `С` (noun) and `ЧИСЛ` (cardinal numeral) to Latin `N`.
+Because pylem turns the rendered `morphInfo` token into `LemmaInfo.part_of_speech`, the
+public Python object has already lost the original source-POS distinction at that point.
 
-## Dictionary and analyzer drift
+Scriptorium must therefore treat runtime `N` as unresolved between `noun` and `cardinal`.
+It must **not** infer the bucket from list order, lexical guesses, or morphology-feature
+patterns merely because such a heuristic looks plausible.
 
-The pinned pylem package is useful because it wraps the historical AOT C++ morphology
-family and ships a pinned morphology dictionary, but it is not evidence of dictionary
-identity with FantLab's 2022 deployment.
+The underlying AOT code still has distinct internal POS slots/ancodes before string
+rendering. A future implementation may expose that discriminator through a narrow binding
+extension, but it becomes compatibility evidence only after its behavior is pinned and
+validated against source-matched FantLab benchmarks. The current pylem Python API does not
+provide that discriminator.
 
-The following remain unproven:
+## Extra runtime categories
+
+Five runtime POS values are real standalone categories in the pinned backend but have no
+standalone bucket on the observed 2022 FantLab work surface:
+
+- `POSL` / `ПОСЛ` — postposition;
+- `COLLOC` / `ФРАЗ` — phrasal/collocation category;
+- `ADJ_SHORT` / `КР_ПРИЛ` — short adjective;
+- `PARTICIPLE_SHORT` / `КР_ПРИЧАСТИЕ` — short participle;
+- `INFINITIVE` / `ИНФИНИТИВ` — infinitive.
+
+FantLab's broader methodology names these kinds of categories, but public evidence does
+not establish how the 2022 work page folds them into its 17 displayed buckets. They stay
+`unresolved`; the repaired contract no longer models short forms as grammeme overrides of
+ordinary adjective/participle runtime codes because pinned pylem exposes them as separate
+POS values.
+
+## Ambiguity and dictionary drift
+
+`MorphanHolder.lemmatize()` yields zero or more `LemmaInfo` analyses. The wrapper exposes
+prediction metadata and optional weights, but no public evidence establishes FantLab's
+homonym/disambiguation policy. Scriptorium must preserve all analyses at the morphology
+adapter boundary until benchmark evidence supports a deterministic selection rule.
+
+The following also remain unproven:
 
 - whether FantLab used the same AOT source revision or dictionary bytes;
 - whether FantLab applied later dictionary corrections;
-- how it resolves multiple AOT analyses/homonyms;
 - how predicted/out-of-dictionary analyses participate in POS statistics;
-- how the unresolved categories above are folded into the 2022 display buckets.
+- how the five extra runtime categories are folded into the 2022 display buckets;
+- how FantLab distinguishes the noun/cardinal source categories represented by pylem as
+  the same runtime `N` string.
 
-These questions are benchmark inputs for `SCRIP-MORPH-002`, not implementation defaults.
+These are benchmark inputs for `SCRIP-MORPH-002`, not implementation defaults.
 
 ## Verification performed in this unit
 
 Source-level verification established:
 
-- PyPI still lists 0.0.18 as the latest pylem release and publishes the sdist hash above;
-- the pinned pylem commit declares version 0.0.18;
-- its submodule SHAs are recoverable from GitHub at that exact revision;
-- its CMake files require CMake 3.16 and C++17;
-- the wrapper exposes `LemmaInfo.part_of_speech` and can yield multiple analyses;
-- the pinned AOT documentation lists the 18 Russian POS labels used by this contract;
-- the mapping JSON parses and contains exactly 17 `direct` POS rows.
+- the pinned pylem binding calls `SetUseNationalConstants(false)`;
+- `pylem/__init__.py` parses the leading `morphInfo` token into
+  `LemmaInfo.part_of_speech`;
+- pinned `morph_dict` defines 22 source POS slots and 21 unique Latin runtime strings;
+- the only duplicate runtime string is `N`, shared by noun and cardinal numeral;
+- 15 runtime strings map directly to one observed FantLab bucket each;
+- five additional runtime strings remain explicitly unresolved;
+- the repaired mapping JSON parses and its counts agree with the pinned source inventory.
 
-A native build was **not run** in this automation environment. `pip download
---no-deps pylem==0.0.18` could not resolve the external package host because outbound
-network access from the execution container is unavailable. That is an environment
-limitation, not a pylem build failure. The package identity and source metadata were
-verified through the public package/repository sources instead.
+A native build remains **not run**. The original spike could not resolve the external
+package host from its execution container. That is an environment limitation, not a
+pylem build failure.
 
 ## Primary sources
 
 - https://pypi.org/project/pylem/
-- https://github.com/sokirko74/pylem/tree/68d62ce5452b6b80f2c2ef3345b4160c09e24bdf
+- https://github.com/sokirko74/pylem/blob/68d62ce5452b6b80f2c2ef3345b4160c09e24bdf/pylem/binding/main.cpp
+- https://github.com/sokirko74/pylem/blob/68d62ce5452b6b80f2c2ef3345b4160c09e24bdf/pylem/__init__.py
+- https://github.com/sokirko74/morph_dict/blob/4c5e9b6d048d1ba74e02988593b23fb0cbc87772/AgramtabLib/RusGramTab.cpp
 - https://github.com/sokirko74/aot/blob/ee2c370c65b01fd78b3f366ed23aa1c2ed2d7c93/Source/www/wwwroot/concor.html
 - https://fantlab.ru/article374
 - https://fantlab.ru/work12625/lp

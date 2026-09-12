@@ -1,10 +1,10 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 18
+STATE_REVISION: 19
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T14:58:00Z
-LAST_RESULT: SCRIP-REPRO-002 implemented the provenance-safe FantLab benchmark CLI; PR #19 is ready for independent review.
-LAST_VERIFIED_PROGRESS: Issue #18 owns the benchmark harness. The authored candidate passed 24/24 standard-library tests in reconstruction, maps the 18 currently implemented FantLab metrics into the frozen comparison schema, preserves captured decimal lexemes such as 10.30 without inferring precision, and keeps the source-unmatched work488 reference unresolved; M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-12T16:48:00Z
+LAST_RESULT: SCRIP-REPRO-002 repaired the provenance-admission defect found in independent review; PR #19 remains in REVIEW for fresh exact-head judgement.
+LAST_VERIFIED_PROGRESS: Pre-repair review found that `edition_match=exact` could admit integer pass/fail without naming the edition/transcription or source reference. The repaired gate now requires exact match plus non-empty edition label, source reference, legal basis and raw digest; two regression tests cover the missing-identity cases while lexical-display and unresolved-decimal behavior remain unchanged. M2 remains 0/5.
 
 ## Current unit
 
@@ -14,9 +14,10 @@ ISSUE:          #18
 STATUS:         REVIEW
 BRANCH:         feature/18-benchmark-harness
 PR:             #19
-NEXT_ACTION:    Independently review the final PR #19 head, rerun/inspect all benchmark
-                and existing tests, validate output against the frozen comparison schema,
-                and merge only if provenance/pass/fail/unresolved semantics remain sound.
+NEXT_ACTION:    Independently review the repaired exact PR #19 head, rerun/inspect the
+                full suite, validate the output against the frozen comparison schema,
+                and merge only if the tightened provenance/pass/fail/unresolved semantics
+                remain sound.
 ```
 
 ## Current milestone gate
@@ -107,8 +108,13 @@ Ordered highest first among unblocked work after the current review closes.
 - Decimal mean/rate comparisons remain `unresolved_precision` with `numeric_match: null`.
   The harness preserves captured JSON numeric lexemes (including trailing zeroes) as
   display evidence without treating those lexical digits as a precision oracle.
-- The authored benchmark/CLI slice passed 24/24 standard-library tests before final
-  durable-state publication; independent review must bind verification to the final head.
+- Independent review of the initial benchmark head found the admission gate could trust
+  an `exact` flag without an auditable edition identity/source reference. The repaired
+  gate now requires non-empty `edition_label` and `source_reference` in addition to exact
+  match, legal basis and the harness-computed raw digest.
+- Regression tests now prove that omitting either edition identity or source reference
+  keeps exact integer comparisons `unresolved`; the repair does not change reference
+  lexeme preservation or decimal `unresolved_precision` behavior.
 
 ## Known risks / blockers
 

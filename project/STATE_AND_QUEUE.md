@@ -1,23 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 19
+STATE_REVISION: 20
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T16:48:00Z
-LAST_RESULT: SCRIP-REPRO-002 repaired the provenance-admission defect found in independent review; PR #19 remains in REVIEW for fresh exact-head judgement.
-LAST_VERIFIED_PROGRESS: Pre-repair review found that `edition_match=exact` could admit integer pass/fail without naming the edition/transcription or source reference. The repaired gate now requires exact match plus non-empty edition label, source reference, legal basis and raw digest; two regression tests cover the missing-identity cases while lexical-display and unresolved-decimal behavior remain unchanged. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-12T17:51:52Z
+LAST_RESULT: SCRIP-REPRO-002 passed repaired exact-head review and PR #19 was squash-merged; issue #18 is complete.
+LAST_VERIFIED_PROGRESS: PR #19 merged as f9cd4fbd5e0de34f9c2df798dab9b7b3f9fe7188 after independent review of repaired head 10d405cc579b446f16c36ba1f493afa5148612ca. The reconstructed complete suite passed 26/26 tests under Python 3.13, comparison artifacts were checked against the frozen schema contract, and pass/fail admission now requires exact edition match plus edition identity, source reference, legal basis and raw digest. M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-REPRO-002
 ISSUE:          #18
-STATUS:         REVIEW
-BRANCH:         feature/18-benchmark-harness
+STATUS:         DONE
 PR:             #19
-NEXT_ACTION:    Independently review the repaired exact PR #19 head, rerun/inspect the
-                full suite, validate the output against the frozen comparison schema,
-                and merge only if the tightened provenance/pass/fail/unresolved semantics
-                remain sound.
+MERGED_COMMIT:  f9cd4fbd5e0de34f9c2df798dab9b7b3f9fe7188
+NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
+                dependency state; SCRIP-TEXT-002 is the first listed candidate.
 ```
 
 ## Current milestone gate
@@ -28,7 +26,7 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work after the current review closes.
+Ordered highest first among unblocked work.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
@@ -115,6 +113,9 @@ Ordered highest first among unblocked work after the current review closes.
 - Regression tests now prove that omitting either edition identity or source reference
   keeps exact integer comparisons `unresolved`; the repair does not change reference
   lexeme preservation or decimal `unresolved_precision` behavior.
+- Independent review of repaired PR #19 found no remaining semantic/schema/provenance
+  blocker. A reconstructed full suite passed 26/26 tests under Python 3.13, schema-contract
+  assertions passed, and hosted CI remained not configured rather than green.
 
 ## Known risks / blockers
 

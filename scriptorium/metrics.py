@@ -1,7 +1,8 @@
 """Deterministic first-wave metric extraction.
 
-The profile in this module is an explicit *inferred* candidate for FantLab-visible
-general and punctuation metrics. Public metric names do not imply reproduced parity.
+The profiles in this module are explicit *inferred* candidates for FantLab-visible
+general, dialogue and punctuation metrics. Public metric names do not imply reproduced
+parity.
 """
 
 from __future__ import annotations
@@ -9,12 +10,18 @@ from __future__ import annotations
 from hashlib import sha256
 from typing import Final
 
-from .text import NORMALIZATION_PROFILE, normalize_text, sentence_spans, word_tokens
+from .dialogue import (
+    DIALOGUE_PROFILE,
+    author_remark_spans,
+    dialogue_spans,
+    narration_spans,
+)
+from .text import NORMALIZATION_PROFILE, TextSpan, normalize_text, sentence_spans, word_tokens
 
 
-METRIC_PROFILE: Final = "scriptorium-metrics-v1"
+METRIC_PROFILE: Final = "scriptorium-metrics-v2"
 PUNCTUATION_PROFILE: Final = "scriptorium-punctuation-v1"
-SCHEMA_VERSION: Final = "scriptorium-deterministic-metrics-v1"
+SCHEMA_VERSION: Final = "scriptorium-deterministic-metrics-v2"
 METRIC_CONTRACT_ID: Final = "fantlab-2022-v1"
 
 PUNCTUATION_KEYS: Final = (
@@ -45,6 +52,22 @@ _METRIC_DEFINITIONS: Final = {
     ),
     "fantlab.general.mean_sentence_length_chars": (
         "characters/sentence",
+        "public_surface",
+        "inferred",
+    ),
+    "fantlab.dialogue.mean_narration_sentence_length_chars": (
+        "characters/sentence",
+        "public_surface",
+        "inferred",
+    ),
+    "fantlab.dialogue.mean_dialogue_sentence_length_chars": (
+        "characters/sentence",
+        "public_surface",
+        "inferred",
+    ),
+    "fantlab.dialogue.share_percent": ("percent", "public_surface", "inferred"),
+    "fantlab.dialogue.author_text_inside_dialogue_percent": (
+        "percent",
         "public_surface",
         "inferred",
     ),
@@ -84,7 +107,7 @@ _SINGLE_PUNCTUATION: Final = {
 
 
 def analyze_deterministic_metrics(text: str) -> dict[str, object]:
-    """Return the versioned first-wave metric artifact for ``text``.
+    """Return the versioned deterministic metric artifact for ``text``.
 
     All FantLab-namespaced values are compatibility candidates. They remain
     ``inferred`` until source-matched benchmarks satisfy the project gate.
@@ -95,6 +118,19 @@ def analyze_deterministic_metrics(text: str) -> dict[str, object]:
     sentences = sentence_spans(normalized)
     word_count = len(words)
     sentence_count = len(sentences)
+
+    narration = narration_spans(normalized)
+    dialogue = dialogue_spans(normalized)
+    author_remarks = author_remark_spans(normalized)
+
+    narration_sentence_lengths = _sentence_lengths(narration)
+    dialogue_sentence_lengths = _sentence_lengths(dialogue)
+
+    non_whitespace_characters = _non_whitespace_count(normalized)
+    dialogue_characters = sum(_non_whitespace_count(span.text) for span in dialogue)
+    author_remark_characters = sum(
+        _non_whitespace_count(span.text) for span in author_remarks
+    )
 
     metrics: dict[str, dict[str, object]] = {
         "fantlab.general.characters": _metric(len(normalized), "fantlab.general.characters"),
@@ -109,6 +145,22 @@ def analyze_deterministic_metrics(text: str) -> dict[str, object]:
         "fantlab.general.mean_sentence_length_chars": _metric(
             _safe_mean(sum(len(sentence.text) for sentence in sentences), sentence_count),
             "fantlab.general.mean_sentence_length_chars",
+        ),
+        "fantlab.dialogue.mean_narration_sentence_length_chars": _metric(
+            _safe_mean(sum(narration_sentence_lengths), len(narration_sentence_lengths)),
+            "fantlab.dialogue.mean_narration_sentence_length_chars",
+        ),
+        "fantlab.dialogue.mean_dialogue_sentence_length_chars": _metric(
+            _safe_mean(sum(dialogue_sentence_lengths), len(dialogue_sentence_lengths)),
+            "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+        ),
+        "fantlab.dialogue.share_percent": _metric(
+            _percent(dialogue_characters, non_whitespace_characters),
+            "fantlab.dialogue.share_percent",
+        ),
+        "fantlab.dialogue.author_text_inside_dialogue_percent": _metric(
+            _percent(author_remark_characters, dialogue_characters),
+            "fantlab.dialogue.author_text_inside_dialogue_percent",
         ),
     }
 
@@ -128,6 +180,7 @@ def analyze_deterministic_metrics(text: str) -> dict[str, object]:
         "profiles": {
             "normalization": NORMALIZATION_PROFILE,
             "metrics": METRIC_PROFILE,
+            "dialogue": DIALOGUE_PROFILE,
             "punctuation": PUNCTUATION_PROFILE,
         },
         "normalized_sha256": sha256(normalized.encode("utf-8")).hexdigest(),
@@ -167,6 +220,17 @@ def punctuation_counts(text: str) -> dict[str, int]:
     return counts
 
 
+def _sentence_lengths(paragraphs: tuple[TextSpan, ...]) -> list[int]:
+    lengths: list[int] = []
+    for paragraph in paragraphs:
+        lengths.extend(len(sentence.text) for sentence in sentence_spans(paragraph.text))
+    return lengths
+
+
+def _non_whitespace_count(text: str) -> int:
+    return sum(1 for character in text if not character.isspace())
+
+
 def _metric(value: int | float | None, metric_id: str) -> dict[str, object]:
     unit, definition_evidence, compatibility_status = _METRIC_DEFINITIONS[metric_id]
     return {
@@ -181,6 +245,12 @@ def _safe_mean(total: int, denominator: int) -> float | None:
     if denominator == 0:
         return None
     return total / denominator
+
+
+def _percent(part: int, whole: int) -> float | None:
+    if whole == 0:
+        return None
+    return part * 100.0 / whole
 
 
 def _per_1000(count: int, word_count: int) -> float | None:

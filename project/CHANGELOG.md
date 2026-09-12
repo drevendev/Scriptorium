@@ -73,7 +73,7 @@ code changes remain in Git history and their issues/PRs.
 - M2 parity progress remains 0/5 source-matched works; candidate availability must not be
   confused with benchmark admissibility.
 
-## 2026-09-11 — AOT/pylem compatibility candidate
+## 2026-09-12 — AOT/pylem compatibility candidate
 
 - Pinned `pylem==0.0.18` by package version and published sdist SHA-256, plus the
   repository revision that declares 0.0.18 and its exact `morph_dict` and `pybind11`
@@ -81,15 +81,23 @@ code changes remain in Git history and their issues/PRs.
 - Recorded the distinction between an immutable PyPI artifact hash and the weaker
   repository-version match because PyPI metadata does not encode the Git commit used to
   build the uploaded sdist.
-- Added a machine-readable AOT POS mapping with 17 direct semantic counterparts on the
-  observed `fantlab-2022-v1` work surface.
-- Required unresolved overrides before direct mapping for `ИНФИНИТИВ`, short adjectives
-  (`П + кр`) and short participles (`ПРИЧАСТИЕ + кр`); postpositions and phrasal verbs
-  remain unresolved derived categories.
-- Refused to invent a FantLab homonym/disambiguation policy: pylem can return multiple
-  analyses, so the future adapter must preserve ambiguity until benchmarks justify a
-  deterministic selection rule.
+- Independent review found that the first mapping used documentation-facing Cyrillic AOT
+  labels instead of the actual runtime strings returned by pinned pylem. The contract was
+  repaired around `SetUseNationalConstants(false)` and `LemmaInfo.part_of_speech`.
+- The repaired machine contract enumerates all 22 pinned AOT source POS slots and the 21
+  unique Latin runtime strings they render to.
+- Fifteen runtime strings have unambiguous semantic counterparts on the observed
+  `fantlab-2022-v1` surface and may be mapped directly as inferred candidates.
+- Both noun `С` and cardinal numeral `ЧИСЛ` render as runtime `N`. The public pylem Python
+  result does not expose the original AOT POS enum/ancode, so noun/cardinal remains an
+  explicit unresolved collision instead of two false direct mappings.
+- `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` are distinct runtime
+  categories in the pinned backend; their folding onto the 17 displayed FantLab buckets
+  remains unresolved.
+- Refused to invent either a FantLab homonym-selection policy or a runtime-collision
+  recovery heuristic. Future adapter work must preserve uncertainty until a discriminator
+  and source-matched benchmark evidence justify it.
 - Kept pylem/AOT dictionary equivalence to FantLab 2022 explicitly unproven.
-- Native build verification remains pending because the execution container could not
-  resolve external package hosts; this was recorded as an environment limitation, not a
+- Native build verification remains pending; the original execution environment could
+  not resolve external package hosts, which is an environment limitation rather than a
   pylem failure.

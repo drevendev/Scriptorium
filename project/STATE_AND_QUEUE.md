@@ -1,21 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 23
+STATE_REVISION: 24
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T21:51:49Z
-LAST_RESULT: SCRIP-TEXT-002 passed repaired exact-head review and PR #21 was squash-merged; issue #20 is complete.
-LAST_VERIFIED_PROGRESS: PR #21 merged as 4849a88f8d57ec759bb1ad687ef490b8d27bb206 after independent review of repaired head 69830a145032b6cd2bf1bae6948406744bd6d41a. An exact-head reconstruction passed 34/34 standard-library tests, including the LF-only Unicode-separator regression, and a generated scriptorium-deterministic-metrics-v2 artifact validated against the exact Draft 2020-12 schema. Hosted CI remains not configured; M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-12T23:04:00Z
+LAST_RESULT: SCRIP-METRIC-002 implemented deterministic vocabulary/rolling-window metrics, explicit dictionary dependency identity and benchmark gates; PR #23 is ready for independent review.
+LAST_VERIFIED_PROGRESS: Issue #22 owns the vocabulary slice. The authored candidate adds six FantLab-shaped vocabulary rows under scriptorium-vocabulary-v1, versions the aggregate artifact as scriptorium-metrics-v3 / scriptorium-deterministic-metrics-v3 with 29 rows total, and extends the benchmark mapping from 22 to 28 FantLab IDs. A local reconstruction covering the existing regression surface plus the new vocabulary cases passed 44/44 checks, and the Draft 2020-12 v3 schema accepted artifacts with both null and explicit dictionary dependencies. Direct branch cloning was unavailable because the execution container could not resolve github.com; exact published-head verification is therefore delegated to the independent review run. M2 remains 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-TEXT-002
-ISSUE:          #20
-STATUS:         DONE
-PR:             #21
-MERGED_COMMIT:  4849a88f8d57ec759bb1ad687ef490b8d27bb206
-NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
-                dependency state; SCRIP-METRIC-002 is the first listed candidate.
+UNIT_ID:        SCRIP-METRIC-002
+ISSUE:          #22
+STATUS:         REVIEW
+BRANCH:         feature/22-vocabulary-metrics
+PR:             #23
+NEXT_ACTION:    Independently review the final PR #23 head, reconstruct/run the exact
+                published test surface, validate the v3 schema and dictionary admission
+                gates, and merge only if no blocker remains.
 ```
 
 ## Current milestone gate
@@ -26,11 +27,10 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Ordered highest first among unblocked work after the current review closes.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-METRIC-002 | implementation | Vocabulary/rolling-window metrics | SCRIP-TEXT-001 |
 | P1 | SCRIP-MORPH-002 | implementation | POS distributions, bigrams and sentence-position metrics | SCRIP-MORPH-001, SCRIP-TEXT-001 |
 | P2 | SCRIP-SITE-001 | architecture | Static artifact/site contract for GitHub Pages | M1 underway |
 
@@ -68,7 +68,7 @@ Ordered highest first among unblocked work.
 - Pinned morph_dict defines 22 Russian source POS slots but only 21 unique Latin runtime
   strings. Fifteen runtime strings map unambiguously to one observed FantLab bucket.
 - Both noun `С` and cardinal numeral `ЧИСЛ` render as runtime `N`. The public pylem Python
-  result does not expose the original source POS enum/ancode, so this distinction remains
+  result does not expose the original AOT POS enum/ancode, so this distinction remains
   unresolved rather than guessed.
 - `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` are distinct pinned
   runtime POS values with no standalone bucket on the observed 2022 FantLab surface.
@@ -112,7 +112,7 @@ Ordered highest first among unblocked work.
   recovered FantLab parser.
 - `scriptorium-metrics-v2` adds all four FantLab dialogue scalars with explicit
   non-whitespace-character denominators and keeps them `inferred`; the benchmark harness
-  now maps 22 implemented FantLab fields in total.
+  maps 22 implemented FantLab fields at that revision.
 - The second public showcase binds two *Anna Karenina*, Part I, Chapter II dialogue
   paragraphs to Russian Wikisource `oldid=4929731`, the cited Nauka 1970 edition, and
   SHA-256 `2dcd42a6e638809ae17ecb2e250b092e65ac7919701ae0d25cc9cccb5790e7f9` without
@@ -125,6 +125,25 @@ Ordered highest first among unblocked work.
 - Independent repaired-head review reconstructed exact PR #21 content and passed 34/34
   standard-library tests. A generated v2 artifact also validated against the exact Draft
   2020-12 schema; hosted statuses/workflows were absent, so CI remains not configured.
+- FantLab's public vocabulary methodology defines unique words, active dictionary and
+  non-dictionary vocabulary, and UASZ-N as unique dictionary words within N consecutive
+  words after repeat removal and dictionary filtering; production lexical normalization,
+  dictionary identity/version and scalar window/aggregation details are not published.
+- `scriptorium-vocabulary-v1` uses Unicode case-folded text-profile tokens as an explicit
+  inferred lexical identity. It does not lemmatize or fold `ё` into `е`.
+- `scriptorium-metrics-v3` adds six vocabulary rows. Unique words require no external
+  dictionary; active dictionary/non-dictionary and UASZ values remain `null` until an
+  explicit dictionary lexeme set plus profile ID is supplied.
+- Explicit dictionary dependencies are bound by profile, canonical normalized-lexeme
+  SHA-256 and lexeme count. This makes the supplied dependency reproducible without
+  claiming it is FantLab's production dictionary.
+- The inferred UASZ scalar uses every complete contiguous N-token window at one-token
+  step and an arithmetic mean of rolling unique dictionary counts; incomplete tails do
+  not contribute and the implementation is O(words) for each configured window size.
+- The benchmark mapping now covers 28 FantLab IDs. Dictionary-dependent rows are barred
+  from `pass`/`fail` while FantLab dictionary identity/version is unproven; missing active
+  integer actuals are `not_run`, while missing UASZ values remain `unresolved` under the
+  frozen `unresolved_precision` comparison-v1 rule.
 
 ## Known risks / blockers
 
@@ -175,6 +194,12 @@ Ordered highest first among unblocked work.
 17. **Parity-corpus edition gap.** None of the five retained candidates has evidence
     tying its source transcription to FantLab's exact analyzed edition/bytes. M2 remains
     blocked until that evidence is found or the user explicitly changes the gate.
+18. **Vocabulary lexical/window inference.** FantLab does not publish exact lexical
+    normalization, UASZ window step, edge policy or scalar aggregation. Case-folded
+    surface forms and step-1 complete-window means remain inferred candidates.
+19. **Vocabulary dictionary identity gap.** FantLab's production dictionary/version is
+    not established. An arbitrary explicit dictionary is reproducible input only and
+    must not make dictionary-dependent rows parity-admissible.
 
 ## Run selection rule
 

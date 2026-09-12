@@ -233,6 +233,8 @@ def _comparison_row(
 def _provenance_admissible(source_text: dict[str, object]) -> bool:
     return (
         source_text["edition_match"] == "exact"
+        and bool(source_text["edition_label"])
+        and bool(source_text["source_reference"])
         and bool(source_text["legal_basis"])
         and bool(source_text["raw_sha256"])
     )

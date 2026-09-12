@@ -72,3 +72,24 @@ code changes remain in Git history and their issues/PRs.
   independence for the five-work M2 gate is not yet defined.
 - M2 parity progress remains 0/5 source-matched works; candidate availability must not be
   confused with benchmark admissibility.
+
+## 2026-09-11 — AOT/pylem compatibility candidate
+
+- Pinned `pylem==0.0.18` by package version and published sdist SHA-256, plus the
+  repository revision that declares 0.0.18 and its exact `morph_dict` and `pybind11`
+  submodule revisions.
+- Recorded the distinction between an immutable PyPI artifact hash and the weaker
+  repository-version match because PyPI metadata does not encode the Git commit used to
+  build the uploaded sdist.
+- Added a machine-readable AOT POS mapping with 17 direct semantic counterparts on the
+  observed `fantlab-2022-v1` work surface.
+- Required unresolved overrides before direct mapping for `ИНФИНИТИВ`, short adjectives
+  (`П + кр`) and short participles (`ПРИЧАСТИЕ + кр`); postpositions and phrasal verbs
+  remain unresolved derived categories.
+- Refused to invent a FantLab homonym/disambiguation policy: pylem can return multiple
+  analyses, so the future adapter must preserve ambiguity until benchmarks justify a
+  deterministic selection rule.
+- Kept pylem/AOT dictionary equivalence to FantLab 2022 explicitly unproven.
+- Native build verification remains pending because the execution container could not
+  resolve external package hosts; this was recorded as an environment limitation, not a
+  pylem failure.

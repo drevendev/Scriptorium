@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 22
+STATE_REVISION: 23
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T20:49:25Z
-LAST_RESULT: SCRIP-TEXT-002 repaired the LF-only paragraph-boundary contract violation found in independent review; PR #21 remains in REVIEW for a fresh exact-head judgement.
-LAST_VERIFIED_PROGRESS: The repair replaces Python splitlines() with literal normalized-LF scanning and adds regression coverage proving U+2028 LINE SEPARATOR, U+0085 NEL and VT do not create false paragraph/dialogue boundaries. Existing CRLF/LF offsets remain stable in focused reconstruction checks; metric/schema/benchmark semantics were not changed.
+LAST_COMMITTED_RUN_AT: 2026-09-12T21:51:49Z
+LAST_RESULT: SCRIP-TEXT-002 passed repaired exact-head review and PR #21 was squash-merged; issue #20 is complete.
+LAST_VERIFIED_PROGRESS: PR #21 merged as 4849a88f8d57ec759bb1ad687ef490b8d27bb206 after independent review of repaired head 69830a145032b6cd2bf1bae6948406744bd6d41a. An exact-head reconstruction passed 34/34 standard-library tests, including the LF-only Unicode-separator regression, and a generated scriptorium-deterministic-metrics-v2 artifact validated against the exact Draft 2020-12 schema. Hosted CI remains not configured; M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-TEXT-002
 ISSUE:          #20
-STATUS:         REVIEW
-BRANCH:         feature/20-dialogue-metrics
+STATUS:         DONE
 PR:             #21
-NEXT_ACTION:    Independently review the repaired exact PR #21 head, rerun/inspect the
-                complete test suite including the Unicode-separator regression, and
-                merge only if the LF-only repair leaves no remaining blocker.
+MERGED_COMMIT:  4849a88f8d57ec759bb1ad687ef490b8d27bb206
+NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
+                dependency state; SCRIP-METRIC-002 is the first listed candidate.
 ```
 
 ## Current milestone gate
@@ -27,7 +26,7 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work after the current review closes.
+Ordered highest first among unblocked work.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
@@ -118,13 +117,14 @@ Ordered highest first among unblocked work after the current review closes.
   paragraphs to Russian Wikisource `oldid=4929731`, the cited Nauka 1970 edition, and
   SHA-256 `2dcd42a6e638809ae17ecb2e250b092e65ac7919701ae0d25cc9cccb5790e7f9` without
   committing the source prose. Its 250 characters are explicitly non-corpus/non-parity.
-- The authored dialogue candidate passed 33/33 reconstructed standard-library tests and
-  an out-of-band JSON Schema validation before publication.
 - Independent review found the first dialogue implementation used Python `splitlines()`,
   which recognizes Unicode separators beyond the frozen LF-only paragraph contract.
-  The repair now scans literal normalized `\n` only; focused checks preserve existing
-  CRLF/LF offsets and prove U+2028, U+0085 and VT remain inside a single paragraph rather
-  than creating false dialogue spans. A fresh exact-head full-suite review remains due.
+  The repaired implementation scans literal normalized `\n` only and regression coverage
+  proves U+2028, U+0085 and VT remain inside a single paragraph instead of creating false
+  dialogue spans.
+- Independent repaired-head review reconstructed exact PR #21 content and passed 34/34
+  standard-library tests. A generated v2 artifact also validated against the exact Draft
+  2020-12 schema; hosted statuses/workflows were absent, so CI remains not configured.
 
 ## Known risks / blockers
 

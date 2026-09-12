@@ -1,21 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 12
+STATE_REVISION: 14
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T10:50:23Z
-LAST_RESULT: SCRIP-MORPH-001 passed fresh exact-head review and PR #10 was squash-merged; issue #9 is complete.
-LAST_VERIFIED_PROGRESS: PR #10 merged as 1112375d7488faa5f3751cdb2a1659eca80c3f4e after independent review of head f6c6e39dacc4bfbb53532573d15dd63307455489. The pinned pylem runtime contract now records 22 AOT source POS slots, 21 unique Latin runtime strings, 15 unambiguous direct FantLab targets, one unresolved N noun/cardinal collision, and five unresolved extra runtime categories.
+LAST_COMMITTED_RUN_AT: 2026-09-12T12:50:00Z
+LAST_RESULT: SCRIP-TEXT-001 repaired the testing-policy drift found in independent review; PR #15 remains in REVIEW for fresh exact-head judgement.
+LAST_VERIFIED_PROGRESS: Independent review of pre-repair head 45060bccdf9280a07661625346ef2d134493b3a3 confirmed 11/11 golden tests and coherent inferred text behavior. The repair changes only architecture/control documentation: standard-library unittest is now the initial unit/golden/benchmark runner, with pytest deferred until a concrete need justifies it.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-MORPH-001
-ISSUE:          #9
-STATUS:         DONE
-PR:             #10
-MERGED_COMMIT:  1112375d7488faa5f3751cdb2a1659eca80c3f4e
-NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
-                dependency state; SCRIP-TEXT-001 is the first listed candidate.
+UNIT_ID:        SCRIP-TEXT-001
+ISSUE:          #11
+STATUS:         REVIEW
+BRANCH:         feature/11-text-model
+PR:             #15
+NEXT_ACTION:    Independently review the repaired exact PR #15 head, confirm the code/test
+                blobs are unchanged from the passing review evidence, inspect the testing
+                policy repair, and merge only if no new blocker remains.
 ```
 
 ## Current milestone gate
@@ -26,11 +27,10 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Ordered highest first among unblocked work after the current review closes.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-TEXT-001 | implementation | Deterministic normalization/tokenization/sentence model with golden tests | SCRIP-REPRO-001 |
 | P1 | SCRIP-METRIC-001 | implementation | Character/word/sentence/punctuation metrics and JSON schema | SCRIP-TEXT-001 |
 | P1 | SCRIP-REPRO-002 | implementation | CLI benchmark harness reporting expected/actual/delta and provenance | SCRIP-METRIC-001 |
 | P1 | SCRIP-TEXT-002 | implementation | Dialogue segmentation and author-text-in-dialogue metrics | SCRIP-TEXT-001 |
@@ -77,6 +77,15 @@ Ordered highest first among unblocked work.
 - `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` are distinct pinned
   runtime POS values with no standalone bucket on the observed 2022 FantLab surface.
   Their folding behavior remains unresolved.
+- `scriptorium-text-v1` is the first executable text profile. It normalizes line endings
+  and Unicode NFC, emits deterministic word/sentence candidate spans with offsets into
+  normalized text, and is explicitly classified as inferred rather than reproduced.
+- Independent review of the implementation content passed 11/11 standard-library golden
+  tests under Python 3.13.5. The subsequent repair changed only architecture/control
+  documentation, not the tested text-model or test blobs.
+- The architecture now names standard-library `unittest` as the initial unit, golden and
+  benchmark contract runner. `pytest` is optional future infrastructure, not an implicit
+  dependency or a contradictory bootstrap requirement.
 
 ## Known risks / blockers
 
@@ -86,33 +95,36 @@ Ordered highest first among unblocked work.
 2. **Hidden-algorithm risk.** FantLab publicly acknowledges unpublished corrective
    coefficients/know-how. Keep reverse-engineering evidence-based; do not lower the M2
    gate without an explicit manifest amendment.
-3. **Runtime POS collision.** Pinned pylem renders both noun and cardinal numeral as
+3. **Text-boundary inference.** FantLab's exact normalization, tokenization, abbreviation
+   and sentence-boundary rules are not public. `scriptorium-text-v1` is a deterministic
+   candidate only; benchmark deltas must drive any compatibility revisions.
+4. **Runtime POS collision.** Pinned pylem renders both noun and cardinal numeral as
    Latin `N`. `LemmaInfo.part_of_speech` cannot recover the distinction; an explicitly
    exposed source POS discriminator plus benchmark validation is required before these
    two FantLab buckets can be produced compatibly.
-4. **Extra-category folding unresolved.** `POSL`, `COLLOC`, `ADJ_SHORT`,
+5. **Extra-category folding unresolved.** `POSL`, `COLLOC`, `ADJ_SHORT`,
    `PARTICIPLE_SHORT` and `INFINITIVE` exist separately in the pinned runtime, while the
    observed FantLab 2022 surface has no matching standalone buckets.
-5. **Morphology drift.** The pinned pylem dictionary/source has not been shown identical
+6. **Morphology drift.** The pinned pylem dictionary/source has not been shown identical
    to FantLab's 2022 production morphology. Source-matched benchmarks must measure drift.
-6. **Morphology ambiguity.** Pylem can expose multiple analyses; FantLab's homonym and
+7. **Morphology ambiguity.** Pylem can expose multiple analyses; FantLab's homonym and
    prediction-selection policy is not public. No first-result/weight heuristic is accepted.
-7. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
+8. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
    verified network-enabled runtime. This remains `not_run`, not a package failure.
-8. **Copyright risk.** Author.Today/fanfiction availability is not a license. Treat
+9. **Copyright risk.** Author.Today/fanfiction availability is not a license. Treat
    platform texts as candidates until work-specific rights permit analysis/publication.
-9. **Scheduler serialization unverified.** Re-read refs/state before write and avoid
-   same-run author+merge of substantial PRs.
-10. **External mode controller unverified.** The user-authorized deterministic selection
+10. **Scheduler serialization unverified.** Re-read refs/state before write and avoid
+    same-run author+merge of substantial PRs.
+11. **External mode controller unverified.** The user-authorized deterministic selection
     ladder is operative, but no independent EndlessZen controller/selection receipt
     mechanism has been bound and proven yet.
-11. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
+12. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
     differently rounded or cached values. Benchmark expectations must name the exact
     source surface and capture display text; cross-surface joining is not parity evidence.
-12. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
+13. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
     a general formatting/tie rule. Unknown precision remains unresolved rather than
     inferred from rendered text.
-13. **Parity-corpus edition gap.** None of the five retained candidates has evidence
+14. **Parity-corpus edition gap.** None of the five retained candidates has evidence
     tying its source transcription to FantLab's exact analyzed edition/bytes. M2 remains
     blocked until that evidence is found or the user explicitly changes the gate.
 

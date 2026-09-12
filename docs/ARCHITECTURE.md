@@ -9,7 +9,11 @@ manifest gates.
 - `pylem`/AOT as the first FantLab-compatible morphology experiment, isolated behind a
   provider interface.
 - JSON as the canonical derived-analysis and benchmark interchange format.
-- `pytest` for unit/golden/benchmark contract tests.
+- Standard-library `unittest` is the initial runner for unit, golden and benchmark
+  contract tests so the deterministic core can be verified without a third-party test
+  dependency. Introduce `pytest` later only when concrete fixture, parametrization or
+  plugin needs justify the dependency; changing runners must not weaken existing
+  contract coverage.
 - A static GitHub Pages frontend built only from derived JSON/artifacts. The first site
   implementation should prefer minimal HTML/CSS/TypeScript or vanilla JavaScript over
   introducing a server/database.

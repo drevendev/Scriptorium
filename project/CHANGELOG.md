@@ -101,3 +101,23 @@ code changes remain in Git history and their issues/PRs.
 - Native build verification remains pending; the original execution environment could
   not resolve external package hosts, which is an environment limitation rather than a
   pylem failure.
+
+## 2026-09-12 — Deterministic text model candidate
+
+- Added the first executable Python analysis layer under `scriptorium/`.
+- Defined `scriptorium-text-v1` normalization as newline canonicalization plus Unicode
+  NFC while preserving all other whitespace, punctuation, case and quote style.
+- Added deterministic word candidates and sentence candidates with half-open offsets
+  into normalized text.
+- Kept tokenization and sentence-boundary behavior explicitly `inferred`; no abbreviation
+  heuristic or undocumented FantLab rule is guessed into the implementation.
+- Added golden tests for Cyrillic/mixed tokens, internal hyphen/apostrophe behavior,
+  exact normalized-text offsets, punctuation/ellipsis/closing quotes, blank input,
+  unterminated tails and deterministic replay.
+- Exposed the first executable capability in the public README and documented that the
+  next verified metric slice should publish derived analysis for real legally usable
+  books rather than waiting for the complete analyzer.
+- Independent review found a bootstrap architecture drift: the repository still named
+  `pytest` while this slice deliberately uses standard-library `unittest`. The
+  architecture now makes `unittest` the initial unit/golden/benchmark runner and defers
+  `pytest` until a concrete fixture, parametrization or plugin need justifies adding it.

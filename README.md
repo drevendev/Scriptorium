@@ -14,18 +14,29 @@ still valid analyzer inputs, but their results carry representativeness warnings
 
 ## What works today
 
-Scriptorium now has a first executable, standard-library-only text layer:
+Scriptorium now has a standard-library-only deterministic analysis core:
 
 - versioned CRLF/CR → LF and Unicode NFC normalization;
-- deterministic word candidates with offsets into normalized text;
-- deterministic sentence candidates with offsets and explicit punctuation rules;
-- golden tests for Cyrillic, hyphen/apostrophe tokens, punctuation and normalized
-  offsets.
+- deterministic word candidates and sentence spans with normalized-text offsets;
+- first-wave character, word, mean word/sentence length and punctuation metrics;
+- a versioned JSON artifact/schema with explicit `inferred` vs `extension` status;
+- golden tests for text boundaries, metric formulas and punctuation overlap.
 
-These rules are currently **inferred candidates**, not claimed FantLab reproduction.
-See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md). The next metric slice will build
-character/word/sentence outputs on this layer and should publish derived results for
-legally usable real books instead of waiting for the complete analyzer.
+The FantLab-shaped values are **inferred candidates**, not claimed reproduction.
+See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md) and
+[`docs/METRIC_PROFILE.md`](docs/METRIC_PROFILE.md).
+
+### First public showcase
+
+The repository now includes a derived metric slice for a real public-domain literary
+source: the opening four prose paragraphs of Tolstoy's *Anna Karenina*, Part I,
+Chapter I, bound to an exact Russian Wikisource revision.
+
+[`showcase/anna-karenina-part1-ch1-opening.json`](showcase/anna-karenina-part1-ch1-opening.json)
+contains source provenance, hashes and the derived metric artifact, but no source prose.
+It is intentionally marked as a **short illustrative excerpt**, not a corpus entry and
+not FantLab parity evidence. Full-work showcase artifacts will follow as ingestion and
+source freezing mature.
 
 ## Project state
 

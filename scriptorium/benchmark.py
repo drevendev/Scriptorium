@@ -123,6 +123,15 @@ _VOCABULARY_SPECS: Final = (
         "unresolved_precision",
     ),
 )
+_DICTIONARY_DEPENDENT_METRICS: Final = frozenset(
+    {
+        "fantlab.vocabulary.active_dictionary",
+        "fantlab.vocabulary.active_nondictionary",
+        "fantlab.vocabulary.uasz_3000",
+        "fantlab.vocabulary.uasz_10000",
+        "fantlab.vocabulary.uasz_100000",
+    }
+)
 _PUNCTUATION_LABELS: Final = {
     "comma": ",",
     "period": ".",
@@ -161,6 +170,9 @@ def build_comparison(
 
     Vocabulary dictionary-dependent fields are only produced when an explicit
     dictionary lexeme collection and profile identity are supplied together.
+    Merely supplying a dictionary never makes it FantLab-compatible: until the
+    production dictionary identity/version is established, dictionary-dependent
+    comparisons remain diagnostic ``unresolved`` results.
     """
 
     if edition_match not in {"exact", "strong", "weak", "unknown"}:
@@ -186,6 +198,7 @@ def build_comparison(
         "raw_sha256": raw_sha256,
         "normalized_sha256": analysis["normalized_sha256"],
     }
+    dictionary_dependency = analysis["dependencies"]["vocabulary_dictionary"]
 
     metrics: dict[str, object] = {}
     for metric_id, path, source_label, rule in _reference_specs():
@@ -200,6 +213,17 @@ def build_comparison(
         if actual_row is None:
             raise ValueError(f"analyzer does not emit mapped metric {metric_id}")
 
+        admission_issues: list[str] = []
+        if not _provenance_admissible(source_text):
+            admission_issues.append(
+                "Exact edition/legal provenance required for parity is incomplete."
+            )
+        if metric_id in _DICTIONARY_DEPENDENT_METRICS:
+            admission_issues.append(
+                "FantLab dictionary identity/version has not been established for the "
+                "supplied vocabulary dependency."
+            )
+
         actual = actual_row["value"]
         metrics[metric_id] = _comparison_row(
             expected=expected,
@@ -208,7 +232,7 @@ def build_comparison(
             definition_evidence=actual_row["definition_evidence"],
             source_label=source_label,
             rule=rule,
-            provenance_admissible=_provenance_admissible(source_text),
+            admission_issues=tuple(admission_issues),
         )
 
     if not metrics:
@@ -224,7 +248,7 @@ def build_comparison(
             "scriptorium_revision": scriptorium_revision,
             "compatibility_profile": COMPATIBILITY_PROFILE,
             "normalization_profile": NORMALIZATION_PROFILE,
-            "dictionary_version": analysis["dependencies"]["vocabulary_dictionary"],
+            "dictionary_version": _dictionary_version_string(dictionary_dependency),
         },
         "metrics": metrics,
     }
@@ -251,7 +275,7 @@ def _comparison_row(
     definition_evidence: str,
     source_label: str,
     rule: str,
-    provenance_admissible: bool,
+    admission_issues: tuple[str, ...],
 ) -> dict[str, object]:
     raw_delta = None if actual is None else actual - expected
     actual_display = None if actual is None else str(actual)
@@ -261,12 +285,9 @@ def _comparison_row(
         if actual is None:
             result = "not_run"
             reason = "The analyzer did not produce an actual value."
-        elif not provenance_admissible:
+        elif admission_issues:
             result = "unresolved"
-            reason = (
-                "Numeric equality is diagnostic only because exact edition/legal "
-                "provenance required for parity is incomplete."
-            )
+            reason = " ".join(admission_issues)
         elif numeric_match:
             result = "pass"
             reason = None
@@ -281,8 +302,7 @@ def _comparison_row(
         reasons = [
             "FantLab display precision and tie-breaking are not independently established."
         ]
-        if not provenance_admissible:
-            reasons.append("Exact edition/legal provenance required for parity is incomplete.")
+        reasons.extend(admission_issues)
         if actual is None:
             reasons.append("The analyzer produced no numeric value for this input.")
         reason = " ".join(reasons)
@@ -318,6 +338,14 @@ def _provenance_admissible(source_text: dict[str, object]) -> bool:
         and bool(source_text["source_reference"])
         and bool(source_text["legal_basis"])
         and bool(source_text["raw_sha256"])
+    )
+
+
+def _dictionary_version_string(dependency: object) -> str | None:
+    if not isinstance(dependency, dict):
+        return None
+    return (
+        f"{dependency['profile']}@sha256:{dependency['normalized_lexemes_sha256']}"
     )
 
 

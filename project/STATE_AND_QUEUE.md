@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 14
+STATE_REVISION: 15
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T12:50:00Z
-LAST_RESULT: SCRIP-TEXT-001 repaired the testing-policy drift found in independent review; PR #15 remains in REVIEW for fresh exact-head judgement.
-LAST_VERIFIED_PROGRESS: Independent review of pre-repair head 45060bccdf9280a07661625346ef2d134493b3a3 confirmed 11/11 golden tests and coherent inferred text behavior. The repair changes only architecture/control documentation: standard-library unittest is now the initial unit/golden/benchmark runner, with pytest deferred until a concrete need justifies it.
+LAST_COMMITTED_RUN_AT: 2026-09-12T12:54:00Z
+LAST_RESULT: SCRIP-TEXT-001 passed repaired exact-head review and PR #15 was squash-merged; issue #11 is complete.
+LAST_VERIFIED_PROGRESS: PR #15 merged as 502bc2134ba32604338e6cae3d48d2846317c12b after review of repaired head 55971a22e4fbe2986168ade199e78da3e416fd49. Exact published text-model/test content passed 11/11 standard-library tests under Python 3.13.5; the architecture now durably names unittest as the initial contract-test runner while the text model remains explicitly inferred rather than FantLab-reproduced.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-TEXT-001
 ISSUE:          #11
-STATUS:         REVIEW
-BRANCH:         feature/11-text-model
+STATUS:         DONE
 PR:             #15
-NEXT_ACTION:    Independently review the repaired exact PR #15 head, confirm the code/test
-                blobs are unchanged from the passing review evidence, inspect the testing
-                policy repair, and merge only if no new blocker remains.
+MERGED_COMMIT:  502bc2134ba32604338e6cae3d48d2846317c12b
+NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
+                dependency state; SCRIP-METRIC-001 is the first listed candidate.
 ```
 
 ## Current milestone gate
@@ -27,7 +26,7 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work after the current review closes.
+Ordered highest first among unblocked work.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
@@ -80,9 +79,8 @@ Ordered highest first among unblocked work after the current review closes.
 - `scriptorium-text-v1` is the first executable text profile. It normalizes line endings
   and Unicode NFC, emits deterministic word/sentence candidate spans with offsets into
   normalized text, and is explicitly classified as inferred rather than reproduced.
-- Independent review of the implementation content passed 11/11 standard-library golden
-  tests under Python 3.13.5. The subsequent repair changed only architecture/control
-  documentation, not the tested text-model or test blobs.
+- Independent review of the final implementation content passed 11/11 standard-library
+  golden tests under Python 3.13.5 before merge.
 - The architecture now names standard-library `unittest` as the initial unit, golden and
   benchmark contract runner. `pytest` is optional future infrastructure, not an implicit
   dependency or a contradictory bootstrap requirement.

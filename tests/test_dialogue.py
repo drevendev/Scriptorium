@@ -124,12 +124,8 @@ class DialogueMetricTests(unittest.TestCase):
             narration["fantlab.dialogue.author_text_inside_dialogue_percent"]["value"]
         )
 
-    def test_schema_v2_freezes_dialogue_profile_and_rows(self):
-        schema_path = (
-            Path(__file__).parents[1]
-            / "schemas"
-            / "scriptorium-deterministic-metrics-v2.schema.json"
-        )
+    def test_current_schema_keeps_dialogue_profile_and_rows(self):
+        schema_path = Path(__file__).parents[1] / "schemas" / f"{SCHEMA_VERSION}.schema.json"
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
 
         self.assertEqual(schema["properties"]["schema_version"]["const"], SCHEMA_VERSION)
@@ -138,7 +134,7 @@ class DialogueMetricTests(unittest.TestCase):
             DIALOGUE_PROFILE,
         )
         required = schema["properties"]["metrics"]["required"]
-        self.assertEqual(len(required), 23)
+        self.assertEqual(len(required), 29)
         self.assertIn("fantlab.dialogue.share_percent", required)
 
     def test_benchmark_exposes_all_four_dialogue_fields_as_unresolved_precision(self):

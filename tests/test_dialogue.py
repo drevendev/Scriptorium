@@ -43,6 +43,15 @@ class DialogueSpanTests(unittest.TestCase):
         for span in paragraph_spans(text):
             self.assertEqual(normalized[span.start:span.end], span.text)
 
+    def test_only_literal_lf_creates_paragraph_boundaries(self):
+        text = "Автор\u2028— Реплика\u0085– Ответ\x0b- Третий"
+        normalized = normalize_text(text)
+        expected = (TextSpan(normalized, 0, len(normalized)),)
+
+        self.assertEqual(paragraph_spans(text), expected)
+        self.assertEqual(narration_spans(text), expected)
+        self.assertEqual(dialogue_spans(text), ())
+
     def test_author_remark_segments_alternate_after_internal_separators(self):
         text = "— Привет, — сказал он. — Пока, — добавил он."
         normalized = normalize_text(text)

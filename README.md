@@ -12,6 +12,21 @@ legally usable and at least 300,000 characters including spaces; copyrighted tex
 not committed merely because it is accessible online. Shorter texts and excerpts are
 still valid analyzer inputs, but their results carry representativeness warnings.
 
+## What works today
+
+Scriptorium now has a first executable, standard-library-only text layer:
+
+- versioned CRLF/CR → LF and Unicode NFC normalization;
+- deterministic word candidates with offsets into normalized text;
+- deterministic sentence candidates with offsets and explicit punctuation rules;
+- golden tests for Cyrillic, hyphen/apostrophe tokens, punctuation and normalized
+  offsets.
+
+These rules are currently **inferred candidates**, not claimed FantLab reproduction.
+See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md). The next metric slice will build
+character/word/sentence outputs on this layer and should publish derived results for
+legally usable real books instead of waiting for the complete analyzer.
+
 ## Project state
 
 This is an hourly autonomous project operated with an EndlessZen-derived work cycle.

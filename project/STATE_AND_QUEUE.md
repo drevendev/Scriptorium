@@ -1,10 +1,10 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 13
+STATE_REVISION: 14
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T11:10:30Z
-LAST_RESULT: SCRIP-TEXT-001 implemented the first deterministic normalization/tokenization/sentence candidate model with golden tests; PR #15 is ready for independent review.
-LAST_VERIFIED_PROGRESS: Issue #11 owns the text model; the authored module/test content passed 11/11 standard-library unittests before publication, and the public README now exposes the executable text-layer capability without claiming FantLab parity.
+LAST_COMMITTED_RUN_AT: 2026-09-12T12:50:00Z
+LAST_RESULT: SCRIP-TEXT-001 repaired the testing-policy drift found in independent review; PR #15 remains in REVIEW for fresh exact-head judgement.
+LAST_VERIFIED_PROGRESS: Independent review of pre-repair head 45060bccdf9280a07661625346ef2d134493b3a3 confirmed 11/11 golden tests and coherent inferred text behavior. The repair changes only architecture/control documentation: standard-library unittest is now the initial unit/golden/benchmark runner, with pytest deferred until a concrete need justifies it.
 
 ## Current unit
 
@@ -14,9 +14,9 @@ ISSUE:          #11
 STATUS:         REVIEW
 BRANCH:         feature/11-text-model
 PR:             #15
-NEXT_ACTION:    Independently review the current PR #15 head, rerun or inspect the
-                golden tests against the published branch content, and merge only if
-                offsets/rules remain deterministic and explicitly inferred.
+NEXT_ACTION:    Independently review the repaired exact PR #15 head, confirm the code/test
+                blobs are unchanged from the passing review evidence, inspect the testing
+                policy repair, and merge only if no new blocker remains.
 ```
 
 ## Current milestone gate
@@ -80,8 +80,12 @@ Ordered highest first among unblocked work after the current review closes.
 - `scriptorium-text-v1` is the first executable text profile. It normalizes line endings
   and Unicode NFC, emits deterministic word/sentence candidate spans with offsets into
   normalized text, and is explicitly classified as inferred rather than reproduced.
-- The authored text-model slice passed 11/11 standard-library golden tests before branch
-  publication; independent review must bind that result to the final published head.
+- Independent review of the implementation content passed 11/11 standard-library golden
+  tests under Python 3.13.5. The subsequent repair changed only architecture/control
+  documentation, not the tested text-model or test blobs.
+- The architecture now names standard-library `unittest` as the initial unit, golden and
+  benchmark contract runner. `pytest` is optional future infrastructure, not an implicit
+  dependency or a contradictory bootstrap requirement.
 
 ## Known risks / blockers
 

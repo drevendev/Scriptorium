@@ -121,3 +121,22 @@ code changes remain in Git history and their issues/PRs.
   `pytest` while this slice deliberately uses standard-library `unittest`. The
   architecture now makes `unittest` the initial unit/golden/benchmark runner and defers
   `pytest` until a concrete fixture, parametrization or plugin need justifies adding it.
+
+## 2026-09-12 — First deterministic metric profile
+
+- Added `scriptorium-metrics-v1` for character count, word count, mean word/sentence
+  length and a Scriptorium sentence-count diagnostic on top of `scriptorium-text-v1`.
+- Added all 14 observed FantLab punctuation-per-1000-word fields under an explicit
+  `scriptorium-punctuation-v1` candidate policy.
+- Made compound punctuation greedy/non-overlapping, documented Unicode ellipsis,
+  dash/quote variants and opening-parenthesis counting, and kept every FantLab-shaped
+  value `inferred` until source-matched benchmarks demonstrate parity.
+- Added `scriptorium-deterministic-metrics-v1` JSON Schema with stable metric IDs, units,
+  evidence class, compatibility status and normalized-text digest.
+- Added standard-library golden tests covering formulas, zero denominators, punctuation
+  overlap, diagnostic raw counts, deterministic digests and schema/profile identity.
+- Added the first real-source derived showcase from an exact Russian Wikisource revision
+  of *Anna Karenina*, Part I, Chapter I. Only provenance, selection hashes and derived
+  metrics are stored; the selected prose is not committed.
+- The showcase is explicitly an illustrative 1,298-character excerpt, below the
+  300,000-character corpus threshold and inadmissible as FantLab parity evidence.

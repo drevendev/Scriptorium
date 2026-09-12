@@ -28,6 +28,12 @@ When an exact, legally usable source edition is established, also provide proven
   --legal-basis "public_domain / license / permission evidence"
 ```
 
+All four provenance claims are required before an integer comparison may become
+`pass` or `fail`: `edition_match=exact`, a non-empty edition/transcription identity,
+a non-empty source reference, and a non-empty legal basis. The raw SHA-256 is always
+computed by the harness from the supplied bytes. Missing identity/reference evidence
+keeps the comparison diagnostic `unresolved` even if the numeric value matches.
+
 The text path is never copied into the repository by the harness. The output records the
 raw byte SHA-256 and the normalized-text SHA-256 instead.
 
@@ -62,12 +68,12 @@ exact field and reference surface.
 
 `fantlab.general.characters` and `fantlab.general.words` use `exact_integer`.
 
-- exact source edition + legal basis + raw digest + equality -> `pass`;
-- exact admissible provenance + disagreement -> `fail`;
-- equality or disagreement without admissible provenance -> `unresolved`.
+- exact edition identity + source reference + legal basis + raw digest + equality -> `pass`;
+- the same admissible provenance + disagreement -> `fail`;
+- equality or disagreement without any one of those provenance elements -> `unresolved`.
 
-The last rule is deliberate: a different edition can be numerically close or even equal
-without proving reproduction.
+The last rule is deliberate: a different or unidentified edition can be numerically
+close or even equal without proving reproduction.
 
 ### Decimal/rate fields
 

@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 16
+STATE_REVISION: 17
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T14:02:00Z
-LAST_RESULT: SCRIP-METRIC-001 implemented the first deterministic general/punctuation metric profile, schema and real-source showcase; PR #17 is ready for independent review.
-LAST_VERIFIED_PROGRESS: Issue #16 owns the first metric slice. The authored candidate passed 17/17 standard-library tests before publication, adds 19 stable metric rows (four FantLab general metrics, one Scriptorium sentence-count extension, and 14 FantLab punctuation fields), and publishes a provenance-bound Anna Karenina excerpt artifact without source prose or parity claims.
+LAST_COMMITTED_RUN_AT: 2026-09-12T14:20:00Z
+LAST_RESULT: SCRIP-METRIC-001 passed independent exact-head review and PR #17 was squash-merged; issue #16 is complete.
+LAST_VERIFIED_PROGRESS: PR #17 merged as c9799a6e098267384b44716f9423ca1c74842270 after independent review of head 392b5a7581d7ea86d594b7a4e492b16ae84f861e. The first deterministic general/punctuation metric profile, 19-row schema and provenance-bound Anna Karenina illustrative showcase are now on master; FantLab-shaped values remain explicitly inferred and M2 parity progress remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-METRIC-001
 ISSUE:          #16
-STATUS:         REVIEW
-BRANCH:         feature/16-deterministic-metrics
+STATUS:         DONE
 PR:             #17
-NEXT_ACTION:    Independently review the final PR #17 head, rerun/inspect all 17 tests,
-                validate the JSON schema and showcase provenance/hash contract, and
-                merge only if metric formulas and inferred punctuation choices are sound.
+MERGED_COMMIT:  c9799a6e098267384b44716f9423ca1c74842270
+NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
+                dependency state; SCRIP-REPRO-002 is the first listed candidate.
 ```
 
 ## Current milestone gate
@@ -27,7 +26,7 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work after the current review closes.
+Ordered highest first among unblocked work.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
@@ -96,6 +95,10 @@ Ordered highest first among unblocked work after the current review closes.
   Chapter I revision `oldid=4929732`. It stores only provenance, a precise four-paragraph
   selection rule, hashes and derived metrics. The 1,298-character excerpt is explicitly
   non-corpus and non-benchmark evidence.
+- Independent review of PR #17 found no semantic/schema/provenance blocker. The new
+  metric cases were rerun against the published implementation; hosted CI is not
+  configured. Wikisource independently confirms the cited Nauka 1970 chapter source
+  and the parent work's public-domain status.
 
 ## Known risks / blockers
 

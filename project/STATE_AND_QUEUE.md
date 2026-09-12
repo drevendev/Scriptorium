@@ -1,24 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 11
+STATE_REVISION: 12
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T09:52:00Z
-LAST_RESULT: SCRIP-MORPH-001 repaired PR #10 around the actual Latin runtime POS strings exposed by pinned pylem 0.0.18; the contract now enumerates all 22 AOT source slots, preserves the N noun/cardinal collision as unresolved, and is ready for fresh independent review.
-LAST_VERIFIED_PROGRESS: Pinned pylem calls SetUseNationalConstants(false), pylem parses the leading morphInfo token into LemmaInfo.part_of_speech, and pinned morph_dict has 22 source POS slots but 21 unique Latin runtime strings. Fifteen runtime strings have unambiguous FantLab targets, N is ambiguous between noun/cardinal, and five extra runtime categories remain unresolved.
+LAST_COMMITTED_RUN_AT: 2026-09-12T10:50:23Z
+LAST_RESULT: SCRIP-MORPH-001 passed fresh exact-head review and PR #10 was squash-merged; issue #9 is complete.
+LAST_VERIFIED_PROGRESS: PR #10 merged as 1112375d7488faa5f3751cdb2a1659eca80c3f4e after independent review of head f6c6e39dacc4bfbb53532573d15dd63307455489. The pinned pylem runtime contract now records 22 AOT source POS slots, 21 unique Latin runtime strings, 15 unambiguous direct FantLab targets, one unresolved N noun/cardinal collision, and five unresolved extra runtime categories.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-MORPH-001
 ISSUE:          #9
-STATUS:         REVIEW
-BRANCH:         research/9-aot-pylem-contract
+STATUS:         DONE
 PR:             #10
-REPAIR_BASE:    dcf3dcfdf1deaf4be201c1e1b127ff7c7e34f423
-NEXT_ACTION:    Independently review the repaired runtime mapping against pinned
-                pylem/morph_dict source, especially the 22-slot inventory, the 15 direct
-                runtime mappings, the unresolved N noun/cardinal collision and the five
-                extra runtime POS values; merge only if the repaired contract is honest.
+MERGED_COMMIT:  1112375d7488faa5f3751cdb2a1659eca80c3f4e
+NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
+                dependency state; SCRIP-TEXT-001 is the first listed candidate.
 ```
 
 ## Current milestone gate
@@ -29,7 +26,7 @@ configuration provenance.
 
 ## Queue
 
-Ordered highest first among unblocked work after the current review closes.
+Ordered highest first among unblocked work.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |

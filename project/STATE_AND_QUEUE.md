@@ -1,24 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 10
+STATE_REVISION: 11
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T09:12:00Z
-LAST_RESULT: Independent review of SCRIP-MORPH-001 found that PR #10 maps documentation-facing Cyrillic AOT POS labels rather than the Latin runtime constants exposed by pinned pylem 0.0.18; the current head must not merge.
-LAST_VERIFIED_PROGRESS: Review of exact head dcf3dcfdf1deaf4be201c1e1b127ff7c7e34f423 verified SetUseNationalConstants(false) in pinned pylem and the pinned morph_dict 22-POS runtime inventory, including the lossy runtime `N` collision between noun and cardinal numeral. Review finding is recorded on PR #10.
+LAST_COMMITTED_RUN_AT: 2026-09-12T09:52:00Z
+LAST_RESULT: SCRIP-MORPH-001 repaired PR #10 around the actual Latin runtime POS strings exposed by pinned pylem 0.0.18; the contract now enumerates all 22 AOT source slots, preserves the N noun/cardinal collision as unresolved, and is ready for fresh independent review.
+LAST_VERIFIED_PROGRESS: Pinned pylem calls SetUseNationalConstants(false), pylem parses the leading morphInfo token into LemmaInfo.part_of_speech, and pinned morph_dict has 22 source POS slots but 21 unique Latin runtime strings. Fifteen runtime strings have unambiguous FantLab targets, N is ambiguous between noun/cardinal, and five extra runtime categories remain unresolved.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-MORPH-001
 ISSUE:          #9
-STATUS:         REPAIR_REQUIRED
+STATUS:         REVIEW
 BRANCH:         research/9-aot-pylem-contract
 PR:             #10
-REVIEWED_HEAD:  dcf3dcfdf1deaf4be201c1e1b127ff7c7e34f423
-NEXT_ACTION:    Repair the contract around the actual pylem 0.0.18 runtime POS representation:
-                enumerate all 22 Latin runtime POS values, classify the extra categories,
-                and resolve or explicitly preserve the N noun/cardinal collision before
-                requesting a fresh independent review.
+REPAIR_BASE:    dcf3dcfdf1deaf4be201c1e1b127ff7c7e34f423
+NEXT_ACTION:    Independently review the repaired runtime mapping against pinned
+                pylem/morph_dict source, especially the 22-slot inventory, the 15 direct
+                runtime mappings, the unresolved N noun/cardinal collision and the five
+                extra runtime POS values; merge only if the repaired contract is honest.
 ```
 
 ## Current milestone gate
@@ -69,13 +69,17 @@ Ordered highest first among unblocked work after the current review closes.
 - Pinned pylem calls `SetUseNationalConstants(false)` after morphology load, therefore
   runtime POS/grammeme strings exposed through that holder use Latin constants rather
   than the Cyrillic documentation-facing constants.
-- Pinned morph_dict defines 22 Russian POS runtime entries. The Latin runtime inventory
-  includes `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT`, and `INFINITIVE` as distinct
-  values in addition to the categories represented on the observed FantLab surface.
-- The pinned runtime maps both Cyrillic noun `С` and cardinal numeral `ЧИСЛ` to Latin
-  `N`. `LemmaInfo.part_of_speech` alone therefore cannot justify a direct noun/cardinal
-  distinction; another proven discriminator is required or the distinction remains
-  unresolved.
+- `pylem/__init__.py` parses the leading `morphInfo` token into
+  `LemmaInfo.part_of_speech`; this is the runtime adapter surface described by the
+  compatibility contract.
+- Pinned morph_dict defines 22 Russian source POS slots but only 21 unique Latin runtime
+  strings. Fifteen runtime strings map unambiguously to one observed FantLab bucket.
+- Both noun `С` and cardinal numeral `ЧИСЛ` render as runtime `N`; the public pylem Python
+  result does not expose the original source POS enum/ancode, so this distinction remains
+  unresolved rather than guessed.
+- `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` are distinct pinned
+  runtime POS values with no standalone bucket on the observed 2022 FantLab surface.
+  Their folding behavior remains unresolved.
 
 ## Known risks / blockers
 
@@ -85,12 +89,13 @@ Ordered highest first among unblocked work after the current review closes.
 2. **Hidden-algorithm risk.** FantLab publicly acknowledges unpublished corrective
    coefficients/know-how. Keep reverse-engineering evidence-based; do not lower the M2
    gate without an explicit manifest amendment.
-3. **Morphology runtime-contract mismatch.** PR #10 currently maps Cyrillic AOT labels,
-   while pinned pylem exposes Latin runtime constants after `SetUseNationalConstants(false)`.
-   The contract must be repaired before merge.
-4. **Runtime POS collision.** Pinned morph_dict maps both noun and cardinal numeral to
-   Latin `N`; `part_of_speech` alone loses this distinction. Do not invent a recovery
-   heuristic without evidence from ancodes/grammemes or source-matched benchmarks.
+3. **Runtime POS collision.** Pinned pylem renders both noun and cardinal numeral as
+   Latin `N`. `LemmaInfo.part_of_speech` cannot recover the distinction; an explicitly
+   exposed source POS discriminator plus benchmark validation is required before these
+   two FantLab buckets can be produced compatibly.
+4. **Extra-category folding unresolved.** `POSL`, `COLLOC`, `ADJ_SHORT`,
+   `PARTICIPLE_SHORT` and `INFINITIVE` exist separately in the pinned runtime, while the
+   observed FantLab 2022 surface has no matching standalone buckets.
 5. **Morphology drift.** The pinned pylem dictionary/source has not been shown identical
    to FantLab's 2022 production morphology. Source-matched benchmarks must measure drift.
 6. **Morphology ambiguity.** Pylem can expose multiple analyses; FantLab's homonym and

@@ -477,3 +477,32 @@ code changes remain in Git history and their issues/PRs.
   revisions and compute raw/normalized SHA-256 plus character count. Only then should a
   field-by-field diagnostic run; it remains diagnostic until independent evidence ties
   FantLab's uploaded analysis text to the same frozen source.
+
+## 2026-09-13 — Independent review and merge: Anna Karenina source-edition trace
+
+- Independently reviewed repaired PR #36 exact head
+  `6ccdf1c4fbbd67622bdf8bcfa591d745cb9100ac`. The branch was strictly ahead of
+  `master` by 8 commits and behind by 0; the five changed paths contain only candidate/
+  provenance metadata plus project documentation/state, with no committed novel prose.
+- Parsed both machine-readable JSON files successfully and reconfirmed the fail-closed
+  state: `source_identity_status=partial`, `fantlab_source_edition_match=unknown`,
+  `gate_ready=false`, `diagnostic_comparison_admissible=false`, and
+  `m2_parity_admissible=false`.
+- Fresh evidence checks on 2026-09-13 reconfirmed FantLab's 19 September 2022 analysis at
+  1,692,647 characters / 253,275 words and re-followed the work-page TXT link through
+  `getwork74152506.txt.zip` to the LitRes trial endpoint with `art=74152506`. The repaired
+  trace correctly treats that redirect as a dated point-in-time observation, not stable
+  analyzer-input identity.
+- Rechecked the creator discussion supporting the uploaded-text-corpus distinction from
+  bibliographic listings. Rechecked Russian Wikisource's FEB/Nauka 1970 source statement,
+  explicit public-domain notice, permanent work-index `oldid=3829834`, and 239 chapter
+  subpages across eight parts; the index revision still does not freeze those subpage
+  text revisions.
+- The exact head has no pull-request workflow run. That is expected for this
+  corpus/docs/project-only change under publication-scoped CI and is not a green-CI claim.
+- PR #36 was squash-merged as `26df4eb31455ade653f3cd5331213537cf1acd4f` and Issue #35
+  closed completed. M2 remains 0/5 source-matched works.
+- The next normal-flow ladder rechecks `SCRIP-MORPH-003` first. If native provider
+  execution is still unavailable, `SCRIP-REPRO-004` freezes the 239 Wikisource chapter
+  revisions plus canonical extraction/concatenation and candidate digests before any
+  diagnostic comparison is allowed.

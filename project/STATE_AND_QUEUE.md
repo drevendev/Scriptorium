@@ -1,10 +1,10 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 43
+STATE_REVISION: 44
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T22:04:00Z
-LAST_RESULT: SCRIP-REPRO-004 authored as Issue #37 / PR #38. The legally usable Russian Wikisource/FEB Anna Karenina candidate is now frozen as a source-free 239-revision composite with deterministic extraction/composition and immutable raw/normalized identity. It is diagnostic-ready but not source-matched to FantLab; M2 remains 0/5.
-LAST_VERIFIED_PROGRESS: Hosted research receipt run 34785638797 on authored head 45b073fbdf415120bf27ec850f3410e482a4f125 passed 85/85 tests, canonical site build/rebuild, all 239 chapter extraction contracts, revision-manifest generation and artifact upload. Artifact 10326711163 matched GitHub SHA-256 9155f8d4d39cb4fc1ac0b8c9188626efb84b1183d3d1cc32349d943b986052aa. The frozen composite has 1,705,605 characters including spaces, 3,072,993 UTF-8 bytes, and raw plus scriptorium-text-v1 normalized SHA-256 1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205. Temporary network-research workflow steps were removed before review; production Pages workflow content is restored byte-for-byte to master. A committed regression validates the packed source-free revision manifest.
+LAST_COMMITTED_RUN_AT: 2026-09-13T23:02:00Z
+LAST_RESULT: SCRIP-REPRO-004 review blocker repaired in PR #38. The expanded network-capture receipt and canonical packed source-free manifest now have distinct versioned contracts, with deterministic checked-in pack/decode logic and a 239-chapter ordered identity digest. The repair is authored but not self-approved; M2 remains 0/5.
+LAST_VERIFIED_PROGRESS: Repair code head 1d9a20ff90bd705f0bb2c75bdf44518bad765b5c removed the same-version/two-shapes ambiguity by reserving `scriptorium-source-revision-manifest-v1` for the expanded capture receipt and `scriptorium-source-revision-packed-manifest-v1` for the canonical source-free artifact. The packed manifest binds the ordered title/revision/timestamp/MediaWiki-SHA1 projection to SHA-256 fea96e084c769dfdec3a5fd55cbce34b061336441ba6edec70ebc830f5f83779 derived from research artifact 10326711163. Hosted run 34788366315 passed the standard-library test step, canonical site build, byte-identical rebuild and artifact upload; deploy was skipped. Artifact 10326723971 matched GitHub SHA-256 a269d84e15a5b0d8789f23b8cf2f284e9641350f516d0eb62c6f23650384c3d0 and contained only the normal generated site tree. FantLab source-edition match remains unknown, diagnostic comparison remains allowed only as diagnostic evidence, and M2 parity remains false.
 
 ## Current unit
 
@@ -14,14 +14,14 @@ ISSUE:          #37
 STATUS:         REVIEW
 PR:             #38
 MERGED_COMMIT:  none
-NEXT_ACTION:    Independently review PR #38 exact final head. Require the production
-                Pages workflow to equal master, full hosted standard-library suite/site
-                build to pass on that head, all committed candidate/provenance JSON to
-                parse, the 239-revision packed manifest to remain source-prose-free, and
-                FantLab source-edition/M2 gates to remain unknown/false. Merge only if
-                those checks pass. After merge, re-check SCRIP-MORPH-003 executability;
-                if still blocked, SCRIP-REPRO-005 may run diagnostic deterministic metrics
-                against the frozen candidate without treating resemblance as parity.
+NEXT_ACTION:    Independently review PR #38 exact repaired final head. Verify the
+                expanded-vs-packed contract split, deterministic 239-identity
+                pack/decode regressions, hosted exact-head checks/artifact boundary,
+                and unchanged FantLab source-edition/M2 fail-closed gates. Merge only
+                if those checks pass. After merge, re-check SCRIP-MORPH-003
+                executability; if still blocked, SCRIP-REPRO-005 may run diagnostic
+                deterministic metrics against the frozen candidate without treating
+                resemblance as parity.
 ```
 
 ## Current milestone gate
@@ -35,7 +35,7 @@ Resolve the current REVIEW unit before selecting new work. Afterwards evaluate r
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
 | P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked because the execution container has no installed pylem and cannot resolve required GitHub/PyPI package hosts |
-| P2 | SCRIP-REPRO-004 | research / benchmark | Freeze the Anna Karenina public candidate as a 239-revision source-free composite with deterministic extraction/composition and immutable identity | Authored in PR #38; independent exact-head review required |
+| P2 | SCRIP-REPRO-004 | research / benchmark | Freeze the Anna Karenina public candidate as a 239-revision source-free composite with deterministic extraction/composition and immutable identity | Repaired in PR #38; independent exact-head review required |
 | P3 | SCRIP-REPRO-005 | benchmark / reproduction | Run implemented deterministic Scriptorium metrics against the frozen Anna Karenina candidate and record field-by-field diagnostic deltas, including investigation of the character-count gap | SCRIP-REPRO-004 merged; diagnostic-only while FantLab analyzer-input identity remains unproven |
 
 ## Evidence already established
@@ -53,7 +53,8 @@ Resolve the current REVIEW unit before selecting new work. Afterwards evaluate r
 - `corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.json` keeps `fantlab_source_edition_match=unknown` and `m2_parity_admissible=false`.
 - Russian Wikisource identifies the public transcription via FEB as Tolstoy, *Anna Karenina*, Nauka 1970, pp. 5–684 and marks the literary work public domain. The work is an eight-part, 239-chapter composite.
 - `scriptorium/wikisource_freeze.py` defines the deterministic source-research contract. It fetches explicit chapter revisions, accepts only the narrowly observed Wikisource wrapper/template variants, fails closed on unsupported markup, strips navigation/notes/ref wrappers, and composes chapters in fixed part/chapter order with `\n\n` separators.
-- `corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json` records all 239 revision IDs, timestamp offsets and MediaWiki SHA-1 identities in packed source-free form plus the composite identity. Novel prose is not committed.
+- The expanded captured receipt uses `scriptorium-source-revision-manifest-v1`; the canonical packed source-free artifact uses distinct `scriptorium-source-revision-packed-manifest-v1`. `scriptorium/source_revision_manifest.py` deterministically packs and decodes the canonical representation rather than letting one version string denote two shapes.
+- `corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json` records all 239 revision IDs, timestamp offsets and MediaWiki SHA-1 identities in packed source-free form plus the composite identity. Its `captured_identity_sha256` binds the ordered title/revision/timestamp/SHA-1 projection to research artifact 10326711163. Novel prose is not committed.
 - Frozen composite identity: 1,705,605 characters including spaces; 3,072,993 UTF-8 bytes; raw SHA-256 and `scriptorium-text-v1` normalized SHA-256 both `1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`.
 - The frozen candidate is 12,958 characters longer than FantLab's displayed count. This is a diagnostic fact, not proof of source mismatch or counting behavior; both source bytes and FantLab normalization/counting details remain potentially different.
 - `diagnostic_comparison_admissible=true` now means deterministic comparison may run against this reproducible public candidate. It does **not** mean FantLab source identity is known.

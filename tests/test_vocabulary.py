@@ -7,6 +7,7 @@ from scriptorium.vocabulary import (
     dictionary_lexemes_sha256,
     mean_unique_dictionary_words,
     normalize_dictionary_lexemes,
+    normalize_lexeme,
     rolling_unique_dictionary_counts,
     vocabulary_lexemes,
 )
@@ -22,6 +23,7 @@ class VocabularyTests(unittest.TestCase):
             lexemes,
             ("кот", "кот", "кот", "ёж", "ёж", "рок-н-ролл", "рок-н-ролл"),
         )
+        self.assertEqual(normalize_lexeme("е\u0308ж"), "ёж")
 
     def test_unique_words_work_without_dictionary_dependency(self):
         result = analyze_vocabulary("Кот кот Пёс дракон")
@@ -66,6 +68,24 @@ class VocabularyTests(unittest.TestCase):
             dictionary_lexemes_sha256(dictionary),
             dictionary_lexemes_sha256(reversed(sorted(dictionary))),
         )
+
+    def test_dictionary_unicode_composition_has_one_identity_and_digest(self):
+        composed = normalize_dictionary_lexemes(["ёж"])
+        decomposed = normalize_dictionary_lexemes(["е\u0308ж"])
+
+        self.assertEqual(composed, decomposed)
+        self.assertEqual(dictionary_lexemes_sha256(composed), dictionary_lexemes_sha256(decomposed))
+
+    def test_decomposed_dictionary_lexeme_matches_equivalent_text_token(self):
+        result = analyze_vocabulary(
+            "Ёж волк",
+            dictionary_words=["е\u0308ж"],
+            dictionary_profile="unicode-test-v1",
+        )
+
+        self.assertEqual(result["unique_words"], 2)
+        self.assertEqual(result["active_dictionary"], 1)
+        self.assertEqual(result["active_nondictionary"], 1)
 
     def test_rolling_windows_advance_one_token_without_rebuilding_sets(self):
         lexemes = ("a", "b", "c", "c")

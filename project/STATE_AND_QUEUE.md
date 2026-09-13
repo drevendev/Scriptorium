@@ -1,23 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 39
+STATE_REVISION: 40
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T16:53:00Z
-LAST_RESULT: SCRIP-SITE-004 independently reviewed and squash-merged as 1c740d1cd4e5149b3ce7d6b270becce2cc4ade31; Pages pull-request/master triggers now cover every renderer-supported canonical publication artifact root, while Pages activation remains intentionally separate.
-LAST_VERIFIED_PROGRESS: Independent exact-head review of PR #34 head 647f35fac3e895f5a3258949e87cc8d8195176ba confirmed the branch was strictly ahead of master, the diff was limited to publication-root trigger coverage plus its regression/state handoff, and hosted run 34766996476 passed the complete Python 3.13.15 standard-library suite 80/80, canonical site build, byte-identical rebuild and Pages artifact upload while deployment was skipped on the pull-request event. Artifact 10320628444 was independently downloaded again; its ZIP SHA-256 matched GitHub's a86fd5da51bba2c857f79680c7d08f0bf780d46fec5096cfd74b0159942c5395 and contained only artifact.tar with generated build.json, root index, two allow-listed Anna Karenina pages and shared CSS. PR #34 was squash-merged as 1c740d1cd4e5149b3ce7d6b270becce2cc4ade31 and Issue #33 closed completed. Master push run 34769895595 also completed successfully with build/upload green and deploy skipped because activation remains unset. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T17:54:00Z
+LAST_RESULT: SCRIP-REPRO-003 advanced Anna Karenina from a generic eligible-unmatched corpus candidate to a documented partial source identity: FantLab's uploaded analysis source remains unknown, while the legal Wikisource/FEB/Nauka 1970 transcription is now tied to permanent work-index revision 3829834 and explicitly recognized as a 239-subpage composite that is not yet byte-frozen.
+LAST_VERIFIED_PROGRESS: Issue #35 and PR #36 record a fail-closed source-edition trace for `tolstoy-anna-karenina-ru`. Fresh evidence confirmed the FantLab 2022 target at 1,692,647 characters and 253,275 words, FantLab creator statements that analyzed works come from texts uploaded to the database, the current FantLab TXT excerpt redirect to an unrelated/unproven LitRes trial endpoint, and Wikisource/FEB provenance to the Nauka 1970 transcription with public-domain notice. The trace records `source_identity_status=partial`, `fantlab_source_edition_match=unknown`, diagnostic comparison inadmissible, M2 parity inadmissible, and the exact next evidence: revision-pin all 239 chapter subpages, freeze extraction/concatenation, then hash and count the composite before any diagnostic comparison. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-SITE-004
-ISSUE:          #33
-STATUS:         DONE
-PR:             #34
-MERGED_COMMIT:  1c740d1cd4e5149b3ce7d6b270becce2cc4ade31
-NEXT_ACTION:    Re-check SCRIP-MORPH-003 provider/runtime executability first. If native
-                pylem/provider execution remains unavailable, select SCRIP-REPRO-003 and
-                advance one retained >=300k FantLab candidate toward an exact source-
-                edition match. Pages activation remains a separate administrator effect.
+UNIT_ID:        SCRIP-REPRO-003
+ISSUE:          #35
+STATUS:         REVIEW
+PR:             #36
+NEXT_ACTION:    Independently review the exact PR #36 head. Re-check the research claims
+                against their cited public surfaces, validate both source-trace and
+                candidate-catalog JSON, confirm no source prose is committed, and keep
+                M2 at 0/5 unless evidence actually ties FantLab's uploaded analysis text
+                to the same frozen source. Merge only if that exact-head review passes.
 ```
 
 ## Current milestone gate
@@ -62,6 +62,14 @@ dependency is not executable.
 - The first parity-corpus seed contains five candidate-eligible full novels, but none has
   evidence tying the public transcription to FantLab's exact analyzed source edition.
   M2 therefore remains 0/5 source-matched works.
+- `SCRIP-REPRO-003` now records a machine-readable source trace for `Анна Каренина`.
+  FantLab's analysis surface does not expose its source edition/bytes; creator statements
+  describe an uploaded-text analyzer corpus, so bibliographic editions are not accepted
+  as input identity. The legal Wikisource/FEB transcription names Nauka 1970 and freezes
+  work-index revision 3829834, but its 239 chapter subpages still require their own
+  revision manifest and deterministic composition before candidate bytes can be hashed.
+  The current FantLab TXT excerpt redirects to a LitRes trial and is explicitly excluded
+  as source-match evidence. Diagnostic and M2 admissibility therefore both remain false.
 
 ### Deterministic text / dialogue / metric surface
 
@@ -117,9 +125,9 @@ dependency is not executable.
 - FantLab homonym/prediction selection and production dictionary equivalence are not
   public. No first-result or guessed folding heuristic is accepted as compatibility.
 - Native pylem build/runtime verification is still `not_run`, not a package failure.
-- The 2026-09-13 SCRIP-SITE-004 selection re-check again found no installed pylem and DNS
-  unavailable for GitHub/PyPI package hosts in the execution container. Connector access
-  to GitHub remains healthy; this does not constitute provider-runtime verification.
+- The 2026-09-13 SCRIP-REPRO-003 selection re-check again found no installed pylem and
+  DNS unavailable for GitHub/PyPI package hosts in the execution container. Connector
+  access to GitHub remains healthy; this does not constitute provider-runtime verification.
 
 ### Provider-neutral POS metric surface
 
@@ -248,7 +256,8 @@ dependency is not executable.
 18. **Display precision unresolved.** Visible decimal digits do not establish formatting
     precision or tie behavior.
 19. **Parity-corpus edition gap.** All five retained candidates remain below the M2
-    source-edition-admissibility gate.
+    source-edition-admissibility gate. Anna Karenina now has a partial identity trace, but
+    its 239 chapter revisions and FantLab ingestion-source relationship remain unfrozen.
 20. **Hosted verification is publication-scoped.** The Pages workflow now has tested
     trigger coverage for every renderer-supported canonical publication root, but it is
     not a general repository CI replacement.

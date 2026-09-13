@@ -96,7 +96,10 @@ class WikisourceFreezeTests(unittest.TestCase):
                 "source_work_url",
             },
         )
-        self.assertEqual(manifest["manifest_version"], "scriptorium-source-revision-manifest-v1")
+        self.assertEqual(
+            manifest["manifest_version"],
+            "scriptorium-source-revision-packed-manifest-v1",
+        )
         self.assertEqual(manifest["candidate_id"], "tolstoy-anna-karenina-ru")
         self.assertEqual(manifest["composition"]["part_chapter_counts"], list(PART_CHAPTER_COUNTS))
         self.assertIs(manifest["composition"]["source_text_committed"], False)

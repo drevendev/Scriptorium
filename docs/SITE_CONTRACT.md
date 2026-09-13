@@ -80,6 +80,8 @@ rather than publish an entry when any of these invariants are violated:
 - an indexed showcase artifact says `source.source_text_committed` is not exactly
   `false`;
 - the manifest's publication/admissibility labels contradict the canonical artifact;
+- the manifest's `compatibility_claim` contradicts the claim derived from the canonical
+  artifact's per-metric compatibility statuses;
 - a renderer would need to fetch a remote book or embed source prose in order to build.
 
 External source URLs may be rendered as provenance links. They are never a build-time
@@ -88,10 +90,25 @@ license to fetch or redistribute the referenced text.
 ## Claim rendering
 
 Pages is a presentation layer and may not upgrade evidence. Per-metric compatibility
-status from the canonical artifact remains authoritative. A manifest-level `mixed` entry
-means that the artifact contains more than one evidence class (for example inferred
-FantLab-shaped metrics plus Scriptorium extensions); the UI must still show the finer
-per-metric labels.
+status from the canonical artifact remains authoritative. For artifacts exposing a
+non-empty `analysis.metrics` object, `scriptorium-publication-manifest-v1` derives the
+manifest-level claim deterministically from every metric row's `compatibility_status`:
+
+- if every metric has the same supported status, the manifest claim is that status;
+- if two or more supported statuses are present, the manifest claim is `mixed`;
+- missing/empty metric surfaces or unknown compatibility statuses are not publishable
+  under this derivation rule and must fail closed until an explicit contract is added.
+
+The supported per-metric statuses for this v1 derivation are `inferred`, `reproduced`
+and `extension`. Therefore a manifest entry may claim `reproduced` only when **every**
+canonical metric row is `reproduced`; combining reproduced metrics with inferred or
+extension metrics yields `mixed`. The executable check lives in
+`scriptorium.publication.validate_compatibility_claim`, and a future renderer must call
+that validation rather than trusting the manifest string by itself.
+
+The current showcase artifacts contain inferred FantLab-shaped metrics plus the
+Scriptorium sentence-count extension, so their derived manifest claim is `mixed`. The UI
+must still show the finer per-metric labels.
 
 `benchmark_admissibility=not_admissible` and
 `corpus_admissibility=not_admissible` must be visible to users for illustrative excerpts.

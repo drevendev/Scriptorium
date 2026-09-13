@@ -4,9 +4,42 @@ import re
 import unittest
 from pathlib import Path
 
+from scriptorium.site_renderer import _ALLOWED_ARTIFACT_ROOTS
+
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW_PATH = ROOT / ".github" / "workflows" / "pages.yml"
+
+
+def _event_paths(workflow: str, event: str) -> set[str]:
+    lines = workflow.splitlines()
+    marker = f"  {event}:"
+    try:
+        start = lines.index(marker)
+    except ValueError as exc:
+        raise AssertionError(f"workflow is missing {event!r} trigger") from exc
+
+    end = len(lines)
+    for index in range(start + 1, len(lines)):
+        line = lines[index]
+        if line.startswith("  ") and not line.startswith("    "):
+            end = index
+            break
+
+    in_paths = False
+    paths: set[str] = set()
+    for line in lines[start + 1 : end]:
+        if line == "    paths:":
+            in_paths = True
+            continue
+        if not in_paths:
+            continue
+        if line.startswith("      - "):
+            paths.add(line.removeprefix("      - ").strip().strip('"'))
+            continue
+        if line.startswith("    ") and not line.startswith("      "):
+            break
+    return paths
 
 
 class PagesWorkflowContractTests(unittest.TestCase):
@@ -35,6 +68,17 @@ class PagesWorkflowContractTests(unittest.TestCase):
             "actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1",
         }
         self.assertEqual({line.removeprefix("uses: ") for line in uses_lines}, expected)
+
+    def test_supported_publication_roots_trigger_pr_and_master_builds(self) -> None:
+        required = {f"{root}/**" for root in _ALLOWED_ARTIFACT_ROOTS}
+        for event in ("pull_request", "push"):
+            with self.subTest(event=event):
+                paths = _event_paths(self.workflow, event)
+                self.assertTrue(
+                    required <= paths,
+                    f"{event} trigger is missing canonical publication roots: "
+                    f"{sorted(required - paths)}",
+                )
 
     def test_build_is_read_only_and_uses_canonical_renderer(self) -> None:
         self.assertIn("permissions:\n  contents: read\n", self.workflow)

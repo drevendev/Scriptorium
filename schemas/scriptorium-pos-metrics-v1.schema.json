@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drevendev.github.io/Scriptorium/schemas/scriptorium-pos-metrics-v1.schema.json",
+  "title": "Scriptorium POS metrics v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "metric_contract_id", "profile", "text_profile", "normalized_sha256", "mapping_contract", "runtime_profile", "runtime_analysis_sha256", "compatibility_status", "input", "metrics"],
+  "properties": {
+    "schema_version": {"const": "scriptorium-pos-metrics-v1"},
+    "metric_contract_id": {"const": "fantlab-2022-v1"},
+    "profile": {"const": "scriptorium-pos-v1"},
+    "text_profile": {"const": "scriptorium-text-v1"},
+    "normalized_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "mapping_contract": {"const": "aot-pylem-0.0.18-to-fantlab-2022-v1"},
+    "runtime_profile": {"type": "string", "minLength": 1},
+    "runtime_analysis_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "compatibility_status": {"const": "inferred"},
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["word_count", "sentence_count"],
+      "properties": {
+        "word_count": {"type": "integer", "minimum": 0},
+        "sentence_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["undefined", "defined", "service_words", "buckets", "bigrams", "positions"],
+      "properties": {
+        "undefined": {"$ref": "#/$defs/wordShare"},
+        "defined": {"$ref": "#/$defs/wordShare"},
+        "service_words": {"$ref": "#/$defs/unresolvedService"},
+        "buckets": {"$ref": "#/$defs/bucketDistribution"},
+        "bigrams": {"$ref": "#/$defs/bigramMatrix"},
+        "positions": {"$ref": "#/$defs/positionMatrix"}
+      }
+    }
+  },
+  "$defs": {
+    "bucketNames": {
+      "enum": ["noun", "adjective", "verb", "pronoun_noun", "pronoun_adjective", "pronoun_predicative", "cardinal", "ordinal", "adverb", "predicative", "preposition", "conjunction", "interjection", "introductory_word", "particle", "participle", "gerund"]
+    },
+    "nullablePercent": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+    "wordShare": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count", "percent_of_words"],
+      "properties": {
+        "count": {"type": "integer", "minimum": 0},
+        "percent_of_words": {"$ref": "#/$defs/nullablePercent"}
+      }
+    },
+    "bucketDistributionRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count", "percent_of_defined"],
+      "properties": {
+        "count": {"type": "integer", "minimum": 0},
+        "percent_of_defined": {"$ref": "#/$defs/nullablePercent"}
+      }
+    },
+    "bucketDistribution": {
+      "type": "object",
+      "minProperties": 17,
+      "maxProperties": 17,
+      "propertyNames": {"$ref": "#/$defs/bucketNames"},
+      "additionalProperties": {"$ref": "#/$defs/bucketDistributionRow"}
+    },
+    "bigramCell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_count", "per_1000_words"],
+      "properties": {
+        "raw_count": {"type": "integer", "minimum": 0},
+        "per_1000_words": {"type": ["number", "null"], "minimum": 0}
+      }
+    },
+    "bigramRow": {
+      "type": "object",
+      "minProperties": 17,
+      "maxProperties": 17,
+      "propertyNames": {"$ref": "#/$defs/bucketNames"},
+      "additionalProperties": {"$ref": "#/$defs/bigramCell"}
+    },
+    "bigramMatrix": {
+      "type": "object",
+      "minProperties": 17,
+      "maxProperties": 17,
+      "propertyNames": {"$ref": "#/$defs/bucketNames"},
+      "additionalProperties": {"$ref": "#/$defs/bigramRow"}
+    },
+    "positionCell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_count", "percent"],
+      "properties": {
+        "raw_count": {"type": "integer", "minimum": 0},
+        "percent": {"$ref": "#/$defs/nullablePercent"}
+      }
+    },
+    "positionBucketRow": {
+      "type": "object",
+      "minProperties": 17,
+      "maxProperties": 17,
+      "propertyNames": {"$ref": "#/$defs/bucketNames"},
+      "additionalProperties": {"$ref": "#/$defs/positionCell"}
+    },
+    "positionMatrix": {
+      "type": "object",
+      "minProperties": 20,
+      "maxProperties": 20,
+      "propertyNames": {"enum": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"]},
+      "additionalProperties": {"$ref": "#/$defs/positionBucketRow"}
+    },
+    "unresolvedService": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count", "percent_of_defined", "status", "reason"],
+      "properties": {
+        "count": {"type": "null"},
+        "percent_of_defined": {"type": "null"},
+        "status": {"const": "unresolved"},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

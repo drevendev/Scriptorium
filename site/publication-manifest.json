@@ -1,0 +1,39 @@
+{
+  "schema_version": "scriptorium-publication-manifest-v1",
+  "generated_from": {
+    "repository": "drevendev/Scriptorium",
+    "branch": "master"
+  },
+  "deployment": {
+    "publication_source": "github_actions",
+    "generated_output_committed": false
+  },
+  "entries": [
+    {
+      "entry_id": "anna-karenina-part1-ch1-opening-v1",
+      "kind": "work_showcase",
+      "slug": "anna-karenina-part1-ch1-opening",
+      "title": "Anna Karenina — Part I, Chapter I opening",
+      "artifact_path": "showcase/anna-karenina-part1-ch1-opening.json",
+      "artifact_schema": "scriptorium-deterministic-metrics-v1",
+      "publication_status": "illustrative_excerpt",
+      "benchmark_admissibility": "not_admissible",
+      "corpus_admissibility": "not_admissible",
+      "compatibility_claim": "mixed",
+      "source_text_included": false
+    },
+    {
+      "entry_id": "anna-karenina-part1-ch2-dialogue-v1",
+      "kind": "work_showcase",
+      "slug": "anna-karenina-part1-ch2-dialogue",
+      "title": "Anna Karenina — Part I, Chapter II dialogue",
+      "artifact_path": "showcase/anna-karenina-part1-ch2-dialogue.json",
+      "artifact_schema": "scriptorium-deterministic-metrics-v2",
+      "publication_status": "illustrative_excerpt",
+      "benchmark_admissibility": "not_admissible",
+      "corpus_admissibility": "not_admissible",
+      "compatibility_claim": "mixed",
+      "source_text_included": false
+    }
+  ]
+}

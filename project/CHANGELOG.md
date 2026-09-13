@@ -251,3 +251,15 @@ code changes remain in Git history and their issues/PRs.
 - No source-matched benchmark or public analyzed-work showcase moved in this slice: M2
   remains 0/5, and no POS values were invented without provenance-bound source text and
   provider execution evidence.
+- Independent review found that the runtime-candidate digest was not sufficient artifact
+  provenance: identical candidate matrices and identical word/sentence counts can still
+  correspond to different sentence segmentation and therefore different bigram/position
+  metrics.
+- Repaired the artifact contract by binding it to `scriptorium-text-v1` and SHA-256 of the
+  exact normalized UTF-8 text, and froze both fields in the Draft 2020-12 schema while
+  retaining the existing runtime profile/mapping/candidate identities.
+- Added a segmentation-collision regression using `А Б. В Г.` versus `А. Б В Г.`: both
+  inputs have the same runtime-candidate digest and counts but distinct normalized-text
+  identities and distinct POS bigrams. The repaired focused morphology suite passes
+  10/10 and a generated artifact validates against the repaired schema; independent
+  exact-head/full-suite review remains required before merge.

@@ -42,6 +42,16 @@ closed until their canonical artifact contracts and presentation rules are imple
 This is intentional: a generic renderer must not guess how evidence or admissibility
 should be interpreted for a future artifact family.
 
+Within `work_showcase`, renderer v1 explicitly supports only the two canonical profiles
+already present in the merged publication manifest:
+
+- `scriptorium-deterministic-metrics-v1`;
+- `scriptorium-deterministic-metrics-v2`.
+
+A newer or otherwise unknown artifact schema fails closed even when the manifest and
+artifact repeat the same schema string. Supporting another profile is a reviewed
+renderer-contract change, not an implicit consequence of compatible-looking JSON.
+
 Stable work routes follow the merged publication contract:
 
 ```text
@@ -72,9 +82,13 @@ The build is rejected when, among other cases:
 
 - the canonical publication manifest is missing, unreadable, or traverses a symlink;
 - the manifest profile, repository identity or deployment boundary is unexpected;
+- top-level manifest or entry properties differ from the frozen
+  `scriptorium-publication-manifest-v1` key sets;
 - an entry ID or slug is duplicate or unsafe;
 - an artifact path is absolute, contains a traversal/double-separator shape, traverses a
   symlink, resolves outside the repository, is missing, or is not JSON;
+- a work-showcase `artifact_schema` is not one of the explicitly supported renderer-v1
+  profiles above;
 - `source_text_included` is not exactly `false`;
 - a showcase says `source.source_text_committed` is not exactly `false`;
 - manifest schema/status/admissibility labels contradict the canonical showcase;

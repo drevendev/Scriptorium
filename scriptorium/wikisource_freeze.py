@@ -22,14 +22,16 @@ COMPOSITE_PROFILE = "scriptorium-wikisource-composite-v1"
 EXTRACTION_PROFILE = "scriptorium-wikisource-body-v1"
 USER_AGENT = "Scriptorium provenance research/1.0 (+https://github.com/drevendev/Scriptorium)"
 
-_DIV_TEXT_RE = re.compile(
-    r'<div\s+class=["\']text["\']\s*>(.*?)</div>',
+_BODY_DIV_RE = re.compile(
+    r'<div\s+class=["\'](?:text|indent)["\']\s*>(.*?)</div>',
     re.IGNORECASE | re.DOTALL,
 )
 _NOINCLUDE_RE = re.compile(r"<noinclude>.*?</noinclude>", re.IGNORECASE | re.DOTALL)
 _COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 _REF_RE = re.compile(r"<ref\b[^>]*>.*?</ref\s*>|<ref\b[^>]*/\s*>", re.IGNORECASE | re.DOTALL)
 _LANG_RE = re.compile(r"\{\{lang\|[^|{}]+\|([^{}]*)\}\}", re.IGNORECASE)
+_POEMX1_RE = re.compile(r"\{\{poemx1\|\|\s*(.*?)\s*\|\}\}", re.IGNORECASE | re.DOTALL)
+_NOTES_HEADING_RE = re.compile(r"\n?={2,6}\s*Примечания\s*={2,6}.*$", re.IGNORECASE | re.DOTALL)
 _WIKILINK_RE = re.compile(r"\[\[(?:[^\[\]|]+\|)?([^\[\]]+)\]\]")
 _EXTERNAL_LINK_RE = re.compile(r"\[(?:https?://\S+)\s+([^\]]+)\]")
 _HTML_TAG_RE = re.compile(r"</?(?:span|small|big|i|b|em|strong|sup|sub|br)\b[^>]*>", re.IGNORECASE)
@@ -159,16 +161,18 @@ def extract_transcription_body(wikitext: str) -> str:
         raise TypeError("wikitext must be str")
     text = _COMMENT_RE.sub("", wikitext)
     text = _NOINCLUDE_RE.sub("", text)
-    matches = _DIV_TEXT_RE.findall(text)
+    matches = _BODY_DIV_RE.findall(text)
     if len(matches) != 1:
-        raise ValueError(f"expected exactly one <div class=\"text\"> body, got {len(matches)}")
+        raise ValueError(f"expected exactly one transcription <div> body, got {len(matches)}")
     body = matches[0]
+    body = _NOTES_HEADING_RE.sub("", body)
     body = _REF_RE.sub("", body)
     body = body.replace("{{СодержаниеБН}}", "")
     previous = None
     while previous != body:
         previous = body
         body = _LANG_RE.sub(lambda match: match.group(1), body)
+        body = _POEMX1_RE.sub(lambda match: match.group(1), body)
         body = _WIKILINK_RE.sub(lambda match: match.group(1), body)
         body = _EXTERNAL_LINK_RE.sub(lambda match: match.group(1), body)
         body = _HTML_TAG_RE.sub("", body)

@@ -1,23 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 29
+STATE_REVISION: 30
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T05:58:56Z
-LAST_RESULT: SCRIP-MORPH-002 passed independent repaired-head review and PR #25 was squash-merged; issue #24 is complete.
-LAST_VERIFIED_PROGRESS: Exact PR #25 head 1c23bab2648b62a9b8e6a8b105b431b0dfc9604b was independently reconstructed from published GitHub blobs. The full standard-library suite passed 56/56 tests; changed executable/test/schema blobs matched the exact PR tree by Git blob SHA. Draft 2020-12 accepted the POS schema and generated artifacts, including the segmentation-collision regression proving identical runtime-candidate matrices can require distinct normalized-text identities. The 15 direct runtime mappings were cross-checked against the pinned AOT/pylem contract. Hosted statuses/workflows remain absent, so CI is not configured rather than green. PR #25 merged as 62a7bdb3dbac9b13fdabffe6c10640acf454da34. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T06:55:00Z
+LAST_RESULT: SCRIP-SITE-001 authored the static GitHub Pages publication contract and opened PR #27 for independent review.
+LAST_VERIFIED_PROGRESS: The current runtime re-checked SCRIP-MORPH-003 first; DNS resolution for github.com, pypi.org and files.pythonhosted.org still fails, so native pylem/provider provenance remains not_run and that unit is blocked rather than failed. The next unblocked queue unit, SCRIP-SITE-001, now defines scriptorium-publication-manifest-v1, a Draft 2020-12 schema, an explicit two-entry showcase allow-list, stable route semantics and fail-closed source-text/admissibility rules. The seed manifest/schema validate locally and focused standard-library contract checks pass against the two canonical showcase artifacts. GitHub Pages is not enabled and no deployment workflow was added in this authoring run. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-MORPH-002
-ISSUE:          #24
-STATUS:         DONE
-PR:             #25
-MERGED_COMMIT:  62a7bdb3dbac9b13fdabffe6c10640acf454da34
-NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
-                dependency state. SCRIP-MORPH-003 is first listed, but requires verified
-                provider/runtime provenance; if that dependency is not executable, select
-                the next unblocked unit instead.
+UNIT_ID:        SCRIP-SITE-001
+ISSUE:          #26
+STATUS:         REVIEW
+PR:             #27
+HEAD:           scrip-site-001-publication-contract
+NEXT_ACTION:    Independently review the exact PR #27 head. Re-run the publication
+                contract tests and full standard-library suite when possible; inspect
+                the manifest/schema safety boundary and GitHub Pages architecture
+                decision. Merge only if review finds no blocker.
 ```
 
 ## Current milestone gate
@@ -31,12 +31,13 @@ remain separate work; the M1 gate is therefore still open.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Evaluate rows in priority order after checking their dependencies; skip a row while its
+dependency is not executable.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance |
-| P2 | SCRIP-SITE-001 | architecture | Static artifact/site contract for GitHub Pages | M1 underway |
+| P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked by unavailable native/provider execution environment |
+| P2 | SCRIP-SITE-002 | implementation | Build a deterministic static renderer that consumes only the publication manifest; deployment remains separate | SCRIP-SITE-001 merged |
 
 ## Evidence already established
 
@@ -116,6 +117,9 @@ Ordered highest first among unblocked work.
 - FantLab homonym/prediction selection and production dictionary equivalence are not
   public. No first-result or guessed folding heuristic is accepted as compatibility.
 - Native pylem build/runtime verification is still `not_run`, not a package failure.
+- The 2026-09-13 SCRIP-SITE-001 selection check again found DNS unavailable for GitHub
+  and PyPI package hosts in the execution container. Connector access to GitHub remains
+  healthy; this does not constitute provider-runtime verification.
 
 ### Provider-neutral POS metric surface
 
@@ -160,6 +164,13 @@ Ordered highest first among unblocked work.
   generated. Vocabulary/POS values were not fabricated from historical hashes; a future
   richer showcase must re-read a provenance-bound source selection and record provider
   execution identity where morphology is involved.
+- PR #27 adds `scriptorium-publication-manifest-v1` as an explicit Pages allow-list rather
+  than directory discovery. The seed manifest indexes exactly the two existing showcase
+  artifacts, freezes stable slugs and marks source text absent plus both benchmark/corpus
+  admissibility as false.
+- The Pages architecture candidate uses a future custom GitHub Actions build/upload/deploy
+  flow, keeps generated HTML out of repository state, and treats the canonical JSON
+  artifacts plus manifest as the only publication inputs. Pages is not enabled yet.
 
 ## Known risks / blockers
 
@@ -187,7 +198,8 @@ Ordered highest first among unblocked work.
     has not been established.
 12. **Morphology ambiguity.** FantLab homonym/prediction-selection policy is not public.
 13. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
-    verified network-enabled runtime.
+    verified network-enabled runtime; the current execution environment still lacks DNS
+    for required package/source hosts.
 14. **Copyright risk.** Web accessibility, including Author.Today/fanfiction, is not a
     license; work-specific rights evidence remains mandatory.
 15. **Scheduler serialization unverified.** Re-read refs/state before every write and do
@@ -208,6 +220,9 @@ Ordered highest first among unblocked work.
 22. **Detached provider provenance.** The POS aggregator binds text and supplied runtime
     candidates, but it still does not prove which binary/dictionary/config produced those
     candidates; provider execution must be pinned before benchmark integration.
+23. **Pages deployment not enabled.** PR #27 defines the publication contract only. A
+    later reviewed unit must implement a renderer and separately enable/deploy Pages
+    without turning generated output into canonical state.
 
 ## Run selection rule
 
@@ -215,7 +230,7 @@ On each wake:
 
 1. resolve `CURRENT_UNIT` review/recovery before new work;
 2. inspect open PR checks/comments relevant to that unit;
-3. otherwise choose the first unblocked queue row;
+3. otherwise choose the first dependency-satisfied queue row;
 4. create/search the corresponding issue before implementation;
 5. do exactly one bounded unit and update this file in the same semantic change.
 

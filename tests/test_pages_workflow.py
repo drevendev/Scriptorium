@@ -46,6 +46,7 @@ class PagesWorkflowContractTests(unittest.TestCase):
             "      contents: read\n",
             self.workflow,
         )
+        self.assertIn("persist-credentials: false", self.workflow)
         self.assertIn('python-version: "3.13"', self.workflow)
         self.assertIn("python -m unittest discover -s tests -v", self.workflow)
         self.assertIn(

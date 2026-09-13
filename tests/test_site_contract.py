@@ -3,6 +3,8 @@ import re
 import unittest
 from pathlib import Path
 
+from scriptorium.publication import derive_compatibility_claim, validate_compatibility_claim
+
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "site" / "publication-manifest.json"
@@ -59,6 +61,19 @@ class PublicationManifestContractTests(unittest.TestCase):
             )
             self.assertEqual(entry["corpus_admissibility"], artifact["corpus_admissibility"])
             self.assertIs(artifact["source"]["source_text_committed"], False)
+            self.assertEqual(entry["compatibility_claim"], "mixed")
+            self.assertEqual(derive_compatibility_claim(artifact), "mixed")
+            self.assertEqual(validate_compatibility_claim(entry, artifact), "mixed")
+
+    def test_compatibility_claim_upgrade_is_rejected(self):
+        entry = dict(self.manifest["entries"][0])
+        artifact = json.loads(
+            (ROOT / entry["artifact_path"]).read_text(encoding="utf-8")
+        )
+        entry["compatibility_claim"] = "reproduced"
+
+        with self.assertRaisesRegex(ValueError, "compatibility_claim"):
+            validate_compatibility_claim(entry, artifact)
 
     def test_manifest_contains_no_source_prose_payload_keys(self):
         forbidden_keys = {"text", "source_text", "raw_text", "content"}

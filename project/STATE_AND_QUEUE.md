@@ -2,9 +2,9 @@
 
 STATE_REVISION: 33
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T10:58:50Z
-LAST_RESULT: SCRIP-SITE-002 authored on issue #28; deterministic static renderer candidate is ready for independent review.
-LAST_VERIFIED_PROGRESS: SCRIP-MORPH-003 executability was re-checked first and remains blocked by the execution container's DNS failure for GitHub/PyPI package hosts, so the next dependency-satisfied unit SCRIP-SITE-002 was selected. `scriptorium-static-site-v1` now consumes only the explicit publication manifest, renders deterministic index/work-showcase pages plus an input-digest build receipt, revalidates evidence/admissibility/source-text boundaries, escapes artifact-controlled HTML, accepts only credential-free HTTP(S) provenance links, and leaves Pages deployment disabled. The focused authored renderer suite passed 8/8 after repairing a partial-refresh hazard by validating/rendering all pages before replacing existing output. Native full-repository exact-head checkout remains unavailable because the execution container cannot resolve GitHub hosts; independent exact-head review remains required. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T11:00:34Z
+LAST_RESULT: SCRIP-SITE-002 authored on issue #28 and opened as PR #29 for independent review.
+LAST_VERIFIED_PROGRESS: SCRIP-MORPH-003 executability was re-checked first and remains blocked by the execution container's DNS failure for GitHub/PyPI package hosts, so the next dependency-satisfied unit SCRIP-SITE-002 was selected. `scriptorium-static-site-v1` consumes only the explicit publication manifest, renders deterministic index/work-showcase pages plus an input-digest build receipt, revalidates evidence/admissibility/source-text boundaries, escapes artifact-controlled HTML, accepts only credential-free HTTP(S) provenance links, and leaves Pages deployment disabled. The focused authored renderer suite passed 8/8 after repairing a partial-refresh hazard by validating/rendering all pages before replacing existing output. Native full-repository exact-head checkout remains unavailable because the execution container cannot resolve GitHub hosts; independent exact-head review remains required. PR #29 is mergeable and remains open. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
@@ -12,12 +12,12 @@ LAST_VERIFIED_PROGRESS: SCRIP-MORPH-003 executability was re-checked first and r
 UNIT_ID:        SCRIP-SITE-002
 ISSUE:          #28
 STATUS:         REVIEW
-PR:             pending
+PR:             #29
 MERGED_COMMIT:  -
-NEXT_ACTION:    Open the authored branch as a PR, record its exact head, then perform a
-                later independent exact-head review: run the full standard-library suite
-                plus a real seed-manifest site build, inspect deterministic/no-source-
-                prose/fail-closed output, and merge only if evidence remains clean.
+NEXT_ACTION:    Perform a later independent exact-head review of PR #29: run the full
+                standard-library suite plus a real seed-manifest site build, inspect
+                deterministic/no-source-prose/fail-closed output, and merge only if
+                evidence remains clean.
 ```
 
 ## Current milestone gate
@@ -171,15 +171,15 @@ dependency is not executable. Current REVIEW work preempts selection of another 
   `compatibility_status` values by executable fail-closed derivation. The two historical
   showcase artifacts derive to `mixed`; a manifest-only upgrade to `reproduced` is a
   validation error rather than publishable presentation metadata.
-- `scriptorium-static-site-v1` is now authored on the SCRIP-SITE-002 review branch. It
-  consumes only the explicit manifest, supports work-showcase routes, revalidates
-  canonical evidence/admissibility/source-text labels, renders selected derived and
-  provenance fields with HTML escaping, emits exact input digests, and does not fetch
-  remote source material. Reserved future artifact kinds fail closed.
+- `scriptorium-static-site-v1` is authored in PR #29. It consumes only the explicit
+  manifest, supports work-showcase routes, revalidates canonical evidence/admissibility/
+  source-text labels, renders selected derived and provenance fields with HTML escaping,
+  emits exact input digests, and does not fetch remote source material. Reserved future
+  artifact kinds fail closed.
 - The renderer validates/renders the full requested site before replacing output; a
   failed entry leaves the previous tree untouched, while a successful rebuild removes
   stale files. Generated `/build/` output is ignored and remains non-canonical.
-- The authored focused renderer suite passed 8/8. The exact PR head still requires later
+- The authored focused renderer suite passed 8/8. The exact PR #29 head requires later
   independent full-suite and seed-build review before merge.
 - The Pages architecture uses a future custom GitHub Actions build/upload/deploy flow,
   keeps generated HTML out of repository state, and treats the canonical JSON artifacts

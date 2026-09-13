@@ -506,3 +506,33 @@ code changes remain in Git history and their issues/PRs.
   execution is still unavailable, `SCRIP-REPRO-004` freezes the 239 Wikisource chapter
   revisions plus canonical extraction/concatenation and candidate digests before any
   diagnostic comparison is allowed.
+
+## 2026-09-13 — Independent review and merge: frozen Anna Karenina candidate
+
+- Independently reviewed PR #38 exact final head
+  `cf8ba3ee96ef8a0ffc267d8f848000ceee28e09b` after the prior version-contract blocker
+  had been repaired. The branch was strictly ahead of `master` by 19 commits and behind
+  by 0, and GitHub reported it mergeable.
+- Verified that the expanded capture receipt remains
+  `scriptorium-source-revision-manifest-v1` while the canonical source-free artifact is
+  `scriptorium-source-revision-packed-manifest-v1`; the checked-in deterministic
+  pack/decode path round-trips all 239 ordered chapter identities and validates captured
+  identity SHA-256 `fea96e084c769dfdec3a5fd55cbce34b061336441ba6edec70ebc830f5f83779`.
+- Exact-head hosted run `34788532663` used Python 3.13.15 and passed **92/92**
+  standard-library tests, canonical Pages build, byte-identical rebuild and artifact
+  upload; deployment was skipped on the pull-request event.
+- Independently downloaded artifact `10327113653`; the ZIP SHA-256 matched GitHub's
+  `c72670a56a1279895221524cc7ef9f22c805660232b1a210d1d4e1aa6661e6f6`. Its tar contains
+  only generated `build.json`, root index, the two existing Anna Karenina work pages and
+  CSS; neither the research receipt nor novel prose is published.
+- The frozen public candidate identity is 1,705,605 characters / 3,072,993 UTF-8 bytes
+  with raw and `scriptorium-text-v1` normalized SHA-256
+  `1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`.
+  `fantlab_source_edition_match` remains `unknown`; diagnostic comparison is permitted
+  only as diagnostic evidence, `m2_parity_admissible=false`, and M2 remains 0/5.
+- PR #38 was squash-merged as `9790057ad6cc56d7dbe092099d6bd11fd84a8baa`; Issue #37
+  closed completed.
+- Post-merge selection recheck still finds no installed `pylem` and the execution
+  container still cannot resolve `github.com`, so `SCRIP-MORPH-003` remains `not_run`
+  rather than failed. The next dependency-satisfied unit is `SCRIP-REPRO-005`, which may
+  run deterministic metrics against the frozen candidate only as diagnostic evidence.

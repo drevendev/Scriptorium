@@ -33,12 +33,14 @@
         "legal_basis": "public_domain",
         "legal_evidence": "The work page explicitly marks the literary work public domain; first publication was 1875–1877 in the Russian Empire."
       },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.json",
+      "source_identity_status": "partial",
       "fantlab_source_edition_match": "unknown",
       "gate_ready": false,
       "status": "eligible_unmatched",
       "blockers": [
         "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
-        "A raw source digest and edition-to-FantLab match must be established before parity evidence is admissible."
+        "The Wikisource work index is revision-pinned, but its 239 chapter subpages still need a revision-pinned manifest, canonical concatenation policy, raw/normalized digests and character count before even a source-frozen diagnostic comparison is admissible."
       ]
     },
     {

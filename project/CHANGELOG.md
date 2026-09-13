@@ -445,3 +445,35 @@ code changes remain in Git history and their issues/PRs.
   administrator effect; the next normal-flow bias returns to morphology/provider work
   when executable, otherwise source-edition/benchmark work. M2 remains 0/5 source-matched
   works.
+
+## 2026-09-13 — Anna Karenina source-edition trace candidate
+
+- Re-checked `SCRIP-MORPH-003` before selection. `pylem` is still not installed and the
+  execution container still cannot resolve GitHub/PyPI package hosts, so native provider
+  execution remains `not_run`; connected GitHub repository access is healthy.
+- Selected `SCRIP-REPRO-003` and opened Issue #35 / PR #36 for the retained
+  `tolstoy-anna-karenina-ru` candidate.
+- Reconfirmed the FantLab 19 September 2022 target at 1,692,647 characters and 253,275
+  words, while its public analysis surface still discloses neither source edition nor
+  immutable analyzer-input bytes.
+- Recorded FantLab creator evidence that the analyzer operates on works uploaded to the
+  database. This makes the site's bibliographic edition list insufficient evidence for
+  analyzer-input identity and prevents a false source match by edition resemblance.
+- Inspected the current work-page TXT excerpt link and found that it redirects to a LitRes
+  trial endpoint. The trace therefore marks its relationship to the 2022 analysis text
+  as unproven and excludes it from source-edition evidence.
+- Strengthened the legal/public transcription side: Russian Wikisource identifies the
+  transcription via FEB as `Толстой Л. Н. Анна Каренина. М.: Наука, 1970. С. 5–684`,
+  explicitly marks the literary work public domain, and exposes permanent work-index
+  revision `3829834`.
+- Identified the remaining immutable-identity gap precisely: the work index composes 239
+  separately stored chapter subpages across eight parts, so pinning index revision
+  `3829834` does not freeze the chapter text bytes. The new machine-readable trace records
+  source identity as `partial`, not exact.
+- Kept the reproduction gate fail-closed: `fantlab_source_edition_match=unknown`,
+  diagnostic comparison inadmissible, M2 parity inadmissible, and M2 remains 0/5.
+- The next evidence step is bounded and mechanical: revision-pin all 239 chapter
+  subpages, freeze extraction/concatenation order, acquire those exact public-domain
+  revisions and compute raw/normalized SHA-256 plus character count. Only then should a
+  field-by-field diagnostic run; it remains diagnostic until independent evidence ties
+  FantLab's uploaded analysis text to the same frozen source.

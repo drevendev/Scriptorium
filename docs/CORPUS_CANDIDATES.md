@@ -56,6 +56,41 @@ The important result is therefore **5 candidate-eligible, 0 parity-gate-ready**.
 reproduction gate has not moved: FantLab publishes the analysis values but does not name
 the source edition or immutable text bytes on these `/lp` pages.
 
+## SCRIP-REPRO-003: Anna Karenina source trace
+
+The first source-matching pass now has a machine-readable trace at
+`corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.json`.
+
+What changed:
+
+- FantLab's 19 September 2022 `/lp` surface is frozen as the comparison target at
+  1,692,647 characters and 253,275 words, but it still discloses no source edition or
+  analyzed bytes.
+- FantLab's creator described the analyzer corpus as works **uploaded to the database**;
+  author profiles use all uploaded works. Therefore the bibliographic editions listed on
+  a work page are not evidence of analyzer-input identity.
+- On 13 September 2026, the FantLab TXT "download excerpt" link for the work redirected
+  to a LitRes trial endpoint (`art=74152506`). The trace records this as a dated,
+  point-in-time observation rather than a stable work identity, and it is not treated as
+  evidence for the text that produced the 2022 analysis.
+- Russian Wikisource identifies its transcription as coming through the FEB Tolstoy
+  electronic edition from `Толстой Л. Н. Анна Каренина. М.: Наука, 1970. С. 5–684`, and
+  explicitly marks the literary work public domain.
+- The current Wikisource work index has permanent revision `oldid=3829834`, but the novel
+  is a composite of 239 separately stored chapter subpages across eight parts. Freezing
+  the index revision does **not** freeze those chapter text revisions.
+
+The source identity is therefore **partial**, not exact. This pass deliberately does not
+run a diagnostic comparison: the complete candidate bytes are not yet revision-pinned
+or hashed, and FantLab's own uploaded source remains unidentified. M2 remains 0/5.
+
+The next source-matching slice for this candidate is mechanical and testable: build a
+revision-pinned manifest for the 239 chapter subpages, freeze extraction/concatenation
+order, acquire those exact public-domain revision texts, and compute raw/normalized
+SHA-256 plus character count. Only then can Scriptorium run a useful diagnostic against
+FantLab. Even a close numeric match remains diagnostic until independent evidence ties
+FantLab's uploaded analysis text to the same frozen source.
+
 ## Held leads
 
 The machine-readable catalog also records leads that should not be silently promoted:

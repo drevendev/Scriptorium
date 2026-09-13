@@ -1,21 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 26
+STATE_REVISION: 27
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T01:59:30Z
-LAST_RESULT: SCRIP-METRIC-002 passed independent repaired-head review and PR #23 was squash-merged; issue #22 is complete.
-LAST_VERIFIED_PROGRESS: Exact PR #23 head 4468f9e64da7fcdfc2ef8ad2a6d50bb803cbc111 was reconstructed from published GitHub blobs and reviewed independently. The full standard-library suite passed 46/46 tests under Python 3.13.5. Draft 2020-12 validation accepted the v3 schema and generated artifacts both without a vocabulary dictionary and with an explicit profile/SHA-256/lexeme-count dependency. The Unicode NFC + casefold repair, rolling-window behavior, source-provenance gate and dictionary parity-admission barrier were rechecked. Hosted statuses/workflows remain absent, so CI is not configured rather than green. PR #23 merged as ab8cd21c505bf3c229648be491f31d0a8a5f30fd. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T02:57:21Z
+LAST_RESULT: SCRIP-MORPH-002 authored as provider-neutral POS aggregation and opened as PR #25 for independent review.
+LAST_VERIFIED_PROGRESS: The branch adds `scriptorium-pos-v1` / `scriptorium-pos-metrics-v1`, conservatively resolves only unanimous direct pylem-runtime mappings, preserves `N`, extra AOT categories and cross-bucket homonyms as undefined, and emits defined/undefined POS distributions, all 17 displayed buckets, a complete sentence-bounded 17x17 bigram matrix and sentence positions 1..20. Focused reconstructed morphology tests passed 9/9 and Draft 2020-12 accepted both the new schema and a generated artifact. A full exact-head repository suite is not claimed because the execution container could not DNS-resolve GitHub for checkout; GitHub connector reads/writes remained healthy. PR #25 is intentionally unmerged pending independent exact-head review. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-METRIC-002
-ISSUE:          #22
-STATUS:         DONE
-PR:             #23
-MERGED_COMMIT:  ab8cd21c505bf3c229648be491f31d0a8a5f30fd
-NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
-                dependency state; SCRIP-MORPH-002 is the first listed candidate.
+UNIT_ID:        SCRIP-MORPH-002
+ISSUE:          #24
+STATUS:         REVIEW
+PR:             #25
+NEXT_ACTION:    Independently review the exact current PR #25 head, run the full
+                repository suite and Draft 2020-12 POS artifact validation, inspect
+                sentence-bounded bigram and all-sentence position denominators, then
+                merge only if no correctness/provenance blocker remains.
 ```
 
 ## Current milestone gate
@@ -23,15 +24,18 @@ NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirmin
 M0 is closed. M1 closes when the benchmark harness can compare expected vs actual
 FantLab-visible deterministic metrics field-by-field while preserving text and
 configuration provenance. General, dialogue, vocabulary and punctuation families are
-now executable inferred candidates; the remaining queued deterministic family is POS.
+executable inferred candidates. POS aggregation now has a versioned provider-neutral
+candidate artifact, but native/provider execution identity and benchmark-harness wiring
+remain separate work; the M1 gate is therefore still open.
 
 ## Queue
 
-Ordered highest first among unblocked work.
+Ordered highest first among unblocked work. Review/recovery of the current unit preempts
+new queue selection.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-MORPH-002 | implementation | POS distributions, bigrams and sentence-position metrics | SCRIP-MORPH-001, SCRIP-TEXT-001 |
+| P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance |
 | P2 | SCRIP-SITE-001 | architecture | Static artifact/site contract for GitHub Pages | M1 underway |
 
 ## Evidence already established
@@ -69,10 +73,12 @@ Ordered highest first among unblocked work.
   internal dash-separator rule.
 - `scriptorium-punctuation-v1` covers all 14 observed FantLab punctuation fields with a
   declared greedy non-overlap policy and explicit dash/quote/ellipsis handling.
-- `scriptorium-metrics-v3` / `scriptorium-deterministic-metrics-v3` currently contains
-  29 rows: 28 FantLab-shaped fields plus the Scriptorium sentence-count extension.
-- The benchmark harness currently maps 28 FantLab IDs: four general, four dialogue, six
-  vocabulary and fourteen punctuation fields.
+- `scriptorium-metrics-v3` / `scriptorium-deterministic-metrics-v3` contains 29 rows:
+  28 FantLab-shaped general/dialogue/vocabulary/punctuation fields plus the Scriptorium
+  sentence-count extension.
+- The main benchmark harness currently maps those 28 FantLab IDs. POS is deliberately
+  not injected into that artifact until a provider execution/configuration identity is
+  pinned rather than supplied as an unverified detached candidate matrix.
 
 ### Vocabulary profile
 
@@ -103,24 +109,50 @@ Ordered highest first among unblocked work.
   records the package/sdist identity and pinned `morph_dict` revision.
 - Pinned pylem calls `SetUseNationalConstants(false)`, so runtime POS strings use Latin
   constants. Fifteen runtime strings map unambiguously to observed FantLab buckets.
-- Noun `С` and cardinal numeral `ЧИСЛ` both render as runtime `N`; the public Python result
-  does not expose a source discriminator, so the collision remains unresolved.
+- Noun `С` and cardinal numeral `ЧИСЛ` both render as runtime `N`; the public Python
+  result does not expose a source discriminator, so the collision remains unresolved.
 - `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` remain distinct
   runtime categories with no proven standalone FantLab bucket/folding rule.
 - FantLab homonym/prediction selection and production dictionary equivalence are not
   public. No first-result or guessed folding heuristic is accepted as compatibility.
 - Native pylem build/runtime verification is still `not_run`, not a package failure.
 
+### Provider-neutral POS metric surface
+
+- `scriptorium-pos-v1` accepts exactly one runtime-analysis sequence per deterministic
+  Scriptorium word token and binds it to a caller-supplied runtime profile plus a
+  canonical candidate-matrix SHA-256 and the pinned AOT/pylem mapping contract.
+- A token is defined only when every candidate uses one of the 15 direct runtime strings
+  and all candidates map to the same displayed FantLab bucket. Empty analyses, runtime
+  `N`, unresolved extra categories, unknown codes and cross-bucket homonyms are undefined.
+- Distribution output includes defined/undefined word counts/rates and every one of the
+  17 displayed FantLab bucket counts and percentages of defined words. Service-word
+  aggregation stays explicit `unresolved` null data rather than a guessed POS fold.
+- The POS-bigram candidate emits all 17x17 ordered cells, counts only resolved adjacent
+  tokens inside the same Scriptorium sentence candidate and reports raw count plus
+  occurrences per 1000 total Scriptorium word tokens. Undefined tokens break pairs.
+- Sentence-position output emits positions 1..20. Based on FantLab's public “randomly
+  selected sentence” wording, every cell uses all Scriptorium sentence candidates as
+  denominator; short sentences and undefined tokens contribute zero to the numerator.
+- Bigram sentence-bounding and position denominator choices are explicitly inferred;
+  they require source-matched benchmark discrimination before any reproduced claim.
+- `scriptorium-pos-metrics-v1` freezes a 17-bucket distribution, complete 17x17 bigram
+  matrix and 20x17 position surface. Focused reconstructed tests passed 9/9 and Draft
+  2020-12 validation accepted a generated artifact during the authoring run.
+
 ### Public repository representation
 
-- README/docs expose the deterministic text, dialogue, punctuation, vocabulary and local
-  benchmark capabilities while labeling FantLab-shaped behavior as inferred.
+- README/docs expose deterministic text, dialogue, punctuation, vocabulary and POS
+  aggregation capabilities while labeling FantLab-shaped behavior as inferred.
+- `docs/POS_MODEL.md` explains the conservative pylem runtime boundary, unresolved
+  noun/cardinal collision, bigram candidate and sentence-position denominator.
 - Two derived *Anna Karenina* excerpt showcases are published with exact Wikisource
   revision provenance, hashes and metrics only; source prose is not committed. Both are
   explicitly illustrative, below 300,000 characters and inadmissible for corpus/parity.
 - Existing showcase artifacts preserve the metric profile under which they were
-  generated. Vocabulary values were not fabricated from historical hashes; a future
-  vocabulary showcase must re-read a provenance-bound source selection.
+  generated. Vocabulary/POS values were not fabricated from historical hashes; a future
+  richer showcase must re-read a provenance-bound source selection and record provider
+  execution identity where morphology is involved.
 
 ## Known risks / blockers
 
@@ -161,9 +193,14 @@ Ordered highest first among unblocked work.
     precision or tie behavior.
 19. **Parity-corpus edition gap.** All five retained candidates remain below the M2
     source-edition-admissibility gate.
-20. **Hosted CI absent.** Legacy statuses and PR workflow runs were both absent for the
-    reviewed PR #23 head. Local independent review evidence is recorded, but CI remains
-    not configured.
+20. **Hosted CI absent.** Legacy statuses and PR workflow runs were absent for the last
+    independently reviewed PR. Local review evidence is recorded, but CI remains not
+    configured until a current head proves otherwise.
+21. **POS adjacency/position inference.** Sentence-bounded bigrams and all-sentence
+    position denominators are evidence-based candidates, not established FantLab internals.
+22. **Detached provider provenance.** The new POS aggregator can hash supplied runtime
+    candidates, but it does not prove which binary/dictionary/config produced them;
+    provider execution must be pinned before benchmark integration.
 
 ## Run selection rule
 

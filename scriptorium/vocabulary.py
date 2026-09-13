@@ -13,6 +13,7 @@ from collections.abc import Iterable, Sequence
 from hashlib import sha256
 import json
 from typing import Final
+from unicodedata import normalize as normalize_unicode
 
 from .text import normalize_text, word_tokens
 
@@ -24,14 +25,14 @@ UASZ_WINDOW_SIZES: Final = (3000, 10000, 100000)
 def normalize_lexeme(word: str) -> str:
     """Return the v1 lexical identity for one candidate word.
 
-    The candidate uses Unicode ``casefold()`` only. It does not lemmatize, fold
-    ``ё`` into ``е``, or otherwise rewrite token text. Exact FantLab lexical
-    identity remains a benchmark question.
+    The candidate normalizes to Unicode NFC before applying ``casefold()``. It does not
+    lemmatize, fold ``ё`` into ``е``, or otherwise rewrite token text. Exact FantLab
+    lexical identity remains a benchmark question.
     """
 
     if not isinstance(word, str):
         raise TypeError("word must be str")
-    return word.casefold()
+    return normalize_unicode("NFC", word).casefold()
 
 
 def vocabulary_lexemes(text: str) -> tuple[str, ...]:

@@ -68,13 +68,24 @@ jobs:
         shell: bash
         run: |
           python - <<'PY'
+          import re
           from scriptorium.wikisource_freeze import expected_chapters, fetch_current_chapter_revisions, extract_transcription_body
           chapters = expected_chapters()
           revisions = fetch_current_chapter_revisions(chapters)
+          failures = []
           for chapter in chapters:
               title = str(chapter["title"])
-              print(title, flush=True)
-              extract_transcription_body(str(revisions[title]["wikitext"]))
+              wikitext = str(revisions[title]["wikitext"])
+              try:
+                  extract_transcription_body(wikitext)
+              except Exception as exc:
+                  visible = re.sub(r"<noinclude>.*?</noinclude>", "", wikitext, flags=re.IGNORECASE | re.DOTALL)
+                  names = sorted(set(re.findall(r"\{\{\s*([^|{}\n]+)", visible)))
+                  print(f"FAIL {title}: {type(exc).__name__}: {exc}; visible_templates={names!r}", flush=True)
+                  failures.append(title)
+          if failures:
+              raise SystemExit(f"{len(failures)} chapter extraction failures")
+          print("All 239 chapter extraction contracts passed", flush=True)
           PY
 
       - name: Capture revision-pinned Wikisource research receipt

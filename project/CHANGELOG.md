@@ -363,3 +363,36 @@ code changes remain in Git history and their issues/PRs.
 - GitHub Pages itself remains disabled. The next public-site unit is the separately
   reviewed Pages build/upload/deploy workflow; generated HTML must remain disposable and
   the merged fail-closed publication boundary must not be weakened.
+
+## 2026-09-13 — Gated GitHub Pages workflow candidate
+
+- Re-checked `SCRIP-MORPH-003` before selection. Native/provider provenance remains
+  `not_run`: pylem is not installed in the execution environment and DNS resolution for
+  GitHub/PyPI package hosts is still unavailable, while the connected GitHub API path is
+  healthy. `SCRIP-SITE-003` was therefore the next dependency-satisfied queue unit.
+- Opened Issue #30 and PR #31 for the first executable publication workflow over the
+  merged `scriptorium-static-site-v1` renderer. This authoring run deliberately does not
+  merge the workflow.
+- Added a pull-request/relevant-master build job that uses Python 3.13, runs the complete
+  standard-library test suite, builds only through `scriptorium.site_renderer`, rebuilds
+  into a second disposable directory and requires byte-identical output before upload.
+- Upload scope is exactly `build/site`; canonical JSON artifacts and source-selection
+  provenance remain repository inputs and are not packed as a broader directory tree.
+- Kept workflow-level and build-job permissions at `contents: read`, disabled persisted
+  checkout credentials, and isolated `pages: write` plus `id-token: write` to the deploy
+  job.
+- Pinned all GitHub-owned actions to reviewed full release-tag commits:
+  `checkout` v7.0.1, `setup-python` v7.0.0, `upload-pages-artifact` v5.0.0,
+  `configure-pages` v6.0.0 and `deploy-pages` v5.0.1. Current configure/deploy releases
+  use the Node 24 action runtime.
+- Made deployment depend on the successful build, target the `github-pages` environment,
+  run only for `refs/heads/master` outside pull-request events, and require the explicit
+  repository variable `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true`.
+- The workflow does not call privileged Pages enablement and does not use a secret/PAT.
+  Repository Pages source/settings and activation of the deploy interlock remain a
+  separate administrator effect after independent code/workflow review.
+- Added five standard-library workflow-contract regressions covering full-SHA action
+  pinning, read-only build permissions/canonical renderer invocation, deploy gating,
+  absence of secrets/privileged enablement, and upload scope. Focused authoring checks
+  pass 5/5; hosted exact-head workflow execution remains required in the independent
+  review before merge.

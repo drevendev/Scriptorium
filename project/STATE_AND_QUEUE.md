@@ -1,26 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 36
+STATE_REVISION: 37
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T13:59:00Z
-LAST_RESULT: SCRIP-SITE-003 authored on PR #31; a gated GitHub Pages build/upload/deploy workflow is ready for independent exact-head review and must not be merged in the authoring run.
-LAST_VERIFIED_PROGRESS: Re-checked SCRIP-MORPH-003 first; native pylem/provider provenance remains non-executable because pylem is not installed and the execution container still cannot resolve GitHub/PyPI package hosts. SCRIP-SITE-003 therefore became the first dependency-satisfied queue unit. PR #31 adds a Python 3.13 standard-library verification and deterministic static-site build, uploads only disposable build/site output, pins current GitHub-owned Pages actions to reviewed full release-tag SHAs, keeps build permissions read-only with checkout credentials not persisted, and isolates pages:write/id-token:write to a master-only deployment job behind the explicit SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true repository-variable interlock. The workflow does not enable Pages or use secrets/PATs. Focused workflow contract checks pass 5/5 in the authoring environment. Independent hosted execution and review remain required before merge. GitHub Pages repository settings remain disabled/unconfigured by this unit. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T14:56:00Z
+LAST_RESULT: SCRIP-SITE-003 independently reviewed and squash-merged as cb2dbfff22cec99e2063f208916680eac8da3d4d; the first gated GitHub Pages build/upload/deploy workflow is now on master, while Pages activation remains intentionally separate.
+LAST_VERIFIED_PROGRESS: Independent exact-head review of PR #31 head 10d376dbff1628170eb8358ea32b335152635446 inspected hosted run 34761422729, which passed the complete Python 3.13.15 standard-library suite 79/79, canonical site build, byte-identical rebuild and Pages artifact upload while the deploy job was skipped on the pull-request event. The downloaded artifact matched GitHub's recorded SHA-256 ff1b3a1e1096ae97eb199a03f628ffa8ec66b983806658f3b626c44913c17a7b and contained only build.json, root index, two allow-listed work pages and shared CSS; canonical showcase JSON/source-selection prose was not packaged. All five action pins independently resolved to their stated official release tags, and configure-pages/deploy-pages both declare Node 24. PR #31 was squash-merged as cb2dbfff22cec99e2063f208916680eac8da3d4d; the resulting master push run 34763894163 also completed successfully with build/upload green and deploy skipped because activation remains unset. Issue #30 was closed completed. Review also found a latent path-filter freshness gap: the workflow omits renderer-supported `benchmarks/**` and `public-artifacts/**` roots, so Issue #33 / SCRIP-SITE-004 now blocks Pages activation/expansion until repaired. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-SITE-003
 ISSUE:          #30
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #31
-MERGED_COMMIT:  —
-NEXT_ACTION:    Independently review the exact PR #31 head. Inspect the hosted pull-request
-                workflow run and jobs, require the complete standard-library suite and
-                deterministic build/upload job to pass, confirm deploy is skipped on PR,
-                verify full-SHA action pins/permissions/activation boundary, and only then
-                decide whether to merge. Do not enable Pages or set the deployment
-                interlock in the review unless separately justified as an administrator
-                effect after the code is merged.
+MERGED_COMMIT:  cb2dbfff22cec99e2063f208916680eac8da3d4d
+NEXT_ACTION:    Re-check SCRIP-MORPH-003 provider/runtime executability first. If native
+                pylem/provider execution is still unavailable, select SCRIP-SITE-004 / #33
+                and repair the Pages trigger-root gap before any Pages activation or
+                publication-root expansion. After that repair, bias the next eligible
+                selection toward benchmark/source-edition work rather than more SITE work.
 ```
 
 ## Current milestone gate
@@ -40,7 +38,8 @@ dependency is not executable.
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
 | P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked by unavailable native/provider execution environment |
-| P2 | SCRIP-SITE-003 | implementation | Add a reviewed GitHub Pages build/upload/deploy workflow over `scriptorium-static-site-v1`; keep generated output disposable and preserve fail-closed evidence/legal gates | SCRIP-SITE-002; authored on PR #31 and awaiting independent hosted review |
+| P2 | SCRIP-SITE-004 | repair | Synchronize Pages PR/master path filters with every renderer-supported canonical publication artifact root and add regression coverage | SCRIP-SITE-003 merged; Issue #33 open; blocks Pages activation/expansion |
+| P3 | SCRIP-REPRO-003 | research / benchmark | Advance one retained >=300k FantLab candidate toward an exact source-edition match: trace the analyzed edition, legal public transcription and immutable identity, then record whether a diagnostic comparison can become admissible | Benchmark harness and parity-corpus seed already merged; independent source-edition evidence required |
 
 ## Evidence already established
 
@@ -192,16 +191,23 @@ dependency is not executable.
   standard-library inventory and two deterministic real seed builds. The generated HTML
   contained no source-selection prose from either canonical showcase and preserved the
   public `mixed` / `not_admissible` evidence labels.
-- PR #31 now proposes the first executable Pages workflow: PR/relevant master builds run
-  Python 3.13 tests, build and byte-compare the deterministic site, and upload only
-  `build/site`. All five GitHub-owned actions are full-SHA pinned to reviewed current
-  release tags; current configure/deploy action generations use Node 24.
-- The proposed deploy job is master-only, requires the explicit
+- `SCRIP-SITE-003` is merged. The Pages workflow runs Python 3.13 tests, builds and
+  byte-compares the deterministic site, and uploads only `build/site`. All five
+  GitHub-owned actions are full-SHA pinned to independently verified official release
+  tags; pinned configure/deploy actions use Node 24.
+- Exact-head PR run 34761422729 passed 79/79 tests, deterministic build/upload and kept
+  deployment skipped. Downloaded artifact 10319295813 matched GitHub's SHA-256 and
+  contained only generated site output. The first master push run 34763894163 also
+  completed successfully with deploy skipped because the activation variable is unset.
+- The deploy job is master-only, requires the explicit
   `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` repository variable, targets the `github-pages`
   environment, and alone receives `pages: write` and `id-token: write`. The workflow does
   not use configure-pages privileged enablement, secrets or a PAT. Pages repository
-  configuration therefore remains a separate administrator effect after independent
-  review rather than being inferred from workflow presence.
+  configuration therefore remains a separate administrator effect.
+- Independent review identified a latent freshness gap after merge: workflow path filters
+  do not yet include renderer-supported `benchmarks/**` and `public-artifacts/**` roots.
+  Current seed entries use only `showcase/**`, so no current output is stale, but Issue #33
+  must be repaired before Pages activation or publication-root expansion.
 
 ## Known risks / blockers
 
@@ -243,17 +249,18 @@ dependency is not executable.
     precision or tie behavior.
 19. **Parity-corpus edition gap.** All five retained candidates remain below the M2
     source-edition-admissibility gate.
-20. **Hosted CI absent historically.** Reviewed PR #29 had no hosted statuses/workflow
-    runs. PR #31 introduces the first hosted verification path and must be judged from its
-    actual exact-head run rather than assumed green from workflow syntax.
+20. **Hosted verification is publication-scoped.** SCRIP-SITE-003 now supplies the first
+    hosted workflow path and has passed on both PR and master, but its path filters are a
+    contract surface and must remain synchronized with every canonical publication input.
 21. **POS adjacency/position inference.** Sentence-bounded bigrams and all-sentence
     position denominators are evidence-based candidates, not established FantLab internals.
 22. **Detached provider provenance.** The POS aggregator binds text and supplied runtime
     candidates, but it still does not prove which binary/dictionary/config produced those
     candidates; provider execution must be pinned before benchmark integration.
-23. **Pages deployment activation pending.** PR #31 contains a gated workflow candidate,
-    but repository Pages source/settings are not enabled by code and the explicit deploy
-    interlock must remain unset until independent workflow review succeeds.
+23. **Pages deployment activation pending.** The reviewed workflow is merged and the
+    deploy interlock remains unset; repository Pages source/settings are not enabled by
+    code. Issue #33's trigger-root repair must land before activation or publication-root
+    expansion.
 
 ## Run selection rule
 

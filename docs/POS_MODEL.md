@@ -12,7 +12,8 @@ This profile is the deterministic aggregation layer between the pinned AOT/pylem
 runtime contract and FantLab-shaped POS statistics. It intentionally does not import or
 build pylem. The caller supplies the runtime POS analyses that a provider produced, one
 sequence per `scriptorium-text-v1` word token, plus a non-empty runtime-profile identity.
-The artifact hashes that exact candidate matrix so the aggregation input is reproducible.
+The artifact binds both that exact candidate matrix and the normalized Scriptorium text
+identity, because sentence segmentation affects bigram and position metrics.
 
 ## Why the provider boundary is explicit
 
@@ -109,21 +110,30 @@ sentences long enough to reach the position.
 The artifact emits positions 1..20. The 2022 observed work surface commonly renders the
 first ten, while FantLab's public methodology says position statistics exist up to 20.
 
-## Runtime input identity
+## Text and runtime input identity
 
 `runtime_pos_candidates` must align one-for-one with the deterministic Scriptorium word
 token stream. A mismatch is an error rather than a truncation or padding rule.
 
 The artifact records:
 
+- `text_profile` — the deterministic normalization/segmentation profile,
+  `scriptorium-text-v1`;
+- `normalized_sha256` — SHA-256 of the exact normalized UTF-8 text that produced the word
+  and sentence streams;
 - `runtime_profile` — caller-supplied identity for the producer/configuration;
 - `runtime_analysis_sha256` — SHA-256 of the canonical JSON candidate matrix;
 - `mapping_contract` — the pinned runtime-to-FantLab mapping contract.
 
-A runtime profile name plus this digest makes the aggregation reproducible, but it does
-**not** prove that the analyses came from FantLab's production morphology or even from a
-native pylem build. Provenance of the provider execution belongs to the future adapter
-and benchmark record.
+The runtime candidate matrix alone is not enough to identify the aggregation input. Two
+texts can have the same word/sentence counts and the same candidate matrix while placing
+the same tokens into different sentence boundaries, which changes both POS bigrams and
+sentence-position rows. `text_profile` plus `normalized_sha256` therefore binds the
+artifact to the deterministic text stream whose segmentation the metrics actually use.
+
+These identities make the aggregation reproducible, but they do **not** prove that the
+analyses came from FantLab's production morphology or even from a native pylem build.
+Provenance of the provider execution belongs to the future adapter and benchmark record.
 
 ## Schema and tests
 
@@ -133,11 +143,12 @@ and benchmark record.
 - a complete 17×17 bigram matrix;
 - exactly positions 1..20, each with all 17 buckets;
 - null service-word values with an explicit `unresolved` status;
-- an immutable runtime-analysis SHA-256.
+- immutable normalized-text and runtime-analysis SHA-256 identities.
 
 `tests/test_morphology.py` covers conservative resolution, empty input, denominator
-choices, sentence-boundary behavior, unresolved bigram breaks, alignment checks and the
-20-position boundary.
+choices, sentence-boundary behavior, unresolved bigram breaks, alignment checks, the
+20-position boundary, and a regression where identical runtime candidates/counts on two
+differently segmented texts must yield distinct text identities and metrics.
 
 ## Primary evidence
 

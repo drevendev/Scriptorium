@@ -11,6 +11,7 @@ from scriptorium.metrics import (
     analyze_deterministic_metrics,
     punctuation_counts,
 )
+from scriptorium.vocabulary import VOCABULARY_PROFILE
 
 
 class DeterministicMetricTests(unittest.TestCase):
@@ -29,6 +30,8 @@ class DeterministicMetricTests(unittest.TestCase):
             metrics["fantlab.general.mean_sentence_length_chars"]["value"],
             (9 + 9) / 2,
         )
+        self.assertEqual(metrics["fantlab.vocabulary.unique_words"]["value"], 4)
+        self.assertIsNone(metrics["fantlab.vocabulary.active_dictionary"]["value"])
         self.assertEqual(
             metrics["fantlab.general.characters"]["compatibility_status"], "inferred"
         )
@@ -37,13 +40,18 @@ class DeterministicMetricTests(unittest.TestCase):
         )
 
     def test_empty_text_preserves_zero_counts_and_undefined_rates(self):
-        metrics = analyze_deterministic_metrics("")["metrics"]
+        artifact = analyze_deterministic_metrics("")
+        metrics = artifact["metrics"]
 
         self.assertEqual(metrics["fantlab.general.characters"]["value"], 0)
         self.assertEqual(metrics["fantlab.general.words"]["value"], 0)
         self.assertEqual(metrics["scriptorium.general.sentences"]["value"], 0)
+        self.assertEqual(metrics["fantlab.vocabulary.unique_words"]["value"], 0)
         self.assertIsNone(metrics["fantlab.general.mean_word_length_chars"]["value"])
         self.assertIsNone(metrics["fantlab.general.mean_sentence_length_chars"]["value"])
+        self.assertIsNone(metrics["fantlab.vocabulary.active_dictionary"]["value"])
+        self.assertIsNone(metrics["fantlab.vocabulary.uasz_3000"]["value"])
+        self.assertIsNone(artifact["dependencies"]["vocabulary_dictionary"])
         for key in PUNCTUATION_KEYS:
             row = metrics[f"fantlab.punctuation.{key}.per_1000_words"]
             self.assertEqual(row["raw_count"], 0)
@@ -91,7 +99,9 @@ class DeterministicMetricTests(unittest.TestCase):
         self.assertEqual(first["schema_version"], SCHEMA_VERSION)
         self.assertEqual(first["profiles"]["metrics"], METRIC_PROFILE)
         self.assertEqual(first["profiles"]["dialogue"], DIALOGUE_PROFILE)
+        self.assertEqual(first["profiles"]["vocabulary"], VOCABULARY_PROFILE)
         self.assertEqual(first["profiles"]["punctuation"], PUNCTUATION_PROFILE)
+        self.assertIsNone(first["dependencies"]["vocabulary_dictionary"])
         self.assertEqual(
             first["normalized_sha256"],
             "852e7a3dce82ea35581c89365ace4ea9e3dd22d754dd37f127c37de62392c349",
@@ -113,6 +123,11 @@ class DeterministicMetricTests(unittest.TestCase):
             schema["properties"]["profiles"]["properties"]["dialogue"]["const"],
             DIALOGUE_PROFILE,
         )
+        self.assertEqual(
+            schema["properties"]["profiles"]["properties"]["vocabulary"]["const"],
+            VOCABULARY_PROFILE,
+        )
+        self.assertEqual(len(schema["properties"]["metrics"]["required"]), 29)
         self.assertFalse(schema["additionalProperties"])
 
 

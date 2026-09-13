@@ -9,10 +9,11 @@ fields remain unresolved while FantLab display precision/tie behavior is unknown
 from __future__ import annotations
 
 import argparse
+from collections.abc import Iterable
 from hashlib import sha256
 import json
 from pathlib import Path
-from typing import Final, Iterable
+from typing import Final
 
 from .dialogue import DIALOGUE_PROFILE
 from .metrics import (
@@ -23,12 +24,13 @@ from .metrics import (
     analyze_deterministic_metrics,
 )
 from .text import NORMALIZATION_PROFILE
+from .vocabulary import VOCABULARY_PROFILE
 
 
 BENCHMARK_PROFILE: Final = "scriptorium-benchmark-v1"
 BENCHMARK_SCHEMA_VERSION: Final = "fantlab-benchmark-comparison-v1"
 COMPATIBILITY_PROFILE: Final = (
-    f"{METRIC_PROFILE}+{DIALOGUE_PROFILE}+{PUNCTUATION_PROFILE}"
+    f"{METRIC_PROFILE}+{DIALOGUE_PROFILE}+{VOCABULARY_PROFILE}+{PUNCTUATION_PROFILE}"
 )
 
 _GENERAL_SPECS: Final = (
@@ -83,6 +85,53 @@ _DIALOGUE_SPECS: Final = (
         "unresolved_precision",
     ),
 )
+_VOCABULARY_SPECS: Final = (
+    (
+        "fantlab.vocabulary.unique_words",
+        ("unique_words",),
+        "Использовано уникальных слов",
+        "exact_integer",
+    ),
+    (
+        "fantlab.vocabulary.active_dictionary",
+        ("active_dictionary_vocabulary",),
+        "Активный словарный запас (АСЗ)",
+        "exact_integer",
+    ),
+    (
+        "fantlab.vocabulary.active_nondictionary",
+        ("active_non_dictionary_vocabulary",),
+        "Активный несловарный запас (АНСЗ)",
+        "exact_integer",
+    ),
+    (
+        "fantlab.vocabulary.uasz_3000",
+        ("uasz_3000",),
+        "Удельный АСЗ на 3000 слов текста",
+        "unresolved_precision",
+    ),
+    (
+        "fantlab.vocabulary.uasz_10000",
+        ("uasz_10000",),
+        "Удельный АСЗ на 10000 слов текста",
+        "unresolved_precision",
+    ),
+    (
+        "fantlab.vocabulary.uasz_100000",
+        ("uasz_100000",),
+        "Удельный АСЗ на 100000 слов текста",
+        "unresolved_precision",
+    ),
+)
+_DICTIONARY_DEPENDENT_METRICS: Final = frozenset(
+    {
+        "fantlab.vocabulary.active_dictionary",
+        "fantlab.vocabulary.active_nondictionary",
+        "fantlab.vocabulary.uasz_3000",
+        "fantlab.vocabulary.uasz_10000",
+        "fantlab.vocabulary.uasz_100000",
+    }
+)
 _PUNCTUATION_LABELS: Final = {
     "comma": ",",
     "period": ".",
@@ -110,12 +159,20 @@ def build_comparison(
     edition_label: str | None = None,
     source_reference: str | None = None,
     legal_basis: str | None = None,
+    dictionary_words: Iterable[str] | None = None,
+    dictionary_profile: str | None = None,
 ) -> dict[str, object]:
     """Build one deterministic FantLab comparison artifact.
 
     ``reference_json`` is parsed twice: once numerically and once with numeric
     tokens preserved as strings. The second parse retains lexical evidence such
     as ``10.30`` that ordinary JSON decoding would collapse to ``10.3``.
+
+    Vocabulary dictionary-dependent fields are only produced when an explicit
+    dictionary lexeme collection and profile identity are supplied together.
+    Merely supplying a dictionary never makes it FantLab-compatible: until the
+    production dictionary identity/version is established, dictionary-dependent
+    comparisons remain diagnostic ``unresolved`` results.
     """
 
     if edition_match not in {"exact", "strong", "weak", "unknown"}:
@@ -126,7 +183,11 @@ def build_comparison(
     reference = json.loads(reference_json)
     lexical_reference = json.loads(reference_json, parse_int=str, parse_float=str)
     text = source_bytes.decode("utf-8")
-    analysis = analyze_deterministic_metrics(text)
+    analysis = analyze_deterministic_metrics(
+        text,
+        dictionary_words=dictionary_words,
+        dictionary_profile=dictionary_profile,
+    )
 
     raw_sha256 = sha256(source_bytes).hexdigest()
     source_text = {
@@ -137,6 +198,7 @@ def build_comparison(
         "raw_sha256": raw_sha256,
         "normalized_sha256": analysis["normalized_sha256"],
     }
+    dictionary_dependency = analysis["dependencies"]["vocabulary_dictionary"]
 
     metrics: dict[str, object] = {}
     for metric_id, path, source_label, rule in _reference_specs():
@@ -151,6 +213,17 @@ def build_comparison(
         if actual_row is None:
             raise ValueError(f"analyzer does not emit mapped metric {metric_id}")
 
+        admission_issues: list[str] = []
+        if not _provenance_admissible(source_text):
+            admission_issues.append(
+                "Exact edition/legal provenance required for parity is incomplete."
+            )
+        if metric_id in _DICTIONARY_DEPENDENT_METRICS:
+            admission_issues.append(
+                "FantLab dictionary identity/version has not been established for the "
+                "supplied vocabulary dependency."
+            )
+
         actual = actual_row["value"]
         metrics[metric_id] = _comparison_row(
             expected=expected,
@@ -159,7 +232,7 @@ def build_comparison(
             definition_evidence=actual_row["definition_evidence"],
             source_label=source_label,
             rule=rule,
-            provenance_admissible=_provenance_admissible(source_text),
+            admission_issues=tuple(admission_issues),
         )
 
     if not metrics:
@@ -175,6 +248,7 @@ def build_comparison(
             "scriptorium_revision": scriptorium_revision,
             "compatibility_profile": COMPATIBILITY_PROFILE,
             "normalization_profile": NORMALIZATION_PROFILE,
+            "dictionary_version": _dictionary_version_string(dictionary_dependency),
         },
         "metrics": metrics,
     }
@@ -183,6 +257,7 @@ def build_comparison(
 def _reference_specs() -> Iterable[tuple[str, tuple[str, ...], str, str]]:
     yield from _GENERAL_SPECS
     yield from _DIALOGUE_SPECS
+    yield from _VOCABULARY_SPECS
     for key in PUNCTUATION_KEYS:
         yield (
             f"fantlab.punctuation.{key}.per_1000_words",
@@ -200,7 +275,7 @@ def _comparison_row(
     definition_evidence: str,
     source_label: str,
     rule: str,
-    provenance_admissible: bool,
+    admission_issues: tuple[str, ...],
 ) -> dict[str, object]:
     raw_delta = None if actual is None else actual - expected
     actual_display = None if actual is None else str(actual)
@@ -210,12 +285,9 @@ def _comparison_row(
         if actual is None:
             result = "not_run"
             reason = "The analyzer did not produce an actual value."
-        elif not provenance_admissible:
+        elif admission_issues:
             result = "unresolved"
-            reason = (
-                "Numeric equality is diagnostic only because exact edition/legal "
-                "provenance required for parity is incomplete."
-            )
+            reason = " ".join(admission_issues)
         elif numeric_match:
             result = "pass"
             reason = None
@@ -230,8 +302,7 @@ def _comparison_row(
         reasons = [
             "FantLab display precision and tie-breaking are not independently established."
         ]
-        if not provenance_admissible:
-            reasons.append("Exact edition/legal provenance required for parity is incomplete.")
+        reasons.extend(admission_issues)
         if actual is None:
             reasons.append("The analyzer produced no numeric value for this input.")
         reason = " ".join(reasons)
@@ -267,6 +338,14 @@ def _provenance_admissible(source_text: dict[str, object]) -> bool:
         and bool(source_text["source_reference"])
         and bool(source_text["legal_basis"])
         and bool(source_text["raw_sha256"])
+    )
+
+
+def _dictionary_version_string(dependency: object) -> str | None:
+    if not isinstance(dependency, dict):
+        return None
+    return (
+        f"{dependency['profile']}@sha256:{dependency['normalized_lexemes_sha256']}"
     )
 
 
@@ -308,12 +387,29 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--edition-label")
     parser.add_argument("--source-reference")
     parser.add_argument("--legal-basis")
+    parser.add_argument(
+        "--dictionary",
+        type=Path,
+        help="Optional UTF-8 dictionary file with one lexical form per line.",
+    )
+    parser.add_argument(
+        "--dictionary-profile",
+        help="Required stable identity/version when --dictionary is supplied.",
+    )
     parser.add_argument("--output", type=Path)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = _build_parser().parse_args(argv)
+    parser = _build_parser()
+    args = parser.parse_args(argv)
+    if (args.dictionary is None) != (args.dictionary_profile is None):
+        parser.error("--dictionary and --dictionary-profile must be supplied together")
+
+    dictionary_words = None
+    if args.dictionary is not None:
+        dictionary_words = args.dictionary.read_text(encoding="utf-8").splitlines()
+
     artifact = build_comparison(
         args.reference.read_text(encoding="utf-8"),
         args.text.read_bytes(),
@@ -322,6 +418,8 @@ def main(argv: list[str] | None = None) -> int:
         edition_label=args.edition_label,
         source_reference=args.source_reference,
         legal_basis=args.legal_basis,
+        dictionary_words=dictionary_words,
+        dictionary_profile=args.dictionary_profile,
     )
     rendered = json.dumps(artifact, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     if args.output is None:

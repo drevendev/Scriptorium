@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drevendev.github.io/Scriptorium/schemas/scriptorium-publication-manifest-v1.schema.json",
+  "title": "Scriptorium public publication manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_from",
+    "deployment",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "scriptorium-publication-manifest-v1"
+    },
+    "generated_from": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "branch"],
+      "properties": {
+        "repository": {
+          "const": "drevendev/Scriptorium"
+        },
+        "branch": {
+          "const": "master"
+        }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publication_source", "generated_output_committed"],
+      "properties": {
+        "publication_source": {
+          "const": "github_actions"
+        },
+        "generated_output_committed": {
+          "const": false
+        }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entry_id",
+          "kind",
+          "slug",
+          "title",
+          "artifact_path",
+          "artifact_schema",
+          "publication_status",
+          "benchmark_admissibility",
+          "corpus_admissibility",
+          "compatibility_claim",
+          "source_text_included"
+        ],
+        "properties": {
+          "entry_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "kind": {
+            "enum": [
+              "work_showcase",
+              "benchmark",
+              "author_profile",
+              "tag_profile"
+            ]
+          },
+          "slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact_path": {
+            "type": "string",
+            "pattern": "^(showcase|benchmarks|public-artifacts)/[A-Za-z0-9._/-]+\\.json$"
+          },
+          "artifact_schema": {
+            "type": "string",
+            "minLength": 1
+          },
+          "publication_status": {
+            "enum": [
+              "illustrative_excerpt",
+              "diagnostic",
+              "published"
+            ]
+          },
+          "benchmark_admissibility": {
+            "enum": [
+              "not_admissible",
+              "diagnostic_only",
+              "admissible"
+            ]
+          },
+          "corpus_admissibility": {
+            "enum": [
+              "not_admissible",
+              "admissible"
+            ]
+          },
+          "compatibility_claim": {
+            "enum": [
+              "inferred",
+              "reproduced",
+              "extension",
+              "mixed"
+            ]
+          },
+          "source_text_included": {
+            "const": false
+          }
+        }
+      }
+    }
+  }
+}

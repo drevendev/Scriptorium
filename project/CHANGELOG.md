@@ -347,3 +347,19 @@ code changes remain in Git history and their issues/PRs.
   synchronized `scriptorium-unknown-v999` manifest/artifact schema. The repaired focused
   renderer suite passes 11/11 plus `py_compile`; a later independent exact-head review is
   still required before merge.
+- Independent repaired-head review reconstructed the full standard-library execution
+  surface from the GitHub-published head and passed **74/74** tests. The canonical
+  publication manifest and both showcase artifacts were used byte-for-byte for the real
+  seed build.
+- The real seed site was built twice with byte-identical output: one root page, two stable
+  `/works/<slug>/` pages, shared CSS and `build.json`. A direct scan confirmed that none
+  of the source-selection prose stored as provenance boundaries in either showcase was
+  copied into generated HTML, while `mixed` compatibility and `not_admissible` labels
+  remained visible.
+- GitHub reported the reviewed head mergeable and strictly ahead of `master`; hosted
+  statuses/workflow runs remained absent, so CI is still not configured rather than
+  green. PR #29 was squash-merged as `73d4b8316f4b0a7fee94248b978732d0f5c1d4b5`
+  and Issue #28 closed completed.
+- GitHub Pages itself remains disabled. The next public-site unit is the separately
+  reviewed Pages build/upload/deploy workflow; generated HTML must remain disposable and
+  the merged fail-closed publication boundary must not be weakened.

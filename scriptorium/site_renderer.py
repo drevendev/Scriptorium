@@ -27,6 +27,28 @@ _ALLOWED_ARTIFACT_ROOTS = frozenset({"showcase", "benchmarks", "public-artifacts
 _ALLOWED_PUBLICATION_STATUSES = frozenset({"illustrative_excerpt", "diagnostic", "published"})
 _ALLOWED_BENCHMARK_ADMISSIBILITY = frozenset({"not_admissible", "diagnostic_only", "admissible"})
 _ALLOWED_CORPUS_ADMISSIBILITY = frozenset({"not_admissible", "admissible"})
+_MANIFEST_KEYS = frozenset({"schema_version", "generated_from", "deployment", "entries"})
+_WORK_SHOWCASE_ENTRY_KEYS = frozenset(
+    {
+        "entry_id",
+        "kind",
+        "slug",
+        "title",
+        "artifact_path",
+        "artifact_schema",
+        "publication_status",
+        "benchmark_admissibility",
+        "corpus_admissibility",
+        "compatibility_claim",
+        "source_text_included",
+    }
+)
+_SUPPORTED_SHOWCASE_ARTIFACT_SCHEMAS = frozenset(
+    {
+        "scriptorium-deterministic-metrics-v1",
+        "scriptorium-deterministic-metrics-v2",
+    }
+)
 
 
 class PublicationBuildError(ValueError):
@@ -61,6 +83,22 @@ def _require_enum(
     if value not in allowed:
         raise PublicationBuildError(f"{context}.{key} has unsupported value {value!r}")
     return value
+
+
+def _require_exact_keys(
+    container: Mapping[str, Any], allowed: frozenset[str], context: str
+) -> None:
+    actual = set(container)
+    if actual == allowed:
+        return
+    details: list[str] = []
+    missing = sorted(allowed - actual)
+    unexpected = sorted(actual - allowed)
+    if missing:
+        details.append(f"missing={missing!r}")
+    if unexpected:
+        details.append(f"unexpected={unexpected!r}")
+    raise PublicationBuildError(f"{context} has invalid keys: {', '.join(details)}")
 
 
 def _safe_artifact_path(repo_root: Path, raw_path: Any) -> Path:
@@ -102,6 +140,7 @@ def _safe_external_url(value: Any, context: str) -> str:
 
 
 def _validate_manifest_header(manifest: Mapping[str, Any]) -> Sequence[Mapping[str, Any]]:
+    _require_exact_keys(manifest, _MANIFEST_KEYS, "publication manifest")
     if manifest.get("schema_version") != MANIFEST_PROFILE:
         raise PublicationBuildError("unsupported publication manifest profile")
     generated_from = manifest.get("generated_from")
@@ -124,12 +163,19 @@ def _validate_showcase(entry: Mapping[str, Any], artifact: Mapping[str, Any]) ->
             f"renderer {GENERATOR_PROFILE} does not yet support kind {entry.get('kind')!r}"
         )
     entry_id = _required_text(entry, "entry_id", "manifest entry")
+    _require_exact_keys(entry, _WORK_SHOWCASE_ENTRY_KEYS, f"manifest entry {entry_id}")
     slug = _required_text(entry, "slug", f"manifest entry {entry_id}")
     if not _SLUG_RE.fullmatch(entry_id) or not _SLUG_RE.fullmatch(slug):
         raise PublicationBuildError(f"manifest entry {entry_id!r} has unsafe identity or slug")
     if entry.get("source_text_included") is not False:
         raise PublicationBuildError(f"manifest entry {entry_id!r} includes source text")
 
+    artifact_schema = _require_enum(
+        entry,
+        "artifact_schema",
+        _SUPPORTED_SHOWCASE_ARTIFACT_SCHEMAS,
+        f"manifest entry {entry_id}",
+    )
     publication_status = _require_enum(
         entry, "publication_status", _ALLOWED_PUBLICATION_STATUSES, f"manifest entry {entry_id}"
     )
@@ -154,7 +200,7 @@ def _validate_showcase(entry: Mapping[str, Any], artifact: Mapping[str, Any]) ->
 
     expected_pairs = (
         ("entry_id", entry_id, artifact.get("showcase_id")),
-        ("artifact_schema", entry.get("artifact_schema"), analysis.get("schema_version")),
+        ("artifact_schema", artifact_schema, analysis.get("schema_version")),
         ("publication_status", publication_status, artifact.get("status")),
         ("benchmark_admissibility", benchmark_admissibility, artifact.get("benchmark_admissibility")),
         ("corpus_admissibility", corpus_admissibility, artifact.get("corpus_admissibility")),
@@ -377,7 +423,6 @@ def build_site(
     # not leave a partially refreshed site that looks publishable.
     index_html = _render_index(render_items)
     work_pages = {item["slug"]: _render_work(item) for item in render_items}
-
     build_record = {
         "generator_profile": GENERATOR_PROFILE,
         "manifest_profile": MANIFEST_PROFILE,

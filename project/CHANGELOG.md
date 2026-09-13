@@ -88,7 +88,7 @@ code changes remain in Git history and their issues/PRs.
   unique Latin runtime strings they render to.
 - Fifteen runtime strings have unambiguous semantic counterparts on the observed
   `fantlab-2022-v1` surface and may be mapped directly as inferred candidates.
-- Both noun `С` and cardinal numeral `ЧИСЛ` render as runtime `N`. The public pylem Python
+- Both noun `С` and cardinal numeral `ЧИСЛ` both render as runtime `N`. The public pylem Python
   result does not expose the original AOT POS enum/ancode, so noun/cardinal remains an
   explicit unresolved collision instead of two false direct mappings.
 - `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` are distinct runtime
@@ -134,7 +134,7 @@ code changes remain in Git history and their issues/PRs.
 - Added `scriptorium-deterministic-metrics-v1` JSON Schema with stable metric IDs, units,
   evidence class, compatibility status and normalized-text digest.
 - Added standard-library golden tests covering formulas, zero denominators, punctuation
-  overlap, diagnostic raw counts and deterministic digests and schema/profile identity.
+  overlap, diagnostic raw counts, deterministic digests and schema/profile identity.
 - Added the first real-source derived showcase from an exact Russian Wikisource revision
   of *Anna Karenina*, Part I, Chapter I. Only provenance, selection hashes and derived
   metrics are stored; the selected prose is not committed.
@@ -196,7 +196,7 @@ code changes remain in Git history and their issues/PRs.
   contains 29 rows total, including the Scriptorium sentence-count extension.
 - Kept unique vocabulary available without external dependencies while making active
   dictionary, active non-dictionary and UASZ values `null` unless an explicit dictionary
-  lexeme collection and non-empty profile ID are supplied together.
+  lexeme collection and profile identity are supplied together.
 - Bound supplied dictionaries to a canonical normalized-lexeme SHA-256 and lexeme count,
   preventing a reused profile label from silently hiding different dependency contents.
 - Implemented inferred UASZ-3000/10000/100000 scalars as arithmetic means over every

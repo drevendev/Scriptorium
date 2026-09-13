@@ -1,6 +1,7 @@
 # Static publication contract
 
-Status: `scriptorium-publication-manifest-v1` architecture candidate.
+Status: `scriptorium-publication-manifest-v1` merged; `scriptorium-static-site-v1`
+renderer is an implementation candidate under review.
 
 This contract defines the boundary between Scriptorium's durable analysis artifacts and
 the future GitHub Pages user interface. It does **not** enable Pages or claim that a
@@ -56,7 +57,7 @@ historical metric artifacts are not rewritten merely to fit a newer analyzer ver
 
 ## Stable routes
 
-The future site generator derives routes from `kind` + `slug`:
+The site generator derives routes from `kind` + `slug`:
 
 | Kind | Route |
 | --- | --- |
@@ -65,9 +66,11 @@ The future site generator derives routes from `kind` + `slug`:
 | `author_profile` | `/authors/<slug>/` |
 | `tag_profile` | `/tags/<slug>/` |
 
-A title change must not change a slug. If a published slug ever needs replacement, a
-later contract version must define redirect/alias semantics rather than silently moving
-an existing page.
+The current `scriptorium-static-site-v1` candidate implements only `work_showcase`.
+Reserved future kinds fail closed instead of being rendered through guessed generic
+semantics. A title change must not change a slug. If a published slug ever needs
+replacement, a later contract version must define redirect/alias semantics rather than
+silently moving an existing page.
 
 ## Safety boundary
 
@@ -82,10 +85,14 @@ rather than publish an entry when any of these invariants are violated:
 - the manifest's publication/admissibility labels contradict the canonical artifact;
 - the manifest's `compatibility_claim` contradicts the claim derived from the canonical
   artifact's per-metric compatibility statuses;
+- the renderer encounters an artifact family whose publication semantics are not yet
+  implemented;
+- a provenance URL is not HTTP(S) or embeds URL credentials;
 - a renderer would need to fetch a remote book or embed source prose in order to build.
 
 External source URLs may be rendered as provenance links. They are never a build-time
-license to fetch or redistribute the referenced text.
+license to fetch or redistribute the referenced text. Artifact-controlled strings are
+HTML-escaped before insertion into generated pages.
 
 ## Claim rendering
 
@@ -103,16 +110,42 @@ The supported per-metric statuses for this v1 derivation are `inferred`, `reprod
 and `extension`. Therefore a manifest entry may claim `reproduced` only when **every**
 canonical metric row is `reproduced`; combining reproduced metrics with inferred or
 extension metrics yields `mixed`. The executable check lives in
-`scriptorium.publication.validate_compatibility_claim`, and a future renderer must call
-that validation rather than trusting the manifest string by itself.
+`scriptorium.publication.validate_compatibility_claim`, and the renderer calls that
+validation rather than trusting the manifest string by itself.
 
 The current showcase artifacts contain inferred FantLab-shaped metrics plus the
 Scriptorium sentence-count extension, so their derived manifest claim is `mixed`. The UI
-must still show the finer per-metric labels.
+still shows the finer per-metric labels.
 
 `benchmark_admissibility=not_admissible` and
-`corpus_admissibility=not_admissible` must be visible to users for illustrative excerpts.
-A pretty page must never turn a showcase slice into parity evidence.
+`corpus_admissibility=not_admissible` are visible to users for illustrative excerpts. A
+pretty page must never turn a showcase slice into parity evidence.
+
+## Renderer contract
+
+`scriptorium-static-site-v1` is a standard-library renderer whose only publication
+inputs are the manifest and canonical artifacts named by it. It never scans directories
+for publishable JSON and never dereferences provenance URLs.
+
+The renderer emits a deterministic root index, stable work pages, shared CSS and a
+non-canonical `build.json` receipt containing the publication-manifest SHA-256, each
+allow-listed artifact SHA-256 and the route generated for it. No timestamps or absolute
+local paths enter the output.
+
+Only explicitly selected derived/provenance fields are rendered. In particular, source
+selection fields such as excerpt boundary text are not copied into HTML simply because
+they exist in a canonical artifact. Numeric metric values must be finite JSON numbers or
+`null`, units must be present, and per-metric compatibility status must remain one of the
+supported evidence classes.
+
+Before replacing an existing output directory, the builder validates and renders the
+entire requested site in memory. A failing entry therefore leaves the previous output
+tree untouched instead of producing a partially refreshed publication. A successful
+build replaces the tree completely so stale pages cannot survive a manifest removal.
+Output symlinks, the repository root, and repository ancestors are rejected as build
+targets.
+
+See [`SITE_RENDERER.md`](SITE_RENDERER.md) for the local command and generated layout.
 
 ## Build determinism
 
@@ -129,7 +162,8 @@ the allow-list, and renderer code.
 
 ## Next implementation boundary
 
-A later `SITE` implementation unit may add the generator, static HTML/CSS/JavaScript and
-Pages workflow. That unit must consume this manifest rather than rediscovering files by
-directory glob, must test the fail-closed safety rules above, and must not weaken the
-repository's legal/provenance gates.
+After independent review of the renderer candidate, a later `SITE` unit may add and
+enable the GitHub Pages workflow. That unit must call the renderer against the canonical
+manifest, upload only the generated directory, pin reviewed action revisions, preserve
+the fail-closed legal/evidence boundary, and keep generated HTML out of repository state.
+Repository Pages settings and deployment are still disabled at this stage.

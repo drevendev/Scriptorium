@@ -1,0 +1,89 @@
+name: Scriptorium Pages
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/pages.yml"
+      - "scriptorium/**"
+      - "site/**"
+      - "showcase/**"
+      - "schemas/**"
+      - "tests/**"
+  push:
+    branches:
+      - master
+    paths:
+      - ".github/workflows/pages.yml"
+      - "scriptorium/**"
+      - "site/**"
+      - "showcase/**"
+      - "schemas/**"
+      - "tests/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scriptorium-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Verify and build static site
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Build canonical Pages artifact
+        run: python -m scriptorium.site_renderer --repo-root . --output build/site
+
+      - name: Verify deterministic rebuild
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m scriptorium.site_renderer --repo-root . --output build/site-check
+          diff -qr build/site build/site-check
+          rm -rf build/site-check
+          test -z "$(find build/site -type l -print -quit)"
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: build/site
+
+  deploy:
+    name: Deploy GitHub Pages
+    needs: build
+    if: >-
+      github.ref == 'refs/heads/master' &&
+      github.event_name != 'pull_request' &&
+      vars.SCRIPTORIUM_PAGES_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Verify GitHub Pages configuration
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Deploy GitHub Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

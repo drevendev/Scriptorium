@@ -1,23 +1,26 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 35
+STATE_REVISION: 36
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T13:02:00Z
-LAST_RESULT: SCRIP-SITE-002 independently reviewed and squash-merged as 73d4b8316f4b0a7fee94248b978732d0f5c1d4b5; the deterministic fail-closed work-showcase renderer is now on master.
-LAST_VERIFIED_PROGRESS: Independent review of repaired PR #29 head d225a2e8bdd9f5c126ab7fa226637dca6e05cbd5 reconstructed the repository execution surface from GitHub-published head contents and passed the complete standard-library test inventory 74/74. A real seed-manifest build using the exact canonical manifest and both exact showcase artifact bytes was run twice with byte-identical output; it produced only the root index, two stable work pages, shared CSS and build.json. Generated HTML was explicitly scanned for the source-selection prose carried by both Anna Karenina artifacts and contained none of it; `mixed` compatibility and `not_admissible` benchmark/corpus labels remained visible. Strict manifest-key and synchronized unknown-artifact-schema regressions passed. GitHub reported the PR strictly ahead of master (9/0), mergeable, with 0 commit statuses and 0 PR workflow runs, so hosted CI remains not configured rather than green. Native git checkout remains unavailable because the execution container cannot resolve GitHub/PyPI hosts. PR #29 was squash-merged and Issue #28 closed completed. GitHub Pages remains disabled. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T13:59:00Z
+LAST_RESULT: SCRIP-SITE-003 authored on PR #31; a gated GitHub Pages build/upload/deploy workflow is ready for independent exact-head review and must not be merged in the authoring run.
+LAST_VERIFIED_PROGRESS: Re-checked SCRIP-MORPH-003 first; native pylem/provider provenance remains non-executable because pylem is not installed and the execution container still cannot resolve GitHub/PyPI package hosts. SCRIP-SITE-003 therefore became the first dependency-satisfied queue unit. PR #31 adds a Python 3.13 standard-library verification and deterministic static-site build, uploads only disposable build/site output, pins current GitHub-owned Pages actions to reviewed full release-tag SHAs, keeps build permissions read-only with checkout credentials not persisted, and isolates pages:write/id-token:write to a master-only deployment job behind the explicit SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true repository-variable interlock. The workflow does not enable Pages or use secrets/PATs. Focused workflow contract checks pass 5/5 in the authoring environment. Independent hosted execution and review remain required before merge. GitHub Pages repository settings remain disabled/unconfigured by this unit. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-SITE-002
-ISSUE:          #28
-STATUS:         DONE
-PR:             #29
-MERGED_COMMIT:  73d4b8316f4b0a7fee94248b978732d0f5c1d4b5
-NEXT_ACTION:    Re-check SCRIP-MORPH-003 provider/runtime executability first. If native
-                pylem/provider execution is still unavailable, select SCRIP-SITE-003 and
-                add the reviewed GitHub Pages build/upload/deploy workflow without
-                weakening the merged publication boundary or committing generated HTML.
+UNIT_ID:        SCRIP-SITE-003
+ISSUE:          #30
+STATUS:         REVIEW
+PR:             #31
+MERGED_COMMIT:  —
+NEXT_ACTION:    Independently review the exact PR #31 head. Inspect the hosted pull-request
+                workflow run and jobs, require the complete standard-library suite and
+                deterministic build/upload job to pass, confirm deploy is skipped on PR,
+                verify full-SHA action pins/permissions/activation boundary, and only then
+                decide whether to merge. Do not enable Pages or set the deployment
+                interlock in the review unless separately justified as an administrator
+                effect after the code is merged.
 ```
 
 ## Current milestone gate
@@ -37,7 +40,7 @@ dependency is not executable.
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
 | P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked by unavailable native/provider execution environment |
-| P2 | SCRIP-SITE-003 | implementation | Add a reviewed GitHub Pages build/upload/deploy workflow over `scriptorium-static-site-v1`; keep generated output disposable and preserve fail-closed evidence/legal gates | SCRIP-SITE-002; renderer merged; repository Pages settings/deployment remain separate effects to verify |
+| P2 | SCRIP-SITE-003 | implementation | Add a reviewed GitHub Pages build/upload/deploy workflow over `scriptorium-static-site-v1`; keep generated output disposable and preserve fail-closed evidence/legal gates | SCRIP-SITE-002; authored on PR #31 and awaiting independent hosted review |
 
 ## Evidence already established
 
@@ -117,9 +120,9 @@ dependency is not executable.
 - FantLab homonym/prediction selection and production dictionary equivalence are not
   public. No first-result or guessed folding heuristic is accepted as compatibility.
 - Native pylem build/runtime verification is still `not_run`, not a package failure.
-- The 2026-09-13 SCRIP-SITE-002 review still found DNS unavailable for GitHub and PyPI
-  package hosts in the execution container. Connector access to GitHub remains healthy;
-  this does not constitute provider-runtime verification.
+- The 2026-09-13 SCRIP-SITE-003 selection re-check again found no installed pylem and DNS
+  unavailable for GitHub/PyPI package hosts in the execution container. Connector access
+  to GitHub remains healthy; this does not constitute provider-runtime verification.
 
 ### Provider-neutral POS metric surface
 
@@ -189,9 +192,16 @@ dependency is not executable.
   standard-library inventory and two deterministic real seed builds. The generated HTML
   contained no source-selection prose from either canonical showcase and preserved the
   public `mixed` / `not_admissible` evidence labels.
-- The Pages architecture uses a future custom GitHub Actions build/upload/deploy flow,
-  keeps generated HTML out of repository state, and treats the canonical JSON artifacts
-  plus manifest as the only publication inputs. Pages is not enabled yet.
+- PR #31 now proposes the first executable Pages workflow: PR/relevant master builds run
+  Python 3.13 tests, build and byte-compare the deterministic site, and upload only
+  `build/site`. All five GitHub-owned actions are full-SHA pinned to reviewed current
+  release tags; current configure/deploy action generations use Node 24.
+- The proposed deploy job is master-only, requires the explicit
+  `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` repository variable, targets the `github-pages`
+  environment, and alone receives `pages: write` and `id-token: write`. The workflow does
+  not use configure-pages privileged enablement, secrets or a PAT. Pages repository
+  configuration therefore remains a separate administrator effect after independent
+  review rather than being inferred from workflow presence.
 
 ## Known risks / blockers
 
@@ -233,17 +243,17 @@ dependency is not executable.
     precision or tie behavior.
 19. **Parity-corpus edition gap.** All five retained candidates remain below the M2
     source-edition-admissibility gate.
-20. **Hosted CI absent.** Commit statuses and PR workflow runs were absent on reviewed PR
-    #29 head, so CI remains not configured rather than green; independent reconstructed
-    full-suite and seed-build evidence is recorded.
+20. **Hosted CI absent historically.** Reviewed PR #29 had no hosted statuses/workflow
+    runs. PR #31 introduces the first hosted verification path and must be judged from its
+    actual exact-head run rather than assumed green from workflow syntax.
 21. **POS adjacency/position inference.** Sentence-bounded bigrams and all-sentence
     position denominators are evidence-based candidates, not established FantLab internals.
 22. **Detached provider provenance.** The POS aggregator binds text and supplied runtime
     candidates, but it still does not prove which binary/dictionary/config produced those
     candidates; provider execution must be pinned before benchmark integration.
-23. **Pages deployment not enabled.** The deterministic renderer is merged, but
-    workflow/action pinning, Pages repository settings and public deployment remain
-    separate reviewed work and must not be inferred from local generated output.
+23. **Pages deployment activation pending.** PR #31 contains a gated workflow candidate,
+    but repository Pages source/settings are not enabled by code and the explicit deploy
+    interlock must remain unset until independent workflow review succeeds.
 
 ## Run selection rule
 

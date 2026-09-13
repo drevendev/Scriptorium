@@ -104,10 +104,38 @@ The build is rejected when, among other cases:
 All artifact-controlled strings are HTML-escaped. Remote provenance URLs are rendered as
 links only; the builder never dereferences them.
 
-## Deployment boundary
+## GitHub Actions publication path
 
-This unit does **not** enable GitHub Pages and does not add a deployment workflow. A
-later reviewed unit may execute this renderer in GitHub Actions, upload `build/site` with
-the Pages artifact action, and deploy it to the `github-pages` environment. Generated
-HTML remains disposable output; the publication manifest and canonical JSON artifacts
-remain the only repository publication inputs.
+`.github/workflows/pages.yml` is the candidate publication workflow for the merged
+renderer. Pull requests and relevant pushes run the standard-library test suite under
+Python 3.13, build the site only through `scriptorium.site_renderer`, rebuild it into a
+second disposable directory and require the two trees to be byte-identical before the
+first `build/site` tree is uploaded as the Pages artifact.
+
+The build job has only `contents: read`, checkout credentials are not persisted, and
+GitHub-owned actions are pinned to reviewed full commit SHAs. The workflow currently
+pins `actions/checkout` v7.0.1, `actions/setup-python` v7.0.0,
+`actions/upload-pages-artifact` v5.0.0, `actions/configure-pages` v6.0.0 and
+`actions/deploy-pages` v5.0.1. The current configure/deploy generations use the Node 24
+action runtime.
+
+Deployment is intentionally narrower than build verification. The deploy job:
+
+- depends on the successful build job;
+- runs only for `refs/heads/master`, never for pull-request events;
+- additionally requires the repository variable
+  `SCRIPTORIUM_PAGES_DEPLOY_ENABLED` to equal the literal string `true`;
+- is the only job granted `pages: write` and `id-token: write`;
+- targets the `github-pages` environment;
+- runs `configure-pages` without its privileged `enablement` option before deploying the
+  already-built Pages artifact.
+
+The repository variable is a deliberate activation interlock, not evidence that Pages is
+configured. This workflow does **not** enable Pages, change repository Pages source
+settings, or use a secret/PAT to do so. An administrator must separately configure the
+repository to use GitHub Actions as its Pages source and then set the activation variable
+only after this workflow is independently reviewed. Until that happens, builds can prove
+the publication artifact while the deploy job remains skipped.
+
+Generated HTML remains disposable output; the publication manifest and canonical JSON
+artifacts remain the only repository publication inputs.

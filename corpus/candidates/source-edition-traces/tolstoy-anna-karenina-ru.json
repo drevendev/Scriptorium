@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "tolstoy-anna-karenina-ru",
-  "research_date": "2026-09-13",
+  "research_date": "2026-09-14",
   "fantlab": {
     "work_id": 270306,
     "analysis_url": "https://fantlab.ru/work270306/lp",
@@ -40,39 +40,57 @@
     "structure": {
       "kind": "composite_subpages",
       "parts": 8,
+      "part_chapter_counts": [34, 35, 32, 23, 33, 32, 31, 19],
       "chapter_subpages": 239,
       "index_revision_freezes_chapter_text": false
+    },
+    "frozen_candidate": {
+      "status": "frozen",
+      "revision_manifest": "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json",
+      "chapter_revision_count": 239,
+      "composition_profile": "scriptorium-wikisource-composite-v1",
+      "extraction_profile": "scriptorium-wikisource-body-v1",
+      "chapter_separator": "\\n\\n",
+      "character_count_including_spaces": 1705605,
+      "utf8_byte_count": 3072993,
+      "raw_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+      "normalization_profile": "scriptorium-text-v1",
+      "normalized_character_count_including_spaces": 1705605,
+      "normalized_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+      "source_text_committed": false,
+      "evidence_run": "https://github.com/drevendev/Scriptorium/actions/runs/34785638797",
+      "evidence_artifact_id": 10326711163,
+      "evidence_artifact_sha256": "9155f8d4d39cb4fc1ac0b8c9188626efb84b1183d3d1cc32349d943b986052aa"
     }
   },
   "immutable_identity": {
     "status": "partial",
+    "public_candidate_status": "frozen",
     "frozen_components": [
       "Wikisource work-index revision 3829834",
-      "bibliographic source statement naming the Nauka 1970 transcription source"
+      "all 239 chapter revision IDs, timestamps and MediaWiki SHA-1 identities in the committed revision manifest",
+      "scriptorium-wikisource-body-v1 extraction contract",
+      "scriptorium-wikisource-composite-v1 canonical part/chapter order and chapter separator",
+      "composite raw and scriptorium-text-v1 normalized SHA-256 identity"
     ],
     "unfrozen_components": [
-      "the 239 chapter-subpage revision IDs",
-      "a canonical chapter extraction and concatenation policy",
-      "the exact composite source bytes",
-      "raw SHA-256",
-      "normalized SHA-256"
+      "the relationship between FantLab's uploaded analyzer input and this frozen public-domain candidate"
     ],
-    "reason": "The permanent link freezes the work index but does not freeze the separately stored chapter text revisions."
+    "reason": "The public Wikisource/FEB candidate is now reproducibly frozen, but FantLab does not disclose the edition or bytes of the uploaded text behind its 2022 analysis."
   },
   "admissibility": {
     "fantlab_source_edition_match": "unknown",
-    "diagnostic_comparison_admissible": false,
+    "diagnostic_comparison_admissible": true,
     "m2_parity_admissible": false,
-    "status": "not_admissible",
+    "status": "diagnostic_only",
     "reasons": [
-      "The legal public transcription is not yet frozen as a complete composite text.",
-      "FantLab does not disclose the edition or bytes of the uploaded text behind the 2022 analysis.",
+      "The legal public transcription is frozen as a 239-revision composite with deterministic extraction and composite hashes.",
+      "FantLab does not disclose the edition or bytes of the uploaded text behind the 2022 analysis, so comparison against this candidate cannot establish parity by itself.",
       "The FantLab excerpt download observed on 2026-09-13 redirected to a LitRes trial endpoint and provides no evidence that it is the analyzer input."
     ],
     "next_evidence": [
-      "Construct a revision-pinned manifest for all 239 Wikisource chapter subpages that comprise the Nauka 1970/FEB transcription.",
-      "Freeze a canonical extraction and concatenation order, acquire those exact revision texts under the recorded legal basis, and compute raw and normalized SHA-256 plus character count.",
-      "Run a field-by-field Scriptorium diagnostic comparison against FantLab only after the candidate bytes are frozen; keep the result diagnostic while the FantLab ingestion source remains unproven.",
+      "Run Scriptorium deterministic metrics against the frozen 1,705,605-character candidate and compare implemented fields to the FantLab reference as a diagnostic-only benchmark.",
+      "Investigate the 12,958-character difference between the frozen extracted candidate length and FantLab's displayed 1,692,647-character count without assuming that either surface uses identical counting or source bytes.",
       "Promote source-edition match or M2 parity evidence only if independent evidence ties FantLab's uploaded analysis text to the same frozen source."
     ]
   }

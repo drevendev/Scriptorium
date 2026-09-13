@@ -1,10 +1,10 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 24
+STATE_REVISION: 25
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-12T23:04:00Z
-LAST_RESULT: SCRIP-METRIC-002 implemented deterministic vocabulary/rolling-window metrics, explicit dictionary dependency identity and benchmark gates; PR #23 is ready for independent review.
-LAST_VERIFIED_PROGRESS: Issue #22 owns the vocabulary slice. The authored candidate adds six FantLab-shaped vocabulary rows under scriptorium-vocabulary-v1, versions the aggregate artifact as scriptorium-metrics-v3 / scriptorium-deterministic-metrics-v3 with 29 rows total, and extends the benchmark mapping from 22 to 28 FantLab IDs. A local reconstruction covering the existing regression surface plus the new vocabulary cases passed 44/44 checks, and the Draft 2020-12 v3 schema accepted artifacts with both null and explicit dictionary dependencies. Direct branch cloning was unavailable because the execution container could not resolve github.com; exact published-head verification is therefore delegated to the independent review run. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-13T00:46:47Z
+LAST_RESULT: SCRIP-METRIC-002 repaired the PR #23 Unicode dictionary-canonicalization blocker; the unit remains in REVIEW for an independent exact-head verification.
+LAST_VERIFIED_PROGRESS: The repair makes scriptorium-vocabulary-v1 lexical identity NFC + casefold on both text and explicit-dictionary paths, so canonically equivalent spellings share membership and dependency identity. Two regressions cover composed/decomposed dictionary-set+digest equality and decomposed-dictionary membership against equivalent text. A focused reconstruction bound to the repaired published vocabulary/text source passed 7/7 Unicode repair assertions. The full repository suite and v3 schema have not been rerun on the repaired final head in this authoring run; hosted CI remains not configured. M2 remains 0/5.
 
 ## Current unit
 
@@ -14,9 +14,10 @@ ISSUE:          #22
 STATUS:         REVIEW
 BRANCH:         feature/22-vocabulary-metrics
 PR:             #23
-NEXT_ACTION:    Independently review the final PR #23 head, reconstruct/run the exact
-                published test surface, validate the v3 schema and dictionary admission
-                gates, and merge only if no blocker remains.
+NEXT_ACTION:    Independently review the repaired PR #23 exact head, run the full
+                repository suite and v3 schema validation, confirm the Unicode
+                canonicalization regressions plus dictionary admission gates, and
+                merge only if no blocker remains.
 ```
 
 ## Current milestone gate
@@ -129,8 +130,9 @@ Ordered highest first among unblocked work after the current review closes.
   non-dictionary vocabulary, and UASZ-N as unique dictionary words within N consecutive
   words after repeat removal and dictionary filtering; production lexical normalization,
   dictionary identity/version and scalar window/aggregation details are not published.
-- `scriptorium-vocabulary-v1` uses Unicode case-folded text-profile tokens as an explicit
-  inferred lexical identity. It does not lemmatize or fold `ё` into `е`.
+- `scriptorium-vocabulary-v1` uses Unicode NFC + case-folded tokens as an explicit
+  inferred lexical identity on both the text and explicit-dictionary paths. It does not
+  lemmatize or fold `ё` into `е`.
 - `scriptorium-metrics-v3` adds six vocabulary rows. Unique words require no external
   dictionary; active dictionary/non-dictionary and UASZ values remain `null` until an
   explicit dictionary lexeme set plus profile ID is supplied.
@@ -144,6 +146,11 @@ Ordered highest first among unblocked work after the current review closes.
   from `pass`/`fail` while FantLab dictionary identity/version is unproven; missing active
   integer actuals are `not_run`, while missing UASZ values remain `unresolved` under the
   frozen `unresolved_precision` comparison-v1 rule.
+- Independent review found dictionary entries skipped NFC before case-folding, so
+  canonically equivalent spellings could diverge in membership and dependency digest.
+  The repaired `normalize_lexeme()` applies NFC before case-folding for every caller; two
+  regressions prove composed/decomposed dictionary identities share a digest and match
+  canonically equivalent text tokens.
 
 ## Known risks / blockers
 
@@ -195,7 +202,7 @@ Ordered highest first among unblocked work after the current review closes.
     tying its source transcription to FantLab's exact analyzed edition/bytes. M2 remains
     blocked until that evidence is found or the user explicitly changes the gate.
 18. **Vocabulary lexical/window inference.** FantLab does not publish exact lexical
-    normalization, UASZ window step, edge policy or scalar aggregation. Case-folded
+    normalization, UASZ window step, edge policy or scalar aggregation. NFC + case-folded
     surface forms and step-1 complete-window means remain inferred candidates.
 19. **Vocabulary dictionary identity gap.** FantLab's production dictionary/version is
     not established. An arbitrary explicit dictionary is reproducible input only and

@@ -263,3 +263,31 @@ code changes remain in Git history and their issues/PRs.
   identities and distinct POS bigrams. The repaired focused morphology suite passes
   10/10 and a generated artifact validates against the repaired schema; independent
   exact-head/full-suite review remains required before merge.
+
+## 2026-09-13 — Static GitHub Pages publication contract candidate
+
+- Re-checked `SCRIP-MORPH-003` before selecting new work. Native/provider verification
+  remains `not_run` because the current execution environment still cannot resolve
+  GitHub/PyPI package hosts; this is a scoped environment blocker, not a pylem failure.
+- Added `scriptorium-publication-manifest-v1` as an explicit allow-list between canonical
+  repository artifacts and the future public Pages renderer. JSON elsewhere in the
+  repository is not implicitly public just because it exists.
+- Seeded the manifest with the two existing *Anna Karenina* showcase slices, preserving
+  their historical metric schema versions and explicit non-corpus/non-benchmark status.
+- Froze stable URL slugs, repository-relative artifact references, publication status,
+  benchmark/corpus admissibility, compatibility claim, and `source_text_included=false`
+  in a Draft 2020-12 schema.
+- Defined fail-closed publication rules: paths may not escape the repository, an indexed
+  showcase must say source text is not committed, and build-time remote book fetching is
+  forbidden. Pages remains a renderer of derived/public metadata, not a redistribution
+  channel for source prose.
+- Chose a future custom GitHub Actions Pages flow based on current official GitHub
+  guidance: checkout/build, upload the generated static directory as a Pages artifact,
+  then deploy with the Pages deployment action. Generated HTML is disposable output and
+  will not be committed as a second source of truth.
+- Deliberately did not enable Pages or add a deployment workflow in this architecture
+  unit. Deployment settings, action pinning and environment protection remain later
+  reviewed work.
+- Added standard-library contract checks for unique IDs/slugs, repo-relative paths,
+  canonical showcase label agreement and the no-source-prose boundary. The seed manifest
+  and schema also pass Draft 2020-12 validation locally.

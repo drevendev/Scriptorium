@@ -1,287 +1,105 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 42
+STATE_REVISION: 44
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T20:50:00Z
-LAST_RESULT: SCRIP-REPRO-003 independently reviewed and squash-merged as 26df4eb31455ade653f3cd5331213537cf1acd4f; the Anna Karenina source identity remains partial, all diagnostic/M2 admissibility gates remain fail-closed, and M2 remains 0/5 source-matched works.
-LAST_VERIFIED_PROGRESS: Independent repaired-head review of PR #36 exact head 6ccdf1c4fbbd67622bdf8bcfa591d745cb9100ac confirmed the branch was strictly ahead of master by 8 commits and behind by 0, both machine-readable JSON files parse, and changed paths contain only candidate/provenance metadata plus project documentation/state rather than source prose. Fresh 2026-09-13 evidence checks reconfirmed FantLab's 19 Sep 2022 analysis at 1,692,647 characters / 253,275 words, the work-page TXT redirect through getwork74152506.txt.zip to a LitRes trial with art=74152506, the creator's uploaded-text-corpus distinction, and Wikisource FEB/Nauka 1970 provenance, public-domain notice, index oldid 3829834 and 239 chapter subpages. No PR workflow run exists for this corpus/docs/project-only head; that is expected under publication-scoped CI and was not treated as a green-CI claim. PR #36 was squash-merged as 26df4eb31455ade653f3cd5331213537cf1acd4f and Issue #35 closed completed.
+LAST_COMMITTED_RUN_AT: 2026-09-13T23:02:00Z
+LAST_RESULT: SCRIP-REPRO-004 review blocker repaired in PR #38. The expanded network-capture receipt and canonical packed source-free manifest now have distinct versioned contracts, with deterministic checked-in pack/decode logic and a 239-chapter ordered identity digest. The repair is authored but not self-approved; M2 remains 0/5.
+LAST_VERIFIED_PROGRESS: Repair code head 1d9a20ff90bd705f0bb2c75bdf44518bad765b5c removed the same-version/two-shapes ambiguity by reserving `scriptorium-source-revision-manifest-v1` for the expanded capture receipt and `scriptorium-source-revision-packed-manifest-v1` for the canonical source-free artifact. The packed manifest binds the ordered title/revision/timestamp/MediaWiki-SHA1 projection to SHA-256 fea96e084c769dfdec3a5fd55cbce34b061336441ba6edec70ebc830f5f83779 derived from research artifact 10326711163. Hosted run 34788366315 passed the standard-library test step, canonical site build, byte-identical rebuild and artifact upload; deploy was skipped. Artifact 10326723971 matched GitHub SHA-256 a269d84e15a5b0d8789f23b8cf2f284e9641350f516d0eb62c6f23650384c3d0 and contained only the normal generated site tree. FantLab source-edition match remains unknown, diagnostic comparison remains allowed only as diagnostic evidence, and M2 parity remains false.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-REPRO-003
-ISSUE:          #35
-STATUS:         DONE
-PR:             #36
-MERGED_COMMIT:  26df4eb31455ade653f3cd5331213537cf1acd4f
-NEXT_ACTION:    Re-check SCRIP-MORPH-003 provider/runtime executability first. If native
-                pylem/provider execution remains unavailable, select SCRIP-REPRO-004 to
-                revision-pin all 239 Anna Karenina Wikisource chapter subpages, define
-                canonical extraction/concatenation, and freeze raw/normalized candidate
-                identity before any diagnostic comparison. Keep M2 at 0/5 until FantLab
-                analyzer-input identity is independently tied to the frozen source.
+UNIT_ID:        SCRIP-REPRO-004
+ISSUE:          #37
+STATUS:         REVIEW
+PR:             #38
+MERGED_COMMIT:  none
+NEXT_ACTION:    Independently review PR #38 exact repaired final head. Verify the
+                expanded-vs-packed contract split, deterministic 239-identity
+                pack/decode regressions, hosted exact-head checks/artifact boundary,
+                and unchanged FantLab source-edition/M2 fail-closed gates. Merge only
+                if those checks pass. After merge, re-check SCRIP-MORPH-003
+                executability; if still blocked, SCRIP-REPRO-005 may run diagnostic
+                deterministic metrics against the frozen candidate without treating
+                resemblance as parity.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 closes when the benchmark harness can compare expected vs actual
-FantLab-visible deterministic metrics field-by-field while preserving text and
-configuration provenance. General, dialogue, vocabulary and punctuation families are
-executable inferred candidates. POS aggregation now has a versioned provider-neutral
-candidate artifact, but native/provider execution identity and benchmark-harness wiring
-remain separate work; the M1 gate is therefore still open.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral candidate artifact, but native pylem/provider execution identity remains unverified. The benchmark harness can compare implemented deterministic fields, but the M2 reproduction gate still requires at least five legally usable, source-matched works and currently remains **0/5**.
 
 ## Queue
 
-Evaluate rows in priority order after checking their dependencies; skip a row while its
-dependency is not executable.
+Resolve the current REVIEW unit before selecting new work. Afterwards evaluate rows in priority order and skip dependencies that are not executable.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked by unavailable native/provider execution environment |
-| P2 | SCRIP-REPRO-004 | research / benchmark | Freeze the Anna Karenina public candidate bytes: revision-pin all 239 Wikisource chapter subpages, define canonical extraction/concatenation, and record raw/normalized digests plus character count without committing full text | SCRIP-REPRO-003 merged; requires access to immutable Wikisource revisions and preserves diagnostic/M2 fail-closed gates |
+| P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked because the execution container has no installed pylem and cannot resolve required GitHub/PyPI package hosts |
+| P2 | SCRIP-REPRO-004 | research / benchmark | Freeze the Anna Karenina public candidate as a 239-revision source-free composite with deterministic extraction/composition and immutable identity | Repaired in PR #38; independent exact-head review required |
+| P3 | SCRIP-REPRO-005 | benchmark / reproduction | Run implemented deterministic Scriptorium metrics against the frozen Anna Karenina candidate and record field-by-field diagnostic deltas, including investigation of the character-count gap | SCRIP-REPRO-004 merged; diagnostic-only while FantLab analyzer-input identity remains unproven |
 
 ## Evidence already established
 
-### FantLab / benchmark surface
+### FantLab / benchmark boundary
 
-- FantLab's public methodology describes sentence/dialogue measures, unique/dictionary
-  vocabulary and 3k/10k/100k windows, POS frequencies/bigrams/positions, punctuation,
-  character bigrams, inter-word character features and later distinguishing-word
-  frequencies. Corrective coefficients and some implementation details are unpublished;
-  resemblance is never treated as parity.
-- `fantlab-2022-v1` is the frozen compatibility contract. The first captured numeric
-  reference is the 19 September 2022 `Шутиха` analysis in
-  `benchmarks/fantlab/work488.json`.
-- `scriptorium-benchmark-v1` records raw/normalized hashes, edition/source/legal
-  provenance, analyzer configuration, expected/actual values and raw deltas.
-- Exact integer comparisons can become `pass`/`fail` only with `edition_match=exact`,
-  non-empty edition identity, source reference, legal basis and harness-computed raw
-  SHA-256. Otherwise numeric resemblance remains `unresolved`.
-- Decimal/rate comparisons remain `unresolved_precision` until FantLab display precision
-  and tie-breaking are independently established. Captured JSON numeric lexemes are
-  retained as display evidence without inferring precision from visible digits.
-- The first parity-corpus seed contains five candidate-eligible full novels, but none has
-  evidence tying the public transcription to FantLab's exact analyzed source edition.
-  M2 therefore remains 0/5 source-matched works.
-- `SCRIP-REPRO-003` records a machine-readable source trace for `Анна Каренина`.
-  FantLab's analysis surface does not expose its source edition/bytes; creator statements
-  describe an uploaded-text analyzer corpus, so bibliographic editions are not accepted
-  as input identity. The legal Wikisource/FEB transcription names Nauka 1970 and freezes
-  work-index revision 3829834, but its 239 chapter subpages still require their own
-  revision manifest and deterministic composition before candidate bytes can be hashed.
-  The FantLab TXT excerpt redirect observed on 2026-09-13 resolved through
-  `getwork74152506.txt.zip` to a LitRes trial with `art=74152506`; the trace records this
-  as point-in-time evidence and explicitly excludes it as source-match evidence.
-  Diagnostic and M2 admissibility therefore both remain false.
+- FantLab's public methodology exposes deterministic/general, dialogue, vocabulary, POS and punctuation surfaces but acknowledges unpublished corrective coefficients/know-how. Similarity is never parity by itself.
+- `fantlab-2022-v1` is the frozen compatibility contract. `scriptorium-benchmark-v1` records source/legal identity, hashes, analyzer configuration, expected/actual values and deltas.
+- Exact integer `pass`/`fail` requires admissible exact source identity. Decimal/rate comparisons remain `unresolved_precision` until formatting/rounding behavior is independently established.
+- The retained five-work parity seed remains 0/5 source-matched. A frozen public candidate may support diagnostics without satisfying M2.
 
-### Deterministic text / dialogue / metric surface
+### Anna Karenina source identity
 
-- `scriptorium-text-v1` normalizes CRLF/CR to LF and Unicode to NFC, then emits
-  deterministic word/sentence candidate spans with offsets into normalized text. It is
-  explicitly `inferred`, not reproduced.
-- `scriptorium-dialogue-v1` uses literal normalized LF paragraph boundaries and an
-  explicit leading dash+whitespace rule. Unicode U+2028, U+0085 and VT do not create
-  false paragraph boundaries. Candidate author remarks use an inspectable alternating
-  internal dash-separator rule.
-- `scriptorium-punctuation-v1` covers all 14 observed FantLab punctuation fields with a
-  declared greedy non-overlap policy and explicit dash/quote/ellipsis handling.
-- `scriptorium-metrics-v3` / `scriptorium-deterministic-metrics-v3` contains 29 rows:
-  28 FantLab-shaped general/dialogue/vocabulary/punctuation fields plus the Scriptorium
-  sentence-count extension.
-- The main benchmark harness currently maps those 28 FantLab IDs. POS is deliberately
-  not injected into that artifact until a provider execution/configuration identity is
-  pinned rather than supplied as an unverified detached candidate matrix.
+- FantLab work 270306 reports its 19 September 2022 analysis as 1,692,647 characters and 253,275 words, but the public surface does not disclose analyzer-input edition or bytes.
+- `corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.json` keeps `fantlab_source_edition_match=unknown` and `m2_parity_admissible=false`.
+- Russian Wikisource identifies the public transcription via FEB as Tolstoy, *Anna Karenina*, Nauka 1970, pp. 5–684 and marks the literary work public domain. The work is an eight-part, 239-chapter composite.
+- `scriptorium/wikisource_freeze.py` defines the deterministic source-research contract. It fetches explicit chapter revisions, accepts only the narrowly observed Wikisource wrapper/template variants, fails closed on unsupported markup, strips navigation/notes/ref wrappers, and composes chapters in fixed part/chapter order with `\n\n` separators.
+- The expanded captured receipt uses `scriptorium-source-revision-manifest-v1`; the canonical packed source-free artifact uses distinct `scriptorium-source-revision-packed-manifest-v1`. `scriptorium/source_revision_manifest.py` deterministically packs and decodes the canonical representation rather than letting one version string denote two shapes.
+- `corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json` records all 239 revision IDs, timestamp offsets and MediaWiki SHA-1 identities in packed source-free form plus the composite identity. Its `captured_identity_sha256` binds the ordered title/revision/timestamp/SHA-1 projection to research artifact 10326711163. Novel prose is not committed.
+- Frozen composite identity: 1,705,605 characters including spaces; 3,072,993 UTF-8 bytes; raw SHA-256 and `scriptorium-text-v1` normalized SHA-256 both `1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`.
+- The frozen candidate is 12,958 characters longer than FantLab's displayed count. This is a diagnostic fact, not proof of source mismatch or counting behavior; both source bytes and FantLab normalization/counting details remain potentially different.
+- `diagnostic_comparison_admissible=true` now means deterministic comparison may run against this reproducible public candidate. It does **not** mean FantLab source identity is known.
 
-### Vocabulary profile
+### Deterministic analyzer surface
 
-- `scriptorium-vocabulary-v1` uses Unicode NFC followed by `casefold()` as its explicit
-  inferred lexical identity. It does not lemmatize and does not fold `ё` into `е`.
-- `fantlab.vocabulary.unique_words` is available without an external dictionary.
-  Active dictionary/non-dictionary counts and UASZ-3000/10000/100000 remain `null`
-  unless an explicit dictionary lexeme collection and non-empty profile ID are supplied.
-- Explicit dictionaries are normalized/deduplicated and bound to profile ID, canonical
-  normalized-set SHA-256 and lexeme count. This establishes reproducible dependency
-  identity but does not claim equivalence to FantLab's production dictionary.
-- UASZ v1 is an inferred candidate using every complete contiguous N-token window with
-  step 1, dictionary filtering, rolling unique-count maintenance and arithmetic mean;
-  incomplete tails do not contribute.
-- Dictionary-dependent benchmark rows cannot become `pass`/`fail` while FantLab's
-  production dictionary identity/version is unproven. Missing integer dictionary actuals
-  are `not_run`; missing UASZ values remain `unresolved` under the frozen
-  `unresolved_precision` rule.
-- Independent review found and repaired a Unicode canonicalization defect in the initial
-  dictionary path. The final implementation NFC-normalizes inside `normalize_lexeme()`;
-  regressions prove composed/decomposed spellings share membership and dependency digest.
-- Independent repaired-head review of PR #23 passed 46/46 standard-library tests under
-  Python 3.13.5 and validated generated v3 artifacts against Draft 2020-12 schema rules.
+- `scriptorium-text-v1` provides deterministic NFC/newline normalization and word/sentence candidate spans; compatibility remains inferred.
+- `scriptorium-dialogue-v1`, `scriptorium-punctuation-v1`, `scriptorium-vocabulary-v1`, `scriptorium-metrics-v3` and `scriptorium-deterministic-metrics-v3` provide the currently implemented general/dialogue/vocabulary/punctuation surface.
+- Dictionary-dependent vocabulary values remain non-parity because FantLab's production dictionary identity is unknown.
+- `scriptorium-pos-v1` / `scriptorium-pos-metrics-v1` provides provider-neutral POS aggregation with explicit unresolved categories and text/runtime identity. Native pylem provider provenance is still `not_run`.
 
-### Morphology compatibility research
+### Morphology compatibility
 
-- `pylem==0.0.18` is the selected AOT-lineage compatibility candidate; the repository
-  records the package/sdist identity and pinned `morph_dict` revision.
-- Pinned pylem calls `SetUseNationalConstants(false)`, so runtime POS strings use Latin
-  constants. Fifteen runtime strings map unambiguously to observed FantLab buckets.
-- Noun `С` and cardinal numeral `ЧИСЛ` both render as runtime `N`; the public Python
-  result does not expose a source discriminator, so the collision remains unresolved.
-- `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` remain distinct
-  runtime categories with no proven standalone FantLab bucket/folding rule.
-- FantLab homonym/prediction selection and production dictionary equivalence are not
-  public. No first-result or guessed folding heuristic is accepted as compatibility.
-- Native pylem build/runtime verification is still `not_run`, not a package failure.
-- The 2026-09-13 SCRIP-REPRO-003 selection re-check again found no installed pylem and
-  DNS unavailable for GitHub/PyPI package hosts in the execution container. Connector
-  access to GitHub remains healthy; this does not constitute provider-runtime verification.
-
-### Provider-neutral POS metric surface
-
-- `scriptorium-pos-v1` accepts exactly one runtime-analysis sequence per deterministic
-  Scriptorium word token and binds the artifact to `scriptorium-text-v1`, SHA-256 of the
-  normalized UTF-8 text, a caller-supplied runtime profile, the canonical candidate-matrix
-  SHA-256 and the pinned AOT/pylem mapping contract.
-- Independent review proved the runtime-candidate digest alone was insufficient: two
-  texts with identical word/sentence counts and the same candidate matrix can have
-  different sentence boundaries and therefore different bigram/position metrics. The
-  repaired schema freezes both text profile and normalized-text identity.
-- A token is defined only when every candidate uses one of the 15 direct runtime strings
-  and all candidates map to the same displayed FantLab bucket. Empty analyses, runtime
-  `N`, unresolved extra categories, unknown codes and cross-bucket homonyms are undefined.
-- Distribution output includes defined/undefined word counts/rates and every one of the
-  17 displayed FantLab bucket counts and percentages of defined words. Service-word
-  aggregation stays explicit `unresolved` null data rather than a guessed POS fold.
-- The POS-bigram candidate emits all 17x17 ordered cells, counts only resolved adjacent
-  tokens inside the same Scriptorium sentence candidate and reports raw count plus
-  occurrences per 1000 total Scriptorium word tokens. Undefined tokens break pairs.
-- Sentence-position output emits positions 1..20. Based on FantLab's public “randomly
-  selected sentence” wording, every cell uses all Scriptorium sentence candidates as
-  denominator; short sentences and undefined tokens contribute zero to the numerator.
-- Bigram sentence-bounding and position denominator choices are explicitly inferred;
-  they require source-matched benchmark discrimination before any reproduced claim.
-- `scriptorium-pos-metrics-v1` freezes a 17-bucket distribution, complete 17x17 bigram
-  matrix and 20x17 position surface. Independent repaired-head review of PR #25 passed
-  the full 56/56 standard-library suite and Draft 2020-12 validation of generated POS
-  artifacts, including the text-segmentation identity regression.
+- `pylem==0.0.18` remains the selected AOT-lineage compatibility candidate, pinned with its source/dictionary provenance in repository records.
+- Pinned pylem exposes 15 runtime strings with direct candidate mappings. Runtime `N` collapses noun/cardinal; several extra categories and FantLab homonym/prediction behavior remain unresolved.
+- No heuristic is accepted merely to force the runtime into FantLab's displayed buckets.
+- Native provider execution remains infrastructure-blocked in the current execution container; this is not a pylem failure.
 
 ### Public repository representation
 
-- README/docs expose deterministic text, dialogue, punctuation, vocabulary and POS
-  aggregation capabilities while labeling FantLab-shaped behavior as inferred.
-- `docs/POS_MODEL.md` explains the conservative pylem runtime boundary, unresolved
-  noun/cardinal collision, text/runtime identity, bigram candidate and sentence-position
-  denominator.
-- Two derived *Anna Karenina* excerpt showcases are published with exact Wikisource
-  revision provenance, hashes and metrics only; source prose is not committed. Both are
-  explicitly illustrative, below 300,000 characters and inadmissible for corpus/parity.
-- Existing showcase artifacts preserve the metric profile under which they were
-  generated. Vocabulary/POS values were not fabricated from historical hashes; a future
-  richer showcase must re-read a provenance-bound source selection and record provider
-  execution identity where morphology is involved.
-- `scriptorium-publication-manifest-v1` is merged as an explicit Pages allow-list rather
-  than directory discovery. The seed manifest indexes exactly the two existing showcase
-  artifacts, freezes stable slugs and marks source text absent plus both benchmark/corpus
-  admissibility as false.
-- Manifest-level compatibility claims are checked against canonical per-metric
-  `compatibility_status` values by executable fail-closed derivation. The two historical
-  showcase artifacts derive to `mixed`; a manifest-only upgrade to `reproduced` is a
-  validation error rather than publishable presentation metadata.
-- `scriptorium-static-site-v1` is merged. It consumes only the explicit manifest,
-  implements stable work-showcase routes, revalidates canonical evidence/admissibility/
-  source-text labels, renders selected derived and provenance fields with HTML escaping,
-  emits exact input digests, and does not fetch remote source material. Reserved future
-  artifact kinds fail closed.
-- The renderer enforces the exact v1 manifest top-level/entry key sets and allows only
-  the two current showcase artifact contracts (`scriptorium-deterministic-metrics-v1`
-  and `scriptorium-deterministic-metrics-v2`). Unknown future schema strings fail closed
-  even when the manifest and artifact agree, so publication semantics cannot expand by
-  accident.
-- The renderer validates/renders the full requested site before replacing output; a
-  failed entry leaves the previous tree untouched, while a successful rebuild removes
-  stale files. Generated `/build/` output is ignored and remains non-canonical.
-- Independent repaired-head review of PR #29 passed the reconstructed full 74/74
-  standard-library inventory and two deterministic real seed builds. The generated HTML
-  contained no source-selection prose from either canonical showcase and preserved the
-  public `mixed` / `not_admissible` evidence labels.
-- `SCRIP-SITE-003` is merged. The Pages workflow runs Python 3.13 tests, builds and
-  byte-compares the deterministic site, and uploads only `build/site`. All five
-  GitHub-owned actions are full-SHA pinned to independently verified official release
-  tags; pinned configure/deploy actions use Node 24.
-- Exact-head PR run 34761422729 passed 79/79 tests, deterministic build/upload and kept
-  deployment skipped. Downloaded artifact 10319295813 matched GitHub's SHA-256 and
-  contained only generated site output. The first master push run 34763894163 also
-  completed successfully with deploy skipped because the activation variable is unset.
-- The deploy job is master-only, requires the explicit
-  `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` repository variable, targets the `github-pages`
-  environment, and alone receives `pages: write` and `id-token: write`. The workflow does
-  not use configure-pages privileged enablement, secrets or a PAT. Pages repository
-  configuration therefore remains a separate administrator effect.
-- `SCRIP-SITE-004` is merged as `1c740d1cd4e5149b3ce7d6b270becce2cc4ade31`.
-  Both PR and master-push hosted runs passed the complete 80-test suite, deterministic
-  build and artifact upload, with deploy skipped while activation remains unset. Pages
-  PR/master filters now cover every canonical renderer root (`showcase/**`,
-  `benchmarks/**`, `public-artifacts/**`), and the regression derives that requirement
-  directly from `_ALLOWED_ARTIFACT_ROOTS`.
+- Two derived Anna Karenina excerpt showcases remain public, explicitly short/non-corpus/non-parity, with no source prose committed.
+- `scriptorium-publication-manifest-v1`, `scriptorium-static-site-v1` and the gated Pages build/upload workflow are merged and fail closed on unsupported publication semantics.
+- Publication triggers cover all renderer-supported canonical roots. Build/upload has passed hosted checks on PR/master; deployment remains intentionally disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` and repository Pages administration is a separate owner/admin effect.
+- SCRIP-REPRO-004 does not change public Pages content or activate deployment.
 
 ## Known risks / blockers
 
-1. **Exact source edition risk.** FantLab does not necessarily identify the exact bytes or
-   edition behind a published analysis. Parity requires a traceable source match.
-2. **Hidden-algorithm risk.** FantLab acknowledges unpublished corrective coefficients
-   and know-how; source-matched deltas must drive revisions rather than speculation.
-3. **Text-boundary inference.** Exact FantLab normalization, tokenization, abbreviation and
-   sentence-boundary behavior remain unknown.
-4. **General-metric denominator inference.** Character/token/sentence denominator details
-   are not proven equivalent to FantLab.
-5. **Punctuation inference.** Overlap, Unicode glyph normalization and parenthesis rules
-   remain inferred candidates.
-6. **Dialogue inference.** Paragraph markers, embedded author-remark grammar, quoted speech
-   and scalar denominators remain unproven.
-7. **Vocabulary lexical/window inference.** Exact lexical normalization, UASZ step/edge
-   policy and scalar aggregation are not public.
-8. **Vocabulary dictionary identity gap.** FantLab's production dictionary/version is
-   unknown; arbitrary explicit dictionaries are reproducible input only.
-9. **Runtime POS collision.** Pinned pylem collapses noun/cardinal to runtime `N` on the
-   public adapter surface.
-10. **Extra POS folding unresolved.** Several AOT runtime categories have no proven
-    observed FantLab bucket mapping.
-11. **Morphology drift.** Pinned pylem/AOT dictionary/source equivalence to FantLab 2022
-    has not been established.
-12. **Morphology ambiguity.** FantLab homonym/prediction-selection policy is not public.
-13. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
-    verified network-enabled runtime; the current execution environment still lacks DNS
-    for required package/source hosts.
-14. **Copyright risk.** Web accessibility, including Author.Today/fanfiction, is not a
-    license; work-specific rights evidence remains mandatory.
-15. **Scheduler serialization unverified.** Re-read refs/state before every write and do
-    not overwrite a newer state revision.
-16. **External mode controller unverified.** The authorized deterministic selection ladder
-    is operative, but no independent selection-receipt mechanism has been proven.
-17. **Display/cache surface drift.** FantLab summary/detail surfaces may round or cache
-    differently; exact source surface must be captured with benchmark expectations.
-18. **Display precision unresolved.** Visible decimal digits do not establish formatting
-    precision or tie behavior.
-19. **Parity-corpus edition gap.** All five retained candidates remain below the M2
-    source-edition-admissibility gate. Anna Karenina now has a partial identity trace, but
-    its 239 chapter revisions and FantLab ingestion-source relationship remain unfrozen.
-20. **Hosted verification is publication-scoped.** The Pages workflow now has tested
-    trigger coverage for every renderer-supported canonical publication root, but it is
-    not a general repository CI replacement.
-21. **POS adjacency/position inference.** Sentence-bounded bigrams and all-sentence
-    position denominators are evidence-based candidates, not established FantLab internals.
-22. **Detached provider provenance.** The POS aggregator binds text and supplied runtime
-    candidates, but it still does not prove which binary/dictionary/config produced those
-    candidates; provider execution must be pinned before benchmark integration.
-23. **Pages deployment activation pending.** The reviewed workflow and trigger coverage
-    are merged, but the deploy interlock remains unset and repository Pages source/settings
-    are not enabled by code; activation remains a separate administrator effect.
+1. **FantLab source identity:** the uploaded analyzer input behind public results is not disclosed for the retained corpus candidates; M2 stays 0/5 until independent evidence closes this gap.
+2. **Hidden algorithm details:** FantLab corrective coefficients and some implementation choices are unpublished.
+3. **Text-boundary/counting inference:** exact normalization, tokenization, sentence boundaries and displayed character-count semantics are not proven equivalent.
+4. **Vocabulary dictionary identity:** FantLab's production dictionary/version is unknown.
+5. **Morphology provider runtime:** native pylem build/runtime provenance remains unavailable in the current container.
+6. **AOT/POS ambiguity:** noun/cardinal runtime collision, extra-category folding and homonym/prediction selection remain unresolved.
+7. **Copyright:** web availability is not permission; work-specific legal evidence remains mandatory and source prose is not committed by default.
+8. **Hosted CI scope:** the Pages workflow is publication/analyzer scoped, not a universal repository CI replacement.
+9. **Pages activation:** code/workflow is merged but live deployment remains deliberately unactivated.
 
 ## Run selection rule
 
 On each wake:
 
 1. resolve `CURRENT_UNIT` review/recovery before new work;
-2. inspect open PR checks/comments relevant to that unit;
+2. inspect the exact PR head, checks and comments relevant to that unit;
 3. otherwise choose the first dependency-satisfied queue row;
 4. create/search the corresponding issue before implementation;
-5. do exactly one bounded unit and update this file in the same semantic change.
+5. do exactly one bounded unit and update this file plus the project changelog/benchmark or provenance record in the same semantic change.
 
-Do not create parallel units merely because an hourly wake occurred.
+Do not create parallel units merely because another wake occurred.

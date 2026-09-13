@@ -88,7 +88,7 @@ code changes remain in Git history and their issues/PRs.
   unique Latin runtime strings they render to.
 - Fifteen runtime strings have unambiguous semantic counterparts on the observed
   `fantlab-2022-v1` surface and may be mapped directly as inferred candidates.
-- Both noun `С` and cardinal numeral `ЧИСЛ` render as runtime `N`. The public pylem Python
+- Both noun `С` and cardinal numeral `ЧИСЛ` both render as runtime `N`. The public pylem Python
   result does not expose the original AOT POS enum/ancode, so noun/cardinal remains an
   explicit unresolved collision instead of two false direct mappings.
 - `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` are distinct runtime
@@ -263,3 +263,41 @@ code changes remain in Git history and their issues/PRs.
   identities and distinct POS bigrams. The repaired focused morphology suite passes
   10/10 and a generated artifact validates against the repaired schema; independent
   exact-head/full-suite review remains required before merge.
+
+## 2026-09-13 — Static GitHub Pages publication contract candidate
+
+- Re-checked `SCRIP-MORPH-003` before selecting new work. Native/provider verification
+  remains `not_run` because the current execution environment still cannot resolve
+  GitHub/PyPI package hosts; this is a scoped environment blocker, not a pylem failure.
+- Added `scriptorium-publication-manifest-v1` as an explicit allow-list between canonical
+  repository artifacts and the future public Pages renderer. JSON elsewhere in the
+  repository is not implicitly public just because it exists.
+- Seeded the manifest with the two existing *Anna Karenina* showcase slices, preserving
+  their historical metric schema versions and explicit non-corpus/non-benchmark status.
+- Froze stable URL slugs, repository-relative artifact references, publication status,
+  benchmark/corpus admissibility, compatibility claim, and `source_text_included=false`
+  in a Draft 2020-12 schema.
+- Defined fail-closed publication rules: paths may not escape the repository, an indexed
+  showcase must say source text is not committed, and build-time remote book fetching is
+  forbidden. Pages remains a renderer of derived/public metadata, not a redistribution
+  channel for source prose.
+- Chose a future custom GitHub Actions Pages flow based on current official GitHub
+  guidance: checkout/build, upload the generated static directory as a Pages artifact,
+  then deploy with the Pages deployment action. Generated HTML is disposable output and
+  will not be committed as a second source of truth.
+- Deliberately did not enable Pages or add a deployment workflow in this architecture
+  unit. Deployment settings, action pinning and environment protection remain later
+  reviewed work.
+- Added standard-library contract checks for unique IDs/slugs, repo-relative paths,
+  canonical showcase label agreement and the no-source-prose boundary. The seed manifest
+  and schema also pass Draft 2020-12 validation locally.
+- Independent review found that `compatibility_claim` was only schema-checked, so a
+  manifest-only `mixed -> reproduced` edit could upgrade public evidence without changing
+  the canonical showcase artifact.
+- Repaired the boundary with executable fail-closed derivation from canonical per-metric
+  `compatibility_status`: one uniform supported status remains that status, multiple
+  supported statuses become `mixed`, and missing/unknown metric surfaces are rejected.
+- Added a regression proving the current mixed Anna Karenina showcase cannot be relabeled
+  `reproduced`, and documented compatibility-claim contradiction as a build-stopping
+  safety failure. A future renderer must call this validation rather than trust the
+  manifest string alone.

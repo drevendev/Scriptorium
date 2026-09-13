@@ -129,8 +129,8 @@ code changes remain in Git history and their issues/PRs.
 - Added all 14 observed FantLab punctuation-per-1000-word fields under an explicit
   `scriptorium-punctuation-v1` candidate policy.
 - Made compound punctuation greedy/non-overlapping, documented Unicode ellipsis,
-  dash/quote variants and opening-parenthesis counting, and kept every FantLab-shaped
-  value `inferred` until source-matched benchmarks demonstrate parity.
+  dash/quote/ellipsis handling, and kept every FantLab-shaped value `inferred` until
+  source-matched benchmarks demonstrate parity.
 - Added `scriptorium-deterministic-metrics-v1` JSON Schema with stable metric IDs, units,
   evidence class, compatibility status and normalized-text digest.
 - Added standard-library golden tests covering formulas, zero denominators, punctuation
@@ -301,3 +301,49 @@ code changes remain in Git history and their issues/PRs.
   `reproduced`, and documented compatibility-claim contradiction as a build-stopping
   safety failure. A future renderer must call this validation rather than trust the
   manifest string alone.
+
+## 2026-09-13 — Deterministic static site renderer candidate
+
+- Re-checked `SCRIP-MORPH-003` before selection. Native pylem/provider execution remains
+  `not_run`: the execution container still cannot resolve GitHub or PyPI package hosts,
+  while the connected GitHub API path remains healthy. The next dependency-satisfied
+  unit was therefore `SCRIP-SITE-002`.
+- Added `scriptorium-static-site-v1`, a standard-library renderer whose publication inputs
+  are only `site/publication-manifest.json` and the canonical artifacts explicitly named
+  by that manifest. Directory scanning and build-time remote fetching are absent by
+  design.
+- Implemented a deterministic root index plus stable `/works/<slug>/` work-showcase
+  pages, shared CSS and a disposable `build.json` receipt containing the manifest and
+  allow-listed artifact SHA-256 identities. No timestamps or local absolute paths enter
+  generated output.
+- Kept v1 deliberately narrow: reserved benchmark/author/tag kinds fail closed until
+  their own canonical rendering contracts exist rather than inheriting guessed showcase
+  semantics.
+- Rendered only selected derived metrics and provenance metadata. Source-selection fields
+  and source prose are not copied into HTML; artifact-controlled strings are escaped and
+  provenance links are accepted only as credential-free HTTP(S) URLs.
+- Revalidated canonical publication/admissibility labels and compatibility claims at
+  build time and added runtime path containment, finite-number/unit/evidence checks, and
+  output-target guards.
+- Made refresh atomic at the validation boundary: all pages are validated/rendered before
+  the previous output tree is replaced, while successful rebuilds replace the tree
+  completely so stale pages cannot survive manifest removals.
+- Added eight focused standard-library regressions covering deterministic bytes/routes,
+  manifest-only selection, escaping, evidence/admissibility contradictions, source-text
+  flags, traversal/unsupported-kind/URL rejection, non-finite values, symlink protection,
+  failed-build preservation and stale-output cleanup. The authored focused suite passed
+  8/8; full exact-head repository review remains for a later independent wake.
+- Added public renderer documentation and ignored `/build/` output. GitHub Pages remains
+  disabled; workflow/deployment/action pinning are a separate reviewed unit.
+- Independent review found a fail-open contract gap: the renderer validated selected
+  fields manually but accepted unexpected top-level/entry properties and an invented
+  `artifact_schema` whenever the artifact repeated the same invented string.
+- Repaired `scriptorium-static-site-v1` to enforce the exact manifest and entry key sets
+  defined by `scriptorium-publication-manifest-v1` and to allow only the currently
+  supported showcase profiles `scriptorium-deterministic-metrics-v1` and
+  `scriptorium-deterministic-metrics-v2`. Future artifact schemas now require an explicit
+  renderer-contract change rather than becoming publishable by string agreement alone.
+- Added regressions for unexpected top-level manifest keys, unexpected entry keys and a
+  synchronized `scriptorium-unknown-v999` manifest/artifact schema. The repaired focused
+  renderer suite passes 11/11 plus `py_compile`; a later independent exact-head review is
+  still required before merge.

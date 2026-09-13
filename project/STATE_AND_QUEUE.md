@@ -1,22 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 32
+STATE_REVISION: 34
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T09:54:13Z
-LAST_RESULT: SCRIP-SITE-001 passed independent repaired-head review and PR #27 was squash-merged; issue #26 is complete.
-LAST_VERIFIED_PROGRESS: Exact PR #27 head 4b7a46c4ea999429d4368d1af17284eaf3b5a6e5 was independently reviewed. Compatibility-claim derivation passed an independent 14-case edge matrix, artifact-path safety passed an independent edge matrix, and Draft 2020-12 schema self-check plus seed-manifest validation passed. Both canonical seed showcases contain inferred FantLab-shaped metrics plus the Scriptorium sentence-count extension, so their manifest claim correctly derives to `mixed`; a manifest-only upgrade to `reproduced` fails closed. GitHub reported the exact head mergeable/rebaseable with mergeable_state=clean. Hosted statuses/workflows remained absent, so CI is not configured rather than green. Native full-suite checkout remained unavailable because the execution container cannot resolve GitHub hosts; existing analyzer modules were unchanged by this PR. PR #27 merged as 20bd0706270b50e85b8b384b430c096aafe072be. GitHub Pages remains disabled. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T11:52:14Z
+LAST_RESULT: SCRIP-SITE-002 recovered after independent review blocked PR #29; the publication renderer now fails closed on manifest contract drift and unsupported showcase artifact schemas.
+LAST_VERIFIED_PROGRESS: Independent review of PR #29 head cb251f2ea2c0fd090ef4e804c61993dd7ac81fce found that manual renderer validation accepted schema-invalid extra manifest properties and arbitrary artifact schema strings when the canonical artifact repeated the same value. The repair adds exact top-level/entry key validation for `scriptorium-publication-manifest-v1` and an explicit v1 renderer allow-list limited to `scriptorium-deterministic-metrics-v1` and `scriptorium-deterministic-metrics-v2`, the only current showcase profiles. A locally reconstructed focused renderer suite passed 11/11 and `py_compile` passed; regressions prove an extra top-level key, an extra entry key, and a synchronized `scriptorium-unknown-v999` manifest/artifact schema are rejected. Native full-repository exact-head checkout remains unavailable because the execution container cannot resolve GitHub hosts. Hosted statuses/workflows remain absent on the repair head, so CI is not configured rather than green. PR #29 remains open for a later independent repaired-head review. GitHub Pages remains disabled. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-SITE-001
-ISSUE:          #26
-STATUS:         DONE
-PR:             #27
-MERGED_COMMIT:  20bd0706270b50e85b8b384b430c096aafe072be
-NEXT_ACTION:    Select the highest-priority dependency-satisfied queue unit. Re-check
-                SCRIP-MORPH-003 provider/runtime executability first; if DNS/native
-                provider verification is still unavailable, advance SCRIP-SITE-002.
+UNIT_ID:        SCRIP-SITE-002
+ISSUE:          #28
+STATUS:         REVIEW
+PR:             #29
+MERGED_COMMIT:  -
+NEXT_ACTION:    Perform a later independent exact-head review of repaired PR #29: verify
+                the full standard-library suite plus a real seed-manifest site build,
+                re-test strict manifest keys and supported artifact-schema rejection,
+                inspect deterministic/no-source-prose output, and merge only if clean.
 ```
 
 ## Current milestone gate
@@ -31,12 +32,11 @@ remain separate work; the M1 gate is therefore still open.
 ## Queue
 
 Evaluate rows in priority order after checking their dependencies; skip a row while its
-dependency is not executable.
+dependency is not executable. Current REVIEW work preempts selection of another row.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
 | P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked by unavailable native/provider execution environment |
-| P2 | SCRIP-SITE-002 | implementation | Build a deterministic static renderer that consumes only the publication manifest; deployment remains separate | SCRIP-SITE-001 merged |
 
 ## Evidence already established
 
@@ -116,7 +116,7 @@ dependency is not executable.
 - FantLab homonym/prediction selection and production dictionary equivalence are not
   public. No first-result or guessed folding heuristic is accepted as compatibility.
 - Native pylem build/runtime verification is still `not_run`, not a package failure.
-- The 2026-09-13 SCRIP-SITE-001 selection check again found DNS unavailable for GitHub
+- The 2026-09-13 SCRIP-SITE-002 selection check again found DNS unavailable for GitHub
   and PyPI package hosts in the execution container. Connector access to GitHub remains
   healthy; this does not constitute provider-runtime verification.
 
@@ -163,14 +163,28 @@ dependency is not executable.
   generated. Vocabulary/POS values were not fabricated from historical hashes; a future
   richer showcase must re-read a provenance-bound source selection and record provider
   execution identity where morphology is involved.
-- `scriptorium-publication-manifest-v1` is now merged as an explicit Pages allow-list
-  rather than directory discovery. The seed manifest indexes exactly the two existing
-  showcase artifacts, freezes stable slugs and marks source text absent plus both
-  benchmark/corpus admissibility as false.
+- `scriptorium-publication-manifest-v1` is merged as an explicit Pages allow-list rather
+  than directory discovery. The seed manifest indexes exactly the two existing showcase
+  artifacts, freezes stable slugs and marks source text absent plus both benchmark/corpus
+  admissibility as false.
 - Manifest-level compatibility claims are checked against canonical per-metric
   `compatibility_status` values by executable fail-closed derivation. The two historical
   showcase artifacts derive to `mixed`; a manifest-only upgrade to `reproduced` is a
   validation error rather than publishable presentation metadata.
+- `scriptorium-static-site-v1` is authored in PR #29. It consumes only the explicit
+  manifest, supports work-showcase routes, revalidates canonical evidence/admissibility/
+  source-text labels, renders selected derived and provenance fields with HTML escaping,
+  emits exact input digests, and does not fetch remote source material. Reserved future
+  artifact kinds fail closed.
+- Repaired PR #29 now also enforces the exact v1 manifest top-level/entry key sets and
+  allows only the two current showcase artifact contracts (`scriptorium-deterministic-metrics-v1`
+  and `scriptorium-deterministic-metrics-v2`). Unknown future schema strings fail closed
+  even when the manifest and artifact agree, so publication semantics cannot expand by accident.
+- The renderer validates/renders the full requested site before replacing output; a
+  failed entry leaves the previous tree untouched, while a successful rebuild removes
+  stale files. Generated `/build/` output is ignored and remains non-canonical.
+- The repaired focused renderer suite passed 11/11 plus `py_compile`. The exact repaired
+  PR #29 head still requires a later independent full-suite and seed-build review before merge.
 - The Pages architecture uses a future custom GitHub Actions build/upload/deploy flow,
   keeps generated HTML out of repository state, and treats the canonical JSON artifacts
   plus manifest as the only publication inputs. Pages is not enabled yet.
@@ -215,17 +229,16 @@ dependency is not executable.
     precision or tie behavior.
 19. **Parity-corpus edition gap.** All five retained candidates remain below the M2
     source-edition-admissibility gate.
-20. **Hosted CI absent.** Legacy statuses and PR workflow runs were both absent for the
-    independently reviewed PR #27 exact head. Local independent contract evidence is
-    recorded, but CI remains not configured.
+20. **Hosted CI absent.** Commit statuses and PR workflow runs remain absent on the repaired
+    PR #29 head, so CI is not configured rather than green; local focused evidence is recorded.
 21. **POS adjacency/position inference.** Sentence-bounded bigrams and all-sentence
     position denominators are evidence-based candidates, not established FantLab internals.
 22. **Detached provider provenance.** The POS aggregator binds text and supplied runtime
     candidates, but it still does not prove which binary/dictionary/config produced those
     candidates; provider execution must be pinned before benchmark integration.
-23. **Pages deployment not enabled.** The publication contract is merged, but a later
-    reviewed unit must implement a renderer and separately enable/deploy Pages without
-    turning generated output into canonical state.
+23. **Pages deployment not enabled.** A deterministic renderer candidate is now under
+    review, but workflow/action pinning, Pages repository settings and public deployment
+    remain separate work and must not be inferred from local generated output.
 
 ## Run selection rule
 

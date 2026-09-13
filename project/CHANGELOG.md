@@ -134,7 +134,7 @@ code changes remain in Git history and their issues/PRs.
 - Added `scriptorium-deterministic-metrics-v1` JSON Schema with stable metric IDs, units,
   evidence class, compatibility status and normalized-text digest.
 - Added standard-library golden tests covering formulas, zero denominators, punctuation
-  overlap, diagnostic raw counts, deterministic digests and schema/profile identity.
+  overlap, diagnostic raw counts and deterministic digests and schema/profile identity.
 - Added the first real-source derived showcase from an exact Russian Wikisource revision
   of *Anna Karenina*, Part I, Chapter I. Only provenance, selection hashes and derived
   metrics are stored; the selected prose is not committed.
@@ -196,7 +196,7 @@ code changes remain in Git history and their issues/PRs.
   contains 29 rows total, including the Scriptorium sentence-count extension.
 - Kept unique vocabulary available without external dependencies while making active
   dictionary, active non-dictionary and UASZ values `null` unless an explicit dictionary
-  lexeme collection and profile identity are supplied together.
+  lexeme collection and non-empty profile ID are supplied together.
 - Bound supplied dictionaries to a canonical normalized-lexeme SHA-256 and lexeme count,
   preventing a reused profile label from silently hiding different dependency contents.
 - Implemented inferred UASZ-3000/10000/100000 scalars as arithmetic means over every
@@ -291,3 +291,13 @@ code changes remain in Git history and their issues/PRs.
 - Added standard-library contract checks for unique IDs/slugs, repo-relative paths,
   canonical showcase label agreement and the no-source-prose boundary. The seed manifest
   and schema also pass Draft 2020-12 validation locally.
+- Independent review found that `compatibility_claim` was only schema-checked, so a
+  manifest-only `mixed -> reproduced` edit could upgrade public evidence without changing
+  the canonical showcase artifact.
+- Repaired the boundary with executable fail-closed derivation from canonical per-metric
+  `compatibility_status`: one uniform supported status remains that status, multiple
+  supported statuses become `mixed`, and missing/unknown metric surfaces are rejected.
+- Added a regression proving the current mixed Anna Karenina showcase cannot be relabeled
+  `reproduced`, and documented compatibility-claim contradiction as a build-stopping
+  safety failure. A future renderer must call this validation rather than trust the
+  manifest string alone.

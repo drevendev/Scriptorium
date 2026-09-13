@@ -69,9 +69,10 @@ What changed:
 - FantLab's creator described the analyzer corpus as works **uploaded to the database**;
   author profiles use all uploaded works. Therefore the bibliographic editions listed on
   a work page are not evidence of analyzer-input identity.
-- The current FantLab TXT "download excerpt" link for the work redirects to a LitRes
-  trial endpoint. It is not treated as evidence for the text that produced the 2022
-  analysis.
+- On 13 September 2026, the FantLab TXT "download excerpt" link for the work redirected
+  to a LitRes trial endpoint (`art=74152506`). The trace records this as a dated,
+  point-in-time observation rather than a stable work identity, and it is not treated as
+  evidence for the text that produced the 2022 analysis.
 - Russian Wikisource identifies its transcription as coming through the FEB Tolstoy
   electronic edition from `Толстой Л. Н. Анна Каренина. М.: Наука, 1970. С. 5–684`, and
   explicitly marks the literary work public domain.

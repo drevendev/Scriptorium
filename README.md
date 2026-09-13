@@ -23,19 +23,30 @@ Scriptorium now has a standard-library-only deterministic analysis core:
 - dictionary-free unique-vocabulary counting plus explicit external-dictionary active
   vocabulary and UASZ-3000/10000/100000 candidates;
 - immutable dictionary dependency identity using profile + normalized lexeme-set SHA-256;
-- a versioned JSON artifact/schema with explicit `inferred` vs `extension` status;
+- a provider-neutral `scriptorium-pos-v1` aggregation layer for defined/undefined POS,
+  the 17 displayed FantLab buckets, a complete 17×17 POS-bigram matrix, and positions
+  1..20 while preserving unresolved pylem categories and homonyms;
+- versioned JSON artifacts/schemas with explicit `inferred` vs `extension` status;
 - a local-text FantLab benchmark CLI that emits expected/actual/delta plus source hashes
   and refuses to turn incomplete source provenance, an unproven dictionary, or unknown
   decimal precision into parity;
 - golden tests for text boundaries, dialogue spans, metric formulas, vocabulary windows,
-  punctuation overlap and benchmark gate behavior.
+  punctuation overlap, POS aggregation rules and benchmark gate behavior.
 
 The FantLab-shaped values are **inferred candidates**, not claimed reproduction.
 See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md),
 [`docs/DIALOGUE_MODEL.md`](docs/DIALOGUE_MODEL.md),
 [`docs/VOCABULARY_MODEL.md`](docs/VOCABULARY_MODEL.md),
+[`docs/POS_MODEL.md`](docs/POS_MODEL.md),
 [`docs/METRIC_PROFILE.md`](docs/METRIC_PROFILE.md), and
 [`docs/BENCHMARKING.md`](docs/BENCHMARKING.md).
+
+The POS artifact deliberately accepts an externally produced pylem-style runtime
+candidate matrix rather than pretending native pylem execution is already verified.
+Runtime `N` remains unresolved because pinned pylem collapses noun and cardinal to the
+same public POS string; cross-bucket homonyms and extra AOT categories are not guessed
+into a bucket. See [`docs/AOT_PYLEM_COMPATIBILITY.md`](docs/AOT_PYLEM_COMPATIBILITY.md)
+and [`docs/POS_MODEL.md`](docs/POS_MODEL.md).
 
 ### Benchmark a local text
 
@@ -62,9 +73,11 @@ match.
 
 The harness never fetches or commits the local text. `Шутиха` currently has no
 source-matched legally usable full text in the project, so this reference remains a
-diagnostic target rather than parity evidence. The harness now maps 28 implemented
+diagnostic target rather than parity evidence. The harness currently maps 28 implemented
 FantLab fields: four general, four dialogue, six vocabulary and fourteen punctuation
-fields. Decimal fields remain unresolved until FantLab display precision is independently
+fields. POS aggregation now has its own versioned artifact, but it is not yet wired into
+the benchmark CLI because native/provider execution provenance is not established.
+Decimal fields remain unresolved until FantLab display precision is independently
 established. See [`docs/BENCHMARKING.md`](docs/BENCHMARKING.md).
 
 ### Public showcase
@@ -81,7 +94,7 @@ without storing the analyzed prose:
 Both artifacts are bound to exact Russian Wikisource revisions and store provenance,
 hashes and derived metrics only. They are intentionally marked **illustrative excerpts**,
 not corpus entries and not FantLab parity evidence. Existing artifacts preserve the
-metric profile under which they were generated; a future vocabulary showcase must be
+metric profile under which they were generated; a future vocabulary/POS showcase must be
 regenerated from a provenance-bound source selection rather than inventing new values
 from hashes alone. Full-work showcase artifacts will follow as ingestion and source
 freezing mature.

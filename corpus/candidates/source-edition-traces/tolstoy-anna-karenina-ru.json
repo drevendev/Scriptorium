@@ -1,0 +1,76 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "tolstoy-anna-karenina-ru",
+  "research_date": "2026-09-13",
+  "fantlab": {
+    "work_id": 270306,
+    "analysis_url": "https://fantlab.ru/work270306/lp",
+    "analysis_date": "2022-09-19",
+    "observed_counts": {
+      "characters": 1692647,
+      "words": 253275
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "ingestion_model_evidence": {
+      "url": "https://fantlab.ru/forum/forum2page3/topic2216page1",
+      "observation": "FantLab creator states that works participate if they are uploaded to the database and that author profiles use all uploaded works.",
+      "implication": "The analyzer input is an uploaded-text corpus distinct from the bibliographic edition list; an edition listed on the work page cannot be treated as the analyzed source without separate evidence."
+    },
+    "work_page_excerpt_download": {
+      "work_page_url": "https://fantlab.ru/work270306",
+      "observed_behavior": "The current TXT excerpt link redirects to a LitRes trial endpoint (art=69555640).",
+      "relationship_to_analyzed_text": "unproven",
+      "use_as_source_edition_evidence": false
+    }
+  },
+  "public_transcription": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Анна_Каренина_(Толстой)",
+    "permanent_work_index_url": "https://ru.wikisource.org/w/index.php?title=Анна_Каренина_(Толстой)&oldid=3829834",
+    "work_index_revision_id": 3829834,
+    "work_index_last_edited_display": "2019-09-12 19:30",
+    "bibliographic_source": "ФЭБ. ЭНИ «Лев Толстой»; Толстой Л. Н. Анна Каренина. М.: Наука, 1970. С. 5–684.",
+    "legal_basis": "public_domain",
+    "legal_evidence": "The Wikisource work page explicitly marks the literary work public domain.",
+    "publication_evidence": "Created 1873–1876; published in «Русский вестник» in 1875–1877, with part VIII separately in 1877.",
+    "structure": {
+      "kind": "composite_subpages",
+      "parts": 8,
+      "chapter_subpages": 239,
+      "index_revision_freezes_chapter_text": false
+    }
+  },
+  "immutable_identity": {
+    "status": "partial",
+    "frozen_components": [
+      "Wikisource work-index revision 3829834",
+      "bibliographic source statement naming the Nauka 1970 transcription source"
+    ],
+    "unfrozen_components": [
+      "the 239 chapter-subpage revision IDs",
+      "a canonical chapter extraction and concatenation policy",
+      "the exact composite source bytes",
+      "raw SHA-256",
+      "normalized SHA-256"
+    ],
+    "reason": "The permanent link freezes the work index but does not freeze the separately stored chapter text revisions."
+  },
+  "admissibility": {
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_comparison_admissible": false,
+    "m2_parity_admissible": false,
+    "status": "not_admissible",
+    "reasons": [
+      "The legal public transcription is not yet frozen as a complete composite text.",
+      "FantLab does not disclose the edition or bytes of the uploaded text behind the 2022 analysis.",
+      "The current FantLab excerpt download is a LitRes trial redirect and provides no evidence that it is the analyzer input."
+    ],
+    "next_evidence": [
+      "Construct a revision-pinned manifest for all 239 Wikisource chapter subpages that comprise the Nauka 1970/FEB transcription.",
+      "Freeze a canonical extraction and concatenation order, acquire those exact revision texts under the recorded legal basis, and compute raw and normalized SHA-256 plus character count.",
+      "Run a field-by-field Scriptorium diagnostic comparison against FantLab only after the candidate bytes are frozen; keep the result diagnostic while the FantLab ingestion source remains unproven.",
+      "Promote source-edition match or M2 parity evidence only if independent evidence ties FantLab's uploaded analysis text to the same frozen source."
+    ]
+  }
+}

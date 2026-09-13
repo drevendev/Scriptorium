@@ -1,4 +1,5 @@
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -72,6 +73,21 @@ class PublicationManifestContractTests(unittest.TestCase):
                     walk(child)
 
         walk(self.manifest)
+
+    def test_schema_rejects_path_escape_shapes(self):
+        pattern = self.schema["properties"]["entries"]["items"]["properties"][
+            "artifact_path"
+        ]["pattern"]
+        self.assertIsNotNone(
+            re.fullmatch(pattern, "showcase/anna-karenina-part1-ch1-opening.json")
+        )
+        for invalid in (
+            "/showcase/example.json",
+            "docs/example.json",
+            "showcase/../example.json",
+            "showcase//example.json",
+        ):
+            self.assertIsNone(re.fullmatch(pattern, invalid), invalid)
 
     def test_schema_freezes_fail_closed_source_text_flag(self):
         item_properties = self.schema["properties"]["entries"]["items"]["properties"]

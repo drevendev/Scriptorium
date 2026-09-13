@@ -40,6 +40,7 @@ class WikisourceFreezeTests(unittest.TestCase):
 
 Второй абзац с [https://example.invalid подписью] и ''курсивом''. {{poemx1|| {{lang|de|Himmlisch}}|}}
 {{right|А. Каренин.}}
+<center>{{Razr|Конец}}</center>
 === Примечания ===
 <references />
 </div>
@@ -47,7 +48,7 @@ class WikisourceFreezeTests(unittest.TestCase):
         self.assertEqual(
             extract_transcription_body(source),
             "Первая строка с dolce vita и меткой.\n\n"
-            "Второй абзац с подписью и курсивом. Himmlisch А. Каренин.",
+            "Второй абзац с подписью и курсивом. Himmlisch А. Каренин. Конец",
         )
 
     def test_unknown_template_fails_closed(self):

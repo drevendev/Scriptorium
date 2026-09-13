@@ -82,7 +82,7 @@
           },
           "artifact_path": {
             "type": "string",
-            "pattern": "^(showcase|benchmarks|public-artifacts)/[A-Za-z0-9._/-]+\\.json$"
+            "pattern": "^(showcase|benchmarks|public-artifacts)/(?!.*(?:\\.\\.|//))[A-Za-z0-9._/-]+\\.json$"
           },
           "artifact_schema": {
             "type": "string",

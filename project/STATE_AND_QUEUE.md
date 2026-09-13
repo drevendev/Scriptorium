@@ -1,34 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 25
+STATE_REVISION: 26
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T00:46:47Z
-LAST_RESULT: SCRIP-METRIC-002 repaired the PR #23 Unicode dictionary-canonicalization blocker; the unit remains in REVIEW for an independent exact-head verification.
-LAST_VERIFIED_PROGRESS: The repair makes scriptorium-vocabulary-v1 lexical identity NFC + casefold on both text and explicit-dictionary paths, so canonically equivalent spellings share membership and dependency identity. Two regressions cover composed/decomposed dictionary-set+digest equality and decomposed-dictionary membership against equivalent text. A focused reconstruction bound to the repaired published vocabulary/text source passed 7/7 Unicode repair assertions. The full repository suite and v3 schema have not been rerun on the repaired final head in this authoring run; hosted CI remains not configured. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-13T01:59:30Z
+LAST_RESULT: SCRIP-METRIC-002 passed independent repaired-head review and PR #23 was squash-merged; issue #22 is complete.
+LAST_VERIFIED_PROGRESS: Exact PR #23 head 4468f9e64da7fcdfc2ef8ad2a6d50bb803cbc111 was reconstructed from published GitHub blobs and reviewed independently. The full standard-library suite passed 46/46 tests under Python 3.13.5. Draft 2020-12 validation accepted the v3 schema and generated artifacts both without a vocabulary dictionary and with an explicit profile/SHA-256/lexeme-count dependency. The Unicode NFC + casefold repair, rolling-window behavior, source-provenance gate and dictionary parity-admission barrier were rechecked. Hosted statuses/workflows remain absent, so CI is not configured rather than green. PR #23 merged as ab8cd21c505bf3c229648be491f31d0a8a5f30fd. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-METRIC-002
 ISSUE:          #22
-STATUS:         REVIEW
-BRANCH:         feature/22-vocabulary-metrics
+STATUS:         DONE
 PR:             #23
-NEXT_ACTION:    Independently review the repaired PR #23 exact head, run the full
-                repository suite and v3 schema validation, confirm the Unicode
-                canonicalization regressions plus dictionary admission gates, and
-                merge only if no blocker remains.
+MERGED_COMMIT:  ab8cd21c505bf3c229648be491f31d0a8a5f30fd
+NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
+                dependency state; SCRIP-MORPH-002 is the first listed candidate.
 ```
 
 ## Current milestone gate
 
 M0 is closed. M1 closes when the benchmark harness can compare expected vs actual
 FantLab-visible deterministic metrics field-by-field while preserving text and
-configuration provenance.
+configuration provenance. General, dialogue, vocabulary and punctuation families are
+now executable inferred candidates; the remaining queued deterministic family is POS.
 
 ## Queue
 
-Ordered highest first among unblocked work after the current review closes.
+Ordered highest first among unblocked work.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
@@ -37,176 +36,134 @@ Ordered highest first among unblocked work after the current review closes.
 
 ## Evidence already established
 
-- FantLab article `https://fantlab.ru/article374` states the analyzer was developed in
-  2007-2008 and produces more than 1,000 statistical characteristics.
-- Publicly described families include sentence/dialogue measures, unique/dictionary
+### FantLab / benchmark surface
+
+- FantLab's public methodology describes sentence/dialogue measures, unique/dictionary
   vocabulary and 3k/10k/100k windows, POS frequencies/bigrams/positions, punctuation,
   character bigrams, inter-word character features and later distinguishing-word
-  frequencies.
-- A concrete 18 September 2022 work page (`work12625/lp`) exposes the first-wave scalar
-  labels, 17 displayed POS buckets, POS bigrams, POS-by-sentence-position and 14
-  punctuation patterns used by `fantlab-2022-v1`.
-- The methodology article names additional POS labels not observed as separate buckets
-  on that 2022 page; their mapping is not guessed.
-- FantLab says corrective coefficients and some implementation details remain
-  unpublished. Exact parity must therefore be demonstrated, not inferred.
-- FantLab's 2022 `Шутиха` page is captured as the first numeric reference in
+  frequencies. Corrective coefficients and some implementation details are unpublished;
+  resemblance is never treated as parity.
+- `fantlab-2022-v1` is the frozen compatibility contract. The first captured numeric
+  reference is the 19 September 2022 `Шутиха` analysis in
   `benchmarks/fantlab/work488.json`.
-- Rendered decimal text is not treated as proof of decimal precision. A known
-  `display_places` value requires independent field/surface evidence; otherwise the
-  metric remains `unresolved_precision`.
-- The first parity-corpus seed has five candidate-eligible full novels: `Анна Каренина`,
-  `Воскресение`, `Идиот`, `Братья Карамазовы` and `Бесы`. Candidate availability has not
-  advanced M2 because every FantLab source-edition match remains unknown.
-- PyPI still exposes pylem 0.0.18 as the selected compatibility candidate; the repository
-  revision pins `morph_dict@4c5e9b6d048d1ba74e02988593b23fb0cbc87772`.
-- Pinned pylem calls `SetUseNationalConstants(false)` after morphology load, therefore
-  runtime POS/grammeme strings exposed through that holder use Latin constants rather
-  than the Cyrillic documentation-facing constants.
-- `pylem/__init__.py` parses the leading `morphInfo` token into
-  `LemmaInfo.part_of_speech`; this is the runtime adapter surface described by the
-  compatibility contract.
-- Pinned morph_dict defines 22 Russian source POS slots but only 21 unique Latin runtime
-  strings. Fifteen runtime strings map unambiguously to one observed FantLab bucket.
-- Both noun `С` and cardinal numeral `ЧИСЛ` render as runtime `N`. The public pylem Python
-  result does not expose the original AOT POS enum/ancode, so this distinction remains
-  unresolved rather than guessed.
-- `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` are distinct pinned
-  runtime POS values with no standalone bucket on the observed 2022 FantLab surface.
-  Their folding behavior remains unresolved.
-- `scriptorium-text-v1` is the first executable text profile. It normalizes line endings
-  and Unicode NFC, emits deterministic word/sentence candidate spans with offsets into
-  normalized text, and is explicitly classified as inferred rather than reproduced.
-- Independent review of the final text-model implementation content passed 11/11
-  standard-library golden tests under Python 3.13.5 before merge.
-- The architecture names standard-library `unittest` as the initial unit, golden and
-  benchmark contract runner. `pytest` is optional future infrastructure, not an implicit
-  dependency or a contradictory bootstrap requirement.
-- `scriptorium-metrics-v1` provides deterministic character/word/mean-length values plus
-  the Scriptorium sentence-count diagnostic; FantLab-namespaced values remain explicitly
-  `inferred`.
-- `scriptorium-punctuation-v1` covers all 14 observed punctuation fields with a declared
-  greedy non-overlap policy, explicit ellipsis/dash/quote mappings and opening-parenthesis
-  candidate counting rather than hidden heuristics.
-- The first public showcase is bound to Russian Wikisource `Анна Каренина`, Part I,
-  Chapter I revision `oldid=4929732`. It stores only provenance, a precise four-paragraph
-  selection rule, hashes and derived metrics. The 1,298-character excerpt is explicitly
-  non-corpus and non-benchmark evidence.
-- `scriptorium-benchmark-v1` executes the frozen comparison contract over implemented
-  FantLab metrics, recording raw/normalized hashes, source-edition/legal provenance,
-  expected/actual values and raw deltas.
-- Integer character/word comparisons can only pass with exact-edition admissible
-  provenance; otherwise numeric matches remain diagnostic `unresolved` results.
-- Decimal mean/rate comparisons remain `unresolved_precision` with `numeric_match: null`.
-  The harness preserves captured JSON numeric lexemes (including trailing zeroes) as
-  display evidence without treating those lexical digits as a precision oracle.
-- Independent review of the benchmark admission gate required non-empty `edition_label`
-  and `source_reference` in addition to exact match, legal basis and raw digest. Regression
-  tests prove either missing identity field keeps integer comparisons `unresolved`.
-- A reconstructed final benchmark suite passed 26/26 tests under Python 3.13 before merge;
-  hosted CI remained not configured rather than green.
-- `scriptorium-dialogue-v1` classifies LF-delimited paragraphs as dialogue only for an
-  explicit leading `—`, `–` or `-` followed by whitespace and preserves normalized-text
-  offsets for dialogue/narration spans.
-- Candidate author text inside dialogue is exposed as alternating spans after internal
-  whitespace-dash-whitespace separators. This is inspectable inferred behavior, not a
-  recovered FantLab parser.
-- `scriptorium-metrics-v2` adds all four FantLab dialogue scalars with explicit
-  non-whitespace-character denominators and keeps them `inferred`; the benchmark harness
-  maps 22 implemented FantLab fields at that revision.
-- The second public showcase binds two *Anna Karenina*, Part I, Chapter II dialogue
-  paragraphs to Russian Wikisource `oldid=4929731`, the cited Nauka 1970 edition, and
-  SHA-256 `2dcd42a6e638809ae17ecb2e250b092e65ac7919701ae0d25cc9cccb5790e7f9` without
-  committing the source prose. Its 250 characters are explicitly non-corpus/non-parity.
-- Independent review found the first dialogue implementation used Python `splitlines()`,
-  which recognizes Unicode separators beyond the frozen LF-only paragraph contract.
-  The repaired implementation scans literal normalized `\n` only and regression coverage
-  proves U+2028, U+0085 and VT remain inside a single paragraph instead of creating false
-  dialogue spans.
-- Independent repaired-head review reconstructed exact PR #21 content and passed 34/34
-  standard-library tests. A generated v2 artifact also validated against the exact Draft
-  2020-12 schema; hosted statuses/workflows were absent, so CI remains not configured.
-- FantLab's public vocabulary methodology defines unique words, active dictionary and
-  non-dictionary vocabulary, and UASZ-N as unique dictionary words within N consecutive
-  words after repeat removal and dictionary filtering; production lexical normalization,
-  dictionary identity/version and scalar window/aggregation details are not published.
-- `scriptorium-vocabulary-v1` uses Unicode NFC + case-folded tokens as an explicit
-  inferred lexical identity on both the text and explicit-dictionary paths. It does not
-  lemmatize or fold `ё` into `е`.
-- `scriptorium-metrics-v3` adds six vocabulary rows. Unique words require no external
-  dictionary; active dictionary/non-dictionary and UASZ values remain `null` until an
-  explicit dictionary lexeme set plus profile ID is supplied.
-- Explicit dictionary dependencies are bound by profile, canonical normalized-lexeme
-  SHA-256 and lexeme count. This makes the supplied dependency reproducible without
-  claiming it is FantLab's production dictionary.
-- The inferred UASZ scalar uses every complete contiguous N-token window at one-token
-  step and an arithmetic mean of rolling unique dictionary counts; incomplete tails do
-  not contribute and the implementation is O(words) for each configured window size.
-- The benchmark mapping now covers 28 FantLab IDs. Dictionary-dependent rows are barred
-  from `pass`/`fail` while FantLab dictionary identity/version is unproven; missing active
-  integer actuals are `not_run`, while missing UASZ values remain `unresolved` under the
-  frozen `unresolved_precision` comparison-v1 rule.
-- Independent review found dictionary entries skipped NFC before case-folding, so
-  canonically equivalent spellings could diverge in membership and dependency digest.
-  The repaired `normalize_lexeme()` applies NFC before case-folding for every caller; two
-  regressions prove composed/decomposed dictionary identities share a digest and match
-  canonically equivalent text tokens.
+- `scriptorium-benchmark-v1` records raw/normalized hashes, edition/source/legal
+  provenance, analyzer configuration, expected/actual values and raw deltas.
+- Exact integer comparisons can become `pass`/`fail` only with `edition_match=exact`,
+  non-empty edition identity, source reference, legal basis and harness-computed raw
+  SHA-256. Otherwise numeric resemblance remains `unresolved`.
+- Decimal/rate comparisons remain `unresolved_precision` until FantLab display precision
+  and tie-breaking are independently established. Captured JSON numeric lexemes are
+  retained as display evidence without inferring precision from visible digits.
+- The first parity-corpus seed contains five candidate-eligible full novels, but none has
+  evidence tying the public transcription to FantLab's exact analyzed source edition.
+  M2 therefore remains 0/5 source-matched works.
+
+### Deterministic text / dialogue / metric surface
+
+- `scriptorium-text-v1` normalizes CRLF/CR to LF and Unicode to NFC, then emits
+  deterministic word/sentence candidate spans with offsets into normalized text. It is
+  explicitly `inferred`, not reproduced.
+- `scriptorium-dialogue-v1` uses literal normalized LF paragraph boundaries and an
+  explicit leading dash+whitespace rule. Unicode U+2028, U+0085 and VT do not create
+  false paragraph boundaries. Candidate author remarks use an inspectable alternating
+  internal dash-separator rule.
+- `scriptorium-punctuation-v1` covers all 14 observed FantLab punctuation fields with a
+  declared greedy non-overlap policy and explicit dash/quote/ellipsis handling.
+- `scriptorium-metrics-v3` / `scriptorium-deterministic-metrics-v3` currently contains
+  29 rows: 28 FantLab-shaped fields plus the Scriptorium sentence-count extension.
+- The benchmark harness currently maps 28 FantLab IDs: four general, four dialogue, six
+  vocabulary and fourteen punctuation fields.
+
+### Vocabulary profile
+
+- `scriptorium-vocabulary-v1` uses Unicode NFC followed by `casefold()` as its explicit
+  inferred lexical identity. It does not lemmatize and does not fold `ё` into `е`.
+- `fantlab.vocabulary.unique_words` is available without an external dictionary.
+  Active dictionary/non-dictionary counts and UASZ-3000/10000/100000 remain `null`
+  unless an explicit dictionary lexeme collection and non-empty profile ID are supplied.
+- Explicit dictionaries are normalized/deduplicated and bound to profile ID, canonical
+  normalized-set SHA-256 and lexeme count. This establishes reproducible dependency
+  identity but does not claim equivalence to FantLab's production dictionary.
+- UASZ v1 is an inferred candidate using every complete contiguous N-token window with
+  step 1, dictionary filtering, rolling unique-count maintenance and arithmetic mean;
+  incomplete tails do not contribute.
+- Dictionary-dependent benchmark rows cannot become `pass`/`fail` while FantLab's
+  production dictionary identity/version is unproven. Missing integer dictionary actuals
+  are `not_run`; missing UASZ values remain `unresolved` under the frozen
+  `unresolved_precision` rule.
+- Independent review found and repaired a Unicode canonicalization defect in the initial
+  dictionary path. The final implementation NFC-normalizes inside `normalize_lexeme()`;
+  regressions prove composed/decomposed spellings share membership and dependency digest.
+- Independent repaired-head review of PR #23 passed 46/46 standard-library tests under
+  Python 3.13.5 and validated generated v3 artifacts against Draft 2020-12 schema rules.
+
+### Morphology compatibility research
+
+- `pylem==0.0.18` is the selected AOT-lineage compatibility candidate; the repository
+  records the package/sdist identity and pinned `morph_dict` revision.
+- Pinned pylem calls `SetUseNationalConstants(false)`, so runtime POS strings use Latin
+  constants. Fifteen runtime strings map unambiguously to observed FantLab buckets.
+- Noun `С` and cardinal numeral `ЧИСЛ` both render as runtime `N`; the public Python result
+  does not expose a source discriminator, so the collision remains unresolved.
+- `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` remain distinct
+  runtime categories with no proven standalone FantLab bucket/folding rule.
+- FantLab homonym/prediction selection and production dictionary equivalence are not
+  public. No first-result or guessed folding heuristic is accepted as compatibility.
+- Native pylem build/runtime verification is still `not_run`, not a package failure.
+
+### Public repository representation
+
+- README/docs expose the deterministic text, dialogue, punctuation, vocabulary and local
+  benchmark capabilities while labeling FantLab-shaped behavior as inferred.
+- Two derived *Anna Karenina* excerpt showcases are published with exact Wikisource
+  revision provenance, hashes and metrics only; source prose is not committed. Both are
+  explicitly illustrative, below 300,000 characters and inadmissible for corpus/parity.
+- Existing showcase artifacts preserve the metric profile under which they were
+  generated. Vocabulary values were not fabricated from historical hashes; a future
+  vocabulary showcase must re-read a provenance-bound source selection.
 
 ## Known risks / blockers
 
-1. **Exact source edition risk.** FantLab publishes analysis values but not necessarily
-   the exact full text bytes used. Parity requires finding works where the source
-   edition can be matched or strongly established.
-2. **Hidden-algorithm risk.** FantLab publicly acknowledges unpublished corrective
-   coefficients/know-how. Keep reverse-engineering evidence-based; do not lower the M2
-   gate without an explicit manifest amendment.
-3. **Text-boundary inference.** FantLab's exact normalization, tokenization, abbreviation
-   and sentence-boundary rules are not public. `scriptorium-text-v1` is a deterministic
-   candidate only; benchmark deltas must drive any compatibility revisions.
-4. **General-metric denominator inference.** Character unit, token length and sentence
-   length denominator details are not public enough to call current formulas reproduced.
-5. **Punctuation inference.** FantLab does not publish overlap, Unicode dash/quote,
-   ellipsis normalization or parenthesis-pair rules. `scriptorium-punctuation-v1` is a
-   deterministic candidate whose choices require source-matched benchmark pressure.
-6. **Dialogue inference.** FantLab does not publish paragraph markers, embedded
-   author-remark grammar, quoted-speech handling or scalar dialogue denominators.
-   `scriptorium-dialogue-v1` is intentionally narrow and must remain inferred until
-   source-matched deltas discriminate its choices.
-7. **Runtime POS collision.** Pinned pylem renders both noun and cardinal numeral as
-   Latin `N`. `LemmaInfo.part_of_speech` cannot recover the distinction; an explicitly
-   exposed source POS discriminator plus benchmark validation is required before these
-   two FantLab buckets can be produced compatibly.
-8. **Extra-category folding unresolved.** `POSL`, `COLLOC`, `ADJ_SHORT`,
-   `PARTICIPLE_SHORT` and `INFINITIVE` exist separately in the pinned runtime, while the
-   observed FantLab 2022 surface has no matching standalone buckets.
-9. **Morphology drift.** The pinned pylem dictionary/source has not been shown identical
-   to FantLab's 2022 production morphology. Source-matched benchmarks must measure drift.
-10. **Morphology ambiguity.** Pylem can expose multiple analyses; FantLab's homonym and
-    prediction-selection policy is not public. No first-result/weight heuristic is accepted.
-11. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
-    verified network-enabled runtime. This remains `not_run`, not a package failure.
-12. **Copyright risk.** Author.Today/fanfiction availability is not a license. Treat
-    platform texts as candidates until work-specific rights permit analysis/publication.
-13. **Scheduler serialization unverified.** Re-read refs/state before write and avoid
-    same-run author+merge of substantial PRs.
-14. **External mode controller unverified.** The user-authorized deterministic selection
-    ladder is operative, but no independent EndlessZen controller/selection receipt
-    mechanism has been bound and proven yet.
-15. **Display/cache surface drift.** Summary and detailed FantLab surfaces may expose
-    differently rounded or cached values. Benchmark expectations must name the exact
-    source surface and capture display text; cross-surface joining is not parity evidence.
-16. **Display precision unresolved.** FantLab may trim trailing zeroes and does not publish
-    a general formatting/tie rule. Unknown precision remains unresolved rather than
-    inferred from rendered text.
-17. **Parity-corpus edition gap.** None of the five retained candidates has evidence
-    tying its source transcription to FantLab's exact analyzed edition/bytes. M2 remains
-    blocked until that evidence is found or the user explicitly changes the gate.
-18. **Vocabulary lexical/window inference.** FantLab does not publish exact lexical
-    normalization, UASZ window step, edge policy or scalar aggregation. NFC + case-folded
-    surface forms and step-1 complete-window means remain inferred candidates.
-19. **Vocabulary dictionary identity gap.** FantLab's production dictionary/version is
-    not established. An arbitrary explicit dictionary is reproducible input only and
-    must not make dictionary-dependent rows parity-admissible.
+1. **Exact source edition risk.** FantLab does not necessarily identify the exact bytes or
+   edition behind a published analysis. Parity requires a traceable source match.
+2. **Hidden-algorithm risk.** FantLab acknowledges unpublished corrective coefficients
+   and know-how; source-matched deltas must drive revisions rather than speculation.
+3. **Text-boundary inference.** Exact FantLab normalization, tokenization, abbreviation and
+   sentence-boundary behavior remain unknown.
+4. **General-metric denominator inference.** Character/token/sentence denominator details
+   are not proven equivalent to FantLab.
+5. **Punctuation inference.** Overlap, Unicode glyph normalization and parenthesis rules
+   remain inferred candidates.
+6. **Dialogue inference.** Paragraph markers, embedded author-remark grammar, quoted speech
+   and scalar denominators remain unproven.
+7. **Vocabulary lexical/window inference.** Exact lexical normalization, UASZ step/edge
+   policy and scalar aggregation are not public.
+8. **Vocabulary dictionary identity gap.** FantLab's production dictionary/version is
+   unknown; arbitrary explicit dictionaries are reproducible input only.
+9. **Runtime POS collision.** Pinned pylem collapses noun/cardinal to runtime `N` on the
+   public adapter surface.
+10. **Extra POS folding unresolved.** Several AOT runtime categories have no proven
+    observed FantLab bucket mapping.
+11. **Morphology drift.** Pinned pylem/AOT dictionary/source equivalence to FantLab 2022
+    has not been established.
+12. **Morphology ambiguity.** FantLab homonym/prediction-selection policy is not public.
+13. **Native-build verification pending.** pylem 0.0.18 has not yet been built in a
+    verified network-enabled runtime.
+14. **Copyright risk.** Web accessibility, including Author.Today/fanfiction, is not a
+    license; work-specific rights evidence remains mandatory.
+15. **Scheduler serialization unverified.** Re-read refs/state before every write and do
+    not overwrite a newer state revision.
+16. **External mode controller unverified.** The authorized deterministic selection ladder
+    is operative, but no independent selection-receipt mechanism has been proven.
+17. **Display/cache surface drift.** FantLab summary/detail surfaces may round or cache
+    differently; exact source surface must be captured with benchmark expectations.
+18. **Display precision unresolved.** Visible decimal digits do not establish formatting
+    precision or tie behavior.
+19. **Parity-corpus edition gap.** All five retained candidates remain below the M2
+    source-edition-admissibility gate.
+20. **Hosted CI absent.** Legacy statuses and PR workflow runs were both absent for the
+    reviewed PR #23 head. Local independent review evidence is recorded, but CI remains
+    not configured.
 
 ## Run selection rule
 

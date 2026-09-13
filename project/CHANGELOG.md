@@ -335,3 +335,15 @@ code changes remain in Git history and their issues/PRs.
   8/8; full exact-head repository review remains for a later independent wake.
 - Added public renderer documentation and ignored `/build/` output. GitHub Pages remains
   disabled; workflow/deployment/action pinning are a separate reviewed unit.
+- Independent review found a fail-open contract gap: the renderer validated selected
+  fields manually but accepted unexpected top-level/entry properties and an invented
+  `artifact_schema` whenever the artifact repeated the same invented string.
+- Repaired `scriptorium-static-site-v1` to enforce the exact manifest and entry key sets
+  defined by `scriptorium-publication-manifest-v1` and to allow only the currently
+  supported showcase profiles `scriptorium-deterministic-metrics-v1` and
+  `scriptorium-deterministic-metrics-v2`. Future artifact schemas now require an explicit
+  renderer-contract change rather than becoming publishable by string agreement alone.
+- Added regressions for unexpected top-level manifest keys, unexpected entry keys and a
+  synchronized `scriptorium-unknown-v999` manifest/artifact schema. The repaired focused
+  renderer suite passes 11/11 plus `py_compile`; a later independent exact-head review is
+  still required before merge.

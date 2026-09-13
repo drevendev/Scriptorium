@@ -30,16 +30,19 @@ Scriptorium now has a standard-library-only deterministic analysis core:
 - a local-text FantLab benchmark CLI that emits expected/actual/delta plus source hashes
   and refuses to turn incomplete source provenance, an unproven dictionary, or unknown
   decimal precision into parity;
+- a versioned static-publication allow-list for future GitHub Pages rendering, with
+  explicit source-text and admissibility safety flags;
 - golden tests for text boundaries, dialogue spans, metric formulas, vocabulary windows,
-  punctuation overlap, POS aggregation rules and benchmark gate behavior.
+  punctuation overlap, POS aggregation rules, publication safety and benchmark gate behavior.
 
 The FantLab-shaped values are **inferred candidates**, not claimed reproduction.
 See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md),
 [`docs/DIALOGUE_MODEL.md`](docs/DIALOGUE_MODEL.md),
 [`docs/VOCABULARY_MODEL.md`](docs/VOCABULARY_MODEL.md),
 [`docs/POS_MODEL.md`](docs/POS_MODEL.md),
-[`docs/METRIC_PROFILE.md`](docs/METRIC_PROFILE.md), and
-[`docs/BENCHMARKING.md`](docs/BENCHMARKING.md).
+[`docs/METRIC_PROFILE.md`](docs/METRIC_PROFILE.md),
+[`docs/BENCHMARKING.md`](docs/BENCHMARKING.md), and
+[`docs/SITE_CONTRACT.md`](docs/SITE_CONTRACT.md).
 
 The POS artifact deliberately accepts an externally produced pylem-style runtime
 candidate matrix rather than pretending native pylem execution is already verified.
@@ -98,6 +101,14 @@ metric profile under which they were generated; a future vocabulary/POS showcase
 regenerated from a provenance-bound source selection rather than inventing new values
 from hashes alone. Full-work showcase artifacts will follow as ingestion and source
 freezing mature.
+
+The future Pages UI has an explicit publication boundary rather than globbing every JSON
+file in the repository. [`site/publication-manifest.json`](site/publication-manifest.json)
+allow-lists public artifacts and freezes stable slugs plus source-text/admissibility
+safety metadata under
+[`scriptorium-publication-manifest-v1`](schemas/scriptorium-publication-manifest-v1.schema.json).
+Pages is **not deployed yet**; generated HTML will be a disposable GitHub Actions artifact,
+not a second committed source of truth. See [`docs/SITE_CONTRACT.md`](docs/SITE_CONTRACT.md).
 
 ## Project state
 

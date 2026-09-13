@@ -159,6 +159,25 @@ class StaticSiteRendererTests(unittest.TestCase):
         with self.assertRaisesRegex(PublicationBuildError, "source text"):
             build_site(self.root, self.output)
 
+    def test_canonical_manifest_and_artifacts_must_not_traverse_symlinks(self):
+        alternate = self.root / "site" / "alternate.json"
+        alternate.write_text(
+            (self.root / "site" / "publication-manifest.json").read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
+        (self.root / "site" / "publication-manifest.json").unlink()
+        (self.root / "site" / "publication-manifest.json").symlink_to(alternate)
+        with self.assertRaisesRegex(PublicationBuildError, "manifest must not traverse symlinks"):
+            build_site(self.root, self.output)
+
+        (self.root / "site" / "publication-manifest.json").unlink()
+        alternate.replace(self.root / "site" / "publication-manifest.json")
+        real_artifact = self.root / "showcase" / "real.json"
+        (self.root / "showcase" / "example.json").replace(real_artifact)
+        (self.root / "showcase" / "example.json").symlink_to(real_artifact)
+        with self.assertRaisesRegex(PublicationBuildError, "artifact_path must not traverse symlinks"):
+            build_site(self.root, self.output)
+
     def test_path_escape_unsupported_kind_and_unsafe_url_fail_closed(self):
         self.entry["artifact_path"] = "showcase/../outside.json"
         self._write_fixture()

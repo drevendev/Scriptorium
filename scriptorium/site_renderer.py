@@ -34,7 +34,10 @@ class PublicationBuildError(ValueError):
 
 
 def _read_json(path: Path) -> tuple[dict[str, Any], bytes]:
-    raw = path.read_bytes()
+    try:
+        raw = path.read_bytes()
+    except OSError as exc:
+        raise PublicationBuildError(f"cannot read publication JSON: {path}") from exc
     try:
         value = json.loads(raw.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -76,7 +79,10 @@ def _safe_artifact_path(repo_root: Path, raw_path: Any) -> Path:
         raise PublicationBuildError(f"unsafe artifact_path {raw_path!r}")
 
     root = repo_root.resolve()
-    candidate = (root / Path(*parts)).resolve()
+    lexical_candidate = root / Path(*parts)
+    candidate = lexical_candidate.resolve()
+    if lexical_candidate.absolute() != candidate:
+        raise PublicationBuildError(f"artifact_path must not traverse symlinks: {raw_path!r}")
     if candidate == root or root not in candidate.parents:
         raise PublicationBuildError(f"artifact_path escapes repository: {raw_path!r}")
     if not candidate.is_file():
@@ -328,17 +334,14 @@ def _prepare_output(repo_root: Path, output_dir: Path) -> Path:
 def build_site(
     repo_root: Path | str,
     output_dir: Path | str,
-    manifest_path: Path | str = "site/publication-manifest.json",
 ) -> dict[str, Any]:
-    """Build deterministic static output from the explicit publication allow-list."""
+    """Build deterministic static output from the canonical publication allow-list."""
 
     root = Path(repo_root).resolve()
-    manifest_file = Path(manifest_path)
-    if not manifest_file.is_absolute():
-        manifest_file = root / manifest_file
-    manifest_file = manifest_file.resolve()
-    if root not in manifest_file.parents:
-        raise PublicationBuildError("manifest path must stay inside the repository")
+    manifest_path = root / "site" / "publication-manifest.json"
+    manifest_file = manifest_path.resolve()
+    if manifest_path.absolute() != manifest_file:
+        raise PublicationBuildError("canonical publication manifest must not traverse symlinks")
     manifest, manifest_raw = _read_json(manifest_file)
     entries = _validate_manifest_header(manifest)
 
@@ -403,10 +406,9 @@ def build_site(
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", default=".", help="repository root (default: current directory)")
-    parser.add_argument("--manifest", default="site/publication-manifest.json")
     parser.add_argument("--output", default="build/site")
     args = parser.parse_args(argv)
-    build_site(args.repo_root, args.output, args.manifest)
+    build_site(args.repo_root, args.output)
     return 0
 
 

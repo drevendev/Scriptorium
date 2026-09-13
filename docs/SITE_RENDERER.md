@@ -15,11 +15,12 @@ From the repository root:
 python -m scriptorium.site_renderer --output build/site
 ```
 
-The default inputs are the repository root and
-`site/publication-manifest.json`. Relative output paths are resolved under the repository
-root. For deletion safety, every output target must resolve inside the repository's
-`build/` subtree; output elsewhere, including `.git`, is rejected. Generated output is
-ignored by Git and is not canonical project state.
+The publication input is always the canonical
+`site/publication-manifest.json`; there is deliberately no CLI override that can substitute
+another manifest. Relative output paths are resolved under the repository root. For
+deletion safety, every output target must resolve inside the repository's `build/`
+subtree; output elsewhere, including `.git`, is rejected. Generated output is ignored by
+Git and is not canonical project state.
 
 The current renderer writes:
 
@@ -69,10 +70,11 @@ with a partially refreshed site.
 
 The build is rejected when, among other cases:
 
+- the canonical publication manifest is missing, unreadable, or traverses a symlink;
 - the manifest profile, repository identity or deployment boundary is unexpected;
 - an entry ID or slug is duplicate or unsafe;
-- an artifact path is absolute, contains a traversal/double-separator shape, resolves
-  outside the repository, is missing, or is not JSON;
+- an artifact path is absolute, contains a traversal/double-separator shape, traverses a
+  symlink, resolves outside the repository, is missing, or is not JSON;
 - `source_text_included` is not exactly `false`;
 - a showcase says `source.source_text_committed` is not exactly `false`;
 - manifest schema/status/admissibility labels contradict the canonical showcase;

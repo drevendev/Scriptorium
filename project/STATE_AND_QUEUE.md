@@ -1,23 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 41
+STATE_REVISION: 42
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T19:48:00Z
-LAST_RESULT: SCRIP-REPRO-003 repaired the provenance-accuracy blocker from independent PR #36 review: the FantLab TXT excerpt redirect is now recorded as a dated point-in-time observation from 2026-09-13 (`art=74152506`) rather than a timeless current identifier; all source-match/admissibility gates remain fail-closed and M2 remains 0/5.
-LAST_VERIFIED_PROGRESS: Fresh retrieval of the current FantLab work page and its TXT link on 2026-09-13 showed `https://fantlab.ru/getwork74152506.txt.zip` redirecting to a LitRes trial endpoint with `art=74152506`. The machine trace now records `observed_on`, the observed FantLab TXT URL, the observed redirect URL and explicitly states that this is point-in-time provenance rather than stable work identity. Corpus documentation was synchronized. `relationship_to_analyzed_text=unproven`, `fantlab_source_edition_match=unknown`, diagnostic comparison inadmissible and M2 parity inadmissible remain unchanged. PR #36 now requires a new independent exact-head review before merge.
+LAST_COMMITTED_RUN_AT: 2026-09-13T20:50:00Z
+LAST_RESULT: SCRIP-REPRO-003 independently reviewed and squash-merged as 26df4eb31455ade653f3cd5331213537cf1acd4f; the Anna Karenina source identity remains partial, all diagnostic/M2 admissibility gates remain fail-closed, and M2 remains 0/5 source-matched works.
+LAST_VERIFIED_PROGRESS: Independent repaired-head review of PR #36 exact head 6ccdf1c4fbbd67622bdf8bcfa591d745cb9100ac confirmed the branch was strictly ahead of master by 8 commits and behind by 0, both machine-readable JSON files parse, and changed paths contain only candidate/provenance metadata plus project documentation/state rather than source prose. Fresh 2026-09-13 evidence checks reconfirmed FantLab's 19 Sep 2022 analysis at 1,692,647 characters / 253,275 words, the work-page TXT redirect through getwork74152506.txt.zip to a LitRes trial with art=74152506, the creator's uploaded-text-corpus distinction, and Wikisource FEB/Nauka 1970 provenance, public-domain notice, index oldid 3829834 and 239 chapter subpages. No PR workflow run exists for this corpus/docs/project-only head; that is expected under publication-scoped CI and was not treated as a green-CI claim. PR #36 was squash-merged as 26df4eb31455ade653f3cd5331213537cf1acd4f and Issue #35 closed completed.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-REPRO-003
 ISSUE:          #35
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #36
-NEXT_ACTION:    Independently review the repaired exact PR #36 head. Re-check the dated
-                FantLab TXT redirect observation, validate both source-trace and
-                candidate-catalog JSON, confirm no source prose is committed, and keep
-                M2 at 0/5 unless evidence actually ties FantLab's uploaded analysis text
-                to the same frozen source. Merge only if that repaired-head review passes.
+MERGED_COMMIT:  26df4eb31455ade653f3cd5331213537cf1acd4f
+NEXT_ACTION:    Re-check SCRIP-MORPH-003 provider/runtime executability first. If native
+                pylem/provider execution remains unavailable, select SCRIP-REPRO-004 to
+                revision-pin all 239 Anna Karenina Wikisource chapter subpages, define
+                canonical extraction/concatenation, and freeze raw/normalized candidate
+                identity before any diagnostic comparison. Keep M2 at 0/5 until FantLab
+                analyzer-input identity is independently tied to the frozen source.
 ```
 
 ## Current milestone gate
@@ -37,7 +39,7 @@ dependency is not executable.
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
 | P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked by unavailable native/provider execution environment |
-| P2 | SCRIP-REPRO-003 | research / benchmark | Advance one retained >=300k FantLab candidate toward an exact source-edition match: trace the analyzed edition, legal public transcription and immutable identity, then record whether a diagnostic comparison can become admissible | Benchmark harness and parity-corpus seed already merged; independent source-edition evidence required |
+| P2 | SCRIP-REPRO-004 | research / benchmark | Freeze the Anna Karenina public candidate bytes: revision-pin all 239 Wikisource chapter subpages, define canonical extraction/concatenation, and record raw/normalized digests plus character count without committing full text | SCRIP-REPRO-003 merged; requires access to immutable Wikisource revisions and preserves diagnostic/M2 fail-closed gates |
 
 ## Evidence already established
 
@@ -62,7 +64,7 @@ dependency is not executable.
 - The first parity-corpus seed contains five candidate-eligible full novels, but none has
   evidence tying the public transcription to FantLab's exact analyzed source edition.
   M2 therefore remains 0/5 source-matched works.
-- `SCRIP-REPRO-003` now records a machine-readable source trace for `Анна Каренина`.
+- `SCRIP-REPRO-003` records a machine-readable source trace for `Анна Каренина`.
   FantLab's analysis surface does not expose its source edition/bytes; creator statements
   describe an uploaded-text analyzer corpus, so bibliographic editions are not accepted
   as input identity. The legal Wikisource/FEB transcription names Nauka 1970 and freezes

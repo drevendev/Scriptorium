@@ -396,3 +396,26 @@ code changes remain in Git history and their issues/PRs.
   absence of secrets/privileged enablement, and upload scope. Focused authoring checks
   pass 5/5; hosted exact-head workflow execution remains required in the independent
   review before merge.
+- Independent exact-head review inspected hosted run `34761422729`: Python 3.13.15 passed
+  the complete **79/79** standard-library inventory, canonical build and byte-identical
+  rebuild succeeded, the Pages artifact uploaded successfully, and deployment was skipped
+  on the pull-request event as required.
+- The downloaded Pages artifact matched GitHub's recorded SHA-256
+  `ff1b3a1e1096ae97eb199a03f628ffa8ec66b983806658f3b626c44913c17a7b` and contained
+  only generated `build.json`, the root index, two allow-listed work pages and shared CSS.
+  Canonical showcase JSON was not packaged and explicit source-selection prose remained
+  absent from the generated site; `mixed` compatibility plus `not_admissible` benchmark/
+  corpus labels remained visible.
+- Independently resolved every action pin to its stated official release tag and verified
+  that the pinned configure-pages/deploy-pages actions declare Node 24. Current GitHub
+  Pages guidance still matches the workflow's build artifact -> `needs` -> deploy shape,
+  required `pages: write` / `id-token: write` permissions and `github-pages` environment.
+- PR #31 was squash-merged as `cb2dbfff22cec99e2063f208916680eac8da3d4d` and Issue #30
+  closed completed. The resulting master push run `34763894163` also completed successfully;
+  build/upload passed and deployment stayed skipped because the explicit activation
+  variable remains unset. Pages settings were not changed.
+- Post-merge review identified a latent publication-freshness gap: the workflow path
+  filters watch `showcase/**` but omit renderer-supported `benchmarks/**` and
+  `public-artifacts/**`. The current seed manifest references only showcase artifacts, so
+  no current page is stale, but Issue #33 / `SCRIP-SITE-004` now blocks Pages activation
+  or publication-root expansion until trigger coverage is synchronized and regression-tested.

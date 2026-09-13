@@ -1,10 +1,10 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 40
+STATE_REVISION: 41
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T17:54:00Z
-LAST_RESULT: SCRIP-REPRO-003 advanced Anna Karenina from a generic eligible-unmatched corpus candidate to a documented partial source identity: FantLab's uploaded analysis source remains unknown, while the legal Wikisource/FEB/Nauka 1970 transcription is now tied to permanent work-index revision 3829834 and explicitly recognized as a 239-subpage composite that is not yet byte-frozen.
-LAST_VERIFIED_PROGRESS: Issue #35 and PR #36 record a fail-closed source-edition trace for `tolstoy-anna-karenina-ru`. Fresh evidence confirmed the FantLab 2022 target at 1,692,647 characters and 253,275 words, FantLab creator statements that analyzed works come from texts uploaded to the database, the current FantLab TXT excerpt redirect to an unrelated/unproven LitRes trial endpoint, and Wikisource/FEB provenance to the Nauka 1970 transcription with public-domain notice. The trace records `source_identity_status=partial`, `fantlab_source_edition_match=unknown`, diagnostic comparison inadmissible, M2 parity inadmissible, and the exact next evidence: revision-pin all 239 chapter subpages, freeze extraction/concatenation, then hash and count the composite before any diagnostic comparison. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T19:48:00Z
+LAST_RESULT: SCRIP-REPRO-003 repaired the provenance-accuracy blocker from independent PR #36 review: the FantLab TXT excerpt redirect is now recorded as a dated point-in-time observation from 2026-09-13 (`art=74152506`) rather than a timeless current identifier; all source-match/admissibility gates remain fail-closed and M2 remains 0/5.
+LAST_VERIFIED_PROGRESS: Fresh retrieval of the current FantLab work page and its TXT link on 2026-09-13 showed `https://fantlab.ru/getwork74152506.txt.zip` redirecting to a LitRes trial endpoint with `art=74152506`. The machine trace now records `observed_on`, the observed FantLab TXT URL, the observed redirect URL and explicitly states that this is point-in-time provenance rather than stable work identity. Corpus documentation was synchronized. `relationship_to_analyzed_text=unproven`, `fantlab_source_edition_match=unknown`, diagnostic comparison inadmissible and M2 parity inadmissible remain unchanged. PR #36 now requires a new independent exact-head review before merge.
 
 ## Current unit
 
@@ -13,11 +13,11 @@ UNIT_ID:        SCRIP-REPRO-003
 ISSUE:          #35
 STATUS:         REVIEW
 PR:             #36
-NEXT_ACTION:    Independently review the exact PR #36 head. Re-check the research claims
-                against their cited public surfaces, validate both source-trace and
+NEXT_ACTION:    Independently review the repaired exact PR #36 head. Re-check the dated
+                FantLab TXT redirect observation, validate both source-trace and
                 candidate-catalog JSON, confirm no source prose is committed, and keep
                 M2 at 0/5 unless evidence actually ties FantLab's uploaded analysis text
-                to the same frozen source. Merge only if that exact-head review passes.
+                to the same frozen source. Merge only if that repaired-head review passes.
 ```
 
 ## Current milestone gate
@@ -68,8 +68,10 @@ dependency is not executable.
   as input identity. The legal Wikisource/FEB transcription names Nauka 1970 and freezes
   work-index revision 3829834, but its 239 chapter subpages still require their own
   revision manifest and deterministic composition before candidate bytes can be hashed.
-  The current FantLab TXT excerpt redirects to a LitRes trial and is explicitly excluded
-  as source-match evidence. Diagnostic and M2 admissibility therefore both remain false.
+  The FantLab TXT excerpt redirect observed on 2026-09-13 resolved through
+  `getwork74152506.txt.zip` to a LitRes trial with `art=74152506`; the trace records this
+  as point-in-time evidence and explicitly excludes it as source-match evidence.
+  Diagnostic and M2 admissibility therefore both remain false.
 
 ### Deterministic text / dialogue / metric surface
 

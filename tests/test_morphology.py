@@ -9,6 +9,7 @@ from scriptorium.morphology import (
     analyze_pos_metrics,
     resolve_runtime_pos,
 )
+from scriptorium.text import NORMALIZATION_PROFILE
 
 
 class MorphologyMetricTests(unittest.TestCase):
@@ -111,12 +112,28 @@ class MorphologyMetricTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(first["schema_version"], POS_SCHEMA_VERSION)
         self.assertEqual(first["profile"], POS_PROFILE)
+        self.assertEqual(first["text_profile"], NORMALIZATION_PROFILE)
         self.assertEqual(first["mapping_contract"], POS_MAPPING_CONTRACT)
         self.assertEqual(tuple(first["metrics"]["buckets"]), FANTLAB_POS_BUCKETS)
         self.assertEqual(len(first["metrics"]["bigrams"]), 17)
         self.assertTrue(
             all(len(row) == 17 for row in first["metrics"]["bigrams"].values())
         )
+
+    def test_text_identity_distinguishes_segmentation_with_same_runtime_matrix(self):
+        candidates = [["A"], ["V"], ["A"], ["V"]]
+        first = analyze_pos_metrics("А Б. В Г.", candidates, runtime_profile="fixture")
+        second = analyze_pos_metrics("А. Б В Г.", candidates, runtime_profile="fixture")
+
+        self.assertEqual(first["runtime_analysis_sha256"], second["runtime_analysis_sha256"])
+        self.assertEqual(first["input"], {"word_count": 4, "sentence_count": 2})
+        self.assertEqual(second["input"], first["input"])
+        self.assertEqual(first["text_profile"], NORMALIZATION_PROFILE)
+        self.assertEqual(second["text_profile"], NORMALIZATION_PROFILE)
+        self.assertNotEqual(first["normalized_sha256"], second["normalized_sha256"])
+        self.assertEqual(first["metrics"]["bigrams"]["adjective"]["verb"]["raw_count"], 2)
+        self.assertEqual(second["metrics"]["bigrams"]["adjective"]["verb"]["raw_count"], 1)
+        self.assertEqual(second["metrics"]["bigrams"]["verb"]["adjective"]["raw_count"], 1)
 
 
 if __name__ == "__main__":

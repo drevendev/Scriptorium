@@ -64,6 +64,9 @@ jobs:
           rm -rf build/site-check
           test -z "$(find build/site -type l -print -quit)"
 
+      - name: Capture revision-pinned Wikisource research receipt
+        run: python -m scriptorium.wikisource_freeze --output build/site/_research-wikisource-freeze.json
+
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

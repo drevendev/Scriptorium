@@ -1,22 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 28
+STATE_REVISION: 29
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T04:46:12Z
-LAST_RESULT: SCRIP-MORPH-002 repaired after independent review found that the POS artifact was not bound to the text/segmentation identity that determines bigram and sentence-position metrics; PR #25 remains review-ready and unmerged.
-LAST_VERIFIED_PROGRESS: The repair binds every POS artifact to `scriptorium-text-v1` plus SHA-256 of the exact normalized UTF-8 text, in addition to the existing runtime profile, mapping contract and runtime-candidate digest. A regression proves `А Б. В Г.` and `А. Б В Г.` can have identical runtime-candidate digests and identical word/sentence counts while producing different sentence-bounded metrics, and therefore must carry distinct normalized-text identities. The reconstructed focused morphology suite passes 10/10 and Draft 2020-12 accepts both the repaired schema and a generated artifact. A full independent exact-head repository suite is still required before merge. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T05:58:56Z
+LAST_RESULT: SCRIP-MORPH-002 passed independent repaired-head review and PR #25 was squash-merged; issue #24 is complete.
+LAST_VERIFIED_PROGRESS: Exact PR #25 head 1c23bab2648b62a9b8e6a8b105b431b0dfc9604b was independently reconstructed from published GitHub blobs. The full standard-library suite passed 56/56 tests; changed executable/test/schema blobs matched the exact PR tree by Git blob SHA. Draft 2020-12 accepted the POS schema and generated artifacts, including the segmentation-collision regression proving identical runtime-candidate matrices can require distinct normalized-text identities. The 15 direct runtime mappings were cross-checked against the pinned AOT/pylem contract. Hosted statuses/workflows remain absent, so CI is not configured rather than green. PR #25 merged as 62a7bdb3dbac9b13fdabffe6c10640acf454da34. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-MORPH-002
 ISSUE:          #24
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #25
-NEXT_ACTION:    Independently review the exact repaired PR #25 head, run the full
-                repository suite and Draft 2020-12 POS artifact validation, confirm
-                text-profile/normalized-text binding and the segmentation-collision
-                regression, then merge only if no correctness/provenance blocker remains.
+MERGED_COMMIT:  62a7bdb3dbac9b13fdabffe6c10640acf454da34
+NEXT_ACTION:    Select the highest-priority unblocked queue unit after confirming its
+                dependency state. SCRIP-MORPH-003 is first listed, but requires verified
+                provider/runtime provenance; if that dependency is not executable, select
+                the next unblocked unit instead.
 ```
 
 ## Current milestone gate
@@ -30,8 +31,7 @@ remain separate work; the M1 gate is therefore still open.
 
 ## Queue
 
-Ordered highest first among unblocked work. Review/recovery of the current unit preempts
-new queue selection.
+Ordered highest first among unblocked work.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
@@ -142,9 +142,9 @@ new queue selection.
 - Bigram sentence-bounding and position denominator choices are explicitly inferred;
   they require source-matched benchmark discrimination before any reproduced claim.
 - `scriptorium-pos-metrics-v1` freezes a 17-bucket distribution, complete 17x17 bigram
-  matrix and 20x17 position surface. The repaired focused morphology suite passes 10/10,
-  and Draft 2020-12 validation accepts a generated artifact with both text and runtime
-  input identities.
+  matrix and 20x17 position surface. Independent repaired-head review of PR #25 passed
+  the full 56/56 standard-library suite and Draft 2020-12 validation of generated POS
+  artifacts, including the text-segmentation identity regression.
 
 ### Public repository representation
 
@@ -200,9 +200,9 @@ new queue selection.
     precision or tie behavior.
 19. **Parity-corpus edition gap.** All five retained candidates remain below the M2
     source-edition-admissibility gate.
-20. **Hosted CI absent.** Legacy statuses and PR workflow runs were absent for the last
-    independently reviewed PR. Local review evidence is recorded, but CI remains not
-    configured until a current head proves otherwise.
+20. **Hosted CI absent.** Legacy statuses and PR workflow runs were both absent for the
+    independently reviewed PR #25 exact head. Local independent review evidence is
+    recorded, but CI remains not configured.
 21. **POS adjacency/position inference.** Sentence-bounded bigrams and all-sentence
     position denominators are evidence-based candidates, not established FantLab internals.
 22. **Detached provider provenance.** The POS aggregator binds text and supplied runtime

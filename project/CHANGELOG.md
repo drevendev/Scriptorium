@@ -419,3 +419,29 @@ code changes remain in Git history and their issues/PRs.
   `public-artifacts/**`. The current seed manifest references only showcase artifacts, so
   no current page is stale, but Issue #33 / `SCRIP-SITE-004` now blocks Pages activation
   or publication-root expansion until trigger coverage is synchronized and regression-tested.
+
+## 2026-09-13 — Pages publication-root trigger repair
+
+- Repaired the publication freshness contract in `SCRIP-SITE-004`: both pull-request and
+  `master` push filters now include every canonical renderer artifact root —
+  `showcase/**`, `benchmarks/**` and `public-artifacts/**`.
+- Added a regression that derives required trigger paths directly from the renderer's
+  `_ALLOWED_ARTIFACT_ROOTS`, so adding renderer support for another canonical root without
+  updating the workflow fails the test instead of silently creating a stale-deployment path.
+- Independent exact-head review of PR #34 head
+  `647f35fac3e895f5a3258949e87cc8d8195176ba` confirmed the branch was strictly ahead of
+  `master`, permissions/action pins/upload scope/deploy interlock were unchanged, and
+  hosted run `34766996476` passed **80/80** tests, canonical build, byte-identical rebuild
+  and artifact upload while deployment remained skipped on the PR event.
+- Independently downloaded artifact `10320628444`; the ZIP SHA-256 matched GitHub's
+  `a86fd5da51bba2c857f79680c7d08f0bf780d46fec5096cfd74b0159942c5395` and its tar
+  contained only generated `build.json`, root index, the two allow-listed Anna Karenina
+  pages and shared CSS.
+- PR #34 was squash-merged as `1c740d1cd4e5149b3ce7d6b270becce2cc4ade31` and Issue #33
+  closed completed. The resulting master push run `34769895595` also completed
+  successfully with build/upload green and deploy skipped because Pages activation remains
+  unset.
+- The trigger-repair blocker is closed. GitHub Pages activation is still a separate
+  administrator effect; the next normal-flow bias returns to morphology/provider work
+  when executable, otherwise source-edition/benchmark work. M2 remains 0/5 source-matched
+  works.

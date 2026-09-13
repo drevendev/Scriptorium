@@ -31,21 +31,23 @@ class WikisourceFreezeTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             roman(0)
 
-    def test_extracts_only_text_body_and_normalizes_wiki_markup(self):
+    def test_extracts_observed_text_indent_and_inline_template_variants(self):
         source = '''<noinclude>metadata</noinclude>
-<div class="text">
+<div class="indent">
 {{СодержаниеБН}}
 Первая
 строка с {{lang|it|dolce vita}} и [[Цель|меткой]].<ref>Сноска.</ref>
 
-Второй абзац с [https://example.invalid подписью] и ''курсивом''.
-</div>
+Второй абзац с [https://example.invalid подписью] и ''курсивом''. {{poemx1|| {{lang|de|Himmlisch}}|}}
+{{right|А. Каренин.}}
 === Примечания ===
-<references />'''
+<references />
+</div>
+<noinclude>navigation</noinclude>'''
         self.assertEqual(
             extract_transcription_body(source),
             "Первая строка с dolce vita и меткой.\n\n"
-            "Второй абзац с подписью и курсивом.",
+            "Второй абзац с подписью и курсивом. Himmlisch А. Каренин.",
         )
 
     def test_unknown_template_fails_closed(self):

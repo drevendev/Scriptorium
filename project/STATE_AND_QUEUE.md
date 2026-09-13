@@ -1,10 +1,10 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 27
+STATE_REVISION: 28
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T02:57:21Z
-LAST_RESULT: SCRIP-MORPH-002 authored as provider-neutral POS aggregation and opened as PR #25 for independent review.
-LAST_VERIFIED_PROGRESS: The branch adds `scriptorium-pos-v1` / `scriptorium-pos-metrics-v1`, conservatively resolves only unanimous direct pylem-runtime mappings, preserves `N`, extra AOT categories and cross-bucket homonyms as undefined, and emits defined/undefined POS distributions, all 17 displayed buckets, a complete sentence-bounded 17x17 bigram matrix and sentence positions 1..20. Focused reconstructed morphology tests passed 9/9 and Draft 2020-12 accepted both the new schema and a generated artifact. A full exact-head repository suite is not claimed because the execution container could not DNS-resolve GitHub for checkout; GitHub connector reads/writes remained healthy. PR #25 is intentionally unmerged pending independent exact-head review. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T04:46:12Z
+LAST_RESULT: SCRIP-MORPH-002 repaired after independent review found that the POS artifact was not bound to the text/segmentation identity that determines bigram and sentence-position metrics; PR #25 remains review-ready and unmerged.
+LAST_VERIFIED_PROGRESS: The repair binds every POS artifact to `scriptorium-text-v1` plus SHA-256 of the exact normalized UTF-8 text, in addition to the existing runtime profile, mapping contract and runtime-candidate digest. A regression proves `А Б. В Г.` and `А. Б В Г.` can have identical runtime-candidate digests and identical word/sentence counts while producing different sentence-bounded metrics, and therefore must carry distinct normalized-text identities. The reconstructed focused morphology suite passes 10/10 and Draft 2020-12 accepts both the repaired schema and a generated artifact. A full independent exact-head repository suite is still required before merge. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
@@ -13,10 +13,10 @@ UNIT_ID:        SCRIP-MORPH-002
 ISSUE:          #24
 STATUS:         REVIEW
 PR:             #25
-NEXT_ACTION:    Independently review the exact current PR #25 head, run the full
-                repository suite and Draft 2020-12 POS artifact validation, inspect
-                sentence-bounded bigram and all-sentence position denominators, then
-                merge only if no correctness/provenance blocker remains.
+NEXT_ACTION:    Independently review the exact repaired PR #25 head, run the full
+                repository suite and Draft 2020-12 POS artifact validation, confirm
+                text-profile/normalized-text binding and the segmentation-collision
+                regression, then merge only if no correctness/provenance blocker remains.
 ```
 
 ## Current milestone gate
@@ -120,8 +120,13 @@ new queue selection.
 ### Provider-neutral POS metric surface
 
 - `scriptorium-pos-v1` accepts exactly one runtime-analysis sequence per deterministic
-  Scriptorium word token and binds it to a caller-supplied runtime profile plus a
-  canonical candidate-matrix SHA-256 and the pinned AOT/pylem mapping contract.
+  Scriptorium word token and binds the artifact to `scriptorium-text-v1`, SHA-256 of the
+  normalized UTF-8 text, a caller-supplied runtime profile, the canonical candidate-matrix
+  SHA-256 and the pinned AOT/pylem mapping contract.
+- Independent review proved the runtime-candidate digest alone was insufficient: two
+  texts with identical word/sentence counts and the same candidate matrix can have
+  different sentence boundaries and therefore different bigram/position metrics. The
+  repaired schema freezes both text profile and normalized-text identity.
 - A token is defined only when every candidate uses one of the 15 direct runtime strings
   and all candidates map to the same displayed FantLab bucket. Empty analyses, runtime
   `N`, unresolved extra categories, unknown codes and cross-bucket homonyms are undefined.
@@ -137,15 +142,17 @@ new queue selection.
 - Bigram sentence-bounding and position denominator choices are explicitly inferred;
   they require source-matched benchmark discrimination before any reproduced claim.
 - `scriptorium-pos-metrics-v1` freezes a 17-bucket distribution, complete 17x17 bigram
-  matrix and 20x17 position surface. Focused reconstructed tests passed 9/9 and Draft
-  2020-12 validation accepted a generated artifact during the authoring run.
+  matrix and 20x17 position surface. The repaired focused morphology suite passes 10/10,
+  and Draft 2020-12 validation accepts a generated artifact with both text and runtime
+  input identities.
 
 ### Public repository representation
 
 - README/docs expose deterministic text, dialogue, punctuation, vocabulary and POS
   aggregation capabilities while labeling FantLab-shaped behavior as inferred.
 - `docs/POS_MODEL.md` explains the conservative pylem runtime boundary, unresolved
-  noun/cardinal collision, bigram candidate and sentence-position denominator.
+  noun/cardinal collision, text/runtime identity, bigram candidate and sentence-position
+  denominator.
 - Two derived *Anna Karenina* excerpt showcases are published with exact Wikisource
   revision provenance, hashes and metrics only; source prose is not committed. Both are
   explicitly illustrative, below 300,000 characters and inadmissible for corpus/parity.
@@ -198,9 +205,9 @@ new queue selection.
     configured until a current head proves otherwise.
 21. **POS adjacency/position inference.** Sentence-bounded bigrams and all-sentence
     position denominators are evidence-based candidates, not established FantLab internals.
-22. **Detached provider provenance.** The new POS aggregator can hash supplied runtime
-    candidates, but it does not prove which binary/dictionary/config produced them;
-    provider execution must be pinned before benchmark integration.
+22. **Detached provider provenance.** The POS aggregator binds text and supplied runtime
+    candidates, but it still does not prove which binary/dictionary/config produced those
+    candidates; provider execution must be pinned before benchmark integration.
 
 ## Run selection rule
 

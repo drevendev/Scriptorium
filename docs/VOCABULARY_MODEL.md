@@ -18,16 +18,19 @@ Primary methodology evidence: `https://fantlab.ru/article374`.
 ## Lexical identity
 
 `scriptorium-vocabulary-v1` takes the ordered `scriptorium-text-v1` word tokens and uses
-Unicode `casefold()` as lexical identity. It deliberately does **not**:
+Unicode NFC followed by Unicode `casefold()` as lexical identity. The same NFC +
+case-fold rule is applied to explicit dictionary entries before membership checks and
+dependency hashing. It deliberately does **not**:
 
 - lemmatize words;
 - fold `ё` into `е`;
 - alter the text profile's internal hyphen/apostrophe behavior;
 - guess spelling corrections or morphology.
 
-Consequently `Кот`, `кот`, and `КОТ` are one candidate lexeme, while different inflected
-forms remain different lexemes. This is an inspectable reconstruction, not a claim about
-FantLab's private lexical pipeline.
+Consequently `Кот`, `кот`, and `КОТ` are one candidate lexeme, and canonically equivalent
+spellings such as composed `ёж` and decomposed `е` + U+0308 + `ж` share one candidate
+identity. Different inflected forms remain different lexemes. This is an inspectable
+reconstruction, not a claim about FantLab's private lexical pipeline.
 
 `fantlab.vocabulary.unique_words` is available without any external dictionary and is
 the number of unique candidate lexemes in the input.
@@ -36,8 +39,8 @@ the number of unique candidate lexemes in the input.
 
 Scriptorium does not bundle or silently select a dictionary for this profile. The caller
 may supply an explicit lexeme collection only together with a non-empty dictionary
-profile ID. The collection is normalized with the same case-fold rule, deduplicated, and
-bound into the metric artifact as:
+profile ID. The collection is normalized with the same NFC + case-fold rule,
+deduplicated, and bound into the metric artifact as:
 
 ```text
 dependencies.vocabulary_dictionary.profile
@@ -45,7 +48,8 @@ dependencies.vocabulary_dictionary.normalized_lexemes_sha256
 dependencies.vocabulary_dictionary.lexeme_count
 ```
 
-The SHA-256 covers the canonical sorted normalized lexeme set, so two different
+The SHA-256 covers the canonical sorted normalized lexeme set, so canonically equivalent
+Unicode spellings yield the same dependency identity while genuinely different
 collections cannot be hidden behind the same profile label without changing the artifact.
 
 Without this dependency the following values are `null`, never fabricated as zero:
@@ -104,9 +108,10 @@ Visible decimal digits are not used as a precision oracle.
 
 ## Verification boundary
 
-Golden tests cover lexical normalization, missing-dependency behavior, active-vocabulary
-partitioning, immutable dictionary identity, rolling-window edge behavior, the real
-3,000-token window size, artifact/schema identity, and benchmark admission behavior.
+Golden tests cover lexical normalization including composed/decomposed Unicode equality,
+missing-dependency behavior, active-vocabulary partitioning, immutable dictionary
+identity, rolling-window edge behavior, the real 3,000-token window size, artifact/schema
+identity, and benchmark admission behavior.
 
 None of these tests promote the profile from `inferred` to `reproduced`. Source-matched
 FantLab benchmarks and a justified dictionary compatibility story remain required.

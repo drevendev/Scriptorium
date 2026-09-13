@@ -196,6 +196,27 @@ class StaticSiteRendererTests(unittest.TestCase):
         with self.assertRaisesRegex(PublicationBuildError, "HTTP\\(S\\)"):
             build_site(self.root, self.output)
 
+    def test_manifest_contract_and_artifact_schema_fail_closed(self):
+        manifest = self._manifest()
+        manifest["unexpected"] = True
+        (self.root / "site" / "publication-manifest.json").write_text(
+            json.dumps(manifest, ensure_ascii=False), encoding="utf-8"
+        )
+        with self.assertRaisesRegex(PublicationBuildError, "publication manifest has invalid keys"):
+            build_site(self.root, self.output)
+
+        self.entry["unexpected"] = "not in publication-manifest-v1"
+        self._write_fixture()
+        with self.assertRaisesRegex(PublicationBuildError, "manifest entry example-v1 has invalid keys"):
+            build_site(self.root, self.output)
+        self.entry.pop("unexpected")
+
+        self.entry["artifact_schema"] = "scriptorium-unknown-v999"
+        self.artifact["analysis"]["schema_version"] = "scriptorium-unknown-v999"
+        self._write_fixture()
+        with self.assertRaisesRegex(PublicationBuildError, "artifact_schema has unsupported value"):
+            build_site(self.root, self.output)
+
     def test_non_finite_metric_and_output_symlink_fail_closed(self):
         build_site(self.root, self.output)
         before = self._snapshot()

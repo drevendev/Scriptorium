@@ -216,3 +216,38 @@ code changes remain in Git history and their issues/PRs.
 - Existing public showcase artifacts remain versioned historical outputs; no vocabulary
   values were fabricated from their hashes without re-reading the provenance-bound
   source selection.
+
+## 2026-09-13 — Provider-neutral POS metric candidate
+
+- Added `scriptorium-pos-v1` / `scriptorium-pos-metrics-v1` as a deterministic aggregation
+  layer over one externally supplied pylem-style runtime-analysis sequence per
+  `scriptorium-text-v1` word token.
+- Bound every POS artifact to a non-empty runtime profile, the pinned
+  `aot-pylem-0.0.18-to-fantlab-2022-v1` mapping contract and a SHA-256 of the canonical
+  runtime-candidate matrix; this makes the aggregation input reproducible without
+  pretending native pylem execution was verified in this unit.
+- Resolve a token only when every supplied analysis belongs to the 15 direct runtime
+  mappings and every mapped analysis agrees on one displayed FantLab bucket. Empty
+  analyses, runtime `N`, the five unresolved extra AOT categories, unknown codes and
+  cross-bucket homonyms stay undefined.
+- Added defined/undefined counts and rates plus all 17 displayed bucket counts and
+  percentages of defined words. FantLab's service-word aggregation remains explicit
+  `unresolved` null data because its exact POS-to-service folding is not public.
+- Added a complete 17×17 ordered POS-bigram matrix. The v1 candidate counts only resolved
+  adjacent tokens inside the same Scriptorium sentence candidate and normalizes raw
+  pair counts per 1000 total Scriptorium word tokens; an undefined token breaks a pair.
+- Added positions 1..20. Based on FantLab's public “randomly selected sentence” wording,
+  every position uses all Scriptorium sentence candidates as its denominator; sentences
+  that are too short or undefined at that position add zero to bucket numerators.
+- Kept the bigram adjacency and sentence-position denominator choices visibly inferred;
+  source-matched benchmarks, not plausibility, must decide whether they match FantLab.
+- Added focused tests for conservative mapping, empty input, ambiguity/unresolved cases,
+  sentence-bounded bigrams, per-1000 normalization, all-sentence position denominators,
+  alignment and the 20-position boundary. The reconstructed focused suite passed 9/9.
+- Draft 2020-12 validation accepted both the POS schema itself and a generated artifact.
+  A full branch suite is left for independent exact-head review because the execution
+  container could not DNS-resolve GitHub for a repository checkout; GitHub connector
+  reads and writes remained healthy.
+- No source-matched benchmark or public analyzed-work showcase moved in this slice: M2
+  remains 0/5, and no POS values were invented without provenance-bound source text and
+  provider execution evidence.

@@ -17,7 +17,9 @@ python -m scriptorium.site_renderer --output build/site
 
 The default inputs are the repository root and
 `site/publication-manifest.json`. Relative output paths are resolved under the repository
-root. Generated output is ignored by Git and is not canonical project state.
+root. For deletion safety, every output target must resolve inside the repository's
+`build/` subtree; output elsewhere, including `.git`, is rejected. Generated output is
+ignored by Git and is not canonical project state.
 
 The current renderer writes:
 
@@ -80,8 +82,8 @@ The build is rejected when, among other cases:
 - a rendered metric has an unsupported evidence status, invalid unit, non-numeric value
   or non-finite number;
 - a provenance link is not HTTP(S) or embeds URL credentials;
-- the output target is a symlink, the repository itself, or an ancestor of the
-  repository.
+- the output target is a symlink or resolves outside the repository `build/` subtree,
+  including through a symlinked parent.
 
 All artifact-controlled strings are HTML-escaped. Remote provenance URLs are rendered as
 links only; the builder never dereferences them.

@@ -238,7 +238,7 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
         '<main><p class="eyebrow">Scriptorium</p><h1>Evidence-labelled literary analysis</h1>'
         '<p class="lede">Public pages are generated only from repository artifacts explicitly allow-listed by the publication manifest. '
         'Compatibility labels describe evidence, not visual similarity to FantLab.</p>'
-        f'<section class="grid'>{"".join(cards)}</section></main>'
+        f'<section class="grid">{"".join(cards)}</section></main>'
     )
     return _page("Scriptorium", "assets/site.css", body)
 
@@ -310,11 +310,15 @@ footer { opacity: .7; font-size: .9rem; }
 
 def _prepare_output(repo_root: Path, output_dir: Path) -> Path:
     root = repo_root.resolve()
-    if output_dir.exists() and output_dir.is_symlink():
+    if output_dir.is_symlink():
         raise PublicationBuildError("output directory must not be a symlink")
     output = output_dir.resolve()
-    if output == root or output in root.parents:
-        raise PublicationBuildError("output directory must not be the repository or its ancestor")
+    try:
+        relative = output.relative_to(root)
+    except ValueError as exc:
+        raise PublicationBuildError("output directory must stay inside the repository build/ tree") from exc
+    if not relative.parts or relative.parts[0] != "build":
+        raise PublicationBuildError("output directory must stay inside the repository build/ tree")
     if output.exists():
         shutil.rmtree(output)
     output.mkdir(parents=True)

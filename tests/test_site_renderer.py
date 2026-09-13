@@ -196,6 +196,22 @@ class StaticSiteRendererTests(unittest.TestCase):
         with self.assertRaisesRegex(PublicationBuildError, "must not be a symlink"):
             build_site(self.root, self.output)
 
+    def test_output_must_stay_under_repository_build_tree(self):
+        outside = Path(self.temp.name) / "outside-site"
+        with self.assertRaisesRegex(PublicationBuildError, "repository build/ tree"):
+            build_site(self.root, outside)
+        with self.assertRaisesRegex(PublicationBuildError, "repository build/ tree"):
+            build_site(self.root, self.root / ".git")
+
+        target = self.root / "valuable"
+        target.mkdir()
+        link = self.root / "build" / "linked"
+        link.parent.mkdir(parents=True, exist_ok=True)
+        link.symlink_to(target, target_is_directory=True)
+        with self.assertRaisesRegex(PublicationBuildError, "repository build/ tree"):
+            build_site(self.root, link / "site")
+        self.assertTrue(target.is_dir())
+
     def test_rebuild_removes_stale_output(self):
         build_site(self.root, self.output)
         stale = self.output / "stale.html"

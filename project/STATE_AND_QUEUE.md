@@ -1,23 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 31
+STATE_REVISION: 32
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-13T08:46:00Z
-LAST_RESULT: SCRIP-SITE-001 repaired PR #27 after independent review found that manifest compatibility claims could upgrade canonical metric evidence.
-LAST_VERIFIED_PROGRESS: Independent review of PR #27 head 8bb178b7f83d35b8262322ff28d900bad2d14dac found one evidence-safety blocker: `compatibility_claim` was schema-valid but not checked against canonical artifact metric statuses. The repair adds `scriptorium.publication` with fail-closed deterministic derivation from non-empty `analysis.metrics`: one uniform supported status remains that status, multiple supported statuses become `mixed`, and missing/unknown surfaces are rejected. Seed showcase checks now validate the derived claim and a regression proves `mixed -> reproduced` mutation is rejected. Focused synthetic assertions for uniform, mixed, mismatch, missing and unknown-status behavior passed 9/9. Full exact-head repository review remains for the next independent run. GitHub Pages is still not enabled. M2 remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-13T09:54:13Z
+LAST_RESULT: SCRIP-SITE-001 passed independent repaired-head review and PR #27 was squash-merged; issue #26 is complete.
+LAST_VERIFIED_PROGRESS: Exact PR #27 head 4b7a46c4ea999429d4368d1af17284eaf3b5a6e5 was independently reviewed. Compatibility-claim derivation passed an independent 14-case edge matrix, artifact-path safety passed an independent edge matrix, and Draft 2020-12 schema self-check plus seed-manifest validation passed. Both canonical seed showcases contain inferred FantLab-shaped metrics plus the Scriptorium sentence-count extension, so their manifest claim correctly derives to `mixed`; a manifest-only upgrade to `reproduced` fails closed. GitHub reported the exact head mergeable/rebaseable with mergeable_state=clean. Hosted statuses/workflows remained absent, so CI is not configured rather than green. Native full-suite checkout remained unavailable because the execution container cannot resolve GitHub hosts; existing analyzer modules were unchanged by this PR. PR #27 merged as 20bd0706270b50e85b8b384b430c096aafe072be. GitHub Pages remains disabled. M2 remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-SITE-001
 ISSUE:          #26
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #27
-HEAD:           scrip-site-001-publication-contract
-NEXT_ACTION:    Independently review the repaired exact PR #27 head. Re-run the full
-                standard-library suite and publication-contract tests when possible;
-                verify that canonical compatibility-claim derivation fails closed and
-                inspect hosted status/workflow evidence. Merge only if no blocker remains.
+MERGED_COMMIT:  20bd0706270b50e85b8b384b430c096aafe072be
+NEXT_ACTION:    Select the highest-priority dependency-satisfied queue unit. Re-check
+                SCRIP-MORPH-003 provider/runtime executability first; if DNS/native
+                provider verification is still unavailable, advance SCRIP-SITE-002.
 ```
 
 ## Current milestone gate
@@ -164,17 +163,17 @@ dependency is not executable.
   generated. Vocabulary/POS values were not fabricated from historical hashes; a future
   richer showcase must re-read a provenance-bound source selection and record provider
   execution identity where morphology is involved.
-- PR #27 adds `scriptorium-publication-manifest-v1` as an explicit Pages allow-list rather
-  than directory discovery. The seed manifest indexes exactly the two existing showcase
-  artifacts, freezes stable slugs and marks source text absent plus both benchmark/corpus
-  admissibility as false.
-- Manifest-level compatibility claims are now checked against canonical per-metric
+- `scriptorium-publication-manifest-v1` is now merged as an explicit Pages allow-list
+  rather than directory discovery. The seed manifest indexes exactly the two existing
+  showcase artifacts, freezes stable slugs and marks source text absent plus both
+  benchmark/corpus admissibility as false.
+- Manifest-level compatibility claims are checked against canonical per-metric
   `compatibility_status` values by executable fail-closed derivation. The two historical
   showcase artifacts derive to `mixed`; a manifest-only upgrade to `reproduced` is a
   validation error rather than publishable presentation metadata.
-- The Pages architecture candidate uses a future custom GitHub Actions build/upload/deploy
-  flow, keeps generated HTML out of repository state, and treats the canonical JSON
-  artifacts plus manifest as the only publication inputs. Pages is not enabled yet.
+- The Pages architecture uses a future custom GitHub Actions build/upload/deploy flow,
+  keeps generated HTML out of repository state, and treats the canonical JSON artifacts
+  plus manifest as the only publication inputs. Pages is not enabled yet.
 
 ## Known risks / blockers
 
@@ -217,16 +216,16 @@ dependency is not executable.
 19. **Parity-corpus edition gap.** All five retained candidates remain below the M2
     source-edition-admissibility gate.
 20. **Hosted CI absent.** Legacy statuses and PR workflow runs were both absent for the
-    independently reviewed PR #25 exact head. Local independent review evidence is
+    independently reviewed PR #27 exact head. Local independent contract evidence is
     recorded, but CI remains not configured.
 21. **POS adjacency/position inference.** Sentence-bounded bigrams and all-sentence
     position denominators are evidence-based candidates, not established FantLab internals.
 22. **Detached provider provenance.** The POS aggregator binds text and supplied runtime
     candidates, but it still does not prove which binary/dictionary/config produced those
     candidates; provider execution must be pinned before benchmark integration.
-23. **Pages deployment not enabled.** PR #27 defines the publication contract only. A
-    later reviewed unit must implement a renderer and separately enable/deploy Pages
-    without turning generated output into canonical state.
+23. **Pages deployment not enabled.** The publication contract is merged, but a later
+    reviewed unit must implement a renderer and separately enable/deploy Pages without
+    turning generated output into canonical state.
 
 ## Run selection rule
 

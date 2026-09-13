@@ -19,7 +19,10 @@
     },
     "work_page_excerpt_download": {
       "work_page_url": "https://fantlab.ru/work270306",
-      "observed_behavior": "The current TXT excerpt link redirects to a LitRes trial endpoint (art=69555640).",
+      "observed_on": "2026-09-13",
+      "observed_txt_url": "https://fantlab.ru/getwork74152506.txt.zip",
+      "observed_redirect_url": "https://litres.ru/gettrial/?art=74152506&format=txt.zip&utm_source=advcake&utm_medium=cpa&utm_campaign=affiliate&utm_content=56166daa&uilang=ru&erid=2VfnxyNkZrY&advcake_method=1&m=1",
+      "observed_behavior": "On 2026-09-13 the TXT excerpt link redirected to a LitRes trial endpoint with art=74152506; this is recorded as a point-in-time observation, not a stable work identity.",
       "relationship_to_analyzed_text": "unproven",
       "use_as_source_edition_evidence": false
     }
@@ -64,7 +67,7 @@
     "reasons": [
       "The legal public transcription is not yet frozen as a complete composite text.",
       "FantLab does not disclose the edition or bytes of the uploaded text behind the 2022 analysis.",
-      "The current FantLab excerpt download is a LitRes trial redirect and provides no evidence that it is the analyzer input."
+      "The FantLab excerpt download observed on 2026-09-13 redirected to a LitRes trial endpoint and provides no evidence that it is the analyzer input."
     ],
     "next_evidence": [
       "Construct a revision-pinned manifest for all 239 Wikisource chapter subpages that comprise the Nauka 1970/FEB transcription.",

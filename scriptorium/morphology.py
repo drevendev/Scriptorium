@@ -13,7 +13,7 @@ from hashlib import sha256
 import json
 from typing import Final
 
-from .text import normalize_text, sentence_spans, word_tokens
+from .text import NORMALIZATION_PROFILE, normalize_text, sentence_spans, word_tokens
 
 POS_PROFILE: Final = "scriptorium-pos-v1"
 POS_SCHEMA_VERSION: Final = "scriptorium-pos-metrics-v1"
@@ -133,6 +133,8 @@ def analyze_pos_metrics(
         "schema_version": POS_SCHEMA_VERSION,
         "metric_contract_id": "fantlab-2022-v1",
         "profile": POS_PROFILE,
+        "text_profile": NORMALIZATION_PROFILE,
+        "normalized_sha256": sha256(normalized.encode("utf-8")).hexdigest(),
         "mapping_contract": POS_MAPPING_CONTRACT,
         "runtime_profile": runtime_profile.strip(),
         "runtime_analysis_sha256": sha256(canonical_candidates).hexdigest(),

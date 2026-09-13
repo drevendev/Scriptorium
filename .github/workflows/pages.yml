@@ -64,6 +64,19 @@ jobs:
           rm -rf build/site-check
           test -z "$(find build/site -type l -print -quit)"
 
+      - name: Diagnose Wikisource extraction contract
+        shell: bash
+        run: |
+          python - <<'PY'
+          from scriptorium.wikisource_freeze import expected_chapters, fetch_current_chapter_revisions, extract_transcription_body
+          chapters = expected_chapters()
+          revisions = fetch_current_chapter_revisions(chapters)
+          for chapter in chapters:
+              title = str(chapter["title"])
+              print(title, flush=True)
+              extract_transcription_body(str(revisions[title]["wikitext"]))
+          PY
+
       - name: Capture revision-pinned Wikisource research receipt
         run: python -m scriptorium.wikisource_freeze --output build/site/_research-wikisource-freeze.json
 

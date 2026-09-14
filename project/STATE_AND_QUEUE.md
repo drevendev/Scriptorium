@@ -1,38 +1,38 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 50
+STATE_REVISION: 51
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-14T05:00:00Z
-LAST_RESULT: SCRIP-PUNCT-002 authored on PR #44. The new inferred punctuation-v2 policy removes the internal double role where ASCII hyphen-minus retained inside a current text-v1 word token was also counted as dash punctuation. Aggregate/schema identities are versioned forward; no FantLab parity claim moved.
-LAST_VERIFIED_PROGRESS: Re-oriented from master b612c0de4e2b72af611b9ea74ade3632d84b6c0e. SCRIP-MORPH-003 remains infrastructure not_run: the execution container has no installed pylem and DNS still fails for github.com, pypi.org and files.pythonhosted.org. FantLab article 374 still publishes only punctuation-frequency scope, while public work surfaces label the `-` row as `тире`; no public hyphen/dash classifier was found. SCRIP-PUNCT-002 therefore resolves only Scriptorium's internal consistency boundary: token-internal ASCII hyphens retained by scriptorium-text-v1 are lexical connectors for punctuation-v2 and are not simultaneously counted as dash events. PR #44 exact authored head 3d41f9f858435ff14ca88437fb731c8507d4d65e queued hosted frozen-diagnostic run 34808009137 and Pages run 34808009168; independent exact-head review is still required before merge.
+LAST_COMMITTED_RUN_AT: 2026-09-14T05:53:00Z
+LAST_RESULT: SCRIP-PUNCT-002 independently reviewed and squash-merged as 12b1802dfa04fb94a4fff4ffeffa5961fbf7c585. The inferred punctuation-v2 policy is now on master; token-internal ASCII hyphens retained by scriptorium-text-v1 are not double-counted as dash punctuation, while FantLab's actual classifier remains unknown and M2 remains 0/5 source-matched works.
+LAST_VERIFIED_PROGRESS: Independent review of PR #44 exact head b1446f2be2c9613f3b502758ffd4aea490176c48 found no blocking defect. The branch was 12 commits ahead / 0 behind master, mergeable, with no review threads or prior comments. Frozen-diagnostic run 34808236364 and Pages run 34808236373 both completed successfully on that exact head; deployment remained skipped. Independently downloaded artifact 10334160818 matched SHA-256 8f47bde36c898cfd868da6b4e6337deeb9ad2ceb5b5b7dafcfe609c2e0a534f2, contained one derived JSON only, bound itself to the exact head, and preserved fantlab_source_edition_match=unknown, diagnostic_only and m2_parity_admissible=false. PR #44 was squash-merged and Issue #43 closed completed. Merge-commit master push Pages run 34811184706 also completed successfully.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-PUNCT-002
 ISSUE:          #43
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #44
-AUTHORED_HEAD:  3d41f9f858435ff14ca88437fb731c8507d4d65e
-NEXT_ACTION:    Do not merge from the authoring run. On the next wake, re-read PR #44,
-                inspect its exact current head, review comments/threads and hosted
-                checks. Independently verify punctuation-v2 lexical-hyphen behavior,
-                schema/profile versioning, historical-v1 artifact preservation and the
-                frozen diagnostic boundary. Merge only if that exact head is clean.
+MERGED_COMMIT:  12b1802dfa04fb94a4fff4ffeffa5961fbf7c585
+NEXT_ACTION:    Re-check SCRIP-MORPH-003 provider/runtime executability first. If native
+                pinned pylem/provider execution is still unavailable, select
+                SCRIP-DIALOGUE-002 and investigate the author-text-inside-dialogue gap
+                from definitions/tests and diagnostic evidence without fitting the
+                source-unmatched Anna Karenina target.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral candidate artifact, but native pinned pylem/provider execution identity remains unverified. The benchmark harness has one reproducibly frozen full-work Anna Karenina diagnostic, but its FantLab analyzer-input edition is unknown. SCRIP-PUNCT-002 versions punctuation semantics forward without claiming FantLab's hidden hyphen/dash rule. The M2 reproduction gate remains **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral candidate artifact, but native pinned pylem/provider execution identity remains unverified. The benchmark harness has one reproducibly frozen full-work Anna Karenina diagnostic, but its FantLab analyzer-input edition is unknown. SCRIP-PUNCT-002 is merged and versions punctuation semantics forward without claiming FantLab's hidden hyphen/dash rule. The M2 reproduction gate remains **0/5 source-matched works**.
 
 ## Queue
 
-Evaluate rows in priority order and skip dependencies that are not executable. A `REVIEW` current unit preempts selecting a new row.
+Evaluate rows in priority order and skip dependencies that are not executable.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
 | P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked because the execution container has no installed pylem and cannot resolve required GitHub/PyPI package hosts |
-| P2 | SCRIP-PUNCT-002 | analyzer core / reproduction | Resolve the inspectable lexical-hyphen-versus-dash event overlap under a versioned punctuation policy, using public methodology and independent tests rather than fitting the unmatched Anna Karenina target | Authored as Issue #43 / PR #44; independent exact-head review required before merge |
+| P2 | SCRIP-PUNCT-002 | analyzer core / reproduction | Resolve the inspectable lexical-hyphen-versus-dash event overlap under a versioned punctuation policy, using public methodology and independent tests rather than fitting the unmatched Anna Karenina target | DONE in Issue #43 / PR #44; merged as 12b1802dfa04fb94a4fff4ffeffa5961fbf7c585 |
 | P3 | SCRIP-DIALOGUE-002 | analyzer core / reproduction | Investigate the +21.372 percentage-point author-text-inside-dialogue gap, including delimiter recognition and denominator semantics, with bounded tests and diagnostic evidence | SCRIP-REPRO-005 merged; do not tune to one unmatched source as parity proof |
 
 ## Evidence already established
@@ -72,17 +72,18 @@ Evaluate rows in priority order and skip dependencies that are not executable. A
 
 ### Punctuation v2 candidate — SCRIP-PUNCT-002
 
-- PR #44 versions the aggregate artifact to `scriptorium-metrics-v4` / `scriptorium-deterministic-metrics-v4` and punctuation semantics to `scriptorium-punctuation-v2`; the historical v3 schema and punctuation-v1 evidence remain untouched.
+- `scriptorium-metrics-v4` / `scriptorium-deterministic-metrics-v4` and `scriptorium-punctuation-v2` are merged on master; the historical v3 schema and punctuation-v1 evidence remain untouched.
 - Punctuation-v2 derives lexical ASCII-hyphen positions from the exact current `scriptorium-text-v1` token spans. If ASCII `-` is retained inside a word token, that glyph is not also counted as a dash punctuation event.
 - Token-external ASCII hyphen-minus and U+2010..U+2014 remain inferred dash candidates. Greedy compound punctuation and all non-dash rows are unchanged.
 - The rule is an internal consistency invariant, not a linguistic assertion that every token-internal hyphen is lexically correct and not a reconstruction of FantLab's unpublished classifier.
 - The source-free policy diagnostic is versioned forward to v2 for newly generated evidence and explicitly distinguishes the legacy punctuation-v1 all-glyph baseline from current punctuation-v2. The committed historical v1 artifact is intentionally not rewritten without replay.
+- Exact-head frozen run 34808236364 verified the full standard-library suite, exact 239-revision replay and derived diagnostic upload. Artifact 10334160818 reports punctuation-v2 dash 40.59281699448318 per 1000 words, delta +14.91281699448318 versus FantLab, while remaining source-unmatched diagnostic evidence only.
 - No production word-token semantics changed. No source-edition gate changed. M2 remains 0/5.
 
 ### Deterministic analyzer surface
 
 - `scriptorium-text-v1` provides deterministic NFC/newline normalization and word/sentence candidate spans; compatibility remains inferred.
-- `scriptorium-dialogue-v1`, `scriptorium-vocabulary-v1`, `scriptorium-metrics-v4` and `scriptorium-deterministic-metrics-v4` provide the current general/dialogue/vocabulary/punctuation surface when PR #44 is reviewed and merged; master remains on v3/v1 until then.
+- `scriptorium-dialogue-v1`, `scriptorium-vocabulary-v1`, `scriptorium-punctuation-v2`, `scriptorium-metrics-v4` and `scriptorium-deterministic-metrics-v4` provide the current general/dialogue/vocabulary/punctuation surface.
 - Dictionary-dependent vocabulary values remain non-parity because FantLab's production dictionary/version is unknown.
 - `scriptorium-pos-v1` / `scriptorium-pos-metrics-v1` provides provider-neutral POS aggregation with explicit unresolved categories and text/runtime identity. Native pylem provider provenance is still `not_run`.
 
@@ -97,9 +98,9 @@ Evaluate rows in priority order and skip dependencies that are not executable. A
 
 - Two derived Anna Karenina excerpt showcases remain public, explicitly short/non-corpus/non-parity, with no source prose committed.
 - The repository contains a source-free full-work Anna Karenina diagnostic artifact and a historical source-free word/dash policy-sensitivity artifact linked from the public README. Both state source identity is unknown and M2 inadmissible.
-- `docs/METRIC_PROFILE.md` on PR #44 exposes the punctuation-v2 rule and its uncertainty boundary to repository visitors without rewriting historical artifacts.
+- `docs/METRIC_PROFILE.md` now exposes the merged punctuation-v2 rule and its uncertainty boundary to repository visitors without rewriting historical artifacts.
 - `scriptorium-publication-manifest-v1`, `scriptorium-static-site-v1` and the gated Pages build/upload workflow remain fail-closed on unsupported publication semantics.
-- Live deployment remains intentionally disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` and repository Pages administration is a separate owner/admin effect.
+- PR #44 exact head passed Pages run 34808236373 and merge commit `12b1802dfa04fb94a4fff4ffeffa5961fbf7c585` passed master push Pages run 34811184706; live deployment remains intentionally disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` and repository Pages administration is a separate owner/admin effect.
 
 ## Known risks / blockers
 

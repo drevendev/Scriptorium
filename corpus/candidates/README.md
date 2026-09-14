@@ -16,14 +16,16 @@ Canonical evidence:
 - `source-edition-traces/tolstoy-anna-karenina-ru.revisions.json` — packed source-free 239-revision identity and composite hashes.
 - `../../scriptorium/wikisource_freeze.py` — deterministic fetch/extraction/composition implementation.
 
-## Resurrection source trace
+## Resurrection diagnostic candidate
 
-`tolstoy-resurrection-ru` now has a second source-edition trace, but **not** a frozen full-work candidate. Russian Wikisource identifies Alexey Komarov's library as its transcription source; Komarov's source page completes the citation as **L. N. Tolstoy, Collected Works in eight volumes, volume 6, Moscow: Lexika, 1996**. The Wikisource work index exposes permanent revision `oldid=5614128`, and Wikisource plus Komarov independently expose the same three-part structure of **59 + 42 + 28 = 129 chapters**.
+`tolstoy-resurrection-ru` is now a second reproducibly frozen public-domain candidate. Russian Wikisource identifies Alexey Komarov's library as its transcription source; Komarov's source page completes the citation as **L. N. Tolstoy, Collected Works in eight volumes, volume 6, Moscow: Lexika, 1996**. The work has **59 + 42 + 28 = 129 chapters**, and the committed source-free manifest pins every chapter revision ID, revision timestamp and MediaWiki SHA-1 identity in deterministic part/chapter order.
 
-That index revision does not freeze the chapter text. Chapter pages have independent revision IDs, so a reproducible full-work candidate requires all 129 chapter revisions to be pinned before a diagnostic comparison is admitted. FantLab's 19 September 2022 analysis reports **881,244 characters** and **126,457 words**, but still discloses neither analyzer-input edition nor immutable bytes. Its current TXT excerpt link redirects to a LitRes trial endpoint and is explicitly excluded from source-match evidence.
+The frozen extraction uses the explicit `scriptorium-wikisource-resurrection-body-v1` contract because the source set contains two observed page shapes: some chapters wrap prose in one or more `text`/`indent` divs, while others place prose directly after the `Отексте` header. Exact-revision replay reconstructs a **890,835-character** composite with raw and `scriptorium-text-v1` normalized SHA-256 `2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`. No source prose is committed.
+
+FantLab's 19 September 2022 analysis displays **881,244 characters** and **126,457 words**, a character-count difference of **9,591** from this frozen public candidate. That difference is diagnostic-only: FantLab still discloses neither the analyzer-input edition nor immutable bytes, and its TXT excerpt link is not source-match evidence. `fantlab_source_edition_match` therefore remains `unknown`; the candidate may now support source-frozen diagnostic comparisons but not M2 parity evidence, so the reproduction gate remains **0/5 source-matched works**.
 
 Canonical evidence:
 
-- `source-edition-traces/tolstoy-resurrection-ru.json` — source chain, work-index identity, 129-chapter freeze boundary, admissibility and next evidence.
-
-`fantlab_source_edition_match` therefore remains `unknown`, `diagnostic_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+- `source-edition-traces/tolstoy-resurrection-ru.json` — provenance, legal/source boundary, frozen identity and admissibility.
+- `source-edition-traces/tolstoy-resurrection-ru.revisions.json` — compact source-free 129-revision identity and composite hashes.
+- `../../scriptorium/resurrection_freeze.py` — versioned source-specific extraction and exact-revision replay implementation.

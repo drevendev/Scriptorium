@@ -10,6 +10,7 @@ on:
       - "scriptorium/text.py"
       - "tests/test_morphology.py"
       - "tests/test_pylem_provider.py"
+      - "tools/pylem_runtime_probe.py"
       - "docs/AOT_PYLEM_COMPATIBILITY.md"
       - "project/STATE_AND_QUEUE.md"
       - "project/CHANGELOG.d/SCRIP-MORPH-003.md"
@@ -19,6 +20,25 @@ permissions:
   contents: read
 
 jobs:
+  contract-tests:
+    name: Verify Scriptorium provider contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run complete standard-library test suite
+        run: python -m unittest discover -s tests -v
+
   native-pylem-smoke:
     name: Build and execute pinned pylem 0.0.18
     runs-on: ubuntu-24.04
@@ -57,14 +77,11 @@ jobs:
           assert version("pylem") == "0.0.18", version("pylem")
           PY
 
-      - name: Run complete standard-library test suite
-        run: python -m unittest discover -s tests -v
-
-      - name: Execute native provider smoke
+      - name: Execute isolated native provider smoke
         run: |
           set -euo pipefail
           mkdir -p build/morph
-          python -m scriptorium.pylem_provider \
+          python tools/pylem_runtime_probe.py \
             --receipt build/morph/pylem-runtime-receipt.json
           python - <<'PY'
           import json
@@ -75,7 +92,9 @@ jobs:
           )
           assert receipt["provider"]["distribution"] == "pylem"
           assert receipt["provider"]["version"] == "0.0.18"
+          assert receipt["provider"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
           assert receipt["fixture"]["source_text_included"] is False
+          assert receipt["fixture"]["token_count"] == 3
           assert receipt["epistemic_boundary"]["fantlab_dictionary_equivalence"] == "unknown"
           assert receipt["epistemic_boundary"]["m2_parity_admissible"] is False
           print(json.dumps(receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")))

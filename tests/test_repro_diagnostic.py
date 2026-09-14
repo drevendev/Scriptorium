@@ -1,0 +1,54 @@
+import json
+import unittest
+from unittest.mock import patch
+
+from scriptorium.repro_diagnostic import build_frozen_diagnostic
+
+
+class ReproDiagnosticTests(unittest.TestCase):
+    def test_frozen_diagnostic_remains_fail_closed_for_unknown_fantlab_source(self):
+        reference = json.dumps(
+            {
+                "benchmark_id": "example",
+                "reference": {
+                    "site": "FantLab",
+                    "url": "https://example.invalid/lp",
+                    "analysis_date": "2022-09-19",
+                    "work_id": 1,
+                    "title": "Example",
+                    "author": "Example",
+                },
+                "expected": {"characters": 11, "words": 2},
+            }
+        )
+        manifest = {
+            "bibliographic_source": "Frozen edition",
+            "source_work_url": "https://example.invalid/source",
+            "legal_basis": "public_domain",
+        }
+
+        with patch(
+            "scriptorium.repro_diagnostic.replay_packed_manifest",
+            return_value="Привет мир.",
+        ):
+            artifact = build_frozen_diagnostic(
+                reference,
+                manifest,
+                scriptorium_revision="abc123",
+            )
+
+        self.assertEqual(artifact["source_text"]["edition_match"], "unknown")
+        self.assertEqual(
+            artifact["metrics"]["fantlab.general.characters"]["comparison"]["result"],
+            "unresolved",
+        )
+        self.assertEqual(
+            artifact["metrics"]["fantlab.general.characters"]["comparison"]["raw_delta"],
+            0,
+        )
+        self.assertEqual(artifact["diagnostic_boundary"]["status"], "diagnostic_only")
+        self.assertIs(artifact["diagnostic_boundary"]["m2_parity_admissible"], False)
+
+
+if __name__ == "__main__":
+    unittest.main()

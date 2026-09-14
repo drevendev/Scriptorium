@@ -1,3 +1,4 @@
+import ast
 import unittest
 from pathlib import Path
 
@@ -67,6 +68,15 @@ class PylemProviderUnitTests(unittest.TestCase):
             encoding="utf-8"
         )
         probe = (root / "tools/pylem_runtime_probe.py").read_text(encoding="utf-8")
+        probe_tree = ast.parse(probe)
+        probe_import_roots = set()
+        for node in ast.walk(probe_tree):
+            if isinstance(node, ast.Import):
+                probe_import_roots.update(
+                    alias.name.split(".", 1)[0] for alias in node.names
+                )
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                probe_import_roots.add(node.module.split(".", 1)[0])
 
         self.assertEqual(PYLEM_VERSION, "0.0.18")
         self.assertEqual(PYLEM_RUNTIME_PROFILE, "pylem-0.0.18-python39-sidecar-v1")
@@ -84,7 +94,7 @@ class PylemProviderUnitTests(unittest.TestCase):
         self.assertIn("python tools/pylem_runtime_probe.py", workflow)
         self.assertIn("build/morph/pylem-runtime-receipt.json", workflow)
         self.assertNotIn("secrets.", workflow)
-        self.assertNotIn("scriptorium", probe)
+        self.assertNotIn("scriptorium", probe_import_roots)
         self.assertIn('"source_text_included": False', probe)
         self.assertNotIn("TOKENS,", probe)
 

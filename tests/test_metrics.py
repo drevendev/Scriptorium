@@ -85,9 +85,9 @@ class DeterministicMetricTests(unittest.TestCase):
         counts = punctuation_counts("кто-то 12-34 кто - то ‐ ‑ ‒ – —")
 
         # ASCII hyphens retained inside current text-v1 word tokens are lexical
-        # connectors for punctuation-v2. A spaced ASCII hyphen and every supported
-        # Unicode dash-family glyph remain punctuation candidates.
-        self.assertEqual(counts["dash"], 7)
+        # connectors for punctuation-v2. A spaced ASCII hyphen and each of the five
+        # supported U+2010..U+2014 dash-family glyphs remain punctuation candidates.
+        self.assertEqual(counts["dash"], 6)
 
         artifact = analyze_deterministic_metrics("кто-то кто - то")
         dash = artifact["metrics"]["fantlab.punctuation.dash.per_1000_words"]

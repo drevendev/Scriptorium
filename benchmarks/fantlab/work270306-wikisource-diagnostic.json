@@ -1,0 +1,66 @@
+{
+  "artifact_version": "scriptorium-frozen-diagnostic-v1",
+  "benchmark_id": "fantlab-work270306-2022-09-19",
+  "candidate_id": "tolstoy-anna-karenina-ru",
+  "evidence": {
+    "hosted_run_id": 34794221625,
+    "python_version": "3.13.15",
+    "scriptorium_revision": "9ba8f36440b15fc41374209437048ae2e486d579",
+    "reference_path": "benchmarks/fantlab/work270306.json",
+    "source_manifest_path": "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json",
+    "replay_integrity": "passed",
+    "chapter_count": 239,
+    "raw_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+    "normalized_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+    "source_text_committed": false,
+    "source_text_uploaded": false
+  },
+  "epistemic_status": {
+    "status": "diagnostic_only",
+    "fantlab_source_edition_match": "unknown",
+    "m2_parity_admissible": false,
+    "m2_source_matched_progress": "0/5",
+    "reason": "The public-domain candidate is reproducibly frozen, but FantLab does not disclose the analyzer-input edition or bytes. Numeric deltas cannot establish parity."
+  },
+  "metrics": {
+    "fantlab.general.characters": {"expected": 1692647, "actual": 1705605, "raw_delta": 12958, "result": "unresolved"},
+    "fantlab.general.words": {"expected": 253275, "actual": 269358, "raw_delta": 16083, "result": "unresolved"},
+    "fantlab.general.mean_word_length_chars": {"expected": 4.95, "actual": 4.9825511029930425, "raw_delta": 0.032551102993042313, "result": "unresolved"},
+    "fantlab.general.mean_sentence_length_chars": {"expected": 79.17, "actual": 78.99585453175052, "raw_delta": -0.17414546824947763, "result": "unresolved"},
+    "fantlab.dialogue.mean_narration_sentence_length_chars": {"expected": 108.87, "actual": 109.54996977634495, "raw_delta": 0.6799697763449473, "result": "unresolved"},
+    "fantlab.dialogue.mean_dialogue_sentence_length_chars": {"expected": 52.54, "actual": 51.53638271820885, "raw_delta": -1.0036172817911506, "result": "unresolved"},
+    "fantlab.dialogue.share_percent": {"expected": 35.12, "actual": 34.97462555501088, "raw_delta": -0.14537444498911611, "result": "unresolved"},
+    "fantlab.dialogue.author_text_inside_dialogue_percent": {"expected": 17.02, "actual": 38.39203965651457, "raw_delta": 21.37203965651457, "result": "unresolved"},
+    "fantlab.vocabulary.unique_words": {"expected": 12770, "actual": 33373, "raw_delta": 20603, "result": "unresolved"},
+    "fantlab.vocabulary.active_dictionary": {"expected": 11428, "actual": null, "raw_delta": null, "result": "not_run"},
+    "fantlab.vocabulary.active_nondictionary": {"expected": 1342, "actual": null, "raw_delta": null, "result": "not_run"},
+    "fantlab.vocabulary.uasz_3000": {"expected": 944.54, "actual": null, "raw_delta": null, "result": "unresolved"},
+    "fantlab.vocabulary.uasz_10000": {"expected": 2126.08, "actual": null, "raw_delta": null, "result": "unresolved"},
+    "fantlab.vocabulary.uasz_100000": {"expected": 8061.16, "actual": null, "raw_delta": null, "result": "unresolved"},
+    "fantlab.punctuation.comma.per_1000_words": {"expected": 155.86, "actual": 146.31457020025394, "raw_delta": -9.545429799746074, "result": "unresolved"},
+    "fantlab.punctuation.period.per_1000_words": {"expected": 65.57, "actual": 61.48323049621693, "raw_delta": -4.08676950378306, "result": "unresolved"},
+    "fantlab.punctuation.dash.per_1000_words": {"expected": 25.68, "actual": 46.57370488346364, "raw_delta": 20.89370488346364, "result": "unresolved"},
+    "fantlab.punctuation.exclamation.per_1000_words": {"expected": 5.92, "actual": 5.598497167338635, "raw_delta": -0.32150283266136537, "result": "unresolved"},
+    "fantlab.punctuation.question.per_1000_words": {"expected": 9.01, "actual": 8.471996376569473, "raw_delta": -0.5380036234305265, "result": "unresolved"},
+    "fantlab.punctuation.ellipsis.per_1000_words": {"expected": 3.13, "actual": 3.1890643678672994, "raw_delta": 0.059064367867299516, "result": "unresolved"},
+    "fantlab.punctuation.exclamation_ellipsis.per_1000_words": {"expected": 0.17, "actual": 0.15963884495726877, "raw_delta": -0.010361155042731246, "result": "unresolved"},
+    "fantlab.punctuation.question_ellipsis.per_1000_words": {"expected": 0.21, "actual": 0.18933909518187692, "raw_delta": -0.020660904818123077, "result": "unresolved"},
+    "fantlab.punctuation.triple_exclamation.per_1000_words": {"expected": 0.0, "actual": 0.0, "raw_delta": 0.0, "result": "unresolved"},
+    "fantlab.punctuation.question_exclamation.per_1000_words": {"expected": 0.01, "actual": 0.0074250625561520355, "raw_delta": -0.0025749374438479647, "result": "unresolved"},
+    "fantlab.punctuation.quote.per_1000_words": {"expected": 6.27, "actual": 5.776698668686284, "raw_delta": -0.4933013313137158, "result": "unresolved"},
+    "fantlab.punctuation.parentheses.per_1000_words": {"expected": 0.6, "actual": 0.5605922229894786, "raw_delta": -0.03940777701052134, "result": "unresolved"},
+    "fantlab.punctuation.colon.per_1000_words": {"expected": 2.8, "actual": 2.6581723951024285, "raw_delta": -0.1418276048975713, "result": "unresolved"},
+    "fantlab.punctuation.semicolon.per_1000_words": {"expected": 4.34, "actual": 4.094921999717847, "raw_delta": -0.24507800028215243, "result": "unresolved"}
+  },
+  "omitted_metric_families": {
+    "pos": "Native pinned pylem/provider execution is still not_run; no POS actuals are manufactured."
+  },
+  "observations": [
+    "The frozen candidate is 12,958 characters (+0.766%) above FantLab and 16,083 words (+6.350%) above FantLab, so the discrepancy is not explained by character-count display alone.",
+    "Mean sentence length, dialogue share, narration-sentence length and several punctuation rates are numerically close, but resemblance remains diagnostic because the analyzer-input edition is unknown.",
+    "Author-text-inside-dialogue differs by +21.372 percentage points, making the current author-remark candidate a high-value compatibility investigation target.",
+    "Dash frequency differs by +20.894 per 1000 Scriptorium words, making dash/dialogue-marker counting semantics a high-value deterministic compatibility investigation target.",
+    "Unique vocabulary differs by +20,603 because the current Scriptorium candidate counts case-folded surface lexical forms and is not yet a demonstrated FantLab vocabulary definition.",
+    "Dictionary-dependent vocabulary metrics remain not_run/unresolved because FantLab's production dictionary identity is unknown and no substitute dictionary was supplied."
+  ]
+}

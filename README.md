@@ -99,6 +99,16 @@ not committed or uploaded. FantLab does not disclose the analyzer-input edition 
 bytes, so every result remains source-unmatched diagnostic evidence and M2 parity stays
 0/5.
 
+A source-free [word/dash policy sensitivity artifact](benchmarks/fantlab/work270306-policy-sensitivity.json)
+now makes two of the largest gaps inspectable without changing compatibility semantics.
+On the frozen candidate, excluding numeric-only tokens removes only 17 of the +16,083
+word difference and joining U+2010/U+2011 lexical hyphens changes the word count by zero.
+The current punctuation candidate also counts 1,607 letter-to-letter ASCII hyphens as
+dash events while they occur inside current word tokens; excluding that overlap would
+still leave the dash rate about 14.928 per 1000 words above FantLab. These measurements
+identify bounded policy questions; they do **not** establish FantLab's tokenizer or
+hyphen rules because the analyzer-input edition remains unknown.
+
 ### Public showcase
 
 The repository includes derived metric slices for real public-domain literary sources

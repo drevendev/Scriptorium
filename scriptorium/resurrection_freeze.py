@@ -29,7 +29,7 @@ CANDIDATE_ID = "tolstoy-resurrection-ru"
 WORK_BASE_TITLE = "Воскресение (Толстой)"
 PART_CHAPTER_COUNTS = (59, 42, 28)
 MANIFEST_VERSION = "scriptorium-source-revision-manifest-v1"
-EXTRACTION_PROFILE = "scriptorium-wikisource-multibody-v1"
+EXTRACTION_PROFILE = "scriptorium-wikisource-resurrection-body-v1"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Воскресение_(Толстой)"
 SOURCE_WORK_INDEX_REVISION_ID = 5614128
 BIBLIOGRAPHIC_SOURCE = (
@@ -41,6 +41,9 @@ _BODY_DIV_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 _NOINCLUDE_RE = re.compile(r"<noinclude>.*?</noinclude>", re.IGNORECASE | re.DOTALL)
+_HEADER_TEMPLATE_RE = re.compile(r"^\s*\{\{Отексте\b.*?\}\}", re.IGNORECASE | re.DOTALL)
+_HEADING_RE = re.compile(r"={2,6}\s*[^=\n]+?\s*={2,6}")
+_CATEGORY_RE = re.compile(r"\[\[Категория:[^\]]+\]\]\s*$", re.IGNORECASE | re.DOTALL)
 
 
 def expected_chapters() -> tuple[dict[str, object], ...]:
@@ -64,20 +67,39 @@ def expected_chapters() -> tuple[dict[str, object], ...]:
     return tuple(chapters)
 
 
+def _strip_page_scaffolding(wikitext: str) -> str:
+    source = _NOINCLUDE_RE.sub("", wikitext)
+    source = _HEADER_TEMPLATE_RE.sub("", source, count=1)
+    source = source.replace("__NOEDITSECTION__", "")
+    source = _HEADING_RE.sub("", source)
+    source = _CATEGORY_RE.sub("", source)
+    return source.strip()
+
+
 def extract_resurrection_body(wikitext: str) -> str:
-    """Render one chapter whose Wikisource transcription may use multiple body divs."""
+    """Render one chapter across the two observed Resurrection page shapes.
+
+    The transcription currently mixes older pages that wrap prose in one or more
+    ``text``/``indent`` divs with later pages whose prose follows the ``Отексте``
+    header template directly. Both routes are explicit and fail closed through the
+    existing Wikisource body sanitizer.
+    """
 
     if not isinstance(wikitext, str):
         raise TypeError("wikitext must be str")
     source = _NOINCLUDE_RE.sub("", wikitext)
     matches = _BODY_DIV_RE.findall(source)
-    if not matches:
-        raise ValueError("expected at least one Resurrection transcription <div> body")
-    rendered = [
-        extract_transcription_body(f'<div class="text">{fragment}</div>')
-        for fragment in matches
-    ]
-    return "\n\n".join(rendered)
+    if matches:
+        rendered = [
+            extract_transcription_body(f'<div class="text">{fragment}</div>')
+            for fragment in matches
+        ]
+        return "\n\n".join(rendered)
+
+    plain = _strip_page_scaffolding(source)
+    if not plain:
+        raise ValueError("empty Resurrection transcription after page-scaffolding removal")
+    return extract_transcription_body(f'<div class="text">{plain}</div>')
 
 
 def _sha256_text(text: str) -> str:

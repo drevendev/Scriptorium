@@ -1,0 +1,123 @@
+name: Scriptorium pinned pylem provider
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/morphology-provider.yml"
+      - "requirements/pylem-0.0.18.txt"
+      - "scriptorium/morphology.py"
+      - "scriptorium/pylem_provider.py"
+      - "scriptorium/text.py"
+      - "tests/test_morphology.py"
+      - "tests/test_pylem_provider.py"
+      - "tools/pylem_runtime_probe.py"
+      - "docs/AOT_PYLEM_COMPATIBILITY.md"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-MORPH-003.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract-tests:
+    name: Verify Scriptorium provider contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run complete standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+  native-pylem-smoke:
+    name: Build and execute pinned pylem 0.0.18
+    # The exact 2019-era morph_dict source relies on legacy transitive integer/platform
+    # typedef includes that no longer compile under Ubuntu 24.04 / GCC 13. Keep this
+    # legacy provider lane isolated on an older runner rather than patching hash-pinned
+    # upstream bytes or weakening the modern Python 3.13 contract lane.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.9"
+
+      - name: Record build toolchain
+        run: |
+          set -euo pipefail
+          python --version
+          cmake --version
+          c++ --version
+
+      - name: Install hash-pinned pylem source distribution
+        env:
+          # Pinned pylem vendors a legacy pybind11 CMake minimum. The runner's modern
+          # CMake rejects that compatibility floor unless it is raised explicitly;
+          # this policy setting leaves the upstream pylem sources unchanged.
+          CMAKE_ARGS: "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+        run: |
+          set -euo pipefail
+          mkdir -p build/morph
+          python -m pip install -vv --disable-pip-version-check --no-deps --require-hashes \
+            -r requirements/pylem-0.0.18.txt 2>&1 | tee build/morph/pylem-install.log
+          python - <<'PY'
+          from importlib.metadata import version
+          assert version("pylem") == "0.0.18", version("pylem")
+          PY
+
+      - name: Upload install failure evidence
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-pylem-install-log
+          path: build/morph/pylem-install.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Execute isolated native provider smoke
+        run: |
+          set -euo pipefail
+          mkdir -p build/morph
+          python tools/pylem_runtime_probe.py \
+            --receipt build/morph/pylem-runtime-receipt.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          receipt = json.loads(
+              Path("build/morph/pylem-runtime-receipt.json").read_text(encoding="utf-8")
+          )
+          assert receipt["provider"]["distribution"] == "pylem"
+          assert receipt["provider"]["version"] == "0.0.18"
+          assert receipt["provider"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
+          assert receipt["fixture"]["source_text_included"] is False
+          assert receipt["fixture"]["token_count"] == 3
+          assert receipt["epistemic_boundary"]["fantlab_dictionary_equivalence"] == "unknown"
+          assert receipt["epistemic_boundary"]["m2_parity_admissible"] is False
+          print(json.dumps(receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+          PY
+
+      - name: Upload source-free runtime receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-pylem-runtime-receipt
+          path: build/morph/pylem-runtime-receipt.json
+          if-no-files-found: error
+          retention-days: 7

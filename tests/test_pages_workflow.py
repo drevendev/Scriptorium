@@ -9,6 +9,7 @@ from scriptorium.site_renderer import _ALLOWED_ARTIFACT_ROOTS
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW_PATH = ROOT / ".github" / "workflows" / "pages.yml"
+PUBLICATION_PROVENANCE_TRIGGER = "corpus/candidates/source-edition-traces/**"
 
 
 def _event_paths(workflow: str, event: str) -> set[str]:
@@ -79,6 +80,12 @@ class PagesWorkflowContractTests(unittest.TestCase):
                     f"{event} trigger is missing canonical publication roots: "
                     f"{sorted(required - paths)}",
                 )
+
+    def test_publication_provenance_sources_trigger_pr_and_master_builds(self) -> None:
+        for event in ("pull_request", "push"):
+            with self.subTest(event=event):
+                paths = _event_paths(self.workflow, event)
+                self.assertIn(PUBLICATION_PROVENANCE_TRIGGER, paths)
 
     def test_build_is_read_only_and_uses_canonical_renderer(self) -> None:
         self.assertIn("permissions:\n  contents: read\n", self.workflow)

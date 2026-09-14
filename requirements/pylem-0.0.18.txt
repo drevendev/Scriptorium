@@ -1,0 +1,2 @@
+# AOT-lineage compatibility provider. Source distribution hash is published by PyPI.
+pylem==0.0.18 --hash=sha256:66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515

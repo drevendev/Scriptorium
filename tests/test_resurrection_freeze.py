@@ -6,6 +6,7 @@ from scriptorium.resurrection_freeze import (
     PART_CHAPTER_COUNTS,
     build_manifest,
     expected_chapters,
+    extract_resurrection_body,
     replay_manifest,
 )
 
@@ -36,6 +37,35 @@ class ResurrectionFreezeTests(unittest.TestCase):
         self.assertEqual(
             chapters[-1]["title"],
             "Воскресение (Толстой)/Часть III/Глава XXVIII",
+        )
+
+    def test_extractor_handles_observed_plain_and_multi_div_page_shapes(self):
+        plain = """{{Отексте
+|АВТОР=[[Лев Николаевич Толстой]]
+|НАЗВАНИЕ=[[Воскресение (Толстой)|Воскресение]]
+|ЧАСТЬ= Часть первая. Глава II
+}}
+__NOEDITSECTION__
+=== II ===
+Первый абзац.
+
+Второй абзац.
+[[Категория:Воскресение (Толстой)|1_02]]
+"""
+        self.assertEqual(
+            extract_resurrection_body(plain),
+            "Первый абзац.\n\nВторой абзац.",
+        )
+
+        multi = """{{Отексте|ЧАСТЬ=Часть первая. Глава I}}
+{| | <div class="indent">Эпиграф.</div> |}
+=== I ===
+<div class="indent">Первый абзац.\n\nВторой абзац.</div>
+[[Категория:Воскресение (Толстой)|1_01]]
+"""
+        self.assertEqual(
+            extract_resurrection_body(multi),
+            "Эпиграф.\n\nПервый абзац.\n\nВторой абзац.",
         )
 
     def test_capture_is_source_free_and_replay_verifies_every_derived_identity(self):

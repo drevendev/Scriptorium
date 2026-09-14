@@ -1,0 +1,10 @@
+## 2026-09-14 — Frozen-work pylem sidecar transport candidate
+
+- Added `scriptorium-pylem-sidecar-request-v1` as an **ephemeral** source-bearing transport: the modern runtime replays the frozen source, applies `scriptorium-text-v1`, and records exact token ordinals/text/hashes for the isolated legacy provider. The request is CI-local and is never uploaded or committed.
+- Added `scriptorium-pylem-sidecar-response-v1`: Python 3.9 / exact `pylem==0.0.18` returns token ordinal, token SHA-256 and every runtime POS candidate in provider order. The response carries no source prose and is also ephemeral.
+- The modern runtime independently re-hashes normalized text and every token before accepting provider output. Token count/order/hash drift, unknown runtime POS, blank values or runtime-profile drift fail closed before POS aggregation.
+- Reused the existing conservative `scriptorium-pos-v1` aggregation unchanged: runtime `N`, unresolved extra AOT categories, empty analyses and cross-bucket homonyms remain undefined rather than guessed.
+- Added a hosted frozen *Anna Karenina* diagnostic lane. It replays all pinned Wikisource revisions, runs the exact pylem sidecar over Scriptorium tokens, then uploads only `scriptorium-frozen-pos-diagnostic-v1`; source-bearing request/response files are explicitly deleted before artifact upload.
+- The derived diagnostic compares bucket counts/percentages to FantLab only as `diagnostic_only`. `fantlab_source_edition_match`, dictionary equivalence, homonym selection, noun/cardinal recovery and extra-category folding remain unresolved, and `m2_parity_admissible=false`.
+- Repeated lexical forms are cached inside the context-free pylem sidecar to keep full-work execution bounded while preserving the exact candidate sequence for every token occurrence.
+- This unit does not advance the M2 corpus gate: source-matched parity remains 0/5 until FantLab analyzer-input edition identity is established and all published compatibility metrics satisfy the declared equality/rounding rules.

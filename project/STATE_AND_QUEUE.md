@@ -1,29 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 59
+STATE_REVISION: 60
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-14T13:07:24Z
-LAST_RESULT: SCRIP-SITE-005 independently reviewed on exact head 639cb977c74af29f48511c55633fa472cd0b7252 and squash-merged as 905ddd9b4f0f8665e3748bb6a0b70b4b39c0562d. The source-free Resurrection provenance-only public slice is now on master; FantLab source-edition match remains unknown, benchmark use remains diagnostic-only, M2 parity remains inadmissible, and live Pages deployment remains disabled.
-LAST_VERIFIED_PROGRESS: Independent review found no blocking defect. PR #53 was 14 commits ahead / 0 behind master, mergeable and non-draft, with 10 changed files and no review threads. Exact-head Pages run 34841825171 checked out authored head 639cb977c74af29f48511c55633fa472cd0b7252 directly, used Python 3.13.15, passed 113/113 standard-library tests, built the canonical static site twice byte-identically, uploaded only the generated site tree, and skipped deployment. Independently downloaded Pages artifact 10346536678 matched GitHub SHA-256 3de17961ffd2bbcfe832b02acac61630cccda80b71e1bd6c71e7266527a00c70; its generated Resurrection page contains frozen provenance/identity, source-edition match unknown, M2 parity false and no novel prose. Exact-head frozen-diagnostic run 34841825191 also succeeded and replayed all 129 Resurrection revisions; replay artifact 10346865701 has GitHub SHA-256 2554d64321a6c9c5cd4c198a7d856023c523ddcfac01565e45b477bf1a39f9a2. Issue #52 closed completed with the squash merge. Master push Pages run 34847254708 then completed successfully on merge commit 905ddd9b4f0f8665e3748bb6a0b70b4b39c0562d; deployment remained gated off.
+LAST_COMMITTED_RUN_AT: 2026-09-14T19:54:00Z
+LAST_RESULT: SCRIP-MORPH-003 provider-execution slice independently reviewed, repaired for one stale documentation claim, re-verified on exact final head 8995b9d107ed1dbd9269254023c947a26d0490ce, and squash-merged as a46cdf73499cd4857ecdb9440936463514cb63ba. Exact hash-pinned pylem 0.0.18 native execution is now demonstrated on the isolated Ubuntu 22.04 / Python 3.9 compatibility lane while the main Scriptorium provider contract remains verified on Ubuntu 24.04 / Python 3.13. FantLab dictionary identity, homonym selection, noun/cardinal recovery and M2 parity remain unresolved.
+LAST_VERIFIED_PROGRESS: Independent review found no blocking semantic defect in PR #55 and no review threads. The review did find one blocking documentation defect: docs/AOT_PYLEM_COMPATIBILITY.md still said native execution was not run after hosted execution had succeeded. That stale statement and the stale PR-body Python-version description were repaired without changing analyzer/provider semantics. Fresh exact-final-head runs then all passed: pinned-provider run 34889467872 passed the Python 3.13 full contract suite and the Ubuntu 22.04 / Python 3.9 exact-sdist install/native smoke; frozen-diagnostic run 34889467980 succeeded; Pages run 34889467982 succeeded. Final-head native artifact 10366241024 is 845 bytes with GitHub-recorded archive digest sha256:2015d94e4e3f7aee193575f0c57cf4db43d3ae21d55e006908b9fb7f25802dc8. The workflow asserts provider pylem 0.0.18, runtime profile pylem-0.0.18-python39-sidecar-v1, source_text_included=false, FantLab dictionary equivalence unknown and m2_parity_admissible=false. Issue #54 closed with the squash merge. Benchmark movement remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-SITE-005
-ISSUE:          #52
-STATUS:         DONE
-PR:             #53
-MERGED_COMMIT:  905ddd9b4f0f8665e3748bb6a0b70b4b39c0562d
-NEXT_ACTION:    Re-check SCRIP-MORPH-003 provider/runtime executability first. If native
-                pinned pylem/provider execution remains unavailable, no other unfinished
-                dependency-satisfied queue row remains; select and issue the next bounded
-                Scriptorium unit under the standing allocation and current M1 gate rather
-                than manufacturing progress on the blocked provider path.
+UNIT_ID:        SCRIP-MORPH-003
+ISSUE:          #54
+STATUS:         DONE (provider execution slice)
+PR:             #55
+MERGED_COMMIT:  a46cdf73499cd4857ecdb9440936463514cb63ba
+NEXT_ACTION:    Select the next bounded SCRIP-MORPH-003 continuation: wire the now-verified
+                isolated pylem sidecar/provider output into source-free frozen-work POS
+                diagnostic artifacts and benchmark comparison, preserving all ambiguity,
+                source-match and M2 fail-closed boundaries. Do not treat provider
+                executability as FantLab morphology parity.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral candidate artifact, but native pinned pylem/provider execution identity remains unverified. The benchmark harness has one reproducibly frozen full-work *Anna Karenina* diagnostic whose FantLab analyzer-input edition is unknown. `tolstoy-resurrection-ru` is a second reproducibly frozen public-domain candidate with 129 pinned chapter revisions and deterministic composite identity, but FantLab source identity remains unknown. The M2 reproduction gate remains **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral candidate artifact, and exact hash-pinned pylem/provider execution provenance is now verified in an isolated legacy compatibility lane. Full frozen-work POS diagnostic transport/wiring has not yet landed. The benchmark harness has one reproducibly frozen full-work *Anna Karenina* diagnostic whose FantLab analyzer-input edition is unknown. `tolstoy-resurrection-ru` is a second reproducibly frozen public-domain candidate with 129 pinned chapter revisions and deterministic composite identity, but FantLab source identity remains unknown. The M2 reproduction gate remains **0/5 source-matched works**.
 
 ## Queue
 
@@ -31,7 +31,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked because the execution runtime has no installed pylem and cannot resolve required GitHub/PyPI package hosts |
+| P1 | SCRIP-MORPH-003 | implementation / reproduction | Wire verified pinned pylem sidecar/provider output into frozen diagnostic POS artifacts and benchmark comparison | SCRIP-MORPH-002; provider/runtime provenance established in Issue #54 / PR #55; next continuation is unblocked, while noun/cardinal, extra-category folding and FantLab homonym/dictionary behavior remain unresolved |
 | P2 | SCRIP-DIALOGUE-002 | analyzer core / reproduction | Investigate author-text-inside-dialogue gap via inspectable delimiter and denominator sensitivity | DONE in Issue #45 / PR #46; merged as 25555ba1b719ac2dae8bc340701433ce16f8ed64 |
 | P3 | SCRIP-REPRO-006 | benchmark / reproduction | Pursue a second source-edition trace or stronger source-matching evidence for a retained >=300k FantLab candidate | DONE in Issue #47 / PR #48; merged as f7a6937bb89b6a44ff21e8193c38c1c70af9aa01 |
 | P4 | SCRIP-REPRO-007 | benchmark / reproduction | Freeze Resurrection by pinning/replaying all 129 chapter revisions and recording composite identities | DONE in Issue #50 / PR #51; merged as d31ab4417d979fd141df31d400d4fa5156adf274; source match remains unknown |
@@ -71,7 +71,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - Anna Karenina diagnostic: characters +12,958; words +16,083; mean word length +0.03255 characters; mean sentence length -0.17415 characters relative to FantLab.
 - Dialogue: narration mean sentence length +0.67997 characters, dialogue mean -1.00362 characters, dialogue share -0.14537 percentage points, author text inside dialogue +21.37204 percentage points before the sensitivity probe.
 - Surface-form unique vocabulary is +20,603 relative to FantLab; dictionary-dependent values remain unresolved because FantLab dictionary identity is unknown.
-- POS actuals remain absent because native pinned pylem/provider execution is still `not_run`.
+- POS actuals remain absent because the verified legacy provider has not yet been wired through a source-free sidecar transport into the frozen-work diagnostic; provider executability itself is now verified.
 
 ### Word / punctuation policy findings
 
@@ -88,17 +88,19 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 ### Morphology compatibility
 
-- `pylem==0.0.18` remains the selected AOT-lineage compatibility candidate with pinned source/dictionary provenance.
-- Fifteen runtime strings have direct candidate mappings. Runtime `N` collapses noun/cardinal; extra categories and FantLab homonym/prediction behavior remain unresolved.
-- Native provider execution remains infrastructure-blocked in the current execution runtime; this is not a pylem failure.
+- `pylem==0.0.18` remains the selected AOT-lineage compatibility candidate with immutable sdist SHA-256 `66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515` and pinned source/dictionary provenance.
+- Fifteen runtime strings have direct candidate mappings. Runtime `N` collapses noun/cardinal; five extra categories and FantLab homonym/prediction behavior remain unresolved.
+- Hosted provider executability is verified. Exact-final-head run `34889467872` checked out `8995b9d107ed1dbd9269254023c947a26d0490ce`; its Ubuntu 24.04 / Python 3.13 contract job passed the complete standard-library suite, and its isolated Ubuntu 22.04 / Python 3.9 native job installed the hash-pinned sdist unchanged, executed the native smoke and uploaded the source-free receipt.
+- Final-head runtime artifact `10366241024` is 845 bytes with GitHub-recorded archive digest `sha256:2015d94e4e3f7aee193575f0c57cf4db43d3ae21d55e006908b9fb7f25802dc8`. Its workflow contract keeps `fantlab_dictionary_equivalence=unknown` and `m2_parity_admissible=false`.
+- The pinned legacy source is toolchain-sensitive: an Ubuntu 24.04 / GCC 13 native attempt failed inside vendored `morph_dict`; the compatibility lane therefore remains isolated on Ubuntu 22.04 / Python 3.9 rather than patching upstream bytes. This is a maintainability constraint, not an active provider-executability blocker.
 
 ### Public repository representation
 
 - Two derived *Anna Karenina* excerpt showcases remain allow-listed, explicitly short/non-corpus/non-parity and source-free.
 - `scriptorium-publication-manifest-v1`, `scriptorium-static-site-v1` and the gated Pages workflow remain fail-closed. Live deployment is disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 - SCRIP-SITE-005 adds one provenance-only *Resurrection* public artifact whose canonical fields are cross-checked against the frozen source trace. The renderer rejects source-match, parity or compatibility promotion and does not publish source prose.
-- Pages trigger coverage now includes `corpus/candidates/source-edition-traces/**` in addition to all renderer artifact roots, so provenance-source changes cannot silently bypass the publication build.
-- Independent exact-head review confirmed the generated Pages tree contains the Resurrection provenance page plus only the previously allow-listed pages, shared CSS and build receipt. The merge-commit Pages push run also passed while live deployment stayed disabled.
+- Pages trigger coverage includes `corpus/candidates/source-edition-traces/**` in addition to all renderer artifact roots, so provenance-source changes cannot silently bypass the publication build.
+- Exact-final-head Pages run `34889467982` also succeeded for PR #55; the live deployment gate remains unchanged and Pages administration is still a separate owner/admin effect.
 
 ## Known risks / blockers
 
@@ -108,7 +110,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 4. FantLab's actual hyphen/dash classifier remains unpublished.
 5. Dialogue author-remark grammar/denominator semantics remain unknown.
 6. FantLab dictionary/version identity is unknown.
-7. Native pylem build/runtime provenance is unavailable in the current execution runtime.
+7. The verified pylem 0.0.18 compatibility backend is constrained to the isolated Ubuntu 22.04 / Python 3.9 lane because the pinned legacy source does not compile unchanged under the tested Ubuntu 24.04 / GCC 13 native toolchain.
 8. AOT/POS noun-cardinal collision, extra-category folding and homonym/prediction selection remain unresolved.
 9. The frozen Resurrection candidate's relationship to FantLab's uploaded analyzer input is unknown; its 9,591-character display delta must not be fitted or promoted to source-match evidence.
 10. Work-specific copyright/provenance evidence remains mandatory; source prose is not committed by default.
@@ -120,7 +122,7 @@ On each wake:
 
 1. resolve `CURRENT_UNIT` review/recovery before new work;
 2. inspect the exact PR head, checks and comments relevant to that unit;
-3. otherwise re-check P1 provider/runtime executability, then choose the first dependency-satisfied queue row;
+3. otherwise choose the first dependency-satisfied queue row, with P1 morphology now executable through its verified hosted compatibility lane;
 4. create/search the corresponding issue before implementation;
 5. do exactly one bounded unit and update this file plus the project changelog/benchmark or provenance record in the same semantic change.
 

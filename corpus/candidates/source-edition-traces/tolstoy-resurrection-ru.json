@@ -56,61 +56,61 @@
       "index_revision_freezes_chapter_text": false,
       "structure_cross_check": "The Wikisource work index and Komarov library table of contents both expose 59 + 42 + 28 chapters."
     },
-    "subpage_revision_evidence": {
-      "purpose": "Demonstrate that chapter text has independent revision identity and is not frozen by the work-index oldid.",
-      "samples": [
-        {
-          "title": "Воскресение (Толстой)/Часть I/Глава XLVIII",
-          "observed_revision_id": 5646761,
-          "relationship_to_index_revision": "independent_subpage_revision"
-        },
-        {
-          "title": "Воскресение (Толстой)/Часть II/Глава XL",
-          "observed_revision_id": 5646811,
-          "relationship_to_index_revision": "independent_subpage_revision"
-        }
-      ]
+    "page_shape_evidence": {
+      "observation": "The frozen chapter set contains both older pages with one or more text/indent div bodies and later pages with prose directly following the Отексте header template.",
+      "extraction_contract": "scriptorium-wikisource-resurrection-body-v1",
+      "reason_for_versioned_contract": "A single-div extractor failed on both observed shapes, so Resurrection uses an explicit source-specific contract rather than silently widening the Anna Karenina extractor."
     },
     "frozen_candidate": {
-      "status": "not_frozen",
-      "chapter_revision_count_required": 129,
-      "revision_manifest": null,
+      "status": "frozen",
+      "revision_manifest": "corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json",
+      "chapter_revision_count": 129,
       "composition_profile": "scriptorium-wikisource-composite-v1",
-      "extraction_profile": "scriptorium-wikisource-body-v1",
+      "extraction_profile": "scriptorium-wikisource-resurrection-body-v1",
+      "chapter_separator": "\\n\\n",
+      "character_count_including_spaces": 890835,
+      "utf8_byte_count": 1610692,
+      "raw_sha256": "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0",
+      "normalization_profile": "scriptorium-text-v1",
+      "normalized_character_count_including_spaces": 890835,
+      "normalized_sha256": "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0",
       "source_text_committed": false,
-      "reason": "The work-index revision identifies structure and provenance but does not freeze the 129 chapter subpage revisions or composite bytes."
+      "capture_evidence_run": "https://github.com/drevendev/Scriptorium/actions/runs/34836286331",
+      "capture_evidence_artifact_id": 10344631133,
+      "capture_evidence_artifact_sha256": "379d193e016661350ca9e2bc11332480ea4d77307ca550180818f66fb3411fcd",
+      "manifest_file_sha256": "0914ed84614a2e050ea79bf467511a2fcceef33d0d18d86c72dfe28039cde720"
     }
   },
   "immutable_identity": {
     "status": "partial",
-    "public_candidate_status": "traced_not_frozen",
+    "public_candidate_status": "frozen",
     "frozen_components": [
       "Wikisource work-index revision 5614128",
-      "three-part / 129-chapter canonical structure",
+      "all 129 chapter revision IDs, timestamps and MediaWiki SHA-1 identities in the committed revision manifest",
+      "scriptorium-wikisource-resurrection-body-v1 extraction contract",
+      "scriptorium-wikisource-composite-v1 canonical part/chapter order and chapter separator",
+      "composite raw and scriptorium-text-v1 normalized SHA-256 identity",
       "bibliographic source chain from Wikisource to Komarov library and Lexika 1996 volume 6"
     ],
     "unfrozen_components": [
-      "all 129 chapter revision IDs, timestamps and MediaWiki SHA-1 identities",
-      "composite raw and normalized SHA-256 identity",
-      "the relationship between FantLab's uploaded analyzer input and this public-domain candidate"
+      "the relationship between FantLab's uploaded analyzer input and this frozen public-domain candidate"
     ],
-    "reason": "The public transcription now has a traceable bibliographic source chain and stable work-index identity, but its chapter bytes are not yet revision-pinned and FantLab does not disclose its analyzer-input source."
+    "reason": "The public Wikisource/Komarov candidate is reproducibly frozen, but FantLab does not disclose the edition or bytes of the uploaded text behind its 2022 analysis."
   },
   "admissibility": {
     "fantlab_source_edition_match": "unknown",
-    "diagnostic_comparison_admissible": false,
+    "diagnostic_comparison_admissible": true,
     "m2_parity_admissible": false,
-    "status": "source_trace_only",
+    "status": "diagnostic_only",
     "reasons": [
-      "The Wikisource/Komarov source chain now identifies the candidate transcription as Lexika 1996 volume 6 and the work is legally usable as public-domain literary text.",
-      "The work-index revision does not freeze the 129 chapter subpage revisions, so there is no immutable full-text candidate yet.",
-      "FantLab does not disclose the edition or bytes of the uploaded text behind its 2022 analysis.",
+      "The legal public transcription is frozen as a 129-revision composite with deterministic extraction and composite hashes.",
+      "FantLab does not disclose the edition or bytes of the uploaded text behind the 2022 analysis, so comparison against this candidate cannot establish parity by itself.",
       "The current FantLab excerpt download redirects to a LitRes trial endpoint and provides no evidence that it is the analyzer input."
     ],
     "next_evidence": [
-      "Pin all 129 Wikisource chapter revision IDs, timestamps and MediaWiki SHA-1 identities in canonical part/chapter order.",
-      "Replay those exact public revisions through the existing source-free extraction/composition contract and compute raw plus scriptorium-text-v1 normalized SHA-256 identities and character count.",
-      "Only after the public candidate is frozen may Scriptorium run field-by-field full-work diagnostics; those diagnostics remain inadmissible for M2 until independent evidence ties FantLab's uploaded analyzer input to the same frozen source."
+      "Run Scriptorium deterministic metrics against the frozen 890,835-character candidate and compare implemented fields to the FantLab reference as a diagnostic-only benchmark.",
+      "Investigate the 9,591-character difference between the frozen extracted candidate length and FantLab's displayed 881,244-character count without assuming identical source bytes or counting semantics.",
+      "Promote source-edition match or M2 parity evidence only if independent evidence ties FantLab's uploaded analysis text to the same frozen source."
     ]
   }
 }

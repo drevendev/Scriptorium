@@ -1,0 +1,75 @@
+name: Scriptorium frozen diagnostic
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/repro-diagnostic.yml"
+      - "scriptorium/**"
+      - "tests/**"
+      - "benchmarks/fantlab/work270306.json"
+      - "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  anna-karenina-diagnostic:
+    name: Replay frozen Anna Karenina and compare
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Replay exact frozen revisions and build diagnostic comparison
+        env:
+          SCRIPTORIUM_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.repro_diagnostic \
+            --reference benchmarks/fantlab/work270306.json \
+            --manifest corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json \
+            --scriptorium-revision "$SCRIPTORIUM_REVISION" \
+            --output build/repro/work270306-wikisource-diagnostic.json
+
+      - name: Emit derived diagnostic evidence only
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("build/repro/work270306-wikisource-diagnostic.json")
+          artifact = json.loads(path.read_text(encoding="utf-8"))
+          summary = {
+              "schema_version": artifact["schema_version"],
+              "benchmark_id": artifact["benchmark_id"],
+              "scriptorium_revision": artifact["analyzer"]["scriptorium_revision"],
+              "source_text": artifact["source_text"],
+              "diagnostic_boundary": artifact["diagnostic_boundary"],
+              "metrics": {
+                  metric_id: {
+                      "expected": row["expected"]["numeric_value"],
+                      "actual": row["actual"]["raw_value"],
+                      "raw_delta": row["comparison"]["raw_delta"],
+                      "result": row["comparison"]["result"],
+                  }
+                  for metric_id, row in artifact["metrics"].items()
+              },
+          }
+          print("SCRIPTORIUM_DIAGNOSTIC_JSON_BEGIN")
+          print(json.dumps(summary, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+          print("SCRIPTORIUM_DIAGNOSTIC_JSON_END")
+          PY

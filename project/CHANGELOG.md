@@ -536,3 +536,45 @@ code changes remain in Git history and their issues/PRs.
   container still cannot resolve `github.com`, so `SCRIP-MORPH-003` remains `not_run`
   rather than failed. The next dependency-satisfied unit is `SCRIP-REPRO-005`, which may
   run deterministic metrics against the frozen candidate only as diagnostic evidence.
+
+## 2026-09-14 — Frozen Anna Karenina full-work diagnostic candidate
+
+- Re-checked `SCRIP-MORPH-003` first. The execution container still has no installed
+  `pylem`, and direct DNS resolution for GitHub/PyPI package hosts still fails, so native
+  provider execution remains infrastructure `not_run`; the connected GitHub API path is
+  healthy.
+- Opened Issue #39 / PR #40 for `SCRIP-REPRO-005`. Added the 19 September 2022 FantLab
+  work-270306 reference, exact pinned-revision replay, a fail-closed diagnostic runner,
+  mocked/local regressions and a bounded hosted integration workflow.
+- The replay path requests the 239 revision IDs already frozen in the canonical packed
+  manifest and verifies each returned title, timestamp and MediaWiki SHA-1 before source
+  prose is accepted. It then reconstructs the text in memory and requires the committed
+  1,705,605-character / SHA-256
+  `1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`
+  composite identity before analysis.
+- Hosted frozen-diagnostic run `34794221625` on authored analysis head
+  `9ba8f36440b15fc41374209437048ae2e486d579` used Python 3.13.15, passed **95/95**
+  standard-library tests, replayed the exact frozen source successfully and emitted only
+  derived diagnostic evidence. No novel prose was committed or uploaded by that workflow.
+- The same analysis head passed Pages run `34794221544`: tests, canonical build,
+  byte-identical rebuild and artifact upload succeeded; deployment remained skipped.
+- The first full-work diagnostic records 1,705,605 Scriptorium characters versus
+  FantLab's 1,692,647 (+12,958 / +0.766%) and 269,358 Scriptorium words versus 253,275
+  (+16,083 / +6.350%). This demonstrates that the observed gap is not only a displayed
+  character-count difference, while still leaving source-edition mismatch as a live
+  alternative explanation.
+- Several values are numerically close — mean sentence length differs by -0.174
+  characters and dialogue share by -0.145 percentage points — but these remain
+  diagnostic resemblance, not parity.
+- The highest-value deterministic gaps are author text inside dialogue (+21.372
+  percentage points) and dash frequency (+20.894 per 1000 Scriptorium words). These now
+  justify explicit follow-up units for dialogue-author-remark and token/dash semantics
+  rather than heuristic tuning to a single unmatched text.
+- Surface-form unique vocabulary is 33,373 versus FantLab's 12,770 (+20,603).
+  Dictionary-dependent vocabulary metrics remain not-run/unresolved because FantLab's
+  production dictionary identity is unknown and no substitute dictionary was supplied.
+- Native POS actuals were deliberately omitted because pinned pylem/provider execution
+  remains `not_run`; no values were manufactured from the provider-neutral contract.
+- The committed diagnostic artifact keeps `status=diagnostic_only`,
+  `fantlab_source_edition_match=unknown`, `m2_parity_admissible=false`, and M2 at 0/5.
+  PR #40 remains open for a later independent exact-head review before any merge.

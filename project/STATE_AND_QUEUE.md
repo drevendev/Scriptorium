@@ -1,30 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 61
+STATE_REVISION: 62
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-14T20:15:00Z
-LAST_RESULT: SCRIP-MORPH-004 authored as Issue #56 / PR #57. The branch now defines a fail-closed JSON transport from the modern Scriptorium runtime to the isolated exact pylem 0.0.18 Python 3.9 sidecar and back, then uses it for a full frozen Anna Karenina POS diagnostic. Source-bearing request material is ephemeral CI-local state; uploaded output is derived/source-free and diagnostic-only. The substantive PR is intentionally unmerged pending a later independent exact-head review.
-LAST_VERIFIED_PROGRESS: On authored head 7011ed51a00a66f5e5ad186e019bde0ed045abaa the complete Python 3.13 standard-library contract job passed, Pages run 34891499205 passed, and the ordinary frozen diagnostic run 34891499241 passed. The new full-work pylem job was still executing when this durable-state commit was prepared, so those intermediate checks must not be treated as final-head evidence. Updating this file creates a newer head and therefore requires fresh exact-final-head CI before review/merge. Benchmark movement remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-14T20:49:00Z
+LAST_RESULT: Independent review of SCRIP-MORPH-004 / PR #57 found a blocking provenance-validation gap in the otherwise green sidecar transport. A self-consistent request/response pair could be accepted without proving canonical scriptorium-text-v1 normalization, exact pylem provider identity, or binding the request digest to the selected frozen manifest. The branch was repaired to fail closed on all three boundaries and on malformed FantLab POS counts. Because this review run authored semantic validation code, the PR remains intentionally unmerged for a later independent exact-head review.
+LAST_VERIFIED_PROGRESS: Before the repair, exact head e6337edef70cf2e58ee2ec47a0d5fb2d952392f2 had all relevant workflows green, including full frozen Anna Karenina pylem execution, and artifact 10367575396 was independently inspected as one source-free JSON bound to normalized SHA-256 1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205. The review repair adds canonical text-profile/normalization validation, exact provider distribution/version validation, explicit source-text exclusion, post-aggregation text-identity validation, manifest composite-digest binding, and regression tests. Updating durable state creates a newer head; fresh exact-final-head CI and artifact inspection are required before merge. Benchmark movement remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-MORPH-004
 ISSUE:          #56
-STATUS:         REVIEW
+STATUS:         REVIEW (provenance repair authored; independent re-review required)
 PR:             #57
 BASE_REVISION:  df37e6021b26512d1766dc4c44b4fd1b65d6e425
-NEXT_ACTION:    Independently review the exact final PR head, changed-file surface,
-                comments/threads and hosted checks. Require all three provider jobs,
-                especially the frozen Anna Karenina sidecar diagnostic, to be green on
-                that exact head. Inspect the uploaded diagnostic and verify that it is
-                source-free, diagnostic_only, source-match unknown and M2-inadmissible.
-                Merge only if those boundaries hold; otherwise repair the exact defect.
+NEXT_ACTION:    Independently review the exact final PR head after the provenance repair,
+                including changed files, comments/threads and all hosted checks. Require
+                all three provider jobs to be green on that exact head and download the
+                new frozen Anna Karenina diagnostic artifact. Verify source-free output,
+                frozen-manifest digest binding, diagnostic_only/source-match-unknown and
+                M2-inadmissible boundaries. Merge only if the repaired contract holds.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral artifact and exact pylem 0.0.18 executability is verified in an isolated Ubuntu 22.04 / Python 3.9 lane. SCRIP-MORPH-004 now proposes the missing frozen-work transport: the modern runtime freezes token identity, the legacy sidecar returns all pylem runtime candidates, and the modern runtime validates hashes/profile/candidates before applying unchanged `scriptorium-pos-v1` aggregation. The M2 reproduction gate remains **0/5 source-matched works** because FantLab analyzer-input editions are still unknown.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral artifact and exact pylem 0.0.18 executability is verified in an isolated Ubuntu 22.04 / Python 3.9 lane. SCRIP-MORPH-004 now proposes the missing frozen-work transport: the modern runtime freezes canonical token identity, the legacy sidecar returns all pylem runtime candidates, and the modern runtime validates text profile/canonical normalization, provider identity, token hashes/profile/candidates and frozen-manifest digest binding before applying unchanged `scriptorium-pos-v1` aggregation. The M2 reproduction gate remains **0/5 source-matched works** because FantLab analyzer-input editions are still unknown.
 
 ## Queue
 
@@ -32,7 +32,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-MORPH-004 | review / reproduction | Independently review and, if exact-head evidence is green, merge PR #57 frozen-work pylem transport/diagnostic | Issue #56 / PR #57 open; authored substantive unit must not self-merge |
+| P0 | SCRIP-MORPH-004 | review / reproduction | Independently re-review and, if exact-head evidence is green, merge PR #57 frozen-work pylem transport/diagnostic after provenance repair | Issue #56 / PR #57 open; current review run authored semantic validation repair and must not self-merge |
 | P1 | SCRIP-MORPH-005 | analyzer core / reproduction | Use the first verified full-work POS diagnostic to investigate the largest POS deltas without guessing unresolved `N`, extra-category folding or FantLab homonym behavior | Depends on SCRIP-MORPH-004 merge and source-free diagnostic evidence |
 | P2 | SCRIP-REPRO | benchmark / provenance | Strengthen source-edition matching for retained >=300k FantLab candidates | No current candidate is source-matched; M2 remains 0/5 |
 | P3 | SCRIP-SITE | public representation | Publish additional derived analysis only when it can be represented without source prose or parity overclaim | Existing static renderer/Pages build is ready; live activation is a separate owner/admin effect |
@@ -73,7 +73,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - `scriptorium-pos-v1` resolves a token only when every supplied analysis maps to the same direct FantLab-shaped bucket. Empty analyses, `N`, extra categories, unknown codes and cross-bucket homonyms remain undefined.
 - POS artifacts are bound to normalization profile, normalized-text SHA-256, runtime profile, mapping contract and canonical runtime-candidate digest.
 - Provider executability is verified: exact pylem 0.0.18 builds/runs unchanged on isolated Ubuntu 22.04 / Python 3.9 while the modern contract suite remains on Ubuntu 24.04 / Python 3.13. Ubuntu 24.04 / GCC 13 does not compile the pinned legacy vendored source unchanged; this is a toolchain constraint, not evidence about morphology parity.
-- SCRIP-MORPH-004 adds `scriptorium-pylem-sidecar-request-v1` / `scriptorium-pylem-sidecar-response-v1`. The request is ephemeral and source-bearing; the response carries token hashes and ordered runtime candidates. The modern consumer revalidates normalized text, every token ordinal/hash, runtime profile and runtime vocabulary before aggregation.
+- SCRIP-MORPH-004 adds `scriptorium-pylem-sidecar-request-v1` / `scriptorium-pylem-sidecar-response-v1`. The request is ephemeral and source-bearing; the response carries token hashes and ordered runtime candidates. The repaired modern consumer validates canonical `scriptorium-text-v1` input, exact pylem provider identity, every token ordinal/hash, runtime profile/vocabulary and the frozen manifest normalized digest before aggregation.
 - The proposed `scriptorium-frozen-pos-diagnostic-v1` uploads only aggregate POS/provenance. It explicitly keeps FantLab source edition, dictionary equivalence, homonym selection, noun/cardinal recovery, extra-category folding and M2 parity unresolved.
 
 ### Public repository representation
@@ -88,7 +88,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 3. FantLab dictionary/version, homonym-selection/prediction behavior and service-word folding remain unknown.
 4. pylem runtime `N` loses noun/cardinal distinction; five extra runtime categories still lack justified FantLab folding.
 5. The exact pinned pylem source requires an isolated legacy toolchain; changing that lane requires new evidence rather than silently patching upstream bytes.
-6. PR #57 full frozen-work sidecar execution must pass on its **final exact head** and its uploaded artifact must be independently inspected before merge.
+6. PR #57 now contains a semantic provenance-validation repair authored during review; fresh exact-head CI/artifact evidence plus an independent later review are required before merge.
 7. Pages live activation is a repository-admin effect and remains off.
 
 ## Run selection rule

@@ -10,6 +10,9 @@ on:
       - "scriptorium/text.py"
       - "tests/test_morphology.py"
       - "tests/test_pylem_provider.py"
+      - "docs/AOT_PYLEM_COMPATIBILITY.md"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-MORPH-003.md"
   workflow_dispatch:
 
 permissions:
@@ -40,6 +43,11 @@ jobs:
           c++ --version
 
       - name: Install hash-pinned pylem source distribution
+        env:
+          # Pinned pylem vendors an old pybind11 CMake minimum. Modern CMake 4.x
+          # removed compatibility below 3.5; this documented policy floor preserves
+          # the upstream sources unchanged while allowing them to configure.
+          CMAKE_ARGS: "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
         run: |
           set -euo pipefail
           python -m pip install --disable-pip-version-check --no-deps --require-hashes \

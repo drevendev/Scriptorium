@@ -21,9 +21,9 @@ from .text import NORMALIZATION_PROFILE, TextSpan, normalize_text, sentence_span
 from .vocabulary import VOCABULARY_PROFILE, analyze_vocabulary
 
 
-METRIC_PROFILE: Final = "scriptorium-metrics-v3"
-PUNCTUATION_PROFILE: Final = "scriptorium-punctuation-v1"
-SCHEMA_VERSION: Final = "scriptorium-deterministic-metrics-v3"
+METRIC_PROFILE: Final = "scriptorium-metrics-v4"
+PUNCTUATION_PROFILE: Final = "scriptorium-punctuation-v2"
+SCHEMA_VERSION: Final = "scriptorium-deterministic-metrics-v4"
 METRIC_CONTRACT_ID: Final = "fantlab-2022-v1"
 
 PUNCTUATION_KEYS: Final = (
@@ -243,19 +243,25 @@ def analyze_deterministic_metrics(
 
 
 def punctuation_counts(text: str) -> dict[str, int]:
-    """Count punctuation events under ``scriptorium-punctuation-v1``.
+    """Count punctuation events under ``scriptorium-punctuation-v2``.
 
     Multi-character surface patterns are greedily consumed before single-character
-    events, so one glyph run cannot inflate both a compound and its component
-    metrics. Ellipsis accepts either ``...`` or U+2026. Dash variants U+2010 through
-    U+2014 plus ASCII hyphen count as ``dash``. Quote glyphs are counted
-    individually. ``parentheses`` counts opening ``(`` glyphs as candidate pair
+    events, so one glyph run cannot inflate both a compound and its component metrics.
+    Ellipsis accepts either ``...`` or U+2026. Dash-family glyphs U+2010 through U+2014
+    remain dash candidates. ASCII hyphen-minus is also a dash candidate except when the
+    exact glyph is retained inside a ``scriptorium-text-v1`` word token; in that lexical
+    connector role it is not simultaneously counted as punctuation. Quote glyphs are
+    counted individually. ``parentheses`` counts opening ``(`` glyphs as candidate pair
     events; unmatched closing glyphs do not increment it.
 
-    These are inferred compatibility choices, not recovered FantLab rules.
+    The lexical-hyphen exclusion is an internally consistent Scriptorium inference, not
+    a recovered FantLab rule. FantLab's public methodology names punctuation frequencies
+    and labels the public ``-`` row as ``тире`` but does not publish its hyphen/dash
+    classifier.
     """
 
     normalized = normalize_text(text)
+    lexical_ascii_hyphens = _token_internal_ascii_hyphen_offsets(normalized)
     counts = {key: 0 for key in PUNCTUATION_KEYS}
     index = 0
 
@@ -266,12 +272,24 @@ def punctuation_counts(text: str) -> dict[str, int]:
                 index += len(token)
                 break
         else:
+            if normalized[index] == "-" and index in lexical_ascii_hyphens:
+                index += 1
+                continue
             key = _SINGLE_PUNCTUATION.get(normalized[index])
             if key is not None:
                 counts[key] += 1
             index += 1
 
     return counts
+
+
+def _token_internal_ascii_hyphen_offsets(text: str) -> frozenset[int]:
+    offsets: set[int] = set()
+    for token in word_tokens(text):
+        for relative_index, character in enumerate(token.text):
+            if character == "-":
+                offsets.add(token.start + relative_index)
+    return frozenset(offsets)
 
 
 def _sentence_lengths(paragraphs: tuple[TextSpan, ...]) -> list[int]:

@@ -610,3 +610,32 @@ code changes remain in Git history and their issues/PRs.
   installed `pylem`, and DNS resolution for `github.com`, `pypi.org` and
   `files.pythonhosted.org` still fails. The next dependency-satisfied unit after the
   mandatory provider recheck is `SCRIP-TEXT-004`.
+
+## 2026-09-14 — Word and dash policy sensitivity candidate
+
+- Re-checked `SCRIP-MORPH-003` before selection. Native pylem remains absent and the
+  execution container still cannot resolve GitHub/PyPI package hosts, so provider
+  execution remains infrastructure `not_run` rather than failed.
+- Opened Issue #41 / PR #42 for `SCRIP-TEXT-004` and added
+  `scriptorium-text-policy-diagnostic-v1`, a source-free sensitivity surface that tests
+  bounded tokenizer/dash-policy variants without changing FantLab compatibility semantics.
+- Hosted frozen-diagnostic run `34800715320` on authored analysis head
+  `2b31cd9aaa9daddc28649fe1a921904bba0f8aec` passed the full standard-library suite,
+  replayed all 239 frozen Anna Karenina revisions and uploaded only derived JSON artifact
+  `10331456918`. The artifact ZIP SHA-256 was independently verified as
+  `5c4ec7c59a8feca75c087553b952f2af471b05e157476d55ce1e490f1116d285`.
+- The word probes are strongly negative evidence against two simple explanations of the
+  +16,083-word diagnostic gap: excluding numeric-only tokens removes only 17 words, and
+  treating U+2010/U+2011 as lexical connectors changes the frozen candidate count by zero.
+  No tokenizer behavior was changed from these numbers.
+- The dash probe exposes an internal candidate-policy overlap: of 1,612 ASCII hyphen-minus
+  glyphs, 1,607 occur directly between letters and 1,611 are internal to current word
+  tokens while the punctuation profile also counts them as dashes. The candidate also has
+  10,933 U+2014 em dashes and no U+2010/U+2011/U+2012/U+2013 glyphs.
+- Excluding all current token-internal ASCII hyphens would reduce the diagnostic dash rate
+  from 46.574 to 40.593 per 1000 current words, still about +14.913 above FantLab's 25.68.
+  Thus lexical-hyphen overlap is real but explains only part of the source-unmatched gap
+  and does not reveal FantLab's rule.
+- The public README now links the source-free sensitivity artifact. M2 remains 0/5,
+  `fantlab_source_edition_match=unknown`, and no production tokenizer/punctuation
+  compatibility semantics were changed. PR #42 remains open for independent later review.

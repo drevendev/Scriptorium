@@ -66,8 +66,10 @@ class PylemProviderUnitTests(unittest.TestCase):
         workflow = (root / ".github/workflows/morphology-provider.yml").read_text(
             encoding="utf-8"
         )
+        probe = (root / "tools/pylem_runtime_probe.py").read_text(encoding="utf-8")
 
         self.assertEqual(PYLEM_VERSION, "0.0.18")
+        self.assertEqual(PYLEM_RUNTIME_PROFILE, "pylem-0.0.18-python39-sidecar-v1")
         self.assertIn("pylem==0.0.18", requirement)
         self.assertIn(
             "sha256:66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515",
@@ -75,12 +77,16 @@ class PylemProviderUnitTests(unittest.TestCase):
         )
         self.assertIn("permissions:\n  contents: read", workflow)
         self.assertIn("ref: ${{ github.event.pull_request.head.sha || github.sha }}", workflow)
-        self.assertIn("python-version: \"3.9\"", workflow)
+        self.assertIn('python-version: "3.13"', workflow)
+        self.assertIn('python-version: "3.9"', workflow)
         self.assertIn("--no-deps --require-hashes", workflow)
         self.assertIn("python -m unittest discover -s tests -v", workflow)
-        self.assertIn("python -m scriptorium.pylem_provider", workflow)
+        self.assertIn("python tools/pylem_runtime_probe.py", workflow)
         self.assertIn("build/morph/pylem-runtime-receipt.json", workflow)
         self.assertNotIn("secrets.", workflow)
+        self.assertNotIn("scriptorium", probe)
+        self.assertIn('"source_text_included": False', probe)
+        self.assertNotIn("TOKENS,", probe)
 
 
 if __name__ == "__main__":

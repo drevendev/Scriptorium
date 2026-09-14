@@ -1,0 +1,116 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "tolstoy-resurrection-ru",
+  "research_date": "2026-09-14",
+  "fantlab": {
+    "work_id": 296603,
+    "analysis_url": "https://fantlab.ru/work296603/lp",
+    "analysis_date": "2022-09-19",
+    "observed_counts": {
+      "characters": 881244,
+      "words": 126457
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "ingestion_model_evidence": {
+      "url": "https://fantlab.ru/forum/forum2page3/topic2216page1",
+      "observation": "FantLab creator states that works participate when texts are uploaded to the database and that author linguistic profiles use all uploaded works.",
+      "implication": "The analyzer input is an uploaded-text corpus distinct from the bibliographic edition list. A listed edition or an externally available transcription cannot be treated as the analyzed source without separate identity evidence."
+    },
+    "work_page_excerpt_download": {
+      "work_page_url": "https://fantlab.ru/work296603",
+      "observed_on": "2026-09-14",
+      "observed_txt_url": "https://fantlab.ru/getwork23803525.txt.zip",
+      "observed_redirect_url": "https://litres.ru/gettrial/?art=23803525&format=txt.zip",
+      "observed_behavior": "The TXT excerpt link redirected to a LitRes trial endpoint with art=23803525. Query-tracking parameters are intentionally omitted from the durable record.",
+      "relationship_to_analyzed_text": "unproven",
+      "use_as_source_edition_evidence": false
+    }
+  },
+  "public_transcription": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Воскресение_(Толстой)",
+    "permanent_work_index_url": "https://ru.wikisource.org/w/index.php?title=Воскресение_(Толстой)&oldid=5614128",
+    "work_index_revision_id": 5614128,
+    "bibliographic_source_chain": [
+      {
+        "provider": "Russian Wikisource",
+        "observation": "The work index names Alexey Komarov's library as the transcription source and describes the source as L. N. Tolstoy, Collected Works in eight volumes, volume 6, Moscow."
+      },
+      {
+        "provider": "Alexey Komarov's library",
+        "url": "https://ilibrary.ru/text/1462/index.html",
+        "observation": "The source page completes the citation as: Л. Н. Толстой. Собрание сочинений в восьми томах. Т. 6. М., \"Лексика\", 1996."
+      }
+    ],
+    "bibliographic_source": "Л. Н. Толстой. Собрание сочинений в восьми томах. Т. 6. М., \"Лексика\", 1996.",
+    "source_provenance_confidence": "strong",
+    "legal_basis": "public_domain",
+    "legal_evidence": "The Wikisource work page explicitly marks the literary work public domain. This trace concerns the public-domain literary text body; no claim is made about later editorial apparatus.",
+    "publication_evidence": "Created 1889–1899; the novel was published in 1899.",
+    "structure": {
+      "kind": "composite_subpages",
+      "parts": 3,
+      "part_chapter_counts": [59, 42, 28],
+      "chapter_subpages": 129,
+      "index_revision_freezes_chapter_text": false,
+      "structure_cross_check": "The Wikisource work index and Komarov library table of contents both expose 59 + 42 + 28 chapters."
+    },
+    "subpage_revision_evidence": {
+      "purpose": "Demonstrate that chapter text has independent revision identity and is not frozen by the work-index oldid.",
+      "samples": [
+        {
+          "title": "Воскресение (Толстой)/Часть I/Глава XLVIII",
+          "observed_revision_id": 5646761,
+          "relationship_to_index_revision": "independent_subpage_revision"
+        },
+        {
+          "title": "Воскресение (Толстой)/Часть II/Глава XL",
+          "observed_revision_id": 5646811,
+          "relationship_to_index_revision": "independent_subpage_revision"
+        }
+      ]
+    },
+    "frozen_candidate": {
+      "status": "not_frozen",
+      "chapter_revision_count_required": 129,
+      "revision_manifest": null,
+      "composition_profile": "scriptorium-wikisource-composite-v1",
+      "extraction_profile": "scriptorium-wikisource-body-v1",
+      "source_text_committed": false,
+      "reason": "The work-index revision identifies structure and provenance but does not freeze the 129 chapter subpage revisions or composite bytes."
+    }
+  },
+  "immutable_identity": {
+    "status": "partial",
+    "public_candidate_status": "traced_not_frozen",
+    "frozen_components": [
+      "Wikisource work-index revision 5614128",
+      "three-part / 129-chapter canonical structure",
+      "bibliographic source chain from Wikisource to Komarov library and Lexika 1996 volume 6"
+    ],
+    "unfrozen_components": [
+      "all 129 chapter revision IDs, timestamps and MediaWiki SHA-1 identities",
+      "composite raw and normalized SHA-256 identity",
+      "the relationship between FantLab's uploaded analyzer input and this public-domain candidate"
+    ],
+    "reason": "The public transcription now has a traceable bibliographic source chain and stable work-index identity, but its chapter bytes are not yet revision-pinned and FantLab does not disclose its analyzer-input source."
+  },
+  "admissibility": {
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_comparison_admissible": false,
+    "m2_parity_admissible": false,
+    "status": "source_trace_only",
+    "reasons": [
+      "The Wikisource/Komarov source chain now identifies the candidate transcription as Lexika 1996 volume 6 and the work is legally usable as public-domain literary text.",
+      "The work-index revision does not freeze the 129 chapter subpage revisions, so there is no immutable full-text candidate yet.",
+      "FantLab does not disclose the edition or bytes of the uploaded text behind its 2022 analysis.",
+      "The current FantLab excerpt download redirects to a LitRes trial endpoint and provides no evidence that it is the analyzer input."
+    ],
+    "next_evidence": [
+      "Pin all 129 Wikisource chapter revision IDs, timestamps and MediaWiki SHA-1 identities in canonical part/chapter order.",
+      "Replay those exact public revisions through the existing source-free extraction/composition contract and compute raw plus scriptorium-text-v1 normalized SHA-256 identities and character count.",
+      "Only after the public candidate is frozen may Scriptorium run field-by-field full-work diagnostics; those diagnostics remain inadmissible for M2 until independent evidence ties FantLab's uploaded analyzer input to the same frozen source."
+    ]
+  }
+}

@@ -193,7 +193,7 @@ def _separator_left_context(text: str, paragraph_start: int, separator_start: in
     if not prefix:
         return "other"
 
-    if prefix.endswith("?.."): 
+    if prefix.endswith("?.."):
         return "question_ellipsis"
     if prefix.endswith("!.."):
         return "exclamation_ellipsis"

@@ -92,7 +92,7 @@ class DeterministicMetricTests(unittest.TestCase):
         artifact = analyze_deterministic_metrics("кто-то кто - то")
         dash = artifact["metrics"]["fantlab.punctuation.dash.per_1000_words"]
         self.assertEqual(dash["raw_count"], 1)
-        self.assertAlmostEqual(dash["value"], 250.0)
+        self.assertAlmostEqual(dash["value"], 1000 / 3)
 
     def test_punctuation_rates_keep_raw_counts_for_diagnostics(self):
         metrics = analyze_deterministic_metrics("раз, два, три.")["metrics"]

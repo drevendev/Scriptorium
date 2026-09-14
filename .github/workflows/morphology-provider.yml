@@ -41,7 +41,11 @@ jobs:
 
   native-pylem-smoke:
     name: Build and execute pinned pylem 0.0.18
-    runs-on: ubuntu-24.04
+    # The exact 2019-era morph_dict source relies on legacy transitive integer/platform
+    # typedef includes that no longer compile under Ubuntu 24.04 / GCC 13. Keep this
+    # legacy provider lane isolated on an older runner rather than patching hash-pinned
+    # upstream bytes or weakening the modern Python 3.13 contract lane.
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
     steps:
       - name: Checkout pull-request head

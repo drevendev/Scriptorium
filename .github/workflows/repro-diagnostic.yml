@@ -125,11 +125,12 @@ jobs:
           from pathlib import Path
           manifest = json.loads(Path("build/repro/tolstoy-resurrection-ru.revisions.json").read_text(encoding="utf-8"))
           receipt = json.loads(Path("build/repro/tolstoy-resurrection-ru.replay-receipt.json").read_text(encoding="utf-8"))
+          encoding = manifest["chapter_identity_encoding"]
           summary = {
               "candidate_id": manifest["candidate_id"],
-              "chapter_count": len(manifest["chapters"]),
-              "first_revision_id": manifest["chapters"][0]["revision_id"],
-              "last_revision_id": manifest["chapters"][-1]["revision_id"],
+              "chapter_count": encoding["chapter_count"],
+              "first_revision_id": encoding["revision_ids"][0],
+              "last_revision_id": encoding["revision_ids"][-1],
               "composite_identity": manifest["composite_identity"],
               "replay_receipt": receipt,
               "source_text_committed": manifest["composition"]["source_text_committed"],

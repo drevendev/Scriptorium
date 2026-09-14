@@ -3,14 +3,12 @@ from hashlib import sha256
 import unittest
 
 from scriptorium.resurrection_freeze import (
-    PACKED_MANIFEST_VERSION,
+    MANIFEST_VERSION,
     PART_CHAPTER_COUNTS,
     build_manifest,
     expected_chapters,
     extract_resurrection_body,
-    pack_manifest,
     replay_manifest,
-    unpack_manifest,
 )
 
 
@@ -71,65 +69,68 @@ __NOEDITSECTION__
             "Эпиграф.\n\nПервый абзац.\n\nВторой абзац.",
         )
 
-    def test_packed_manifest_is_source_free_and_round_trips_every_identity(self):
+    def test_manifest_is_source_free_and_replay_uses_exact_source_identities(self):
         records = self._synthetic_records()
-        expanded = build_manifest(fetcher=lambda chapters: records)
-        packed = pack_manifest(expanded)
-        self.assertEqual(packed["manifest_version"], PACKED_MANIFEST_VERSION)
-        self.assertEqual(packed["candidate_id"], "tolstoy-resurrection-ru")
-        self.assertNotIn("chapters", packed)
-        encoding = packed["chapter_identity_encoding"]
+        manifest = build_manifest(fetcher=lambda chapters: records)
+        self.assertEqual(manifest["manifest_version"], MANIFEST_VERSION)
+        self.assertEqual(manifest["candidate_id"], "tolstoy-resurrection-ru")
+        self.assertNotIn("chapters", manifest)
+        self.assertIs(manifest["composition"]["source_text_committed"], False)
+        self.assertGreaterEqual(
+            manifest["composite_identity"]["character_count_including_spaces"],
+            300_000,
+        )
+
+        encoding = manifest["chapter_identity_encoding"]
         self.assertEqual(encoding["chapter_count"], 129)
         self.assertEqual(len(encoding["revision_ids"]), 129)
         self.assertEqual(len(encoding["revision_timestamps"]), 129)
         self.assertEqual(len(encoding["mediawiki_sha1_hex_concat"]), 129 * 40)
-        self.assertEqual(len(encoding["wikitext_sha256_hex_concat"]), 129 * 64)
-        self.assertEqual(len(encoding["extracted_sha256_hex_concat"]), 129 * 64)
-        self.assertEqual(len(encoding["extracted_character_counts"]), 129)
-        self.assertIs(packed["composition"]["source_text_committed"], False)
-        self.assertGreaterEqual(
-            packed["composite_identity"]["character_count_including_spaces"],
-            300_000,
-        )
         forbidden = {"body", "content", "prose", "source_text", "text", "wikitext"}
-        self.assertTrue(forbidden.isdisjoint(packed))
+        self.assertTrue(forbidden.isdisjoint(manifest))
         self.assertTrue(forbidden.isdisjoint(encoding))
 
-        round_tripped = unpack_manifest(packed)
-        self.assertEqual(round_tripped, expanded)
         replay_records = {title: record["wikitext"] for title, record in records.items()}
-        receipt = replay_manifest(packed, fetcher=lambda identities: replay_records)
+        observed_identities = []
+
+        def replay_fetcher(identities):
+            observed_identities.extend(identities)
+            return replay_records
+
+        receipt = replay_manifest(manifest, fetcher=replay_fetcher)
+        self.assertEqual(len(observed_identities), 129)
+        first = observed_identities[0]
+        source = records[first["title"]]
+        self.assertEqual(first["revision_id"], source["revision_id"])
+        self.assertEqual(first["revision_timestamp"], source["timestamp"])
+        self.assertEqual(first["mediawiki_sha1"], source["mediawiki_sha1"])
         self.assertEqual(receipt["chapter_count"], 129)
         self.assertIs(receipt["source_text_included"], False)
         self.assertEqual(receipt["fantlab_source_edition_match"], "unknown")
         self.assertIs(receipt["m2_parity_admissible"], False)
-        self.assertEqual(receipt["composite_identity"], expanded["composite_identity"])
+        self.assertEqual(receipt["composite_identity"], manifest["composite_identity"])
 
-        changed = copy.deepcopy(packed)
-        digest = changed["chapter_identity_encoding"]["extracted_sha256_hex_concat"]
-        changed["chapter_identity_encoding"]["extracted_sha256_hex_concat"] = (
-            digest[: 50 * 64] + "0" * 64 + digest[51 * 64 :]
-        )
-        with self.assertRaisesRegex(ValueError, "extracted SHA-256 drift"):
-            replay_manifest(changed, fetcher=lambda identities: replay_records)
-
-    def test_replay_fails_closed_on_contract_drift(self):
+    def test_replay_fails_closed_on_source_and_composite_contract_drift(self):
         records = self._synthetic_records()
-        expanded = build_manifest(fetcher=lambda chapters: records)
-        packed = pack_manifest(expanded)
+        manifest = build_manifest(fetcher=lambda chapters: records)
         replay_records = {title: record["wikitext"] for title, record in records.items()}
 
-        changed = copy.deepcopy(packed)
+        changed = copy.deepcopy(manifest)
         changed["chapter_identity_encoding"]["chapter_count"] = 128
         with self.assertRaisesRegex(ValueError, "packed chapter count drift"):
             replay_manifest(changed, fetcher=lambda identities: replay_records)
 
-        changed = copy.deepcopy(packed)
+        changed = copy.deepcopy(manifest)
+        changed["chapter_identity_encoding"]["mediawiki_sha1_hex_concat"] = "0"
+        with self.assertRaisesRegex(ValueError, "mediawiki_sha1 length"):
+            replay_manifest(changed, fetcher=lambda identities: replay_records)
+
+        changed = copy.deepcopy(manifest)
         changed["composite_identity"]["raw_sha256"] = "0" * 64
         with self.assertRaisesRegex(ValueError, "raw_sha256"):
             replay_manifest(changed, fetcher=lambda identities: replay_records)
 
-        changed = copy.deepcopy(packed)
+        changed = copy.deepcopy(manifest)
         changed["composition"]["source_text_committed"] = True
         with self.assertRaisesRegex(ValueError, "source-text boundary drift"):
             replay_manifest(changed, fetcher=lambda identities: replay_records)

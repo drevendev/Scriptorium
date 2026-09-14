@@ -8,6 +8,7 @@ on:
       - "tests/**"
       - "benchmarks/fantlab/work270306.json"
       - "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json"
+      - "corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json"
   workflow_dispatch:
 
 permissions:
@@ -77,9 +78,66 @@ jobs:
           PY
 
       - name: Upload source-free diagnostic artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: scriptorium-frozen-diagnostic
           path: build/repro/work270306-wikisource-diagnostic.json
+          if-no-files-found: error
+          retention-days: 7
+
+  resurrection-freeze-replay:
+    name: Replay frozen Resurrection source candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Replay exact committed revisions
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.resurrection_freeze replay \
+            --manifest corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json \
+            --receipt build/repro/tolstoy-resurrection-ru.replay-receipt.json
+
+      - name: Emit source-free replay summary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path("corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json").read_text(encoding="utf-8"))
+          receipt = json.loads(Path("build/repro/tolstoy-resurrection-ru.replay-receipt.json").read_text(encoding="utf-8"))
+          encoding = manifest["chapter_identity_encoding"]
+          summary = {
+              "candidate_id": manifest["candidate_id"],
+              "chapter_count": encoding["chapter_count"],
+              "first_revision_id": encoding["revision_ids"][0],
+              "last_revision_id": encoding["revision_ids"][-1],
+              "composite_identity": manifest["composite_identity"],
+              "replay_receipt": receipt,
+              "source_text_committed": manifest["composition"]["source_text_committed"],
+          }
+          print("SCRIPTORIUM_RESURRECTION_REPLAY_BEGIN")
+          print(json.dumps(summary, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+          print("SCRIPTORIUM_RESURRECTION_REPLAY_END")
+          PY
+
+      - name: Upload source-free replay receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-resurrection-replay
+          path: build/repro/tolstoy-resurrection-ru.replay-receipt.json
           if-no-files-found: error
           retention-days: 7

@@ -36,6 +36,9 @@ Scriptorium now has a standard-library-only deterministic analysis core:
 - source-free exact-revision replay for the frozen 239-chapter Russian Wikisource
   *Anna Karenina* candidate, with title/timestamp/MediaWiki-SHA-1 and composite-digest
   verification before a full-work diagnostic can run;
+- source-free exact-revision replay for the frozen 129-chapter Russian Wikisource
+  *Resurrection* candidate, with a versioned source-specific extraction contract for its
+  heterogeneous Wikisource page shapes and the same fail-closed source-match boundary;
 - a versioned static-publication allow-list plus a deterministic, fail-closed static
   renderer for derived/public work-showcase pages;
 - golden tests for text boundaries, dialogue spans, metric formulas, vocabulary windows,
@@ -101,6 +104,18 @@ Wikisource revisions. The replayed source is bound to SHA-256
 not committed or uploaded. FantLab does not disclose the analyzer-input edition or
 bytes, so every result remains source-unmatched diagnostic evidence and M2 parity stays
 0/5.
+
+A second frozen public-domain candidate is now available for *Resurrection*.
+[`corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json`](corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json)
+records its provenance and fail-closed admissibility boundary, while the compact
+[`tolstoy-resurrection-ru.revisions.json`](corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json)
+pins all **129** chapter revision IDs, timestamps and MediaWiki SHA-1 identities without
+storing source prose. Exact replay reconstructs a **890,835-character** composite bound
+to raw and `scriptorium-text-v1` normalized SHA-256
+`2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`.
+FantLab displays 881,244 characters for its 2022 analysis, but does not disclose the
+analyzer-input bytes or edition; this candidate is therefore eligible only for
+**diagnostic-only** comparison and does not move the 0/5 source-matched reproduction gate.
 
 A source-free [word/dash policy sensitivity artifact](benchmarks/fantlab/work270306-policy-sensitivity.json)
 records the investigation that led to the punctuation boundary without turning the
@@ -179,7 +194,8 @@ The first public numeric reference is FantLab's analysis of Henry Lion Oldie's
 [`benchmarks/fantlab/work488.json`](benchmarks/fantlab/work488.json). No novel text is
 stored with that reference. The frozen *Anna Karenina* diagnostic adds the first
 full-work expected/actual comparison without promoting a source-unmatched candidate to
-parity.
+parity; frozen *Resurrection* adds a second reproducible full-work source identity ready
+for the same diagnostic-only discipline.
 
 ## Methodology status
 

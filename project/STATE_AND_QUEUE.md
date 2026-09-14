@@ -3,7 +3,7 @@
 STATE_REVISION: 56
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-09-14T11:04:18Z
-LAST_RESULT: SCRIP-REPRO-007 authored in Issue #50 / PR #51. The retained Resurrection public-domain candidate is now frozen as 129 pinned Russian Wikisource revisions with a source-free durable manifest, versioned source-specific extraction, exact-revision replay and immutable composite identity. FantLab analyzer-input identity remains unknown; the unit is in REVIEW and M2 remains 0/5 source-matched works.
+LAST_RESULT: SCRIP-REPRO-007 authored in Issue #50 / PR #51. The retained Resurrection public-domain candidate is now frozen as 129 pinned Russian Wikisource revisions with a source-free durable manifest, versioned source-specific extraction, exact-revision replay and immutable composite identity. FantLab analyzer-input identity remains unknown; the unit is in REVIEW and M2 remains 0/5 source-matched works. The semantic changelog delta is recorded in `project/CHANGELOG.d/2026-09-14-SCRIP-REPRO-007.md` for consolidation during independent review/merge.
 LAST_VERIFIED_PROGRESS: The selected fallback followed a fresh SCRIP-MORPH-003 executability check: native pylem was not installed and DNS for GitHub/PyPI package hosts remained unavailable, so morphology stayed infrastructure `not_run`. Hosted capture on PR head aeb07a66a6a1d3e62656b44a345429367294f24a passed the full 107-test suite, fetched all 129 current chapter revisions, replayed those exact identities, and produced a source-free manifest plus replay receipt. The manifest pins every revision ID, timestamp and MediaWiki SHA-1 and freezes a 890,835-character / 1,610,692-byte composite with raw and `scriptorium-text-v1` normalized SHA-256 2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0. Capture artifact 10344631133 had ZIP SHA-256 379d193e016661350ca9e2bc11332480ea4d77307ca550180818f66fb3411fcd; independent download confirmed the archive contains only the source-free manifest and replay receipt. During capture, real Wikisource pages exposed two source shapes (multiple `text`/`indent` div bodies and plain prose after the `Отексте` header), so the unit added explicit `scriptorium-wikisource-resurrection-body-v1` extraction instead of silently widening the Anna contract. The committed manifest keeps FantLab source match unknown and M2 inadmissible; final PR-head replay-only verification is required by independent review before merge.
 
 ## Current unit
@@ -16,8 +16,9 @@ PR:             #51
 BASE:           master@17c4c05cd3c9832bc073383f80084eb8ffb8a30e
 NEXT_ACTION:    Independently review exact PR #51 head, including the committed 129-revision
                 source-free manifest, source-specific extraction contract, replay-only hosted
-                workflow, artifact boundary, and fail-closed FantLab/M2 labels. Merge only if
-                exact-head tests/replay remain green and no source prose or parity overclaim is present.
+                workflow, artifact boundary, and fail-closed FantLab/M2 labels. Consolidate
+                the CHANGELOG.d semantic delta into project/CHANGELOG.md at merge. Merge only
+                if exact-head tests/replay remain green and no source prose or parity overclaim is present.
 ```
 
 ## Current milestone gate

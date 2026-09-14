@@ -78,16 +78,23 @@ def consume_sidecar_response(
     rows = response.get("rows")
     if not isinstance(request_tokens, list) or not isinstance(rows, list):
         raise ValueError("sidecar transport token rows must be arrays")
+    canonical_tokens = word_tokens(normalized)
+    if len(request_tokens) != len(canonical_tokens):
+        raise ValueError("sidecar request token count does not match canonical tokenization")
     if response.get("token_count") != len(request_tokens) or len(rows) != len(request_tokens):
         raise ValueError("sidecar response token count mismatch")
 
     candidates: list[tuple[str, ...]] = []
-    for ordinal, (request_row, response_row) in enumerate(zip(request_tokens, rows)):
+    for ordinal, (request_row, response_row, canonical_token) in enumerate(
+        zip(request_tokens, rows, canonical_tokens)
+    ):
         if not isinstance(request_row, Mapping) or not isinstance(response_row, Mapping):
             raise ValueError("sidecar token row must be an object")
         token = request_row.get("text")
         if not isinstance(token, str):
             raise ValueError("sidecar request token missing text")
+        if token != canonical_token.text:
+            raise ValueError("sidecar request token text does not match canonical tokenization")
         expected_hash = _sha256_text(token)
         if request_row.get("ordinal") != ordinal or response_row.get("ordinal") != ordinal:
             raise ValueError("sidecar token ordinal mismatch")

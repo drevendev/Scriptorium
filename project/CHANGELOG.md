@@ -578,3 +578,35 @@ code changes remain in Git history and their issues/PRs.
 - The committed diagnostic artifact keeps `status=diagnostic_only`,
   `fantlab_source_edition_match=unknown`, `m2_parity_admissible=false`, and M2 at 0/5.
   PR #40 remains open for a later independent exact-head review before any merge.
+
+## 2026-09-14 — Independent review and merge: frozen Anna Karenina full-work diagnostic
+
+- Independently reviewed PR #40 exact final head
+  `e0337c05ba73f146c6aeee1cff1792cf27a1a261`; the branch was 12 commits ahead of
+  `master`, 0 behind, mergeable, and contained only the diagnostic workflow, source-free
+  benchmark artifacts, replay/diagnostic code, tests and repository-facing documentation.
+- Freshly rechecked FantLab work 270306 and confirmed the 19 September 2022 public values
+  used by the implemented general, dialogue, vocabulary and punctuation comparison.
+- Exact-head hosted diagnostic run `34794669740` on Python 3.13.15 passed **95/95** tests,
+  replayed all 239 pinned revisions and reproduced frozen SHA-256
+  `1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205` while keeping
+  `fantlab_source_edition_match=unknown`, `status=diagnostic_only` and
+  `m2_parity_admissible=false`.
+- The committed source-free summary remains explicitly bound to authored analysis head
+  `9ba8f36440b15fc41374209437048ae2e486d579`; the exact final head independently
+  reproduced the same numeric surface after normalization-profile validation was tightened
+  to the actual `scriptorium-text-v1` constant, rather than trusting the manifest value.
+- Exact-head Pages run `34794669749` succeeded with deployment skipped. After merge, the
+  `master` push Pages run `34797281911` also completed successfully; Pages activation
+  remains deliberately disabled.
+- PR #40 was squash-merged as `46fdbf04a246f327cebe40e36816d1ee63c0c31e`; Issue #39
+  closed completed.
+- The merged diagnostic records +12,958 characters, +16,083 words, +21.372 percentage
+  points author-text-inside-dialogue, +20.894 dashes per 1000 Scriptorium words and
+  +20,603 unique surface vocabulary. Dictionary-dependent vocabulary remains
+  not-run/unresolved and POS remains omitted because native pinned pylem execution is
+  still `not_run`.
+- M2 remains **0/5 source-matched works**. Post-merge runtime recheck still finds no
+  installed `pylem`, and DNS resolution for `github.com`, `pypi.org` and
+  `files.pythonhosted.org` still fails. The next dependency-satisfied unit after the
+  mandatory provider recheck is `SCRIP-TEXT-004`.

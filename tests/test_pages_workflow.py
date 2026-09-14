@@ -88,6 +88,9 @@ class PagesWorkflowContractTests(unittest.TestCase):
                 paths = _event_paths(self.workflow, event)
                 self.assertIn(PUBLICATION_PROVENANCE_TRIGGER, paths)
 
+    def test_pull_request_build_checks_out_exact_authored_head(self) -> None:
+        self.assertEqual(self.workflow.count(EXACT_HEAD_REF), 1)
+
     def test_build_is_read_only_and_uses_canonical_renderer(self) -> None:
         self.assertIn("permissions:\n  contents: read\n", self.workflow)
         self.assertIn(
@@ -99,7 +102,6 @@ class PagesWorkflowContractTests(unittest.TestCase):
             self.workflow,
         )
         self.assertIn("persist-credentials: false", self.workflow)
-        self.assertEqual(self.workflow.count(EXACT_HEAD_REF), 1)
         self.assertIn('python-version: "3.13"', self.workflow)
         self.assertIn("python -m unittest discover -s tests -v", self.workflow)
         self.assertIn(

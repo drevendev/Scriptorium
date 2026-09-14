@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Mapping, Sequence
 
 from .benchmark import build_comparison
+from .dialogue_diagnostic import analyze_dialogue_policy
 from .policy_diagnostic import analyze_word_dash_policy
 from .wikisource_replay import replay_packed_manifest
 
@@ -59,6 +60,26 @@ def build_frozen_diagnostic(
         expected_word_count=(expected_words if isinstance(expected_words, int) else None),
         expected_dash_per_1000_words=(
             float(expected_dash_rate) if expected_dash_rate is not None else None
+        ),
+    )
+
+    expected_dialogue_share = _expected_numeric(
+        artifact, "fantlab.dialogue.share_percent"
+    )
+    expected_author_text_inside_dialogue = _expected_numeric(
+        artifact, "fantlab.dialogue.author_text_inside_dialogue_percent"
+    )
+    artifact["dialogue_sensitivity"] = analyze_dialogue_policy(
+        composite,
+        expected_dialogue_share_percent=(
+            float(expected_dialogue_share)
+            if expected_dialogue_share is not None
+            else None
+        ),
+        expected_author_text_inside_dialogue_percent=(
+            float(expected_author_text_inside_dialogue)
+            if expected_author_text_inside_dialogue is not None
+            else None
         ),
     )
     return artifact

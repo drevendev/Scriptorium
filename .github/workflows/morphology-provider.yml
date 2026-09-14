@@ -7,13 +7,20 @@ on:
       - "requirements/pylem-0.0.18.txt"
       - "scriptorium/morphology.py"
       - "scriptorium/pylem_provider.py"
+      - "scriptorium/pylem_transport.py"
       - "scriptorium/text.py"
+      - "scriptorium/wikisource_replay.py"
       - "tests/test_morphology.py"
       - "tests/test_pylem_provider.py"
+      - "tests/test_pylem_transport.py"
       - "tools/pylem_runtime_probe.py"
+      - "tools/pylem_sidecar.py"
+      - "benchmarks/fantlab/work270306.json"
+      - "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json"
       - "docs/AOT_PYLEM_COMPATIBILITY.md"
       - "project/STATE_AND_QUEUE.md"
       - "project/CHANGELOG.d/SCRIP-MORPH-003.md"
+      - "project/CHANGELOG.d/SCRIP-MORPH-004.md"
   workflow_dispatch:
 
 permissions:
@@ -41,10 +48,6 @@ jobs:
 
   native-pylem-smoke:
     name: Build and execute pinned pylem 0.0.18
-    # The exact 2019-era morph_dict source relies on legacy transitive integer/platform
-    # typedef includes that no longer compile under Ubuntu 24.04 / GCC 13. Keep this
-    # legacy provider lane isolated on an older runner rather than patching hash-pinned
-    # upstream bytes or weakening the modern Python 3.13 contract lane.
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     steps:
@@ -68,9 +71,6 @@ jobs:
 
       - name: Install hash-pinned pylem source distribution
         env:
-          # Pinned pylem vendors a legacy pybind11 CMake minimum. The runner's modern
-          # CMake rejects that compatibility floor unless it is raised explicitly;
-          # this policy setting leaves the upstream pylem sources unchanged.
           CMAKE_ARGS: "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
         run: |
           set -euo pipefail
@@ -100,10 +100,7 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-
-          receipt = json.loads(
-              Path("build/morph/pylem-runtime-receipt.json").read_text(encoding="utf-8")
-          )
+          receipt = json.loads(Path("build/morph/pylem-runtime-receipt.json").read_text(encoding="utf-8"))
           assert receipt["provider"]["distribution"] == "pylem"
           assert receipt["provider"]["version"] == "0.0.18"
           assert receipt["provider"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
@@ -119,5 +116,95 @@ jobs:
         with:
           name: scriptorium-pylem-runtime-receipt
           path: build/morph/pylem-runtime-receipt.json
+          if-no-files-found: error
+          retention-days: 7
+
+  frozen-pos-diagnostic:
+    name: Replay frozen Anna Karenina through isolated pylem sidecar
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13 contract runtime
+        id: py313
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Prepare ephemeral frozen-work sidecar request
+        run: |
+          set -euo pipefail
+          mkdir -p build/morph
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.pylem_transport prepare \
+            --manifest corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json \
+            --request build/morph/anna-pylem-request.json
+
+      - name: Set up Python 3.9 legacy provider runtime
+        id: py39
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.9"
+
+      - name: Install exact pylem sidecar dependency
+        env:
+          CMAKE_ARGS: "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+        run: |
+          set -euo pipefail
+          "${{ steps.py39.outputs.python-path }}" -m pip install --disable-pip-version-check \
+            --no-deps --require-hashes -r requirements/pylem-0.0.18.txt
+
+      - name: Execute sidecar over exact Scriptorium tokens
+        run: |
+          set -euo pipefail
+          "${{ steps.py39.outputs.python-path }}" tools/pylem_sidecar.py \
+            --request build/morph/anna-pylem-request.json \
+            --response build/morph/anna-pylem-response.json
+
+      - name: Build source-free frozen POS diagnostic
+        env:
+          SCRIPTORIUM_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.pylem_transport finalize \
+            --manifest corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json \
+            --reference benchmarks/fantlab/work270306.json \
+            --request build/morph/anna-pylem-request.json \
+            --response build/morph/anna-pylem-response.json \
+            --scriptorium-revision "$SCRIPTORIUM_REVISION" \
+            --output build/morph/work270306-pylem-pos-diagnostic.json
+          "${{ steps.py313.outputs.python-path }}" - <<'PY'
+          import json
+          from pathlib import Path
+          artifact = json.loads(Path("build/morph/work270306-pylem-pos-diagnostic.json").read_text(encoding="utf-8"))
+          assert artifact["source_text_included"] is False
+          assert artifact["diagnostic_boundary"]["status"] == "diagnostic_only"
+          assert artifact["diagnostic_boundary"]["fantlab_source_edition_match"] == "unknown"
+          assert artifact["diagnostic_boundary"]["fantlab_dictionary_equivalence"] == "unknown"
+          assert artifact["diagnostic_boundary"]["m2_parity_admissible"] is False
+          assert artifact["pos"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
+          print(json.dumps({
+              "candidate_id": artifact["candidate_id"],
+              "normalized_sha256": artifact["transport"]["normalized_sha256"],
+              "runtime_analysis_sha256": artifact["transport"]["runtime_analysis_sha256"],
+              "defined": artifact["pos"]["metrics"]["defined"],
+              "undefined": artifact["pos"]["metrics"]["undefined"],
+              "m2_parity_admissible": False,
+          }, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+          PY
+
+      - name: Remove ephemeral source-bearing transport files
+        if: always()
+        run: rm -f build/morph/anna-pylem-request.json build/morph/anna-pylem-response.json
+
+      - name: Upload source-free frozen POS diagnostic
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-anna-pylem-pos-diagnostic
+          path: build/morph/work270306-pylem-pos-diagnostic.json
           if-no-files-found: error
           retention-days: 7

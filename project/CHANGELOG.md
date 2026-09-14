@@ -182,7 +182,7 @@ code changes remain in Git history and their issues/PRs.
 - Added golden coverage for offsets, marker handling, author remarks, empty denominators,
   schema identity and benchmark exposure; the authored reconstructed suite passed 33/33.
 - Added a second public derived showcase from two dialogue paragraphs of *Anna Karenina*,
-  Part I, Chapter II, bound to Russian Wikisource `oldid=4929731` and the cited Nauka
+  Part I, Chapter II, bound to Russian Wikisource revision `oldid=4929731` and the cited Nauka
   1970 edition. Source prose is not committed; the 250-character slice is explicitly
   non-corpus and non-parity evidence.
 
@@ -639,3 +639,31 @@ code changes remain in Git history and their issues/PRs.
 - The public README now links the source-free sensitivity artifact. M2 remains 0/5,
   `fantlab_source_edition_match=unknown`, and no production tokenizer/punctuation
   compatibility semantics were changed. PR #42 remains open for independent later review.
+
+## 2026-09-14 — Dialogue policy sensitivity candidate
+
+- Re-checked `SCRIP-MORPH-003` before selection. Native `pylem` remains absent and the
+  execution container still cannot resolve GitHub/PyPI package hosts, so provider
+  execution remains infrastructure `not_run` rather than a pylem failure.
+- Opened Issue #45 / PR #46 for `SCRIP-DIALOGUE-002`. Fresh public-methodology review
+  reconfirmed that FantLab names dialogue share and author text inside dialogue but does
+  not publish the delimiter grammar or denominator semantics; it also acknowledges
+  unpublished implementation know-how/corrective coefficients.
+- Added `scriptorium-dialogue-policy-diagnostic-v1` as a separate source-free sensitivity
+  probe. Production `scriptorium-dialogue-v1` remains unchanged.
+- The probe records the current alternating whitespace-dash-whitespace author-remark
+  behavior plus a narrower punctuation-shaped opener candidate. The narrower probe
+  accepts comma/question/exclamation/ellipsis left contexts and treats the next internal
+  separator as the candidate remark closer, allowing ordinary dashes inside speech to be
+  measured separately without claiming a recovered FantLab parser.
+- Denominator sensitivity is explicit: both current and narrower author-remark character
+  counts are reported over dialogue non-whitespace characters and over whole-text
+  non-whitespace characters, together with source-free separator-context counts.
+- Integrated the probe into the existing frozen *Anna Karenina* diagnostic workflow.
+  The artifact keeps source identity `unknown`, `diagnostic_only` and
+  `m2_parity_admissible=false`; no source prose is committed or intended for upload.
+- Added focused regressions for ordinary speech-internal dashes, punctuation-shaped
+  author-remark openers, closer re-synchronization, denominator variants, empty input and
+  the no-source-prose boundary. PR #46 remains open for independent exact-head review and
+  hosted artifact verification before any merge or dialogue-profile versioning decision.
+- M2 remains **0/5 source-matched works**.

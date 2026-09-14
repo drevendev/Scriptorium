@@ -18,7 +18,12 @@ class ReproDiagnosticTests(unittest.TestCase):
                     "title": "Example",
                     "author": "Example",
                 },
-                "expected": {"characters": 11, "words": 2},
+                "expected": {
+                    "characters": 11,
+                    "words": 2,
+                    "dialogue_share_percent": 35.12,
+                    "author_text_inside_dialogue_percent": 17.02,
+                },
             }
         )
         manifest = {
@@ -61,6 +66,26 @@ class ReproDiagnosticTests(unittest.TestCase):
         )
         self.assertIsNone(
             artifact["policy_sensitivity"]["reference"]["expected_dash_per_1000_words"]
+        )
+
+        self.assertEqual(artifact["dialogue_sensitivity"]["status"], "diagnostic_only")
+        self.assertEqual(
+            artifact["dialogue_sensitivity"]["reference"][
+                "expected_dialogue_share_percent"
+            ],
+            35.12,
+        )
+        self.assertEqual(
+            artifact["dialogue_sensitivity"]["reference"][
+                "expected_author_text_inside_dialogue_percent"
+            ],
+            17.02,
+        )
+        self.assertEqual(artifact["dialogue_sensitivity"]["dialogue_share"]["value"], 0.0)
+        self.assertIsNone(
+            artifact["dialogue_sensitivity"]["author_text_inside_dialogue_variants"][
+                "current_v1_over_dialogue"
+            ]["value"]
         )
 
 

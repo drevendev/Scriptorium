@@ -1,7 +1,7 @@
 # Dialogue model
 
 Profile ID: `scriptorium-dialogue-v1`  
-Metric profile: `scriptorium-metrics-v2`  
+Current aggregate metric profile: `scriptorium-metrics-v4`  
 Status: **inferred candidate**, not reproduced FantLab behavior.
 
 FantLab publicly exposes mean sentence lengths for narration/dialogue, dialogue share,
@@ -32,10 +32,36 @@ speech -> author text -> speech -> author text -> ...
 normalized-text offsets. The rule intentionally does not infer speaker identity, quoted
 speech, screenplay formatting or more complicated Russian dialogue punctuation.
 
+## SCRIP-DIALOGUE-002 diagnostic probe
+
+The frozen full-work *Anna Karenina* diagnostic exposed a large mismatch in author text
+inside dialogue while the overall dialogue-share value was much closer to FantLab. That
+is enough to justify investigating the parser, but not enough to tune production behavior:
+FantLab's public article names the metric without publishing its delimiter grammar or
+denominator semantics, and the exact FantLab analyzer-input edition remains unknown.
+
+`scriptorium-dialogue-policy-diagnostic-v1` therefore runs beside the production profile
+without changing it. The probe records only source-free counts and percentages. It
+compares:
+
+- the current alternating-separator author-remark spans;
+- a narrower delimiter probe whose author-text opener must follow comma, question,
+  exclamation or ellipsis punctuation at the source-text surface, after which the next
+  internal separator closes the candidate remark;
+- each author-remark numerator over the current dialogue-character denominator and over
+  the whole normalized non-whitespace text denominator.
+
+The narrower probe is intentionally diagnostic rather than linguistic authority. Its
+purpose is to measure how much ordinary dash use inside speech can influence the v1
+alternation rule. A numerically closer result must not be promoted to FantLab behavior
+without source-matched benchmark evidence. Hosted frozen diagnostics keep
+`fantlab_source_edition_match=unknown`, `diagnostic_only`, and
+`m2_parity_admissible=false`.
+
 ## Scalar metrics
 
-`scriptorium-metrics-v2` adds four FantLab-shaped fields, all with compatibility status
-`inferred`:
+The current aggregate metric profile exposes four FantLab-shaped dialogue fields, all
+with compatibility status `inferred`:
 
 | Metric | Candidate v1 rule |
 | --- | --- |
@@ -53,7 +79,7 @@ whether this profile is compatible.
 
 ## Benchmark surface
 
-`scriptorium.benchmark` now maps the four scalar dialogue fields when a captured FantLab
+`scriptorium.benchmark` maps the four scalar dialogue fields when a captured FantLab
 reference contains them. Their decimal precision is not independently established, so
 they remain `unresolved_precision` and cannot produce a FantLab `pass` yet even with an
 exact source edition.
@@ -80,6 +106,9 @@ author-profile evidence.
 - Character-count denominators may differ on whitespace/punctuation treatment.
 - A dialogue paragraph that mixes speech and narration is classified as dialogue as a
   whole for the share metric, even though author remarks are separately estimated.
+- The SCRIP-DIALOGUE-002 punctuation-shaped opener probe is a sensitivity test only; it
+  is not a replacement production profile until stronger evidence justifies versioning
+  the dialogue contract.
 
 No one of these edges should be silently repaired by intuition; benchmark deltas should
 drive future profile revisions.

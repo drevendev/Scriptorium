@@ -60,6 +60,7 @@ jobs:
               "source_text": artifact["source_text"],
               "diagnostic_boundary": artifact["diagnostic_boundary"],
               "policy_sensitivity": artifact["policy_sensitivity"],
+              "dialogue_sensitivity": artifact["dialogue_sensitivity"],
               "metrics": {
                   metric_id: {
                       "expected": row["expected"]["numeric_value"],

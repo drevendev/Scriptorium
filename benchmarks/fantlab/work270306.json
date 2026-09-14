@@ -1,0 +1,82 @@
+{
+  "benchmark_id": "fantlab-work270306-2022-09-19",
+  "reference": {
+    "site": "FantLab",
+    "url": "https://fantlab.ru/work270306/lp",
+    "analysis_date": "2022-09-19",
+    "work_id": 270306,
+    "title": "Анна Каренина",
+    "author": "Лев Толстой"
+  },
+  "status": "diagnostic-reference-source-unmatched",
+  "source_text": {
+    "available_to_project": true,
+    "edition_matched": false,
+    "legal_basis": "public_domain",
+    "raw_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+    "note": "The project has a reproducibly frozen public-domain Wikisource candidate, but FantLab does not identify the analyzer-input edition or bytes. Numeric comparison is diagnostic only and cannot advance M2 parity."
+  },
+  "expected": {
+    "characters": 1692647,
+    "words": 253275,
+    "approx_pages": 831,
+    "mean_word_length_characters": 4.95,
+    "mean_sentence_length_characters": 79.17,
+    "mean_narration_sentence_length_characters": 108.87,
+    "mean_dialogue_sentence_length_characters": 52.54,
+    "dialogue_share_percent": 35.12,
+    "author_text_inside_dialogue_percent": 17.02,
+    "unique_words": 12770,
+    "active_dictionary_vocabulary": 11428,
+    "active_non_dictionary_vocabulary": 1342,
+    "uasz_3000": 944.54,
+    "uasz_10000": 2126.08,
+    "uasz_100000": 8061.16,
+    "undefined_pos_words": 65036,
+    "undefined_pos_percent_of_words": 25.68,
+    "defined_pos_words": 188239,
+    "defined_pos_percent_of_words": 74.32,
+    "service_words": 111625,
+    "service_words_percent_of_defined_pos": 59.30,
+    "pos": {
+      "noun": {"count": 53278, "percent_of_defined": 28.30},
+      "adjective": {"count": 17964, "percent_of_defined": 9.54},
+      "verb": {"count": 46390, "percent_of_defined": 24.64},
+      "pronoun_noun": {"count": 26630, "percent_of_defined": 14.15},
+      "pronoun_adjective": {"count": 15033, "percent_of_defined": 7.99},
+      "pronoun_predicative": {"count": 40, "percent_of_defined": 0.02},
+      "cardinal": {"count": 2553, "percent_of_defined": 1.36},
+      "ordinal": {"count": 387, "percent_of_defined": 0.21},
+      "adverb": {"count": 10530, "percent_of_defined": 5.59},
+      "predicative": {"count": 2052, "percent_of_defined": 1.09},
+      "preposition": {"count": 21787, "percent_of_defined": 11.57},
+      "conjunction": {"count": 24479, "percent_of_defined": 13.00},
+      "interjection": {"count": 4856, "percent_of_defined": 2.58},
+      "introductory_word": {"count": 431, "percent_of_defined": 0.23},
+      "particle": {"count": 17475, "percent_of_defined": 9.28},
+      "participle": {"count": 3700, "percent_of_defined": 1.97},
+      "gerund": {"count": 894, "percent_of_defined": 0.47}
+    },
+    "punctuation_per_1000_words": {
+      "comma": 155.86,
+      "period": 65.57,
+      "dash": 25.68,
+      "exclamation": 5.92,
+      "question": 9.01,
+      "ellipsis": 3.13,
+      "exclamation_ellipsis": 0.17,
+      "question_ellipsis": 0.21,
+      "triple_exclamation": 0.00,
+      "question_exclamation": 0.01,
+      "quote": 6.27,
+      "parentheses": 0.60,
+      "colon": 2.80,
+      "semicolon": 4.34
+    }
+  },
+  "comparison": {
+    "rule": "diagnostic-only-until-source-edition-match",
+    "result": "not-run",
+    "reason": "The frozen Wikisource candidate is legally usable and reproducible, but FantLab analyzer-input identity is not established."
+  }
+}

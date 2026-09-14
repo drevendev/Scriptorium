@@ -22,7 +22,9 @@ from .publication import validate_compatibility_claim
 
 GENERATOR_PROFILE = "scriptorium-static-site-v1"
 MANIFEST_PROFILE = "scriptorium-publication-manifest-v1"
+PROVENANCE_SHOWCASE_PROFILE = "scriptorium-work-provenance-showcase-v1"
 _SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
+_HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 _ALLOWED_ARTIFACT_ROOTS = frozenset({"showcase", "benchmarks", "public-artifacts"})
 _ALLOWED_PUBLICATION_STATUSES = frozenset({"illustrative_excerpt", "diagnostic", "published"})
 _ALLOWED_BENCHMARK_ADMISSIBILITY = frozenset({"not_admissible", "diagnostic_only", "admissible"})
@@ -47,6 +49,58 @@ _SUPPORTED_SHOWCASE_ARTIFACT_SCHEMAS = frozenset(
     {
         "scriptorium-deterministic-metrics-v1",
         "scriptorium-deterministic-metrics-v2",
+        PROVENANCE_SHOWCASE_PROFILE,
+    }
+)
+_PROVENANCE_TOP_LEVEL_KEYS = frozenset(
+    {
+        "schema_version",
+        "showcase_id",
+        "status",
+        "benchmark_admissibility",
+        "corpus_admissibility",
+        "compatibility_claim",
+        "source_text_committed",
+        "representativeness_note",
+        "work",
+        "source",
+        "frozen_identity",
+        "fantlab_boundary",
+    }
+)
+_PROVENANCE_SOURCE_KEYS = frozenset(
+    {
+        "provider",
+        "page",
+        "revision_url",
+        "edition_note",
+        "legal_basis",
+        "revision_manifest",
+        "chapter_revision_count",
+        "composition_profile",
+        "extraction_profile",
+    }
+)
+_PROVENANCE_IDENTITY_KEYS = frozenset(
+    {
+        "character_count_including_spaces",
+        "utf8_byte_count",
+        "raw_sha256",
+        "normalization_profile",
+        "normalized_character_count_including_spaces",
+        "normalized_sha256",
+    }
+)
+_PROVENANCE_FANTLAB_KEYS = frozenset(
+    {
+        "work_id",
+        "analysis_url",
+        "analysis_date",
+        "displayed_character_count",
+        "displayed_word_count",
+        "fantlab_source_edition_match",
+        "m2_parity_admissible",
+        "note",
     }
 )
 
@@ -157,7 +211,7 @@ def _validate_manifest_header(manifest: Mapping[str, Any]) -> Sequence[Mapping[s
     return entries
 
 
-def _validate_showcase(entry: Mapping[str, Any], artifact: Mapping[str, Any]) -> dict[str, Any]:
+def _validate_common_entry(entry: Mapping[str, Any]) -> tuple[str, str, str, str, str, str]:
     if entry.get("kind") != "work_showcase":
         raise PublicationBuildError(
             f"renderer {GENERATOR_PROFILE} does not yet support kind {entry.get('kind')!r}"
@@ -191,7 +245,20 @@ def _validate_showcase(entry: Mapping[str, Any], artifact: Mapping[str, Any]) ->
         _ALLOWED_CORPUS_ADMISSIBILITY,
         f"manifest entry {entry_id}",
     )
+    return (
+        entry_id,
+        slug,
+        artifact_schema,
+        publication_status,
+        benchmark_admissibility,
+        corpus_admissibility,
+    )
 
+
+def _validate_metric_showcase(
+    entry: Mapping[str, Any], artifact: Mapping[str, Any], common: tuple[str, str, str, str, str, str]
+) -> dict[str, Any]:
+    entry_id, slug, artifact_schema, publication_status, benchmark_admissibility, corpus_admissibility = common
     analysis = artifact.get("analysis")
     source = artifact.get("source")
     work = artifact.get("work")
@@ -224,6 +291,7 @@ def _validate_showcase(entry: Mapping[str, Any], artifact: Mapping[str, Any]) ->
 
     revision_url = _safe_external_url(source.get("revision_url"), f"showcase {entry_id}.source.revision_url")
     return {
+        "render_mode": "metrics",
         "entry_id": entry_id,
         "slug": slug,
         "title": _required_text(entry, "title", f"manifest entry {entry_id}"),
@@ -242,6 +310,151 @@ def _validate_showcase(entry: Mapping[str, Any], artifact: Mapping[str, Any]) ->
         "legal_basis": _required_text(source, "legal_basis", f"showcase {entry_id}.source"),
         "metrics": metrics,
     }
+
+
+def _positive_int(container: Mapping[str, Any], key: str, context: str) -> int:
+    value = container.get(key)
+    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+        raise PublicationBuildError(f"{context}.{key} must be a positive integer")
+    return value
+
+
+def _sha256_text(container: Mapping[str, Any], key: str, context: str) -> str:
+    value = container.get(key)
+    if not isinstance(value, str) or not _HEX64_RE.fullmatch(value):
+        raise PublicationBuildError(f"{context}.{key} must be a lowercase SHA-256")
+    return value
+
+
+def _safe_revision_manifest(value: Any, context: str) -> str:
+    if not isinstance(value, str) or not value.endswith(".json") or "\\" in value:
+        raise PublicationBuildError(f"{context} must be a repository JSON path")
+    path = PurePosixPath(value)
+    if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
+        raise PublicationBuildError(f"{context} must be a safe repository JSON path")
+    if path.parts[:3] != ("corpus", "candidates", "source-edition-traces"):
+        raise PublicationBuildError(f"{context} must point into the canonical source-edition trace tree")
+    return value
+
+
+def _validate_provenance_showcase(
+    entry: Mapping[str, Any], artifact: Mapping[str, Any], common: tuple[str, str, str, str, str, str]
+) -> dict[str, Any]:
+    entry_id, slug, artifact_schema, publication_status, benchmark_admissibility, corpus_admissibility = common
+    _require_exact_keys(artifact, _PROVENANCE_TOP_LEVEL_KEYS, f"provenance showcase {entry_id}")
+    if artifact.get("schema_version") != PROVENANCE_SHOWCASE_PROFILE or artifact_schema != PROVENANCE_SHOWCASE_PROFILE:
+        raise PublicationBuildError(f"provenance showcase {entry_id!r} has unsupported schema identity")
+
+    expected_pairs = (
+        ("entry_id", entry_id, artifact.get("showcase_id")),
+        ("publication_status", publication_status, artifact.get("status")),
+        ("benchmark_admissibility", benchmark_admissibility, artifact.get("benchmark_admissibility")),
+        ("corpus_admissibility", corpus_admissibility, artifact.get("corpus_admissibility")),
+        ("compatibility_claim", entry.get("compatibility_claim"), artifact.get("compatibility_claim")),
+    )
+    for label, manifest_value, canonical_value in expected_pairs:
+        if manifest_value != canonical_value:
+            raise PublicationBuildError(
+                f"manifest {label} contradicts showcase {entry_id!r}: "
+                f"manifest={manifest_value!r}, canonical={canonical_value!r}"
+            )
+    if artifact.get("compatibility_claim") != "extension":
+        raise PublicationBuildError(
+            f"provenance showcase {entry_id!r} must use extension compatibility to avoid a FantLab parity claim"
+        )
+    if artifact.get("source_text_committed") is not False:
+        raise PublicationBuildError(f"showcase {entry_id!r} commits source text")
+
+    work = artifact.get("work")
+    source = artifact.get("source")
+    frozen = artifact.get("frozen_identity")
+    fantlab = artifact.get("fantlab_boundary")
+    if not all(isinstance(value, Mapping) for value in (work, source, frozen, fantlab)):
+        raise PublicationBuildError(f"provenance showcase {entry_id!r} lacks required objects")
+    assert isinstance(work, Mapping) and isinstance(source, Mapping)
+    assert isinstance(frozen, Mapping) and isinstance(fantlab, Mapping)
+    _require_exact_keys(source, _PROVENANCE_SOURCE_KEYS, f"provenance showcase {entry_id}.source")
+    _require_exact_keys(frozen, _PROVENANCE_IDENTITY_KEYS, f"provenance showcase {entry_id}.frozen_identity")
+    _require_exact_keys(fantlab, _PROVENANCE_FANTLAB_KEYS, f"provenance showcase {entry_id}.fantlab_boundary")
+
+    revision_url = _safe_external_url(source.get("revision_url"), f"showcase {entry_id}.source.revision_url")
+    revision_manifest = _safe_revision_manifest(
+        source.get("revision_manifest"), f"showcase {entry_id}.source.revision_manifest"
+    )
+    chapter_revision_count = _positive_int(source, "chapter_revision_count", f"showcase {entry_id}.source")
+    character_count = _positive_int(frozen, "character_count_including_spaces", f"showcase {entry_id}.frozen_identity")
+    normalized_character_count = _positive_int(
+        frozen, "normalized_character_count_including_spaces", f"showcase {entry_id}.frozen_identity"
+    )
+    utf8_byte_count = _positive_int(frozen, "utf8_byte_count", f"showcase {entry_id}.frozen_identity")
+    raw_sha256 = _sha256_text(frozen, "raw_sha256", f"showcase {entry_id}.frozen_identity")
+    normalized_sha256 = _sha256_text(frozen, "normalized_sha256", f"showcase {entry_id}.frozen_identity")
+
+    work_id = _positive_int(fantlab, "work_id", f"showcase {entry_id}.fantlab_boundary")
+    fantlab_url = _safe_external_url(
+        fantlab.get("analysis_url"), f"showcase {entry_id}.fantlab_boundary.analysis_url"
+    )
+    displayed_character_count = _positive_int(
+        fantlab, "displayed_character_count", f"showcase {entry_id}.fantlab_boundary"
+    )
+    displayed_word_count = _positive_int(
+        fantlab, "displayed_word_count", f"showcase {entry_id}.fantlab_boundary"
+    )
+    if fantlab.get("fantlab_source_edition_match") != "unknown":
+        raise PublicationBuildError(
+            f"provenance showcase {entry_id!r} must preserve unknown FantLab source-edition match"
+        )
+    if fantlab.get("m2_parity_admissible") is not False:
+        raise PublicationBuildError(
+            f"provenance showcase {entry_id!r} must remain M2 parity inadmissible"
+        )
+    if benchmark_admissibility != "diagnostic_only":
+        raise PublicationBuildError(
+            f"provenance showcase {entry_id!r} must remain diagnostic-only for benchmark use"
+        )
+
+    return {
+        "render_mode": "provenance",
+        "entry_id": entry_id,
+        "slug": slug,
+        "title": _required_text(entry, "title", f"manifest entry {entry_id}"),
+        "publication_status": publication_status,
+        "benchmark_admissibility": benchmark_admissibility,
+        "corpus_admissibility": corpus_admissibility,
+        "compatibility_claim": "extension",
+        "author": _required_text(work, "author", f"showcase {entry_id}.work"),
+        "work_title": _required_text(work, "title", f"showcase {entry_id}.work"),
+        "language": _required_text(work, "language", f"showcase {entry_id}.work"),
+        "representativeness_note": _required_text(artifact, "representativeness_note", f"showcase {entry_id}"),
+        "provider": _required_text(source, "provider", f"showcase {entry_id}.source"),
+        "page": _required_text(source, "page", f"showcase {entry_id}.source"),
+        "revision_url": revision_url,
+        "edition_note": _required_text(source, "edition_note", f"showcase {entry_id}.source"),
+        "legal_basis": _required_text(source, "legal_basis", f"showcase {entry_id}.source"),
+        "revision_manifest": revision_manifest,
+        "chapter_revision_count": chapter_revision_count,
+        "composition_profile": _required_text(source, "composition_profile", f"showcase {entry_id}.source"),
+        "extraction_profile": _required_text(source, "extraction_profile", f"showcase {entry_id}.source"),
+        "character_count": character_count,
+        "normalized_character_count": normalized_character_count,
+        "utf8_byte_count": utf8_byte_count,
+        "raw_sha256": raw_sha256,
+        "normalized_sha256": normalized_sha256,
+        "normalization_profile": _required_text(frozen, "normalization_profile", f"showcase {entry_id}.frozen_identity"),
+        "fantlab_work_id": work_id,
+        "fantlab_url": fantlab_url,
+        "fantlab_analysis_date": _required_text(fantlab, "analysis_date", f"showcase {entry_id}.fantlab_boundary"),
+        "fantlab_displayed_character_count": displayed_character_count,
+        "fantlab_displayed_word_count": displayed_word_count,
+        "fantlab_note": _required_text(fantlab, "note", f"showcase {entry_id}.fantlab_boundary"),
+    }
+
+
+def _validate_showcase(entry: Mapping[str, Any], artifact: Mapping[str, Any]) -> dict[str, Any]:
+    common = _validate_common_entry(entry)
+    if common[2] == PROVENANCE_SHOWCASE_PROFILE:
+        return _validate_provenance_showcase(entry, artifact, common)
+    return _validate_metric_showcase(entry, artifact, common)
 
 
 def _format_metric_value(value: Any) -> str:
@@ -276,9 +489,10 @@ def _page(title: str, stylesheet_href: str, body: str) -> str:
 def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
     cards = []
     for item in entries:
+        mode_note = " · provenance-only" if item.get("render_mode") == "provenance" else ""
         cards.append(
             '<article class="card">'
-            f'<p class="eyebrow">{_escape(item["publication_status"])}</p>'
+            f'<p class="eyebrow">{_escape(item["publication_status"])}{_escape(mode_note)}</p>'
             f'<h2><a href="works/{_escape(item["slug"])}/">{_escape(item["title"])}</a></h2>'
             f'<p>{_escape(item["author"])} · {_escape(item["work_title"])}</p>'
             f'<p><strong>Compatibility:</strong> {_escape(item["compatibility_claim"])}</p>'
@@ -295,7 +509,7 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
     return _page("Scriptorium", "assets/site.css", body)
 
 
-def _render_work(item: Mapping[str, Any]) -> str:
+def _render_metric_work(item: Mapping[str, Any]) -> str:
     rows = []
     for metric_id in sorted(item["metrics"]):
         row = item["metrics"][metric_id]
@@ -340,6 +554,57 @@ def _render_work(item: Mapping[str, Any]) -> str:
     return _page(item["title"], "../../assets/site.css", body)
 
 
+def _render_provenance_work(item: Mapping[str, Any]) -> str:
+    revision_url = _escape(item["revision_url"])
+    fantlab_url = _escape(item["fantlab_url"])
+    body = (
+        '<main><nav><a href="../../">← All published analyses</a></nav>'
+        f'<p class="eyebrow">{_escape(item["publication_status"])} · provenance-only</p>'
+        f'<h1>{_escape(item["title"])}</h1>'
+        f'<p class="lede">{_escape(item["author"])} · {_escape(item["work_title"])}</p>'
+        '<section class="notice"><strong>Evidence boundary.</strong> '
+        'This page freezes a public source candidate; it does not claim that FantLab analyzed the same bytes. '
+        f'Benchmark: {_escape(item["benchmark_admissibility"])}. '
+        f'Corpus: {_escape(item["corpus_admissibility"])}. '
+        f'{_escape(item["representativeness_note"])}</section>'
+        '<h2>Frozen source identity</h2><dl>'
+        f'<dt>Pinned chapter revisions</dt><dd>{_escape(item["chapter_revision_count"])}</dd>'
+        f'<dt>Characters including spaces</dt><dd>{_escape(item["character_count"])}</dd>'
+        f'<dt>UTF-8 bytes</dt><dd>{_escape(item["utf8_byte_count"])}</dd>'
+        f'<dt>Raw SHA-256</dt><dd><code>{_escape(item["raw_sha256"])}</code></dd>'
+        f'<dt>Normalization</dt><dd>{_escape(item["normalization_profile"])}</dd>'
+        f'<dt>Normalized characters</dt><dd>{_escape(item["normalized_character_count"])}</dd>'
+        f'<dt>Normalized SHA-256</dt><dd><code>{_escape(item["normalized_sha256"])}</code></dd>'
+        f'<dt>Composition profile</dt><dd><code>{_escape(item["composition_profile"])}</code></dd>'
+        f'<dt>Extraction profile</dt><dd><code>{_escape(item["extraction_profile"])}</code></dd>'
+        f'<dt>Revision manifest</dt><dd><code>{_escape(item["revision_manifest"])}</code></dd>'
+        '</dl>'
+        '<h2>Public-source provenance</h2><dl>'
+        f'<dt>Provider</dt><dd>{_escape(item["provider"])}</dd>'
+        f'<dt>Source page</dt><dd>{_escape(item["page"])}</dd>'
+        f'<dt>Edition</dt><dd>{_escape(item["edition_note"])}</dd>'
+        f'<dt>Legal basis</dt><dd>{_escape(item["legal_basis"])}</dd>'
+        f'<dt>Immutable source reference</dt><dd><a rel="noreferrer" href="{revision_url}">{revision_url}</a></dd>'
+        '</dl>'
+        '<h2>FantLab boundary</h2><dl>'
+        f'<dt>FantLab work</dt><dd><a rel="noreferrer" href="{fantlab_url}">work {_escape(item["fantlab_work_id"])}</a></dd>'
+        f'<dt>Analysis date</dt><dd>{_escape(item["fantlab_analysis_date"])}</dd>'
+        f'<dt>Displayed characters</dt><dd>{_escape(item["fantlab_displayed_character_count"])}</dd>'
+        f'<dt>Displayed words</dt><dd>{_escape(item["fantlab_displayed_word_count"])}</dd>'
+        '<dt>Source-edition match</dt><dd><strong>unknown</strong></dd>'
+        '<dt>M2 parity admissible</dt><dd><strong>false</strong></dd>'
+        f'</dl><p class="notice">{_escape(item["fantlab_note"])}</p>'
+        '<p class="notice">Source text is deliberately not included in this site build.</p></main>'
+    )
+    return _page(item["title"], "../../assets/site.css", body)
+
+
+def _render_work(item: Mapping[str, Any]) -> str:
+    if item.get("render_mode") == "provenance":
+        return _render_provenance_work(item)
+    return _render_metric_work(item)
+
+
 _SITE_CSS = """\
 :root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.5; }
 body { margin: 0; }
@@ -354,8 +619,9 @@ h1 { font-size: clamp(2rem, 5vw, 4rem); line-height: 1.05; }
 table { border-collapse: collapse; width: 100%; }
 th, td { border-bottom: 1px solid currentColor; padding: .65rem; text-align: left; vertical-align: top; }
 dt { font-weight: 700; margin-top: 1rem; }
-dd { margin-left: 0; }
+dd { margin-left: 0; overflow-wrap: anywhere; }
 .status { font-weight: 700; }
+code { overflow-wrap: anywhere; }
 footer { opacity: .7; font-size: .9rem; }
 """
 
@@ -419,8 +685,6 @@ def build_site(
     render_items.sort(key=lambda item: (item["slug"], item["entry_id"]))
     input_rows.sort(key=lambda item: item["entry_id"])
 
-    # Render and validate every page before touching the output tree. A failed build must
-    # not leave a partially refreshed site that looks publishable.
     index_html = _render_index(render_items)
     work_pages = {item["slug"]: _render_work(item) for item in render_items}
     build_record = {

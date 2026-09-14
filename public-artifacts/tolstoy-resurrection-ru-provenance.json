@@ -1,0 +1,44 @@
+{
+  "schema_version": "scriptorium-work-provenance-showcase-v1",
+  "showcase_id": "tolstoy-resurrection-ru-provenance-v1",
+  "status": "diagnostic",
+  "benchmark_admissibility": "diagnostic_only",
+  "corpus_admissibility": "admissible",
+  "compatibility_claim": "extension",
+  "source_text_committed": false,
+  "representativeness_note": "Full public-domain source candidate frozen for reproducible analysis; FantLab analyzer-input edition remains unknown, so this page is provenance evidence rather than a parity claim.",
+  "work": {
+    "author": "Leo Tolstoy",
+    "title": "Resurrection",
+    "language": "ru"
+  },
+  "source": {
+    "provider": "Russian Wikisource",
+    "page": "Воскресение (Толстой)",
+    "revision_url": "https://ru.wikisource.org/w/index.php?title=Воскресение_(Толстой)&oldid=5614128",
+    "edition_note": "Л. Н. Толстой. Собрание сочинений в восьми томах. Т. 6. М., \"Лексика\", 1996.",
+    "legal_basis": "public domain",
+    "revision_manifest": "corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json",
+    "chapter_revision_count": 129,
+    "composition_profile": "scriptorium-wikisource-composite-v1",
+    "extraction_profile": "scriptorium-wikisource-resurrection-body-v1"
+  },
+  "frozen_identity": {
+    "character_count_including_spaces": 890835,
+    "utf8_byte_count": 1610692,
+    "raw_sha256": "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0",
+    "normalization_profile": "scriptorium-text-v1",
+    "normalized_character_count_including_spaces": 890835,
+    "normalized_sha256": "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0"
+  },
+  "fantlab_boundary": {
+    "work_id": 296603,
+    "analysis_url": "https://fantlab.ru/work296603/lp",
+    "analysis_date": "2022-09-19",
+    "displayed_character_count": 881244,
+    "displayed_word_count": 126457,
+    "fantlab_source_edition_match": "unknown",
+    "m2_parity_admissible": false,
+    "note": "The 9,591-character difference between the frozen public candidate and FantLab's displayed count is not source-match evidence and is not fitted here."
+  }
+}

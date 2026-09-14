@@ -15,7 +15,7 @@ from .metrics import punctuation_counts
 from .text import normalize_text, word_tokens
 
 
-POLICY_DIAGNOSTIC_VERSION: Final = "scriptorium-text-policy-diagnostic-v1"
+POLICY_DIAGNOSTIC_VERSION: Final = "scriptorium-text-policy-diagnostic-v2"
 
 # U+002D HYPHEN-MINUS is retained for continuity with scriptorium-text-v1.
 # U+2010 HYPHEN and U+2011 NON-BREAKING HYPHEN are included only in this
@@ -62,28 +62,27 @@ def analyze_word_dash_policy(
     }
 
     glyph_counts = {glyph: normalized.count(glyph) for glyph in _DASH_GLYPHS}
-    current_dash_count = punctuation_counts(normalized)["dash"]
-    counted_dash_glyphs = sum(glyph_counts.values())
-    if current_dash_count != counted_dash_glyphs:
-        raise AssertionError(
-            "scriptorium-punctuation-v1 dash count diverged from supported glyph total"
-        )
-
+    all_supported_dash_glyphs = sum(glyph_counts.values())
     ascii_contexts = _ascii_hyphen_contexts(normalized)
     lexical_hyphen_like_between_letters = _lexical_hyphen_like_between_letters(normalized)
     token_internal_ascii_hyphens = sum(token.text.count("-") for token in current_tokens)
+    current_dash_count = punctuation_counts(normalized)["dash"]
+    if current_dash_count != all_supported_dash_glyphs - token_internal_ascii_hyphens:
+        raise AssertionError(
+            "scriptorium-punctuation-v2 dash count diverged from its token-internal "
+            "ASCII-hyphen exclusion"
+        )
 
     dash_variants = {
-        "current_all_supported_dash_glyphs": current_dash_count,
+        "legacy_punctuation_v1_all_supported_dash_glyphs": all_supported_dash_glyphs,
+        "current_scriptorium_punctuation_v2": current_dash_count,
         "exclude_ascii_hyphen_between_letters": (
-            current_dash_count - ascii_contexts["between_letters"]
+            all_supported_dash_glyphs - ascii_contexts["between_letters"]
         ),
         "exclude_lexical_hyphen_like_between_letters": (
-            current_dash_count - lexical_hyphen_like_between_letters
+            all_supported_dash_glyphs - lexical_hyphen_like_between_letters
         ),
-        "exclude_all_current_token_internal_ascii_hyphens": (
-            current_dash_count - token_internal_ascii_hyphens
-        ),
+        "exclude_all_current_token_internal_ascii_hyphens": current_dash_count,
     }
 
     word_rows: dict[str, dict[str, object]] = {}

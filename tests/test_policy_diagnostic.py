@@ -15,6 +15,7 @@ class PolicyDiagnosticTests(unittest.TestCase):
             expected_dash_per_1000_words=500.0,
         )
 
+        self.assertEqual(artifact["schema_version"], "scriptorium-text-policy-diagnostic-v2")
         word_variants = artifact["word_policy"]["variants"]
         self.assertEqual(word_variants["current_scriptorium_text_v1"]["count"], 6)
         self.assertEqual(word_variants["exclude_numeric_only_tokens"]["count"], 5)
@@ -37,7 +38,14 @@ class PolicyDiagnosticTests(unittest.TestCase):
         self.assertEqual(dash_policy["current_token_internal_ascii_hyphens"], 2)
 
         dash_variants = dash_policy["variants"]
-        self.assertEqual(dash_variants["current_all_supported_dash_glyphs"]["count"], 5)
+        self.assertEqual(
+            dash_variants["legacy_punctuation_v1_all_supported_dash_glyphs"]["count"],
+            5,
+        )
+        self.assertEqual(
+            dash_variants["current_scriptorium_punctuation_v2"]["count"],
+            3,
+        )
         self.assertEqual(dash_variants["exclude_ascii_hyphen_between_letters"]["count"], 4)
         self.assertEqual(
             dash_variants["exclude_lexical_hyphen_like_between_letters"]["count"],
@@ -48,13 +56,13 @@ class PolicyDiagnosticTests(unittest.TestCase):
             3,
         )
         self.assertAlmostEqual(
-            dash_variants["exclude_lexical_hyphen_like_between_letters"][
+            dash_variants["current_scriptorium_punctuation_v2"][
                 "per_1000_current_words"
             ],
             500.0,
         )
         self.assertAlmostEqual(
-            dash_variants["exclude_lexical_hyphen_like_between_letters"][
+            dash_variants["current_scriptorium_punctuation_v2"][
                 "rate_delta_to_reference"
             ],
             0.0,
@@ -72,7 +80,7 @@ class PolicyDiagnosticTests(unittest.TestCase):
             0,
         )
         self.assertIsNone(
-            artifact["dash_policy"]["variants"]["current_all_supported_dash_glyphs"][
+            artifact["dash_policy"]["variants"]["current_scriptorium_punctuation_v2"][
                 "per_1000_current_words"
             ]
         )
@@ -81,6 +89,8 @@ class PolicyDiagnosticTests(unittest.TestCase):
         path = Path("benchmarks/fantlab/work270306-policy-sensitivity.json")
         artifact = json.loads(path.read_text(encoding="utf-8"))
 
+        # This committed evidence is intentionally historical v1 output produced before
+        # punctuation-v2. It remains immutable rather than being rewritten without replay.
         self.assertEqual(artifact["artifact_version"], "scriptorium-text-policy-diagnostic-v1")
         self.assertEqual(artifact["epistemic_status"]["status"], "diagnostic_only")
         self.assertEqual(

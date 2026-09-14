@@ -48,6 +48,20 @@ class ReproDiagnosticTests(unittest.TestCase):
         )
         self.assertEqual(artifact["diagnostic_boundary"]["status"], "diagnostic_only")
         self.assertIs(artifact["diagnostic_boundary"]["m2_parity_admissible"], False)
+        self.assertEqual(artifact["policy_sensitivity"]["status"], "diagnostic_only")
+        self.assertEqual(
+            artifact["policy_sensitivity"]["word_policy"]["variants"][
+                "current_scriptorium_text_v1"
+            ]["count"],
+            2,
+        )
+        self.assertEqual(
+            artifact["policy_sensitivity"]["reference"]["expected_word_count"],
+            2,
+        )
+        self.assertIsNone(
+            artifact["policy_sensitivity"]["reference"]["expected_dash_per_1000_words"]
+        )
 
 
 if __name__ == "__main__":

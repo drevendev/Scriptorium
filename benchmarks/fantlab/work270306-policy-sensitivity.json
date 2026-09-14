@@ -1,0 +1,103 @@
+{
+  "artifact_version": "scriptorium-text-policy-diagnostic-v1",
+  "benchmark_id": "fantlab-work270306-2022-09-19",
+  "candidate_id": "tolstoy-anna-karenina-ru",
+  "evidence": {
+    "hosted_run_id": 34800715320,
+    "workflow_artifact_id": 10331456918,
+    "workflow_artifact_zip_sha256": "5c4ec7c59a8feca75c087553b952f2af471b05e157476d55ce1e490f1116d285",
+    "scriptorium_revision": "2b31cd9aaa9daddc28649fe1a921904bba0f8aec",
+    "frozen_source_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+    "source_text_committed": false,
+    "source_text_uploaded": false,
+    "test_and_replay_status": "passed"
+  },
+  "epistemic_status": {
+    "status": "diagnostic_only",
+    "fantlab_source_edition_match": "unknown",
+    "m2_parity_admissible": false,
+    "m2_source_matched_progress": "0/5",
+    "reason": "The probes measure inspectable Scriptorium policy effects on a reproducibly frozen public-domain candidate. FantLab does not disclose the analyzer-input edition or bytes, so numerical movement cannot establish FantLab semantics or parity."
+  },
+  "reference": {
+    "expected_word_count": 253275,
+    "expected_dash_per_1000_words": 25.68
+  },
+  "word_policy": {
+    "current_numeric_only_tokens": 17,
+    "unicode_hyphen_candidate_numeric_only_tokens": 17,
+    "variants": {
+      "current_scriptorium_text_v1": {
+        "count": 269358,
+        "delta_from_current": 0,
+        "delta_to_reference": 16083
+      },
+      "exclude_numeric_only_tokens": {
+        "count": 269341,
+        "delta_from_current": -17,
+        "delta_to_reference": 16066
+      },
+      "join_unicode_hyphen_connectors": {
+        "count": 269358,
+        "delta_from_current": 0,
+        "delta_to_reference": 16083
+      },
+      "join_unicode_hyphens_and_exclude_numeric_only": {
+        "count": 269341,
+        "delta_from_current": -17,
+        "delta_to_reference": 16066
+      }
+    }
+  },
+  "dash_policy": {
+    "glyph_counts": {
+      "U+002D HYPHEN-MINUS": 1612,
+      "U+2010 HYPHEN": 0,
+      "U+2011 NON-BREAKING HYPHEN": 0,
+      "U+2012 FIGURE DASH": 0,
+      "U+2013 EN DASH": 0,
+      "U+2014 EM DASH": 10933
+    },
+    "ascii_hyphen_contexts": {
+      "between_letters": 1607,
+      "between_digits": 0,
+      "between_other_alnum": 4,
+      "other": 1
+    },
+    "lexical_hyphen_like_between_letters": 1607,
+    "current_token_internal_ascii_hyphens": 1611,
+    "variants": {
+      "current_all_supported_dash_glyphs": {
+        "count": 12545,
+        "delta_from_current_count": 0,
+        "per_1000_current_words": 46.57370488346364,
+        "rate_delta_to_reference": 20.89370488346364
+      },
+      "exclude_ascii_hyphen_between_letters": {
+        "count": 10938,
+        "delta_from_current_count": -1607,
+        "per_1000_current_words": 40.60766711959548,
+        "rate_delta_to_reference": 14.927667119595483
+      },
+      "exclude_lexical_hyphen_like_between_letters": {
+        "count": 10938,
+        "delta_from_current_count": -1607,
+        "per_1000_current_words": 40.60766711959548,
+        "rate_delta_to_reference": 14.927667119595483
+      },
+      "exclude_all_current_token_internal_ascii_hyphens": {
+        "count": 10934,
+        "delta_from_current_count": -1611,
+        "per_1000_current_words": 40.59281699448318,
+        "rate_delta_to_reference": 14.91281699448318
+      }
+    }
+  },
+  "conclusions": [
+    "Excluding numeric-only tokens changes the frozen candidate word count by only 17, leaving a +16,066 diagnostic gap to FantLab. This probe does not justify changing word-token semantics.",
+    "Joining U+2010/U+2011 as lexical hyphen connectors changes the frozen candidate word count by zero because those glyphs do not occur in the candidate. This probe does not explain the word gap.",
+    "The current punctuation profile counts 1,612 ASCII hyphen-minus glyphs as dashes while 1,611 of those glyphs are also internal to current word tokens; 1,607 occur directly between letters. This is an inspectable policy overlap worth resolving independently of FantLab fitting.",
+    "Excluding all current token-internal ASCII hyphens would reduce the dash-rate diagnostic gap from +20.894 to +14.913 per 1000 current words, so lexical-hyphen overlap explains only part of the observed difference.",
+    "No tokenizer or punctuation compatibility semantics are changed by this artifact. Source identity remains unknown and numerical closeness or movement is not parity evidence."
+  ]
+}

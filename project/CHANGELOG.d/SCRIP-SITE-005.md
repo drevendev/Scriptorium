@@ -1,0 +1,12 @@
+## 2026-09-14 — Frozen Resurrection provenance showcase candidate
+
+- Re-checked `SCRIP-MORPH-003` before selection. Native `pylem` is still absent from the execution runtime and DNS resolution for the required GitHub/PyPI package hosts is unavailable, so provider execution remains infrastructure `not_run` rather than a morphology failure.
+- Selected `SCRIP-SITE-005` as the next dependency-satisfied queue row and opened Issue #52.
+- Added `public-artifacts/tolstoy-resurrection-ru-provenance.json`, a source-free publication artifact derived from the canonical frozen Resurrection trace. It exposes only provenance, immutable composite counts/hashes, the 129-revision identity boundary, legal/source metadata and FantLab's public reference counts.
+- Preserved the epistemic boundary in executable publication validation: FantLab source-edition match must remain `unknown`, benchmark use must remain `diagnostic_only`, M2 parity must remain false, and provenance-only pages use the Scriptorium `extension` compatibility label rather than implying FantLab reproduction.
+- Extended the deterministic static renderer with an explicit `scriptorium-work-provenance-showcase-v1` contract and a provenance-first work page. The renderer still consumes only allow-listed repository artifacts and publishes no source prose.
+- Added canonical cross-checks that bind the public artifact to `corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json`, plus focused fail-closed tests for source-match/parity/compatibility/source-text promotion attempts.
+- Expanded Pages path coverage to `corpus/candidates/source-edition-traces/**` so changes to a canonical provenance source trigger the same deterministic publication build as its derived public artifact.
+- Updated README public-showcase navigation to expose the frozen Resurrection source identity honestly while keeping the 9,591-character difference from FantLab explicitly non-admissible as source-match evidence.
+- Live Pages deployment remains disabled behind the existing explicit repository-variable/admin gate. M2 remains 0/5 source-matched works.
+- This is an authoring unit. The branch must remain unmerged until a later wake independently reviews the exact PR head and hosted build evidence.

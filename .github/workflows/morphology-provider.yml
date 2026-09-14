@@ -70,12 +70,22 @@ jobs:
           CMAKE_ARGS: "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
         run: |
           set -euo pipefail
-          python -m pip install --disable-pip-version-check --no-deps --require-hashes \
-            -r requirements/pylem-0.0.18.txt
+          mkdir -p build/morph
+          python -m pip install -vv --disable-pip-version-check --no-deps --require-hashes \
+            -r requirements/pylem-0.0.18.txt 2>&1 | tee build/morph/pylem-install.log
           python - <<'PY'
           from importlib.metadata import version
           assert version("pylem") == "0.0.18", version("pylem")
           PY
+
+      - name: Upload install failure evidence
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-pylem-install-log
+          path: build/morph/pylem-install.log
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Execute isolated native provider smoke
         run: |

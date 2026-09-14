@@ -5,7 +5,7 @@ from pathlib import Path
 import unittest
 
 from scriptorium.source_revision_manifest import decode_chapter_identities
-from scriptorium.text import normalize_text
+from scriptorium.text import NORMALIZATION_PROFILE, normalize_text
 from scriptorium.wikisource_replay import (
     fetch_pinned_chapter_revisions,
     replay_packed_manifest,
@@ -100,7 +100,7 @@ class WikisourceReplayTests(unittest.TestCase):
             "character_count_including_spaces": len(expected),
             "utf8_byte_count": len(raw),
             "raw_sha256": sha256(raw).hexdigest(),
-            "normalization_profile": "scriptorium-text-v1",
+            "normalization_profile": NORMALIZATION_PROFILE,
             "normalized_character_count_including_spaces": len(normalized),
             "normalized_sha256": sha256(normalized.encode("utf-8")).hexdigest(),
         }
@@ -108,9 +108,15 @@ class WikisourceReplayTests(unittest.TestCase):
         actual = replay_packed_manifest(adjusted, fetcher=lambda rows: synthetic)
         self.assertEqual(actual, expected)
 
-        adjusted["composite_identity"]["raw_sha256"] = "0" * 64
+        bad_hash = copy.deepcopy(adjusted)
+        bad_hash["composite_identity"]["raw_sha256"] = "0" * 64
         with self.assertRaisesRegex(ValueError, "raw_sha256"):
-            replay_packed_manifest(adjusted, fetcher=lambda rows: synthetic)
+            replay_packed_manifest(bad_hash, fetcher=lambda rows: synthetic)
+
+        bad_profile = copy.deepcopy(adjusted)
+        bad_profile["composite_identity"]["normalization_profile"] = "future-profile-v999"
+        with self.assertRaisesRegex(ValueError, "normalization_profile"):
+            replay_packed_manifest(bad_profile, fetcher=lambda rows: synthetic)
 
 
 if __name__ == "__main__":

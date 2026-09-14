@@ -29,6 +29,7 @@ CANDIDATE_ID = "tolstoy-resurrection-ru"
 WORK_BASE_TITLE = "Воскресение (Толстой)"
 PART_CHAPTER_COUNTS = (59, 42, 28)
 MANIFEST_VERSION = "scriptorium-source-revision-manifest-v1"
+PACKED_MANIFEST_VERSION = "scriptorium-resurrection-source-revision-packed-manifest-v1"
 EXTRACTION_PROFILE = "scriptorium-wikisource-resurrection-body-v1"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Воскресение_(Толстой)"
 SOURCE_WORK_INDEX_REVISION_ID = 5614128
@@ -190,9 +191,11 @@ def build_manifest(
     }
 
 
-def _validated_rows(manifest: Mapping[str, object]) -> tuple[Mapping[str, object], ...]:
+def _validated_expanded_rows(
+    manifest: Mapping[str, object],
+) -> tuple[Mapping[str, object], ...]:
     if manifest.get("manifest_version") != MANIFEST_VERSION:
-        raise ValueError("unsupported Resurrection revision-manifest version")
+        raise ValueError("unsupported expanded Resurrection revision-manifest version")
     if manifest.get("candidate_id") != CANDIDATE_ID:
         raise ValueError("unexpected Resurrection candidate id")
     composition = manifest.get("composition")
@@ -244,10 +247,139 @@ def _validated_rows(manifest: Mapping[str, object]) -> tuple[Mapping[str, object
                 raise ValueError(f"invalid {key} at {expected_row['title']!r}") from exc
         if not isinstance(row.get("revision_timestamp"), str):
             raise ValueError(f"missing revision timestamp at {expected_row['title']!r}")
-        if not isinstance(row.get("extracted_character_count"), int):
-            raise ValueError(f"missing extracted character count at {expected_row['title']!r}")
+        count = row.get("extracted_character_count")
+        if not isinstance(count, int) or count < 0:
+            raise ValueError(f"invalid extracted character count at {expected_row['title']!r}")
         validated.append(row)
     return tuple(validated)
+
+
+def pack_manifest(manifest: Mapping[str, object]) -> dict[str, object]:
+    """Pack repeated deterministic chapter metadata without losing source identities."""
+
+    rows = _validated_expanded_rows(manifest)
+    packed = {
+        key: manifest[key]
+        for key in (
+            "candidate_id",
+            "provider",
+            "source_work_url",
+            "source_work_index_revision_id",
+            "bibliographic_source",
+            "legal_basis",
+            "composition",
+            "composite_identity",
+        )
+    }
+    packed["manifest_version"] = PACKED_MANIFEST_VERSION
+    packed["chapter_identity_encoding"] = {
+        "chapter_count": len(rows),
+        "titles": "deterministic_from_part_chapter_counts",
+        "revision_ids": [row["revision_id"] for row in rows],
+        "revision_timestamps": [row["revision_timestamp"] for row in rows],
+        "mediawiki_sha1_hex_concat": "".join(str(row["mediawiki_sha1"]) for row in rows),
+        "wikitext_sha256_hex_concat": "".join(str(row["wikitext_sha256"]) for row in rows),
+        "extracted_character_counts": [row["extracted_character_count"] for row in rows],
+        "extracted_sha256_hex_concat": "".join(str(row["extracted_sha256"]) for row in rows),
+    }
+    return packed
+
+
+def _split_hex(value: object, *, width: int, count: int, label: str) -> list[str]:
+    if not isinstance(value, str) or len(value) != width * count:
+        raise ValueError(f"invalid packed {label} length")
+    try:
+        int(value, 16)
+    except ValueError as exc:
+        raise ValueError(f"invalid packed {label} hex") from exc
+    return [value[index : index + width] for index in range(0, len(value), width)]
+
+
+def unpack_manifest(manifest: Mapping[str, object]) -> dict[str, object]:
+    """Expand the compact durable manifest into the replay contract."""
+
+    if manifest.get("manifest_version") == MANIFEST_VERSION:
+        expanded = dict(manifest)
+        _validated_expanded_rows(expanded)
+        return expanded
+    if manifest.get("manifest_version") != PACKED_MANIFEST_VERSION:
+        raise ValueError("unsupported Resurrection revision-manifest version")
+    if manifest.get("candidate_id") != CANDIDATE_ID:
+        raise ValueError("unexpected Resurrection candidate id")
+    encoding = manifest.get("chapter_identity_encoding")
+    if not isinstance(encoding, dict):
+        raise ValueError("packed manifest missing chapter_identity_encoding")
+    chapters = expected_chapters()
+    count = len(chapters)
+    if encoding.get("chapter_count") != count:
+        raise ValueError("packed chapter count drift")
+    if encoding.get("titles") != "deterministic_from_part_chapter_counts":
+        raise ValueError("packed title encoding drift")
+
+    revision_ids = encoding.get("revision_ids")
+    timestamps = encoding.get("revision_timestamps")
+    extracted_counts = encoding.get("extracted_character_counts")
+    if not isinstance(revision_ids, list) or len(revision_ids) != count:
+        raise ValueError("invalid packed revision_ids")
+    if not isinstance(timestamps, list) or len(timestamps) != count:
+        raise ValueError("invalid packed revision_timestamps")
+    if not isinstance(extracted_counts, list) or len(extracted_counts) != count:
+        raise ValueError("invalid packed extracted_character_counts")
+    mediawiki_sha1s = _split_hex(
+        encoding.get("mediawiki_sha1_hex_concat"), width=40, count=count, label="mediawiki_sha1"
+    )
+    wikitext_sha256s = _split_hex(
+        encoding.get("wikitext_sha256_hex_concat"), width=64, count=count, label="wikitext_sha256"
+    )
+    extracted_sha256s = _split_hex(
+        encoding.get("extracted_sha256_hex_concat"), width=64, count=count, label="extracted_sha256"
+    )
+
+    rows: list[dict[str, object]] = []
+    for index, chapter in enumerate(chapters):
+        revision_id = revision_ids[index]
+        if not isinstance(revision_id, int) or revision_id <= 0:
+            raise ValueError("invalid packed revision id")
+        timestamp = timestamps[index]
+        if not isinstance(timestamp, str):
+            raise ValueError("invalid packed revision timestamp")
+        extracted_count = extracted_counts[index]
+        if not isinstance(extracted_count, int) or extracted_count < 0:
+            raise ValueError("invalid packed extracted character count")
+        title = str(chapter["title"])
+        rows.append(
+            {
+                **chapter,
+                "revision_id": revision_id,
+                "revision_timestamp": timestamp,
+                "permanent_url": (
+                    "https://ru.wikisource.org/w/index.php?title="
+                    f"{quote(title.replace(' ', '_'), safe='()/_')}&oldid={revision_id}"
+                ),
+                "mediawiki_sha1": mediawiki_sha1s[index],
+                "wikitext_sha256": wikitext_sha256s[index],
+                "extracted_character_count": extracted_count,
+                "extracted_sha256": extracted_sha256s[index],
+            }
+        )
+
+    expanded = {
+        key: manifest[key]
+        for key in (
+            "candidate_id",
+            "provider",
+            "source_work_url",
+            "source_work_index_revision_id",
+            "bibliographic_source",
+            "legal_basis",
+            "composition",
+            "composite_identity",
+        )
+    }
+    expanded["manifest_version"] = MANIFEST_VERSION
+    expanded["chapters"] = rows
+    _validated_expanded_rows(expanded)
+    return expanded
 
 
 def replay_manifest(
@@ -257,7 +389,8 @@ def replay_manifest(
 ) -> dict[str, object]:
     """Replay exact recorded revisions and return a source-free verification receipt."""
 
-    rows = _validated_rows(manifest)
+    expanded = unpack_manifest(manifest)
+    rows = _validated_expanded_rows(expanded)
     identities = tuple(
         {
             "title": row["title"],
@@ -283,7 +416,7 @@ def replay_manifest(
 
     composite = "\n\n".join(bodies)
     observed = _composite_identity(composite)
-    expected_identity = manifest.get("composite_identity")
+    expected_identity = expanded.get("composite_identity")
     if not isinstance(expected_identity, dict):
         raise ValueError("revision manifest missing composite_identity")
     for key, value in observed.items():
@@ -325,7 +458,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     args = parser.parse_args(argv)
     if args.command == "capture":
-        _write_json(args.output, build_manifest())
+        _write_json(args.output, pack_manifest(build_manifest()))
         return 0
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))

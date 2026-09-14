@@ -154,7 +154,7 @@ The following also remain unproven:
 
 These are benchmark inputs for `SCRIP-MORPH-002`, not implementation defaults.
 
-## Verification performed in this unit
+## Hosted native execution evidence
 
 Source-level verification established:
 
@@ -167,9 +167,30 @@ Source-level verification established:
 - five additional runtime strings remain explicitly unresolved;
 - the repaired mapping JSON parses and its counts agree with the pinned source inventory.
 
-A native build remains **not run**. The original spike could not resolve the external
-package host from its execution container. That is an environment limitation, not a
-pylem build failure.
+The provider execution path is now independently demonstrated on PR #55 exact head
+`3c5c5d49294816ef64e81b68311f11f8dfe6c8bf` by GitHub Actions run `34888181464`:
+
+- the modern contract job ran on `ubuntu-24.04` with Python 3.13 and completed the full
+  standard-library test suite successfully;
+- the isolated native-provider job ran on `ubuntu-22.04` with Python 3.9;
+- the native job installed the exact hash-pinned `pylem==0.0.18` source distribution
+  with `--require-hashes --no-deps` and `CMAKE_POLICY_VERSION_MINIMUM=3.5`, without
+  patching the pylem or vendored `morph_dict` source bytes;
+- the install step, isolated native probe and source-free receipt upload all completed
+  successfully;
+- runtime artifact `10365997598` is 845 bytes with GitHub-recorded archive digest
+  `sha256:08f75c60d8b3f611118541ddb74bba871a3f7b13eeafb162fbd737f9174d48c8`;
+- before upload the workflow asserts provider distribution `pylem`, version `0.0.18`,
+  runtime profile `pylem-0.0.18-python39-sidecar-v1`, a three-token fixture with
+  `source_text_included=false`, `fantlab_dictionary_equivalence=unknown`, and
+  `m2_parity_admissible=false`.
+
+An earlier Ubuntu 24.04 native attempt reached C++ compilation and failed inside the
+pinned legacy `morph_dict` source under the newer hosted toolchain. The reviewed remedy
+is isolation of this legacy compatibility backend on the Ubuntu 22.04/Python 3.9 sidecar
+lane, not alteration of immutable upstream source. This verifies provider executability;
+it does **not** establish FantLab dictionary identity, token-level parity, homonym
+selection parity, noun/cardinal recovery, or M2 benchmark admissibility.
 
 ## Primary sources
 

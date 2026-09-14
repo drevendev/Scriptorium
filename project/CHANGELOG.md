@@ -698,3 +698,28 @@ code changes remain in Git history and their issues/PRs.
   revision IDs/timestamps/MediaWiki SHA-1 identities, replay the exact public revisions
   through the existing extraction/composition contract, and compute raw/normalized
   composite identities before any full-work diagnostic is allowed.
+
+## 2026-09-14 — Frozen Resurrection public candidate
+
+- Re-checked `SCRIP-MORPH-003` before selection. Native `pylem` is still not installed and the execution runtime still cannot resolve GitHub/PyPI package hosts, so provider execution remains infrastructure `not_run` rather than a pylem failure.
+- Selected `SCRIP-REPRO-007` in Issue #50 / PR #51 and froze the retained public-domain *Resurrection* candidate as all **129** Russian Wikisource chapter revisions in the canonical 59 + 42 + 28 part/chapter order.
+- The durable source-free manifest records every revision ID, revision timestamp and MediaWiki SHA-1 identity plus the composite raw/normalized identity. It does not contain source prose.
+- Hosted capture/replay exposed two real Wikisource page shapes: Chapter I-style pages can contain multiple `text`/`indent` div bodies while Chapter II-style pages can place prose directly after the `Отексте` header. Added explicit `scriptorium-wikisource-resurrection-body-v1` extraction instead of silently widening the existing Anna Karenina contract.
+- The frozen composite is **890,835 characters including spaces** / **1,610,692 UTF-8 bytes** with raw and `scriptorium-text-v1` normalized SHA-256 `2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`.
+- Hosted capture/replay run `34836286331` on head `aeb07a66a6a1d3e62656b44a345429367294f24a` passed **107/107** standard-library tests, captured all 129 source identities and immediately replayed those exact revisions. Source-free artifact `10344631133` had ZIP SHA-256 `379d193e016661350ca9e2bc11332480ea4d77307ca550180818f66fb3411fcd`; independent download confirmed manifest SHA-256 `0914ed84614a2e050ea79bf467511a2fcceef33d0d18d86c72dfe28039cde720` and a source-free replay receipt.
+- After committing the captured manifest, the PR workflow was changed from capture mode to **replay-only** verification so ordinary review no longer refreshes the frozen source implicitly.
+- FantLab still does not disclose the edition or immutable analyzer-input bytes behind work 296603. Its displayed **881,244-character** count differs from the frozen public candidate by **9,591** characters; this is diagnostic evidence only and must not be fitted into a source-match claim.
+- `fantlab_source_edition_match=unknown`, `diagnostic_comparison_admissible=true` only for reproducible source-frozen diagnostics, `m2_parity_admissible=false`, and the reproduction gate remains **0/5 source-matched works**.
+- Public repository representation now links and explains the second frozen candidate from the root README and corpus README. No source prose was committed and live Pages deployment was not changed.
+- PR #51 remained open after the authoring run for an independent exact-head review.
+
+## 2026-09-14 — Independent review and merge: frozen Resurrection candidate
+
+- Independently reviewed PR #51 exact final head `71aa90c32d0785d1f275bca6be1e022c2da1e301`; the branch was **20 commits ahead / 0 behind** `master`, non-draft and mergeable, with no review threads.
+- Inspected the source-specific extraction/replay implementation, tests, workflow, provenance/admissibility record and public README changes. The committed revision manifest contains revision identities and derived hashes only; exact-head searches found no `wikitext`, `prose` or `source_text` payload keys.
+- Exact-head frozen-diagnostic run `34837032042` checked out the reviewed head, used Python 3.13.15, passed **107/107** standard-library tests in the Resurrection job, replayed all 129 pinned revisions and reproduced the committed **890,835-character / 1,610,692-byte** composite with raw and `scriptorium-text-v1` normalized SHA-256 `2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`.
+- Independently downloaded replay artifact `10344417869`; GitHub and the downloaded ZIP agree on SHA-256 `4b7cc1418db66c39a578dcce5165e7c421e08548c6ccc06cad979a324621c240`. The archive contains exactly one source-free replay receipt and no source prose.
+- Exact-head Pages run `34837032048` passed the standard-library suite, canonical build, byte-identical rebuild and artifact upload; deployment remained skipped by the existing activation interlock.
+- The evidence boundary remains fail-closed: `fantlab_source_edition_match=unknown`, diagnostics are source-frozen but non-parity, `m2_parity_admissible=false`, and M2 remains **0/5 source-matched works**. The 9,591-character difference from FantLab is not source-match evidence.
+- PR #51 was squash-merged as `d31ab4417d979fd141df31d400d4fa5156adf274`; Issue #50 closed completed. The merge commit had no hosted workflow run at bookkeeping time, so no post-merge CI-success claim is made.
+- The next normal-flow ladder rechecks `SCRIP-MORPH-003` first. If native pinned provider execution is still unavailable, `SCRIP-SITE-005` is the next dependency-satisfied row and must expose only derived/provenance data for the newly frozen capability, never source prose or parity overclaim.

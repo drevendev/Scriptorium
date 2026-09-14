@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 53
+STATE_REVISION: 54
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-14T07:52:43Z
-LAST_RESULT: SCRIP-DIALOGUE-002 independently reviewed on exact head 2dd86cc159dc87e09185b532a3727ee0797c6e38 and squash-merged as 25555ba1b719ac2dae8bc340701433ce16f8ed64. The source-free dialogue sensitivity diagnostic is now on master; production `scriptorium-dialogue-v1` is unchanged, FantLab source identity remains unknown, and M2 remains 0/5 source-matched works.
-LAST_VERIFIED_PROGRESS: Independent review found no blocking defect. PR #46 was 10 commits ahead / 0 behind master, mergeable and non-draft. Frozen run 34818880313 checked out the exact head, used Python 3.13.15, passed 103/103 standard-library tests, replayed all 239 pinned Wikisource revisions and uploaded derived evidence only. Independently downloaded artifact 10337900179 matched GitHub SHA-256 48550ddceba52f0f57a31168ff214bee371d9a338551c76dce2b43add29755b8, contained exactly one derived JSON, bound itself to the exact head and preserved `fantlab_source_edition_match=unknown`, `diagnostic_only`, `m2_parity_admissible=false`. Exact-head Pages run 34818880306 succeeded with deploy skipped. PR #46 was squash-merged as 25555ba1b719ac2dae8bc340701433ce16f8ed64; Issue #45 closed completed and master push Pages run 34819812044 completed successfully.
+LAST_COMMITTED_RUN_AT: 2026-09-14T08:54:00Z
+LAST_RESULT: SCRIP-REPRO-006 authored in Issue #47 / PR #48 as a second source-edition trace for retained candidate `tolstoy-resurrection-ru`. The public transcription now has a strong Wikisource -> Alexey Komarov library -> Lexika 1996 volume 6 provenance chain and a stable work-index revision, but its 129 chapter subpages are not revision-pinned, FantLab analyzer-input identity remains unknown, and M2 remains 0/5 source-matched works.
+LAST_VERIFIED_PROGRESS: P1 SCRIP-MORPH-003 was re-checked first: `pylem` is still absent from the execution runtime and DNS resolution still fails for github.com, pypi.org and files.pythonhosted.org, so native provider execution remains infrastructure `not_run`. Fresh source research reconfirmed FantLab work 296603 at 881,244 characters / 126,457 words on 19 September 2022 with no disclosed edition/bytes; its current TXT excerpt redirects through `getwork23803525.txt.zip` to a LitRes trial endpoint and is excluded from source-match evidence. Russian Wikisource names Alexey Komarov's library as source, exposes work-index oldid 5614128 and marks the literary work public domain; Komarov completes the citation as L. N. Tolstoy, Collected Works in eight volumes, volume 6, Moscow: Lexika, 1996. Wikisource and Komarov both expose 59 + 42 + 28 = 129 chapters, while sampled chapter pages have independent revision IDs, proving the index oldid does not freeze chapter bytes.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-DIALOGUE-002
-ISSUE:          #45
-STATUS:         DONE
-PR:             #46
-MERGED_COMMIT:  25555ba1b719ac2dae8bc340701433ce16f8ed64
-NEXT_ACTION:    Re-check SCRIP-MORPH-003 provider/runtime executability first. If native
-                pinned pylem/provider execution is still unavailable, select
-                SCRIP-REPRO-006 and pursue a second source-edition trace or stronger
-                source-matching evidence for a retained >=300k FantLab candidate.
+UNIT_ID:        SCRIP-REPRO-006
+ISSUE:          #47
+STATUS:         REVIEW
+PR:             #48
+BASE:           master@c8d9b9c07a44ce1d8bb00c957970539e39c0713b
+NEXT_ACTION:    Independently review PR #48 exact head. Recheck the FantLab/Wikisource/
+                Komarov evidence, parse the candidate catalog and new trace, confirm no
+                source prose or parity promotion is present, and merge only if the
+                source-trace-only / not-frozen boundaries remain intact.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral candidate artifact, but native pinned pylem/provider execution identity remains unverified. The benchmark harness has one reproducibly frozen full-work *Anna Karenina* diagnostic, but its FantLab analyzer-input edition is unknown. SCRIP-DIALOGUE-002 is merged as diagnostic-only sensitivity evidence; it changes no production dialogue semantics. The M2 reproduction gate remains **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral candidate artifact, but native pinned pylem/provider execution identity remains unverified. The benchmark harness has one reproducibly frozen full-work *Anna Karenina* diagnostic whose FantLab analyzer-input edition is unknown. `tolstoy-resurrection-ru` now has a second durable source-edition trace with strong public-transcription provenance, but its 129 chapter revisions are not yet frozen and no diagnostic run is admissible. The M2 reproduction gate remains **0/5 source-matched works**.
 
 ## Queue
 
@@ -32,7 +32,7 @@ Evaluate rows in priority order and skip dependencies that are not executable.
 | --- | --- | --- | --- | --- |
 | P1 | SCRIP-MORPH-003 | implementation | Bind pinned pylem/provider execution and wire POS artifacts into diagnostic benchmark comparison | SCRIP-MORPH-002; verified provider/runtime provenance; currently blocked because the execution container has no installed pylem and cannot resolve required GitHub/PyPI package hosts |
 | P2 | SCRIP-DIALOGUE-002 | analyzer core / reproduction | Investigate the author-text-inside-dialogue gap via inspectable delimiter and denominator sensitivity without fitting the source-unmatched target | DONE in Issue #45 / PR #46; merged as 25555ba1b719ac2dae8bc340701433ce16f8ed64 |
-| P3 | SCRIP-REPRO-006 | benchmark / reproduction | After dialogue review, pursue a second source-edition trace or stronger source-matching evidence for a retained >=300k FantLab candidate | Requires a legally usable candidate and immutable source identity evidence; must not infer FantLab input bytes from bibliographic resemblance |
+| P3 | SCRIP-REPRO-006 | benchmark / reproduction | Pursue a second source-edition trace or stronger source-matching evidence for a retained >=300k FantLab candidate | REVIEW in Issue #47 / PR #48; Resurrection public source traced, 129 chapter revisions not yet frozen |
 | P4 | SCRIP-SITE-005 | public representation | Add the next honest derived showcase slice only after a newly verified metric/corpus capability creates useful public material | Must publish derived/provenance data only; no source prose or parity overclaim |
 
 ## Evidence already established
@@ -51,6 +51,17 @@ Evaluate rows in priority order and skip dependencies that are not executable.
 - `corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json` records all 239 revision identities in source-free packed form. `scriptorium/wikisource_replay.py` re-fetches those exact revisions and verifies each identity before reconstructing the composite in memory.
 - Frozen composite identity: 1,705,605 characters including spaces; 3,072,993 UTF-8 bytes; raw and `scriptorium-text-v1` normalized SHA-256 `1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`.
 - `fantlab_source_edition_match=unknown`, `diagnostic_comparison_admissible=true` only for reproducible diagnostics, and `m2_parity_admissible=false`.
+
+### Resurrection source trace — SCRIP-REPRO-006
+
+- FantLab work 296603 reports a 19 September 2022 analysis at 881,244 characters and 126,457 words, but its analysis surface discloses neither source edition nor immutable analyzer-input bytes.
+- The FantLab work-page TXT excerpt observed on 2026-09-14 routes through `getwork23803525.txt.zip` to a LitRes trial endpoint with `art=23803525`; this point-in-time behavior is explicitly not analyzer-input identity.
+- Russian Wikisource identifies Alexey Komarov's library as the transcription source, exposes permanent work-index revision `oldid=5614128`, and marks the literary work public domain.
+- Komarov's source page completes the citation as `Л. Н. Толстой. Собрание сочинений в восьми томах. Т. 6. М., "Лексика", 1996.`; the candidate catalog now records source provenance confidence as strong.
+- Wikisource and Komarov independently expose the same three-part structure: 59 + 42 + 28 = 129 chapters.
+- The work-index revision does not freeze chapter text. Sample chapter pages expose independent revision IDs (`5646761` for Part I / Chapter XLVIII and `5646811` for Part II / Chapter XL), so all 129 chapter revisions must be pinned before a reproducible full-work candidate exists.
+- `corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json` therefore records `public_candidate_status=traced_not_frozen`, `diagnostic_comparison_admissible=false`, `fantlab_source_edition_match=unknown`, and `m2_parity_admissible=false`.
+- Next evidence is mechanical and fail-closed: pin all 129 chapter revision IDs/timestamps/MediaWiki SHA-1 identities, replay them through the existing extraction/composition contract, then compute composite raw/normalized hashes before any full-work diagnostic. Even then, M2 stays closed until independent evidence ties FantLab's uploaded analyzer input to the same source.
 
 ### Existing full-work diagnostic
 
@@ -86,7 +97,8 @@ Evaluate rows in priority order and skip dependencies that are not executable.
 
 - Two derived *Anna Karenina* excerpt showcases remain public, explicitly short/non-corpus/non-parity, with no source prose committed.
 - The repository contains source-free full-work and word/dash diagnostics linked from public docs; SCRIP-DIALOGUE-002 extends the hosted source-free diagnostic but does not itself activate or expand live Pages.
-- `docs/DIALOGUE_MODEL.md` now documents the merged diagnostic boundary and denominator/delimiter uncertainty for repository visitors.
+- `docs/DIALOGUE_MODEL.md` documents the merged diagnostic boundary and denominator/delimiter uncertainty for repository visitors.
+- `corpus/candidates/README.md` now exposes the Resurrection provenance trace and its 129-chapter freeze boundary without presenting it as a diagnostic or parity result.
 - `scriptorium-publication-manifest-v1`, `scriptorium-static-site-v1` and the gated Pages build/upload workflow remain fail-closed. Live deployment remains intentionally disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers
@@ -99,8 +111,9 @@ Evaluate rows in priority order and skip dependencies that are not executable.
 6. FantLab dictionary/version identity is unknown.
 7. Native pylem build/runtime provenance is unavailable in the current container.
 8. AOT/POS noun-cardinal collision, extra-category folding and homonym/prediction selection remain unresolved.
-9. Work-specific copyright/provenance evidence remains mandatory; source prose is not committed by default.
-10. Pages activation is a separate owner/admin effect and remains off.
+9. The Resurrection public transcription has a strong bibliographic source trace but is not immutable until all 129 chapter revisions are pinned and replayed.
+10. Work-specific copyright/provenance evidence remains mandatory; source prose is not committed by default.
+11. Pages activation is a separate owner/admin effect and remains off.
 
 ## Run selection rule
 

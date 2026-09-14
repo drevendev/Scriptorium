@@ -11,13 +11,13 @@ import argparse
 from hashlib import sha256
 import json
 from pathlib import Path
+import re
 from typing import Callable, Iterable, Mapping, Sequence
 from urllib.parse import quote
 
 from .text import NORMALIZATION_PROFILE, normalize_text
 from .wikisource_freeze import (
     COMPOSITE_PROFILE,
-    EXTRACTION_PROFILE,
     extract_transcription_body,
     fetch_current_chapter_revisions,
     roman,
@@ -29,12 +29,18 @@ CANDIDATE_ID = "tolstoy-resurrection-ru"
 WORK_BASE_TITLE = "Воскресение (Толстой)"
 PART_CHAPTER_COUNTS = (59, 42, 28)
 MANIFEST_VERSION = "scriptorium-source-revision-manifest-v1"
+EXTRACTION_PROFILE = "scriptorium-wikisource-multibody-v1"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Воскресение_(Толстой)"
 SOURCE_WORK_INDEX_REVISION_ID = 5614128
 BIBLIOGRAPHIC_SOURCE = (
     "Л. Н. Толстой. Собрание сочинений в восьми томах. Т. 6. "
     "М., \"Лексика\", 1996."
 )
+_BODY_DIV_RE = re.compile(
+    r'<div\s+class=["\'](?:text|indent)["\']\s*>(.*?)</div>',
+    re.IGNORECASE | re.DOTALL,
+)
+_NOINCLUDE_RE = re.compile(r"<noinclude>.*?</noinclude>", re.IGNORECASE | re.DOTALL)
 
 
 def expected_chapters() -> tuple[dict[str, object], ...]:
@@ -56,6 +62,22 @@ def expected_chapters() -> tuple[dict[str, object], ...]:
     if ordinal != 129:
         raise AssertionError(f"chapter contract drift: expected 129, got {ordinal}")
     return tuple(chapters)
+
+
+def extract_resurrection_body(wikitext: str) -> str:
+    """Render one chapter whose Wikisource transcription may use multiple body divs."""
+
+    if not isinstance(wikitext, str):
+        raise TypeError("wikitext must be str")
+    source = _NOINCLUDE_RE.sub("", wikitext)
+    matches = _BODY_DIV_RE.findall(source)
+    if not matches:
+        raise ValueError("expected at least one Resurrection transcription <div> body")
+    rendered = [
+        extract_transcription_body(f'<div class="text">{fragment}</div>')
+        for fragment in matches
+    ]
+    return "\n\n".join(rendered)
 
 
 def _sha256_text(text: str) -> str:
@@ -98,7 +120,10 @@ def build_manifest(
             raise ValueError(f"duplicate revision id {revision_id}")
         revision_ids.add(revision_id)
         wikitext = str(revision["wikitext"])
-        body = extract_transcription_body(wikitext)
+        try:
+            body = extract_resurrection_body(wikitext)
+        except ValueError as exc:
+            raise ValueError(f"failed to extract {title!r}: {exc}") from exc
         bodies.append(body)
         rows.append(
             {
@@ -227,7 +252,7 @@ def replay_manifest(
         wikitext = revisions[title]
         if _sha256_text(wikitext) != row["wikitext_sha256"]:
             raise ValueError(f"wikitext SHA-256 drift for {title!r}")
-        body = extract_transcription_body(wikitext)
+        body = extract_resurrection_body(wikitext)
         if len(body) != row["extracted_character_count"]:
             raise ValueError(f"extracted character-count drift for {title!r}")
         if _sha256_text(body) != row["extracted_sha256"]:

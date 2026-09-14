@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Mapping, Sequence
 
 from .morphology import analyze_pos_metrics
-from .pylem_provider import KNOWN_RUNTIME_POS, PYLEM_RUNTIME_PROFILE
+from .pylem_provider import KNOWN_RUNTIME_POS, PYLEM_RUNTIME_PROFILE, PYLEM_VERSION
 from .text import NORMALIZATION_PROFILE, normalize_text, word_tokens
 from .wikisource_replay import replay_packed_manifest
 
@@ -48,13 +48,26 @@ def consume_sidecar_response(
     """Validate an isolated sidecar response and aggregate conservative POS metrics."""
     if request.get("schema_version") != REQUEST_SCHEMA:
         raise ValueError("unexpected pylem sidecar request schema")
+    if request.get("text_profile") != NORMALIZATION_PROFILE:
+        raise ValueError("unexpected pylem sidecar text profile")
     if response.get("schema_version") != RESPONSE_SCHEMA:
         raise ValueError("unexpected pylem sidecar response schema")
     if response.get("runtime_profile") != PYLEM_RUNTIME_PROFILE:
         raise ValueError("unexpected pylem runtime profile")
+
+    provider = response.get("provider")
+    if not isinstance(provider, Mapping):
+        raise ValueError("sidecar response missing provider identity")
+    if provider.get("distribution") != "pylem" or provider.get("version") != PYLEM_VERSION:
+        raise ValueError("unexpected pylem provider identity")
+    if response.get("source_text_included") is not False:
+        raise ValueError("sidecar response must explicitly exclude source text")
+
     normalized = request.get("normalized_text")
     if not isinstance(normalized, str):
         raise ValueError("sidecar request missing normalized_text")
+    if normalize_text(normalized) != normalized:
+        raise ValueError("sidecar request text is not canonical for its text profile")
     normalized_sha256 = _sha256_text(normalized)
     if request.get("normalized_sha256") != normalized_sha256:
         raise ValueError("sidecar request normalized text hash mismatch")
@@ -93,11 +106,27 @@ def consume_sidecar_response(
             validated.append(value)
         candidates.append(tuple(validated))
 
-    return analyze_pos_metrics(
+    pos = analyze_pos_metrics(
         normalized,
         candidates,
         runtime_profile=PYLEM_RUNTIME_PROFILE,
     )
+    if pos.get("normalized_sha256") != normalized_sha256:
+        raise ValueError("aggregated POS text identity drifted from sidecar transport")
+    return pos
+
+
+def _bind_frozen_manifest_identity(
+    request: Mapping[str, object],
+    manifest: Mapping[str, object],
+) -> None:
+    composite_identity = manifest.get("composite_identity")
+    if not isinstance(composite_identity, Mapping):
+        raise ValueError("packed manifest missing composite_identity")
+    if composite_identity.get("normalization_profile") != NORMALIZATION_PROFILE:
+        raise ValueError("packed manifest normalization profile mismatch")
+    if request.get("normalized_sha256") != composite_identity.get("normalized_sha256"):
+        raise ValueError("sidecar request is not bound to the frozen manifest identity")
 
 
 def build_frozen_pos_diagnostic(
@@ -108,6 +137,7 @@ def build_frozen_pos_diagnostic(
     *,
     scriptorium_revision: str,
 ) -> dict[str, object]:
+    _bind_frozen_manifest_identity(request, manifest)
     pos = consume_sidecar_response(request, response)
     expected = reference.get("expected")
     expected_pos = expected.get("pos") if isinstance(expected, Mapping) else None
@@ -117,10 +147,13 @@ def build_frozen_pos_diagnostic(
             expected_row = expected_pos.get(bucket)
             if not isinstance(expected_row, Mapping):
                 continue
+            expected_count = expected_row.get("count")
+            if isinstance(expected_count, bool) or not isinstance(expected_count, int):
+                raise ValueError(f"FantLab POS count for {bucket!r} must be an integer")
             comparisons[bucket] = {
-                "expected_count": expected_row.get("count"),
+                "expected_count": expected_count,
                 "actual_count": actual_row["count"],
-                "count_delta": actual_row["count"] - expected_row.get("count", 0),
+                "count_delta": actual_row["count"] - expected_count,
                 "expected_percent_of_defined": expected_row.get("percent_of_defined"),
                 "actual_percent_of_defined": actual_row["percent_of_defined"],
                 "result": "diagnostic_only",
@@ -155,7 +188,9 @@ def build_frozen_pos_diagnostic(
 
 
 def prepare_frozen_request(manifest: Mapping[str, object]) -> dict[str, object]:
-    return build_sidecar_request(replay_packed_manifest(manifest))
+    request = build_sidecar_request(replay_packed_manifest(manifest))
+    _bind_frozen_manifest_identity(request, manifest)
+    return request
 
 
 def _load_object(path: Path) -> dict[str, object]:

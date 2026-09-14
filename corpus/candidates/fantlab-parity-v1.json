@@ -62,18 +62,20 @@
       "source": {
         "provider": "Russian Wikisource",
         "url": "https://ru.wikisource.org/wiki/Воскресение_(Толстой)",
-        "edition_note": "Л. Н. Толстой. Собрание сочинений в восьми томах. Т. 6. М. (as cited by the Wikisource work page; bibliographic detail is incomplete there).",
-        "source_provenance_confidence": "moderate",
+        "edition_note": "Л. Н. Толстой. Собрание сочинений в восьми томах. Т. 6. М., \"Лексика\", 1996 (Wikisource identifies Alexey Komarov's library as its source; Komarov supplies the complete citation).",
+        "source_provenance_confidence": "strong",
         "legal_basis": "public_domain",
         "legal_evidence": "The work page explicitly marks the literary work public domain; the novel was published in 1899 in the Russian Empire."
       },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json",
+      "source_identity_status": "traced_not_frozen",
       "fantlab_source_edition_match": "unknown",
       "diagnostic_ready": false,
       "gate_ready": false,
       "status": "eligible_unmatched",
       "blockers": [
         "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
-        "The Wikisource bibliographic citation should be completed before freezing source identity."
+        "The public transcription's work-index revision does not freeze the 129 chapter subpage revisions; an immutable full-text candidate must be revision-pinned before full-work diagnostics."
       ]
     },
     {

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Mapping, Sequence
 
 from .benchmark import build_comparison
+from .policy_diagnostic import analyze_word_dash_policy
 from .wikisource_replay import replay_packed_manifest
 
 
@@ -48,7 +49,35 @@ def build_frozen_diagnostic(
             "disclose the analyzer-input edition or bytes. Numeric deltas cannot establish parity."
         ),
     }
+
+    expected_words = _expected_numeric(artifact, "fantlab.general.words")
+    expected_dash_rate = _expected_numeric(
+        artifact, "fantlab.punctuation.dash.per_1000_words"
+    )
+    artifact["policy_sensitivity"] = analyze_word_dash_policy(
+        composite,
+        expected_word_count=(expected_words if isinstance(expected_words, int) else None),
+        expected_dash_per_1000_words=(
+            float(expected_dash_rate) if expected_dash_rate is not None else None
+        ),
+    )
     return artifact
+
+
+def _expected_numeric(artifact: Mapping[str, object], metric_id: str) -> int | float | None:
+    metrics = artifact.get("metrics")
+    if not isinstance(metrics, Mapping):
+        return None
+    row = metrics.get(metric_id)
+    if not isinstance(row, Mapping):
+        return None
+    expected = row.get("expected")
+    if not isinstance(expected, Mapping):
+        return None
+    value = expected.get("numeric_value")
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    return value
 
 
 def _build_parser() -> argparse.ArgumentParser:

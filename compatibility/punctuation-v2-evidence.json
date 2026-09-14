@@ -1,0 +1,42 @@
+{
+  "artifact_version": "scriptorium-punctuation-policy-evidence-v1",
+  "unit_id": "SCRIP-PUNCT-002",
+  "compatibility_contract": "fantlab-2022-v1",
+  "epistemic_status": {
+    "status": "inferred",
+    "recovered_fantlab_rule": false,
+    "fantlab_hyphen_dash_classifier": "unknown",
+    "m2_source_matched_progress": "0/5"
+  },
+  "public_evidence": [
+    {
+      "url": "https://fantlab.ru/article374",
+      "observation": "FantLab publicly states that the analyzer measures frequencies of known punctuation marks; the article does not publish a hyphen-versus-dash classifier."
+    },
+    {
+      "url": "https://fantlab.ru/work270306/lp",
+      "observation": "The public linguistic-analysis surface renders the '-' punctuation row with the Russian label 'тире'."
+    }
+  ],
+  "scriptorium_profiles": {
+    "normalization": "scriptorium-text-v1",
+    "punctuation": "scriptorium-punctuation-v2",
+    "metrics": "scriptorium-metrics-v4",
+    "artifact_schema": "scriptorium-deterministic-metrics-v4"
+  },
+  "decision": {
+    "ascii_hyphen_minus": {
+      "token_internal_under_scriptorium_text_v1": "lexical_connector_not_dash_event",
+      "token_external": "dash_candidate"
+    },
+    "unicode_dash_family_u2010_through_u2014": "dash_candidate",
+    "reason": "A glyph already retained inside the versioned word-token stream is not simultaneously counted as punctuation. This is an internal-consistency rule, not a claim about FantLab implementation."
+  },
+  "historical_diagnostic": {
+    "artifact": "benchmarks/fantlab/work270306-policy-sensitivity.json",
+    "fantlab_source_edition_match": "unknown",
+    "token_internal_ascii_hyphens": 1611,
+    "rate_delta_to_fantlab_after_excluding_token_internal_ascii_hyphens_per_1000_words": 14.91281699448318,
+    "interpretation": "The source-unmatched diagnostic exposed the overlap but does not establish FantLab semantics and was not used as a fitting target."
+  }
+}

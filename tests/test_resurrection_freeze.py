@@ -74,6 +74,10 @@ __NOEDITSECTION__
         manifest = build_manifest(fetcher=lambda chapters: records)
         self.assertEqual(manifest["manifest_version"], MANIFEST_VERSION)
         self.assertEqual(manifest["candidate_id"], "tolstoy-resurrection-ru")
+        self.assertEqual(
+            manifest["composition"]["extraction_profile"],
+            "scriptorium-wikisource-resurrection-body-v1",
+        )
         self.assertNotIn("chapters", manifest)
         self.assertIs(manifest["composition"]["source_text_committed"], False)
         self.assertGreaterEqual(

@@ -9,6 +9,7 @@ on:
       - "showcase/**"
       - "benchmarks/**"
       - "public-artifacts/**"
+      - "corpus/candidates/source-edition-traces/**"
       - "schemas/**"
       - "tests/**"
   push:
@@ -21,6 +22,7 @@ on:
       - "showcase/**"
       - "benchmarks/**"
       - "public-artifacts/**"
+      - "corpus/candidates/source-edition-traces/**"
       - "schemas/**"
       - "tests/**"
   workflow_dispatch:

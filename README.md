@@ -30,10 +30,14 @@ Scriptorium now has a standard-library-only deterministic analysis core:
 - a local-text FantLab benchmark CLI that emits expected/actual/delta plus source hashes
   and refuses to turn incomplete source provenance, an unproven dictionary, or unknown
   decimal precision into parity;
+- source-free exact-revision replay for the frozen 239-chapter Russian Wikisource
+  *Anna Karenina* candidate, with title/timestamp/MediaWiki-SHA-1 and composite-digest
+  verification before a full-work diagnostic can run;
 - a versioned static-publication allow-list plus a deterministic, fail-closed static
   renderer for derived/public work-showcase pages;
 - golden tests for text boundaries, dialogue spans, metric formulas, vocabulary windows,
-  punctuation overlap, POS aggregation rules, publication safety and benchmark gate behavior.
+  punctuation overlap, POS aggregation rules, source replay, publication safety and
+  benchmark gate behavior.
 
 The FantLab-shaped values are **inferred candidates**, not claimed reproduction.
 See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md),
@@ -84,6 +88,17 @@ the benchmark CLI because native/provider execution provenance is not establishe
 Decimal fields remain unresolved until FantLab display precision is independently
 established. See [`docs/BENCHMARKING.md`](docs/BENCHMARKING.md).
 
+The repository also contains a full-work **diagnostic-only** comparison for *Anna
+Karenina*. [`benchmarks/fantlab/work270306.json`](benchmarks/fantlab/work270306.json)
+records FantLab's public 19 September 2022 values, while
+[`benchmarks/fantlab/work270306-wikisource-diagnostic.json`](benchmarks/fantlab/work270306-wikisource-diagnostic.json)
+records expected/actual/delta evidence from a replay of the 239 frozen public-domain
+Wikisource revisions. The replayed source is bound to SHA-256
+`1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`; novel prose is
+not committed or uploaded. FantLab does not disclose the analyzer-input edition or
+bytes, so every result remains source-unmatched diagnostic evidence and M2 parity stays
+0/5.
+
 ### Public showcase
 
 The repository includes derived metric slices for real public-domain literary sources
@@ -100,8 +115,9 @@ hashes and derived metrics only. They are intentionally marked **illustrative ex
 not corpus entries and not FantLab parity evidence. Existing artifacts preserve the
 metric profile under which they were generated; a future vocabulary/POS showcase must be
 regenerated from a provenance-bound source selection rather than inventing new values
-from hashes alone. Full-work showcase artifacts will follow as ingestion and source
-freezing mature.
+from hashes alone. The full-work diagnostic above is likewise source-free and inspectable,
+but it is not published as a Pages work view because its benchmark rendering contract has
+not yet been defined.
 
 The publication boundary is explicit rather than directory-based.
 [`site/publication-manifest.json`](site/publication-manifest.json) allow-lists public
@@ -121,9 +137,12 @@ into the output. The renderer validates the whole build before replacing the dis
 output tree and emits `build.json` with exact input digests for reproducibility. See
 [`docs/SITE_RENDERER.md`](docs/SITE_RENDERER.md).
 
-GitHub Pages is **not deployed yet**. A later reviewed unit may execute this renderer in
-a Pages workflow; generated HTML remains a disposable GitHub Actions artifact, not a
-second committed source of truth. See [`docs/SITE_CONTRACT.md`](docs/SITE_CONTRACT.md).
+The reviewed GitHub Actions Pages pipeline now runs tests, builds the canonical static
+site twice, requires a byte-identical rebuild and uploads only the disposable generated
+site tree on relevant pull requests and `master` changes. **Live GitHub Pages deployment
+is still disabled**: deployment requires the explicit repository variable
+`SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true`, and repository Pages activation/settings remain
+a separate owner/admin effect. See [`docs/SITE_CONTRACT.md`](docs/SITE_CONTRACT.md).
 
 ## Project state
 
@@ -138,7 +157,9 @@ The durable project contract lives in:
 The first public numeric reference is FantLab's analysis of Henry Lion Oldie's
 `Шутиха`; its published values are recorded in
 [`benchmarks/fantlab/work488.json`](benchmarks/fantlab/work488.json). No novel text is
-stored with that reference.
+stored with that reference. The frozen *Anna Karenina* diagnostic adds the first
+full-work expected/actual comparison without promoting a source-unmatched candidate to
+parity.
 
 ## Methodology status
 

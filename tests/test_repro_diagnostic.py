@@ -81,7 +81,7 @@ class ReproDiagnosticTests(unittest.TestCase):
             ],
             17.02,
         )
-        self.assertIsNone(artifact["dialogue_sensitivity"]["dialogue_share"]["value"])
+        self.assertEqual(artifact["dialogue_sensitivity"]["dialogue_share"]["value"], 0.0)
         self.assertIsNone(
             artifact["dialogue_sensitivity"]["author_text_inside_dialogue_variants"][
                 "current_v1_over_dialogue"

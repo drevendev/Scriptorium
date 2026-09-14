@@ -75,7 +75,7 @@ class PylemProviderUnitTests(unittest.TestCase):
         )
         self.assertIn("permissions:\n  contents: read", workflow)
         self.assertIn("ref: ${{ github.event.pull_request.head.sha || github.sha }}", workflow)
-        self.assertIn("python-version: \"3.10\"", workflow)
+        self.assertIn("python-version: \"3.9\"", workflow)
         self.assertIn("--no-deps --require-hashes", workflow)
         self.assertIn("python -m unittest discover -s tests -v", workflow)
         self.assertIn("python -m scriptorium.pylem_provider", workflow)

@@ -85,8 +85,8 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  resurrection-freeze-capture:
-    name: Capture source-free Resurrection revision manifest
+  resurrection-freeze-replay:
+    name: Replay frozen Resurrection source candidate
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -104,26 +104,20 @@ jobs:
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
 
-      - name: Capture current 129 chapter revisions and derived identities
+      - name: Replay exact committed revisions
         run: |
           set -euo pipefail
           mkdir -p build/repro
-          python -m scriptorium.resurrection_freeze capture \
-            --output build/repro/tolstoy-resurrection-ru.revisions.json
-
-      - name: Verify captured manifest by exact-revision replay
-        run: |
-          set -euo pipefail
           python -m scriptorium.resurrection_freeze replay \
-            --manifest build/repro/tolstoy-resurrection-ru.revisions.json \
+            --manifest corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json \
             --receipt build/repro/tolstoy-resurrection-ru.replay-receipt.json
 
-      - name: Emit source-free freeze summary
+      - name: Emit source-free replay summary
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          manifest = json.loads(Path("build/repro/tolstoy-resurrection-ru.revisions.json").read_text(encoding="utf-8"))
+          manifest = json.loads(Path("corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json").read_text(encoding="utf-8"))
           receipt = json.loads(Path("build/repro/tolstoy-resurrection-ru.replay-receipt.json").read_text(encoding="utf-8"))
           encoding = manifest["chapter_identity_encoding"]
           summary = {
@@ -135,17 +129,15 @@ jobs:
               "replay_receipt": receipt,
               "source_text_committed": manifest["composition"]["source_text_committed"],
           }
-          print("SCRIPTORIUM_RESURRECTION_FREEZE_BEGIN")
+          print("SCRIPTORIUM_RESURRECTION_REPLAY_BEGIN")
           print(json.dumps(summary, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
-          print("SCRIPTORIUM_RESURRECTION_FREEZE_END")
+          print("SCRIPTORIUM_RESURRECTION_REPLAY_END")
           PY
 
-      - name: Upload source-free capture and replay receipt
+      - name: Upload source-free replay receipt
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: scriptorium-resurrection-freeze-capture
-          path: |
-            build/repro/tolstoy-resurrection-ru.revisions.json
-            build/repro/tolstoy-resurrection-ru.replay-receipt.json
+          name: scriptorium-resurrection-replay
+          path: build/repro/tolstoy-resurrection-ru.replay-receipt.json
           if-no-files-found: error
           retention-days: 7

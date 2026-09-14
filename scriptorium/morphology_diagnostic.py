@@ -63,6 +63,7 @@ def decompose_runtime_candidates(
     reason_counts: Counter[str] = Counter()
     unresolved_presence: Counter[str] = Counter()
     direct_ambiguity_sets: Counter[str] = Counter()
+    direct_ambiguity_bucket_presence: Counter[str] = Counter()
 
     for row in rows:
         reason = classify_runtime_candidates(row)
@@ -77,6 +78,8 @@ def decompose_runtime_candidates(
         if reason == "direct_cross_bucket_ambiguity":
             buckets = sorted({DIRECT_RUNTIME_TO_BUCKET[value] for value in unique})
             direct_ambiguity_sets["|".join(buckets)] += 1
+            for bucket in buckets:
+                direct_ambiguity_bucket_presence[bucket] += 1
 
     defined_count = reason_counts["defined"]
     undefined_reason_counts = {reason: reason_counts[reason] for reason in UNDEFINED_REASONS}
@@ -105,6 +108,9 @@ def decompose_runtime_candidates(
             runtime_pos: unresolved_presence[runtime_pos]
             for runtime_pos in sorted({N_RUNTIME_POS} | EXTRA_UNRESOLVED_RUNTIME_POS)
         },
+        "direct_ambiguity_bucket_presence_counts": dict(
+            sorted(direct_ambiguity_bucket_presence.items())
+        ),
         "direct_ambiguity_bucket_set_counts": dict(sorted(direct_ambiguity_sets.items())),
         "classification_boundary": {
             "reason_precedence": list(UNDEFINED_REASONS),

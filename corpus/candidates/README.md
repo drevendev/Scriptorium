@@ -15,3 +15,15 @@ Canonical evidence:
 - `source-edition-traces/tolstoy-anna-karenina-ru.json` — provenance, legal/source boundary, admissibility and next evidence.
 - `source-edition-traces/tolstoy-anna-karenina-ru.revisions.json` — packed source-free 239-revision identity and composite hashes.
 - `../../scriptorium/wikisource_freeze.py` — deterministic fetch/extraction/composition implementation.
+
+## Resurrection source trace
+
+`tolstoy-resurrection-ru` now has a second source-edition trace, but **not** a frozen full-work candidate. Russian Wikisource identifies Alexey Komarov's library as its transcription source; Komarov's source page completes the citation as **L. N. Tolstoy, Collected Works in eight volumes, volume 6, Moscow: Lexika, 1996**. The Wikisource work index exposes permanent revision `oldid=5614128`, and Wikisource plus Komarov independently expose the same three-part structure of **59 + 42 + 28 = 129 chapters**.
+
+That index revision does not freeze the chapter text. Chapter pages have independent revision IDs, so a reproducible full-work candidate requires all 129 chapter revisions to be pinned before a diagnostic comparison is admitted. FantLab's 19 September 2022 analysis reports **881,244 characters** and **126,457 words**, but still discloses neither analyzer-input edition nor immutable bytes. Its current TXT excerpt link redirects to a LitRes trial endpoint and is explicitly excluded from source-match evidence.
+
+Canonical evidence:
+
+- `source-edition-traces/tolstoy-resurrection-ru.json` — source chain, work-index identity, 129-chapter freeze boundary, admissibility and next evidence.
+
+`fantlab_source_edition_match` therefore remains `unknown`, `diagnostic_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.

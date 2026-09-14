@@ -81,6 +81,19 @@ class DeterministicMetricTests(unittest.TestCase):
         )
         self.assertEqual(counts, expected)
 
+    def test_lexical_ascii_hyphens_are_not_dash_events(self):
+        counts = punctuation_counts("кто-то 12-34 кто - то ‐ ‑ ‒ – —")
+
+        # ASCII hyphens retained inside current text-v1 word tokens are lexical
+        # connectors for punctuation-v2. A spaced ASCII hyphen and each of the five
+        # supported U+2010..U+2014 dash-family glyphs remain punctuation candidates.
+        self.assertEqual(counts["dash"], 6)
+
+        artifact = analyze_deterministic_metrics("кто-то кто - то")
+        dash = artifact["metrics"]["fantlab.punctuation.dash.per_1000_words"]
+        self.assertEqual(dash["raw_count"], 1)
+        self.assertAlmostEqual(dash["value"], 1000 / 3)
+
     def test_punctuation_rates_keep_raw_counts_for_diagnostics(self):
         metrics = analyze_deterministic_metrics("раз, два, три.")["metrics"]
 
@@ -126,6 +139,10 @@ class DeterministicMetricTests(unittest.TestCase):
         self.assertEqual(
             schema["properties"]["profiles"]["properties"]["vocabulary"]["const"],
             VOCABULARY_PROFILE,
+        )
+        self.assertEqual(
+            schema["properties"]["profiles"]["properties"]["punctuation"]["const"],
+            PUNCTUATION_PROFILE,
         )
         self.assertEqual(len(schema["properties"]["metrics"]["required"]), 29)
         self.assertFalse(schema["additionalProperties"])

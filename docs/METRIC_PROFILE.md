@@ -1,10 +1,10 @@
 # Deterministic metric profile
 
-Metric profile: `scriptorium-metrics-v3`  
+Metric profile: `scriptorium-metrics-v4`  
 Text profile: `scriptorium-text-v1`  
 Dialogue profile: `scriptorium-dialogue-v1`  
 Vocabulary profile: `scriptorium-vocabulary-v1`  
-Punctuation profile: `scriptorium-punctuation-v1`  
+Punctuation profile: `scriptorium-punctuation-v2`  
 Metric contract: `fantlab-2022-v1`
 
 Status: **inferred compatibility candidate**.
@@ -63,8 +63,12 @@ contiguous N-token window with step 1. This window/aggregation policy is inferre
 
 ## Punctuation profile
 
-FantLab's 2022 work page exposes 14 punctuation frequencies per 1000 words. The v1
-candidate implements all 14 while keeping normalization and overlap behavior explicit.
+FantLab's 2022 work page exposes 14 punctuation frequencies per 1000 words, and the
+public methodology says the analyzer measures frequencies of known punctuation marks.
+The public row rendered with `-` is labelled `тире`, but FantLab does not publish a
+hyphen/dash classifier. `scriptorium-punctuation-v2` therefore remains an inferred
+candidate rather than a recovered rule.
+
 Multi-character forms are greedily consumed before component glyphs:
 
 - `?..` and `?…` → `question_ellipsis`;
@@ -74,15 +78,28 @@ Multi-character forms are greedily consumed before component glyphs:
 - `...` and `…` → `ellipsis`.
 
 Single glyphs then map to comma, period, exclamation, question, colon and semicolon.
-ASCII hyphen plus U+2010..U+2014 dash variants map to `dash`. Double-quote families are
-counted as individual quote events. `parentheses` counts opening `(` glyphs as candidate
-pair events. All choices remain `inferred`.
+U+2010..U+2014 dash-family glyphs remain `dash` candidates. ASCII hyphen-minus is also a
+`dash` candidate **except** when that exact character is retained inside a
+`scriptorium-text-v1` word token; in that role the text profile already treats it as a
+lexical connector, so punctuation-v2 does not simultaneously count it as punctuation.
+This rule applies equally to letter and digit token bodies because it is defined from the
+versioned token stream rather than from a language-specific lexical guess. Spaced or
+otherwise token-external ASCII hyphens continue to count as dash candidates.
+
+This change fixes an internal double-role inconsistency exposed by `SCRIP-TEXT-004`; it
+is not justified by numerical closeness to the source-unmatched *Anna Karenina*
+diagnostic. `scriptorium-punctuation-v1` remains the historical all-supported-dash-glyph
+policy recorded by older artifacts.
+
+Double-quote families are counted as individual quote events. `parentheses` counts
+opening `(` glyphs as candidate pair events. All punctuation choices remain `inferred`.
 
 ## Artifact contract
 
-`schemas/scriptorium-deterministic-metrics-v3.schema.json` freezes:
+`schemas/scriptorium-deterministic-metrics-v4.schema.json` freezes:
 
-- all profile identifiers;
+- the v4 aggregate metric profile plus text/dialogue/vocabulary and punctuation-v2
+  profile identifiers;
 - 29 metric rows: 5 general/diagnostic + 4 dialogue + 6 vocabulary + 14 punctuation;
 - per-row unit, definition-evidence class and compatibility status;
 - normalized-text SHA-256;
@@ -90,7 +107,8 @@ pair events. All choices remain `inferred`.
   lexeme-set SHA-256 + lexeme count.
 
 Punctuation rows additionally preserve raw event counts. Dependency metadata is analysis
-provenance, not an extra FantLab metric.
+provenance, not an extra FantLab metric. The v3 schema remains in the repository for
+historical artifacts produced under punctuation-v1; it is not rewritten in place.
 
 ## Public showcase
 
@@ -107,8 +125,8 @@ preferred direction as ingestion/source freezing matures.
 ## Verification boundary
 
 Golden tests cover deterministic text/dialogue behavior, general formulas, vocabulary
-normalization and rolling windows, punctuation overlap, dependency digests, schema/profile
-identity and benchmark gates.
+normalization and rolling windows, punctuation compound overlap, lexical-hyphen
+exclusion, dependency digests, schema/profile identity and benchmark gates.
 
 Source-matched benchmark work remains required before any FantLab metric can move from
 `inferred` to `reproduced`.

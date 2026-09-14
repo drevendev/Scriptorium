@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://drevendev.github.io/Scriptorium/schemas/scriptorium-deterministic-metrics-v4.schema.json",
+  "title": "Scriptorium deterministic metrics v4",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "metric_contract_id", "profiles", "dependencies", "normalized_sha256", "metrics"],
+  "properties": {
+    "schema_version": {"const": "scriptorium-deterministic-metrics-v4"},
+    "metric_contract_id": {"const": "fantlab-2022-v1"},
+    "profiles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["normalization", "metrics", "dialogue", "vocabulary", "punctuation"],
+      "properties": {
+        "normalization": {"const": "scriptorium-text-v1"},
+        "metrics": {"const": "scriptorium-metrics-v4"},
+        "dialogue": {"const": "scriptorium-dialogue-v1"},
+        "vocabulary": {"const": "scriptorium-vocabulary-v1"},
+        "punctuation": {"const": "scriptorium-punctuation-v2"}
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vocabulary_dictionary"],
+      "properties": {
+        "vocabulary_dictionary": {
+          "anyOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/dictionaryDependency"}
+          ]
+        }
+      }
+    },
+    "normalized_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fantlab.general.characters",
+        "fantlab.general.words",
+        "scriptorium.general.sentences",
+        "fantlab.general.mean_word_length_chars",
+        "fantlab.general.mean_sentence_length_chars",
+        "fantlab.dialogue.mean_narration_sentence_length_chars",
+        "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+        "fantlab.dialogue.share_percent",
+        "fantlab.dialogue.author_text_inside_dialogue_percent",
+        "fantlab.vocabulary.unique_words",
+        "fantlab.vocabulary.active_dictionary",
+        "fantlab.vocabulary.active_nondictionary",
+        "fantlab.vocabulary.uasz_3000",
+        "fantlab.vocabulary.uasz_10000",
+        "fantlab.vocabulary.uasz_100000",
+        "fantlab.punctuation.comma.per_1000_words",
+        "fantlab.punctuation.period.per_1000_words",
+        "fantlab.punctuation.dash.per_1000_words",
+        "fantlab.punctuation.exclamation.per_1000_words",
+        "fantlab.punctuation.question.per_1000_words",
+        "fantlab.punctuation.ellipsis.per_1000_words",
+        "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+        "fantlab.punctuation.question_ellipsis.per_1000_words",
+        "fantlab.punctuation.triple_exclamation.per_1000_words",
+        "fantlab.punctuation.question_exclamation.per_1000_words",
+        "fantlab.punctuation.quote.per_1000_words",
+        "fantlab.punctuation.parentheses.per_1000_words",
+        "fantlab.punctuation.colon.per_1000_words",
+        "fantlab.punctuation.semicolon.per_1000_words"
+      ],
+      "properties": {
+        "fantlab.general.characters": {"$ref": "#/$defs/publicSurfaceCharacters"},
+        "fantlab.general.words": {"$ref": "#/$defs/publicSurfaceWords"},
+        "scriptorium.general.sentences": {"$ref": "#/$defs/extensionSentences"},
+        "fantlab.general.mean_word_length_chars": {"$ref": "#/$defs/publicSurfaceCharactersPerWord"},
+        "fantlab.general.mean_sentence_length_chars": {"$ref": "#/$defs/publicSurfaceCharactersPerSentence"},
+        "fantlab.dialogue.mean_narration_sentence_length_chars": {"$ref": "#/$defs/publicSurfaceCharactersPerSentence"},
+        "fantlab.dialogue.mean_dialogue_sentence_length_chars": {"$ref": "#/$defs/publicSurfaceCharactersPerSentence"},
+        "fantlab.dialogue.share_percent": {"$ref": "#/$defs/publicSurfacePercent"},
+        "fantlab.dialogue.author_text_inside_dialogue_percent": {"$ref": "#/$defs/publicSurfacePercent"},
+        "fantlab.vocabulary.unique_words": {"$ref": "#/$defs/publicDefinitionWords"},
+        "fantlab.vocabulary.active_dictionary": {"$ref": "#/$defs/publicDefinitionWords"},
+        "fantlab.vocabulary.active_nondictionary": {"$ref": "#/$defs/publicDefinitionWords"},
+        "fantlab.vocabulary.uasz_3000": {"$ref": "#/$defs/publicDefinitionWindow"},
+        "fantlab.vocabulary.uasz_10000": {"$ref": "#/$defs/publicDefinitionWindow"},
+        "fantlab.vocabulary.uasz_100000": {"$ref": "#/$defs/publicDefinitionWindow"},
+        "fantlab.punctuation.comma.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.period.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.dash.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.exclamation.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.question.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.ellipsis.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.exclamation_ellipsis.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.question_ellipsis.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.triple_exclamation.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.question_exclamation.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.quote.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.parentheses.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.colon.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"},
+        "fantlab.punctuation.semicolon.per_1000_words": {"$ref": "#/$defs/punctuationMetricRow"}
+      }
+    }
+  },
+  "$defs": {
+    "dictionaryDependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile", "normalized_lexemes_sha256", "lexeme_count"],
+      "properties": {
+        "profile": {"type": "string", "minLength": 1},
+        "normalized_lexemes_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "lexeme_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "metricRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit", "definition_evidence", "compatibility_status"],
+      "properties": {
+        "value": {"type": ["number", "null"]},
+        "unit": {"type": "string"},
+        "definition_evidence": {"enum": ["public_definition", "public_surface", "inferred_candidate", "scriptorium_extension"]},
+        "compatibility_status": {"enum": ["inferred", "extension"]}
+      }
+    },
+    "publicSurfaceCharacters": {
+      "allOf": [
+        {"$ref": "#/$defs/metricRow"},
+        {"properties": {"unit": {"const": "characters"}, "definition_evidence": {"const": "public_surface"}, "compatibility_status": {"const": "inferred"}}}
+      ]
+    },
+    "publicSurfaceWords": {
+      "allOf": [
+        {"$ref": "#/$defs/metricRow"},
+        {"properties": {"unit": {"const": "words"}, "definition_evidence": {"const": "public_surface"}, "compatibility_status": {"const": "inferred"}}}
+      ]
+    },
+    "extensionSentences": {
+      "allOf": [
+        {"$ref": "#/$defs/metricRow"},
+        {"properties": {"unit": {"const": "sentences"}, "definition_evidence": {"const": "scriptorium_extension"}, "compatibility_status": {"const": "extension"}}}
+      ]
+    },
+    "publicSurfaceCharactersPerWord": {
+      "allOf": [
+        {"$ref": "#/$defs/metricRow"},
+        {"properties": {"unit": {"const": "characters/word"}, "definition_evidence": {"const": "public_surface"}, "compatibility_status": {"const": "inferred"}}}
+      ]
+    },
+    "publicSurfaceCharactersPerSentence": {
+      "allOf": [
+        {"$ref": "#/$defs/metricRow"},
+        {"properties": {"unit": {"const": "characters/sentence"}, "definition_evidence": {"const": "public_surface"}, "compatibility_status": {"const": "inferred"}}}
+      ]
+    },
+    "publicSurfacePercent": {
+      "allOf": [
+        {"$ref": "#/$defs/metricRow"},
+        {"properties": {"unit": {"const": "percent"}, "definition_evidence": {"const": "public_surface"}, "compatibility_status": {"const": "inferred"}}}
+      ]
+    },
+    "publicDefinitionWords": {
+      "allOf": [
+        {"$ref": "#/$defs/metricRow"},
+        {"properties": {"unit": {"const": "words"}, "definition_evidence": {"const": "public_definition"}, "compatibility_status": {"const": "inferred"}}}
+      ]
+    },
+    "publicDefinitionWindow": {
+      "allOf": [
+        {"$ref": "#/$defs/metricRow"},
+        {"properties": {"unit": {"const": "unique_dictionary_words/window"}, "definition_evidence": {"const": "public_definition"}, "compatibility_status": {"const": "inferred"}}}
+      ]
+    },
+    "punctuationMetricRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit", "definition_evidence", "compatibility_status", "raw_count"],
+      "properties": {
+        "value": {"type": ["number", "null"]},
+        "unit": {"const": "occurrences/1000_words"},
+        "definition_evidence": {"const": "public_surface"},
+        "compatibility_status": {"const": "inferred"},
+        "raw_count": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

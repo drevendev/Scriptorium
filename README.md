@@ -20,6 +20,9 @@ Scriptorium now has a standard-library-only deterministic analysis core:
 - deterministic word candidates and sentence spans with normalized-text offsets;
 - explicit dash-led dialogue paragraphs and candidate author-remark spans;
 - first-wave character, word, mean word/sentence length, dialogue and punctuation metrics;
+- a versioned punctuation-v2 policy that does not double-count ASCII hyphens retained
+  inside current word tokens as dash punctuation, while keeping the rule explicitly
+  inferred rather than claiming FantLab parity;
 - dictionary-free unique-vocabulary counting plus explicit external-dictionary active
   vocabulary and UASZ-3000/10000/100000 candidates;
 - immutable dictionary dependency identity using profile + normalized lexeme-set SHA-256;
@@ -100,14 +103,21 @@ bytes, so every result remains source-unmatched diagnostic evidence and M2 parit
 0/5.
 
 A source-free [word/dash policy sensitivity artifact](benchmarks/fantlab/work270306-policy-sensitivity.json)
-now makes two of the largest gaps inspectable without changing compatibility semantics.
-On the frozen candidate, excluding numeric-only tokens removes only 17 of the +16,083
-word difference and joining U+2010/U+2011 lexical hyphens changes the word count by zero.
-The current punctuation candidate also counts 1,607 letter-to-letter ASCII hyphens as
-dash events while they occur inside current word tokens; excluding that overlap would
-still leave the dash rate about 14.928 per 1000 words above FantLab. These measurements
-identify bounded policy questions; they do **not** establish FantLab's tokenizer or
-hyphen rules because the analyzer-input edition remains unknown.
+records the investigation that led to the punctuation boundary without turning the
+unmatched work into a tuning target. It showed that excluding numeric-only tokens removes
+only 17 of the +16,083 word difference, and that 1,611 ASCII hyphens occur inside current
+word tokens. Historical punctuation-v1 counted those glyphs as dash events too. The
+current `scriptorium-punctuation-v2` candidate removes that double role: ASCII hyphens
+retained inside `scriptorium-text-v1` word tokens are lexical connectors for punctuation
+purposes and are not also dash events. The historical artifact remains v1 evidence rather
+than being silently rewritten.
+
+This still does **not** establish FantLab's hyphen rule. The public methodology only says
+punctuation frequencies are measured and the work surface labels its `-` row as `тире`;
+FantLab does not publish the classifier. Even the historical sensitivity result after
+excluding all token-internal ASCII hyphens remained about +14.913 dash events per 1000
+words above the source-unmatched FantLab result. Punctuation-v2 is therefore an internal
+consistency improvement under a new profile, not a parity promotion.
 
 ### Public showcase
 

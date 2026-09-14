@@ -48,7 +48,7 @@ code changes remain in Git history and their issues/PRs.
   buckets observed on a 2022 work page as a morphology research question rather than a
   guessed mapping.
 - Added a versioned field-by-field benchmark comparison schema with exact reference
-  surface, edition/legal/hash provenance, expected display text, actual raw value,
+  surface, edition/legal/hash provenance, expected display text, actual value,
   deltas and `pass | fail | unresolved | not_run` outcomes.
 - After independent review, made the metrics object key the sole metric identity so a
   schema-valid row cannot carry a contradictory nested identifier.
@@ -667,3 +667,34 @@ code changes remain in Git history and their issues/PRs.
   the no-source-prose boundary. PR #46 remains open for independent exact-head review and
   hosted artifact verification before any merge or dialogue-profile versioning decision.
 - M2 remains **0/5 source-matched works**.
+
+## 2026-09-14 — Resurrection source-edition trace candidate
+
+- Re-checked `SCRIP-MORPH-003` first. Native `pylem` remains absent and direct DNS
+  resolution for GitHub/PyPI package hosts still fails, so provider execution remains
+  infrastructure `not_run` rather than a pylem failure.
+- Selected `SCRIP-REPRO-006` and opened Issue #47 / PR #48 for retained candidate
+  `tolstoy-resurrection-ru`.
+- Reconfirmed FantLab's 19 September 2022 analysis at 881,244 characters and 126,457
+  words while preserving that the public analysis surface exposes neither source edition
+  nor immutable analyzer-input bytes.
+- Followed the current work-page TXT excerpt path through `getwork23803525.txt.zip` to a
+  LitRes trial endpoint with `art=23803525`; the trace records this only as dated
+  point-in-time behavior and excludes it from analyzer-input identity evidence.
+- Strengthened the public-transcription provenance chain. Russian Wikisource names
+  Alexey Komarov's library as the source and exposes permanent work-index revision
+  `oldid=5614128`; Komarov completes the bibliographic citation as `Л. Н. Толстой.
+  Собрание сочинений в восьми томах. Т. 6. М., "Лексика", 1996.`
+- Cross-checked the structure independently on Wikisource and Komarov: three parts with
+  59 + 42 + 28 = 129 chapters. Sample Wikisource chapter pages have independent revision
+  IDs, proving that the work-index oldid does not freeze the chapter text bytes.
+- Added `corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json` and upgraded
+  the candidate catalog provenance confidence from moderate to strong, while keeping the
+  candidate deliberately `traced_not_frozen`.
+- Kept all reproduction gates fail-closed: `fantlab_source_edition_match=unknown`,
+  `diagnostic_comparison_admissible=false`, `diagnostic_ready=false`,
+  `m2_parity_admissible=false`, `gate_ready=false`, and M2 remains 0/5.
+- The next evidence step is mechanical rather than inferential: pin all 129 chapter
+  revision IDs/timestamps/MediaWiki SHA-1 identities, replay the exact public revisions
+  through the existing extraction/composition contract, and compute raw/normalized
+  composite identities before any full-work diagnostic is allowed.

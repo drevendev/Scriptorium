@@ -48,7 +48,7 @@ code changes remain in Git history and their issues/PRs.
   buckets observed on a 2022 work page as a morphology research question rather than a
   guessed mapping.
 - Added a versioned field-by-field benchmark comparison schema with exact reference
-  surface, edition/legal/hash provenance, expected display text, actual value,
+  surface, edition/legal/hash provenance, expected display text, actual raw value,
   deltas and `pass | fail | unresolved | not_run` outcomes.
 - After independent review, made the metrics object key the sole metric identity so a
   schema-valid row cannot carry a contradictory nested identifier.

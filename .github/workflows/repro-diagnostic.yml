@@ -59,6 +59,7 @@ jobs:
               "scriptorium_revision": artifact["analyzer"]["scriptorium_revision"],
               "source_text": artifact["source_text"],
               "diagnostic_boundary": artifact["diagnostic_boundary"],
+              "policy_sensitivity": artifact["policy_sensitivity"],
               "metrics": {
                   metric_id: {
                       "expected": row["expected"]["numeric_value"],
@@ -73,3 +74,11 @@ jobs:
           print(json.dumps(summary, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
           print("SCRIPTORIUM_DIAGNOSTIC_JSON_END")
           PY
+
+      - name: Upload source-free diagnostic artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: scriptorium-frozen-diagnostic
+          path: build/repro/work270306-wikisource-diagnostic.json
+          if-no-files-found: error
+          retention-days: 7

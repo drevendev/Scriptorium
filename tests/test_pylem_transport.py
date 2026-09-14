@@ -1,4 +1,5 @@
 import ast
+from hashlib import sha256
 import json
 import unittest
 from pathlib import Path
@@ -12,6 +13,7 @@ from scriptorium.pylem_transport import (
     consume_sidecar_response,
 )
 from scriptorium.pylem_provider import PYLEM_RUNTIME_PROFILE
+from scriptorium.text import NORMALIZATION_PROFILE
 
 
 class PylemTransportTests(unittest.TestCase):
@@ -31,6 +33,15 @@ class PylemTransportTests(unittest.TestCase):
                 for ordinal, values in enumerate(rows)
             ],
             "source_text_included": False,
+        }
+
+    def _manifest(self, request, *, candidate_id="fixture-work"):
+        return {
+            "candidate_id": candidate_id,
+            "composite_identity": {
+                "normalization_profile": NORMALIZATION_PROFILE,
+                "normalized_sha256": request["normalized_sha256"],
+            },
         }
 
     def test_round_trip_preserves_conservative_resolution(self):
@@ -55,7 +66,30 @@ class PylemTransportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unknown runtime POS"):
             consume_sidecar_response(request, response)
 
-    def test_frozen_diagnostic_is_source_free_and_non_parity(self):
+    def test_provider_identity_mismatch_fails_closed(self):
+        request = build_sidecar_request("слово")
+        response = self._response(request, [["N"]])
+        response["provider"] = {"distribution": "other", "version": "0.0.18"}
+        with self.assertRaisesRegex(ValueError, "provider identity"):
+            consume_sidecar_response(request, response)
+
+    def test_noncanonical_or_wrong_profile_request_fails_closed(self):
+        request = build_sidecar_request("Красный дом.")
+        response = self._response(request, [["A"], ["N"]])
+        request["text_profile"] = "different-profile"
+        with self.assertRaisesRegex(ValueError, "text profile"):
+            consume_sidecar_response(request, response)
+
+        request = build_sidecar_request("Красный дом.")
+        request["normalized_text"] = "Красный\r\nдом."
+        request["normalized_sha256"] = sha256(
+            request["normalized_text"].encode("utf-8")
+        ).hexdigest()
+        response = self._response(request, [["A"], ["N"]])
+        with self.assertRaisesRegex(ValueError, "not canonical"):
+            consume_sidecar_response(request, response)
+
+    def test_frozen_diagnostic_is_bound_to_manifest_and_non_parity(self):
         request = build_sidecar_request("Красный дом.")
         response = self._response(request, [["A"], ["N"]])
         reference = {
@@ -66,12 +100,11 @@ class PylemTransportTests(unittest.TestCase):
                 }
             }
         }
-        manifest = {"candidate_id": "fixture-work"}
         artifact = build_frozen_pos_diagnostic(
             request,
             response,
             reference,
-            manifest,
+            self._manifest(request),
             scriptorium_revision="deadbeef",
         )
         self.assertEqual(artifact["schema_version"], DIAGNOSTIC_SCHEMA)
@@ -85,6 +118,36 @@ class PylemTransportTests(unittest.TestCase):
             artifact["fantlab_bucket_comparison"]["adjective"]["result"],
             "diagnostic_only",
         )
+
+        mismatched_manifest = self._manifest(request, candidate_id="wrong-work")
+        mismatched_manifest["composite_identity"]["normalized_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "frozen manifest identity"):
+            build_frozen_pos_diagnostic(
+                request,
+                response,
+                reference,
+                mismatched_manifest,
+                scriptorium_revision="deadbeef",
+            )
+
+    def test_invalid_expected_count_fails_closed(self):
+        request = build_sidecar_request("Красный дом.")
+        response = self._response(request, [["A"], ["N"]])
+        reference = {
+            "expected": {
+                "pos": {
+                    "adjective": {"count": None, "percent_of_defined": 5.0},
+                }
+            }
+        }
+        with self.assertRaisesRegex(ValueError, "must be an integer"):
+            build_frozen_pos_diagnostic(
+                request,
+                response,
+                reference,
+                self._manifest(request),
+                scriptorium_revision="deadbeef",
+            )
 
     def test_sidecar_tool_has_no_scriptorium_import(self):
         root = Path(__file__).resolve().parents[1]

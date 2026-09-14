@@ -1,25 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 58
+STATE_REVISION: 59
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-14T12:03:00Z
-LAST_RESULT: SCRIP-SITE-005 authored in Issue #52 / PR #53. A source-free provenance-only publication slice now exposes the frozen 129-revision Resurrection candidate through the deterministic static renderer while preserving FantLab source-edition match as unknown, diagnostic-only benchmark admissibility and M2 parity inadmissibility. The PR remains open for independent exact-head review; live Pages deployment remains disabled.
-LAST_VERIFIED_PROGRESS: The authored branch is based on master 06c5e9f2c9fb674752af4472f95211fac39c7cf6. It adds `public-artifacts/tolstoy-resurrection-ru-provenance.json`, an explicit `scriptorium-work-provenance-showcase-v1` renderer contract, canonical cross-checks against the frozen source trace, fail-closed promotion tests, README navigation and publication-source trigger coverage. Native pylem/provider execution was re-checked before selection and remains infrastructure `not_run`: pylem is absent from the execution runtime and the required GitHub/PyPI package hosts are not DNS-resolvable from that runtime. Hosted exact-head PR evidence is pending after this state commit and must be judged by a later wake before merge.
+LAST_COMMITTED_RUN_AT: 2026-09-14T13:07:24Z
+LAST_RESULT: SCRIP-SITE-005 independently reviewed on exact head 639cb977c74af29f48511c55633fa472cd0b7252 and squash-merged as 905ddd9b4f0f8665e3748bb6a0b70b4b39c0562d. The source-free Resurrection provenance-only public slice is now on master; FantLab source-edition match remains unknown, benchmark use remains diagnostic-only, M2 parity remains inadmissible, and live Pages deployment remains disabled.
+LAST_VERIFIED_PROGRESS: Independent review found no blocking defect. PR #53 was 14 commits ahead / 0 behind master, mergeable and non-draft, with 10 changed files and no review threads. Exact-head Pages run 34841825171 checked out authored head 639cb977c74af29f48511c55633fa472cd0b7252 directly, used Python 3.13.15, passed 113/113 standard-library tests, built the canonical static site twice byte-identically, uploaded only the generated site tree, and skipped deployment. Independently downloaded Pages artifact 10346536678 matched GitHub SHA-256 3de17961ffd2bbcfe832b02acac61630cccda80b71e1bd6c71e7266527a00c70; its generated Resurrection page contains frozen provenance/identity, source-edition match unknown, M2 parity false and no novel prose. Exact-head frozen-diagnostic run 34841825191 also succeeded and replayed all 129 Resurrection revisions; replay artifact 10346865701 has GitHub SHA-256 2554d64321a6c9c5cd4c198a7d856023c523ddcfac01565e45b477bf1a39f9a2. Issue #52 closed completed with the squash merge. Master push Pages run 34847254708 then completed successfully on merge commit 905ddd9b4f0f8665e3748bb6a0b70b4b39c0562d; deployment remained gated off.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-SITE-005
 ISSUE:          #52
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #53
-BRANCH:         scrip-site-005-resurrection-provenance
-BASE_COMMIT:    06c5e9f2c9fb674752af4472f95211fac39c7cf6
-NEXT_ACTION:    Independently inspect the exact final PR #53 head, changed-file surface,
-                review threads and hosted Pages/reproduction workflow evidence. Verify
-                generated output contains the provenance-only Resurrection page and no
-                source prose. Merge only if all fail-closed source-match/parity/publication
-                boundaries remain intact. Do not self-approve from this authoring run.
+MERGED_COMMIT:  905ddd9b4f0f8665e3748bb6a0b70b4b39c0562d
+NEXT_ACTION:    Re-check SCRIP-MORPH-003 provider/runtime executability first. If native
+                pinned pylem/provider execution remains unavailable, no other unfinished
+                dependency-satisfied queue row remains; select and issue the next bounded
+                Scriptorium unit under the standing allocation and current M1 gate rather
+                than manufacturing progress on the blocked provider path.
 ```
 
 ## Current milestone gate
@@ -36,7 +35,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 | P2 | SCRIP-DIALOGUE-002 | analyzer core / reproduction | Investigate author-text-inside-dialogue gap via inspectable delimiter and denominator sensitivity | DONE in Issue #45 / PR #46; merged as 25555ba1b719ac2dae8bc340701433ce16f8ed64 |
 | P3 | SCRIP-REPRO-006 | benchmark / reproduction | Pursue a second source-edition trace or stronger source-matching evidence for a retained >=300k FantLab candidate | DONE in Issue #47 / PR #48; merged as f7a6937bb89b6a44ff21e8193c38c1c70af9aa01 |
 | P4 | SCRIP-REPRO-007 | benchmark / reproduction | Freeze Resurrection by pinning/replaying all 129 chapter revisions and recording composite identities | DONE in Issue #50 / PR #51; merged as d31ab4417d979fd141df31d400d4fa5156adf274; source match remains unknown |
-| P5 | SCRIP-SITE-005 | public representation | Publish the newly frozen Resurrection capability as derived/provenance-only public material | REVIEW in Issue #52 / PR #53; no source prose, source-match/parity promotion or Pages activation allowed |
+| P5 | SCRIP-SITE-005 | public representation | Publish the newly frozen Resurrection capability as derived/provenance-only public material | DONE in Issue #52 / PR #53; merged as 905ddd9b4f0f8665e3748bb6a0b70b4b39c0562d; source prose excluded, source match unknown, Pages activation unchanged |
 
 ## Evidence already established
 
@@ -63,6 +62,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - `scriptorium-wikisource-resurrection-body-v1` is the explicit source-specific extraction contract; `scriptorium-wikisource-composite-v1` fixes part/chapter order and separators.
 - Frozen composite: 890,835 characters; 1,610,692 UTF-8 bytes; raw and normalized SHA-256 `2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`.
 - Independent exact-head review of SCRIP-REPRO-007 replayed all 129 revisions and reproduced the identity; the source-free replay artifact ZIP SHA-256 was `4b7cc1418db66c39a578dcce5165e7c421e08548c6ccc06cad979a324621c240`.
+- SCRIP-SITE-005 now publishes a source-free provenance-only view of this frozen candidate. Its public artifact is cross-checked against the canonical trace and the renderer rejects source-match, M2-parity, compatibility or source-text promotion.
 - The 9,591-character difference from FantLab's displayed count is not source-match evidence. `fantlab_source_edition_match=unknown`, diagnostic-only comparison remains allowed, `m2_parity_admissible=false`.
 - FantLab's work-page TXT route is volatile and redirects to LitRes trial content; it is excluded from analyzer-input identity evidence.
 
@@ -98,6 +98,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - `scriptorium-publication-manifest-v1`, `scriptorium-static-site-v1` and the gated Pages workflow remain fail-closed. Live deployment is disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 - SCRIP-SITE-005 adds one provenance-only *Resurrection* public artifact whose canonical fields are cross-checked against the frozen source trace. The renderer rejects source-match, parity or compatibility promotion and does not publish source prose.
 - Pages trigger coverage now includes `corpus/candidates/source-edition-traces/**` in addition to all renderer artifact roots, so provenance-source changes cannot silently bypass the publication build.
+- Independent exact-head review confirmed the generated Pages tree contains the Resurrection provenance page plus only the previously allow-listed pages, shared CSS and build receipt. The merge-commit Pages push run also passed while live deployment stayed disabled.
 
 ## Known risks / blockers
 

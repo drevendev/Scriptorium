@@ -9,6 +9,8 @@ from scriptorium.publication import derive_compatibility_claim, validate_compati
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "site" / "publication-manifest.json"
 SCHEMA_PATH = ROOT / "schemas" / "scriptorium-publication-manifest-v1.schema.json"
+RESURRECTION_TRACE = ROOT / "corpus" / "candidates" / "source-edition-traces" / "tolstoy-resurrection-ru.json"
+PROVENANCE_PROFILE = "scriptorium-work-provenance-showcase-v1"
 
 
 class PublicationManifestContractTests(unittest.TestCase):
@@ -48,25 +50,94 @@ class PublicationManifestContractTests(unittest.TestCase):
             self.assertFalse(entry["source_text_included"])
 
     def test_seed_manifest_matches_canonical_showcase_safety_labels(self):
-        self.assertEqual(len(self.manifest["entries"]), 2)
+        self.assertEqual(len(self.manifest["entries"]), 3)
         for entry in self.manifest["entries"]:
             artifact = json.loads(
                 (ROOT / entry["artifact_path"]).read_text(encoding="utf-8")
             )
             self.assertEqual(entry["entry_id"], artifact["showcase_id"])
-            self.assertEqual(entry["artifact_schema"], artifact["analysis"]["schema_version"])
             self.assertEqual(entry["publication_status"], artifact["status"])
             self.assertEqual(
                 entry["benchmark_admissibility"], artifact["benchmark_admissibility"]
             )
             self.assertEqual(entry["corpus_admissibility"], artifact["corpus_admissibility"])
+
+            if entry["artifact_schema"] == PROVENANCE_PROFILE:
+                self.assertEqual(artifact["schema_version"], PROVENANCE_PROFILE)
+                self.assertIs(artifact["source_text_committed"], False)
+                self.assertEqual(entry["compatibility_claim"], "extension")
+                self.assertEqual(artifact["compatibility_claim"], "extension")
+                self.assertEqual(
+                    artifact["fantlab_boundary"]["fantlab_source_edition_match"],
+                    "unknown",
+                )
+                self.assertIs(
+                    artifact["fantlab_boundary"]["m2_parity_admissible"], False
+                )
+                continue
+
+            self.assertEqual(entry["artifact_schema"], artifact["analysis"]["schema_version"])
             self.assertIs(artifact["source"]["source_text_committed"], False)
             self.assertEqual(entry["compatibility_claim"], "mixed")
             self.assertEqual(derive_compatibility_claim(artifact), "mixed")
             self.assertEqual(validate_compatibility_claim(entry, artifact), "mixed")
 
+    def test_resurrection_public_artifact_matches_frozen_canonical_trace(self):
+        entry = next(
+            row
+            for row in self.manifest["entries"]
+            if row["artifact_schema"] == PROVENANCE_PROFILE
+        )
+        artifact = json.loads((ROOT / entry["artifact_path"]).read_text(encoding="utf-8"))
+        trace = json.loads(RESURRECTION_TRACE.read_text(encoding="utf-8"))
+        frozen = trace["public_transcription"]["frozen_candidate"]
+        source = artifact["source"]
+        identity = artifact["frozen_identity"]
+        fantlab = artifact["fantlab_boundary"]
+
+        self.assertEqual(source["chapter_revision_count"], frozen["chapter_revision_count"])
+        self.assertEqual(source["composition_profile"], frozen["composition_profile"])
+        self.assertEqual(source["extraction_profile"], frozen["extraction_profile"])
+        self.assertEqual(
+            source["revision_manifest"], frozen["revision_manifest"]
+        )
+        for key in (
+            "character_count_including_spaces",
+            "utf8_byte_count",
+            "raw_sha256",
+            "normalization_profile",
+            "normalized_character_count_including_spaces",
+            "normalized_sha256",
+        ):
+            self.assertEqual(identity[key], frozen[key], key)
+
+        self.assertEqual(fantlab["work_id"], trace["fantlab"]["work_id"])
+        self.assertEqual(fantlab["analysis_url"], trace["fantlab"]["analysis_url"])
+        self.assertEqual(fantlab["analysis_date"], trace["fantlab"]["analysis_date"])
+        self.assertEqual(
+            fantlab["displayed_character_count"],
+            trace["fantlab"]["observed_counts"]["characters"],
+        )
+        self.assertEqual(
+            fantlab["displayed_word_count"],
+            trace["fantlab"]["observed_counts"]["words"],
+        )
+        self.assertEqual(
+            fantlab["fantlab_source_edition_match"],
+            trace["admissibility"]["fantlab_source_edition_match"],
+        )
+        self.assertIs(
+            fantlab["m2_parity_admissible"],
+            trace["admissibility"]["m2_parity_admissible"],
+        )
+
     def test_compatibility_claim_upgrade_is_rejected(self):
-        entry = dict(self.manifest["entries"][0])
+        entry = next(
+            row
+            for row in self.manifest["entries"]
+            if row["artifact_schema"] != PROVENANCE_PROFILE
+        )
+        entry = dict(entry)
         artifact = json.loads(
             (ROOT / entry["artifact_path"]).read_text(encoding="utf-8")
         )
@@ -88,6 +159,15 @@ class PublicationManifestContractTests(unittest.TestCase):
                     walk(child)
 
         walk(self.manifest)
+        provenance_entry = next(
+            row
+            for row in self.manifest["entries"]
+            if row["artifact_schema"] == PROVENANCE_PROFILE
+        )
+        provenance = json.loads(
+            (ROOT / provenance_entry["artifact_path"]).read_text(encoding="utf-8")
+        )
+        walk(provenance)
 
     def test_schema_rejects_path_escape_shapes(self):
         pattern = self.schema["properties"]["entries"]["items"]["properties"][
@@ -95,6 +175,9 @@ class PublicationManifestContractTests(unittest.TestCase):
         ]["pattern"]
         self.assertIsNotNone(
             re.fullmatch(pattern, "showcase/anna-karenina-part1-ch1-opening.json")
+        )
+        self.assertIsNotNone(
+            re.fullmatch(pattern, "public-artifacts/tolstoy-resurrection-ru-provenance.json")
         )
         for invalid in (
             "/showcase/example.json",

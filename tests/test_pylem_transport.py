@@ -60,6 +60,14 @@ class PylemTransportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "token identity mismatch"):
             consume_sidecar_response(request, response)
 
+    def test_request_token_must_match_canonical_tokenization(self):
+        request = build_sidecar_request("Красный дом.")
+        request["tokens"][1]["text"] = "кот"
+        request["tokens"][1]["sha256"] = sha256("кот".encode("utf-8")).hexdigest()
+        response = self._response(request, [["A"], ["N"]])
+        with self.assertRaisesRegex(ValueError, "canonical tokenization"):
+            consume_sidecar_response(request, response)
+
     def test_unknown_runtime_pos_fails_closed(self):
         request = build_sidecar_request("слово")
         response = self._response(request, [["NEW_POS"]])

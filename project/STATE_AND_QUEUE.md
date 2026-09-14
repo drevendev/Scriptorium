@@ -1,24 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 48
+STATE_REVISION: 49
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-14T02:58:00Z
-LAST_RESULT: SCRIP-TEXT-004 authored as Issue #41 / PR #42. A source-free policy-sensitivity diagnostic now shows that tested numeric-token and Unicode-hyphen word variants explain essentially none of the +16,083-word gap, while lexical ASCII-hyphen overlap explains only part of the +20.894-dash-per-1000 gap. No compatibility semantics were changed; M2 remains 0/5 source-matched works.
-LAST_VERIFIED_PROGRESS: PR #42 authored analysis head 2b31cd9aaa9daddc28649fe1a921904bba0f8aec passed hosted frozen-diagnostic run 34800715320 and Pages run 34800715298. The diagnostic workflow replayed all 239 frozen Anna Karenina revisions, passed the standard-library suite, emitted/uploaded source-free evidence artifact 10331456918, and kept source identity unknown/M2 inadmissible. Artifact ZIP SHA-256 5c4ec7c59a8feca75c087553b952f2af471b05e157476d55ce1e490f1116d285 was independently rechecked. SCRIP-MORPH-003 remains infrastructure not_run because pylem is absent and direct DNS resolution to GitHub/PyPI package hosts still fails in the execution container.
+LAST_COMMITTED_RUN_AT: 2026-09-14T03:54:00Z
+LAST_RESULT: SCRIP-TEXT-004 independently reviewed and squash-merged as aa018e74a5a0dddda456ea2e83d1a4c451649255. The source-free word/dash policy sensitivity probes are now merged without changing production tokenizer/punctuation semantics; M2 remains 0/5 source-matched works.
+LAST_VERIFIED_PROGRESS: Independent review of PR #42 exact head 7a007dd94fe613f18efb7be9aa0187a85d6bcb21 re-read the policy diagnostic, regression coverage, frozen diagnostic integration, source-free boundary and hosted checks. Frozen-diagnostic run 34801140517 succeeded through tests, exact frozen replay, derived evidence emission and artifact upload; artifact 10331323104 is bound to the exact head with SHA-256 fd00404e05bafb57b0155a482b623bcf17ea71e2e55ff5dc741831be79946282. Pages run 34801140525 succeeded through tests/build/deterministic rebuild/upload with deployment skipped. The newly used actions/upload-artifact pin resolves to official v4.6.2. PR #42 was squash-merged, Issue #41 closed completed, and merge-commit master push Pages run 34804070440 completed successfully. Post-merge runtime recheck still finds no installed pylem and DNS resolution still fails for github.com, pypi.org and files.pythonhosted.org, so SCRIP-MORPH-003 remains infrastructure not_run.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-TEXT-004
 ISSUE:          #41
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #42
-MERGED_COMMIT:  none
-NEXT_ACTION:    Independently review the final PR #42 head. Verify that executable code
-                remains fail-closed/source-free, inspect the exact hosted checks and
-                policy-sensitivity artifact, and confirm no FantLab semantics were
-                inferred from numerical closeness. If clean, squash-merge in that later
-                run. After merge, re-check SCRIP-MORPH-003 before selecting new work.
+MERGED_COMMIT:  aa018e74a5a0dddda456ea2e83d1a4c451649255
+NEXT_ACTION:    Re-check SCRIP-MORPH-003 provider/runtime executability first. The
+                post-merge execution container still has no installed pylem and cannot
+                resolve github.com, pypi.org or files.pythonhosted.org. If that remains
+                true on the next wake, select SCRIP-PUNCT-002 and resolve the lexical-
+                hyphen-versus-dash overlap from definitions/tests rather than fitting
+                the source-unmatched Anna Karenina target.
 ```
 
 ## Current milestone gate
@@ -65,6 +66,7 @@ Evaluate rows in priority order and skip dependencies that are not executable.
 
 - `scriptorium-text-policy-diagnostic-v1` is a source-free sensitivity surface, not a FantLab compatibility profile. Its variants are probes only and cannot promote parity.
 - Hosted run 34800715320 on authored analysis head `2b31cd9aaa9daddc28649fe1a921904bba0f8aec` replayed the same 239 frozen revisions, ran the full standard-library suite successfully and uploaded derived artifact 10331456918. The artifact ZIP SHA-256 is `5c4ec7c59a8feca75c087553b952f2af471b05e157476d55ce1e490f1116d285` and contains no source prose.
+- Exact final head `7a007dd94fe613f18efb7be9aa0187a85d6bcb21` independently passed frozen-diagnostic run `34801140517`; exact-head artifact `10331323104` records SHA-256 `fd00404e05bafb57b0155a482b623bcf17ea71e2e55ff5dc741831be79946282`. Exact-head Pages run `34801140525` also passed build/rebuild/upload with deployment skipped, and merge-commit master run `34804070440` completed successfully.
 - Current `scriptorium-text-v1` counts 269,358 words. Only 17 are numeric-only tokens; excluding them leaves 269,341, still +16,066 versus FantLab. Treating U+2010/U+2011 as lexical connectors changes the frozen candidate count by zero because neither glyph occurs. These tested variants do not explain the word gap and do not justify a tokenizer change.
 - Current `scriptorium-punctuation-v1` counts 12,545 dash-family glyphs: 10,933 U+2014 em dashes plus 1,612 ASCII hyphen-minus glyphs; U+2010/U+2011/U+2012/U+2013 do not occur in the candidate.
 - Of the 1,612 ASCII hyphens, 1,607 sit directly between letters and 1,611 are internal to current word tokens. That is a real inspectable policy overlap: the same glyph can be lexical inside a word and simultaneously counted as punctuation.
@@ -90,7 +92,7 @@ Evaluate rows in priority order and skip dependencies that are not executable.
 - Two derived Anna Karenina excerpt showcases remain public, explicitly short/non-corpus/non-parity, with no source prose committed.
 - The repository contains a source-free full-work Anna Karenina diagnostic artifact and now a source-free word/dash policy-sensitivity artifact linked from the public README. Both state source identity is unknown and M2 inadmissible.
 - `scriptorium-publication-manifest-v1`, `scriptorium-static-site-v1` and the gated Pages build/upload workflow remain fail-closed on unsupported publication semantics.
-- PR #42 authored analysis head passed Pages run 34800715298; live deployment remains intentionally disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` and repository Pages administration is a separate owner/admin effect.
+- PR #42 exact final head passed Pages run 34801140525, and merge commit `aa018e74a5a0dddda456ea2e83d1a4c451649255` passed master push Pages run 34804070440; live deployment remains intentionally disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` and repository Pages administration is a separate owner/admin effect.
 
 ## Known risks / blockers
 

@@ -40,7 +40,7 @@ Scriptorium now has a standard-library-only deterministic analysis core:
   *Resurrection* candidate, with a versioned source-specific extraction contract for its
   heterogeneous Wikisource page shapes and the same fail-closed source-match boundary;
 - a versioned static-publication allow-list plus a deterministic, fail-closed static
-  renderer for derived/public work-showcase pages;
+  renderer for derived/public work-showcase and provenance-only pages;
 - golden tests for text boundaries, dialogue spans, metric formulas, vocabulary windows,
   punctuation overlap, POS aggregation rules, source replay, publication safety and
   benchmark gate behavior.
@@ -136,23 +136,30 @@ consistency improvement under a new profile, not a parity promotion.
 
 ### Public showcase
 
-The repository includes derived metric slices for real public-domain literary sources
-without storing the analyzed prose:
+The repository includes source-free public slices for real public-domain literary
+sources:
 
 - [`showcase/anna-karenina-part1-ch1-opening.json`](showcase/anna-karenina-part1-ch1-opening.json)
   shows the first general/punctuation metrics on the opening four prose paragraphs of
   *Anna Karenina*, Part I, Chapter I.
 - [`showcase/anna-karenina-part1-ch2-dialogue.json`](showcase/anna-karenina-part1-ch2-dialogue.json)
   shows the inferred dialogue profile on two dash-led dialogue paragraphs from Chapter II.
+- [`public-artifacts/tolstoy-resurrection-ru-provenance.json`](public-artifacts/tolstoy-resurrection-ru-provenance.json)
+  exposes the full frozen *Resurrection* source identity: 129 pinned revisions,
+  extraction/composition profiles, immutable counts and SHA-256 identities, legal/source
+  provenance, and the explicit `unknown` FantLab source-edition boundary. It contains no
+  novel prose and makes no parity claim.
 
-Both artifacts are bound to exact Russian Wikisource revisions and store provenance,
-hashes and derived metrics only. They are intentionally marked **illustrative excerpts**,
-not corpus entries and not FantLab parity evidence. Existing artifacts preserve the
-metric profile under which they were generated; a future vocabulary/POS showcase must be
-regenerated from a provenance-bound source selection rather than inventing new values
-from hashes alone. The full-work diagnostic above is likewise source-free and inspectable,
-but it is not published as a Pages work view because its benchmark rendering contract has
-not yet been defined.
+The Anna Karenina metric artifacts are bound to exact Russian Wikisource revisions and
+store provenance, hashes and derived metrics only. They are intentionally marked
+**illustrative excerpts**, not corpus entries and not FantLab parity evidence. Existing
+artifacts preserve the metric profile under which they were generated; a future
+vocabulary/POS showcase must be regenerated from a provenance-bound source selection
+rather than inventing new values from hashes alone. The full-work Anna Karenina diagnostic
+is likewise source-free and inspectable, but it is not published as a Pages work view
+because its benchmark rendering contract has not yet been defined. The *Resurrection*
+Pages slice is deliberately provenance-first: it demonstrates a reproducibly frozen
+>=300k public-domain candidate while keeping source-match and M2 parity fail-closed.
 
 The publication boundary is explicit rather than directory-based.
 [`site/publication-manifest.json`](site/publication-manifest.json) allow-lists public
@@ -165,17 +172,19 @@ before writing pages:
 python -m scriptorium.site_renderer --output build/site
 ```
 
-Generated pages include a root index, stable `/works/<slug>/` views, derived metric
-values/evidence labels and selected provenance metadata. Artifact-controlled text is
-HTML-escaped, provenance links must be HTTP(S), and source selection prose is not copied
-into the output. The renderer validates the whole build before replacing the disposable
-output tree and emits `build.json` with exact input digests for reproducibility. See
-[`docs/SITE_RENDERER.md`](docs/SITE_RENDERER.md).
+Generated pages include a root index, stable `/works/<slug>/` views, derived metric or
+frozen-provenance evidence labels and selected provenance metadata. Artifact-controlled
+text is HTML-escaped, provenance links must be HTTP(S), and source selection prose is not
+copied into the output. The renderer validates the whole build before replacing the
+disposable output tree and emits `build.json` with exact input digests for reproducibility.
+See [`docs/SITE_RENDERER.md`](docs/SITE_RENDERER.md).
 
 The reviewed GitHub Actions Pages pipeline now runs tests, builds the canonical static
 site twice, requires a byte-identical rebuild and uploads only the disposable generated
-site tree on relevant pull requests and `master` changes. **Live GitHub Pages deployment
-is still disabled**: deployment requires the explicit repository variable
+site tree on relevant pull requests and `master` changes. Publication-source provenance
+changes also trigger the build, preventing a source trace from drifting away from a
+published derived artifact without CI noticing. **Live GitHub Pages deployment is still
+disabled**: deployment requires the explicit repository variable
 `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true`, and repository Pages activation/settings remain
 a separate owner/admin effect. See [`docs/SITE_CONTRACT.md`](docs/SITE_CONTRACT.md).
 

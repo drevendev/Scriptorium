@@ -6,7 +6,7 @@ from hashlib import sha256
 from typing import Callable, Iterable, Mapping
 
 from .source_revision_manifest import decode_chapter_identities
-from .text import normalize_text
+from .text import NORMALIZATION_PROFILE, normalize_text
 from .wikisource_freeze import _api_query, extract_transcription_body
 
 
@@ -119,7 +119,7 @@ def replay_packed_manifest(
         "character_count_including_spaces": len(composite),
         "utf8_byte_count": len(raw),
         "raw_sha256": sha256(raw).hexdigest(),
-        "normalization_profile": composite_identity.get("normalization_profile"),
+        "normalization_profile": NORMALIZATION_PROFILE,
         "normalized_character_count_including_spaces": len(normalized),
         "normalized_sha256": sha256(normalized.encode("utf-8")).hexdigest(),
     }

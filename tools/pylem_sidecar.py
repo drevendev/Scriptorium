@@ -39,6 +39,7 @@ def build_response(request):
     from pylem import MorphanHolder, MorphLanguage
 
     holder = MorphanHolder(MorphLanguage.Russian)
+    cache = {}
     output_rows = []
     for ordinal, row in enumerate(rows):
         if not isinstance(row, dict) or row.get("ordinal") != ordinal:
@@ -49,17 +50,21 @@ def build_response(request):
         token_sha256 = _sha256_text(token)
         if row.get("sha256") != token_sha256:
             raise ValueError("request token hash mismatch")
-        runtime_pos = []
-        for analysis in holder.lemmatize(token):
-            value = getattr(analysis, "part_of_speech", None)
-            if not isinstance(value, str) or not value.strip():
-                raise RuntimeError("pylem returned blank/non-string part_of_speech")
-            runtime_pos.append(value.strip())
+        runtime_pos = cache.get(token)
+        if runtime_pos is None:
+            values = []
+            for analysis in holder.lemmatize(token):
+                value = getattr(analysis, "part_of_speech", None)
+                if not isinstance(value, str) or not value.strip():
+                    raise RuntimeError("pylem returned blank/non-string part_of_speech")
+                values.append(value.strip())
+            runtime_pos = tuple(values)
+            cache[token] = runtime_pos
         output_rows.append(
             {
                 "ordinal": ordinal,
                 "token_sha256": token_sha256,
-                "runtime_pos": runtime_pos,
+                "runtime_pos": list(runtime_pos),
             }
         )
 
@@ -69,6 +74,7 @@ def build_response(request):
         "provider": {"distribution": "pylem", "version": installed},
         "normalized_sha256": normalized_sha256,
         "token_count": len(rows),
+        "distinct_token_count": len(cache),
         "rows": output_rows,
         "source_text_included": False,
         "epistemic_boundary": {

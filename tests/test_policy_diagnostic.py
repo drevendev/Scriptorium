@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 import unittest
 
 from scriptorium.policy_diagnostic import analyze_word_dash_policy
@@ -74,6 +75,32 @@ class PolicyDiagnosticTests(unittest.TestCase):
             artifact["dash_policy"]["variants"]["current_all_supported_dash_glyphs"][
                 "per_1000_current_words"
             ]
+        )
+
+    def test_committed_sensitivity_artifact_stays_source_free_and_fail_closed(self):
+        path = Path("benchmarks/fantlab/work270306-policy-sensitivity.json")
+        artifact = json.loads(path.read_text(encoding="utf-8"))
+
+        self.assertEqual(artifact["artifact_version"], "scriptorium-text-policy-diagnostic-v1")
+        self.assertEqual(artifact["epistemic_status"]["status"], "diagnostic_only")
+        self.assertEqual(
+            artifact["epistemic_status"]["fantlab_source_edition_match"], "unknown"
+        )
+        self.assertIs(artifact["epistemic_status"]["m2_parity_admissible"], False)
+        self.assertEqual(artifact["epistemic_status"]["m2_source_matched_progress"], "0/5")
+        self.assertIs(artifact["evidence"]["source_text_committed"], False)
+        self.assertIs(artifact["evidence"]["source_text_uploaded"], False)
+        self.assertEqual(
+            artifact["word_policy"]["variants"]["exclude_numeric_only_tokens"][
+                "delta_to_reference"
+            ],
+            16066,
+        )
+        self.assertAlmostEqual(
+            artifact["dash_policy"]["variants"][
+                "exclude_all_current_token_internal_ascii_hyphens"
+            ]["rate_delta_to_reference"],
+            14.91281699448318,
         )
 
 

@@ -6,7 +6,7 @@
   "corpus_admissibility": "admissible",
   "compatibility_claim": "extension",
   "source_text_committed": false,
-  "representativeness_note": "Full-work source-free morphology diagnostic from independently reviewed SCRIP-MORPH-005 (merge 7dab1a6b0fe2a1d9fe44653a17580e3f6f25145b) and SCRIP-MORPH-006 (merge 1bc8d9f92f6c8ab4bdce0a49ed45095af4579565): 269,358 Scriptorium word tokens; 117,554 conservatively defined POS; 151,804 undefined POS. Of the undefined rows, 59,254 are direct cross-bucket ambiguities. Pinned AOT literature homonym weights uniquely nominate a FantLab-shaped bucket for only 5,972 of those rows (10.0786%); production POS resolution is unchanged. These numbers are diagnostic provider-signal evidence, not recovered FantLab rules or parity evidence.",
+  "representativeness_note": "Full-work source-free morphology diagnostic from independently reviewed SCRIP-MORPH-005 (merge 7dab1a6b0fe2a1d9fe44653a17580e3f6f25145b) and SCRIP-MORPH-006 (merge 1bc8d9f92f6c8ab4bdce0a49ed45095af4579565): 269,358 Scriptorium word tokens; 117,554 conservatively defined POS; 151,804 undefined POS. Of the undefined rows, 59,254 are direct cross-bucket ambiguities. Pinned AOT literature homonym weights uniquely nominate a FantLab-shaped bucket for only 5,972 of those rows (10.0786%); production POS resolution is unchanged. SCRIP-MORPH-008 exact-provider replay also measures FantLab's separately documented 22-category methodology surface without folding it into the current work-page surface: 127,909 rows are conservatively defined there, 10,355 more than the 17-bucket view, consisting of 7,607 infinitives, 1,874 short adjectives, 718 short participles, 156 phrasal verbs and 0 postpositions. The work-page relation remains unknown. These numbers are diagnostic provider-signal evidence, not recovered FantLab rules, displayed FantLab counts or parity evidence.",
   "work": {
     "author": "Leo Tolstoy",
     "title": "Anna Karenina",
@@ -30,6 +30,31 @@
     "normalization_profile": "scriptorium-text-v1",
     "normalized_character_count_including_spaces": 1705605,
     "normalized_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205"
+  },
+  "full_methodology_pos_diagnostic": {
+    "status": "diagnostic_only",
+    "methodology_contract": "scriptorium-fantlab-methodology-pos-diagnostic-v1",
+    "fantlab_methodology_source": "https://fantlab.ru/article374",
+    "provider_runtime_profile": "pylem-0.0.18-python39-sidecar-v1",
+    "runtime_analysis_sha256": "00cb365eeb6e187362cb1cb54acc6718c230791df18013702907dfee6446d69d",
+    "token_count": 269358,
+    "observed_work_page_defined_count": 117554,
+    "methodology_defined_count": 127909,
+    "methodology_undefined_count": 141449,
+    "additional_methodology_defined_count": 10355,
+    "extra_bucket_counts": {
+      "postposition": 0,
+      "phrasal_verb": 156,
+      "short_adjective": 1874,
+      "short_participle": 718,
+      "infinitive": 7607
+    },
+    "current_work_page_surface_relation": "unknown",
+    "runtime_n_resolution": "unresolved",
+    "fantlab_homonym_selection": "unresolved",
+    "fantlab_dictionary_equivalence": "unknown",
+    "production_pos_profile_changed": false,
+    "m2_parity_admissible": false
   },
   "fantlab_boundary": {
     "work_id": 270306,

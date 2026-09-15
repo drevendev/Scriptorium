@@ -1,26 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 79
+STATE_REVISION: 80
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T13:58:32Z
-LAST_RESULT: SCRIP-CORPUS-002 / Issue #73 / PR #74 authored a source-free corpus/provenance slice for Andrei Bely's `Серебряный голубь` as the first retained candidate deliberately chosen to diversify the seed beyond nineteenth-century Russian classics. FantLab work 293515 reports a 19 September 2022 linguistic analysis at 549,050 characters / 83,369 words. Russian Wikisource explicitly marks the complete one-page work public domain in Russia, cites Bely's 1990 two-volume collected edition (vol. 1, pp. 377–642), credits V. Esaulov's 2006 electronic version, and exposes permanent full-work revision `oldid=5588003`. The candidate remains `traced_not_frozen`: no extraction/hash freeze or FantLab source identity is claimed, the FantLab 1910 versus Wikisource 1909 publication-year discrepancy remains unresolved, and M2 remains 0/5 source-matched works.
-LAST_VERIFIED_PROGRESS: Fresh source research verified FantLab's published threshold count and analysis date, the Wikisource public-domain notice and bibliographic source citation, and the permanent one-page revision boundary. The authored repository changes add `bely-silver-dove-ru` to the candidate catalog, add `corpus/candidates/source-edition-traces/bely-silver-dove-ru.json`, document the candidate in corpus navigation, and record the unit in `project/CHANGELOG.d/SCRIP-CORPUS-002.md`. PR #74 was opened from unchanged master `66f904e33fe094b416de577ce4c803dffaef563c`; this authoring run does not independently judge or merge its own substantive provenance change. Exact-head checks/review remain the next action.
+LAST_COMMITTED_RUN_AT: 2026-09-15T14:49:19Z
+LAST_RESULT: SCRIP-CORPUS-002 / Issue #73 / PR #74 received an independent exact-head review with no blocking defect and was squash-merged as `0b4c4fc17b9bbfb084d0f25a44b415926725b2fe`; Issue #73 closed completed. The merged unit adds Andrei Bely's `Серебряный голубь` as a source-free early-twentieth-century modernist FantLab parity-corpus candidate with explicit Wikisource public-domain/bibliographic evidence and permanent revision identity while preserving `traced_not_frozen`, source-match `unknown`, diagnostics disabled and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Independent review of exact head `fa61fcecb6e73278a1f3552aaf986dc1446dd5cc` confirmed the PR was 5 commits ahead / 0 behind unchanged master `66f904e33fe094b416de577ce4c803dffaef563c`, changed exactly five expected corpus/provenance/state files, and had no pre-existing PR comments, submitted reviews or review threads. Exact-head runs `34978609215` (Pages) and `34978609254` (pinned provider) succeeded; hosted jobs passed the standard-library/contract suites, deterministic site rebuild, exact hash-pinned pylem 0.0.18 native smoke on Python 3.9, and frozen Anna replay/source-free diagnostic uploads. Fresh external re-check confirmed FantLab's 19 September 2022 analysis at 549,050 characters / 83,369 words and Russian Wikisource permanent revision `oldid=5588003` (30 July 2025 21:54) carrying the 1909 publication label, public-domain notice, 1990 volume citation and V. Esaulov 2006 electronic-version credit. The authorial front matter itself says `1910 года. 12 апреля`, so the 1909/1910 dating discrepancy remains unresolved rather than being normalized into source identity.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-002
 ISSUE:          #73
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #74
-HEAD_BRANCH:    scrip-corpus-002-bely-silver-dove
-NEXT_ACTION:    Independently review the exact current head of PR #74. Re-check the
-                FantLab threshold/date, Wikisource legal/bibliographic/permanent-revision
-                evidence, JSON/catalog integrity, changed-file boundary and any hosted
-                checks. Merge only if the source-match claims remain fail-closed; then
-                close Issue #73 completed and record review evidence. Do not treat the
-                permanent public revision as a frozen analyzer input without an explicit
-                extraction/hash replay.
+MERGED_COMMIT:  0b4c4fc17b9bbfb084d0f25a44b415926725b2fe
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer strengthening the new Silver Dove candidate by defining a
+                fail-closed single-page Wikisource extraction contract and exact-revision
+                hash freeze if the source markup can be bounded safely; otherwise add
+                another legally usable >=300k diversity candidate. Do not treat a public
+                freeze as FantLab analyzer-input identity without independent evidence.
 ```
 
 ## Current milestone gate

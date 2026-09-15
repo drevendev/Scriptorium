@@ -1,30 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 77
+STATE_REVISION: 78
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T11:54:16Z
-LAST_RESULT: SCRIP-MORPH-008 / Issue #71 / PR #72 is authored and in REVIEW. The unit wires the reviewed 22-category FantLab methodology POS diagnostic through the frozen Anna Karenina pinned-provider lane, binds its source-free aggregate to frozen normalized text plus the exact runtime-analysis matrix, and exposes aggregate-only methodology counts in the existing public Anna morphology showcase. Production `scriptorium-pos-v1` remains unchanged; runtime `N`, cross-category homonyms, FantLab dictionary identity/homonym selection and the relation between the 22-category methodology and current 17-bucket work-page presentation remain fail-closed. M2 remains 0/5 source-matched works.
-LAST_VERIFIED_PROGRESS: Provider run `34965648975` on authored implementation head `cbc2cff0f2d6a5d2abe2e19acd6816ce22cba3b4` passed the complete Python 3.13 standard-library suite, unchanged hash-pinned pylem 0.0.18 native smoke on Python 3.9, and the full frozen Anna replay. The methodology diagnostic measured 269,358 tokens, 127,909 conservatively defined methodology rows and 141,449 undefined rows, adding 10,355 defined rows over the 117,554-defined 17-bucket view: 7,607 infinitives, 1,874 short adjectives, 718 short participles, 156 phrasal verbs/collocations and 0 postpositions. It is bound to frozen normalized SHA-256 `1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`, runtime profile `pylem-0.0.18-python39-sidecar-v1` and runtime-analysis SHA-256 `00cb365eeb6e187362cb1cb54acc6718c230791df18013702907dfee6446d69d`. Actions artifact `10395347613` has archive SHA-256 `d5ac8714a5be1eac06bd21415607c9d3e06f81e68e85df2965e38b64c9d07d65`; its sole JSON payload SHA-256 is `dc43b796311884dd76fef7cc0151950d626f41a0b3b1384901e437d5ae773f78` and contains no source text, normalized text, token rows or candidate rows. Pages run `34965648986` and frozen diagnostic run `34965649096` on that implementation head also succeeded. Final authored-head checks after the public/state commits remain part of PR #72 review evidence and must be inspected before merge.
+LAST_COMMITTED_RUN_AT: 2026-09-15T12:52:30Z
+LAST_RESULT: SCRIP-MORPH-008 / Issue #71 / PR #72 received an independent exact-head review with no blocking defect and was squash-merged as `374704167262bdd3723c165a9685c0d4f6b1c0dc`; Issue #71 closed completed. The merged unit wires the reviewed 22-category FantLab methodology POS diagnostic through the frozen Anna Karenina pinned-provider lane, binds its source-free aggregate to frozen normalized text plus the exact runtime-analysis matrix, and exposes review-approved aggregate-only methodology counts in the existing public Anna morphology showcase. Production `scriptorium-pos-v1` remains unchanged; runtime `N`, cross-category homonyms, FantLab dictionary identity/homonym selection and the relation between the 22-category methodology and current 17-bucket work-page presentation remain fail-closed. M2 remains 0/5 source-matched works.
+LAST_VERIFIED_PROGRESS: Independent review of exact head `b731c0c9a3e28a50ebdefe90460310ae449d338e` confirmed the PR was 9 commits ahead / 0 behind unchanged master `89263111c1fd22282d4d4126b5b639a976b5c352`, changed exactly seven expected workflow/state/public-artifact/implementation/test files, and had no pre-existing PR comments, submitted reviews or review threads. Exact-head runs `34966221404` (Pages), `34966221493` (frozen diagnostic), and `34966221492` (pinned provider) all succeeded; provider jobs passed the complete Python 3.13 standard-library suite, exact hash-pinned pylem 0.0.18 native smoke on Python 3.9, and the full frozen Anna provider replay. Final methodology artifact `10395775083` has archive SHA-256 `a88d43c5aefec9d0cfa5db6c1a1c3800b3ac17ad236e0d61d1a064b33cfc32d4`; its sole JSON payload SHA-256 is `d194c8961cf6077f209c6d868ec147c928b19a0193060f3e1966507816da4e5d`, contains no source prose/normalized text/token rows/candidate rows, and is bound to frozen normalized SHA-256 `1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`, runtime profile `pylem-0.0.18-python39-sidecar-v1`, runtime-analysis SHA-256 `00cb365eeb6e187362cb1cb54acc6718c230791df18013702907dfee6446d69d`, and final head. Independent accounting reproduced 127,909 defined + 141,449 undefined = 269,358 tokens and 7,607 infinitives + 1,874 short adjectives + 718 short participles + 156 phrasal verbs/collocations + 0 postpositions = 10,355 additional methodology-defined rows. Pages artifact `10395112367` has archive SHA-256 `db112e531a31838c22abce743eebc4405549129ebab40aa07fe918a6b7d0f4c2`; the rendered Anna morphology route preserves source-match `unknown`, M2 false, unknown work-page relation and the no-source-text disclosure.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-MORPH-008
 ISSUE:          #71
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #72
-MERGED_COMMIT:  none
-NEXT_ACTION:    Independently review the exact final head of PR #72, including its
-                provider/Pages/frozen-diagnostic checks and source-free methodology
-                artifact. Merge only if the aggregate remains bound to the same frozen
-                candidate/provider analysis and all epistemic boundaries hold. After a
-                safe merge, select SCRIP-CORPUS continuation to rebalance recent
-                morphology-heavy work toward legally usable >=300k corpus diversity.
+MERGED_COMMIT:  374704167262bdd3723c165a9685c0d4f6b1c0dc
+NEXT_ACTION:    Select SCRIP-CORPUS continuation as the highest-priority
+                dependency-satisfied normal-flow unit. Prioritize a legally usable
+                >=300k candidate that improves corpus diversity beyond the current
+                19th-century Russian-classic concentration, preserving explicit
+                license/provenance and translation identity.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering the five additional source-backed AOT categories while leaving runtime `N` unresolved. SCRIP-MORPH-008 now has provider-executed frozen Anna aggregate evidence for the latter surface and exposes only those source-free aggregate values in the public morphology showcase; this does not establish how the five categories relate to the current FantLab work-page table. Anna Karenina, Resurrection and Brothers Karamazov each have immutable public-source candidates, but M2 remains open at **0/5 source-matched works** because no retained FantLab analyzer-input edition/byte identity is independently established.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering the five additional source-backed AOT categories while leaving runtime `N` unresolved. SCRIP-MORPH-008 now has independently reviewed and merged provider-executed frozen Anna aggregate evidence for the latter surface and exposes only those source-free aggregate values in the public morphology showcase; this does not establish how the five categories relate to the current FantLab work-page table. Anna Karenina, Resurrection and Brothers Karamazov each have immutable public-source candidates, but M2 remains open at **0/5 source-matched works** because no retained FantLab analyzer-input edition/byte identity is independently established.
 
 ## Queue
 
@@ -32,7 +31,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation identity and explicit legal provenance; select only after PR #72 review/merge is resolved |
+| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation identity and explicit legal provenance |
 
 ## Evidence already established
 
@@ -96,7 +95,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 ### Public repository representation
 
 - The static renderer/publication manifest remain fail-closed and source-free. Public material includes two short Anna Karenina derived showcases, a provenance-only Resurrection page, and a full-work Anna Karenina morphology diagnostic page.
-- The full-work morphology page exposes reviewed M005/M006 aggregates plus the SCRIP-MORPH-008 authored aggregate-only 22-category methodology diagnostic, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false`, unresolved work-page relation and unchanged production POS semantics.
+- The full-work morphology page exposes reviewed M005/M006 aggregates plus the independently reviewed SCRIP-MORPH-008 aggregate-only 22-category methodology diagnostic, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false`, unresolved work-page relation and unchanged production POS semantics.
 - The methodology public slice exposes only aggregate counts and runtime-analysis identity; it publishes no source prose, normalized text, tokens or candidate rows.
 - Corpus navigation documents the frozen Brothers Karamazov public identity and exact source-free manifest, but no derived full-work analysis is published for it because FantLab source match and diagnostic admissibility remain unresolved.
 - Publication contract tests scan provenance artifacts for forbidden source-prose keys; Pages builds are reproducible.

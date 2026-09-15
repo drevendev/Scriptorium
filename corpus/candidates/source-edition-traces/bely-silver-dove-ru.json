@@ -1,0 +1,86 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "bely-silver-dove-ru",
+  "research_date": "2026-09-15",
+  "fantlab": {
+    "work_id": 293515,
+    "analysis_url": "https://fantlab.ru/work293515/lp",
+    "analysis_date": "2022-09-19",
+    "observed_counts": {
+      "characters": 549050,
+      "words": 83369
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "work_page_url": "https://fantlab.ru/work293515",
+    "work_page_publication_year": 1910,
+    "relationship_to_public_transcription": "unproven"
+  },
+  "public_transcription": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Серебряный_голубь_(Белый)",
+    "permanent_work_url": "https://ru.wikisource.org/w/index.php?title=Серебряный_голубь_(Белый)&oldid=5588003",
+    "work_revision_id": 5588003,
+    "work_revision_timestamp": "2025-07-30T21:54:00Z",
+    "structure": {
+      "kind": "single_page_full_work",
+      "described_as": "Повесть в семи главах",
+      "full_text_present_on_revision": true,
+      "independent_subpage_revision_inventory_required": false,
+      "source_text_committed": false
+    },
+    "bibliographic_source": "Андрей Белый. Сочинения в двух томах. М.: Художественная литература, 1990. Том 1, стр. 377–642.",
+    "electronic_version_credit": "В. Есаулов, 19 августа 2006 г.",
+    "page_source_label": "az.lib.ru",
+    "source_provenance_confidence": "strong",
+    "legal_basis": "public_domain",
+    "legal_evidence": "The Russian Wikisource work page explicitly marks the literary work public domain in Russia under Article 1281 of the Civil Code. This trace concerns the literary work body and does not assert rights over later editorial apparatus.",
+    "publication_metadata": {
+      "wikisource_year": 1909,
+      "fantlab_year": 1910,
+      "status": "discrepant_not_resolved",
+      "note": "The two public surfaces use different publication years. This may reflect serial versus book publication or another cataloging convention, but Scriptorium does not infer the cause or source identity without independent evidence."
+    },
+    "immutable_identity": {
+      "status": "revision_identified_not_extracted",
+      "frozen_components": [
+        "Russian Wikisource full-work revision 5588003",
+        "bibliographic citation to the 1990 Khudozhestvennaya literatura edition",
+        "electronic-version attribution to V. Esaulov dated 2006-08-19"
+      ],
+      "unfrozen_components": [
+        "versioned extraction contract for the full-work revision",
+        "raw and normalized full-work SHA-256 identities",
+        "character count of the extracted public candidate",
+        "the relationship between FantLab's uploaded analyzer input and this public transcription"
+      ],
+      "reason": "The complete public transcription is available at one permanent Wikisource revision, but Scriptorium has not yet defined and replayed an extraction contract or computed composite text hashes. FantLab independently does not disclose the edition or immutable bytes used for its 2022 analysis."
+    }
+  },
+  "diversity": {
+    "period": "early_20th_century",
+    "movement": "Russian symbolism / modernism",
+    "work_identity": "original_russian",
+    "reason_selected": "The retained parity seed is concentrated in nineteenth-century Russian classics. This legally usable FantLab-analyzed work adds an early-twentieth-century modernist/symbolist voice while keeping translation identity uncomplicated."
+  },
+  "admissibility": {
+    "length_threshold_met_from_fantlab": true,
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "status": "traced_not_frozen",
+    "reasons": [
+      "FantLab reports 549,050 characters, above the 300,000-character calibration threshold.",
+      "Russian Wikisource explicitly marks the literary work public domain and supplies a concrete 1990 source-edition citation plus a permanent full-work revision.",
+      "The public-source revision has not yet been extracted under a versioned Scriptorium contract or bound to raw/normalized hashes.",
+      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis.",
+      "FantLab and Wikisource expose different publication years (1910 versus 1909); the discrepancy is retained as unresolved evidence rather than normalized away."
+    ],
+    "next_evidence": [
+      "Define a fail-closed extraction contract for Wikisource revision 5588003 that excludes page metadata/navigation while retaining only literary text and authorial headings/preface as justified by source structure.",
+      "Replay the exact revision, compute raw and scriptorium-text-v1 normalized character counts and SHA-256 identities, and commit only source-free provenance/hashes.",
+      "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to a specific Silver Dove edition or byte stream; do not infer identity from title, publication year, or similar counts."
+    ]
+  }
+}

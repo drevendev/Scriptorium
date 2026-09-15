@@ -172,6 +172,39 @@
         "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
         "The 1990 critical-edition transcription is a source candidate, not evidence that FantLab analyzed that edition."
       ]
+    },
+    {
+      "candidate_id": "bely-silver-dove-ru",
+      "author": "Андрей Белый",
+      "title": "Серебряный голубь",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 293515,
+        "analysis_url": "https://fantlab.ru/work293515/lp",
+        "analysis_date": "2022-09-19",
+        "characters": 549050,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Серебряный_голубь_(Белый)",
+        "edition_note": "Андрей Белый. Сочинения в двух томах. М.: Художественная литература, 1990. Том 1, стр. 377–642; electronic version credited to V. Esaulov, 19 August 2006 (as cited on the Wikisource full-work page).",
+        "source_provenance_confidence": "strong",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The work page explicitly marks the literary work public domain in Russia under Article 1281 of the Civil Code."
+      },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/bely-silver-dove-ru.json",
+      "source_identity_status": "traced_not_frozen",
+      "fantlab_source_edition_match": "unknown",
+      "diagnostic_ready": false,
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "The complete Wikisource transcription is pinned to permanent revision 5588003, but Scriptorium has not yet defined/replayed a full-work extraction contract or computed raw/normalized hashes.",
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
+        "FantLab labels the work 1910 while the current Wikisource metadata says publication 1909; the discrepancy is preserved as unresolved bibliographic evidence rather than treated as source identity."
+      ]
     }
   ],
   "held_leads": [

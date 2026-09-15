@@ -195,15 +195,18 @@
         "legal_evidence": "The work page explicitly marks the literary work public domain in Russia under Article 1281 of the Civil Code."
       },
       "source_edition_trace": "corpus/candidates/source-edition-traces/bely-silver-dove-ru.json",
-      "source_identity_status": "traced_not_frozen",
+      "source_revision_manifest": "corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json",
+      "source_identity_status": "public_candidate_frozen",
+      "frozen_candidate_characters": 563125,
+      "frozen_candidate_sha256": "496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183",
       "fantlab_source_edition_match": "unknown",
       "diagnostic_ready": false,
       "gate_ready": false,
       "status": "eligible_unmatched",
       "blockers": [
-        "The complete Wikisource transcription is pinned to permanent revision 5588003, but Scriptorium has not yet defined/replayed a full-work extraction contract or computed raw/normalized hashes.",
-        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
-        "FantLab labels the work 1910 while the current Wikisource metadata says publication 1909; the discrepancy is preserved as unresolved bibliographic evidence rather than treated as source identity."
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; the frozen public-domain candidate is not source-match or M2 parity evidence.",
+        "The frozen public candidate has 563,125 characters while FantLab displays 549,050; the 14,075-character delta must not be treated as proof of edition identity or a single normalization cause.",
+        "FantLab labels the work 1910 while Wikisource metadata says publication 1909; the discrepancy is preserved as unresolved bibliographic evidence rather than treated as source identity."
       ]
     }
   ],

@@ -45,6 +45,7 @@ BOOK_NAMES = (
 BOOK_CHAPTER_COUNTS = (5, 8, 11, 7, 7, 3, 4, 8, 9, 7, 10, 14)
 EPILOGUE_CHAPTER_COUNT = 3
 SOURCE_SEGMENT_COUNT = 98
+CAPTURE_BATCH_SIZE = 8
 MANIFEST_VERSION = "scriptorium-karamazov-source-revision-packed-manifest-v1"
 EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v1"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)"
@@ -116,6 +117,28 @@ def expected_segments() -> tuple[dict[str, object], ...]:
             f"source inventory drift: expected {SOURCE_SEGMENT_COUNT}, got {ordinal}"
         )
     return tuple(segments)
+
+
+def fetch_current_segment_revisions(
+    segments: Iterable[dict[str, object]],
+) -> dict[str, dict[str, object]]:
+    """Fetch current identities in short batches so long Cyrillic titles stay below URI limits."""
+
+    expected = tuple(segments)
+    records: dict[str, dict[str, object]] = {}
+    for offset in range(0, len(expected), CAPTURE_BATCH_SIZE):
+        batch = expected[offset : offset + CAPTURE_BATCH_SIZE]
+        fetched = fetch_current_chapter_revisions(batch)
+        overlap = set(records).intersection(fetched)
+        if overlap:
+            raise ValueError(f"duplicate source-segment responses: {sorted(overlap)!r}")
+        records.update(fetched)
+    expected_titles = {str(segment["title"]) for segment in expected}
+    if set(records) != expected_titles:
+        missing = sorted(expected_titles - set(records))
+        extra = sorted(set(records) - expected_titles)
+        raise ValueError(f"source inventory mismatch; missing={missing!r} extra={extra!r}")
+    return records
 
 
 def _strip_leading_template(source: str, name: str) -> str:
@@ -237,7 +260,7 @@ def build_manifest(
     *,
     fetcher: Callable[
         [Iterable[dict[str, object]]], dict[str, dict[str, object]]
-    ] = fetch_current_chapter_revisions,
+    ] = fetch_current_segment_revisions,
 ) -> dict[str, object]:
     """Capture source identities and composite hashes without serializing source prose."""
 

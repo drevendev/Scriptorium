@@ -48,7 +48,7 @@ EPILOGUE_CHAPTER_COUNT = 3
 SOURCE_SEGMENT_COUNT = 98
 CAPTURE_BATCH_SIZE = 8
 MANIFEST_VERSION = "scriptorium-karamazov-source-revision-packed-manifest-v1"
-EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v5"
+EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v6"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)"
 SOURCE_WORK_INDEX_REVISION_ID = 5616907
 BIBLIOGRAPHIC_SOURCE = (
@@ -81,6 +81,7 @@ _EDITOR_NOTE_START_RE = re.compile(
     r"\{\{\s*(?:примечание\s+вт|примечания\s+вт)(?=\s*[|}])",
     re.IGNORECASE,
 )
+_TYPO_START_RE = re.compile(r"\{\{\s*опечатка(?=\s*[|}])", re.IGNORECASE)
 _HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
 _HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 
@@ -272,6 +273,46 @@ def _strip_wikisource_editor_notes(source: str) -> str:
         cursor = end
 
 
+def _unwrap_typo_templates(source: str) -> str:
+    """Render only the observed unambiguous long-form Wikisource typo corrections.
+
+    Russian Wikisource documents ``{{Опечатка|source|corrected|О1/О2/О3}}`` as the
+    long form for a corrected printing error. The current source-free probe found two
+    three-argument invocations in Book XI chapter IV with no nested templates or links.
+    The main-space transcription therefore keeps only the corrected second argument.
+    Short/ambiguous forms, unknown correction classes and nested markup remain
+    fail-closed rather than guessing whether a parameter is correction text or comment.
+    """
+
+    output: list[str] = []
+    cursor = 0
+    while True:
+        match = _TYPO_START_RE.search(source, cursor)
+        if match is None:
+            output.append(source[cursor:])
+            return "".join(output)
+        output.append(source[cursor : match.start()])
+        end = _find_balanced_template_end(source, match.start())
+        raw = source[match.start() : end]
+        parts = _split_template_parts(raw[2:-2])
+        if not parts or parts[0].strip().casefold() != "опечатка":
+            raise ValueError("unexpected template while unwrapping Wikisource typo")
+        args = parts[1:]
+        if len(args) != 3:
+            raise ValueError("unsupported Wikisource typo argument shape")
+        original, corrected, correction_class = (arg.strip() for arg in args)
+        if not original or not corrected:
+            raise ValueError("empty Wikisource typo text argument")
+        if re.fullmatch(r"О[123]", correction_class, re.IGNORECASE) is None:
+            raise ValueError("unsupported Wikisource typo correction class")
+        if any("{{" in arg or "}}" in arg for arg in args):
+            raise ValueError("nested template inside Wikisource typo is unsupported")
+        if any("[[" in arg or "]]" in arg for arg in args):
+            raise ValueError("wikilink inside Wikisource typo is unsupported")
+        output.append(corrected)
+        cursor = end
+
+
 def _strip_observed_poem_indent_templates(middle: str) -> str:
     """Strip source-observed numeric ``Indent`` directives used only for layout.
 
@@ -434,6 +475,7 @@ def extract_karamazov_body(wikitext: str, *, kind: str) -> str:
 
     source = _NOINCLUDE_RE.sub("", wikitext)
     source = _strip_wikisource_editor_notes(source)
+    source = _unwrap_typo_templates(source)
     source = _unwrap_poem1_templates(source)
 
     onlyinclude = _ONLYINCLUDE_RE.findall(source)
@@ -544,6 +586,7 @@ def build_manifest(
             "epilogue_chapter_count": EPILOGUE_CHAPTER_COUNT,
             "navigation_wrappers_included": False,
             "wikisource_editor_notes_included": False,
+            "wikisource_typo_corrections_render_corrected_text": True,
             "literary_heading_levels_preserved_as_text": [5, 6],
             "poem_indent_templates_stripped_as_formatting": True,
         },
@@ -589,6 +632,8 @@ def _validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object
         raise ValueError("navigation-wrapper boundary drift")
     if composition.get("wikisource_editor_notes_included") is not False:
         raise ValueError("Wikisource editor-note boundary drift")
+    if composition.get("wikisource_typo_corrections_render_corrected_text") is not True:
+        raise ValueError("Wikisource typo-correction boundary drift")
     if composition.get("literary_heading_levels_preserved_as_text") != [5, 6]:
         raise ValueError("literary-heading boundary drift")
     if composition.get("poem_indent_templates_stripped_as_formatting") is not True:

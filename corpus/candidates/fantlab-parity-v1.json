@@ -130,15 +130,17 @@
         "legal_evidence": "The work page explicitly marks the literary work public domain; original publication was 1878–1880 in the Russian Empire."
       },
       "source_edition_trace": "corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.json",
-      "source_identity_status": "traced_not_frozen",
+      "source_revision_manifest": "corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.revisions.json",
+      "source_identity_status": "public_candidate_frozen",
+      "frozen_candidate_characters": 1810351,
+      "frozen_candidate_sha256": "26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6",
       "fantlab_source_edition_match": "unknown",
       "diagnostic_ready": false,
       "gate_ready": false,
       "status": "eligible_unmatched",
       "blockers": [
-        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
-        "The traced 1991 Nauka / RVB Wikisource transcription is a strong public source candidate, not evidence that FantLab analyzed that edition.",
-        "Wikisource work-index revision 5616907 does not freeze the independent text-bearing subpage revisions; exact leaf inventory, extraction/composition and composite hashes must be frozen before full-work diagnostics."
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; the frozen public-domain candidate is not source-match or M2 parity evidence.",
+        "The frozen public candidate has 1,810,351 characters while FantLab displays 1,807,107; the 3,244-character delta must not be treated as proof of edition identity or a single normalization cause."
       ]
     },
     {

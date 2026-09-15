@@ -32,7 +32,7 @@ jobs:
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
 
-      - name: Probe nested Poem1 markup on the current failing leaf
+      - name: Probe nested indent shape on the current failing leaf
         run: |
           python - <<'PY'
           import re
@@ -51,12 +51,12 @@ jobs:
           )
           source = str(fetch_current_segment_revisions((target,))[str(target["title"])]["wikitext"])
           source = _strip_wikisource_editor_notes(_NOINCLUDE_RE.sub("", source))
-          start_re = re.compile(r"\{\{\s*poem1\b", re.IGNORECASE)
+          poem_start = re.compile(r"\{\{\s*poem1\b", re.IGNORECASE)
+          indent_start = re.compile(r"\{\{\s*indent(?=\s*[|}])", re.IGNORECASE)
           cursor = 0
-          shapes = []
-          nested_names = set()
+          indent_shapes = []
           while True:
-              match = start_re.search(source, cursor)
+              match = poem_start.search(source, cursor)
               if match is None:
                   break
               end = _find_balanced_template_end(source, match.start())
@@ -64,18 +64,23 @@ jobs:
               parts = _split_template_parts(raw[2:-2])
               args = parts[1:]
               middle = args[1] if len(args) > 1 else ""
-              names = sorted({
-                  nested.group(1).strip().casefold()
-                  for nested in re.finditer(r"\{\{\s*([^|{}\n]+)", middle)
-              })
-              nested_names.update(names)
-              shapes.append((len(args), bool(re.fullmatch(r"\s*<poem\b[^>]*>.*?</poem>\s*", middle, re.I | re.S)), tuple(names)))
+              nested = indent_start.search(middle)
+              if nested is not None:
+                  nested_end = _find_balanced_template_end(middle, nested.start())
+                  nested_raw = middle[nested.start():nested_end]
+                  nested_parts = _split_template_parts(nested_raw[2:-2])
+                  nested_args = nested_parts[1:]
+                  indent_shapes.append({
+                      "arg_count": len(nested_args),
+                      "blank_flags": [not arg.strip() for arg in nested_args],
+                      "numeric_flags": [bool(re.fullmatch(r"\s*\d+(?:[.,]\d+)?\s*", arg)) for arg in nested_args],
+                      "nested_template_counts": [len(re.findall(r"\{\{", arg)) for arg in nested_args],
+                      "contains_links_flags": ["[[" in arg or "]]" in arg for arg in nested_args],
+                      "at_line_start": middle.rfind("\n", 0, nested.start()) + 1 == nested.start(),
+                  })
               cursor = end
-          print("SCRIPTORIUM_KARAMAZOV_POEM1_COUNT=" + str(len(shapes)))
-          print("SCRIPTORIUM_KARAMAZOV_POEM1_ARG_COUNTS=" + ",".join(str(shape[0]) for shape in shapes))
-          print("SCRIPTORIUM_KARAMAZOV_POEM1_POEM_TAG_FLAGS=" + ",".join("1" if shape[1] else "0" for shape in shapes))
-          print("SCRIPTORIUM_KARAMAZOV_POEM1_NESTED_TEMPLATE_NAMES=" + ",".join(sorted(nested_names)))
-          print("SCRIPTORIUM_KARAMAZOV_POEM1_NESTED_TEMPLATE_COUNTS=" + ",".join(str(len(shape[2])) for shape in shapes))
+          import json
+          print("SCRIPTORIUM_KARAMAZOV_INDENT_SHAPES=" + json.dumps(indent_shapes, sort_keys=True, separators=(",", ":")))
           PY
 
       - name: Capture exact source revisions and composite hashes

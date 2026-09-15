@@ -62,6 +62,7 @@ def decompose_runtime_candidates(
     rows = tuple(tuple(row) for row in candidate_rows)
     reason_counts: Counter[str] = Counter()
     unresolved_presence: Counter[str] = Counter()
+    undefined_direct_bucket_presence: Counter[str] = Counter()
     direct_ambiguity_sets: Counter[str] = Counter()
     direct_ambiguity_bucket_presence: Counter[str] = Counter()
 
@@ -75,10 +76,15 @@ def decompose_runtime_candidates(
         for runtime_pos in unique & ({N_RUNTIME_POS} | EXTRA_UNRESOLVED_RUNTIME_POS):
             unresolved_presence[runtime_pos] += 1
 
+        direct_buckets = sorted(
+            {DIRECT_RUNTIME_TO_BUCKET[value] for value in unique if value in DIRECT_RUNTIME_TO_BUCKET}
+        )
+        for bucket in direct_buckets:
+            undefined_direct_bucket_presence[bucket] += 1
+
         if reason == "direct_cross_bucket_ambiguity":
-            buckets = sorted({DIRECT_RUNTIME_TO_BUCKET[value] for value in unique})
-            direct_ambiguity_sets["|".join(buckets)] += 1
-            for bucket in buckets:
+            direct_ambiguity_sets["|".join(direct_buckets)] += 1
+            for bucket in direct_buckets:
                 direct_ambiguity_bucket_presence[bucket] += 1
 
     defined_count = reason_counts["defined"]
@@ -108,6 +114,9 @@ def decompose_runtime_candidates(
             runtime_pos: unresolved_presence[runtime_pos]
             for runtime_pos in sorted({N_RUNTIME_POS} | EXTRA_UNRESOLVED_RUNTIME_POS)
         },
+        "undefined_direct_bucket_token_presence_counts": dict(
+            sorted(undefined_direct_bucket_presence.items())
+        ),
         "direct_ambiguity_bucket_presence_counts": dict(
             sorted(direct_ambiguity_bucket_presence.items())
         ),

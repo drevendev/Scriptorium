@@ -1,0 +1,64 @@
+{
+  "contract_id": "fantlab-pos-methodology-v1",
+  "status": "inferred_source_backed_surface_contract",
+  "fantlab_methodology_source": "https://fantlab.ru/article374",
+  "fantlab_methodology_evidence": "Article 374 explicitly enumerates 22 POS statistics and says POS bigrams and sentence-position metrics cover the listed parts of speech.",
+  "observed_work_page_surface": {
+    "status": "separate_narrower_surface",
+    "bucket_count": 17,
+    "relation_to_full_methodology": "unknown",
+    "rule": "Do not infer that methodology-only categories are folded into visible work-page buckets merely because the current page omits them."
+  },
+  "full_methodology_buckets": [
+    "noun",
+    "adjective",
+    "verb",
+    "pronoun_noun",
+    "pronoun_adjective",
+    "pronoun_predicative",
+    "cardinal",
+    "ordinal",
+    "adverb",
+    "predicative",
+    "preposition",
+    "postposition",
+    "conjunction",
+    "interjection",
+    "introductory_word",
+    "phrasal_verb",
+    "particle",
+    "short_adjective",
+    "participle",
+    "gerund",
+    "short_participle",
+    "infinitive"
+  ],
+  "methodology_only_runtime_mapping": {
+    "POSL": "postposition",
+    "COLLOC": "phrasal_verb",
+    "ADJ_SHORT": "short_adjective",
+    "PARTICIPLE_SHORT": "short_participle",
+    "INFINITIVE": "infinitive"
+  },
+  "pinned_aot_evidence": {
+    "repository": "https://github.com/sokirko74/morph_dict",
+    "revision": "4c5e9b6d048d1ba74e02988593b23fb0cbc87772",
+    "path": "AgramtabLib/RusGramTab.cpp",
+    "statement": "The five runtime strings are distinct Latin renderings of standalone Russian AOT POS slots."
+  },
+  "runtime_n_boundary": {
+    "runtime_pos": "N",
+    "candidate_buckets": ["noun", "cardinal"],
+    "status": "unresolved_lossy_collision",
+    "rule": "Do not recover noun/cardinal from list order, lexical guesses, weights, or morph-feature correlation."
+  },
+  "diagnostic_policy": {
+    "production_profile": "scriptorium-pos-v1",
+    "production_profile_changed": false,
+    "methodology_view": "diagnostic_only",
+    "cross_category_homonyms": "undefined",
+    "fantlab_dictionary_equivalence": "unknown",
+    "fantlab_homonym_selection": "unresolved",
+    "m2_parity_admissible": false
+  }
+}

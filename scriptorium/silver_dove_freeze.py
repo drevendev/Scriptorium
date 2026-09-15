@@ -60,7 +60,9 @@ _EXPECTED_CATEGORIES = (
     "Импорт/lib.ru",
     "Импорт/az.lib.ru/Андрей Белый",
 )
-_HEADING3_RE = re.compile(r"===\s*(?P<text>[^=]+?)\s*===", re.DOTALL)
+_HEADING3_RE = re.compile(
+    r"(?m)^[ \t]*===(?!=)[ \t]*(?P<text>[^\n=].*?)[ \t]*(?<![=])===(?![=])[ \t]*$"
+)
 _CENTER_RE = re.compile(r"<center>(?P<text>.*?)</center>", re.IGNORECASE | re.DOTALL)
 _CATEGORY_RE = re.compile(r"\[\[Категория:(?P<name>[^\]]+)\]\]", re.IGNORECASE)
 _HEX64_RE = re.compile(r"^[0-9a-f]{64}$")

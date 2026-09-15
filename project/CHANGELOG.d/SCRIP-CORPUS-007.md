@@ -1,7 +1,7 @@
 # SCRIP-CORPUS-007 — Hyperboloid textual-family provenance classification
 
 Issue: #83  
-PR: pending  
+PR: #84  
 Mode: corpus / provenance
 
 ## Decision

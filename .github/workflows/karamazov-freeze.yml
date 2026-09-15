@@ -36,8 +36,11 @@ jobs:
         run: |
           python - <<'PY'
           import collections
+          import html
           import json
           import re
+          from urllib.parse import urlencode
+          from urllib.request import Request, urlopen
           from scriptorium.karamazov_freeze import (
               _BODY_DIV_RE,
               _NOINCLUDE_RE,
@@ -105,6 +108,26 @@ jobs:
           print("SCRIPTORIUM_KARAMAZOV_TEMPLATE_SHAPES=" + json.dumps(
               payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
           ))
+
+          query = urlencode({
+              "action": "expandtemplates",
+              "text": "{{NB}}",
+              "prop": "wikitext",
+              "format": "json",
+              "formatversion": "2",
+          })
+          request = Request(
+              "https://ru.wikisource.org/w/api.php?" + query,
+              headers={"User-Agent": "Scriptorium/0.1 source-free provenance probe"},
+          )
+          with urlopen(request, timeout=20) as response:
+              expanded = json.load(response)["expandtemplates"]["wikitext"]
+          decoded = html.unescape(expanded)
+          print("SCRIPTORIUM_WIKISOURCE_NB_RENDER=" + json.dumps({
+              "expanded_length": len(expanded),
+              "decoded_length": len(decoded),
+              "decoded_codepoints": [f"U+{ord(char):04X}" for char in decoded],
+          }, sort_keys=True, separators=(",", ":")))
           PY
 
       - name: Capture exact source revisions and composite hashes

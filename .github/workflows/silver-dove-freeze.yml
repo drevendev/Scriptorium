@@ -8,6 +8,7 @@ on:
       - "scriptorium/wikisource_freeze.py"
       - "scriptorium/wikisource_replay.py"
       - "tests/test_silver_dove_freeze.py"
+      - "corpus/candidates/source-edition-traces/bely-silver-dove-ru.json"
       - "corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json"
   workflow_dispatch:
 
@@ -16,7 +17,7 @@ permissions:
 
 jobs:
   freeze:
-    name: Capture and replay pinned Silver Dove source identity
+    name: Replay pinned Silver Dove source identity
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -34,23 +35,21 @@ jobs:
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
 
-      - name: Capture and replay exact public revision
+      - name: Replay exact public revision from committed identity
         run: |
           set -euo pipefail
           mkdir -p build/repro
-          python -m scriptorium.silver_dove_freeze capture \
-            --output build/repro/bely-silver-dove-ru.revisions.json
           python -m scriptorium.silver_dove_freeze replay \
-            --manifest build/repro/bely-silver-dove-ru.revisions.json \
+            --manifest corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json \
             --receipt build/repro/bely-silver-dove-ru.replay.json
 
-      - name: Verify source-free evidence
+      - name: Verify source-free replay evidence
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
 
-          manifest = json.loads(Path("build/repro/bely-silver-dove-ru.revisions.json").read_text(encoding="utf-8"))
+          manifest = json.loads(Path("corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json").read_text(encoding="utf-8"))
           receipt = json.loads(Path("build/repro/bely-silver-dove-ru.replay.json").read_text(encoding="utf-8"))
           assert manifest["candidate_id"] == "bely-silver-dove-ru"
           assert manifest["source_identity"]["revision_id"] == 5588003
@@ -60,7 +59,7 @@ jobs:
           assert manifest["m2_parity_admissible"] is False
           assert receipt["source_text_included"] is False
           assert receipt["composite_identity"] == manifest["composite_identity"]
-          print("SCRIPTORIUM_SILVER_DOVE_FREEZE=" + json.dumps(
+          print("SCRIPTORIUM_SILVER_DOVE_REPLAY=" + json.dumps(
               {
                   "candidate_id": manifest["candidate_id"],
                   "source_identity": manifest["source_identity"],
@@ -75,12 +74,10 @@ jobs:
           ))
           PY
 
-      - name: Upload source-free freeze evidence
+      - name: Upload source-free replay receipt
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: silver-dove-source-freeze-evidence
-          path: |
-            build/repro/bely-silver-dove-ru.revisions.json
-            build/repro/bely-silver-dove-ru.replay.json
+          name: silver-dove-source-replay-receipt
+          path: build/repro/bely-silver-dove-ru.replay.json
           if-no-files-found: error
           retention-days: 7

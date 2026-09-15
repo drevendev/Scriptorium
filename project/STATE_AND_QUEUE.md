@@ -1,30 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 88
+STATE_REVISION: 89
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T22:51:30Z
-LAST_RESULT: SCRIP-CORPUS-006 / Issue #81 / PR #82 received an independent later-run exact-head review with no blocking defect and was squash-merged as `3643b358859d3c875b83fc5af30dbe423fbb4d69`; Issue #81 closed completed. The merged unit strengthens `tolstoy-hyperboloid-garin-wikisource-ru` with a concrete 1958 Goslitizdat volume-4 edition-family lead while keeping it explicitly non-identifying, unfrozen, FantLab source match `unknown`, diagnostics disabled, and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Independent review of exact head `b3440047603d43f898ac5389cbde7a7b2ab1f1d3` confirmed the branch was 4 commits ahead / 0 behind unchanged base `7aafd6a175bd6bc2716014a554b242cbca76bcc1`, changed exactly four expected corpus/provenance/state files, and had no pre-existing PR discussion, submitted reviews, or review threads. Exact-head runs `35028225864` (Pages) and `35028225888` (pinned provider) both completed successfully. Fresh source verification reconfirmed that sibling A. N. Tolstoy Wikisource pages `Союз пяти` and `Случай на Бассейной улице` explicitly cite the 1958 ten-volume collected works, volume 4, while FantLab independently identifies the same volume as a real Hyperboloid edition context; because the Hyperboloid page itself still does not cite that volume, `bibliographic_source_identity` remains unset and the 1958 volume remains lead-only.
+LAST_COMMITTED_RUN_AT: 2026-09-16T00:01:00Z
+LAST_RESULT: SCRIP-CORPUS-007 / Issue #83 / PR #84 is authored and in REVIEW. The unit strengthens `tolstoy-hyperboloid-garin-wikisource-ru` by classifying the concrete Moscow Goslitizdat 1958 volume-4 lead as a 1939-fourth-edition-derived editorial/textual-family witness, while independent Russian State Library bibliography proves that `1958` alone is ambiguous because a distinct Kyiv 1958 edition also exists. `bibliographic_source_identity` remains unset, the public source remains unfrozen, FantLab source match remains `unknown`, diagnostics stay disabled, and M2 remains 0/5.
+LAST_VERIFIED_PROGRESS: Fresh source research verified that FantLab-hosted Yu. A. Krestinsky commentary distinguishes four book editions (1927, 1934, 1936, 1939), describes the 1939 Sovetsky pisatel text as the fourth book edition, and states under the Moscow Goslitizdat 1958 collected-works volume-4 heading that the text is printed from the 1939 edition with checking against preceding editions. Russian State Library record `01006486636` independently catalogs a different Kyiv: Goslitizdat Ukrainy, 1958, 393-page Hyperboloid/Aelita edition. These findings narrow the textual-family lead but do not directly tie Wikisource/az.lib revision `5014458` to the Moscow volume or reveal FantLab's analyzer-input bytes.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-006
-ISSUE:          #81
-STATUS:         DONE
-PR:             #82
-MERGED_COMMIT:  3643b358859d3c875b83fc5af30dbe423fbb4d69
-NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
-                Prefer another legally usable >=300k diversity candidate or stronger
-                independent source-identity evidence for an existing candidate; keep
-                translation and edition identity explicit and do not infer FantLab
-                input identity from title, bibliography, sibling provenance, edition
-                availability, character-count proximity, or public-source freezing.
+UNIT_ID:        SCRIP-CORPUS-007
+ISSUE:          #83
+STATUS:         REVIEW
+PR:             #84
+MERGED_COMMIT:  —
+NEXT_ACTION:    Independently review the exact head of PR #84 in a later run.
+                Recheck changed files, source-evidence classification, comments/reviews
+                and exact-head required checks. Merge only if no blocking defect is found;
+                do not promote the Moscow 1958 textual-family lead to source identity.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering the five additional source-backed AOT categories while leaving runtime `N` unresolved. SCRIP-MORPH-008 has independently reviewed and merged provider-executed frozen Anna aggregate evidence for the latter surface and exposes only source-free aggregates in the public morphology showcase; this does not establish how the five categories relate to the current FantLab work-page table. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg adds an explicit but unfrozen 1916 edition lead. Hyperboloid of Engineer Garin adds an early-Soviet SF/adventure candidate with a permanent Wikisource revision lead and a newly narrowed 1958 Goslitizdat edition-family lead, but its exact literary-text identity, direct print-edition mapping and FantLab-input identity remain unproven. M2 therefore remains open at **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering the five additional source-backed AOT categories while leaving runtime `N` unresolved. SCRIP-MORPH-008 has independently reviewed and merged provider-executed frozen Anna aggregate evidence for the latter surface and exposes only source-free aggregates in the public morphology showcase; this does not establish how the five categories relate to the current FantLab work-page table. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg adds an explicit but unfrozen 1916 edition lead. Hyperboloid of Engineer Garin adds an early-Soviet SF/adventure candidate with a permanent Wikisource revision lead and a Moscow Goslitizdat 1958 volume-4 lead now textologically classified as 1939-fourth-edition-derived, but its exact literary-text identity, direct print-edition mapping and FantLab-input identity remain unproven. M2 therefore remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -92,7 +90,9 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - FantLab work 44824 reports its 18 September 2022 linguistic analysis at 495,539 characters and 69,126 words, clearing the >=300,000-character corpus threshold.
 - Russian Wikisource publishes a stable reviewed full-work transcription, explicitly marks the literary work public domain, cites `az.lib.ru` as source and exposes permanent revision `oldid=5014458` dated 30 August 2023.
 - The page says the novel was written in 1926–1927 and revised with new chapters in 1937. FantLab independently records four authorial reworkings, a new ending published in 1927 and the 1939 Sovetsky pisatel volume as the last lifetime edition. Those facts establish revision-family ambiguity, not a mapping from the public transcription to a specific print edition or FantLab input.
-- SCRIP-CORPUS-006 adds a narrower edition-family lead without asserting identity: sibling Tolstoy Wikisource/az.lib pages `Союз пяти` and `Случай на Бассейной улице` cite A. N. Tolstoy, *Collected Works in ten volumes*, volume 4, Goslitizdat, Moscow, 1958, while independent FantLab bibliography identifies the same 1958 volume as a real Hyperboloid edition context. The Hyperboloid page itself does not cite that volume, so `bibliographic_source_identity` remains unset and the lead has no parity weight.
+- SCRIP-CORPUS-006 established the Moscow Goslitizdat 1958 collected-works volume 4 as a concrete but collateral edition lead from sibling Wikisource/az.lib provenance plus independent FantLab bibliography.
+- SCRIP-CORPUS-007 strengthens only the **textual-family classification** of that lead: FantLab-hosted Yu. A. Krestinsky commentary distinguishes four book editions and states that the Moscow 1958 volume's Hyperboloid text is printed from the 1939 fourth book edition with checking against preceding editions. Russian State Library record `01006486636` separately catalogs a Kyiv 1958 Hyperboloid/Aelita edition, proving that year-only `1958` matching is ambiguous.
+- Neither finding directly ties the Wikisource/az.lib transcription to the Moscow volume. `bibliographic_source_identity` therefore remains unset; the lead is a 1939-derived textual-family target with no source/parity weight.
 - This unit does not freeze MediaWiki revision digests, define a deterministic literary-body extraction, or compute raw/normalized text identity. No source text is committed. `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`.
 
 ### Deterministic metric findings
@@ -125,7 +125,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - The static renderer/publication manifest remain fail-closed and source-free. Public material includes two short Anna Karenina derived showcases, a provenance-only Resurrection page, and a full-work Anna Karenina morphology diagnostic page.
 - The full-work morphology page exposes reviewed M005/M006 aggregates plus the independently reviewed SCRIP-MORPH-008 aggregate-only 22-category methodology diagnostic, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false`, unresolved work-page relation and unchanged production POS semantics.
 - The methodology public slice exposes only aggregate counts and runtime-analysis identity; it publishes no source prose, normalized text, tokens or candidate rows.
-- Corpus navigation and the parity catalog document frozen source-free identities for Brothers Karamazov and Silver Dove plus trace-only source leads for Petersburg 1916 and Hyperboloid of Engineer Garin. Merged SCRIP-CORPUS-006 adds the 1958 Goslitizdat volume-4 Hyperboloid lead to public corpus navigation while explicitly classifying it as collateral/non-identifying. No derived full-work analysis is published for these unmatched candidates.
+- Corpus navigation and the parity catalog document frozen source-free identities for Brothers Karamazov and Silver Dove plus trace-only source leads for Petersburg 1916 and Hyperboloid of Engineer Garin. SCRIP-CORPUS-007 sharpens the Hyperboloid machine-readable public trace with 1939-derived textological context for the specific Moscow 1958 volume and explicit same-year edition disambiguation, while keeping it non-identifying. No derived full-work analysis is published for these unmatched candidates.
 - Publication contract tests scan provenance artifacts for forbidden source-prose keys; Pages builds are reproducible.
 - Live deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -140,7 +140,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 7. Brothers Karamazov has a frozen public-source identity, but no evidence ties FantLab's uploaded 2022 analyzer input to those same bytes; diagnostic comparison and M2 parity therefore remain disabled.
 8. Silver Dove now has a frozen public-source identity, but no evidence ties FantLab's uploaded 2022 analyzer input to those bytes; the 14,075-character display delta and unresolved 1909/1910 publication metadata remain explicit mismatch/unknown-policy evidence, so diagnostics and M2 stay disabled.
 9. Petersburg has an explicit public-domain 1916 edition lead but no Scriptorium-frozen PDF/OCR identity and no evidence tying FantLab's 2022 input to that edition; diagnostics and M2 remain disabled.
-10. Hyperboloid of Engineer Garin has a permanent public-domain Wikisource revision and a concrete but collateral 1958 Goslitizdat edition-family lead; it still has no frozen literary-text identity, no direct bibliographic statement tying that transcription to the 1958 volume, and no evidence tying FantLab's 2022 input to it. Diagnostics and M2 remain disabled.
+10. Hyperboloid of Engineer Garin has a permanent public-domain Wikisource revision and a concrete Moscow Goslitizdat 1958 lead now classified as a 1939-fourth-edition-derived textual-family witness. It still has no frozen literary-text identity, no direct bibliographic statement tying the Wikisource/az.lib transcription to that Moscow volume, and no evidence tying FantLab's 2022 input to it; a distinct Kyiv 1958 edition also makes year-only matching explicitly unsafe. Diagnostics and M2 remain disabled.
 11. Pages live activation is a repository-admin effect and remains off.
 
 ## Run selection rule

@@ -99,10 +99,12 @@ def _strip_leading_template(source: str, name: str) -> str:
 
 def _plain_heading(match: re.Match[str]) -> str:
     text = match.group("text").strip()
+    # The frozen page contains empty level-three markup used only as layout.
+    # It renders no literary characters, so strip only that observed empty shape.
+    if not text:
+        return ""
     if "{{" in text or "}}" in text or "<" in text or ">" in text:
         raise ValueError("unsupported markup inside Silver Dove heading")
-    if not text:
-        raise ValueError("empty Silver Dove heading")
     return f"\n\n{text}\n\n"
 
 
@@ -218,6 +220,7 @@ def build_manifest(
             "source_page_count": 1,
             "authorial_preface_included": True,
             "literary_headings_included": True,
+            "empty_level3_heading_markup_included": False,
             "page_bibliographic_scaffolding_included": False,
             "wikisource_editorial_publication_note_included": False,
             "category_links_included": False,
@@ -253,6 +256,7 @@ def _validate_manifest(manifest: Mapping[str, object]) -> dict[str, object]:
         "source_page_count": 1,
         "authorial_preface_included": True,
         "literary_headings_included": True,
+        "empty_level3_heading_markup_included": False,
         "page_bibliographic_scaffolding_included": False,
         "wikisource_editorial_publication_note_included": False,
         "category_links_included": False,

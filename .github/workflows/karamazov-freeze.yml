@@ -1,10 +1,11 @@
-name: Brothers Karamazov source freeze
+name: Brothers Karamazov source replay
 
 on:
   pull_request:
     paths:
       - ".github/workflows/karamazov-freeze.yml"
       - "scriptorium/karamazov_freeze.py"
+      - "scriptorium/wikisource_replay.py"
       - "tests/test_karamazov_freeze.py"
       - "corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.revisions.json"
   workflow_dispatch:
@@ -13,8 +14,8 @@ permissions:
   contents: read
 
 jobs:
-  capture:
-    name: Capture Brothers Karamazov source identity
+  replay:
+    name: Replay pinned Brothers Karamazov source identity
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -32,141 +33,48 @@ jobs:
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
 
-      - name: Probe unsupported template names on the current failing leaf
-        run: |
-          python - <<'PY'
-          import collections
-          import html
-          import json
-          import re
-          from urllib.parse import urlencode
-          from urllib.request import Request, urlopen
-          from scriptorium.karamazov_freeze import (
-              _BODY_DIV_RE,
-              _NOINCLUDE_RE,
-              _ONLYINCLUDE_RE,
-              _find_balanced_template_end,
-              _split_template_parts,
-              _strip_wikisource_editor_notes,
-              _unwrap_literary_headings,
-              _unwrap_poem1_templates,
-              _unwrap_typo_templates,
-              expected_segments,
-              fetch_current_segment_revisions,
-          )
-
-          target = next(
-              row for row in expected_segments()
-              if str(row["title"]).endswith("/Книга двенадцатая/III")
-          )
-          source = str(fetch_current_segment_revisions((target,))[str(target["title"])]["wikitext"])
-          source = _strip_wikisource_editor_notes(_NOINCLUDE_RE.sub("", source))
-          source = _unwrap_typo_templates(source)
-          source = _unwrap_poem1_templates(source)
-          onlyinclude = _ONLYINCLUDE_RE.findall(source)
-          if onlyinclude:
-              fragments = [_unwrap_literary_headings(onlyinclude[0])]
-          else:
-              fragments = [_unwrap_literary_headings(value) for value in _BODY_DIV_RE.findall(source)]
-
-          shapes = collections.Counter()
-          for fragment in fragments:
-              cursor = 0
-              start_re = re.compile(r"\{\{\s*([^|{}\n]+)")
-              while True:
-                  match = start_re.search(fragment, cursor)
-                  if match is None:
-                      break
-                  end = _find_balanced_template_end(fragment, match.start())
-                  raw = fragment[match.start():end]
-                  parts = _split_template_parts(raw[2:-2])
-                  name = re.sub(r"\s+", " ", parts[0].strip()).casefold()
-                  args = parts[1:]
-                  shape = (
-                      name,
-                      len(args),
-                      tuple(not arg.strip() for arg in args),
-                      tuple(bool(re.fullmatch(r"\s*\d+(?:[.,]\d+)?\s*", arg)) for arg in args),
-                      tuple(len(re.findall(r"\{\{", arg)) for arg in args),
-                      tuple("[[" in arg or "]]" in arg for arg in args),
-                  )
-                  shapes[shape] += 1
-                  cursor = end
-
-          payload = [
-              {
-                  "name": shape[0],
-                  "arg_count": shape[1],
-                  "blank_flags": shape[2],
-                  "numeric_flags": shape[3],
-                  "nested_template_counts": shape[4],
-                  "contains_links_flags": shape[5],
-                  "count": count,
-              }
-              for shape, count in sorted(shapes.items())
-          ]
-          print("SCRIPTORIUM_KARAMAZOV_TEMPLATE_SHAPES=" + json.dumps(
-              payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
-          ))
-
-          query = urlencode({
-              "action": "expandtemplates",
-              "text": "{{NB}}",
-              "prop": "wikitext",
-              "format": "json",
-              "formatversion": "2",
-          })
-          request = Request(
-              "https://ru.wikisource.org/w/api.php?" + query,
-              headers={"User-Agent": "Scriptorium/0.1 source-free provenance probe"},
-          )
-          with urlopen(request, timeout=20) as response:
-              expanded = json.load(response)["expandtemplates"]["wikitext"]
-          decoded = html.unescape(expanded)
-          print("SCRIPTORIUM_WIKISOURCE_NB_RENDER=" + json.dumps({
-              "expanded_length": len(expanded),
-              "decoded_length": len(decoded),
-              "decoded_codepoints": [f"U+{ord(char):04X}" for char in decoded],
-          }, sort_keys=True, separators=(",", ":")))
-          PY
-
-      - name: Capture exact source revisions and composite hashes
+      - name: Replay exact pinned source revisions
         run: |
           set -euo pipefail
           mkdir -p build/repro
-          python -m scriptorium.karamazov_freeze capture \
-            --output build/repro/dostoevsky-brothers-karamazov-ru.revisions.json
+          python -m scriptorium.karamazov_freeze replay \
+            --manifest corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.revisions.json \
+            --receipt build/repro/dostoevsky-brothers-karamazov-ru.replay.json
 
-      - name: Emit source-free capture summary
+      - name: Verify and emit source-free replay summary
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
 
-          manifest = json.loads(
-              Path("build/repro/dostoevsky-brothers-karamazov-ru.revisions.json").read_text(
+          receipt = json.loads(
+              Path("build/repro/dostoevsky-brothers-karamazov-ru.replay.json").read_text(
                   encoding="utf-8"
               )
           )
-          encoding = manifest["source_identity_encoding"]
+          assert receipt["source_segment_count"] == 98
+          assert receipt["source_text_included"] is False
+          assert receipt["diagnostic_comparison_admissible"] is False
+          assert receipt["fantlab_source_edition_match"] == "unknown"
+          assert receipt["m2_parity_admissible"] is False
           summary = {
-              "candidate_id": manifest["candidate_id"],
-              "source_segment_count": encoding["source_segment_count"],
-              "first_revision_id": encoding["revision_ids"][0],
-              "last_revision_id": encoding["revision_ids"][-1],
-              "composite_identity": manifest["composite_identity"],
-              "extraction_profile": manifest["composition"]["extraction_profile"],
-              "source_text_committed": manifest["composition"]["source_text_committed"],
+              "candidate_id": receipt["candidate_id"],
+              "source_segment_count": receipt["source_segment_count"],
+              "composite_identity": receipt["composite_identity"],
+              "source_text_included": receipt["source_text_included"],
+              "diagnostic_comparison_admissible": receipt["diagnostic_comparison_admissible"],
+              "fantlab_source_edition_match": receipt["fantlab_source_edition_match"],
+              "m2_parity_admissible": receipt["m2_parity_admissible"],
           }
-          print("SCRIPTORIUM_KARAMAZOV_CAPTURE=" + json.dumps(
+          print("SCRIPTORIUM_KARAMAZOV_REPLAY=" + json.dumps(
               summary, ensure_ascii=False, sort_keys=True, separators=(",", ":")
           ))
           PY
 
-      - name: Upload source-free revision manifest
+      - name: Upload source-free replay receipt
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: karamazov-source-revision-manifest
-          path: build/repro/dostoevsky-brothers-karamazov-ru.revisions.json
+          name: karamazov-source-replay-receipt
+          path: build/repro/dostoevsky-brothers-karamazov-ru.replay.json
           if-no-files-found: error
           retention-days: 7

@@ -21,7 +21,7 @@
     "work_url": "https://ru.wikisource.org/wiki/Серебряный_голубь_(Белый)",
     "permanent_work_url": "https://ru.wikisource.org/w/index.php?title=Серебряный_голубь_(Белый)&oldid=5588003",
     "work_revision_id": 5588003,
-    "work_revision_timestamp": "2025-07-30T21:54:00Z",
+    "work_revision_timestamp": "2025-07-30T21:54:23Z",
     "structure": {
       "kind": "single_page_full_work",
       "described_as": "Повесть в семи главах",
@@ -41,20 +41,38 @@
       "status": "discrepant_not_resolved",
       "note": "The two public surfaces use different publication years. This may reflect serial versus book publication or another cataloging convention, but Scriptorium does not infer the cause or source identity without independent evidence."
     },
+    "frozen_candidate": {
+      "status": "frozen_public_candidate",
+      "revision_manifest": "corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json",
+      "manifest_version": "scriptorium-silver-dove-source-revision-manifest-v1",
+      "source_page_count": 1,
+      "extraction_profile": "scriptorium-wikisource-silver-dove-body-v1",
+      "composition_profile": "scriptorium-wikisource-single-page-v1",
+      "character_count_including_spaces": 563125,
+      "utf8_byte_count": 1039363,
+      "raw_sha256": "496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183",
+      "normalized_character_count_including_spaces": 563125,
+      "normalized_sha256": "496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183",
+      "normalization_profile": "scriptorium-text-v1",
+      "source_text_committed": false,
+      "replay_required": true,
+      "relationship_to_fantlab_analyzer_input": "unknown"
+    },
     "immutable_identity": {
-      "status": "revision_identified_not_extracted",
+      "status": "frozen_public_candidate",
+      "public_candidate_status": "frozen_source_identity",
       "frozen_components": [
-        "Russian Wikisource full-work revision 5588003",
-        "bibliographic citation to the 1990 Khudozhestvennaya literatura edition",
-        "electronic-version attribution to V. Esaulov dated 2006-08-19"
+        "Russian Wikisource full-work revision 5588003 at 2025-07-30T21:54:23Z",
+        "MediaWiki SHA-1 629893aa2acaa55979114a8bfc2a8882fd43f2a8 and wikitext SHA-256 a611080e4dd1295336c3d8c7c78fc7a077608b247c9e96d7ae0a989fc256381a",
+        "versioned scriptorium-wikisource-silver-dove-body-v1 extraction contract",
+        "scriptorium-wikisource-single-page-v1 composition contract",
+        "raw and scriptorium-text-v1 normalized composite SHA-256 identity 496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183",
+        "bibliographic citation to the 1990 Khudozhestvennaya literatura edition and electronic-version attribution to V. Esaulov dated 2006-08-19"
       ],
       "unfrozen_components": [
-        "versioned extraction contract for the full-work revision",
-        "raw and normalized full-work SHA-256 identities",
-        "character count of the extracted public candidate",
-        "the relationship between FantLab's uploaded analyzer input and this public transcription"
+        "the relationship between FantLab's uploaded analyzer input and this frozen public transcription"
       ],
-      "reason": "The complete public transcription is available at one permanent Wikisource revision, but Scriptorium has not yet defined and replayed an extraction contract or computed composite text hashes. FantLab independently does not disclose the edition or immutable bytes used for its 2022 analysis."
+      "reason": "The complete public transcription is now replayable from one immutable Wikisource revision under a versioned source-specific extraction contract. FantLab independently does not disclose the edition or immutable bytes used for its 2022 analysis."
     }
   },
   "diversity": {
@@ -69,18 +87,19 @@
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "traced_not_frozen",
+    "status": "frozen_source_identity_unmatched_to_fantlab",
     "reasons": [
       "FantLab reports 549,050 characters, above the 300,000-character calibration threshold.",
+      "The frozen public candidate contains 563,125 characters including spaces and is replayable from exact Wikisource revision 5588003 under a versioned extraction contract.",
+      "The 14,075-character difference between the frozen public candidate and FantLab's displayed count is evidence of non-identity or differing counting/extraction policy, not evidence that the editions match.",
       "Russian Wikisource explicitly marks the literary work public domain and supplies a concrete 1990 source-edition citation plus a permanent full-work revision.",
-      "The public-source revision has not yet been extracted under a versioned Scriptorium contract or bound to raw/normalized hashes.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis.",
-      "FantLab and Wikisource expose different publication years (1910 versus 1909); the discrepancy is retained as unresolved evidence rather than normalized away."
+      "FantLab and Wikisource expose different publication years (1910 versus 1909); the discrepancy remains unresolved."
     ],
     "next_evidence": [
-      "Define a fail-closed extraction contract for Wikisource revision 5588003 that excludes page metadata/navigation while retaining only literary text and authorial headings/preface as justified by source structure.",
-      "Replay the exact revision, compute raw and scriptorium-text-v1 normalized character counts and SHA-256 identities, and commit only source-free provenance/hashes.",
-      "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to a specific Silver Dove edition or byte stream; do not infer identity from title, publication year, or similar counts."
+      "Replay the committed single-revision manifest on every relevant verification path and reject any source/composite drift.",
+      "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to a specific Silver Dove edition or byte stream; do not infer identity from title, publication year, or count proximity.",
+      "Only after source identity is established may field-by-field diagnostic comparison become admissible for the M2 reproduction gate."
     ]
   }
 }

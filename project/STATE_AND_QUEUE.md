@@ -1,39 +1,37 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 69
+STATE_REVISION: 70
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T04:02:00Z
-LAST_RESULT: SCRIP-SITE-006 / Issue #62 / PR #63 authored a bounded source-free full-work morphology showcase for the frozen public-domain Anna Karenina candidate. The public artifact exposes only independently reviewed M005/M006 aggregate evidence under the existing provenance-first fail-closed publication contract, is allow-listed at a stable Pages route, and updates README navigation/stale provider-execution prose. Initial exact-head CI exposed a stale three-entry/first-provenance test assumption; that contract test was generalized for multiple provenance pages without weakening safety. The substantive public-surface change remains intentionally unmerged pending independent exact-head review. Benchmark movement remains 0/5 source-matched works.
-LAST_VERIFIED_PROGRESS: The authored slice cross-checks public frozen identity and FantLab boundary against the canonical Anna Karenina source trace, pins the reviewed M005/M006 merge identities and aggregate counts, rejects source/transport payload keys, and exercises the canonical renderer route. The first hosted runs on `bd71ff4ad9a6989a753e0f35ae00eea824c2dab2` failed at the shared standard-library test step because `tests/test_site_contract.py` still required exactly three manifest entries and treated the first provenance entry as Resurrection. The repaired contract now expects the four-entry public seed, locates Resurrection by stable entry ID and scans every provenance artifact for forbidden source-prose keys. Fresh exact-final-head CI is required after this state commit before merge judgement; no passing claim is recorded until those runs finish. Public values remain diagnostic-only: 269,358 Scriptorium word tokens, 117,554 conservatively defined POS, 151,804 undefined POS, 59,254 direct cross-bucket ambiguities, and 5,972 (10.0786%) unique AOT literature homonym-weight maxima. Production POS resolution is unchanged; source match and M2 parity remain fail-closed.
+LAST_COMMITTED_RUN_AT: 2026-09-15T04:49:00Z
+LAST_RESULT: SCRIP-SITE-006 / Issue #62 / PR #63 received an independent exact-head review with no blocking defect and was squash-merged as ad1b0438c87943d194ee62eff5eb5a39c88f64b9. The merged unit publishes the first source-free full-work morphology showcase for the frozen public-domain Anna Karenina candidate under the existing fail-closed provenance-first Pages contract. It exposes only independently reviewed M005/M006 aggregate diagnostics, keeps source-edition match unknown and M2 parity inadmissible, publishes no source prose, and does not change production POS semantics. Issue #62 closed completed. Benchmark movement remains 0/5 source-matched works.
+LAST_VERIFIED_PROGRESS: Exact reviewed head 5302391654c4aee4dc06ad8110534b748a23a694 was 9 commits ahead / 0 behind its base and changed only the seven expected README/changelog/state/public-artifact/manifest/test paths. PR comments, submitted reviews and review threads were empty. Pages run 34927046541 passed the complete standard-library suite, canonical static-site build and deterministic rebuild; frozen diagnostic run 34927046538 and pinned-provider run 34927046530 also succeeded on the same head. Downloaded Pages artifact 10380480071 matched GitHub archive digest sha256:e14d9fa194dadcdc7876caa66ee83ef2349d1087cc5458703e9e3e01eaedd1b4. Its generated build.json binds the new stable morphology route to public artifact SHA-256 e9dcf1c7e6672216568923108b9e5b45298af9e50e20ede1dc0c79fb176dfaea. The generated page was inspected independently: reviewed aggregate values and frozen identity are present; source-edition match is unknown; M2 parity is false; provider homonym weights remain diagnostic-only; the page explicitly states that source text is absent and contains no source prose payload. Benchmark movement remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-SITE-006
 ISSUE:          #62
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #63
-BASE_REVISION:  fe42aef9b80875146b6cf23ca72ff8a3cc2fcac7
-NEXT_ACTION:    Independently review the exact final PR head, changed-file surface,
-                comments/threads and hosted checks. Require the complete standard-library
-                suite and deterministic Pages build to be green on that exact head. Inspect
-                the generated morphology page/artifact and verify source text is absent,
-                source-edition match remains unknown, M2 parity is false, production POS
-                semantics are not promoted, and reviewed aggregate numbers remain bound to
-                the frozen Anna Karenina identity. Merge only if those boundaries hold.
+MERGED_COMMIT:  ad1b0438c87943d194ee62eff5eb5a39c88f64b9
+NEXT_ACTION:    Select the next normal-flow unit. Public representation has now received
+                a bounded corrective slice after the morphology-heavy M003-M006 sequence.
+                Prefer the highest-priority SCRIP-REPRO continuation: strengthen source-
+                edition matching for a retained >=300k FantLab candidate, or freeze another
+                legally usable diagnostic candidate only when provenance evidence is strong
+                enough. Do not infer source match from count similarity.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral artifact, reviewed exact-pylem frozen-work transport, reviewed source-free undefined-reason decomposition, and reviewed provider-side homonym-weight diagnostic. SCRIP-SITE-006 now proposes the first public full-work morphology representation by publishing only reviewed aggregate diagnostic evidence under the existing provenance-first renderer, without changing analyzer semantics or advancing parity. The M2 reproduction gate remains **0/5 source-matched works** because FantLab analyzer-input editions, dictionary identity and homonym policy remain unknown.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral artifact, reviewed exact-pylem frozen-work transport, reviewed source-free undefined-reason decomposition, and reviewed provider-side homonym-weight diagnostic. SCRIP-SITE-006 has now merged the first public full-work morphology representation by publishing only reviewed aggregate diagnostic evidence under the existing provenance-first renderer, without changing analyzer semantics or advancing parity. The M2 reproduction gate remains **0/5 source-matched works** because FantLab analyzer-input editions, dictionary identity and homonym policy remain unknown.
 
 ## Queue
 
-Evaluate rows in priority order and skip dependencies that are not executable. Recovery/review-ready work and failing required checks preempt normal selection.
+Evaluate rows in priority order and skip dependencies that are not executable. Recovery/review-ready work and failing required checks preempt normal selection. Public representation just received a bounded slice after the morphology-heavy recent sequence, so benchmark/provenance is now the preferred normal-flow correction.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-SITE-006 | review / public representation | Independently review and, if exact-head evidence is green, merge the source-free full-work morphology showcase | Issue #62 / PR #63; substantial change must not self-merge |
 | P1 | SCRIP-REPRO continuation | benchmark / provenance | Strengthen source-edition matching for retained >=300k FantLab candidates or add another legally usable source-frozen diagnostic candidate when evidence supports it | No current candidate is source-matched; M2 remains 0/5 |
 | P2 | SCRIP-MORPH continuation | analyzer core / reproduction | Investigate the next largest unresolved morphology axis with inspectable evidence, without guessing runtime `N`, extra-category folding, FantLab homonym selection, dictionary identity or service-word aggregation | M006 merged; reviewed homonym-weight signal explains only a limited subset and is not a production rule |
 | P3 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Must preserve translation identity and explicit legal provenance |
@@ -85,9 +83,10 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 ### Public repository representation
 
 - The static renderer/publication manifest remain fail-closed and source-free. Existing public material includes two short Anna Karenina derived showcases and a provenance-only Resurrection page.
-- SCRIP-SITE-006 adds an allow-listed provenance-first full-work Anna Karenina morphology page backed by a source-free public artifact. It exposes reviewed M005/M006 aggregate values only, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false` and unchanged production POS semantics.
-- The publication contract tests now support multiple provenance-first pages while continuing to cross-check Resurrection explicitly and scanning every provenance artifact for forbidden source-prose keys.
-- Root README navigation now links that public artifact and no longer claims that native/provider pylem execution is unverified.
+- SCRIP-SITE-006 is merged as `ad1b0438c87943d194ee62eff5eb5a39c88f64b9` and adds an allow-listed provenance-first full-work Anna Karenina morphology page backed by a source-free public artifact. It exposes reviewed M005/M006 aggregate values only, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false` and unchanged production POS semantics.
+- The publication contract tests support multiple provenance-first pages while continuing to cross-check Resurrection explicitly and scanning every provenance artifact for forbidden source-prose keys.
+- Root README navigation links that public artifact and no longer claims that native/provider pylem execution is unverified.
+- Exact reviewed Pages artifact `10380480071` contains the stable `/works/tolstoy-anna-karenina-morphology-diagnostic/` route and deterministic `build.json` binding; generated output was independently inspected and contained no source prose payload.
 - Pages builds are reproducible; live deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers

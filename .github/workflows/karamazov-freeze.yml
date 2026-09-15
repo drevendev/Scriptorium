@@ -32,6 +32,34 @@ jobs:
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
 
+      - name: Probe remaining markup on the current failing leaf
+        run: |
+          python - <<'PY'
+          import re
+          from scriptorium.karamazov_freeze import (
+              _NOINCLUDE_RE,
+              _ONLYINCLUDE_RE,
+              _unwrap_poem1_templates,
+              expected_segments,
+              fetch_current_segment_revisions,
+          )
+
+          target = next(
+              row for row in expected_segments()
+              if str(row["title"]).endswith("/Книга третья/VIII")
+          )
+          source = str(fetch_current_segment_revisions((target,))[str(target["title"])]["wikitext"])
+          source = _unwrap_poem1_templates(_NOINCLUDE_RE.sub("", source))
+          onlyinclude = _ONLYINCLUDE_RE.findall(source)
+          probe = onlyinclude[0] if len(onlyinclude) == 1 else source
+          names = sorted({
+              match.group(1).strip().casefold()
+              for match in re.finditer(r"\{\{\s*([^|{}\n]+)", probe)
+          })
+          print("SCRIPTORIUM_KARAMAZOV_REMAINING_TEMPLATE_NAMES=" + ",".join(names))
+          print("SCRIPTORIUM_KARAMAZOV_REMAINING_TEMPLATE_COUNT=" + str(len(names)))
+          PY
+
       - name: Capture exact source revisions and composite hashes
         run: |
           set -euo pipefail

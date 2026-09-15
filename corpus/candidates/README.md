@@ -71,3 +71,17 @@ This unit deliberately stops at **source-edition tracing**. Scriptorium has not 
 Canonical evidence:
 
 - `source-edition-traces/bely-petersburg-1916-ru.json` — FantLab counts, explicit 1916 facsimile identity, public-domain evidence, Wikisource provenance warning, edition-family boundary and next evidence required before diagnostics.
+
+## Hyperboloid of Engineer Garin traced early-Soviet SF candidate
+
+`tolstoy-hyperboloid-garin-wikisource-ru` adds a new author and an early Soviet science-fiction/adventure work to the retained diversity set. FantLab's 18 September 2022 linguistic analysis reports **495,539 characters** and **69,126 words**, so it clears the >=300,000-character calibration threshold.
+
+Russian Wikisource publishes a stable reviewed full-work transcription, explicitly marks the literary work public domain, cites `az.lib.ru` as its source, and exposes permanent revision **`oldid=5014458`** from 30 August 2023. That is a useful immutable locator but not yet a Scriptorium-frozen literary-text identity: this unit does not record the MediaWiki revision SHA-1/wikitext digest, define a deterministic body extractor, or compute raw/normalized text digests. No source prose is committed.
+
+Revision identity is deliberately fail-closed. The Wikisource text states that the novel was written in 1926–1927 and revised with new chapters in 1937. FantLab separately records that Tolstoy reworked the novel four times, notes a new ending published in 1927, and identifies the 1939 `Советский писатель` edition as the last lifetime edition. Scriptorium therefore does **not** infer that the Wikisource/az.lib transcription matches a particular 1927, 1937 or 1939 print edition, and it does not infer that FantLab analyzed the same text.
+
+Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+
+Canonical evidence:
+
+- `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json` — FantLab counts, permanent Wikisource revision, public-domain evidence, revision-family ambiguity and the evidence required before any diagnostic promotion.

@@ -242,6 +242,39 @@
         "The 1916 scan has strong edition/legal provenance but Scriptorium has not yet frozen the PDF byte digest or a deterministic OCR/extraction profile.",
         "The 1916 first book edition must remain distinct from Bely's materially revised 1922 edition."
       ]
+    },
+    {
+      "candidate_id": "tolstoy-hyperboloid-garin-wikisource-ru",
+      "author": "Алексей Николаевич Толстой",
+      "title": "Гиперболоид инженера Гарина",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 44824,
+        "analysis_url": "https://fantlab.ru/work44824/lp",
+        "analysis_date": "2022-09-18",
+        "characters": 495539,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Гиперболоид_инженера_Гарина_(Толстой)",
+        "edition_note": "Stable reviewed Wikisource transcription at permanent revision oldid=5014458 (30 August 2023). The page cites az.lib.ru as its source and says the novel was written in 1926–1927 and revised with new chapters in 1937; it does not identify a bibliographic print edition for the transcription.",
+        "source_provenance_confidence": "medium",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The Wikisource page explicitly marks the literary work public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions."
+      },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json",
+      "source_identity_status": "traced_not_frozen",
+      "fantlab_source_edition_match": "unknown",
+      "diagnostic_ready": false,
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; no relationship to the Wikisource/az.lib transcription is inferred.",
+        "The permanent Wikisource revision is traced but Scriptorium has not yet recorded its MediaWiki SHA-1/wikitext digest or a deterministic literary-body extraction and raw/normalized text identity.",
+        "The novel has multiple authorial revision families; the Wikisource/az.lib transcription is not independently tied to a specific 1927, 1937 or 1939 print edition."
+      ]
     }
   ],
   "held_leads": [

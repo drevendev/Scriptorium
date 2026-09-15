@@ -80,8 +80,10 @@ Russian Wikisource publishes a stable reviewed full-work transcription, explicit
 
 Revision identity is deliberately fail-closed. The Wikisource text states that the novel was written in 1926–1927 and revised with new chapters in 1937. FantLab separately records that Tolstoy reworked the novel four times, notes a new ending published in 1927, and identifies the 1939 `Советский писатель` edition as the last lifetime edition. Scriptorium therefore does **not** infer that the Wikisource/az.lib transcription matches a particular 1927, 1937 or 1939 print edition, and it does not infer that FantLab analyzed the same text.
 
-Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+A stronger **bibliographic lead** is now recorded, but deliberately not promoted to source identity. Two sibling A. N. Tolstoy pages in the Russian Wikisource/az.lib source ecosystem — *Союз пяти* and *Случай на Бассейной улице* — identify their text source as **A. N. Tolstoy, Collected Works in ten volumes, vol. 4, *Emigrants. Hyperboloid of Engineer Garin*, Moscow: Goslitizdat, 1958**. Independent FantLab bibliographic commentary identifies the same 1958 volume as a real Hyperboloid edition context. This makes the 1958 volume a concrete edition family to test, not proof: the Hyperboloid Wikisource page itself still cites only `az.lib.ru`, and no direct evidence yet says that its exact transcription was made from that volume. Sibling import metadata and edition availability cannot establish textual identity.
+
+Accordingly `bibliographic_source_identity` remains unset, `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
 
 Canonical evidence:
 
-- `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json` — FantLab counts, permanent Wikisource revision, public-domain evidence, revision-family ambiguity and the evidence required before any diagnostic promotion.
+- `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json` — FantLab counts, permanent Wikisource revision, public-domain evidence, revision-family ambiguity, collateral 1958-volume bibliographic leads with explicit identity weight, and the evidence required before any diagnostic promotion.

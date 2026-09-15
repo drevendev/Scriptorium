@@ -33,6 +33,30 @@
       "fantlab_work_page": "FantLab notes that Tolstoy reworked the novel four times, records a new ending published in 1927, and identifies Sovetsky pisatel 1939 as the last lifetime edition.",
       "identity_boundary": "The Wikisource/az.lib transcription is not assigned to a specific print-edition family beyond the page's internal 1937-revision note. Scriptorium does not equate it with the 1927, 1937, 1939, or FantLab analyzer input without independent evidence."
     },
+    "bibliographic_leads": [
+      {
+        "source": "Russian Wikisource — Союз пяти (Толстой)",
+        "url": "https://ru.wikisource.org/wiki/Союз_пяти_(Толстой)",
+        "evidence": "A sibling A. N. Tolstoy Wikisource text that also cites az.lib.ru identifies its text source as A. N. Tolstoy, Collected Works in ten volumes, volume 4, Emigrants. Hyperboloid of Engineer Garin, Moscow: Goslitizdat, 1958.",
+        "relationship": "collateral_same_author_source_ecosystem",
+        "identity_weight": "lead_only"
+      },
+      {
+        "source": "Russian Wikisource — Случай на Бассейной улице (Толстой)",
+        "url": "https://ru.wikisource.org/wiki/Случай_на_Бассейной_улице_(Толстой)",
+        "evidence": "Another sibling Tolstoy page in the az.lib.ru import lineage cites the same 1958 ten-volume collected-works volume 4 as its text source.",
+        "relationship": "collateral_same_author_source_ecosystem",
+        "identity_weight": "lead_only"
+      },
+      {
+        "source": "FantLab bibliographic commentary — Ю. А. Крестинский. Гиперболоид инженера Гарина (комментарии к роману)",
+        "url": "https://fantlab.ru/blogarticle67634",
+        "evidence": "The commentary is headed with A. N. Tolstoy, Collected Works in ten volumes, volume 4, Emigrants. Hyperboloid of Engineer Garin. Stories, Moscow: State Publishing House of Fiction, 1958, independently confirming that the 1958 volume is a real Hyperboloid edition context.",
+        "relationship": "independent_bibliographic_context",
+        "identity_weight": "lead_only"
+      }
+    ],
+    "bibliographic_lead_assessment": "The 1958 Goslitizdat volume 4 is now a concrete edition-family lead worth testing against the az.lib/Wikisource transcription. It is not promoted to bibliographic_source_identity because neither the Hyperboloid Wikisource page nor an independently verified az.lib source note currently states that this exact transcription was made from that volume. Sibling-page provenance and an edition containing the work cannot establish byte/text identity.",
     "immutable_identity": {
       "status": "traced_not_frozen",
       "traced_components": [
@@ -41,7 +65,8 @@
         "stable/reviewed page status",
         "explicit public-domain notice",
         "az.lib.ru source pointer",
-        "authorial 1926–1927 / revised-in-1937 note"
+        "authorial 1926–1927 / revised-in-1937 note",
+        "collateral 1958 Goslitizdat volume-4 bibliographic lead, explicitly non-identifying"
       ],
       "unfrozen_components": [
         "MediaWiki revision SHA-1 and raw wikitext SHA-256 recorded by Scriptorium",
@@ -50,7 +75,7 @@
         "bibliographic print-edition identity behind the Wikisource/az.lib transcription",
         "relationship between FantLab's uploaded analyzer input and any 1927/1937/1939 revision family"
       ],
-      "reason": "The permanent revision gives a reproducible source locator and clear legal basis, but Scriptorium has not frozen the revision bytes or a fail-closed body extraction, and the transcription's print-edition identity remains under-specified."
+      "reason": "The permanent revision gives a reproducible source locator and clear legal basis. Collateral Wikisource/az.lib evidence now supplies a concrete 1958 volume-4 lead, but Scriptorium still has neither a direct citation tying this Hyperboloid transcription to that edition nor frozen revision/body bytes, so exact source identity remains under-specified."
     },
     "source_text_committed": false
   },
@@ -71,13 +96,15 @@
       "FantLab reports 495,539 characters, above the 300,000-character calibration threshold.",
       "Russian Wikisource provides a stable reviewed permanent revision and explicitly marks the literary work public domain.",
       "The page cites az.lib.ru but does not identify a bibliographic print edition; its internal note says the novel was revised with new chapters in 1937.",
+      "Sibling Tolstoy pages in the Wikisource/az.lib source ecosystem and independent FantLab bibliography now identify the 1958 Goslitizdat collected-works volume 4 as a concrete Hyperboloid edition lead, but none directly ties this transcription to that volume.",
       "FantLab independently records multiple authorial revisions and does not disclose the edition or immutable bytes uploaded for the 2022 analysis.",
-      "No source prose, frozen literary-text digest, diagnostic result, or parity claim is created by this trace-only unit."
+      "No source prose, frozen literary-text digest, diagnostic result, or parity claim is created by this provenance-strengthening unit."
     ],
     "next_evidence": [
       "Freeze exact MediaWiki revision identity and wikitext digest for oldid 5014458 without committing source prose.",
       "Define a deterministic, fail-closed extraction contract and derived raw/normalized digests before enabling full-work diagnostics.",
-      "Seek independent bibliographic evidence for the Wikisource/az.lib transcription's revision family and for FantLab's analyzer-input edition; never infer identity from title or character-count proximity."
+      "Seek a direct bibliographic statement for the Hyperboloid Wikisource/az.lib transcription itself, testing but not assuming the 1958 Goslitizdat volume-4 lead.",
+      "Seek independent evidence for FantLab's analyzer-input edition; never infer identity from title, sibling-page provenance, edition availability, or character-count proximity."
     ]
   }
 }

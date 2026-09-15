@@ -1,24 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 73
+STATE_REVISION: 74
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T08:26:00Z
-LAST_RESULT: SCRIP-REPRO-009 / Issue #66 / PR #67 froze the retained >=300k `dostoevsky-brothers-karamazov-ru` public candidate at 98 exact Russian Wikisource revisions under versioned source-specific extraction/composition semantics, committed only source-free identity metadata and composite hashes, and switched ordinary verification from live capture to exact pinned replay. The frozen public composite is 1,810,351 characters / 3,261,432 UTF-8 bytes with raw and `scriptorium-text-v1` normalized SHA-256 `26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6`. FantLab source-edition match remains unknown, diagnostic comparison remains disabled, M2 parity is inadmissible, and benchmark movement remains 0/5 source-matched works. The substantial authored PR is left for an independent exact-head review.
-LAST_VERIFIED_PROGRESS: Hosted capture run 34946890902 on authored head 6665f0dacf0a0e7bf4e55633ae11a89484cff4f8 passed 151/151 standard-library tests, completed all 98 source segments, and uploaded exactly one source-free manifest artifact (ID 10386733809; archive SHA-256 `ee42aee4158ef4f5dd8f661e9e15c7c35f28d3fe438e898de97606032d5ec1db`; JSON SHA-256 `bf3451afa69d8f057ad173880f60095e0b49615c7724027d56a60171b6399da9`). The captured profile `scriptorium-wikisource-karamazov-body-v7` explicitly handles only source-observed markup boundaries and fails closed outside them. The committed candidate catalog/trace record the 3,244-character delta from FantLab's displayed 1,807,107 characters as evidence that source identity is not established, not as a normalization explanation. Final exact-head replay and ordinary repository checks are required before independent review/merge.
+LAST_COMMITTED_RUN_AT: 2026-09-15T08:50:20Z
+LAST_RESULT: SCRIP-REPRO-009 / Issue #66 / PR #67 received an independent exact-head review with no blocking defect and was squash-merged as `e7913f5f58852683d79c07f19db8ec4d6f4d8f9d`. The merged unit freezes retained >=300k candidate `dostoevsky-brothers-karamazov-ru` at 98 exact Russian Wikisource revisions under versioned fail-closed extraction/composition semantics, while committing only source-free identity metadata and composite hashes. FantLab source-edition match remains unknown, diagnostic comparison remains disabled, M2 parity is inadmissible, and benchmark movement remains 0/5 source-matched works. Issue #66 closed completed.
+LAST_VERIFIED_PROGRESS: Independent review of exact head `35163ab1ee3cbe9113357e8161e9fc29146d280a` confirmed the PR was cleanly mergeable against unchanged master, with eight expected files changed and no PR comments, submitted reviews or review threads. Exact-head runs `34947463077` (Brothers Karamazov replay), `34947463185` (Pages), `34947463116` (frozen diagnostic), and `34947463138` (pinned pylem provider) all succeeded. Replay used Python 3.13.15, passed 151/151 standard-library tests, fetched all 98 exact pinned revisions and reproduced the committed 1,810,351-character / 3,261,432-byte composite with raw and `scriptorium-text-v1` normalized SHA-256 `26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6`. Independently downloaded artifact `10387807120` contained exactly one source-free replay receipt; its archive SHA-256 matched GitHub at `f9c1ba0c71ccf8029b1de3d1f610b4b78a89c3ca00464323ab8dbfa86bf611af`. The 3,244-character delta from FantLab remains non-identity evidence only.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-REPRO-009
 ISSUE:          #66
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #67
-MERGED_COMMIT:  —
-NEXT_ACTION:    Independently review the exact final PR #67 head after all authored
-                state/changelog updates. Require the pinned 98-revision replay workflow,
-                ordinary tests/checks and source-free receipt to succeed. Merge only if
-                no semantic/provenance blocker is found. Do not promote FantLab source
-                match, diagnostic admissibility or M2 parity from the public-source freeze.
+MERGED_COMMIT:  e7913f5f58852683d79c07f19db8ec4d6f4d8f9d
+NEXT_ACTION:    Select the SCRIP-MORPH continuation as the highest-priority
+                dependency-satisfied normal-flow unit. Investigate the next largest
+                unresolved morphology axis with inspectable evidence while preserving
+                the fail-closed boundaries around runtime N, extra-category folding,
+                FantLab homonym selection, dictionary identity and service-word
+                aggregation. Do not promote any provider heuristic without benchmark evidence.
 ```
 
 ## Current milestone gate
@@ -31,9 +32,8 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-REPRO-009 review | review / recovery | Independently inspect PR #67 exact head, pinned replay receipt, source-free manifest, changed surface and all required checks; merge only if safe | SCRIP-REPRO-009 authored and in REVIEW |
-| P2 | SCRIP-MORPH continuation | analyzer core / reproduction | Investigate the next largest unresolved morphology axis with inspectable evidence, without guessing runtime `N`, extra-category folding, FantLab homonym selection, dictionary identity or service-word aggregation | M006 merged; provider homonym-weight signal is diagnostic only |
-| P3 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation identity and explicit legal provenance |
+| P1 | SCRIP-MORPH continuation | analyzer core / reproduction | Investigate the next largest unresolved morphology axis with inspectable evidence, without guessing runtime `N`, extra-category folding, FantLab homonym selection, dictionary identity or service-word aggregation | M006 merged; provider homonym-weight signal is diagnostic only |
+| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation identity and explicit legal provenance |
 
 ## Evidence already established
 

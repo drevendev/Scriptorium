@@ -3,9 +3,9 @@
   "research_date": "2026-09-15",
   "minimum_characters_including_spaces": 300000,
   "legal_policy": {
-    "source": "Russian Wikisource copyright policy",
-    "url": "https://ru.wikisource.org/wiki/Викитека:Авторские_права",
-    "rule_used": "Russian Wikisource permits works first published in the Russian Empire before 7 November 1917 under its public-domain policy; retained work pages also carry an explicit public-domain notice. Only the literary work body is in scope, not later editorial apparatus."
+    "source": "Candidate-specific public-domain, open-license, or explicit-permission evidence",
+    "url": "https://github.com/drevendev/Scriptorium/blob/master/AGENTS.md#corpus-and-copyright-boundary",
+    "rule_used": "Every retained candidate records provider-specific legal evidence. Web accessibility alone is never treated as permission. Only the literary work body is in scope by default; later editorial apparatus and source-provider UI are excluded unless separately licensed and required."
   },
   "status_vocabulary": {
     "eligible_unmatched": "Legal source, FantLab linguistic analysis, and length threshold are confirmed, but the FantLab source edition/bytes are not matched.",
@@ -207,6 +207,39 @@
         "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; the frozen public-domain candidate is not source-match or M2 parity evidence.",
         "The frozen public candidate has 563,125 characters while FantLab displays 549,050; the 14,075-character delta must not be treated as proof of edition identity or a single normalization cause.",
         "FantLab labels the work 1910 while Wikisource metadata says publication 1909; the discrepancy is preserved as unresolved bibliographic evidence rather than treated as source identity."
+      ]
+    },
+    {
+      "candidate_id": "bely-petersburg-1916-ru",
+      "author": "Андрей Белый",
+      "title": "Петербург",
+      "language": "ru",
+      "work_identity": "original_1916_first_book_edition",
+      "fantlab": {
+        "work_id": 293513,
+        "analysis_url": "https://fantlab.ru/work293513/lp",
+        "analysis_date": "2022-09-19",
+        "characters": 944182,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Wikimedia Commons",
+        "url": "https://commons.wikimedia.org/wiki/File:Андрей_Белый._Петербург_(1916).pdf",
+        "edition_note": "Facsimile of Andrei Bely's first 1916 book publication, described by Wikimedia Commons as a mechanical reproduction of the three Sirin installments from 1913–1914; 632 pages.",
+        "source_provenance_confidence": "strong",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The Wikimedia Commons file page explicitly marks the work public domain and identifies publication in the Russian Empire before 7 November 1917."
+      },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.json",
+      "source_identity_status": "traced_not_frozen",
+      "fantlab_source_edition_match": "unknown",
+      "diagnostic_ready": false,
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; no relationship to the 1916 facsimile is inferred.",
+        "The 1916 scan has strong edition/legal provenance but Scriptorium has not yet frozen the PDF byte digest or a deterministic OCR/extraction profile.",
+        "The 1916 first book edition must remain distinct from Bely's materially revised 1922 edition."
       ]
     }
   ],

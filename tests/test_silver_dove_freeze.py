@@ -6,7 +6,6 @@ import unittest
 from scriptorium.silver_dove_freeze import (
     CANDIDATE_ID,
     SOURCE_REVISION_ID,
-    SOURCE_REVISION_TIMESTAMP,
     WORK_TITLE,
     _EXPECTED_CATEGORIES,
     _EXPECTED_EDITORIAL_NOTE,
@@ -15,6 +14,8 @@ from scriptorium.silver_dove_freeze import (
     extract_silver_dove_body,
     replay_manifest,
 )
+
+_TEST_TIMESTAMP = "2025-07-30T21:54:37Z"
 
 
 def _source(literary: str) -> str:
@@ -71,7 +72,7 @@ class SilverDoveManifestTests(unittest.TestCase):
             return {
                 WORK_TITLE: {
                     "revision_id": SOURCE_REVISION_ID,
-                    "timestamp": SOURCE_REVISION_TIMESTAMP,
+                    "timestamp": _TEST_TIMESTAMP,
                     "mediawiki_sha1": "a" * 40,
                     "wikitext": source,
                 }
@@ -83,6 +84,7 @@ class SilverDoveManifestTests(unittest.TestCase):
         source, capture_fetcher = self._fetcher("Текст повести. " * 26000)
         manifest = build_manifest(fetcher=capture_fetcher)
         self.assertEqual(manifest["candidate_id"], CANDIDATE_ID)
+        self.assertEqual(manifest["source_identity"]["revision_timestamp"], _TEST_TIMESTAMP)
         self.assertGreaterEqual(
             manifest["composite_identity"]["character_count_including_spaces"], 300_000
         )
@@ -95,6 +97,7 @@ class SilverDoveManifestTests(unittest.TestCase):
             rows = tuple(rows)
             self.assertEqual(len(rows), 1)
             self.assertEqual(rows[0]["revision_id"], SOURCE_REVISION_ID)
+            self.assertEqual(rows[0]["revision_timestamp"], _TEST_TIMESTAMP)
             return {WORK_TITLE: source}
 
         receipt = replay_manifest(manifest, fetcher=replay_fetcher)

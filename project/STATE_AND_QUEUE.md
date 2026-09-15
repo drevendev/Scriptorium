@@ -1,24 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 85
+STATE_REVISION: 86
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T19:59:00Z
-LAST_RESULT: SCRIP-CORPUS-005 / Issue #79 / PR #80 authored a new legally usable early-Soviet science-fiction/adventure candidate, `tolstoy-hyperboloid-garin-wikisource-ru`. FantLab reports 495,539 characters / 69,126 words. Russian Wikisource supplies a stable reviewed permanent revision and explicit public-domain notice, but the transcription's print-edition identity and its relation to FantLab's analyzer input remain unknown. The unit is trace-only: no source prose or frozen literary-text digest is committed, diagnostics remain disabled and M2 stays 0/5.
-LAST_VERIFIED_PROGRESS: Fresh public-source research confirmed FantLab work 44824 was analyzed on 18 September 2022 at 495,539 characters / 69,126 words. Russian Wikisource permanent revision `oldid=5014458` is dated 30 August 2023, is presented as a stable reviewed page, cites `az.lib.ru` as source and marks the literary work public domain. The Wikisource text states that the novel was written in 1926–1927 and revised with new chapters in 1937, while FantLab independently records four authorial reworkings, a new 1927 ending and the 1939 Sovetsky pisatel volume as the last lifetime edition. Scriptorium therefore records revision-family ambiguity explicitly and does not infer an edition or FantLab-input match.
+LAST_COMMITTED_RUN_AT: 2026-09-15T20:51:10Z
+LAST_RESULT: SCRIP-CORPUS-005 / Issue #79 / PR #80 received an independent later-run exact-head review with no blocking defect and was squash-merged as `5941c6e158faf27f9a20ad31cf2549c8dc9cf31e`; Issue #79 closed completed. The merged unit adds `tolstoy-hyperboloid-garin-wikisource-ru` as a trace-only early-Soviet science-fiction/adventure candidate while keeping exact literary-text identity unfrozen, FantLab source match `unknown`, diagnostics disabled, and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Independent review of exact head `4973d0166acf156b4d5789974f7777983201fe19` confirmed the branch was 6 commits ahead / 0 behind unchanged base `813f415d7c4ad6c04fb344455110cfcb2187d494`, changed exactly five expected corpus/provenance/state files, and had no pre-existing submitted reviews or review threads; the only pre-existing PR discussion was the authored-run verification receipt. Exact-head runs `35016895745` (Pages) and `35016895806` (pinned provider) both completed successfully. Fresh source review independently reconfirmed FantLab's 18 September 2022 reference at 495,539 characters / 69,126 words and its four-reworking / 1927-ending / 1939-last-lifetime-edition notes, while Russian Wikisource permanent revision `oldid=5014458` is dated 30 August 2023, cites `az.lib.ru`, marks the work public domain, and states that the novel was revised with new chapters in 1937. These facts support the trace and revision-family ambiguity, not an edition or FantLab-input match.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-005
 ISSUE:          #79
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #80
-NEXT_ACTION:    Independently review the exact PR #80 head, changed-file boundary,
-                required checks and provenance claims. Merge only if the candidate
-                remains trace-only and source-free: permanent revision locator recorded,
-                exact literary-text identity unfrozen, revision family unresolved,
-                FantLab input match unknown, diagnostics/gate readiness false, and
-                M2 unchanged at 0/5.
+MERGED_COMMIT:  5941c6e158faf27f9a20ad31cf2549c8dc9cf31e
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer another legally usable >=300k diversity candidate or stronger
+                independent source-identity evidence for an existing candidate; keep
+                translation and edition identity explicit and do not infer FantLab
+                input identity from title, bibliography, count proximity or freezing.
 ```
 
 ## Current milestone gate
@@ -31,7 +31,6 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-005 review | review / recovery | Independently review PR #80 exact head and merge only if provenance/admissibility boundaries and checks hold | Exact head unchanged; required checks green; no blocking review evidence |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Evidence already established

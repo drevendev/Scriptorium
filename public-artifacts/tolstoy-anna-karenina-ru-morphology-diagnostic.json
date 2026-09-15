@@ -31,31 +31,6 @@
     "normalized_character_count_including_spaces": 1705605,
     "normalized_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205"
   },
-  "full_methodology_pos_diagnostic": {
-    "status": "diagnostic_only",
-    "methodology_contract": "scriptorium-fantlab-methodology-pos-diagnostic-v1",
-    "fantlab_methodology_source": "https://fantlab.ru/article374",
-    "provider_runtime_profile": "pylem-0.0.18-python39-sidecar-v1",
-    "runtime_analysis_sha256": "00cb365eeb6e187362cb1cb54acc6718c230791df18013702907dfee6446d69d",
-    "token_count": 269358,
-    "observed_work_page_defined_count": 117554,
-    "methodology_defined_count": 127909,
-    "methodology_undefined_count": 141449,
-    "additional_methodology_defined_count": 10355,
-    "extra_bucket_counts": {
-      "postposition": 0,
-      "phrasal_verb": 156,
-      "short_adjective": 1874,
-      "short_participle": 718,
-      "infinitive": 7607
-    },
-    "current_work_page_surface_relation": "unknown",
-    "runtime_n_resolution": "unresolved",
-    "fantlab_homonym_selection": "unresolved",
-    "fantlab_dictionary_equivalence": "unknown",
-    "production_pos_profile_changed": false,
-    "m2_parity_admissible": false
-  },
   "fantlab_boundary": {
     "work_id": 270306,
     "analysis_url": "https://fantlab.ru/work270306/lp",

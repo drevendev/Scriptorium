@@ -59,3 +59,15 @@ Canonical evidence:
 - `source-edition-traces/bely-silver-dove-ru.json` — FantLab counts, public-domain/source-edition evidence, frozen public identity, diversity rationale, unresolved publication metadata and admissibility.
 - `source-edition-traces/bely-silver-dove-ru.revisions.json` — source-free exact revision identity and composite hashes.
 - `../../scriptorium/silver_dove_freeze.py` — versioned source-specific extraction and exact-revision replay implementation.
+
+## Petersburg traced modernist candidate
+
+`bely-petersburg-1916-ru` adds a second long Andrei Bely work while preserving a concrete edition identity. FantLab's 19 September 2022 linguistic analysis reports **944,182 characters** and **130,217 words**, so the work clears the >=300,000-character calibration threshold.
+
+The retained source candidate is not the generic Russian Wikisource landing page. That landing page explicitly sits in the `Тексты без ссылок на источники` category and exposes edition navigation rather than a source-identified complete transcription, so it is useful only as a public-domain/bibliographic cross-check. Instead, Scriptorium records the Wikimedia Commons **632-page facsimile of the first 1916 book publication**, described there as a mechanical reproduction of the three *Sirin* installments from 1913–1914. Commons explicitly marks the work public domain. No scan pages, OCR, or source prose are committed.
+
+This unit deliberately stops at **source-edition tracing**. Scriptorium has not yet frozen the PDF byte digest, selected literary pages, or a deterministic OCR/extraction contract, and FantLab does not disclose which Petersburg edition or byte stream it analyzed. The 1916 first book edition is also kept distinct from Bely's materially revised 1922 edition. Therefore `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+
+Canonical evidence:
+
+- `source-edition-traces/bely-petersburg-1916-ru.json` — FantLab counts, explicit 1916 facsimile identity, public-domain evidence, Wikisource provenance warning, edition-family boundary and next evidence required before diagnostics.

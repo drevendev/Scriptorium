@@ -60,7 +60,7 @@ _BODY_DIV_RE = re.compile(
 )
 _ONLYINCLUDE_RE = re.compile(r"<onlyinclude>(.*?)</onlyinclude>", re.IGNORECASE | re.DOTALL)
 _POEM1_RE = re.compile(
-    r"\{\{poem1\|\|\s*<poem\b[^>]*>\s*(.*?)\s*</poem>\s*\|\}\}",
+    r"\{\{\s*poem1\s*\|\s*\|\s*<poem\b[^>]*>\s*(.*?)\s*</poem>\s*\|\s*\}\}",
     re.IGNORECASE | re.DOTALL,
 )
 _NOINCLUDE_RE = re.compile(r"<noinclude>.*?</noinclude>", re.IGNORECASE | re.DOTALL)

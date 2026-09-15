@@ -155,6 +155,19 @@ class KaramazovFreezeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "wikilink inside Wikisource typo"):
             extract_karamazov_body(linked, kind="book_chapter")
 
+    def test_extractor_renders_only_zero_argument_nb_as_visible_notabene(self):
+        source = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
+<onlyinclude>Перед знаком. {{NB}}После знака.</onlyinclude>
+"""
+        self.assertEqual(
+            extract_karamazov_body(source, kind="book_chapter"),
+            "Перед знаком. NB После знака.",
+        )
+
+        argument = source.replace("{{NB}}", "{{NB|вариант}}")
+        with self.assertRaisesRegex(ValueError, "unsupported Wikisource NB argument shape"):
+            extract_karamazov_body(argument, kind="book_chapter")
+
     def test_wikisource_editor_notes_are_excluded_with_nested_markup(self):
         source = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
 <onlyinclude>Авторский текст до.
@@ -223,12 +236,13 @@ __NOTOC____NOEDITSECTION__
         self.assertEqual(manifest["manifest_version"], MANIFEST_VERSION)
         self.assertEqual(manifest["candidate_id"], "dostoevsky-brothers-karamazov-ru")
         self.assertEqual(manifest["composition"]["extraction_profile"], EXTRACTION_PROFILE)
-        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v6")
+        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v7")
         self.assertIs(manifest["composition"]["navigation_wrappers_included"], False)
         self.assertIs(manifest["composition"]["wikisource_editor_notes_included"], False)
         self.assertIs(
             manifest["composition"]["wikisource_typo_corrections_render_corrected_text"], True
         )
+        self.assertIs(manifest["composition"]["wikisource_nb_zero_arg_renders_notabene"], True)
         self.assertEqual(manifest["composition"]["literary_heading_levels_preserved_as_text"], [5, 6])
         self.assertIs(manifest["composition"]["poem_indent_templates_stripped_as_formatting"], True)
         self.assertIs(manifest["composition"]["source_text_committed"], False)
@@ -289,6 +303,11 @@ __NOTOC____NOEDITSECTION__
         changed = copy.deepcopy(manifest)
         changed["composition"]["wikisource_typo_corrections_render_corrected_text"] = False
         with self.assertRaisesRegex(ValueError, "typo-correction boundary drift"):
+            replay_manifest(changed, fetcher=lambda identities: replay_records)
+
+        changed = copy.deepcopy(manifest)
+        changed["composition"]["wikisource_nb_zero_arg_renders_notabene"] = False
+        with self.assertRaisesRegex(ValueError, "Wikisource NB boundary drift"):
             replay_manifest(changed, fetcher=lambda identities: replay_records)
 
         changed = copy.deepcopy(manifest)

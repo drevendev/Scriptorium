@@ -32,39 +32,50 @@ jobs:
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
 
-      - name: Probe structural markup on the current failing leaf
+      - name: Probe nested Poem1 markup on the current failing leaf
         run: |
           python - <<'PY'
           import re
           from scriptorium.karamazov_freeze import (
               _NOINCLUDE_RE,
-              _ONLYINCLUDE_RE,
+              _find_balanced_template_end,
+              _split_template_parts,
               _strip_wikisource_editor_notes,
-              _unwrap_poem1_templates,
               expected_segments,
               fetch_current_segment_revisions,
           )
 
           target = next(
               row for row in expected_segments()
-              if str(row["title"]).endswith("/Книга шестая/II")
+              if str(row["title"]).endswith("/Книга девятая/IV")
           )
           source = str(fetch_current_segment_revisions((target,))[str(target["title"])]["wikitext"])
           source = _strip_wikisource_editor_notes(_NOINCLUDE_RE.sub("", source))
-          source = _unwrap_poem1_templates(source)
-          onlyinclude = _ONLYINCLUDE_RE.findall(source)
-          probe = onlyinclude[0] if len(onlyinclude) == 1 else source
-          names = sorted({
-              match.group(1).strip().casefold()
-              for match in re.finditer(r"\{\{\s*([^|{}\n]+)", probe)
-          })
-          heading_levels = [len(match.group(1)) for match in re.finditer(r"(?m)^(={2,6})[^=\n].*?\1\s*$", probe)]
-          print("SCRIPTORIUM_KARAMAZOV_REMAINING_TEMPLATE_NAMES=" + ",".join(names))
-          print("SCRIPTORIUM_KARAMAZOV_REMAINING_TEMPLATE_COUNT=" + str(len(names)))
-          print("SCRIPTORIUM_KARAMAZOV_HEADING_COUNT=" + str(len(heading_levels)))
-          print("SCRIPTORIUM_KARAMAZOV_HEADING_LEVELS=" + ",".join(map(str, heading_levels)))
-          print("SCRIPTORIUM_KARAMAZOV_TABLE_START_COUNT=" + str(probe.count("{|")))
-          print("SCRIPTORIUM_KARAMAZOV_TABLE_END_COUNT=" + str(probe.count("|}")))
+          start_re = re.compile(r"\{\{\s*poem1\b", re.IGNORECASE)
+          cursor = 0
+          shapes = []
+          nested_names = set()
+          while True:
+              match = start_re.search(source, cursor)
+              if match is None:
+                  break
+              end = _find_balanced_template_end(source, match.start())
+              raw = source[match.start():end]
+              parts = _split_template_parts(raw[2:-2])
+              args = parts[1:]
+              middle = args[1] if len(args) > 1 else ""
+              names = sorted({
+                  nested.group(1).strip().casefold()
+                  for nested in re.finditer(r"\{\{\s*([^|{}\n]+)", middle)
+              })
+              nested_names.update(names)
+              shapes.append((len(args), bool(re.fullmatch(r"\s*<poem\b[^>]*>.*?</poem>\s*", middle, re.I | re.S)), tuple(names)))
+              cursor = end
+          print("SCRIPTORIUM_KARAMAZOV_POEM1_COUNT=" + str(len(shapes)))
+          print("SCRIPTORIUM_KARAMAZOV_POEM1_ARG_COUNTS=" + ",".join(str(shape[0]) for shape in shapes))
+          print("SCRIPTORIUM_KARAMAZOV_POEM1_POEM_TAG_FLAGS=" + ",".join("1" if shape[1] else "0" for shape in shapes))
+          print("SCRIPTORIUM_KARAMAZOV_POEM1_NESTED_TEMPLATE_NAMES=" + ",".join(sorted(nested_names)))
+          print("SCRIPTORIUM_KARAMAZOV_POEM1_NESTED_TEMPLATE_COUNTS=" + ",".join(str(len(shape[2])) for shape in shapes))
           PY
 
       - name: Capture exact source revisions and composite hashes

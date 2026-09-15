@@ -48,7 +48,7 @@ EPILOGUE_CHAPTER_COUNT = 3
 SOURCE_SEGMENT_COUNT = 98
 CAPTURE_BATCH_SIZE = 8
 MANIFEST_VERSION = "scriptorium-karamazov-source-revision-packed-manifest-v1"
-EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v3"
+EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v4"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)"
 SOURCE_WORK_INDEX_REVISION_ID = 5616907
 BIBLIOGRAPHIC_SOURCE = (
@@ -62,6 +62,11 @@ _BODY_DIV_RE = re.compile(
 _ONLYINCLUDE_RE = re.compile(r"<onlyinclude>(.*?)</onlyinclude>", re.IGNORECASE | re.DOTALL)
 _NOINCLUDE_RE = re.compile(r"<noinclude>.*?</noinclude>", re.IGNORECASE | re.DOTALL)
 _HEADING_RE = re.compile(r"={2,6}\s*[^=\n]+?\s*={2,6}")
+_LITERARY_HEADING_RE = re.compile(
+    r"^(?P<marks>={5,6})\s*(?P<text>[^=\n].*?)\s*(?P=marks)\s*$",
+    re.MULTILINE,
+)
+_ANY_LINE_HEADING_RE = re.compile(r"^={2,6}[^=\n].*?={2,6}\s*$", re.MULTILINE)
 _CENTER_RE = re.compile(r"<center>.*?</center>", re.IGNORECASE | re.DOTALL)
 _CATEGORY_RE = re.compile(r"\[\[Категория:[^\]]+\]\]\s*$", re.IGNORECASE | re.DOTALL)
 _RIGHT_RE = re.compile(r"\{\{right\|(?P<text>.*?)\}\}", re.IGNORECASE | re.DOTALL)
@@ -320,6 +325,31 @@ def _plain_inline(value: str) -> str:
     return re.sub(r"[ \t]*\n[ \t]*", " ", value).strip()
 
 
+def _unwrap_literary_headings(source: str) -> str:
+    """Preserve the text of the source-observed level-5/6 literary subheadings.
+
+    A source-free probe of Book VI chapter II found five headings inside the admitted
+    ``onlyinclude`` body: one level-5 and four level-6 headings, with no table markup.
+    These are inside the literary body rather than page scaffolding, so their visible
+    text is retained while the MediaWiki heading syntax is removed. Any other heading
+    level remains fail-closed for a later source-specific decision.
+    """
+
+    def replace(match: re.Match[str]) -> str:
+        raw = match.group("text")
+        if "{{" in raw or "}}" in raw or "<" in raw or ">" in raw:
+            raise ValueError("unsupported markup inside literary subheading")
+        text = _plain_inline(raw)
+        if not text:
+            raise ValueError("empty literary subheading")
+        return f"\n\n{text}\n\n"
+
+    result = _LITERARY_HEADING_RE.sub(replace, source)
+    if _ANY_LINE_HEADING_RE.search(result):
+        raise ValueError("unsupported literary heading level remains inside transcription body")
+    return result
+
+
 def extract_index_front_matter(wikitext: str) -> str:
     """Extract only the authorial dedication and epigraph from the work index."""
 
@@ -374,12 +404,15 @@ def extract_karamazov_body(wikitext: str, *, kind: str) -> str:
     if onlyinclude:
         if len(onlyinclude) != 1:
             raise ValueError(f"expected one onlyinclude body, got {len(onlyinclude)}")
-        return extract_transcription_body(f'<div class="text">{onlyinclude[0]}</div>')
+        fragment = _unwrap_literary_headings(onlyinclude[0])
+        return extract_transcription_body(f'<div class="text">{fragment}</div>')
 
     divs = _BODY_DIV_RE.findall(source)
     if divs:
         rendered = [
-            extract_transcription_body(f'<div class="text">{fragment}</div>')
+            extract_transcription_body(
+                f'<div class="text">{_unwrap_literary_headings(fragment)}</div>'
+            )
             for fragment in divs
         ]
         return "\n\n".join(rendered)
@@ -475,6 +508,7 @@ def build_manifest(
             "epilogue_chapter_count": EPILOGUE_CHAPTER_COUNT,
             "navigation_wrappers_included": False,
             "wikisource_editor_notes_included": False,
+            "literary_heading_levels_preserved_as_text": [5, 6],
         },
         "source_identity_encoding": {
             "source_segment_count": len(segments),
@@ -518,6 +552,8 @@ def _validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object
         raise ValueError("navigation-wrapper boundary drift")
     if composition.get("wikisource_editor_notes_included") is not False:
         raise ValueError("Wikisource editor-note boundary drift")
+    if composition.get("literary_heading_levels_preserved_as_text") != [5, 6]:
+        raise ValueError("literary-heading boundary drift")
     if composition.get("source_text_committed") is not False:
         raise ValueError("source-text boundary drift")
 

@@ -59,6 +59,10 @@ _BODY_DIV_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 _ONLYINCLUDE_RE = re.compile(r"<onlyinclude>(.*?)</onlyinclude>", re.IGNORECASE | re.DOTALL)
+_POEM1_RE = re.compile(
+    r"\{\{poem1\|\|\s*<poem\b[^>]*>\s*(.*?)\s*</poem>\s*\|\}\}",
+    re.IGNORECASE | re.DOTALL,
+)
 _NOINCLUDE_RE = re.compile(r"<noinclude>.*?</noinclude>", re.IGNORECASE | re.DOTALL)
 _HEADING_RE = re.compile(r"={2,6}\s*[^=\n]+?\s*={2,6}")
 _CENTER_RE = re.compile(r"<center>.*?</center>", re.IGNORECASE | re.DOTALL)
@@ -222,6 +226,7 @@ def extract_karamazov_body(wikitext: str, *, kind: str) -> str:
         return extract_index_front_matter(wikitext)
 
     source = _NOINCLUDE_RE.sub("", wikitext)
+    source = _POEM1_RE.sub(lambda match: match.group(1), source)
     onlyinclude = _ONLYINCLUDE_RE.findall(source)
     if onlyinclude:
         if len(onlyinclude) != 1:

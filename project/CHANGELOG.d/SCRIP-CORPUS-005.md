@@ -1,7 +1,7 @@
 # SCRIP-CORPUS-005 — trace an early Soviet science-fiction candidate
 
 - Issue: #79
-- PR: pending
+- PR: #80
 - Scope: corpus / provenance; no source-text publication, diagnostic promotion, or FantLab parity claim.
 - Added Alexey N. Tolstoy's `Гиперболоид инженера Гарина` as a legally usable >=300,000-character diversity candidate. FantLab's 18 September 2022 linguistic analysis reports 495,539 characters and 69,126 words.
 - Russian Wikisource provides a stable reviewed full-work page, explicitly marks the literary work public domain, cites `az.lib.ru` as its source, and exposes permanent revision `oldid=5014458` dated 30 August 2023.

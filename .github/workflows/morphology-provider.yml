@@ -7,12 +7,14 @@ on:
       - "requirements/pylem-0.0.18.txt"
       - "scriptorium/morphology.py"
       - "scriptorium/morphology_diagnostic.py"
+      - "scriptorium/homonym_weight_diagnostic.py"
       - "scriptorium/pylem_provider.py"
       - "scriptorium/pylem_transport.py"
       - "scriptorium/text.py"
       - "scriptorium/wikisource_replay.py"
       - "tests/test_morphology.py"
       - "tests/test_morphology_diagnostic.py"
+      - "tests/test_homonym_weight_diagnostic.py"
       - "tests/test_pylem_provider.py"
       - "tests/test_pylem_transport.py"
       - "tools/pylem_runtime_probe.py"
@@ -24,6 +26,7 @@ on:
       - "project/CHANGELOG.d/SCRIP-MORPH-003.md"
       - "project/CHANGELOG.d/SCRIP-MORPH-004.md"
       - "project/CHANGELOG.d/SCRIP-MORPH-005.md"
+      - "project/CHANGELOG.d/SCRIP-MORPH-006.md"
   workflow_dispatch:
 
 permissions:
@@ -208,6 +211,40 @@ jobs:
           }, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
           PY
 
+      - name: Build source-free homonym-weight signal diagnostic
+        env:
+          SCRIPTORIUM_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.homonym_weight_diagnostic \
+            --manifest corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json \
+            --request build/morph/anna-pylem-request.json \
+            --response build/morph/anna-pylem-response.json \
+            --scriptorium-revision "$SCRIPTORIUM_REVISION" \
+            --output build/morph/work270306-pylem-homonym-weight-diagnostic.json
+          "${{ steps.py313.outputs.python-path }}" - <<'PY'
+          import json
+          from pathlib import Path
+          artifact = json.loads(Path("build/morph/work270306-pylem-homonym-weight-diagnostic.json").read_text(encoding="utf-8"))
+          assert artifact["schema_version"] == "scriptorium-frozen-homonym-weight-diagnostic-v1"
+          assert artifact["source_text_included"] is False
+          assert artifact["diagnostic_boundary"]["status"] == "diagnostic_only"
+          assert artifact["diagnostic_boundary"]["fantlab_homonym_selection"] == "unresolved"
+          assert artifact["diagnostic_boundary"]["production_resolution_changed"] is False
+          assert artifact["diagnostic_boundary"]["m2_parity_admissible"] is False
+          signal = artifact["signal"]
+          assert signal["status"] == "diagnostic_only"
+          assert signal["evidence_boundary"]["production_homonym_selection_changed"] is False
+          assert signal["homonym_weight_complete_count"] + signal["homonym_weight_missing_count"] == signal["direct_cross_bucket_ambiguity_count"]
+          assert signal["unique_max_bucket_count"] + signal["tied_max_bucket_count"] == signal["homonym_weight_complete_count"]
+          print(json.dumps({
+              "candidate_id": artifact["candidate_id"],
+              "normalized_sha256": artifact["normalized_sha256"],
+              "signal": signal,
+              "m2_parity_admissible": False,
+          }, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+          PY
+
       - name: Remove ephemeral source-bearing transport files
         if: always()
         run: rm -f build/morph/anna-pylem-request.json build/morph/anna-pylem-response.json
@@ -217,5 +254,13 @@ jobs:
         with:
           name: scriptorium-anna-pylem-pos-diagnostic
           path: build/morph/work270306-pylem-pos-diagnostic.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload source-free homonym-weight diagnostic
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-anna-pylem-homonym-weight-diagnostic
+          path: build/morph/work270306-pylem-homonym-weight-diagnostic.json
           if-no-files-found: error
           retention-days: 7

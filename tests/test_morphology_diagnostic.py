@@ -51,6 +51,10 @@ class MorphologyDiagnosticTests(unittest.TestCase):
             1,
         )
         self.assertEqual(
+            artifact["undefined_direct_bucket_token_presence_counts"],
+            {"adjective": 2, "verb": 2},
+        )
+        self.assertEqual(
             artifact["direct_ambiguity_bucket_presence_counts"],
             {"adjective": 1, "verb": 1},
         )

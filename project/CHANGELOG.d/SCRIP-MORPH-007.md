@@ -1,0 +1,10 @@
+# SCRIP-MORPH-007 — full FantLab methodology POS surface
+
+- Selected Issue #69 after orientation showed the initially considered runtime-`N` source audit would duplicate already-landed evidence; the duplicate selection note was closed without implementation.
+- Re-read current FantLab article 374. Its POS methodology explicitly enumerates 22 categories, including postpositions, phrasal verbs, short adjectives, short participles and infinitives, and says POS bigrams / sentence-position statistics cover the listed parts of speech.
+- Re-verified pinned `morph_dict@4c5e9b6d048d1ba74e02988593b23fb0cbc87772` `AgramtabLib/RusGramTab.cpp`: the five source categories have distinct Latin runtime strings `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT`, and `INFINITIVE`.
+- Changed the architecture decision: these five values are no longer described as categories that merely need a guessed fold into the observed 17-bucket work-page table. They are source-backed members of a separate full FantLab methodology surface; the relation between that surface and the narrower current work-page presentation remains unknown.
+- Added `scriptorium.methodology_pos_diagnostic` with a provider-neutral fail-closed resolver for the full documented methodology surface. It adds only the five source-backed category mappings on top of the existing direct work-page mapping; runtime `N`, no-analysis rows and cross-category homonyms remain undefined.
+- Added a source-free frozen diagnostic wrapper. `scriptorium-pos-v1` production semantics are unchanged and the new methodology view is `diagnostic_only` with `m2_parity_admissible=false`.
+- Added `compatibility/fantlab-pos-methodology-v1.json`, `docs/FANTLAB_POS_SURFACES.md`, and unit coverage for all five mappings, runtime-`N` refusal, cross-category ambiguity and frozen artifact source-free/manifest-binding constraints.
+- Benchmark movement: none. Source-match gate remains 0/5; FantLab dictionary identity, homonym selection, current-page presentation relation and service-word aggregation remain unresolved.

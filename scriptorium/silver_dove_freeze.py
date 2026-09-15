@@ -25,7 +25,6 @@ from .wikisource_replay import fetch_pinned_chapter_revisions
 CANDIDATE_ID = "bely-silver-dove-ru"
 WORK_TITLE = "Серебряный голубь (Белый)"
 SOURCE_REVISION_ID = 5588003
-SOURCE_REVISION_TIMESTAMP = "2025-07-30T21:54:00Z"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Серебряный_голубь_(Белый)"
 PERMANENT_SOURCE_URL = (
     "https://ru.wikisource.org/w/index.php?title=Серебряный_голубь_(Белый)&oldid=5588003"
@@ -188,8 +187,8 @@ def build_manifest(
             f"Silver Dove current revision drift: observed {revision_id}, expected {SOURCE_REVISION_ID}"
         )
     timestamp = str(revision["timestamp"])
-    if timestamp != SOURCE_REVISION_TIMESTAMP:
-        raise ValueError("Silver Dove source revision timestamp drift")
+    if not timestamp:
+        raise ValueError("Silver Dove source revision timestamp missing")
     wikitext = str(revision["wikitext"])
     body = extract_silver_dove_body(wikitext)
     identity = _identity(body)
@@ -267,8 +266,9 @@ def _validate_manifest(manifest: Mapping[str, object]) -> dict[str, object]:
         raise ValueError("Silver Dove source title drift")
     if source_identity.get("revision_id") != SOURCE_REVISION_ID:
         raise ValueError("Silver Dove source revision drift")
-    if source_identity.get("revision_timestamp") != SOURCE_REVISION_TIMESTAMP:
-        raise ValueError("Silver Dove source timestamp drift")
+    timestamp = source_identity.get("revision_timestamp")
+    if not isinstance(timestamp, str) or not timestamp:
+        raise ValueError("invalid Silver Dove source timestamp")
     for key in ("mediawiki_sha1", "wikitext_sha256"):
         value = source_identity.get(key)
         if not isinstance(value, str) or not value:

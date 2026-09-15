@@ -49,6 +49,7 @@ class PylemTransportTests(unittest.TestCase):
         self.assertEqual(request["schema_version"], REQUEST_SCHEMA)
         response = self._response(request, [["A"], ["N"], ["V", "A"]])
         artifact = consume_sidecar_response(request, response)
+        self.assertEqual(artifact["runtime_profile"], PYLEM_RUNTIME_PROFILE)
         self.assertEqual(artifact["metrics"]["defined"]["count"], 1)
         self.assertEqual(artifact["metrics"]["undefined"]["count"], 2)
         self.assertEqual(artifact["metrics"]["buckets"]["adjective"]["count"], 1)
@@ -102,10 +103,13 @@ class PylemTransportTests(unittest.TestCase):
         response = self._response(request, [["A"], ["N"]])
         reference = {
             "expected": {
+                "words": 2,
+                "defined_pos_words": 1,
+                "undefined_pos_words": 1,
                 "pos": {
                     "adjective": {"count": 10, "percent_of_defined": 5.0},
                     "noun": {"count": 20, "percent_of_defined": 10.0},
-                }
+                },
             }
         }
         artifact = build_frozen_pos_diagnostic(
@@ -119,12 +123,21 @@ class PylemTransportTests(unittest.TestCase):
         self.assertFalse(artifact["source_text_included"])
         self.assertEqual(artifact["diagnostic_boundary"]["status"], "diagnostic_only")
         self.assertFalse(artifact["diagnostic_boundary"]["m2_parity_admissible"])
+        self.assertEqual(
+            artifact["undefined_decomposition"]["undefined_reason_counts"]["runtime_n_only"],
+            1,
+        )
+        self.assertEqual(artifact["fantlab_pos_accounting"]["undefined_pos_words"]["delta"], 0)
         serialized = json.dumps(artifact, ensure_ascii=False)
         self.assertNotIn("Красный", serialized)
         self.assertNotIn("дом", serialized)
         self.assertEqual(
             artifact["fantlab_bucket_comparison"]["adjective"]["result"],
             "diagnostic_only",
+        )
+        self.assertEqual(
+            artifact["fantlab_bucket_comparison"]["adjective"]["actual_scope"],
+            "scriptorium_conservatively_defined_tokens_only",
         )
 
         mismatched_manifest = self._manifest(request, candidate_id="wrong-work")
@@ -143,9 +156,12 @@ class PylemTransportTests(unittest.TestCase):
         response = self._response(request, [["A"], ["N"]])
         reference = {
             "expected": {
+                "words": 2,
+                "defined_pos_words": 1,
+                "undefined_pos_words": 1,
                 "pos": {
                     "adjective": {"count": None, "percent_of_defined": 5.0},
-                }
+                },
             }
         }
         with self.assertRaisesRegex(ValueError, "must be an integer"):

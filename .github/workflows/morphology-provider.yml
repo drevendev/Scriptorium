@@ -6,11 +6,13 @@ on:
       - ".github/workflows/morphology-provider.yml"
       - "requirements/pylem-0.0.18.txt"
       - "scriptorium/morphology.py"
+      - "scriptorium/morphology_diagnostic.py"
       - "scriptorium/pylem_provider.py"
       - "scriptorium/pylem_transport.py"
       - "scriptorium/text.py"
       - "scriptorium/wikisource_replay.py"
       - "tests/test_morphology.py"
+      - "tests/test_morphology_diagnostic.py"
       - "tests/test_pylem_provider.py"
       - "tests/test_pylem_transport.py"
       - "tools/pylem_runtime_probe.py"
@@ -21,6 +23,7 @@ on:
       - "project/STATE_AND_QUEUE.md"
       - "project/CHANGELOG.d/SCRIP-MORPH-003.md"
       - "project/CHANGELOG.d/SCRIP-MORPH-004.md"
+      - "project/CHANGELOG.d/SCRIP-MORPH-005.md"
   workflow_dispatch:
 
 permissions:
@@ -181,18 +184,26 @@ jobs:
           import json
           from pathlib import Path
           artifact = json.loads(Path("build/morph/work270306-pylem-pos-diagnostic.json").read_text(encoding="utf-8"))
+          assert artifact["schema_version"] == "scriptorium-frozen-pos-diagnostic-v2"
           assert artifact["source_text_included"] is False
           assert artifact["diagnostic_boundary"]["status"] == "diagnostic_only"
           assert artifact["diagnostic_boundary"]["fantlab_source_edition_match"] == "unknown"
           assert artifact["diagnostic_boundary"]["fantlab_dictionary_equivalence"] == "unknown"
           assert artifact["diagnostic_boundary"]["m2_parity_admissible"] is False
           assert artifact["pos"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
+          decomposition = artifact["undefined_decomposition"]
+          assert decomposition["status"] == "diagnostic_only"
+          assert sum(decomposition["undefined_reason_counts"].values()) == decomposition["undefined_count"]
+          assert decomposition["defined_count"] + decomposition["undefined_count"] == decomposition["token_count"]
+          assert artifact["fantlab_pos_accounting"]["status"] == "diagnostic_only"
           print(json.dumps({
               "candidate_id": artifact["candidate_id"],
               "normalized_sha256": artifact["transport"]["normalized_sha256"],
               "runtime_analysis_sha256": artifact["transport"]["runtime_analysis_sha256"],
               "defined": artifact["pos"]["metrics"]["defined"],
               "undefined": artifact["pos"]["metrics"]["undefined"],
+              "undefined_decomposition": decomposition,
+              "fantlab_pos_accounting": artifact["fantlab_pos_accounting"],
               "m2_parity_admissible": False,
           }, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
           PY

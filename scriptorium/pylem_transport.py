@@ -8,13 +8,14 @@ from pathlib import Path
 from typing import Mapping, Sequence
 
 from .morphology import analyze_pos_metrics
+from .morphology_diagnostic import build_fantlab_pos_accounting, decompose_runtime_candidates
 from .pylem_provider import KNOWN_RUNTIME_POS, PYLEM_RUNTIME_PROFILE, PYLEM_VERSION
 from .text import NORMALIZATION_PROFILE, normalize_text, word_tokens
 from .wikisource_replay import replay_packed_manifest
 
 REQUEST_SCHEMA = "scriptorium-pylem-sidecar-request-v1"
 RESPONSE_SCHEMA = "scriptorium-pylem-sidecar-response-v1"
-DIAGNOSTIC_SCHEMA = "scriptorium-frozen-pos-diagnostic-v1"
+DIAGNOSTIC_SCHEMA = "scriptorium-frozen-pos-diagnostic-v2"
 
 
 def _sha256_text(value: str) -> str:
@@ -136,6 +137,22 @@ def _bind_frozen_manifest_identity(
         raise ValueError("sidecar request is not bound to the frozen manifest identity")
 
 
+def _validated_candidate_rows(response: Mapping[str, object]) -> tuple[tuple[str, ...], ...]:
+    """Read candidate rows only after ``consume_sidecar_response`` validated them."""
+    rows = response.get("rows")
+    if not isinstance(rows, list):
+        raise ValueError("validated sidecar response lost token rows")
+    candidate_rows: list[tuple[str, ...]] = []
+    for row in rows:
+        if not isinstance(row, Mapping):
+            raise ValueError("validated sidecar response contains a non-object row")
+        runtime_pos = row.get("runtime_pos")
+        if not isinstance(runtime_pos, list) or not all(isinstance(value, str) for value in runtime_pos):
+            raise ValueError("validated sidecar response contains invalid runtime_pos")
+        candidate_rows.append(tuple(runtime_pos))
+    return tuple(candidate_rows)
+
+
 def build_frozen_pos_diagnostic(
     request: Mapping[str, object],
     response: Mapping[str, object],
@@ -146,8 +163,18 @@ def build_frozen_pos_diagnostic(
 ) -> dict[str, object]:
     _bind_frozen_manifest_identity(request, manifest)
     pos = consume_sidecar_response(request, response)
+    candidate_rows = _validated_candidate_rows(response)
+    decomposition = decompose_runtime_candidates(candidate_rows)
+    if decomposition["defined_count"] != pos["metrics"]["defined"]["count"]:
+        raise ValueError("POS diagnostic defined-count decomposition mismatch")
+    if decomposition["undefined_count"] != pos["metrics"]["undefined"]["count"]:
+        raise ValueError("POS diagnostic undefined-count decomposition mismatch")
+
     expected = reference.get("expected")
-    expected_pos = expected.get("pos") if isinstance(expected, Mapping) else None
+    if not isinstance(expected, Mapping):
+        raise ValueError("FantLab reference missing expected metrics")
+    accounting = build_fantlab_pos_accounting(expected, pos)
+    expected_pos = expected.get("pos")
     comparisons: dict[str, object] = {}
     if isinstance(expected_pos, Mapping):
         for bucket, actual_row in pos["metrics"]["buckets"].items():
@@ -163,6 +190,7 @@ def build_frozen_pos_diagnostic(
                 "count_delta": actual_row["count"] - expected_count,
                 "expected_percent_of_defined": expected_row.get("percent_of_defined"),
                 "actual_percent_of_defined": actual_row["percent_of_defined"],
+                "actual_scope": "scriptorium_conservatively_defined_tokens_only",
                 "result": "diagnostic_only",
             }
     candidate_id = manifest.get("candidate_id")
@@ -187,9 +215,12 @@ def build_frozen_pos_diagnostic(
             "fantlab_homonym_selection": "unresolved",
             "noun_cardinal_runtime_collision": "unresolved",
             "extra_category_folding": "unresolved",
+            "service_word_aggregation": "unresolved",
             "m2_parity_admissible": False,
         },
         "pos": pos,
+        "undefined_decomposition": decomposition,
+        "fantlab_pos_accounting": accounting,
         "fantlab_bucket_comparison": comparisons,
     }
 

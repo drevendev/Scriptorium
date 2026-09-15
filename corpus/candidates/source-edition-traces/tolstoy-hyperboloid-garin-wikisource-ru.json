@@ -1,0 +1,83 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "tolstoy-hyperboloid-garin-wikisource-ru",
+  "research_date": "2026-09-15",
+  "fantlab": {
+    "work_id": 44824,
+    "analysis_url": "https://fantlab.ru/work44824/lp",
+    "analysis_date": "2022-09-18",
+    "observed_counts": {
+      "characters": 495539,
+      "words": 69126
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "work_page_url": "https://fantlab.ru/work44824",
+    "relationship_to_public_source": "unproven"
+  },
+  "public_source": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Гиперболоид_инженера_Гарина_(Толстой)",
+    "permanent_work_url": "https://ru.wikisource.org/w/index.php?title=Гиперболоид_инженера_Гарина_(Толстой)&oldid=5014458",
+    "revision_id": 5014458,
+    "revision_timestamp_observed": "2023-08-30T20:13:00Z",
+    "review_status": "stable_reviewed_revision",
+    "publication_year_metadata": 1927,
+    "source_reference": "az.lib.ru",
+    "bibliographic_source_identity": null,
+    "source_provenance_confidence": "medium",
+    "legal_basis": "public_domain",
+    "legal_evidence": "The Russian Wikisource page explicitly marks the literary work public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions. The work body itself is not committed by Scriptorium.",
+    "revision_family_evidence": {
+      "wikisource_authorial_note": "The page states that the novel was written in 1926–1927 and revised, with new chapters, in 1937.",
+      "fantlab_work_page": "FantLab notes that Tolstoy reworked the novel four times, records a new ending published in 1927, and identifies Sovetsky pisatel 1939 as the last lifetime edition.",
+      "identity_boundary": "The Wikisource/az.lib transcription is not assigned to a specific print-edition family beyond the page's internal 1937-revision note. Scriptorium does not equate it with the 1927, 1937, 1939, or FantLab analyzer input without independent evidence."
+    },
+    "immutable_identity": {
+      "status": "traced_not_frozen",
+      "traced_components": [
+        "permanent Wikisource revision oldid 5014458",
+        "observed revision timestamp 2023-08-30T20:13:00Z",
+        "stable/reviewed page status",
+        "explicit public-domain notice",
+        "az.lib.ru source pointer",
+        "authorial 1926–1927 / revised-in-1937 note"
+      ],
+      "unfrozen_components": [
+        "MediaWiki revision SHA-1 and raw wikitext SHA-256 recorded by Scriptorium",
+        "deterministic literary-body extraction contract",
+        "raw and normalized literary-text digests",
+        "bibliographic print-edition identity behind the Wikisource/az.lib transcription",
+        "relationship between FantLab's uploaded analyzer input and any 1927/1937/1939 revision family"
+      ],
+      "reason": "The permanent revision gives a reproducible source locator and clear legal basis, but Scriptorium has not frozen the revision bytes or a fail-closed body extraction, and the transcription's print-edition identity remains under-specified."
+    },
+    "source_text_committed": false
+  },
+  "diversity": {
+    "period": "early_soviet_20th_century",
+    "movement_or_genre": "science fiction / adventure",
+    "work_identity": "original_russian",
+    "reason_selected": "This adds an early Soviet science-fiction/adventure work by a new author to the retained parity-candidate set, expanding period and genre coverage beyond nineteenth-century Russian classics and the existing Bely modernist slice."
+  },
+  "admissibility": {
+    "length_threshold_met_from_fantlab": true,
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "status": "source_revision_traced_not_frozen",
+    "reasons": [
+      "FantLab reports 495,539 characters, above the 300,000-character calibration threshold.",
+      "Russian Wikisource provides a stable reviewed permanent revision and explicitly marks the literary work public domain.",
+      "The page cites az.lib.ru but does not identify a bibliographic print edition; its internal note says the novel was revised with new chapters in 1937.",
+      "FantLab independently records multiple authorial revisions and does not disclose the edition or immutable bytes uploaded for the 2022 analysis.",
+      "No source prose, frozen literary-text digest, diagnostic result, or parity claim is created by this trace-only unit."
+    ],
+    "next_evidence": [
+      "Freeze exact MediaWiki revision identity and wikitext digest for oldid 5014458 without committing source prose.",
+      "Define a deterministic, fail-closed extraction contract and derived raw/normalized digests before enabling full-work diagnostics.",
+      "Seek independent bibliographic evidence for the Wikisource/az.lib transcription's revision family and for FantLab's analyzer-input edition; never infer identity from title or character-count proximity."
+    ]
+  }
+}

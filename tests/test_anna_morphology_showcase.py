@@ -56,7 +56,7 @@ class AnnaMorphologyPublicShowcaseTests(unittest.TestCase):
         self.assertEqual(boundary["fantlab_source_edition_match"], "unknown")
         self.assertIs(boundary["m2_parity_admissible"], False)
 
-    def test_reviewed_morphology_summary_is_explicit_and_non_promotional(self) -> None:
+    def test_morphology_and_methodology_summary_is_explicit_and_non_promotional(self) -> None:
         note = self.artifact["representativeness_note"]
         for value in (
             "269,358",
@@ -67,8 +67,16 @@ class AnnaMorphologyPublicShowcaseTests(unittest.TestCase):
             "10.0786%",
             MERGED_M005,
             MERGED_M006,
+            "127,909",
+            "10,355",
+            "7,607 infinitives",
+            "1,874 short adjectives",
+            "718 short participles",
+            "156 phrasal verbs",
+            "0 postpositions",
+            "work-page relation remains unknown",
             "production POS resolution is unchanged",
-            "not recovered FantLab rules or parity evidence",
+            "not recovered FantLab rules, displayed FantLab counts or parity evidence",
         ):
             self.assertIn(value, note)
 
@@ -131,6 +139,10 @@ class AnnaMorphologyPublicShowcaseTests(unittest.TestCase):
         self.assertIn("269,358", html)
         self.assertIn("59,254", html)
         self.assertIn("5,972", html)
+        self.assertIn("127,909", html)
+        self.assertIn("10,355", html)
+        self.assertIn("7,607 infinitives", html)
+        self.assertIn("work-page relation remains unknown", html)
         self.assertIn("Source-edition match", html)
         self.assertIn("unknown", html)
         self.assertIn("M2 parity admissible", html)

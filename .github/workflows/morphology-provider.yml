@@ -8,6 +8,7 @@ on:
       - "scriptorium/morphology.py"
       - "scriptorium/morphology_diagnostic.py"
       - "scriptorium/homonym_weight_diagnostic.py"
+      - "scriptorium/methodology_pos_diagnostic.py"
       - "scriptorium/pylem_provider.py"
       - "scriptorium/pylem_transport.py"
       - "scriptorium/text.py"
@@ -15,18 +16,23 @@ on:
       - "tests/test_morphology.py"
       - "tests/test_morphology_diagnostic.py"
       - "tests/test_homonym_weight_diagnostic.py"
+      - "tests/test_methodology_pos_diagnostic.py"
       - "tests/test_pylem_provider.py"
       - "tests/test_pylem_transport.py"
       - "tools/pylem_runtime_probe.py"
       - "tools/pylem_sidecar.py"
       - "benchmarks/fantlab/work270306.json"
       - "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json"
+      - "public-artifacts/tolstoy-anna-karenina-ru-morphology-diagnostic.json"
       - "docs/AOT_PYLEM_COMPATIBILITY.md"
+      - "docs/FANTLAB_POS_SURFACES.md"
       - "project/STATE_AND_QUEUE.md"
       - "project/CHANGELOG.d/SCRIP-MORPH-003.md"
       - "project/CHANGELOG.d/SCRIP-MORPH-004.md"
       - "project/CHANGELOG.d/SCRIP-MORPH-005.md"
       - "project/CHANGELOG.d/SCRIP-MORPH-006.md"
+      - "project/CHANGELOG.d/SCRIP-MORPH-007.md"
+      - "project/CHANGELOG.d/SCRIP-MORPH-008.md"
   workflow_dispatch:
 
 permissions:
@@ -245,6 +251,52 @@ jobs:
           }, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
           PY
 
+      - name: Build source-free full-methodology POS diagnostic
+        env:
+          SCRIPTORIUM_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.methodology_pos_diagnostic \
+            --manifest corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json \
+            --request build/morph/anna-pylem-request.json \
+            --response build/morph/anna-pylem-response.json \
+            --scriptorium-revision "$SCRIPTORIUM_REVISION" \
+            --output build/morph/work270306-pylem-methodology-pos-diagnostic.json
+          "${{ steps.py313.outputs.python-path }}" - <<'PY'
+          import json
+          from pathlib import Path
+          artifact = json.loads(Path("build/morph/work270306-pylem-methodology-pos-diagnostic.json").read_text(encoding="utf-8"))
+          assert artifact["schema_version"] == "scriptorium-frozen-fantlab-methodology-pos-diagnostic-v1"
+          assert artifact["source_text_included"] is False
+          assert artifact["diagnostic_boundary"]["status"] == "diagnostic_only"
+          assert artifact["diagnostic_boundary"]["fantlab_source_edition_match"] == "unknown"
+          assert artifact["diagnostic_boundary"]["current_work_page_surface_relation"] == "unknown"
+          assert artifact["diagnostic_boundary"]["production_pos_profile_changed"] is False
+          assert artifact["diagnostic_boundary"]["m2_parity_admissible"] is False
+          assert artifact["transport"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
+          assert artifact["transport"]["normalized_sha256"] == "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205"
+          signal = artifact["methodology_pos"]
+          assert signal["transport"] == artifact["transport"]
+          assert signal["status"] == "diagnostic_only"
+          assert signal["defined_count"] + signal["undefined_count"] == signal["token_count"]
+          assert signal["defined_count"] - signal["observed_work_page_surface_defined_count"] == signal["additional_methodology_defined_count"]
+          assert sum(signal["extra_methodology_bucket_counts"].values()) == signal["additional_methodology_defined_count"]
+          assert signal["evidence_boundary"]["runtime_n_resolution"] == "unresolved"
+          assert signal["evidence_boundary"]["fantlab_homonym_selection"] == "unresolved"
+          assert signal["evidence_boundary"]["m2_parity_admissible"] is False
+          print(json.dumps({
+              "candidate_id": artifact["candidate_id"],
+              "transport": artifact["transport"],
+              "token_count": signal["token_count"],
+              "defined_count": signal["defined_count"],
+              "undefined_count": signal["undefined_count"],
+              "observed_work_page_surface_defined_count": signal["observed_work_page_surface_defined_count"],
+              "additional_methodology_defined_count": signal["additional_methodology_defined_count"],
+              "extra_methodology_bucket_counts": signal["extra_methodology_bucket_counts"],
+              "m2_parity_admissible": False,
+          }, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+          PY
+
       - name: Remove ephemeral source-bearing transport files
         if: always()
         run: rm -f build/morph/anna-pylem-request.json build/morph/anna-pylem-response.json
@@ -262,5 +314,13 @@ jobs:
         with:
           name: scriptorium-anna-pylem-homonym-weight-diagnostic
           path: build/morph/work270306-pylem-homonym-weight-diagnostic.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload source-free full-methodology POS diagnostic
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-anna-pylem-methodology-pos-diagnostic
+          path: build/morph/work270306-pylem-methodology-pos-diagnostic.json
           if-no-files-found: error
           retention-days: 7

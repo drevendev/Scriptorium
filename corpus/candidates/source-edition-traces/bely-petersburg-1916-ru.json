@@ -1,0 +1,91 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "bely-petersburg-1916-ru",
+  "research_date": "2026-09-15",
+  "fantlab": {
+    "work_id": 293513,
+    "analysis_url": "https://fantlab.ru/work293513/lp",
+    "analysis_date": "2022-09-19",
+    "observed_counts": {
+      "characters": 944182,
+      "words": 130217
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "work_page_url": "https://fantlab.ru/work293513",
+    "relationship_to_public_edition": "unproven"
+  },
+  "public_edition": {
+    "provider": "Wikimedia Commons",
+    "file_page_url": "https://commons.wikimedia.org/wiki/File:Андрей_Белый._Петербург_(1916).pdf",
+    "file_description_revision_url": "https://commons.wikimedia.org/w/index.php?title=File:Андрей_Белый._Петербург_(1916).pdf&oldid=1046280975",
+    "edition_label": "Андрей Белый. Петербург. 1916 — first book edition facsimile",
+    "structure": {
+      "kind": "facsimile_scan",
+      "page_count": 632,
+      "commons_upload_timestamp": "2016-03-20T18:31:00Z",
+      "source_text_committed": false
+    },
+    "bibliographic_source": "Wikimedia Commons describes the file as a facsimile reproduction of the first 1916 book publication (print run 6000), itself a mechanical reproduction of the novel parts published in three Sirin collections in 1913–1914.",
+    "upstream_scan_source": "http://imwerden.de/publ-1538.html",
+    "source_provenance_confidence": "strong",
+    "legal_basis": "public_domain",
+    "legal_evidence": "The Wikimedia Commons file description explicitly marks the work public domain and identifies publication in the Russian Empire before 7 November 1917. The scan is used only as a candidate edition identity; no source pages or OCR are committed here.",
+    "edition_identity_boundary": {
+      "status": "explicit_1916_first_book_edition",
+      "distinct_from": [
+        "the 1922 Berlin revision",
+        "an unversioned or source-less generic transcription"
+      ],
+      "note": "Petersburg has materially different edition families. Scriptorium records this 1916 facsimile as its own candidate identity and does not collapse it with the revised 1922 text."
+    },
+    "immutable_identity": {
+      "status": "traced_not_frozen",
+      "frozen_components": [
+        "Wikimedia Commons file-description revision oldid 1046280975",
+        "explicit first-book-publication year 1916 and 632-page facsimile description",
+        "public-domain status on the file description"
+      ],
+      "unfrozen_components": [
+        "exact PDF byte digest recorded by Scriptorium",
+        "page/OCR selection and deterministic extraction profile",
+        "raw and normalized literary-text digests",
+        "the relationship between FantLab's uploaded analyzer input and this 1916 edition"
+      ],
+      "reason": "The public scan provides strong source-edition and legal provenance, but Scriptorium has not yet frozen the PDF bytes or a deterministic OCR/extraction result."
+    }
+  },
+  "wikisource_cross_check": {
+    "work_url": "https://ru.wikisource.org/wiki/Петербург_(Белый)",
+    "permanent_work_url": "https://ru.wikisource.org/w/index.php?title=Петербург_(Белый)&oldid=4715397",
+    "status": "not_used_as_source_identity",
+    "public_domain_notice": true,
+    "source_provenance_warning": "The current landing page is explicitly categorized as a text without source references and exposes edition navigation rather than a source-identified complete transcription. It is retained only as a bibliographic/legal cross-check, not as the candidate byte identity."
+  },
+  "diversity": {
+    "period": "early_20th_century",
+    "movement": "Russian symbolism / modernism",
+    "work_identity": "original_russian_1916_first_book_edition",
+    "reason_selected": "This adds a second long Andrei Bely work with a different modernist style surface and an explicit historical edition identity, improving future author-profile and corpus-diversity coverage beyond nineteenth-century Russian classics."
+  },
+  "admissibility": {
+    "length_threshold_met_from_fantlab": true,
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "status": "source_edition_traced_not_frozen",
+    "reasons": [
+      "FantLab reports 944,182 characters, above the 300,000-character calibration threshold.",
+      "Wikimedia Commons supplies an explicit 632-page facsimile identity for the 1916 first book edition and marks it public domain.",
+      "The public scan has not yet been frozen into a Scriptorium PDF digest plus deterministic OCR/extraction contract, so no full-work diagnostic input exists yet.",
+      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis.",
+      "The 1916 first book edition must remain distinct from Bely's revised 1922 edition; no edition-family equivalence is inferred."
+    ],
+    "next_evidence": [
+      "Freeze the exact Commons PDF bytes by stable file identity and SHA-256 without committing the scan itself.",
+      "Define and verify a deterministic, fail-closed page/OCR extraction contract for the 1916 edition before enabling full-work diagnostics.",
+      "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to the 1916 edition or another explicit Petersburg edition; never infer identity from title or count proximity."
+    ]
+  }
+}

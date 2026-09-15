@@ -9,11 +9,20 @@ from pathlib import Path
 PYLEM_VERSION = "0.0.18"
 REQUEST_SCHEMA = "scriptorium-pylem-sidecar-request-v1"
 RESPONSE_SCHEMA = "scriptorium-pylem-sidecar-response-v1"
+CANDIDATE_METADATA_SCHEMA = "scriptorium-pylem-candidate-metadata-v1"
 RUNTIME_PROFILE = "pylem-0.0.18-python39-sidecar-v1"
 
 
 def _sha256_text(value):
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _optional_int(value, field):
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise RuntimeError("pylem returned invalid %s" % field)
+    return value
 
 
 def build_response(request):
@@ -50,26 +59,47 @@ def build_response(request):
         token_sha256 = _sha256_text(token)
         if row.get("sha256") != token_sha256:
             raise ValueError("request token hash mismatch")
-        runtime_pos = cache.get(token)
-        if runtime_pos is None:
+
+        cached = cache.get(token)
+        if cached is None:
             values = []
+            metadata = []
             for analysis in holder.lemmatize(token):
                 value = getattr(analysis, "part_of_speech", None)
                 if not isinstance(value, str) or not value.strip():
                     raise RuntimeError("pylem returned blank/non-string part_of_speech")
-                values.append(value.strip())
-            runtime_pos = tuple(values)
-            cache[token] = runtime_pos
+                runtime_pos = value.strip()
+                predicted = getattr(analysis, "predicted", None)
+                if not isinstance(predicted, bool):
+                    raise RuntimeError("pylem returned invalid predicted flag")
+                values.append(runtime_pos)
+                metadata.append(
+                    {
+                        "runtime_pos": runtime_pos,
+                        "predicted": predicted,
+                        "homonym_weight": _optional_int(
+                            getattr(analysis, "homonym_weight", None), "homonym_weight"
+                        ),
+                        "word_weight": _optional_int(
+                            getattr(analysis, "word_weight", None), "word_weight"
+                        ),
+                    }
+                )
+            cached = (tuple(values), tuple(metadata))
+            cache[token] = cached
+        runtime_pos, candidate_metadata = cached
         output_rows.append(
             {
                 "ordinal": ordinal,
                 "token_sha256": token_sha256,
                 "runtime_pos": list(runtime_pos),
+                "candidate_metadata": [dict(item) for item in candidate_metadata],
             }
         )
 
     return {
         "schema_version": RESPONSE_SCHEMA,
+        "candidate_metadata_schema": CANDIDATE_METADATA_SCHEMA,
         "runtime_profile": RUNTIME_PROFILE,
         "provider": {"distribution": "pylem", "version": installed},
         "normalized_sha256": normalized_sha256,

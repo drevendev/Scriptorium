@@ -1,0 +1,83 @@
+name: Silver Dove source freeze
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/silver-dove-freeze.yml"
+      - "scriptorium/silver_dove_freeze.py"
+      - "scriptorium/wikisource_freeze.py"
+      - "scriptorium/wikisource_replay.py"
+      - "tests/test_silver_dove_freeze.py"
+      - "corpus/candidates/source-edition-traces/bely-silver-dove-ru.json"
+      - "corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze:
+    name: Replay pinned Silver Dove source identity
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Replay exact public revision from committed identity
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.silver_dove_freeze replay \
+            --manifest corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json \
+            --receipt build/repro/bely-silver-dove-ru.replay.json
+
+      - name: Verify source-free replay evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          manifest = json.loads(Path("corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json").read_text(encoding="utf-8"))
+          receipt = json.loads(Path("build/repro/bely-silver-dove-ru.replay.json").read_text(encoding="utf-8"))
+          assert manifest["candidate_id"] == "bely-silver-dove-ru"
+          assert manifest["source_identity"]["revision_id"] == 5588003
+          assert manifest["composition"]["source_text_committed"] is False
+          assert manifest["fantlab_source_edition_match"] == "unknown"
+          assert manifest["diagnostic_comparison_admissible"] is False
+          assert manifest["m2_parity_admissible"] is False
+          assert receipt["source_text_included"] is False
+          assert receipt["composite_identity"] == manifest["composite_identity"]
+          print("SCRIPTORIUM_SILVER_DOVE_REPLAY=" + json.dumps(
+              {
+                  "candidate_id": manifest["candidate_id"],
+                  "source_identity": manifest["source_identity"],
+                  "composite_identity": manifest["composite_identity"],
+                  "fantlab_source_edition_match": manifest["fantlab_source_edition_match"],
+                  "diagnostic_comparison_admissible": manifest["diagnostic_comparison_admissible"],
+                  "m2_parity_admissible": manifest["m2_parity_admissible"],
+              },
+              ensure_ascii=False,
+              sort_keys=True,
+              separators=(",", ":"),
+          ))
+          PY
+
+      - name: Upload source-free replay receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: silver-dove-source-replay-receipt
+          path: build/repro/bely-silver-dove-ru.replay.json
+          if-no-files-found: error
+          retention-days: 7

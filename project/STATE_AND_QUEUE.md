@@ -1,30 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 80
+STATE_REVISION: 81
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T14:49:19Z
-LAST_RESULT: SCRIP-CORPUS-002 / Issue #73 / PR #74 received an independent exact-head review with no blocking defect and was squash-merged as `0b4c4fc17b9bbfb084d0f25a44b415926725b2fe`; Issue #73 closed completed. The merged unit adds Andrei Bely's `Серебряный голубь` as a source-free early-twentieth-century modernist FantLab parity-corpus candidate with explicit Wikisource public-domain/bibliographic evidence and permanent revision identity while preserving `traced_not_frozen`, source-match `unknown`, diagnostics disabled and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Independent review of exact head `fa61fcecb6e73278a1f3552aaf986dc1446dd5cc` confirmed the PR was 5 commits ahead / 0 behind unchanged master `66f904e33fe094b416de577ce4c803dffaef563c`, changed exactly five expected corpus/provenance/state files, and had no pre-existing PR comments, submitted reviews or review threads. Exact-head runs `34978609215` (Pages) and `34978609254` (pinned provider) succeeded; hosted jobs passed the standard-library/contract suites, deterministic site rebuild, exact hash-pinned pylem 0.0.18 native smoke on Python 3.9, and frozen Anna replay/source-free diagnostic uploads. Fresh external re-check confirmed FantLab's 19 September 2022 analysis at 549,050 characters / 83,369 words and Russian Wikisource permanent revision `oldid=5588003` (30 July 2025 21:54) carrying the 1909 publication label, public-domain notice, 1990 volume citation and V. Esaulov 2006 electronic-version credit. The authorial front matter itself says `1910 года. 12 апреля`, so the 1909/1910 dating discrepancy remains unresolved rather than being normalized into source identity.
+LAST_COMMITTED_RUN_AT: 2026-09-15T16:03:04Z
+LAST_RESULT: SCRIP-CORPUS-003 / Issue #75 / PR #76 freezes the retained `bely-silver-dove-ru` public Wikisource candidate at exact revision `5588003` under a versioned source-specific extraction/replay contract. The source-free manifest records exact revision/hash identity and a 563,125-character composite while preserving FantLab source match `unknown`, diagnostics disabled and M2 at 0/5. The authored PR remains open for independent review and must not be self-merged in the production wake.
+LAST_VERIFIED_PROGRESS: Capture/replay run `34992478190` on authored head `69dc49cc28875382e926f3f90b1c63ee76a19a68` passed all 162 standard-library tests, replayed Russian Wikisource revision `5588003` at `2025-07-30T21:54:23Z`, and produced source-free identity only. The pinned wikitext identity is MediaWiki SHA-1 `629893aa2acaa55979114a8bfc2a8882fd43f2a8` / SHA-256 `a611080e4dd1295336c3d8c7c78fc7a077608b247c9e96d7ae0a989fc256381a`; the extracted candidate is 563,125 characters / 1,039,363 UTF-8 bytes with raw and normalized SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`. The successful bootstrap artifact `10405159628` contained only the source-free manifest and replay receipt; after capture, the workflow was tightened to replay the committed manifest rather than recapture mutable current state. FantLab's displayed 549,050-character count is 14,075 lower and is recorded as a mismatch/unknown-policy signal, not source identity.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-002
-ISSUE:          #73
-STATUS:         DONE
-PR:             #74
-MERGED_COMMIT:  0b4c4fc17b9bbfb084d0f25a44b415926725b2fe
-NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
-                Prefer strengthening the new Silver Dove candidate by defining a
-                fail-closed single-page Wikisource extraction contract and exact-revision
-                hash freeze if the source markup can be bounded safely; otherwise add
-                another legally usable >=300k diversity candidate. Do not treat a public
-                freeze as FantLab analyzer-input identity without independent evidence.
+UNIT_ID:        SCRIP-CORPUS-003
+ISSUE:          #75
+STATUS:         REVIEW
+PR:             #76
+NEXT_ACTION:    Independently review the exact PR #76 head, changed-file scope,
+                comments/reviews/threads and all required checks. Merge only if the
+                committed Silver Dove manifest replays exactly, the extractor remains
+                source-specific/fail-closed, no source prose is published, and all
+                FantLab/M2 boundaries remain closed. Do not treat the frozen public
+                candidate or its 14,075-character display delta as analyzer-input identity.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering the five additional source-backed AOT categories while leaving runtime `N` unresolved. SCRIP-MORPH-008 now has independently reviewed and merged provider-executed frozen Anna aggregate evidence for the latter surface and exposes only those source-free aggregate values in the public morphology showcase; this does not establish how the five categories relate to the current FantLab work-page table. Anna Karenina, Resurrection and Brothers Karamazov each have immutable public-source candidates. Silver Dove adds a legally usable >=300k early-twentieth-century modernist candidate with a permanent single-page public revision but is not yet extraction/hash-frozen. M2 remains open at **0/5 source-matched works** because no retained FantLab analyzer-input edition/byte identity is independently established.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering the five additional source-backed AOT categories while leaving runtime `N` unresolved. SCRIP-MORPH-008 has independently reviewed and merged provider-executed frozen Anna aggregate evidence for the latter surface and exposes only source-free aggregates in the public morphology showcase; this does not establish how the five categories relate to the current FantLab work-page table. Anna Karenina, Resurrection, Brothers Karamazov and now Silver Dove have immutable public-source candidates. Silver Dove adds an early-twentieth-century modernist/symbolist voice but still has no independently established FantLab analyzer-input identity. M2 therefore remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -32,6 +31,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
+| P0 | SCRIP-CORPUS-003 review | recovery / review | Independently review PR #76 exact head and merge only if its source-free Silver Dove freeze remains reproducible and fail-closed | Exact-head checks green; no source/parity promotion |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation identity and explicit legal provenance |
 
 ## Evidence already established
@@ -68,13 +68,16 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - FantLab's current TXT excerpt route redirects to a LitRes trial endpoint (`art=171949`) and remains inadmissible as analyzer-input identity evidence.
 - `source_identity_status=public_candidate_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `diagnostic_comparison_admissible=false`, and `m2_parity_admissible=false`.
 
-### Silver Dove modernist candidate
+### Frozen Silver Dove modernist candidate
 
 - FantLab work 293515 reports its 19 September 2022 linguistic analysis at 549,050 characters and 83,369 words, clearing the >=300,000-character corpus threshold.
 - Russian Wikisource publishes the complete work on one page, explicitly marks the literary work public domain in Russia, cites Andrei Bely, *Works in two volumes*, Moscow: Khudozhestvennaya literatura, 1990, volume 1, pp. 377–642, and credits V. Esaulov's electronic version dated 19 August 2006.
-- The complete public page has permanent revision `oldid=5588003` (30 July 2025 21:54). That revision identity is durable provenance but is not yet a Scriptorium frozen text candidate because no versioned extraction contract/raw-normalized hash replay has been committed.
-- FantLab labels the work a 1910 novel while the current Wikisource metadata says publication 1909. The discrepancy remains explicitly unresolved; Scriptorium does not infer serial-versus-book chronology or source identity from it.
-- `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`.
+- The public source is frozen at exact revision `5588003` / `2025-07-30T21:54:23Z`, MediaWiki SHA-1 `629893aa2acaa55979114a8bfc2a8882fd43f2a8` and wikitext SHA-256 `a611080e4dd1295336c3d8c7c78fc7a077608b247c9e96d7ae0a989fc256381a`.
+- `scriptorium-wikisource-silver-dove-body-v1` retains the authorial preface and literary headings while excluding the page/bibliographic scaffold, empty level-three layout markup, the trailing Wikisource editorial publication note and category links. Unsupported remaining markup is rejected by the shared fail-closed renderer.
+- Composite identity: 563,125 characters; 1,039,363 UTF-8 bytes; raw and `scriptorium-text-v1` normalized SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`. No source prose is committed.
+- FantLab's displayed count is 14,075 lower. The delta is explicit non-identity/unknown-policy evidence; it does not establish the same edition or justify tuning normalization.
+- FantLab labels the work 1910 while Wikisource metadata says publication 1909. The discrepancy remains explicitly unresolved; Scriptorium does not infer serial-versus-book chronology or source identity from it.
+- `source_identity_status=public_candidate_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `diagnostic_comparison_admissible=false`, and `m2_parity_admissible=false`.
 
 ### Deterministic metric findings
 
@@ -106,7 +109,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - The static renderer/publication manifest remain fail-closed and source-free. Public material includes two short Anna Karenina derived showcases, a provenance-only Resurrection page, and a full-work Anna Karenina morphology diagnostic page.
 - The full-work morphology page exposes reviewed M005/M006 aggregates plus the independently reviewed SCRIP-MORPH-008 aggregate-only 22-category methodology diagnostic, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false`, unresolved work-page relation and unchanged production POS semantics.
 - The methodology public slice exposes only aggregate counts and runtime-analysis identity; it publishes no source prose, normalized text, tokens or candidate rows.
-- Corpus navigation documents the frozen Brothers Karamazov public identity and exact source-free manifest plus the new traced Silver Dove modernist candidate. No derived full-work analysis is published for either unmatched candidate.
+- Corpus navigation and the parity catalog now document frozen source-free identities for Brothers Karamazov and Silver Dove. No derived full-work analysis is published for either unmatched candidate.
 - Publication contract tests scan provenance artifacts for forbidden source-prose keys; Pages builds are reproducible.
 - Live deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -119,7 +122,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 5. Provider no-analysis is negligible, but known conservative policy boundaries account for nearly all current frozen-work undefined rows; provider homonym weights still do not justify a FantLab selection rule.
 6. The exact pinned pylem source requires an isolated legacy toolchain; changing that lane requires new evidence rather than silently patching upstream bytes.
 7. Brothers Karamazov has a frozen public-source identity, but no evidence ties FantLab's uploaded 2022 analyzer input to those same bytes; diagnostic comparison and M2 parity therefore remain disabled.
-8. Silver Dove has strong legal/bibliographic provenance and a permanent single-page revision, but still requires a versioned extraction/hash freeze and independent FantLab analyzer-input provenance before diagnostics or M2 evidence can be admitted; the 1909/1910 publication metadata discrepancy remains unresolved.
+8. Silver Dove now has a frozen public-source identity, but no evidence ties FantLab's uploaded 2022 analyzer input to those bytes; the 14,075-character display delta and unresolved 1909/1910 publication metadata remain explicit mismatch/unknown-policy evidence, so diagnostics and M2 stay disabled.
 9. Pages live activation is a repository-admin effect and remains off.
 
 ## Run selection rule

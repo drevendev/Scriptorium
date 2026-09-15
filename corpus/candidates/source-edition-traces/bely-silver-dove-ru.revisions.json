@@ -1,0 +1,39 @@
+{
+  "bibliographic_source": "Андрей Белый. Сочинения в двух томах. М.: Художественная литература, 1990. Том 1, стр. 377–642.",
+  "candidate_id": "bely-silver-dove-ru",
+  "composition": {
+    "authorial_preface_included": true,
+    "category_links_included": false,
+    "empty_level3_heading_markup_included": false,
+    "extraction_profile": "scriptorium-wikisource-silver-dove-body-v1",
+    "literary_headings_included": true,
+    "page_bibliographic_scaffolding_included": false,
+    "profile": "scriptorium-wikisource-single-page-v1",
+    "source_page_count": 1,
+    "source_text_committed": false,
+    "wikisource_editorial_publication_note_included": false
+  },
+  "composite_identity": {
+    "character_count_including_spaces": 563125,
+    "normalization_profile": "scriptorium-text-v1",
+    "normalized_character_count_including_spaces": 563125,
+    "normalized_sha256": "496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183",
+    "raw_sha256": "496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183",
+    "utf8_byte_count": 1039363
+  },
+  "diagnostic_comparison_admissible": false,
+  "fantlab_source_edition_match": "unknown",
+  "legal_basis": "public_domain",
+  "m2_parity_admissible": false,
+  "manifest_version": "scriptorium-silver-dove-source-revision-manifest-v1",
+  "permanent_source_url": "https://ru.wikisource.org/w/index.php?title=Серебряный_голубь_(Белый)&oldid=5588003",
+  "provider": "Russian Wikisource",
+  "source_identity": {
+    "mediawiki_sha1": "629893aa2acaa55979114a8bfc2a8882fd43f2a8",
+    "revision_id": 5588003,
+    "revision_timestamp": "2025-07-30T21:54:23Z",
+    "title": "Серебряный голубь (Белый)",
+    "wikitext_sha256": "a611080e4dd1295336c3d8c7c78fc7a077608b247c9e96d7ae0a989fc256381a"
+  },
+  "source_work_url": "https://ru.wikisource.org/wiki/Серебряный_голубь_(Белый)"
+}

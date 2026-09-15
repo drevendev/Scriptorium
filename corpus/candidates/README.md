@@ -44,14 +44,18 @@ Canonical evidence:
 - `source-edition-traces/dostoevsky-brothers-karamazov-ru.revisions.json` — compact source-free 98-revision identity and composite hashes.
 - `../../scriptorium/karamazov_freeze.py` — versioned source-specific extraction and exact-revision replay implementation.
 
-## Silver Dove modernist candidate
+## Silver Dove frozen modernist candidate
 
 `bely-silver-dove-ru` is the first retained candidate deliberately added to move the corpus beyond its nineteenth-century Russian-classic concentration. FantLab's 19 September 2022 linguistic analysis reports **549,050 characters** and **83,369 words**, so the work clears the >=300,000-character calibration threshold.
 
-Russian Wikisource publishes the complete work on one page, explicitly marks the literary work public domain in Russia, and cites **Andrei Bely, Works in two volumes, Moscow: Khudozhestvennaya literatura, 1990, volume 1, pp. 377–642**, with the electronic version credited to V. Esaulov on 19 August 2006. The current complete page is independently addressable as permanent revision `oldid=5588003`. This makes a future exact-revision freeze substantially simpler than the multi-hundred-subpage candidates already in the catalog, but the revision has **not** yet been extracted under a versioned Scriptorium contract or bound to raw/normalized hashes.
+Russian Wikisource publishes the complete work on one page, explicitly marks the literary work public domain in Russia, and cites **Andrei Bely, Works in two volumes, Moscow: Khudozhestvennaya literatura, 1990, volume 1, pp. 377–642**, with the electronic version credited to V. Esaulov on 19 August 2006. The source-free manifest now pins permanent revision `oldid=5588003` at `2025-07-30T21:54:23Z`, its MediaWiki SHA-1 and wikitext SHA-256, plus the versioned `scriptorium-wikisource-silver-dove-body-v1` extraction contract. The extractor retains the authorial preface and literary headings while excluding page/bibliographic scaffolding, empty level-three layout markup, the trailing Wikisource editorial publication note and category links; unsupported remaining markup fails closed. No source prose is committed.
 
-The public metadata also preserves an unresolved bibliographic discrepancy: FantLab labels the work a 1910 novel while the current Wikisource page says publication 1909. Scriptorium does not assume whether this represents serialization versus book publication or another cataloging convention, and it is not evidence that FantLab analyzed the Wikisource/1990 transcription. `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and M2 remains **0/5 source-matched works**.
+The frozen public candidate contains **563,125 characters including spaces** (1,039,363 UTF-8 bytes) and has raw and `scriptorium-text-v1` normalized SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`. FantLab's displayed count is **14,075 characters lower**. That delta is evidence of non-identity or differing extraction/counting policy, not permission to tune normalization and not proof of a source match.
+
+The public metadata also preserves an unresolved bibliographic discrepancy: FantLab labels the work 1910 while Wikisource metadata says 1909. Scriptorium does not assume whether this reflects serialization versus book publication or another cataloging convention. `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and M2 remains **0/5 source-matched works**.
 
 Canonical evidence:
 
-- `source-edition-traces/bely-silver-dove-ru.json` — FantLab counts, public-domain/source-edition evidence, permanent revision identity, diversity rationale, unresolved publication metadata, and the exact next freeze evidence.
+- `source-edition-traces/bely-silver-dove-ru.json` — FantLab counts, public-domain/source-edition evidence, frozen public identity, diversity rationale, unresolved publication metadata and admissibility.
+- `source-edition-traces/bely-silver-dove-ru.revisions.json` — source-free exact revision identity and composite hashes.
+- `../../scriptorium/silver_dove_freeze.py` — versioned source-specific extraction and exact-revision replay implementation.

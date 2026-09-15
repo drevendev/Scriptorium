@@ -27,7 +27,11 @@ jobs:
         run: |
           python - <<'PY'
           import re
-          from scriptorium.karamazov_freeze import expected_segments, fetch_current_segment_revisions
+          from scriptorium.karamazov_freeze import (
+              _POEM1_RE,
+              expected_segments,
+              fetch_current_segment_revisions,
+          )
 
           target = next(row for row in expected_segments() if str(row["title"]).endswith("/Книга третья/III"))
           source = str(fetch_current_segment_revisions((target,))[str(target["title"])]["wikitext"])
@@ -83,5 +87,9 @@ jobs:
                   "ends_poem_tag": bool(re.search(r"</poem>\s*$", arg, re.I)),
                   "nested_template_names": sorted(set(m.group(1).strip().casefold() for m in re.finditer(r"\{\{\s*([^|{}\n]+)", arg))),
               })
+          sanitized = _POEM1_RE.sub(lambda match: match.group(1), probe)
+          remaining = sorted(set(m.group(1).strip().casefold() for m in re.finditer(r"\{\{\s*([^|{}\n]+)", sanitized)))
           print("SCRIPTORIUM_POEM1_SHAPE=" + repr(metadata))
+          print("SCRIPTORIUM_POEM1_REGEX_MATCHES=" + str(len(_POEM1_RE.findall(probe))))
+          print("SCRIPTORIUM_POEM1_REMAINING=" + ",".join(remaining))
           PY

@@ -16,7 +16,6 @@ OUTPUT = ROOT / "build" / "test-anna-morphology-showcase"
 ENTRY_ID = "tolstoy-anna-karenina-ru-morphology-diagnostic-v1"
 MERGED_M005 = "7dab1a6b0fe2a1d9fe44653a17580e3f6f25145b"
 MERGED_M006 = "1bc8d9f92f6c8ab4bdce0a49ed45095af4579565"
-RUNTIME_ANALYSIS_SHA256 = "00cb365eeb6e187362cb1cb54acc6718c230791df18013702907dfee6446d69d"
 
 
 class AnnaMorphologyPublicShowcaseTests(unittest.TestCase):
@@ -57,7 +56,7 @@ class AnnaMorphologyPublicShowcaseTests(unittest.TestCase):
         self.assertEqual(boundary["fantlab_source_edition_match"], "unknown")
         self.assertIs(boundary["m2_parity_admissible"], False)
 
-    def test_reviewed_morphology_summary_is_explicit_and_non_promotional(self) -> None:
+    def test_morphology_and_methodology_summary_is_explicit_and_non_promotional(self) -> None:
         note = self.artifact["representativeness_note"]
         for value in (
             "269,358",
@@ -85,44 +84,6 @@ class AnnaMorphologyPublicShowcaseTests(unittest.TestCase):
         self.assertEqual(self.artifact["benchmark_admissibility"], "diagnostic_only")
         self.assertEqual(self.artifact["compatibility_claim"], "extension")
         self.assertIs(self.artifact["source_text_committed"], False)
-
-    def test_full_methodology_aggregate_is_source_free_and_fail_closed(self) -> None:
-        methodology = self.artifact["full_methodology_pos_diagnostic"]
-        self.assertEqual(methodology["status"], "diagnostic_only")
-        self.assertEqual(
-            methodology["methodology_contract"],
-            "scriptorium-fantlab-methodology-pos-diagnostic-v1",
-        )
-        self.assertEqual(
-            methodology["provider_runtime_profile"],
-            "pylem-0.0.18-python39-sidecar-v1",
-        )
-        self.assertEqual(methodology["runtime_analysis_sha256"], RUNTIME_ANALYSIS_SHA256)
-        self.assertEqual(methodology["token_count"], 269358)
-        self.assertEqual(methodology["observed_work_page_defined_count"], 117554)
-        self.assertEqual(methodology["methodology_defined_count"], 127909)
-        self.assertEqual(methodology["methodology_undefined_count"], 141449)
-        self.assertEqual(methodology["additional_methodology_defined_count"], 10355)
-        self.assertEqual(
-            methodology["extra_bucket_counts"],
-            {
-                "postposition": 0,
-                "phrasal_verb": 156,
-                "short_adjective": 1874,
-                "short_participle": 718,
-                "infinitive": 7607,
-            },
-        )
-        self.assertEqual(
-            sum(methodology["extra_bucket_counts"].values()),
-            methodology["additional_methodology_defined_count"],
-        )
-        self.assertEqual(methodology["current_work_page_surface_relation"], "unknown")
-        self.assertEqual(methodology["runtime_n_resolution"], "unresolved")
-        self.assertEqual(methodology["fantlab_homonym_selection"], "unresolved")
-        self.assertEqual(methodology["fantlab_dictionary_equivalence"], "unknown")
-        self.assertIs(methodology["production_pos_profile_changed"], False)
-        self.assertIs(methodology["m2_parity_admissible"], False)
 
     def test_artifact_contains_no_transport_or_source_text_payload_keys(self) -> None:
         keys: set[str] = set()

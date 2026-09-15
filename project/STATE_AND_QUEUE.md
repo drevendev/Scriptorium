@@ -1,22 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 87
+STATE_REVISION: 88
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T21:54:00Z
-LAST_RESULT: SCRIP-CORPUS-006 / Issue #81 / PR #82 strengthened the trace-only `tolstoy-hyperboloid-garin-wikisource-ru` candidate with a concrete 1958 Goslitizdat volume-4 bibliographic lead from collateral Wikisource/az.lib provenance plus independent FantLab bibliographic context, while explicitly refusing to promote that lead to transcription identity. The candidate remains unfrozen, FantLab source match stays `unknown`, diagnostics remain disabled, and M2 remains 0/5.
-LAST_VERIFIED_PROGRESS: Fresh source review separated direct Hyperboloid evidence from collateral edition-family evidence. Russian Wikisource permanent revision `oldid=5014458` still directly establishes only the stable reviewed public-domain locator, `az.lib.ru` source pointer and internal 1926–1927 / revised-in-1937 note. Sibling A. N. Tolstoy Wikisource pages `Союз пяти` and `Случай на Бассейной улице` cite the 1958 ten-volume collected works, volume 4, while FantLab bibliography independently confirms that volume as a real Hyperboloid edition context. Because the Hyperboloid page itself does not cite that volume, `bibliographic_source_identity` remains unset and the 1958 volume is recorded only as a testable lead.
+LAST_COMMITTED_RUN_AT: 2026-09-15T22:51:30Z
+LAST_RESULT: SCRIP-CORPUS-006 / Issue #81 / PR #82 received an independent later-run exact-head review with no blocking defect and was squash-merged as `3643b358859d3c875b83fc5af30dbe423fbb4d69`; Issue #81 closed completed. The merged unit strengthens `tolstoy-hyperboloid-garin-wikisource-ru` with a concrete 1958 Goslitizdat volume-4 edition-family lead while keeping it explicitly non-identifying, unfrozen, FantLab source match `unknown`, diagnostics disabled, and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Independent review of exact head `b3440047603d43f898ac5389cbde7a7b2ab1f1d3` confirmed the branch was 4 commits ahead / 0 behind unchanged base `7aafd6a175bd6bc2716014a554b242cbca76bcc1`, changed exactly four expected corpus/provenance/state files, and had no pre-existing PR discussion, submitted reviews, or review threads. Exact-head runs `35028225864` (Pages) and `35028225888` (pinned provider) both completed successfully. Fresh source verification reconfirmed that sibling A. N. Tolstoy Wikisource pages `Союз пяти` and `Случай на Бассейной улице` explicitly cite the 1958 ten-volume collected works, volume 4, while FantLab independently identifies the same volume as a real Hyperboloid edition context; because the Hyperboloid page itself still does not cite that volume, `bibliographic_source_identity` remains unset and the 1958 volume remains lead-only.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-006
 ISSUE:          #81
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #82
-MERGED_COMMIT:  none
-NEXT_ACTION:    Independently review the exact final PR #82 head and required checks.
-                Merge only if the provenance evidence remains correctly classified as
-                lead-only and all source-match/diagnostic/M2 gates remain fail-closed.
+MERGED_COMMIT:  3643b358859d3c875b83fc5af30dbe423fbb4d69
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer another legally usable >=300k diversity candidate or stronger
+                independent source-identity evidence for an existing candidate; keep
+                translation and edition identity explicit and do not infer FantLab
+                input identity from title, bibliography, sibling provenance, edition
+                availability, character-count proximity, or public-source freezing.
 ```
 
 ## Current milestone gate
@@ -29,7 +32,6 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-006 review | review / recovery | Independently review PR #82 exact head, required checks and provenance classification; merge only if fail-closed boundaries hold | PR #82 required checks complete and exact head unchanged |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Evidence already established
@@ -123,7 +125,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - The static renderer/publication manifest remain fail-closed and source-free. Public material includes two short Anna Karenina derived showcases, a provenance-only Resurrection page, and a full-work Anna Karenina morphology diagnostic page.
 - The full-work morphology page exposes reviewed M005/M006 aggregates plus the independently reviewed SCRIP-MORPH-008 aggregate-only 22-category methodology diagnostic, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false`, unresolved work-page relation and unchanged production POS semantics.
 - The methodology public slice exposes only aggregate counts and runtime-analysis identity; it publishes no source prose, normalized text, tokens or candidate rows.
-- Corpus navigation and the parity catalog document frozen source-free identities for Brothers Karamazov and Silver Dove plus trace-only source leads for Petersburg 1916 and Hyperboloid of Engineer Garin. PR #82 adds the 1958 Goslitizdat volume-4 Hyperboloid lead to public corpus navigation while explicitly classifying it as collateral/non-identifying. No derived full-work analysis is published for these unmatched candidates.
+- Corpus navigation and the parity catalog document frozen source-free identities for Brothers Karamazov and Silver Dove plus trace-only source leads for Petersburg 1916 and Hyperboloid of Engineer Garin. Merged SCRIP-CORPUS-006 adds the 1958 Goslitizdat volume-4 Hyperboloid lead to public corpus navigation while explicitly classifying it as collateral/non-identifying. No derived full-work analysis is published for these unmatched candidates.
 - Publication contract tests scan provenance artifacts for forbidden source-prose keys; Pages builds are reproducible.
 - Live deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 

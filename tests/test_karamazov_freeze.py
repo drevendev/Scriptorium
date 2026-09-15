@@ -120,6 +120,22 @@ class KaramazovFreezeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "malformed Poem1 poem-tag shape"):
             extract_karamazov_body(malformed, kind="book_chapter")
 
+    def test_wikisource_editor_notes_are_excluded_with_nested_markup(self):
+        source = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
+<onlyinclude>Авторский текст до.
+{{Примечание ВТ|Редакторский комментарий {{lang-fr|texte}}.}}
+Авторский текст после.
+{{Примечания ВТ}}</onlyinclude>
+"""
+        self.assertEqual(
+            extract_karamazov_body(source, kind="book_chapter"),
+            "Авторский текст до. Авторский текст после.",
+        )
+
+        malformed = source.replace("{{Примечание ВТ|Редакторский", "{{Примечание ВТ}} Редакторский")
+        with self.assertRaisesRegex(ValueError, "missing its note argument"):
+            extract_karamazov_body(malformed, kind="book_chapter")
+
     def test_extractor_handles_onlyinclude_and_styled_indent(self):
         preface = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
 == От автора ==
@@ -152,8 +168,9 @@ __NOTOC____NOEDITSECTION__
         self.assertEqual(manifest["manifest_version"], MANIFEST_VERSION)
         self.assertEqual(manifest["candidate_id"], "dostoevsky-brothers-karamazov-ru")
         self.assertEqual(manifest["composition"]["extraction_profile"], EXTRACTION_PROFILE)
-        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v2")
+        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v3")
         self.assertIs(manifest["composition"]["navigation_wrappers_included"], False)
+        self.assertIs(manifest["composition"]["wikisource_editor_notes_included"], False)
         self.assertIs(manifest["composition"]["source_text_committed"], False)
         self.assertGreaterEqual(
             manifest["composite_identity"]["character_count_including_spaces"], 300_000
@@ -202,6 +219,11 @@ __NOTOC____NOEDITSECTION__
         changed = copy.deepcopy(manifest)
         changed["composition"]["extraction_profile"] = "older-profile"
         with self.assertRaisesRegex(ValueError, "extraction profile"):
+            replay_manifest(changed, fetcher=lambda identities: replay_records)
+
+        changed = copy.deepcopy(manifest)
+        changed["composition"]["wikisource_editor_notes_included"] = True
+        with self.assertRaisesRegex(ValueError, "editor-note boundary drift"):
             replay_manifest(changed, fetcher=lambda identities: replay_records)
 
         changed = copy.deepcopy(manifest)

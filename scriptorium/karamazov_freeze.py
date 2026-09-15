@@ -48,7 +48,7 @@ EPILOGUE_CHAPTER_COUNT = 3
 SOURCE_SEGMENT_COUNT = 98
 CAPTURE_BATCH_SIZE = 8
 MANIFEST_VERSION = "scriptorium-karamazov-source-revision-packed-manifest-v1"
-EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v2"
+EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v3"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)"
 SOURCE_WORK_INDEX_REVISION_ID = 5616907
 BIBLIOGRAPHIC_SOURCE = (
@@ -72,6 +72,10 @@ _EPIGRAPH_RE = re.compile(
 _WIKILINK_RE = re.compile(r"\[\[(?:[^\[\]|]+\|)?([^\[\]]+)\]\]")
 _FORMATTING_RE = re.compile(r"'{2,5}")
 _POEM_TAG_RE = re.compile(r"<poem\b[^>]*>\s*(.*?)\s*</poem>", re.IGNORECASE | re.DOTALL)
+_EDITOR_NOTE_START_RE = re.compile(
+    r"\{\{\s*(?:примечание\s+вт|примечания\s+вт)(?=\s*[|}])",
+    re.IGNORECASE,
+)
 _HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
 _HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 
@@ -182,7 +186,7 @@ def _split_template_parts(inner: str) -> list[str]:
         if pair == "}}":
             template_depth -= 1
             if template_depth < 0:
-                raise ValueError("unbalanced nested template in Poem1")
+                raise ValueError("unbalanced nested template")
             buffer.append(pair)
             index += 2
             continue
@@ -194,7 +198,7 @@ def _split_template_parts(inner: str) -> list[str]:
         if pair == "]]":
             link_depth -= 1
             if link_depth < 0:
-                raise ValueError("unbalanced wikilink in Poem1")
+                raise ValueError("unbalanced wikilink")
             buffer.append(pair)
             index += 2
             continue
@@ -206,15 +210,67 @@ def _split_template_parts(inner: str) -> list[str]:
         buffer.append(inner[index])
         index += 1
     if template_depth or link_depth:
-        raise ValueError("unbalanced nested markup in Poem1")
+        raise ValueError("unbalanced nested markup")
     parts.append("".join(buffer))
     return parts
+
+
+def _find_balanced_template_end(source: str, start: int) -> int:
+    depth = 0
+    index = start
+    while index < len(source) - 1:
+        pair = source[index : index + 2]
+        if pair == "{{":
+            depth += 1
+            index += 2
+            continue
+        if pair == "}}":
+            depth -= 1
+            index += 2
+            if depth == 0:
+                return index
+            if depth < 0:
+                break
+            continue
+        index += 1
+    raise ValueError("unterminated balanced template")
+
+
+def _strip_wikisource_editor_notes(source: str) -> str:
+    """Remove Wikisource-editor notes, which are explicitly not literary source text.
+
+    Russian Wikisource documents ``Примечание ВТ`` / ``Примечания ВТ`` as a paired
+    facility for comments made by Wikisource contributors, visually separated from
+    authorial notes. The full balanced invocation is removed so nested formatting or
+    language templates inside an editor comment cannot leak into the literary composite.
+    """
+
+    output: list[str] = []
+    cursor = 0
+    while True:
+        match = _EDITOR_NOTE_START_RE.search(source, cursor)
+        if match is None:
+            output.append(source[cursor:])
+            return "".join(output)
+        output.append(source[cursor : match.start()])
+        end = _find_balanced_template_end(source, match.start())
+        raw = source[match.start() : end]
+        parts = _split_template_parts(raw[2:-2])
+        if not parts:
+            raise ValueError("empty Wikisource editor-note template")
+        name = re.sub(r"\s+", " ", parts[0].strip()).casefold()
+        if name not in {"примечание вт", "примечания вт"}:
+            raise ValueError("unexpected template while stripping Wikisource editor note")
+        if name == "примечание вт" and len(parts) < 2:
+            raise ValueError("Wikisource editor note is missing its note argument")
+        output.append("")
+        cursor = end
 
 
 def _unwrap_poem1_templates(source: str) -> str:
     """Replace only the two source-observed Poem1 shapes, fail closed on all others.
 
-    The source-free hosted probe observed eight invocations in Book III chapter III:
+    A source-free hosted probe observed eight invocations in Book III chapter III:
     six had ``{{Poem1||<poem>...</poem>|}}`` and two had
     ``{{Poem1||plain text|}}``. Both render the middle positional argument. This parser
     accepts exactly that three-argument blank/middle/blank contract and refuses nested
@@ -230,29 +286,7 @@ def _unwrap_poem1_templates(source: str) -> str:
             output.append(source[cursor:])
             return "".join(output)
         output.append(source[cursor : match.start()])
-
-        depth = 0
-        index = match.start()
-        end: int | None = None
-        while index < len(source) - 1:
-            pair = source[index : index + 2]
-            if pair == "{{":
-                depth += 1
-                index += 2
-                continue
-            if pair == "}}":
-                depth -= 1
-                index += 2
-                if depth == 0:
-                    end = index
-                    break
-                if depth < 0:
-                    break
-                continue
-            index += 1
-        if end is None:
-            raise ValueError("unterminated Poem1 template")
-
+        end = _find_balanced_template_end(source, match.start())
         raw = source[match.start() : end]
         parts = _split_template_parts(raw[2:-2])
         if not parts or parts[0].strip().casefold() != "poem1":
@@ -333,6 +367,7 @@ def extract_karamazov_body(wikitext: str, *, kind: str) -> str:
         return extract_index_front_matter(wikitext)
 
     source = _NOINCLUDE_RE.sub("", wikitext)
+    source = _strip_wikisource_editor_notes(source)
     source = _unwrap_poem1_templates(source)
 
     onlyinclude = _ONLYINCLUDE_RE.findall(source)
@@ -439,6 +474,7 @@ def build_manifest(
             "book_chapter_counts": list(BOOK_CHAPTER_COUNTS),
             "epilogue_chapter_count": EPILOGUE_CHAPTER_COUNT,
             "navigation_wrappers_included": False,
+            "wikisource_editor_notes_included": False,
         },
         "source_identity_encoding": {
             "source_segment_count": len(segments),
@@ -480,6 +516,8 @@ def _validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object
         raise ValueError("unexpected segment separator")
     if composition.get("navigation_wrappers_included") is not False:
         raise ValueError("navigation-wrapper boundary drift")
+    if composition.get("wikisource_editor_notes_included") is not False:
+        raise ValueError("Wikisource editor-note boundary drift")
     if composition.get("source_text_committed") is not False:
         raise ValueError("source-text boundary drift")
 

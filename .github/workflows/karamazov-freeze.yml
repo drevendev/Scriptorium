@@ -47,16 +47,18 @@ jobs:
               _strip_wikisource_editor_notes,
               _unwrap_literary_headings,
               _unwrap_poem1_templates,
+              _unwrap_typo_templates,
               expected_segments,
               fetch_current_segment_revisions,
           )
 
           target = next(
               row for row in expected_segments()
-              if str(row["title"]).endswith("/Книга одиннадцатая/IV")
+              if str(row["title"]).endswith("/Книга двенадцатая/III")
           )
           source = str(fetch_current_segment_revisions((target,))[str(target["title"])]["wikitext"])
           source = _strip_wikisource_editor_notes(_NOINCLUDE_RE.sub("", source))
+          source = _unwrap_typo_templates(source)
           source = _unwrap_poem1_templates(source)
           onlyinclude = _ONLYINCLUDE_RE.findall(source)
           if onlyinclude:

@@ -1,6 +1,6 @@
 {
   "catalog_version": "fantlab-parity-candidates-v1",
-  "research_date": "2026-09-14",
+  "research_date": "2026-09-15",
   "minimum_characters_including_spaces": 300000,
   "legal_policy": {
     "source": "Russian Wikisource copyright policy",
@@ -124,18 +124,21 @@
       "source": {
         "provider": "Russian Wikisource",
         "url": "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)",
-        "edition_note": "Достоевский Ф. М. Собрание сочинений: в 15 т. Л.: Наука, 1991. Т. 9–10 (as cited by the Wikisource work page).",
+        "edition_note": "Достоевский Ф. М. Собрание сочинений: в 15 т. Л.: Наука, 1991. Т. 9–10 (as cited by Wikisource and confirmed by the linked Russian Virtual Library electronic edition).",
         "source_provenance_confidence": "strong",
         "legal_basis": "public_domain",
         "legal_evidence": "The work page explicitly marks the literary work public domain; original publication was 1878–1880 in the Russian Empire."
       },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.json",
+      "source_identity_status": "traced_not_frozen",
       "fantlab_source_edition_match": "unknown",
       "diagnostic_ready": false,
       "gate_ready": false,
       "status": "eligible_unmatched",
       "blockers": [
         "FantLab does not identify the exact edition or text bytes used for the 2022 analysis.",
-        "The 1991 critical-edition transcription is a source candidate, not evidence that FantLab analyzed that edition."
+        "The traced 1991 Nauka / RVB Wikisource transcription is a strong public source candidate, not evidence that FantLab analyzed that edition.",
+        "Wikisource work-index revision 5616907 does not freeze the independent text-bearing subpage revisions; exact leaf inventory, extraction/composition and composite hashes must be frozen before full-work diagnostics."
       ]
     },
     {

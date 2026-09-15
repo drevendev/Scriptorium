@@ -29,3 +29,15 @@ Canonical evidence:
 - `source-edition-traces/tolstoy-resurrection-ru.json` — provenance, legal/source boundary, frozen identity and admissibility.
 - `source-edition-traces/tolstoy-resurrection-ru.revisions.json` — compact source-free 129-revision identity and composite hashes.
 - `../../scriptorium/resurrection_freeze.py` — versioned source-specific extraction and exact-revision replay implementation.
+
+## Brothers Karamazov traced candidate
+
+`dostoevsky-brothers-karamazov-ru` now has a strong bibliographic trace but is **not yet frozen for full-work diagnostics**. FantLab's 18 September 2022 analysis reports **1,807,107 characters** and **281,507 words**. Russian Wikisource identifies its public-domain transcription as Dostoevsky's **Collected Works in 15 volumes, Leningrad: Nauka, 1991, volumes 9-10** and links the Russian Virtual Library electronic edition. RVB independently confirms that volume 9 contains parts I-III and volume 10 contains part IV plus the epilogue, under the same 1991 Nauka edition.
+
+The Wikisource work index has permanent revision `oldid=5616907`, but that revision does **not** freeze the novel bytes. Individual content pages have their own revisions; sampled Book I, Chapter I exposes independent revision `oldid=1224742`. The index lists an author preface, twelve books across four parts, and 96 numbered chapter/epilogue leaves, but a later freeze must verify the exact text-bearing inventory, page shapes, extraction rules and composition before recording composite hashes. The sampled chapter also reports no reviewed version, so transcription QA is kept separate from the otherwise strong bibliographic provenance.
+
+FantLab's current TXT excerpt route redirects to a LitRes trial endpoint (`art=171949`). That route is recorded only as negative source-identity evidence: neither the excerpt nor the listed edition proves which uploaded bytes FantLab analyzed. Therefore `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `m2_parity_admissible=false`, and M2 remains **0/5 source-matched works**.
+
+Canonical evidence:
+
+- `source-edition-traces/dostoevsky-brothers-karamazov-ru.json` — Wikisource/RVB/Nauka bibliographic chain, permanent-index boundary, legal basis, non-frozen structure and exact next evidence.

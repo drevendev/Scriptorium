@@ -128,6 +128,33 @@ class KaramazovFreezeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "malformed Poem1 poem-tag shape"):
             extract_karamazov_body(malformed, kind="book_chapter")
 
+    def test_extractor_renders_only_unambiguous_long_form_typo_corrections(self):
+        source = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
+<onlyinclude>До исправления.
+{{Опечатка|ошыбка|ошибка|О1}}
+После исправления.</onlyinclude>
+"""
+        self.assertEqual(
+            extract_karamazov_body(source, kind="book_chapter"),
+            "До исправления. ошибка После исправления.",
+        )
+
+        short = source.replace("{{Опечатка|ошыбка|ошибка|О1}}", "{{Опечатка|ошибка|О1}}")
+        with self.assertRaisesRegex(ValueError, "unsupported Wikisource typo argument shape"):
+            extract_karamazov_body(short, kind="book_chapter")
+
+        unknown_class = source.replace("|О1}}", "|комментарий}}")
+        with self.assertRaisesRegex(ValueError, "unsupported Wikisource typo correction class"):
+            extract_karamazov_body(unknown_class, kind="book_chapter")
+
+        nested = source.replace("|ошибка|О1}}", "|{{lang|ru|ошибка}}|О1}}")
+        with self.assertRaisesRegex(ValueError, "nested template inside Wikisource typo"):
+            extract_karamazov_body(nested, kind="book_chapter")
+
+        linked = source.replace("|ошибка|О1}}", "|[[Ошибка|ошибка]]|О1}}")
+        with self.assertRaisesRegex(ValueError, "wikilink inside Wikisource typo"):
+            extract_karamazov_body(linked, kind="book_chapter")
+
     def test_wikisource_editor_notes_are_excluded_with_nested_markup(self):
         source = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
 <onlyinclude>Авторский текст до.
@@ -196,9 +223,12 @@ __NOTOC____NOEDITSECTION__
         self.assertEqual(manifest["manifest_version"], MANIFEST_VERSION)
         self.assertEqual(manifest["candidate_id"], "dostoevsky-brothers-karamazov-ru")
         self.assertEqual(manifest["composition"]["extraction_profile"], EXTRACTION_PROFILE)
-        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v5")
+        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v6")
         self.assertIs(manifest["composition"]["navigation_wrappers_included"], False)
         self.assertIs(manifest["composition"]["wikisource_editor_notes_included"], False)
+        self.assertIs(
+            manifest["composition"]["wikisource_typo_corrections_render_corrected_text"], True
+        )
         self.assertEqual(manifest["composition"]["literary_heading_levels_preserved_as_text"], [5, 6])
         self.assertIs(manifest["composition"]["poem_indent_templates_stripped_as_formatting"], True)
         self.assertIs(manifest["composition"]["source_text_committed"], False)
@@ -254,6 +284,11 @@ __NOTOC____NOEDITSECTION__
         changed = copy.deepcopy(manifest)
         changed["composition"]["wikisource_editor_notes_included"] = True
         with self.assertRaisesRegex(ValueError, "editor-note boundary drift"):
+            replay_manifest(changed, fetcher=lambda identities: replay_records)
+
+        changed = copy.deepcopy(manifest)
+        changed["composition"]["wikisource_typo_corrections_render_corrected_text"] = False
+        with self.assertRaisesRegex(ValueError, "typo-correction boundary drift"):
             replay_manifest(changed, fetcher=lambda identities: replay_records)
 
         changed = copy.deepcopy(manifest)

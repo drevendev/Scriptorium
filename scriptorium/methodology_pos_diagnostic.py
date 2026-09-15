@@ -144,6 +144,11 @@ def analyze_methodology_pos_signal(
         "schema_version": METHODOLOGY_DIAGNOSTIC_SCHEMA,
         "status": "diagnostic_only",
         "fantlab_methodology_source": FANTLAB_METHODOLOGY_SOURCE,
+        "transport": {
+            "runtime_profile": observed_surface["runtime_profile"],
+            "normalized_sha256": observed_surface["normalized_sha256"],
+            "runtime_analysis_sha256": observed_surface["runtime_analysis_sha256"],
+        },
         "token_count": token_count,
         "defined_count": defined_count,
         "undefined_count": undefined_count,
@@ -181,13 +186,15 @@ def build_frozen_methodology_pos_diagnostic(
     if request.get("normalized_sha256") != composite_identity.get("normalized_sha256"):
         raise ValueError("methodology POS request is not bound to frozen manifest identity")
 
+    signal = analyze_methodology_pos_signal(request, response)
     return {
         "schema_version": FROZEN_METHODOLOGY_DIAGNOSTIC_SCHEMA,
         "candidate_id": candidate_id,
         "scriptorium_revision": scriptorium_revision,
         "normalized_sha256": request["normalized_sha256"],
         "source_text_included": False,
-        "methodology_pos": analyze_methodology_pos_signal(request, response),
+        "transport": signal["transport"],
+        "methodology_pos": signal,
         "diagnostic_boundary": {
             "status": "diagnostic_only",
             "fantlab_source_edition_match": "unknown",

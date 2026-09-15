@@ -48,7 +48,7 @@ EPILOGUE_CHAPTER_COUNT = 3
 SOURCE_SEGMENT_COUNT = 98
 CAPTURE_BATCH_SIZE = 8
 MANIFEST_VERSION = "scriptorium-karamazov-source-revision-packed-manifest-v1"
-EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v6"
+EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v7"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)"
 SOURCE_WORK_INDEX_REVISION_ID = 5616907
 BIBLIOGRAPHIC_SOURCE = (
@@ -82,6 +82,7 @@ _EDITOR_NOTE_START_RE = re.compile(
     re.IGNORECASE,
 )
 _TYPO_START_RE = re.compile(r"\{\{\s*опечатка(?=\s*[|}])", re.IGNORECASE)
+_NB_START_RE = re.compile(r"\{\{\s*nb(?=\s*[|}])", re.IGNORECASE)
 _HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
 _HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 
@@ -313,6 +314,36 @@ def _unwrap_typo_templates(source: str) -> str:
         cursor = end
 
 
+def _unwrap_nb_templates(source: str) -> str:
+    """Render only the source-observed zero-argument Russian Wikisource ``NB`` marker.
+
+    The hosted source-free probe found one zero-argument invocation in Book XII
+    chapter III. Russian Wikisource's live template expansion renders it as a math
+    ``N`` followed by a negatively-spaced ``B`` and then a literal space, i.e. the
+    visible authorial ``NB`` (nota bene) marker. Preserve that visible text while
+    refusing every argument-bearing shape so a future template variant cannot silently
+    change the composite.
+    """
+
+    output: list[str] = []
+    cursor = 0
+    while True:
+        match = _NB_START_RE.search(source, cursor)
+        if match is None:
+            output.append(source[cursor:])
+            return "".join(output)
+        output.append(source[cursor : match.start()])
+        end = _find_balanced_template_end(source, match.start())
+        raw = source[match.start() : end]
+        parts = _split_template_parts(raw[2:-2])
+        if not parts or parts[0].strip().casefold() != "nb":
+            raise ValueError("unexpected template while unwrapping Wikisource NB")
+        if len(parts) != 1:
+            raise ValueError("unsupported Wikisource NB argument shape")
+        output.append("NB ")
+        cursor = end
+
+
 def _strip_observed_poem_indent_templates(middle: str) -> str:
     """Strip source-observed numeric ``Indent`` directives used only for layout.
 
@@ -476,6 +507,7 @@ def extract_karamazov_body(wikitext: str, *, kind: str) -> str:
     source = _NOINCLUDE_RE.sub("", wikitext)
     source = _strip_wikisource_editor_notes(source)
     source = _unwrap_typo_templates(source)
+    source = _unwrap_nb_templates(source)
     source = _unwrap_poem1_templates(source)
 
     onlyinclude = _ONLYINCLUDE_RE.findall(source)
@@ -587,6 +619,7 @@ def build_manifest(
             "navigation_wrappers_included": False,
             "wikisource_editor_notes_included": False,
             "wikisource_typo_corrections_render_corrected_text": True,
+            "wikisource_nb_zero_arg_renders_notabene": True,
             "literary_heading_levels_preserved_as_text": [5, 6],
             "poem_indent_templates_stripped_as_formatting": True,
         },
@@ -634,6 +667,8 @@ def _validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object
         raise ValueError("Wikisource editor-note boundary drift")
     if composition.get("wikisource_typo_corrections_render_corrected_text") is not True:
         raise ValueError("Wikisource typo-correction boundary drift")
+    if composition.get("wikisource_nb_zero_arg_renders_notabene") is not True:
+        raise ValueError("Wikisource NB boundary drift")
     if composition.get("literary_heading_levels_preserved_as_text") != [5, 6]:
         raise ValueError("literary-heading boundary drift")
     if composition.get("poem_indent_templates_stripped_as_formatting") is not True:

@@ -32,55 +32,77 @@ jobs:
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
 
-      - name: Probe nested indent shape on the current failing leaf
+      - name: Probe unsupported template names on the current failing leaf
         run: |
           python - <<'PY'
+          import collections
+          import json
           import re
           from scriptorium.karamazov_freeze import (
+              _BODY_DIV_RE,
               _NOINCLUDE_RE,
+              _ONLYINCLUDE_RE,
               _find_balanced_template_end,
               _split_template_parts,
               _strip_wikisource_editor_notes,
+              _unwrap_literary_headings,
+              _unwrap_poem1_templates,
               expected_segments,
               fetch_current_segment_revisions,
           )
 
           target = next(
               row for row in expected_segments()
-              if str(row["title"]).endswith("/Книга девятая/IV")
+              if str(row["title"]).endswith("/Книга одиннадцатая/IV")
           )
           source = str(fetch_current_segment_revisions((target,))[str(target["title"])]["wikitext"])
           source = _strip_wikisource_editor_notes(_NOINCLUDE_RE.sub("", source))
-          poem_start = re.compile(r"\{\{\s*poem1\b", re.IGNORECASE)
-          indent_start = re.compile(r"\{\{\s*indent(?=\s*[|}])", re.IGNORECASE)
-          cursor = 0
-          indent_shapes = []
-          while True:
-              match = poem_start.search(source, cursor)
-              if match is None:
-                  break
-              end = _find_balanced_template_end(source, match.start())
-              raw = source[match.start():end]
-              parts = _split_template_parts(raw[2:-2])
-              args = parts[1:]
-              middle = args[1] if len(args) > 1 else ""
-              nested = indent_start.search(middle)
-              if nested is not None:
-                  nested_end = _find_balanced_template_end(middle, nested.start())
-                  nested_raw = middle[nested.start():nested_end]
-                  nested_parts = _split_template_parts(nested_raw[2:-2])
-                  nested_args = nested_parts[1:]
-                  indent_shapes.append({
-                      "arg_count": len(nested_args),
-                      "blank_flags": [not arg.strip() for arg in nested_args],
-                      "numeric_flags": [bool(re.fullmatch(r"\s*\d+(?:[.,]\d+)?\s*", arg)) for arg in nested_args],
-                      "nested_template_counts": [len(re.findall(r"\{\{", arg)) for arg in nested_args],
-                      "contains_links_flags": ["[[" in arg or "]]" in arg for arg in nested_args],
-                      "at_line_start": middle.rfind("\n", 0, nested.start()) + 1 == nested.start(),
-                  })
-              cursor = end
-          import json
-          print("SCRIPTORIUM_KARAMAZOV_INDENT_SHAPES=" + json.dumps(indent_shapes, sort_keys=True, separators=(",", ":")))
+          source = _unwrap_poem1_templates(source)
+          onlyinclude = _ONLYINCLUDE_RE.findall(source)
+          if onlyinclude:
+              fragments = [_unwrap_literary_headings(onlyinclude[0])]
+          else:
+              fragments = [_unwrap_literary_headings(value) for value in _BODY_DIV_RE.findall(source)]
+
+          shapes = collections.Counter()
+          for fragment in fragments:
+              cursor = 0
+              start_re = re.compile(r"\{\{\s*([^|{}\n]+)")
+              while True:
+                  match = start_re.search(fragment, cursor)
+                  if match is None:
+                      break
+                  end = _find_balanced_template_end(fragment, match.start())
+                  raw = fragment[match.start():end]
+                  parts = _split_template_parts(raw[2:-2])
+                  name = re.sub(r"\s+", " ", parts[0].strip()).casefold()
+                  args = parts[1:]
+                  shape = (
+                      name,
+                      len(args),
+                      tuple(not arg.strip() for arg in args),
+                      tuple(bool(re.fullmatch(r"\s*\d+(?:[.,]\d+)?\s*", arg)) for arg in args),
+                      tuple(len(re.findall(r"\{\{", arg)) for arg in args),
+                      tuple("[[" in arg or "]]" in arg for arg in args),
+                  )
+                  shapes[shape] += 1
+                  cursor = end
+
+          payload = [
+              {
+                  "name": shape[0],
+                  "arg_count": shape[1],
+                  "blank_flags": shape[2],
+                  "numeric_flags": shape[3],
+                  "nested_template_counts": shape[4],
+                  "contains_links_flags": shape[5],
+                  "count": count,
+              }
+              for shape, count in sorted(shapes.items())
+          ]
+          print("SCRIPTORIUM_KARAMAZOV_TEMPLATE_SHAPES=" + json.dumps(
+              payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+          ))
           PY
 
       - name: Capture exact source revisions and composite hashes

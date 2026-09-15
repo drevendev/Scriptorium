@@ -36,6 +36,19 @@
       "source_text_included": false
     },
     {
+      "entry_id": "tolstoy-anna-karenina-ru-morphology-diagnostic-v1",
+      "kind": "work_showcase",
+      "slug": "tolstoy-anna-karenina-morphology-diagnostic",
+      "title": "Anna Karenina — full-work morphology diagnostic",
+      "artifact_path": "public-artifacts/tolstoy-anna-karenina-ru-morphology-diagnostic.json",
+      "artifact_schema": "scriptorium-work-provenance-showcase-v1",
+      "publication_status": "diagnostic",
+      "benchmark_admissibility": "diagnostic_only",
+      "corpus_admissibility": "admissible",
+      "compatibility_claim": "extension",
+      "source_text_included": false
+    },
+    {
       "entry_id": "tolstoy-resurrection-ru-provenance-v1",
       "kind": "work_showcase",
       "slug": "tolstoy-resurrection-provenance",

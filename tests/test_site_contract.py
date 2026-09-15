@@ -11,6 +11,7 @@ MANIFEST_PATH = ROOT / "site" / "publication-manifest.json"
 SCHEMA_PATH = ROOT / "schemas" / "scriptorium-publication-manifest-v1.schema.json"
 RESURRECTION_TRACE = ROOT / "corpus" / "candidates" / "source-edition-traces" / "tolstoy-resurrection-ru.json"
 PROVENANCE_PROFILE = "scriptorium-work-provenance-showcase-v1"
+RESURRECTION_ENTRY_ID = "tolstoy-resurrection-ru-provenance-v1"
 
 
 class PublicationManifestContractTests(unittest.TestCase):
@@ -50,7 +51,7 @@ class PublicationManifestContractTests(unittest.TestCase):
             self.assertFalse(entry["source_text_included"])
 
     def test_seed_manifest_matches_canonical_showcase_safety_labels(self):
-        self.assertEqual(len(self.manifest["entries"]), 3)
+        self.assertEqual(len(self.manifest["entries"]), 4)
         for entry in self.manifest["entries"]:
             artifact = json.loads(
                 (ROOT / entry["artifact_path"]).read_text(encoding="utf-8")
@@ -86,7 +87,7 @@ class PublicationManifestContractTests(unittest.TestCase):
         entry = next(
             row
             for row in self.manifest["entries"]
-            if row["artifact_schema"] == PROVENANCE_PROFILE
+            if row["entry_id"] == RESURRECTION_ENTRY_ID
         )
         artifact = json.loads((ROOT / entry["artifact_path"]).read_text(encoding="utf-8"))
         trace = json.loads(RESURRECTION_TRACE.read_text(encoding="utf-8"))
@@ -159,15 +160,17 @@ class PublicationManifestContractTests(unittest.TestCase):
                     walk(child)
 
         walk(self.manifest)
-        provenance_entry = next(
+        provenance_entries = [
             row
             for row in self.manifest["entries"]
             if row["artifact_schema"] == PROVENANCE_PROFILE
-        )
-        provenance = json.loads(
-            (ROOT / provenance_entry["artifact_path"]).read_text(encoding="utf-8")
-        )
-        walk(provenance)
+        ]
+        self.assertGreaterEqual(len(provenance_entries), 1)
+        for entry in provenance_entries:
+            provenance = json.loads(
+                (ROOT / entry["artifact_path"]).read_text(encoding="utf-8")
+            )
+            walk(provenance)
 
     def test_schema_rejects_path_escape_shapes(self):
         pattern = self.schema["properties"]["entries"]["items"]["properties"][

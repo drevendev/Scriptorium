@@ -29,6 +29,12 @@ Scriptorium now has a standard-library-only deterministic analysis core:
 - a provider-neutral `scriptorium-pos-v1` aggregation layer for defined/undefined POS,
   the 17 displayed FantLab buckets, a complete 17×17 POS-bigram matrix, and positions
   1..20 while preserving unresolved pylem categories and homonyms;
+- an exact hash-pinned `pylem==0.0.18` compatibility sidecar verified on an isolated
+  Ubuntu 22.04 / Python 3.9 lane, with source-free transport into the modern Scriptorium
+  runtime and full-work frozen-candidate diagnostics;
+- reviewed source-free morphology diagnostics that decompose undefined POS boundaries and
+  measure the pinned AOT literature homonym-weight signal without changing production
+  POS selection;
 - versioned JSON artifacts/schemas with explicit `inferred` vs `extension` status;
 - a local-text FantLab benchmark CLI that emits expected/actual/delta plus source hashes
   and refuses to turn incomplete source provenance, an unproven dictionary, or unknown
@@ -55,12 +61,13 @@ See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md),
 [`docs/SITE_CONTRACT.md`](docs/SITE_CONTRACT.md), and
 [`docs/SITE_RENDERER.md`](docs/SITE_RENDERER.md).
 
-The POS artifact deliberately accepts an externally produced pylem-style runtime
-candidate matrix rather than pretending native pylem execution is already verified.
-Runtime `N` remains unresolved because pinned pylem collapses noun and cardinal to the
-same public POS string; cross-bucket homonyms and extra AOT categories are not guessed
-into a bucket. See [`docs/AOT_PYLEM_COMPATIBILITY.md`](docs/AOT_PYLEM_COMPATIBILITY.md)
-and [`docs/POS_MODEL.md`](docs/POS_MODEL.md).
+The POS aggregation artifact remains provider-neutral, while exact pinned pylem execution
+is now verified through an isolated legacy sidecar. Runtime `N` remains unresolved because
+pinned pylem collapses noun and cardinal to the same public POS string; cross-bucket
+homonyms and extra AOT categories are not guessed into a bucket. Full-work diagnostics
+preserve those boundaries rather than promoting provider signals into FantLab rules. See
+[`docs/AOT_PYLEM_COMPATIBILITY.md`](docs/AOT_PYLEM_COMPATIBILITY.md) and
+[`docs/POS_MODEL.md`](docs/POS_MODEL.md).
 
 ### Benchmark a local text
 
@@ -89,10 +96,11 @@ The harness never fetches or commits the local text. `Шутиха` currently ha
 source-matched legally usable full text in the project, so this reference remains a
 diagnostic target rather than parity evidence. The harness currently maps 28 implemented
 FantLab fields: four general, four dialogue, six vocabulary and fourteen punctuation
-fields. POS aggregation now has its own versioned artifact, but it is not yet wired into
-the benchmark CLI because native/provider execution provenance is not established.
-Decimal fields remain unresolved until FantLab display precision is independently
-established. See [`docs/BENCHMARKING.md`](docs/BENCHMARKING.md).
+fields. POS aggregation has its own versioned artifact and hosted frozen-work pylem
+transport, but the local benchmark CLI still does not silently instantiate the legacy
+provider or claim FantLab morphology parity. Decimal fields remain unresolved until
+FantLab display precision is independently established. See
+[`docs/BENCHMARKING.md`](docs/BENCHMARKING.md).
 
 The repository also contains a full-work **diagnostic-only** comparison for *Anna
 Karenina*. [`benchmarks/fantlab/work270306.json`](benchmarks/fantlab/work270306.json)
@@ -144,22 +152,28 @@ sources:
   *Anna Karenina*, Part I, Chapter I.
 - [`showcase/anna-karenina-part1-ch2-dialogue.json`](showcase/anna-karenina-part1-ch2-dialogue.json)
   shows the inferred dialogue profile on two dash-led dialogue paragraphs from Chapter II.
+- [`public-artifacts/tolstoy-anna-karenina-ru-morphology-diagnostic.json`](public-artifacts/tolstoy-anna-karenina-ru-morphology-diagnostic.json)
+  publishes the reviewed full-work morphology diagnostic for the frozen *Anna Karenina*
+  candidate: 269,358 current Scriptorium word tokens, 117,554 conservatively defined POS,
+  151,804 undefined POS, 59,254 direct cross-bucket ambiguities, and only 5,972 ambiguity
+  rows with a unique maximum under the pinned AOT literature homonym-weight signal. The
+  artifact is source-free, production POS resolution is unchanged, FantLab source identity
+  remains unknown, and the page is diagnostic-only rather than parity evidence.
 - [`public-artifacts/tolstoy-resurrection-ru-provenance.json`](public-artifacts/tolstoy-resurrection-ru-provenance.json)
   exposes the full frozen *Resurrection* source identity: 129 pinned revisions,
   extraction/composition profiles, immutable counts and SHA-256 identities, legal/source
   provenance, and the explicit `unknown` FantLab source-edition boundary. It contains no
   novel prose and makes no parity claim.
 
-The Anna Karenina metric artifacts are bound to exact Russian Wikisource revisions and
+The Anna Karenina excerpt artifacts are bound to exact Russian Wikisource revisions and
 store provenance, hashes and derived metrics only. They are intentionally marked
 **illustrative excerpts**, not corpus entries and not FantLab parity evidence. Existing
-artifacts preserve the metric profile under which they were generated; a future
-vocabulary/POS showcase must be regenerated from a provenance-bound source selection
-rather than inventing new values from hashes alone. The full-work Anna Karenina diagnostic
-is likewise source-free and inspectable, but it is not published as a Pages work view
-because its benchmark rendering contract has not yet been defined. The *Resurrection*
-Pages slice is deliberately provenance-first: it demonstrates a reproducibly frozen
->=300k public-domain candidate while keeping source-match and M2 parity fail-closed.
+artifacts preserve the metric profile under which they were generated. The full-work
+morphology page deliberately uses the existing provenance-first publication contract: it
+makes the frozen source identity and source-match boundary visible while surfacing only a
+reviewed aggregate morphology summary in the evidence note. No token rows, runtime
+candidate rows, source prose or recovered FantLab rule are published. The *Resurrection*
+Pages slice is likewise provenance-first and keeps source-match and M2 parity fail-closed.
 
 The publication boundary is explicit rather than directory-based.
 [`site/publication-manifest.json`](site/publication-manifest.json) allow-lists public

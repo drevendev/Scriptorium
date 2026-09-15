@@ -91,7 +91,7 @@ class KaramazovFreezeTests(unittest.TestCase):
             "Посвящается Анне Григорьевне Достоевской\n\nСтрока эпиграфа.\n\nИсточник эпиграфа",
         )
 
-    def test_extractor_handles_onlyinclude_and_styled_indent_shapes(self):
+    def test_extractor_handles_onlyinclude_styled_indent_and_observed_poem1_shapes(self):
         preface = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
 == От автора ==
 <onlyinclude>Первый абзац.\n\nВторой абзац.</onlyinclude>
@@ -112,6 +112,23 @@ __NOTOC____NOEDITSECTION__
             extract_karamazov_body(styled, kind="epilogue_chapter"),
             "Первый абзац.\n\nВторой абзац.",
         )
+
+        poem1 = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
+<onlyinclude>Перед вставкой.
+{{Poem1||<poem>
+Первая строка
+Вторая строка
+</poem>|}}
+После вставки.</onlyinclude>
+"""
+        self.assertEqual(
+            extract_karamazov_body(poem1, kind="book_chapter"),
+            "Перед вставкой. Первая строка Вторая строка После вставки.",
+        )
+
+        unsupported = poem1.replace("Poem1||<poem>", "Poem1|Заголовок|<poem>")
+        with self.assertRaisesRegex(ValueError, "unsupported template"):
+            extract_karamazov_body(unsupported, kind="book_chapter")
 
     def test_manifest_is_source_free_and_replay_uses_exact_source_identities(self):
         records = self._synthetic_records()

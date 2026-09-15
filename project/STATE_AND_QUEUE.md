@@ -1,23 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 83
+STATE_REVISION: 84
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T17:56:30Z
-LAST_RESULT: SCRIP-CORPUS-004 / Issue #77 / PR #78 authored a new source-explicit modernist corpus candidate, `bely-petersburg-1916-ru`, anchored to Wikimedia Commons' public-domain 632-page facsimile of Andrei Bely's first 1916 book publication. FantLab reports 944,182 characters / 130,217 words, but its analyzer-input edition remains undisclosed. The candidate is deliberately `traced_not_frozen`; no scan/OCR/source prose is committed, diagnostics stay disabled and M2 remains 0/5.
-LAST_VERIFIED_PROGRESS: Fresh public-source research confirmed FantLab work 293513 was analyzed on 19 September 2022 at 944,182 characters / 130,217 words. Wikimedia Commons identifies its 1916 PDF as a 632-page facsimile of the first book publication, mechanically reproducing the 1913–1914 Sirin installments, and marks the work public domain. Russian Wikisource independently marks Petersburg public domain but categorizes its generic landing page as `Тексты без ссылок на источники`, so Scriptorium records that page only as a legal/bibliographic cross-check and does not promote it to source identity. The 1916 first-book edition remains explicitly distinct from the revised 1922 edition.
+LAST_COMMITTED_RUN_AT: 2026-09-15T18:50:33Z
+LAST_RESULT: SCRIP-CORPUS-004 / Issue #77 / PR #78 received an independent later-run exact-head review with no blocking defect and was squash-merged as `22911929228b127e721f0607d0d1c97cf5dd6823`; Issue #77 closed completed. The merged unit adds the edition-explicit `bely-petersburg-1916-ru` modernist candidate while keeping the Commons PDF/OCR identity unfrozen, FantLab source match `unknown`, diagnostics disabled, and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Independent review of exact head `2ec01e45bdc3e2ac69092e0cb3bfefd5ac2483be` confirmed the branch was 6 commits ahead / 0 behind unchanged base `6ddb25aec005c80628aa74278582e01c3d2a49a0`, changed exactly five expected corpus/provenance/state files, and had no pre-existing PR comments, submitted reviews or review threads. Exact-head runs `35004623316` (Pages) and `35004623349` (pinned provider) both succeeded. Pages ran the complete Python 3.13 standard-library suite, built the canonical static site and verified a deterministic rebuild; the provider workflow also passed provider-contract tests, exact hash-pinned `pylem==0.0.18` native smoke on Python 3.9 and the frozen Anna sidecar replay. Fresh public-source review reconfirmed FantLab's 944,182-character / 130,217-word reference, Commons' 632-page first-1916-book facsimile description and public-domain notice, and Wikisource's source-less landing-page warning plus separate 1913/1922 edition navigation.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-004
 ISSUE:          #77
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #78
-NEXT_ACTION:    Independently review the exact PR #78 head, changed-file boundary,
-                checks, comments/reviews and provenance claims. Merge only if the
-                candidate remains source-free and fail-closed: 1916 edition identity
-                explicit, PDF/OCR extraction unfrozen, FantLab input match unknown,
-                diagnostics/gate readiness false, and M2 unchanged at 0/5.
+MERGED_COMMIT:  22911929228b127e721f0607d0d1c97cf5dd6823
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer another legally usable >=300k diversity candidate or stronger
+                independent source-identity evidence for an existing candidate; keep
+                translation and edition identity explicit and do not infer FantLab
+                input identity from title, bibliography, count proximity or freezing.
 ```
 
 ## Current milestone gate
@@ -30,7 +31,6 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-004 review | review / recovery | Independently review PR #78 exact head and merge only if provenance/admissibility boundaries and checks hold | Exact head unchanged; required checks green; no blocking review evidence |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Evidence already established

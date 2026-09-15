@@ -48,7 +48,7 @@ EPILOGUE_CHAPTER_COUNT = 3
 SOURCE_SEGMENT_COUNT = 98
 CAPTURE_BATCH_SIZE = 8
 MANIFEST_VERSION = "scriptorium-karamazov-source-revision-packed-manifest-v1"
-EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v4"
+EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v5"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)"
 SOURCE_WORK_INDEX_REVISION_ID = 5616907
 BIBLIOGRAPHIC_SOURCE = (
@@ -272,14 +272,49 @@ def _strip_wikisource_editor_notes(source: str) -> str:
         cursor = end
 
 
+def _strip_observed_poem_indent_templates(middle: str) -> str:
+    """Strip source-observed numeric ``Indent`` directives used only for layout.
+
+    The hosted source-free probe for Book IX chapter IV found one nested invocation in
+    a Poem1 middle argument. It is at line start and has exactly one numeric positional
+    argument. Russian Wikisource documents ``{{indent|N}}`` as additional left-margin
+    formatting measured in ex, so that invocation contributes layout rather than
+    literary characters. Text-valued or differently positioned Indent invocations stay
+    fail-closed rather than being guessed away.
+    """
+
+    output: list[str] = []
+    cursor = 0
+    start_re = re.compile(r"\{\{\s*indent(?=\s*[|}])", re.IGNORECASE)
+    while True:
+        match = start_re.search(middle, cursor)
+        if match is None:
+            output.append(middle[cursor:])
+            return "".join(output)
+        line_start = middle.rfind("\n", 0, match.start()) + 1
+        if middle[line_start : match.start()].strip():
+            raise ValueError("nested Indent inside Poem1 must be at line start")
+        output.append(middle[cursor : match.start()])
+        end = _find_balanced_template_end(middle, match.start())
+        raw = middle[match.start() : end]
+        parts = _split_template_parts(raw[2:-2])
+        if not parts or parts[0].strip().casefold() != "indent":
+            raise ValueError("unexpected template while stripping Poem1 Indent")
+        args = parts[1:]
+        if len(args) != 1 or re.fullmatch(r"\s*\d+(?:[.,]\d+)?\s*", args[0]) is None:
+            raise ValueError("unsupported Poem1 Indent argument shape")
+        cursor = end
+
+
 def _unwrap_poem1_templates(source: str) -> str:
-    """Replace only the two source-observed Poem1 shapes, fail closed on all others.
+    """Replace only source-observed Poem1 shapes, fail closed on all others.
 
     A source-free hosted probe observed eight invocations in Book III chapter III:
     six had ``{{Poem1||<poem>...</poem>|}}`` and two had
-    ``{{Poem1||plain text|}}``. Both render the middle positional argument. This parser
-    accepts exactly that three-argument blank/middle/blank contract and refuses nested
-    templates or malformed poem tags.
+    ``{{Poem1||plain text|}}``. A later source-free probe observed one numeric
+    ``{{Indent|N}}`` layout directive at line start inside a Poem1 middle argument in
+    Book IX chapter IV. The parser strips only that documented formatting shape and
+    refuses every other nested template or malformed poem tag.
     """
 
     output: list[str] = []
@@ -302,6 +337,7 @@ def _unwrap_poem1_templates(source: str) -> str:
         middle = args[1].strip()
         if not middle:
             raise ValueError("empty Poem1 text argument")
+        middle = _strip_observed_poem_indent_templates(middle)
         if "{{" in middle or "}}" in middle:
             raise ValueError("nested template inside Poem1 text is unsupported")
 
@@ -509,6 +545,7 @@ def build_manifest(
             "navigation_wrappers_included": False,
             "wikisource_editor_notes_included": False,
             "literary_heading_levels_preserved_as_text": [5, 6],
+            "poem_indent_templates_stripped_as_formatting": True,
         },
         "source_identity_encoding": {
             "source_segment_count": len(segments),
@@ -554,6 +591,8 @@ def _validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object
         raise ValueError("Wikisource editor-note boundary drift")
     if composition.get("literary_heading_levels_preserved_as_text") != [5, 6]:
         raise ValueError("literary-heading boundary drift")
+    if composition.get("poem_indent_templates_stripped_as_formatting") is not True:
+        raise ValueError("Poem1 Indent-formatting boundary drift")
     if composition.get("source_text_committed") is not False:
         raise ValueError("source-text boundary drift")
 

@@ -88,12 +88,12 @@ class KaramazovFreezeTests(unittest.TestCase):
             "Строка эпиграфа.\n\nИсточник эпиграфа",
         )
 
-    def test_extractor_accepts_both_observed_poem1_shapes_and_rejects_wider_shapes(self):
+    def test_extractor_accepts_observed_poem1_shapes_and_numeric_indent_only(self):
         source = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
 <onlyinclude>Перед вставкой.
 {{Poem1||<poem>
 Первая строка
-Вторая строка
+{{indent|3}}Вторая строка
 </poem>|}}
 Середина.
 {{poem1||Короткая строка без poem-тега.|}}
@@ -115,6 +115,14 @@ class KaramazovFreezeTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "nested template"):
             extract_karamazov_body(nested, kind="book_chapter")
+
+        textual_indent = source.replace("{{indent|3}}", "{{indent|ступень}}", 1)
+        with self.assertRaisesRegex(ValueError, "unsupported Poem1 Indent argument shape"):
+            extract_karamazov_body(textual_indent, kind="book_chapter")
+
+        inline_indent = source.replace("{{indent|3}}Вторая", "префикс {{indent|3}}Вторая", 1)
+        with self.assertRaisesRegex(ValueError, "must be at line start"):
+            extract_karamazov_body(inline_indent, kind="book_chapter")
 
         malformed = source.replace("</poem>|}}", "|}}", 1)
         with self.assertRaisesRegex(ValueError, "malformed Poem1 poem-tag shape"):
@@ -188,10 +196,11 @@ __NOTOC____NOEDITSECTION__
         self.assertEqual(manifest["manifest_version"], MANIFEST_VERSION)
         self.assertEqual(manifest["candidate_id"], "dostoevsky-brothers-karamazov-ru")
         self.assertEqual(manifest["composition"]["extraction_profile"], EXTRACTION_PROFILE)
-        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v4")
+        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v5")
         self.assertIs(manifest["composition"]["navigation_wrappers_included"], False)
         self.assertIs(manifest["composition"]["wikisource_editor_notes_included"], False)
         self.assertEqual(manifest["composition"]["literary_heading_levels_preserved_as_text"], [5, 6])
+        self.assertIs(manifest["composition"]["poem_indent_templates_stripped_as_formatting"], True)
         self.assertIs(manifest["composition"]["source_text_committed"], False)
         self.assertGreaterEqual(
             manifest["composite_identity"]["character_count_including_spaces"], 300_000
@@ -250,6 +259,11 @@ __NOTOC____NOEDITSECTION__
         changed = copy.deepcopy(manifest)
         changed["composition"]["literary_heading_levels_preserved_as_text"] = [6]
         with self.assertRaisesRegex(ValueError, "literary-heading boundary drift"):
+            replay_manifest(changed, fetcher=lambda identities: replay_records)
+
+        changed = copy.deepcopy(manifest)
+        changed["composition"]["poem_indent_templates_stripped_as_formatting"] = False
+        with self.assertRaisesRegex(ValueError, "Indent-formatting boundary drift"):
             replay_manifest(changed, fetcher=lambda identities: replay_records)
 
         changed = copy.deepcopy(manifest)

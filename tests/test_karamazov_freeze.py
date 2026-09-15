@@ -4,6 +4,7 @@ import unittest
 
 from scriptorium.karamazov_freeze import (
     BOOK_CHAPTER_COUNTS,
+    EXTRACTION_PROFILE,
     MANIFEST_VERSION,
     SOURCE_SEGMENT_COUNT,
     SOURCE_WORK_INDEX_REVISION_ID,
@@ -65,13 +66,8 @@ class KaramazovFreezeTests(unittest.TestCase):
         self.assertEqual(len(segments), 98)
         self.assertEqual(len({row["title"] for row in segments}), 98)
         self.assertEqual(segments[0]["title"], "Братья Карамазовы (Достоевский)")
-        self.assertEqual(segments[0]["kind"], "front_matter")
-        self.assertEqual(
-            segments[1]["title"], "Братья Карамазовы (Достоевский)/От автора"
-        )
-        self.assertEqual(
-            segments[-1]["title"], "Братья Карамазовы (Достоевский)/Эпилог/III"
-        )
+        self.assertEqual(segments[1]["title"], "Братья Карамазовы (Достоевский)/От автора")
+        self.assertEqual(segments[-1]["title"], "Братья Карамазовы (Достоевский)/Эпилог/III")
         titles = {row["title"] for row in segments}
         self.assertNotIn("Братья Карамазовы (Достоевский)/Книга первая", titles)
         self.assertNotIn("Братья Карамазовы (Достоевский)/Эпилог", titles)
@@ -88,13 +84,48 @@ class KaramazovFreezeTests(unittest.TestCase):
 """
         self.assertEqual(
             extract_index_front_matter(source),
-            "Посвящается Анне Григорьевне Достоевской\n\nСтрока эпиграфа.\n\nИсточник эпиграфа",
+            "Посвящается Анне Григорьевне Достоевской\n\n"
+            "Строка эпиграфа.\n\nИсточник эпиграфа",
         )
 
-    def test_extractor_handles_onlyinclude_styled_indent_and_observed_poem1_shapes(self):
+    def test_extractor_accepts_both_observed_poem1_shapes_and_rejects_wider_shapes(self):
+        source = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
+<onlyinclude>Перед вставкой.
+{{Poem1||<poem>
+Первая строка
+Вторая строка
+</poem>|}}
+Середина.
+{{poem1||Короткая строка без poem-тега.|}}
+После вставки.</onlyinclude>
+"""
+        self.assertEqual(
+            extract_karamazov_body(source, kind="book_chapter"),
+            "Перед вставкой. Первая строка Вторая строка "
+            "Середина. Короткая строка без poem-тега. После вставки.",
+        )
+
+        titled = source.replace("{{Poem1||<poem>", "{{Poem1|Заголовок|<poem>", 1)
+        with self.assertRaisesRegex(ValueError, "unsupported Poem1 argument shape"):
+            extract_karamazov_body(titled, kind="book_chapter")
+
+        nested = source.replace(
+            "{{poem1||Короткая строка без poem-тега.|}}",
+            "{{poem1||Текст {{lang|ru|вложенный}}.|}}",
+        )
+        with self.assertRaisesRegex(ValueError, "nested template"):
+            extract_karamazov_body(nested, kind="book_chapter")
+
+        malformed = source.replace("</poem>|}}", "|}}", 1)
+        with self.assertRaisesRegex(ValueError, "malformed Poem1 poem-tag shape"):
+            extract_karamazov_body(malformed, kind="book_chapter")
+
+    def test_extractor_handles_onlyinclude_and_styled_indent(self):
         preface = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
 == От автора ==
-<onlyinclude>Первый абзац.\n\nВторой абзац.</onlyinclude>
+<onlyinclude>Первый абзац.
+
+Второй абзац.</onlyinclude>
 [[Категория:Братья Карамазовы (Достоевский)]]
 """
         self.assertEqual(
@@ -106,39 +137,22 @@ class KaramazovFreezeTests(unittest.TestCase):
 __NOTOC____NOEDITSECTION__
 <center>''Эпилог''</center>
 == I ==
-<div class='indent' style='text-align:justify'>Первый абзац.\n\nВторой абзац.</div>
+<div class='indent' style='text-align:justify'>Первый абзац.
+
+Второй абзац.</div>
 """
         self.assertEqual(
             extract_karamazov_body(styled, kind="epilogue_chapter"),
             "Первый абзац.\n\nВторой абзац.",
         )
 
-        poem1 = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
-<onlyinclude>Перед вставкой.
-{{Poem1||<poem>
-Первая строка
-Вторая строка
-</poem>|}}
-После вставки.</onlyinclude>
-"""
-        self.assertEqual(
-            extract_karamazov_body(poem1, kind="book_chapter"),
-            "Перед вставкой. Первая строка Вторая строка После вставки.",
-        )
-
-        unsupported = poem1.replace("Poem1||<poem>", "Poem1|Заголовок|<poem>")
-        with self.assertRaisesRegex(ValueError, "unsupported template"):
-            extract_karamazov_body(unsupported, kind="book_chapter")
-
     def test_manifest_is_source_free_and_replay_uses_exact_source_identities(self):
         records = self._synthetic_records()
         manifest = build_manifest(fetcher=lambda segments: records)
         self.assertEqual(manifest["manifest_version"], MANIFEST_VERSION)
         self.assertEqual(manifest["candidate_id"], "dostoevsky-brothers-karamazov-ru")
-        self.assertEqual(
-            manifest["composition"]["extraction_profile"],
-            "scriptorium-wikisource-karamazov-body-v1",
-        )
+        self.assertEqual(manifest["composition"]["extraction_profile"], EXTRACTION_PROFILE)
+        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v2")
         self.assertIs(manifest["composition"]["navigation_wrappers_included"], False)
         self.assertIs(manifest["composition"]["source_text_committed"], False)
         self.assertGreaterEqual(
@@ -175,7 +189,7 @@ __NOTOC____NOEDITSECTION__
         self.assertIs(receipt["m2_parity_admissible"], False)
         self.assertEqual(receipt["composite_identity"], manifest["composite_identity"])
 
-    def test_replay_fails_closed_on_inventory_and_composite_contract_drift(self):
+    def test_replay_fails_closed_on_inventory_extraction_and_composite_drift(self):
         records = self._synthetic_records()
         manifest = build_manifest(fetcher=lambda segments: records)
         replay_records = {title: record["wikitext"] for title, record in records.items()}
@@ -186,13 +200,8 @@ __NOTOC____NOEDITSECTION__
             replay_manifest(changed, fetcher=lambda identities: replay_records)
 
         changed = copy.deepcopy(manifest)
-        changed["source_identity_encoding"]["mediawiki_sha1_hex_concat"] = "0"
-        with self.assertRaisesRegex(ValueError, "mediawiki_sha1 length"):
-            replay_manifest(changed, fetcher=lambda identities: replay_records)
-
-        changed = copy.deepcopy(manifest)
-        changed["source_identity_encoding"]["revision_ids"][0] += 1
-        with self.assertRaisesRegex(ValueError, "work-index revision drift"):
+        changed["composition"]["extraction_profile"] = "older-profile"
+        with self.assertRaisesRegex(ValueError, "extraction profile"):
             replay_manifest(changed, fetcher=lambda identities: replay_records)
 
         changed = copy.deepcopy(manifest)

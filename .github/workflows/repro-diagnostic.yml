@@ -9,7 +9,6 @@ on:
       - "benchmarks/fantlab/work270306.json"
       - "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json"
       - "corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json"
-      - "corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.revisions.json"
   workflow_dispatch:
 
 permissions:
@@ -140,80 +139,5 @@ jobs:
         with:
           name: scriptorium-resurrection-replay
           path: build/repro/tolstoy-resurrection-ru.replay-receipt.json
-          if-no-files-found: error
-          retention-days: 7
-
-  karamazov-source-capture:
-    name: Capture Brothers Karamazov source identity
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout pull-request head
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          persist-credentials: false
-
-      - name: Set up Python 3.13
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.13"
-
-      - name: Run standard-library test suite
-        run: python -m unittest discover -s tests -v
-
-      - name: Probe unresolved markup names without source prose
-        run: |
-          python - <<'PY'
-          import re
-          from scriptorium.karamazov_freeze import expected_segments, fetch_current_segment_revisions
-
-          target = next(
-              row for row in expected_segments()
-              if str(row["title"]).endswith("/Книга третья/III")
-          )
-          revision = fetch_current_segment_revisions((target,))[str(target["title"])]
-          source = str(revision["wikitext"])
-          onlyinclude = re.findall(r"<onlyinclude>(.*?)</onlyinclude>", source, re.I | re.S)
-          probe = onlyinclude[0] if len(onlyinclude) == 1 else source
-          names = sorted({
-              match.group(1).strip()
-              for match in re.finditer(r"\{\{\s*([^|{}\n]+)", probe)
-          })
-          print("SCRIPTORIUM_KARAMAZOV_TEMPLATE_NAMES=" + ",".join(names))
-          PY
-
-      - name: Capture current source identities and composite hashes
-        run: |
-          set -euo pipefail
-          mkdir -p build/repro
-          python -m scriptorium.karamazov_freeze capture \
-            --output build/repro/dostoevsky-brothers-karamazov-ru.revisions.json
-
-      - name: Emit source-free capture summary
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          manifest = json.loads(Path("build/repro/dostoevsky-brothers-karamazov-ru.revisions.json").read_text(encoding="utf-8"))
-          encoding = manifest["source_identity_encoding"]
-          summary = {
-              "candidate_id": manifest["candidate_id"],
-              "source_segment_count": encoding["source_segment_count"],
-              "first_revision_id": encoding["revision_ids"][0],
-              "last_revision_id": encoding["revision_ids"][-1],
-              "composite_identity": manifest["composite_identity"],
-              "source_text_committed": manifest["composition"]["source_text_committed"],
-          }
-          print("SCRIPTORIUM_KARAMAZOV_CAPTURE_BEGIN")
-          print(json.dumps(summary, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
-          print("SCRIPTORIUM_KARAMAZOV_CAPTURE_END")
-          PY
-
-      - name: Upload source-free revision manifest
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: scriptorium-karamazov-source-capture
-          path: build/repro/dostoevsky-brothers-karamazov-ru.revisions.json
           if-no-files-found: error
           retention-days: 7

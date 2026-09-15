@@ -1,9 +1,10 @@
 """Freeze and replay the Russian Wikisource Brothers Karamazov candidate.
 
-The durable manifest is deliberately source-free. Capture uses current wikitext only
-transiently to derive immutable revision identities and a composite text digest. Replay
-fetches the exact pinned revisions, verifies MediaWiki identity, reconstructs the text
-under this source-specific extraction contract and checks the same composite identity.
+The durable manifest is source-free. Capture transiently reads current Russian
+Wikisource wikitext, records exact revision identities, extracts the public-domain
+transcription under a versioned source-specific contract, and stores only immutable
+identities plus composite hashes. Replay fetches only those pinned revisions and must
+reproduce the same composite identity.
 """
 
 from __future__ import annotations
@@ -47,7 +48,7 @@ EPILOGUE_CHAPTER_COUNT = 3
 SOURCE_SEGMENT_COUNT = 98
 CAPTURE_BATCH_SIZE = 8
 MANIFEST_VERSION = "scriptorium-karamazov-source-revision-packed-manifest-v1"
-EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v1"
+EXTRACTION_PROFILE = "scriptorium-wikisource-karamazov-body-v2"
 SOURCE_WORK_URL = "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)"
 SOURCE_WORK_INDEX_REVISION_ID = 5616907
 BIBLIOGRAPHIC_SOURCE = (
@@ -59,10 +60,6 @@ _BODY_DIV_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 _ONLYINCLUDE_RE = re.compile(r"<onlyinclude>(.*?)</onlyinclude>", re.IGNORECASE | re.DOTALL)
-_POEM1_RE = re.compile(
-    r"\{\{\s*poem1\s*\|\s*\|\s*<poem\b[^>]*>\s*(.*?)\s*</poem>\s*\|\s*\}\}",
-    re.IGNORECASE | re.DOTALL,
-)
 _NOINCLUDE_RE = re.compile(r"<noinclude>.*?</noinclude>", re.IGNORECASE | re.DOTALL)
 _HEADING_RE = re.compile(r"={2,6}\s*[^=\n]+?\s*={2,6}")
 _CENTER_RE = re.compile(r"<center>.*?</center>", re.IGNORECASE | re.DOTALL)
@@ -74,18 +71,13 @@ _EPIGRAPH_RE = re.compile(
 )
 _WIKILINK_RE = re.compile(r"\[\[(?:[^\[\]|]+\|)?([^\[\]]+)\]\]")
 _FORMATTING_RE = re.compile(r"'{2,5}")
+_POEM_TAG_RE = re.compile(r"<poem\b[^>]*>\s*(.*?)\s*</poem>", re.IGNORECASE | re.DOTALL)
 _HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
 _HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 def expected_segments() -> tuple[dict[str, object], ...]:
-    """Return the frozen text-bearing inventory in canonical composition order.
-
-    The work index contributes only its authorial dedication/epigraph front matter.
-    Book wrapper pages and the epilogue wrapper are navigation-only and deliberately
-    excluded. The separate author preface, 93 numbered book chapters and three epilogue
-    chapters are admitted as text-bearing leaves.
-    """
+    """Return the exact 98-segment text-bearing inventory in composition order."""
 
     segments: list[dict[str, object]] = [
         {"ordinal": 1, "kind": "front_matter", "title": WORK_BASE_TITLE},
@@ -126,7 +118,7 @@ def expected_segments() -> tuple[dict[str, object], ...]:
 def fetch_current_segment_revisions(
     segments: Iterable[dict[str, object]],
 ) -> dict[str, dict[str, object]]:
-    """Fetch current identities in short batches so long Cyrillic titles stay below URI limits."""
+    """Fetch current identities in small batches to keep long Cyrillic URLs bounded."""
 
     expected = tuple(segments)
     records: dict[str, dict[str, object]] = {}
@@ -170,6 +162,121 @@ def _strip_leading_template(source: str, name: str) -> str:
             continue
         index += 1
     raise ValueError(f"unterminated leading {name} template")
+
+
+def _split_template_parts(inner: str) -> list[str]:
+    """Split a template invocation on top-level pipes only."""
+
+    parts: list[str] = []
+    buffer: list[str] = []
+    template_depth = 0
+    link_depth = 0
+    index = 0
+    while index < len(inner):
+        pair = inner[index : index + 2]
+        if pair == "{{":
+            template_depth += 1
+            buffer.append(pair)
+            index += 2
+            continue
+        if pair == "}}":
+            template_depth -= 1
+            if template_depth < 0:
+                raise ValueError("unbalanced nested template in Poem1")
+            buffer.append(pair)
+            index += 2
+            continue
+        if pair == "[[":
+            link_depth += 1
+            buffer.append(pair)
+            index += 2
+            continue
+        if pair == "]]":
+            link_depth -= 1
+            if link_depth < 0:
+                raise ValueError("unbalanced wikilink in Poem1")
+            buffer.append(pair)
+            index += 2
+            continue
+        if inner[index] == "|" and template_depth == 0 and link_depth == 0:
+            parts.append("".join(buffer))
+            buffer = []
+            index += 1
+            continue
+        buffer.append(inner[index])
+        index += 1
+    if template_depth or link_depth:
+        raise ValueError("unbalanced nested markup in Poem1")
+    parts.append("".join(buffer))
+    return parts
+
+
+def _unwrap_poem1_templates(source: str) -> str:
+    """Replace only the two source-observed Poem1 shapes, fail closed on all others.
+
+    The source-free hosted probe observed eight invocations in Book III chapter III:
+    six had ``{{Poem1||<poem>...</poem>|}}`` and two had
+    ``{{Poem1||plain text|}}``. Both render the middle positional argument. This parser
+    accepts exactly that three-argument blank/middle/blank contract and refuses nested
+    templates or malformed poem tags.
+    """
+
+    output: list[str] = []
+    cursor = 0
+    start_re = re.compile(r"\{\{\s*poem1\b", re.IGNORECASE)
+    while True:
+        match = start_re.search(source, cursor)
+        if match is None:
+            output.append(source[cursor:])
+            return "".join(output)
+        output.append(source[cursor : match.start()])
+
+        depth = 0
+        index = match.start()
+        end: int | None = None
+        while index < len(source) - 1:
+            pair = source[index : index + 2]
+            if pair == "{{":
+                depth += 1
+                index += 2
+                continue
+            if pair == "}}":
+                depth -= 1
+                index += 2
+                if depth == 0:
+                    end = index
+                    break
+                if depth < 0:
+                    break
+                continue
+            index += 1
+        if end is None:
+            raise ValueError("unterminated Poem1 template")
+
+        raw = source[match.start() : end]
+        parts = _split_template_parts(raw[2:-2])
+        if not parts or parts[0].strip().casefold() != "poem1":
+            raise ValueError("unexpected template while unwrapping Poem1")
+        args = parts[1:]
+        if len(args) != 3 or args[0].strip() or args[2].strip():
+            raise ValueError("unsupported Poem1 argument shape")
+        middle = args[1].strip()
+        if not middle:
+            raise ValueError("empty Poem1 text argument")
+        if "{{" in middle or "}}" in middle:
+            raise ValueError("nested template inside Poem1 text is unsupported")
+
+        poem = _POEM_TAG_RE.fullmatch(middle)
+        if poem is not None:
+            replacement = poem.group(1).strip()
+        elif re.search(r"</?poem\b", middle, re.IGNORECASE):
+            raise ValueError("malformed Poem1 poem-tag shape")
+        else:
+            replacement = middle
+        if not replacement:
+            raise ValueError("empty rendered Poem1 text")
+        output.append(replacement)
+        cursor = end
 
 
 def _plain_inline(value: str) -> str:
@@ -218,7 +325,7 @@ def _strip_page_scaffolding(wikitext: str) -> str:
 
 
 def extract_karamazov_body(wikitext: str, *, kind: str) -> str:
-    """Extract one admitted text-bearing segment under the observed page-shape contract."""
+    """Extract one admitted segment under the observed Karamazov page-shape contract."""
 
     if not isinstance(wikitext, str):
         raise TypeError("wikitext must be str")
@@ -226,7 +333,8 @@ def extract_karamazov_body(wikitext: str, *, kind: str) -> str:
         return extract_index_front_matter(wikitext)
 
     source = _NOINCLUDE_RE.sub("", wikitext)
-    source = _POEM1_RE.sub(lambda match: match.group(1), source)
+    source = _unwrap_poem1_templates(source)
+
     onlyinclude = _ONLYINCLUDE_RE.findall(source)
     if onlyinclude:
         if len(onlyinclude) != 1:
@@ -320,7 +428,10 @@ def build_manifest(
         "composition": {
             "profile": COMPOSITE_PROFILE,
             "extraction_profile": EXTRACTION_PROFILE,
-            "order": "work-index authorial front matter, author preface, books 1-12 in order with chapters ascending, then epilogue chapters I-III",
+            "order": (
+                "work-index authorial front matter, author preface, books 1-12 in order "
+                "with chapters ascending, then epilogue chapters I-III"
+            ),
             "segment_separator": "\\n\\n",
             "source_text_committed": False,
             "front_matter_segments": 1,
@@ -347,6 +458,8 @@ def _validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object
         raise ValueError("unexpected Karamazov candidate id")
     if manifest.get("source_work_index_revision_id") != SOURCE_WORK_INDEX_REVISION_ID:
         raise ValueError("Karamazov work-index revision drift")
+    if manifest.get("legal_basis") != "public_domain":
+        raise ValueError("Karamazov legal-basis drift")
 
     composition = manifest.get("composition")
     if not isinstance(composition, dict):
@@ -359,8 +472,10 @@ def _validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object
         raise ValueError("Karamazov book/chapter contract drift")
     if composition.get("epilogue_chapter_count") != EPILOGUE_CHAPTER_COUNT:
         raise ValueError("Karamazov epilogue contract drift")
-    if composition.get("front_matter_segments") != 1 or composition.get("author_preface_segments") != 1:
+    if composition.get("front_matter_segments") != 1:
         raise ValueError("Karamazov front-matter contract drift")
+    if composition.get("author_preface_segments") != 1:
+        raise ValueError("Karamazov author-preface contract drift")
     if composition.get("segment_separator") != "\\n\\n":
         raise ValueError("unexpected segment separator")
     if composition.get("navigation_wrappers_included") is not False:
@@ -401,6 +516,7 @@ def _validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object
         if index == 0 and revision_id != SOURCE_WORK_INDEX_REVISION_ID:
             raise ValueError("packed work-index revision drift")
         seen_revision_ids.add(revision_id)
+
         timestamp = timestamps[index]
         if not isinstance(timestamp, str) or not timestamp:
             raise ValueError("invalid packed revision timestamp")
@@ -453,9 +569,9 @@ def replay_manifest(
     revisions = fetcher(identities)
     bodies = [
         extract_karamazov_body(
-            revisions[str(row["title"])], kind=str(row["kind"])
+            revisions[str(identity["title"])], kind=str(identity["kind"])
         )
-        for row in identities
+        for identity in identities
     ]
     observed = _composite_identity("\n\n".join(bodies))
     expected = manifest["composite_identity"]
@@ -491,7 +607,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    capture = subparsers.add_parser("capture", help="capture current source-free revision manifest")
+    capture = subparsers.add_parser(
+        "capture", help="capture current source-free revision manifest"
+    )
     capture.add_argument("--output", type=Path, required=True)
 
     replay = subparsers.add_parser("replay", help="replay an existing pinned manifest")

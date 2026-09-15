@@ -1,26 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 71
+STATE_REVISION: 72
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T05:57:00Z
-LAST_RESULT: SCRIP-REPRO-008 / Issue #64 / PR #65 authored a durable source-edition trace for retained >=300k candidate `dostoevsky-brothers-karamazov-ru`. Official-source research now binds the public transcription bibliographically from Russian Wikisource through the Russian Virtual Library to Dostoevsky, Collected Works in 15 volumes, Leningrad: Nauka, 1991, volumes 9-10. Wikisource work-index revision 5616907 is recorded, while sampled Book I Chapter I has independent revision 1224742, proving the index oldid does not freeze the novel bytes. The candidate remains `traced_not_frozen`; diagnostic comparison is disabled, FantLab source-edition match is unknown, M2 parity is inadmissible, and benchmark movement remains 0/5 source-matched works. The substantive PR is intentionally unmerged pending independent exact-head review.
-LAST_VERIFIED_PROGRESS: Fresh evidence reconfirmed FantLab work 168951's 18 September 2022 analysis at 1,807,107 characters and 281,507 words, but the public analysis surface still does not disclose analyzer-input edition or bytes. The current FantLab TXT excerpt route redirects to a LitRes trial endpoint and is explicitly excluded from source-identity evidence. Wikisource cites the 1991 Nauka volumes 9-10 and links RVB; RVB independently places parts I-III in volume 9 and part IV plus epilogue in volume 10 under that edition. The Wikisource index exposes an author preface, twelve books across four parts and 96 numbered chapter/epilogue leaves, but the exact text-bearing inventory, wrapper participation, extraction semantics, per-leaf revisions and composite hashes remain unfrozen. No source prose is committed. This state commit creates a newer PR head, so a later review must require fresh exact-final-head checks before merge. Benchmark movement remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-15T07:02:00Z
+LAST_RESULT: SCRIP-REPRO-008 / Issue #64 / PR #65 received an independent exact-head review with no blocking defect and was squash-merged as 0f38ccfbc139e0b879e7be46ea07cc30c4ed78c8. The merged unit adds a durable source-edition trace for retained >=300k candidate `dostoevsky-brothers-karamazov-ru`, binding the public transcription bibliographically from Russian Wikisource through the Russian Virtual Library to Dostoevsky, Collected Works in 15 volumes, Leningrad: Nauka, 1991, volumes 9-10. The candidate remains `traced_not_frozen`; full-work diagnostics stay disabled, FantLab source-edition match remains unknown, M2 parity is inadmissible, and benchmark movement remains 0/5 source-matched works. Issue #64 closed completed.
+LAST_VERIFIED_PROGRESS: Independent review of exact head 6f4bebcd7bc2a520469a4257d10a392c15d1dbeb confirmed 5 commits ahead / 0 behind the base with only the five expected provenance/docs/state files changed and no PR comments, submitted reviews or review threads. Fresh source checks reconfirmed FantLab work 168951's 18 September 2022 analysis at 1,807,107 characters / 281,507 words; Wikisource's attribution to the 1991 Nauka volumes 9-10 and public-domain marker; RVB's placement of parts I-III in volume 9 and part IV plus epilogue in volume 10; the sampled chapter's unreviewed status; and the current FantLab TXT redirect to the LitRes trial route. The Wikisource table of contents independently sums to 96 numbered chapter/epilogue leaves plus the separate author preface, while exact text-bearing inventory, wrapper participation, extraction semantics, per-leaf revisions and composite hashes remain unfrozen. Pages run 34934852446 and pinned-provider run 34934852444 succeeded on the exact reviewed head. No source prose was added. Benchmark movement remains 0/5 source-matched works.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-REPRO-008
 ISSUE:          #64
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #65
-BASE_REVISION:  257b35ea507e659d45f7c597f8ebb90df5cbb214
-NEXT_ACTION:    Independently review the exact final PR head, changed-file surface,
-                comments/threads and hosted checks. Confirm that the trace accurately
-                preserves the Wikisource -> RVB -> Nauka 1991 vols. 9-10 provenance
-                chain, that work-index revision 5616907 is not mistaken for leaf-byte
-                identity, and that no source prose or source-match/parity promotion was
-                introduced. Merge only if those boundaries hold; otherwise repair the
-                exact defect.
+MERGED_COMMIT:  0f38ccfbc139e0b879e7be46ea07cc30c4ed78c8
+NEXT_ACTION:    Select SCRIP-REPRO-009 as the highest-priority dependency-satisfied
+                normal-flow unit: verify and freeze the complete Brothers Karamazov
+                text-bearing Wikisource inventory, exact leaf revisions, extraction/
+                composition contract and composite hashes without committing source
+                prose. Do not enable diagnostics or infer FantLab source match merely
+                because the public candidate becomes source-frozen.
 ```
 
 ## Current milestone gate
@@ -33,8 +32,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-REPRO-008 | review / benchmark provenance | Independently review and, if exact-head evidence is clean, merge PR #65 Brothers Karamazov source-edition trace | Issue #64 / PR #65 open; authored substantive unit must not self-merge |
-| P1 | SCRIP-REPRO-009 | benchmark / provenance | Verify and freeze the complete Brothers Karamazov text-bearing Wikisource leaf inventory, exact revisions, source-specific extraction/composition and composite hashes without source prose | Depends on SCRIP-REPRO-008 merge; public candidate remains `traced_not_frozen` |
+| P1 | SCRIP-REPRO-009 | benchmark / provenance | Verify and freeze the complete Brothers Karamazov text-bearing Wikisource leaf inventory, exact revisions, source-specific extraction/composition and composite hashes without source prose | SCRIP-REPRO-008 merged; public candidate remains `traced_not_frozen` |
 | P2 | SCRIP-MORPH continuation | analyzer core / reproduction | Investigate the next largest unresolved morphology axis with inspectable evidence, without guessing runtime `N`, extra-category folding, FantLab homonym selection, dictionary identity or service-word aggregation | M006 merged; provider homonym-weight signal is diagnostic only |
 | P3 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation identity and explicit legal provenance |
 

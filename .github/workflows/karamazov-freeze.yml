@@ -1,0 +1,80 @@
+name: Brothers Karamazov source replay
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/karamazov-freeze.yml"
+      - "scriptorium/karamazov_freeze.py"
+      - "scriptorium/wikisource_replay.py"
+      - "tests/test_karamazov_freeze.py"
+      - "corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.revisions.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Replay pinned Brothers Karamazov source identity
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Replay exact pinned source revisions
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.karamazov_freeze replay \
+            --manifest corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.revisions.json \
+            --receipt build/repro/dostoevsky-brothers-karamazov-ru.replay.json
+
+      - name: Verify and emit source-free replay summary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          receipt = json.loads(
+              Path("build/repro/dostoevsky-brothers-karamazov-ru.replay.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          assert receipt["source_segment_count"] == 98
+          assert receipt["source_text_included"] is False
+          assert receipt["diagnostic_comparison_admissible"] is False
+          assert receipt["fantlab_source_edition_match"] == "unknown"
+          assert receipt["m2_parity_admissible"] is False
+          summary = {
+              "candidate_id": receipt["candidate_id"],
+              "source_segment_count": receipt["source_segment_count"],
+              "composite_identity": receipt["composite_identity"],
+              "source_text_included": receipt["source_text_included"],
+              "diagnostic_comparison_admissible": receipt["diagnostic_comparison_admissible"],
+              "fantlab_source_edition_match": receipt["fantlab_source_edition_match"],
+              "m2_parity_admissible": receipt["m2_parity_admissible"],
+          }
+          print("SCRIPTORIUM_KARAMAZOV_REPLAY=" + json.dumps(
+              summary, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+          ))
+          PY
+
+      - name: Upload source-free replay receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: karamazov-source-replay-receipt
+          path: build/repro/dostoevsky-brothers-karamazov-ru.replay.json
+          if-no-files-found: error
+          retention-days: 7

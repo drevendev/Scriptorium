@@ -54,56 +54,71 @@
       "kind": "composite_subpages",
       "parts": 4,
       "books": 12,
-      "numbered_chapter_and_epilogue_leaves_observed_from_index": 96,
-      "separate_author_preface_observed": true,
-      "exact_text_bearing_leaf_inventory_frozen": false,
+      "numbered_chapter_and_epilogue_leaves": 96,
+      "author_preface_segments": 1,
+      "work_index_front_matter_segments": 1,
+      "exact_text_bearing_segment_inventory_frozen": true,
+      "source_segment_count": 98,
+      "book_wrapper_pages_included": false,
+      "epilogue_wrapper_page_included": false,
       "index_revision_freezes_subpage_text": false,
-      "structure_note": "The work index exposes an author preface, twelve books across four parts, and an epilogue. Summing the numbered chapter/epilogue leaves listed by the index gives 96; a later freeze must verify the exact text-bearing inventory and whether any book wrapper contributes text before defining a composition contract."
+      "structure_note": "The frozen composition admits exactly the work-index authorial dedication/epigraph, the separate author preface, 93 numbered book chapters, and three epilogue chapters. Book and epilogue wrapper pages are navigation-only and are not admitted as literary text segments."
     },
     "subpage_revision_boundary": {
       "sample_page": "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)/Книга_первая/I",
       "sample_permanent_url": "https://ru.wikisource.org/w/index.php?title=Братья_Карамазовы_(Достоевский)/Книга_первая/I&oldid=1224742",
       "sample_revision_id": 1224742,
-      "observation": "A sampled chapter has its own independent permanent revision, proving that the work-index oldid alone does not freeze chapter text bytes."
+      "observation": "A sampled chapter has its own independent permanent revision, proving that the work-index oldid alone does not freeze chapter text bytes. The committed revision manifest therefore pins all 98 admitted segment revisions independently."
     },
     "frozen_candidate": {
-      "status": "not_frozen",
+      "status": "frozen_public_candidate",
+      "revision_manifest": "corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.revisions.json",
+      "manifest_version": "scriptorium-karamazov-source-revision-packed-manifest-v1",
+      "source_segment_count": 98,
+      "extraction_profile": "scriptorium-wikisource-karamazov-body-v7",
+      "composition_profile": "scriptorium-wikisource-composite-v1",
+      "character_count_including_spaces": 1810351,
+      "utf8_byte_count": 3261432,
+      "raw_sha256": "26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6",
+      "normalized_character_count_including_spaces": 1810351,
+      "normalized_sha256": "26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6",
+      "normalization_profile": "scriptorium-text-v1",
       "source_text_committed": false,
-      "reason": "The work-index revision and bibliographic chain are durable, but exact text-bearing subpage revisions, extraction semantics, canonical composition and composite hashes have not yet been frozen."
+      "replay_required": true,
+      "relationship_to_fantlab_analyzer_input": "unknown"
     }
   },
   "immutable_identity": {
-    "status": "partial",
-    "public_candidate_status": "traced_not_frozen",
+    "status": "frozen_public_candidate",
+    "public_candidate_status": "frozen_source_identity",
     "frozen_components": [
       "Wikisource work-index revision 5616907",
-      "bibliographic source chain from Wikisource to Russian Virtual Library and Nauka 1991 volumes 9-10",
-      "observed high-level four-part / twelve-book structure"
+      "98 admitted source-segment revision IDs, timestamps and MediaWiki SHA-1 identities",
+      "versioned scriptorium-wikisource-karamazov-body-v7 extraction contract",
+      "scriptorium-wikisource-composite-v1 composition order and separators",
+      "raw and scriptorium-text-v1 normalized composite SHA-256 identities",
+      "bibliographic source chain from Wikisource to Russian Virtual Library and Nauka 1991 volumes 9-10"
     ],
     "unfrozen_components": [
-      "the exact text-bearing Wikisource subpage revision inventory",
-      "a versioned extraction contract for the observed page shapes",
-      "canonical composition order/separators and composite raw/normalized hashes",
-      "the relationship between FantLab's uploaded analyzer input and this public transcription"
+      "the relationship between FantLab's uploaded analyzer input and this frozen public transcription"
     ],
-    "reason": "The public Wikisource/RVB candidate has strong bibliographic provenance, but neither its complete text bytes nor its relationship to FantLab's uploaded analyzer input is frozen or established."
+    "reason": "The public Wikisource/RVB candidate now has an immutable source-free revision and composite identity, but FantLab does not disclose enough analyzer-input provenance to establish that its 2022 analysis used these same bytes or this edition."
   },
   "admissibility": {
     "fantlab_source_edition_match": "unknown",
     "diagnostic_comparison_admissible": false,
     "m2_parity_admissible": false,
-    "status": "traced_not_frozen",
+    "status": "frozen_source_identity_unmatched_to_fantlab",
     "reasons": [
-      "Wikisource and RVB provide a strong public bibliographic chain to the 1991 Nauka volumes 9-10 and an explicit public-domain boundary for the literary work.",
-      "The work index is only a composite index; independent chapter revisions mean its oldid does not identify the novel bytes.",
+      "The Wikisource/RVB public candidate is frozen at 98 exact source revisions under a versioned extraction/composition contract and exceeds the 300,000-character corpus threshold.",
+      "The frozen composite contains 1,810,351 characters including spaces, while FantLab displays 1,807,107 characters; this count delta is evidence of non-identity or differing counting/extraction policy, not evidence that the editions match.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis.",
       "The current FantLab TXT excerpt redirects to a LitRes trial endpoint and does not identify the analyzer input."
     ],
     "next_evidence": [
-      "Verify the complete text-bearing Wikisource leaf inventory, including the author preface and any book-wrapper text that participates in the rendered work.",
-      "Pin every admitted text-bearing leaf revision ID/timestamp/MediaWiki SHA-1 and define a source-specific extraction/composition contract without committing source prose.",
-      "Replay the pinned revisions and record raw and scriptorium-text-v1 normalized composite hashes before enabling diagnostic comparison.",
-      "Promote source-edition match or M2 parity evidence only if independent evidence ties FantLab's uploaded analysis text to the same frozen source."
+      "Replay the committed 98-revision manifest on every relevant verification path and reject any source/composite drift.",
+      "Investigate independent edition evidence capable of tying FantLab's uploaded analysis text to a frozen source; do not infer identity from similar counts or title metadata.",
+      "Only after source identity is established may field-by-field diagnostic comparison become admissible for the M2 reproduction gate."
     ]
   }
 }

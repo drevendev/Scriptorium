@@ -129,7 +129,7 @@ class KaramazovFreezeTests(unittest.TestCase):
 """
         self.assertEqual(
             extract_karamazov_body(source, kind="book_chapter"),
-            "Авторский текст до. Авторский текст после.",
+            "Авторский текст до.\n\nАвторский текст после.",
         )
 
         malformed = source.replace("{{Примечание ВТ|Редакторский", "{{Примечание ВТ}} Редакторский")

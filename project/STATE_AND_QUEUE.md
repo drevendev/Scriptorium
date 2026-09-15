@@ -1,30 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 72
+STATE_REVISION: 73
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T07:02:00Z
-LAST_RESULT: SCRIP-REPRO-008 / Issue #64 / PR #65 received an independent exact-head review with no blocking defect and was squash-merged as 0f38ccfbc139e0b879e7be46ea07cc30c4ed78c8. The merged unit adds a durable source-edition trace for retained >=300k candidate `dostoevsky-brothers-karamazov-ru`, binding the public transcription bibliographically from Russian Wikisource through the Russian Virtual Library to Dostoevsky, Collected Works in 15 volumes, Leningrad: Nauka, 1991, volumes 9-10. The candidate remains `traced_not_frozen`; full-work diagnostics stay disabled, FantLab source-edition match remains unknown, M2 parity is inadmissible, and benchmark movement remains 0/5 source-matched works. Issue #64 closed completed.
-LAST_VERIFIED_PROGRESS: Independent review of exact head 6f4bebcd7bc2a520469a4257d10a392c15d1dbeb confirmed 5 commits ahead / 0 behind the base with only the five expected provenance/docs/state files changed and no PR comments, submitted reviews or review threads. Fresh source checks reconfirmed FantLab work 168951's 18 September 2022 analysis at 1,807,107 characters / 281,507 words; Wikisource's attribution to the 1991 Nauka volumes 9-10 and public-domain marker; RVB's placement of parts I-III in volume 9 and part IV plus epilogue in volume 10; the sampled chapter's unreviewed status; and the current FantLab TXT redirect to the LitRes trial route. The Wikisource table of contents independently sums to 96 numbered chapter/epilogue leaves plus the separate author preface, while exact text-bearing inventory, wrapper participation, extraction semantics, per-leaf revisions and composite hashes remain unfrozen. Pages run 34934852446 and pinned-provider run 34934852444 succeeded on the exact reviewed head. No source prose was added. Benchmark movement remains 0/5 source-matched works.
+LAST_COMMITTED_RUN_AT: 2026-09-15T08:26:00Z
+LAST_RESULT: SCRIP-REPRO-009 / Issue #66 / PR #67 froze the retained >=300k `dostoevsky-brothers-karamazov-ru` public candidate at 98 exact Russian Wikisource revisions under versioned source-specific extraction/composition semantics, committed only source-free identity metadata and composite hashes, and switched ordinary verification from live capture to exact pinned replay. The frozen public composite is 1,810,351 characters / 3,261,432 UTF-8 bytes with raw and `scriptorium-text-v1` normalized SHA-256 `26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6`. FantLab source-edition match remains unknown, diagnostic comparison remains disabled, M2 parity is inadmissible, and benchmark movement remains 0/5 source-matched works. The substantial authored PR is left for an independent exact-head review.
+LAST_VERIFIED_PROGRESS: Hosted capture run 34946890902 on authored head 6665f0dacf0a0e7bf4e55633ae11a89484cff4f8 passed 151/151 standard-library tests, completed all 98 source segments, and uploaded exactly one source-free manifest artifact (ID 10386733809; archive SHA-256 `ee42aee4158ef4f5dd8f661e9e15c7c35f28d3fe438e898de97606032d5ec1db`; JSON SHA-256 `bf3451afa69d8f057ad173880f60095e0b49615c7724027d56a60171b6399da9`). The captured profile `scriptorium-wikisource-karamazov-body-v7` explicitly handles only source-observed markup boundaries and fails closed outside them. The committed candidate catalog/trace record the 3,244-character delta from FantLab's displayed 1,807,107 characters as evidence that source identity is not established, not as a normalization explanation. Final exact-head replay and ordinary repository checks are required before independent review/merge.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-REPRO-008
-ISSUE:          #64
-STATUS:         DONE
-PR:             #65
-MERGED_COMMIT:  0f38ccfbc139e0b879e7be46ea07cc30c4ed78c8
-NEXT_ACTION:    Select SCRIP-REPRO-009 as the highest-priority dependency-satisfied
-                normal-flow unit: verify and freeze the complete Brothers Karamazov
-                text-bearing Wikisource inventory, exact leaf revisions, extraction/
-                composition contract and composite hashes without committing source
-                prose. Do not enable diagnostics or infer FantLab source match merely
-                because the public candidate becomes source-frozen.
+UNIT_ID:        SCRIP-REPRO-009
+ISSUE:          #66
+STATUS:         REVIEW
+PR:             #67
+MERGED_COMMIT:  —
+NEXT_ACTION:    Independently review the exact final PR #67 head after all authored
+                state/changelog updates. Require the pinned 98-revision replay workflow,
+                ordinary tests/checks and source-free receipt to succeed. Merge only if
+                no semantic/provenance blocker is found. Do not promote FantLab source
+                match, diagnostic admissibility or M2 parity from the public-source freeze.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral artifact, reviewed exact-pylem frozen-work transport, reviewed source-free undefined-reason decomposition, and reviewed provider-side homonym-weight diagnostics. The repository now also publishes a reviewed source-free full-work Anna Karenina morphology showcase. M2 remains open at **0/5 source-matched works** because no retained FantLab analyzer-input edition/byte identity is independently established.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS aggregation has a versioned provider-neutral artifact, reviewed exact-pylem frozen-work transport, reviewed source-free undefined-reason decomposition, and reviewed provider-side homonym-weight diagnostics. The repository publishes a reviewed source-free full-work Anna Karenina morphology showcase. Anna Karenina, Resurrection and Brothers Karamazov now each have immutable public-source candidates, but M2 remains open at **0/5 source-matched works** because no retained FantLab analyzer-input edition/byte identity is independently established.
 
 ## Queue
 
@@ -32,7 +31,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-REPRO-009 | benchmark / provenance | Verify and freeze the complete Brothers Karamazov text-bearing Wikisource leaf inventory, exact revisions, source-specific extraction/composition and composite hashes without source prose | SCRIP-REPRO-008 merged; public candidate remains `traced_not_frozen` |
+| P0 | SCRIP-REPRO-009 review | review / recovery | Independently inspect PR #67 exact head, pinned replay receipt, source-free manifest, changed surface and all required checks; merge only if safe | SCRIP-REPRO-009 authored and in REVIEW |
 | P2 | SCRIP-MORPH continuation | analyzer core / reproduction | Investigate the next largest unresolved morphology axis with inspectable evidence, without guessing runtime `N`, extra-category folding, FantLab homonym selection, dictionary identity or service-word aggregation | M006 merged; provider homonym-weight signal is diagnostic only |
 | P3 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation identity and explicit legal provenance |
 
@@ -42,7 +41,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 - `fantlab-2022-v1` is the frozen compatibility contract. FantLab publicly documents broad metric families while leaving some coefficients/parser details unpublished.
 - Exact integer parity is admissible only with exact source-edition identity, legal basis and immutable text digest. Decimal/rate parity additionally requires independently established display-rounding behavior.
-- The retained parity seed remains **0/5 source-matched works**. Diagnostic resemblance never advances M2.
+- The retained parity seed remains **0/5 source-matched works**. Diagnostic resemblance and public-source freezing never advance M2 by themselves.
 
 ### Frozen Anna Karenina candidate
 
@@ -58,16 +57,17 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - Composite identity: 890,835 characters; 1,610,692 UTF-8 bytes; raw/normalized SHA-256 `2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`.
 - Source match remains unknown; the 9,591-character display delta is not identity evidence.
 
-### Brothers Karamazov traced candidate
+### Frozen Brothers Karamazov candidate
 
 - FantLab work 168951 reports its 18 September 2022 analysis at 1,807,107 characters and 281,507 words but does not disclose analyzer-input edition/bytes.
-- Russian Wikisource identifies its transcription source as Dostoevsky, *Collected Works in 15 volumes*, Leningrad: Nauka, 1991, volumes 9-10 and links the Russian Virtual Library electronic edition.
-- RVB independently identifies volume 9 as the 1991 Nauka edition containing parts I-III and volume 10 as the same edition containing part IV plus epilogue; the electronic publication is identified as RVB version 3.0 dated 27 January 2017.
-- Wikisource permanent work-index revision `oldid=5616907` freezes only the index. Sampled Book I Chapter I exposes its own permanent revision `oldid=1224742`, so the index revision cannot stand in for full-text byte identity.
-- The index exposes an author preface, twelve books across four parts and 96 numbered chapter/epilogue leaves. This is an observed structure, not yet a canonical text-bearing inventory: wrapper participation and exact leaf set still require verification before a composition contract can be frozen.
-- The sampled chapter reports no reviewed version. This is recorded as transcription-QA evidence and does not weaken the separate bibliographic provenance/legal-basis claim.
-- FantLab's current TXT excerpt route redirects to a LitRes trial endpoint (`art=171949`); that behavior is explicitly inadmissible as analyzer-input identity evidence.
-- `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`.
+- Russian Wikisource identifies its transcription source as Dostoevsky, *Collected Works in 15 volumes*, Leningrad: Nauka, 1991, volumes 9-10 and links the Russian Virtual Library electronic edition; RVB independently confirms parts I-III in volume 9 and part IV plus epilogue in volume 10.
+- The exact public-source inventory is now frozen at 98 independently revision-pinned segments: one work-index authorial front matter segment, one author preface, 93 book chapters and three epilogue chapters. Navigation-only book/epilogue wrappers are excluded.
+- Source identities are stored compactly as 98 revision IDs, timestamps and MediaWiki SHA-1 values; no source prose is committed. Exact replay must reproduce the same composite identity.
+- `scriptorium-wikisource-karamazov-body-v7` handles only source-observed markup shapes: Wikisource editor notes are excluded; level-5/6 literary headings retain visible text; numeric line-start `Indent` inside observed `Poem1` is layout-only; unambiguous three-argument `Опечатка` (`О1`/`О2`/`О3`) emits corrected text; zero-argument `NB` preserves its visible `NB` marker. Broader shapes fail closed.
+- Composite identity: 1,810,351 characters; 3,261,432 UTF-8 bytes; raw and `scriptorium-text-v1` normalized SHA-256 `26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6`.
+- The frozen candidate is 3,244 characters above FantLab's displayed count. This does not establish edition identity or explain the delta; it is an explicit source-mismatch/unknown-policy signal.
+- FantLab's current TXT excerpt route redirects to a LitRes trial endpoint (`art=171949`) and remains inadmissible as analyzer-input identity evidence.
+- `source_identity_status=public_candidate_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `diagnostic_comparison_admissible=false`, and `m2_parity_admissible=false`.
 
 ### Deterministic metric findings
 
@@ -82,18 +82,18 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - Fifteen runtime strings map directly as inferred candidates. Runtime `N` collapses noun/cardinal; `POSL`, `COLLOC`, `ADJ_SHORT`, `PARTICIPLE_SHORT` and `INFINITIVE` remain unresolved extra categories.
 - `scriptorium-pos-v1` resolves a token only when all supplied analyses map to the same direct FantLab-shaped bucket. Empty analyses, `N`, extra categories, unknown codes and cross-bucket homonyms remain undefined.
 - Exact pylem 0.0.18 executability is verified in the isolated Ubuntu 22.04 / Python 3.9 lane; the modern Scriptorium contract suite remains on Ubuntu 24.04 / Python 3.13.
-- The reviewed frozen POS diagnostic contains 269,358 Scriptorium word tokens: 117,554 conservatively defined and 151,804 undefined. Noun/cardinal remain zero by design because `N` is unresolved.
-- Reviewed undefined decomposition: 55,081 `runtime_n_only`, 19,670 `runtime_n_mixed`, 10,677 `extra_runtime_only`, 7,120 `extra_runtime_mixed`, 59,254 `direct_cross_bucket_ambiguity`, and 2 `no_analysis`. Thus 151,802 / 151,804 undefined rows are withheld by known conservative policy boundaries rather than provider no-analysis.
-- Runtime `N` is present in 74,751 undefined rows. Extra-category presence includes ADJ_SHORT 10,126, INFINITIVE 8,230, PARTICIPLE_SHORT 1,100, COLLOC 350 and POSL 0. These are candidate-presence counts, not justified FantLab folds.
-- FantLab partition deltas on the unmatched frozen candidate are +16,083 words, -70,685 defined POS words and +86,768 undefined POS words. These cannot be attributed to one morphology rule while source/tokenization identity differs.
-- Pinned pylem exposes `homonym_weight`, `word_weight` and `predicted`; its pinned `morph_dict` loads literature homonym statistics by default. This establishes provider-signal provenance only, not FantLab policy/dictionary identity.
-- Reviewed M006 evidence covers all 59,254 direct cross-bucket ambiguity rows. Homonym-weight metadata is complete, but only 5,972 rows (10.0786%) have a unique maximum FantLab-shaped bucket; 53,282 tie and 45,832 have all bucket maxima at zero.
+- The reviewed frozen Anna Karenina POS diagnostic contains 269,358 Scriptorium word tokens: 117,554 conservatively defined and 151,804 undefined.
+- Reviewed undefined decomposition: 55,081 `runtime_n_only`, 19,670 `runtime_n_mixed`, 10,677 `extra_runtime_only`, 7,120 `extra_runtime_mixed`, 59,254 `direct_cross_bucket_ambiguity`, and 2 `no_analysis`.
+- Runtime `N` is present in 74,751 undefined rows. Extra-category presence includes ADJ_SHORT 10,126, INFINITIVE 8,230, PARTICIPLE_SHORT 1,100, COLLOC 350 and POSL 0; these are candidate-presence counts, not justified FantLab folds.
+- FantLab partition deltas on the unmatched Anna candidate are +16,083 words, -70,685 defined POS words and +86,768 undefined POS words; source/tokenization mismatch prevents attribution to one morphology rule.
+- Pinned pylem exposes `homonym_weight`, `word_weight` and `predicted`; only 5,972 / 59,254 direct cross-bucket ambiguity rows have a unique maximum FantLab-shaped bucket, so provider weights do not justify a FantLab homonym-selection rule.
 - Production homonym selection was not changed. FantLab dictionary identity, homonym selection, noun/cardinal recovery, extra-category folding and service-word aggregation remain unresolved.
 
 ### Public repository representation
 
 - The static renderer/publication manifest remain fail-closed and source-free. Public material includes two short Anna Karenina derived showcases, a provenance-only Resurrection page, and a full-work Anna Karenina morphology diagnostic page.
 - The full-work morphology page exposes reviewed aggregate values only, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false` and unchanged production POS semantics.
+- Corpus navigation now documents the frozen Brothers Karamazov public identity and exact source-free manifest, but no derived full-work analysis is published for it because FantLab source match and diagnostic admissibility remain unresolved.
 - Publication contract tests scan provenance artifacts for forbidden source-prose keys; Pages builds are reproducible.
 - Live deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -105,7 +105,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 4. pylem runtime `N` loses noun/cardinal distinction; five extra runtime categories still lack justified FantLab folding.
 5. Provider no-analysis is negligible, but known conservative policy boundaries account for nearly all current frozen-work undefined rows; provider homonym weights still do not justify a FantLab selection rule.
 6. The exact pinned pylem source requires an isolated legacy toolchain; changing that lane requires new evidence rather than silently patching upstream bytes.
-7. Brothers Karamazov now has strong public bibliographic provenance but no frozen full-text identity; the complete text-bearing subpage inventory/extraction/composition must be established before diagnostics.
+7. Brothers Karamazov now has a frozen public-source identity, but no evidence ties FantLab's uploaded 2022 analyzer input to those same bytes; diagnostic comparison and M2 parity therefore remain disabled.
 8. Pages live activation is a repository-admin effect and remains off.
 
 ## Run selection rule
@@ -117,4 +117,4 @@ On each wake:
 3. otherwise choose the first dependency-satisfied queue row, applying the standing rolling allocation when multiple normal-flow units are eligible;
 4. create/search the corresponding issue before implementation;
 5. do exactly one bounded unit and update this file plus the relevant changelog/benchmark/provenance record;
-6. do not infer parity or unblock M2 from provider executability, diagnostic resemblance, provider-only homonym weights, bibliographic resemblance or excerpt-delivery routes.
+6. do not infer parity or unblock M2 from provider executability, diagnostic resemblance, provider-only homonym weights, bibliographic resemblance, public-source freezing or excerpt-delivery routes.

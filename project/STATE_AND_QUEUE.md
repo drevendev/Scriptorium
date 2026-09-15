@@ -1,29 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 82
+STATE_REVISION: 83
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T16:52:48Z
-LAST_RESULT: SCRIP-CORPUS-003 / Issue #75 / PR #76 received an independent later-run exact-head review with no blocking defect and was squash-merged as `f9d6ea65399c715e10162a1ce2a77b53c6bee099`; Issue #75 closed completed. The merged unit freezes the retained `bely-silver-dove-ru` public Wikisource candidate at exact revision `5588003` under a source-specific fail-closed extraction/replay contract while preserving FantLab source match `unknown`, diagnostics disabled and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Independent review of exact head `1353018285bd233af643837f2d27d6ce420d730b` confirmed the branch was 14 commits ahead / 0 behind unchanged base `fd1765657e312d9c389d0783e596e76c960fb7b2`, changed exactly nine expected workflow/corpus/provenance/state/implementation/test files, and had no pre-existing PR comments, submitted reviews or review threads. Exact-head runs `34993037413` (Silver Dove source freeze), `34993038239` (Pages), `34993037291` (frozen diagnostic) and `34993037437` (pinned provider) all succeeded. The Silver Dove lane ran 162 standard-library tests, replayed revision `5588003` at `2025-07-30T21:54:23Z`, reproduced the 563,125-character / 1,039,363-byte composite and SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`, and uploaded only the 505-byte source-free receipt artifact `10406002706` (archive SHA-256 `6ed7e4f8b344fe5cbbcefd5320a5e41a4b3cf89ef8cf34b257e5b6f3b694f50d`). The 14,075-character difference from FantLab remains mismatch/unknown-policy evidence only.
+LAST_COMMITTED_RUN_AT: 2026-09-15T17:56:30Z
+LAST_RESULT: SCRIP-CORPUS-004 / Issue #77 / PR #78 authored a new source-explicit modernist corpus candidate, `bely-petersburg-1916-ru`, anchored to Wikimedia Commons' public-domain 632-page facsimile of Andrei Bely's first 1916 book publication. FantLab reports 944,182 characters / 130,217 words, but its analyzer-input edition remains undisclosed. The candidate is deliberately `traced_not_frozen`; no scan/OCR/source prose is committed, diagnostics stay disabled and M2 remains 0/5.
+LAST_VERIFIED_PROGRESS: Fresh public-source research confirmed FantLab work 293513 was analyzed on 19 September 2022 at 944,182 characters / 130,217 words. Wikimedia Commons identifies its 1916 PDF as a 632-page facsimile of the first book publication, mechanically reproducing the 1913–1914 Sirin installments, and marks the work public domain. Russian Wikisource independently marks Petersburg public domain but categorizes its generic landing page as `Тексты без ссылок на источники`, so Scriptorium records that page only as a legal/bibliographic cross-check and does not promote it to source identity. The 1916 first-book edition remains explicitly distinct from the revised 1922 edition.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-003
-ISSUE:          #75
-STATUS:         DONE
-PR:             #76
-MERGED_COMMIT:  f9d6ea65399c715e10162a1ce2a77b53c6bee099
-NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
-                Prefer another legally usable >=300k diversity candidate or stronger
-                independent source-identity evidence for an existing candidate; keep
-                translation identity explicit and do not infer FantLab input identity
-                from count proximity, bibliography or public-source freezing.
+UNIT_ID:        SCRIP-CORPUS-004
+ISSUE:          #77
+STATUS:         REVIEW
+PR:             #78
+NEXT_ACTION:    Independently review the exact PR #78 head, changed-file boundary,
+                checks, comments/reviews and provenance claims. Merge only if the
+                candidate remains source-free and fail-closed: 1916 edition identity
+                explicit, PDF/OCR extraction unfrozen, FantLab input match unknown,
+                diagnostics/gate readiness false, and M2 unchanged at 0/5.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering the five additional source-backed AOT categories while leaving runtime `N` unresolved. SCRIP-MORPH-008 has independently reviewed and merged provider-executed frozen Anna aggregate evidence for the latter surface and exposes only source-free aggregates in the public morphology showcase; this does not establish how the five categories relate to the current FantLab work-page table. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove now have immutable public-source candidates. Silver Dove adds an early-twentieth-century modernist/symbolist voice but still has no independently established FantLab analyzer-input identity. M2 therefore remains open at **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering the five additional source-backed AOT categories while leaving runtime `N` unresolved. SCRIP-MORPH-008 has independently reviewed and merged provider-executed frozen Anna aggregate evidence for the latter surface and exposes only source-free aggregates in the public morphology showcase; this does not establish how the five categories relate to the current FantLab work-page table. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg adds a second early-twentieth-century Bely/modernist work with an explicit 1916 source-edition lead, but remains `traced_not_frozen` and has no established FantLab analyzer-input identity. M2 therefore remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -31,7 +30,8 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation identity and explicit legal provenance |
+| P0 | SCRIP-CORPUS-004 review | review / recovery | Independently review PR #78 exact head and merge only if provenance/admissibility boundaries and checks hold | Exact head unchanged; required checks green; no blocking review evidence |
+| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Evidence already established
 
@@ -78,6 +78,14 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - FantLab labels the work 1910 while Wikisource metadata says publication 1909. The discrepancy remains explicitly unresolved; Scriptorium does not infer serial-versus-book chronology or source identity from it.
 - `source_identity_status=public_candidate_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `diagnostic_comparison_admissible=false`, and `m2_parity_admissible=false`.
 
+### Traced Petersburg 1916 modernist candidate
+
+- FantLab work 293513 reports its 19 September 2022 linguistic analysis at 944,182 characters and 130,217 words, clearing the >=300,000-character corpus threshold.
+- Wikimedia Commons hosts a 632-page PDF described as a facsimile reproduction of Bely's first 1916 book publication, mechanically reproducing the novel parts from three *Sirin* collections published in 1913–1914; the file description explicitly marks the work public domain.
+- The retained identity is edition-specific: `bely-petersburg-1916-ru` means the 1916 first-book edition and is not collapsed with Bely's revised 1922 text.
+- Russian Wikisource independently marks the work public domain but categorizes the generic Petersburg landing page as `Тексты без ссылок на источники`; Scriptorium therefore uses it only as a bibliographic/legal cross-check, not source identity.
+- This unit does not freeze the Commons PDF bytes or define OCR/page extraction. No source text is committed. `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`.
+
 ### Deterministic metric findings
 
 - Frozen Anna Karenina diagnostic deltas include characters +12,958 and words +16,083 relative to FantLab; simple numeric-token and lexical-hyphen probes explain little of the word gap.
@@ -108,7 +116,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - The static renderer/publication manifest remain fail-closed and source-free. Public material includes two short Anna Karenina derived showcases, a provenance-only Resurrection page, and a full-work Anna Karenina morphology diagnostic page.
 - The full-work morphology page exposes reviewed M005/M006 aggregates plus the independently reviewed SCRIP-MORPH-008 aggregate-only 22-category methodology diagnostic, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false`, unresolved work-page relation and unchanged production POS semantics.
 - The methodology public slice exposes only aggregate counts and runtime-analysis identity; it publishes no source prose, normalized text, tokens or candidate rows.
-- Corpus navigation and the parity catalog now document frozen source-free identities for Brothers Karamazov and Silver Dove. No derived full-work analysis is published for either unmatched candidate.
+- Corpus navigation and the parity catalog now document frozen source-free identities for Brothers Karamazov and Silver Dove plus the source-explicit but not-yet-frozen 1916 Petersburg candidate. No derived full-work analysis is published for these unmatched candidates.
 - Publication contract tests scan provenance artifacts for forbidden source-prose keys; Pages builds are reproducible.
 - Live deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -122,7 +130,8 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 6. The exact pinned pylem source requires an isolated legacy toolchain; changing that lane requires new evidence rather than silently patching upstream bytes.
 7. Brothers Karamazov has a frozen public-source identity, but no evidence ties FantLab's uploaded 2022 analyzer input to those same bytes; diagnostic comparison and M2 parity therefore remain disabled.
 8. Silver Dove now has a frozen public-source identity, but no evidence ties FantLab's uploaded 2022 analyzer input to those bytes; the 14,075-character display delta and unresolved 1909/1910 publication metadata remain explicit mismatch/unknown-policy evidence, so diagnostics and M2 stay disabled.
-9. Pages live activation is a repository-admin effect and remains off.
+9. Petersburg has an explicit public-domain 1916 edition lead but no Scriptorium-frozen PDF/OCR identity and no evidence tying FantLab's 2022 input to that edition; diagnostics and M2 remain disabled.
+10. Pages live activation is a repository-admin effect and remains off.
 
 ## Run selection rule
 

@@ -1,0 +1,109 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "dostoevsky-brothers-karamazov-ru",
+  "research_date": "2026-09-15",
+  "fantlab": {
+    "work_id": 168951,
+    "analysis_url": "https://fantlab.ru/work168951/lp",
+    "analysis_date": "2022-09-18",
+    "observed_counts": {
+      "characters": 1807107,
+      "words": 281507
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "work_page_excerpt_download": {
+      "work_page_url": "https://fantlab.ru/work168951",
+      "observed_on": "2026-09-15",
+      "observed_txt_url": "https://fantlab.ru/getwork171949.txt.zip",
+      "observed_redirect_url": "https://litres.ru/gettrial/?art=171949&format=txt.zip",
+      "observed_behavior": "The TXT excerpt route redirected to a LitRes trial endpoint with art=171949. Tracking parameters are intentionally omitted from the durable record.",
+      "relationship_to_analyzed_text": "unproven",
+      "use_as_source_edition_evidence": false
+    }
+  },
+  "public_transcription": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)",
+    "permanent_work_index_url": "https://ru.wikisource.org/w/index.php?title=Братья_Карамазовы_(Достоевский)&oldid=5616907",
+    "work_index_revision_id": 5616907,
+    "bibliographic_source_chain": [
+      {
+        "provider": "Russian Wikisource",
+        "observation": "The work index identifies the transcription source as Dostoevsky, Collected Works in 15 volumes, Leningrad: Nauka, 1991, volumes 9-10, and links the Russian Virtual Library electronic edition."
+      },
+      {
+        "provider": "Russian Virtual Library",
+        "url": "https://rvb.ru/dostoevski/tocvol9.htm",
+        "observation": "Volume 9 identifies Dostoevsky, Collected Works in 15 volumes, Leningrad: Nauka, 1991 and contains Brothers Karamazov parts I-III. The page identifies the electronic publication as RVB version 3.0 dated 27 January 2017."
+      },
+      {
+        "provider": "Russian Virtual Library",
+        "url": "https://rvb.ru/dostoevski/tocvol10.htm",
+        "observation": "Volume 10 identifies the same 1991 Nauka collected edition and contains Brothers Karamazov part IV and the epilogue. The page identifies the electronic publication as RVB version 3.0 dated 27 January 2017."
+      }
+    ],
+    "bibliographic_source": "Достоевский Ф. М. Собрание сочинений: в 15 т. Л.: Наука, 1991. Т. 9-10.",
+    "source_provenance_confidence": "strong",
+    "transcription_quality_status": "not_reviewed_on_sampled_wikisource_chapter",
+    "transcription_quality_evidence": "The sampled Wikisource Book I, Chapter I page reports that it has no reviewed versions. This is a transcription-QA limitation, not a legal-basis or bibliographic-provenance failure.",
+    "legal_basis": "public_domain",
+    "legal_evidence": "The Wikisource work page explicitly marks the literary work public domain. This trace concerns the public-domain literary text body and does not assert rights over later editorial apparatus.",
+    "publication_evidence": "The novel was written in 1878-1880 and first published in 1879-1880; the FantLab work page also records the original journal publication and the December 1880 two-volume edition.",
+    "structure": {
+      "kind": "composite_subpages",
+      "parts": 4,
+      "books": 12,
+      "numbered_chapter_and_epilogue_leaves_observed_from_index": 96,
+      "separate_author_preface_observed": true,
+      "exact_text_bearing_leaf_inventory_frozen": false,
+      "index_revision_freezes_subpage_text": false,
+      "structure_note": "The work index exposes an author preface, twelve books across four parts, and an epilogue. Summing the numbered chapter/epilogue leaves listed by the index gives 96; a later freeze must verify the exact text-bearing inventory and whether any book wrapper contributes text before defining a composition contract."
+    },
+    "subpage_revision_boundary": {
+      "sample_page": "https://ru.wikisource.org/wiki/Братья_Карамазовы_(Достоевский)/Книга_первая/I",
+      "sample_permanent_url": "https://ru.wikisource.org/w/index.php?title=Братья_Карамазовы_(Достоевский)/Книга_первая/I&oldid=1224742",
+      "sample_revision_id": 1224742,
+      "observation": "A sampled chapter has its own independent permanent revision, proving that the work-index oldid alone does not freeze chapter text bytes."
+    },
+    "frozen_candidate": {
+      "status": "not_frozen",
+      "source_text_committed": false,
+      "reason": "The work-index revision and bibliographic chain are durable, but exact text-bearing subpage revisions, extraction semantics, canonical composition and composite hashes have not yet been frozen."
+    }
+  },
+  "immutable_identity": {
+    "status": "partial",
+    "public_candidate_status": "traced_not_frozen",
+    "frozen_components": [
+      "Wikisource work-index revision 5616907",
+      "bibliographic source chain from Wikisource to Russian Virtual Library and Nauka 1991 volumes 9-10",
+      "observed high-level four-part / twelve-book structure"
+    ],
+    "unfrozen_components": [
+      "the exact text-bearing Wikisource subpage revision inventory",
+      "a versioned extraction contract for the observed page shapes",
+      "canonical composition order/separators and composite raw/normalized hashes",
+      "the relationship between FantLab's uploaded analyzer input and this public transcription"
+    ],
+    "reason": "The public Wikisource/RVB candidate has strong bibliographic provenance, but neither its complete text bytes nor its relationship to FantLab's uploaded analyzer input is frozen or established."
+  },
+  "admissibility": {
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_comparison_admissible": false,
+    "m2_parity_admissible": false,
+    "status": "traced_not_frozen",
+    "reasons": [
+      "Wikisource and RVB provide a strong public bibliographic chain to the 1991 Nauka volumes 9-10 and an explicit public-domain boundary for the literary work.",
+      "The work index is only a composite index; independent chapter revisions mean its oldid does not identify the novel bytes.",
+      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis.",
+      "The current FantLab TXT excerpt redirects to a LitRes trial endpoint and does not identify the analyzer input."
+    ],
+    "next_evidence": [
+      "Verify the complete text-bearing Wikisource leaf inventory, including the author preface and any book-wrapper text that participates in the rendered work.",
+      "Pin every admitted text-bearing leaf revision ID/timestamp/MediaWiki SHA-1 and define a source-specific extraction/composition contract without committing source prose.",
+      "Replay the pinned revisions and record raw and scriptorium-text-v1 normalized composite hashes before enabling diagnostic comparison.",
+      "Promote source-edition match or M2 parity evidence only if independent evidence ties FantLab's uploaded analysis text to the same frozen source."
+    ]
+  }
+}

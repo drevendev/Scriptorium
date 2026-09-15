@@ -99,12 +99,17 @@ class MethodologyPosDiagnosticTests(unittest.TestCase):
                 "infinitive": 1,
             },
         )
+        self.assertEqual(signal["transport"]["runtime_profile"], PYLEM_RUNTIME_PROFILE)
+        self.assertEqual(
+            signal["transport"]["normalized_sha256"], request["normalized_sha256"]
+        )
+        self.assertRegex(signal["transport"]["runtime_analysis_sha256"], r"^[0-9a-f]{64}$")
         self.assertIsNone(signal["buckets"]["noun"]["count"])
         self.assertIsNone(signal["buckets"]["cardinal"]["count"])
         self.assertFalse(signal["evidence_boundary"]["production_pos_profile_changed"])
         self.assertFalse(signal["evidence_boundary"]["m2_parity_admissible"])
 
-    def test_frozen_artifact_is_source_free_and_manifest_bound(self):
+    def test_frozen_artifact_is_source_free_manifest_and_provider_analysis_bound(self):
         request = build_sidecar_request("короток бежать дом")
         response = self._response(request, [["ADJ_SHORT"], ["INFINITIVE"], ["N"]])
         artifact = build_frozen_methodology_pos_diagnostic(
@@ -120,6 +125,12 @@ class MethodologyPosDiagnosticTests(unittest.TestCase):
         self.assertEqual(artifact["diagnostic_boundary"]["status"], "diagnostic_only")
         self.assertFalse(artifact["diagnostic_boundary"]["production_pos_profile_changed"])
         self.assertFalse(artifact["diagnostic_boundary"]["m2_parity_admissible"])
+        self.assertEqual(artifact["transport"], artifact["methodology_pos"]["transport"])
+        self.assertEqual(artifact["transport"]["runtime_profile"], PYLEM_RUNTIME_PROFILE)
+        self.assertEqual(
+            artifact["transport"]["normalized_sha256"], request["normalized_sha256"]
+        )
+        self.assertRegex(artifact["transport"]["runtime_analysis_sha256"], r"^[0-9a-f]{64}$")
         serialized = json.dumps(artifact, ensure_ascii=False)
         self.assertNotIn("короток", serialized)
         self.assertNotIn("бежать", serialized)

@@ -214,7 +214,7 @@
       "author": "Андрей Белый",
       "title": "Петербург",
       "language": "ru",
-      "work_identity": "original_1916_first_book_edition",
+      "work_identity": "original",
       "fantlab": {
         "work_id": 293513,
         "analysis_url": "https://fantlab.ru/work293513/lp",
@@ -225,6 +225,7 @@
       "source": {
         "provider": "Wikimedia Commons",
         "url": "https://commons.wikimedia.org/wiki/File:Андрей_Белый._Петербург_(1916).pdf",
+        "edition_identity": "1916_first_book_edition",
         "edition_note": "Facsimile of Andrei Bely's first 1916 book publication, described by Wikimedia Commons as a mechanical reproduction of the three Sirin installments from 1913–1914; 632 pages.",
         "source_provenance_confidence": "strong",
         "legal_basis": "public_domain",

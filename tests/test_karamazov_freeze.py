@@ -136,6 +136,26 @@ class KaramazovFreezeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "missing its note argument"):
             extract_karamazov_body(malformed, kind="book_chapter")
 
+    def test_observed_literary_subheadings_preserve_text_and_other_levels_fail_closed(self):
+        source = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
+<onlyinclude>Начало.
+===== ''Подраздел [[Цель|видимая цель]]'' =====
+Текст после первого заголовка.
+====== Второй подраздел ======
+Конец.</onlyinclude>
+"""
+        self.assertEqual(
+            extract_karamazov_body(source, kind="book_chapter"),
+            "Начало.\n\nПодраздел видимая цель\n\n"
+            "Текст после первого заголовка.\n\nВторой подраздел\n\nКонец.",
+        )
+
+        unsupported = source.replace("===== ''Подраздел", "==== ''Подраздел", 1).replace(
+            "цель]]'' =====", "цель]]'' ====", 1
+        )
+        with self.assertRaisesRegex(ValueError, "unsupported literary heading level"):
+            extract_karamazov_body(unsupported, kind="book_chapter")
+
     def test_extractor_handles_onlyinclude_and_styled_indent(self):
         preface = """{{Отексте|АВТОР=[[Фёдор Михайлович Достоевский]]}}
 == От автора ==
@@ -168,9 +188,10 @@ __NOTOC____NOEDITSECTION__
         self.assertEqual(manifest["manifest_version"], MANIFEST_VERSION)
         self.assertEqual(manifest["candidate_id"], "dostoevsky-brothers-karamazov-ru")
         self.assertEqual(manifest["composition"]["extraction_profile"], EXTRACTION_PROFILE)
-        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v3")
+        self.assertEqual(EXTRACTION_PROFILE, "scriptorium-wikisource-karamazov-body-v4")
         self.assertIs(manifest["composition"]["navigation_wrappers_included"], False)
         self.assertIs(manifest["composition"]["wikisource_editor_notes_included"], False)
+        self.assertEqual(manifest["composition"]["literary_heading_levels_preserved_as_text"], [5, 6])
         self.assertIs(manifest["composition"]["source_text_committed"], False)
         self.assertGreaterEqual(
             manifest["composite_identity"]["character_count_including_spaces"], 300_000
@@ -224,6 +245,11 @@ __NOTOC____NOEDITSECTION__
         changed = copy.deepcopy(manifest)
         changed["composition"]["wikisource_editor_notes_included"] = True
         with self.assertRaisesRegex(ValueError, "editor-note boundary drift"):
+            replay_manifest(changed, fetcher=lambda identities: replay_records)
+
+        changed = copy.deepcopy(manifest)
+        changed["composition"]["literary_heading_levels_preserved_as_text"] = [6]
+        with self.assertRaisesRegex(ValueError, "literary-heading boundary drift"):
             replay_manifest(changed, fetcher=lambda identities: replay_records)
 
         changed = copy.deepcopy(manifest)

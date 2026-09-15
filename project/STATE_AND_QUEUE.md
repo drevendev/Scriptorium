@@ -1,29 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 84
+STATE_REVISION: 85
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-15T18:50:33Z
-LAST_RESULT: SCRIP-CORPUS-004 / Issue #77 / PR #78 received an independent later-run exact-head review with no blocking defect and was squash-merged as `22911929228b127e721f0607d0d1c97cf5dd6823`; Issue #77 closed completed. The merged unit adds the edition-explicit `bely-petersburg-1916-ru` modernist candidate while keeping the Commons PDF/OCR identity unfrozen, FantLab source match `unknown`, diagnostics disabled, and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Independent review of exact head `2ec01e45bdc3e2ac69092e0cb3bfefd5ac2483be` confirmed the branch was 6 commits ahead / 0 behind unchanged base `6ddb25aec005c80628aa74278582e01c3d2a49a0`, changed exactly five expected corpus/provenance/state files, and had no pre-existing PR comments, submitted reviews or review threads. Exact-head runs `35004623316` (Pages) and `35004623349` (pinned provider) both succeeded. Pages ran the complete Python 3.13 standard-library suite, built the canonical static site and verified a deterministic rebuild; the provider workflow also passed provider-contract tests, exact hash-pinned `pylem==0.0.18` native smoke on Python 3.9 and the frozen Anna sidecar replay. Fresh public-source review reconfirmed FantLab's 944,182-character / 130,217-word reference, Commons' 632-page first-1916-book facsimile description and public-domain notice, and Wikisource's source-less landing-page warning plus separate 1913/1922 edition navigation.
+LAST_COMMITTED_RUN_AT: 2026-09-15T19:59:00Z
+LAST_RESULT: SCRIP-CORPUS-005 / Issue #79 / PR #80 authored a new legally usable early-Soviet science-fiction/adventure candidate, `tolstoy-hyperboloid-garin-wikisource-ru`. FantLab reports 495,539 characters / 69,126 words. Russian Wikisource supplies a stable reviewed permanent revision and explicit public-domain notice, but the transcription's print-edition identity and its relation to FantLab's analyzer input remain unknown. The unit is trace-only: no source prose or frozen literary-text digest is committed, diagnostics remain disabled and M2 stays 0/5.
+LAST_VERIFIED_PROGRESS: Fresh public-source research confirmed FantLab work 44824 was analyzed on 18 September 2022 at 495,539 characters / 69,126 words. Russian Wikisource permanent revision `oldid=5014458` is dated 30 August 2023, is presented as a stable reviewed page, cites `az.lib.ru` as source and marks the literary work public domain. The Wikisource text states that the novel was written in 1926–1927 and revised with new chapters in 1937, while FantLab independently records four authorial reworkings, a new 1927 ending and the 1939 Sovetsky pisatel volume as the last lifetime edition. Scriptorium therefore records revision-family ambiguity explicitly and does not infer an edition or FantLab-input match.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-004
-ISSUE:          #77
-STATUS:         DONE
-PR:             #78
-MERGED_COMMIT:  22911929228b127e721f0607d0d1c97cf5dd6823
-NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
-                Prefer another legally usable >=300k diversity candidate or stronger
-                independent source-identity evidence for an existing candidate; keep
-                translation and edition identity explicit and do not infer FantLab
-                input identity from title, bibliography, count proximity or freezing.
+UNIT_ID:        SCRIP-CORPUS-005
+ISSUE:          #79
+STATUS:         REVIEW
+PR:             #80
+NEXT_ACTION:    Independently review the exact PR #80 head, changed-file boundary,
+                required checks and provenance claims. Merge only if the candidate
+                remains trace-only and source-free: permanent revision locator recorded,
+                exact literary-text identity unfrozen, revision family unresolved,
+                FantLab input match unknown, diagnostics/gate readiness false, and
+                M2 unchanged at 0/5.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering the five additional source-backed AOT categories while leaving runtime `N` unresolved. SCRIP-MORPH-008 has independently reviewed and merged provider-executed frozen Anna aggregate evidence for the latter surface and exposes only source-free aggregates in the public morphology showcase; this does not establish how the five categories relate to the current FantLab work-page table. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg adds a second early-twentieth-century Bely/modernist work with an explicit 1916 source-edition lead, but remains `traced_not_frozen` and has no established FantLab analyzer-input identity. M2 therefore remains open at **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering the five additional source-backed AOT categories while leaving runtime `N` unresolved. SCRIP-MORPH-008 has independently reviewed and merged provider-executed frozen Anna aggregate evidence for the latter surface and exposes only source-free aggregates in the public morphology showcase; this does not establish how the five categories relate to the current FantLab work-page table. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg adds an explicit but unfrozen 1916 edition lead. Hyperboloid of Engineer Garin adds an early-Soviet SF/adventure candidate with a permanent Wikisource revision lead, but its exact literary-text identity and revision-family mapping remain unfrozen and no retained candidate has an established FantLab analyzer-input identity. M2 therefore remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -31,6 +31,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
+| P0 | SCRIP-CORPUS-005 review | review / recovery | Independently review PR #80 exact head and merge only if provenance/admissibility boundaries and checks hold | Exact head unchanged; required checks green; no blocking review evidence |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Evidence already established
@@ -86,6 +87,13 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - Russian Wikisource independently marks the work public domain but categorizes the generic Petersburg landing page as `Тексты без ссылок на источники`; Scriptorium therefore uses it only as a bibliographic/legal cross-check, not source identity.
 - This unit does not freeze the Commons PDF bytes or define OCR/page extraction. No source text is committed. `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`.
 
+### Traced Hyperboloid of Engineer Garin early-Soviet SF candidate
+
+- FantLab work 44824 reports its 18 September 2022 linguistic analysis at 495,539 characters and 69,126 words, clearing the >=300,000-character corpus threshold.
+- Russian Wikisource publishes a stable reviewed full-work transcription, explicitly marks the literary work public domain, cites `az.lib.ru` as source and exposes permanent revision `oldid=5014458` dated 30 August 2023.
+- The page says the novel was written in 1926–1927 and revised with new chapters in 1937. FantLab independently records four authorial reworkings, a new ending published in 1927 and the 1939 Sovetsky pisatel volume as the last lifetime edition. Those facts establish revision-family ambiguity, not a mapping from the public transcription to a specific print edition or FantLab input.
+- This unit does not freeze MediaWiki revision digests, define a deterministic literary-body extraction, or compute raw/normalized text identity. No source text is committed. `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`.
+
 ### Deterministic metric findings
 
 - Frozen Anna Karenina diagnostic deltas include characters +12,958 and words +16,083 relative to FantLab; simple numeric-token and lexical-hyphen probes explain little of the word gap.
@@ -116,7 +124,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - The static renderer/publication manifest remain fail-closed and source-free. Public material includes two short Anna Karenina derived showcases, a provenance-only Resurrection page, and a full-work Anna Karenina morphology diagnostic page.
 - The full-work morphology page exposes reviewed M005/M006 aggregates plus the independently reviewed SCRIP-MORPH-008 aggregate-only 22-category methodology diagnostic, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false`, unresolved work-page relation and unchanged production POS semantics.
 - The methodology public slice exposes only aggregate counts and runtime-analysis identity; it publishes no source prose, normalized text, tokens or candidate rows.
-- Corpus navigation and the parity catalog now document frozen source-free identities for Brothers Karamazov and Silver Dove plus the source-explicit but not-yet-frozen 1916 Petersburg candidate. No derived full-work analysis is published for these unmatched candidates.
+- Corpus navigation and the parity catalog now document frozen source-free identities for Brothers Karamazov and Silver Dove plus trace-only source leads for Petersburg 1916 and Hyperboloid of Engineer Garin. No derived full-work analysis is published for these unmatched candidates.
 - Publication contract tests scan provenance artifacts for forbidden source-prose keys; Pages builds are reproducible.
 - Live deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -131,7 +139,8 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 7. Brothers Karamazov has a frozen public-source identity, but no evidence ties FantLab's uploaded 2022 analyzer input to those same bytes; diagnostic comparison and M2 parity therefore remain disabled.
 8. Silver Dove now has a frozen public-source identity, but no evidence ties FantLab's uploaded 2022 analyzer input to those bytes; the 14,075-character display delta and unresolved 1909/1910 publication metadata remain explicit mismatch/unknown-policy evidence, so diagnostics and M2 stay disabled.
 9. Petersburg has an explicit public-domain 1916 edition lead but no Scriptorium-frozen PDF/OCR identity and no evidence tying FantLab's 2022 input to that edition; diagnostics and M2 remain disabled.
-10. Pages live activation is a repository-admin effect and remains off.
+10. Hyperboloid of Engineer Garin has a permanent public-domain Wikisource revision lead but no frozen literary-text identity, no independently established print-edition family for the transcription, and no evidence tying FantLab's 2022 input to it; diagnostics and M2 remain disabled.
+11. Pages live activation is a repository-admin effect and remains off.
 
 ## Run selection rule
 

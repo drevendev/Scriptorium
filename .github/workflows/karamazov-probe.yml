@@ -1,0 +1,87 @@
+name: Karamazov markup probe
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/karamazov-probe.yml"
+      - "scriptorium/karamazov_freeze.py"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Emit only Poem1 structural metadata
+        run: |
+          python - <<'PY'
+          import re
+          from scriptorium.karamazov_freeze import expected_segments, fetch_current_segment_revisions
+
+          target = next(row for row in expected_segments() if str(row["title"]).endswith("/Книга третья/III"))
+          source = str(fetch_current_segment_revisions((target,))[str(target["title"])]["wikitext"])
+          onlyinclude = re.findall(r"<onlyinclude>(.*?)</onlyinclude>", source, re.I | re.S)
+          probe = onlyinclude[0] if len(onlyinclude) == 1 else source
+          start = re.search(r"\{\{\s*poem1\b", probe, re.I)
+          if start is None:
+              raise SystemExit("Poem1 not found")
+          depth = 0
+          end = None
+          i = start.start()
+          while i < len(probe) - 1:
+              pair = probe[i:i+2]
+              if pair == "{{": depth += 1; i += 2; continue
+              if pair == "}}":
+                  depth -= 1; i += 2
+                  if depth == 0:
+                      end = i
+                      break
+                  continue
+              i += 1
+          if end is None:
+              raise SystemExit("unbalanced Poem1")
+          inner = probe[start.start()+2:end-2]
+          parts = []
+          buf = []
+          depth = 0
+          link_depth = 0
+          i = 0
+          while i < len(inner):
+              pair = inner[i:i+2]
+              if pair == "{{": depth += 1; buf.append(pair); i += 2; continue
+              if pair == "}}": depth -= 1; buf.append(pair); i += 2; continue
+              if pair == "[[": link_depth += 1; buf.append(pair); i += 2; continue
+              if pair == "]]": link_depth -= 1; buf.append(pair); i += 2; continue
+              if inner[i] == "|" and depth == 0 and link_depth == 0:
+                  parts.append("".join(buf)); buf=[]; i += 1; continue
+              buf.append(inner[i]); i += 1
+          parts.append("".join(buf))
+          args = parts[1:]
+          metadata = []
+          for arg in args:
+              stripped = arg.strip()
+              key = None
+              if "=" in stripped:
+                  maybe = stripped.split("=", 1)[0].strip()
+                  if maybe and re.fullmatch(r"[A-Za-zА-Яа-яЁё_ -]+", maybe): key = maybe
+              metadata.append({
+                  "length": len(arg),
+                  "lines": arg.count("\n") + 1,
+                  "named_key": key,
+                  "starts_poem_tag": bool(re.match(r"\s*<poem\b", arg, re.I)),
+                  "ends_poem_tag": bool(re.search(r"</poem>\s*$", arg, re.I)),
+                  "nested_template_names": sorted(set(m.group(1).strip().casefold() for m in re.finditer(r"\{\{\s*([^|{}\n]+)", arg))),
+              })
+          print("SCRIPTORIUM_POEM1_SHAPE=" + repr(metadata))
+          PY

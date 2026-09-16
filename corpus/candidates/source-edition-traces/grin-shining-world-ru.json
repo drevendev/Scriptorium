@@ -1,0 +1,99 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "grin-shining-world-ru",
+  "research_date": "2026-09-16",
+  "fantlab": {
+    "work_id": 27340,
+    "analysis_url": "https://fantlab.ru/work27340/lp",
+    "analysis_date": "2022-09-18",
+    "observed_counts": {
+      "characters": 306240,
+      "words": 43678
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "work_page_url": "https://fantlab.ru/work27340",
+    "relationship_to_public_edition": "unproven"
+  },
+  "public_transcription": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Блистающий_мир_(Грин)",
+    "work_index_permanent_url": "https://ru.wikisource.org/w/index.php?title=Блистающий_мир_(Грин)&oldid=4186047",
+    "work_index_oldid": 4186047,
+    "review_status": "reviewed_stable_work_index",
+    "stable_version_checked_date": "2024-05-04",
+    "bibliographic_source": "А. С. Грин. Собрание сочинений в шести томах. — М.: Правда, 1965. — Т. 3. — С. 66–214; Wikisource names lib.web as the electronic source.",
+    "structure": {
+      "parts": 3,
+      "chapter_counts": [
+        16,
+        11,
+        7
+      ],
+      "total_chapters": 34,
+      "sampled_chapter_subpages_repeat_bibliographic_source": true,
+      "sampled_chapter_source_examples": [
+        "part_1_chapter_2",
+        "part_1_chapter_9",
+        "part_2_chapter_1"
+      ],
+      "source_text_committed": false
+    },
+    "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
+    "legal_basis": "public_domain_original_work_with_wikisource_reuse_terms",
+    "legal_evidence": "Wikisource identifies Alexander Grin as 1880–1932 and lists Shining World as a 1923 lifetime publication; its author page states that works published during his lifetime are approximately in the public domain in the country of origin and separately warns that translations and later revisions may have independent rights. The retained candidate is the original Russian literary work body. Wikisource page content is additionally exposed under CC BY-SA subject to its terms; Scriptorium commits no source prose and excludes later editorial apparatus unless separately justified.",
+    "immutable_identity": {
+      "status": "traced_not_frozen",
+      "frozen_components": [
+        "work-index permanent revision oldid 4186047",
+        "explicit 1965 Pravda volume-3 bibliographic source citation on the reviewed work index",
+        "three-part / 34-chapter navigation structure observed on the work index"
+      ],
+      "unfrozen_components": [
+        "exact revision IDs, timestamps and MediaWiki SHA-1 values for all 34 chapter subpages",
+        "a deterministic literary-body extraction contract for the chapter pages",
+        "a deterministic composition order bound to pinned chapter identities",
+        "raw and scriptorium-text-v1 normalized composite digests",
+        "the relationship between FantLab's uploaded analyzer input and the 1965-source Wikisource transcription"
+      ],
+      "reason": "The work index gives a strong bibliographic lead and immutable locator, but the literary text lives on 34 chapter subpages. Pinning only the index cannot freeze the full text."
+    },
+    "edition_identity_boundary": {
+      "status": "source_cited_1965_transcription_family_not_full_text_frozen",
+      "note": "The candidate is specifically the primary Wikisource transcription whose reviewed work index cites Pravda 1965 volume 3; sampled chapter pages repeat that citation. It must not be collapsed with other Grin transcriptions, later editorial revisions, or FantLab's undisclosed analyzer input merely because the title and chapter structure agree."
+    }
+  },
+  "independent_cross_check": {
+    "provider": "Russian Virtual Library",
+    "url": "https://rvb.ru/20vek/grin/ss6/vol3/texts/064.html",
+    "observed_identity": "Alexander Grin, Shining World, 1921–1923, with the same three-part / 34-chapter structure",
+    "evidence_weight": "bibliographic_and_text_family_cross_check_only",
+    "note": "RVB corroborates work chronology and structure but is not treated as byte identity for the Wikisource transcription or as FantLab-input evidence."
+  },
+  "diversity": {
+    "period": "early_20th_century_1920s",
+    "movement": "Russian romanticism / symbolist-fantastic prose",
+    "work_identity": "original_russian",
+    "reason_selected": "This adds Alexander Grin as a new author and a 1920s long-form romantic-symbolist/fantastic prose candidate, broadening the retained set beyond nineteenth-century Russian classics, Andrei Bely modernism and early-Soviet technological science fiction."
+  },
+  "admissibility": {
+    "length_threshold_met_from_fantlab": true,
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "status": "source_edition_traced_not_frozen",
+    "reasons": [
+      "FantLab reports 306,240 characters, above the 300,000-character calibration threshold, and 43,678 words for its 18 September 2022 analysis.",
+      "Russian Wikisource supplies a reviewed source-cited transcription family tied to the 1965 Pravda collected-works volume 3 and exposes an immutable work-index revision.",
+      "The original Russian work was published during Grin's lifetime in 1923; Wikisource's author-level rights notice treats his lifetime publications as public-domain works in the source country while warning about translations and later revisions.",
+      "The 34 literary chapter subpages have not been revision-pinned and no deterministic body extraction/composition contract or composite digest exists yet.",
+      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
+    ],
+    "next_evidence": [
+      "Freeze the exact 34-chapter Wikisource source inventory with revision IDs, timestamps and MediaWiki SHA-1 values without committing source prose.",
+      "Define a deterministic fail-closed extraction/composition contract and record raw plus scriptorium-text-v1 normalized composite digests before enabling diagnostics.",
+      "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to the 1965-source transcription or another explicit edition; never infer identity from title, structure or character-count proximity."
+    ]
+  }
+}

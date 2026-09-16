@@ -91,3 +91,19 @@ Accordingly `bibliographic_source_identity` remains unset, `source_identity_stat
 Canonical evidence:
 
 - `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json` — FantLab counts, permanent Wikisource revision, public-domain evidence, revision-family ambiguity, the Moscow-1958 textual-family classification, independent same-year edition disambiguation, and the evidence required before any diagnostic promotion.
+
+## Shining World traced 1920s romantic-fantastic candidate
+
+`grin-shining-world-ru` adds Alexander Grin and a different 1920s prose tradition to the retained diversity set. FantLab's 18 September 2022 linguistic analysis reports **306,240 characters** and **43,678 words**, so the novel clears the >=300,000-character calibration threshold, though only narrowly.
+
+Russian Wikisource exposes a reviewed work index whose stable version was checked on 4 May 2024. The index cites **A. S. Grin, Collected Works in six volumes, Moscow: Pravda, 1965, volume 3, pp. 66–214 (`lib.web`)** and links **34 chapter subpages** arranged as 16 + 11 + 7 chapters across three parts; sampled chapter pages repeat the same bibliographic source. The index exposes permanent revision **`oldid=4186047`**, but that locator freezes only the navigation/index page, not the 34 literary chapter revisions. No source prose is committed.
+
+The legal boundary is explicit rather than inferred from mere web access. Wikisource identifies Grin as 1880–1932, lists *Shining World* as a 1923 lifetime publication, and its author rights notice says works published during his lifetime are approximately in the public domain in the country of origin while warning that translations and later revisions may carry independent rights. Scriptorium retains only the original Russian literary work body as the candidate scope and excludes later editorial apparatus unless separately justified. Wikisource page content is also exposed under CC BY-SA subject to its terms.
+
+Russian Virtual Library independently identifies *Shining World* as a 1921–1923 Grin text and exposes the same three-part / 34-chapter structure. That is a useful bibliographic/text-family cross-check, not byte identity. Scriptorium therefore does **not** equate RVB, the 1965-source Wikisource transcription, any alternate Grin transcription, or FantLab's undisclosed analyzer input merely from title, chronology, structure, or count proximity.
+
+Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**. A later freeze unit must pin every chapter revision plus deterministic extraction/composition and raw/normalized composite digests before diagnostics are allowed.
+
+Canonical evidence:
+
+- `source-edition-traces/grin-shining-world-ru.json` — FantLab counts, 1965-source Wikisource transcription family, legal/source boundary, immutable index locator, independent RVB cross-check, diversity rationale, and exact evidence required before diagnostic promotion.

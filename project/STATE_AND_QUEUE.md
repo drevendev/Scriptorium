@@ -1,27 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 107
+STATE_REVISION: 108
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T22:02:45Z
-LAST_RESULT: SCRIP-CORPUS-016 / Issue #101 / PR #102 authored a deterministic, source-free literary-body freeze for `tolstoy-hyperboloid-garin-wikisource-ru` on top of the already frozen MediaWiki revision `oldid=5014458`. The source-specific fail-closed extractor now reproduces a 499066-character / 930560-byte public literary body with raw and `scriptorium-text-v1` normalized SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`, without committing literary prose. Public provenance/navigation now exposes the candidate as frozen public source identity while keeping the direct print-edition identity and FantLab analyzer-input identity unknown. PR #102 remains REVIEW_PENDING and must not be merged until a later independent review.
-LAST_VERIFIED_PROGRESS: Bootstrap exact-head run `35155623478` at `be66ec664a4aba2231a283f0d3914480eb768818` passed the full 171-test standard-library suite, fresh exact revision capture, byte-for-byte comparison/replay against the committed revision manifest, source-free structure probing, deterministic literary-body capture, source-free assertions and artifact upload. It emitted the exact body identity now committed in `tolstoy-hyperboloid-garin-wikisource-ru.body.json`: 499066 characters, 930560 UTF-8 bytes, raw/normalized SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`. The frozen public candidate is 3527 displayed characters larger than FantLab's 495539-character result; that delta is evidence of non-identity or differing source/extraction/counting policy, not a source match. Final post-bookkeeping exact-head CI is still required before review-ready promotion. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-16T22:47:59Z
+LAST_RESULT: SCRIP-CORPUS-016 / Issue #101 / PR #102 was independently reviewed at exact head `bf41149bdd9996249db01ec9da9889376a80d057`. The source-specific Hyperboloid extraction/replay implementation and all four current-head workflows were healthy, but review found a blocking machine-readable provenance inconsistency: `corpus/candidates/fantlab-parity-v1.json` still described the candidate as unfrozen. This recovery unit repairs that catalog row to reference the committed revision/body manifests, 499066-character frozen body and SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`, removes the false unfrozen blocker, and preserves the unresolved FantLab/print-edition boundary. PR #102 remains unmerged and requires fresh exact-head checks plus a later independent review of the repaired head.
+LAST_VERIFIED_PROGRESS: The independent review of `bf41149bdd9996249db01ec9da9889376a80d057` confirmed the fail-closed/source-free extraction contract and green runs `35156488833` (Hyperboloid replay), `35156488806` (Pages), `35156488898` (frozen diagnostic) and `35156488923` (pinned provider), but correctly blocked merge because the central catalog contradicted the newly frozen revision/body manifests. The repair synchronizes `source_revision_manifest`, `source_body_manifest`, `source_identity_status=public_candidate_frozen`, 499066 characters / 930560 bytes and the frozen body digest while retaining `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`. Fresh checks on the repaired head are required before merge; no success is claimed for that repaired head in this state commit. M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-016
 ISSUE:          #101
-STATUS:         REVIEW_PENDING
+STATUS:         REVIEW_PENDING / REPAIR_AUTHORED
 PR:             #102
 AUTHORED_BASE:   d76c5403d62ec85c022efe4def93883eef550da3
-NEXT_ACTION:    Verify the final authored PR head after body-manifest/public-navigation/state
-                bookkeeping. Require fresh exact oldid=5014458 capture, byte-for-byte
-                comparison of both committed source-free manifests, literary-body replay,
-                the full standard-library suite and Pages build. If green, mark PR #102
-                Ready for review but do not self-merge. A later run must independently
-                review the exact head before merge. Preserve `fantlab_source_edition_match`
-                as unknown and M2 at 0/5 unless independent analyzer-input identity evidence
-                appears.
+NEXT_ACTION:    Require fresh exact-head checks after the catalog-sync repair, including
+                Hyperboloid source/body replay and Pages. Then perform a later independent
+                review of the repaired exact head before any merge. Preserve the frozen
+                public-source identity, but keep direct print-edition identity and
+                `fantlab_source_edition_match` unknown; M2 stays 0/5.
 ```
 
 ## Current milestone gate
@@ -36,7 +33,7 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-016 review | recovery / review | Independently review exact PR #102 head; merge only if source-free manifests reproduce and all relevant checks are green | Authored unit must first be Ready for review; no self-approval |
+| P0 | SCRIP-CORPUS-016 repaired-head review | recovery / review | Verify the catalog-sync repair on the exact PR #102 head; merge only after current checks are green and a later independent review finds no blocker | Repaired head must preserve source-free manifests and keep FantLab source identity unknown |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
@@ -69,6 +66,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - Static publication remains source-free and deterministic; publication tests reject forbidden source-prose keys.
 - Public corpus navigation exposes the retained frozen and trace-only candidates with provenance boundaries rather than parity claims.
 - SCRIP-CORPUS-016 upgrades the public Hyperboloid entry from revision-container-only identity to a frozen source-free literary-body identity with exact counts/digests and an explicit fail-closed extraction profile, while preserving the unresolved print-edition and FantLab-input boundary.
+- The repaired machine-readable candidate catalog now agrees with the Hyperboloid trace/body manifests and no longer advertises the candidate as `traced_not_frozen`.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers

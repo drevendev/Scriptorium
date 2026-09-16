@@ -181,8 +181,8 @@ def _plain_heading(match: re.Match[str]) -> str:
     text = match.group("text").strip()
     if not text:
         raise ValueError("empty Hyperboloid literary heading")
-    if "{{" in text or "}}" in text or "<" in text or ">" in text:
-        raise ValueError("unsupported markup inside Hyperboloid heading")
+    if "{{" in text or "}}" in text:
+        raise ValueError("unsupported template inside Hyperboloid heading")
     return f"\n\n{text}\n\n"
 
 

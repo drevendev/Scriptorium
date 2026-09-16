@@ -139,3 +139,19 @@ Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_
 Canonical evidence:
 
 - `source-edition-traces/grin-running-on-waves-ru.json` — FantLab counts, source-cited 1965 Wikisource family, work-index permanent locator, independent FantLab bibliography cross-check, public-domain boundary, and next evidence required before diagnostic promotion.
+
+## The White Guard traced mixed-source candidate
+
+`bulgakov-white-guard-ru` adds Mikhail Bulgakov and another long 1920s prose tradition while making an unusually important provenance caveat visible. FantLab's 18 September 2022 linguistic analysis reports **487,807 characters** and **70,307 words**, comfortably above the >=300,000-character calibration threshold.
+
+Russian Wikisource explicitly marks the original Russian literary work public domain and exposes permanent work-index revision **`oldid=4715350`**. The index links 20 chapters across three parts, but it also explicitly declares that the current transcription is **mixed-source**: chapters **1–11** cite *M. Bulgakov. Days of the Turbins (The White Guard), Paris: Concorde, 1927*, while chapters **12–20** cite *Bulgakov M. A. The White Guard. The Life of Monsieur de Molière. Stories, Moscow: Pravda, 1989*. Scriptorium therefore does not represent this Wikisource work as one edition identity.
+
+The permanent work-index revision freezes the navigation/index declaration only. None of the 20 literary chapter pages is revision-pinned by this unit, no chapter-to-source partition manifest is bound to exact page identities, no deterministic extraction/composition contract exists, and no raw or `scriptorium-text-v1` normalized composite digest is recorded. No source prose is committed.
+
+A separate 1927 *Days of the Turbins (The White Guard)* DJVU is retained only as a facsimile lead for the first source family. Its current rendered file surface reports 189 pages and 8.01 MB and names `torrents` as the source. That is not enough to identify the mixed Wikisource chapter bytes, establish a reliable full-work single-edition witness, or connect the scan to FantLab's undisclosed analyzer input.
+
+Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**. A later freeze must preserve the explicit 1–11 / 12–20 source partition while pinning all chapter revisions and computing deterministic source-free identities; any legally usable single-edition full-work witness must remain a distinct text identity rather than silently replacing this mixed transcription.
+
+Canonical evidence:
+
+- `source-edition-traces/bulgakov-white-guard-ru.json` — FantLab counts, permanent Wikisource index locator, explicit two-source chapter partition, legal boundary, separate 1927 facsimile lead, fail-closed identity status, and next evidence required before diagnostics.

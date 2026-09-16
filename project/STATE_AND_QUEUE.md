@@ -1,24 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 90
+STATE_REVISION: 91
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T01:48:35Z
-LAST_RESULT: SCRIP-CORPUS-007 / Issue #83 / PR #84 recovery patch completed after an independent review found the public corpus navigation out of sync with the machine-readable provenance. `corpus/candidates/README.md` now exposes the Moscow Goslitizdat 1958 volume-4 lead as a 1939-fourth-edition-derived editorial/textual-family witness and records the distinct Kyiv 1958 edition as same-year disambiguation, while preserving `bibliographic_source_identity` unset, source match `unknown`, diagnostics disabled, and M2 at 0/5. The repaired PR remains for a later independent exact-head review rather than self-merge.
-LAST_VERIFIED_PROGRESS: The blocking review finding on PR #84 was repaired without changing analyzer semantics or source/parity admissibility. Public corpus navigation now matches the canonical trace: FantLab-hosted Yu. A. Krestinsky commentary distinguishes four book editions (1927, 1934, 1936, 1939) and states that the Moscow Goslitizdat 1958 collected-works volume-4 text is printed from the 1939 edition with checking against preceding editions; Russian State Library record `01006486636` independently catalogs a distinct Kyiv: Goslitizdat Ukrainy, 1958, 393-page Hyperboloid/Aelita edition. The remaining recovery requirement is to inspect required checks on the repaired exact head and obtain a later independent review before merge.
+LAST_COMMITTED_RUN_AT: 2026-09-16T02:50:59Z
+LAST_RESULT: SCRIP-CORPUS-007 / Issue #83 / PR #84 received an independent later-run review of repaired exact head `f33e3cb5861294f9b4389ded10cc2c35302401c9` with no blocking defect and was squash-merged as `86a98f14ca110981d32677446210db4b376a197c`; Issue #83 closed completed. The merged unit classifies the Moscow Goslitizdat 1958 volume-4 Hyperboloid lead as a 1939-fourth-edition-derived textual-family witness and exposes distinct Kyiv-1958 same-year ambiguity while keeping source identity unproven, diagnostics disabled, and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Independent review confirmed the branch was 7 commits ahead / 0 behind unchanged base `9d695174e83a4c63dc6a966898f9bf91815916ba`, changed exactly four expected provenance/public-navigation/state files, and repaired the prior public-navigation completeness blocker. Fresh source verification reconfirmed Krestinsky's 1927/1934/1936/1939 edition history and the Moscow-1958 volume's 1939-text basis, plus Russian State Library record `01006486636` as a distinct Kyiv 1958 Hyperboloid/Aelita edition. Exact-head runs `35045718867` (Pages) and `35045718851` (pinned provider) both completed successfully, including the standard-library suite, deterministic Pages rebuild, provider contract, exact hash-pinned `pylem==0.0.18` smoke and frozen Anna sidecar diagnostics.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-007
 ISSUE:          #83
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #84
-MERGED_COMMIT:  —
-NEXT_ACTION:    Inspect required checks on the repaired exact head, then independently
-                review that exact head in a later run. Recheck changed files,
-                source-evidence classification, comments/reviews and required checks.
-                Merge only if no blocking defect is found; do not promote the Moscow
-                1958 textual-family lead to source identity.
+MERGED_COMMIT:  86a98f14ca110981d32677446210db4b376a197c
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer another legally usable >=300k diversity candidate or stronger
+                independent source-identity evidence for an existing candidate; keep
+                translation and edition identity explicit and do not infer FantLab
+                input identity from title, bibliography, textual-family compatibility,
+                edition availability, character-count proximity or public-source freezing.
 ```
 
 ## Current milestone gate

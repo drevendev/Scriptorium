@@ -408,6 +408,40 @@
         "The 20 literary chapter revisions, source-partition manifest, deterministic extraction/composition contract, and raw/normalized composite digests are not frozen.",
         "A 1927 DJVU is retained only as a separate facsimile lead for the first source family; it is not evidence of equality with the mixed transcription or with FantLab input."
       ]
+    },
+    {
+      "candidate_id": "ilf-petrov-twelve-chairs-ru",
+      "author": "Илья Ильф; Евгений Петров",
+      "title": "Двенадцать стульев",
+      "language": "ru",
+      "work_identity": "original_coauthored",
+      "fantlab": {
+        "work_id": 182817,
+        "analysis_url": "https://fantlab.ru/work182817/lp",
+        "analysis_date": "2022-09-17",
+        "characters": 572654,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Двенадцать_стульев_(Ильф_и_Петров)",
+        "edition_note": "Two distinct retained public families: current work-index oldid=5706136 cites GIKhL 1961 vol. 1 pp. 25–382 and says it reproduces the 1938 Soviet Writer text checked against earlier publications, exposing 40 chapters; separate oldid=5706135 identifies the Zemlya i Fabrika 1928 first standalone edition and exposes 41 chapters. Neither literary body is frozen.",
+        "source_provenance_confidence": "strong_for_distinct_bibliographic_and_structural_families",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The retained Russian Wikisource original-Russian work surfaces explicitly mark the work public domain. Candidate scope is literary body metadata/provenance only; no source prose, scan bytes, translation, derivative work, or later editorial apparatus is committed."
+      },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-ru.json",
+      "source_identity_status": "traced_not_frozen",
+      "fantlab_source_edition_match": "unknown",
+      "diagnostic_ready": false,
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; neither retained public route is source-match evidence.",
+        "The 40-chapter later 1938/1961 family and 41-chapter Zemlya i Fabrika 1928 family must remain distinct; neither has exact literary-page identities, deterministic extraction/composition, or raw/normalized composite digests.",
+        "The 1928 facsimile is an unfrozen edition witness only; Scriptorium has not recorded an exact binary snapshot SHA-256, OCR profile, or page-to-literary-text mapping.",
+        "FantLab explicitly warns that coauthorship mixes styles and prevents exact author-recognition for this work; the candidate must not be silently assigned to an individual Ilf or Petrov author profile."
+      ]
     }
   ],
   "held_leads": [

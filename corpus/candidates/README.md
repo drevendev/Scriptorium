@@ -107,3 +107,19 @@ Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_
 Canonical evidence:
 
 - `source-edition-traces/grin-shining-world-ru.json` — FantLab counts, 1965-source Wikisource transcription family, legal/source boundary, immutable index locator, independent RVB cross-check, diversity rationale, and exact evidence required before diagnostic promotion.
+
+## Road to Nowhere traced Grin candidate
+
+`grin-road-nowhere-ru` adds a second long Alexander Grin work and creates a future same-author comparison pair without weakening the source gate. FantLab's 18 September 2022 linguistic analysis reports **438,439 characters** and **61,299 words**, comfortably above the >=300,000-character calibration threshold.
+
+The primary Russian Wikisource work index cites **A. S. Grin, Collected Works, volume 6, Moscow: Pravda, 1965, pp. 3–227 (`lib.web`)** and exposes permanent index revision **`oldid=4715367`**. FantLab's independent bibliography for the 1965 six-volume collected works lists *Road to Nowhere* on exactly **pp. 3–227**, which strongly corroborates the bibliographic transcription family. It still does not prove that the electronic literary bytes exactly reproduce that printing, and it says nothing about FantLab's undisclosed analyzer upload.
+
+A second Wikisource route makes that distinction concrete rather than theoretical. `Дорога в никуда (Грин)` is a separate single-page `az.lib.ru`-derived transcription at permanent revision **`oldid=5585836`**; it labels the 1930 original Russian work public domain in Russia under Article 1281 and shows a two-part, 24-chapter structure. Scriptorium records this as alternate-transcription and legal evidence only. It is **not** collapsed with the source-cited 1965 family merely because both represent the same novel.
+
+No source prose is committed. The retained rights scope is the original Russian literary work body; translations, later creative revisions, and editorial apparatus remain outside scope unless separately justified. The 1965-source index itself does not freeze the linked literary-page revisions, deterministic extraction/composition, or raw/normalized composite digests.
+
+Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+
+Canonical evidence:
+
+- `source-edition-traces/grin-road-nowhere-ru.json` — FantLab counts, source-cited 1965 Wikisource family, independent bibliography match, alternate az.lib transcription/legal evidence, fail-closed identity boundary, and next evidence required before diagnostics.

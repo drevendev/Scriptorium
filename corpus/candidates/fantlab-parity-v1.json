@@ -1,6 +1,6 @@
 {
   "catalog_version": "fantlab-parity-candidates-v1",
-  "research_date": "2026-09-15",
+  "research_date": "2026-09-16",
   "minimum_characters_including_spaces": 300000,
   "legal_policy": {
     "source": "Candidate-specific public-domain, open-license, or explicit-permission evidence",
@@ -274,6 +274,39 @@
         "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; no relationship to the Wikisource/az.lib transcription is inferred.",
         "The permanent Wikisource revision is traced but Scriptorium has not yet recorded its MediaWiki SHA-1/wikitext digest or a deterministic literary-body extraction and raw/normalized text identity.",
         "The novel has multiple authorial revision families; the Wikisource/az.lib transcription is not independently tied to a specific 1927, 1937 or 1939 print edition."
+      ]
+    },
+    {
+      "candidate_id": "grin-shining-world-ru",
+      "author": "Александр Грин",
+      "title": "Блистающий мир",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 27340,
+        "analysis_url": "https://fantlab.ru/work27340/lp",
+        "analysis_date": "2022-09-18",
+        "characters": 306240,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Блистающий_мир_(Грин)",
+        "edition_note": "Reviewed Wikisource transcription family citing А. С. Грин. Собрание сочинений в шести томах. М.: Правда, 1965. Т. 3. С. 66–214 (lib.web). The work index exposes permanent revision oldid=4186047 but the literary text is distributed across 34 chapter subpages that are not frozen by this unit.",
+        "source_provenance_confidence": "strong",
+        "legal_basis": "public_domain",
+        "legal_evidence": "Wikisource identifies Grin as 1880–1932, lists the novel as a 1923 lifetime publication, and its author rights notice states that works published during his lifetime are approximately public domain in the country of origin while warning that translations and later revisions may have separate rights. The retained candidate is the original Russian literary body; no source prose or later editorial apparatus is committed."
+      },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/grin-shining-world-ru.json",
+      "source_identity_status": "traced_not_frozen",
+      "fantlab_source_edition_match": "unknown",
+      "diagnostic_ready": false,
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; no relationship to the Wikisource 1965-source transcription is inferred.",
+        "The work-index permanent revision is an immutable locator only: the 34 chapter subpages, extraction/composition contract and raw/normalized composite digests are not frozen.",
+        "The 1965 bibliographic source citation establishes a transcription family, not identity with FantLab's undisclosed upload or with another Grin transcription."
       ]
     }
   ],

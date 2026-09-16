@@ -34,3 +34,13 @@ Bibliographic agreement between Wikisource and FantLab's edition catalog does no
 Public corpus navigation and the machine-readable parity catalog now expose this second long Grin candidate and its exact evidence boundary. The dedicated trace records the next admissible steps: pin the primary literary-page inventory, define fail-closed extraction/composition, compute source-free composite digests, and seek independent evidence for FantLab's actual analyzer input.
 
 This authoring run leaves PR #88 for a later independent exact-head review rather than self-merging it.
+
+## Independent review and merge
+
+A later run independently reviewed exact head `13c81c376eb7b91f39dcc823806397dfd5ffc7e2` against unchanged base `0e9e397b78d61ceb1116ef7cf144136a9fddbb53`. The branch was 7 commits ahead / 0 behind and changed exactly the intended five files: the parity catalog, public corpus README, the dedicated Road-to-Nowhere source-edition trace, this changelog fragment, and durable state. No prior submitted reviews or inline review threads were present.
+
+Fresh source checks reconfirmed FantLab's 18 September 2022 analysis at 438,439 characters / 61,299 words; the primary Wikisource index citation to Pravda 1965 volume 6 pp. 3–227 at `oldid=4715367`; FantLab edition `12567` listing the novel on the same page range; and the separate `az.lib.ru`-derived Wikisource transcription at `oldid=5585836` with its 1930/public-domain notice and 2-part, 24-chapter structure. These findings did not change the fail-closed identity classification.
+
+Exact-head workflows were independently inspected at job level. Scriptorium Pages run `35061898735` completed successfully with the standard-library suite, canonical site build, deterministic rebuild and artifact upload; PR deployment was skipped as designed. Pinned-provider run `35061898761` completed successfully with the provider-contract suite, hash-pinned `pylem==0.0.18` install/native smoke and frozen-Anna source-free diagnostic replay.
+
+No blocking defect was found. PR #88 was squash-merged as `53e955a7397cac15240bfac22059f5aad6469c19`; Issue #87 closed completed. The merge does not advance M2: literary-page identity and FantLab analyzer-input identity remain unresolved, diagnostics/gate remain disabled, and the reproduction gate stays at **0/5 source-matched works**.

@@ -34,3 +34,11 @@ The next admissible freeze step is to retrieve one specific PDF snapshot and rec
 Public corpus navigation now exposes the description-vs-binary distinction so a repository visitor cannot mistake a Commons page oldid for a frozen book byte stream. No relationship is inferred between the 1916 facsimile and FantLab's undisclosed analyzer input.
 
 This authoring run leaves PR #92 for a later independent exact-head review rather than self-merging it.
+
+## Independent review — blocking correction
+
+Independent review of exact substantive head `db5de8450888a39d6a044d8c3c75a8d4b9bf4869` found one provenance-interpretation blocker. Commons Page Information does display `Upload | Allow all users (infinite)`, but that value appears in the **Page protection** table. It records the absence of an upload-protection level; it must not be treated as proof that every user can overwrite the current PDF or that the binary is presently replaceable. The current Commons file page separately renders an explicit file-history notice that the file cannot be overwritten on the viewed surface.
+
+The fail-closed conclusion remains valid for a different reason: a file-description `oldid` is not a content digest, so Scriptorium still needs an exact retrieved byte count + SHA-256 before claiming a frozen PDF identity. Recovery must revise the trace, public README, state and this changelog to distinguish page-protection metadata from binary overwrite capability, record the explicit current no-overwrite observation, and justify the digest requirement independently of inferred mutability.
+
+PR #92 was converted back to draft. No diagnostic or M2 promotion occurred. Exact-head CI before review was green: Pages run `35082566266` and pinned-provider run `35082566287` both completed successfully.

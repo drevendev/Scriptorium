@@ -74,13 +74,15 @@ Canonical evidence:
 
 - `source-edition-traces/bely-petersburg-1916-ru.json` — FantLab counts, explicit 1916 facsimile identity, public-domain evidence, Commons description-vs-binary identity boundary, Wikisource provenance warning, edition-family boundary and next evidence required before diagnostics.
 
-## Hyperboloid of Engineer Garin revision-frozen early-Soviet SF candidate
+## Hyperboloid of Engineer Garin frozen early-Soviet SF candidate
 
 `tolstoy-hyperboloid-garin-wikisource-ru` adds a new author and an early Soviet science-fiction/adventure work to the retained diversity set. FantLab's 18 September 2022 linguistic analysis reports **495,539 characters** and **69,126 words**, so it clears the >=300,000-character calibration threshold.
 
-Russian Wikisource publishes a stable reviewed full-work transcription, explicitly marks the literary work public domain and cites `az.lib.ru` as its source. The source-free manifest now pins permanent revision **`oldid=5014458`** as page ID **1022517**, timestamp **`2023-08-30T20:13:01Z`**, MediaWiki SHA-1 **`605afeabc38e4f5948371afdf976f586edbf1955`**, **502,280 wikitext characters / 934,455 UTF-8 bytes**, and wikitext SHA-256 **`fa0b099bba2d0f0e6ce395a16de76317afcd8bec8b23b52e455f97a9726a4de9`**. No source prose is committed.
+Russian Wikisource publishes a stable reviewed full-work transcription, explicitly marks the literary work public domain and cites `az.lib.ru` as its source. Scriptorium pins permanent revision **`oldid=5014458`** as page ID **1022517**, timestamp **`2023-08-30T20:13:01Z`**, MediaWiki SHA-1 **`605afeabc38e4f5948371afdf976f586edbf1955`**, **502,280 wikitext characters / 934,455 UTF-8 bytes**, and wikitext SHA-256 **`fa0b099bba2d0f0e6ce395a16de76317afcd8bec8b23b52e455f97a9726a4de9`**. No source prose is committed.
 
-This is intentionally a **revision-wikitext identity**, not a frozen literary body. No deterministic literary-body extraction contract or raw/`scriptorium-text-v1` normalized literary digest exists yet. Freezing the MediaWiki revision also does not establish which print edition the `az.lib.ru` transcription represents and does not identify FantLab's analyzer input.
+The exact revision is now also replayed through the versioned, source-specific `scriptorium-hyperboloid-wikisource-body-v1` fail-closed extraction contract. The frozen public literary body contains **499,066 characters including spaces** (**930,560 UTF-8 bytes**) and has raw and `scriptorium-text-v1` normalized SHA-256 **`a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`**. The extractor admits only the observed one-page markup inventory, preserves visible literary heading/formatting content, strips source/editorial scaffolding and trailing categories, and fails closed on shape drift. No literary prose is stored in the repository.
+
+FantLab's displayed character count is **3,527 characters lower** than this frozen public candidate. That difference is evidence of non-identity or differing extraction/counting policy, not evidence that the sources match and not permission to tune the extractor toward the FantLab number. Freezing the public body also does not establish which print edition the `az.lib.ru` transcription represents or identify FantLab's analyzer input.
 
 Revision-family evidence remains fail-closed. The Wikisource text states that the novel was written in 1926–1927 and revised with new chapters in 1937. FantLab separately records that Tolstoy reworked the novel four times, notes a new ending published in 1927, and identifies the 1939 `Советский писатель` edition as the last lifetime edition. Scriptorium therefore does **not** infer that the Wikisource/az.lib transcription matches a particular 1927, 1937 or 1939 print edition.
 
@@ -90,13 +92,14 @@ The textological classification is narrower still. FantLab-hosted Yu. A. Krestin
 
 Same-year bibliography prevents shortcut matching. Russian State Library record `01006486636` catalogs a distinct **Kyiv: Goslitizdat Ukrainy, 1958, 393-page _Hyperboloid of Engineer Garin; Aelita_ edition**. Consequently `1958` alone is not an edition identifier and cannot be used to equate the Wikisource/az.lib transcription, the Moscow collected-works volume, that Kyiv edition, or FantLab's undisclosed analyzer input.
 
-Accordingly `source_identity_status=revision_wikitext_frozen_body_unfrozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+Accordingly `source_identity_status=frozen_source_identity_unmatched_to_fantlab`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
 
 Canonical evidence:
 
-- `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json` — FantLab counts, legal/source boundary, revision-family ambiguity, the Moscow-1958 textual-family classification and independent same-year disambiguation.
+- `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json` — FantLab counts, legal/source boundary, frozen public identity, revision-family ambiguity, the Moscow-1958 textual-family classification and independent same-year disambiguation.
 - `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json` — exact source-free MediaWiki revision-wikitext identity.
-- `../../scriptorium/single_page_revision.py` — generic fail-closed exact-revision capture/replay implementation.
+- `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.body.json` — source-free literary-body counts/digests and extraction-profile binding.
+- `../../scriptorium/hyperboloid_freeze.py` — source-specific fail-closed exact-revision body extraction/replay implementation.
 
 ## Shining World traced 1920s romantic-fantastic candidate
 

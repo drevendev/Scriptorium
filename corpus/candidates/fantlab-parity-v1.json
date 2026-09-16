@@ -265,14 +265,19 @@
         "legal_evidence": "The Wikisource page explicitly marks the literary work public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions."
       },
       "source_edition_trace": "corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json",
-      "source_identity_status": "traced_not_frozen",
+      "source_revision_manifest": "corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json",
+      "source_body_manifest": "corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.body.json",
+      "source_identity_status": "public_candidate_frozen",
+      "frozen_candidate_characters": 499066,
+      "frozen_candidate_bytes": 930560,
+      "frozen_candidate_sha256": "a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513",
       "fantlab_source_edition_match": "unknown",
       "diagnostic_ready": false,
       "gate_ready": false,
       "status": "eligible_unmatched",
       "blockers": [
-        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; no relationship to the Wikisource/az.lib transcription is inferred.",
-        "The permanent Wikisource revision is traced but Scriptorium has not yet recorded its MediaWiki SHA-1/wikitext digest or a deterministic literary-body extraction and raw/normalized text identity.",
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; no relationship to the frozen Wikisource/az.lib transcription is inferred.",
+        "The frozen public candidate has 499,066 characters while FantLab displays 495,539; the 3,527-character delta is non-identity or policy evidence and must not be treated as proof of source equivalence.",
         "The novel has multiple authorial revision families; the Wikisource/az.lib transcription is not independently tied to a specific 1927, 1937 or 1939 print edition."
       ]
     },

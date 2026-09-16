@@ -5,9 +5,14 @@ on:
     paths:
       - ".github/workflows/hyperboloid-source-revision.yml"
       - "scriptorium/single_page_revision.py"
+      - "scriptorium/hyperboloid_freeze.py"
+      - "scriptorium/hyperboloid_probe.py"
+      - "scriptorium/wikisource_freeze.py"
       - "tests/test_single_page_revision.py"
+      - "tests/test_hyperboloid_freeze.py"
       - "corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json"
       - "corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json"
+      - "corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.body.json"
   workflow_dispatch:
 
 permissions:
@@ -15,7 +20,7 @@ permissions:
 
 jobs:
   freeze:
-    name: Replay pinned Hyperboloid source revision
+    name: Replay pinned Hyperboloid source and literary body
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -47,24 +52,70 @@ jobs:
             --legal-basis public_domain \
             --output build/repro/tolstoy-hyperboloid-garin-wikisource-ru.revision.observed.json
 
-      - name: Compare committed source-free identity when present
+      - name: Compare committed revision identity and replay
         run: |
           set -euo pipefail
           expected='corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json'
           observed='build/repro/tolstoy-hyperboloid-garin-wikisource-ru.revision.observed.json'
+          cmp "$expected" "$observed"
+          python -m scriptorium.single_page_revision replay \
+            --manifest "$expected" \
+            --receipt build/repro/tolstoy-hyperboloid-garin-wikisource-ru.revision.replay.json
+
+      - name: Probe pinned wikitext structure without source prose
+        run: python -m scriptorium.hyperboloid_probe
+
+      - name: Capture literary-body identity from the exact pinned revision
+        run: |
+          set -euo pipefail
+          expected='corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.body.json'
+          observed='build/repro/tolstoy-hyperboloid-garin-wikisource-ru.body.observed.json'
+          revision='corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json'
+          python -m scriptorium.hyperboloid_freeze capture \
+            --revision-manifest "$revision" \
+            --output "$observed"
           if [[ -f "$expected" ]]; then
             cmp "$expected" "$observed"
-            python -m scriptorium.single_page_revision replay \
-              --manifest "$expected" \
-              --receipt build/repro/tolstoy-hyperboloid-garin-wikisource-ru.revision.replay.json
+            python -m scriptorium.hyperboloid_freeze replay \
+              --revision-manifest "$revision" \
+              --body-manifest "$expected" \
+              --receipt build/repro/tolstoy-hyperboloid-garin-wikisource-ru.body.replay.json
           else
-            echo 'Committed source identity not present yet; capture artifact is the bootstrap evidence.'
+            echo 'Committed literary-body identity not present yet; capture artifact is the bootstrap evidence.'
           fi
 
-      - name: Upload source-free capture evidence
+      - name: Verify body artifact is source-free and fail-closed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('build/repro/tolstoy-hyperboloid-garin-wikisource-ru.body.observed.json')
+          manifest = json.loads(path.read_text(encoding='utf-8'))
+          assert manifest['candidate_id'] == 'tolstoy-hyperboloid-garin-wikisource-ru'
+          assert manifest['source_revision']['revision_id'] == 5014458
+          assert manifest['extraction']['source_text_committed'] is False
+          assert manifest['literary_body_identity']['character_count_including_spaces'] >= 300000
+          assert manifest['fantlab_source_edition_match'] == 'unknown'
+          assert manifest['diagnostic_comparison_admissible'] is True
+          assert manifest['m2_parity_admissible'] is False
+          forbidden = {'wikitext', 'content', 'body', 'text', 'source_text'}
+          assert not forbidden.intersection(manifest)
+          print('SCRIPTORIUM_HYPERBOLOID_BODY=' + json.dumps({
+              'candidate_id': manifest['candidate_id'],
+              'source_revision': manifest['source_revision'],
+              'extraction_profile': manifest['extraction']['profile'],
+              'literary_body_identity': manifest['literary_body_identity'],
+              'fantlab_source_edition_match': manifest['fantlab_source_edition_match'],
+              'diagnostic_comparison_admissible': manifest['diagnostic_comparison_admissible'],
+              'm2_parity_admissible': manifest['m2_parity_admissible'],
+          }, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
+          PY
+
+      - name: Upload source-free capture and replay evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: hyperboloid-source-revision
-          path: build/repro/tolstoy-hyperboloid-garin-wikisource-ru.revision.*.json
+          path: build/repro/tolstoy-hyperboloid-garin-wikisource-ru.*.json
           if-no-files-found: error
           retention-days: 7

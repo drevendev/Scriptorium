@@ -1,0 +1,29 @@
+{
+  "candidate_id": "tolstoy-hyperboloid-garin-wikisource-ru",
+  "diagnostic_comparison_admissible": true,
+  "extraction": {
+    "profile": "scriptorium-hyperboloid-wikisource-body-v1",
+    "scope": "literary body extracted from the exact pinned revision wikitext",
+    "source_text_committed": false
+  },
+  "fantlab_source_edition_match": "unknown",
+  "literary_body_identity": {
+    "character_count_including_spaces": 499066,
+    "normalization_profile": "scriptorium-text-v1",
+    "normalized_character_count_including_spaces": 499066,
+    "normalized_sha256": "a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513",
+    "raw_sha256": "a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513",
+    "utf8_byte_count": 930560
+  },
+  "m2_parity_admissible": false,
+  "manifest_version": "scriptorium-single-page-literary-body-v1",
+  "provider": "Russian Wikisource",
+  "source_revision": {
+    "mediawiki_sha1": "605afeabc38e4f5948371afdf976f586edbf1955",
+    "page_id": 1022517,
+    "revision_id": 5014458,
+    "revision_timestamp": "2023-08-30T20:13:01Z",
+    "title": "Гиперболоид инженера Гарина (Толстой)",
+    "wikitext_sha256": "fa0b099bba2d0f0e6ce395a16de76317afcd8bec8b23b52e455f97a9726a4de9"
+  }
+}

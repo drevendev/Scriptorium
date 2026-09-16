@@ -1,10 +1,10 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 89
+STATE_REVISION: 90
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T00:01:00Z
-LAST_RESULT: SCRIP-CORPUS-007 / Issue #83 / PR #84 is authored and in REVIEW. The unit strengthens `tolstoy-hyperboloid-garin-wikisource-ru` by classifying the concrete Moscow Goslitizdat 1958 volume-4 lead as a 1939-fourth-edition-derived editorial/textual-family witness, while independent Russian State Library bibliography proves that `1958` alone is ambiguous because a distinct Kyiv 1958 edition also exists. `bibliographic_source_identity` remains unset, the public source remains unfrozen, FantLab source match remains `unknown`, diagnostics stay disabled, and M2 remains 0/5.
-LAST_VERIFIED_PROGRESS: Fresh source research verified that FantLab-hosted Yu. A. Krestinsky commentary distinguishes four book editions (1927, 1934, 1936, 1939), describes the 1939 Sovetsky pisatel text as the fourth book edition, and states under the Moscow Goslitizdat 1958 collected-works volume-4 heading that the text is printed from the 1939 edition with checking against preceding editions. Russian State Library record `01006486636` independently catalogs a different Kyiv: Goslitizdat Ukrainy, 1958, 393-page Hyperboloid/Aelita edition. These findings narrow the textual-family lead but do not directly tie Wikisource/az.lib revision `5014458` to the Moscow volume or reveal FantLab's analyzer-input bytes.
+LAST_COMMITTED_RUN_AT: 2026-09-16T01:48:35Z
+LAST_RESULT: SCRIP-CORPUS-007 / Issue #83 / PR #84 recovery patch completed after an independent review found the public corpus navigation out of sync with the machine-readable provenance. `corpus/candidates/README.md` now exposes the Moscow Goslitizdat 1958 volume-4 lead as a 1939-fourth-edition-derived editorial/textual-family witness and records the distinct Kyiv 1958 edition as same-year disambiguation, while preserving `bibliographic_source_identity` unset, source match `unknown`, diagnostics disabled, and M2 at 0/5. The repaired PR remains for a later independent exact-head review rather than self-merge.
+LAST_VERIFIED_PROGRESS: The blocking review finding on PR #84 was repaired without changing analyzer semantics or source/parity admissibility. Public corpus navigation now matches the canonical trace: FantLab-hosted Yu. A. Krestinsky commentary distinguishes four book editions (1927, 1934, 1936, 1939) and states that the Moscow Goslitizdat 1958 collected-works volume-4 text is printed from the 1939 edition with checking against preceding editions; Russian State Library record `01006486636` independently catalogs a distinct Kyiv: Goslitizdat Ukrainy, 1958, 393-page Hyperboloid/Aelita edition. The remaining recovery requirement is to inspect required checks on the repaired exact head and obtain a later independent review before merge.
 
 ## Current unit
 
@@ -14,10 +14,11 @@ ISSUE:          #83
 STATUS:         REVIEW
 PR:             #84
 MERGED_COMMIT:  —
-NEXT_ACTION:    Independently review the exact head of PR #84 in a later run.
-                Recheck changed files, source-evidence classification, comments/reviews
-                and exact-head required checks. Merge only if no blocking defect is found;
-                do not promote the Moscow 1958 textual-family lead to source identity.
+NEXT_ACTION:    Inspect required checks on the repaired exact head, then independently
+                review that exact head in a later run. Recheck changed files,
+                source-evidence classification, comments/reviews and required checks.
+                Merge only if no blocking defect is found; do not promote the Moscow
+                1958 textual-family lead to source identity.
 ```
 
 ## Current milestone gate
@@ -125,7 +126,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - The static renderer/publication manifest remain fail-closed and source-free. Public material includes two short Anna Karenina derived showcases, a provenance-only Resurrection page, and a full-work Anna Karenina morphology diagnostic page.
 - The full-work morphology page exposes reviewed M005/M006 aggregates plus the independently reviewed SCRIP-MORPH-008 aggregate-only 22-category methodology diagnostic, identifies the frozen source digest and explicitly preserves `diagnostic_only`, source-match `unknown`, M2 `false`, unresolved work-page relation and unchanged production POS semantics.
 - The methodology public slice exposes only aggregate counts and runtime-analysis identity; it publishes no source prose, normalized text, tokens or candidate rows.
-- Corpus navigation and the parity catalog document frozen source-free identities for Brothers Karamazov and Silver Dove plus trace-only source leads for Petersburg 1916 and Hyperboloid of Engineer Garin. SCRIP-CORPUS-007 sharpens the Hyperboloid machine-readable public trace with 1939-derived textological context for the specific Moscow 1958 volume and explicit same-year edition disambiguation, while keeping it non-identifying. No derived full-work analysis is published for these unmatched candidates.
+- Corpus navigation and the parity catalog document frozen source-free identities for Brothers Karamazov and Silver Dove plus trace-only source leads for Petersburg 1916 and Hyperboloid of Engineer Garin. SCRIP-CORPUS-007 now synchronizes both the Hyperboloid machine-readable public trace and `corpus/candidates/README.md` with the 1939-derived textological context for the specific Moscow 1958 volume and explicit same-year Kyiv-1958 disambiguation, while keeping the lead non-identifying. No derived full-work analysis is published for these unmatched candidates.
 - Publication contract tests scan provenance artifacts for forbidden source-prose keys; Pages builds are reproducible.
 - Live deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 

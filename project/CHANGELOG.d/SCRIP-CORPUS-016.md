@@ -1,6 +1,6 @@
 # SCRIP-CORPUS-016 — freeze Hyperboloid literary-body identity
 
-Status: REVIEW_PENDING
+Status: REVIEW_PENDING / READY_FOR_INDEPENDENT_REVIEW
 
 Issue #101 / PR #102 strengthen `tolstoy-hyperboloid-garin-wikisource-ru` from a frozen MediaWiki revision container into a reproducibly frozen public literary-body identity without changing the unresolved FantLab boundary.
 
@@ -25,7 +25,7 @@ FantLab displays `495539` characters, `3527` fewer than the frozen public candid
 
 Bootstrap exact-head run `35155623478` on `be66ec664a4aba2231a283f0d3914480eb768818` passed the full 171-test standard-library suite, fresh exact revision capture, committed revision-manifest comparison/replay, source-free structure probe, deterministic literary-body capture, source-free assertions and artifact upload. It produced the exact body identity later committed in the repository.
 
-A final exact-head verification pass is required after the committed body manifest, public navigation and durable bookkeeping settle. The PR remains unmerged for a later independent review.
+After the body manifest, provenance, public README and durable state were committed, exact authored head `cbd56ee2b23e5205d0a251a9be55c71820618138` was fully green: Hyperboloid source/body replay `35156176512`, Pages deterministic build `35156176530`, frozen diagnostic `35156176472`, and pinned-provider regression `35156176486` all completed successfully. The Hyperboloid run freshly re-fetched `oldid=5014458`, compared the committed revision manifest, reproduced the committed body manifest byte-for-byte, replayed it, passed source-free assertions, and passed the complete standard-library suite. PR #102 was then marked Ready for review and remains intentionally unmerged for a later independent judgement.
 
 ## Gate
 

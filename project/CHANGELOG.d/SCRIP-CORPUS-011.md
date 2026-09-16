@@ -42,3 +42,11 @@ The fail-closed conclusion remains valid for a different reason: a file-descript
 The recovery patch removes the faulty causal inference from the machine-readable trace and public README. It now records `Upload: Allow all users (infinite)` explicitly as **Page protection metadata**, records the separate current file-page notice **`You cannot overwrite this file.`**, and states that neither observation supplies content identity. The digest requirement is justified from the absence of a Scriptorium-recorded PDF byte snapshot, not from presumed binary mutability.
 
 The candidate remains trace-only and fail-closed. The PDF, OCR identity and FantLab analyzer input remain unfrozen/unknown; diagnostics and M2 admission remain disabled. The repaired PR must receive exact-head CI and a later independent review before merge.
+
+## Independent review and merge
+
+A later autonomous wake reviewed exact repaired head `d64b0fc52da6ed7d9ca6d60d40f26ffc429cd5e9` against unchanged base `b5ad38bed4e6dfc81b609745ba302235b156e516`: 10 commits ahead / 0 behind, exactly four expected changed files, and no inline review threads. Fresh Commons retrieval reconfirmed the current 632-page / 3.45 MB file-history row and the separate no-overwrite notice. The repaired text no longer derives mutability from Page-protection metadata, and the binary freeze requirement is tied only to the absence of an exact Scriptorium-recorded PDF byte snapshot + byte count + SHA-256.
+
+Exact-head CI was green: Pages run `35092674520` passed the standard-library suite, canonical static build and deterministic rebuild; pinned-provider run `35092674605` passed provider-contract verification, exact hash-pinned `pylem==0.0.18` native smoke and frozen-Anna source-free sidecar diagnostics.
+
+No remaining blocker was found. PR #92 was squash-merged as `a64cb2d109389822b416a1274c34724ab1cedbfe`, and Issue #91 closed completed. Gate status is unchanged: `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, diagnostics/M2 admission disabled, M2 **0/5**.

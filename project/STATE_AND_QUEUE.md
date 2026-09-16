@@ -1,25 +1,26 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 105
+STATE_REVISION: 106
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T18:46:20Z
-LAST_RESULT: SCRIP-CORPUS-014 / Issue #97 / PR #98 received an independent later-run exact-head review of `d71b6ba42effa9a25055ed357dfd3fb12cab350d` with no blocking defect and was squash-merged as `973d39df125e67d093cbe953a84440218838e412`; Issue #97 closed completed. The merged unit freezes source-free revision-wikitext identity for the alternate single-page Russian Wikisource route for `grin-road-nowhere-ru` while keeping literary-body/composite identity, the primary Pravda-1965 family, and FantLab analyzer-input identity explicitly distinct/unfrozen.
-LAST_VERIFIED_PROGRESS: Immediately before merge, current `master` was unchanged from the authored base and PR #98 was 7 commits ahead / 0 behind with exactly seven expected source-free files and no inline review threads. Exact-head runs `35131499607` (Road to Nowhere alternate source revision), `35131499586` (Scriptorium Pages), and `35131500101` (Scriptorium frozen diagnostic) all completed successfully. The alternate revision manifest records page ID `1003775`, revision `5585836`, timestamp `2025-07-30T20:33:01Z`, MediaWiki SHA-1 `135933c3b9155bddb0356d0eb9644d11f55ba870`, 443991 wikitext characters / 827730 UTF-8 bytes, and SHA-256 `f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b` without committing source prose. This does not establish a frozen literary body or FantLab source match; M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-16T20:48:38Z
+LAST_RESULT: SCRIP-CORPUS-015 / Issue #99 / PR #100 received an independent later-run exact-head review of `239c9bf358f376a49598f2808f6a32b7c07bb15a` with no blocking defect and was squash-merged as `9e27cedca58a884af283ad56d76056c59725e64b`; Issue #99 closed completed. The merged unit freezes source-free MediaWiki revision-wikitext identity for `tolstoy-hyperboloid-garin-wikisource-ru` while keeping deterministic literary-body extraction/digests, bibliographic print-edition identity and FantLab analyzer-input identity explicitly distinct and unresolved.
+LAST_VERIFIED_PROGRESS: Immediately before merge, current `master` was unchanged from the authored base `b58598f7e54d8849369077ad07ad0628ad5e38d9`; PR #100 was 6 commits ahead / 0 behind with exactly six expected provenance/replay files and no inline review threads. Exact-head runs `35143599234` (Hyperboloid source revision) and `35143599189` (Scriptorium Pages) completed successfully. The replay run passed the full standard-library suite, fresh pinned capture, byte-for-byte comparison with the committed manifest and replay; Pages passed the full suite, canonical build and deterministic rebuild. The manifest records page ID `1022517`, revision `5014458`, timestamp `2023-08-30T20:13:01Z`, MediaWiki SHA-1 `605afeabc38e4f5948371afdf976f586edbf1955`, 502280 wikitext characters / 934455 UTF-8 bytes, and SHA-256 `fa0b099bba2d0f0e6ce395a16de76317afcd8bec8b23b52e455f97a9726a4de9` without committing source prose. This does not establish a frozen literary body or FantLab source match; M2 remains 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-014
-ISSUE:          #97
+UNIT_ID:        SCRIP-CORPUS-015
+ISSUE:          #99
 STATUS:         DONE
-PR:             #98
-MERGED_COMMIT:  973d39df125e67d093cbe953a84440218838e412
+PR:             #100
+MERGED_COMMIT:  9e27cedca58a884af283ad56d76056c59725e64b
 NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
                 Prefer another legally usable >=300k diversity candidate or stronger
-                independent source-identity evidence for an existing candidate. Keep
-                coauthorship, translation, edition/text-family and literary-body versus
-                container/revision identity explicit. Never infer FantLab input identity
-                from bibliography, title, count proximity or public-source freezing.
+                independent source-identity evidence for an existing candidate. When a
+                revision/container identity is frozen, keep literary-body extraction and
+                raw/normalized body digests separate until deterministically reproduced.
+                Never infer FantLab input identity from bibliography, title, count
+                proximity or public-source freezing.
 ```
 
 ## Current milestone gate
@@ -45,7 +46,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Brothers Karamazov** — frozen public-source candidate: 98 admitted revisions; composite 1,810,351 characters; SHA-256 `26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6`; FantLab source match unknown.
 - **Silver Dove** — frozen single-revision public-source candidate at `oldid=5588003`; composite 563,125 characters; SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`; FantLab source match unknown.
 - **Petersburg** — first-1916-edition facsimile lead; Commons description revision is pinned but PDF bytes/OCR identity are not; no binary/source match claim.
-- **Hyperboloid of Engineer Garin** — stable public revision plus a 1939-derived Moscow-1958 textual-family lead; literary identity and FantLab source match remain unfrozen/unknown.
+- **Hyperboloid of Engineer Garin** — the Russian Wikisource `az.lib.ru` route at `oldid=5014458` has a source-free frozen **revision-wikitext** identity (page ID `1022517`; SHA-256 `fa0b099bba2d0f0e6ce395a16de76317afcd8bec8b23b52e455f97a9726a4de9`) plus a 1939-derived Moscow-1958 textual-family lead. Deterministic literary-body extraction/body digests, direct print-edition identity and FantLab source match remain unfrozen/unknown.
 - **Shining World** — 1965-source Wikisource family with 34 chapter subpages; chapter identities/composite remain unfrozen.
 - **Road to Nowhere** — primary Pravda-1965 source family remains unfrozen. The distinct `az.lib.ru` single-page route at `oldid=5585836` now has a source-free frozen **revision-wikitext** identity (page ID `1003775`; SHA-256 `f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b`), but deterministic literary-body extraction/body digests are not frozen and neither route is identified as FantLab input.
 - **Running on Waves** — Detskaya literatura 1965 source-cited family with 35 chapters plus epilogue; literary subpage identities/composite remain unfrozen.
@@ -65,7 +66,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 
 - Static publication remains source-free and deterministic; publication tests reject forbidden source-prose keys.
 - Public corpus navigation exposes the retained frozen and trace-only candidates with provenance boundaries rather than parity claims.
-- SCRIP-CORPUS-014 adds reusable source-free single-page revision capture/replay plus a frozen revision-wikitext manifest for the alternate Road to Nowhere route. It does **not** publish literary source text or a full-work derived analysis for that unmatched candidate.
+- SCRIP-CORPUS-015 adds a frozen source-free revision-wikitext manifest and dedicated replay workflow for Hyperboloid of Engineer Garin, while explicitly refusing to present revision/container identity as a frozen literary body or FantLab source match.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers
@@ -76,6 +77,6 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 4. pylem runtime `N` loses noun/cardinal distinction; methodology-only categories are diagnostic until their visible work-page relation is evidenced.
 5. Frozen public-source candidates remain unmatched to FantLab input and therefore cannot advance M2.
 6. Petersburg lacks a Scriptorium-recorded PDF snapshot digest and deterministic OCR/page-extraction identity.
-7. Hyperboloid, Shining World, Running on Waves, White Guard and Twelve Chairs remain trace-only/unfrozen at the literary-body level.
+7. Hyperboloid now has a frozen revision-wikitext identity but no deterministic literary-body extraction/body digests or direct print-edition identity; Shining World, Running on Waves, White Guard and Twelve Chairs remain trace-only/unfrozen at the literary-body level.
 8. Road to Nowhere now has a frozen alternate revision-wikitext identity, but the primary 1965 literary family and the alternate route's literary-body extraction/body digests remain unfrozen; FantLab input remains undisclosed.
 9. Pages live activation remains a repository-admin effect and is off.

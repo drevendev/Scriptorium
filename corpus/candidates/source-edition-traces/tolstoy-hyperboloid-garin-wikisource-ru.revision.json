@@ -1,0 +1,25 @@
+{
+  "bibliographic_source": "az.lib.ru single-page transcription; exact print-edition identity unresolved",
+  "candidate_id": "tolstoy-hyperboloid-garin-wikisource-ru",
+  "capture_scope": {
+    "composite_identity_frozen": false,
+    "literary_body_extraction_frozen": false,
+    "revision_wikitext_identity_frozen": true,
+    "source_text_committed": false
+  },
+  "legal_basis": "public_domain",
+  "manifest_version": "scriptorium-single-page-source-revision-v1",
+  "permanent_source_url": "https://ru.wikisource.org/w/index.php?title=Гиперболоид_инженера_Гарина_(Толстой)&oldid=5014458",
+  "provider": "Russian Wikisource",
+  "source_identity": {
+    "mediawiki_sha1": "605afeabc38e4f5948371afdf976f586edbf1955",
+    "page_id": 1022517,
+    "revision_id": 5014458,
+    "revision_timestamp": "2023-08-30T20:13:01Z",
+    "title": "Гиперболоид инженера Гарина (Толстой)",
+    "wikitext_character_count": 502280,
+    "wikitext_sha256": "fa0b099bba2d0f0e6ce395a16de76317afcd8bec8b23b52e455f97a9726a4de9",
+    "wikitext_utf8_byte_count": 934455
+  },
+  "source_work_url": "https://ru.wikisource.org/wiki/Гиперболоид_инженера_Гарина_(Толстой)"
+}

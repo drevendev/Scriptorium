@@ -374,6 +374,40 @@
         "The source-cited 1965 work-index locator does not freeze the 35 linked chapter revisions, epilogue revision, extraction/composition contract, or raw/normalized composite digests.",
         "The FantLab bibliography match corroborates the cited edition family but does not establish electronic-byte identity with Wikisource or FantLab analyzer-input identity."
       ]
+    },
+    {
+      "candidate_id": "bulgakov-white-guard-ru",
+      "author": "Михаил Булгаков",
+      "title": "Белая гвардия",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 7692,
+        "analysis_url": "https://fantlab.ru/work7692/lp",
+        "analysis_date": "2022-09-18",
+        "characters": 487807,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Белая_гвардия_(Булгаков)",
+        "edition_note": "Work-index permanent revision oldid=4715350 explicitly describes a mixed transcription: chapters 1-11 cite M. Bulgakov, Days of the Turbins (The White Guard), Paris: Concorde, 1927; chapters 12-20 cite Bulgakov M. A., The White Guard. The Life of Monsieur de Molière. Stories, Moscow: Pravda, 1989. The 20 chapter bodies are not frozen.",
+        "source_provenance_confidence": "strong_for_explicit_mixed_transcription_provenance",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The Russian Wikisource work page explicitly marks the original Russian literary work public domain in Russia under Article 1281 and in life-plus-70-or-less jurisdictions. The retained scope is the original Russian literary body only; no source prose, scan bytes, translation, derivative work, or later editorial apparatus is committed."
+      },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/bulgakov-white-guard-ru.json",
+      "source_identity_status": "traced_not_frozen",
+      "fantlab_source_edition_match": "unknown",
+      "diagnostic_ready": false,
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; no relationship to either Wikisource source family is inferred.",
+        "The current Wikisource work is explicitly mixed-source across chapter ranges 1-11 and 12-20, so the work index cannot be treated as a single-edition identity.",
+        "The 20 literary chapter revisions, source-partition manifest, deterministic extraction/composition contract, and raw/normalized composite digests are not frozen.",
+        "A 1927 DJVU is retained only as a separate facsimile lead for the first source family; it is not evidence of equality with the mixed transcription or with FantLab input."
+      ]
     }
   ],
   "held_leads": [

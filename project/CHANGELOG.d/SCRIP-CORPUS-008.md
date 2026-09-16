@@ -30,3 +30,13 @@ No identity is inferred between the 1965-source Wikisource transcription, RVB, a
 - M2 remains **0/5 source-matched works**.
 
 Public corpus navigation now exposes the candidate and its exact evidence boundary. The machine-readable trace records the next admissible evidence steps without publishing book text. This authoring run leaves PR #86 for a later independent exact-head review rather than self-merging it.
+
+## Independent review and merge
+
+A later run independently reviewed exact PR head `35061e829d5b279aa45a29f32ff255516c45961a` against unchanged base `c7da33834dd6df8017bc59d86b39b0d07ea480ab`. GitHub compare reported **7 commits ahead / 0 behind**, and the PR changed exactly the five expected corpus/provenance/public-navigation/state files. No blocking review defect or pre-existing review thread was present.
+
+Fresh evidence checks reconfirmed FantLab work `27340` at 306,240 characters / 43,678 words on 18 September 2022; the reviewed Wikisource work-index source citation, permanent locator `oldid=4186047`, and 16+11+7 chapter structure; sampled chapter pages carrying the same Pravda 1965 volume-3 source citation; and RVB as a 1921–1923 / three-part text-family cross-check only. A statutory cross-check also confirmed the Russian general life-plus-70 term and the transition rule that the newer term applies only where the former 50-year term had not expired by 1 January 1993, consistent with the retained public-domain treatment for Grin's 1923 lifetime work while preserving the repository's translation/later-revision caveat.
+
+Exact-head workflow runs `35053939844` (Scriptorium Pages) and `35053939843` (Scriptorium pinned pylem provider) both completed successfully. Pages passed the standard-library suite, canonical static-site build, deterministic rebuild and artifact upload; live deployment was skipped on the pull-request event. The provider workflow passed its contract suite, exact hash-pinned `pylem==0.0.18` native smoke and frozen-Anna source-free diagnostic replay.
+
+PR #86 was squash-merged as `84f4f4cea73a53d8ff01fe45000e6655e9f4cb5a`; Issue #85 closed `completed`. The source identity boundary is unchanged: the index locator does not freeze the 34 literary chapter revisions, extraction/composition contract or composite digests, FantLab input identity remains unknown, and **M2 remains 0/5 source-matched works**.

@@ -51,17 +51,20 @@
       "commons_page_id": 47639472,
       "page_information_hash": "682476934dd6ed49c6bbcdb0720127c1812ff477",
       "page_information_hash_scope": "Commons page/content metadata; not asserted to be the PDF binary checksum",
-      "page_information_upload_permission": "Allow all users",
+      "page_protection_upload_level": "Allow all users (infinite)",
+      "page_protection_interpretation": "This value is listed under Commons Page protection. Scriptorium treats it only as protection metadata and does not infer from it that the current PDF can be overwritten or that the binary is mutable.",
       "current_file_history_observation": {
         "upload_timestamp": "2016-03-20T18:31:00Z",
         "page_count": 632,
         "file_size_display": "3.45 MB",
         "upload_user": "M5"
       },
+      "current_file_page_overwrite_notice": "You cannot overwrite this file.",
+      "current_file_page_overwrite_notice_scope": "Observed on the current rendered Commons file page. This is operational surface evidence, not a PDF content digest or a historical byte identity.",
       "current_direct_file_url_is_immutable_identity": false,
       "scriptorium_pdf_sha256": null,
       "byte_snapshot_status": "not_frozen",
-      "reason": "A permanent revision of the Commons description page freezes descriptive wikitext, not the uploaded binary. Commons page information currently permits uploads to the file page, so the current file-history row and upload.wikimedia.org URL are useful retrieval evidence but are not accepted as an immutable Scriptorium byte identity without an independently recorded digest of the retrieved PDF snapshot."
+      "reason": "A permanent revision of the Commons description page freezes descriptive wikitext, not the uploaded PDF bytes. The current file page separately states that the file cannot be overwritten, while Page Information lists an unprotected upload action; those observations describe current Commons behavior and protection state rather than the file contents. Scriptorium therefore requires an independently retrieved byte snapshot with exact byte count and SHA-256 before claiming a frozen PDF identity."
     },
     "immutable_identity": {
       "status": "traced_not_frozen",
@@ -72,12 +75,12 @@
         "public-domain status on the file description"
       ],
       "unfrozen_components": [
-        "an exact retrieved PDF byte snapshot plus Scriptorium-recorded SHA-256",
+        "an exact retrieved PDF byte snapshot plus Scriptorium-recorded byte count and SHA-256",
         "page/OCR selection and deterministic extraction profile",
         "raw and normalized literary-text digests",
         "the relationship between FantLab's uploaded analyzer input and this 1916 edition"
       ],
-      "reason": "The public scan provides strong source-edition and legal provenance, but the description-page oldid does not freeze binary bytes and Scriptorium has not yet recorded a PDF snapshot digest or deterministic OCR/extraction result."
+      "reason": "The public scan provides strong source-edition and legal provenance, but the description-page oldid and current Commons operational notices do not identify the PDF contents. Scriptorium has not yet recorded a PDF snapshot digest or deterministic OCR/extraction result."
     }
   },
   "wikisource_cross_check": {
@@ -103,13 +106,13 @@
     "reasons": [
       "FantLab reports 944,182 characters, above the 300,000-character calibration threshold.",
       "Wikimedia Commons supplies an explicit 632-page facsimile identity for the 1916 first book edition and marks it public domain.",
-      "The recorded Commons description-page oldid freezes descriptive wikitext but not the PDF binary; Commons page information currently reports upload permission for the file page, so no immutable PDF identity is claimed from the URL/history row alone.",
-      "The public scan has not yet been frozen into a Scriptorium PDF snapshot digest plus deterministic OCR/extraction contract, so no full-work diagnostic input exists yet.",
+      "The recorded Commons description-page oldid freezes descriptive wikitext but not the PDF binary. Page Information's Upload value is protection metadata, while the current file page separately says the file cannot be overwritten; neither observation is treated as a PDF content identity.",
+      "The public scan has not yet been frozen into a Scriptorium PDF byte-count/SHA-256 snapshot plus deterministic OCR/extraction contract, so no full-work diagnostic input exists yet.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis.",
       "The 1916 first book edition must remain distinct from Bely's revised 1922 edition; no edition-family equivalence is inferred."
     ],
     "next_evidence": [
-      "Retrieve one specific Commons PDF snapshot and record its exact byte count plus SHA-256 in a source-free manifest without committing the scan itself; do not treat the description-page oldid or mutable current-file URL as the digest.",
+      "Retrieve one specific Commons PDF snapshot and record its exact byte count plus SHA-256 in a source-free manifest without committing the scan itself; do not treat the description-page oldid, Page Information hash, file-history row, current overwrite notice, or direct file URL as a substitute for a content digest.",
       "Define and verify a deterministic, fail-closed page/OCR extraction contract for the 1916 edition before enabling full-work diagnostics.",
       "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to the 1916 edition or another explicit Petersburg edition; never infer identity from title or count proximity."
     ]

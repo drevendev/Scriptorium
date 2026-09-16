@@ -20,7 +20,7 @@
     "work_url": "https://ru.wikisource.org/wiki/Гиперболоид_инженера_Гарина_(Толстой)",
     "permanent_work_url": "https://ru.wikisource.org/w/index.php?title=Гиперболоид_инженера_Гарина_(Толстой)&oldid=5014458",
     "revision_id": 5014458,
-    "revision_timestamp_observed": "2023-08-30T20:13:00Z",
+    "revision_timestamp_observed": "2023-08-30T20:13:01Z",
     "review_status": "stable_reviewed_revision",
     "publication_year_metadata": 1927,
     "source_reference": "az.lib.ru",
@@ -66,11 +66,19 @@
       }
     ],
     "bibliographic_lead_assessment": "The lead is now more specific: the Moscow Goslitizdat 1958 collected-works volume 4 is textologically described as using the 1939 fourth book edition with checking against earlier editions. That narrows the edition family to test and rules out treating '1958' as a sufficient identity because another distinct 1958 Kyiv edition exists. It is still not promoted to bibliographic_source_identity: neither the Hyperboloid Wikisource page nor independently verified az.lib metadata states that this exact transcription was made from the Moscow volume.",
+    "revision_manifest": "corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json",
     "immutable_identity": {
-      "status": "traced_not_frozen",
+      "status": "revision_wikitext_frozen_body_unfrozen",
+      "frozen_components": [
+        "Russian Wikisource page ID 1022517",
+        "revision oldid 5014458",
+        "revision timestamp 2023-08-30T20:13:01Z",
+        "MediaWiki SHA-1 605afeabc38e4f5948371afdf976f586edbf1955",
+        "502280 wikitext characters / 934455 UTF-8 bytes",
+        "wikitext SHA-256 fa0b099bba2d0f0e6ce395a16de76317afcd8bec8b23b52e455f97a9726a4de9",
+        "capture scope explicitly excludes literary-body/composite identity and source prose"
+      ],
       "traced_components": [
-        "permanent Wikisource revision oldid 5014458",
-        "observed revision timestamp 2023-08-30T20:13:00Z",
         "stable/reviewed page status",
         "explicit public-domain notice",
         "az.lib.ru source pointer",
@@ -80,13 +88,12 @@
         "independent same-year disambiguation showing a distinct Kyiv 1958 edition"
       ],
       "unfrozen_components": [
-        "MediaWiki revision SHA-1 and raw wikitext SHA-256 recorded by Scriptorium",
         "deterministic literary-body extraction contract",
         "raw and normalized literary-text digests",
         "direct bibliographic print-edition identity behind the Wikisource/az.lib transcription",
         "relationship between FantLab's uploaded analyzer input and any 1927/1934/1936/1939 textual family"
       ],
-      "reason": "The permanent revision gives a reproducible source locator and clear legal basis. Textological evidence now makes the Moscow 1958 volume-4 lead substantially more precise by identifying its 1939-derived textual family, while independent bibliography proves that 1958 alone is ambiguous. Scriptorium still lacks a direct statement tying the Wikisource/az.lib transcription to that exact Moscow volume and has not frozen the revision/body bytes, so exact source identity remains under-specified."
+      "reason": "Scriptorium now has a replayable source-free identity for the exact MediaWiki revision wikitext. This freezes the revision container only: no literary-body extractor or literary-text digest exists yet, the az.lib transcription is not directly tied to the Moscow 1958 volume, and FantLab's analyzer input remains undisclosed."
     },
     "source_text_committed": false
   },
@@ -98,25 +105,26 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
+    "source_identity_status": "revision_wikitext_frozen_body_unfrozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "source_revision_traced_not_frozen",
+    "status": "source_revision_wikitext_frozen_body_unfrozen",
     "reasons": [
       "FantLab reports 495,539 characters, above the 300,000-character calibration threshold.",
       "Russian Wikisource provides a stable reviewed permanent revision and explicitly marks the literary work public domain.",
+      "A source-free manifest now freezes page ID 1022517 / revision 5014458 at 2023-08-30T20:13:01Z with MediaWiki SHA-1, exact wikitext counts and wikitext SHA-256; no source prose is committed.",
+      "The frozen identity is revision wikitext only. No deterministic literary-body extraction contract or raw/normalized literary-text digest exists yet.",
       "The page cites az.lib.ru but does not identify a bibliographic print edition; its internal note says the novel was revised with new chapters in 1937.",
       "Sibling Tolstoy pages in the Wikisource/az.lib source ecosystem identify the Moscow 1958 collected-works volume 4 as a concrete lead, and FantLab-hosted Krestinsky textology classifies that volume's Hyperboloid text as printed from the 1939 fourth book edition with checking against earlier editions.",
       "A separate Russian State Library record for a Kyiv 1958 Hyperboloid/Aelita edition demonstrates that publication year alone cannot identify the Moscow volume.",
-      "None of the evidence directly ties the Wikisource/az.lib Hyperboloid transcription to the Moscow 1958 volume, and FantLab does not disclose the edition or immutable bytes uploaded for the 2022 analysis.",
-      "No source prose, frozen literary-text digest, diagnostic result, or parity claim is created by this provenance-strengthening unit."
+      "None of the evidence directly ties the Wikisource/az.lib Hyperboloid transcription to the Moscow 1958 volume, and FantLab does not disclose the edition or immutable bytes uploaded for the 2022 analysis."
     ],
     "next_evidence": [
-      "Freeze exact MediaWiki revision identity and wikitext digest for oldid 5014458 without committing source prose.",
-      "Define a deterministic, fail-closed extraction contract and derived raw/normalized digests before enabling full-work diagnostics.",
+      "Define a deterministic, fail-closed extraction contract over pinned revision 5014458 and record raw plus scriptorium-text-v1 normalized literary-body digests before enabling full-work diagnostics.",
       "Seek a direct bibliographic statement for the Hyperboloid Wikisource/az.lib transcription itself, specifically testing the Moscow Goslitizdat 1958 volume-4 lead rather than any generic 1958 edition.",
-      "Seek independent evidence for FantLab's analyzer-input edition; never infer identity from title, authorial note compatibility, textual-family compatibility, edition availability, or character-count proximity."
+      "Seek independent evidence for FantLab's analyzer-input edition; never infer identity from title, authorial note compatibility, textual-family compatibility, edition availability, revision freezing, or character-count proximity."
     ]
   }
 }

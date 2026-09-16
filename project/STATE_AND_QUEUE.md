@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 100
+STATE_REVISION: 101
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T11:48:03Z
-LAST_RESULT: Recovered SCRIP-CORPUS-011 / Issue #91 / PR #92 from the independent-review provenance blocker. The Petersburg machine-readable trace, public corpus README and unit changelog now distinguish Commons Page Information's `Upload: Allow all users (infinite)` Page-protection row from actual overwrite capability, and separately record the current file-page notice `You cannot overwrite this file.` The byte-freeze requirement is now justified from content identity: neither a description-page oldid, Page Information hash/protection row, file-history observation nor operational overwrite notice is a Scriptorium-recorded PDF content digest. `scriptorium_pdf_sha256` remains null; source identity remains traced-not-frozen, FantLab match unknown, diagnostics disabled and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Fresh Wikimedia Commons evidence on 16 September 2026 reconfirmed file page ID `47639472`, Page Information hash `682476934dd6ed49c6bbcdb0720127c1812ff477`, `Upload: Allow all users (infinite)` specifically under Page protection, the current 632-page / 3.45 MB file-history row from 20 March 2016, and the separate current file-page notice `You cannot overwrite this file.` Recovery commits through `b61224e07db41b093cd4b549cb1327b8c0988a4e` corrected the trace, public README and changelog without changing the candidate's gate status. Exact-head CI and later independent judgement remain required before merge.
+LAST_COMMITTED_RUN_AT: 2026-09-16T12:51:00Z
+LAST_RESULT: SCRIP-CORPUS-011 / Issue #91 / PR #92 received an independent exact-head review of repaired head `d64b0fc52da6ed7d9ca6d60d40f26ffc429cd5e9` with no remaining blocking defect and was squash-merged as `a64cb2d109389822b416a1274c34724ab1cedbfe`; Issue #91 closed completed. The merged unit hardens Petersburg provenance by separating the Commons description-page revision, Page-protection metadata, current no-overwrite operational notice and the still-unfrozen PDF binary identity. The PDF freeze requirement rests on an exact retrieved byte snapshot + byte count + SHA-256; `scriptorium_pdf_sha256` remains null, source identity traced-not-frozen, FantLab match unknown, diagnostics disabled and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `b5ad38bed4e6dfc81b609745ba302235b156e516`, repaired head 10 commits ahead / 0 behind, exactly four expected files, and no inline review threads. Fresh Wikimedia Commons retrieval on 16 September 2026 reconfirmed the 632-page / 3.45 MB current file-history row and the separate current no-overwrite notice; the repaired trace correctly treats the Page Information Upload row only as Page-protection metadata and neither operational surface as PDF content identity. Exact-head Pages run `35092674520` passed the standard-library suite, canonical site build and deterministic rebuild; pinned-provider run `35092674605` passed provider contract, exact hash-pinned `pylem==0.0.18` native smoke and frozen-Anna source-free sidecar diagnostics.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-011
 ISSUE:          #91
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #92
-BASE_COMMIT:    b5ad38bed4e6dfc81b609745ba302235b156e516
-NEXT_ACTION:    Independently review PR #92 at its exact current head after required
-                checks complete. Confirm that Page-protection metadata is not used as
-                overwrite evidence, the separate current no-overwrite notice is scoped
-                as operational evidence rather than content identity, and the PDF freeze
-                requirement rests on an exact retrieved byte count + SHA-256. Merge only
-                if exact-head CI and provenance review are clean. Keep source identity
-                traced-not-frozen, FantLab match unknown, diagnostics disabled and M2 0/5.
+MERGED_COMMIT:  a64cb2d109389822b416a1274c34724ab1cedbfe
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer another legally usable >=300k diversity candidate or stronger
+                independent source-identity evidence for an existing candidate; keep
+                translation and edition identity explicit and do not infer FantLab
+                input identity from bibliography, title, chapter structure, count
+                proximity, public-source freezing, provider protection metadata or
+                operational overwrite notices.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit 1916 edition lead whose Commons description revision is pinned but whose PDF binary remains unfrozen; Commons Page Information currently reports no upload-protection level while the current file page separately says the file cannot be overwritten, so no binary mutability is inferred from protection metadata. A Scriptorium-recorded PDF snapshot digest is still required because neither those operational observations nor the description-page revision are a PDF content identity. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. `grin-running-on-waves-ru` adds a third long Grin candidate with a Detskaya literatura 1965 source-cited Wikisource family, 35 chapters plus epilogue, and independent FantLab edition corroboration, but its 36 literary subpages remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit 1916 edition lead whose Commons description revision is pinned but whose PDF binary remains unfrozen; Commons Page Information reports an upload-protection setting while the current file page separately says the file cannot be overwritten, so no binary mutability is inferred from protection metadata. A Scriptorium-recorded PDF snapshot digest is still required because neither those operational observations nor the description-page revision are a PDF content identity. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. `grin-running-on-waves-ru` adds a third long Grin candidate with a Detskaya literatura 1965 source-cited Wikisource family, 35 chapters plus epilogue, and independent FantLab edition corroboration, but its 36 literary subpages remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -130,7 +130,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 - Static publication remains source-free and fail-closed; publication tests reject forbidden source-prose keys and Pages builds are deterministic.
 - Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove; trace-only provenance for Petersburg and Hyperboloid; and trace-only Grin candidates `grin-shining-world-ru`, `grin-road-nowhere-ru` and `grin-running-on-waves-ru`.
-- SCRIP-CORPUS-011 now exposes the repaired Petersburg boundary publicly: Commons Page-protection metadata and the current no-overwrite notice are separate operational observations, neither is a PDF content identity, and a recorded byte-count/SHA-256 snapshot is still required before binary freeze. PR #92 awaits exact-head checks and independent later-run judgement.
+- SCRIP-CORPUS-011 is merged: the public Petersburg trace now exposes the repaired provenance boundary in which Commons Page-protection metadata and the current no-overwrite notice are separate operational observations, neither is a PDF content identity, and a recorded byte-count/SHA-256 snapshot is still required before binary freeze.
 - No derived full-work analysis is published for unmatched trace-only candidates.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 

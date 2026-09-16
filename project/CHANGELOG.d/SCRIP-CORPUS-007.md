@@ -14,6 +14,12 @@ That is stronger than the previous bare edition-family lead: the Moscow 1958 vol
 
 Independent same-year disambiguation makes that distinction operationally important. The Russian State Library catalogs a separate Kyiv: Goslitizdat Ukrainy, 1958, 393-page edition containing *Hyperboloid of Engineer Garin* and *Aelita*. Therefore `1958` by itself is not an edition identifier and must never be used to equate the Wikisource transcription, the Moscow collected-works volume, or another same-year edition.
 
+## Review recovery
+
+The first independent exact-head review found one blocking completeness defect: the machine-readable trace and durable state contained the new classification, but `corpus/candidates/README.md` still exposed the older SCRIP-CORPUS-006 wording. PR #84 was therefore returned to draft rather than merged.
+
+The recovery patch now synchronizes the public corpus navigation with the canonical provenance record. The Hyperboloid section explicitly exposes the Moscow 1958 lead as a 1939-fourth-edition-derived editorial/textual-family witness, records Russian State Library record `01006486636` as a distinct Kyiv 1958 edition, and preserves the rule that year-only matching has no identity weight. This repair changes documentation only; it does not add source bytes or weaken any source/parity gate.
+
 ## Gate effect
 
 No source/parity gate advances:

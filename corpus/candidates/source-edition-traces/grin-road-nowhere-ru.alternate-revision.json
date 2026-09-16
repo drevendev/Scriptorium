@@ -1,0 +1,25 @@
+{
+  "bibliographic_source": "az.lib.ru single-page transcription; Wikisource publication year 1930",
+  "candidate_id": "grin-road-nowhere-ru",
+  "capture_scope": {
+    "composite_identity_frozen": false,
+    "literary_body_extraction_frozen": false,
+    "revision_wikitext_identity_frozen": true,
+    "source_text_committed": false
+  },
+  "legal_basis": "public_domain",
+  "manifest_version": "scriptorium-single-page-source-revision-v1",
+  "permanent_source_url": "https://ru.wikisource.org/w/index.php?title=Дорога_в_никуда_(Грин)&oldid=5585836",
+  "provider": "Russian Wikisource",
+  "source_identity": {
+    "mediawiki_sha1": "135933c3b9155bddb0356d0eb9644d11f55ba870",
+    "page_id": 1003775,
+    "revision_id": 5585836,
+    "revision_timestamp": "2025-07-30T20:33:01Z",
+    "title": "Дорога в никуда (Грин)",
+    "wikitext_character_count": 443991,
+    "wikitext_sha256": "f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b",
+    "wikitext_utf8_byte_count": 827730
+  },
+  "source_work_url": "https://ru.wikisource.org/wiki/Дорога_в_никуда_(Грин)"
+}

@@ -58,9 +58,22 @@
       ],
       "total_chapters": 24
     },
+    "immutable_revision_identity": {
+      "status": "revision_wikitext_frozen_literary_body_not_extracted",
+      "manifest_path": "corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-revision.json",
+      "page_id": 1003775,
+      "revision_id": 5585836,
+      "revision_timestamp": "2025-07-30T20:33:01Z",
+      "mediawiki_sha1": "135933c3b9155bddb0356d0eb9644d11f55ba870",
+      "wikitext_character_count": 443991,
+      "wikitext_utf8_byte_count": 827730,
+      "wikitext_sha256": "f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b",
+      "source_text_committed": false,
+      "boundary": "The source-free manifest identifies the exact pinned revision wikitext. It does not yet define which rendered characters belong to the literary body, a deterministic extraction policy, or raw/normalized literary-body digests, so it is not a frozen analyzer-input identity."
+    },
     "legal_notice": "The page explicitly states that the work is in the public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions; it also carries separate derivative-work/translation rights language. Scriptorium relies only on the original Russian literary-work scope here.",
-    "evidence_weight": "alternate_transcription_and_legal_cross_check_only",
-    "note": "This single-page az.lib-derived transcription is deliberately not collapsed with the source-cited 1965 Wikisource family. Its differing title form/source path demonstrates why title and work identity alone cannot establish edition or byte identity."
+    "evidence_weight": "alternate_transcription_revision_frozen_and_legal_cross_check_only",
+    "note": "This single-page az.lib-derived transcription is deliberately not collapsed with the source-cited 1965 Wikisource family. Its exact revision wikitext is now frozen source-free, but literary-body extraction/composite identity and any relation to the primary family or FantLab input remain unproven."
   },
   "independent_bibliographic_cross_check": {
     "provider": "FantLab bibliography",
@@ -91,15 +104,15 @@
     "reasons": [
       "FantLab reports 438,439 characters and 61,299 words for its 18 September 2022 analysis, comfortably above the 300,000-character calibration threshold.",
       "Russian Wikisource supplies a permanent work-index locator and an explicit Pravda 1965 volume-6 pp. 3–227 source citation; FantLab bibliography independently corroborates that edition and page range.",
-      "A separate Wikisource/az.lib full-work transcription explicitly marks the original Russian work public domain, but it is an alternate transcription and is not used to infer byte identity for the primary 1965-source family.",
-      "The literary pages behind the primary work index are not revision-pinned and no deterministic extraction/composition contract or composite digest exists yet.",
+      "The alternate Wikisource/az.lib single-page transcription now has a source-free frozen revision-wikitext identity at oldid 5585836, including MediaWiki SHA-1 and Scriptorium SHA-256, but no deterministic literary-body extraction or composite digest exists yet.",
+      "The literary pages behind the primary 1965-source work index are not revision-pinned and no deterministic extraction/composition contract or composite digest exists yet.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
       "Freeze the exact literary-page inventory for the primary 1965-source Wikisource transcription with revision IDs, timestamps and MediaWiki SHA-1 values without committing source prose.",
-      "Define deterministic fail-closed extraction/composition and record raw plus scriptorium-text-v1 normalized composite digests before enabling diagnostics.",
-      "Compare the primary 1965-source and alternate az.lib transcription identities only after both are independently frozen; do not infer equivalence from title, plot, chapter labels or count proximity.",
-      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliography alone cannot advance M2."
+      "Define deterministic fail-closed literary-body extraction for the alternate frozen revision and record raw plus scriptorium-text-v1 normalized body digests before treating that route as a complete text identity.",
+      "Compare primary and alternate transcription bodies only after the primary route and the alternate literary body are independently frozen; do not infer equivalence from title, plot, chapter labels or count proximity.",
+      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliography or source-revision freezing alone cannot advance M2."
     ]
   }
 }

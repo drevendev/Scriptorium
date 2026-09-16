@@ -1,6 +1,6 @@
 # SCRIP-CORPUS-016 — freeze Hyperboloid literary-body identity
 
-Status: REVIEW_PENDING / REPAIR_AUTHORED
+Status: DONE
 
 Issue #101 / PR #102 strengthen `tolstoy-hyperboloid-garin-wikisource-ru` from a frozen MediaWiki revision container into a reproducibly frozen public literary-body identity without changing the unresolved FantLab boundary.
 
@@ -12,6 +12,7 @@ Issue #101 / PR #102 strengthen `tolstoy-hyperboloid-garin-wikisource-ru` from a
 - Extended the existing Hyperboloid source workflow so a fresh exact revision fetch must still match the committed revision identity, then must reproduce the committed literary-body manifest byte-for-byte and replay it successfully.
 - Added source-free body manifest `corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.body.json`.
 - Promoted the canonical trace and public corpus README from `revision_wikitext_frozen_body_unfrozen` to `frozen_source_identity_unmatched_to_fantlab` while keeping print-edition identity and FantLab analyzer-input identity unresolved.
+- After an independent review found the central machine-readable candidate catalog stale, synchronized `corpus/candidates/fantlab-parity-v1.json` with the committed revision/body manifests and removed the false unfrozen blocker.
 
 ## Frozen public body
 
@@ -29,7 +30,9 @@ After the body manifest, provenance, public README and durable state were commit
 
 A later independent review of exact head `bf41149bdd9996249db01ec9da9889376a80d057` reconfirmed the fail-closed/source-free implementation and green runs `35156488833`, `35156488806`, `35156488898`, and `35156488923`, but correctly blocked merge because `corpus/candidates/fantlab-parity-v1.json` still described Hyperboloid as `traced_not_frozen` and retained a now-false blocker saying the revision/body identities had not been recorded.
 
-This recovery patch synchronizes the central catalog with the committed source-free manifests: it now references both the revision and body manifests, records `source_identity_status=public_candidate_frozen`, 499066 characters / 930560 bytes and SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`, and replaces the false unfrozen blocker with the actual 3527-character non-identity/policy delta. Fresh exact-head checks and a later independent review are required before merge; no repaired-head success is claimed by this fragment itself.
+The catalog repair produced exact head `9fa268604dde91a078bc403a50d24fc2394b9bf5`. Fresh runs `35159779198` (Hyperboloid source/body replay), `35159779188` (Pages), `35159779182` (frozen diagnostic), and `35159779183` (pinned provider) all completed successfully. The Hyperboloid job re-fetched `oldid=5014458`, matched/replayed the committed revision identity, reproduced the body manifest byte-for-byte, passed source-free structure/fail-closed assertions, and ran the standard-library suite.
+
+A subsequent independent exact-head review found no remaining blocker. Immediately before merge the PR was 21 commits ahead / 0 behind current `master`, mergeable, changed exactly the 11 expected unit files, and had no inline review threads. PR #102 was promoted from Draft and squash-merged as `055e5c789ed65bc48eaaeb19bf007ad3400d1380`; Issue #101 closed completed.
 
 ## Gate
 

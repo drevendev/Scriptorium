@@ -1,7 +1,7 @@
 # SCRIP-CORPUS-008 — trace Alexander Grin's Shining World
 
 Issue: #85  
-PR: pending  
+PR: #86  
 Mode: corpus / provenance
 
 ## Decision
@@ -29,4 +29,4 @@ No identity is inferred between the 1965-source Wikisource transcription, RVB, a
 - `m2_parity_admissible=false`;
 - M2 remains **0/5 source-matched works**.
 
-Public corpus navigation now exposes the candidate and its exact evidence boundary. The machine-readable trace records the next admissible evidence steps without publishing book text.
+Public corpus navigation now exposes the candidate and its exact evidence boundary. The machine-readable trace records the next admissible evidence steps without publishing book text. This authoring run leaves PR #86 for a later independent exact-head review rather than self-merging it.

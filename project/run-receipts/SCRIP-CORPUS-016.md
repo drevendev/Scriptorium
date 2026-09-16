@@ -5,7 +5,7 @@
 - PR: #102
 - Base revision: `d76c5403d62ec85c022efe4def93883eef550da3`
 - Authored branch: `scrip-corpus-016-hyperboloid-body`
-- Status: REVIEW_PENDING
+- Status: REVIEW_PENDING / READY_FOR_INDEPENDENT_REVIEW
 - Selection reason: no interrupted claim or review-ready Scriptorium PR preempted selection at orientation time; the queue exposed only `SCRIP-CORPUS continuation`, and the retained Hyperboloid trace explicitly named deterministic literary-body extraction plus raw/normalized digests as its next evidence step.
 
 ## Produced
@@ -46,7 +46,9 @@ The observed exact source shape is one leading `Отексте` metadata scaffol
 
 Bootstrap exact-head run `35155623478` at `be66ec664a4aba2231a283f0d3914480eb768818` passed 171 standard-library tests, fresh pinned revision capture, byte-for-byte committed revision-manifest comparison, revision replay, source-free structure probing, deterministic body capture, source-free assertions and artifact upload. Artifact ID `10471235096` had zip SHA-256 `e2bc943cd50643c99ba8535f97ef8c31f55edfb2f945c29cfb88713444b148eb`.
 
-That run emitted the body identity above. The committed body manifest and later bookkeeping still require final exact-head workflow verification before PR #102 is marked review-ready.
+After the body manifest, provenance, public README and durable state were committed, exact authored head `cbd56ee2b23e5205d0a251a9be55c71820618138` was fully green. `Hyperboloid source revision` run `35156176512` passed the full standard-library suite, fresh pinned capture, committed revision-manifest comparison/replay, source-free probe, byte-for-byte committed body-manifest comparison/replay, source-free assertions and artifact upload. `Scriptorium Pages` run `35156176530` passed the suite, canonical static build and deterministic rebuild. `Scriptorium frozen diagnostic` run `35156176472` passed. `Scriptorium pinned pylem provider` run `35156176486` passed provider-contract tests, the hash-pinned `pylem==0.0.18` native smoke and the frozen-Anna sidecar diagnostic replay.
+
+PR #102 was marked Ready for review after those exact-head checks completed successfully. It remains intentionally unmerged because this run authored the substantive change; the next wake must independently review the exact current PR head before merge.
 
 ## FantLab / benchmark boundary
 
@@ -56,4 +58,4 @@ The `az.lib.ru` transcription still has no direct bibliographic print-edition id
 
 ## Next wake
 
-If final exact-head CI is green, perform an independent review of PR #102 before merge. Verify that the source-specific extraction contract remains fail-closed, committed public artifacts contain no source prose, the body manifest reproduces byte-for-byte from oldid `5014458`, and no public-source freeze is promoted to FantLab source parity.
+Perform an independent exact-head review of PR #102 before merge. Verify that the source-specific extraction contract remains fail-closed, committed public artifacts contain no source prose, the body manifest reproduces byte-for-byte from oldid `5014458`, all current-head checks remain green, and no public-source freeze is promoted to FantLab source parity.

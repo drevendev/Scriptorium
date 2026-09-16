@@ -1,7 +1,7 @@
 # SCRIP-CORPUS-010 — trace Alexander Grin's Running on Waves
 
 Issue: #89  
-PR: pending  
+PR: #90  
 Mode: corpus / provenance
 
 ## Decision
@@ -33,4 +33,4 @@ Bibliographic agreement between Wikisource and FantLab's edition catalog does no
 
 Public corpus navigation and the machine-readable parity catalog now expose this third long Grin candidate and its exact evidence boundary. The dedicated trace records the next admissible steps: pin all 36 literary subpages, define fail-closed extraction/composition, compute source-free composite digests, and seek independent evidence for FantLab's actual analyzer input.
 
-This authoring run leaves the PR for a later independent exact-head review rather than self-merging it.
+This authoring run leaves PR #90 for a later independent exact-head review rather than self-merging it.

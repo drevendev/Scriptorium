@@ -6,6 +6,7 @@ on:
       - ".github/workflows/hyperboloid-source-revision.yml"
       - "scriptorium/single_page_revision.py"
       - "scriptorium/hyperboloid_freeze.py"
+      - "scriptorium/hyperboloid_probe.py"
       - "scriptorium/wikisource_freeze.py"
       - "tests/test_single_page_revision.py"
       - "tests/test_hyperboloid_freeze.py"
@@ -61,6 +62,9 @@ jobs:
             --manifest "$expected" \
             --receipt build/repro/tolstoy-hyperboloid-garin-wikisource-ru.revision.replay.json
 
+      - name: Probe pinned wikitext structure without source prose
+        run: python -m scriptorium.hyperboloid_probe
+
       - name: Capture literary-body identity from the exact pinned revision
         run: |
           set -euo pipefail
@@ -77,7 +81,7 @@ jobs:
               --body-manifest "$expected" \
               --receipt build/repro/tolstoy-hyperboloid-garin-wikisource-ru.body.replay.json
           else
-            echo 'Committed literary-body identity not present yet; capture artifact is bootstrap evidence.'
+            echo 'Committed literary-body identity not present yet; capture artifact is the bootstrap evidence.'
           fi
 
       - name: Verify body artifact is source-free and fail-closed

@@ -30,7 +30,7 @@ EXTRACTION_PROFILE = "scriptorium-hyperboloid-wikisource-body-v1"
 _EXPECTED_HEADING_COUNT = 132
 _EXPECTED_CATEGORY_COUNT = 9
 _EXPECTED_WIKILINK_COUNT = 13
-_EXPECTED_COMMENT_COUNT = 2
+_EXPECTED_COMMENT_COUNT = 0
 _EXPECTED_BOLD_ITALIC_MARKER_COUNT = 44
 _EXPECTED_TAG_COUNTS = {"br": 18, "sup": 18, "u": 18}
 _EXPECTED_SUP_U_PAIR_COUNT = 9
@@ -192,9 +192,9 @@ def extract_literary_body(wikitext: str) -> str:
     The frozen revision has one leading ``Отексте`` metadata template, direct page
     prose rather than a ``div.text`` wrapper, 132 level-three literary headings, and
     a trailing nine-category Wikisource block. The profile admits only the observed
-    HTML/wikilink/comment formatting inventory. Visible contents of ``sup/u`` markers
-    are preserved while the formatting tags are removed by the generic renderer.
-    Any source-shape drift fails closed and requires a new extraction profile.
+    post-scaffold HTML/wikilink/comment formatting inventory. Visible contents of
+    ``sup/u`` markers are preserved while formatting tags are removed by the generic
+    renderer. Any source-shape drift fails closed and requires a new extraction profile.
     """
 
     if not isinstance(wikitext, str):

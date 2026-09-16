@@ -1,0 +1,119 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "ilf-petrov-twelve-chairs-ru",
+  "research_date": "2026-09-16",
+  "fantlab": {
+    "work_id": 182817,
+    "analysis_url": "https://fantlab.ru/work182817/lp",
+    "analysis_date": "2022-09-17",
+    "observed_counts": {
+      "characters": 572654,
+      "words": 80203
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "work_page_url": "https://fantlab.ru/work182817",
+    "relationship_to_public_transcriptions": "unproven",
+    "coauthorship_caveat": "FantLab's author-recognition surface warns that this work has two authors and that the mixed styles prevent exact author-recognition results. Scriptorium records this only as future VOICE-method evidence; it is not a parity result and no Ilf/Petrov individual profile is inferred from the warning."
+  },
+  "public_text_families": [
+    {
+      "family_id": "wikisource-later-editorial-family",
+      "provider": "Russian Wikisource",
+      "work_url": "https://ru.wikisource.org/wiki/Двенадцать_стульев_(Ильф,_Петров)",
+      "work_index_permanent_url": "https://ru.wikisource.org/w/index.php?title=Двенадцать_стульев_(Ильф,_Петров)&oldid=5706136",
+      "work_index_oldid": 5706136,
+      "bibliographic_source": "И. Ильф, Е. Петров. Собрание сочинений. М.: Государственное издательство художественной литературы, 1961. Т. 1. С. 25–382.",
+      "textual_family_note": "The Wikisource source note says the 1961 publication reproduces the text of the 1938 Soviet Writer four-volume edition, checked against previous publications.",
+      "observed_chapters": 40,
+      "source_provenance_confidence": "strong_for_bibliographic_and_editorial_family",
+      "immutable_identity": {
+        "status": "traced_not_frozen",
+        "frozen_components": [
+          "work-index permanent revision oldid 5706136",
+          "bibliographic/editorial-family declaration on that index"
+        ],
+        "unfrozen_components": [
+          "exact identities for the literary chapter bodies",
+          "deterministic literary-body extraction and composition",
+          "raw and scriptorium-text-v1 normalized composite digests"
+        ]
+      }
+    },
+    {
+      "family_id": "wikisource-zif-1928-first-standalone-edition",
+      "provider": "Russian Wikisource",
+      "work_url": "https://ru.wikisource.org/wiki/Двенадцать_стульев_(Ильф,_Петров)/ЗИФ_1928",
+      "work_index_permanent_url": "https://ru.wikisource.org/w/index.php?title=Двенадцать_стульев_(Ильф,_Петров)/ЗИФ_1928&oldid=5706135",
+      "work_index_oldid": 5706135,
+      "bibliographic_source": "И. Ильф, Е. Петров. Двенадцать стульев. М.-Л.: Земля и фабрика, 1928.",
+      "edition_identity": "first_standalone_1928_zemlya_i_fabrika",
+      "observed_chapters": 41,
+      "source_provenance_confidence": "strong_for_bibliographic_edition_family",
+      "immutable_identity": {
+        "status": "traced_not_frozen",
+        "frozen_components": [
+          "work-index permanent revision oldid 5706135",
+          "bibliographic first-edition declaration on that index"
+        ],
+        "unfrozen_components": [
+          "exact identities for all literary pages used by the 1928 transcription",
+          "deterministic literary-body extraction and composition",
+          "raw and scriptorium-text-v1 normalized composite digests"
+        ]
+      }
+    }
+  ],
+  "edition_identity_boundary": {
+    "status": "distinct_text_families_required",
+    "evidence": "The current later editorial family exposes 40 chapters while the separately identified 1928 first standalone edition exposes 41 chapters. This structural difference is sufficient to prohibit collapsing the two public routes into one edition/text identity, but it is not by itself a byte-level comparison or proof of every textual difference.",
+    "fantlab_relation": "unknown",
+    "rule": "Do not infer FantLab analyzer-input identity from title, authorship, publication history, chapter count, bibliographic compatibility, or public availability. Each edition/transcription family requires its own immutable literary-text identity before diagnostics."
+  },
+  "facsimile_lead": {
+    "provider": "Russian Wikisource / Wikimedia Commons",
+    "url": "https://ru.wikisource.org/wiki/Файл:Ильф,_Петров_-_Двенадцать_стульев_(ЗиФ,_1928).pdf",
+    "edition_identity": "Zemlya i Fabrika 1928 first standalone edition",
+    "observed_pages": 424,
+    "observed_rendered_size": "74.37 MB",
+    "provider_source_url": "https://rusneb.ru/catalog/000199_000009_009200723/",
+    "scriptorium_binary_sha256": null,
+    "byte_snapshot_status": "not_frozen",
+    "evidence_weight": "facsimile_and_bibliographic_lead_only",
+    "note": "The scan is a useful edition witness, but Scriptorium has not captured an exact binary snapshot, byte count, digest, OCR profile, or page-to-literary-text mapping. The file-page locator therefore is not used as a content identity."
+  },
+  "legal_boundary": {
+    "basis": "public_domain_original_russian_work_with_wikisource_reuse_terms",
+    "evidence": "Russian Wikisource marks both retained original-Russian work surfaces public domain. Candidate scope is the literary body only; no source prose, scan bytes, translation, derivative work, or later editorial apparatus is committed.",
+    "source_text_committed": false
+  },
+  "diversity": {
+    "period": "1920s",
+    "movement": "early-Soviet satirical prose",
+    "work_identity": "original_russian_coauthored",
+    "reason_selected": "This adds a legally usable long coauthored 20th-century candidate, preserves a documented first-edition versus later-editorial-family split, and exposes a future author-voice methodological case where single-author attribution assumptions are unsafe."
+  },
+  "admissibility": {
+    "length_threshold_met_from_fantlab": true,
+    "source_identity_status": "traced_not_frozen",
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "status": "multi_edition_traced_not_frozen",
+    "reasons": [
+      "FantLab reports 572,654 characters and 80,203 words for its 17 September 2022 analysis, above the 300,000-character calibration threshold.",
+      "Russian Wikisource provides explicit public-domain evidence and stable work-index locators for two distinct bibliographic/text families.",
+      "The later family has 40 visible chapters while the first standalone 1928 family has 41, so Scriptorium must not flatten them into one edition identity.",
+      "Neither public literary body is fully revision-pinned under a deterministic extraction/composition contract with composite digests.",
+      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
+    ],
+    "next_evidence": [
+      "Freeze one selected public text family by exact literary-page identities and a deterministic fail-closed extraction/composition manifest.",
+      "Record raw and scriptorium-text-v1 normalized composite digests before enabling source-bound diagnostics.",
+      "If the 1928 facsimile is used, capture a specific binary snapshot with byte count/SHA-256 and define OCR/page-extraction provenance before relating it to a transcription.",
+      "Seek independent evidence that can identify FantLab's uploaded analyzer input; bibliographic compatibility and chapter structure cannot advance M2.",
+      "When author-voice work begins, model this work as coauthored evidence rather than silently assigning its statistics to either individual author."
+    ]
+  }
+}

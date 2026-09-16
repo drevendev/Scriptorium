@@ -1,30 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 97
+STATE_REVISION: 98
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T08:51:25Z
-LAST_RESULT: SCRIP-CORPUS-010 / Issue #89 / PR #90 received an independent later-run review of exact head `a6c779aa208bc01d8581de151b75f618d5cc87ab` with no blocking defect and was squash-merged as `2df3e90328e487a57798e0a13e485a580585b0c9`; Issue #89 closed completed. The merged unit adds Alexander Grin's `Бегущая по волнам` as a legally usable >=300,000-character trace-only candidate with a source-cited Detskaya literatura 1965 Wikisource family and independent FantLab bibliographic corroboration while keeping the 36 literary subpages unfrozen, FantLab input identity unknown, diagnostics/gate disabled, and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `19e32ee1a6d27c290cd52e085b790ae24719d019`, 6 commits ahead / 0 behind, exactly five expected corpus/provenance/public-navigation/state files, and no prior submitted reviews or inline review threads. Fresh evidence reconfirmed FantLab's 18 September 2022 count at 360,987 characters / 52,985 words; the Russian Wikisource page's 1928 date, Detskaya literatura 1965 source citation, 35 numbered chapters plus epilogue, public-domain notice and permanent locator `oldid=2595407`; and FantLab edition `12637` listing the same 1965 volume with the novel on pp. 77–276. Exact-head runs `35071053751` (Pages) and `35071053786` (pinned provider) both completed successfully; job-level inspection confirmed the standard-library suite, deterministic Pages rebuild, provider contract, exact hash-pinned `pylem==0.0.18` install/native smoke and frozen-Anna source-free sidecar diagnostic replay.
+LAST_COMMITTED_RUN_AT: 2026-09-16T10:02:00Z
+LAST_RESULT: SCRIP-CORPUS-011 / Issue #91 / PR #92 authored a provenance-hardening patch for the existing 1916 Petersburg Commons candidate. Fresh evidence separates permanent Commons description revision `oldid=1046280975` from the still-unfrozen PDF binary: file page ID `47639472` currently reports upload permission for all users, so the current file-history row/direct file URL is retrieval evidence rather than immutable byte identity. The patch keeps PDF SHA-256 unset, diagnostics/gate disabled, FantLab input identity unknown, and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: The 632-page first-1916-book facsimile/public-domain provenance remains intact and its title page was visually checked as Andrei Bely's `Петербург` (1916). Commons page-information evidence records page ID `47639472`, the 2016-03-20 18:31 upload/creation observation and `Upload: Allow all users`; the page-information content hash is explicitly scoped to page/content metadata rather than the PDF binary. The connected runtime could inspect the web-served PDF but could not obtain the binary bytes for a local SHA-256, so `scriptorium_pdf_sha256` remains null by design. PR #92 is authored and awaits exact-head CI plus independent later-run review; no source match or diagnostic promotion is claimed.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-010
-ISSUE:          #89
-STATUS:         DONE
-PR:             #90
-MERGED_COMMIT:  2df3e90328e487a57798e0a13e485a580585b0c9
-NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
-                Prefer another legally usable >=300k diversity candidate or stronger
-                independent source-identity evidence for an existing candidate; keep
-                translation and edition identity explicit and do not infer FantLab
-                input identity from bibliography, title, chapter structure, count
-                proximity or public-source freezing.
+UNIT_ID:        SCRIP-CORPUS-011
+ISSUE:          #91
+STATUS:         REVIEW
+PR:             #92
+BASE_COMMIT:    b5ad38bed4e6dfc81b609745ba302235b156e516
+NEXT_ACTION:    Independently review PR #92 at its exact head after required checks
+                complete. Confirm that the Commons description-oldid / PDF-byte boundary
+                is fail-closed, the public corpus README matches the machine-readable
+                trace, and no PDF/OCR/FantLab source identity is implied. Merge only if
+                exact-head evidence remains clean; otherwise repair the PR first.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit but unfrozen 1916 edition lead. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. `grin-running-on-waves-ru` adds a third long Grin candidate with a Detskaya literatura 1965 source-cited Wikisource family, 35 chapters plus epilogue, and independent FantLab edition corroboration, but its 36 literary subpages remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit 1916 edition lead whose Commons description revision is pinned but whose PDF binary remains unfrozen; fresh page information shows the file page remains uploadable, so a Scriptorium-recorded PDF snapshot digest is required before binary freeze. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. `grin-running-on-waves-ru` adds a third long Grin candidate with a Detskaya literatura 1965 source-cited Wikisource family, 35 chapters plus epilogue, and independent FantLab edition corroboration, but its 36 literary subpages remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -73,8 +72,10 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 ### Traced Petersburg 1916 modernist candidate
 
 - FantLab work 293513 reports 944,182 characters and 130,217 words on 19 September 2022.
-- Wikimedia Commons exposes a 632-page public-domain facsimile of the first 1916 book edition, distinct from Bely's materially revised 1922 text.
-- PDF bytes/OCR/page extraction are not frozen; FantLab input relation remains unknown. `source_identity_status=traced_not_frozen`, diagnostics/M2 disabled.
+- Wikimedia Commons exposes a 632-page public-domain facsimile of the first 1916 book edition, distinct from Bely's materially revised 1922 text; the facsimile title page independently shows `Петербург`, Andrei Bely and 1916.
+- Permanent file-description revision `oldid=1046280975` freezes descriptive page wikitext, not the PDF binary. Commons page information records file page ID `47639472` and currently reports `Upload: Allow all users`; the current direct file URL/history row is therefore not accepted as immutable byte identity by itself.
+- `scriptorium_pdf_sha256=null`; an exact retrieved PDF snapshot plus byte count/SHA-256 and a deterministic OCR/page-extraction contract remain required before binary/source-text freeze.
+- FantLab input relation remains unknown. `source_identity_status=traced_not_frozen`, diagnostics/M2 disabled.
 
 ### Traced Hyperboloid of Engineer Garin early-Soviet SF candidate
 
@@ -127,7 +128,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 - Static publication remains source-free and fail-closed; publication tests reject forbidden source-prose keys and Pages builds are deterministic.
 - Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove; trace-only provenance for Petersburg and Hyperboloid; and trace-only Grin candidates `grin-shining-world-ru`, `grin-road-nowhere-ru` and `grin-running-on-waves-ru`.
-- SCRIP-CORPUS-010 adds Running on Waves to the machine-readable catalog, a dedicated source-edition trace and `corpus/candidates/README.md`, while explicitly separating a source-cited 1965 bibliographic family from electronic-byte identity and from FantLab's unknown input.
+- SCRIP-CORPUS-011 hardens Petersburg's public provenance language by making explicit that a permanent Commons description-page revision is not a frozen PDF binary and that a source-free byte-count/SHA-256 snapshot is required before binary identity can be claimed.
 - No derived full-work analysis is published for unmatched trace-only candidates.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -139,7 +140,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 4. pylem runtime `N` loses noun/cardinal distinction; methodology-only categories are measured diagnostically but their work-page relationship remains unknown.
 5. Exact pinned pylem requires an isolated legacy toolchain; changing that lane requires new evidence.
 6. Frozen public-source candidates remain unmatched to FantLab input and therefore cannot advance M2.
-7. Petersburg has strong 1916 edition provenance but no frozen PDF/OCR identity and no FantLab source match.
+7. Petersburg has strong 1916 edition provenance and a pinned Commons description revision, but no Scriptorium-recorded PDF snapshot digest or OCR identity; the file page remains uploadable and FantLab source match is unknown.
 8. Hyperboloid has a stable public revision and a 1939-derived Moscow-1958 textual-family lead, but no frozen literary identity, direct print mapping or FantLab source match; same-year editions are ambiguous.
 9. Shining World has a source-cited reviewed work-index locator but its 34 chapter revisions/extraction/composite identity are not frozen and FantLab's input is undisclosed.
 10. Road to Nowhere has a source-cited 1965 bibliographic family plus a distinct alternate az.lib transcription, but the primary literary-page identity is not frozen and FantLab's input is undisclosed.

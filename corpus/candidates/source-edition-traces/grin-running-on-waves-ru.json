@@ -1,0 +1,93 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "grin-running-on-waves-ru",
+  "research_date": "2026-09-16",
+  "fantlab": {
+    "work_id": 27344,
+    "analysis_url": "https://fantlab.ru/work27344/lp",
+    "analysis_date": "2022-09-18",
+    "observed_counts": {
+      "characters": 360987,
+      "words": 52985
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "work_page_url": "https://fantlab.ru/work27344",
+    "relationship_to_public_edition": "unproven"
+  },
+  "primary_public_transcription": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Бегущая_по_волнам_(Грин)",
+    "work_index_permanent_url": "https://ru.wikisource.org/w/index.php?title=Бегущая_по_волнам_(Грин)&oldid=2595407",
+    "work_index_oldid": 2595407,
+    "work_index_last_edit_shown": "2017-06-15T04:54:00Z",
+    "creation_year_shown": 1928,
+    "bibliographic_source": "А. Грин. Алые паруса. Бегущая по волнам. Золотая цепь. М.: Детская литература, 1965. Серия: Библиотека приключений.",
+    "observed_structure": {
+      "numbered_chapters": 35,
+      "epilogue": true,
+      "literary_subpages_total": 36
+    },
+    "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
+    "source_text_committed": false,
+    "immutable_identity": {
+      "status": "traced_not_frozen",
+      "frozen_components": [
+        "work-index permanent revision oldid 2595407",
+        "explicit Detskaya literatura 1965 bibliographic source citation on the work index",
+        "work-index navigation exposing 35 numbered chapters plus an epilogue"
+      ],
+      "unfrozen_components": [
+        "exact revision IDs, timestamps and MediaWiki SHA-1 values for all 35 chapter pages and the epilogue",
+        "a deterministic literary-body extraction contract",
+        "a deterministic composition order bound to pinned literary-page identities",
+        "raw and scriptorium-text-v1 normalized composite digests",
+        "the relationship between FantLab's uploaded analyzer input and the 1965-source Wikisource transcription"
+      ],
+      "reason": "The permanent work-index revision and explicit bibliography identify a transcription family and page inventory, but the literary body is served through 36 linked subpages whose exact revisions are not frozen by this unit."
+    },
+    "edition_identity_boundary": {
+      "status": "source_cited_1965_transcription_family_not_full_text_frozen",
+      "note": "The candidate is specifically the Wikisource transcription family whose index cites the 1965 Detskaya literatura volume. Bibliographic agreement does not establish byte identity with the printed volume, another electronic transcription, or FantLab's undisclosed analyzer input."
+    }
+  },
+  "independent_bibliographic_cross_check": {
+    "provider": "FantLab bibliography",
+    "url": "https://fantlab.ru/edition12637",
+    "observed_identity": "A. Grin, Алые паруса. Бегущая по волнам. Золотая цепь, Moscow: Detskaya literatura, 1965, Biblioteka priklyucheniy; Бегущая по волнам is listed on pp. 77–276.",
+    "evidence_weight": "bibliographic_transcription_family_cross_check_only",
+    "note": "The title, publisher, year, series and contained-work placement independently corroborate the edition family cited by Wikisource. This does not prove that the Wikisource bytes reproduce that printing exactly or that FantLab analyzed it."
+  },
+  "legal_boundary": {
+    "basis": "public_domain_original_russian_work_with_wikisource_reuse_terms",
+    "evidence": "The Russian Wikisource work page identifies Alexander Grin as 1880–1932, records the work as created in 1928, and explicitly marks the literary work public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions. The retained scope is the original Russian literary work body only; no source prose is committed, and translations, derivative works or later editorial apparatus require separate rights/provenance review.",
+    "source_text_committed": false
+  },
+  "diversity": {
+    "period": "late_1920s",
+    "movement": "Russian romantic / fantastic adventure prose",
+    "work_identity": "original_russian",
+    "reason_selected": "This adds a third long Grin work with a FantLab analysis and a source-cited public-domain transcription family, strengthening future same-author voice-profile coverage while keeping edition and byte identity explicit."
+  },
+  "admissibility": {
+    "length_threshold_met_from_fantlab": true,
+    "source_identity_status": "traced_not_frozen",
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "status": "source_edition_traced_not_frozen",
+    "reasons": [
+      "FantLab reports 360,987 characters and 52,985 words for its 18 September 2022 analysis, above the 300,000-character calibration threshold.",
+      "Russian Wikisource supplies a permanent work-index locator, an explicit 1965 Detskaya literatura source citation, 35 numbered chapter links plus an epilogue, and an explicit public-domain notice for the original Russian work.",
+      "FantLab bibliography independently corroborates the same 1965 Detskaya literatura volume and lists the novel on pp. 77–276.",
+      "The 36 literary subpages are not revision-pinned and no deterministic extraction/composition contract or composite digest exists yet.",
+      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
+    ],
+    "next_evidence": [
+      "Freeze the exact 35 chapter pages plus epilogue with revision IDs, timestamps and MediaWiki SHA-1 values without committing source prose.",
+      "Define deterministic fail-closed extraction/composition and record raw plus scriptorium-text-v1 normalized composite digests before enabling diagnostics.",
+      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliography, title, structure or count proximity alone cannot advance M2."
+    ]
+  }
+}

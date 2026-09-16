@@ -1,30 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 95
+STATE_REVISION: 96
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T06:55:30Z
-LAST_RESULT: SCRIP-CORPUS-009 / Issue #87 / PR #88 received an independent later-run review of exact head `13c81c376eb7b91f39dcc823806397dfd5ffc7e2` with no blocking defect and was squash-merged as `53e955a7397cac15240bfac22059f5aad6469c19`; Issue #87 closed completed. The merged unit adds Alexander Grin's `Дорога никуда` as a legally usable >=300,000-character trace-only candidate with a source-cited Pravda 1965 volume-6 pp. 3–227 Wikisource family, independent FantLab bibliographic corroboration, and a deliberately separate az.lib-derived alternate transcription while keeping literary identity unfrozen, FantLab input identity unknown, diagnostics/gate disabled, and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `0e9e397b78d61ceb1116ef7cf144136a9fddbb53`, 7 commits ahead / 0 behind, exactly five expected corpus/provenance/public-navigation/state files, and no prior submitted reviews or inline review threads. Fresh evidence reconfirmed FantLab's 18 September 2022 count at 438,439 characters / 61,299 words, the primary Wikisource Pravda-1965 vol. 6 pp. 3–227 citation with index oldid 4715367, FantLab edition 12567 listing the novel on the same page range, and the separate az.lib-derived Wikisource transcription at oldid 5585836 with its 1930/public-domain notice and 2-part / 24-chapter structure. Exact-head runs `35061898735` (Pages) and `35061898761` (pinned provider) both completed successfully; job-level inspection confirmed the standard-library suite, deterministic Pages rebuild, provider contract, exact hash-pinned `pylem==0.0.18` install/native smoke and frozen-Anna source-free diagnostic replay.
+LAST_COMMITTED_RUN_AT: 2026-09-16T07:57:00Z
+LAST_RESULT: SCRIP-CORPUS-010 / Issue #89 / PR #90 authored a trace-only Alexander Grin `Бегущая по волнам` corpus candidate. FantLab work 27344 reports 360,987 characters / 52,985 words on 18 September 2022; Russian Wikisource exposes a public-domain 1928 work index at oldid 2595407 citing the Detskaya literatura 1965 volume and linking 35 numbered chapters plus an epilogue; FantLab edition 12637 independently corroborates that 1965 volume and lists the novel on pp. 77–276. Literary subpage identities remain unfrozen, FantLab input identity remains unknown, diagnostics/gate stay disabled, and M2 remains 0/5.
+LAST_VERIFIED_PROGRESS: The authoring run verified the source boundary before mutation: Wikisource explicitly identifies Grin as 1880–1932, creation year 1928, the 1965 Detskaya literatura source citation, 35 chapter links plus an epilogue, permanent work-index oldid 2595407 and a public-domain notice; FantLab bibliography independently identifies the same 1965 volume and pp. 77–276. The machine-readable catalog, dedicated trace, public corpus README and changelog fragment are updated on PR #90. Exact-head CI remains part of this authored PR's verification/review evidence and does not convert bibliography into source match.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-009
-ISSUE:          #87
-STATUS:         DONE
-PR:             #88
-MERGED_COMMIT:  53e955a7397cac15240bfac22059f5aad6469c19
-NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
-                Prefer another legally usable >=300k diversity candidate or stronger
-                independent source-identity evidence for an existing candidate; keep
-                translation and edition identity explicit and do not infer FantLab
-                input identity from bibliography, title, chapter structure, count
-                proximity or public-source freezing.
+UNIT_ID:        SCRIP-CORPUS-010
+ISSUE:          #89
+STATUS:         REVIEW
+PR:             #90
+NEXT_ACTION:    Independently review the exact PR #90 head, changed-file scope,
+                comments/threads and required checks. Merge only if that later review
+                finds no blocking defect. Do not infer FantLab input identity from the
+                1965 bibliography, work title, chapter structure or count proximity.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit but unfrozen 1916 edition lead. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit but unfrozen 1916 edition lead. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. `grin-running-on-waves-ru` adds a third long Grin candidate with a Detskaya literatura 1965 source-cited Wikisource family, 35 chapters plus epilogue, and independent FantLab edition corroboration, but its 36 literary subpages remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -100,6 +97,14 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - A distinct single-page Wikisource transcription sourced from `az.lib.ru` exists at `oldid=5585836`, shows 2 parts / 24 chapters and explicitly marks the 1930 original Russian work public domain. It is retained only as alternate-transcription/legal evidence and is not collapsed with the 1965-source family.
 - `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`. A freeze requires the primary literary-page inventory plus deterministic extraction/composition and raw/normalized composite digests.
 
+### Traced Running on Waves Grin candidate
+
+- FantLab work 27344 reports **360,987 characters** and **52,985 words** on 18 September 2022.
+- Russian Wikisource identifies the work as 1928, cites **A. Grin, _Scarlet Sails. Running on Waves. The Golden Chain_, Moscow: Detskaya literatura, 1965 (Biblioteka priklyucheniy)**, and exposes permanent work-index revision `oldid=2595407`.
+- The work index links **35 numbered chapters plus an epilogue**, for 36 literary subpages. It explicitly marks the original Russian literary work public domain in Russia and life-plus-70-or-less jurisdictions.
+- FantLab edition `12637` independently catalogs the same Detskaya literatura 1965 volume and lists *Running on Waves* on pp. 77–276. This corroborates the bibliographic family only; it does not identify Wikisource bytes or FantLab analyzer input.
+- `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`. A freeze requires exact identities for all 36 literary subpages plus deterministic extraction/composition and raw/normalized composite digests.
+
 ### Deterministic metric findings
 
 - Frozen Anna diagnostic deltas include characters +12,958 and words +16,083 relative to FantLab; numeric-token and lexical-hyphen probes explain little of the word gap.
@@ -118,8 +123,8 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 ### Public repository representation
 
 - Static publication remains source-free and fail-closed; publication tests reject forbidden source-prose keys and Pages builds are deterministic.
-- Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove; trace-only provenance for Petersburg and Hyperboloid; and trace-only Grin candidates `grin-shining-world-ru` and `grin-road-nowhere-ru`.
-- SCRIP-CORPUS-009 adds Road to Nowhere to the machine-readable catalog, a dedicated source-edition trace, and `corpus/candidates/README.md`, while explicitly separating the source-cited 1965 family from the alternate az.lib transcription and from FantLab's unknown input.
+- Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove; trace-only provenance for Petersburg and Hyperboloid; and trace-only Grin candidates `grin-shining-world-ru`, `grin-road-nowhere-ru` and `grin-running-on-waves-ru`.
+- SCRIP-CORPUS-010 adds Running on Waves to the machine-readable catalog, a dedicated source-edition trace and `corpus/candidates/README.md`, while explicitly separating a source-cited 1965 bibliographic family from electronic-byte identity and from FantLab's unknown input.
 - No derived full-work analysis is published for unmatched trace-only candidates.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -135,7 +140,8 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 8. Hyperboloid has a stable public revision and a 1939-derived Moscow-1958 textual-family lead, but no frozen literary identity, direct print mapping or FantLab source match; same-year editions are ambiguous.
 9. Shining World has a source-cited reviewed work-index locator but its 34 chapter revisions/extraction/composite identity are not frozen and FantLab's input is undisclosed.
 10. Road to Nowhere has a source-cited 1965 bibliographic family plus a distinct alternate az.lib transcription, but the primary literary-page identity is not frozen and FantLab's input is undisclosed.
-11. Pages live activation remains a repository-admin effect and is off.
+11. Running on Waves has a source-cited 1965 bibliographic family and a permanent index locator, but its 35 chapters plus epilogue are not revision-frozen and FantLab's input is undisclosed.
+12. Pages live activation remains a repository-admin effect and is off.
 
 ## Run selection rule
 

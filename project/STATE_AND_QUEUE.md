@@ -1,24 +1,26 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 108
+STATE_REVISION: 109
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T22:47:59Z
-LAST_RESULT: SCRIP-CORPUS-016 / Issue #101 / PR #102 was independently reviewed at exact head `bf41149bdd9996249db01ec9da9889376a80d057`. The source-specific Hyperboloid extraction/replay implementation and all four current-head workflows were healthy, but review found a blocking machine-readable provenance inconsistency: `corpus/candidates/fantlab-parity-v1.json` still described the candidate as unfrozen. This recovery unit repairs that catalog row to reference the committed revision/body manifests, 499066-character frozen body and SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`, removes the false unfrozen blocker, and preserves the unresolved FantLab/print-edition boundary. PR #102 remains unmerged and requires fresh exact-head checks plus a later independent review of the repaired head.
-LAST_VERIFIED_PROGRESS: The independent review of `bf41149bdd9996249db01ec9da9889376a80d057` confirmed the fail-closed/source-free extraction contract and green runs `35156488833` (Hyperboloid replay), `35156488806` (Pages), `35156488898` (frozen diagnostic) and `35156488923` (pinned provider), but correctly blocked merge because the central catalog contradicted the newly frozen revision/body manifests. The repair synchronizes `source_revision_manifest`, `source_body_manifest`, `source_identity_status=public_candidate_frozen`, 499066 characters / 930560 bytes and the frozen body digest while retaining `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`. Fresh checks on the repaired head are required before merge; no success is claimed for that repaired head in this state commit. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-16T23:54:09Z
+LAST_RESULT: SCRIP-CORPUS-016 / Issue #101 / PR #102 received an independent later-run exact-head review of repaired head `9fa268604dde91a078bc403a50d24fc2394b9bf5` with no blocking defect and was squash-merged as `055e5c789ed65bc48eaaeb19bf007ad3400d1380`; Issue #101 closed completed. The merged unit freezes a deterministic source-free literary-body identity for the exact Russian Wikisource revision `oldid=5014458`, synchronizes the central candidate catalog with the committed revision/body manifests, and preserves direct print-edition identity plus FantLab analyzer-input identity as unresolved.
+LAST_VERIFIED_PROGRESS: Immediately before merge, current `master` was still the authored base `d76c5403d62ec85c022efe4def93883eef550da3`; PR #102 was 21 commits ahead / 0 behind, mergeable, changed exactly 11 expected unit files and had no inline review threads. Repaired exact-head runs `35159779198` (Hyperboloid source/body replay), `35159779188` (Scriptorium Pages), `35159779182` (frozen diagnostic) and `35159779183` (pinned provider) all completed successfully. The Hyperboloid job passed the standard-library suite, re-fetched exact `oldid=5014458`, matched/replayed the committed revision manifest, reproduced the committed literary-body manifest byte-for-byte, passed source-free structure/fail-closed assertions and uploaded derived/replay evidence. The frozen body is 499066 characters / 930560 bytes with raw and normalized SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`; `fantlab_source_edition_match` remains unknown and M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-016
 ISSUE:          #101
-STATUS:         REVIEW_PENDING / REPAIR_AUTHORED
+STATUS:         DONE
 PR:             #102
-AUTHORED_BASE:   d76c5403d62ec85c022efe4def93883eef550da3
-NEXT_ACTION:    Require fresh exact-head checks after the catalog-sync repair, including
-                Hyperboloid source/body replay and Pages. Then perform a later independent
-                review of the repaired exact head before any merge. Preserve the frozen
-                public-source identity, but keep direct print-edition identity and
-                `fantlab_source_edition_match` unknown; M2 stays 0/5.
+MERGED_COMMIT:  055e5c789ed65bc48eaaeb19bf007ad3400d1380
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer another legally usable >=300k diversity candidate or stronger
+                independent source-identity evidence for an existing candidate. When a
+                revision/container identity is frozen, keep literary-body extraction and
+                raw/normalized body digests separate until deterministically reproduced.
+                Never infer FantLab input identity from bibliography, title, count
+                proximity or public-source freezing.
 ```
 
 ## Current milestone gate
@@ -33,7 +35,6 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-016 repaired-head review | recovery / review | Verify the catalog-sync repair on the exact PR #102 head; merge only after current checks are green and a later independent review finds no blocker | Repaired head must preserve source-free manifests and keep FantLab source identity unknown |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status

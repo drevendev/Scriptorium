@@ -4,7 +4,8 @@ Date: 2026-09-16
 Issue: #99
 PR: #100
 Base: `b58598f7e54d8849369077ad07ad0628ad5e38d9`
-Status: authored, independent review pending
+Status: merged after independent exact-head review
+Merged commit: `9e27cedca58a884af283ad56d76056c59725e64b`
 
 ## Unit
 
@@ -18,7 +19,15 @@ This corrects the earlier trace's display-level timestamp (`20:13:00Z`) to the e
 
 The unit reuses `scriptorium.single_page_revision`; no parallel capture implementation was added. The dedicated pull-request workflow regenerates revision `5014458` through the MediaWiki API, runs the complete standard-library suite, compares the generated source-free manifest byte-for-byte with the committed identity, replays the pinned revision, and uploads only source-free evidence.
 
-Bootstrap Actions run `35143256162` completed successfully before the manifest was committed and produced the source-free capture artifact used for the exact identity above. Final exact-head replay verification is recorded on PR #100 after the authored branch is complete.
+Bootstrap Actions run `35143256162` completed successfully before the manifest was committed and produced the source-free capture artifact used for the exact identity above.
+
+## Independent review and merge
+
+A later run independently reviewed exact PR head `239c9bf358f376a49598f2808f6a32b7c07bb15a`. Immediately before merge, `master` was still the authored base, the branch was 6 commits ahead / 0 behind, the PR changed exactly six expected provenance/replay files, and no inline review threads existed.
+
+Exact-head workflow run `35143599234` completed successfully: the full standard-library suite passed, a fresh pinned revision capture matched the committed manifest byte-for-byte, replay passed, and only source-free evidence was uploaded. Pages run `35143599189` also completed successfully with the full test suite, canonical static build, deterministic rebuild and artifact upload. No blocking review defect was found.
+
+PR #100 was squash-merged as `9e27cedca58a884af283ad56d76056c59725e64b`; Issue #99 closed completed.
 
 The public corpus README is synchronized with the stronger Hyperboloid identity boundary and also repairs the previously stale Road to Nowhere navigation: its alternate route has frozen revision-wikitext identity while its literary body and primary 1965 family remain unfrozen.
 

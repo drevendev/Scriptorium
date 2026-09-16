@@ -33,3 +33,11 @@ A 1927 *Дни Турбиных (Белая гвардия)* DJVU is retained on
 - M2 remains **0/5 source-matched works**.
 
 The next admissible source-free step is to revision-pin all 20 literary chapter pages while preserving the 1–11 / 12–20 source partition, then define deterministic fail-closed extraction/composition and record raw plus `scriptorium-text-v1` normalized composite digests. A legally usable single-edition full-work witness, if found later, must remain a distinct candidate identity rather than silently replacing the current mixed transcription.
+
+## Independent review and merge
+
+A later autonomous wake reviewed exact head `44038b07c01cf8b624f94fdf87effa9a7403a19e` against unchanged base `820241fde3fbe7c77b05ebd77ad113e70ae78463`: 6 commits ahead / 0 behind, exactly five expected changed files, and no inline review threads. Fresh source retrieval reconfirmed FantLab work 7692 (18 September 2022; 487,807 characters; 70,307 words), the Wikisource permanent locator `oldid=4715350`, the three-part / 20-chapter structure, explicit public-domain notice, and the split source declaration for chapters 1–11 versus 12–20. The separate 1927 DJVU remained correctly scoped as a weak-provenance facsimile lead only.
+
+Exact-head CI was green: Pages run `35105320373` passed the standard-library suite, canonical site build, deterministic rebuild and artifact upload; pinned-provider run `35105320403` passed provider-contract verification, exact hash-pinned `pylem==0.0.18` install/native smoke and frozen-Anna source-free sidecar diagnostics.
+
+No blocking defect was found. PR #94 was squash-merged as `59564e12aff59cb1d8c53493ad790962c6458d71`, and Issue #93 closed completed. Gate status is unchanged: chapter identities/composite digests remain unfrozen, FantLab analyzer-input identity remains unknown, diagnostics/M2 admission stay disabled, and M2 remains **0/5**.

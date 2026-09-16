@@ -1,24 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 94
+STATE_REVISION: 95
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T05:59:00Z
-LAST_RESULT: SCRIP-CORPUS-009 / Issue #87 / PR #88 traces Alexander Grin's `Дорога никуда` as a legally usable >=300,000-character candidate. FantLab work 27346 reports 438,439 characters and 61,299 words on 18 September 2022. Russian Wikisource supplies a source-cited Pravda 1965 volume-6 pp. 3–227 transcription family at work-index oldid=4715367, while FantLab bibliography independently corroborates the same volume/page range. A distinct az.lib-derived Wikisource transcription at oldid=5585836 is retained only as alternate-transcription/legal evidence. Literary-page identity remains unfrozen, FantLab analyzer-input identity is unknown, diagnostics/gate stay disabled, and M2 remains 0/5.
-LAST_VERIFIED_PROGRESS: Source research established the FantLab threshold/date/counts, the primary Wikisource 1965 bibliographic family and immutable work-index locator, independent FantLab bibliography agreement on pp. 3–227, and a distinct two-part / 24-chapter az.lib-derived Wikisource transcription with explicit public-domain notice. The two electronic routes are deliberately not collapsed. Exact-head repository workflow verification and independent later-run review remain required before merge.
+LAST_COMMITTED_RUN_AT: 2026-09-16T06:55:30Z
+LAST_RESULT: SCRIP-CORPUS-009 / Issue #87 / PR #88 received an independent later-run review of exact head `13c81c376eb7b91f39dcc823806397dfd5ffc7e2` with no blocking defect and was squash-merged as `53e955a7397cac15240bfac22059f5aad6469c19`; Issue #87 closed completed. The merged unit adds Alexander Grin's `Дорога никуда` as a legally usable >=300,000-character trace-only candidate with a source-cited Pravda 1965 volume-6 pp. 3–227 Wikisource family, independent FantLab bibliographic corroboration, and a deliberately separate az.lib-derived alternate transcription while keeping literary identity unfrozen, FantLab input identity unknown, diagnostics/gate disabled, and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `0e9e397b78d61ceb1116ef7cf144136a9fddbb53`, 7 commits ahead / 0 behind, exactly five expected corpus/provenance/public-navigation/state files, and no prior submitted reviews or inline review threads. Fresh evidence reconfirmed FantLab's 18 September 2022 count at 438,439 characters / 61,299 words, the primary Wikisource Pravda-1965 vol. 6 pp. 3–227 citation with index oldid 4715367, FantLab edition 12567 listing the novel on the same page range, and the separate az.lib-derived Wikisource transcription at oldid 5585836 with its 1930/public-domain notice and 2-part / 24-chapter structure. Exact-head runs `35061898735` (Pages) and `35061898761` (pinned provider) both completed successfully; job-level inspection confirmed the standard-library suite, deterministic Pages rebuild, provider contract, exact hash-pinned `pylem==0.0.18` install/native smoke and frozen-Anna source-free diagnostic replay.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-009
 ISSUE:          #87
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #88
-NEXT_ACTION:    Independently review the exact PR #88 head after required workflows settle.
-                Confirm the five-file corpus/provenance/public-navigation/state scope,
-                evidence citations and fail-closed identity boundary before any merge.
-                Do not promote bibliography or either Wikisource route to FantLab source
-                identity; the primary literary-page inventory and composite digests are
-                still unfrozen.
+MERGED_COMMIT:  53e955a7397cac15240bfac22059f5aad6469c19
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer another legally usable >=300k diversity candidate or stronger
+                independent source-identity evidence for an existing candidate; keep
+                translation and edition identity explicit and do not infer FantLab
+                input identity from bibliography, title, chapter structure, count
+                proximity or public-source freezing.
 ```
 
 ## Current milestone gate
@@ -31,7 +32,6 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-009 review | review / provenance | Independent exact-head review of PR #88 and merge only if source boundaries, five-file scope and required checks are clean | PR #88 workflows complete |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Evidence already established

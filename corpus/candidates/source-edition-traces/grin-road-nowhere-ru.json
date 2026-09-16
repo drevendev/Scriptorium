@@ -1,0 +1,105 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "grin-road-nowhere-ru",
+  "research_date": "2026-09-16",
+  "fantlab": {
+    "work_id": 27346,
+    "analysis_url": "https://fantlab.ru/work27346/lp",
+    "analysis_date": "2022-09-18",
+    "observed_counts": {
+      "characters": 438439,
+      "words": 61299
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "work_page_url": "https://fantlab.ru/work27346",
+    "relationship_to_public_edition": "unproven"
+  },
+  "primary_public_transcription": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Дорога_никуда_(Грин)",
+    "work_index_permanent_url": "https://ru.wikisource.org/w/index.php?title=Дорога_никуда_(Грин)&oldid=4715367",
+    "work_index_oldid": 4715367,
+    "bibliographic_source": "А. С. Грин. Собрание сочинений, т. 6. М.: Правда, 1965, сс. 3–227; Wikisource names lib.web as the electronic source.",
+    "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
+    "source_text_committed": false,
+    "immutable_identity": {
+      "status": "traced_not_frozen",
+      "frozen_components": [
+        "work-index permanent revision oldid 4715367",
+        "explicit Pravda 1965 volume-6 pp. 3–227 bibliographic source citation on the work index"
+      ],
+      "unfrozen_components": [
+        "exact revision IDs, timestamps and MediaWiki SHA-1 values for the literary chapter subpages",
+        "a deterministic literary-body extraction contract",
+        "a deterministic composition order bound to pinned literary-page identities",
+        "raw and scriptorium-text-v1 normalized composite digests",
+        "the relationship between FantLab's uploaded analyzer input and the 1965-source Wikisource transcription"
+      ],
+      "reason": "The permanent work-index revision and explicit bibliography identify a transcription family, but the literary body is served through linked chapter pages whose exact revisions are not frozen by this unit."
+    },
+    "edition_identity_boundary": {
+      "status": "source_cited_1965_transcription_family_not_full_text_frozen",
+      "note": "The primary candidate is specifically the Wikisource transcription family whose index cites Pravda 1965 volume 6 pp. 3–227. Bibliographic agreement does not establish byte identity with the printed volume, another electronic transcription, or FantLab's undisclosed analyzer input."
+    }
+  },
+  "alternate_public_transcription": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Дорога_в_никуда_(Грин)",
+    "permanent_url": "https://ru.wikisource.org/w/index.php?title=Дорога_в_никуда_(Грин)&oldid=5585836",
+    "oldid": 5585836,
+    "source": "az.lib.ru",
+    "publication_year_shown": 1930,
+    "observed_structure": {
+      "parts": 2,
+      "chapter_counts": [
+        7,
+        17
+      ],
+      "total_chapters": 24
+    },
+    "legal_notice": "The page explicitly states that the work is in the public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions; it also carries separate derivative-work/translation rights language. Scriptorium relies only on the original Russian literary-work scope here.",
+    "evidence_weight": "alternate_transcription_and_legal_cross_check_only",
+    "note": "This single-page az.lib-derived transcription is deliberately not collapsed with the source-cited 1965 Wikisource family. Its differing title form/source path demonstrates why title and work identity alone cannot establish edition or byte identity."
+  },
+  "independent_bibliographic_cross_check": {
+    "provider": "FantLab bibliography",
+    "url": "https://fantlab.ru/edition12567",
+    "observed_identity": "A. S. Grin, Collected Works in six volumes, Moscow: Pravda, 1965, volume 6; Road to Nowhere is listed on pp. 3–227.",
+    "evidence_weight": "bibliographic_transcription_family_cross_check_only",
+    "note": "The page range independently matches the primary Wikisource source citation. This corroborates the cited edition family but does not prove that the Wikisource bytes reproduce that printing exactly or that FantLab analyzed it."
+  },
+  "legal_boundary": {
+    "basis": "public_domain_original_russian_work_with_wikisource_reuse_terms",
+    "evidence": "Russian Wikisource identifies Alexander Grin as 1880–1932. Its alternate full-work transcription labels this 1930 work public domain in Russia under Article 1281 and in life-plus-70-or-less jurisdictions. The retained scope is the original Russian literary work body only; no source prose is committed, and translations, later creative revisions, or editorial apparatus require separate rights/provenance review.",
+    "source_text_committed": false
+  },
+  "diversity": {
+    "period": "late_1920s_to_1930",
+    "movement": "Russian romantic / psychological adventure prose",
+    "work_identity": "original_russian",
+    "reason_selected": "This adds a second long Grin work with a much larger FantLab analysis and a source-cited 1965 transcription family, improving same-author future profile coverage while keeping edition ambiguity explicit."
+  },
+  "admissibility": {
+    "length_threshold_met_from_fantlab": true,
+    "source_identity_status": "traced_not_frozen",
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "status": "source_edition_traced_not_frozen",
+    "reasons": [
+      "FantLab reports 438,439 characters and 61,299 words for its 18 September 2022 analysis, comfortably above the 300,000-character calibration threshold.",
+      "Russian Wikisource supplies a permanent work-index locator and an explicit Pravda 1965 volume-6 pp. 3–227 source citation; FantLab bibliography independently corroborates that edition and page range.",
+      "A separate Wikisource/az.lib full-work transcription explicitly marks the original Russian work public domain, but it is an alternate transcription and is not used to infer byte identity for the primary 1965-source family.",
+      "The literary pages behind the primary work index are not revision-pinned and no deterministic extraction/composition contract or composite digest exists yet.",
+      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
+    ],
+    "next_evidence": [
+      "Freeze the exact literary-page inventory for the primary 1965-source Wikisource transcription with revision IDs, timestamps and MediaWiki SHA-1 values without committing source prose.",
+      "Define deterministic fail-closed extraction/composition and record raw plus scriptorium-text-v1 normalized composite digests before enabling diagnostics.",
+      "Compare the primary 1965-source and alternate az.lib transcription identities only after both are independently frozen; do not infer equivalence from title, plot, chapter labels or count proximity.",
+      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliography alone cannot advance M2."
+    ]
+  }
+}

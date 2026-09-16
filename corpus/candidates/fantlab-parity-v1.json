@@ -308,6 +308,39 @@
         "The work-index permanent revision is an immutable locator only: the 34 chapter subpages, extraction/composition contract and raw/normalized composite digests are not frozen.",
         "The 1965 bibliographic source citation establishes a transcription family, not identity with FantLab's undisclosed upload or with another Grin transcription."
       ]
+    },
+    {
+      "candidate_id": "grin-road-nowhere-ru",
+      "author": "Александр Грин",
+      "title": "Дорога никуда",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 27346,
+        "analysis_url": "https://fantlab.ru/work27346/lp",
+        "analysis_date": "2022-09-18",
+        "characters": 438439,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Дорога_никуда_(Грин)",
+        "edition_note": "Wikisource work-index permanent revision oldid=4715367 cites А. С. Грин. Собрание сочинений, т. 6. М.: Правда, 1965, сс. 3–227 (lib.web). FantLab bibliography independently lists the same 1965 volume and pp. 3–227 for the novel; the literary chapter revisions are not frozen.",
+        "source_provenance_confidence": "strong",
+        "legal_basis": "public_domain",
+        "legal_evidence": "A separate Wikisource full-work transcription records the 1930 original Russian work as public domain in Russia under Article 1281 and in life-plus-70-or-less jurisdictions. The retained scope is the original Russian literary body only; no source prose, translation, or later editorial apparatus is committed."
+      },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/grin-road-nowhere-ru.json",
+      "source_identity_status": "traced_not_frozen",
+      "fantlab_source_edition_match": "unknown",
+      "diagnostic_ready": false,
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; bibliography cannot establish a source match.",
+        "The source-cited 1965 work-index locator does not freeze the linked literary-page revisions, extraction/composition contract, or raw/normalized composite digests.",
+        "A distinct Wikisource/az.lib full-work transcription exists at oldid=5585836; it is retained as alternate-transcription/legal evidence and is not collapsed with the 1965-source family."
+      ]
     }
   ],
   "held_leads": [

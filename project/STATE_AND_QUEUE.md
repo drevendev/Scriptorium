@@ -1,30 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 93
+STATE_REVISION: 94
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T04:52:54Z
-LAST_RESULT: SCRIP-CORPUS-008 / Issue #85 / PR #86 received an independent later-run review of exact head `35061e829d5b279aa45a29f32ff255516c45961a` with no blocking defect and was squash-merged as `84f4f4cea73a53d8ff01fe45000e6655e9f4cb5a`; Issue #85 closed completed. The merged unit adds Alexander Grin's `Блистающий мир` as a legally usable >=300,000-character diversity candidate with a source-cited 1965 Wikisource transcription family while keeping full-text identity unfrozen, FantLab input identity unknown, diagnostics/gate disabled, and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `c7da33834dd6df8017bc59d86b39b0d07ea480ab`, 7 commits ahead / 0 behind, exactly five expected corpus/provenance/public-navigation/state files, and no review threads. Fresh evidence reconfirmed FantLab's 18 September 2022 count at 306,240 characters / 43,678 words, Wikisource permanent locator `oldid=4186047`, Pravda 1965 vol. 3 pp. 66–214 provenance, 16+11+7 chapter navigation, sampled chapter-source repetition, RVB's 1921–1923 text-family cross-check, and the legal-use boundary. Exact-head runs `35053939844` (Pages) and `35053939843` (pinned provider) both completed successfully, including the standard-library suite, deterministic Pages rebuild, provider contract, exact hash-pinned `pylem==0.0.18` smoke and frozen Anna sidecar diagnostics.
+LAST_COMMITTED_RUN_AT: 2026-09-16T05:59:00Z
+LAST_RESULT: SCRIP-CORPUS-009 / Issue #87 / PR #88 traces Alexander Grin's `Дорога никуда` as a legally usable >=300,000-character candidate. FantLab work 27346 reports 438,439 characters and 61,299 words on 18 September 2022. Russian Wikisource supplies a source-cited Pravda 1965 volume-6 pp. 3–227 transcription family at work-index oldid=4715367, while FantLab bibliography independently corroborates the same volume/page range. A distinct az.lib-derived Wikisource transcription at oldid=5585836 is retained only as alternate-transcription/legal evidence. Literary-page identity remains unfrozen, FantLab analyzer-input identity is unknown, diagnostics/gate stay disabled, and M2 remains 0/5.
+LAST_VERIFIED_PROGRESS: Source research established the FantLab threshold/date/counts, the primary Wikisource 1965 bibliographic family and immutable work-index locator, independent FantLab bibliography agreement on pp. 3–227, and a distinct two-part / 24-chapter az.lib-derived Wikisource transcription with explicit public-domain notice. The two electronic routes are deliberately not collapsed. Exact-head repository workflow verification and independent later-run review remain required before merge.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-008
-ISSUE:          #85
-STATUS:         DONE
-PR:             #86
-MERGED_COMMIT:  84f4f4cea73a53d8ff01fe45000e6655e9f4cb5a
-NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
-                Prefer another legally usable >=300k diversity candidate or stronger
-                independent source-identity evidence for an existing candidate; keep
-                translation and edition identity explicit and do not infer FantLab
-                input identity from title, bibliography, chapter structure, count
-                proximity or public-source freezing.
+UNIT_ID:        SCRIP-CORPUS-009
+ISSUE:          #87
+STATUS:         REVIEW
+PR:             #88
+NEXT_ACTION:    Independently review the exact PR #88 head after required workflows settle.
+                Confirm the five-file corpus/provenance/public-navigation/state scope,
+                evidence citations and fail-closed identity boundary before any merge.
+                Do not promote bibliography or either Wikisource route to FantLab source
+                identity; the primary literary-page inventory and composite digests are
+                still unfrozen.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit but unfrozen 1916 edition lead. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit but unfrozen 1916 edition lead. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -32,6 +31,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
+| P0 | SCRIP-CORPUS-009 review | review / provenance | Independent exact-head review of PR #88 and merge only if source boundaries, five-file scope and required checks are clean | PR #88 workflows complete |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Evidence already established
@@ -92,6 +92,14 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - Russian Virtual Library independently exposes *Shining World* as a 1921–1923 work with the same three-part / 34-chapter structure; this is bibliographic/text-family corroboration only.
 - `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`. A freeze requires all 34 exact chapter revisions, deterministic extraction/composition and raw/normalized composite digests.
 
+### Traced Road to Nowhere Grin candidate
+
+- FantLab work 27346 reports **438,439 characters** and **61,299 words** on 18 September 2022.
+- The primary Russian Wikisource work index cites **A. S. Grin, Collected Works, volume 6, Moscow: Pravda, 1965, pp. 3–227 (`lib.web`)**; permanent revision `oldid=4715367` pins the index only.
+- FantLab bibliography independently lists the same 1965 volume and *Road to Nowhere* on pp. 3–227. This corroborates a bibliographic transcription family, not electronic bytes or FantLab analyzer-input identity.
+- A distinct single-page Wikisource transcription sourced from `az.lib.ru` exists at `oldid=5585836`, shows 2 parts / 24 chapters and explicitly marks the 1930 original Russian work public domain. It is retained only as alternate-transcription/legal evidence and is not collapsed with the 1965-source family.
+- `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`. A freeze requires the primary literary-page inventory plus deterministic extraction/composition and raw/normalized composite digests.
+
 ### Deterministic metric findings
 
 - Frozen Anna diagnostic deltas include characters +12,958 and words +16,083 relative to FantLab; numeric-token and lexical-hyphen probes explain little of the word gap.
@@ -110,8 +118,8 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 ### Public repository representation
 
 - Static publication remains source-free and fail-closed; publication tests reject forbidden source-prose keys and Pages builds are deterministic.
-- Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove, trace-only provenance for Petersburg and Hyperboloid, and the trace-only `grin-shining-world-ru` candidate.
-- SCRIP-CORPUS-008 adds the Grin candidate to the machine-readable catalog, a dedicated source-edition trace, and `corpus/candidates/README.md` while explicitly labeling the work-index locator as insufficient to freeze the 34-chapter literary text.
+- Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove; trace-only provenance for Petersburg and Hyperboloid; and trace-only Grin candidates `grin-shining-world-ru` and `grin-road-nowhere-ru`.
+- SCRIP-CORPUS-009 adds Road to Nowhere to the machine-readable catalog, a dedicated source-edition trace, and `corpus/candidates/README.md`, while explicitly separating the source-cited 1965 family from the alternate az.lib transcription and from FantLab's unknown input.
 - No derived full-work analysis is published for unmatched trace-only candidates.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -126,7 +134,8 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 7. Petersburg has strong 1916 edition provenance but no frozen PDF/OCR identity and no FantLab source match.
 8. Hyperboloid has a stable public revision and a 1939-derived Moscow-1958 textual-family lead, but no frozen literary identity, direct print mapping or FantLab source match; same-year editions are ambiguous.
 9. Shining World has a source-cited reviewed work-index locator but its 34 chapter revisions/extraction/composite identity are not frozen and FantLab's input is undisclosed.
-10. Pages live activation remains a repository-admin effect and is off.
+10. Road to Nowhere has a source-cited 1965 bibliographic family plus a distinct alternate az.lib transcription, but the primary literary-page identity is not frozen and FantLab's input is undisclosed.
+11. Pages live activation remains a repository-admin effect and is off.
 
 ## Run selection rule
 

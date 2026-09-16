@@ -1,25 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 102
+STATE_REVISION: 103
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T14:00:00Z
-LAST_RESULT: SCRIP-CORPUS-012 / Issue #93 / PR #94 added Mikhail Bulgakov's `bulgakov-white-guard-ru` as a legally usable >=300k trace-only diversity candidate while preserving Russian Wikisource's explicit mixed-source boundary: chapters 1-11 cite Paris Concorde 1927, chapters 12-20 cite Moscow Pravda 1989. FantLab work 7692 reports 487,807 characters and 70,307 words on 18 September 2022 but discloses neither analyzer-input edition nor bytes. Work-index oldid 4715350 freezes the index declaration only; chapter identities, extraction/composition, composite digests and FantLab relation remain unfrozen/unknown, diagnostics disabled and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Fresh FantLab retrieval reconfirmed the 18 September 2022 analysis and 487,807 / 70,307 counts. Fresh Russian Wikisource retrieval reconfirmed the 20-chapter three-part structure, explicit public-domain notice, permanent index oldid 4715350, and the split source declaration for chapters 1-11 versus 12-20. A separate 1927 DJVU is retained only as a weak-provenance facsimile lead for the first source family; no equality with the mixed transcription or FantLab input is inferred. PR #94 is authored and must receive exact-head checks plus an independent later review before merge.
+LAST_COMMITTED_RUN_AT: 2026-09-16T14:55:00Z
+LAST_RESULT: SCRIP-CORPUS-012 / Issue #93 / PR #94 received an independent exact-head review of `44038b07c01cf8b624f94fdf87effa9a7403a19e` with no blocking defect and was squash-merged as `59564e12aff59cb1d8c53493ad790962c6458d71`; Issue #93 closed completed. The merged unit adds Mikhail Bulgakov's `bulgakov-white-guard-ru` as a legally usable >=300k trace-only diversity candidate while preserving Russian Wikisource's explicit mixed-source boundary: chapters 1-11 cite Paris Concorde 1927, chapters 12-20 cite Moscow Pravda 1989. Chapter identities, extraction/composition, composite digests and FantLab relation remain unfrozen/unknown, diagnostics disabled and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `820241fde3fbe7c77b05ebd77ad113e70ae78463`, exact head 6 commits ahead / 0 behind, exactly five expected files and no inline review threads. Fresh FantLab retrieval reconfirmed the 18 September 2022 analysis and 487,807 / 70,307 counts. Fresh Russian Wikisource retrieval reconfirmed the 20-chapter three-part structure, explicit public-domain notice, permanent index oldid 4715350, and the split source declaration for chapters 1-11 versus 12-20. Exact-head Pages run `35105320373` and pinned-provider run `35105320403` both passed; the separate 1927 DJVU remains only a weak-provenance facsimile lead for the first source family.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-012
 ISSUE:          #93
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #94
-MERGED_COMMIT:  none
-NEXT_ACTION:    Independently review the exact PR #94 head after required checks finish.
-                Confirm the five-file scope, JSON validity, source-free publication
-                boundary and mixed-source provenance wording before considering merge.
-                Do not infer one edition identity for the Wikisource work and do not
-                advance M2 from title, bibliography, scan availability, chapter layout,
-                count proximity or public-domain status.
+MERGED_COMMIT:  59564e12aff59cb1d8c53493ad790962c6458d71
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer another legally usable >=300k diversity candidate or stronger
+                independent source-identity evidence for an existing candidate; keep
+                translation, edition and mixed-source identity explicit and do not
+                infer FantLab input identity from bibliography, title, chapter layout,
+                count proximity, public-domain status or facsimile availability.
 ```
 
 ## Current milestone gate
@@ -138,7 +138,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - Static publication remains source-free and fail-closed; publication tests reject forbidden source-prose keys and Pages builds are deterministic.
 - Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove; trace-only provenance for Petersburg and Hyperboloid; trace-only Grin candidates `grin-shining-world-ru`, `grin-road-nowhere-ru` and `grin-running-on-waves-ru`; and the trace-only mixed-source Bulgakov candidate `bulgakov-white-guard-ru`.
 - SCRIP-CORPUS-011 is merged: the public Petersburg trace now exposes the repaired provenance boundary in which Commons Page-protection metadata and the current no-overwrite notice are separate operational observations, neither is a PDF content identity, and a recorded byte-count/SHA-256 snapshot is still required before binary freeze.
-- SCRIP-CORPUS-012 is in review: the public White Guard trace makes the chapter 1-11 / 12-20 source split first-class so a repository visitor cannot mistake the Wikisource work title or index locator for a single-edition text identity.
+- SCRIP-CORPUS-012 is merged: the public White Guard trace makes the chapter 1-11 / 12-20 source split first-class so a repository visitor cannot mistake the Wikisource work title or index locator for a single-edition text identity.
 - No derived full-work analysis is published for unmatched trace-only candidates.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 

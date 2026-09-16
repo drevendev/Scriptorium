@@ -1,7 +1,7 @@
 # SCRIP-CORPUS-012 — trace The White Guard as an explicit mixed-source candidate
 
 Issue: #93  
-PR: pending  
+PR: #94  
 Mode: corpus / provenance
 
 ## Decision

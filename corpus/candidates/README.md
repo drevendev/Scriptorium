@@ -66,11 +66,13 @@ Canonical evidence:
 
 The retained source candidate is not the generic Russian Wikisource landing page. That landing page explicitly sits in the `Тексты без ссылок на источники` category and exposes edition navigation rather than a source-identified complete transcription, so it is useful only as a public-domain/bibliographic cross-check. Instead, Scriptorium records the Wikimedia Commons **632-page facsimile of the first 1916 book publication**, described there as a mechanical reproduction of the three *Sirin* installments from 1913–1914. Commons explicitly marks the work public domain. No scan pages, OCR, or source prose are committed.
 
-This unit deliberately stops at **source-edition tracing**. Scriptorium has not yet frozen the PDF byte digest, selected literary pages, or a deterministic OCR/extraction contract, and FantLab does not disclose which Petersburg edition or byte stream it analyzed. The 1916 first book edition is also kept distinct from Bely's materially revised 1922 edition. Therefore `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+The permanent Commons file-description revision **`oldid=1046280975` freezes descriptive page wikitext, not the PDF binary**. Fresh Commons page information for file page ID **47639472** reports that uploads are currently allowed for all users, so the current file-history row and direct `upload.wikimedia.org` URL are treated as retrieval evidence rather than an immutable byte identity. A later freeze must retrieve one specific PDF snapshot and record its exact byte count plus SHA-256 in source-free metadata before Scriptorium can claim that binary as frozen.
+
+This unit deliberately remains at **source-edition tracing**. Scriptorium has not yet recorded a PDF snapshot digest, selected literary pages, or a deterministic OCR/extraction contract, and FantLab does not disclose which Petersburg edition or byte stream it analyzed. The 1916 first book edition is also kept distinct from Bely's materially revised 1922 edition. Therefore `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
 
 Canonical evidence:
 
-- `source-edition-traces/bely-petersburg-1916-ru.json` — FantLab counts, explicit 1916 facsimile identity, public-domain evidence, Wikisource provenance warning, edition-family boundary and next evidence required before diagnostics.
+- `source-edition-traces/bely-petersburg-1916-ru.json` — FantLab counts, explicit 1916 facsimile identity, public-domain evidence, Commons description-vs-binary identity boundary, Wikisource provenance warning, edition-family boundary and next evidence required before diagnostics.
 
 ## Hyperboloid of Engineer Garin traced early-Soviet SF candidate
 

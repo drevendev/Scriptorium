@@ -16,11 +16,9 @@ The facsimile's title page was independently inspected and identifies *Пете�
 
 The previously recorded Commons permanent description locator `oldid=1046280975` freezes descriptive page wikitext; it does **not** by itself freeze the PDF bytes served for the file.
 
-Fresh Commons page-information evidence records file page ID `47639472`, creation/upload time `2016-03-20T18:31:00Z`, a 632-page current file-history observation, and page-level upload permission reported as **Allow all users**. The page-information content hash is recorded only as page/content metadata and is explicitly **not** treated as a PDF checksum.
+Fresh Commons Page Information records file page ID `47639472`, creation/upload time `2016-03-20T18:31:00Z`, a 632-page current file-history observation, and `Upload: Allow all users (infinite)` inside the **Page protection** table. That upload value is retained only as protection metadata and is not interpreted as proof that the current PDF can be overwritten. The current rendered file page separately states **`You cannot overwrite this file.`** The page-information content hash is likewise scoped only to page/content metadata and is not treated as a PDF checksum.
 
-Consequently the current file-history row and direct `upload.wikimedia.org` URL are retrieval evidence, not immutable Scriptorium binary identity. `scriptorium_pdf_sha256` remains `null`; `byte_snapshot_status` remains `not_frozen`.
-
-The next admissible freeze step is to retrieve one specific PDF snapshot and record its exact byte count and SHA-256 in source-free metadata without committing the scan, then define and verify deterministic fail-closed page/OCR extraction before enabling full-work diagnostics.
+Neither the page-protection row nor the current overwrite notice identifies the PDF contents. `scriptorium_pdf_sha256` therefore remains `null`; `byte_snapshot_status` remains `not_frozen`. The next admissible freeze step is to retrieve one specific PDF snapshot and record its exact byte count and SHA-256 in source-free metadata without committing the scan, then define and verify deterministic fail-closed page/OCR extraction before enabling full-work diagnostics.
 
 ## Gate effect
 
@@ -31,14 +29,16 @@ The next admissible freeze step is to retrieve one specific PDF snapshot and rec
 - `m2_parity_admissible=false`;
 - M2 remains **0/5 source-matched works**.
 
-Public corpus navigation now exposes the description-vs-binary distinction so a repository visitor cannot mistake a Commons page oldid for a frozen book byte stream. No relationship is inferred between the 1916 facsimile and FantLab's undisclosed analyzer input.
-
-This authoring run leaves PR #92 for a later independent exact-head review rather than self-merging it.
+Public corpus navigation exposes the description-vs-binary distinction so a repository visitor cannot mistake a Commons page oldid, Page Information hash, file-history row or operational overwrite notice for a frozen book byte stream. No relationship is inferred between the 1916 facsimile and FantLab's undisclosed analyzer input.
 
 ## Independent review — blocking correction
 
 Independent review of exact substantive head `db5de8450888a39d6a044d8c3c75a8d4b9bf4869` found one provenance-interpretation blocker. Commons Page Information does display `Upload | Allow all users (infinite)`, but that value appears in the **Page protection** table. It records the absence of an upload-protection level; it must not be treated as proof that every user can overwrite the current PDF or that the binary is presently replaceable. The current Commons file page separately renders an explicit file-history notice that the file cannot be overwritten on the viewed surface.
 
-The fail-closed conclusion remains valid for a different reason: a file-description `oldid` is not a content digest, so Scriptorium still needs an exact retrieved byte count + SHA-256 before claiming a frozen PDF identity. Recovery must revise the trace, public README, state and this changelog to distinguish page-protection metadata from binary overwrite capability, record the explicit current no-overwrite observation, and justify the digest requirement independently of inferred mutability.
+The fail-closed conclusion remains valid for a different reason: a file-description `oldid` is not a content digest, so Scriptorium still needs an exact retrieved byte count + SHA-256 before claiming a frozen PDF identity. PR #92 was converted back to draft. No diagnostic or M2 promotion occurred. Exact-head CI before review was green: Pages run `35082566266` and pinned-provider run `35082566287` both completed successfully.
 
-PR #92 was converted back to draft. No diagnostic or M2 promotion occurred. Exact-head CI before review was green: Pages run `35082566266` and pinned-provider run `35082566287` both completed successfully.
+## Recovery patch
+
+The recovery patch removes the faulty causal inference from the machine-readable trace and public README. It now records `Upload: Allow all users (infinite)` explicitly as **Page protection metadata**, records the separate current file-page notice **`You cannot overwrite this file.`**, and states that neither observation supplies content identity. The digest requirement is justified from the absence of a Scriptorium-recorded PDF byte snapshot, not from presumed binary mutability.
+
+The candidate remains trace-only and fail-closed. The PDF, OCR identity and FantLab analyzer input remain unfrozen/unknown; diagnostics and M2 admission remain disabled. The repaired PR must receive exact-head CI and a later independent review before merge.

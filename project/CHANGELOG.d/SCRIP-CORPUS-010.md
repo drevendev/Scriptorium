@@ -34,3 +34,13 @@ Bibliographic agreement between Wikisource and FantLab's edition catalog does no
 Public corpus navigation and the machine-readable parity catalog now expose this third long Grin candidate and its exact evidence boundary. The dedicated trace records the next admissible steps: pin all 36 literary subpages, define fail-closed extraction/composition, compute source-free composite digests, and seek independent evidence for FantLab's actual analyzer input.
 
 This authoring run leaves PR #90 for a later independent exact-head review rather than self-merging it.
+
+## Independent review and merge
+
+A later run independently reviewed exact head `a6c779aa208bc01d8581de151b75f618d5cc87ab` against unchanged base `19e32ee1a6d27c290cd52e085b790ae24719d019`. The branch was 6 commits ahead / 0 behind and changed exactly the intended five files: the parity catalog, public corpus README, the dedicated Running-on-Waves source-edition trace, this changelog fragment, and durable state. No prior submitted reviews or inline review threads were present.
+
+Fresh source checks reconfirmed FantLab's 18 September 2022 analysis at 360,987 characters / 52,985 words; the Russian Wikisource work page's 1928 date, Detskaya literatura 1965 source citation, 35 numbered chapters plus epilogue, public-domain notice and permanent locator `oldid=2595407`; and FantLab edition `12637` listing the same 1965 volume with *Running on Waves* on pp. 77–276. These findings support only the recorded bibliographic transcription-family trace and do not establish electronic-byte identity or FantLab analyzer-input identity.
+
+Exact-head workflows were independently inspected at job level. Scriptorium Pages run `35071053751` completed successfully with the standard-library suite, canonical site build, deterministic rebuild and artifact upload; PR deployment was skipped as designed. Pinned-provider run `35071053786` completed successfully with the provider-contract suite, exact hash-pinned `pylem==0.0.18` install/native smoke and frozen-Anna source-free sidecar diagnostics.
+
+No blocking defect was found. PR #90 was squash-merged as `2df3e90328e487a57798e0a13e485a580585b0c9`; Issue #89 closed completed. The merge does not advance M2: the 36 literary subpages remain unfrozen, FantLab analyzer-input identity remains undisclosed, diagnostics/gate remain disabled, and the reproduction gate stays at **0/5 source-matched works**.

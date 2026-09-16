@@ -1,31 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 101
+STATE_REVISION: 102
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T12:51:00Z
-LAST_RESULT: SCRIP-CORPUS-011 / Issue #91 / PR #92 received an independent exact-head review of repaired head `d64b0fc52da6ed7d9ca6d60d40f26ffc429cd5e9` with no remaining blocking defect and was squash-merged as `a64cb2d109389822b416a1274c34724ab1cedbfe`; Issue #91 closed completed. The merged unit hardens Petersburg provenance by separating the Commons description-page revision, Page-protection metadata, current no-overwrite operational notice and the still-unfrozen PDF binary identity. The PDF freeze requirement rests on an exact retrieved byte snapshot + byte count + SHA-256; `scriptorium_pdf_sha256` remains null, source identity traced-not-frozen, FantLab match unknown, diagnostics disabled and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `b5ad38bed4e6dfc81b609745ba302235b156e516`, repaired head 10 commits ahead / 0 behind, exactly four expected files, and no inline review threads. Fresh Wikimedia Commons retrieval on 16 September 2026 reconfirmed the 632-page / 3.45 MB current file-history row and the separate current no-overwrite notice; the repaired trace correctly treats the Page Information Upload row only as Page-protection metadata and neither operational surface as PDF content identity. Exact-head Pages run `35092674520` passed the standard-library suite, canonical site build and deterministic rebuild; pinned-provider run `35092674605` passed provider contract, exact hash-pinned `pylem==0.0.18` native smoke and frozen-Anna source-free sidecar diagnostics.
+LAST_COMMITTED_RUN_AT: 2026-09-16T14:00:00Z
+LAST_RESULT: SCRIP-CORPUS-012 / Issue #93 / PR #94 added Mikhail Bulgakov's `bulgakov-white-guard-ru` as a legally usable >=300k trace-only diversity candidate while preserving Russian Wikisource's explicit mixed-source boundary: chapters 1-11 cite Paris Concorde 1927, chapters 12-20 cite Moscow Pravda 1989. FantLab work 7692 reports 487,807 characters and 70,307 words on 18 September 2022 but discloses neither analyzer-input edition nor bytes. Work-index oldid 4715350 freezes the index declaration only; chapter identities, extraction/composition, composite digests and FantLab relation remain unfrozen/unknown, diagnostics disabled and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Fresh FantLab retrieval reconfirmed the 18 September 2022 analysis and 487,807 / 70,307 counts. Fresh Russian Wikisource retrieval reconfirmed the 20-chapter three-part structure, explicit public-domain notice, permanent index oldid 4715350, and the split source declaration for chapters 1-11 versus 12-20. A separate 1927 DJVU is retained only as a weak-provenance facsimile lead for the first source family; no equality with the mixed transcription or FantLab input is inferred. PR #94 is authored and must receive exact-head checks plus an independent later review before merge.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-011
-ISSUE:          #91
-STATUS:         DONE
-PR:             #92
-MERGED_COMMIT:  a64cb2d109389822b416a1274c34724ab1cedbfe
-NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
-                Prefer another legally usable >=300k diversity candidate or stronger
-                independent source-identity evidence for an existing candidate; keep
-                translation and edition identity explicit and do not infer FantLab
-                input identity from bibliography, title, chapter structure, count
-                proximity, public-source freezing, provider protection metadata or
-                operational overwrite notices.
+UNIT_ID:        SCRIP-CORPUS-012
+ISSUE:          #93
+STATUS:         REVIEW
+PR:             #94
+MERGED_COMMIT:  none
+NEXT_ACTION:    Independently review the exact PR #94 head after required checks finish.
+                Confirm the five-file scope, JSON validity, source-free publication
+                boundary and mixed-source provenance wording before considering merge.
+                Do not infer one edition identity for the Wikisource work and do not
+                advance M2 from title, bibliography, scan availability, chapter layout,
+                count proximity or public-domain status.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit 1916 edition lead whose Commons description revision is pinned but whose PDF binary remains unfrozen; Commons Page Information reports an upload-protection setting while the current file page separately says the file cannot be overwritten, so no binary mutability is inferred from protection metadata. A Scriptorium-recorded PDF snapshot digest is still required because neither those operational observations nor the description-page revision are a PDF content identity. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. `grin-running-on-waves-ru` adds a third long Grin candidate with a Detskaya literatura 1965 source-cited Wikisource family, 35 chapters plus epilogue, and independent FantLab edition corroboration, but its 36 literary subpages remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit 1916 edition lead whose Commons description revision is pinned but whose PDF binary remains unfrozen; Commons Page Information reports an upload-protection setting while the current file page separately says the file cannot be overwritten, so no binary mutability is inferred from protection metadata. A Scriptorium-recorded PDF snapshot digest is still required because neither those operational observations nor the description-page revision are a PDF content identity. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. `grin-running-on-waves-ru` adds a third long Grin candidate with a Detskaya literatura 1965 source-cited Wikisource family, 35 chapters plus epilogue, and independent FantLab edition corroboration, but its 36 literary subpages remain unfrozen. `bulgakov-white-guard-ru` adds a long 1920s Bulgakov candidate whose Wikisource index explicitly combines two bibliographic source families across chapters 1-11 and 12-20; that mixed provenance is retained as evidence against a single-edition identity and all 20 chapter bodies remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -111,6 +110,14 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - FantLab edition `12637` independently catalogs the same Detskaya literatura 1965 volume and lists *Running on Waves* on pp. 77–276. This corroborates the bibliographic family only; it does not identify Wikisource bytes or FantLab analyzer input.
 - `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`. A freeze requires exact identities for all 36 literary subpages plus deterministic extraction/composition and raw/normalized composite digests.
 
+### Traced The White Guard mixed-source candidate
+
+- FantLab work 7692 reports **487,807 characters** and **70,307 words** on 18 September 2022.
+- Russian Wikisource exposes permanent work-index revision `oldid=4715350`, a three-part / 20-chapter structure and an explicit public-domain notice for the original Russian literary work.
+- The same index explicitly declares **different bibliographic source families**: chapters **1-11** cite Bulgakov's *Days of the Turbins (The White Guard)*, Paris: Concorde, 1927; chapters **12-20** cite *The White Guard. The Life of Monsieur de Molière. Stories*, Moscow: Pravda, 1989. The current public transcription is therefore not represented as one edition identity.
+- A separate 1927 DJVU is retained only as a facsimile lead for the first source family. The rendered file surface currently reports 189 pages and 8.01 MB and names `torrents` as its source; no scan digest, page/chapter mapping, byte equivalence or FantLab relationship is established.
+- `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`. A freeze requires all 20 exact chapter identities, an explicit source-partition manifest, deterministic extraction/composition and raw/normalized composite digests. A single-edition full-work witness, if later found, must remain a distinct identity.
+
 ### Deterministic metric findings
 
 - Frozen Anna diagnostic deltas include characters +12,958 and words +16,083 relative to FantLab; numeric-token and lexical-hyphen probes explain little of the word gap.
@@ -129,8 +136,9 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 ### Public repository representation
 
 - Static publication remains source-free and fail-closed; publication tests reject forbidden source-prose keys and Pages builds are deterministic.
-- Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove; trace-only provenance for Petersburg and Hyperboloid; and trace-only Grin candidates `grin-shining-world-ru`, `grin-road-nowhere-ru` and `grin-running-on-waves-ru`.
+- Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove; trace-only provenance for Petersburg and Hyperboloid; trace-only Grin candidates `grin-shining-world-ru`, `grin-road-nowhere-ru` and `grin-running-on-waves-ru`; and the trace-only mixed-source Bulgakov candidate `bulgakov-white-guard-ru`.
 - SCRIP-CORPUS-011 is merged: the public Petersburg trace now exposes the repaired provenance boundary in which Commons Page-protection metadata and the current no-overwrite notice are separate operational observations, neither is a PDF content identity, and a recorded byte-count/SHA-256 snapshot is still required before binary freeze.
+- SCRIP-CORPUS-012 is in review: the public White Guard trace makes the chapter 1-11 / 12-20 source split first-class so a repository visitor cannot mistake the Wikisource work title or index locator for a single-edition text identity.
 - No derived full-work analysis is published for unmatched trace-only candidates.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -147,7 +155,8 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 9. Shining World has a source-cited reviewed work-index locator but its 34 chapter revisions/extraction/composite identity are not frozen and FantLab's input is undisclosed.
 10. Road to Nowhere has a source-cited 1965 bibliographic family plus a distinct alternate az.lib transcription, but the primary literary-page identity is not frozen and FantLab's input is undisclosed.
 11. Running on Waves has a source-cited 1965 bibliographic family and a permanent index locator, but its 35 chapters plus epilogue are not revision-frozen and FantLab's input is undisclosed.
-12. Pages live activation remains a repository-admin effect and is off.
+12. The White Guard is explicitly mixed-source on Wikisource: chapters 1-11 and 12-20 cite different editions. Its 20 chapter identities and composite are unfrozen, the 1927 facsimile lead has weak retrieval provenance, and FantLab's input is undisclosed; no single-edition or source-match claim is admissible.
+13. Pages live activation remains a repository-admin effect and is off.
 
 ## Run selection rule
 

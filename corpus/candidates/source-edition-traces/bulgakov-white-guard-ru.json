@@ -1,0 +1,110 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "bulgakov-white-guard-ru",
+  "research_date": "2026-09-16",
+  "fantlab": {
+    "work_id": 7692,
+    "analysis_url": "https://fantlab.ru/work7692/lp",
+    "analysis_date": "2022-09-18",
+    "observed_counts": {
+      "characters": 487807,
+      "words": 70307
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "work_page_url": "https://fantlab.ru/work7692",
+    "relationship_to_public_transcription": "unproven"
+  },
+  "public_transcription": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Белая_гвардия_(Булгаков)",
+    "work_index_permanent_url": "https://ru.wikisource.org/w/index.php?title=Белая_гвардия_(Булгаков)&oldid=4715350",
+    "work_index_oldid": 4715350,
+    "publication_year_shown": 1925,
+    "observed_structure": {
+      "parts": 3,
+      "chapter_counts": [
+        7,
+        4,
+        9
+      ],
+      "total_chapters": 20
+    },
+    "source_partition": [
+      {
+        "chapter_range": "1-11",
+        "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). Париж: Concorde, 1927.",
+        "identity_scope": "Wikisource-declared source family for chapters 1-11 only"
+      },
+      {
+        "chapter_range": "12-20",
+        "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. М.: Правда, 1989.",
+        "identity_scope": "Wikisource-declared source family for chapters 12-20 only"
+      }
+    ],
+    "source_provenance_confidence": "strong_for_explicit_mixed_transcription_provenance",
+    "source_text_committed": false,
+    "immutable_identity": {
+      "status": "traced_not_frozen",
+      "frozen_components": [
+        "work-index permanent revision oldid 4715350",
+        "explicit work-index declaration that chapters 1-11 and 12-20 come from different bibliographic source families"
+      ],
+      "unfrozen_components": [
+        "exact revision IDs, timestamps and MediaWiki SHA-1 values for all 20 literary chapter subpages",
+        "a chapter-by-chapter source-partition manifest bound to those exact revisions",
+        "a deterministic literary-body extraction contract",
+        "a deterministic composition order bound to pinned literary-page identities",
+        "raw and scriptorium-text-v1 normalized composite digests",
+        "the relationship between either public source family and FantLab's undisclosed analyzer input"
+      ],
+      "reason": "The permanent work-index revision freezes the index and its explicit mixed-source declaration, but it does not freeze the 20 chapter bodies. The current Wikisource work is not a single-edition transcription and must not be represented as one."
+    },
+    "edition_identity_boundary": {
+      "status": "explicit_mixed_source_transcription_not_full_text_frozen",
+      "note": "Chapters 1-11 and 12-20 are explicitly attributed to different editions. The work-index oldid therefore cannot serve as a single-edition identity, and bibliographic labels do not establish electronic-byte identity with either printed source or with FantLab's analyzer input."
+    }
+  },
+  "facsimile_lead": {
+    "provider": "Wikimedia Commons via Russian Wikisource",
+    "url": "https://ru.wikisource.org/wiki/Файл:Дни_Турбиных_(Белая_гвардия)_(Булгаков,_1927).djvu",
+    "observed_identity": "1927 Days of the Turbins (The White Guard) DJVU; 189 pages; current rendered file size 8.01 MB.",
+    "provider_source_field": "torrents",
+    "evidence_weight": "facsimile_and_bibliographic_lead_for_1927_source_family_only",
+    "note": "The scan is relevant only as a lead for the edition family named for chapters 1-11. Its provider source field is weak provenance, and no scan digest, page-to-chapter mapping, textual equivalence to Wikisource, or relationship to FantLab input is established by this unit."
+  },
+  "legal_boundary": {
+    "basis": "public_domain_original_russian_work_with_wikisource_reuse_terms",
+    "evidence": "Russian Wikisource explicitly marks the original Russian literary work public domain in Russia under Article 1281 and in life-plus-70-or-less jurisdictions. Candidate scope is the original Russian literary body only; no source prose, scan bytes, translation, derivative work, or later editorial apparatus is committed.",
+    "source_text_committed": false
+  },
+  "diversity": {
+    "period": "1920s",
+    "movement": "early-Soviet / émigré-era historical and civil-war prose",
+    "work_identity": "original_russian",
+    "reason_selected": "This adds a legally usable long 20th-century Bulgakov candidate and, unlike cleaner single-family traces, exercises Scriptorium's requirement to preserve explicit mixed-edition provenance rather than flattening a work title into one text identity."
+  },
+  "admissibility": {
+    "length_threshold_met_from_fantlab": true,
+    "source_identity_status": "traced_not_frozen",
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "status": "mixed_source_transcription_traced_not_frozen",
+    "reasons": [
+      "FantLab reports 487,807 characters and 70,307 words for its 18 September 2022 analysis, comfortably above the 300,000-character calibration threshold.",
+      "Russian Wikisource explicitly marks the original Russian work public domain and provides a permanent work-index locator.",
+      "The work index explicitly says chapters 1-11 use the Paris Concorde 1927 source while chapters 12-20 use a Moscow Pravda 1989 source; this is evidence against treating the current Wikisource work as one edition identity.",
+      "The 20 literary chapter pages are not revision-pinned and no deterministic extraction/composition contract or composite digest exists yet.",
+      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
+    ],
+    "next_evidence": [
+      "Freeze the exact 20-page literary inventory with revision IDs, timestamps and MediaWiki SHA-1 values while preserving the chapter 1-11 versus 12-20 source partition.",
+      "Define deterministic fail-closed extraction/composition and record raw plus scriptorium-text-v1 normalized composite digests before enabling diagnostics.",
+      "Treat the 1927 DJVU only as a separate facsimile lead unless an exact snapshot digest and page/chapter mapping are recorded; do not infer equivalence from title or publication year.",
+      "Search for a legally usable full-work single-edition witness if one is needed for edition-controlled diagnostics, and keep it distinct from the current mixed Wikisource transcription.",
+      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; the work title and public-source bibliography cannot advance M2."
+    ]
+  }
+}

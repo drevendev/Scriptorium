@@ -31,7 +31,12 @@
         7
       ],
       "total_chapters": 34,
-      "chapter_subpages_repeat_bibliographic_source": true,
+      "sampled_chapter_subpages_repeat_bibliographic_source": true,
+      "sampled_chapter_source_examples": [
+        "part_1_chapter_2",
+        "part_1_chapter_9",
+        "part_2_chapter_1"
+      ],
       "source_text_committed": false
     },
     "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
@@ -55,7 +60,7 @@
     },
     "edition_identity_boundary": {
       "status": "source_cited_1965_transcription_family_not_full_text_frozen",
-      "note": "The candidate is specifically the primary Wikisource transcription that cites Pravda 1965 volume 3. It must not be collapsed with other Grin transcriptions, later editorial revisions, or FantLab's undisclosed analyzer input merely because the title and chapter structure agree."
+      "note": "The candidate is specifically the primary Wikisource transcription whose reviewed work index cites Pravda 1965 volume 3; sampled chapter pages repeat that citation. It must not be collapsed with other Grin transcriptions, later editorial revisions, or FantLab's undisclosed analyzer input merely because the title and chapter structure agree."
     }
   },
   "independent_cross_check": {

@@ -1,30 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 103
+STATE_REVISION: 104
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T14:55:00Z
-LAST_RESULT: SCRIP-CORPUS-012 / Issue #93 / PR #94 received an independent exact-head review of `44038b07c01cf8b624f94fdf87effa9a7403a19e` with no blocking defect and was squash-merged as `59564e12aff59cb1d8c53493ad790962c6458d71`; Issue #93 closed completed. The merged unit adds Mikhail Bulgakov's `bulgakov-white-guard-ru` as a legally usable >=300k trace-only diversity candidate while preserving Russian Wikisource's explicit mixed-source boundary: chapters 1-11 cite Paris Concorde 1927, chapters 12-20 cite Moscow Pravda 1989. Chapter identities, extraction/composition, composite digests and FantLab relation remain unfrozen/unknown, diagnostics disabled and M2 at 0/5.
-LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `820241fde3fbe7c77b05ebd77ad113e70ae78463`, exact head 6 commits ahead / 0 behind, exactly five expected files and no inline review threads. Fresh FantLab retrieval reconfirmed the 18 September 2022 analysis and 487,807 / 70,307 counts. Fresh Russian Wikisource retrieval reconfirmed the 20-chapter three-part structure, explicit public-domain notice, permanent index oldid 4715350, and the split source declaration for chapters 1-11 versus 12-20. Exact-head Pages run `35105320373` and pinned-provider run `35105320403` both passed; the separate 1927 DJVU remains only a weak-provenance facsimile lead for the first source family.
+LAST_COMMITTED_RUN_AT: 2026-09-16T16:53:14Z
+LAST_RESULT: SCRIP-CORPUS-013 / Issue #95 / PR #96 received an independent exact-head review of `ee9799b6457a21502bfaac677ae91af1359ee409` with no blocking defect and was squash-merged as `76d4c3a5b44ad1ad13d2c6869ad68f280eff0b2a`; Issue #95 closed completed. The merged unit adds Ilf and Petrov's `ilf-petrov-twelve-chairs-ru` as a legally usable >=300k trace-only coauthored diversity candidate while keeping the 40-chapter later 1938/1961 editorial family distinct from the 41-chapter Zemlya i Fabrika 1928 first standalone edition. Literary-page identities, extraction/composition, composite digests and FantLab analyzer-input relation remain unfrozen/unknown; diagnostics remain disabled and M2 stays 0/5.
+LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `52dc8fbc4b4782b1e7980c09ee420ddd2fd75cc6`, exact head 4 commits ahead / 0 behind, exactly three source-free added files and no inline review threads. Fresh FantLab retrieval reconfirmed the 17 September 2022 analysis at 572,654 characters / 80,203 words and its explicit warning that two-author style mixing prevents exact author-recognition results for this work. Fresh Russian Wikisource retrieval reconfirmed the later family's GIKhL 1961 / 1938-text lineage, 40 chapters and public-domain notice; the separate Zemlya i Fabrika 1928 route exposes 41 chapters. The facsimile surface currently reports 424 pages / 74.37 MB and points to the Russian National Electronic Library, but no Scriptorium binary digest exists. Exact-head Pages run `35118672960` passed the standard-library suite, canonical site build, deterministic rebuild verification and artifact upload; the morphology-provider workflow did not trigger for this corpus-only scope and no provider result is claimed.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-012
-ISSUE:          #93
+UNIT_ID:        SCRIP-CORPUS-013
+ISSUE:          #95
 STATUS:         DONE
-PR:             #94
-MERGED_COMMIT:  59564e12aff59cb1d8c53493ad790962c6458d71
+PR:             #96
+MERGED_COMMIT:  76d4c3a5b44ad1ad13d2c6869ad68f280eff0b2a
 NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
                 Prefer another legally usable >=300k diversity candidate or stronger
                 independent source-identity evidence for an existing candidate; keep
-                translation, edition and mixed-source identity explicit and do not
-                infer FantLab input identity from bibliography, title, chapter layout,
-                count proximity, public-domain status or facsimile availability.
+                coauthorship, translation and edition/text-family identity explicit and
+                do not infer FantLab input identity from bibliography, title, chapter
+                layout, count proximity, public-domain status or facsimile availability.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit 1916 edition lead whose Commons description revision is pinned but whose PDF binary remains unfrozen; Commons Page Information reports an upload-protection setting while the current file page separately says the file cannot be overwritten, so no binary mutability is inferred from protection metadata. A Scriptorium-recorded PDF snapshot digest is still required because neither those operational observations nor the description-page revision are a PDF content identity. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. `grin-running-on-waves-ru` adds a third long Grin candidate with a Detskaya literatura 1965 source-cited Wikisource family, 35 chapters plus epilogue, and independent FantLab edition corroboration, but its 36 literary subpages remain unfrozen. `bulgakov-white-guard-ru` adds a long 1920s Bulgakov candidate whose Wikisource index explicitly combines two bibliographic source families across chapters 1-11 and 12-20; that mixed provenance is retained as evidence against a single-edition identity and all 20 chapter bodies remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit 1916 edition lead whose Commons description revision is pinned but whose PDF binary remains unfrozen; Commons Page Information reports an upload-protection setting while the current file page separately says the file cannot be overwritten, so no binary mutability is inferred from protection metadata. A Scriptorium-recorded PDF snapshot digest is still required because neither those operational observations nor the description-page revision are a PDF content identity. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. `grin-road-nowhere-ru` adds a second long Grin candidate: a primary 1965-source Wikisource family is bibliographically corroborated by FantLab, while a distinct az.lib-derived transcription is kept separate; neither route is frozen as FantLab input. `grin-running-on-waves-ru` adds a third long Grin candidate with a Detskaya literatura 1965 source-cited Wikisource family, 35 chapters plus epilogue, and independent FantLab edition corroboration, but its 36 literary subpages remain unfrozen. `bulgakov-white-guard-ru` adds a long 1920s Bulgakov candidate whose Wikisource index explicitly combines two bibliographic source families across chapters 1-11 and 12-20; that mixed provenance is retained as evidence against a single-edition identity and all 20 chapter bodies remain unfrozen. `ilf-petrov-twelve-chairs-ru` adds a long coauthored early-Soviet satire candidate with a 40-chapter later 1938/1961 editorial family and a distinct 41-chapter Zemlya i Fabrika 1928 first standalone edition; both routes remain trace-only and FantLab explicitly warns that coauthorship makes its author-recognition result non-exact. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -118,6 +118,15 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 - A separate 1927 DJVU is retained only as a facsimile lead for the first source family. The rendered file surface currently reports 189 pages and 8.01 MB and names `torrents` as its source; no scan digest, page/chapter mapping, byte equivalence or FantLab relationship is established.
 - `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`. A freeze requires all 20 exact chapter identities, an explicit source-partition manifest, deterministic extraction/composition and raw/normalized composite digests. A single-edition full-work witness, if later found, must remain a distinct identity.
 
+### Traced The Twelve Chairs coauthored multi-edition candidate
+
+- FantLab work 182817 reports **572,654 characters** and **80,203 words** on 17 September 2022.
+- The current Russian Wikisource family cites **I. Ilf, E. Petrov, Collected Works, Moscow: GIKhL, 1961, vol. 1, pp. 25–382** and says that publication follows the 1938 Soviet Writer four-volume text checked against earlier publications. Permanent work-index revision `oldid=5706136` exposes **40 chapters** and explicitly marks the original Russian work public domain.
+- A separate Russian Wikisource route identifies the **Zemlya i Fabrika 1928 first standalone edition**, permanent revision `oldid=5706135`, with **41 chapters**. The 40-versus-41 structural difference is sufficient to require distinct edition/transcription identities, but is not a byte-level diff and does not identify FantLab input.
+- The 1928 facsimile surface currently reports **424 pages / 74.37 MB** and points to the Russian National Electronic Library. `scriptorium_binary_sha256=null`; no exact binary snapshot, OCR profile or page-to-literary-text mapping is frozen.
+- FantLab itself warns that the work has two authors and mixed authorial styles, so its author-recognition result cannot claim exactness. Scriptorium retains that warning as future VOICE-method evidence and does not assign this work to an individual Ilf or Petrov profile.
+- `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`. A freeze requires exact literary-page identities for one selected family, deterministic extraction/composition and raw/normalized composite digests; M2 additionally requires independent evidence identifying FantLab's analyzer input.
+
 ### Deterministic metric findings
 
 - Frozen Anna diagnostic deltas include characters +12,958 and words +16,083 relative to FantLab; numeric-token and lexical-hyphen probes explain little of the word gap.
@@ -136,9 +145,10 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 ### Public repository representation
 
 - Static publication remains source-free and fail-closed; publication tests reject forbidden source-prose keys and Pages builds are deterministic.
-- Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove; trace-only provenance for Petersburg and Hyperboloid; trace-only Grin candidates `grin-shining-world-ru`, `grin-road-nowhere-ru` and `grin-running-on-waves-ru`; and the trace-only mixed-source Bulgakov candidate `bulgakov-white-guard-ru`.
-- SCRIP-CORPUS-011 is merged: the public Petersburg trace now exposes the repaired provenance boundary in which Commons Page-protection metadata and the current no-overwrite notice are separate operational observations, neither is a PDF content identity, and a recorded byte-count/SHA-256 snapshot is still required before binary freeze.
+- Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove; trace-only provenance for Petersburg and Hyperboloid; trace-only Grin candidates `grin-shining-world-ru`, `grin-road-nowhere-ru` and `grin-running-on-waves-ru`; the trace-only mixed-source Bulgakov candidate `bulgakov-white-guard-ru`; and the trace-only coauthored multi-edition candidate `ilf-petrov-twelve-chairs-ru`.
+- SCRIP-CORPUS-011 is merged: the public Petersburg trace exposes the repaired provenance boundary in which Commons Page-protection metadata and the current no-overwrite notice are separate operational observations, neither is a PDF content identity, and a recorded byte-count/SHA-256 snapshot is still required before binary freeze.
 - SCRIP-CORPUS-012 is merged: the public White Guard trace makes the chapter 1-11 / 12-20 source split first-class so a repository visitor cannot mistake the Wikisource work title or index locator for a single-edition text identity.
+- SCRIP-CORPUS-013 is merged: the public Twelve Chairs candidate note and trace keep the 40-chapter later family separate from the 41-chapter 1928 first standalone edition and make the coauthorship limitation explicit for future VOICE modeling.
 - No derived full-work analysis is published for unmatched trace-only candidates.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -156,15 +166,5 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 10. Road to Nowhere has a source-cited 1965 bibliographic family plus a distinct alternate az.lib transcription, but the primary literary-page identity is not frozen and FantLab's input is undisclosed.
 11. Running on Waves has a source-cited 1965 bibliographic family and a permanent index locator, but its 35 chapters plus epilogue are not revision-frozen and FantLab's input is undisclosed.
 12. The White Guard is explicitly mixed-source on Wikisource: chapters 1-11 and 12-20 cite different editions. Its 20 chapter identities and composite are unfrozen, the 1927 facsimile lead has weak retrieval provenance, and FantLab's input is undisclosed; no single-edition or source-match claim is admissible.
-13. Pages live activation remains a repository-admin effect and is off.
-
-## Run selection rule
-
-On each wake:
-
-1. resolve interrupted/review-ready work or failing required checks before new selection;
-2. inspect the exact PR head, checks, comments and artifacts for any recovery/review unit;
-3. otherwise choose the first dependency-satisfied queue row, applying the standing rolling allocation when multiple normal-flow units are eligible;
-4. create/search the corresponding issue before implementation;
-5. do exactly one bounded unit and update this file plus the relevant changelog/benchmark/provenance record;
-6. do not infer parity or unblock M2 from provider executability, diagnostic resemblance, provider weights, methodology-category counts, bibliographic resemblance, public-source freezing, chapter-structure agreement or excerpt-delivery routes.
+13. The Twelve Chairs has at least two distinct public edition/transcription families (40-chapter later 1938/1961 lineage versus 41-chapter Zemlya i Fabrika 1928). Neither literary body nor the 1928 scan is frozen, FantLab input is undisclosed, and coauthorship makes individual-author profile attribution unsafe without an explicit model.
+14. Pages live activation remains a repository-admin effect and is off.

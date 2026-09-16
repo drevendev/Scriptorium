@@ -206,7 +206,7 @@
       "blockers": [
         "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; the frozen public-domain candidate is not source-match or M2 parity evidence.",
         "The frozen public candidate has 563,125 characters while FantLab displays 549,050; the 14,075-character delta must not be treated as proof of edition identity or a single normalization cause.",
-        "FantLab labels the work 1910 while Wikisource metadata says 1909; the discrepancy is preserved as unresolved bibliographic evidence rather than treated as source identity."
+        "FantLab labels the work 1910 while Wikisource metadata says publication 1909; the discrepancy is preserved as unresolved bibliographic evidence rather than treated as source identity."
       ]
     },
     {

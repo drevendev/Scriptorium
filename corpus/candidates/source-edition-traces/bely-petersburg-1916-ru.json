@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "bely-petersburg-1916-ru",
-  "research_date": "2026-09-15",
+  "research_date": "2026-09-16",
   "fantlab": {
     "work_id": 293513,
     "analysis_url": "https://fantlab.ru/work293513/lp",
@@ -19,11 +19,15 @@
     "provider": "Wikimedia Commons",
     "file_page_url": "https://commons.wikimedia.org/wiki/File:Андрей_Белый._Петербург_(1916).pdf",
     "file_description_revision_url": "https://commons.wikimedia.org/w/index.php?title=File:Андрей_Белый._Петербург_(1916).pdf&oldid=1046280975",
+    "page_information_url": "https://commons.wikimedia.org/w/index.php?action=info&title=File:Андрей_Белый._Петербург_(1916).pdf",
+    "current_original_file_url": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Андрей_Белый._Петербург_(1916).pdf",
     "edition_label": "Андрей Белый. Петербург. 1916 — first book edition facsimile",
     "structure": {
       "kind": "facsimile_scan",
       "page_count": 632,
+      "commons_page_id": 47639472,
       "commons_upload_timestamp": "2016-03-20T18:31:00Z",
+      "current_file_size_display": "3.45 MB",
       "source_text_committed": false
     },
     "bibliographic_source": "Wikimedia Commons describes the file as a facsimile reproduction of the first 1916 book publication (print run 6000), itself a mechanical reproduction of the novel parts published in three Sirin collections in 1913–1914.",
@@ -39,20 +43,41 @@
       ],
       "note": "Petersburg has materially different edition families. Scriptorium records this 1916 facsimile as its own candidate identity and does not collapse it with the revised 1922 text."
     },
+    "commons_binary_identity_boundary": {
+      "observed_on": "2026-09-16",
+      "description_revision_oldid": 1046280975,
+      "description_revision_pins_file_page_wikitext": true,
+      "description_revision_pins_pdf_bytes": false,
+      "commons_page_id": 47639472,
+      "page_information_hash": "682476934dd6ed49c6bbcdb0720127c1812ff477",
+      "page_information_hash_scope": "Commons page/content metadata; not asserted to be the PDF binary checksum",
+      "page_information_upload_permission": "Allow all users",
+      "current_file_history_observation": {
+        "upload_timestamp": "2016-03-20T18:31:00Z",
+        "page_count": 632,
+        "file_size_display": "3.45 MB",
+        "upload_user": "M5"
+      },
+      "current_direct_file_url_is_immutable_identity": false,
+      "scriptorium_pdf_sha256": null,
+      "byte_snapshot_status": "not_frozen",
+      "reason": "A permanent revision of the Commons description page freezes descriptive wikitext, not the uploaded binary. Commons page information currently permits uploads to the file page, so the current file-history row and upload.wikimedia.org URL are useful retrieval evidence but are not accepted as an immutable Scriptorium byte identity without an independently recorded digest of the retrieved PDF snapshot."
+    },
     "immutable_identity": {
       "status": "traced_not_frozen",
       "frozen_components": [
         "Wikimedia Commons file-description revision oldid 1046280975",
+        "Commons file page ID 47639472 and observed file-history metadata",
         "explicit first-book-publication year 1916 and 632-page facsimile description",
         "public-domain status on the file description"
       ],
       "unfrozen_components": [
-        "exact PDF byte digest recorded by Scriptorium",
+        "an exact retrieved PDF byte snapshot plus Scriptorium-recorded SHA-256",
         "page/OCR selection and deterministic extraction profile",
         "raw and normalized literary-text digests",
         "the relationship between FantLab's uploaded analyzer input and this 1916 edition"
       ],
-      "reason": "The public scan provides strong source-edition and legal provenance, but Scriptorium has not yet frozen the PDF bytes or a deterministic OCR/extraction result."
+      "reason": "The public scan provides strong source-edition and legal provenance, but the description-page oldid does not freeze binary bytes and Scriptorium has not yet recorded a PDF snapshot digest or deterministic OCR/extraction result."
     }
   },
   "wikisource_cross_check": {
@@ -78,12 +103,13 @@
     "reasons": [
       "FantLab reports 944,182 characters, above the 300,000-character calibration threshold.",
       "Wikimedia Commons supplies an explicit 632-page facsimile identity for the 1916 first book edition and marks it public domain.",
-      "The public scan has not yet been frozen into a Scriptorium PDF digest plus deterministic OCR/extraction contract, so no full-work diagnostic input exists yet.",
+      "The recorded Commons description-page oldid freezes descriptive wikitext but not the PDF binary; Commons page information currently reports upload permission for the file page, so no immutable PDF identity is claimed from the URL/history row alone.",
+      "The public scan has not yet been frozen into a Scriptorium PDF snapshot digest plus deterministic OCR/extraction contract, so no full-work diagnostic input exists yet.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis.",
       "The 1916 first book edition must remain distinct from Bely's revised 1922 edition; no edition-family equivalence is inferred."
     ],
     "next_evidence": [
-      "Freeze the exact Commons PDF bytes by stable file identity and SHA-256 without committing the scan itself.",
+      "Retrieve one specific Commons PDF snapshot and record its exact byte count plus SHA-256 in a source-free manifest without committing the scan itself; do not treat the description-page oldid or mutable current-file URL as the digest.",
       "Define and verify a deterministic, fail-closed page/OCR extraction contract for the 1916 edition before enabling full-work diagnostics.",
       "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to the 1916 edition or another explicit Petersburg edition; never infer identity from title or count proximity."
     ]

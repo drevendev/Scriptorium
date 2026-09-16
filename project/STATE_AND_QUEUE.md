@@ -1,28 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 92
+STATE_REVISION: 93
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T03:59:23Z
-LAST_RESULT: SCRIP-CORPUS-008 / Issue #85 / PR #86 traces Alexander Grin's `Блистающий мир` as a legally usable >=300,000-character diversity candidate. FantLab work 27340 reports 306,240 characters and 43,678 words on 18 September 2022. Russian Wikisource provides a reviewed work index citing the Pravda 1965 collected-works volume 3 and permanent revision oldid=4186047, with 34 literary chapter subpages; Russian Virtual Library independently corroborates the 1921–1923 work and the same three-part / 34-chapter structure. The candidate remains trace-only: no chapter inventory/digests or extraction/composition contract are frozen, FantLab input identity is unknown, diagnostics/gate remain disabled, and M2 stays 0/5.
-LAST_VERIFIED_PROGRESS: Source research independently established the FantLab threshold/date, the Wikisource 1965 bibliographic transcription family, reviewed/stable work index, 16+11+7 chapter structure, Grin 1880–1932 plus 1923 lifetime publication and Wikisource's rights warning for translations/later revisions, and RVB as a non-identifying bibliographic/text-family cross-check. The machine-readable trace deliberately records only sampled chapter-source repetition rather than claiming all 34 chapter pages were individually verified. Exact PR-head workflow verification is required before any merge decision.
+LAST_COMMITTED_RUN_AT: 2026-09-16T04:52:54Z
+LAST_RESULT: SCRIP-CORPUS-008 / Issue #85 / PR #86 received an independent later-run review of exact head `35061e829d5b279aa45a29f32ff255516c45961a` with no blocking defect and was squash-merged as `84f4f4cea73a53d8ff01fe45000e6655e9f4cb5a`; Issue #85 closed completed. The merged unit adds Alexander Grin's `Блистающий мир` as a legally usable >=300,000-character diversity candidate with a source-cited 1965 Wikisource transcription family while keeping full-text identity unfrozen, FantLab input identity unknown, diagnostics/gate disabled, and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `c7da33834dd6df8017bc59d86b39b0d07ea480ab`, 7 commits ahead / 0 behind, exactly five expected corpus/provenance/public-navigation/state files, and no review threads. Fresh evidence reconfirmed FantLab's 18 September 2022 count at 306,240 characters / 43,678 words, Wikisource permanent locator `oldid=4186047`, Pravda 1965 vol. 3 pp. 66–214 provenance, 16+11+7 chapter navigation, sampled chapter-source repetition, RVB's 1921–1923 text-family cross-check, and the legal-use boundary. Exact-head runs `35053939844` (Pages) and `35053939843` (pinned provider) both completed successfully, including the standard-library suite, deterministic Pages rebuild, provider contract, exact hash-pinned `pylem==0.0.18` smoke and frozen Anna sidecar diagnostics.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-008
 ISSUE:          #85
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #86
-NEXT_ACTION:    Independently review the exact PR #86 head after required workflows settle.
-                Confirm the five-file provenance/public-navigation/state scope, source/legal
-                boundaries, and exact-head checks before any merge. Do not promote the work
-                index to a frozen full-text identity: all 34 literary chapter revisions,
-                deterministic extraction/composition and composite digests are still missing.
+MERGED_COMMIT:  84f4f4cea73a53d8ff01fe45000e6655e9f4cb5a
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer another legally usable >=300k diversity candidate or stronger
+                independent source-identity evidence for an existing candidate; keep
+                translation and edition identity explicit and do not infer FantLab
+                input identity from title, bibliography, chapter structure, count
+                proximity or public-source freezing.
 ```
 
 ## Current milestone gate
 
-M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit but unfrozen 1916 edition lead. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` now adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
+M0 is closed. M1 remains open. General, dialogue, vocabulary and punctuation families are executable inferred candidates. POS has two explicitly separated surfaces: the 17-bucket work-page-compatible `scriptorium-pos-v1` production candidate, and the diagnostic-only full FantLab methodology surface covering five additional source-backed AOT categories while leaving runtime `N` unresolved. Anna Karenina, Resurrection, Brothers Karamazov and Silver Dove have immutable public-source candidates. Petersburg has an explicit but unfrozen 1916 edition lead. Hyperboloid of Engineer Garin has an early-Soviet SF/adventure trace plus a Moscow Goslitizdat 1958 volume-4 textual-family lead classified as 1939-fourth-edition-derived, but not tied directly to the Wikisource/az.lib transcription. `grin-shining-world-ru` adds a 1920s romantic-fantastic candidate with a source-cited 1965 Wikisource transcription family and reviewed work-index locator, but its 34 chapter identities remain unfrozen. No retained work has an independently established FantLab analyzer-input identity, so M2 remains open at **0/5 source-matched works**.
 
 ## Queue
 
@@ -30,7 +32,6 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-008 review | review / provenance | Independent exact-head review of PR #86 and merge only if source boundaries, five-file scope and required checks remain clean | PR #86 workflows complete |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Evidence already established
@@ -109,7 +110,7 @@ Evaluate rows in priority order and skip dependencies that are not executable. R
 ### Public repository representation
 
 - Static publication remains source-free and fail-closed; publication tests reject forbidden source-prose keys and Pages builds are deterministic.
-- Public corpus navigation and parity catalog now expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove, trace-only provenance for Petersburg and Hyperboloid, and the new trace-only `grin-shining-world-ru` candidate.
+- Public corpus navigation and parity catalog expose frozen identities for Anna, Resurrection, Brothers Karamazov and Silver Dove, trace-only provenance for Petersburg and Hyperboloid, and the trace-only `grin-shining-world-ru` candidate.
 - SCRIP-CORPUS-008 adds the Grin candidate to the machine-readable catalog, a dedicated source-edition trace, and `corpus/candidates/README.md` while explicitly labeling the work-index locator as insufficient to freeze the 34-chapter literary text.
 - No derived full-work analysis is published for unmatched trace-only candidates.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.

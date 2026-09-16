@@ -59,10 +59,12 @@ def _source_shape(literary="Основной текст."):
     markers = " ".join(f"<sup><u>[{index % 9}]</u></sup>" for index in range(9))
     categories = "\n".join(f"[[Категория:Тест {index}]]" for index in range(1, 10))
     return (
-        "{{Отексте\n|источник=тест\n}}\n"
+        "{{Отексте\n"
         "<!-- редакционный комментарий 1 -->\n"
-        f"{literary}\n\n{headings}\n\n{links}\n\n{italics}\n\n{breaks}\n\n{markers}\n"
+        "|источник=тест\n"
         "<!-- редакционный комментарий 2 -->\n"
+        "}}\n"
+        f"{literary}\n\n{headings}\n\n{links}\n\n{italics}\n\n{breaks}\n\n{markers}\n"
         f"{categories}\n"
     )
 

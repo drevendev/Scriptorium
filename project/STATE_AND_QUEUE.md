@@ -1,22 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 96
+STATE_REVISION: 97
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T07:57:00Z
-LAST_RESULT: SCRIP-CORPUS-010 / Issue #89 / PR #90 authored a trace-only Alexander Grin `Бегущая по волнам` corpus candidate. FantLab work 27344 reports 360,987 characters / 52,985 words on 18 September 2022; Russian Wikisource exposes a public-domain 1928 work index at oldid 2595407 citing the Detskaya literatura 1965 volume and linking 35 numbered chapters plus an epilogue; FantLab edition 12637 independently corroborates that 1965 volume and lists the novel on pp. 77–276. Literary subpage identities remain unfrozen, FantLab input identity remains unknown, diagnostics/gate stay disabled, and M2 remains 0/5.
-LAST_VERIFIED_PROGRESS: The authoring run verified the source boundary before mutation: Wikisource explicitly identifies Grin as 1880–1932, creation year 1928, the 1965 Detskaya literatura source citation, 35 chapter links plus an epilogue, permanent work-index oldid 2595407 and a public-domain notice; FantLab bibliography independently identifies the same 1965 volume and pp. 77–276. The machine-readable catalog, dedicated trace, public corpus README and changelog fragment are updated on PR #90. Exact-head CI remains part of this authored PR's verification/review evidence and does not convert bibliography into source match.
+LAST_COMMITTED_RUN_AT: 2026-09-16T08:51:25Z
+LAST_RESULT: SCRIP-CORPUS-010 / Issue #89 / PR #90 received an independent later-run review of exact head `a6c779aa208bc01d8581de151b75f618d5cc87ab` with no blocking defect and was squash-merged as `2df3e90328e487a57798e0a13e485a580585b0c9`; Issue #89 closed completed. The merged unit adds Alexander Grin's `Бегущая по волнам` as a legally usable >=300,000-character trace-only candidate with a source-cited Detskaya literatura 1965 Wikisource family and independent FantLab bibliographic corroboration while keeping the 36 literary subpages unfrozen, FantLab input identity unknown, diagnostics/gate disabled, and M2 at 0/5.
+LAST_VERIFIED_PROGRESS: Independent review confirmed unchanged base `19e32ee1a6d27c290cd52e085b790ae24719d019`, 6 commits ahead / 0 behind, exactly five expected corpus/provenance/public-navigation/state files, and no prior submitted reviews or inline review threads. Fresh evidence reconfirmed FantLab's 18 September 2022 count at 360,987 characters / 52,985 words; the Russian Wikisource page's 1928 date, Detskaya literatura 1965 source citation, 35 numbered chapters plus epilogue, public-domain notice and permanent locator `oldid=2595407`; and FantLab edition `12637` listing the same 1965 volume with the novel on pp. 77–276. Exact-head runs `35071053751` (Pages) and `35071053786` (pinned provider) both completed successfully; job-level inspection confirmed the standard-library suite, deterministic Pages rebuild, provider contract, exact hash-pinned `pylem==0.0.18` install/native smoke and frozen-Anna source-free sidecar diagnostic replay.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-010
 ISSUE:          #89
-STATUS:         REVIEW
+STATUS:         DONE
 PR:             #90
-NEXT_ACTION:    Independently review the exact PR #90 head, changed-file scope,
-                comments/threads and required checks. Merge only if that later review
-                finds no blocking defect. Do not infer FantLab input identity from the
-                1965 bibliography, work title, chapter structure or count proximity.
+MERGED_COMMIT:  2df3e90328e487a57798e0a13e485a580585b0c9
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer another legally usable >=300k diversity candidate or stronger
+                independent source-identity evidence for an existing candidate; keep
+                translation and edition identity explicit and do not infer FantLab
+                input identity from bibliography, title, chapter structure, count
+                proximity or public-source freezing.
 ```
 
 ## Current milestone gate

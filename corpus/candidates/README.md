@@ -155,3 +155,20 @@ Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_
 Canonical evidence:
 
 - `source-edition-traces/bulgakov-white-guard-ru.json` — FantLab counts, permanent Wikisource index locator, explicit two-source chapter partition, legal boundary, separate 1927 facsimile lead, fail-closed identity status, and next evidence required before diagnostics.
+
+## The Twelve Chairs traced coauthored multi-edition candidate
+
+`ilf-petrov-twelve-chairs-ru` adds Ilf and Petrov, a long coauthored early-Soviet satire, and a concrete edition-family split relevant to both future source matching and author-voice modeling. FantLab's 17 September 2022 linguistic analysis reports **572,654 characters** and **80,203 words**, comfortably above the >=300,000-character calibration threshold.
+
+Russian Wikisource exposes two public routes that Scriptorium keeps distinct. The current family cites **I. Ilf, E. Petrov, Collected Works, Moscow: GIKhL, 1961, vol. 1, pp. 25–382** and says that publication reproduces the 1938 Soviet Writer four-volume text checked against earlier publications; permanent revision **`oldid=5706136`** exposes **40 chapters**. A separate route identifies the **Zemlya i Fabrika 1928 first standalone edition**, permanent revision **`oldid=5706135`**, and exposes **41 chapters**. The 40-versus-41 structural difference is enough to require separate edition/transcription identities, but it is not treated as a byte-level diff, proof of every textual change, or evidence that either route was FantLab's analyzer input.
+
+The retained Wikisource surfaces explicitly mark the original Russian work public domain. A 1928 facsimile is also available through the Wikisource/Commons file surface, currently shown as **424 pages / 74.37 MB** with its source field pointing to the Russian National Electronic Library. Scriptorium has not frozen that binary, so it remains a facsimile lead rather than a content identity. No literary prose or scan bytes are committed.
+
+FantLab itself warns on this work's author-recognition surface that the text has two authors and their mixed styles prevent exact recognition results. Scriptorium records that as a future **VOICE-model requirement**: the work must not silently become an individual Ilf or Petrov author profile.
+
+Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**. A later freeze must choose one text family, pin exact literary-page identities, define deterministic fail-closed extraction/composition, and record raw plus `scriptorium-text-v1` normalized composite digests. If the 1928 scan is used, its exact byte snapshot and OCR/page-extraction provenance must also be frozen before source-bound diagnostics.
+
+Canonical evidence:
+
+- [`ilf-petrov-twelve-chairs-ru.md`](ilf-petrov-twelve-chairs-ru.md) — public source-free candidate note.
+- `source-edition-traces/ilf-petrov-twelve-chairs-ru.json` — FantLab counts, dual edition-family trace, public-domain/legal boundary, facsimile lead, coauthorship caveat and fail-closed admissibility.

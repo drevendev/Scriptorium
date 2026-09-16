@@ -5,8 +5,10 @@
 - PR: #102
 - Base revision: `d76c5403d62ec85c022efe4def93883eef550da3`
 - Authored branch: `scrip-corpus-016-hyperboloid-body`
-- Status: REVIEW_PENDING / REPAIR_AUTHORED
-- Selection reason: recovery/review-ready work preempted normal corpus selection. A later independent review of PR #102 found a blocking contradiction between the newly frozen Hyperboloid revision/body manifests and the still-stale machine-readable candidate catalog, so this run repairs that inconsistency rather than selecting new work.
+- Reviewed exact head: `9fa268604dde91a078bc403a50d24fc2394b9bf5`
+- Merged commit: `055e5c789ed65bc48eaaeb19bf007ad3400d1380`
+- Status: DONE
+- Selection reason: recovery/review-ready work preempted normal corpus selection. A prior independent review found a blocking contradiction between the newly frozen Hyperboloid revision/body manifests and the still-stale machine-readable candidate catalog. The authored repair synchronized that catalog and deliberately left PR #102 for a later independent exact-head review; this run performed that review and merged only after the repaired head remained green and internally consistent.
 
 ## Produced
 
@@ -17,7 +19,8 @@
 - Added `corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.body.json`.
 - Updated the canonical Hyperboloid trace and public corpus README to expose a frozen public body while retaining the print-edition/FantLab boundary.
 - Repaired `corpus/candidates/fantlab-parity-v1.json` after independent review found it still advertised the candidate as unfrozen.
-- Updated durable state/changelog/receipt so the next wake sees the catalog-sync repair as review-pending rather than mistaking the earlier green head for merge authorization.
+- Independently reviewed repaired exact head `9fa268604dde91a078bc403a50d24fc2394b9bf5`, promoted PR #102 from Draft, and squash-merged it after all required evidence remained green.
+- Reconciled durable project state and changelog after merge so the next wake sees SCRIP-CORPUS-016 as complete.
 
 ## Exact public-source identity
 
@@ -51,9 +54,13 @@ After the body manifest, provenance, public README and durable state were commit
 
 A later independent review of exact head `bf41149bdd9996249db01ec9da9889376a80d057` reconfirmed the core implementation and green current-head runs `35156488833` (Hyperboloid replay), `35156488806` (Pages), `35156488898` (frozen diagnostic), and `35156488923` (pinned provider), but blocked merge because the central catalog still said `source_identity_status=traced_not_frozen` and retained a false blocker that the revision/body identities were not recorded.
 
+The catalog-sync repair produced exact head `9fa268604dde91a078bc403a50d24fc2394b9bf5`. Fresh runs `35159779198` (Hyperboloid source/body replay), `35159779188` (Pages), `35159779182` (frozen diagnostic), and `35159779183` (pinned provider) all completed successfully. The Hyperboloid job ran the standard-library suite, re-fetched exact `oldid=5014458`, matched/replayed the committed revision identity, reproduced the committed body manifest byte-for-byte, passed the source-free structure probe and source-free/fail-closed assertions, and uploaded derived/replay evidence.
+
+Immediately before the final independent review and merge, current `master` remained `d76c5403d62ec85c022efe4def93883eef550da3`; repaired PR #102 was 21 commits ahead / 0 behind, mergeable, changed exactly the 11 expected unit files, and had no inline review threads. The independent review found no remaining blocking defect. PR #102 was promoted from Draft and squash-merged with the expected-head guard as `055e5c789ed65bc48eaaeb19bf007ad3400d1380`; Issue #101 then closed completed.
+
 ## Catalog-sync repair
 
-The repaired Hyperboloid catalog row now records:
+The repaired Hyperboloid catalog row records:
 
 - `source_revision_manifest=corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json`;
 - `source_body_manifest=corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.body.json`;
@@ -72,4 +79,4 @@ The `az.lib.ru` transcription still has no direct bibliographic print-edition id
 
 ## Next wake
 
-Perform a later independent exact-head review of the repaired PR #102 head after fresh current-head workflows complete. Confirm that the central catalog agrees with both committed manifests, the source-specific extraction contract remains fail-closed, committed public artifacts contain no source prose, the body manifest reproduces byte-for-byte from oldid `5014458`, and no public-source freeze is promoted to FantLab source parity. Merge only if that independent review finds no blocker.
+Select the next dependency-satisfied SCRIP-CORPUS continuation unit from durable state. Prefer another legally usable >=300k diversity candidate or stronger independent source-identity evidence for an existing candidate. Keep public-source freezing, bibliographic leads and FantLab analyzer-input identity separate; never advance M2 from count proximity or title/edition plausibility.

@@ -1,0 +1,70 @@
+name: Hyperboloid source revision
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/hyperboloid-source-revision.yml"
+      - "scriptorium/single_page_revision.py"
+      - "tests/test_single_page_revision.py"
+      - "corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json"
+      - "corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze:
+    name: Replay pinned Hyperboloid source revision
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Capture exact pinned revision identity without source prose
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.single_page_revision capture \
+            --candidate-id tolstoy-hyperboloid-garin-wikisource-ru \
+            --title 'Гиперболоид инженера Гарина (Толстой)' \
+            --revision-id 5014458 \
+            --source-work-url 'https://ru.wikisource.org/wiki/Гиперболоид_инженера_Гарина_(Толстой)' \
+            --permanent-source-url 'https://ru.wikisource.org/w/index.php?title=Гиперболоид_инженера_Гарина_(Толстой)&oldid=5014458' \
+            --bibliographic-source 'az.lib.ru single-page transcription; exact print-edition identity unresolved' \
+            --legal-basis public_domain \
+            --output build/repro/tolstoy-hyperboloid-garin-wikisource-ru.revision.observed.json
+
+      - name: Compare committed source-free identity when present
+        run: |
+          set -euo pipefail
+          expected='corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json'
+          observed='build/repro/tolstoy-hyperboloid-garin-wikisource-ru.revision.observed.json'
+          if [[ -f "$expected" ]]; then
+            cmp "$expected" "$observed"
+            python -m scriptorium.single_page_revision replay \
+              --manifest "$expected" \
+              --receipt build/repro/tolstoy-hyperboloid-garin-wikisource-ru.revision.replay.json
+          else
+            echo 'Committed source identity not present yet; capture artifact is the bootstrap evidence.'
+          fi
+
+      - name: Upload source-free capture evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: hyperboloid-source-revision
+          path: build/repro/tolstoy-hyperboloid-garin-wikisource-ru.revision.*.json
+          if-no-files-found: error
+          retention-days: 7

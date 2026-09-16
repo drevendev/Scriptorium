@@ -74,25 +74,29 @@ Canonical evidence:
 
 - `source-edition-traces/bely-petersburg-1916-ru.json` — FantLab counts, explicit 1916 facsimile identity, public-domain evidence, Commons description-vs-binary identity boundary, Wikisource provenance warning, edition-family boundary and next evidence required before diagnostics.
 
-## Hyperboloid of Engineer Garin traced early-Soviet SF candidate
+## Hyperboloid of Engineer Garin revision-frozen early-Soviet SF candidate
 
 `tolstoy-hyperboloid-garin-wikisource-ru` adds a new author and an early Soviet science-fiction/adventure work to the retained diversity set. FantLab's 18 September 2022 linguistic analysis reports **495,539 characters** and **69,126 words**, so it clears the >=300,000-character calibration threshold.
 
-Russian Wikisource publishes a stable reviewed full-work transcription, explicitly marks the literary work public domain, cites `az.lib.ru` as its source, and exposes permanent revision **`oldid=5014458`** from 30 August 2023. That is a useful immutable locator but not yet a Scriptorium-frozen literary-text identity: this unit does not record the MediaWiki revision SHA-1/wikitext digest, define a deterministic body extractor, or compute raw/normalized text digests. No source prose is committed.
+Russian Wikisource publishes a stable reviewed full-work transcription, explicitly marks the literary work public domain and cites `az.lib.ru` as its source. The source-free manifest now pins permanent revision **`oldid=5014458`** as page ID **1022517**, timestamp **`2023-08-30T20:13:01Z`**, MediaWiki SHA-1 **`605afeabc38e4f5948371afdf976f586edbf1955`**, **502,280 wikitext characters / 934,455 UTF-8 bytes**, and wikitext SHA-256 **`fa0b099bba2d0f0e6ce395a16de76317afcd8bec8b23b52e455f97a9726a4de9`**. No source prose is committed.
 
-Revision identity is deliberately fail-closed. The Wikisource text states that the novel was written in 1926–1927 and revised with new chapters in 1937. FantLab separately records that Tolstoy reworked the novel four times, notes a new ending published in 1927, and identifies the 1939 `Советский писатель` edition as the last lifetime edition. Scriptorium therefore does **not** infer that the Wikisource/az.lib transcription matches a particular 1927, 1937 or 1939 print edition, and it does not infer that FantLab analyzed the same text.
+This is intentionally a **revision-wikitext identity**, not a frozen literary body. No deterministic literary-body extraction contract or raw/`scriptorium-text-v1` normalized literary digest exists yet. Freezing the MediaWiki revision also does not establish which print edition the `az.lib.ru` transcription represents and does not identify FantLab's analyzer input.
 
-A stronger **bibliographic lead** is recorded, but deliberately not promoted to source identity. Two sibling A. N. Tolstoy pages in the Russian Wikisource/az.lib source ecosystem — *Союз пяти* and *Случай на Бассейной улице* — identify their text source as **A. N. Tolstoy, Collected Works in ten volumes, vol. 4, *Emigrants. Hyperboloid of Engineer Garin*, Moscow: Goslitizdat, 1958**. Independent FantLab bibliographic commentary identifies the same 1958 volume as a real Hyperboloid edition context. This makes the Moscow volume a concrete edition family to test, not proof: the Hyperboloid Wikisource page itself still cites only `az.lib.ru`, and no direct evidence says that its exact transcription was made from that volume. Sibling import metadata and edition availability cannot establish textual identity.
+Revision-family evidence remains fail-closed. The Wikisource text states that the novel was written in 1926–1927 and revised with new chapters in 1937. FantLab separately records that Tolstoy reworked the novel four times, notes a new ending published in 1927, and identifies the 1939 `Советский писатель` edition as the last lifetime edition. Scriptorium therefore does **not** infer that the Wikisource/az.lib transcription matches a particular 1927, 1937 or 1939 print edition.
 
-The textological classification is now narrower. FantLab-hosted Yu. A. Krestinsky commentary distinguishes four book editions — **1927, 1934, 1936, and 1939** — identifies the 1939 `Советский писатель` text as the fourth book edition, and states under the Moscow Goslitizdat 1958 collected-works volume-4 heading that its Hyperboloid text is printed from the **1939 edition with checking against preceding editions**. Scriptorium therefore classifies the Moscow 1958 lead as a **1939-fourth-edition-derived editorial/textual-family witness**, still with no source-identity or parity weight.
+A stronger **bibliographic lead** is recorded, but deliberately not promoted to source identity. Two sibling A. N. Tolstoy pages in the Russian Wikisource/az.lib source ecosystem — *Союз пяти* and *Случай на Бассейной улице* — identify their text source as **A. N. Tolstoy, Collected Works in ten volumes, vol. 4, *Emigrants. Hyperboloid of Engineer Garin*, Moscow: Goslitizdat, 1958**. Independent FantLab bibliographic commentary identifies the same 1958 volume as a real Hyperboloid edition context. This makes the Moscow volume a concrete edition family to test, not proof: the Hyperboloid Wikisource page itself still cites only `az.lib.ru`, and no direct evidence says that its exact transcription was made from that volume.
+
+The textological classification is narrower still. FantLab-hosted Yu. A. Krestinsky commentary distinguishes four book editions — **1927, 1934, 1936, and 1939** — identifies the 1939 `Советский писатель` text as the fourth book edition, and states under the Moscow Goslitizdat 1958 collected-works volume-4 heading that its Hyperboloid text is printed from the **1939 edition with checking against preceding editions**. Scriptorium therefore classifies the Moscow 1958 lead as a **1939-fourth-edition-derived editorial/textual-family witness**, still with no source-identity or parity weight.
 
 Same-year bibliography prevents shortcut matching. Russian State Library record `01006486636` catalogs a distinct **Kyiv: Goslitizdat Ukrainy, 1958, 393-page _Hyperboloid of Engineer Garin; Aelita_ edition**. Consequently `1958` alone is not an edition identifier and cannot be used to equate the Wikisource/az.lib transcription, the Moscow collected-works volume, that Kyiv edition, or FantLab's undisclosed analyzer input.
 
-Accordingly `bibliographic_source_identity` remains unset, `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+Accordingly `source_identity_status=revision_wikitext_frozen_body_unfrozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
 
 Canonical evidence:
 
-- `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json` — FantLab counts, permanent Wikisource revision, public-domain evidence, revision-family ambiguity, the Moscow-1958 textual-family classification, independent same-year edition disambiguation, and the evidence required before any diagnostic promotion.
+- `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.json` — FantLab counts, legal/source boundary, revision-family ambiguity, the Moscow-1958 textual-family classification and independent same-year disambiguation.
+- `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json` — exact source-free MediaWiki revision-wikitext identity.
+- `../../scriptorium/single_page_revision.py` — generic fail-closed exact-revision capture/replay implementation.
 
 ## Shining World traced 1920s romantic-fantastic candidate
 
@@ -116,15 +120,16 @@ Canonical evidence:
 
 The primary Russian Wikisource work index cites **A. S. Grin, Collected Works, volume 6, Moscow: Pravda, 1965, pp. 3–227 (`lib.web`)** and exposes permanent index revision **`oldid=4715367`**. FantLab's independent bibliography for the 1965 six-volume collected works lists *Road to Nowhere* on exactly **pp. 3–227**, which strongly corroborates the bibliographic transcription family. It still does not prove that the electronic literary bytes exactly reproduce that printing, and it says nothing about FantLab's undisclosed analyzer upload.
 
-A second Wikisource route makes that distinction concrete rather than theoretical. `Дорога в никуда (Грин)` is a separate single-page `az.lib.ru`-derived transcription at permanent revision **`oldid=5585836`**; it labels the 1930 original Russian work public domain in Russia under Article 1281 and shows a two-part, 24-chapter structure. Scriptorium records this as alternate-transcription and legal evidence only. It is **not** collapsed with the source-cited 1965 family merely because both represent the same novel.
+A second Wikisource route makes that distinction concrete rather than theoretical. `Дорога в никуда (Грин)` is a separate single-page `az.lib.ru`-derived transcription at permanent revision **`oldid=5585836`**; its source-free manifest freezes page ID **1003775**, revision timestamp **`2025-07-30T20:33:01Z`**, MediaWiki SHA-1 **`135933c3b9155bddb0356d0eb9644d11f55ba870`** and wikitext SHA-256 **`f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b`** without storing source prose. That freezes the alternate revision wikitext only; deterministic literary-body extraction/body digests remain unfrozen.
 
-No source prose is committed. The retained rights scope is the original Russian literary work body; translations, later creative revisions, and editorial apparatus remain outside scope unless separately justified. The 1965-source index itself does not freeze the linked literary-page revisions, deterministic extraction/composition, or raw/normalized composite digests.
+The alternate route labels the 1930 original Russian work public domain in Russia under Article 1281 and shows a two-part, 24-chapter structure. It is **not** collapsed with the source-cited 1965 family merely because both represent the same novel. The 1965-source index still does not freeze the linked literary-page revisions, deterministic extraction/composition, or raw/normalized composite digests.
 
-Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+Accordingly the primary family remains trace-only while the alternate route has `revision_wikitext_identity_frozen=true`; `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
 
 Canonical evidence:
 
-- `source-edition-traces/grin-road-nowhere-ru.json` — FantLab counts, source-cited 1965 Wikisource family, independent bibliography match, alternate az.lib transcription/legal evidence, fail-closed identity boundary, and next evidence required before diagnostics.
+- `source-edition-traces/grin-road-nowhere-ru.json` — FantLab counts, source-cited 1965 Wikisource family, independent bibliography match, alternate az.lib transcription/legal evidence and fail-closed identity boundary.
+- `source-edition-traces/grin-road-nowhere-ru.alternate-revision.json` — source-free exact revision-wikitext identity for the alternate route.
 
 ## Running on Waves traced Grin candidate
 

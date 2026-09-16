@@ -341,6 +341,39 @@
         "The source-cited 1965 work-index locator does not freeze the linked literary-page revisions, extraction/composition contract, or raw/normalized composite digests.",
         "A distinct Wikisource/az.lib full-work transcription exists at oldid=5585836; it is retained as alternate-transcription/legal evidence and is not collapsed with the 1965-source family."
       ]
+    },
+    {
+      "candidate_id": "grin-running-on-waves-ru",
+      "author": "Александр Грин",
+      "title": "Бегущая по волнам",
+      "language": "ru",
+      "work_identity": "original",
+      "fantlab": {
+        "work_id": 27344,
+        "analysis_url": "https://fantlab.ru/work27344/lp",
+        "analysis_date": "2022-09-18",
+        "characters": 360987,
+        "length_eligible": true
+      },
+      "source": {
+        "provider": "Russian Wikisource",
+        "url": "https://ru.wikisource.org/wiki/Бегущая_по_волнам_(Грин)",
+        "edition_note": "Wikisource work-index permanent revision oldid=2595407 cites А. Грин. Алые паруса. Бегущая по волнам. Золотая цепь. М.: Детская литература, 1965 (Библиотека приключений), and exposes 35 numbered chapters plus an epilogue. FantLab bibliography independently catalogs the same 1965 volume and lists the novel on pp. 77–276; the literary subpage revisions are not frozen.",
+        "source_provenance_confidence": "strong",
+        "legal_basis": "public_domain",
+        "legal_evidence": "The Russian Wikisource work page identifies Alexander Grin as 1880–1932, records the novel as a 1928 work, and explicitly marks the original literary work public domain in Russia under Article 1281 and in life-plus-70-or-less jurisdictions. The retained scope is the original Russian literary body only; no source prose, translation, derivative work, or later editorial apparatus is committed."
+      },
+      "source_edition_trace": "corpus/candidates/source-edition-traces/grin-running-on-waves-ru.json",
+      "source_identity_status": "traced_not_frozen",
+      "fantlab_source_edition_match": "unknown",
+      "diagnostic_ready": false,
+      "gate_ready": false,
+      "status": "eligible_unmatched",
+      "blockers": [
+        "FantLab does not identify the exact edition or text bytes used for the 2022 analysis; bibliography cannot establish a source match.",
+        "The source-cited 1965 work-index locator does not freeze the 35 linked chapter revisions, epilogue revision, extraction/composition contract, or raw/normalized composite digests.",
+        "The FantLab bibliography match corroborates the cited edition family but does not establish electronic-byte identity with Wikisource or FantLab analyzer-input identity."
+      ]
     }
   ],
   "held_leads": [

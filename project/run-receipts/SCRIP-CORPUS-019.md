@@ -5,8 +5,9 @@
 - PR: #108
 - Branch: `scrip-corpus-019-road-body-freeze`
 - Base at selection: `734155c927b7876cee2f19f94217c5c62eb68247`
-- Exact verified substantive head: `67d3bf542a0de33b72b41f7a1a549cb2899e3292`
-- Result: `REVIEW_PENDING`
+- Independently reviewed exact head: `ade0921c385ddb7ff8265c672e88197813123c31`
+- Squash merge: `9a73f7cb43f5770e4134c1b3655174b6718756cc`
+- Result: `DONE`
 
 ## Selected bounded unit
 
@@ -37,16 +38,18 @@ Strengthen the retained Alexander Grin *Road to Nowhere* candidate by freezing t
 - normalized SHA-256: `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`
 - source text committed: `false`
 
-## Verification
+## Independent review / verification
 
-Exact substantive head `67d3bf542a0de33b72b41f7a1a549cb2899e3292`:
+Later-run review inspected exact head `ade0921c385ddb7ff8265c672e88197813123c31`. The PR was mergeable, 16 commits ahead / 0 behind its base, contained the expected 11 changed files, and had no inline review threads. No blocking defect was found in the generic source-free manifest layer, Road-specific fail-closed extraction contract, committed body manifest, public provenance wording, or M2/FantLab boundary.
 
-- Road replay run `35192521006`: `success`. It re-fetched revision `5585836`, byte-compared the observed source-free revision manifest, replayed the revision, regenerated the literary-body manifest, byte-compared it with the committed manifest, replayed the source-specific body contract, asserted >=300k characters and source-text exclusion, and uploaded source-free evidence.
-- Pages run `35192520928`: `success`.
-- Frozen diagnostic run `35192520936`: `success`.
-- The dedicated Road job ran the complete standard-library suite before live recapture; the code-bearing workflow path reached 182 passing tests.
+Exact-head workflows:
 
-The initial generic one-page renderer correctly failed closed on this direct-page Wikisource source shape. A source-free probe of the exact pinned revision established the bounded contract (one leading `Отексте` scaffold; 27 level-three headings; five trailing category links; no post-scaffold templates/HTML/bold-italic markup), after which the candidate-specific extractor was implemented and verified. Intermediate failing checks were repaired before the final exact-head green evidence above.
+- Road replay run `35192693840`: `success`. It re-ran the standard-library suite, re-fetched revision `5585836`, byte-compared the observed source-free revision manifest, replayed the revision, regenerated the literary-body manifest, byte-compared it with the committed manifest, replayed the source-specific body contract, asserted >=300k characters and source-text exclusion, and uploaded source-free evidence.
+- Pages run `35192693818`: `success`.
+- Frozen diagnostic run `35192693735`: `success`.
+- Pinned pylem provider run `35192693699`: `success`.
+
+The review was recorded on PR #108, the PR was marked Ready, and exact head `ade0921c385ddb7ff8265c672e88197813123c31` was squash-merged as `9a73f7cb43f5770e4134c1b3655174b6718756cc`. Issue #107 closed completed.
 
 ## Evidence boundary / benchmark movement
 
@@ -56,4 +59,4 @@ FantLab's recorded value is 438,439 characters, so the frozen alternate body is 
 
 ## Next action
 
-Independent later-run review of PR #108 at its then-current exact head. Confirm the committed body manifest replays byte-for-byte, review the source-specific extraction boundary and public provenance wording, inspect changed-file scope/threads, and merge only if exact-head required checks remain green. Do not select another normal-flow unit first.
+Select the next dependency-satisfied SCRIP-CORPUS continuation unit from durable state. Prefer strengthening a retained body-unfrozen or trace-only candidate when a deterministic source-free extraction/composition identity can be bounded and verified, otherwise add another legally usable >=300k diversity candidate with explicit provenance. Do not infer FantLab input identity from bibliography, source freezing or count proximity.

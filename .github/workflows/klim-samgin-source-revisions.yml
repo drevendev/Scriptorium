@@ -93,13 +93,15 @@ jobs:
               --receipt "$receipt"
           done
 
-      - name: Probe exact pinned source shape without prose
+      - name: Probe exact pinned source shape and dependencies without prose
         run: |
           set -euo pipefail
           for part in 1 2 3 4; do
             python -m scriptorium.klim_samgin_freeze \
               --revision-manifest "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part${part}.revision.json"
           done
+          python -m scriptorium.klim_samgin_freeze \
+            --resolve-title 'Жизнь Клима Самгина (Горький)/Часть 2/part2'
 
       - name: Verify source-free ordered revision set
         run: |

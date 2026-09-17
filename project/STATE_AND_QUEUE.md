@@ -1,25 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 111
+STATE_REVISION: 112
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-17T02:48:00Z
-LAST_RESULT: SCRIP-CORPUS-017 / Issue #103 / draft PR #104 received an independent exact-head review that validated the provenance boundary but found a blocking public-representation defect: the new Klim Samgin candidate page was not linked from `corpus/candidates/README.md`. This recovery unit repaired that exact defect by adding a concise trace-only Klim Samgin navigation section linking the public candidate page and provenance trace without changing parity-catalog admission or evidence status.
-LAST_VERIFIED_PROGRESS: The repair commit `93003ca3ba09c03f4b63944c34b24e4f60fff62f` updates only public corpus navigation at this stage. Klim Samgin remains a provenance-qualified lead: FantLab reports 3,789,857 characters / 531,192 words; Russian Wikisource exposes the four-part Library-Moshkov/GIKhL 1952/1953 transcription family at permanent locators, but revision timestamps/MediaWiki SHA-1 values, Scriptorium wikitext SHA-256 values, deterministic literary-body extraction/composition and composite digests remain unfrozen. `fantlab_source_edition_match=unknown`, diagnostics remain disabled, main parity-catalog admission remains deferred, and M2 remains 0/5. Fresh exact-head CI plus a later independent review are required before merge.
+LAST_COMMITTED_RUN_AT: 2026-09-17T03:52:54Z
+LAST_RESULT: SCRIP-CORPUS-017 / Issue #103 / PR #104 received an independent later-run exact-head review of repaired head `69744107743a6c0d7b35199dc8123c92dca2e13c` with no blocking defect, was marked Ready, and was squash-merged as `4240a9df5aae55c84a202327bbae6d3bef97e2df`; Issue #103 closed completed. The merged unit adds Maxim Gorky's *The Life of Klim Samgin* as a source-free provenance-qualified twentieth-century corpus lead and repairs public corpus navigation, while deliberately deferring parity-catalog admission until immutable revision/body identity is replay-frozen.
+LAST_VERIFIED_PROGRESS: Immediately before merge, PR #104 was mergeable, 9 commits / 6 changed files, with no inline review threads. Repaired exact-head workflows `35175996990` (Scriptorium Pages) and `35175996991` (pinned pylem provider) both completed successfully. The six-file diff keeps README, candidate page, provenance trace, changelog fragment, state and receipt aligned on `trace_only`, `fantlab_source_edition_match=unknown`, diagnostics/gate disabled, no main parity-catalog admission and M2 0/5. Fresh FantLab verification still reports the retained 19 September 2022 analysis at 3,789,857 characters / 531,192 words.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-017
 ISSUE:          #103
-STATUS:         REPAIR_AUTHORED_REVIEW_PENDING
-PR:             #104 (draft)
-MERGED_COMMIT:  none
-NEXT_ACTION:    Wait for fresh exact-head CI after the public-navigation repair, then
-                independently review PR #104 in a later wake. Confirm that README,
-                candidate page, provenance trace and durable state agree on trace-only
-                status and that no parity-catalog admission or source-match claim was
-                introduced. If accepted, mark Ready and merge safely; otherwise record
-                the exact remaining repair contract. M2 must remain 0/5.
+STATUS:         DONE
+PR:             #104
+MERGED_COMMIT:  4240a9df5aae55c84a202327bbae6d3bef97e2df
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer strengthening a retained trace-only candidate into a replay-frozen
+                immutable source/body identity when that can be bounded and verified, or
+                add another legally usable >=300k diversity candidate when stronger
+                evidence is available. Never infer FantLab input identity from title,
+                bibliography, count proximity or public-source freezing.
 ```
 
 ## Current milestone gate
@@ -34,7 +34,6 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | Review repaired PR #104 exact head | review / corpus provenance | Independently verify SCRIP-CORPUS-017 after fresh exact-head CI and either merge safely or record a bounded repair contract | Do not self-approve authored repair; keep source/parity claims fail-closed |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
@@ -69,7 +68,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - Public corpus navigation exposes the retained frozen and trace-only candidates with provenance boundaries rather than parity claims.
 - SCRIP-CORPUS-016 upgrades the public Hyperboloid entry from revision-container-only identity to a frozen source-free literary-body identity with exact counts/digests and an explicit fail-closed extraction profile, while preserving the unresolved print-edition and FantLab-input boundary.
 - The repaired machine-readable candidate catalog now agrees with the Hyperboloid trace/body manifests and no longer advertises the candidate as `traced_not_frozen`.
-- SCRIP-CORPUS-017 adds a standalone public Klim Samgin candidate page plus a machine-readable provenance trace, and the repair now links both from `corpus/candidates/README.md`. It intentionally does not change the main parity catalog until an immutable four-part literary identity is replay-frozen.
+- SCRIP-CORPUS-017 adds a standalone public Klim Samgin candidate page plus a machine-readable provenance trace, and the repaired/merged navigation links both from `corpus/candidates/README.md`. It intentionally does not change the main parity catalog until an immutable four-part literary identity is replay-frozen.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers

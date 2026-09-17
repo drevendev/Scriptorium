@@ -1,25 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 113
+STATE_REVISION: 114
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-17T04:52:39Z
-LAST_RESULT: SCRIP-CORPUS-018 / Issue #105 / draft PR #106 strengthens Maxim Gorky's *The Life of Klim Samgin* from locator-only provenance into a replay-frozen four-part Russian Wikisource **revision-wikitext** identity. Exact per-part page/revision/timestamp/MediaWiki-SHA1/wikitext-count/SHA-256 manifests are committed in deterministic part order, source prose is excluded, and hosted replay verifies the pinned revisions. Literary-body extraction/composition and FantLab analyzer-input identity remain deliberately unresolved.
-LAST_VERIFIED_PROGRESS: Hosted bootstrap run `35183557851` passed the 171-test standard-library suite and captured all four retained part revisions source-free. The exact containers total 3,228,790 wikitext characters / 5,902,920 UTF-8 bytes; their ordered identity projection is SHA-256 `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`. The final PR adds committed replay manifests, ordered-set validation and public provenance updates while preserving `fantlab_source_edition_match=unknown`, diagnostics/gate disabled and M2 0/5. Final authored-head workflow evidence belongs on PR #106; the PR remains Draft for a later independent review.
+LAST_COMMITTED_RUN_AT: 2026-09-17T05:50:06Z
+LAST_RESULT: SCRIP-CORPUS-018 / Issue #105 / PR #106 received an independent later-run exact-head review of `68a2dd51384ad6b0efbdff36ed2cf341897ea9ff` with no blocking defect, was marked Ready, and was squash-merged as `23925a0e8188937905bcf1e0250a4384b191c7e7`; Issue #105 closed completed. The merged unit replay-freezes the exact source-free revision-wikitext identities of all four retained Maxim Gorky *The Life of Klim Samgin* parts in deterministic order while deliberately leaving literary-body extraction/composition and FantLab analyzer-input identity unresolved.
+LAST_VERIFIED_PROGRESS: Immediately before merge, PR #106 was mergeable, 14 commits ahead / 0 behind master, with 13 changed files and no inline review threads. Exact-head workflows `35183988586` (Klim Samgin source revisions), `35183988845` (Scriptorium Pages), `35183988669` (frozen diagnostic), and `35183988582` (pinned pylem provider) all completed successfully. The dedicated replay workflow re-captured all four pinned revisions, byte-compared observed and committed source-free manifests, replayed each exact revision, and verified ordered identity SHA-256 `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`. Public provenance remains fail-closed: body identity is unfrozen, `fantlab_source_edition_match=unknown`, diagnostics/gate disabled, and M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-018
 ISSUE:          #105
-STATUS:         REVIEW_PENDING
+STATUS:         DONE
 PR:             #106
-NEXT_ACTION:    Independently review the exact current head of draft PR #106.
-                Confirm all four committed manifests reproduce byte-for-byte from pinned
-                Wikisource revisions, the ordered identity digest is deterministic, no
-                source prose leaked, public provenance is internally consistent, and the
-                literary-body/FantLab boundaries remain fail-closed. Merge only on a later
-                run if the exact reviewed head and required checks are green; otherwise
-                record a concrete repair contract.
+MERGED_COMMIT:  23925a0e8188937905bcf1e0250a4384b191c7e7
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer strengthening a retained body-unfrozen or trace-only candidate when
+                a deterministic source-free extraction/composition identity can be bounded
+                and verified, or add another legally usable >=300k diversity candidate when
+                stronger evidence is available. Never infer FantLab input identity from
+                title, bibliography, count proximity or public-source freezing.
 ```
 
 ## Current milestone gate
@@ -34,7 +34,6 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | Review SCRIP-CORPUS-018 | review / recovery | Independent exact-head review of draft PR #106; merge only if source-free replay/manifests/docs are consistent and checks are green | Later wake must be independent of the authored unit |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
@@ -52,7 +51,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Running on Waves** — Detskaya literatura 1965 source-cited family with 35 chapters plus epilogue; literary subpage identities/composite remain unfrozen.
 - **The White Guard** — Wikisource explicitly mixes two bibliographic source families across chapters 1–11 and 12–20; all 20 chapter identities/composite remain unfrozen.
 - **The Twelve Chairs** — keep 40-chapter later 1938/1961 editorial family distinct from 41-chapter 1928 first standalone edition; neither literary body is frozen, and coauthorship prevents individual-author attribution without an explicit VOICE model.
-- **The Life of Klim Samgin** — four exact Russian Wikisource part revisions are now replay-frozen at oldids `5733765`, `5198033`, `5138882`, `5724453`; ordered revision-wikitext identity SHA-256 `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`, totaling 3,228,790 wikitext characters / 5,902,920 UTF-8 bytes. The literary-body extraction/composition and composite body digests remain unfrozen, FantLab source identity remains unknown, and main parity-catalog admission remains deferred.
+- **The Life of Klim Samgin** — four exact Russian Wikisource part revisions are replay-frozen at oldids `5733765`, `5198033`, `5138882`, `5724453`; ordered revision-wikitext identity SHA-256 `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`, totaling 3,228,790 wikitext characters / 5,902,920 UTF-8 bytes. The literary-body extraction/composition and composite body digests remain unfrozen, FantLab source identity remains unknown, and main parity-catalog admission remains deferred.
 
 ## Deterministic / morphology findings
 
@@ -83,5 +82,5 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 6. Petersburg lacks a Scriptorium-recorded PDF snapshot digest and deterministic OCR/page-extraction identity.
 7. Hyperboloid has a frozen revision and deterministic frozen literary-body identity but no direct bibliographic print-edition identity and no FantLab analyzer-input match; Shining World, Running on Waves, White Guard and Twelve Chairs remain trace-only/unfrozen at the literary-body level.
 8. Road to Nowhere has a frozen alternate revision-wikitext identity, but the primary 1965 literary family and the alternate route's literary-body extraction/body digests remain unfrozen; FantLab input remains undisclosed.
-9. Klim Samgin now has replay-frozen exact revision-wikitext identities for all four retained parts, but no candidate-specific literary-body extraction/composition contract or composite raw/normalized body digest; FantLab analyzer-input identity is still undisclosed.
+9. Klim Samgin has replay-frozen exact revision-wikitext identities for all four retained parts, but no candidate-specific literary-body extraction/composition contract or composite raw/normalized body digest; FantLab analyzer-input identity is still undisclosed.
 10. Pages live activation remains a repository-admin effect and is off.

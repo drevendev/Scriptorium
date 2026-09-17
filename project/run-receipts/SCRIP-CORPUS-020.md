@@ -2,59 +2,54 @@
 
 - Date: 2026-09-17
 - Issue: #109
-- PR: #111 (Draft)
+- PR: #111 — merged as `d3665bfb84ad84c91f5a99c64559267da2e1f41e`
 - Branch: `scrip-corpus-020-klim-lst-semantics`
 - Base at selection: `0de8766941bff76e7b20fbd923cd2df95ffbb20b`
-- Result: `TARGET_ONLY_LST_SEMANTICS_AUTHORED_REVIEW_PENDING`
+- Reviewed exact head: `18d4c2b36e2899e85d44d0166d2fb6f31353d9f9`
+- Result: `TARGET_ONLY_LST_SEMANTICS_MERGED_CONTINUATION_OPEN`
 
 ## Selected bounded unit
 
-Continue Issue #109 by resolving and freezing the exact Part 2 `#lst` selection/placement semantics before attempting literary-body extraction or composition. The unit must remain source-free, fail closed on source drift, and must not tune anything toward FantLab's displayed count.
+Independently review the exact authored head of PR #111, merge the bounded target-only `#lst` semantic prerequisite if the evidence/checks are clean, and reconcile durable state without closing the larger literary-body Issue #109.
 
-## Discovery and correction
+## Review evidence
 
-The first implementation assumed a normal labeled-section call. Exact-source CI disproved that assumption. A source-free structural artifact from pinned parent oldid `5198033` showed exactly one `#lst` prefix, one argument, target `Жизнь Клима Самгина (Горький)/Часть 2/part2`, parent offsets `581758..581810`, and **no section argument**. The pinned dependency oldid `2366546` contains zero `<section>` markers.
+The exact head was mergeable, 16 commits ahead / 0 behind `master`, changed 11 files, and had no inline review threads. Review re-checked the source-free contract, implementation/tests, public provenance wording, and the pinned upstream `wikimedia/mediawiki-extensions-LabeledSectionTransclusion` source at commit `3e9a44dec6858aeaf3ca547a32ab3162d6887ed6`. In `setupPfunc12`, after target resolution and template-DOM/frame creation, the zero-remaining-arguments branch returns `newFrame->expand(root)`, supporting the PR's correction from a labeled-section-selection model to a target-only full-template-DOM expansion boundary.
 
-Upstream implementation research then checked `wikimedia/mediawiki-extensions-LabeledSectionTransclusion`, file `includes/LabeledSectionTransclusion.php`, at evidence commit `3e9a44dec6858aeaf3ca547a32ab3162d6887ed6`. In `setupPfunc12`, after the target has been resolved and the target template DOM/frame created, the zero-remaining-arguments branch returns `newFrame->expand(root)`. Therefore the retained invocation performs no labeled-section selection: it delegates the whole target template DOM to MediaWiki frame expansion.
+The retained Part 2 source contract remains:
 
-The implementation was corrected rather than forcing the earlier hypothesis. `scriptorium-klim-samgin-lst-contract-v2` now requires exactly one target-only call and records its source-free placement/identity plus the pinned dependency and upstream semantic branch. The committed contract is `corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json`.
-
-Exact observed invocation evidence:
-
-- one argument; `section_label=null`; `range_end_label=null`
+- one target argument; `section_label=null`; `range_end_label=null`
 - parent offsets `581758..581810`
 - invocation character count `52`, UTF-8 byte count `81`
 - invocation SHA-256 `89969a0424eb9fa332d132216bbeb96647239ab613cf6dadf6c5e2087ff0f15e`
 - dependency oldid `2366546`, wikitext SHA-256 `173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996`
+- dependency shape: six `poemx1` template invocations, zero nested `#lst` calls, zero `<section>` tags
 
-The same source-free contract inventory found **six `poemx1` template invocations** in the dependency, zero nested `#lst` calls and zero section tags. That is a new explicit boundary: the target revision and parser-function semantic branch are frozen, but MediaWiki template-DOM expansion and any transitive template/parser state are not yet reproduced. No resolved Part 2 byte identity is claimed.
+No source prose is committed, and the contract still sets `mediawiki_template_dom_expansion_reproduced=false`, `resolved_part2_wikitext_identity_frozen=false`, `literary_body_extraction_frozen=false`, and `composite_literary_body_identity_frozen=false`.
 
-## Verification
+## Exact-head verification
 
-Bootstrap corrected-head Klim run `35213791952` completed successfully. It:
+All four current exact-head workflows completed successfully:
 
-- ran the full standard-library suite successfully;
-- re-captured and byte-compared all four parent revision manifests plus dependency oldid `2366546`;
-- replayed all five exact revisions;
-- ran source-free source-shape probes;
-- captured the corrected target-only contract successfully;
-- verified the ordered parent source-identity digest and fail-closed M2 flags;
-- uploaded source-free evidence.
+- Klim Samgin source graph `35214227300`: success; checked out `18d4c2b36e2899e85d44d0166d2fb6f31353d9f9`, ran **188** standard-library tests, re-captured and byte-compared all four parent revision manifests plus dependency oldid `2366546`, replayed all five exact revisions, probed source shape, recaptured/byte-compared/replayed the committed target-only contract, verified source-graph assertions, and uploaded source-free evidence.
+- Scriptorium Pages `35214227381`: success.
+- Scriptorium frozen diagnostic `35214227330`: success.
+- Scriptorium pinned pylem provider `35214227371`: success.
 
-The observed contract from that run was inspected before being committed. It records `template_name_counts={"poemx1": 6}` and deliberately sets `mediawiki_template_dom_expansion_reproduced=false`, `resolved_part2_wikitext_identity_frozen=false`, `literary_body_extraction_frozen=false`, and `composite_literary_body_identity_frozen=false`.
+No blocking defect was found in independent judgement. A review receipt was recorded on PR #111 before mutation.
 
-Fresh PR-head workflows are required after the final contract/public-state commits; a later run must judge the current exact head independently before merge. This authored run does not self-approve or self-merge PR #111.
+## Merge and public representation
 
-## Public representation
+PR #111 was marked Ready and squash-merged as `d3665bfb84ad84c91f5a99c64559267da2e1f41e`. Issue #109 intentionally remains open because this merge is a semantic/source-graph prerequisite, not the requested literary-body composite freeze.
 
-The Klim candidate page and machine-readable provenance trace now correct the public explanation: this is a target-only `#lst` edge case, not a labeled-section selection. They expose the exact invocation contract and the six-`poemx1` expansion boundary without publishing source prose or implying FantLab parity.
+The public Klim candidate page and machine-readable provenance trace now describe the target-only `#lst` edge correctly and expose the six-`poemx1` MediaWiki-expansion boundary without claiming resolved body bytes or FantLab parity.
 
 ## Evidence boundary / benchmark movement
 
-The ordered parent source-identity SHA-256 remains `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`. The dependency revision remains independently pinned, but no resolved Part 2 or composite literary-body count/digest is claimed.
+The ordered parent source-identity SHA-256 remains `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`. No resolved Part 2 or composite literary-body count/digest exists yet.
 
 `fantlab_source_edition_match=unknown`; `diagnostic_ready=false`; `gate_ready=false`; `m2_parity_admissible=false`; M2 remains **0/5 source-matched works**.
 
 ## Next action
 
-Independently review current exact head of PR #111 plus its fresh checks. If clean, merge this bounded semantic prerequisite while leaving Issue #109 open. Then continue #109 by freezing or deterministically reproducing the MediaWiki target template-DOM expansion layer, beginning with the six observed `poemx1` invocations, before any per-part literary extraction, 1->2->3->4 composition or composite digest.
+Continue Issue #109 in a later bounded unit by freezing or deterministically reproducing the MediaWiki target template-DOM expansion layer, beginning with the six observed `poemx1` invocations and without treating current mutable template state as historical truth. Only after parser/template dependencies replay deterministically should per-part literary extraction, 1 -> 2 -> 3 -> 4 composition, or composite raw / `scriptorium-text-v1` digests be recorded.

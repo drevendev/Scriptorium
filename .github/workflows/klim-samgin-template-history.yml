@@ -6,16 +6,19 @@ on:
       - ".github/workflows/klim-samgin-template-history.yml"
       - "scriptorium/template_history.py"
       - "scriptorium/mediawiki_transclusion.py"
+      - "scriptorium/mediawiki_template_frame.py"
       - "tests/test_template_history.py"
       - "tests/test_mediawiki_transclusion.py"
+      - "tests/test_mediawiki_template_frame.py"
       - "corpus/candidates/gorky-klim-samgin-ru.md"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.shape.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.transclusion.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.parameters.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json"
       - "project/STATE_AND_QUEUE.md"
       - "project/CHANGELOG.d/SCRIP-CORPUS-020.md"
-      - "project/run-receipts/SCRIP-CORPUS-020.md"
+      - "project/run-receipts/SCRIP-CORPUS-020-poemx1-parameters.md"
   workflow_dispatch:
 
 permissions:
@@ -23,7 +26,7 @@ permissions:
 
 jobs:
   replay:
-    name: Freeze historical poemx1 revision and inclusion semantics
+    name: Freeze historical poemx1 revision, inclusion and parameter surface
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -165,6 +168,41 @@ jobs:
           ))
           PY
 
+      - name: Freeze literal poemx1 template-parameter surface
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.mediawiki_template_frame import build_parameter_surface_manifest
+          from scriptorium.mediawiki_transclusion import preprocess_for_transclusion
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+
+          observed = json.loads(Path(
+              'build/repro/gorky-klim-samgin-ru.poemx1-template.revision.observed.json'
+          ).read_text(encoding='utf-8'))
+          identity = observed['source_identity']
+          fetched = fetch_pinned_wikitext(
+              title=identity['title'], revision_id=identity['revision_id']
+          )
+          text = fetched.pop('wikitext')
+          assert fetched == identity
+          transclusion_input, _ = preprocess_for_transclusion(text)
+          manifest = build_parameter_surface_manifest(
+              candidate_id=observed['candidate_id'],
+              revision_identity=identity,
+              transclusion_input=transclusion_input,
+              research_date='2026-09-17',
+          )
+          path = Path('build/repro/gorky-klim-samgin-ru.poemx1-template.parameters.json')
+          path.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          print('SCRIPTORIUM_POEMX1_PARAMETERS=' + json.dumps(
+              manifest, ensure_ascii=False, sort_keys=True, separators=(',', ':')
+          ))
+          PY
+
       - name: Compare and replay committed historical template evidence
         run: |
           set -euo pipefail
@@ -174,12 +212,16 @@ jobs:
           observed_shape=build/repro/gorky-klim-samgin-ru.poemx1-template.shape.json
           expected_transclusion=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.transclusion.json
           observed_transclusion=build/repro/gorky-klim-samgin-ru.poemx1-template.transclusion.json
+          expected_parameters=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.parameters.json
+          observed_parameters=build/repro/gorky-klim-samgin-ru.poemx1-template.parameters.json
           test -f "$expected"
           test -f "$expected_shape"
           test -f "$expected_transclusion"
+          test -f "$expected_parameters"
           cmp "$expected" "$observed"
           cmp "$expected_shape" "$observed_shape"
           cmp "$expected_transclusion" "$observed_transclusion"
+          cmp "$expected_parameters" "$observed_parameters"
           python -m scriptorium.template_history replay \
             --manifest "$expected" \
             --receipt build/repro/gorky-klim-samgin-ru.poemx1-template.revision.replay.json

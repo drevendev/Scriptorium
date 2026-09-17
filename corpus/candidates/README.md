@@ -123,16 +123,18 @@ Canonical evidence:
 
 The primary Russian Wikisource work index cites **A. S. Grin, Collected Works, volume 6, Moscow: Pravda, 1965, pp. 3–227 (`lib.web`)** and exposes permanent index revision **`oldid=4715367`**. FantLab's independent bibliography for the 1965 six-volume collected works lists *Road to Nowhere* on exactly **pp. 3–227**, which strongly corroborates the bibliographic transcription family. It still does not prove that the electronic literary bytes exactly reproduce that printing, and it says nothing about FantLab's undisclosed analyzer upload.
 
-A second Wikisource route makes that distinction concrete rather than theoretical. `Дорога в никуда (Грин)` is a separate single-page `az.lib.ru`-derived transcription at permanent revision **`oldid=5585836`**; its source-free manifest freezes page ID **1003775**, revision timestamp **`2025-07-30T20:33:01Z`**, MediaWiki SHA-1 **`135933c3b9155bddb0356d0eb9644d11f55ba870`** and wikitext SHA-256 **`f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b`** without storing source prose. That freezes the alternate revision wikitext only; deterministic literary-body extraction/body digests remain unfrozen.
+A second Wikisource route makes that distinction concrete rather than theoretical. `Дорога в никуда (Грин)` is a separate single-page `az.lib.ru`-derived transcription at permanent revision **`oldid=5585836`**. Scriptorium now replay-freezes both its exact revision wikitext and its literary body under the source-specific, fail-closed `scriptorium-road-nowhere-alt-wikisource-body-v1` contract. The source-free body manifest records **442,656 characters including spaces / 825,899 UTF-8 bytes** and raw plus `scriptorium-text-v1` normalized SHA-256 **`e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`**. No source prose is committed.
 
-The alternate route labels the 1930 original Russian work public domain in Russia under Article 1281 and shows a two-part, 24-chapter structure. It is **not** collapsed with the source-cited 1965 family merely because both represent the same novel. The 1965-source index still does not freeze the linked literary-page revisions, deterministic extraction/composition, or raw/normalized composite digests.
+That alternate frozen body is **4,217 characters larger** than FantLab's displayed count. The delta is diagnostic evidence of non-identity or differing extraction/counting policy, not evidence that the alternate transcription matches FantLab and not permission to tune the extractor toward the FantLab number. The alternate route also is **not** collapsed with the source-cited 1965 family merely because both represent the same novel.
 
-Accordingly the primary family remains trace-only while the alternate route has `revision_wikitext_identity_frozen=true`; `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+The primary 1965-source index still does not freeze the linked literary-page revisions, deterministic extraction/composition, or raw/normalized composite digests. Accordingly the retained primary family remains trace-only while the alternate route has a reproducibly frozen public body; `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
 
 Canonical evidence:
 
-- `source-edition-traces/grin-road-nowhere-ru.json` — FantLab counts, source-cited 1965 Wikisource family, independent bibliography match, alternate az.lib transcription/legal evidence and fail-closed identity boundary.
+- `source-edition-traces/grin-road-nowhere-ru.json` — FantLab counts, source-cited 1965 Wikisource family, frozen alternate az.lib body, legal evidence and fail-closed identity boundary.
 - `source-edition-traces/grin-road-nowhere-ru.alternate-revision.json` — source-free exact revision-wikitext identity for the alternate route.
+- `source-edition-traces/grin-road-nowhere-ru.alternate-body.json` — source-free alternate literary-body counts/digests and extraction-profile binding.
+- `../../scriptorium/road_nowhere_freeze.py` — source-specific fail-closed alternate-body extraction/replay implementation.
 
 ## Running on Waves traced Grin candidate
 

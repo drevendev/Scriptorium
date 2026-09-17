@@ -84,12 +84,12 @@
         "exact Part 2 target-only #lst invocation placement: offsets 581758..581810 and invocation SHA-256 89969a0424eb9fa332d132216bbeb96647239ab613cf6dadf6c5e2087ff0f15e",
         "upstream target-only #lst semantic branch evidenced at wikimedia/mediawiki-extensions-LabeledSectionTransclusion commit 3e9a44dec6858aeaf3ca547a32ab3162d6887ed6: with only the target argument remaining, the extension returns newFrame->expand(root) for the whole target template DOM",
         "deterministic inferred historical anchor for Шаблон:Poemx1 oldid 5142743 with wikitext SHA-256 fa7e35686da5ce4c62986a7e8bfc72f2dba067118218d656b2f0983e5cfa06db",
-        "documented MediaWiki partial-transclusion control semantics applied to pinned poemx1: two noinclude pairs, one includeonly pair, zero onlyinclude pairs; the raw doc invocation is excluded from transclusion",
-        "effective unresolved poemx1 dependency graph after inclusion selection: no ordinary templates; #expr x2, #if x5, #ifeq x5, #iferror x1, #tag x1 targeting poem, PAGENAME x1",
+        "documented MediaWiki partial-transclusion control semantics applied to pinned poemx1: two noinclude pairs, one includeonly pair, zero onlyinclude pairs; the raw doc invocation and raw PAGENAME occurrence are excluded from transclusion",
+        "effective unresolved poemx1 dependency graph after inclusion selection: no ordinary templates and no magic words; #expr x2, #if x5, #ifeq x5, #iferror x1, #tag x1 targeting poem",
         "per-part GIKhL 1952/1953 volume declarations exposed by Wikisource"
       ],
       "unfrozen_components": [
-        "MediaWiki parameter/frame and magic-word expansion for the pinned poemx1 template",
+        "MediaWiki template parameter/frame expansion for the pinned poemx1 template",
         "MediaWiki parser-function behavior for #expr, #if, #ifeq and #iferror plus #tag:poem extension rendering",
         "historical render equivalence for the inferred poemx1 as-of revision anchor",
         "a resolved Part 2 wikitext/body identity after the remaining parser dependencies are reproduced",
@@ -98,7 +98,7 @@
         "raw and scriptorium-text-v1 normalized composite literary-body digests",
         "the relationship between FantLab's uploaded analyzer input and this Wikisource/Library Moshkov transcription family"
       ],
-      "reason": "The retained Part 2 call is target-only and delegates the dependency to normal MediaWiki frame expansion. Scriptorium now freezes the exact target revision, an inferred historical poemx1 revision anchor, and the documented inclusion-control layer. That layer proves the raw doc template is no transclusion dependency and leaves no ordinary template transclusions, but parser/magic-word/#tag behavior remains unresolved, so no historical render, resolved Part 2 or literary-body digest is claimed."
+      "reason": "The retained Part 2 call is target-only and delegates the dependency to normal MediaWiki frame expansion. Scriptorium now freezes the exact target revision, an inferred historical poemx1 revision anchor, and the documented inclusion-control layer. Exact replay proves the raw doc template and raw PAGENAME occurrence are not transclusion dependencies and leaves no ordinary templates or magic words, but parameter/frame, parser-function and #tag behavior remain unresolved, so no historical render, resolved Part 2 or literary-body digest is claimed."
     }
   },
   "legal_boundary": {
@@ -126,13 +126,13 @@
       "Russian Wikisource supplies explicit public-domain evidence, a stable work-index locator, four literary part locators and per-part GIKhL 1952/1953 source declarations.",
       "All four pinned part revisions have source-free replay-frozen identities, and the Part 2 target dependency is independently pinned at oldid 2366546.",
       "The Part 2 invocation is exactly target-only rather than labeled-section selection; upstream LabeledSectionTransclusion source shows this shape expands the whole target template DOM through the MediaWiki frame.",
-      "The inferred historical poemx1 anchor is pinned at oldid 5142743, and the documented inclusion-control layer now proves that its raw doc invocation is excluded and no ordinary template transclusion remains.",
-      "The remaining effective poemx1 graph consists of PAGENAME, #expr/#if/#ifeq/#iferror and #tag:poem behavior, which has not yet been reproduced as historical MediaWiki expansion.",
+      "The inferred historical poemx1 anchor is pinned at oldid 5142743, and the documented inclusion-control layer now proves that its raw doc invocation and raw PAGENAME occurrence are excluded; no ordinary template or magic-word dependency remains.",
+      "The remaining effective poemx1 graph consists of template parameter/frame behavior, #expr/#if/#ifeq/#iferror and #tag:poem behavior, which has not yet been reproduced as historical MediaWiki expansion.",
       "Revision/source-semantic freezing is not a literary-body identity: resolved Part 2, deterministic extraction/composition and composite raw/normalized digests remain unfrozen.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Reproduce only the evidenced remaining poemx1 semantics: parameter/frame behavior, PAGENAME, #expr, #if, #ifeq, #iferror and #tag:poem, while preserving the inferred-anchor boundary.",
+      "Reproduce only the evidenced remaining poemx1 semantics: template parameter/frame behavior, #expr, #if, #ifeq, #iferror and #tag:poem, while preserving the inferred-anchor boundary.",
       "Only after the target-only expansion layer is reproducible, define deterministic fail-closed literary-body extraction for each frozen part and compose Part 1 -> Part 2 -> Part 3 -> Part 4.",
       "Record raw and scriptorium-text-v1 normalized composite digests only after exact replay succeeds.",
       "Only after immutable literary-body identity exists, consider main parity-catalog admission and source-bound diagnostics while retaining the unknown FantLab source match.",

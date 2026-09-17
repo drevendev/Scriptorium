@@ -81,7 +81,7 @@ class RoadNowhereFreezeTests(unittest.TestCase):
         source = _source()
         with self.assertRaisesRegex(ValueError, "heading inventory drift"):
             extract_literary_body(source.replace("=== Заголовок 27 ===", "== Заголовок 27 ==", 1))
-        with self.assertRaisesRegex(ValueError, "category inventory drift"):
+        with self.assertRaisesRegex(ValueError, "wikilink inventory drift"):
             extract_literary_body(source.replace("[[Категория:Тест 5]]", "", 1))
         with self.assertRaisesRegex(ValueError, "unsupported template"):
             extract_literary_body(source.replace("Абзац 1.", "{{неизвестно}}", 1))

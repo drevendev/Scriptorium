@@ -164,6 +164,14 @@ Canonical evidence:
 
 - `source-edition-traces/bulgakov-white-guard-ru.json` — FantLab counts, permanent Wikisource index locator, explicit two-source chapter partition, legal boundary, separate 1927 facsimile lead, fail-closed identity status, and next evidence required before diagnostics.
 
+## The Life of Klim Samgin traced interwar Soviet candidate
+
+[`gorky-klim-samgin-ru`](gorky-klim-samgin-ru.md) adds Maxim Gorky and a very long twentieth-century original-Russian work. FantLab's 19 September 2022 linguistic analysis reports **3,789,857 characters** and **531,192 words**, comfortably above the >=300,000-character calibration threshold.
+
+Russian Wikisource exposes a four-part Library-Moshkov transcription family and marks the original Russian work public domain. Scriptorium records the permanent work-index locator `oldid=5628161`, the four literary-part locators `5733765`, `5198033`, `5138882`, `5724453`, and their GIKhL 1952/1953 volume declarations in [`source-edition-traces/gorky-klim-samgin-ru.json`](source-edition-traces/gorky-klim-samgin-ru.json). No source prose is committed.
+
+This candidate remains deliberately **trace-only**. Revision timestamps/MediaWiki SHA-1 values, Scriptorium wikitext SHA-256 identities, deterministic fail-closed literary-body extraction/composition, and raw/normalized composite digests are not frozen. FantLab does not disclose its analyzer-input edition or bytes. Therefore `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, it is not admitted to the main parity catalog, and M2 remains **0/5 source-matched works**.
+
 ## The Twelve Chairs traced coauthored multi-edition candidate
 
 `ilf-petrov-twelve-chairs-ru` adds Ilf and Petrov, a long coauthored early-Soviet satire, and a concrete edition-family split relevant to both future source matching and author-voice modeling. FantLab's 17 September 2022 linguistic analysis reports **572,654 characters** and **80,203 words**, comfortably above the >=300,000-character calibration threshold.

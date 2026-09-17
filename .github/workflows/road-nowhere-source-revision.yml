@@ -5,9 +5,13 @@ on:
     paths:
       - ".github/workflows/road-nowhere-source-revision.yml"
       - "scriptorium/single_page_revision.py"
+      - "scriptorium/single_page_body.py"
+      - "scriptorium/wikisource_freeze.py"
       - "tests/test_single_page_revision.py"
+      - "tests/test_single_page_body.py"
       - "corpus/candidates/source-edition-traces/grin-road-nowhere-ru.json"
       - "corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-revision.json"
+      - "corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-body.json"
   workflow_dispatch:
 
 permissions:
@@ -15,7 +19,7 @@ permissions:
 
 jobs:
   freeze:
-    name: Replay pinned alternate source revision
+    name: Replay pinned alternate source revision and literary body
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -47,24 +51,67 @@ jobs:
             --legal-basis public_domain \
             --output build/repro/grin-road-nowhere-ru.alternate-revision.observed.json
 
-      - name: Compare committed source-free identity when present
+      - name: Compare committed source-free revision identity
         run: |
           set -euo pipefail
           expected='corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-revision.json'
           observed='build/repro/grin-road-nowhere-ru.alternate-revision.observed.json'
+          cmp "$expected" "$observed"
+          python -m scriptorium.single_page_revision replay \
+            --manifest "$expected" \
+            --receipt build/repro/grin-road-nowhere-ru.alternate-revision.replay.json
+
+      - name: Capture source-free literary-body identity
+        run: |
+          set -euo pipefail
+          revision='corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-revision.json'
+          expected='corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-body.json'
+          observed='build/repro/grin-road-nowhere-ru.alternate-body.observed.json'
+          python -m scriptorium.single_page_body capture \
+            --revision-manifest "$revision" \
+            --output "$observed"
           if [[ -f "$expected" ]]; then
             cmp "$expected" "$observed"
-            python -m scriptorium.single_page_revision replay \
-              --manifest "$expected" \
-              --receipt build/repro/grin-road-nowhere-ru.alternate-revision.replay.json
+            python -m scriptorium.single_page_body replay \
+              --revision-manifest "$revision" \
+              --body-manifest "$expected" \
+              --receipt build/repro/grin-road-nowhere-ru.alternate-body.replay.json
           else
-            echo 'Committed source identity not present yet; capture artifact is the bootstrap evidence.'
+            echo 'Committed literary-body identity not present yet; capture artifact is bootstrap evidence.'
           fi
 
-      - name: Upload source-free capture evidence
+      - name: Verify observed body artifact is source-free and fail-closed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('build/repro/grin-road-nowhere-ru.alternate-body.observed.json')
+          manifest = json.loads(path.read_text(encoding='utf-8'))
+          assert manifest['candidate_id'] == 'grin-road-nowhere-ru'
+          assert manifest['source_revision']['revision_id'] == 5585836
+          assert manifest['extraction']['profile'] == 'scriptorium-wikisource-body-v1'
+          assert manifest['extraction']['source_text_committed'] is False
+          assert manifest['literary_body_identity']['character_count_including_spaces'] >= 300000
+          assert manifest['fantlab_source_edition_match'] == 'unknown'
+          assert manifest['diagnostic_comparison_admissible'] is True
+          assert manifest['m2_parity_admissible'] is False
+          forbidden = {'wikitext', 'content', 'body', 'text', 'source_text'}
+          assert not forbidden.intersection(manifest)
+          print('SCRIPTORIUM_ROAD_NOWHERE_BODY=' + json.dumps({
+              'candidate_id': manifest['candidate_id'],
+              'source_revision': manifest['source_revision'],
+              'extraction_profile': manifest['extraction']['profile'],
+              'literary_body_identity': manifest['literary_body_identity'],
+              'fantlab_source_edition_match': manifest['fantlab_source_edition_match'],
+              'm2_parity_admissible': manifest['m2_parity_admissible'],
+          }, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
+          PY
+
+      - name: Upload source-free capture and replay evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: road-nowhere-alternate-source-revision
-          path: build/repro/grin-road-nowhere-ru.alternate-revision.*.json
+          path: build/repro/grin-road-nowhere-ru.alternate-*.json
           if-no-files-found: error
           retention-days: 7

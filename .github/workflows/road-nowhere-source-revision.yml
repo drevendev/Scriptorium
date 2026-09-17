@@ -61,6 +61,53 @@ jobs:
             --manifest "$expected" \
             --receipt build/repro/grin-road-nowhere-ru.alternate-revision.replay.json
 
+      - name: Probe pinned source shape without printing prose
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          import json
+          import re
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+
+          observed = fetch_pinned_wikitext(title='Дорога в никуда (Грин)', revision_id=5585836)
+          source = observed.pop('wikitext')
+          template_names = Counter(
+              name.strip().casefold()
+              for name in re.findall(r'\{\{\s*([^|{}\n]+)', source)
+          )
+          heading_levels = Counter(
+              len(marker)
+              for marker in re.findall(r'(?m)^\s*(={2,6})(?!=).*?\1\s*$', source)
+          )
+          tag_names = Counter(
+              name.casefold()
+              for name in re.findall(r'<\/?\s*([A-Za-z][A-Za-z0-9:-]*)\b[^>]*>', source)
+          )
+          div_classes = Counter(
+              value.casefold()
+              for value in re.findall(r'<div\b[^>]*\bclass=["\']([^"\']+)["\'][^>]*>', source, re.I)
+          )
+          category_lines = len(re.findall(r'(?mi)^\s*\[\[\s*Категория\s*:[^\]\n]+\]\]\s*$', source))
+          report = {
+              'source_identity': observed,
+              'line_count': source.count('\n') + 1,
+              'leading_template_name': next(iter(re.findall(r'^\s*\{\{\s*([^|{}\n]+)', source)), None),
+              'template_name_counts': dict(sorted(template_names.items())),
+              'heading_level_counts': {str(key): value for key, value in sorted(heading_levels.items())},
+              'html_tag_name_counts': dict(sorted(tag_names.items())),
+              'div_class_counts': dict(sorted(div_classes.items())),
+              'category_line_count': category_lines,
+              'wikilink_open_count': source.count('[['),
+              'wikilink_close_count': source.count(']]'),
+              'comment_open_count': source.count('<!--'),
+              'comment_close_count': source.count('-->'),
+              'bold_italic_marker_count': source.count("''"),
+              'noinclude_open_count': len(re.findall(r'<noinclude\b', source, re.I)),
+              'onlyinclude_open_count': len(re.findall(r'<onlyinclude\b', source, re.I)),
+          }
+          print('SCRIPTORIUM_ROAD_NOWHERE_SHAPE=' + json.dumps(report, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
+          PY
+
       - name: Capture source-free literary-body identity
         run: |
           set -euo pipefail

@@ -1,0 +1,33 @@
+{
+  "boundary": "The selected template revision is the latest revision not later than the pinned anchor page-save timestamp. This is a deterministic reconstruction policy, not proof of MediaWiki parser-cache or render-time template state. Template expansion remains unfrozen.",
+  "candidate_id": "gorky-klim-samgin-ru-poemx1-template",
+  "capture_scope": {
+    "historical_render_equivalence_proven": false,
+    "historical_revision_selection_frozen": true,
+    "source_text_committed": false,
+    "template_expansion_reproduced": false,
+    "template_revision_wikitext_identity_frozen": true
+  },
+  "dependency_kind": "mediawiki_template",
+  "manifest_version": "scriptorium-historical-template-revision-v1",
+  "permanent_source_url": "https://ru.wikisource.org/w/index.php?title=%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD:Poemx1&oldid=5142743",
+  "provider": "Russian Wikisource",
+  "resolution_policy": {
+    "anchor_revision_id": 5198033,
+    "anchor_timestamp": "2024-11-26T11:16:35Z",
+    "evidence_class": "inferred_reconstruction_anchor",
+    "historical_render_equivalence_proven": false,
+    "kind": "latest_revision_not_after_anchor_timestamp"
+  },
+  "source_identity": {
+    "mediawiki_sha1": "7b7da0fa04913bc902f6455addad437fc19d67d8",
+    "page_id": 54236,
+    "revision_id": 5142743,
+    "revision_timestamp": "2024-06-02T02:25:12Z",
+    "title": "Шаблон:Poemx1",
+    "wikitext_character_count": 2412,
+    "wikitext_sha256": "fa7e35686da5ce4c62986a7e8bfc72f2dba067118218d656b2f0983e5cfa06db",
+    "wikitext_utf8_byte_count": 2918
+  },
+  "source_work_url": "https://ru.wikisource.org/wiki/%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD:Poemx1"
+}

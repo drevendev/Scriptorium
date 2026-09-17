@@ -23,7 +23,7 @@
     "electronic_source_declared": "Библиотека Мошкова",
     "observed_structure": {
       "parts": 4,
-      "part_2_unversioned_labeled_section_transclusion": "Жизнь Клима Самгина (Горький)/Часть 2/part2"
+      "part_2_target_only_lst_transclusion": "Жизнь Клима Самгина (Горький)/Часть 2/part2"
     },
     "part_revision_locators": [
       {
@@ -42,7 +42,8 @@
         "bibliographic_source": "М. Горький. Собрание сочинений. М.: ГИХЛ, 1952. Т. 20; Wikisource also identifies Library Moshkov as the electronic source.",
         "first_publication_note": "Collected works, 1928, vol. XXI; also serialized in journals.",
         "transclusion_dependency_manifest": "gorky-klim-samgin-ru.part2-part2.revision.json",
-        "transclusion_dependency_oldid": 2366546
+        "transclusion_dependency_oldid": 2366546,
+        "transclusion_semantics_manifest": "gorky-klim-samgin-ru.part2-lst.json"
       },
       {
         "part": 3,
@@ -64,8 +65,9 @@
     "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
     "source_text_committed": false,
     "immutable_identity": {
-      "status": "part_and_known_transclusion_revision_wikitext_identities_frozen_body_unfrozen",
+      "status": "part_and_known_dependency_revisions_plus_target_only_lst_semantics_frozen_body_unfrozen",
       "revision_set_manifest": "gorky-klim-samgin-ru.revisions.json",
+      "part2_transclusion_contract": "gorky-klim-samgin-ru.part2-lst.json",
       "ordered_revision_identity_sha256": "54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577",
       "total_part_revision_wikitext_character_count": 3228790,
       "total_part_revision_wikitext_utf8_byte_count": 5902920,
@@ -75,17 +77,20 @@
         "exact per-part page IDs, revision timestamps and MediaWiki SHA-1 identities",
         "exact per-part revision-wikitext character/byte counts and SHA-256 identities",
         "deterministic part order 1, 2, 3, 4 bound by ordered source-identity SHA-256 54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577",
-        "Part 2 hidden #lst dependency page Жизнь Клима Самгина (Горький)/Часть 2/part2 pinned at oldid 2366546 with wikitext SHA-256 173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996",
+        "Part 2 target-only #lst dependency page Жизнь Клима Самгина (Горький)/Часть 2/part2 pinned at oldid 2366546 with wikitext SHA-256 173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996",
+        "exact Part 2 target-only #lst invocation placement: offsets 581758..581810 and invocation SHA-256 89969a0424eb9fa332d132216bbeb96647239ab613cf6dadf6c5e2087ff0f15e",
+        "upstream target-only #lst semantic branch evidenced at wikimedia/mediawiki-extensions-LabeledSectionTransclusion commit 3e9a44dec6858aeaf3ca547a32ab3162d6887ed6: with only the target argument remaining, the extension returns newFrame->expand(root) for the whole target template DOM",
         "per-part GIKhL 1952/1953 volume declarations exposed by Wikisource"
       ],
       "unfrozen_components": [
-        "the exact #lst labeled-section semantics and placement required to compose Part 2 from its parent and dependency revision",
+        "reproduction of MediaWiki template-DOM expansion for the target-only Part 2 dependency; the pinned dependency contains six poemx1 template invocations",
+        "a resolved Part 2 wikitext/body identity after transitive parser/template dependencies are accounted for",
         "a deterministic fail-closed literary-body extraction contract for each part",
         "a literary-body composition contract bound to the complete frozen source graph",
         "raw and scriptorium-text-v1 normalized composite literary-body digests",
         "the relationship between FantLab's uploaded analyzer input and this Wikisource/Library Moshkov transcription family"
       ],
-      "reason": "A source-free structural probe found that the retained Part 2 oldid contains an unversioned #lst reference to a separate subpage, so the four parent oldids alone were not a complete literary source graph. Scriptorium now pins that dependency revision too, but it still does not claim a literary-body freeze until the labeled-section extraction and four-part composition semantics are implemented and replayed."
+      "reason": "The retained Part 2 call is not a labeled-section selection at all: it supplies only the target page. Upstream LabeledSectionTransclusion therefore delegates the complete target template DOM to MediaWiki frame expansion. Scriptorium now freezes that exact invocation/placement and semantic branch, but the dependency contains six poemx1 template invocations and the MediaWiki expansion layer is not yet reproduced, so no resolved Part 2 or literary-body digest is claimed."
     }
   },
   "legal_boundary": {
@@ -101,7 +106,7 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "revision_wikitext_source_graph_frozen_body_unfrozen",
+    "source_identity_status": "revision_wikitext_source_graph_and_target_only_lst_semantics_frozen_body_unfrozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
@@ -111,14 +116,15 @@
     "reasons": [
       "FantLab reports 3,789,857 characters and 531,192 words for its 19 September 2022 analysis, far above the 300,000-character calibration threshold.",
       "Russian Wikisource supplies explicit public-domain evidence, a stable work-index locator, four literary part locators and per-part GIKhL 1952/1953 source declarations.",
-      "All four pinned part revisions have source-free replay-frozen identities, and the previously implicit Part 2 #lst subpage dependency is now independently pinned at oldid 2366546.",
-      "The dependency discovery proves that parent-page revision identity alone is insufficient for this candidate; labeled-section extraction/composition must remain fail-closed until implemented.",
-      "Revision-wikitext source-graph freezing is not a literary-body identity: deterministic extraction/composition and composite raw/normalized digests remain unfrozen.",
+      "All four pinned part revisions have source-free replay-frozen identities, and the Part 2 target dependency is independently pinned at oldid 2366546.",
+      "The Part 2 invocation is exactly target-only rather than labeled-section selection; current upstream LabeledSectionTransclusion source shows this shape expands the whole target template DOM through the MediaWiki frame.",
+      "The pinned dependency contains six poemx1 template invocations, so target revision identity plus parser-function semantics are still insufficient to claim resolved Part 2 bytes.",
+      "Revision-wikitext/source-semantic freezing is not a literary-body identity: deterministic parser/template expansion, extraction/composition and composite raw/normalized digests remain unfrozen.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Freeze the exact labeled-section selection used by the Part 2 #lst invocation and test it against parent/dependency shape drift.",
-      "Define deterministic fail-closed literary-body extraction for each frozen part revision and compose Part 1 -> Part 2 -> Part 3 -> Part 4 from the complete pinned source graph.",
+      "Freeze or otherwise deterministically reproduce the MediaWiki expansion dependencies required by the target-only Part 2 call, starting with the six observed poemx1 invocations, without treating current mutable template state as historical truth.",
+      "Only after the target-only expansion layer is reproducible, define deterministic fail-closed literary-body extraction for each frozen part and compose Part 1 -> Part 2 -> Part 3 -> Part 4.",
       "Record raw and scriptorium-text-v1 normalized composite digests only after exact replay succeeds.",
       "Only after immutable literary-body identity exists, consider main parity-catalog admission and source-bound diagnostics while retaining the unknown FantLab source match.",
       "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliographic compatibility cannot advance M2."

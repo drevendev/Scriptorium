@@ -102,9 +102,7 @@ jobs:
               --manifest "$expected" \
               --receipt "$receipt"
           done
-          cmp \
-            corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json \
-            build/repro/gorky-klim-samgin-ru.part2-part2.revision.observed.json
+          cmp corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json build/repro/gorky-klim-samgin-ru.part2-part2.revision.observed.json
           python -m scriptorium.single_page_revision replay \
             --manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json \
             --receipt build/repro/gorky-klim-samgin-ru.part2-part2.revision.replay.json
@@ -128,6 +126,80 @@ jobs:
           observed=build/repro/gorky-klim-samgin-ru.part2-lst.observed.json
           receipt=build/repro/gorky-klim-samgin-ru.part2-lst.replay.json
           stderr=build/repro/gorky-klim-samgin-ru.part2-lst.capture.stderr.txt
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          import re
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+
+          root = Path('corpus/candidates/source-edition-traces')
+          parent = json.loads((root / 'gorky-klim-samgin-ru.part2.revision.json').read_text(encoding='utf-8'))
+          dependency = json.loads((root / 'gorky-klim-samgin-ru.part2-part2.revision.json').read_text(encoding='utf-8'))
+
+          def source(manifest):
+              identity = manifest['source_identity']
+              observed = fetch_pinned_wikitext(title=identity['title'], revision_id=identity['revision_id'])
+              text = observed.pop('wikitext')
+              assert observed == identity
+              return text
+
+          parent_text = source(parent)
+          dependency_text = source(dependency)
+          broad_calls = []
+          for match in re.finditer(r'\{\{\s*#lst\s*:(.*?)\}\}', parent_text, re.IGNORECASE | re.DOTALL):
+              args = [arg.strip() for arg in match.group(1).split('|')]
+              projected = []
+              for arg in args:
+                  item = {
+                      'character_count': len(arg),
+                      'sha256': hashlib.sha256(arg.encode('utf-8')).hexdigest(),
+                  }
+                  if len(arg) <= 200 and '\n' not in arg and re.fullmatch(r'[\w\s()/._:-]+', arg, re.UNICODE):
+                      item['structural_value'] = arg
+                  projected.append(item)
+              broad_calls.append({
+                  'parent_start_offset': match.start(),
+                  'parent_end_offset': match.end(),
+                  'argument_count': len(args),
+                  'arguments': projected,
+              })
+
+          marker_rows = []
+          marker_re = re.compile(r'<section\b(?P<attrs>[^>]*)>', re.IGNORECASE)
+          attr_re = re.compile(r'\b(?P<kind>begin|end)\s*=\s*(?:"(?P<double>[^"]*)"|\'(?P<single>[^\']*)\'|(?P<bare>[^\s/>]+))', re.IGNORECASE)
+          for match in marker_re.finditer(dependency_text):
+              attrs = match.group('attrs')
+              attr = attr_re.search(attrs)
+              row = {
+                  'start_offset': match.start(),
+                  'end_offset': match.end(),
+                  'self_closing': attrs.rstrip().endswith('/'),
+                  'marker_sha256': hashlib.sha256(match.group(0).encode('utf-8')).hexdigest(),
+              }
+              if attr:
+                  row['kind'] = attr.group('kind').casefold()
+                  label = attr.group('double') or attr.group('single') or attr.group('bare') or ''
+                  row['label_character_count'] = len(label)
+                  row['label_sha256'] = hashlib.sha256(label.encode('utf-8')).hexdigest()
+                  if len(label) <= 200 and '\n' not in label and re.fullmatch(r'[\w\s()/._:-]+', label, re.UNICODE):
+                      row['structural_label'] = label
+              marker_rows.append(row)
+
+          diagnostic = {
+              'probe_version': 'scriptorium-klim-lst-structural-diagnostic-v1',
+              'parent_revision_id': parent['source_identity']['revision_id'],
+              'dependency_revision_id': dependency['source_identity']['revision_id'],
+              'lst_prefix_count': len(re.findall(r'\{\{\s*#lst\s*:', parent_text, re.IGNORECASE)),
+              'broad_lst_calls': broad_calls,
+              'dependency_section_marker_count': len(marker_rows),
+              'dependency_section_markers': marker_rows,
+              'source_text_included': False,
+          }
+          Path('build/repro/gorky-klim-samgin-ru.part2-lst.structural-diagnostic.json').write_text(
+              json.dumps(diagnostic, ensure_ascii=False, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          PY
           set +e
           python -m scriptorium.klim_samgin_freeze capture-lst \
             --parent-revision-manifest "$parent" \
@@ -155,7 +227,6 @@ jobs:
           import json
           from hashlib import sha256
           from pathlib import Path
-
           trace = Path('corpus/candidates/source-edition-traces')
           summary = json.loads((trace / 'gorky-klim-samgin-ru.revisions.json').read_text(encoding='utf-8'))
           rows = []
@@ -170,14 +241,7 @@ jobs:
           assert dependency['capture_scope']['source_text_committed'] is False
           assert dependency['source_identity']['revision_id'] == 2366546
           assert not forbidden.intersection(dependency['source_identity'])
-          projection = [
-              {key: row[key] for key in (
-                  'part', 'title', 'page_id', 'revision_id', 'revision_timestamp',
-                  'mediawiki_sha1', 'wikitext_character_count',
-                  'wikitext_utf8_byte_count', 'wikitext_sha256'
-              )}
-              for row in rows
-          ]
+          projection = [{key: row[key] for key in ('part','title','page_id','revision_id','revision_timestamp','mediawiki_sha1','wikitext_character_count','wikitext_utf8_byte_count','wikitext_sha256')} for row in rows]
           payload = (json.dumps(projection, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode('utf-8')
           assert sha256(payload).hexdigest() == summary['ordered_revision_identity_sha256']
           assert summary['capture_scope']['all_part_revision_wikitext_identities_frozen'] is True
@@ -188,15 +252,6 @@ jobs:
           assert summary['diagnostic_ready'] is False
           assert summary['gate_ready'] is False
           assert summary['m2_parity_admissible'] is False
-          print('SCRIPTORIUM_KLIM_SOURCE_GRAPH=' + json.dumps({
-              'candidate_id': summary['candidate_id'],
-              'part_revision_ids': [row['revision_id'] for row in rows],
-              'dependency_revision_id': dependency['source_identity']['revision_id'],
-              'dependency_wikitext_sha256': dependency['source_identity']['wikitext_sha256'],
-              'ordered_part_revision_identity_sha256': summary['ordered_revision_identity_sha256'],
-              'fantlab_source_edition_match': summary['fantlab_source_edition_match'],
-              'm2_parity_admissible': summary['m2_parity_admissible'],
-          }, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
           PY
 
       - name: Upload source-free capture and replay evidence

@@ -61,26 +61,31 @@
     "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
     "source_text_committed": false,
     "immutable_identity": {
-      "status": "revision_locators_traced_not_manifest_frozen",
+      "status": "part_revision_wikitext_identities_frozen_body_unfrozen",
+      "revision_set_manifest": "gorky-klim-samgin-ru.revisions.json",
+      "ordered_revision_identity_sha256": "54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577",
+      "total_revision_wikitext_character_count": 3228790,
+      "total_revision_wikitext_utf8_byte_count": 5902920,
       "frozen_components": [
         "work-index permanent revision locator oldid 5628161",
         "four literary part permanent revision locators: 5733765, 5198033, 5138882 and 5724453",
+        "exact per-part page IDs, revision timestamps and MediaWiki SHA-1 identities",
+        "exact per-part revision-wikitext character/byte counts and SHA-256 identities",
+        "deterministic part order 1, 2, 3, 4 bound by ordered source-identity SHA-256 54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577",
         "per-part GIKhL 1952/1953 volume declarations exposed by Wikisource"
       ],
       "unfrozen_components": [
-        "MediaWiki revision timestamps and SHA-1 identities for all four literary parts",
-        "Scriptorium SHA-256 identities for the exact part wikitexts",
         "a deterministic fail-closed literary-body extraction contract for each part",
-        "a deterministic four-part composition order bound to frozen part identities",
-        "raw and scriptorium-text-v1 normalized composite digests",
+        "a literary-body composition contract bound to the frozen part revisions",
+        "raw and scriptorium-text-v1 normalized composite literary-body digests",
         "the relationship between FantLab's uploaded analyzer input and this Wikisource/Library Moshkov transcription family"
       ],
-      "reason": "Permanent revision locators and source declarations establish a traceable four-part public transcription family, but Scriptorium has not yet replay-frozen the exact part revisions or literary body into a source-free manifest."
+      "reason": "Scriptorium now replay-freezes the exact source-free revision-wikitext identity of all four retained part revisions, but this does not yet define or digest the extracted literary body and does not identify FantLab's analyzer input."
     }
   },
   "legal_boundary": {
     "basis": "public_domain_original_russian_work_with_wikisource_reuse_terms",
-    "evidence": "Russian Wikisource explicitly marks the original Russian work public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions. The retained scope is the literary work body only; no source prose, provider UI, later translation or unrelated editorial material is committed.",
+    "evidence": "Russian Wikisource explicitly marks the original Russian work public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions. The retained scope is source-free provenance metadata; no source prose, provider UI, later translation or unrelated editorial material is committed.",
     "source_text_committed": false
   },
   "diversity": {
@@ -91,23 +96,24 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "trace_only",
+    "source_identity_status": "revision_wikitext_frozen_body_unfrozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "catalog_admission": "deferred_until_immutable_literary_identity",
+    "catalog_admission": "deferred_until_immutable_literary_body_identity",
     "status": "provenance_qualified_lead",
     "reasons": [
       "FantLab reports 3,789,857 characters and 531,192 words for its 19 September 2022 analysis, far above the 300,000-character calibration threshold.",
       "Russian Wikisource supplies explicit public-domain evidence, a stable work-index locator, four literary part locators and per-part GIKhL 1952/1953 source declarations.",
-      "Permanent oldid locators are provenance evidence but are not yet a complete Scriptorium immutable literary-body identity because revision timestamps/SHA-1 values, deterministic extraction/composition and composite digests are not recorded.",
+      "All four pinned part revisions now have source-free replay-frozen page/revision/timestamp/MediaWiki SHA-1/wikitext count/SHA-256 identities in deterministic part order.",
+      "Revision-wikitext freezing is not a literary-body identity: deterministic extraction/composition and composite raw/normalized digests remain unfrozen.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Capture all four part revisions through a source-free manifest with revision IDs, timestamps, MediaWiki SHA-1 values, wikitext byte counts and SHA-256 digests.",
-      "Define deterministic fail-closed literary-body extraction and four-part composition, then record raw and scriptorium-text-v1 normalized composite digests.",
-      "Only after the immutable literary identity exists, admit the candidate to the main machine-readable parity catalog and enable source-bound diagnostics.",
+      "Define deterministic fail-closed literary-body extraction for each frozen part revision.",
+      "Define and replay a four-part literary-body composition contract, then record raw and scriptorium-text-v1 normalized composite digests.",
+      "Only after the immutable literary-body identity exists, consider main parity-catalog admission and source-bound diagnostics while retaining the unknown FantLab source match.",
       "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliographic compatibility cannot advance M2."
     ]
   }

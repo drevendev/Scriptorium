@@ -5,14 +5,15 @@
     "composite_literary_body_identity_frozen": false,
     "literary_body_extraction_frozen": false,
     "literary_composition_frozen": false,
-    "source_text_committed": false
+    "source_text_committed": false,
+    "transclusion_dependency_revision_wikitext_identities_frozen": true
   },
   "diagnostic_ready": false,
   "fantlab_source_edition_match": "unknown",
   "gate_ready": false,
   "m2_parity_admissible": false,
-  "manifest_version": "scriptorium-multi-page-source-revision-set-v1",
-  "order": "part ascending: 1, 2, 3, 4",
+  "manifest_version": "scriptorium-multi-page-source-revision-set-v2",
+  "order": "part ascending: 1, 2, 3, 4; Part 2 additionally depends on the separately pinned part2 transclusion revision",
   "ordered_revision_identity_sha256": "54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577",
   "part_manifests": [
     {
@@ -42,5 +43,15 @@
   ],
   "provider": "Russian Wikisource",
   "total_revision_wikitext_character_count": 3228790,
-  "total_revision_wikitext_utf8_byte_count": 5902920
+  "total_revision_wikitext_utf8_byte_count": 5902920,
+  "transclusion_dependencies": [
+    {
+      "manifest": "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json",
+      "parent_part": 2,
+      "reason": "The retained Part 2 wikitext contains a #lst parser-function reference to this subpage; a parent oldid alone therefore does not freeze the complete literary source graph.",
+      "revision_id": 2366546,
+      "title": "Жизнь Клима Самгина (Горький)/Часть 2/part2",
+      "wikitext_sha256": "173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996"
+    }
+  ]
 }

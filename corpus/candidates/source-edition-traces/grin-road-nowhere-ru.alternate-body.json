@@ -1,0 +1,29 @@
+{
+  "candidate_id": "grin-road-nowhere-ru",
+  "diagnostic_comparison_admissible": true,
+  "extraction": {
+    "profile": "scriptorium-road-nowhere-alt-wikisource-body-v1",
+    "scope": "literary body extracted from the exact pinned revision wikitext",
+    "source_text_committed": false
+  },
+  "fantlab_source_edition_match": "unknown",
+  "literary_body_identity": {
+    "character_count_including_spaces": 442656,
+    "normalization_profile": "scriptorium-text-v1",
+    "normalized_character_count_including_spaces": 442656,
+    "normalized_sha256": "e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee",
+    "raw_sha256": "e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee",
+    "utf8_byte_count": 825899
+  },
+  "m2_parity_admissible": false,
+  "manifest_version": "scriptorium-single-page-literary-body-v1",
+  "provider": "Russian Wikisource",
+  "source_revision": {
+    "mediawiki_sha1": "135933c3b9155bddb0356d0eb9644d11f55ba870",
+    "page_id": 1003775,
+    "revision_id": 5585836,
+    "revision_timestamp": "2025-07-30T20:33:01Z",
+    "title": "Дорога в никуда (Грин)",
+    "wikitext_sha256": "f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b"
+  }
+}

@@ -72,7 +72,7 @@ class KlimSamginLstTests(unittest.TestCase):
             parse_target_only_lst_invocation("{{#lst:Page}}{{#lst:Other}}")
 
     def test_contract_freezes_semantic_branch_not_expanded_part2_bytes(self) -> None:
-        parent_text = f"before\n{{{{#lst:{DEPENDENCY_TITLE}}}}\nafter"
+        parent_text = "before\n{{#lst:" + DEPENDENCY_TITLE + "}}\nafter"
         dependency_text = "dependency {{TemplateA}} payload"
         parent = _manifest(PART2_CANDIDATE_ID, "Жизнь Клима Самгина (Горький)/Часть 2", 10, 1, parent_text)
         dependency = _manifest(DEPENDENCY_CANDIDATE_ID, DEPENDENCY_TITLE, 11, 2, dependency_text)
@@ -87,11 +87,7 @@ class KlimSamginLstTests(unittest.TestCase):
             return {**manifest["source_identity"], "wikitext": text}
 
         contract = build_lst_contract(parent, dependency, fetcher=fetcher)
-        validate_lst_contract(
-            contract,
-            parent_revision_manifest=parent,
-            dependency_revision_manifest=dependency,
-        )
+        validate_lst_contract(contract, parent_revision_manifest=parent, dependency_revision_manifest=dependency)
         self.assertEqual(contract["contract_version"], LST_CONTRACT_VERSION)
         self.assertEqual(contract["selection_profile"], LST_SELECTION_PROFILE)
         self.assertEqual(contract["selection_semantics"]["kind"], "target_only_full_template_dom_expansion")
@@ -126,7 +122,7 @@ class KlimSamginLstTests(unittest.TestCase):
         self.assertIs(receipt["resolved_part2_wikitext_identity_frozen"], False)
 
     def test_contract_detects_dependency_shape_without_promoting_it_to_expansion(self) -> None:
-        parent_text = f"{{{{#lst:{DEPENDENCY_TITLE}}}}}"
+        parent_text = "{{#lst:" + DEPENDENCY_TITLE + "}}"
         dependency_text = "<section begin=x />{{#lst:Other}}<section end=x />{{T}}"
         parent = _manifest(PART2_CANDIDATE_ID, "Жизнь Клима Самгина (Горький)/Часть 2", 10, 1, parent_text)
         dependency = _manifest(DEPENDENCY_CANDIDATE_ID, DEPENDENCY_TITLE, 11, 2, dependency_text)

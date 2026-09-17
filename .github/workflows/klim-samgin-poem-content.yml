@@ -1,0 +1,120 @@
+name: Klim Samgin poemx1 parameter-2 surface
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-poem-content.yml"
+      - "scriptorium/mediawiki_poemx1_content.py"
+      - "tests/test_mediawiki_poemx1_content.py"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.bindings.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-content.json"
+      - "corpus/candidates/gorky-klim-samgin-ru.md"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.json"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-020.md"
+      - "project/run-receipts/SCRIP-CORPUS-020-poemx1-content.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Freeze poemx1 parameter-2 expansion surface
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Re-fetch dependency and generate source-free parameter-2 evidence
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from scriptorium.mediawiki_poemx1_content import (
+              build_poemx1_content_surface_manifest,
+          )
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+          from scriptorium.single_page_revision import (
+              validate_manifest as validate_revision_manifest,
+          )
+
+          root = Path('corpus/candidates/source-edition-traces')
+          revision_path = root / 'gorky-klim-samgin-ru.part2-part2.revision.json'
+          binding_path = (
+              root / 'gorky-klim-samgin-ru.poemx1-template.bindings.json'
+          )
+          revision_manifest = json.loads(revision_path.read_text(encoding='utf-8'))
+          validate_revision_manifest(revision_manifest)
+          identity = revision_manifest['source_identity']
+          fetched = fetch_pinned_wikitext(
+              title=identity['title'], revision_id=identity['revision_id']
+          )
+          text = fetched.pop('wikitext')
+          assert fetched == identity
+
+          bindings = json.loads(binding_path.read_text(encoding='utf-8'))
+          manifest = build_poemx1_content_surface_manifest(
+              dependency_wikitext=text,
+              binding_manifest=bindings,
+              research_date='2026-09-18',
+          )
+          observed = Path(
+              'build/repro/gorky-klim-samgin-ru.poemx1-content.json'
+          )
+          observed.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          print('SCRIPTORIUM_POEMX1_CONTENT=' + json.dumps(
+              {
+                  'template_expansion_identity':
+                      manifest['observed_parameter_2_template_expansion_identity'],
+                  'requires_template_dependencies':
+                      manifest['requires_additional_template_dependency_resolution'],
+                  'aggregate': manifest['aggregate_surface'],
+                  'invocations': [
+                      {
+                          'invocation_index': row['invocation_index'],
+                          'surface': row['surface'],
+                      }
+                      for row in manifest['invocations']
+                  ],
+              },
+              ensure_ascii=False,
+              sort_keys=True,
+              separators=(',', ':'),
+          ))
+          PY
+
+      - name: Upload generated source-free evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: klim-samgin-poemx1-content
+          path: build/repro/gorky-klim-samgin-ru.poemx1-content.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Compare committed source-free parameter-2 evidence
+        run: |
+          set -euo pipefail
+          expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-content.json
+          observed=build/repro/gorky-klim-samgin-ru.poemx1-content.json
+          test -f "$expected"
+          cmp "$expected" "$observed"

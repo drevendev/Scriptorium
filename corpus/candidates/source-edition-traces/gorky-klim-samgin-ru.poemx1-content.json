@@ -1,0 +1,202 @@
+{
+  "aggregate_surface": {
+    "apostrophe_markup_run_count": 0,
+    "blank_line_count": 0,
+    "brace_expansion_construct_count": 0,
+    "external_link_open_count": 0,
+    "leading_colon_line_count": 0,
+    "leading_space_line_count": 0,
+    "line_count": 15,
+    "newline_count": 9,
+    "template_or_parser_construct_count": 0,
+    "template_parameter_construct_count": 0,
+    "wikilink_open_count": 0,
+    "xml_like_tag_count": 0
+  },
+  "binding_manifest_version": "scriptorium-template-invocation-bindings-v1",
+  "boundary": "This source-free artifact revalidates the exact six parameter-2 values and freezes only their brace-expansion and render-markup surface. If the observed values contain no brace expansion constructs, that closes only the template-expansion prerequisite for those exact values. Wikilinks, apostrophe markup, line structure, XML-like tags and #tag:poem rendering remain part of the historical rendering boundary. No literary prose is persisted.",
+  "candidate_id": "gorky-klim-samgin-ru-poemx1-parameter-2-content",
+  "capture_scope": {
+    "historical_render_equivalence_proven": false,
+    "parameter_2_brace_expansion_surface_frozen": true,
+    "parameter_2_identities_revalidated": true,
+    "parameter_2_render_markup_surface_frozen": true,
+    "parameter_2_template_expansion_identity_for_observed_values": true,
+    "poem_extension_rendering_reproduced": false,
+    "resolved_part2_identity_frozen": false,
+    "source_text_committed": false
+  },
+  "dependency_revision": {
+    "revision_id": 2366546,
+    "wikitext_sha256": "173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996"
+  },
+  "invocation_count": 6,
+  "invocations": [
+    {
+      "invocation_index": 1,
+      "invocation_sha256": "0f09f7a30447022f3fda19c24f159fa234f09d06d127e5d222ed1d7b4e0f6112",
+      "parameter_2_identity": {
+        "character_count": 44,
+        "sha256": "03df6bd222759617ec3a5366f194490549e4c5c84565c2835986f2a79e7ae7b2",
+        "utf8_byte_count": 83
+      },
+      "surface": {
+        "apostrophe_markup_run_count": 0,
+        "blank_line_count": 0,
+        "brace_expansion_construct_count": 0,
+        "external_link_open_count": 0,
+        "leading_colon_line_count": 0,
+        "leading_space_line_count": 0,
+        "line_count": 2,
+        "newline_count": 1,
+        "template_expansion_identity_for_observed_value": true,
+        "template_or_parser_construct_count": 0,
+        "template_parameter_construct_count": 0,
+        "wikilink_open_count": 0,
+        "xml_like_tag_count": 0,
+        "xml_like_tag_name_counts": {}
+      }
+    },
+    {
+      "invocation_index": 2,
+      "invocation_sha256": "f4c7e9828d49f1c6fe38774eaa2133af3a2dd495164492e1b91605519361993d",
+      "parameter_2_identity": {
+        "character_count": 39,
+        "sha256": "892565ddca290a5f34e71254fee4e38f60918484f3518e3cacbeddc18960149e",
+        "utf8_byte_count": 69
+      },
+      "surface": {
+        "apostrophe_markup_run_count": 0,
+        "blank_line_count": 0,
+        "brace_expansion_construct_count": 0,
+        "external_link_open_count": 0,
+        "leading_colon_line_count": 0,
+        "leading_space_line_count": 0,
+        "line_count": 2,
+        "newline_count": 1,
+        "template_expansion_identity_for_observed_value": true,
+        "template_or_parser_construct_count": 0,
+        "template_parameter_construct_count": 0,
+        "wikilink_open_count": 0,
+        "xml_like_tag_count": 0,
+        "xml_like_tag_name_counts": {}
+      }
+    },
+    {
+      "invocation_index": 3,
+      "invocation_sha256": "0331a13a921cdf3f49a1b4f634cf00fc11c0abdc61f79bd108f78eb0e3dd4f16",
+      "parameter_2_identity": {
+        "character_count": 63,
+        "sha256": "778ad679668d90e695b9fa305f5411b50764e3b0bab091f88bb9e30373d7352b",
+        "utf8_byte_count": 115
+      },
+      "surface": {
+        "apostrophe_markup_run_count": 0,
+        "blank_line_count": 0,
+        "brace_expansion_construct_count": 0,
+        "external_link_open_count": 0,
+        "leading_colon_line_count": 0,
+        "leading_space_line_count": 0,
+        "line_count": 4,
+        "newline_count": 3,
+        "template_expansion_identity_for_observed_value": true,
+        "template_or_parser_construct_count": 0,
+        "template_parameter_construct_count": 0,
+        "wikilink_open_count": 0,
+        "xml_like_tag_count": 0,
+        "xml_like_tag_name_counts": {}
+      }
+    },
+    {
+      "invocation_index": 4,
+      "invocation_sha256": "cf4eab4577e2ac2bc9dcd09835875411734ab9d5abb41c8f2be327757f278aa6",
+      "parameter_2_identity": {
+        "character_count": 128,
+        "sha256": "2f7b013cff5035f5e7bd47de3121387c36494f4f45763e449d1a986685210760",
+        "utf8_byte_count": 231
+      },
+      "surface": {
+        "apostrophe_markup_run_count": 0,
+        "blank_line_count": 0,
+        "brace_expansion_construct_count": 0,
+        "external_link_open_count": 0,
+        "leading_colon_line_count": 0,
+        "leading_space_line_count": 0,
+        "line_count": 3,
+        "newline_count": 2,
+        "template_expansion_identity_for_observed_value": true,
+        "template_or_parser_construct_count": 0,
+        "template_parameter_construct_count": 0,
+        "wikilink_open_count": 0,
+        "xml_like_tag_count": 0,
+        "xml_like_tag_name_counts": {}
+      }
+    },
+    {
+      "invocation_index": 5,
+      "invocation_sha256": "9bb1d32c5d20c4e151c290190458be336cc22c91921029057dc8dea5cbacd81b",
+      "parameter_2_identity": {
+        "character_count": 40,
+        "sha256": "6609a908cbd28f00087935e545a0b635edc5a6fadab77bc777c0423db8b9f983",
+        "utf8_byte_count": 73
+      },
+      "surface": {
+        "apostrophe_markup_run_count": 0,
+        "blank_line_count": 0,
+        "brace_expansion_construct_count": 0,
+        "external_link_open_count": 0,
+        "leading_colon_line_count": 0,
+        "leading_space_line_count": 0,
+        "line_count": 3,
+        "newline_count": 2,
+        "template_expansion_identity_for_observed_value": true,
+        "template_or_parser_construct_count": 0,
+        "template_parameter_construct_count": 0,
+        "wikilink_open_count": 0,
+        "xml_like_tag_count": 0,
+        "xml_like_tag_name_counts": {}
+      }
+    },
+    {
+      "invocation_index": 6,
+      "invocation_sha256": "a0d6aaed7764c3239b7ca3af7b40bb6f697ec4d1a27632f2848ee0db3aa98b26",
+      "parameter_2_identity": {
+        "character_count": 10,
+        "sha256": "f253df3ac421a7761be9abb0d4a92a9354f53c3d6f77a614e3939dea820c4ae8",
+        "utf8_byte_count": 18
+      },
+      "surface": {
+        "apostrophe_markup_run_count": 0,
+        "blank_line_count": 0,
+        "brace_expansion_construct_count": 0,
+        "external_link_open_count": 0,
+        "leading_colon_line_count": 0,
+        "leading_space_line_count": 0,
+        "line_count": 1,
+        "newline_count": 0,
+        "template_expansion_identity_for_observed_value": true,
+        "template_or_parser_construct_count": 0,
+        "template_parameter_construct_count": 0,
+        "wikilink_open_count": 0,
+        "xml_like_tag_count": 0,
+        "xml_like_tag_name_counts": {}
+      }
+    }
+  ],
+  "manifest_version": "scriptorium-poemx1-content-surface-v1",
+  "observed_parameter_2_template_expansion_identity": true,
+  "profile": "scriptorium-mediawiki-poemx1-content-surface-v1",
+  "requires_additional_template_dependency_resolution": false,
+  "research_date": "2026-09-18",
+  "semantics_evidence": [
+    {
+      "claim": "template argument values may contain nested templates, parser functions, variables, or template parameters and are recursively expanded when needed",
+      "url": "https://www.mediawiki.org/wiki/Manual:Template_expansion_process"
+    },
+    {
+      "claim": "Poem preserves line structure and supports ordinary wikitext markup; closing template expansion does not reproduce poem rendering",
+      "url": "https://www.mediawiki.org/wiki/Extension:Poem"
+    }
+  ],
+  "source_text_included": false
+}

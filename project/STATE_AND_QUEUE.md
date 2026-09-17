@@ -1,26 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 120
+STATE_REVISION: 121
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-17T11:49:00Z
-LAST_RESULT: SCRIP-CORPUS-020 / Issue #109 / PR #111 received an independent later-run review of exact head `18d4c2b36e2899e85d44d0166d2fb6f31353d9f9` with no blocking defect, was marked Ready, and was squash-merged as `d3665bfb84ad84c91f5a99c64559267da2e1f41e`. The merged prerequisite freezes the exact target-only Part 2 `#lst` invocation/placement and the evidenced upstream zero-remaining-argument semantic branch while deliberately leaving MediaWiki template-DOM expansion, resolved Part 2 bytes, literary-body extraction/composition and composite digests open under Issue #109.
-LAST_VERIFIED_PROGRESS: Immediately before merge, PR #111 was mergeable, 16 commits ahead / 0 behind master, with 11 changed files and no inline review threads. Exact-head workflows `35214227300` (Klim Samgin source graph), `35214227381` (Scriptorium Pages), `35214227330` (frozen diagnostic), and `35214227371` (pinned pylem provider) all completed successfully. The dedicated Klim job checked out exact head `18d4c2b36e2899e85d44d0166d2fb6f31353d9f9`, ran 188 standard-library tests, re-captured/byte-compared/replayed all four parent revisions plus dependency oldid `2366546`, replayed the committed target-only contract, and confirmed one target argument with no section/range plus six `poemx1` invocations in the dependency. Independent review also re-checked upstream `LabeledSectionTransclusion.php` at evidence commit `3e9a44dec6858aeaf3ca547a32ab3162d6887ed6`; no literary-body digest or FantLab source identity was promoted and M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-17T12:57:00Z
+LAST_RESULT: SCRIP-CORPUS-020 / Issue #109 / draft PR #112 authored the first bounded historical-template dependency freeze for Klim Samgin. A generic source-free resolver now selects the latest Russian Wikisource template revision not later than a pinned page-save timestamp and labels that selection only as an inferred reconstruction anchor. Applied to the six `poemx1` invocations exposed by Part 2, the policy resolves `Шаблон:Poemx1` to oldid `5142743` (2024-06-02T02:25:12Z), while explicitly leaving historical parser-cache/render equivalence, template expansion, resolved Part 2 bytes and all literary-body digests unfrozen.
+LAST_VERIFIED_PROGRESS: Source-free CI capture on PR #112 established page ID `54236`, oldid `5142743`, MediaWiki SHA-1 `7b7da0fa04913bc902f6455addad437fc19d67d8`, 2,412 wikitext characters / 2,918 UTF-8 bytes and wikitext SHA-256 `fa7e35686da5ce4c62986a7e8bfc72f2dba067118218d656b2f0983e5cfa06db` for `Шаблон:Poemx1` under the Part 2 timestamp anchor. The same CI ran 192 standard-library tests successfully and a corrected source-free raw-shape probe records one ordinary template-shaped invocation (`doc`), parser functions `#expr` x2, `#if` x5, `#ifeq` x5, `#iferror` x1, `#tag` x1, magic word `PAGENAME` x1, plus `includeonly`/`noinclude` markup. That raw inventory deliberately does not apply inclusion semantics or claim an effective transitive dependency graph. Final exact-head verification is required before independent judgement; M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-020
 ISSUE:          #109
-STATUS:         TARGET_ONLY_LST_SEMANTICS_MERGED_CONTINUATION_OPEN
-PR:             #111 (merged)
-MERGED_COMMIT:  d3665bfb84ad84c91f5a99c64559267da2e1f41e
-NEXT_ACTION:    Continue Issue #109 in a later bounded unit by freezing or deterministically
-                reproducing the MediaWiki target template-DOM expansion layer, starting
-                with the six observed poemx1 invocations. Do not treat current mutable
-                template state as historical truth. Only after parser/template dependencies
-                replay deterministically should resolved Part 2 bytes, fail-closed per-part
-                literary-body extraction, deterministic Part 1 -> 2 -> 3 -> 4 composition,
-                or raw/scriptorium-text-v1 composite digests be recorded.
+STATUS:         POEMX1_HISTORY_AUTHORED_REVIEW_PENDING
+PR:             #112 (draft)
+MERGED_COMMIT:  none
+NEXT_ACTION:    Independently review the final exact head of PR #112 after its required
+                checks finish. If clean, merge this bounded historical-template identity
+                prerequisite without closing Issue #109. A later continuation should then
+                apply/freeze noinclude/includeonly/onlyinclude semantics for pinned poemx1,
+                resolve the effective transclusion dependency graph, and reproduce only the
+                evidenced parser-function/#tag behavior before attempting resolved Part 2 bytes.
 ```
 
 ## Current milestone gate
@@ -35,7 +34,8 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-020 continuation | corpus / provenance | Continue Issue #109 by freezing/reproducing the target-only MediaWiki template-DOM expansion layer (starting with six `poemx1` invocations), then fail-closed four-part extraction/composition and source-free composite digests | PR #111 prerequisite merged; no resolved Part 2/body identity until parser/template dependencies replay deterministically |
+| P0 | Review draft PR #112 | recovery / review | Independently inspect exact final head, required checks, source-free manifest/shape evidence and inference labels; merge only if clean, without closing #109 | This run authored the change and must not self-approve it |
+| P1 | SCRIP-CORPUS-020 continuation | corpus / provenance | After PR #112 is resolved, apply/freeze pinned `poemx1` inclusion semantics and effective parser/template dependencies, then continue toward resolved Part 2 and fail-closed four-part extraction/composition | Historical template revision identity is only an inferred as-of anchor; no render equivalence may be assumed |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
@@ -53,7 +53,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Running on Waves** — Detskaya literatura 1965 source-cited family with 35 chapters plus epilogue; literary subpage identities/composite remain unfrozen.
 - **The White Guard** — Wikisource explicitly mixes two bibliographic source families across chapters 1–11 and 12–20; all 20 chapter identities/composite remain unfrozen.
 - **The Twelve Chairs** — keep 40-chapter later 1938/1961 editorial family distinct from 41-chapter 1928 first standalone edition; neither literary body is frozen, and coauthorship prevents individual-author attribution without an explicit VOICE model.
-- **The Life of Klim Samgin** — four exact Russian Wikisource parent revisions are replay-frozen at oldids `5733765`, `5198033`, `5138882`, `5724453`; ordered parent revision-wikitext identity SHA-256 `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`, totaling 3,228,790 parent wikitext characters / 5,902,920 UTF-8 bytes. Part 2's target dependency is independently replay-frozen at oldid `2366546`, wikitext SHA-256 `173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996`. Merged PR #111 freezes the exact target-only `#lst` invocation/placement and the evidenced upstream semantic branch that expands the whole target template DOM; the dependency contains six `poemx1` template invocations, so MediaWiki expansion, resolved Part 2 identity, literary extraction/composition and composite digests remain unfrozen. FantLab source identity remains unknown and main parity-catalog admission remains deferred.
+- **The Life of Klim Samgin** — four exact Russian Wikisource parent revisions are replay-frozen at oldids `5733765`, `5198033`, `5138882`, `5724453`; ordered parent revision-wikitext identity SHA-256 `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`, totaling 3,228,790 parent wikitext characters / 5,902,920 UTF-8 bytes. Part 2's target dependency is independently replay-frozen at oldid `2366546`, wikitext SHA-256 `173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996`; merged PR #111 freezes the exact target-only `#lst` invocation/placement and upstream full-target-template-DOM semantic branch. Draft PR #112 now freezes the deterministic as-of reconstruction identity for `Шаблон:Poemx1` at oldid `5142743`, wikitext SHA-256 `fa7e35686da5ce4c62986a7e8bfc72f2dba067118218d656b2f0983e5cfa06db`, explicitly without claiming historical render equivalence. Inclusion semantics, effective dependency graph, MediaWiki expansion, resolved Part 2 identity, literary extraction/composition and composite digests remain unfrozen. FantLab source identity remains unknown and main parity-catalog admission remains deferred.
 
 ## Deterministic / morphology findings
 
@@ -73,7 +73,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - SCRIP-CORPUS-017 adds the standalone public Klim Samgin candidate page and provenance trace.
 - SCRIP-CORPUS-018 strengthens that page/trace with exact per-part revision identities and an ordered revision-set digest while explicitly retaining the body-unfrozen and FantLab-unknown boundary. It intentionally does not change the main parity catalog.
 - SCRIP-CORPUS-019 upgrades the Road to Nowhere public entry and provenance trace with a replay-frozen source-free alternate-body identity while explicitly leaving the retained primary Pravda-1965 family and FantLab-input identity unresolved.
-- SCRIP-CORPUS-020 first pinned the Klim Part 2 dependency, then merged PR #111 corrected the public explanation from "labeled-section selection" to the evidenced target-only `#lst` behavior and exposes the six-`poemx1` MediaWiki-expansion boundary without claiming resolved body bytes.
+- SCRIP-CORPUS-020 first pinned the Klim Part 2 dependency, then merged PR #111 corrected the public explanation from "labeled-section selection" to the evidenced target-only `#lst` behavior. Draft PR #112 now exposes the exact source-free `poemx1` as-of revision anchor and raw structural boundary while retaining explicit `historical_render_equivalence_proven=false` and body-unfrozen labels.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers
@@ -86,5 +86,5 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 6. Petersburg lacks a Scriptorium-recorded PDF snapshot digest and deterministic OCR/page-extraction identity.
 7. Hyperboloid has a frozen revision and deterministic frozen literary-body identity but no direct bibliographic print-edition identity and no FantLab analyzer-input match; Shining World, Running on Waves, White Guard and Twelve Chairs remain trace-only/unfrozen at the literary-body level.
 8. Road to Nowhere now has a frozen alternate revision and deterministic frozen alternate literary-body identity, but the primary Pravda-1965 literary family remains unfrozen and no evidence ties either route to FantLab input.
-9. Klim Samgin's parent/dependency revisions and target-only `#lst` invocation semantics are source-free frozen by merged PR #111, but MediaWiki template-DOM expansion is not reproduced; the dependency contains six `poemx1` invocations. Resolved Part 2 bytes, candidate-specific extraction/composition and composite raw/normalized body digests remain unfrozen; no body or FantLab-input identity may be inferred yet.
+9. Klim Samgin's parent/dependency revisions and target-only `#lst` invocation semantics are frozen, and draft PR #112 adds an inferred as-of `poemx1` revision anchor. This still does not prove historical MediaWiki render state: `noinclude`/`includeonly` semantics, effective parser/template dependencies and actual template expansion remain unresolved. Resolved Part 2 bytes, candidate-specific extraction/composition and composite raw/normalized body digests remain unfrozen; no body or FantLab-input identity may be inferred yet.
 10. Pages live activation remains a repository-admin effect and is off.

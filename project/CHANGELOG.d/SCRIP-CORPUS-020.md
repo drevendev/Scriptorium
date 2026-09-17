@@ -5,8 +5,8 @@
 - Target-only semantics PR: #111 — merged as `d3665bfb84ad84c91f5a99c64559267da2e1f41e`
 - Historical `poemx1` anchor PR: #112 — merged as `aae7290f6056831bd291ac8a7a59100bad0ff4e8`
 - Inclusion-control PR: #113 — merged as `5894878398a8ceba952279c69aaf9b5ab8ebae81`
-- Literal parameter-surface PR: #114 — draft; independent review pending
-- Status: `POEMX1_PARAMETER_SURFACE_AUTHORED_REVIEW_PENDING`
+- Literal parameter-surface PR: #114 — merged as `497303004ba30e251560b8d203433e9a647f9d00`
+- Status: `POEMX1_PARAMETER_SURFACE_MERGED_CONTINUATION_OPEN`
 - Scope: corpus/provenance strengthening and source-graph correctness; no FantLab source-match or M2 promotion.
 
 ## Dependency prerequisite
@@ -62,7 +62,7 @@ PR #113 applied and replay-froze only documented MediaWiki `noinclude` / `includ
 
 An authored-head CI comparison caught an incorrect hand-authored expectation that `PAGENAME` remained in the effective graph. The artifact and wording were repaired from generated evidence. Independent later-run review used exact head `0ecc213bed00e0d3d6a07cfc9df5b61531cd38c6`; all five required workflows were green, no blocking defect was found, and PR #113 was squash-merged as `5894878398a8ceba952279c69aaf9b5ab8ebae81`. Issue #109 remained open.
 
-## Literal template-parameter surface — draft PR #114
+## Literal template-parameter surface — PR #114
 
 The next bounded layer implements only literal triple-brace parameter/default semantics after the already-frozen inclusion selection. Official MediaWiki documentation distinguishes an omitted parameter from a parameter explicitly defined as empty: a missing parameter may use a default, while an explicitly empty argument is defined and suppresses that default. Scriptorium's bounded profile reproduces that distinction for literal parameter names, supports nested literal parameter defaults, leaves a missing parameter without a default as its original triple-brace spelling, and fails closed on dynamic/unsupported parameter-name shapes rather than guessing them. Inserted argument values are not recursively parsed by this layer.
 
@@ -78,12 +78,14 @@ Live exact-source generation on authored head `99031deb1ecf10358e8b94bbd65a4b5be
 
 All except one bare `fixed` reference have defaults. Empty defaults occur for `1` x2, `2` x1, `3` x2, `fixed` x1, `poem` x1 and `width` x1. The committed source-free artifact is `gorky-klim-samgin-ru.poemx1-template.parameters.json`.
 
-The first authored-head workflow exposed one over-specific new unit-test expectation: a dynamic/malformed brace form failed closed earlier in the structural parser with `unclosed MediaWiki brace construct` rather than the exact later validation message the test expected. The test was corrected to assert the actual contract—`ValueError` fail-closed behavior—without weakening acceptance. The next dedicated run `35249215580` checked out exact head `99031deb1ecf10358e8b94bbd65a4b5be7de138b`, passed **205** standard-library tests, regenerated the historical revision/raw-shape/inclusion layers and generated the parameter artifact; it then stopped at the intentionally absent expected parameter artifact. That generated artifact was used as the source for the committed source-free record. Final exact-head replay is required before independent review.
+The first authored-head workflow exposed one over-specific new unit-test expectation: a dynamic/malformed brace form failed closed earlier in the structural parser with `unclosed MediaWiki brace construct` rather than the exact later validation message the test expected. The test was corrected to assert the actual contract—`ValueError` fail-closed behavior—without weakening acceptance. The next dedicated run `35249215580` checked out exact head `99031deb1ecf10358e8b94bbd65a4b5be7de138b`, passed **205** standard-library tests, regenerated the historical revision/raw-shape/inclusion layers and generated the parameter artifact; it then stopped at the intentionally absent expected parameter artifact. That generated artifact was used as the source for the committed source-free record.
+
+Final exact head `337ef93d45bf960c46051bafb5ea13a179f24d6e` received an independent later-run review with no blocking defect. It was 10 commits ahead / 0 behind `master`, changed 9 files, was mergeable, and had no inline review threads. Exact-head workflows `35249613642` (historical template dependency), `35249613527` (Klim source revisions), `35249613614` (Pages), `35249613600` (frozen diagnostic), and `35249613705` (pinned pylem provider) all completed successfully. The dedicated job checked out the exact reviewed SHA, ran the standard-library suite, re-resolved oldid `5142743`, regenerated raw-shape/inclusion/parameter evidence, byte-compared the committed parameter artifact, and replayed the historical revision. Current official MediaWiki documentation was re-checked for omitted/default/defined-empty behavior. PR #114 was marked Ready and squash-merged as `497303004ba30e251560b8d203433e9a647f9d00`.
 
 PR #114 deliberately does **not** bind the six real `poemx1` invocations, recursively expand inserted argument wikitext, execute `#expr` / `#if` / `#ifeq` / `#iferror`, render `#tag:poem`, resolve Part 2, or claim historical render equivalence.
 
 ## Boundary / next trigger
 
-Independent later-run exact-head review of draft PR #114 and all required checks preempts new work. If clean, merge this prerequisite without closing Issue #109. Then continue by source-freezing the six concrete `poemx1` invocation argument shapes and only afterward reproduce the evidenced parser-function / `#tag:poem` behavior. Resolved Part 2 bytes, four-part literary extraction/composition, and raw / `scriptorium-text-v1` composite digests remain prohibited until the target-only expansion layer replays deterministically.
+Issue #109 remains open. Continue by source-freezing the six concrete `poemx1` invocation argument shapes and only afterward reproduce the evidenced parser-function / `#tag:poem` behavior. Resolved Part 2 bytes, four-part literary extraction/composition, and raw / `scriptorium-text-v1` composite digests remain prohibited until the target-only expansion layer replays deterministically.
 
 `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`; M2 remains **0/5 source-matched works**.

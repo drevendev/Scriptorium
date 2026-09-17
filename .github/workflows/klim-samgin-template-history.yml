@@ -6,9 +6,13 @@ on:
       - ".github/workflows/klim-samgin-template-history.yml"
       - "scriptorium/template_history.py"
       - "tests/test_template_history.py"
+      - "corpus/candidates/gorky-klim-samgin-ru.md"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.shape.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-020.md"
+      - "project/run-receipts/SCRIP-CORPUS-020.md"
   workflow_dispatch:
 
 permissions:

@@ -25,15 +25,15 @@ The pinned dependency contains **six `poemx1` template invocations**. Scriptoriu
 
 The next provenance layer is now explicit and replayable. MediaWiki's documented partial-transclusion rules say that `noinclude` content is excluded, `includeonly` content participates in transclusion, and the presence of `onlyinclude` restricts transclusion to material inside `onlyinclude`. Scriptorium applies only that control-tag layer to pinned `poemx1` oldid `5142743`, failing closed on malformed control markup or `nowiki` cases that need separate MediaWiki handling.
 
-For this exact revision the frozen source-free control inventory is **two `noinclude` pairs, one `includeonly` pair, and zero `onlyinclude` pairs**. Applying those rules removes the raw `doc` invocation and its `templatedata` documentation surface from the effective transclusion graph. The remaining unresolved constructs are:
+For this exact revision the frozen source-free control inventory is **two `noinclude` pairs, one `includeonly` pair, and zero `onlyinclude` pairs**. Applying those rules removes the raw `doc` invocation, its `templatedata` documentation surface, **and the raw `PAGENAME` magic-word occurrence** from the effective transclusion graph. The remaining unresolved constructs are:
 
 - parser functions: `#expr` ×2, `#if` ×5, `#ifeq` ×5, `#iferror` ×1, `#tag` ×1;
 - `#tag` target: `poem` ×1;
-- magic word: `PAGENAME` ×1;
+- magic words: **none**;
 - ordinary template transclusions: **none**;
 - remaining ordinary HTML-like tags in the post-selection input: `div` ×6.
 
-The immutable source-free artifact is `source-edition-traces/gorky-klim-samgin-ru.poemx1-template.transclusion.json`; the raw pre-selection diagnostic remains `source-edition-traces/gorky-klim-samgin-ru.poemx1-template.shape.json`. This is a meaningful narrowing: no additional mutable ordinary-template revision dependency is exposed by `poemx1` after documented inclusion selection. It is **not** equivalent to reproducing MediaWiki expansion. Parameter/frame semantics, `PAGENAME`, the parser functions, and `#tag:poem` still have to be reproduced or otherwise source-bound before resolved Part 2 bytes can be claimed.
+The immutable source-free artifact is `source-edition-traces/gorky-klim-samgin-ru.poemx1-template.transclusion.json`; the raw pre-selection diagnostic remains `source-edition-traces/gorky-klim-samgin-ru.poemx1-template.shape.json`. This is a meaningful narrowing: no additional mutable ordinary-template revision or magic-word dependency is exposed by `poemx1` after documented inclusion selection. It is **not** equivalent to reproducing MediaWiki expansion. Template parameters/frame behavior, the parser functions, and `#tag:poem` still have to be reproduced or otherwise source-bound before resolved Part 2 bytes can be claimed.
 
 Therefore there is still **no resolved Part 2 wikitext identity**, no candidate-specific four-part literary-body extraction/composition contract, and no raw/`scriptorium-text-v1` composite digest. The extractor is not tuned toward FantLab's displayed count.
 

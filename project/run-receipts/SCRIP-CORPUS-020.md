@@ -2,54 +2,73 @@
 
 - Date: 2026-09-17
 - Issue: #109
-- PR: #111 — merged as `d3665bfb84ad84c91f5a99c64559267da2e1f41e`
-- Branch: `scrip-corpus-020-klim-lst-semantics`
-- Base at selection: `0de8766941bff76e7b20fbd923cd2df95ffbb20b`
-- Reviewed exact head: `18d4c2b36e2899e85d44d0166d2fb6f31353d9f9`
-- Result: `TARGET_ONLY_LST_SEMANTICS_MERGED_CONTINUATION_OPEN`
+- PR: #112 — draft, independent review pending
+- Branch: `agent/scriptorium-corpus-020-poemx1-history`
+- Base at selection: `7798c76f80add8fac45db4aee3361b47f87cb7e4`
+- Result: `POEMX1_HISTORY_AUTHORED_REVIEW_PENDING`
 
 ## Selected bounded unit
 
-Independently review the exact authored head of PR #111, merge the bounded target-only `#lst` semantic prerequisite if the evidence/checks are clean, and reconcile durable state without closing the larger literary-body Issue #109.
+Advance the open Klim Samgin source-graph boundary by freezing a deterministic historical revision identity for the `poemx1` template used six times by the already pinned Part 2 dependency. Do not reproduce or claim resolved MediaWiki expansion in the same unit; preserve the distinction between a deterministic as-of reconstruction anchor and historical render equivalence.
 
-## Review evidence
+## Implementation
 
-The exact head was mergeable, 16 commits ahead / 0 behind `master`, changed 11 files, and had no inline review threads. Review re-checked the source-free contract, implementation/tests, public provenance wording, and the pinned upstream `wikimedia/mediawiki-extensions-LabeledSectionTransclusion` source at commit `3e9a44dec6858aeaf3ca547a32ab3162d6887ed6`. In `setupPfunc12`, after target resolution and template-DOM/frame creation, the zero-remaining-arguments branch returns `newFrame->expand(root)`, supporting the PR's correction from a labeled-section-selection model to a target-only full-template-DOM expansion boundary.
+Added `scriptorium/template_history.py`, a source-free historical-template revision resolver. Its policy is `latest_revision_not_after_anchor_timestamp`. Capture stores only page/revision identity, counts and hashes; replay re-resolves the same as-of selection and separately fetches the exact selected oldid. The manifest explicitly records:
 
-The retained Part 2 source contract remains:
+- `evidence_class = inferred_reconstruction_anchor`
+- `historical_render_equivalence_proven = false`
+- `template_expansion_reproduced = false`
+- `source_text_committed = false`
 
-- one target argument; `section_label=null`; `range_end_label=null`
-- parent offsets `581758..581810`
-- invocation character count `52`, UTF-8 byte count `81`
-- invocation SHA-256 `89969a0424eb9fa332d132216bbeb96647239ab613cf6dadf6c5e2087ff0f15e`
-- dependency oldid `2366546`, wikitext SHA-256 `173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996`
-- dependency shape: six `poemx1` template invocations, zero nested `#lst` calls, zero `<section>` tags
+Focused mocked tests cover query direction/anchor parameters, rejection of a revision newer than the anchor, title drift, source-free manifest boundaries, exact replay and selection/pinned-byte drift. The repository-wide standard-library suite now includes those tests.
 
-No source prose is committed, and the contract still sets `mediawiki_template_dom_expansion_reproduced=false`, `resolved_part2_wikitext_identity_frozen=false`, `literary_body_extraction_frozen=false`, and `composite_literary_body_identity_frozen=false`.
+A dedicated PR-head workflow `.github/workflows/klim-samgin-template-history.yml` first requires the existing Part 2 contract to retain exactly six `poemx1` invocations, then captures the historical template revision, probes source shape without prose, byte-compares the committed manifest/shape and replays the exact selected revision. Checkout and Python setup actions are full-SHA pinned and credentials are not persisted.
 
-## Exact-head verification
+## Historical template evidence
 
-All four current exact-head workflows completed successfully:
+Using pinned Part 2 oldid `5198033` and timestamp `2024-11-26T11:16:35Z` as the reconstruction anchor, live Russian Wikisource resolution selected `Шаблон:Poemx1`:
 
-- Klim Samgin source graph `35214227300`: success; checked out `18d4c2b36e2899e85d44d0166d2fb6f31353d9f9`, ran **188** standard-library tests, re-captured and byte-compared all four parent revision manifests plus dependency oldid `2366546`, replayed all five exact revisions, probed source shape, recaptured/byte-compared/replayed the committed target-only contract, verified source-graph assertions, and uploaded source-free evidence.
-- Scriptorium Pages `35214227381`: success.
-- Scriptorium frozen diagnostic `35214227330`: success.
-- Scriptorium pinned pylem provider `35214227371`: success.
+- page ID: `54236`
+- oldid: `5142743`
+- revision timestamp: `2024-06-02T02:25:12Z`
+- MediaWiki SHA-1: `7b7da0fa04913bc902f6455addad437fc19d67d8`
+- wikitext characters: `2412`
+- UTF-8 bytes: `2918`
+- wikitext SHA-256: `fa7e35686da5ce4c62986a7e8bfc72f2dba067118218d656b2f0983e5cfa06db`
 
-No blocking defect was found in independent judgement. A review receipt was recorded on PR #111 before mutation.
+The immutable source-free record is `corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json`.
 
-## Merge and public representation
+## Source-shape evidence and correction
 
-PR #111 was marked Ready and squash-merged as `d3665bfb84ad84c91f5a99c64559267da2e1f41e`. Issue #109 intentionally remains open because this merge is a semantic/source-graph prerequisite, not the requested literary-body composite freeze.
+The first probe implementation was intentionally treated as diagnostic and was not committed as evidence because its simple double-brace regex could classify triple-brace parameter syntax as template openings. Before freezing shape evidence, the probe was repaired to require an exact double-brace opener (`(?<!\{)\{\{(?!\{)`), and parser functions plus the `PAGENAME` magic word were separated from ordinary template-shaped invocations.
 
-The public Klim candidate page and machine-readable provenance trace now describe the target-only `#lst` edge correctly and expose the six-`poemx1` MediaWiki-expansion boundary without claiming resolved body bytes or FantLab parity.
+The corrected source-free raw inventory for oldid `5142743` is committed as `gorky-klim-samgin-ru.poemx1-template.shape.json`:
+
+- ordinary raw template-shaped invocations: `doc` x1
+- parser functions: `#expr` x2, `#if` x5, `#ifeq` x5, `#iferror` x1, `#tag` x1
+- magic words: `PAGENAME` x1
+- HTML-like tags: `div` x6, `includeonly` x2, `noinclude` x4, `templatedata` x2
+
+This artifact explicitly does **not** apply MediaWiki `noinclude` / `includeonly` / `onlyinclude` transclusion semantics and therefore does not claim that `doc` or any other raw construct is an effective transitive dependency.
+
+## Verification / repair evidence
+
+The first exact-head capture run `35223860049` completed successfully and ran **192** standard-library tests while establishing the selected template revision identity. A later strict replay run `35224056659` again passed all 192 tests, the Part 2 dependency guard, live template capture and the corrected v2 source-shape probe, then failed at the intended byte comparison because the newly hand-copied committed manifest had one malformed percent-encoded character sequence in `source_work_url`. That authored-data defect was repaired from the workflow's generated manifest, and the workflow was tightened so both manifest and shape artifacts are mandatory and byte-compared before exact replay.
+
+Because this run authored the substantive change, it does not self-approve or merge PR #112. The final exact head must receive independent later-run judgement even if all checks are green.
+
+## Public representation
+
+`corpus/candidates/gorky-klim-samgin-ru.md` now exposes the exact `poemx1` as-of revision identity and the raw structural boundary. It states that the timestamp policy is inferred reconstruction evidence rather than proof of MediaWiki historical render state, and it keeps resolved Part 2/body identities unavailable.
+
+No source prose was committed.
 
 ## Evidence boundary / benchmark movement
 
-The ordered parent source-identity SHA-256 remains `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`. No resolved Part 2 or composite literary-body count/digest exists yet.
+The new template anchor narrows the MediaWiki-expansion problem but does not produce a literary body. No resolved Part 2 wikitext identity, four-part extraction/composition identity, raw body digest or `scriptorium-text-v1` digest is recorded.
 
 `fantlab_source_edition_match=unknown`; `diagnostic_ready=false`; `gate_ready=false`; `m2_parity_admissible=false`; M2 remains **0/5 source-matched works**.
 
 ## Next action
 
-Continue Issue #109 in a later bounded unit by freezing or deterministically reproducing the MediaWiki target template-DOM expansion layer, beginning with the six observed `poemx1` invocations and without treating current mutable template state as historical truth. Only after parser/template dependencies replay deterministically should per-part literary extraction, 1 -> 2 -> 3 -> 4 composition, or composite raw / `scriptorium-text-v1` digests be recorded.
+Independently review the final exact head of draft PR #112 and merge the bounded historical-template identity prerequisite only if required checks/evidence remain clean. Keep Issue #109 open. The next continuation should apply/freeze MediaWiki inclusion semantics to pinned `poemx1`, determine the effective transclusion dependency graph, then reproduce the evidenced parser-function and `#tag:poem` behavior before resolving Part 2 bytes.

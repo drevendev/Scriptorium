@@ -5,7 +5,7 @@
 - Selected from `SCRIP-CORPUS continuation` after re-orienting from `AGENTS.md`, `PROJECT_MANIFEST.md`, `STATE_AND_QUEUE.md` revision 112 and the changelog.
 - No review-ready or interrupted Scriptorium work preempted normal selection.
 - The state preference to strengthen a retained trace-only candidate was applied to `gorky-klim-samgin-ru`.
-- Issue: #105. Draft PR: #106.
+- Issue: #105. PR: #106.
 - Base master at selection: `4b1116ad53a8d39833a4d096ef289f1a5e5f65fb`.
 
 ## Produced
@@ -33,7 +33,9 @@ Added:
 
 Bootstrap workflow run `35183557851`, job `105080693934`, passed the then-current 171-test standard-library suite and captured all four exact revisions successfully. The hosted receipt itself contained only source-free identities; uploaded bootstrap artifact SHA-256 was `f4e266200b496faf051c448a1d755bb89640dd017fa9587dd377f4c32f1ae757`.
 
-Final authored-head verification is recorded on PR #106 after all manifests/docs/state files are committed. The PR is intentionally kept Draft because this run authored the substantive change; merge judgement belongs to a later independent wake.
+The final authored exact head was `68a2dd51384ad6b0efbdff36ed2cf341897ea9ff`. Dedicated run `35183988586` completed successfully: it ran 173 standard-library tests, re-captured all four pinned revisions, compared every observed source-free manifest byte-for-byte with the committed manifest, replayed each exact revision, verified the deterministic ordered revision-set digest and uploaded source-free capture/replay evidence. Exact-head runs `35183988845` (Scriptorium Pages), `35183988669` (frozen diagnostic), and `35183988582` (pinned pylem provider) also completed successfully.
+
+A later independent run reviewed the exact head against Issue #105, the 13-file / 14-commit diff, current public provenance, workflow results and the fail-closed evidence boundary. No blocking defect or inline review thread remained. PR #106 was marked Ready and squash-merged as `23925a0e8188937905bcf1e0250a4384b191c7e7`; Issue #105 closed completed.
 
 ## Evidence boundary
 

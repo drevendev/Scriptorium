@@ -22,17 +22,21 @@ The pinned source-free observed contract is:
 - source template: `Шаблон:Poemx1`, oldid `5142743`, wikitext SHA-256 `fa7e35686da5ce4c62986a7e8bfc72f2dba067118218d656b2f0983e5cfa06db`
 - control tags: `noinclude` pairs x2; `includeonly` pairs x1; `onlyinclude` pairs x0
 - effective ordinary template transclusions: none (`doc` is excluded)
+- effective magic-word dependencies: none (the raw `PAGENAME` occurrence is also excluded)
 - unresolved parser functions: `#expr` x2, `#if` x5, `#ifeq` x5, `#iferror` x1, `#tag` x1
 - unresolved extension target: `poem` x1
-- unresolved magic word: `PAGENAME` x1
 - remaining HTML-like `div` tags: x6
 
-The dedicated PR workflow now fetches exact oldid `5142743`, regenerates the source-free post-inclusion artifact and byte-compares it with `gorky-klim-samgin-ru.poemx1-template.transclusion.json` in addition to replaying the existing historical revision/shape evidence.
+The dedicated PR workflow fetches exact oldid `5142743`, regenerates the source-free post-inclusion artifact and byte-compares it with `gorky-klim-samgin-ru.poemx1-template.transclusion.json` in addition to replaying the existing historical revision/shape evidence.
+
+## Fail-closed correction
+
+Initial exact-head workflow `35237044297` checked out `087771d0449698a22a422255d75c409c061fd553`, passed **198** standard-library tests, required the six-`poemx1` Part 2 shape, re-resolved historical oldid `5142743`, regenerated the raw shape and successfully applied the inclusion profile. The final byte comparison then failed because the first hand-authored post-inclusion artifact had retained `PAGENAME` while the generated artifact correctly had `magic_word_counts = {}`. This is the intended fail-closed behavior: the exact replay established that `PAGENAME` is inside excluded content. The artifact and all public/durable wording were repaired from that evidence; the final head requires a fresh CI pass before independent merge judgement.
 
 ## Boundary
 
-`historical_render_equivalence_proven=false`. Parameter/frame expansion, `PAGENAME`, parser functions, `#tag:poem`, resolved Part 2 bytes, candidate literary extraction/composition and raw/normalized body digests remain unfrozen. `fantlab_source_edition_match=unknown`; M2 remains **0/5**.
+`historical_render_equivalence_proven=false`. Parameter/frame expansion, parser functions, `#tag:poem`, resolved Part 2 bytes, candidate literary extraction/composition and raw/normalized body digests remain unfrozen. `fantlab_source_edition_match=unknown`; M2 remains **0/5**.
 
 ## Next action
 
-Independent later-run exact-head review of draft PR #113 and all required checks. If clean, merge this prerequisite without closing Issue #109, then continue the remaining evidenced MediaWiki parser/magic-word/extension layer.
+Independent later-run exact-head review of draft PR #113 and all required checks. If clean, merge this prerequisite without closing Issue #109, then continue the remaining evidenced MediaWiki parameter/frame/parser/extension layer.

@@ -123,8 +123,11 @@ class SinglePageBodyTests(unittest.TestCase):
         self.assertEqual(receipt["revision_id"], REVISION_ID)
         self.assertFalse(receipt["m2_parity_admissible"])
 
+        # A changed source must fail on the already-frozen revision identity before
+        # extraction is even attempted; body-drift checks apply only after source
+        # identity has been proven unchanged.
         changed = _source("б" * 300_001)
-        with self.assertRaisesRegex(ValueError, "literary-body identity drift"):
+        with self.assertRaisesRegex(ValueError, "identity drift before extraction"):
             replay_body_manifest(
                 revision_manifest,
                 body_manifest,

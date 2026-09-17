@@ -1,9 +1,8 @@
 """Freeze a source-free literary-body identity for one pinned Wikisource revision.
 
-This helper is intentionally narrower than a renderer: it accepts only the fail-closed
-``scriptorium-wikisource-body-v1`` transcription shape already used by the corpus
-freezer, verifies the exact revision identity before extraction, and persists only
-counts/digests. Source prose exists only in process memory.
+The shared machinery verifies an already-frozen revision before extraction and persists
+only counts/digests. Candidate-specific modules may supply a stricter extraction
+function/profile; source prose exists only in process memory.
 """
 
 from __future__ import annotations
@@ -20,6 +19,7 @@ from .wikisource_freeze import EXTRACTION_PROFILE, extract_transcription_body
 
 
 BODY_MANIFEST_VERSION = "scriptorium-single-page-literary-body-v1"
+BodyExtractor = Callable[[str], str]
 
 
 def fetch_pinned_wikitext(
@@ -99,11 +99,17 @@ def build_body_manifest(
     revision_manifest: Mapping[str, object],
     *,
     fetcher: Callable[..., dict[str, object]] = fetch_pinned_wikitext,
+    extractor: BodyExtractor = extract_transcription_body,
+    extraction_profile: str = EXTRACTION_PROFILE,
     minimum_characters: int = 300_000,
 ) -> dict[str, object]:
     """Re-fetch, verify and extract one pinned transcription without retaining prose."""
 
     validate_revision_manifest(revision_manifest)
+    if not callable(extractor):
+        raise TypeError("extractor must be callable")
+    if not isinstance(extraction_profile, str) or not extraction_profile:
+        raise ValueError("extraction_profile must be non-empty")
     if not isinstance(minimum_characters, int) or minimum_characters < 1:
         raise ValueError("minimum_characters must be a positive integer")
     source_identity = revision_manifest.get("source_identity")
@@ -125,7 +131,9 @@ def build_body_manifest(
         )
         raise ValueError(f"pinned revision identity drift before extraction: {differing}")
 
-    body = extract_transcription_body(wikitext)
+    body = extractor(wikitext)
+    if not isinstance(body, str) or not body:
+        raise ValueError("extractor returned empty or non-string literary body")
     identity = _body_identity(body)
     if int(identity["character_count_including_spaces"]) < minimum_characters:
         raise ValueError("extracted literary body is below the corpus threshold")
@@ -143,7 +151,7 @@ def build_body_manifest(
             "wikitext_sha256": source_identity["wikitext_sha256"],
         },
         "extraction": {
-            "profile": EXTRACTION_PROFILE,
+            "profile": extraction_profile,
             "source_text_committed": False,
             "scope": "literary body extracted from the exact pinned revision wikitext",
         },
@@ -158,6 +166,7 @@ def validate_body_manifest(
     manifest: Mapping[str, object],
     *,
     revision_manifest: Mapping[str, object] | None = None,
+    extraction_profile: str = EXTRACTION_PROFILE,
 ) -> None:
     if manifest.get("manifest_version") != BODY_MANIFEST_VERSION:
         raise ValueError("unsupported single-page body manifest version")
@@ -171,7 +180,7 @@ def validate_body_manifest(
         raise ValueError("body manifest revision id missing")
     extraction = manifest.get("extraction")
     if extraction != {
-        "profile": EXTRACTION_PROFILE,
+        "profile": extraction_profile,
         "source_text_committed": False,
         "scope": "literary body extracted from the exact pinned revision wikitext",
     }:
@@ -226,9 +235,22 @@ def replay_body_manifest(
     body_manifest: Mapping[str, object],
     *,
     fetcher: Callable[..., dict[str, object]] = fetch_pinned_wikitext,
+    extractor: BodyExtractor = extract_transcription_body,
+    extraction_profile: str = EXTRACTION_PROFILE,
+    minimum_characters: int = 300_000,
 ) -> dict[str, object]:
-    validate_body_manifest(body_manifest, revision_manifest=revision_manifest)
-    observed = build_body_manifest(revision_manifest, fetcher=fetcher)
+    validate_body_manifest(
+        body_manifest,
+        revision_manifest=revision_manifest,
+        extraction_profile=extraction_profile,
+    )
+    observed = build_body_manifest(
+        revision_manifest,
+        fetcher=fetcher,
+        extractor=extractor,
+        extraction_profile=extraction_profile,
+        minimum_characters=minimum_characters,
+    )
     if observed != body_manifest:
         raise ValueError("pinned single-page literary-body identity drift")
     identity = body_manifest["literary_body_identity"]
@@ -238,7 +260,7 @@ def replay_body_manifest(
         "receipt_version": "scriptorium-single-page-literary-body-replay-v1",
         "candidate_id": body_manifest["candidate_id"],
         "revision_id": source_revision["revision_id"],
-        "extraction_profile": EXTRACTION_PROFILE,
+        "extraction_profile": extraction_profile,
         "raw_sha256": identity["raw_sha256"],
         "normalized_sha256": identity["normalized_sha256"],
         "verified": True,
@@ -265,7 +287,7 @@ def _write_json(path: Path, value: Mapping[str, object]) -> None:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Capture or replay a source-free literary-body identity for one pinned Wikisource page."
+        description="Capture or replay a generic source-free literary-body identity for one pinned Wikisource page."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
     capture = subparsers.add_parser("capture")

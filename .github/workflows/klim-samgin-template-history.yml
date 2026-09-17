@@ -7,6 +7,7 @@ on:
       - "scriptorium/template_history.py"
       - "tests/test_template_history.py"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.shape.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json"
   workflow_dispatch:
 
@@ -82,22 +83,37 @@ jobs:
           text = fetched.pop('wikitext')
           assert fetched == identity
 
-          template_re = re.compile(r'\{\{\s*([^|{}\n]+)')
-          parser_function_re = re.compile(r'\{\{\s*(#[^|{}\n:]+)\s*:')
+          opening_re = re.compile(r'\{\{(?!\{)\s*([^|{}\n]+)')
           html_re = re.compile(r'</?\s*([A-Za-z][A-Za-z0-9]*)\b')
+          templates = Counter()
+          parser_functions = Counter()
+          magic_words = Counter()
+          for match in opening_re.finditer(text):
+              raw = match.group(1).strip()
+              if not raw:
+                  continue
+              if raw.startswith('#'):
+                  parser_functions[raw.split(':', 1)[0]] += 1
+              elif raw.upper() in {'PAGENAME'}:
+                  magic_words[raw.upper()] += 1
+              else:
+                  templates[raw] += 1
+
           diagnostic = {
-              'probe_version': 'scriptorium-historical-template-shape-v1',
+              'probe_version': 'scriptorium-historical-template-shape-v2',
               'candidate_id': observed['candidate_id'],
               'revision_id': identity['revision_id'],
-              'template_name_counts': dict(sorted(Counter(
-                  match.group(1).strip() for match in template_re.finditer(text)
-              ).items())),
-              'parser_function_counts': dict(sorted(Counter(
-                  match.group(1).strip() for match in parser_function_re.finditer(text)
-              ).items())),
+              'raw_template_name_counts': dict(sorted(templates.items())),
+              'parser_function_counts': dict(sorted(parser_functions.items())),
+              'magic_word_counts': dict(sorted(magic_words.items())),
               'html_tag_name_counts': dict(sorted(Counter(
                   match.group(1).lower() for match in html_re.finditer(text)
               ).items())),
+              'classification_boundary': (
+                  'Raw source-shape inventory only. It excludes triple-brace parameters and separates '
+                  'parser functions/magic words, but does not yet apply noinclude/includeonly/onlyinclude '
+                  'transclusion semantics or prove an effective dependency graph.'
+              ),
               'source_text_included': False,
           }
           Path('build/repro/gorky-klim-samgin-ru.poemx1-template.shape.json').write_text(
@@ -109,11 +125,13 @@ jobs:
           ))
           PY
 
-      - name: Compare/replay committed identity when present
+      - name: Compare/replay committed evidence when present
         run: |
           set -euo pipefail
           expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json
           observed=build/repro/gorky-klim-samgin-ru.poemx1-template.revision.observed.json
+          expected_shape=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.shape.json
+          observed_shape=build/repro/gorky-klim-samgin-ru.poemx1-template.shape.json
           if [[ -f "$expected" ]]; then
             cmp "$expected" "$observed"
             python -m scriptorium.template_history replay \
@@ -121,4 +139,9 @@ jobs:
               --receipt build/repro/gorky-klim-samgin-ru.poemx1-template.revision.replay.json
           else
             echo 'Historical template identity not committed yet; this run is the bounded source-free capture probe.'
+          fi
+          if [[ -f "$expected_shape" ]]; then
+            cmp "$expected_shape" "$observed_shape"
+          else
+            echo 'Historical template shape not committed yet; this run is the bounded source-free shape probe.'
           fi

@@ -2,7 +2,8 @@
 
 - Issue: #105
 - PR: #106
-- Status: `REVIEW_PENDING`
+- Status: `DONE`
+- Merged commit: `23925a0e8188937905bcf1e0250a4384b191c7e7`
 - Scope: corpus / provenance strengthening; no literary-body extraction or FantLab parity promotion.
 
 ## Change
@@ -18,8 +19,10 @@ The four revision containers total 3,228,790 wikitext characters / 5,902,920 UTF
 
 A dedicated GitHub Actions workflow re-fetches every pinned revision, compares each observed source-free manifest byte-for-byte with the committed manifest, replays through `scriptorium.single_page_revision`, and verifies the ordered identity-set digest. Standard-library tests cover exact ordering, source-prose exclusion and the fail-closed evidence boundary.
 
+## Review and merge
+
+Independent later-run review of exact head `68a2dd51384ad6b0efbdff36ed2cf341897ea9ff` found no blocking defect. Before merge, PR #106 was mergeable, 14 commits ahead / 0 behind master, with 13 changed files and no inline review threads. Exact-head runs `35183988586` (Klim Samgin source revisions), `35183988845` (Scriptorium Pages), `35183988669` (frozen diagnostic), and `35183988582` (pinned pylem provider) all completed successfully. PR #106 was marked Ready and squash-merged as `23925a0e8188937905bcf1e0250a4384b191c7e7`; Issue #105 closed completed.
+
 ## Boundary
 
 This unit freezes revision **wikitext containers**, not a composed literary body. Candidate-specific fail-closed extraction, literary composition, raw/`scriptorium-text-v1` composite body digests and FantLab analyzer-input identity remain unresolved. `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and M2 remains 0/5.
-
-The authored PR remains Draft for independent later-run review before any merge.

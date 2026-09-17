@@ -1,0 +1,99 @@
+name: Klim Samgin poemx1 control flow
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-template-control.yml"
+      - "scriptorium/mediawiki_poemx1_control.py"
+      - "tests/test_mediawiki_poemx1_control.py"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.transclusion.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.parameters.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.bindings.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.control.json"
+      - "corpus/candidates/gorky-klim-samgin-ru.md"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-020.md"
+      - "project/run-receipts/SCRIP-CORPUS-020-poemx1-control.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Resolve frozen poemx1 parser-control graph
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Regenerate source-free parser-control evidence
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from scriptorium.mediawiki_poemx1_control import build_poemx1_control_flow_manifest
+
+          root = Path('corpus/candidates/source-edition-traces')
+          transclusion = json.loads(
+              (root / 'gorky-klim-samgin-ru.poemx1-template.transclusion.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          parameters = json.loads(
+              (root / 'gorky-klim-samgin-ru.poemx1-template.parameters.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          bindings = json.loads(
+              (root / 'gorky-klim-samgin-ru.poemx1-template.bindings.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          manifest = build_poemx1_control_flow_manifest(
+              transclusion_manifest=transclusion,
+              parameter_manifest=parameters,
+              binding_manifest=bindings,
+              research_date='2026-09-17',
+          )
+          observed = Path(
+              'build/repro/gorky-klim-samgin-ru.poemx1-template.control.json'
+          )
+          observed.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          print('SCRIPTORIUM_POEMX1_CONTROL=' + json.dumps(
+              {
+                  'reachable': manifest['reachable_construct_counts'],
+                  'unreachable': manifest['unreachable_construct_counts'],
+                  'tag': manifest['live_extension_operation'],
+              },
+              ensure_ascii=False,
+              sort_keys=True,
+              separators=(',', ':'),
+          ))
+          PY
+
+      - name: Compare committed source-free parser-control evidence
+        run: |
+          set -euo pipefail
+          expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.control.json
+          observed=build/repro/gorky-klim-samgin-ru.poemx1-template.control.json
+          test -f "$expected"
+          cmp "$expected" "$observed"

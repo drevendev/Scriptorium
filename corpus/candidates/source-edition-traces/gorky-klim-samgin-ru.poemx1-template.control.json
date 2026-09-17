@@ -1,0 +1,148 @@
+{
+  "binding_manifest_version": "scriptorium-template-invocation-bindings-v1",
+  "boundary": "This source-free artifact resolves only the documented #if/#ifeq branch choices for the exact six frozen poemx1 frames. It demonstrates that both #expr calls and the #iferror call are unreachable under those frames. The live #tag:poem operation, recursive expansion of parameter 2, extension rendering, resolved Part 2 bytes and historical render equivalence remain unresolved.",
+  "branch_decisions": [
+    {
+      "decision": "title_if",
+      "effect": "title_block_omitted",
+      "function": "#if",
+      "selected_branch": "false"
+    },
+    {
+      "decision": "fixed_centering_ifeq",
+      "effect": "automatic_centering_and_fit_content_path_selected",
+      "function": "#ifeq",
+      "selected_branch": "unequal"
+    },
+    {
+      "decision": "fixed_width_ifeq",
+      "effect": "conditional_width_path_selected",
+      "function": "#ifeq",
+      "selected_branch": "unequal"
+    },
+    {
+      "decision": "width_if",
+      "effect": "width_arithmetic_path_omitted",
+      "function": "#if",
+      "selected_branch": "false"
+    },
+    {
+      "decision": "poem_if",
+      "effect": "alternate_poem_font_path_omitted",
+      "function": "#if",
+      "selected_branch": "false"
+    },
+    {
+      "decision": "small_ifeq",
+      "effect": "small_font_path_omitted",
+      "function": "#ifeq",
+      "selected_branch": "unequal"
+    },
+    {
+      "decision": "signature_if",
+      "effect": "signature_block_omitted",
+      "function": "#if",
+      "selected_branch": "false"
+    }
+  ],
+  "candidate_id": "gorky-klim-samgin-ru-poemx1-control-flow",
+  "capture_scope": {
+    "expr_evaluation_reproduced": false,
+    "expr_reachable_for_frozen_frame": false,
+    "extension_tag_expansion_reproduced": false,
+    "frozen_frame_validated": true,
+    "historical_render_equivalence_proven": false,
+    "iferror_evaluation_reproduced": false,
+    "iferror_reachable_for_frozen_frame": false,
+    "inserted_parameter_value_recursive_expansion_reproduced": false,
+    "reachable_if_branch_selection_resolved": true,
+    "reachable_ifeq_branch_selection_resolved": true,
+    "resolved_part2_identity_frozen": false,
+    "source_text_committed": false,
+    "tag_poem_operation_reachable": true
+  },
+  "control_profile": "scriptorium-mediawiki-poemx1-control-v1",
+  "invocation_count": 6,
+  "invocation_identities": [
+    {
+      "invocation_index": 1,
+      "invocation_sha256": "0f09f7a30447022f3fda19c24f159fa234f09d06d127e5d222ed1d7b4e0f6112"
+    },
+    {
+      "invocation_index": 2,
+      "invocation_sha256": "f4c7e9828d49f1c6fe38774eaa2133af3a2dd495164492e1b91605519361993d"
+    },
+    {
+      "invocation_index": 3,
+      "invocation_sha256": "0331a13a921cdf3f49a1b4f634cf00fc11c0abdc61f79bd108f78eb0e3dd4f16"
+    },
+    {
+      "invocation_index": 4,
+      "invocation_sha256": "cf4eab4577e2ac2bc9dcd09835875411734ab9d5abb41c8f2be327757f278aa6"
+    },
+    {
+      "invocation_index": 5,
+      "invocation_sha256": "9bb1d32c5d20c4e151c290190458be336cc22c91921029057dc8dea5cbacd81b"
+    },
+    {
+      "invocation_index": 6,
+      "invocation_sha256": "a0d6aaed7764c3239b7ca3af7b40bb6f697ec4d1a27632f2848ee0db3aa98b26"
+    }
+  ],
+  "live_extension_operation": {
+    "content_parameter": "2",
+    "content_recursive_expansion_reproduced": false,
+    "extension_rendering_reproduced": false,
+    "function": "#tag",
+    "invocation_count": 1,
+    "tag": "poem"
+  },
+  "manifest_version": "scriptorium-poemx1-control-flow-v1",
+  "reachable_construct_counts": {
+    "#expr": 0,
+    "#if": 4,
+    "#ifeq": 3,
+    "#iferror": 0,
+    "#tag": 1
+  },
+  "research_date": "2026-09-17",
+  "semantics_evidence": [
+    {
+      "claim": "#if treats empty or whitespace-only input as false; ParserFunctions trims leading/trailing whitespace; #ifeq compares non-numeric operands as case-sensitive text",
+      "url": "https://www.mediawiki.org/wiki/Help:Extension:ParserFunctions"
+    },
+    {
+      "claim": "#tag invokes XML-style parser/extension tags and avoids parsing tag calls in conditional paths that are not executed",
+      "url": "https://www.mediawiki.org/wiki/Help:Magic_words"
+    }
+  ],
+  "shared_source_free_frame": {
+    "1": "defined_empty",
+    "2": "defined_nonempty",
+    "3": "omitted",
+    "fixed": "omitted",
+    "poem": "omitted",
+    "small": "omitted",
+    "width": "omitted"
+  },
+  "source_text_included": false,
+  "static_construct_counts": {
+    "#expr": 2,
+    "#if": 5,
+    "#ifeq": 5,
+    "#iferror": 1,
+    "#tag": 1
+  },
+  "template_revision": {
+    "revision_id": 5142743,
+    "transclusion_input_sha256": "86ad628a9d8fc3d904fd513a1b4335f4e9f816ceedfa2af736e8e3a94e32ffbf",
+    "wikitext_sha256": "fa7e35686da5ce4c62986a7e8bfc72f2dba067118218d656b2f0983e5cfa06db"
+  },
+  "unreachable_construct_counts": {
+    "#expr": 2,
+    "#if": 1,
+    "#ifeq": 2,
+    "#iferror": 1,
+    "#tag": 0
+  }
+}

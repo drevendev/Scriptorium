@@ -1,26 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 109
+STATE_REVISION: 110
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-16T23:54:09Z
-LAST_RESULT: SCRIP-CORPUS-016 / Issue #101 / PR #102 received an independent later-run exact-head review of repaired head `9fa268604dde91a078bc403a50d24fc2394b9bf5` with no blocking defect and was squash-merged as `055e5c789ed65bc48eaaeb19bf007ad3400d1380`; Issue #101 closed completed. The merged unit freezes a deterministic source-free literary-body identity for the exact Russian Wikisource revision `oldid=5014458`, synchronizes the central candidate catalog with the committed revision/body manifests, and preserves direct print-edition identity plus FantLab analyzer-input identity as unresolved.
-LAST_VERIFIED_PROGRESS: Immediately before merge, current `master` was still the authored base `d76c5403d62ec85c022efe4def93883eef550da3`; PR #102 was 21 commits ahead / 0 behind, mergeable, changed exactly 11 expected unit files and had no inline review threads. Repaired exact-head runs `35159779198` (Hyperboloid source/body replay), `35159779188` (Scriptorium Pages), `35159779182` (frozen diagnostic) and `35159779183` (pinned provider) all completed successfully. The Hyperboloid job passed the standard-library suite, re-fetched exact `oldid=5014458`, matched/replayed the committed revision manifest, reproduced the committed literary-body manifest byte-for-byte, passed source-free structure/fail-closed assertions and uploaded derived/replay evidence. The frozen body is 499066 characters / 930560 bytes with raw and normalized SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`; `fantlab_source_edition_match` remains unknown and M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-17T01:00:00Z
+LAST_RESULT: SCRIP-CORPUS-017 / Issue #103 / draft PR #104 qualified Maxim Gorky's `Жизнь Клима Самгина` as a source-free twentieth-century corpus/provenance lead. FantLab work 427585 reports 3,789,857 characters / 531,192 words; Russian Wikisource explicitly marks the original Russian work public domain, exposes a four-part Library-Moshkov transcription family, and supplies permanent part revision locators with GIKhL 1952/1953 volume declarations. The unit deliberately remains `trace_only`: it does not claim an immutable literary-body identity, source-edition match or M2 progress.
+LAST_VERIFIED_PROGRESS: The authored branch starts from master `b88162e58c45821595f5b96649eb52b1b27f7965`. Before this state update, draft PR #104 contained four new source-free files only: provenance trace, public candidate page, changelog fragment and run receipt. The retained permanent locators are work index `oldid=5628161` and Parts 1–4 `oldid=5733765`, `5198033`, `5138882`, `5724453`. Revision timestamps/MediaWiki SHA-1 values, Scriptorium wikitext SHA-256 values, deterministic body extraction/composition and composite digests are not frozen; `fantlab_source_edition_match=unknown`, diagnostics remain disabled and M2 remains 0/5. Exact-head CI and independent review are still required before any merge decision.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-016
-ISSUE:          #101
-STATUS:         DONE
-PR:             #102
-MERGED_COMMIT:  055e5c789ed65bc48eaaeb19bf007ad3400d1380
-NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
-                Prefer another legally usable >=300k diversity candidate or stronger
-                independent source-identity evidence for an existing candidate. When a
-                revision/container identity is frozen, keep literary-body extraction and
-                raw/normalized body digests separate until deterministically reproduced.
-                Never infer FantLab input identity from bibliography, title, count
-                proximity or public-source freezing.
+UNIT_ID:        SCRIP-CORPUS-017
+ISSUE:          #103
+STATUS:         REVIEW_PENDING
+PR:             #104 (draft)
+MERGED_COMMIT:  none
+NEXT_ACTION:    Wait for exact-head CI, then independently review PR #104 in a later wake.
+                Confirm that the new trace/public page/state remain source-free and do
+                not promote permanent oldid locators or bibliography into a frozen
+                literary-body identity. If accepted, merge and reconcile bookkeeping;
+                if not, record the exact repair contract. M2 must remain 0/5.
 ```
 
 ## Current milestone gate
@@ -35,6 +33,7 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
+| P0 | Review PR #104 exact head | review / corpus provenance | Independently verify SCRIP-CORPUS-017 after exact-head CI and either merge safely or record a bounded repair contract | Do not self-approve authored evidence; keep source/parity claims fail-closed |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
@@ -52,6 +51,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Running on Waves** — Detskaya literatura 1965 source-cited family with 35 chapters plus epilogue; literary subpage identities/composite remain unfrozen.
 - **The White Guard** — Wikisource explicitly mixes two bibliographic source families across chapters 1–11 and 12–20; all 20 chapter identities/composite remain unfrozen.
 - **The Twelve Chairs** — keep 40-chapter later 1938/1961 editorial family distinct from 41-chapter 1928 first standalone edition; neither literary body is frozen, and coauthorship prevents individual-author attribution without an explicit VOICE model.
+- **The Life of Klim Samgin** — new provenance-qualified lead: FantLab reports 3,789,857 characters / 531,192 words; Russian Wikisource marks the original Russian work public domain and exposes a four-part Library-Moshkov family with permanent part locators and GIKhL 1952/1953 source declarations. Status remains `trace_only`; immutable revision/body manifests, composite digests and FantLab source identity are not established, so main parity-catalog admission is deferred.
 
 ## Deterministic / morphology findings
 
@@ -68,6 +68,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - Public corpus navigation exposes the retained frozen and trace-only candidates with provenance boundaries rather than parity claims.
 - SCRIP-CORPUS-016 upgrades the public Hyperboloid entry from revision-container-only identity to a frozen source-free literary-body identity with exact counts/digests and an explicit fail-closed extraction profile, while preserving the unresolved print-edition and FantLab-input boundary.
 - The repaired machine-readable candidate catalog now agrees with the Hyperboloid trace/body manifests and no longer advertises the candidate as `traced_not_frozen`.
+- SCRIP-CORPUS-017 adds a standalone public Klim Samgin candidate page plus a machine-readable provenance trace. It intentionally does not change the main parity catalog until an immutable four-part literary identity is replay-frozen.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers
@@ -80,4 +81,5 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 6. Petersburg lacks a Scriptorium-recorded PDF snapshot digest and deterministic OCR/page-extraction identity.
 7. Hyperboloid now has a frozen revision and deterministic frozen literary-body identity, but no direct bibliographic print-edition identity and no FantLab analyzer-input match; Shining World, Running on Waves, White Guard and Twelve Chairs remain trace-only/unfrozen at the literary-body level.
 8. Road to Nowhere now has a frozen alternate revision-wikitext identity, but the primary 1965 literary family and the alternate route's literary-body extraction/body digests remain unfrozen; FantLab input remains undisclosed.
-9. Pages live activation remains a repository-admin effect and is off.
+9. Klim Samgin has four permanent part revision locators and strong public-domain/bibliographic provenance, but no replay-frozen revision/body manifest, extraction/composition profile or composite digest; it remains a lead rather than a catalog-admitted diagnostic candidate.
+10. Pages live activation remains a repository-admin effect and is off.

@@ -125,23 +125,17 @@ jobs:
           ))
           PY
 
-      - name: Compare/replay committed evidence when present
+      - name: Compare and replay committed historical template evidence
         run: |
           set -euo pipefail
           expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json
           observed=build/repro/gorky-klim-samgin-ru.poemx1-template.revision.observed.json
           expected_shape=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.shape.json
           observed_shape=build/repro/gorky-klim-samgin-ru.poemx1-template.shape.json
-          if [[ -f "$expected" ]]; then
-            cmp "$expected" "$observed"
-            python -m scriptorium.template_history replay \
-              --manifest "$expected" \
-              --receipt build/repro/gorky-klim-samgin-ru.poemx1-template.revision.replay.json
-          else
-            echo 'Historical template identity not committed yet; this run is the bounded source-free capture probe.'
-          fi
-          if [[ -f "$expected_shape" ]]; then
-            cmp "$expected_shape" "$observed_shape"
-          else
-            echo 'Historical template shape not committed yet; this run is the bounded source-free shape probe.'
-          fi
+          test -f "$expected"
+          test -f "$expected_shape"
+          cmp "$expected" "$observed"
+          cmp "$expected_shape" "$observed_shape"
+          python -m scriptorium.template_history replay \
+            --manifest "$expected" \
+            --receipt build/repro/gorky-klim-samgin-ru.poemx1-template.revision.replay.json

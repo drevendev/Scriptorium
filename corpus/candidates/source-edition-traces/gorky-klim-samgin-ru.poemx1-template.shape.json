@@ -1,0 +1,26 @@
+{
+  "candidate_id": "gorky-klim-samgin-ru-poemx1-template",
+  "classification_boundary": "Raw source-shape inventory only. It excludes triple-brace parameters and separates parser functions/magic words, but does not yet apply noinclude/includeonly/onlyinclude transclusion semantics or prove an effective dependency graph.",
+  "html_tag_name_counts": {
+    "div": 6,
+    "includeonly": 2,
+    "noinclude": 4,
+    "templatedata": 2
+  },
+  "magic_word_counts": {
+    "PAGENAME": 1
+  },
+  "parser_function_counts": {
+    "#expr": 2,
+    "#if": 5,
+    "#ifeq": 5,
+    "#iferror": 1,
+    "#tag": 1
+  },
+  "probe_version": "scriptorium-historical-template-shape-v2",
+  "raw_template_name_counts": {
+    "doc": 1
+  },
+  "revision_id": 5142743,
+  "source_text_included": false
+}

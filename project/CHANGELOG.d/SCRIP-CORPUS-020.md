@@ -3,8 +3,8 @@
 - Issue: #109
 - Prerequisite PR: #110 — merged as `c6d49b19f7f9d64b014b60f4ba76c5d542938fdc`
 - Target-only semantics PR: #111 — merged as `d3665bfb84ad84c91f5a99c64559267da2e1f41e`
-- Historical `poemx1` anchor PR: #112 — draft, independent review pending
-- Status: `POEMX1_HISTORY_AUTHORED_REVIEW_PENDING`
+- Historical `poemx1` anchor PR: #112 — merged as `aae7290f6056831bd291ac8a7a59100bad0ff4e8`
+- Status: `POEMX1_HISTORY_MERGED_CONTINUATION_OPEN`
 - Scope: corpus/provenance strengthening and source-graph correctness; no FantLab source-match or M2 promotion.
 
 ## Dependency prerequisite
@@ -29,7 +29,7 @@ PR #111 exact head `18d4c2b36e2899e85d44d0166d2fb6f31353d9f9` received an indepe
 
 PR #111 was then marked Ready and squash-merged as `d3665bfb84ad84c91f5a99c64559267da2e1f41e`. Issue #109 intentionally remains open.
 
-## Historical `poemx1` revision anchor — draft PR #112
+## Historical `poemx1` revision anchor — PR #112
 
 The next bounded continuation does not attempt to emulate MediaWiki expansion from today's mutable template state. Instead, `scriptorium/template_history.py` introduces a source-free historical-template revision resolver whose explicit policy is **latest revision not later than the pinned page-save timestamp**. The policy is labeled `inferred_reconstruction_anchor` and hard-codes neither render equivalence nor template expansion success.
 
@@ -46,10 +46,16 @@ The immutable source-free manifest is `corpus/candidates/source-edition-traces/g
 
 A corrected source-shape probe deliberately excludes triple-brace parameters and separates parser functions/magic words from ordinary `{{...}}` openings. For oldid `5142743` it records one raw ordinary template-shaped invocation (`doc`), `#expr` x2, `#if` x5, `#ifeq` x5, `#iferror` x1, `#tag` x1, `PAGENAME` x1, and HTML-like tags `div` x6, `includeonly` x2, `noinclude` x4, `templatedata` x2. The committed shape artifact explicitly says this is raw source inventory only: inclusion semantics have not yet been applied, and no effective transitive dependency graph is claimed.
 
-The first capture workflow run `35223860049` succeeded and ran 192 standard-library tests while establishing the exact template identity. A later strict replay attempt correctly exposed a hand-copied source-URL typo in the newly authored manifest after the test/capture/probe steps had passed; the manifest was repaired and CI was converted to require byte-for-byte manifest and shape comparison plus exact replay. Final exact-head judgement remains for a later independent run because this run authored PR #112.
+The first capture workflow run `35223860049` succeeded and ran 192 standard-library tests while establishing the exact template identity. A later strict replay attempt correctly exposed a hand-copied source-URL typo in the newly authored manifest after the test/capture/probe steps had passed; the manifest was repaired and CI was converted to require byte-for-byte manifest and shape comparison plus exact replay.
+
+## Independent review and merge — PR #112
+
+PR #112 exact head `4626bbeb0b99c12dd78c5d1b4e45e5a04581d72d` received an independent later-run review with no blocking defect. It was 14 commits ahead / 0 behind `master`, changed 9 files, was mergeable, and had no inline review threads. Exact-head workflows `35224478878` (Klim historical template dependency), `35224478838` (Pages), `35224478864` (frozen diagnostic), and `35224478848` (pinned pylem provider) all completed successfully. The dedicated Klim run checked out the exact reviewed SHA, ran 192 standard-library tests, re-resolved the as-of `poemx1` revision, byte-compared the committed revision/shape evidence, and replayed exact oldid `5142743`.
+
+The review found the evidence boundary intact: the revision is still only an `inferred_reconstruction_anchor`; `historical_render_equivalence_proven=false` and `template_expansion_reproduced=false`; the raw shape probe does not claim inclusion semantics or an effective dependency graph. PR #112 was marked Ready and squash-merged as `aae7290f6056831bd291ac8a7a59100bad0ff4e8`. Issue #109 intentionally remains open.
 
 ## Boundary / next trigger
 
-Independent review must first judge final draft PR #112. If it is clean, merge it without closing Issue #109. The next continuation should apply/freeze `noinclude` / `includeonly` / `onlyinclude` semantics for the pinned `poemx1` template revision and resolve which raw constructs actually participate in transclusion. Only then should Scriptorium reproduce the evidenced parser-function / `#tag:poem` behavior and any effective transitive template dependencies. Resolved Part 2 bytes, four-part literary extraction/composition, and raw / `scriptorium-text-v1` composite digests remain prohibited until that layer replays deterministically.
+Continue Issue #109 by applying/freeze-testing `noinclude` / `includeonly` / `onlyinclude` semantics for the pinned `poemx1` template revision and resolving which raw constructs actually participate in transclusion. Only then should Scriptorium reproduce the evidenced parser-function / `#tag:poem` behavior and any effective transitive template dependencies. Resolved Part 2 bytes, four-part literary extraction/composition, and raw / `scriptorium-text-v1` composite digests remain prohibited until that layer replays deterministically.
 
 `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`; M2 remains **0/5 source-matched works**.

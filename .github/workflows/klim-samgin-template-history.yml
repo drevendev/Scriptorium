@@ -1,0 +1,124 @@
+name: Klim Samgin historical template dependency
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-template-history.yml"
+      - "scriptorium/template_history.py"
+      - "tests/test_template_history.py"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Freeze historical poemx1 revision anchor
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Require the pinned Part 2 dependency shape
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract = json.loads(Path(
+              'corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json'
+          ).read_text(encoding='utf-8'))
+          shape = contract['dependency_shape']
+          assert shape['template_name_counts'] == {'poemx1': 6}
+          assert shape['section_tag_count'] == 0
+          assert shape['lst_invocation_count'] == 0
+          assert contract['parent_revision']['revision_id'] == 5198033
+          assert contract['parent_revision']['revision_timestamp'] == '2024-11-26T11:16:35Z'
+          assert contract['capture_scope']['mediawiki_template_dom_expansion_reproduced'] is False
+          PY
+
+      - name: Capture historical poemx1 revision identity at the parent-save anchor
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.template_history capture \
+            --candidate-id gorky-klim-samgin-ru-poemx1-template \
+            --title 'Шаблон:Poemx1' \
+            --anchor-timestamp '2024-11-26T11:16:35Z' \
+            --anchor-revision-id 5198033 \
+            --output build/repro/gorky-klim-samgin-ru.poemx1-template.revision.observed.json
+          cat build/repro/gorky-klim-samgin-ru.poemx1-template.revision.observed.json
+
+      - name: Probe selected template source shape without prose
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          import json
+          from pathlib import Path
+          import re
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+
+          observed = json.loads(Path(
+              'build/repro/gorky-klim-samgin-ru.poemx1-template.revision.observed.json'
+          ).read_text(encoding='utf-8'))
+          identity = observed['source_identity']
+          fetched = fetch_pinned_wikitext(
+              title=identity['title'], revision_id=identity['revision_id']
+          )
+          text = fetched.pop('wikitext')
+          assert fetched == identity
+
+          template_re = re.compile(r'\{\{\s*([^|{}\n]+)')
+          parser_function_re = re.compile(r'\{\{\s*(#[^|{}\n:]+)\s*:')
+          html_re = re.compile(r'</?\s*([A-Za-z][A-Za-z0-9]*)\b')
+          diagnostic = {
+              'probe_version': 'scriptorium-historical-template-shape-v1',
+              'candidate_id': observed['candidate_id'],
+              'revision_id': identity['revision_id'],
+              'template_name_counts': dict(sorted(Counter(
+                  match.group(1).strip() for match in template_re.finditer(text)
+              ).items())),
+              'parser_function_counts': dict(sorted(Counter(
+                  match.group(1).strip() for match in parser_function_re.finditer(text)
+              ).items())),
+              'html_tag_name_counts': dict(sorted(Counter(
+                  match.group(1).lower() for match in html_re.finditer(text)
+              ).items())),
+              'source_text_included': False,
+          }
+          Path('build/repro/gorky-klim-samgin-ru.poemx1-template.shape.json').write_text(
+              json.dumps(diagnostic, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          print('SCRIPTORIUM_POEMX1_SHAPE=' + json.dumps(
+              diagnostic, ensure_ascii=False, sort_keys=True, separators=(',', ':')
+          ))
+          PY
+
+      - name: Compare/replay committed identity when present
+        run: |
+          set -euo pipefail
+          expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json
+          observed=build/repro/gorky-klim-samgin-ru.poemx1-template.revision.observed.json
+          if [[ -f "$expected" ]]; then
+            cmp "$expected" "$observed"
+            python -m scriptorium.template_history replay \
+              --manifest "$expected" \
+              --receipt build/repro/gorky-klim-samgin-ru.poemx1-template.revision.replay.json
+          else
+            echo 'Historical template identity not committed yet; this run is the bounded source-free capture probe.'
+          fi

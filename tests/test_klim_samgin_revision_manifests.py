@@ -11,6 +11,7 @@ from scriptorium.single_page_revision import validate_manifest
 ROOT = Path(__file__).resolve().parents[1]
 TRACE_DIR = ROOT / "corpus" / "candidates" / "source-edition-traces"
 SUMMARY_PATH = TRACE_DIR / "gorky-klim-samgin-ru.revisions.json"
+DEPENDENCY_PATH = TRACE_DIR / "gorky-klim-samgin-ru.part2-part2.revision.json"
 EXPECTED_REVISIONS = (5733765, 5198033, 5138882, 5724453)
 EXPECTED_TITLES = tuple(
     f"Жизнь Клима Самгина (Горький)/Часть {part}" for part in range(1, 5)
@@ -94,9 +95,8 @@ class KlimSamginRevisionManifestTests(unittest.TestCase):
         self.assertEqual(len(wikitext_digests), 4)
 
         summary = _load(SUMMARY_PATH)
-        self.assertEqual(summary["manifest_version"], "scriptorium-multi-page-source-revision-set-v1")
+        self.assertEqual(summary["manifest_version"], "scriptorium-multi-page-source-revision-set-v2")
         self.assertEqual(summary["candidate_id"], "gorky-klim-samgin-ru")
-        self.assertEqual(summary["order"], "part ascending: 1, 2, 3, 4")
         self.assertEqual(summary["ordered_revision_identity_sha256"], _ordered_identity_digest(rows))
         self.assertEqual(
             summary["total_revision_wikitext_character_count"],
@@ -106,6 +106,37 @@ class KlimSamginRevisionManifestTests(unittest.TestCase):
             summary["total_revision_wikitext_utf8_byte_count"],
             sum(int(row["wikitext_utf8_byte_count"]) for row in rows),
         )
+
+    def test_hidden_part2_transclusion_is_independently_pinned_and_source_free(self) -> None:
+        dependency = _load(DEPENDENCY_PATH)
+        validate_manifest(dependency)
+        self.assertEqual(dependency["candidate_id"], "gorky-klim-samgin-ru-part-2-part2")
+        self.assertEqual(
+            dependency["capture_scope"],
+            {
+                "composite_identity_frozen": False,
+                "literary_body_extraction_frozen": False,
+                "revision_wikitext_identity_frozen": True,
+                "source_text_committed": False,
+            },
+        )
+        identity = dependency["source_identity"]
+        self.assertIsInstance(identity, dict)
+        assert isinstance(identity, dict)
+        self.assertEqual(identity["title"], "Жизнь Клима Самгина (Горький)/Часть 2/part2")
+        self.assertEqual(identity["revision_id"], 2366546)
+        self.assertEqual(identity["page_id"], 580081)
+        self.assertEqual(identity["wikitext_character_count"], 583889)
+        self.assertEqual(identity["wikitext_utf8_byte_count"], 1058733)
+        self.assertEqual(identity["wikitext_sha256"], "173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996")
+        self.assertFalse(FORBIDDEN_PROSE_KEYS.intersection(identity))
+        self.assertNotIn("source_text", dependency)
+
+        summary = _load(SUMMARY_PATH)
+        dependencies = summary["transclusion_dependencies"]
+        self.assertEqual(len(dependencies), 1)
+        self.assertEqual(dependencies[0]["revision_id"], 2366546)
+        self.assertEqual(dependencies[0]["manifest"], "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json")
 
     def test_summary_stays_fail_closed_for_body_and_fantlab_identity(self) -> None:
         summary = _load(SUMMARY_PATH)
@@ -117,6 +148,7 @@ class KlimSamginRevisionManifestTests(unittest.TestCase):
                 "literary_body_extraction_frozen": False,
                 "literary_composition_frozen": False,
                 "source_text_committed": False,
+                "transclusion_dependency_revision_wikitext_identities_frozen": True,
             },
         )
         self.assertEqual(summary["fantlab_source_edition_match"], "unknown")

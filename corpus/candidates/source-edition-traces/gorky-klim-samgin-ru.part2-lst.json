@@ -1,0 +1,68 @@
+{
+  "boundary": "The invocation selects no label. Upstream LabeledSectionTransclusion delegates the whole target template DOM to MediaWiki frame expansion when only the target argument is present. Scriptorium has not yet reproduced that MediaWiki expansion or any transitive template/parser dependencies, so no resolved Part 2 or literary-body digest is claimed.",
+  "candidate_id": "gorky-klim-samgin-ru",
+  "capture_scope": {
+    "composite_literary_body_identity_frozen": false,
+    "literary_body_extraction_frozen": false,
+    "lst_invocation_shape_frozen": true,
+    "lst_parent_placement_frozen": true,
+    "lst_selection_semantics_frozen": true,
+    "lst_target_revision_frozen": true,
+    "mediawiki_template_dom_expansion_reproduced": false,
+    "resolved_part2_wikitext_identity_frozen": false,
+    "source_text_committed": false
+  },
+  "contract_version": "scriptorium-klim-samgin-lst-contract-v2",
+  "dependency_revision": {
+    "mediawiki_sha1": "899c3d348b8550486c2c6774b84bc3ff55495f43",
+    "page_id": 580081,
+    "revision_id": 2366546,
+    "revision_timestamp": "2016-11-29T05:49:23Z",
+    "title": "Жизнь Клима Самгина (Горький)/Часть 2/part2",
+    "wikitext_character_count": 583889,
+    "wikitext_sha256": "173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996",
+    "wikitext_utf8_byte_count": 1058733
+  },
+  "dependency_shape": {
+    "lst_invocation_count": 0,
+    "section_tag_count": 0,
+    "template_name_counts": {
+      "poemx1": 6
+    }
+  },
+  "diagnostic_ready": false,
+  "fantlab_source_edition_match": "unknown",
+  "gate_ready": false,
+  "invocation": {
+    "argument_count": 1,
+    "invocation_character_count": 52,
+    "invocation_sha256": "89969a0424eb9fa332d132216bbeb96647239ab613cf6dadf6c5e2087ff0f15e",
+    "invocation_utf8_byte_count": 81,
+    "parent_end_offset": 581810,
+    "parent_start_offset": 581758,
+    "range_end_label": null,
+    "section_label": null,
+    "target_title": "Жизнь Клима Самгина (Горький)/Часть 2/part2"
+  },
+  "m2_parity_admissible": false,
+  "parent_revision": {
+    "mediawiki_sha1": "2d5b9de21f539d12b34c72caa62f228998eaf80c",
+    "page_id": 580077,
+    "revision_id": 5198033,
+    "revision_timestamp": "2024-11-26T11:16:35Z",
+    "title": "Жизнь Клима Самгина (Горький)/Часть 2",
+    "wikitext_character_count": 581888,
+    "wikitext_sha256": "34dc8bf7d1dc77f9aa1686ef0ac348101beac19ccd97d467ee3857e014ad8853",
+    "wikitext_utf8_byte_count": 1054386
+  },
+  "selection_profile": "scriptorium-klim-samgin-part2-target-only-lst-v1",
+  "selection_semantics": {
+    "kind": "target_only_full_template_dom_expansion",
+    "labeled_section_filtering_applied": false,
+    "upstream_behavior": "after target resolution, zero remaining args returns newFrame->expand(root)",
+    "upstream_evidence_commit": "3e9a44dec6858aeaf3ca547a32ab3162d6887ed6",
+    "upstream_path": "includes/LabeledSectionTransclusion.php",
+    "upstream_repository": "wikimedia/mediawiki-extensions-LabeledSectionTransclusion",
+    "upstream_source_url": "https://github.com/wikimedia/mediawiki-extensions-LabeledSectionTransclusion/blob/3e9a44dec6858aeaf3ca547a32ab3162d6887ed6/includes/LabeledSectionTransclusion.php"
+  }
+}

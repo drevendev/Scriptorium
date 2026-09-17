@@ -17,17 +17,19 @@ Scriptorium replay-freezes the exact **revision-wikitext identity** of all four 
 
 The ordered four-parent revision set totals **3,228,790 revision-wikitext characters / 5,902,920 UTF-8 bytes** and has ordered source-identity SHA-256 `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`. This digest identifies the ordered source-free parent-revision metadata projection; it is **not** a digest of a composed literary body.
 
-A fail-closed source-shape probe found an important dependency that the four parent oldids do not express by themselves: Part 2 contains a `#lst` labeled-section transclusion from `Жизнь Клима Самгина (Горький)/Часть 2/part2`. Scriptorium now independently pins that dependency at **`oldid=2366546`** (page ID `580081`, timestamp `2016-11-29T05:49:23Z`) with **583,889 wikitext characters / 1,058,733 UTF-8 bytes** and wikitext SHA-256 **`173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996`**. Exact-revision CI replay verifies it without committing source prose.
+Part 2 contains one `#lst` call to `Жизнь Клима Самгина (Горький)/Часть 2/part2`. Scriptorium independently pins that dependency at **`oldid=2366546`** (page ID `580081`, timestamp `2016-11-29T05:49:23Z`) with **583,889 wikitext characters / 1,058,733 UTF-8 bytes** and wikitext SHA-256 **`173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996`**.
 
-That discovery deliberately prevents a premature literary-body claim. Scriptorium has **not yet frozen the exact labeled-section selection/placement semantics of the Part 2 transclusion**, a candidate-specific fail-closed extraction profile for all four parts, the final four-part composition contract, or raw/`scriptorium-text-v1` composite digests. A parent-page oldid alone is therefore not treated as a complete body identity, and the extractor is not tuned toward FantLab's displayed count.
+A later source-free replay established that this is **not a labeled-section selection**. The exact parent invocation has only one argument—the target page—with parent offsets `581758..581810` and invocation SHA-256 `89969a0424eb9fa332d132216bbeb96647239ab613cf6dadf6c5e2087ff0f15e`. Current upstream Wikimedia `LabeledSectionTransclusion` source shows that after resolving the target, a target-only `#lst` call returns `newFrame->expand(root)`: the whole target template DOM is delegated to normal MediaWiki frame expansion, with no label filter. The source-free contract is `source-edition-traces/gorky-klim-samgin-ru.part2-lst.json`.
+
+That correction moves the boundary rather than pretending it disappeared. The pinned dependency contains **six `poemx1` template invocations**. Scriptorium has not yet reproduced the MediaWiki template-DOM expansion layer or pinned any transitive parser/template state required for historical replay. Therefore there is still **no resolved Part 2 wikitext identity**, no candidate-specific four-part literary-body extraction/composition contract, and no raw/`scriptorium-text-v1` composite digest. The extractor is not tuned toward FantLab's displayed count.
 
 Accordingly the retained status is:
 
-- `source_identity_status = revision_wikitext_source_graph_frozen_body_unfrozen`
+- `source_identity_status = revision_wikitext_source_graph_and_target_only_lst_semantics_frozen_body_unfrozen`
 - `fantlab_source_edition_match = unknown`
 - `diagnostic_ready = false`
 - `gate_ready = false`
 - `m2_parity_admissible = false`
 - main parity-catalog admission remains deferred until a deterministic literary body is replay-frozen.
 
-The provenance record is `source-edition-traces/gorky-klim-samgin-ru.json`; the source-graph summary is `source-edition-traces/gorky-klim-samgin-ru.revisions.json`; the newly pinned dependency is `source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json`. No source prose is committed. M2 remains **0/5 source-matched works**.
+The provenance record is `source-edition-traces/gorky-klim-samgin-ru.json`; the source-graph summary is `source-edition-traces/gorky-klim-samgin-ru.revisions.json`; the dependency revision is `source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json`; and the target-only transclusion contract is `source-edition-traces/gorky-klim-samgin-ru.part2-lst.json`. No source prose is committed. M2 remains **0/5 source-matched works**.

@@ -2,44 +2,59 @@
 
 - Date: 2026-09-17
 - Issue: #109
-- PR: #110
-- Branch: `scrip-corpus-020-klim-body-freeze`
-- Base at selection: `c23128966081455b5c4591e337c592358669d3f7`
-- Reviewed exact head: `69811ae047553ffea7bfa89a94d77656ddf30366`
-- Merge commit: `c6d49b19f7f9d64b014b60f4ba76c5d542938fdc`
-- Result: `PREREQUISITE_MERGED_CONTINUATION_OPEN`
+- PR: #111 (Draft)
+- Branch: `scrip-corpus-020-klim-lst-semantics`
+- Base at selection: `0de8766941bff76e7b20fbd923cd2df95ffbb20b`
+- Result: `TARGET_ONLY_LST_SEMANTICS_AUTHORED_REVIEW_PENDING`
 
 ## Selected bounded unit
 
-Independently review the existing Klim Samgin hidden-transclusion prerequisite PR, merge it only if exact-head evidence is clean, and preserve Issue #109 as the separate continuation for literary-body extraction/composition.
+Continue Issue #109 by resolving and freezing the exact Part 2 `#lst` selection/placement semantics before attempting literary-body extraction or composition. The unit must remain source-free, fail closed on source drift, and must not tune anything toward FantLab's displayed count.
 
-## Review result
+## Discovery and correction
 
-The exact PR head `69811ae047553ffea7bfa89a94d77656ddf30366` was independently re-oriented and reviewed. The PR was mergeable, 14 commits ahead / 0 behind master, changed 10 expected files, and had no inline review threads. The mutation remained correctly limited to source-graph provenance: it pins the Part 2 `#lst` dependency at oldid `2366546`, adds source-free structural probing and replay, and explicitly does not freeze labeled-section semantics, a literary body, or FantLab input identity.
+The first implementation assumed a normal labeled-section call. Exact-source CI disproved that assumption. A source-free structural artifact from pinned parent oldid `5198033` showed exactly one `#lst` prefix, one argument, target `Жизнь Клима Самгина (Горький)/Часть 2/part2`, parent offsets `581758..581810`, and **no section argument**. The pinned dependency oldid `2366546` contains zero `<section>` markers.
 
-No blocking defect was found. A review comment was recorded on the exact head, the PR was marked Ready, and PR #110 was squash-merged as `c6d49b19f7f9d64b014b60f4ba76c5d542938fdc`.
+Upstream implementation research then checked `wikimedia/mediawiki-extensions-LabeledSectionTransclusion`, file `includes/LabeledSectionTransclusion.php`, at evidence commit `3e9a44dec6858aeaf3ca547a32ab3162d6887ed6`. In `setupPfunc12`, after the target has been resolved and the target template DOM/frame created, the zero-remaining-arguments branch returns `newFrame->expand(root)`. Therefore the retained invocation performs no labeled-section selection: it delegates the whole target template DOM to MediaWiki frame expansion.
 
-Issue #109 remains open by design.
+The implementation was corrected rather than forcing the earlier hypothesis. `scriptorium-klim-samgin-lst-contract-v2` now requires exactly one target-only call and records its source-free placement/identity plus the pinned dependency and upstream semantic branch. The committed contract is `corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json`.
+
+Exact observed invocation evidence:
+
+- one argument; `section_label=null`; `range_end_label=null`
+- parent offsets `581758..581810`
+- invocation character count `52`, UTF-8 byte count `81`
+- invocation SHA-256 `89969a0424eb9fa332d132216bbeb96647239ab613cf6dadf6c5e2087ff0f15e`
+- dependency oldid `2366546`, wikitext SHA-256 `173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996`
+
+The same source-free contract inventory found **six `poemx1` template invocations** in the dependency, zero nested `#lst` calls and zero section tags. That is a new explicit boundary: the target revision and parser-function semantic branch are frozen, but MediaWiki template-DOM expansion and any transitive template/parser state are not yet reproduced. No resolved Part 2 byte identity is claimed.
 
 ## Verification
 
-All exact-head workflows completed successfully:
+Bootstrap corrected-head Klim run `35213791952` completed successfully. It:
 
-- Klim source-graph replay run `35203034786`: `success`. The job checked out exact head `69811ae047553ffea7bfa89a94d77656ddf30366`, ran **183 standard-library tests**, re-captured and byte-compared the four parent revision manifests plus dependency `oldid=2366546`, replayed all five exact revisions, probed source shapes without prose, verified the ordered parent digest and dependency digest, and uploaded source-free evidence. The probe reported Part 2 `lst_transclusion_targets=["Жизнь Клима Самгина (Горький)/Часть 2/part2"]`; the dependency revision itself reported no further `#lst` target.
-- Scriptorium Pages run `35203034809`: `success`.
-- Scriptorium frozen diagnostic run `35203034787`: `success`.
-- Scriptorium pinned pylem provider run `35203034757`: `success`.
+- ran the full standard-library suite successfully;
+- re-captured and byte-compared all four parent revision manifests plus dependency oldid `2366546`;
+- replayed all five exact revisions;
+- ran source-free source-shape probes;
+- captured the corrected target-only contract successfully;
+- verified the ordered parent source-identity digest and fail-closed M2 flags;
+- uploaded source-free evidence.
 
-The dependency remains page ID `580081`, revision `2366546`, timestamp `2016-11-29T05:49:23Z`, MediaWiki SHA-1 `899c3d348b8550486c2c6774b84bc3ff55495f43`, 583,889 wikitext characters / 1,058,733 UTF-8 bytes, SHA-256 `173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996`.
+The observed contract from that run was inspected before being committed. It records `template_name_counts={"poemx1": 6}` and deliberately sets `mediawiki_template_dom_expansion_reproduced=false`, `resolved_part2_wikitext_identity_frozen=false`, `literary_body_extraction_frozen=false`, and `composite_literary_body_identity_frozen=false`.
+
+Fresh PR-head workflows are required after the final contract/public-state commits; a later run must judge the current exact head independently before merge. This authored run does not self-approve or self-merge PR #111.
+
+## Public representation
+
+The Klim candidate page and machine-readable provenance trace now correct the public explanation: this is a target-only `#lst` edge case, not a labeled-section selection. They expose the exact invocation contract and the six-`poemx1` expansion boundary without publishing source prose or implying FantLab parity.
 
 ## Evidence boundary / benchmark movement
 
-The parent ordered source-identity SHA-256 remains `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`. No literary-body count or digest is claimed.
+The ordered parent source-identity SHA-256 remains `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`. The dependency revision remains independently pinned, but no resolved Part 2 or composite literary-body count/digest is claimed.
 
-Exact `#lst` labeled-section selection/placement semantics, per-part extraction, deterministic 1->2->3->4 composition and composite raw/`scriptorium-text-v1` digests remain open work on Issue #109. FantLab analyzer-input identity remains undisclosed.
-
-`fantlab_source_edition_match=unknown`; `diagnostic_ready=false`; `gate_ready=false`; `m2_parity_admissible=false`; M2 remains **0/5**.
+`fantlab_source_edition_match=unknown`; `diagnostic_ready=false`; `gate_ready=false`; `m2_parity_admissible=false`; M2 remains **0/5 source-matched works**.
 
 ## Next action
 
-Continue Issue #109 in a later bounded run by freezing exact Part 2 labeled-section semantics and then the fail-closed four-part literary-body extraction/composition contract. Do not infer FantLab input identity or tune extraction toward FantLab's displayed count.
+Independently review current exact head of PR #111 plus its fresh checks. If clean, merge this bounded semantic prerequisite while leaving Issue #109 open. Then continue #109 by freezing or deterministically reproducing the MediaWiki target template-DOM expansion layer, beginning with the six observed `poemx1` invocations, before any per-part literary extraction, 1->2->3->4 composition or composite digest.

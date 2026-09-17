@@ -8,6 +8,7 @@ on:
       - "tests/test_single_page_revision.py"
       - "tests/test_klim_samgin_revision_manifests.py"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part*.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.revisions.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.json"
   workflow_dispatch:
 
@@ -15,8 +16,8 @@ permissions:
   contents: read
 
 jobs:
-  capture:
-    name: Capture pinned Klim Samgin part revisions
+  replay:
+    name: Replay pinned Klim Samgin part revisions
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -75,24 +76,68 @@ jobs:
             --legal-basis public_domain_original_russian_work \
             --output build/repro/gorky-klim-samgin-ru.part4.revision.observed.json
 
-      - name: Print source-free capture receipt
+      - name: Compare committed identities and replay exact revisions
+        run: |
+          set -euo pipefail
+          for part in 1 2 3 4; do
+            expected="corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part${part}.revision.json"
+            observed="build/repro/gorky-klim-samgin-ru.part${part}.revision.observed.json"
+            receipt="build/repro/gorky-klim-samgin-ru.part${part}.revision.replay.json"
+            cmp "$expected" "$observed"
+            python -m scriptorium.single_page_revision replay \
+              --manifest "$expected" \
+              --receipt "$receipt"
+          done
+
+      - name: Verify source-free ordered revision set
         run: |
           python - <<'PY'
           import json
+          from hashlib import sha256
           from pathlib import Path
+
+          trace = Path('corpus/candidates/source-edition-traces')
+          summary = json.loads((trace / 'gorky-klim-samgin-ru.revisions.json').read_text(encoding='utf-8'))
           rows = []
+          forbidden = {'wikitext', 'content', 'body', 'text', 'source_text'}
           for part in range(1, 5):
-              path = Path(f'build/repro/gorky-klim-samgin-ru.part{part}.revision.observed.json')
-              manifest = json.loads(path.read_text(encoding='utf-8'))
+              manifest = json.loads((trace / f'gorky-klim-samgin-ru.part{part}.revision.json').read_text(encoding='utf-8'))
               assert manifest['capture_scope']['source_text_committed'] is False
+              assert manifest['capture_scope']['literary_body_extraction_frozen'] is False
+              assert not forbidden.intersection(manifest['source_identity'])
               rows.append({'part': part, **manifest['source_identity']})
-          print('SCRIPTORIUM_KLIM_CAPTURE=' + json.dumps(rows, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
+          projection = [
+              {key: row[key] for key in (
+                  'part', 'title', 'page_id', 'revision_id', 'revision_timestamp',
+                  'mediawiki_sha1', 'wikitext_character_count',
+                  'wikitext_utf8_byte_count', 'wikitext_sha256'
+              )}
+              for row in rows
+          ]
+          payload = (json.dumps(projection, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode('utf-8')
+          assert sha256(payload).hexdigest() == summary['ordered_revision_identity_sha256']
+          assert summary['capture_scope']['all_part_revision_wikitext_identities_frozen'] is True
+          assert summary['capture_scope']['literary_body_extraction_frozen'] is False
+          assert summary['capture_scope']['literary_composition_frozen'] is False
+          assert summary['fantlab_source_edition_match'] == 'unknown'
+          assert summary['diagnostic_ready'] is False
+          assert summary['gate_ready'] is False
+          assert summary['m2_parity_admissible'] is False
+          print('SCRIPTORIUM_KLIM_REVISION_SET=' + json.dumps({
+              'candidate_id': summary['candidate_id'],
+              'revision_ids': [row['revision_id'] for row in rows],
+              'ordered_revision_identity_sha256': summary['ordered_revision_identity_sha256'],
+              'total_revision_wikitext_character_count': summary['total_revision_wikitext_character_count'],
+              'total_revision_wikitext_utf8_byte_count': summary['total_revision_wikitext_utf8_byte_count'],
+              'fantlab_source_edition_match': summary['fantlab_source_edition_match'],
+              'm2_parity_admissible': summary['m2_parity_admissible'],
+          }, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
           PY
 
-      - name: Upload source-free capture evidence
+      - name: Upload source-free capture and replay evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: klim-samgin-source-revisions-bootstrap
-          path: build/repro/gorky-klim-samgin-ru.part*.revision.observed.json
+          name: klim-samgin-source-revisions
+          path: build/repro/gorky-klim-samgin-ru.part*.revision.*.json
           if-no-files-found: error
           retention-days: 7

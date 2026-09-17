@@ -83,7 +83,7 @@ jobs:
           text = fetched.pop('wikitext')
           assert fetched == identity
 
-          opening_re = re.compile(r'\{\{(?!\{)\s*([^|{}\n]+)')
+          opening_re = re.compile(r'(?<!\{)\{\{(?!\{)\s*([^|{}\n]+)')
           html_re = re.compile(r'</?\s*([A-Za-z][A-Za-z0-9]*)\b')
           templates = Counter()
           parser_functions = Counter()

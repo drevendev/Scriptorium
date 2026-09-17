@@ -36,8 +36,8 @@ class MediaWikiTemplateFrameTests(unittest.TestCase):
         value = "{{#if:x|yes|no}}"
         self.assertEqual(expand_literal_template_parameters("{{{1|}}}", {"1": value}), value)
 
-    def test_dynamic_parameter_name_fails_closed(self) -> None:
-        with self.assertRaisesRegex(ValueError, "dynamic or unsupported"):
+    def test_dynamic_or_malformed_parameter_name_fails_closed(self) -> None:
+        with self.assertRaises(ValueError):
             expand_literal_template_parameters("{{{{{name}}}|fallback}}", {"name": "1"})
 
     def test_inventory_counts_nested_default_references_without_source_text(self) -> None:

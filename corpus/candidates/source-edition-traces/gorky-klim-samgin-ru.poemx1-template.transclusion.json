@@ -27,9 +27,7 @@
     "html_tag_name_counts": {
       "div": 6
     },
-    "magic_word_counts": {
-      "PAGENAME": 1
-    },
+    "magic_word_counts": {},
     "ordinary_template_counts": {},
     "parser_function_counts": {
       "#expr": 2,

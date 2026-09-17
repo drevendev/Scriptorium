@@ -1,0 +1,48 @@
+{
+  "anchor": {
+    "parent_revision_id": 5198033,
+    "parent_revision_timestamp": "2024-11-26T11:16:35Z",
+    "policy": "latest_path_commit_not_later_than_parent_revision_timestamp",
+    "upstream_commit": "03b3694613e23efa1254d8bbbb98121efaef2cb0",
+    "upstream_commit_timestamp": "2024-10-20T09:15:42Z",
+    "upstream_git_blob_sha1": "a362a50d6e139b03a6afd5c24ce7a0923d68ee13",
+    "upstream_history_url": "https://github.com/wikimedia/mediawiki-extensions-Poem/commits/master/includes/Poem.php",
+    "upstream_path": "includes/Poem.php",
+    "upstream_repository": "wikimedia/mediawiki-extensions-Poem",
+    "upstream_source_sha256": "86e853c6c41e94356d57824492f32407b916b890ccdfe31c38a081070fb5313c",
+    "upstream_source_url": "https://github.com/wikimedia/mediawiki-extensions-Poem/blob/03b3694613e23efa1254d8bbbb98121efaef2cb0/includes/Poem.php",
+    "upstream_source_utf8_byte_count": 2702
+  },
+  "boundary": "This artifact freezes an inferred upstream Poem source anchor and the exact source-level transformations relevant to the live #tag:poem path. It does not prove which extension commit Russian Wikisource deployed at the parent save timestamp, does not yet freeze the concrete #tag attribute surface, does not reproduce MediaWiki recursive parsing, and does not claim resolved Part 2 bytes or historical render equivalence.",
+  "bounded_source_semantics": {
+    "compact_parameter_controls_wrapper_newlines": true,
+    "div_attributes_sanitized": true,
+    "interior_newlines_become_breaks": true,
+    "leading_colons_become_indented_spans": true,
+    "leading_spaces_become_nbsp_entities": true,
+    "line_break_strip_item_inserted": true,
+    "output_wrapped_in_div": true,
+    "poem_css_class_forced": true,
+    "poem_parser_hook_registered": true,
+    "recursive_tag_parse_applied": true
+  },
+  "candidate_id": "gorky-klim-samgin-ru-poem-extension-source-anchor",
+  "capture_scope": {
+    "bounded_poem_source_semantics_frozen": true,
+    "historical_render_equivalence_proven": false,
+    "historical_wikisource_deployment_equivalence_proven": false,
+    "mediawiki_core_recursive_parse_reproduced": false,
+    "poem_extension_rendering_reproduced": false,
+    "resolved_part2_identity_frozen": false,
+    "source_text_committed": false,
+    "tag_invocation_attribute_surface_frozen": false,
+    "upstream_source_identity_frozen": true
+  },
+  "evidence_class": "inferred_reconstruction_anchor",
+  "fantlab_source_edition_match": "unknown",
+  "m2_parity_admissible": false,
+  "manifest_version": "scriptorium-poem-extension-source-anchor-v1",
+  "profile": "scriptorium-mediawiki-poem-source-anchor-v1",
+  "research_date": "2026-09-18",
+  "source_text_included": false
+}

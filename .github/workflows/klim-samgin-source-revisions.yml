@@ -127,10 +127,19 @@ jobs:
           expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json
           observed=build/repro/gorky-klim-samgin-ru.part2-lst.observed.json
           receipt=build/repro/gorky-klim-samgin-ru.part2-lst.replay.json
+          stderr=build/repro/gorky-klim-samgin-ru.part2-lst.capture.stderr.txt
+          set +e
           python -m scriptorium.klim_samgin_freeze capture-lst \
             --parent-revision-manifest "$parent" \
             --dependency-revision-manifest "$dependency" \
-            --output "$observed"
+            --output "$observed" \
+            2>"$stderr"
+          status=$?
+          set -e
+          if [[ $status -ne 0 ]]; then
+            exit "$status"
+          fi
+          rm -f "$stderr"
           if [[ -f "$expected" ]]; then
             cmp "$expected" "$observed"
             python -m scriptorium.klim_samgin_freeze replay-lst \
@@ -191,9 +200,10 @@ jobs:
           PY
 
       - name: Upload source-free capture and replay evidence
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: klim-samgin-source-revisions
-          path: build/repro/gorky-klim-samgin-ru*.json
+          path: build/repro/gorky-klim-samgin-ru*
           if-no-files-found: error
           retention-days: 7

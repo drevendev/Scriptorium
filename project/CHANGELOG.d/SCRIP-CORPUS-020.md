@@ -6,7 +6,8 @@
 - Historical `poemx1` anchor PR: #112 — merged as `aae7290f6056831bd291ac8a7a59100bad0ff4e8`
 - Inclusion-control PR: #113 — merged as `5894878398a8ceba952279c69aaf9b5ab8ebae81`
 - Literal parameter-surface PR: #114 — merged as `497303004ba30e251560b8d203433e9a647f9d00`
-- Status: `POEMX1_PARAMETER_SURFACE_MERGED_CONTINUATION_OPEN`
+- Concrete invocation-binding PR: #115 — draft, authored for later independent review
+- Status: `POEMX1_INVOCATION_BINDINGS_AUTHORED_REVIEW_PENDING`
 - Scope: corpus/provenance strengthening and source-graph correctness; no FantLab source-match or M2 promotion.
 
 ## Dependency prerequisite
@@ -84,8 +85,20 @@ Final exact head `337ef93d45bf960c46051bafb5ea13a179f24d6e` received an independ
 
 PR #114 deliberately does **not** bind the six real `poemx1` invocations, recursively expand inserted argument wikitext, execute `#expr` / `#if` / `#ifeq` / `#iferror`, render `#tag:poem`, resolve Part 2, or claim historical render equivalence.
 
+## Concrete `poemx1` invocation bindings — PR #115
+
+This bounded continuation implements only source-free MediaWiki template-call/frame binding for the six concrete `poemx1` invocations in pinned dependency oldid `2366546`. The implementation distinguishes anonymous from named/explicitly numbered arguments, numbers only anonymous arguments, preserves anonymous whitespace, trims named values, applies last-assignment-wins semantics, understands nested brace groups and wikilink pipes, and fails closed on unsupported dynamic parameter-name shapes. It deliberately does not recursively expand inserted argument values.
+
+The first authored-head dedicated run `35261242215` checked out exact head `3369b4c496e6c218f85d6fcb21a05c665475328a`, passed **213** standard-library tests, re-fetched exact oldid `2366546`, verified its frozen identity and generated the source-free binding manifest. The final comparison failed only because the expected committed binding artifact was intentionally absent on that first pass. Generated evidence was then committed as `gorky-klim-samgin-ru.poemx1-template.bindings.json`; the next dedicated run `35261480315` completed successfully and byte-compared the committed artifact to a fresh exact-source generation.
+
+The live evidence materially narrows the remaining historical expansion boundary. All six calls have exactly **two anonymous arguments and zero named arguments**. Parameter `1` is explicitly defined as the empty string in all six calls. Parameter `2` is defined and non-empty in all six calls. Frozen surface names `3`, `fixed`, `poem`, `small`, and `width` are omitted in all six calls. There are no duplicate assignments and no effective binding names outside the frozen parameter surface. The six invocation SHA-256 identities are `0f09f7a30447022f3fda19c24f159fa234f09d06d127e5d222ed1d7b4e0f6112`, `f4c7e9828d49f1c6fe38774eaa2133af3a2dd495164492e1b91605519361993d`, `0331a13a921cdf3f49a1b4f634cf00fc11c0abdc61f79bd108f78eb0e3dd4f16`, `cf4eab4577e2ac2bc9dcd09835875411734ab9d5abb41c8f2be327757f278aa6`, `9bb1d32c5d20c4e151c290190458be336cc22c91921029057dc8dea5cbacd81b`, and `a0d6aaed7764c3239b7ca3af7b40bb6f697ec4d1a27632f2848ee0db3aa98b26`.
+
+The public candidate page and machine-readable provenance trace now expose this source-free frame shape. No literary argument text is committed; invocation and argument values are represented only through placement/count/digest evidence. Recursive expansion of parameter `2`, parser functions and `#tag:poem` remain unresolved. Historical render equivalence remains false, resolved Part 2 is still unfrozen, and no FantLab source identity is inferred.
+
 ## Boundary / next trigger
 
-Issue #109 remains open. Continue by source-freezing the six concrete `poemx1` invocation argument shapes and only afterward reproduce the evidenced parser-function / `#tag:poem` behavior. Resolved Part 2 bytes, four-part literary extraction/composition, and raw / `scriptorium-text-v1` composite digests remain prohibited until the target-only expansion layer replays deterministically.
+Issue #109 remains open. PR #115 remains Draft for independent later-run exact-head review. If the reviewed head remains green and no defect is found, merge the bounded binding prerequisite **without closing #109**. The next technical layer is then to reproduce only the evidenced `#expr`, `#if`, `#ifeq`, `#iferror` and `#tag:poem` behavior under the now-frozen observed frame shape: parameter `1` defined empty, parameter `2` defined non-empty, all other observed surface names omitted. Recursive inserted-value behavior and inferred historical-template anchoring must remain explicit boundaries rather than being silently promoted.
+
+Resolved Part 2 bytes, four-part literary extraction/composition, and raw / `scriptorium-text-v1` composite digests remain prohibited until the target-only expansion layer replays deterministically.
 
 `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`; M2 remains **0/5 source-matched works**.

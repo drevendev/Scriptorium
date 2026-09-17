@@ -5,10 +5,14 @@ on:
     paths:
       - ".github/workflows/klim-samgin-source-revisions.yml"
       - "scriptorium/single_page_revision.py"
+      - "scriptorium/single_page_body.py"
+      - "scriptorium/klim_samgin_freeze.py"
       - "tests/test_single_page_revision.py"
       - "tests/test_klim_samgin_revision_manifests.py"
+      - "tests/test_klim_samgin_freeze.py"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part*.revision.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.revisions.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.body.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.json"
   workflow_dispatch:
 
@@ -17,7 +21,7 @@ permissions:
 
 jobs:
   replay:
-    name: Replay pinned Klim Samgin part revisions
+    name: Replay pinned Klim Samgin source graph
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -75,8 +79,17 @@ jobs:
             --bibliographic-source 'М. Горький. Собрание сочинений. М.: ГИХЛ, 1953. Т. 22; Wikisource electronic source: Библиотека Мошкова.' \
             --legal-basis public_domain_original_russian_work \
             --output build/repro/gorky-klim-samgin-ru.part4.revision.observed.json
+          python -m scriptorium.single_page_revision capture \
+            --candidate-id gorky-klim-samgin-ru-part-2-part2 \
+            --title 'Жизнь Клима Самгина (Горький)/Часть 2/part2' \
+            --revision-id 2366546 \
+            --source-work-url 'https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_2/part2' \
+            --permanent-source-url 'https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_2/part2&oldid=2366546' \
+            --bibliographic-source 'Wikisource dependency transcluded by the retained Part 2 page; electronic source family: Библиотека Мошкова.' \
+            --legal-basis public_domain_original_russian_work \
+            --output build/repro/gorky-klim-samgin-ru.part2-part2.revision.observed.json
 
-      - name: Compare committed identities and replay exact revisions
+      - name: Compare committed identities and replay exact source graph
         run: |
           set -euo pipefail
           for part in 1 2 3 4; do
@@ -88,6 +101,22 @@ jobs:
               --manifest "$expected" \
               --receipt "$receipt"
           done
+          cmp \
+            corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json \
+            build/repro/gorky-klim-samgin-ru.part2-part2.revision.observed.json
+          python -m scriptorium.single_page_revision replay \
+            --manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json \
+            --receipt build/repro/gorky-klim-samgin-ru.part2-part2.revision.replay.json
+
+      - name: Probe exact pinned source shape without prose
+        run: |
+          set -euo pipefail
+          for part in 1 2 3 4; do
+            python -m scriptorium.klim_samgin_freeze \
+              --revision-manifest "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part${part}.revision.json"
+          done
+          python -m scriptorium.klim_samgin_freeze \
+            --revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json
 
       - name: Verify source-free ordered revision set
         run: |
@@ -106,6 +135,10 @@ jobs:
               assert manifest['capture_scope']['literary_body_extraction_frozen'] is False
               assert not forbidden.intersection(manifest['source_identity'])
               rows.append({'part': part, **manifest['source_identity']})
+          dependency = json.loads((trace / 'gorky-klim-samgin-ru.part2-part2.revision.json').read_text(encoding='utf-8'))
+          assert dependency['capture_scope']['source_text_committed'] is False
+          assert dependency['source_identity']['revision_id'] == 2366546
+          assert not forbidden.intersection(dependency['source_identity'])
           projection = [
               {key: row[key] for key in (
                   'part', 'title', 'page_id', 'revision_id', 'revision_timestamp',
@@ -117,18 +150,19 @@ jobs:
           payload = (json.dumps(projection, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode('utf-8')
           assert sha256(payload).hexdigest() == summary['ordered_revision_identity_sha256']
           assert summary['capture_scope']['all_part_revision_wikitext_identities_frozen'] is True
+          assert summary['capture_scope']['transclusion_dependency_revision_wikitext_identities_frozen'] is True
           assert summary['capture_scope']['literary_body_extraction_frozen'] is False
           assert summary['capture_scope']['literary_composition_frozen'] is False
           assert summary['fantlab_source_edition_match'] == 'unknown'
           assert summary['diagnostic_ready'] is False
           assert summary['gate_ready'] is False
           assert summary['m2_parity_admissible'] is False
-          print('SCRIPTORIUM_KLIM_REVISION_SET=' + json.dumps({
+          print('SCRIPTORIUM_KLIM_SOURCE_GRAPH=' + json.dumps({
               'candidate_id': summary['candidate_id'],
-              'revision_ids': [row['revision_id'] for row in rows],
-              'ordered_revision_identity_sha256': summary['ordered_revision_identity_sha256'],
-              'total_revision_wikitext_character_count': summary['total_revision_wikitext_character_count'],
-              'total_revision_wikitext_utf8_byte_count': summary['total_revision_wikitext_utf8_byte_count'],
+              'part_revision_ids': [row['revision_id'] for row in rows],
+              'dependency_revision_id': dependency['source_identity']['revision_id'],
+              'dependency_wikitext_sha256': dependency['source_identity']['wikitext_sha256'],
+              'ordered_part_revision_identity_sha256': summary['ordered_revision_identity_sha256'],
               'fantlab_source_edition_match': summary['fantlab_source_edition_match'],
               'm2_parity_admissible': summary['m2_parity_admissible'],
           }, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
@@ -138,6 +172,6 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: klim-samgin-source-revisions
-          path: build/repro/gorky-klim-samgin-ru.part*.revision.*.json
+          path: build/repro/gorky-klim-samgin-ru*.revision.*.json
           if-no-files-found: error
           retention-days: 7

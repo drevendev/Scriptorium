@@ -5,10 +5,13 @@ on:
     paths:
       - ".github/workflows/klim-samgin-template-history.yml"
       - "scriptorium/template_history.py"
+      - "scriptorium/mediawiki_transclusion.py"
       - "tests/test_template_history.py"
+      - "tests/test_mediawiki_transclusion.py"
       - "corpus/candidates/gorky-klim-samgin-ru.md"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.shape.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.transclusion.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json"
       - "project/STATE_AND_QUEUE.md"
       - "project/CHANGELOG.d/SCRIP-CORPUS-020.md"
@@ -20,7 +23,7 @@ permissions:
 
 jobs:
   replay:
-    name: Freeze historical poemx1 revision anchor
+    name: Freeze historical poemx1 revision and inclusion semantics
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -129,6 +132,39 @@ jobs:
           ))
           PY
 
+      - name: Apply and freeze MediaWiki partial-transclusion control semantics
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.mediawiki_transclusion import build_transclusion_shape_manifest
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+
+          observed = json.loads(Path(
+              'build/repro/gorky-klim-samgin-ru.poemx1-template.revision.observed.json'
+          ).read_text(encoding='utf-8'))
+          identity = observed['source_identity']
+          fetched = fetch_pinned_wikitext(
+              title=identity['title'], revision_id=identity['revision_id']
+          )
+          text = fetched.pop('wikitext')
+          assert fetched == identity
+          manifest = build_transclusion_shape_manifest(
+              candidate_id=observed['candidate_id'],
+              revision_identity=identity,
+              wikitext=text,
+              research_date='2026-09-17',
+          )
+          path = Path('build/repro/gorky-klim-samgin-ru.poemx1-template.transclusion.json')
+          path.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          print('SCRIPTORIUM_POEMX1_TRANSCLUSION=' + json.dumps(
+              manifest, ensure_ascii=False, sort_keys=True, separators=(',', ':')
+          ))
+          PY
+
       - name: Compare and replay committed historical template evidence
         run: |
           set -euo pipefail
@@ -136,10 +172,14 @@ jobs:
           observed=build/repro/gorky-klim-samgin-ru.poemx1-template.revision.observed.json
           expected_shape=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.shape.json
           observed_shape=build/repro/gorky-klim-samgin-ru.poemx1-template.shape.json
+          expected_transclusion=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.transclusion.json
+          observed_transclusion=build/repro/gorky-klim-samgin-ru.poemx1-template.transclusion.json
           test -f "$expected"
           test -f "$expected_shape"
+          test -f "$expected_transclusion"
           cmp "$expected" "$observed"
           cmp "$expected_shape" "$observed_shape"
+          cmp "$expected_transclusion" "$observed_transclusion"
           python -m scriptorium.template_history replay \
             --manifest "$expected" \
             --receipt build/repro/gorky-klim-samgin-ru.poemx1-template.revision.replay.json

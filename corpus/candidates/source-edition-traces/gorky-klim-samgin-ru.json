@@ -1,0 +1,114 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "gorky-klim-samgin-ru",
+  "research_date": "2026-09-17",
+  "fantlab": {
+    "work_id": 427585,
+    "analysis_url": "https://fantlab.ru/work427585/lp",
+    "analysis_date": "2022-09-19",
+    "observed_counts": {
+      "characters": 3789857,
+      "words": 531192
+    },
+    "source_edition_disclosed_on_analysis_surface": false,
+    "source_bytes_disclosed_on_analysis_surface": false,
+    "work_page_url": "https://fantlab.ru/work427585",
+    "relationship_to_public_transcription": "unproven"
+  },
+  "public_transcription": {
+    "provider": "Russian Wikisource",
+    "work_url": "https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)",
+    "work_index_permanent_url": "https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)&oldid=5628161",
+    "work_index_oldid": 5628161,
+    "electronic_source_declared": "Библиотека Мошкова",
+    "observed_structure": {
+      "parts": 4
+    },
+    "part_revision_locators": [
+      {
+        "part": 1,
+        "url": "https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_1",
+        "permanent_url": "https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_1&oldid=5733765",
+        "oldid": 5733765,
+        "bibliographic_source": "М. Горький. Собрание сочинений. М.: ГИХЛ, 1952. Т. 19; Wikisource also identifies Library Moshkov as the electronic source.",
+        "first_publication_note": "Collected works, 1927, vol. XX; also serialized in newspapers and journals in 1927."
+      },
+      {
+        "part": 2,
+        "url": "https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_2",
+        "permanent_url": "https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_2&oldid=5198033",
+        "oldid": 5198033,
+        "bibliographic_source": "М. Горький. Собрание сочинений. М.: ГИХЛ, 1952. Т. 20; Wikisource also identifies Library Moshkov as the electronic source.",
+        "first_publication_note": "Collected works, 1928, vol. XXI; also serialized in journals."
+      },
+      {
+        "part": 3,
+        "url": "https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_3",
+        "permanent_url": "https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_3&oldid=5138882",
+        "oldid": 5138882,
+        "bibliographic_source": "М. Горький. Собрание сочинений. М.: ГИХЛ, 1952. Т. 21; Wikisource also identifies Library Moshkov as the electronic source.",
+        "first_publication_note": "Partly serialized in Zvezda, 1930, nos. 1–4; published as a complete separate book in 1931."
+      },
+      {
+        "part": 4,
+        "url": "https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_4",
+        "permanent_url": "https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_4&oldid=5724453",
+        "oldid": 5724453,
+        "bibliographic_source": "М. Горький. Собрание сочинений. М.: ГИХЛ, 1953. Т. 22; Wikisource also identifies Library Moshkov as the electronic source.",
+        "first_publication_note": "Partly serialized in 1933 and 1936; published as a separate book in 1937."
+      }
+    ],
+    "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
+    "source_text_committed": false,
+    "immutable_identity": {
+      "status": "revision_locators_traced_not_manifest_frozen",
+      "frozen_components": [
+        "work-index permanent revision locator oldid 5628161",
+        "four literary part permanent revision locators: 5733765, 5198033, 5138882 and 5724453",
+        "per-part GIKhL 1952/1953 volume declarations exposed by Wikisource"
+      ],
+      "unfrozen_components": [
+        "MediaWiki revision timestamps and SHA-1 identities for all four literary parts",
+        "Scriptorium SHA-256 identities for the exact part wikitexts",
+        "a deterministic fail-closed literary-body extraction contract for each part",
+        "a deterministic four-part composition order bound to frozen part identities",
+        "raw and scriptorium-text-v1 normalized composite digests",
+        "the relationship between FantLab's uploaded analyzer input and this Wikisource/Library Moshkov transcription family"
+      ],
+      "reason": "Permanent revision locators and source declarations establish a traceable four-part public transcription family, but Scriptorium has not yet replay-frozen the exact part revisions or literary body into a source-free manifest."
+    }
+  },
+  "legal_boundary": {
+    "basis": "public_domain_original_russian_work_with_wikisource_reuse_terms",
+    "evidence": "Russian Wikisource explicitly marks the original Russian work public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions. The retained scope is the literary work body only; no source prose, provider UI, later translation or unrelated editorial material is committed.",
+    "source_text_committed": false
+  },
+  "diversity": {
+    "period": "1925_to_1936",
+    "movement": "interwar Soviet social and psychological panoramic prose",
+    "work_identity": "original_russian",
+    "reason_selected": "This adds a very long twentieth-century original-Russian work by a new retained author and a four-volume source-cited transcription family, broadening calibration diversity beyond nineteenth-century Russian classics while keeping edition identity explicit."
+  },
+  "admissibility": {
+    "length_threshold_met_from_fantlab": true,
+    "source_identity_status": "trace_only",
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "catalog_admission": "deferred_until_immutable_literary_identity",
+    "status": "provenance_qualified_lead",
+    "reasons": [
+      "FantLab reports 3,789,857 characters and 531,192 words for its 19 September 2022 analysis, far above the 300,000-character calibration threshold.",
+      "Russian Wikisource supplies explicit public-domain evidence, a stable work-index locator, four literary part locators and per-part GIKhL 1952/1953 source declarations.",
+      "Permanent oldid locators are provenance evidence but are not yet a complete Scriptorium immutable literary-body identity because revision timestamps/SHA-1 values, deterministic extraction/composition and composite digests are not recorded.",
+      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
+    ],
+    "next_evidence": [
+      "Capture all four part revisions through a source-free manifest with revision IDs, timestamps, MediaWiki SHA-1 values, wikitext byte counts and SHA-256 digests.",
+      "Define deterministic fail-closed literary-body extraction and four-part composition, then record raw and scriptorium-text-v1 normalized composite digests.",
+      "Only after the immutable literary identity exists, admit the candidate to the main machine-readable parity catalog and enable source-bound diagnostics.",
+      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliographic compatibility cannot advance M2."
+    ]
+  }
+}

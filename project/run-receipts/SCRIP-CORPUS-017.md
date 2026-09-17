@@ -1,6 +1,6 @@
 # Run receipt — SCRIP-CORPUS-017
 
-Status: `AUTHORED_REVIEW_PENDING`
+Status: `REPAIR_AUTHORED_REVIEW_PENDING`
 
 Issue: #103  
 Branch: `scrip-corpus-017-klim-samgin`  
@@ -21,8 +21,14 @@ Qualify Maxim Gorky's *The Life of Klim Samgin* as a twentieth-century, legally 
 
 No source prose is committed. This run does not have MediaWiki revision timestamps/SHA-1 values or Scriptorium wikitext SHA-256 values for all four part revisions, does not define deterministic literary-body extraction/composition, and has no raw/normalized composite digest. Therefore the lead is `trace_only`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and is deliberately not added to the main parity catalog yet. M2 remains 0/5.
 
-## Verification expected before later merge judgement
+## Review and repair
 
-- JSON parse succeeds for the new trace.
-- Repository CI/Pages checks pass on the exact PR head.
-- Later independent review confirms that trace, public candidate page and durable state make no stronger identity/parity claim than the evidence supports.
+Independent exact-head review of authored head `39e068afd78bc77c712f7ca91fbefd9ff5f08a74` accepted the provenance/legal boundary and green CI, but found a blocking public-representation consistency defect: `corpus/candidates/gorky-klim-samgin-ru.md` was not linked from the human-facing `corpus/candidates/README.md` navigation.
+
+The repair adds a concise Klim Samgin trace-only section to that README linking both the candidate page and `source-edition-traces/gorky-klim-samgin-ru.json`. It does not add the work to the main parity catalog and does not change any source/parity gate: `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, M2 0/5.
+
+## Verification required before later merge judgement
+
+- Fresh CI/Pages checks pass on the repaired exact PR head.
+- Later independent review confirms that README, candidate page, provenance trace and durable state agree on trace-only status.
+- No source prose, replay-frozen identity claim, parity-catalog admission or FantLab source-match claim was introduced by the repair.

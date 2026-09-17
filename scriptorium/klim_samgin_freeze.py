@@ -1,10 +1,18 @@
-"""Freeze source-free #lst selection semantics for the Klim Samgin source graph.
+"""Source-free source-shape and target-only #lst contract for Klim Samgin.
 
-The retained Part 2 revision delegates one labeled section to a separately pinned
-Wikisource dependency. This module verifies both immutable revision identities, resolves
-that one #lst invocation at the wikitext-selection layer, and persists only offsets,
-counts and digests. It deliberately does not claim that MediaWiki rendering or the final
-literary-body extraction is frozen.
+Part 2 of the retained Russian Wikisource transcription contains exactly one
+``#lst`` invocation. Research against the current upstream Wikimedia
+LabeledSectionTransclusion implementation established an important edge case:
+when ``#lst`` is called with only the target page argument, the extension does
+*not* select a labeled section. After resolving the target it returns
+``$newFrame->expand($root)`` for the whole target template DOM.
+
+This module freezes only the evidence Scriptorium can reproduce without running
+MediaWiki itself: the exact target-only invocation and its parent offsets, the
+pinned target revision, the observed absence/presence inventory of section and
+transclusion markup, and the upstream semantic branch. It deliberately does
+not manufacture an expanded Part 2 byte identity; that remains a later source-
+graph/parser-expansion problem.
 """
 
 from __future__ import annotations
@@ -24,33 +32,21 @@ from .single_page_revision import validate_manifest as validate_revision_manifes
 PART2_CANDIDATE_ID = "gorky-klim-samgin-ru-part-2"
 DEPENDENCY_CANDIDATE_ID = "gorky-klim-samgin-ru-part-2-part2"
 DEPENDENCY_TITLE = "Жизнь Клима Самгина (Горький)/Часть 2/part2"
-LST_CONTRACT_VERSION = "scriptorium-klim-samgin-lst-contract-v1"
-LST_SELECTION_PROFILE = "scriptorium-klim-samgin-part2-lst-selection-v1"
+LST_CONTRACT_VERSION = "scriptorium-klim-samgin-lst-contract-v2"
+LST_SELECTION_PROFILE = "scriptorium-klim-samgin-part2-target-only-lst-v1"
+UPSTREAM_IMPLEMENTATION = "wikimedia/mediawiki-extensions-LabeledSectionTransclusion"
+UPSTREAM_IMPLEMENTATION_PATH = "includes/LabeledSectionTransclusion.php"
+UPSTREAM_EVIDENCE_COMMIT = "3e9a44dec6858aeaf3ca547a32ab3162d6887ed6"
 
 _TEMPLATE_NAME_RE = re.compile(r"\{\{\s*([^|{}\n]+)")
 _HTML_TAG_NAME_RE = re.compile(r"</?\s*([A-Za-z][A-Za-z0-9]*)\b")
 _HEADING_RE = re.compile(r"(?m)^(={2,6})\s*.*?\s*\1\s*$")
 _CATEGORY_RE = re.compile(r"(?mi)^\s*\[\[\s*(?:Категория|Category)\s*:")
-_LST_TARGET_RE = re.compile(
-    r"\{\{\s*#lst\s*:\s*([^|{}\n]+?)(?=\||\}\})",
-    re.IGNORECASE,
-)
 _LST_PREFIX_RE = re.compile(r"\{\{\s*#lst\s*:", re.IGNORECASE)
-_LST_CALL_RE = re.compile(
-    r"\{\{\s*#lst\s*:\s*"
-    r"(?P<target>[^|{}]+?)\s*\|\s*"
-    r"(?P<section>[^|{}]+?)\s*"
-    r"(?P<range>\|[^{}]*?)?"
-    r"\}\}",
-    re.IGNORECASE,
+_TARGET_ONLY_LST_RE = re.compile(
+    r"\{\{\s*#lst\s*:\s*(?P<target>[^|{}\n]+?)\s*\}\}", re.IGNORECASE
 )
-_SECTION_PREFIX_RE = re.compile(r"<section\b", re.IGNORECASE)
-_SECTION_MARKER_RE = re.compile(
-    r"<section\s+(?P<kind>begin|end)\s*=\s*"
-    r"(?:\"(?P<double>[^\"]+)\"|'(?P<single>[^']+)'|(?P<bare>[^\s/>]+))"
-    r"\s*/\s*>",
-    re.IGNORECASE,
-)
+_ANY_SECTION_TAG_RE = re.compile(r"<section\b", re.IGNORECASE)
 
 
 def _load_json(path: Path) -> dict[str, object]:
@@ -62,19 +58,11 @@ def _load_json(path: Path) -> dict[str, object]:
 
 def _write_json(path: Path, value: Mapping[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def _source_free_identity(text: str) -> dict[str, object]:
-    raw = text.encode("utf-8")
-    return {
-        "character_count": len(text),
-        "utf8_byte_count": len(raw),
-        "sha256": sha256(raw).hexdigest(),
-    }
+def _sha256_text(value: str) -> str:
+    return sha256(value.encode("utf-8")).hexdigest()
 
 
 def _verified_wikitext(
@@ -89,122 +77,44 @@ def _verified_wikitext(
     revision_id = source_identity.get("revision_id")
     if not isinstance(title, str) or not isinstance(revision_id, int):
         raise ValueError("revision manifest source identity incomplete")
-
     observed = fetcher(title=title, revision_id=revision_id)
     wikitext = observed.pop("wikitext", None)
     if not isinstance(wikitext, str):
         raise ValueError("transient source prose missing")
     if observed != source_identity:
         differing = sorted(
-            key
-            for key in set(observed) | set(source_identity)
+            key for key in set(observed) | set(source_identity)
             if observed.get(key) != source_identity.get(key)
         )
-        raise ValueError(f"pinned revision identity drift before #lst resolution: {differing}")
+        raise ValueError(f"pinned revision identity drift before #lst analysis: {differing}")
     return wikitext
 
 
-def parse_single_lst_invocation(wikitext: str) -> dict[str, object]:
-    """Parse exactly one simple #lst call and reject range or unsupported syntax."""
-
+def parse_target_only_lst_invocation(wikitext: str) -> dict[str, object]:
+    """Require exactly one target-only #lst call and return source-free placement."""
     if not isinstance(wikitext, str):
         raise TypeError("wikitext must be str")
-    matches = tuple(_LST_CALL_RE.finditer(wikitext))
+    matches = tuple(_TARGET_ONLY_LST_RE.finditer(wikitext))
     prefix_count = len(tuple(_LST_PREFIX_RE.finditer(wikitext)))
-    if prefix_count != len(matches):
-        raise ValueError("unsupported #lst invocation syntax")
+    if prefix_count != 1:
+        raise ValueError(f"expected exactly one #lst invocation, observed {prefix_count}")
     if len(matches) != 1:
-        raise ValueError(f"expected exactly one #lst invocation, observed {len(matches)}")
+        raise ValueError("Klim Samgin Part 2 #lst is not the frozen target-only shape")
     match = matches[0]
     target = match.group("target").strip()
-    section = match.group("section").strip()
-    range_arg = match.group("range")
-    if not target or not section:
-        raise ValueError("#lst target and section label must be non-empty")
-    if range_arg is not None:
-        raise ValueError("Klim Samgin #lst range syntax is not supported by this frozen profile")
+    if not target:
+        raise ValueError("#lst target must be non-empty")
+    raw_call = match.group(0)
     return {
+        "argument_count": 1,
         "target_title": target,
-        "section_label": section,
+        "section_label": None,
+        "range_end_label": None,
         "parent_start_offset": match.start(),
         "parent_end_offset": match.end(),
-    }
-
-
-def _section_markers(wikitext: str) -> list[dict[str, object]]:
-    matches = tuple(_SECTION_MARKER_RE.finditer(wikitext))
-    prefix_count = len(tuple(_SECTION_PREFIX_RE.finditer(wikitext)))
-    if prefix_count != len(matches):
-        raise ValueError("unsupported labeled-section marker syntax")
-    markers: list[dict[str, object]] = []
-    for match in matches:
-        label = match.group("double") or match.group("single") or match.group("bare")
-        if not isinstance(label, str) or not label:
-            raise ValueError("empty labeled-section name")
-        markers.append(
-            {
-                "kind": match.group("kind").casefold(),
-                "label": label,
-                "start_offset": match.start(),
-                "end_offset": match.end(),
-            }
-        )
-    return markers
-
-
-def select_labeled_sections(wikitext: str, section_label: str) -> dict[str, object]:
-    """Select all same-label #lst spans in source order, source-free in its result."""
-
-    if not isinstance(wikitext, str):
-        raise TypeError("wikitext must be str")
-    if not isinstance(section_label, str) or not section_label:
-        raise ValueError("section_label must be non-empty")
-    markers = _section_markers(wikitext)
-    selected = [marker for marker in markers if marker["label"] == section_label]
-    if not selected:
-        raise ValueError(f"dependency has no markers for #lst section {section_label!r}")
-
-    open_marker: dict[str, object] | None = None
-    segments: list[dict[str, object]] = []
-    segment_texts: list[str] = []
-    for marker in selected:
-        kind = marker["kind"]
-        if kind == "begin":
-            if open_marker is not None:
-                raise ValueError("overlapping same-label section begins are unsupported")
-            open_marker = marker
-            continue
-        if open_marker is None:
-            raise ValueError("labeled-section end appears before matching begin")
-        start = int(open_marker["end_offset"])
-        end = int(marker["start_offset"])
-        if end < start:
-            raise ValueError("labeled-section offsets are reversed")
-        text = wikitext[start:end]
-        identity = _source_free_identity(text)
-        segments.append(
-            {
-                "ordinal": len(segments) + 1,
-                "start_offset": start,
-                "end_offset": end,
-                **identity,
-            }
-        )
-        segment_texts.append(text)
-        open_marker = None
-    if open_marker is not None:
-        raise ValueError("labeled-section begin has no matching end")
-
-    selected_wikitext = "".join(segment_texts)
-    if not selected_wikitext:
-        raise ValueError("selected #lst dependency wikitext is empty")
-    return {
-        "total_section_marker_count": len(markers),
-        "selected_label_marker_count": len(selected),
-        "selected_segment_count": len(segments),
-        "segments": segments,
-        "selection_identity": _source_free_identity(selected_wikitext),
-        "_selected_wikitext": selected_wikitext,
+        "invocation_character_count": len(raw_call),
+        "invocation_utf8_byte_count": len(raw_call.encode("utf-8")),
+        "invocation_sha256": _sha256_text(raw_call),
     }
 
 
@@ -214,13 +124,20 @@ def _source_revision_projection(manifest: Mapping[str, object]) -> dict[str, obj
     return {
         key: identity[key]
         for key in (
-            "title",
-            "page_id",
-            "revision_id",
-            "revision_timestamp",
-            "mediawiki_sha1",
-            "wikitext_sha256",
+            "title", "page_id", "revision_id", "revision_timestamp",
+            "mediawiki_sha1", "wikitext_character_count",
+            "wikitext_utf8_byte_count", "wikitext_sha256",
         )
+    }
+
+
+def _dependency_shape(wikitext: str) -> dict[str, object]:
+    template_names = Counter(m.group(1).strip() for m in _TEMPLATE_NAME_RE.finditer(wikitext))
+    lst_count = len(tuple(_LST_PREFIX_RE.finditer(wikitext)))
+    return {
+        "section_tag_count": len(tuple(_ANY_SECTION_TAG_RE.finditer(wikitext))),
+        "lst_invocation_count": lst_count,
+        "template_name_counts": dict(sorted(template_names.items())),
     }
 
 
@@ -230,14 +147,13 @@ def build_lst_contract(
     *,
     fetcher: Callable[..., dict[str, object]] = fetch_pinned_wikitext,
 ) -> dict[str, object]:
-    """Freeze the exact Part 2 #lst selection and placement without source prose."""
-
+    """Freeze exact target-only invocation semantics without faking parser output."""
     validate_revision_manifest(parent_revision_manifest)
     validate_revision_manifest(dependency_revision_manifest)
     if parent_revision_manifest.get("candidate_id") != PART2_CANDIDATE_ID:
         raise ValueError("unexpected Klim Samgin Part 2 candidate")
     if dependency_revision_manifest.get("candidate_id") != DEPENDENCY_CANDIDATE_ID:
-        raise ValueError("unexpected Klim Samgin Part 2 dependency candidate")
+        raise ValueError("unexpected Klim Samgin dependency candidate")
     dependency_identity = dependency_revision_manifest.get("source_identity")
     assert isinstance(dependency_identity, dict)
     if dependency_identity.get("title") != DEPENDENCY_TITLE:
@@ -245,49 +161,48 @@ def build_lst_contract(
 
     parent_wikitext = _verified_wikitext(parent_revision_manifest, fetcher=fetcher)
     dependency_wikitext = _verified_wikitext(dependency_revision_manifest, fetcher=fetcher)
-    invocation = parse_single_lst_invocation(parent_wikitext)
+    invocation = parse_target_only_lst_invocation(parent_wikitext)
     if invocation["target_title"] != DEPENDENCY_TITLE:
-        raise ValueError("Part 2 #lst target does not match the pinned dependency")
+        raise ValueError("Part 2 #lst target does not match pinned dependency")
 
-    selection = select_labeled_sections(
-        dependency_wikitext,
-        str(invocation["section_label"]),
-    )
-    selected_wikitext = selection.pop("_selected_wikitext")
-    assert isinstance(selected_wikitext, str)
-    if _LST_PREFIX_RE.search(dependency_wikitext):
-        raise ValueError("nested #lst dependency requires an explicit additional source-graph pin")
-
-    start = int(invocation["parent_start_offset"])
-    end = int(invocation["parent_end_offset"])
-    resolved_parent = parent_wikitext[:start] + selected_wikitext + parent_wikitext[end:]
-
+    shape = _dependency_shape(dependency_wikitext)
     return {
         "contract_version": LST_CONTRACT_VERSION,
         "candidate_id": "gorky-klim-samgin-ru",
         "selection_profile": LST_SELECTION_PROFILE,
         "parent_revision": _source_revision_projection(parent_revision_manifest),
         "dependency_revision": _source_revision_projection(dependency_revision_manifest),
-        "invocation": {
-            **invocation,
-            "range_end_label": None,
-            "placement_semantics": "replace_exact_parent_invocation_with_all_matching_dependency_sections_in_source_order_without_added_separator",
+        "invocation": invocation,
+        "dependency_shape": shape,
+        "selection_semantics": {
+            "kind": "target_only_full_template_dom_expansion",
+            "labeled_section_filtering_applied": False,
+            "upstream_behavior": "after target resolution, zero remaining args returns newFrame->expand(root)",
+            "upstream_repository": UPSTREAM_IMPLEMENTATION,
+            "upstream_path": UPSTREAM_IMPLEMENTATION_PATH,
+            "upstream_evidence_commit": UPSTREAM_EVIDENCE_COMMIT,
+            "upstream_source_url": (
+                "https://github.com/wikimedia/mediawiki-extensions-LabeledSectionTransclusion/"
+                f"blob/{UPSTREAM_EVIDENCE_COMMIT}/{UPSTREAM_IMPLEMENTATION_PATH}"
+            ),
         },
-        "dependency_selection": selection,
-        "resolved_parent_wikitext_identity": _source_free_identity(resolved_parent),
         "capture_scope": {
-            "lst_labeled_section_selection_frozen": True,
+            "lst_invocation_shape_frozen": True,
+            "lst_target_revision_frozen": True,
+            "lst_selection_semantics_frozen": True,
             "lst_parent_placement_frozen": True,
-            "resolved_part2_wikitext_identity_frozen": True,
+            "mediawiki_template_dom_expansion_reproduced": False,
+            "resolved_part2_wikitext_identity_frozen": False,
             "literary_body_extraction_frozen": False,
             "composite_literary_body_identity_frozen": False,
             "source_text_committed": False,
         },
-        "semantics_evidence": {
-            "authority": "MediaWiki Labeled Section Transclusion documentation",
-            "rule": "a simple #lst call includes every same-name labeled section; no range argument is used by this frozen invocation",
-            "reference": "https://www.mediawiki.org/wiki/Extension:Labeled_Section_Transclusion/en",
-        },
+        "boundary": (
+            "The invocation selects no label. Upstream LabeledSectionTransclusion delegates the whole "
+            "target template DOM to MediaWiki frame expansion when only the target argument is present. "
+            "Scriptorium has not yet reproduced that MediaWiki expansion or any transitive template/parser "
+            "dependencies, so no resolved Part 2 or literary-body digest is claimed."
+        ),
         "fantlab_source_edition_match": "unknown",
         "diagnostic_ready": False,
         "gate_ready": False,
@@ -304,102 +219,79 @@ def validate_lst_contract(
     if contract.get("contract_version") != LST_CONTRACT_VERSION:
         raise ValueError("unsupported Klim Samgin #lst contract version")
     if contract.get("candidate_id") != "gorky-klim-samgin-ru":
-        raise ValueError("unexpected Klim Samgin #lst contract candidate")
+        raise ValueError("unexpected Klim Samgin contract candidate")
     if contract.get("selection_profile") != LST_SELECTION_PROFILE:
-        raise ValueError("Klim Samgin #lst selection profile drift")
+        raise ValueError("Klim Samgin selection profile drift")
     invocation = contract.get("invocation")
     if not isinstance(invocation, dict):
-        raise ValueError("Klim Samgin #lst invocation contract missing")
+        raise ValueError("Klim Samgin invocation missing")
+    if invocation.get("argument_count") != 1:
+        raise ValueError("Klim Samgin invocation must remain target-only")
     if invocation.get("target_title") != DEPENDENCY_TITLE:
-        raise ValueError("Klim Samgin #lst target drift")
-    if not isinstance(invocation.get("section_label"), str) or not invocation["section_label"]:
-        raise ValueError("Klim Samgin #lst section label missing")
-    if invocation.get("range_end_label") is not None:
-        raise ValueError("Klim Samgin frozen #lst invocation must not use a range")
-    for key in ("parent_start_offset", "parent_end_offset"):
-        if not isinstance(invocation.get(key), int) or int(invocation[key]) < 0:
-            raise ValueError(f"invalid Klim Samgin #lst {key}")
-    if int(invocation["parent_end_offset"]) <= int(invocation["parent_start_offset"]):
+        raise ValueError("Klim Samgin target drift")
+    if invocation.get("section_label") is not None or invocation.get("range_end_label") is not None:
+        raise ValueError("Klim Samgin target-only invocation acquired section arguments")
+    start = invocation.get("parent_start_offset")
+    end = invocation.get("parent_end_offset")
+    if not isinstance(start, int) or not isinstance(end, int) or start < 0 or end <= start:
         raise ValueError("invalid Klim Samgin #lst parent placement")
-    if invocation.get("placement_semantics") != (
-        "replace_exact_parent_invocation_with_all_matching_dependency_sections_in_source_order_without_added_separator"
-    ):
-        raise ValueError("Klim Samgin #lst placement semantics drift")
-
-    selection = contract.get("dependency_selection")
-    if not isinstance(selection, dict):
-        raise ValueError("Klim Samgin dependency selection missing")
-    segments = selection.get("segments")
-    if not isinstance(segments, list) or not segments:
-        raise ValueError("Klim Samgin #lst selected segments missing")
-    if selection.get("selected_segment_count") != len(segments):
-        raise ValueError("Klim Samgin #lst selected-segment count drift")
-    if selection.get("selected_label_marker_count") != len(segments) * 2:
-        raise ValueError("Klim Samgin #lst marker-pair count drift")
-    previous_end = -1
-    for ordinal, segment in enumerate(segments, start=1):
-        if not isinstance(segment, dict) or segment.get("ordinal") != ordinal:
-            raise ValueError("Klim Samgin #lst segment order drift")
-        start = segment.get("start_offset")
-        end = segment.get("end_offset")
-        if not isinstance(start, int) or not isinstance(end, int) or start < previous_end or end < start:
-            raise ValueError("Klim Samgin #lst segment offsets invalid")
-        for key in ("character_count", "utf8_byte_count"):
-            if not isinstance(segment.get(key), int) or int(segment[key]) < 0:
-                raise ValueError(f"invalid Klim Samgin #lst segment {key}")
-        digest = segment.get("sha256")
-        if not isinstance(digest, str) or len(digest) != 64:
-            raise ValueError("invalid Klim Samgin #lst segment SHA-256")
-        previous_end = end
-    identity = selection.get("selection_identity")
-    if not isinstance(identity, dict):
-        raise ValueError("Klim Samgin selection_identity missing")
-    for key in ("character_count", "utf8_byte_count"):
-        if not isinstance(identity.get(key), int) or int(identity[key]) <= 0:
-            raise ValueError(f"invalid Klim Samgin selection_identity {key}")
-    digest = identity.get("sha256")
+    for key in ("invocation_character_count", "invocation_utf8_byte_count"):
+        if not isinstance(invocation.get(key), int) or int(invocation[key]) <= 0:
+            raise ValueError(f"invalid {key}")
+    digest = invocation.get("invocation_sha256")
     if not isinstance(digest, str) or len(digest) != 64:
-        raise ValueError("invalid Klim Samgin selection_identity SHA-256")
-    resolved = contract.get("resolved_parent_wikitext_identity")
-    if not isinstance(resolved, dict):
-        raise ValueError("Klim Samgin resolved Part 2 identity missing")
-    for key in ("character_count", "utf8_byte_count"):
-        if not isinstance(resolved.get(key), int) or int(resolved[key]) <= 0:
-            raise ValueError(f"invalid Klim Samgin resolved Part 2 {key}")
-    if not isinstance(resolved.get("sha256"), str) or len(str(resolved["sha256"])) != 64:
-        raise ValueError("invalid Klim Samgin resolved Part 2 SHA-256")
+        raise ValueError("invalid invocation SHA-256")
+
+    semantics = contract.get("selection_semantics")
+    if not isinstance(semantics, dict):
+        raise ValueError("selection semantics missing")
+    if semantics.get("kind") != "target_only_full_template_dom_expansion":
+        raise ValueError("Klim Samgin target-only semantics drift")
+    if semantics.get("labeled_section_filtering_applied") is not False:
+        raise ValueError("target-only #lst must not claim labeled-section filtering")
+    if semantics.get("upstream_evidence_commit") != UPSTREAM_EVIDENCE_COMMIT:
+        raise ValueError("upstream semantics evidence drift")
+
+    shape = contract.get("dependency_shape")
+    if not isinstance(shape, dict):
+        raise ValueError("dependency shape missing")
+    for key in ("section_tag_count", "lst_invocation_count"):
+        if not isinstance(shape.get(key), int) or int(shape[key]) < 0:
+            raise ValueError(f"invalid dependency shape {key}")
+    if not isinstance(shape.get("template_name_counts"), dict):
+        raise ValueError("dependency template inventory missing")
 
     expected_scope = {
-        "lst_labeled_section_selection_frozen": True,
+        "lst_invocation_shape_frozen": True,
+        "lst_target_revision_frozen": True,
+        "lst_selection_semantics_frozen": True,
         "lst_parent_placement_frozen": True,
-        "resolved_part2_wikitext_identity_frozen": True,
+        "mediawiki_template_dom_expansion_reproduced": False,
+        "resolved_part2_wikitext_identity_frozen": False,
         "literary_body_extraction_frozen": False,
         "composite_literary_body_identity_frozen": False,
         "source_text_committed": False,
     }
     if contract.get("capture_scope") != expected_scope:
-        raise ValueError("Klim Samgin #lst capture scope drift")
+        raise ValueError("Klim Samgin contract capture scope drift")
     if contract.get("fantlab_source_edition_match") != "unknown":
         raise ValueError("FantLab source identity must remain unknown")
-    if contract.get("diagnostic_ready") is not False:
-        raise ValueError("Klim Samgin body diagnostic must remain disabled")
-    if contract.get("gate_ready") is not False:
-        raise ValueError("Klim Samgin gate readiness must remain false")
+    if contract.get("diagnostic_ready") is not False or contract.get("gate_ready") is not False:
+        raise ValueError("Klim Samgin diagnostics/gate must remain disabled")
     if contract.get("m2_parity_admissible") is not False:
-        raise ValueError("Klim Samgin #lst freezing cannot advance M2")
+        raise ValueError("target-only #lst evidence cannot advance M2")
 
     forbidden = {"wikitext", "content", "body", "text", "source_text"}
     if forbidden.intersection(contract):
-        raise ValueError("source prose leaked into Klim Samgin #lst contract")
-
+        raise ValueError("source prose leaked into Klim Samgin contract")
     if parent_revision_manifest is not None:
         validate_revision_manifest(parent_revision_manifest)
         if contract.get("parent_revision") != _source_revision_projection(parent_revision_manifest):
-            raise ValueError("Klim Samgin #lst parent revision identity drift")
+            raise ValueError("parent revision identity drift")
     if dependency_revision_manifest is not None:
         validate_revision_manifest(dependency_revision_manifest)
         if contract.get("dependency_revision") != _source_revision_projection(dependency_revision_manifest):
-            raise ValueError("Klim Samgin #lst dependency revision identity drift")
+            raise ValueError("dependency revision identity drift")
 
 
 def replay_lst_contract(
@@ -414,27 +306,20 @@ def replay_lst_contract(
         parent_revision_manifest=parent_revision_manifest,
         dependency_revision_manifest=dependency_revision_manifest,
     )
-    observed = build_lst_contract(
-        parent_revision_manifest,
-        dependency_revision_manifest,
-        fetcher=fetcher,
-    )
+    observed = build_lst_contract(parent_revision_manifest, dependency_revision_manifest, fetcher=fetcher)
     if observed != contract:
-        raise ValueError("pinned Klim Samgin #lst selection/placement identity drift")
-    selection = contract["dependency_selection"]
-    resolved = contract["resolved_parent_wikitext_identity"]
-    assert isinstance(selection, dict) and isinstance(resolved, dict)
-    selection_identity = selection["selection_identity"]
-    assert isinstance(selection_identity, dict)
+        raise ValueError("pinned Klim Samgin target-only #lst contract drift")
+    invocation = contract["invocation"]
+    assert isinstance(invocation, dict)
     return {
-        "receipt_version": "scriptorium-klim-samgin-lst-replay-v1",
+        "receipt_version": "scriptorium-klim-samgin-lst-replay-v2",
         "candidate_id": contract["candidate_id"],
         "selection_profile": LST_SELECTION_PROFILE,
-        "selected_segment_count": selection["selected_segment_count"],
-        "selection_sha256": selection_identity["sha256"],
-        "resolved_part2_wikitext_sha256": resolved["sha256"],
+        "target_title": invocation["target_title"],
+        "invocation_sha256": invocation["invocation_sha256"],
         "verified": True,
         "source_text_included": False,
+        "resolved_part2_wikitext_identity_frozen": False,
         "fantlab_source_edition_match": "unknown",
         "m2_parity_admissible": False,
     }
@@ -442,16 +327,12 @@ def replay_lst_contract(
 
 def probe_revision_shape(revision_manifest: Mapping[str, object]) -> dict[str, object]:
     """Return source-free markup/dependency inventory for one pinned revision."""
-
     wikitext = _verified_wikitext(revision_manifest, fetcher=fetch_pinned_wikitext)
     source_identity = revision_manifest.get("source_identity")
     assert isinstance(source_identity, dict)
-    revision_id = source_identity["revision_id"]
-
     templates = Counter(match.group(1).strip() for match in _TEMPLATE_NAME_RE.finditer(wikitext))
     html_tags = Counter(match.group(1).lower() for match in _HTML_TAG_NAME_RE.finditer(wikitext))
     heading_levels = Counter(len(match.group(1)) for match in _HEADING_RE.finditer(wikitext))
-    lst_targets = sorted(set(match.group(1).strip() for match in _LST_TARGET_RE.finditer(wikitext)))
     nonempty_lines = [line.strip() for line in wikitext.splitlines() if line.strip()]
 
     def line_class(line: str) -> str:
@@ -465,25 +346,28 @@ def probe_revision_shape(revision_manifest: Mapping[str, object]) -> dict[str, o
             return "html"
         return "content_or_markup"
 
+    invocation = None
+    if _LST_PREFIX_RE.search(wikitext):
+        try:
+            invocation = parse_target_only_lst_invocation(wikitext)
+        except ValueError:
+            invocation = {"shape": "non_target_only_or_multiple", "source_text_included": False}
     return {
-        "probe_version": "scriptorium-klim-samgin-shape-probe-v2",
+        "probe_version": "scriptorium-klim-samgin-shape-probe-v3",
         "candidate_id": revision_manifest["candidate_id"],
-        "revision_id": revision_id,
+        "revision_id": source_identity["revision_id"],
         "wikitext_character_count": len(wikitext),
         "line_count": len(wikitext.splitlines()),
         "nonempty_line_count": len(nonempty_lines),
         "template_names": dict(sorted(templates.items())),
-        "lst_transclusion_targets": lst_targets,
+        "lst_invocation_count": len(tuple(_LST_PREFIX_RE.finditer(wikitext))),
+        "target_only_lst_invocation": invocation,
+        "section_tag_count": len(tuple(_ANY_SECTION_TAG_RE.finditer(wikitext))),
         "html_tag_names": dict(sorted(html_tags.items())),
-        "heading_level_counts": {
-            str(level): count for level, count in sorted(heading_levels.items())
-        },
+        "heading_level_counts": {str(level): count for level, count in sorted(heading_levels.items())},
         "category_link_count": len(_CATEGORY_RE.findall(wikitext)),
         "table_start_count": wikitext.count("{|"),
         "table_end_count": wikitext.count("|}"),
-        "noinclude_open_count": len(re.findall(r"<noinclude\b", wikitext, re.IGNORECASE)),
-        "noinclude_close_count": len(re.findall(r"</noinclude\s*>", wikitext, re.IGNORECASE)),
-        "ref_open_count": len(re.findall(r"<ref\b", wikitext, re.IGNORECASE)),
         "first_nonempty_line_class": line_class(nonempty_lines[0]) if nonempty_lines else "empty",
         "last_nonempty_line_class": line_class(nonempty_lines[-1]) if nonempty_lines else "empty",
         "source_text_included": False,
@@ -491,46 +375,32 @@ def probe_revision_shape(revision_manifest: Mapping[str, object]) -> dict[str, o
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Probe or freeze the pinned Klim Samgin source graph without emitting source prose."
-    )
+    parser = argparse.ArgumentParser(description="Probe or freeze the pinned Klim Samgin #lst source contract.")
     subparsers = parser.add_subparsers(dest="command", required=True)
-
     probe = subparsers.add_parser("probe")
     probe.add_argument("--revision-manifest", type=Path, required=True)
-
     capture = subparsers.add_parser("capture-lst")
     capture.add_argument("--parent-revision-manifest", type=Path, required=True)
     capture.add_argument("--dependency-revision-manifest", type=Path, required=True)
     capture.add_argument("--output", type=Path, required=True)
-
     replay = subparsers.add_parser("replay-lst")
     replay.add_argument("--parent-revision-manifest", type=Path, required=True)
     replay.add_argument("--dependency-revision-manifest", type=Path, required=True)
     replay.add_argument("--contract", type=Path, required=True)
     replay.add_argument("--receipt", type=Path)
-
     args = parser.parse_args(argv)
+
     if args.command == "probe":
         result = probe_revision_shape(_load_json(args.revision_manifest))
-        print(
-            "SCRIPTORIUM_KLIM_SHAPE="
-            + json.dumps(result, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
-        )
+        print("SCRIPTORIUM_KLIM_SHAPE=" + json.dumps(result, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
         return 0
-
     parent = _load_json(args.parent_revision_manifest)
     dependency = _load_json(args.dependency_revision_manifest)
     if args.command == "capture-lst":
         contract = build_lst_contract(parent, dependency)
-        validate_lst_contract(
-            contract,
-            parent_revision_manifest=parent,
-            dependency_revision_manifest=dependency,
-        )
+        validate_lst_contract(contract, parent_revision_manifest=parent, dependency_revision_manifest=dependency)
         _write_json(args.output, contract)
         return 0
-
     contract = _load_json(args.contract)
     receipt = replay_lst_contract(parent, dependency, contract)
     if args.receipt is not None:

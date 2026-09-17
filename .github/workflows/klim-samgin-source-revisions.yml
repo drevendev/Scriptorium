@@ -12,6 +12,7 @@ on:
       - "tests/test_klim_samgin_freeze.py"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part*.revision.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.revisions.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.body.json"
       - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.json"
   workflow_dispatch:
@@ -112,11 +113,32 @@ jobs:
         run: |
           set -euo pipefail
           for part in 1 2 3 4; do
-            python -m scriptorium.klim_samgin_freeze \
+            python -m scriptorium.klim_samgin_freeze probe \
               --revision-manifest "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part${part}.revision.json"
           done
-          python -m scriptorium.klim_samgin_freeze \
+          python -m scriptorium.klim_samgin_freeze probe \
             --revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json
+
+      - name: Capture and replay exact Part 2 labeled-section contract
+        run: |
+          set -euo pipefail
+          parent=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2.revision.json
+          dependency=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json
+          expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json
+          observed=build/repro/gorky-klim-samgin-ru.part2-lst.observed.json
+          receipt=build/repro/gorky-klim-samgin-ru.part2-lst.replay.json
+          python -m scriptorium.klim_samgin_freeze capture-lst \
+            --parent-revision-manifest "$parent" \
+            --dependency-revision-manifest "$dependency" \
+            --output "$observed"
+          if [[ -f "$expected" ]]; then
+            cmp "$expected" "$observed"
+            python -m scriptorium.klim_samgin_freeze replay-lst \
+              --parent-revision-manifest "$parent" \
+              --dependency-revision-manifest "$dependency" \
+              --contract "$expected" \
+              --receipt "$receipt"
+          fi
 
       - name: Verify source-free ordered revision set
         run: |
@@ -172,6 +194,6 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: klim-samgin-source-revisions
-          path: build/repro/gorky-klim-samgin-ru*.revision.*.json
+          path: build/repro/gorky-klim-samgin-ru*.json
           if-no-files-found: error
           retention-days: 7

@@ -6,13 +6,13 @@ import unittest
 from scriptorium.klim_samgin_freeze import (
     DEPENDENCY_CANDIDATE_ID,
     DEPENDENCY_TITLE,
-    PART2_CANDIDATE_ID,
     LST_CONTRACT_VERSION,
     LST_SELECTION_PROFILE,
+    PART2_CANDIDATE_ID,
+    UPSTREAM_EVIDENCE_COMMIT,
     build_lst_contract,
-    parse_single_lst_invocation,
+    parse_target_only_lst_invocation,
     replay_lst_contract,
-    select_labeled_sections,
     validate_lst_contract,
 )
 
@@ -51,55 +51,29 @@ def _manifest(candidate_id: str, title: str, revision_id: int, page_id: int, wik
 
 
 class KlimSamginLstTests(unittest.TestCase):
-    def test_simple_invocation_freezes_target_label_and_placement(self) -> None:
-        source = "prefix\n{{#lst:Page/Subpage|section-2}}\nsuffix"
-        invocation = parse_single_lst_invocation(source)
+    def test_target_only_invocation_freezes_target_and_placement(self) -> None:
+        source = "prefix\n{{#lst:Page/Subpage}}\nsuffix"
+        invocation = parse_target_only_lst_invocation(source)
+        self.assertEqual(invocation["argument_count"], 1)
         self.assertEqual(invocation["target_title"], "Page/Subpage")
-        self.assertEqual(invocation["section_label"], "section-2")
+        self.assertIsNone(invocation["section_label"])
+        self.assertIsNone(invocation["range_end_label"])
         self.assertEqual(
             source[invocation["parent_start_offset"]:invocation["parent_end_offset"]],
-            "{{#lst:Page/Subpage|section-2}}",
+            "{{#lst:Page/Subpage}}",
         )
 
-    def test_invocation_rejects_ranges_multiple_calls_and_unparsed_shape(self) -> None:
-        with self.assertRaisesRegex(ValueError, "range syntax"):
-            parse_single_lst_invocation("{{#lst:Page|a|b}}")
+    def test_target_only_parser_rejects_section_range_and_multiple_calls(self) -> None:
+        with self.assertRaisesRegex(ValueError, "target-only"):
+            parse_target_only_lst_invocation("{{#lst:Page|section}}")
+        with self.assertRaisesRegex(ValueError, "target-only"):
+            parse_target_only_lst_invocation("{{#lst:Page|a|b}}")
         with self.assertRaisesRegex(ValueError, "exactly one"):
-            parse_single_lst_invocation("{{#lst:Page|a}}{{#lst:Page|b}}")
-        with self.assertRaisesRegex(ValueError, "unsupported"):
-            parse_single_lst_invocation("{{#lst:Page}}")
+            parse_target_only_lst_invocation("{{#lst:Page}}{{#lst:Other}}")
 
-    def test_same_label_sections_are_selected_in_source_order_without_separator(self) -> None:
-        dependency = (
-            "outside"
-            '<section begin="keep" />alpha<section end="keep" />'
-            "ignored"
-            "<section begin=keep />βeta<section end=keep />"
-            "tail"
-        )
-        selected = select_labeled_sections(dependency, "keep")
-        self.assertEqual(selected["selected_segment_count"], 2)
-        self.assertEqual(selected["selected_label_marker_count"], 4)
-        self.assertEqual(
-            selected["selection_identity"]["sha256"],
-            sha256("alphaβeta".encode("utf-8")).hexdigest(),
-        )
-        self.assertNotIn("wikitext", selected)
-
-    def test_section_selection_fails_closed_on_unpaired_or_unsupported_markers(self) -> None:
-        with self.assertRaisesRegex(ValueError, "matching end"):
-            select_labeled_sections("<section begin=x />abc", "x")
-        with self.assertRaisesRegex(ValueError, "unsupported labeled-section"):
-            select_labeled_sections('<section begin="x">abc</section>', "x")
-
-    def test_contract_is_source_free_and_replay_stable(self) -> None:
-        parent_text = f"before\n{{{{#lst:{DEPENDENCY_TITLE}|part-two}}}}\nafter"
-        dependency_text = (
-            "metadata\n"
-            '<section begin="part-two" />FIRST<section end="part-two" />'
-            "skip"
-            '<section begin="part-two" />SECOND<section end="part-two" />'
-        )
+    def test_contract_freezes_semantic_branch_not_expanded_part2_bytes(self) -> None:
+        parent_text = f"before\n{{{{#lst:{DEPENDENCY_TITLE}}}}\nafter"
+        dependency_text = "dependency {{TemplateA}} payload"
         parent = _manifest(PART2_CANDIDATE_ID, "Жизнь Клима Самгина (Горький)/Часть 2", 10, 1, parent_text)
         dependency = _manifest(DEPENDENCY_CANDIDATE_ID, DEPENDENCY_TITLE, 11, 2, dependency_text)
         lookup = {
@@ -120,40 +94,40 @@ class KlimSamginLstTests(unittest.TestCase):
         )
         self.assertEqual(contract["contract_version"], LST_CONTRACT_VERSION)
         self.assertEqual(contract["selection_profile"], LST_SELECTION_PROFILE)
-        self.assertEqual(contract["dependency_selection"]["selected_segment_count"], 2)
-        resolved = parent_text.replace(
-            f"{{{{#lst:{DEPENDENCY_TITLE}|part-two}}}}",
-            "FIRSTSECOND",
-        )
-        self.assertEqual(
-            contract["resolved_parent_wikitext_identity"]["sha256"],
-            sha256(resolved.encode("utf-8")).hexdigest(),
-        )
+        self.assertEqual(contract["selection_semantics"]["kind"], "target_only_full_template_dom_expansion")
+        self.assertIs(contract["selection_semantics"]["labeled_section_filtering_applied"], False)
+        self.assertEqual(contract["selection_semantics"]["upstream_evidence_commit"], UPSTREAM_EVIDENCE_COMMIT)
+        self.assertEqual(contract["dependency_shape"]["template_name_counts"], {"TemplateA": 1})
+        self.assertEqual(contract["dependency_shape"]["section_tag_count"], 0)
+        self.assertEqual(contract["dependency_shape"]["lst_invocation_count"], 0)
         self.assertEqual(
             contract["capture_scope"],
             {
-                "lst_labeled_section_selection_frozen": True,
+                "lst_invocation_shape_frozen": True,
+                "lst_target_revision_frozen": True,
+                "lst_selection_semantics_frozen": True,
                 "lst_parent_placement_frozen": True,
-                "resolved_part2_wikitext_identity_frozen": True,
+                "mediawiki_template_dom_expansion_reproduced": False,
+                "resolved_part2_wikitext_identity_frozen": False,
                 "literary_body_extraction_frozen": False,
                 "composite_literary_body_identity_frozen": False,
                 "source_text_committed": False,
             },
         )
+        self.assertNotIn("resolved_part2_wikitext_identity", contract)
         self.assertEqual(contract["fantlab_source_edition_match"], "unknown")
         self.assertIs(contract["diagnostic_ready"], False)
         self.assertIs(contract["gate_ready"], False)
         self.assertIs(contract["m2_parity_admissible"], False)
-        self.assertFalse({"wikitext", "content", "body", "text", "source_text"}.intersection(contract))
 
         receipt = replay_lst_contract(parent, dependency, contract, fetcher=fetcher)
         self.assertIs(receipt["verified"], True)
         self.assertIs(receipt["source_text_included"], False)
-        self.assertEqual(receipt["resolved_part2_wikitext_sha256"], contract["resolved_parent_wikitext_identity"]["sha256"])
+        self.assertIs(receipt["resolved_part2_wikitext_identity_frozen"], False)
 
-    def test_contract_rejects_nested_dependency_lst(self) -> None:
-        parent_text = f"{{{{#lst:{DEPENDENCY_TITLE}|x}}}}"
-        dependency_text = "<section begin=x />{{#lst:Another|y}}<section end=x />"
+    def test_contract_detects_dependency_shape_without_promoting_it_to_expansion(self) -> None:
+        parent_text = f"{{{{#lst:{DEPENDENCY_TITLE}}}}}"
+        dependency_text = "<section begin=x />{{#lst:Other}}<section end=x />{{T}}"
         parent = _manifest(PART2_CANDIDATE_ID, "Жизнь Клима Самгина (Горький)/Часть 2", 10, 1, parent_text)
         dependency = _manifest(DEPENDENCY_CANDIDATE_ID, DEPENDENCY_TITLE, 11, 2, dependency_text)
 
@@ -162,8 +136,11 @@ class KlimSamginLstTests(unittest.TestCase):
             text = parent_text if revision_id == 10 else dependency_text
             return {**manifest["source_identity"], "wikitext": text}
 
-        with self.assertRaisesRegex(ValueError, "additional source-graph pin"):
-            build_lst_contract(parent, dependency, fetcher=fetcher)
+        contract = build_lst_contract(parent, dependency, fetcher=fetcher)
+        self.assertEqual(contract["dependency_shape"]["section_tag_count"], 2)
+        self.assertEqual(contract["dependency_shape"]["lst_invocation_count"], 1)
+        self.assertEqual(contract["dependency_shape"]["template_name_counts"], {"#lst:Other": 1, "T": 1})
+        self.assertIs(contract["capture_scope"]["mediawiki_template_dom_expansion_reproduced"], False)
 
 
 if __name__ == "__main__":

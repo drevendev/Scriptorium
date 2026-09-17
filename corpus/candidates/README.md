@@ -164,13 +164,18 @@ Canonical evidence:
 
 - `source-edition-traces/bulgakov-white-guard-ru.json` — FantLab counts, permanent Wikisource index locator, explicit two-source chapter partition, legal boundary, separate 1927 facsimile lead, fail-closed identity status, and next evidence required before diagnostics.
 
-## The Life of Klim Samgin traced interwar Soviet candidate
+## The Life of Klim Samgin revision-frozen interwar Soviet candidate
 
 [`gorky-klim-samgin-ru`](gorky-klim-samgin-ru.md) adds Maxim Gorky and a very long twentieth-century original-Russian work. FantLab's 19 September 2022 linguistic analysis reports **3,789,857 characters** and **531,192 words**, comfortably above the >=300,000-character calibration threshold.
 
-Russian Wikisource exposes a four-part Library-Moshkov transcription family and marks the original Russian work public domain. Scriptorium records the permanent work-index locator `oldid=5628161`, the four literary-part locators `5733765`, `5198033`, `5138882`, `5724453`, and their GIKhL 1952/1953 volume declarations in [`source-edition-traces/gorky-klim-samgin-ru.json`](source-edition-traces/gorky-klim-samgin-ru.json). No source prose is committed.
+Russian Wikisource exposes a four-part Library-Moshkov transcription family and marks the original Russian work public domain. Scriptorium now replay-freezes all four retained literary-part revisions (`5733765`, `5198033`, `5138882`, `5724453`) with exact page IDs, timestamps, MediaWiki SHA-1 values, wikitext counts and SHA-256 digests. Their deterministic part-ordered source-identity projection has SHA-256 **`54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`** and totals **3,228,790 revision-wikitext characters / 5,902,920 UTF-8 bytes**. No source prose is committed.
 
-This candidate remains deliberately **trace-only**. Revision timestamps/MediaWiki SHA-1 values, Scriptorium wikitext SHA-256 identities, deterministic fail-closed literary-body extraction/composition, and raw/normalized composite digests are not frozen. FantLab does not disclose its analyzer-input edition or bytes. Therefore `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, it is not admitted to the main parity catalog, and M2 remains **0/5 source-matched works**.
+This is a **revision-wikitext freeze, not a literary-body freeze**. Candidate-specific fail-closed extraction, literary composition, raw/`scriptorium-text-v1` composite body digests and FantLab analyzer-input identity remain unresolved. Therefore `source_identity_status=revision_wikitext_frozen_body_unfrozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, it is not admitted to the main parity catalog, and M2 remains **0/5 source-matched works**.
+
+Canonical evidence:
+
+- [`source-edition-traces/gorky-klim-samgin-ru.json`](source-edition-traces/gorky-klim-samgin-ru.json) — provenance, legal boundary, revision-freeze status and next evidence.
+- [`source-edition-traces/gorky-klim-samgin-ru.revisions.json`](source-edition-traces/gorky-klim-samgin-ru.revisions.json) — deterministic four-part source-free revision-set identity and links to the exact per-part manifests.
 
 ## The Twelve Chairs traced coauthored multi-edition candidate
 

@@ -1,0 +1,46 @@
+{
+  "candidate_id": "gorky-klim-samgin-ru",
+  "capture_scope": {
+    "all_part_revision_wikitext_identities_frozen": true,
+    "composite_literary_body_identity_frozen": false,
+    "literary_body_extraction_frozen": false,
+    "literary_composition_frozen": false,
+    "source_text_committed": false
+  },
+  "diagnostic_ready": false,
+  "fantlab_source_edition_match": "unknown",
+  "gate_ready": false,
+  "m2_parity_admissible": false,
+  "manifest_version": "scriptorium-multi-page-source-revision-set-v1",
+  "order": "part ascending: 1, 2, 3, 4",
+  "ordered_revision_identity_sha256": "54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577",
+  "part_manifests": [
+    {
+      "manifest": "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part1.revision.json",
+      "part": 1,
+      "revision_id": 5733765,
+      "wikitext_sha256": "556dab4e3c66c8d597dd19f5db6ddae8c1eb52649a97025ff61d4ce388fad575"
+    },
+    {
+      "manifest": "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2.revision.json",
+      "part": 2,
+      "revision_id": 5198033,
+      "wikitext_sha256": "34dc8bf7d1dc77f9aa1686ef0ac348101beac19ccd97d467ee3857e014ad8853"
+    },
+    {
+      "manifest": "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part3.revision.json",
+      "part": 3,
+      "revision_id": 5138882,
+      "wikitext_sha256": "95d782223c9c6893131fbb2ed7a4a6c4b2c14aea074083721d9425b1d30c8182"
+    },
+    {
+      "manifest": "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part4.revision.json",
+      "part": 4,
+      "revision_id": 5724453,
+      "wikitext_sha256": "ce353961f4d76a7f6775456ce1df53d23f33c3073f2126c716fa69561d119bbb"
+    }
+  ],
+  "provider": "Russian Wikisource",
+  "total_revision_wikitext_character_count": 3228790,
+  "total_revision_wikitext_utf8_byte_count": 5902920
+}

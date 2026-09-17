@@ -1,0 +1,143 @@
+name: Klim Samgin source revisions
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-source-revisions.yml"
+      - "scriptorium/single_page_revision.py"
+      - "tests/test_single_page_revision.py"
+      - "tests/test_klim_samgin_revision_manifests.py"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part*.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.revisions.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Replay pinned Klim Samgin part revisions
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Capture exact pinned revision identities without source prose
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.single_page_revision capture \
+            --candidate-id gorky-klim-samgin-ru-part-1 \
+            --title 'Жизнь Клима Самгина (Горький)/Часть 1' \
+            --revision-id 5733765 \
+            --source-work-url 'https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_1' \
+            --permanent-source-url 'https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_1&oldid=5733765' \
+            --bibliographic-source 'М. Горький. Собрание сочинений. М.: ГИХЛ, 1952. Т. 19; Wikisource electronic source: Библиотека Мошкова.' \
+            --legal-basis public_domain_original_russian_work \
+            --output build/repro/gorky-klim-samgin-ru.part1.revision.observed.json
+          python -m scriptorium.single_page_revision capture \
+            --candidate-id gorky-klim-samgin-ru-part-2 \
+            --title 'Жизнь Клима Самгина (Горький)/Часть 2' \
+            --revision-id 5198033 \
+            --source-work-url 'https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_2' \
+            --permanent-source-url 'https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_2&oldid=5198033' \
+            --bibliographic-source 'М. Горький. Собрание сочинений. М.: ГИХЛ, 1952. Т. 20; Wikisource electronic source: Библиотека Мошкова.' \
+            --legal-basis public_domain_original_russian_work \
+            --output build/repro/gorky-klim-samgin-ru.part2.revision.observed.json
+          python -m scriptorium.single_page_revision capture \
+            --candidate-id gorky-klim-samgin-ru-part-3 \
+            --title 'Жизнь Клима Самгина (Горький)/Часть 3' \
+            --revision-id 5138882 \
+            --source-work-url 'https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_3' \
+            --permanent-source-url 'https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_3&oldid=5138882' \
+            --bibliographic-source 'М. Горький. Собрание сочинений. М.: ГИХЛ, 1952. Т. 21; Wikisource electronic source: Библиотека Мошкова.' \
+            --legal-basis public_domain_original_russian_work \
+            --output build/repro/gorky-klim-samgin-ru.part3.revision.observed.json
+          python -m scriptorium.single_page_revision capture \
+            --candidate-id gorky-klim-samgin-ru-part-4 \
+            --title 'Жизнь Клима Самгина (Горький)/Часть 4' \
+            --revision-id 5724453 \
+            --source-work-url 'https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_4' \
+            --permanent-source-url 'https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_4&oldid=5724453' \
+            --bibliographic-source 'М. Горький. Собрание сочинений. М.: ГИХЛ, 1953. Т. 22; Wikisource electronic source: Библиотека Мошкова.' \
+            --legal-basis public_domain_original_russian_work \
+            --output build/repro/gorky-klim-samgin-ru.part4.revision.observed.json
+
+      - name: Compare committed identities and replay exact revisions
+        run: |
+          set -euo pipefail
+          for part in 1 2 3 4; do
+            expected="corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part${part}.revision.json"
+            observed="build/repro/gorky-klim-samgin-ru.part${part}.revision.observed.json"
+            receipt="build/repro/gorky-klim-samgin-ru.part${part}.revision.replay.json"
+            cmp "$expected" "$observed"
+            python -m scriptorium.single_page_revision replay \
+              --manifest "$expected" \
+              --receipt "$receipt"
+          done
+
+      - name: Verify source-free ordered revision set
+        run: |
+          python - <<'PY'
+          import json
+          from hashlib import sha256
+          from pathlib import Path
+
+          trace = Path('corpus/candidates/source-edition-traces')
+          summary = json.loads((trace / 'gorky-klim-samgin-ru.revisions.json').read_text(encoding='utf-8'))
+          rows = []
+          forbidden = {'wikitext', 'content', 'body', 'text', 'source_text'}
+          for part in range(1, 5):
+              manifest = json.loads((trace / f'gorky-klim-samgin-ru.part{part}.revision.json').read_text(encoding='utf-8'))
+              assert manifest['capture_scope']['source_text_committed'] is False
+              assert manifest['capture_scope']['literary_body_extraction_frozen'] is False
+              assert not forbidden.intersection(manifest['source_identity'])
+              rows.append({'part': part, **manifest['source_identity']})
+          projection = [
+              {key: row[key] for key in (
+                  'part', 'title', 'page_id', 'revision_id', 'revision_timestamp',
+                  'mediawiki_sha1', 'wikitext_character_count',
+                  'wikitext_utf8_byte_count', 'wikitext_sha256'
+              )}
+              for row in rows
+          ]
+          payload = (json.dumps(projection, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode('utf-8')
+          assert sha256(payload).hexdigest() == summary['ordered_revision_identity_sha256']
+          assert summary['capture_scope']['all_part_revision_wikitext_identities_frozen'] is True
+          assert summary['capture_scope']['literary_body_extraction_frozen'] is False
+          assert summary['capture_scope']['literary_composition_frozen'] is False
+          assert summary['fantlab_source_edition_match'] == 'unknown'
+          assert summary['diagnostic_ready'] is False
+          assert summary['gate_ready'] is False
+          assert summary['m2_parity_admissible'] is False
+          print('SCRIPTORIUM_KLIM_REVISION_SET=' + json.dumps({
+              'candidate_id': summary['candidate_id'],
+              'revision_ids': [row['revision_id'] for row in rows],
+              'ordered_revision_identity_sha256': summary['ordered_revision_identity_sha256'],
+              'total_revision_wikitext_character_count': summary['total_revision_wikitext_character_count'],
+              'total_revision_wikitext_utf8_byte_count': summary['total_revision_wikitext_utf8_byte_count'],
+              'fantlab_source_edition_match': summary['fantlab_source_edition_match'],
+              'm2_parity_admissible': summary['m2_parity_admissible'],
+          }, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
+          PY
+
+      - name: Upload source-free capture and replay evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: klim-samgin-source-revisions
+          path: build/repro/gorky-klim-samgin-ru.part*.revision.*.json
+          if-no-files-found: error
+          retention-days: 7

@@ -2,8 +2,8 @@
 
 - Issue: #109
 - Prerequisite PR: #110 — merged as `c6d49b19f7f9d64b014b60f4ba76c5d542938fdc`
-- Current PR: #111
-- Status: `TARGET_ONLY_LST_SEMANTICS_AUTHORED_REVIEW_PENDING`
+- Target-only semantics PR: #111 — merged as `d3665bfb84ad84c91f5a99c64559267da2e1f41e`
+- Status: `TARGET_ONLY_LST_SEMANTICS_MERGED_CONTINUATION_OPEN`
 - Scope: corpus/provenance strengthening and source-graph correctness; no FantLab source-match or M2 promotion.
 
 ## Dependency prerequisite
@@ -22,8 +22,14 @@ Scriptorium now has a source-free, fail-closed contract at `corpus/candidates/so
 
 The source-free dependency inventory also found six `poemx1` template invocations and zero `<section>` tags / nested `#lst` calls in dependency oldid `2366546`. This exposes the next real provenance boundary: MediaWiki template-DOM expansion and any transitive template/parser state must be frozen or deterministically reproduced before a resolved Part 2 wikitext/body identity can be claimed.
 
+## Independent review and merge
+
+PR #111 exact head `18d4c2b36e2899e85d44d0166d2fb6f31353d9f9` received an independent later-run review with no blocking defect. It was 16 commits ahead / 0 behind `master`, changed 11 files, and had no inline review threads. Exact-head workflows `35214227300` (Klim source graph), `35214227381` (Pages), `35214227330` (frozen diagnostic), and `35214227371` (pinned pylem provider) all completed successfully. The Klim workflow ran 188 standard-library tests and replayed all five pinned revisions plus the committed target-only contract. The review also re-read the pinned upstream `LabeledSectionTransclusion.php` evidence and confirmed the cited zero-remaining-arguments branch.
+
+PR #111 was then marked Ready and squash-merged as `d3665bfb84ad84c91f5a99c64559267da2e1f41e`. Issue #109 intentionally remains open.
+
 ## Boundary / next trigger
 
-PR #111 was authored in this run and must receive a later independent exact-head review before merge. If accepted, continue Issue #109 by resolving the target-only MediaWiki expansion layer, starting with the observed `poemx1` dependency, then define fail-closed per-part literary extraction and deterministic Part 1 -> Part 2 -> Part 3 -> Part 4 composition before recording raw or `scriptorium-text-v1` composite digests.
+Continue Issue #109 by freezing or deterministically reproducing the target-only MediaWiki template-DOM expansion layer, starting with the observed six `poemx1` invocations. Do not treat current mutable template state as historical truth. Only after those parser/template dependencies replay deterministically should resolved Part 2 bytes, fail-closed per-part literary extraction, deterministic Part 1 -> Part 2 -> Part 3 -> Part 4 composition, or raw / `scriptorium-text-v1` composite digests be recorded.
 
 `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`; M2 remains **0/5 source-matched works**.

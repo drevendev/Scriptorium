@@ -1,25 +1,26 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 114
+STATE_REVISION: 115
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-17T05:50:06Z
-LAST_RESULT: SCRIP-CORPUS-018 / Issue #105 / PR #106 received an independent later-run exact-head review of `68a2dd51384ad6b0efbdff36ed2cf341897ea9ff` with no blocking defect, was marked Ready, and was squash-merged as `23925a0e8188937905bcf1e0250a4384b191c7e7`; Issue #105 closed completed. The merged unit replay-freezes the exact source-free revision-wikitext identities of all four retained Maxim Gorky *The Life of Klim Samgin* parts in deterministic order while deliberately leaving literary-body extraction/composition and FantLab analyzer-input identity unresolved.
-LAST_VERIFIED_PROGRESS: Immediately before merge, PR #106 was mergeable, 14 commits ahead / 0 behind master, with 13 changed files and no inline review threads. Exact-head workflows `35183988586` (Klim Samgin source revisions), `35183988845` (Scriptorium Pages), `35183988669` (frozen diagnostic), and `35183988582` (pinned pylem provider) all completed successfully. The dedicated replay workflow re-captured all four pinned revisions, byte-compared observed and committed source-free manifests, replayed each exact revision, and verified ordered identity SHA-256 `54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577`. Public provenance remains fail-closed: body identity is unfrozen, `fantlab_source_edition_match=unknown`, diagnostics/gate disabled, and M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-17T07:03:01Z
+LAST_RESULT: SCRIP-CORPUS-019 / Issue #107 / draft PR #108 froze a source-free literary-body identity for the already revision-frozen alternate `az.lib.ru` Russian Wikisource transcription of Alexander Grin's *Road to Nowhere*. Exact verified substantive head `67d3bf542a0de33b72b41f7a1a549cb2899e3292` has a fail-closed source-specific extraction/replay contract, body manifest, synchronized provenance/public navigation, and green Road/Pages/frozen-diagnostic workflows. The retained primary Pravda-1965 transcription family remains literary-body-unfrozen and neither public route is identified as FantLab's analyzer input.
+LAST_VERIFIED_PROGRESS: The alternate route at `oldid=5585836` now replays from exact page ID `1003775`, timestamp `2025-07-30T20:33:01Z`, MediaWiki SHA-1 `135933c3b9155bddb0356d0eb9644d11f55ba870` and wikitext SHA-256 `f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b`. Versioned extraction profile `scriptorium-road-nowhere-alt-wikisource-body-v1` produces 442,656 characters / 825,899 UTF-8 bytes with raw and `scriptorium-text-v1` normalized SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`. Exact-head runs `35192521006` (Road replay), `35192520928` (Pages), and `35192520936` (frozen diagnostic) all completed successfully. FantLab displays 438,439 characters, a diagnostic-only delta of +4,217 for the alternate body. `fantlab_source_edition_match=unknown`, overall diagnostics/gate remain disabled, and M2 remains 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-018
-ISSUE:          #105
-STATUS:         DONE
-PR:             #106
-MERGED_COMMIT:  23925a0e8188937905bcf1e0250a4384b191c7e7
-NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
-                Prefer strengthening a retained body-unfrozen or trace-only candidate when
-                a deterministic source-free extraction/composition identity can be bounded
-                and verified, or add another legally usable >=300k diversity candidate when
-                stronger evidence is available. Never infer FantLab input identity from
-                title, bibliography, count proximity or public-source freezing.
+UNIT_ID:        SCRIP-CORPUS-019
+ISSUE:          #107
+STATUS:         REVIEW_PENDING
+PR:             #108 (draft)
+AUTHORED_HEAD:  67d3bf542a0de33b72b41f7a1a549cb2899e3292
+NEXT_ACTION:    Independently review the then-current exact head of draft PR #108 before
+                selecting new normal-flow work. Confirm the committed alternate body
+                manifest replays byte-for-byte from pinned revision 5585836, inspect the
+                fail-closed Road-specific source-shape contract, public provenance wording,
+                changed-file scope and review threads, and require exact-head green checks.
+                Merge only if that later judgement finds no blocking defect. Do not infer
+                equivalence to the primary Pravda-1965 route or FantLab input.
 ```
 
 ## Current milestone gate
@@ -34,7 +35,8 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
+| P0 | Review draft PR #108 | recovery / independent judgement | Review the exact current SCRIP-CORPUS-019 head, required checks, body replay/provenance boundary and changed-file scope; merge only if safe | Must be a later-run judgement separated from the authoring run |
+| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Blocked until P0 review is resolved; preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
 
@@ -47,7 +49,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Petersburg** — first-1916-edition facsimile lead; Commons description revision is pinned but PDF bytes/OCR identity are not; no binary/source match claim.
 - **Hyperboloid of Engineer Garin** — frozen single-revision public-source candidate at Russian Wikisource `oldid=5014458`: page ID `1022517`, wikitext SHA-256 `fa0b099bba2d0f0e6ce395a16de76317afcd8bec8b23b52e455f97a9726a4de9`; versioned `scriptorium-hyperboloid-wikisource-body-v1` extraction reproduces 499066 characters / 930560 bytes with raw and normalized SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`. Direct print-edition identity remains unresolved and FantLab source match is unknown.
 - **Shining World** — 1965-source Wikisource family with 34 chapter subpages; chapter identities/composite remain unfrozen.
-- **Road to Nowhere** — primary Pravda-1965 source family remains unfrozen. The distinct `az.lib.ru` single-page route at `oldid=5585836` has a source-free frozen revision-wikitext identity (page ID `1003775`; SHA-256 `f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b`), but deterministic literary-body extraction/body digests are not frozen and neither route is identified as FantLab input.
+- **Road to Nowhere** — primary Pravda-1965 source family remains unfrozen. The distinct `az.lib.ru` single-page route at `oldid=5585836` now has replay-frozen revision-wikitext and literary-body identities under `scriptorium-road-nowhere-alt-wikisource-body-v1`: 442,656 characters / 825,899 bytes, raw and normalized SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`. FantLab displays 438,439 characters; the +4,217 delta is diagnostic-only. Neither route is identified as FantLab input.
 - **Running on Waves** — Detskaya literatura 1965 source-cited family with 35 chapters plus epilogue; literary subpage identities/composite remain unfrozen.
 - **The White Guard** — Wikisource explicitly mixes two bibliographic source families across chapters 1–11 and 12–20; all 20 chapter identities/composite remain unfrozen.
 - **The Twelve Chairs** — keep 40-chapter later 1938/1961 editorial family distinct from 41-chapter 1928 first standalone edition; neither literary body is frozen, and coauthorship prevents individual-author attribution without an explicit VOICE model.
@@ -70,6 +72,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - The repaired machine-readable candidate catalog agrees with the Hyperboloid trace/body manifests and no longer advertises the candidate as `traced_not_frozen`.
 - SCRIP-CORPUS-017 adds the standalone public Klim Samgin candidate page and provenance trace.
 - SCRIP-CORPUS-018 strengthens that page/trace with exact per-part revision identities and an ordered revision-set digest while explicitly retaining the body-unfrozen and FantLab-unknown boundary. It intentionally does not change the main parity catalog.
+- SCRIP-CORPUS-019 upgrades the Road to Nowhere public entry and provenance trace with a replay-frozen source-free alternate-body identity while explicitly leaving the retained primary Pravda-1965 family and FantLab-input identity unresolved.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers
@@ -81,6 +84,6 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 5. Frozen public-source candidates remain unmatched to FantLab input and therefore cannot advance M2.
 6. Petersburg lacks a Scriptorium-recorded PDF snapshot digest and deterministic OCR/page-extraction identity.
 7. Hyperboloid has a frozen revision and deterministic frozen literary-body identity but no direct bibliographic print-edition identity and no FantLab analyzer-input match; Shining World, Running on Waves, White Guard and Twelve Chairs remain trace-only/unfrozen at the literary-body level.
-8. Road to Nowhere has a frozen alternate revision-wikitext identity, but the primary 1965 literary family and the alternate route's literary-body extraction/body digests remain unfrozen; FantLab input remains undisclosed.
+8. Road to Nowhere now has a frozen alternate revision and deterministic frozen alternate literary-body identity, but the primary Pravda-1965 literary family remains unfrozen and no evidence ties either route to FantLab input.
 9. Klim Samgin has replay-frozen exact revision-wikitext identities for all four retained parts, but no candidate-specific literary-body extraction/composition contract or composite raw/normalized body digest; FantLab analyzer-input identity is still undisclosed.
 10. Pages live activation remains a repository-admin effect and is off.

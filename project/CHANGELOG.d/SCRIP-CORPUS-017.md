@@ -10,4 +10,4 @@
 - `fantlab_source_edition_match=unknown`, diagnostics remain disabled, and M2 remains 0/5.
 - Independent exact-head review accepted the provenance boundary but blocked merge because the new retained candidate was absent from `corpus/candidates/README.md` public navigation.
 - Recovery repair added a concise Klim Samgin trace-only section linking both the public candidate page and provenance trace, without changing catalog admission, diagnostics, source-match status or M2 progress.
-- The repaired head requires fresh CI and a later independent review before any Ready/merge decision.
+- A later independent review of repaired exact head `69744107743a6c0d7b35199dc8123c92dca2e13c` found no remaining blocker after successful Pages and pinned-provider workflows; PR #104 was marked Ready and squash-merged as `4240a9df5aae55c84a202327bbae6d3bef97e2df`, closing Issue #103.

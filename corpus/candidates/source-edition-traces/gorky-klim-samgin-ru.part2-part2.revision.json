@@ -1,0 +1,25 @@
+{
+  "bibliographic_source": "Wikisource dependency transcluded by the retained Part 2 page; electronic source family: Библиотека Мошкова.",
+  "candidate_id": "gorky-klim-samgin-ru-part-2-part2",
+  "capture_scope": {
+    "composite_identity_frozen": false,
+    "literary_body_extraction_frozen": false,
+    "revision_wikitext_identity_frozen": true,
+    "source_text_committed": false
+  },
+  "legal_basis": "public_domain_original_russian_work",
+  "manifest_version": "scriptorium-single-page-source-revision-v1",
+  "permanent_source_url": "https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_2/part2&oldid=2366546",
+  "provider": "Russian Wikisource",
+  "source_identity": {
+    "mediawiki_sha1": "899c3d348b8550486c2c6774b84bc3ff55495f43",
+    "page_id": 580081,
+    "revision_id": 2366546,
+    "revision_timestamp": "2016-11-29T05:49:23Z",
+    "title": "Жизнь Клима Самгина (Горький)/Часть 2/part2",
+    "wikitext_character_count": 583889,
+    "wikitext_sha256": "173054997b54b96241adc07aeb6f76624beb497f94602452d7f9e4e57b0c6996",
+    "wikitext_utf8_byte_count": 1058733
+  },
+  "source_work_url": "https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_2/part2"
+}

@@ -1,26 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 115
+STATE_REVISION: 116
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-17T07:03:01Z
-LAST_RESULT: SCRIP-CORPUS-019 / Issue #107 / draft PR #108 froze a source-free literary-body identity for the already revision-frozen alternate `az.lib.ru` Russian Wikisource transcription of Alexander Grin's *Road to Nowhere*. Exact verified substantive head `67d3bf542a0de33b72b41f7a1a549cb2899e3292` has a fail-closed source-specific extraction/replay contract, body manifest, synchronized provenance/public navigation, and green Road/Pages/frozen-diagnostic workflows. The retained primary Pravda-1965 transcription family remains literary-body-unfrozen and neither public route is identified as FantLab's analyzer input.
-LAST_VERIFIED_PROGRESS: The alternate route at `oldid=5585836` now replays from exact page ID `1003775`, timestamp `2025-07-30T20:33:01Z`, MediaWiki SHA-1 `135933c3b9155bddb0356d0eb9644d11f55ba870` and wikitext SHA-256 `f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b`. Versioned extraction profile `scriptorium-road-nowhere-alt-wikisource-body-v1` produces 442,656 characters / 825,899 UTF-8 bytes with raw and `scriptorium-text-v1` normalized SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`. Exact-head runs `35192521006` (Road replay), `35192520928` (Pages), and `35192520936` (frozen diagnostic) all completed successfully. FantLab displays 438,439 characters, a diagnostic-only delta of +4,217 for the alternate body. `fantlab_source_edition_match=unknown`, overall diagnostics/gate remain disabled, and M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-17T07:50:00Z
+LAST_RESULT: SCRIP-CORPUS-019 / Issue #107 / PR #108 received an independent later-run exact-head review of `ade0921c385ddb7ff8265c672e88197813123c31` with no blocking defect, was marked Ready, and was squash-merged as `9a73f7cb43f5770e4134c1b3655174b6718756cc`; Issue #107 closed completed. The merged unit replay-freezes a source-free literary-body identity for the already revision-frozen alternate `az.lib.ru` Russian Wikisource transcription of Alexander Grin's *Road to Nowhere* while deliberately leaving the retained primary Pravda-1965 family and FantLab analyzer-input identity unresolved.
+LAST_VERIFIED_PROGRESS: Immediately before merge, PR #108 was mergeable, 16 commits ahead / 0 behind master, with 11 changed files and no inline review threads. Exact-head workflows `35192693840` (Road replay), `35192693818` (Scriptorium Pages), `35192693735` (frozen diagnostic), and `35192693699` (pinned pylem provider) all completed successfully. The dedicated Road job re-ran the standard-library suite, re-captured and byte-compared the exact revision and literary-body manifests, replayed the source-specific body contract, and passed source-free assertions. The frozen alternate body is 442,656 characters / 825,899 UTF-8 bytes with raw and normalized SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`. FantLab source identity remains unknown and M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-019
 ISSUE:          #107
-STATUS:         REVIEW_PENDING
-PR:             #108 (draft)
-AUTHORED_HEAD:  67d3bf542a0de33b72b41f7a1a549cb2899e3292
-NEXT_ACTION:    Independently review the then-current exact head of draft PR #108 before
-                selecting new normal-flow work. Confirm the committed alternate body
-                manifest replays byte-for-byte from pinned revision 5585836, inspect the
-                fail-closed Road-specific source-shape contract, public provenance wording,
-                changed-file scope and review threads, and require exact-head green checks.
-                Merge only if that later judgement finds no blocking defect. Do not infer
-                equivalence to the primary Pravda-1965 route or FantLab input.
+STATUS:         DONE
+PR:             #108
+MERGED_COMMIT:  9a73f7cb43f5770e4134c1b3655174b6718756cc
+NEXT_ACTION:    Select the next dependency-satisfied SCRIP-CORPUS continuation unit.
+                Prefer strengthening a retained body-unfrozen or trace-only candidate when
+                a deterministic source-free extraction/composition identity can be bounded
+                and verified, or add another legally usable >=300k diversity candidate when
+                stronger evidence is available. Never infer FantLab input identity from
+                title, bibliography, count proximity or public-source freezing.
 ```
 
 ## Current milestone gate
@@ -35,8 +34,7 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | Review draft PR #108 | recovery / independent judgement | Review the exact current SCRIP-CORPUS-019 head, required checks, body replay/provenance boundary and changed-file scope; merge only if safe | Must be a later-run judgement separated from the authoring run |
-| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Blocked until P0 review is resolved; preserve translation/edition identity and explicit legal provenance |
+| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
 

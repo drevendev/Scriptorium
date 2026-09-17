@@ -2,10 +2,12 @@
 
 - Date: 2026-09-17
 - Issue: #109
-- PR: #114 (draft; independent review pending)
+- PR: #114 — merged
 - Branch: `scrip-corpus-020-poemx1-frame`
 - Base at selection: `41b7effb148247164398e063e55795855e68b436`
-- Result: `POEMX1_PARAMETER_SURFACE_AUTHORED_REVIEW_PENDING`
+- Reviewed exact head: `337ef93d45bf960c46051bafb5ea13a179f24d6e`
+- Squash merge: `497303004ba30e251560b8d203433e9a647f9d00`
+- Result: `POEMX1_PARAMETER_SURFACE_MERGED_CONTINUATION_OPEN`
 
 ## Bounded unit
 
@@ -23,11 +25,11 @@ Focused tests cover defined/non-empty values, defined-empty values, missing defa
 
 ## Official semantics evidence
 
-The bounded behavior is tied to current official MediaWiki documentation:
+The bounded behavior was independently re-checked against current official MediaWiki documentation during merge review:
 
 - `https://www.mediawiki.org/wiki/Help:Templates` — triple-brace template parameters, omitted/default behavior, and the distinction between omitted and explicitly empty arguments.
 - `https://www.mediawiki.org/wiki/Help:Parser_functions_in_templates` — undefined versus defined-empty parameters and empty defaults.
-- `https://www.mediawiki.org/wiki/Manual:Template_expansion_process` — template expansion context; this Scriptorium profile intentionally supports only literal parameter names and stops before the broader expansion process.
+- `https://www.mediawiki.org/wiki/Manual:Template_expansion_process` — formal parameters use expanded argument values or expanded defaults when undefined; this Scriptorium profile intentionally supports only the literal parameter layer and stops before broader parser/template expansion.
 
 ## Exact-source observation
 
@@ -41,24 +43,36 @@ The generated evidence established:
 - exactly one bare no-default reference: `fixed` x1
 - empty-default references: `1` x2, `2` x1, `3` x2, `fixed` x1, `poem` x1, `width` x1
 
-The generated artifact is committed as `corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.parameters.json`, and the dedicated workflow now requires a byte-for-byte replay match.
+The generated artifact is committed as `corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.parameters.json`, and the dedicated workflow requires a byte-for-byte replay match.
 
 ## Fail-closed correction during authoring
 
-The first authored-head CI run `35249020020` ran **205** tests and had one failure in the new dynamic-parameter test. The implementation did fail closed as intended, but the test over-specified that rejection must occur at the literal-name validator. The structurally ambiguous input was rejected earlier by the brace parser as `unclosed MediaWiki brace construct`. The test was repaired to assert the actual contract—`ValueError` fail-closed behavior—without broadening accepted syntax. The subsequent 205-test run was green.
+The first authored-head CI run `35249020020` ran **205** tests and had one failure in the new dynamic-parameter test. The implementation did fail closed as intended, but the test over-specified that rejection must occur at the literal-name validator. The structurally ambiguous input was rejected earlier by the brace parser as `unclosed MediaWiki brace construct`. The test was repaired to assert the actual contract—`ValueError` fail-closed behavior—without broadening accepted syntax.
+
+## Independent exact-head review and merge
+
+The later review inspected exact head `337ef93d45bf960c46051bafb5ea13a179f24d6e`. The branch was **10 commits ahead / 0 behind** `master`, changed 9 files, remained mergeable, and had no inline review threads. No blocking defect was found in the bounded literal-parameter implementation, tests, source-free manifest, workflow replay contract, provenance wording, or public representation.
+
+All five exact-head workflows were green before merge:
+
+- `35249613642` — Klim Samgin historical template dependency; exact checkout of `337ef93d45bf960c46051bafb5ea13a179f24d6e`, standard-library suite, historical oldid re-resolution, raw-shape/inclusion/parameter regeneration, byte-for-byte evidence comparison, and exact replay;
+- `35249613527` — Klim Samgin source revisions;
+- `35249613614` — Scriptorium Pages;
+- `35249613600` — Scriptorium frozen diagnostic;
+- `35249613705` — Scriptorium pinned pylem provider.
+
+A COMMENT review was recorded against the exact head, the PR was marked Ready, and PR #114 was squash-merged as `497303004ba30e251560b8d203433e9a647f9d00`. Issue #109 intentionally remains open because the literary-body objective is not yet complete.
 
 ## Public representation
 
-`corpus/candidates/gorky-klim-samgin-ru.md` now exposes the source-free post-inclusion input digest and exact literal parameter inventory, while stating that concrete invocation binding, recursive inserted-value expansion, parser functions, `#tag:poem`, historical render equivalence and resolved Part 2 remain unresolved.
+`corpus/candidates/gorky-klim-samgin-ru.md` exposes the source-free post-inclusion input digest and exact literal parameter inventory, while stating that concrete invocation binding, recursive inserted-value expansion, parser functions, `#tag:poem`, historical render equivalence and resolved Part 2 remain unresolved.
 
-The machine-readable provenance trace references the new parameter manifest and keeps `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`.
+The machine-readable provenance trace references the parameter manifest and keeps `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`.
 
 No source prose is committed.
 
 ## Evidence boundary / next action
 
-PR #114 remains Draft because this run authored the substantive change. A later independent run must review the exact final head and required checks before merge judgement.
-
-If merged, the next bounded Issue #109 layer is source-free binding of the six concrete `poemx1` invocation argument shapes to the frozen literal parameter surface, followed by only the required `#expr`, `#if`, `#ifeq`, `#iferror` and `#tag:poem` behavior. Resolved Part 2 and four-part literary-body digests remain prohibited until the complete target-only expansion layer replays deterministically.
+The next bounded Issue #109 layer is source-free binding of the six concrete `poemx1` invocation argument shapes to the frozen literal parameter surface, followed by only the required `#expr`, `#if`, `#ifeq`, `#iferror` and `#tag:poem` behavior. Resolved Part 2 and four-part literary-body digests remain prohibited until the complete target-only expansion layer replays deterministically.
 
 M2 remains **0/5 source-matched works**.

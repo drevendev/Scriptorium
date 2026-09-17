@@ -1,0 +1,25 @@
+{
+  "bibliographic_source": "М. Горький. Собрание сочинений. М.: ГИХЛ, 1952. Т. 20; Wikisource electronic source: Библиотека Мошкова.",
+  "candidate_id": "gorky-klim-samgin-ru-part-2",
+  "capture_scope": {
+    "composite_identity_frozen": false,
+    "literary_body_extraction_frozen": false,
+    "revision_wikitext_identity_frozen": true,
+    "source_text_committed": false
+  },
+  "legal_basis": "public_domain_original_russian_work",
+  "manifest_version": "scriptorium-single-page-source-revision-v1",
+  "permanent_source_url": "https://ru.wikisource.org/w/index.php?title=Жизнь_Клима_Самгина_(Горький)/Часть_2&oldid=5198033",
+  "provider": "Russian Wikisource",
+  "source_identity": {
+    "mediawiki_sha1": "2d5b9de21f539d12b34c72caa62f228998eaf80c",
+    "page_id": 580077,
+    "revision_id": 5198033,
+    "revision_timestamp": "2024-11-26T11:16:35Z",
+    "title": "Жизнь Клима Самгина (Горький)/Часть 2",
+    "wikitext_character_count": 581888,
+    "wikitext_sha256": "34dc8bf7d1dc77f9aa1686ef0ac348101beac19ccd97d467ee3857e014ad8853",
+    "wikitext_utf8_byte_count": 1054386
+  },
+  "source_work_url": "https://ru.wikisource.org/wiki/Жизнь_Клима_Самгина_(Горький)/Часть_2"
+}

@@ -1,0 +1,59 @@
+{
+  "boundary": "This artifact freezes only the documented partial-transclusion selection layer and the remaining unresolved dependency classes for the pinned template revision. It does not claim MediaWiki parser expansion, extension-tag rendering, or historical render equivalence.",
+  "candidate_id": "gorky-klim-samgin-ru-poemx1-template",
+  "capture_scope": {
+    "effective_dependency_graph_frozen": true,
+    "extension_tag_expansion_reproduced": false,
+    "historical_render_equivalence_proven": false,
+    "magic_word_expansion_reproduced": false,
+    "parser_function_expansion_reproduced": false,
+    "partial_transclusion_control_semantics_reproduced": true,
+    "source_text_committed": false,
+    "template_parameter_expansion_reproduced": false,
+    "transclusion_input_digest_recorded": false
+  },
+  "control_tag_counts": {
+    "includeonly_pairs": 1,
+    "includeonly_self_closing": 0,
+    "noinclude_pairs": 2,
+    "noinclude_self_closing": 0,
+    "onlyinclude_pairs": 0,
+    "onlyinclude_self_closing": 0
+  },
+  "effective_dependency_graph": {
+    "extension_tag_targets": {
+      "poem": 1
+    },
+    "html_tag_name_counts": {
+      "div": 6
+    },
+    "magic_word_counts": {},
+    "ordinary_template_counts": {},
+    "parser_function_counts": {
+      "#expr": 2,
+      "#if": 5,
+      "#ifeq": 5,
+      "#iferror": 1,
+      "#tag": 1
+    }
+  },
+  "manifest_version": "scriptorium-template-transclusion-shape-v1",
+  "preprocessing_profile": "scriptorium-mediawiki-transclusion-controls-v1",
+  "research_date": "2026-09-17",
+  "semantics_evidence": [
+    {
+      "claim": "noinclude is excluded; includeonly is included; onlyinclude limits transclusion to onlyinclude content",
+      "url": "https://www.mediawiki.org/wiki/Help:Transclusion"
+    },
+    {
+      "claim": "onlyinclude takes precedence over content outside onlyinclude, including includeonly outside it",
+      "url": "https://www.mediawiki.org/wiki/Help:Templates"
+    }
+  ],
+  "source_revision": {
+    "revision_id": 5142743,
+    "title": "Шаблон:Poemx1",
+    "wikitext_sha256": "fa7e35686da5ce4c62986a7e8bfc72f2dba067118218d656b2f0983e5cfa06db"
+  },
+  "source_text_included": false
+}

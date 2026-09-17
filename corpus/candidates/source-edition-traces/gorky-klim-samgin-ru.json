@@ -65,13 +65,14 @@
     "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
     "source_text_committed": false,
     "immutable_identity": {
-      "status": "part_dependency_lst_poemx1_revision_inclusion_and_literal_parameter_surface_frozen_body_unfrozen",
+      "status": "part_dependency_lst_poemx1_revision_inclusion_parameter_surface_and_invocation_bindings_frozen_body_unfrozen",
       "revision_set_manifest": "gorky-klim-samgin-ru.revisions.json",
       "part2_transclusion_contract": "gorky-klim-samgin-ru.part2-lst.json",
       "poemx1_revision_manifest": "gorky-klim-samgin-ru.poemx1-template.revision.json",
       "poemx1_raw_shape_manifest": "gorky-klim-samgin-ru.poemx1-template.shape.json",
       "poemx1_transclusion_manifest": "gorky-klim-samgin-ru.poemx1-template.transclusion.json",
       "poemx1_parameter_manifest": "gorky-klim-samgin-ru.poemx1-template.parameters.json",
+      "poemx1_invocation_binding_manifest": "gorky-klim-samgin-ru.poemx1-template.bindings.json",
       "ordered_revision_identity_sha256": "54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577",
       "total_part_revision_wikitext_character_count": 3228790,
       "total_part_revision_wikitext_utf8_byte_count": 5902920,
@@ -88,10 +89,10 @@
         "documented MediaWiki partial-transclusion control semantics applied to pinned poemx1: two noinclude pairs, one includeonly pair, zero onlyinclude pairs; the raw doc invocation and raw PAGENAME occurrence are excluded from transclusion",
         "effective unresolved poemx1 dependency graph after inclusion selection: no ordinary templates and no magic words; #expr x2, #if x5, #ifeq x5, #iferror x1, #tag x1 targeting poem",
         "post-inclusion input SHA-256 86ad628a9d8fc3d904fd513a1b4335f4e9f816ceedfa2af736e8e3a94e32ffbf with 21 literal triple-brace parameter references across names 1, 2, 3, fixed, poem, small and width; missing-versus-defined-empty/default behavior is reproduced only for literal names",
+        "six concrete poemx1 invocations source-freeze to two anonymous arguments each: parameter 1 is explicitly defined empty in all six, parameter 2 is defined non-empty in all six, 3/fixed/poem/small/width are omitted in all six, with no duplicate or out-of-surface effective bindings",
         "per-part GIKhL 1952/1953 volume declarations exposed by Wikisource"
       ],
       "unfrozen_components": [
-        "binding the six concrete poemx1 invocation argument lists into template frames",
         "recursive MediaWiki expansion of inserted parameter argument wikitext and dynamic parameter-name behavior outside the literal-name profile",
         "MediaWiki parser-function behavior for #expr, #if, #ifeq and #iferror plus #tag:poem extension rendering",
         "historical render equivalence for the inferred poemx1 as-of revision anchor",
@@ -101,7 +102,7 @@
         "raw and scriptorium-text-v1 normalized composite literary-body digests",
         "the relationship between FantLab's uploaded analyzer input and this Wikisource/Library Moshkov transcription family"
       ],
-      "reason": "The retained Part 2 call is target-only and delegates the dependency to normal MediaWiki frame expansion. Scriptorium now freezes the exact target revision, an inferred historical poemx1 revision anchor, the documented inclusion-control layer, and the literal triple-brace parameter-reference/default surface of the post-selection template input. The remaining ordinary-template and magic-word graph is empty, but concrete invocation argument binding, recursive expansion of inserted argument values, parser functions and #tag behavior remain unresolved, so no historical render, resolved Part 2 or literary-body digest is claimed."
+      "reason": "The retained Part 2 call is target-only and delegates the dependency to normal MediaWiki frame expansion. Scriptorium now freezes the exact target revision, an inferred historical poemx1 revision anchor, documented inclusion controls, the literal triple-brace parameter surface, and the source-free concrete frame bindings for all six real invocations. Every observed invocation defines anonymous parameter 1 as empty and parameter 2 as non-empty while omitting the other frozen surface names. Recursive inserted-value expansion, parser functions and #tag behavior remain unresolved, so no historical render, resolved Part 2 or literary-body digest is claimed."
     }
   },
   "legal_boundary": {
@@ -117,7 +118,7 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "revision_wikitext_source_graph_target_only_lst_poemx1_revision_inclusion_and_literal_parameter_surface_frozen_body_unfrozen",
+    "source_identity_status": "revision_wikitext_source_graph_target_only_lst_poemx1_revision_inclusion_parameter_surface_and_invocation_bindings_frozen_body_unfrozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
@@ -131,13 +132,13 @@
       "The Part 2 invocation is exactly target-only rather than labeled-section selection; upstream LabeledSectionTransclusion source shows this shape expands the whole target template DOM through the MediaWiki frame.",
       "The inferred historical poemx1 anchor is pinned at oldid 5142743, and the documented inclusion-control layer proves that its raw doc invocation and raw PAGENAME occurrence are excluded; no ordinary template or magic-word dependency remains.",
       "The post-inclusion template input has a replay-frozen source-free literal parameter surface: 21 references across 1, 2, 3, fixed, poem, small and width, with literal missing/default/defined-empty behavior captured without source prose.",
-      "Concrete invocation argument binding, recursive expansion of inserted values, #expr/#if/#ifeq/#iferror and #tag:poem remain outside the reproduced historical MediaWiki expansion layer.",
+      "All six concrete poemx1 calls are now source-free frame-bound: each has two anonymous arguments, parameter 1 explicitly empty and parameter 2 non-empty; all other frozen surface names are omitted.",
+      "Recursive expansion of inserted values, #expr/#if/#ifeq/#iferror and #tag:poem remain outside the reproduced historical MediaWiki expansion layer.",
       "Revision/source-semantic freezing is not a literary-body identity: resolved Part 2, deterministic extraction/composition and composite raw/normalized digests remain unfrozen.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Bind and source-freeze the six concrete poemx1 invocation argument shapes to the now-frozen literal parameter surface, preserving a fail-closed boundary for dynamic names and recursive inserted-value expansion.",
-      "Reproduce only the evidenced remaining parser behavior: #expr, #if, #ifeq, #iferror and #tag:poem, while preserving the inferred historical-anchor boundary.",
+      "Under the now-frozen observed frame shape (1 defined empty, 2 defined non-empty, 3/fixed/poem/small/width omitted), reproduce only the evidenced remaining #expr, #if, #ifeq, #iferror and #tag:poem behavior while preserving recursive inserted-value and inferred historical-anchor boundaries.",
       "Only after the target-only expansion layer is reproducible, define deterministic fail-closed literary-body extraction for each frozen part and compose Part 1 -> Part 2 -> Part 3 -> Part 4.",
       "Record raw and scriptorium-text-v1 normalized composite digests only after exact replay succeeds.",
       "Only after immutable literary-body identity exists, consider main parity-catalog admission and source-bound diagnostics while retaining the unknown FantLab source match.",

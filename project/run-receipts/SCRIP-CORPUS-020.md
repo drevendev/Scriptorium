@@ -2,10 +2,11 @@
 
 - Date: 2026-09-17
 - Issue: #109
-- PR: #112 — draft, independent review pending
+- PR: #112 — merged as `aae7290f6056831bd291ac8a7a59100bad0ff4e8`
 - Branch: `agent/scriptorium-corpus-020-poemx1-history`
 - Base at selection: `7798c76f80add8fac45db4aee3361b47f87cb7e4`
-- Result: `POEMX1_HISTORY_AUTHORED_REVIEW_PENDING`
+- Reviewed exact head: `4626bbeb0b99c12dd78c5d1b4e45e5a04581d72d`
+- Result: `POEMX1_HISTORY_MERGED_CONTINUATION_OPEN`
 
 ## Selected bounded unit
 
@@ -55,11 +56,19 @@ This artifact explicitly does **not** apply MediaWiki `noinclude` / `includeonly
 
 The first exact-head capture run `35223860049` completed successfully and ran **192** standard-library tests while establishing the selected template revision identity. A later strict replay run `35224056659` again passed all 192 tests, the Part 2 dependency guard, live template capture and the corrected v2 source-shape probe, then failed at the intended byte comparison because the newly hand-copied committed manifest had one malformed percent-encoded character sequence in `source_work_url`. That authored-data defect was repaired from the workflow's generated manifest, and the workflow was tightened so both manifest and shape artifacts are mandatory and byte-compared before exact replay.
 
-Because this run authored the substantive change, it does not self-approve or merge PR #112. The final exact head must receive independent later-run judgement even if all checks are green.
+Final exact-head run `35224478878` checked out `4626bbeb0b99c12dd78c5d1b4e45e5a04581d72d`, passed **192** standard-library tests, required the existing six-`poemx1` Part 2 shape, live-resolved the historical template revision, regenerated the corrected source-free raw-shape evidence, byte-compared both committed evidence files, and replayed exact oldid `5142743`. Exact-head Pages run `35224478838`, frozen diagnostic run `35224478864`, and pinned-pylem provider run `35224478848` also completed successfully.
+
+## Independent review and merge
+
+A later independent run re-read the exact PR head, 9-file scope, historical resolver, manifest validation/replay, source-free shape probe, public provenance wording and durable-state changes. PR #112 was mergeable, 14 commits ahead / 0 behind `master`, with no inline review threads. No blocking defect was found.
+
+The review specifically preserved the uncertainty boundary: `inferred_reconstruction_anchor` is not historical render proof; `historical_render_equivalence_proven=false`; `template_expansion_reproduced=false`; and the raw source-shape artifact does not claim MediaWiki inclusion semantics or an effective dependency graph. Resolved Part 2/body identity, FantLab input identity and M2 admission remain unavailable.
+
+PR #112 was marked Ready and squash-merged as `aae7290f6056831bd291ac8a7a59100bad0ff4e8`. Issue #109 remains open for continuation.
 
 ## Public representation
 
-`corpus/candidates/gorky-klim-samgin-ru.md` now exposes the exact `poemx1` as-of revision identity and the raw structural boundary. It states that the timestamp policy is inferred reconstruction evidence rather than proof of MediaWiki historical render state, and it keeps resolved Part 2/body identities unavailable.
+`corpus/candidates/gorky-klim-samgin-ru.md` exposes the exact `poemx1` as-of revision identity and the raw structural boundary. It states that the timestamp policy is inferred reconstruction evidence rather than proof of MediaWiki historical render state, and it keeps resolved Part 2/body identities unavailable.
 
 No source prose was committed.
 
@@ -71,4 +80,4 @@ The new template anchor narrows the MediaWiki-expansion problem but does not pro
 
 ## Next action
 
-Independently review the final exact head of draft PR #112 and merge the bounded historical-template identity prerequisite only if required checks/evidence remain clean. Keep Issue #109 open. The next continuation should apply/freeze MediaWiki inclusion semantics to pinned `poemx1`, determine the effective transclusion dependency graph, then reproduce the evidenced parser-function and `#tag:poem` behavior before resolving Part 2 bytes.
+Continue Issue #109 in a later bounded unit by applying/freeze-testing MediaWiki `noinclude` / `includeonly` / `onlyinclude` semantics to pinned `poemx1`, determine the effective transclusion dependency graph, and reproduce only the evidenced parser-function / `#tag:poem` behavior before resolving Part 2 bytes. Keep historical render equivalence explicitly unproven until that expansion layer is deterministic.

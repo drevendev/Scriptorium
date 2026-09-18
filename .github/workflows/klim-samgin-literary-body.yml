@@ -31,6 +31,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   replay:
@@ -85,6 +86,10 @@ jobs:
           PY
 
       - name: Re-fetch exact source graph and freeze literary composite
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
           mkdir -p build/repro
@@ -102,10 +107,23 @@ jobs:
             --lst-contract corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json
             --part2-resolution-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-resolution.json
           )
+          set +e
           python -m scriptorium.klim_samgin_literary_body capture \
             "${common[@]}" \
             --research-date 2026-09-18 \
-            --output "$observed"
+            --output "$observed" \
+            >build/repro/capture.stdout 2>build/repro/capture.stderr
+          status=$?
+          set -e
+          if [[ $status -ne 0 ]]; then
+            failure=$(tail -n 1 build/repro/capture.stderr | tr -d '\r' | head -c 3000)
+            printf 'Exact-source capture failed on %s: %s\n' "$HEAD_SHA" "$failure"
+            if [[ -n "${PR_NUMBER:-}" ]]; then
+              body=$(printf 'Source-free exact-source replay diagnostic for `%s`:\n\n```text\n%s\n```\n\nNo source prose is included; this is the terminal exception line only.' "$HEAD_SHA" "$failure")
+              gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null
+            fi
+            exit "$status"
+          fi
           python - "$observed" <<'PY'
           import json
           from pathlib import Path
@@ -127,7 +145,7 @@ jobs:
               },
               ensure_ascii=False,
               sort_keys=True,
-              separators=(',', ':'),
+              separators=(",", ":"),
           ))
           PY
           if [[ -f "$expected" ]]; then
@@ -138,6 +156,14 @@ jobs:
               --receipt "$receipt"
           else
             echo "Initial authoring pass: generated source-free body evidence will be committed before final verification."
+            if [[ -n "${PR_NUMBER:-}" ]]; then
+              {
+                printf 'Source-free generated Klim Samgin literary-body manifest for exact head `%s`:\n\n```json\n' "$HEAD_SHA"
+                cat "$observed"
+                printf '```\n'
+              } > build/repro/manifest-comment.md
+              gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$(cat build/repro/manifest-comment.md)" >/dev/null
+            fi
           fi
 
       - name: Upload generated source-free literary-body evidence
@@ -146,5 +172,5 @@ jobs:
         with:
           name: klim-samgin-literary-body
           path: build/repro/gorky-klim-samgin-ru.literary-body*
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 7

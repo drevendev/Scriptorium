@@ -1,0 +1,75 @@
+{
+  "candidate_id": "grin-running-on-waves-ru",
+  "capture_scope": {
+    "composite_identity_frozen": false,
+    "fantlab_source_edition_match": "unknown",
+    "literary_body_extraction_frozen": false,
+    "literary_page_revisions_frozen": false,
+    "route_inventory_frozen": true,
+    "source_text_committed": false
+  },
+  "excluded_distinct_routes": [
+    {
+      "bibliographic_source": "А.С. Грин. Собрание сочинений: Правда; Москва; 1980",
+      "relationship": "distinct_transcription_route_not_composed_into_primary",
+      "revision_id": 5655654,
+      "source": "az.lib.ru",
+      "title": "Бегущая по волнам (Грин)/Версия 2"
+    }
+  ],
+  "manifest_version": "scriptorium-running-waves-route-inventory-v1",
+  "primary_route": {
+    "bibliographic_source": "А. Грин. Алые паруса. Бегущая по волнам. Золотая цепь. — М.: Дет. лит., 1965. — (Библиотека приключений).",
+    "work_index_revision_id": 2595407,
+    "work_title": "Бегущая по волнам (Грин)",
+    "work_url": "https://ru.wikisource.org/wiki/Бегущая_по_волнам_(Грин)"
+  },
+  "provider": "Russian Wikisource",
+  "route_inventory_witness": {
+    "category_revision_id": 4715419,
+    "category_title": "Категория:Бегущая по волнам (Грин)",
+    "category_url": "https://ru.wikisource.org/wiki/Категория:Бегущая_по_волнам_(Грин)",
+    "listed_page_count": 37,
+    "literary_subpage_count": 36,
+    "literary_titles": [
+      "Бегущая по волнам (Грин)/1",
+      "Бегущая по волнам (Грин)/2",
+      "Бегущая по волнам (Грин)/3",
+      "Бегущая по волнам (Грин)/4",
+      "Бегущая по волнам (Грин)/5",
+      "Бегущая по волнам (Грин)/6",
+      "Бегущая по волнам (Грин)/7",
+      "Бегущая по волнам (Грин)/8",
+      "Бегущая по волнам (Грин)/9",
+      "Бегущая по волнам (Грин)/10",
+      "Бегущая по волнам (Грин)/11",
+      "Бегущая по волнам (Грин)/12",
+      "Бегущая по волнам (Грин)/13",
+      "Бегущая по волнам (Грин)/14",
+      "Бегущая по волнам (Грин)/15",
+      "Бегущая по волнам (Грин)/16",
+      "Бегущая по волнам (Грин)/17",
+      "Бегущая по волнам (Грин)/18",
+      "Бегущая по волнам (Грин)/19",
+      "Бегущая по волнам (Грин)/20",
+      "Бегущая по волнам (Грин)/21",
+      "Бегущая по волнам (Грин)/22",
+      "Бегущая по волнам (Грин)/23",
+      "Бегущая по волнам (Грин)/24",
+      "Бегущая по волнам (Грин)/25",
+      "Бегущая по волнам (Грин)/26",
+      "Бегущая по волнам (Грин)/27",
+      "Бегущая по волнам (Грин)/28",
+      "Бегущая по волнам (Грин)/29",
+      "Бегущая по волнам (Грин)/30",
+      "Бегущая по волнам (Грин)/31",
+      "Бегущая по волнам (Грин)/32",
+      "Бегущая по волнам (Грин)/33",
+      "Бегущая по волнам (Грин)/34",
+      "Бегущая по волнам (Грин)/35",
+      "Бегущая по волнам (Грин)/Эпилог"
+    ],
+    "main_page_title": "Бегущая по волнам (Грин)",
+    "witness_scope": "The permanent category revision witnesses the listed route topology only; it does not freeze the literary subpages' revision/content identities."
+  }
+}

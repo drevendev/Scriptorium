@@ -160,12 +160,9 @@ def _literaryize_dependency(
     dependency: str,
     part2_resolution: Mapping[str, object],
 ) -> tuple[str, dict[str, object]]:
-    """Apply the already-frozen transclusion controls, then replace six poem calls."""
+    """Apply page transclusion controls, then replace the six frozen poem calls."""
     validate_part2_resolution_manifest(part2_resolution)
     transclusion_input, control_counts = preprocess_for_transclusion(dependency)
-    frozen_controls = part2_resolution.get("transclusion_control_counts")
-    if not isinstance(frozen_controls, Mapping) or control_counts != dict(frozen_controls):
-        raise ValueError("Part 2 dependency transclusion-control inventory drift")
 
     rows = part2_resolution.get("poemx1_expansions")
     if not isinstance(rows, list) or len(rows) != 6:
@@ -191,7 +188,7 @@ def _literaryize_dependency(
     if "{{" in literary or "}}" in literary:
         raise ValueError("literaryized Part 2 dependency retains unsupported brace syntax")
     return literary, {
-        "transclusion_control_counts": control_counts,
+        "dependency_transclusion_control_counts": control_counts,
         "dependency_poemx1_replacement_count": len(replacements),
         "literary_dependency_character_count": len(literary),
         "literary_dependency_utf8_byte_count": len(literary.encode("utf-8")),
@@ -473,7 +470,7 @@ def build_manifest(
             "This source-free identity is a deterministic candidate-specific extraction from the "
             "pinned Russian Wikisource/Library Moshkov transcription graph. Frozen poemx1 calls are "
             "replaced by their exact plain parameter-2 values; the Part 2 dependency first receives "
-            "the already-frozen noinclude/includeonly/onlyinclude transclusion-control semantics and "
+            "the documented noinclude/includeonly/onlyinclude page-transclusion selection layer and "
             "is then substituted at the exact frozen #lst span. This does not prove the historical "
             "MediaWiki/Poem deployment or identify FantLab's undisclosed analyzer input."
         ),

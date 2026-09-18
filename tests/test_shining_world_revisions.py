@@ -37,22 +37,10 @@ class ShiningWorldRevisionTests(unittest.TestCase):
         chapters = expected_chapters()
         self.assertEqual(len(chapters), 34)
         self.assertEqual(PART_CHAPTER_COUNTS, (16, 11, 7))
-        self.assertEqual(
-            chapters[0]["title"],
-            "Блистающий мир (Грин)/Часть I/Глава I",
-        )
-        self.assertEqual(
-            chapters[15]["title"],
-            "Блистающий мир (Грин)/Часть I/Глава XVI",
-        )
-        self.assertEqual(
-            chapters[16]["title"],
-            "Блистающий мир (Грин)/Часть II/Глава I",
-        )
-        self.assertEqual(
-            chapters[-1]["title"],
-            "Блистающий мир (Грин)/Часть III/Глава VII",
-        )
+        self.assertEqual(chapters[0]["title"], "Блистающий мир (Грин)/Часть I/Глава I")
+        self.assertEqual(chapters[15]["title"], "Блистающий мир (Грин)/Часть I/Глава XVI")
+        self.assertEqual(chapters[16]["title"], "Блистающий мир (Грин)/Часть II/Глава I")
+        self.assertEqual(chapters[-1]["title"], "Блистающий мир (Грин)/Часть III/Глава VII")
 
     def test_probe_records_red_links_without_requesting_source_prose(self):
         chapters = expected_chapters()[:2]
@@ -60,27 +48,15 @@ class ShiningWorldRevisionTests(unittest.TestCase):
 
         def query(params):
             seen_params.update(params)
-            return {
-                "query": {
-                    "pages": [
-                        {
-                            "title": chapters[0]["title"],
-                            "revisions": [
-                                {
-                                    "revid": 123,
-                                    "timestamp": "2024-01-01T00:00:00Z",
-                                    "sha1": "1" * 40,
-                                }
-                            ],
-                        },
-                        {"title": chapters[1]["title"], "missing": True},
-                    ]
-                }
-            }
+            return {"query": {"pages": [
+                {"title": chapters[0]["title"], "revisions": [{"revid": 123, "timestamp": "2024-01-01T00:00:00Z", "sha1": "1" * 40}]},
+                {"title": chapters[1]["title"], "missing": True},
+            ]}}
 
         records = fetch_chapter_inventory(chapters, query=query)
         self.assertEqual(seen_params["rvprop"], "ids|timestamp|sha1")
         self.assertNotIn("content", seen_params["rvprop"])
+        self.assertNotIn("rvslots", seen_params)
         self.assertEqual(records[str(chapters[0]["title"])]["status"], "present")
         self.assertEqual(records[str(chapters[1]["title"])], {"status": "missing"})
 
@@ -90,9 +66,7 @@ class ShiningWorldRevisionTests(unittest.TestCase):
         self.assertEqual(manifest["candidate_id"], CANDIDATE_ID)
         self.assertEqual(len(manifest["chapters"]), 34)
         self.assertEqual(manifest["inventory_summary"]["missing_chapter_count"], 0)
-        self.assertTrue(
-            manifest["capture_scope"]["complete_chapter_revision_inventory_frozen"]
-        )
+        self.assertTrue(manifest["capture_scope"]["complete_chapter_revision_inventory_frozen"])
         serialized = repr(manifest)
         self.assertNotIn("wikitext", serialized)
         self.assertNotIn("source prose", serialized)
@@ -102,13 +76,8 @@ class ShiningWorldRevisionTests(unittest.TestCase):
         manifest = build_manifest(fetcher=self._missing_last)
         self.assertEqual(manifest["inventory_summary"]["present_chapter_count"], 33)
         self.assertEqual(manifest["inventory_summary"]["missing_chapter_count"], 1)
-        self.assertEqual(
-            manifest["inventory_summary"]["missing_titles"],
-            ["Блистающий мир (Грин)/Часть III/Глава VII"],
-        )
-        self.assertFalse(
-            manifest["capture_scope"]["complete_chapter_revision_inventory_frozen"]
-        )
+        self.assertEqual(manifest["inventory_summary"]["missing_titles"], ["Блистающий мир (Грин)/Часть III/Глава VII"])
+        self.assertFalse(manifest["capture_scope"]["complete_chapter_revision_inventory_frozen"])
         identities = validate_manifest(manifest)
         self.assertEqual(len(identities), 33)
         self.assertNotIn("revision_id", manifest["chapters"][-1])
@@ -118,7 +87,6 @@ class ShiningWorldRevisionTests(unittest.TestCase):
             records = self._fetcher(chapters)
             records.pop(str(expected_chapters()[-1]["title"]))
             return records
-
         with self.assertRaisesRegex(ValueError, "chapter inventory mismatch"):
             build_manifest(fetcher=omitted_title)
 
@@ -127,7 +95,6 @@ class ShiningWorldRevisionTests(unittest.TestCase):
             titles = list(records)
             records[titles[1]]["revision_id"] = records[titles[0]]["revision_id"]
             return records
-
         with self.assertRaisesRegex(ValueError, "duplicate revision id"):
             build_manifest(fetcher=duplicate_revision)
 
@@ -147,17 +114,14 @@ class ShiningWorldRevisionTests(unittest.TestCase):
             return {str(row["title"]): "source prose" for row in rows}
 
         receipt = replay_manifest(manifest, fetcher=replay_fetcher)
-        self.assertEqual(
-            receipt,
-            {
-                "verified": True,
-                "candidate_id": CANDIDATE_ID,
-                "verified_present_chapter_count": 33,
-                "missing_advertised_chapter_count": 1,
-                "complete_chapter_revision_inventory_frozen": False,
-                "source_text_committed": False,
-            },
-        )
+        self.assertEqual(receipt, {
+            "verified": True,
+            "candidate_id": CANDIDATE_ID,
+            "verified_present_chapter_count": 33,
+            "missing_advertised_chapter_count": 1,
+            "complete_chapter_revision_inventory_frozen": False,
+            "source_text_committed": False,
+        })
         self.assertNotIn("source prose", repr(receipt))
 
 

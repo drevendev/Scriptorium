@@ -1,23 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 152
+STATE_REVISION: 153
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-18T20:58:00Z
-LAST_RESULT: SCRIP-CORPUS-022 / Issue #131 authored Draft PR #132 from master `cc1a8d649f2c42be377cb6bbc0b19138a8a6ea58`. The unit freezes a source-free route-topology witness for `grin-running-on-waves-ru`: Russian Wikisource category permanent revision `oldid=4715419` lists exactly 37 pages, consisting of the main work page plus `/1` through `/35` and `/Эпилог`. The separate `/Версия 2` route is explicitly excluded because observed permanent revision `oldid=5655654` declares `az.lib.ru` and a 1980 Pravda collected-works context, distinct from the retained 1965 Detskaya literatura family. A deterministic manifest builder/validator, source-free artifact, fail-closed tests, structured provenance reconciliation, changelog and run receipt are committed on the Draft PR. An isolated reconstruction of the new dependency-free module/artifact/tests passed 5/5 cases. This authoring run did not self-approve or merge the PR.
-LAST_VERIFIED_PROGRESS: `grin-running-on-waves-ru` now has an immutable route-inventory witness rather than only a work-index/navigation statement. The captured category topology proves all 36 expected literary routes were listed at the permanent category revision, while exact literary-page revision IDs/timestamps/MediaWiki SHA-1 values, deterministic extraction/composition and composite hashes remain explicitly unfrozen. The 1980 `Версия 2` route is a documented non-composable source-family boundary. FantLab source identity remains unknown and M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-18T21:46:00Z
+LAST_RESULT: SCRIP-CORPUS-022 / Issue #131 entered independent review of Draft PR #132. The authored head `fa5fd0b038f7d269d38260624ed7a6fcab61009a` was mergeable, 8 commits ahead / 0 behind master, had no submitted reviews or inline review threads, and all 13 pull-request workflow runs were green. Review found one acceptance blocker: top-level public `corpus/candidates/README.md` still described Running on Waves as `traced_not_frozen` and omitted the frozen category route witness and excluded 1980 `/Версия 2` boundary. The same PR branch now reconciles that public navigation with the structured trace/candidate page and records the remediation in the changelog. Because this review run authored a corrective change, it did not self-approve or merge the PR; fresh exact-head CI and a later independent review are required.
+LAST_VERIFIED_PROGRESS: `grin-running-on-waves-ru` has an immutable route-inventory witness rather than only a work-index/navigation statement. Russian Wikisource category permanent revision `oldid=4715419` exposes the main work page plus all expected `/1` through `/35` and `/Эпилог` routes, while exact literary-page revision IDs/timestamps/MediaWiki SHA-1 values, deterministic extraction/composition and composite hashes remain explicitly unfrozen. The 1980 `/Версия 2` route at `oldid=5655654` declares `az.lib.ru` / Pravda 1980 and remains a documented non-composable source-family boundary. Public corpus navigation now reflects the same evidence boundary. FantLab source identity remains unknown and M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-022
 ISSUE:          #131 (open)
-STATUS:         DRAFT_REVIEW_REQUIRED
+STATUS:         DRAFT_REVIEW_REMEDIATED
 PR:             #132 (Draft)
 BASE_REVISION:  cc1a8d649f2c42be377cb6bbc0b19138a8a6ea58
 NEXT_ACTION:    On the next wake, independently review the final exact head of Draft PR #132 and all required checks.
-                Verify the source-free 36-title route inventory, the explicit exclusion of the 1980 /Версия 2 route,
-                the structured/public provenance wording and deterministic tests. Repair any blocking defect before
-                merge; otherwise mark Ready and merge only after exact-head evidence is green. Do not advance M2.
+                Confirm the reconciled top-level corpus README, source-free 36-title route inventory, explicit exclusion
+                of the 1980 /Версия 2 route, structured/public provenance wording and deterministic tests. If every
+                exact-head check is green and no blocking defect remains, mark Ready and merge. Do not advance M2.
 ```
 
 ## Current milestone gate
@@ -67,7 +67,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - Public corpus navigation exposes retained candidates with provenance boundaries rather than parity claims.
 - Hyperboloid and Road to Nowhere expose frozen source-free literary-body identities with explicit unresolved source-match boundaries.
 - Shining World exposes a merged inspectable source-free inventory artifact and corrected public/structured provenance that distinguish the 34 links advertised by the reviewed index from the 19 pages that actually exist; missing targets are visible blockers, not silently filled text.
-- Running on Waves now has an inspectable source-free route-inventory artifact and structured provenance that distinguish the retained 1965 Detskaya literatura route from the separate 1980/az.lib.ru `Версия 2` route; literary-page revisions/body identity remain explicitly unfrozen.
+- Running on Waves now has an inspectable source-free route-inventory artifact, dedicated candidate page, and reconciled top-level corpus navigation that distinguish the retained 1965 Detskaya literatura route from the separate 1980/az.lib.ru `Версия 2` route; literary-page revisions/body identity remain explicitly unfrozen.
 - Klim Samgin exposes the source graph, fail-closed extractor, canonical source-free per-part/composite literary-body identities, public candidate page, and a structured provenance trace consistent with those identities. Evidence remains explicitly diagnostic-only and source-match unknown.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 

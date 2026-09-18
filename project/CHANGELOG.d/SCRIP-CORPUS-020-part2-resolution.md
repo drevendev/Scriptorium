@@ -1,0 +1,7 @@
+# SCRIP-CORPUS-020 — resolve target-only Klim Part 2 source graph
+
+- Added a fail-closed candidate-specific evaluator for only the frozen `poemx1` path reached by the six exact frames: literal parameters, lazy `#if`, literal `#ifeq`, and the already-bounded zero-attribute `#tag:poem` render surface. Unreached `#expr` / `#iferror`, ordinary templates, magic words, or drift outside the frozen profile fail closed rather than being guessed.
+- Added an exact-source replay that re-fetches Part 2 parent oldid `5198033`, target dependency oldid `2366546`, and inferred `Шаблон:Poemx1` oldid `5142743`, then verifies the existing source-free LST, transclusion, parameter, binding, control-flow, and Poem-render manifests before expansion.
+- Replay-freezes the expanded target dependency at **585,113 characters / 1,059,957 UTF-8 bytes**, SHA-256 `a027dfe0d867572f3802050fcfd72b07a43fa6efe539d58035b3af59f49a04d4`, with zero remaining double-brace expansion surface.
+- Substituting that target for the exact target-only `#lst` invocation replay-freezes the resolved Part 2 parent wikitext at **1,166,949 characters / 2,114,262 UTF-8 bytes**, SHA-256 `ab45577f567ce504e24936f73fcdff261780168414e4bccc04bbf8927299d016`.
+- The committed artifact remains source-free and explicitly keeps exact historical Russian Wikisource MediaWiki/Poem deployment equivalence, literary-body extraction, four-part composition, FantLab source identity, and M2 parity admission unresolved. M2 remains **0/5**.

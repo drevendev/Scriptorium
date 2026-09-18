@@ -5,6 +5,7 @@ import unittest
 from scriptorium.klim_samgin_literary_body import (
     COMPOSITION_SEPARATOR,
     _identity,
+    _protect_encoded_angle_spans,
     _protect_literal_line_openers,
     _protect_nowiki,
     _replace_named_template,
@@ -54,6 +55,15 @@ class KlimSamginLiteraryBodyHelpersTests(unittest.TestCase):
     def test_multiline_nowiki_fails_closed(self) -> None:
         with self.assertRaisesRegex(ValueError, "multiline"):
             _protect_nowiki("<nowiki>a\nb</nowiki>", expected_tag_count=2)
+
+    def test_entity_encoded_angle_literal_is_protected_as_visible_text(self) -> None:
+        source, protected = _protect_encoded_angle_spans("before &lt;слово&gt; after")
+        self.assertNotIn("&lt;", source)
+        self.assertEqual(len(protected), 1)
+        self.assertEqual(_restore_tokens(source, protected, label="encoded-angle"), "before <слово> after")
+        untouched, protected_tag = _protect_encoded_angle_spans("&lt;ref&gt;")
+        self.assertEqual(untouched, "&lt;ref&gt;")
+        self.assertEqual(protected_tag, [])
 
     def test_literal_line_openers_are_protected_but_table_delimiters_fail(self) -> None:
         source, protected = _protect_literal_line_openers("plain\n| literal\n! emphatic")

@@ -7,6 +7,7 @@ counts/digests before anything is persisted.
 from __future__ import annotations
 
 import argparse
+import html
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -46,6 +47,7 @@ _TABLE_OPEN_RE = re.compile(r"(?m)^[ \t]*\{\|")
 _TABLE_ROW_OR_END_RE = re.compile(r"(?m)^[ \t]*\|(?:-|\})")
 _LITERAL_LINE_OPENER_RE = re.compile(r"(?m)^(?P<indent>[ \t]*)(?P<mark>[|!])")
 _ANGLE_SPAN_RE = re.compile(r"<(?P<inner>[^<>\r\n]*)>")
+_ENCODED_ANGLE_SPAN_RE = re.compile(r"&lt;(?P<inner>[^\r\n]*?)&gt;", re.IGNORECASE)
 _TAGLIKE_INNER_RE = re.compile(r"^\s*/?\s*[A-Za-z][A-Za-z0-9]*(?:\s|/|$|=)")
 
 
@@ -260,6 +262,29 @@ def _protect_literal_line_openers(source: str) -> tuple[str, list[tuple[str, str
     return _LITERAL_LINE_OPENER_RE.sub(replace, source), protected
 
 
+def _protect_encoded_angle_spans(source: str) -> tuple[str, list[tuple[str, str]]]:
+    """Protect bounded entity-encoded angle prose before shared HTML unescaping."""
+    protected: list[tuple[str, str]] = []
+    prefix = "SCRIPTORIUMKLIMENCODEDANGLETOKEN"
+    if prefix in source:
+        raise ValueError("encoded-angle placeholder prefix collides with source")
+
+    def replace(match: re.Match[str]) -> str:
+        decoded = html.unescape(match.group(0))
+        parsed = _ANGLE_SPAN_RE.fullmatch(decoded)
+        if parsed is None:
+            return match.group(0)
+        inner = parsed.group("inner")
+        stripped = inner.lstrip()
+        if not stripped or stripped.startswith(("!--", "!DOCTYPE", "?")) or _TAGLIKE_INNER_RE.match(inner):
+            return match.group(0)
+        token = f"{prefix}{len(protected):04d}END"
+        protected.append((token, decoded))
+        return token
+
+    return _ENCODED_ANGLE_SPAN_RE.sub(replace, source), protected
+
+
 def _protect_literal_angle_spans(source: str) -> tuple[str, list[tuple[str, str]]]:
     """Protect only non-tag-like one-line <...> literals; leave markup fail-closed.
 
@@ -324,6 +349,7 @@ def _extract_part_body(
     source = _HEADING3_RE.sub(_plain_heading, source)
 
     source, protected_nowiki = _protect_nowiki(source, expected_tag_count=int(tags.get("nowiki", 0)))
+    source, protected_encoded_angles = _protect_encoded_angle_spans(source)
     source, protected_lines = _protect_literal_line_openers(source)
     source, protected_angles = _protect_literal_angle_spans(source)
     try:
@@ -331,6 +357,7 @@ def _extract_part_body(
     except ValueError as exc:
         raise ValueError(f"Klim part {part} conservative renderer rejected prepared source: {exc}") from exc
     rendered = _restore_tokens(rendered, protected_angles, label="angle")
+    rendered = _restore_tokens(rendered, protected_encoded_angles, label="encoded-angle")
     rendered = _restore_tokens(rendered, protected_lines, label="line-opener")
     body = _restore_tokens(rendered, protected_nowiki, label="nowiki")
     if not body:
@@ -344,6 +371,7 @@ def _extract_part_body(
         "level_three_heading_plain_replacement_count": level3_count,
         "nowiki_pair_preservation_count": len(protected_nowiki),
         "literal_line_opener_preservation_count": len(protected_lines),
+        "entity_encoded_angle_span_preservation_count": len(protected_encoded_angles),
         "literal_angle_span_preservation_count": len(protected_angles),
     }
 

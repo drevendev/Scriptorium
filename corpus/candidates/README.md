@@ -101,21 +101,23 @@ Canonical evidence:
 - `source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.body.json` — source-free literary-body counts/digests and extraction-profile binding.
 - `../../scriptorium/hyperboloid_freeze.py` — source-specific fail-closed exact-revision body extraction/replay implementation.
 
-## Shining World traced 1920s romantic-fantastic candidate
+## Shining World audited incomplete 1920s romantic-fantastic candidate
 
 `grin-shining-world-ru` adds Alexander Grin and a different 1920s prose tradition to the retained diversity set. FantLab's 18 September 2022 linguistic analysis reports **306,240 characters** and **43,678 words**, so the novel clears the >=300,000-character calibration threshold, though only narrowly.
 
-Russian Wikisource exposes a reviewed work index whose stable version was checked on 4 May 2024. The index cites **A. S. Grin, Collected Works in six volumes, Moscow: Pravda, 1965, volume 3, pp. 66–214 (`lib.web`)** and links **34 chapter subpages** arranged as 16 + 11 + 7 chapters across three parts; sampled chapter pages repeat the same bibliographic source. The index exposes permanent revision **`oldid=4186047`**, but that locator freezes only the navigation/index page, not the 34 literary chapter revisions. No source prose is committed.
+Russian Wikisource exposes a reviewed work index whose stable version was checked on 4 May 2024. The index cites **A. S. Grin, Collected Works in six volumes, Moscow: Pravda, 1965, volume 3, pp. 66–214 (`lib.web`)** and advertises **34 chapter links** arranged as 16 + 11 + 7 chapters across three parts. Permanent revision **`oldid=4186047`** freezes that navigation/index claim, not a complete literary body. A source-free MediaWiki audit on 18 September 2026 found only **19 existing chapter pages**: all 16 Part I chapters and Part II chapters I–III. The remaining **15 advertised targets are missing**: Part II chapters IV–XI and all seven Part III chapters. Exact revision ID, UTC timestamp and MediaWiki SHA-1 are frozen for the 19 present pages; missing rows carry no invented revision identity. No source prose is committed.
 
 The legal boundary is explicit rather than inferred from mere web access. Wikisource identifies Grin as 1880–1932, lists *Shining World* as a 1923 lifetime publication, and its author rights notice says works published during his lifetime are approximately in the public domain in the country of origin while warning that translations and later revisions may carry independent rights. Scriptorium retains only the original Russian literary work body as the candidate scope and excludes later editorial apparatus unless separately justified. Wikisource page content is also exposed under CC BY-SA subject to its terms.
 
-Russian Virtual Library independently identifies *Shining World* as a 1921–1923 Grin text and exposes the same three-part / 34-chapter structure. That is a useful bibliographic/text-family cross-check, not byte identity. Scriptorium therefore does **not** equate RVB, the 1965-source Wikisource transcription, any alternate Grin transcription, or FantLab's undisclosed analyzer input merely from title, chronology, structure, or count proximity.
+Russian Virtual Library independently identifies *Shining World* as a 1921–1923 Grin text and exposes the same three-part / 34-chapter literary structure. That is a useful bibliographic/text-family cross-check, not byte identity and not permission to splice RVB prose into the incomplete Wikisource family. Scriptorium therefore does **not** equate RVB, the 1965-source Wikisource transcription family, any alternate Grin transcription, or FantLab's undisclosed analyzer input merely from title, chronology, structure, or count proximity.
 
-Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**. A later freeze unit must pin every chapter revision plus deterministic extraction/composition and raw/normalized composite digests before diagnostics are allowed.
+Accordingly this route is an **audited but source-incomplete transcription family**: `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and the M2 reproduction gate remains **0/5 source-matched works**. No complete literary-body extraction/composite is allowed from this route alone. A future unit must establish a legally usable source-complete witness and an explicit edition/source identity contract before any cross-provider composition or diagnostic promotion.
 
 Canonical evidence:
 
-- `source-edition-traces/grin-shining-world-ru.json` — FantLab counts, 1965-source Wikisource transcription family, legal/source boundary, immutable index locator, independent RVB cross-check, diversity rationale, and exact evidence required before diagnostic promotion.
+- `source-edition-traces/grin-shining-world-ru.json` — FantLab counts, 1965-source Wikisource family, legal/source boundary, incomplete-live-inventory status, independent RVB cross-check and next evidence.
+- `source-edition-traces/grin-shining-world-ru.source-inventory.json` — source-free ordered 34-link audit with exact identities for 19 present pages and explicit missing rows for 15 absent targets.
+- `../../scriptorium/shining_world_revisions.py` — fail-closed source-inventory capture and exact-revision replay implementation.
 
 ## Road to Nowhere traced Grin candidate
 

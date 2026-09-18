@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "grin-shining-world-ru",
-  "research_date": "2026-09-16",
+  "research_date": "2026-09-18",
   "fantlab": {
     "work_id": 27340,
     "analysis_url": "https://fantlab.ru/work27340/lp",
@@ -25,13 +25,9 @@
     "bibliographic_source": "А. С. Грин. Собрание сочинений в шести томах. — М.: Правда, 1965. — Т. 3. — С. 66–214; Wikisource names lib.web as the electronic source.",
     "structure": {
       "parts": 3,
-      "chapter_counts": [
-        16,
-        11,
-        7
-      ],
-      "total_chapters": 34,
-      "sampled_chapter_subpages_repeat_bibliographic_source": true,
+      "index_advertised_chapter_counts": [16, 11, 7],
+      "index_advertised_total_chapters": 34,
+      "sampled_present_chapter_subpages_repeat_bibliographic_source": true,
       "sampled_chapter_source_examples": [
         "part_1_chapter_2",
         "part_1_chapter_9",
@@ -39,36 +35,51 @@
       ],
       "source_text_committed": false
     },
-    "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
+    "live_source_inventory": {
+      "audit_date": "2026-09-18",
+      "manifest": "corpus/candidates/source-edition-traces/grin-shining-world-ru.source-inventory.json",
+      "advertised_chapter_count": 34,
+      "present_chapter_count": 19,
+      "missing_advertised_chapter_count": 15,
+      "present_shape": "all 16 Part I chapters plus Part II chapters I-III",
+      "missing_shape": "Part II chapters IV-XI plus all seven Part III chapters",
+      "complete_chapter_revision_inventory_frozen": false,
+      "present_revision_identity_frozen": true,
+      "revision_selection": "current MediaWiki revision observed by the source-inventory capture; per-chapter FlaggedRevs stable equivalence is not asserted",
+      "source_text_committed": false
+    },
+    "source_provenance_confidence": "strong_for_bibliographic_transcription_family_but_incomplete_live_chapter_inventory",
     "legal_basis": "public_domain_original_work_with_wikisource_reuse_terms",
     "legal_evidence": "Wikisource identifies Alexander Grin as 1880–1932 and lists Shining World as a 1923 lifetime publication; its author page states that works published during his lifetime are approximately in the public domain in the country of origin and separately warns that translations and later revisions may have independent rights. The retained candidate is the original Russian literary work body. Wikisource page content is additionally exposed under CC BY-SA subject to its terms; Scriptorium commits no source prose and excludes later editorial apparatus unless separately justified.",
     "immutable_identity": {
-      "status": "traced_not_frozen",
+      "status": "partial_revision_inventory_frozen_incomplete_transcription",
       "frozen_components": [
         "work-index permanent revision oldid 4186047",
         "explicit 1965 Pravda volume-3 bibliographic source citation on the reviewed work index",
-        "three-part / 34-chapter navigation structure observed on the work index"
+        "three-part / 34-link navigation contract advertised by the work index",
+        "exact revision ID, UTC timestamp and MediaWiki SHA-1 for the 19 chapter pages that exist in the 2026-09-18 live inventory"
       ],
       "unfrozen_components": [
-        "exact revision IDs, timestamps and MediaWiki SHA-1 values for all 34 chapter subpages",
-        "a deterministic literary-body extraction contract for the chapter pages",
-        "a deterministic composition order bound to pinned chapter identities",
-        "raw and scriptorium-text-v1 normalized composite digests",
-        "the relationship between FantLab's uploaded analyzer input and the 1965-source Wikisource transcription"
+        "15 advertised chapter targets that are currently missing: Part II chapters IV-XI and Part III chapters I-VII",
+        "a complete single-source literary-body inventory for the novel",
+        "a deterministic literary-body extraction contract",
+        "a deterministic complete-work composition order bound to a source-complete inventory",
+        "raw and scriptorium-text-v1 normalized complete-work composite digests",
+        "the relationship between FantLab's uploaded analyzer input and the 1965-source Wikisource transcription family"
       ],
-      "reason": "The work index gives a strong bibliographic lead and immutable locator, but the literary text lives on 34 chapter subpages. Pinning only the index cannot freeze the full text."
+      "reason": "The reviewed index advertises 34 chapter links, but the live MediaWiki inventory contains only 19 chapter pages. Fifteen advertised targets are red links/missing pages, so the earlier shorthand '34 chapter subpages' was incorrect and a complete novel cannot be frozen from this Wikisource family without inventing or cross-splicing source material."
     },
     "edition_identity_boundary": {
-      "status": "source_cited_1965_transcription_family_not_full_text_frozen",
-      "note": "The candidate is specifically the primary Wikisource transcription whose reviewed work index cites Pravda 1965 volume 3; sampled chapter pages repeat that citation. It must not be collapsed with other Grin transcriptions, later editorial revisions, or FantLab's undisclosed analyzer input merely because the title and chapter structure agree."
+      "status": "source_cited_1965_transcription_family_incomplete_live_inventory",
+      "note": "The candidate remains specifically the primary Wikisource family whose reviewed index cites Pravda 1965 volume 3. The source-free audit freezes identities only for existing pages and records missing advertised targets explicitly. It must not be silently completed from RVB or another provider, collapsed with later editorial revisions, or equated with FantLab's undisclosed analyzer input merely because title, chronology or chapter structure agree."
     }
   },
   "independent_cross_check": {
     "provider": "Russian Virtual Library",
     "url": "https://rvb.ru/20vek/grin/ss6/vol3/texts/064.html",
-    "observed_identity": "Alexander Grin, Shining World, 1921–1923, with the same three-part / 34-chapter structure",
+    "observed_identity": "Alexander Grin, Shining World, 1921–1923, with the same three-part / 34-chapter literary structure",
     "evidence_weight": "bibliographic_and_text_family_cross_check_only",
-    "note": "RVB corroborates work chronology and structure but is not treated as byte identity for the Wikisource transcription or as FantLab-input evidence."
+    "note": "RVB corroborates chronology and intended literary structure but is not treated as byte identity for the incomplete Wikisource transcription or as FantLab-input evidence. Scriptorium does not splice RVB prose into the Wikisource family without a separately justified source/edition identity contract."
   },
   "diversity": {
     "period": "early_20th_century_1920s",
@@ -82,18 +93,20 @@
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "source_edition_traced_not_frozen",
+    "status": "source_inventory_audited_incomplete_public_transcription",
     "reasons": [
       "FantLab reports 306,240 characters, above the 300,000-character calibration threshold, and 43,678 words for its 18 September 2022 analysis.",
-      "Russian Wikisource supplies a reviewed source-cited transcription family tied to the 1965 Pravda collected-works volume 3 and exposes an immutable work-index revision.",
+      "Russian Wikisource supplies a reviewed source-cited index tied to the 1965 Pravda collected-works volume 3 and exposes an immutable work-index revision.",
+      "A source-free 2026-09-18 MediaWiki audit found only 19 existing chapter pages out of the 34 chapter links advertised by that index; Part II chapters IV-XI and all of Part III are missing targets.",
+      "Exact revision identities are frozen for the 19 present pages, but this is an incomplete transcription inventory and cannot produce a complete-work body or composite without another explicitly justified source route.",
       "The original Russian work was published during Grin's lifetime in 1923; Wikisource's author-level rights notice treats his lifetime publications as public-domain works in the source country while warning about translations and later revisions.",
-      "The 34 literary chapter subpages have not been revision-pinned and no deterministic body extraction/composition contract or composite digest exists yet.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Freeze the exact 34-chapter Wikisource source inventory with revision IDs, timestamps and MediaWiki SHA-1 values without committing source prose.",
-      "Define a deterministic fail-closed extraction/composition contract and record raw plus scriptorium-text-v1 normalized composite digests before enabling diagnostics.",
-      "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to the 1965-source transcription or another explicit edition; never infer identity from title, structure or character-count proximity."
+      "Investigate a legally usable source-complete witness for the missing Part II IV-XI and Part III I-VII material while preserving edition/transcription identity; do not silently splice providers.",
+      "If the Wikisource family becomes source-complete, rerun the source-free inventory audit and pin every newly present revision before defining complete-work extraction/composition.",
+      "Only after a source-complete identity exists, define a deterministic fail-closed extraction/composition contract and record raw plus scriptorium-text-v1 normalized composite digests.",
+      "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to the 1965-source family or another explicit edition; never infer identity from title, structure or character-count proximity."
     ]
   }
 }

@@ -1,0 +1,127 @@
+name: Shining World source inventory
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/shining-world-source-revisions.yml"
+      - "scriptorium/shining_world_revisions.py"
+      - "scriptorium/wikisource_freeze.py"
+      - "scriptorium/wikisource_replay.py"
+      - "tests/test_shining_world_revisions.py"
+      - "corpus/candidates/source-edition-traces/grin-shining-world-ru.json"
+      - "corpus/candidates/source-edition-traces/grin-shining-world-ru.source-inventory.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze:
+    name: Audit advertised chapters and replay present revisions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Capture current source-free chapter inventory
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.shining_world_revisions capture \
+            --output build/repro/grin-shining-world-ru.source-inventory.observed.json
+
+      - name: Compare and replay committed source inventory when present
+        run: |
+          set -euo pipefail
+          expected='corpus/candidates/source-edition-traces/grin-shining-world-ru.source-inventory.json'
+          observed='build/repro/grin-shining-world-ru.source-inventory.observed.json'
+          if [[ -f "$expected" ]]; then
+            EXPECTED="$expected" OBSERVED="$observed" python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          expected = json.loads(Path(os.environ['EXPECTED']).read_text(encoding='utf-8'))
+          observed = json.loads(Path(os.environ['OBSERVED']).read_text(encoding='utf-8'))
+          if expected != observed:
+              raise SystemExit('committed Shining World source inventory drifted from live audit')
+          print('Committed source inventory matches live source-free audit semantically.')
+          PY
+            python -m scriptorium.shining_world_revisions replay --manifest "$expected"
+          else
+            echo 'Committed source inventory not present yet; capture artifact is bootstrap evidence.'
+          fi
+
+      - name: Verify audit is source-free and fail-closed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('build/repro/grin-shining-world-ru.source-inventory.observed.json')
+          manifest = json.loads(path.read_text(encoding='utf-8'))
+          assert manifest['candidate_id'] == 'grin-shining-world-ru'
+          assert manifest['source_work_index_revision_id'] == 4186047
+          assert manifest['composition_contract']['part_chapter_counts'] == [16, 11, 7]
+          assert len(manifest['chapters']) == 34
+
+          summary = manifest['inventory_summary']
+          present = [row for row in manifest['chapters'] if row['status'] == 'present']
+          missing = [row for row in manifest['chapters'] if row['status'] == 'missing']
+          assert summary['advertised_chapter_count'] == 34
+          assert summary['present_chapter_count'] == len(present)
+          assert summary['missing_chapter_count'] == len(missing)
+          assert summary['missing_titles'] == [row['title'] for row in missing]
+          assert manifest['capture_scope'] == {
+              'chapter_navigation_inventory_audited': True,
+              'complete_chapter_revision_inventory_frozen': len(missing) == 0,
+              'literary_body_extraction_frozen': False,
+              'composite_identity_frozen': False,
+              'source_text_committed': False,
+          }
+          assert len({row['revision_id'] for row in present}) == len(present)
+          assert all(len(row['mediawiki_sha1']) == 40 for row in present)
+          assert all('revision_id' not in row for row in missing)
+          assert all('revision_timestamp' not in row for row in missing)
+          assert all('mediawiki_sha1' not in row for row in missing)
+
+          forbidden = {'wikitext', 'content', 'body', 'text', 'source_text'}
+          def walk(value):
+              if isinstance(value, dict):
+                  assert not forbidden.intersection(value)
+                  for nested in value.values():
+                      walk(nested)
+              elif isinstance(value, list):
+                  for nested in value:
+                      walk(nested)
+          walk(manifest)
+          print('SCRIPTORIUM_SHINING_WORLD_INVENTORY=' + json.dumps({
+              'candidate_id': manifest['candidate_id'],
+              'advertised_chapter_count': summary['advertised_chapter_count'],
+              'present_chapter_count': summary['present_chapter_count'],
+              'missing_chapter_count': summary['missing_chapter_count'],
+              'missing_titles': summary['missing_titles'],
+              'complete_chapter_revision_inventory_frozen': manifest['capture_scope']['complete_chapter_revision_inventory_frozen'],
+              'source_text_committed': manifest['capture_scope']['source_text_committed'],
+          }, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
+          PY
+
+      - name: Upload source-free capture evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: shining-world-source-inventory
+          path: build/repro/grin-shining-world-ru.source-inventory.observed.json
+          if-no-files-found: error
+          retention-days: 7

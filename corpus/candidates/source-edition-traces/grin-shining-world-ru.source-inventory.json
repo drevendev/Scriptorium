@@ -1,0 +1,250 @@
+{
+  "bibliographic_source": "А. С. Грин. Собрание сочинений в шести томах. — М.: Правда, 1965. — Т. 3. — С. 66–214.",
+  "candidate_id": "grin-shining-world-ru",
+  "capture_scope": {
+    "chapter_navigation_inventory_audited": true,
+    "complete_chapter_revision_inventory_frozen": false,
+    "composite_identity_frozen": false,
+    "literary_body_extraction_frozen": false,
+    "source_text_committed": false
+  },
+  "chapters": [
+    {
+      "chapter": 1,
+      "mediawiki_sha1": "3aeb0920a9f9960133cd494d953566a159486dde",
+      "ordinal": 1,
+      "part": 1,
+      "revision_id": 5192194,
+      "revision_timestamp": "2024-11-01T12:48:47Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава I"
+    },
+    {
+      "chapter": 2,
+      "mediawiki_sha1": "8839c4a411aae2b947d1bfe08eb2598cca6756a8",
+      "ordinal": 2,
+      "part": 1,
+      "revision_id": 5192195,
+      "revision_timestamp": "2024-11-01T12:48:49Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава II"
+    },
+    {
+      "chapter": 3,
+      "mediawiki_sha1": "2da3ce25822f735676a001a10ca677fc23510ef0",
+      "ordinal": 3,
+      "part": 1,
+      "revision_id": 5192196,
+      "revision_timestamp": "2024-11-01T12:48:50Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава III"
+    },
+    {
+      "chapter": 4,
+      "mediawiki_sha1": "180d97a3cfd8a1a15cfc46aa8eee610c4f4f2164",
+      "ordinal": 4,
+      "part": 1,
+      "revision_id": 5192197,
+      "revision_timestamp": "2024-11-01T12:48:52Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава IV"
+    },
+    {
+      "chapter": 5,
+      "mediawiki_sha1": "a35a44891babdc0a0e07df628f29aa9df71ad2f6",
+      "ordinal": 5,
+      "part": 1,
+      "revision_id": 5192199,
+      "revision_timestamp": "2024-11-01T12:48:56Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава V"
+    },
+    {
+      "chapter": 6,
+      "mediawiki_sha1": "0dfc787dbe1964e0e91d8de510c9019e5f186155",
+      "ordinal": 6,
+      "part": 1,
+      "revision_id": 5192200,
+      "revision_timestamp": "2024-11-01T12:48:58Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава VI"
+    },
+    {
+      "chapter": 7,
+      "mediawiki_sha1": "205fb40a6bd72956ee6aeea42b65d81c060908f6",
+      "ordinal": 7,
+      "part": 1,
+      "revision_id": 5192201,
+      "revision_timestamp": "2024-11-01T12:49:01Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава VII"
+    },
+    {
+      "chapter": 8,
+      "mediawiki_sha1": "4fb1017e0abadd81a6883678cb7e98e45c8ee158",
+      "ordinal": 8,
+      "part": 1,
+      "revision_id": 5192202,
+      "revision_timestamp": "2024-11-01T12:49:03Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава VIII"
+    },
+    {
+      "chapter": 9,
+      "mediawiki_sha1": "cf56366e350e391e86d6b10d086c48526c77b207",
+      "ordinal": 9,
+      "part": 1,
+      "revision_id": 5192198,
+      "revision_timestamp": "2024-11-01T12:48:55Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава IX"
+    },
+    {
+      "chapter": 10,
+      "mediawiki_sha1": "06409f5cae64abefbb7100cc3e0244129eb3a8b9",
+      "ordinal": 10,
+      "part": 1,
+      "revision_id": 5192204,
+      "revision_timestamp": "2024-11-01T12:49:05Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава X"
+    },
+    {
+      "chapter": 11,
+      "mediawiki_sha1": "56b2c98361b93e3f999399f8833b439a5f16c310",
+      "ordinal": 11,
+      "part": 1,
+      "revision_id": 5192205,
+      "revision_timestamp": "2024-11-01T12:49:07Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава XI"
+    },
+    {
+      "chapter": 12,
+      "mediawiki_sha1": "1dcc8b5c5f1b954094d92079493f0ab6259a6ce7",
+      "ordinal": 12,
+      "part": 1,
+      "revision_id": 5192206,
+      "revision_timestamp": "2024-11-01T12:49:08Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава XII"
+    },
+    {
+      "chapter": 13,
+      "mediawiki_sha1": "28437ff7e776b46eb38267df6c91ae20bd26158f",
+      "ordinal": 13,
+      "part": 1,
+      "revision_id": 5192207,
+      "revision_timestamp": "2024-11-01T12:49:10Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава XIII"
+    },
+    {
+      "chapter": 14,
+      "mediawiki_sha1": "f92b0d2e9db5edef64ad38aa3f17ac7bb9b57182",
+      "ordinal": 14,
+      "part": 1,
+      "revision_id": 5646777,
+      "revision_timestamp": "2025-09-06T00:10:39Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава XIV"
+    },
+    {
+      "chapter": 15,
+      "mediawiki_sha1": "2e948fd967b22a8d782fcbade70559fc0b489bad",
+      "ordinal": 15,
+      "part": 1,
+      "revision_id": 5192209,
+      "revision_timestamp": "2024-11-01T12:49:15Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава XV"
+    },
+    {
+      "chapter": 16,
+      "mediawiki_sha1": "5e84dd623fe8a05830877beed11c2ca2f0128a00",
+      "ordinal": 16,
+      "part": 1,
+      "revision_id": 5192210,
+      "revision_timestamp": "2024-11-01T12:49:17Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть I/Глава XVI"
+    },
+    {
+      "chapter": 1,
+      "mediawiki_sha1": "0ce251cd8d83c2bd912503924118e57e42cba76e",
+      "ordinal": 17,
+      "part": 2,
+      "revision_id": 5192211,
+      "revision_timestamp": "2024-11-01T12:49:18Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть II/Глава I"
+    },
+    {
+      "chapter": 2,
+      "mediawiki_sha1": "062b3fc1d951a975d16dfefa88c0055d48de9256",
+      "ordinal": 18,
+      "part": 2,
+      "revision_id": 5192212,
+      "revision_timestamp": "2024-11-01T12:49:21Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть II/Глава II"
+    },
+    {
+      "chapter": 3,
+      "mediawiki_sha1": "c8d6433255ae9994c70a83c99b356fc7764732b3",
+      "ordinal": 19,
+      "part": 2,
+      "revision_id": 5192213,
+      "revision_timestamp": "2024-11-01T12:49:22Z",
+      "status": "present",
+      "title": "Блистающий мир (Грин)/Часть II/Глава III"
+    },
+    {"chapter": 4, "ordinal": 20, "part": 2, "status": "missing", "title": "Блистающий мир (Грин)/Часть II/Глава IV"},
+    {"chapter": 5, "ordinal": 21, "part": 2, "status": "missing", "title": "Блистающий мир (Грин)/Часть II/Глава V"},
+    {"chapter": 6, "ordinal": 22, "part": 2, "status": "missing", "title": "Блистающий мир (Грин)/Часть II/Глава VI"},
+    {"chapter": 7, "ordinal": 23, "part": 2, "status": "missing", "title": "Блистающий мир (Грин)/Часть II/Глава VII"},
+    {"chapter": 8, "ordinal": 24, "part": 2, "status": "missing", "title": "Блистающий мир (Грин)/Часть II/Глава VIII"},
+    {"chapter": 9, "ordinal": 25, "part": 2, "status": "missing", "title": "Блистающий мир (Грин)/Часть II/Глава IX"},
+    {"chapter": 10, "ordinal": 26, "part": 2, "status": "missing", "title": "Блистающий мир (Грин)/Часть II/Глава X"},
+    {"chapter": 11, "ordinal": 27, "part": 2, "status": "missing", "title": "Блистающий мир (Грин)/Часть II/Глава XI"},
+    {"chapter": 1, "ordinal": 28, "part": 3, "status": "missing", "title": "Блистающий мир (Грин)/Часть III/Глава I"},
+    {"chapter": 2, "ordinal": 29, "part": 3, "status": "missing", "title": "Блистающий мир (Грин)/Часть III/Глава II"},
+    {"chapter": 3, "ordinal": 30, "part": 3, "status": "missing", "title": "Блистающий мир (Грин)/Часть III/Глава III"},
+    {"chapter": 4, "ordinal": 31, "part": 3, "status": "missing", "title": "Блистающий мир (Грин)/Часть III/Глава IV"},
+    {"chapter": 5, "ordinal": 32, "part": 3, "status": "missing", "title": "Блистающий мир (Грин)/Часть III/Глава V"},
+    {"chapter": 6, "ordinal": 33, "part": 3, "status": "missing", "title": "Блистающий мир (Грин)/Часть III/Глава VI"},
+    {"chapter": 7, "ordinal": 34, "part": 3, "status": "missing", "title": "Блистающий мир (Грин)/Часть III/Глава VII"}
+  ],
+  "composition_contract": {
+    "order": "part ascending then chapter ascending",
+    "part_chapter_counts": [16, 11, 7],
+    "parts": 3
+  },
+  "inventory_summary": {
+    "advertised_chapter_count": 34,
+    "missing_chapter_count": 15,
+    "missing_titles": [
+      "Блистающий мир (Грин)/Часть II/Глава IV",
+      "Блистающий мир (Грин)/Часть II/Глава V",
+      "Блистающий мир (Грин)/Часть II/Глава VI",
+      "Блистающий мир (Грин)/Часть II/Глава VII",
+      "Блистающий мир (Грин)/Часть II/Глава VIII",
+      "Блистающий мир (Грин)/Часть II/Глава IX",
+      "Блистающий мир (Грин)/Часть II/Глава X",
+      "Блистающий мир (Грин)/Часть II/Глава XI",
+      "Блистающий мир (Грин)/Часть III/Глава I",
+      "Блистающий мир (Грин)/Часть III/Глава II",
+      "Блистающий мир (Грин)/Часть III/Глава III",
+      "Блистающий мир (Грин)/Часть III/Глава IV",
+      "Блистающий мир (Грин)/Часть III/Глава V",
+      "Блистающий мир (Грин)/Часть III/Глава VI",
+      "Блистающий мир (Грин)/Часть III/Глава VII"
+    ],
+    "present_chapter_count": 19
+  },
+  "legal_basis": "public_domain_original_work_with_wikisource_reuse_terms",
+  "manifest_version": "scriptorium-shining-world-source-inventory-v1",
+  "provider": "Russian Wikisource",
+  "source_work_index_revision_id": 4186047,
+  "source_work_url": "https://ru.wikisource.org/wiki/Блистающий_мир_(Грин)"
+}

@@ -1,0 +1,131 @@
+name: Klim Samgin literary-body diagnostic
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-literary-debug.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Diagnose source-free prepared Part 2 residual surface
+        run: |
+          mkdir -p build/repro
+          python - <<'PY'
+          from collections import Counter
+          import html
+          import json
+          from pathlib import Path
+          import re
+
+          import scriptorium.wikisource_freeze as wf
+          from scriptorium.klim_samgin_literary_body import (
+              _literaryize_dependency,
+              _literaryize_direct_poemx1,
+              _protect_literal_angle_spans,
+              _protect_literal_line_openers,
+              _protect_nowiki,
+              _replace_named_template,
+              _strip_trailing_category,
+              _substitute_part2_dependency,
+          )
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+
+          root = Path('corpus/candidates/source-edition-traces')
+          def load(name):
+              return json.loads((root / name).read_text(encoding='utf-8'))
+          def fetch_revision(name):
+              manifest = load(name)
+              identity = manifest['source_identity']
+              observed = fetch_pinned_wikitext(title=identity['title'], revision_id=identity['revision_id'])
+              text = observed.pop('wikitext')
+              if observed != identity:
+                  raise SystemExit('revision identity drift')
+              return text
+
+          body_surface = load('gorky-klim-samgin-ru.body-surface.json')
+          direct = load('gorky-klim-samgin-ru.direct-parent-poemx1.json')
+          lst = load('gorky-klim-samgin-ru.part2-lst.json')
+          resolution = load('gorky-klim-samgin-ru.part2-resolution.json')
+          dependency = fetch_revision('gorky-klim-samgin-ru.part2-part2.revision.json')
+          parent = fetch_revision('gorky-klim-samgin-ru.part2.revision.json')
+          literary_dependency, _ = _literaryize_dependency(dependency, resolution)
+          source = _substitute_part2_dependency(parent, literary_dependency, lst)
+          surface_part = body_surface['parts'][1]
+          direct_part = direct['parts'][1]
+          source, _ = _literaryize_direct_poemx1(source, part=2, frozen_part=direct_part)
+          templates = surface_part['template_name_counts']
+          tags = surface_part['html_tag_name_counts']
+          source = _replace_named_template(source, 'Жизнь Клима Самгина', expected=1, replacement='')
+          source = _replace_named_template(source, 'примечания', expected=int(templates.get('примечания', 0)), replacement='')
+          source = _replace_named_template(source, 'Ко', expected=int(templates.get('Ко', 0)), replacement='Ко')
+          source = _strip_trailing_category(source, expected_count=int(surface_part.get('category_link_count', 0)))
+          source, nowiki = _protect_nowiki(source, expected_tag_count=int(tags.get('nowiki', 0)))
+          source, line_openers = _protect_literal_line_openers(source)
+          source, angle_literals = _protect_literal_angle_spans(source)
+
+          stages = {}
+          def surface(value):
+              return {
+                  'character_count': len(value),
+                  'wikilink_open_count': value.count('[['),
+                  'wikilink_close_count': value.count(']]'),
+                  'angle_open_count': value.count('<'),
+                  'angle_close_count': value.count('>'),
+                  'tag_name_counts': dict(sorted(Counter(
+                      name.casefold() for name in re.findall(r'</?\s*([A-Za-z][A-Za-z0-9]*)\b', value)
+                  ).items())),
+                  'template_open_count': value.count('{{'),
+                  'template_close_count': value.count('}}'),
+              }
+          stages['prepared'] = surface(source)
+          body = wf._COMMENT_RE.sub('', source)
+          body = wf._NOINCLUDE_RE.sub('', body)
+          body = wf._NOTES_HEADING_RE.sub('', body)
+          body = wf._REF_RE.sub('', body)
+          body = body.replace('{{СодержаниеБН}}', '')
+          previous = None
+          loops = 0
+          while previous != body:
+              loops += 1
+              previous = body
+              body = wf._LANG_RE.sub(lambda match: match.group(1), body)
+              body = wf._POEMX1_RE.sub(lambda match: match.group(1), body)
+              body = wf._RIGHT_RE.sub(lambda match: match.group(1), body)
+              body = wf._RAZR_RE.sub(lambda match: match.group(1), body)
+              body = wf._WIKILINK_RE.sub(lambda match: match.group(1), body)
+              body = wf._EXTERNAL_LINK_RE.sub(lambda match: match.group(1), body)
+              body = wf._HTML_TAG_RE.sub('', body)
+              body = wf._BOLD_ITALIC_RE.sub('', body)
+              body = html.unescape(body)
+          stages['post_shared_cleanup'] = surface(body)
+          stages['post_shared_cleanup']['loop_count'] = loops
+          stages['protection_counts'] = {
+              'nowiki_pairs': len(nowiki),
+              'line_openers': len(line_openers),
+              'angle_literals': len(angle_literals),
+          }
+          Path('build/repro/prepared-part2-residual.json').write_text(
+              json.dumps(stages, sort_keys=True, separators=(',', ':')) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(stages, sort_keys=True, separators=(',', ':')))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: klim-samgin-literary-debug
+          path: build/repro/prepared-part2-residual.json
+          if-no-files-found: error
+          retention-days: 1

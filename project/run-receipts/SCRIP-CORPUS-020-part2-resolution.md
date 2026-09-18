@@ -21,7 +21,13 @@ Generated source-free identities:
 - resolved parent Part 2 wikitext after exact target-only substitution: 1,166,949 characters / 2,114,262 UTF-8 bytes; SHA-256 `ab45577f567ce504e24936f73fcdff261780168414e4bccc04bbf8927299d016`;
 - remaining target expansion surface: zero `poemx1` invocations and zero `{{` / `}}` delimiters.
 
-The generated artifact was committed as `corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-resolution.json`. A final exact-head replay is required after the complete authoring slice is committed so the committed artifact can be byte-compared rather than accepted only as initial generated evidence.
+The generated artifact was committed as `corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-resolution.json`.
+
+## Exact-head verification
+
+After the complete semantic authoring slice was committed, exact head `cadbd2f812468c468f41a322965672b328cfbf65` completed **all 11 triggered workflows successfully**. Dedicated Part 2 run `35313433442` checked out that exact SHA, ran the complete **239-test** standard-library suite, re-fetched the three pinned source revisions, regenerated the source-free resolution artifact, and byte-compared it against the committed JSON with `cmp` successfully. The pinned-pylem provider workflow also completed all three jobs successfully, including the isolated provider smoke and frozen Anna replay.
+
+This verification is evidence for the authored slice only; PR #122 remains Draft and still requires independent later-run code/claim review before Ready/merge.
 
 ## Claims boundary
 

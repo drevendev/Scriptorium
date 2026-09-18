@@ -1,0 +1,193 @@
+{
+  "boundary": "This source-free artifact freezes a candidate-specific literary-body reconstruction from the exact pinned source graph. The six dependency and seven direct-parent poemx1 calls are replaced only with their independently frozen plain parameter-2 literary values; presentation wrappers are intentionally excluded from text analysis. Exact historical Russian Wikisource MediaWiki/Poem deployment equivalence is not proven. FantLab analyzer-input identity remains unknown, so this artifact opens only diagnostic comparison and cannot advance M2 by itself.",
+  "candidate_id": "gorky-klim-samgin-ru",
+  "capture_scope": {
+    "composite_raw_and_normalized_identities_frozen": true,
+    "four_exact_parent_revisions_replayed": true,
+    "four_part_composition_frozen": true,
+    "four_part_literary_body_extraction_frozen": true,
+    "historical_render_equivalence_proven": false,
+    "historical_wikisource_mediawiki_core_revision_proven": false,
+    "historical_wikisource_poem_deployment_equivalence_proven": false,
+    "part2_exact_dependency_revision_replayed": true,
+    "source_text_committed": false,
+    "target_only_part2_literary_substitution_applied": true,
+    "thirteen_poemx1_plain_values_revalidated_and_inserted": true
+  },
+  "composite_identity": {
+    "character_count_including_spaces": 3810618,
+    "normalization_profile": "scriptorium-text-v1",
+    "normalized_character_count_including_spaces": 3810618,
+    "normalized_sha256": "4f8b61e05cf7d96485d9edc0854d99d994da6ba146fabc3f6a3d509110ce4288",
+    "raw_sha256": "4f8b61e05cf7d96485d9edc0854d99d994da6ba146fabc3f6a3d509110ce4288",
+    "utf8_byte_count": 6958930
+  },
+  "composition": {
+    "part_order": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "profile": "scriptorium-klim-samgin-four-part-composite-v1",
+    "separator": "\\n\\n",
+    "source_text_committed": false
+  },
+  "diagnostic_ready": true,
+  "evidence_class": "candidate_specific_inferred_reconstruction",
+  "extraction_profile": "scriptorium-klim-samgin-wikisource-body-v1",
+  "fantlab_source_edition_match": "unknown",
+  "gate_ready": false,
+  "m2_parity_admissible": false,
+  "manifest_version": "scriptorium-klim-samgin-literary-body-v1",
+  "part2_literary_expansion": {
+    "dependency_partial_transclusion_controls_applied": true,
+    "dependency_transclusion_control_counts": {
+      "includeonly_pairs": 1,
+      "includeonly_self_closing": 0,
+      "noinclude_pairs": 1,
+      "noinclude_self_closing": 0,
+      "onlyinclude_pairs": 0,
+      "onlyinclude_self_closing": 0
+    },
+    "literary_dependency_character_count": 583677,
+    "literary_dependency_pre_transclusion_character_count": 583817,
+    "literary_dependency_pre_transclusion_utf8_byte_count": 1058661,
+    "literary_dependency_sha256": "46c569193d4e8dc50670c5fdcc5eeb901b9621cb055a1357e508cb357f8b04ba",
+    "literary_dependency_utf8_byte_count": 1058448,
+    "target_only_lst_substitution_applied": true,
+    "target_poemx1_literary_replacement_count": 6
+  },
+  "parts": [
+    {
+      "direct_parent_poemx1_literary_replacement_count": 5,
+      "extraction_surface": {
+        "category_count_removed": 1,
+        "heading_count_preserved": 5,
+        "nowiki_pair_count_preserved": 0,
+        "observed_html_tag_name_counts": {
+          "center": 4
+        }
+      },
+      "literary_body_identity": {
+        "character_count_including_spaces": 964215,
+        "normalization_profile": "scriptorium-text-v1",
+        "normalized_character_count_including_spaces": 964215,
+        "normalized_sha256": "1a41cef4b2383a149077da372d9a44ab48c3b2616064da6c1ab5f01a6062f4c8",
+        "raw_sha256": "1a41cef4b2383a149077da372d9a44ab48c3b2616064da6c1ab5f01a6062f4c8",
+        "utf8_byte_count": 1744650
+      },
+      "part": 1,
+      "source_revision": {
+        "mediawiki_sha1": "721b84af3fcdcdf14bad0e663b8e1ab1384cff9c",
+        "page_id": 364224,
+        "revision_id": 5733765,
+        "revision_timestamp": "2026-07-28T12:17:48Z",
+        "title": "Жизнь Клима Самгина (Горький)/Часть 1",
+        "wikitext_sha256": "556dab4e3c66c8d597dd19f5db6ddae8c1eb52649a97025ff61d4ce388fad575"
+      },
+      "source_text_included": false,
+      "target_only_part2_literary_substitution_applied": false
+    },
+    {
+      "direct_parent_poemx1_literary_replacement_count": 2,
+      "extraction_surface": {
+        "category_count_removed": 1,
+        "heading_count_preserved": 0,
+        "nowiki_pair_count_preserved": 0,
+        "observed_html_tag_name_counts": {
+          "ref": 16
+        }
+      },
+      "literary_body_identity": {
+        "character_count_including_spaces": 1164870,
+        "normalization_profile": "scriptorium-text-v1",
+        "normalized_character_count_including_spaces": 1164870,
+        "normalized_sha256": "75896b6a0a87bc10087ececbeb919077de58c628f646aab8994cf653edc15794",
+        "raw_sha256": "75896b6a0a87bc10087ececbeb919077de58c628f646aab8994cf653edc15794",
+        "utf8_byte_count": 2111745
+      },
+      "part": 2,
+      "source_revision": {
+        "mediawiki_sha1": "2d5b9de21f539d12b34c72caa62f228998eaf80c",
+        "page_id": 580077,
+        "revision_id": 5198033,
+        "revision_timestamp": "2024-11-26T11:16:35Z",
+        "title": "Жизнь Клима Самгина (Горький)/Часть 2",
+        "wikitext_sha256": "34dc8bf7d1dc77f9aa1686ef0ac348101beac19ccd97d467ee3857e014ad8853"
+      },
+      "source_text_included": false,
+      "target_only_part2_literary_substitution_applied": true
+    },
+    {
+      "direct_parent_poemx1_literary_replacement_count": 0,
+      "extraction_surface": {
+        "category_count_removed": 1,
+        "heading_count_preserved": 0,
+        "nowiki_pair_count_preserved": 0,
+        "observed_html_tag_name_counts": {
+          "ref": 2
+        }
+      },
+      "literary_body_identity": {
+        "character_count_including_spaces": 680940,
+        "normalization_profile": "scriptorium-text-v1",
+        "normalized_character_count_including_spaces": 680940,
+        "normalized_sha256": "7dc6030381371cdcff5a27a872ab1fd6c49840655e3ce11a45d647ea0bf208ab",
+        "raw_sha256": "7dc6030381371cdcff5a27a872ab1fd6c49840655e3ce11a45d647ea0bf208ab",
+        "utf8_byte_count": 1234441
+      },
+      "part": 3,
+      "source_revision": {
+        "mediawiki_sha1": "61d0ce66ce00bfed3c700d639388f1b6e6460e41",
+        "page_id": 580070,
+        "revision_id": 5138882,
+        "revision_timestamp": "2024-05-24T20:48:07Z",
+        "title": "Жизнь Клима Самгина (Горький)/Часть 3",
+        "wikitext_sha256": "95d782223c9c6893131fbb2ed7a4a6c4b2c14aea074083721d9425b1d30c8182"
+      },
+      "source_text_included": false,
+      "target_only_part2_literary_substitution_applied": false
+    },
+    {
+      "direct_parent_poemx1_literary_replacement_count": 0,
+      "extraction_surface": {
+        "category_count_removed": 1,
+        "heading_count_preserved": 0,
+        "nowiki_pair_count_preserved": 25,
+        "observed_html_tag_name_counts": {
+          "center": 2,
+          "nowiki": 50
+        }
+      },
+      "literary_body_identity": {
+        "character_count_including_spaces": 1000587,
+        "normalization_profile": "scriptorium-text-v1",
+        "normalized_character_count_including_spaces": 1000587,
+        "normalized_sha256": "237b2119e04bdf8c02dded3d138fda457d8f423012d2abe9d752a07c038c8948",
+        "raw_sha256": "237b2119e04bdf8c02dded3d138fda457d8f423012d2abe9d752a07c038c8948",
+        "utf8_byte_count": 1868088
+      },
+      "part": 4,
+      "source_revision": {
+        "mediawiki_sha1": "9c87ed020620076786cdd46deeaffd0ab43bea1e",
+        "page_id": 580075,
+        "revision_id": 5724453,
+        "revision_timestamp": "2026-06-21T18:58:09Z",
+        "title": "Жизнь Клима Самгина (Горький)/Часть 4",
+        "wikitext_sha256": "ce353961f4d76a7f6775456ce1df53d23f33c3073f2126c716fa69561d119bbb"
+      },
+      "source_text_included": false,
+      "target_only_part2_literary_substitution_applied": false
+    }
+  ],
+  "provider": "Russian Wikisource",
+  "research_date": "2026-09-18",
+  "semantics_evidence": [
+    {
+      "claim": "Russian Wikisource documents {{Ко}} as the abbreviation for 'и компания'; the literary extractor preserves its visible plain-text content as 'Ко' while discarding superscript presentation formatting",
+      "url": "https://ru.wikisource.org/wiki/Шаблон:Ко"
+    }
+  ],
+  "source_text_included": false
+}

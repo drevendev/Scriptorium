@@ -1,0 +1,80 @@
+name: Klim Samgin unpaired-angle repair
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-unpaired-angle-repair.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: true
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Apply bounded unpaired-angle repair
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          module = Path('scriptorium/klim_samgin_literary_body.py')
+          source = module.read_text(encoding='utf-8')
+          marker = '''def _restore_tokens(rendered: str, protected: Sequence[tuple[str, str]], *, label: str) -> str:\n'''
+          helper = '''def _protect_unpaired_literal_angles(source: str) -> tuple[str, list[tuple[str, str]]]:\n    """Protect raw angle characters not belonging to any balanced one-line span.\n\n    The exact pinned Klim graph contains one standalone less-than and one standalone\n    greater-than literary character in Part 2. Balanced spans are handled separately.\n    A tag-like unmatched opening remains a hard failure rather than being reclassified\n    as prose.\n    """\n    prefix = "SCRIPTORIUMKLIMUNPAIREDANGLETOKEN"\n    if prefix in source:\n        raise ValueError("unpaired-angle placeholder prefix collides with source")\n    covered: set[int] = set()\n    for match in _ANGLE_SPAN_RE.finditer(source):\n        covered.add(match.start())\n        covered.add(match.end() - 1)\n    positions = [index for index, char in enumerate(source) if char in "<>" and index not in covered]\n    protected: list[tuple[str, str]] = []\n    replacements: list[tuple[int, int, str]] = []\n    for index in positions:\n        char = source[index]\n        if char == "<":\n            following = source[index + 1:index + 33].lstrip()\n            if re.match(r"(?:/?[A-Za-z]|!--|!DOCTYPE|\\?)", following, re.IGNORECASE):\n                raise ValueError("unbalanced tag-like opening angle reached Klim extraction")\n        token = f"{prefix}{len(protected):04d}END"\n        protected.append((token, char))\n        replacements.append((index, index + 1, token))\n    return _replace_spans(source, replacements), protected\n\n\n'''
+          if source.count(marker) != 1:
+              raise SystemExit('unpaired-angle helper insertion marker drift')
+          source = source.replace(marker, helper + marker, 1)
+
+          old = '''    source, protected_lines = _protect_literal_line_openers(source)\n    source, protected_angles = _protect_literal_angle_spans(source)\n    try:\n'''
+          new = '''    source, protected_lines = _protect_literal_line_openers(source)\n    source, protected_angles = _protect_literal_angle_spans(source)\n    source, protected_unpaired_angles = _protect_unpaired_literal_angles(source)\n    try:\n'''
+          if source.count(old) != 1:
+              raise SystemExit('unpaired-angle extraction marker drift')
+          source = source.replace(old, new, 1)
+
+          old = '''    rendered = _restore_tokens(rendered, protected_angles, label="angle")\n    rendered = _restore_tokens(rendered, protected_encoded_angles, label="encoded-angle")\n'''
+          new = '''    rendered = _restore_tokens(rendered, protected_unpaired_angles, label="unpaired-angle")\n    rendered = _restore_tokens(rendered, protected_angles, label="angle")\n    rendered = _restore_tokens(rendered, protected_encoded_angles, label="encoded-angle")\n'''
+          if source.count(old) != 1:
+              raise SystemExit('unpaired-angle restore marker drift')
+          source = source.replace(old, new, 1)
+
+          old = '''        "entity_encoded_angle_span_preservation_count": len(protected_encoded_angles),\n        "literal_angle_span_preservation_count": len(protected_angles),\n'''
+          new = '''        "entity_encoded_angle_span_preservation_count": len(protected_encoded_angles),\n        "literal_angle_span_preservation_count": len(protected_angles),\n        "unpaired_literal_angle_character_preservation_count": len(protected_unpaired_angles),\n'''
+          if source.count(old) != 1:
+              raise SystemExit('unpaired-angle receipt marker drift')
+          source = source.replace(old, new, 1)
+          module.write_text(source, encoding='utf-8')
+
+          tests = Path('tests/test_klim_samgin_literary_body.py')
+          value = tests.read_text(encoding='utf-8')
+          old = '    _protect_literal_line_openers,\n    _protect_nowiki,\n'
+          new = '    _protect_literal_line_openers,\n    _protect_nowiki,\n    _protect_unpaired_literal_angles,\n'
+          if value.count(old) != 1:
+              raise SystemExit('unpaired-angle test import marker drift')
+          value = value.replace(old, new, 1)
+          insertion = '''    def test_entity_encoded_angle_literal_is_protected_as_visible_text(self) -> None:\n'''
+          test = '''    def test_unpaired_angle_characters_are_preserved_but_taglike_opening_fails(self) -> None:\n        source, protected = _protect_unpaired_literal_angles("left < right and > tail")\n        self.assertNotIn(" < ", source)\n        self.assertEqual(len(protected), 2)\n        self.assertEqual(\n            _restore_tokens(source, protected, label="unpaired-angle"),\n            "left < right and > tail",\n        )\n        with self.assertRaisesRegex(ValueError, "tag-like"):\n            _protect_unpaired_literal_angles("left <ref missing-close")\n\n'''
+          if value.count(insertion) != 1:
+              raise SystemExit('unpaired-angle test insertion marker drift')
+          value = value.replace(insertion, test + insertion, 1)
+          tests.write_text(value, encoding='utf-8')
+          PY
+      - name: Verify repair
+        run: python -m unittest discover -s tests -v
+      - name: Commit repaired extractor
+        run: |
+          set -euo pipefail
+          git config user.name "andy-zen-dev"
+          git config user.email "andyzendev@gmail.com"
+          git add scriptorium/klim_samgin_literary_body.py tests/test_klim_samgin_literary_body.py
+          git diff --cached --check
+          git commit -m "Preserve unpaired angle prose in Klim extraction"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

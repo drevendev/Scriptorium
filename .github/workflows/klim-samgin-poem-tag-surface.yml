@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   replay:
-    name: Freeze concrete reached #tag:poem source surface
+    name: "Freeze concrete reached #tag:poem source surface"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -85,18 +85,23 @@ jobs:
               json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
               encoding='utf-8',
           )
-          print('SCRIPTORIUM_POEM_TAG_SURFACE_BEGIN')
-          print(observed.read_text(encoding='utf-8'))
-          print('SCRIPTORIUM_POEM_TAG_SURFACE_END')
+          print('SCRIPTORIUM_POEM_TAG_SURFACE=' + json.dumps(
+              {
+                  'argument_count': manifest['tag_surface']['top_level_argument_count'],
+                  'attribute_count': manifest['tag_surface']['attribute_count'],
+                  'attribute_names': manifest['tag_surface']['attribute_names'],
+                  'content_parameter_references': manifest['tag_surface']['content_argument']['parameter_references']['parameter_reference_counts'],
+              },
+              ensure_ascii=False,
+              sort_keys=True,
+              separators=(',', ':'),
+          ))
           PY
 
-      - name: Compare committed source-free tag surface when present
+      - name: Compare committed source-free tag surface
         run: |
           set -euo pipefail
           expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poem-tag-surface.json
           observed=build/repro/gorky-klim-samgin-ru.poem-tag-surface.json
-          if test -f "$expected"; then
-            cmp "$expected" "$observed"
-          else
-            echo "DISCOVERY_ONLY_EXPECTED_MANIFEST_NOT_COMMITTED"
-          fi
+          test -f "$expected"
+          cmp "$expected" "$observed"

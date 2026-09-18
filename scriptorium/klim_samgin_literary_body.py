@@ -23,10 +23,7 @@ from .klim_samgin_body_surface import (
 )
 from .klim_samgin_direct_poemx1_surface import validate_manifest as validate_direct_manifest
 from .klim_samgin_freeze import LST_CONTRACT_VERSION
-from .mediawiki_part2_resolution import (
-    MANIFEST_VERSION as PART2_RESOLUTION_VERSION,
-    validate_part2_resolution_manifest,
-)
+from .mediawiki_part2_resolution import validate_part2_resolution_manifest
 from .mediawiki_poemx1_content import _parameter_two_value
 from .mediawiki_template_invocation import find_template_invocations
 from .single_page_body import fetch_pinned_wikitext
@@ -50,6 +47,9 @@ _CATEGORY_LINE_RE = re.compile(
 )
 _NOWIKI_PAIR_RE = re.compile(r"<nowiki>(.*?)</nowiki\s*>", re.IGNORECASE | re.DOTALL)
 _NOWIKI_ANY_RE = re.compile(r"</?nowiki\b[^>]*>", re.IGNORECASE)
+_TABLE_OPEN_RE = re.compile(r"(?m)^[ \t]*\{\|")
+_TABLE_ROW_OR_END_RE = re.compile(r"(?m)^[ \t]*\|(?:-|\})")
+_LITERAL_LINE_OPENER_RE = re.compile(r"(?m)^(?P<indent>[ \t]*)(?P<mark>[|!])")
 
 
 def _load_json(path: Path) -> dict[str, object]:
@@ -272,11 +272,36 @@ def _protect_nowiki(source: str, *, expected_tag_count: int) -> tuple[str, list[
     return result, protected
 
 
-def _restore_nowiki(rendered: str, protected: Sequence[tuple[str, str]]) -> str:
+def _protect_literal_line_openers(source: str) -> tuple[str, list[tuple[str, str]]]:
+    """Protect literal line-leading |/! while preserving fail-closed table markers.
+
+    The shared Wikisource renderer conservatively treats every line-leading ``|`` or
+    ``!`` as table syntax. The frozen Klim source graph contains no table opens/rows/
+    ends, so exact line-leading punctuation outside a table is literary text. We keep
+    real table delimiters fatal and protect only the literal punctuation during the
+    shared rendering pass.
+    """
+    if _TABLE_OPEN_RE.search(source) or _TABLE_ROW_OR_END_RE.search(source):
+        raise ValueError("unsupported Klim table delimiter reached literary extraction")
+    marker_prefix = "SCRIPTORIUMKLIMLINEOPENERTOKEN"
+    if marker_prefix in source:
+        raise ValueError("line-opener placeholder prefix collides with source")
+    protected: list[tuple[str, str]] = []
+
+    def replace(match: re.Match[str]) -> str:
+        mark = match.group("mark")
+        token = f"{marker_prefix}{len(protected):04d}END"
+        protected.append((token, mark))
+        return match.group("indent") + token
+
+    return _LITERAL_LINE_OPENER_RE.sub(replace, source), protected
+
+
+def _restore_tokens(rendered: str, protected: Sequence[tuple[str, str]], *, label: str) -> str:
     out = rendered
     for token, value in protected:
         if out.count(token) != 1:
-            raise ValueError("nowiki placeholder multiplicity drift")
+            raise ValueError(f"{label} placeholder multiplicity drift")
         out = out.replace(token, value)
     return out
 
@@ -313,9 +338,14 @@ def _extract_part_body(
     source = _HEADING3_RE.sub(_plain_heading, source)
 
     nowiki_tag_count = int(tags.get("nowiki", 0))
-    source, protected = _protect_nowiki(source, expected_tag_count=nowiki_tag_count)
-    rendered = extract_transcription_body(f'<div class="text">{source}</div>')
-    body = _restore_nowiki(rendered, protected)
+    source, protected_nowiki = _protect_nowiki(source, expected_tag_count=nowiki_tag_count)
+    source, protected_line_openers = _protect_literal_line_openers(source)
+    try:
+        rendered = extract_transcription_body(f'<div class="text">{source}</div>')
+    except ValueError as exc:
+        raise ValueError(f"Klim part {part} conservative renderer rejected prepared source: {exc}") from exc
+    rendered = _restore_tokens(rendered, protected_line_openers, label="line-opener")
+    body = _restore_tokens(rendered, protected_nowiki, label="nowiki")
     if not body:
         raise ValueError(f"Klim part {part} literary body is empty")
     return body, {
@@ -325,7 +355,8 @@ def _extract_part_body(
         "ko_template_plain_replacement_count": ko_count,
         "trailing_category_removal_count": category_count,
         "level_three_heading_plain_replacement_count": level3_count,
-        "nowiki_pair_preservation_count": len(protected),
+        "nowiki_pair_preservation_count": len(protected_nowiki),
+        "literal_line_opener_preservation_count": len(protected_line_openers),
     }
 
 
@@ -457,6 +488,24 @@ def build_manifest(
     }
 
 
+def _validate_identity(value: object, *, label: str) -> None:
+    if not isinstance(value, Mapping):
+        raise ValueError(f"{label} identity missing")
+    for key in (
+        "character_count_including_spaces",
+        "utf8_byte_count",
+        "normalized_character_count_including_spaces",
+    ):
+        if not isinstance(value.get(key), int) or int(value[key]) <= 0:
+            raise ValueError(f"invalid {label} {key}")
+    for key in ("raw_sha256", "normalized_sha256"):
+        digest = value.get(key)
+        if not isinstance(digest, str) or len(digest) != 64:
+            raise ValueError(f"invalid {label} {key}")
+    if value.get("normalization_profile") != NORMALIZATION_PROFILE:
+        raise ValueError(f"{label} normalization profile drift")
+
+
 def validate_manifest(manifest: Mapping[str, object]) -> None:
     if manifest.get("manifest_version") != MANIFEST_VERSION:
         raise ValueError("unsupported Klim literary-body manifest")
@@ -472,8 +521,7 @@ def validate_manifest(manifest: Mapping[str, object]) -> None:
             raise ValueError("Klim literary-body part order drift")
         if row_obj.get("source_revision_id") != EXPECTED_PART_REVISION_IDS[part]:
             raise ValueError(f"Klim part {part} source revision drift")
-        identity = row_obj.get("literary_body_identity")
-        _validate_identity(identity, label=f"part {part}")
+        _validate_identity(row_obj.get("literary_body_identity"), label=f"part {part}")
         if row_obj.get("source_text_included") is not False:
             raise ValueError("source prose must remain absent")
     composition = manifest.get("composition")
@@ -515,24 +563,6 @@ def validate_manifest(manifest: Mapping[str, object]) -> None:
         raise ValueError("source prose key leaked into Klim literary-body manifest")
 
 
-def _validate_identity(value: object, *, label: str) -> None:
-    if not isinstance(value, Mapping):
-        raise ValueError(f"{label} identity missing")
-    for key in (
-        "character_count_including_spaces",
-        "utf8_byte_count",
-        "normalized_character_count_including_spaces",
-    ):
-        if not isinstance(value.get(key), int) or int(value[key]) <= 0:
-            raise ValueError(f"invalid {label} {key}")
-    for key in ("raw_sha256", "normalized_sha256"):
-        digest = value.get(key)
-        if not isinstance(digest, str) or len(digest) != 64:
-            raise ValueError(f"invalid {label} {key}")
-    if value.get("normalization_profile") != NORMALIZATION_PROFILE:
-        raise ValueError(f"{label} normalization profile drift")
-
-
 def replay_manifest(
     revision_manifests: Sequence[Mapping[str, object]],
     dependency_revision_manifest: Mapping[str, object],
@@ -557,9 +587,9 @@ def replay_manifest(
     )
     if observed != dict(manifest):
         raise ValueError("pinned Klim literary-body identity drift")
-    composite = manifest["composition"]
-    assert isinstance(composite, Mapping)
-    identity = composite["composite_literary_body_identity"]
+    composition = manifest["composition"]
+    assert isinstance(composition, Mapping)
+    identity = composition["composite_literary_body_identity"]
     assert isinstance(identity, Mapping)
     return {
         "receipt_version": "scriptorium-klim-samgin-literary-body-replay-v1",

@@ -1,0 +1,152 @@
+name: Klim Samgin target-only Part 2 resolution
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-part2-resolution.yml"
+      - "scriptorium/mediawiki_part2_resolution.py"
+      - "tests/test_mediawiki_part2_resolution.py"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.transclusion.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.parameters.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.bindings.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.control.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poem-render-surface.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-resolution.json"
+      - "corpus/candidates/gorky-klim-samgin-ru.md"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-020-part2-resolution.md"
+      - "project/run-receipts/SCRIP-CORPUS-020-part2-resolution.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Resolve pinned target-only Part 2 source graph
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Re-fetch exact source graph and resolve Part 2
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from scriptorium.mediawiki_part2_resolution import (
+              build_part2_resolution_manifest,
+              validate_part2_resolution_manifest,
+          )
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+
+          root = Path("corpus/candidates/source-edition-traces")
+
+          def load(name: str):
+              return json.loads((root / name).read_text(encoding="utf-8"))
+
+          def fetch_from_manifest(name: str) -> str:
+              manifest = load(name)
+              identity = manifest["source_identity"]
+              observed = fetch_pinned_wikitext(
+                  title=identity["title"], revision_id=identity["revision_id"]
+              )
+              text = observed.pop("wikitext")
+              assert observed == identity
+              return text
+
+          parent = fetch_from_manifest("gorky-klim-samgin-ru.part2.revision.json")
+          dependency = fetch_from_manifest(
+              "gorky-klim-samgin-ru.part2-part2.revision.json"
+          )
+          template = fetch_from_manifest(
+              "gorky-klim-samgin-ru.poemx1-template.revision.json"
+          )
+
+          manifest = build_part2_resolution_manifest(
+              parent_wikitext=parent,
+              dependency_wikitext=dependency,
+              template_wikitext=template,
+              lst_contract=load("gorky-klim-samgin-ru.part2-lst.json"),
+              transclusion_manifest=load(
+                  "gorky-klim-samgin-ru.poemx1-template.transclusion.json"
+              ),
+              parameter_manifest=load(
+                  "gorky-klim-samgin-ru.poemx1-template.parameters.json"
+              ),
+              binding_manifest=load(
+                  "gorky-klim-samgin-ru.poemx1-template.bindings.json"
+              ),
+              control_manifest=load(
+                  "gorky-klim-samgin-ru.poemx1-template.control.json"
+              ),
+              render_manifest=load("gorky-klim-samgin-ru.poem-render-surface.json"),
+              research_date="2026-09-18",
+          )
+          validate_part2_resolution_manifest(manifest)
+          observed = Path(
+              "build/repro/gorky-klim-samgin-ru.part2-resolution.json"
+          )
+          observed.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print("SCRIPTORIUM_PART2_RESOLUTION=" + json.dumps(
+              {
+                  "expanded_dependency_identity": manifest[
+                      "expanded_dependency_identity"
+                  ],
+                  "resolved_parent_part2_identity": manifest[
+                      "resolved_parent_part2_identity"
+                  ],
+                  "remaining_expansion_surface": manifest[
+                      "remaining_expansion_surface"
+                  ],
+                  "expanded_template_outputs": [
+                      row["expanded_template_output"]
+                      for row in manifest["poemx1_expansions"]
+                  ],
+              },
+              ensure_ascii=False,
+              sort_keys=True,
+              separators=(",", ":"),
+          ))
+          PY
+
+      - name: Upload generated source-free Part 2 resolution
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: klim-samgin-part2-resolution
+          path: build/repro/gorky-klim-samgin-ru.part2-resolution.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Compare committed source-free resolution when present
+        run: |
+          set -euo pipefail
+          expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-resolution.json
+          observed=build/repro/gorky-klim-samgin-ru.part2-resolution.json
+          if test -f "$expected"; then
+            cmp "$expected" "$observed"
+          else
+            echo "Initial authoring pass: generated evidence will be committed before final verification."
+          fi

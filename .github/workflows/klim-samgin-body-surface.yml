@@ -1,0 +1,86 @@
+name: Klim Samgin body extraction surface
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-body-surface.yml"
+      - "scriptorium/klim_samgin_body_surface.py"
+      - "scriptorium/klim_samgin_freeze.py"
+      - "scriptorium/mediawiki_template_invocation.py"
+      - "scriptorium/single_page_body.py"
+      - "scriptorium/single_page_revision.py"
+      - "tests/test_klim_samgin_body_surface.py"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part*.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.body-surface.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Replay pinned Klim body extraction surface
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Capture exact source-free extraction surface
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.body-surface.json
+          observed=build/repro/gorky-klim-samgin-ru.body-surface.observed.json
+          receipt=build/repro/gorky-klim-samgin-ru.body-surface.replay.json
+          python -m scriptorium.klim_samgin_body_surface capture \
+            --part1-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part1.revision.json \
+            --part2-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2.revision.json \
+            --part3-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part3.revision.json \
+            --part4-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part4.revision.json \
+            --lst-contract corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json \
+            --research-date 2026-09-18 \
+            --output "$observed"
+          python - "$observed" <<'PY'
+          import json
+          from pathlib import Path
+          import sys
+          path = Path(sys.argv[1])
+          value = json.loads(path.read_text(encoding='utf-8'))
+          path.write_text(
+              json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n',
+              encoding='utf-8',
+          )
+          PY
+          if [[ -f "$expected" ]]; then
+            cmp "$expected" "$observed"
+            python -m scriptorium.klim_samgin_body_surface replay \
+              --part1-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part1.revision.json \
+              --part2-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2.revision.json \
+              --part3-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part3.revision.json \
+              --part4-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part4.revision.json \
+              --lst-contract corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json \
+              --manifest "$expected" \
+              --receipt "$receipt"
+          fi
+
+      - name: Upload source-free extraction-surface evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: klim-samgin-body-extraction-surface
+          path: build/repro/gorky-klim-samgin-ru.body-surface*
+          if-no-files-found: error
+          retention-days: 7

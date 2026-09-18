@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
 import unittest
 
 from scriptorium.klim_samgin_literary_body import (
@@ -7,9 +9,20 @@ from scriptorium.klim_samgin_literary_body import (
     _extract_part_literary_body,
     _plain_poem_value,
     _raw_template_spans,
+    validate_manifest,
 )
 from scriptorium.mediawiki_poemx1_content import _parameter_two_value
 from scriptorium.mediawiki_template_invocation import find_template_invocations
+
+
+_ROOT = Path(__file__).resolve().parents[1]
+_COMMITTED_MANIFEST = (
+    _ROOT
+    / "corpus"
+    / "candidates"
+    / "source-edition-traces"
+    / "gorky-klim-samgin-ru.literary-body.json"
+)
 
 
 class KlimSamginLiteraryBodyTests(unittest.TestCase):
@@ -83,6 +96,24 @@ class KlimSamginLiteraryBodyTests(unittest.TestCase):
         self.assertEqual(
             COMPOSITE_SEPARATOR.join(["A", "B", "C", "D"]),
             "A\n\nB\n\nC\n\nD",
+        )
+
+    def test_committed_manifest_is_source_free_and_keeps_parity_gate_closed(self) -> None:
+        manifest = json.loads(_COMMITTED_MANIFEST.read_text(encoding="utf-8"))
+        validate_manifest(manifest)
+        self.assertFalse(manifest["source_text_included"])
+        self.assertEqual(manifest["evidence_class"], "candidate_specific_inferred_reconstruction")
+        self.assertTrue(manifest["diagnostic_ready"])
+        self.assertFalse(manifest["gate_ready"])
+        self.assertFalse(manifest["m2_parity_admissible"])
+        self.assertEqual(manifest["fantlab_source_edition_match"], "unknown")
+        self.assertEqual(
+            manifest["composite_identity"]["raw_sha256"],
+            "4f8b61e05cf7d96485d9edc0854d99d994da6ba146fabc3f6a3d509110ce4288",
+        )
+        self.assertEqual(
+            manifest["composite_identity"]["normalized_sha256"],
+            manifest["composite_identity"]["raw_sha256"],
         )
 
 

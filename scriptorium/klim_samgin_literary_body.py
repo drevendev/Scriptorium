@@ -1,10 +1,8 @@
-"""Freeze a source-free literary-body identity for the four pinned Klim Samgin parts.
+"""Freeze source-free literary-body identities for the four pinned Klim Samgin parts.
 
-This is a candidate-specific extraction profile, not a generic MediaWiki renderer. It
-replays the already-frozen source graph, replaces only the exact poemx1/#lst surfaces
-whose identities are committed, removes the observed Wikisource scaffolding, and then
-uses Scriptorium's conservative transcription renderer. Literary prose exists only in
-process memory; durable output contains counts, transformation facts and digests.
+This is a candidate-specific extraction profile, not a generic MediaWiki renderer.
+Pinned prose is fetched transiently, transformed under already-frozen source contracts,
+and reduced to counts/digests before anything is persisted.
 """
 from __future__ import annotations
 
@@ -26,6 +24,7 @@ from .klim_samgin_freeze import LST_CONTRACT_VERSION
 from .mediawiki_part2_resolution import validate_part2_resolution_manifest
 from .mediawiki_poemx1_content import _parameter_two_value
 from .mediawiki_template_invocation import find_template_invocations
+from .mediawiki_transclusion import preprocess_for_transclusion
 from .single_page_body import fetch_pinned_wikitext
 from .single_page_revision import validate_manifest as validate_revision_manifest
 from .text import NORMALIZATION_PROFILE, normalize_text
@@ -72,8 +71,8 @@ def _sha256_text(value: str) -> str:
 
 
 def _identity(value: str) -> dict[str, object]:
-    raw = value.encode("utf-8")
     normalized = normalize_text(value)
+    raw = value.encode("utf-8")
     return {
         "character_count_including_spaces": len(value),
         "utf8_byte_count": len(raw),
@@ -132,8 +131,8 @@ def _literaryize_direct_poemx1(
     frozen_part: Mapping[str, object],
 ) -> tuple[str, int]:
     observed = find_template_invocations(source, template_name="poemx1")
-    expected_count = EXPECTED_DIRECT_POEMX1_COUNTS[part]
     frozen_rows = frozen_part.get("invocations")
+    expected_count = EXPECTED_DIRECT_POEMX1_COUNTS[part]
     if not isinstance(frozen_rows, list) or len(frozen_rows) != expected_count:
         raise ValueError(f"Klim part {part} frozen direct poemx1 rows drift")
     if len(observed) != expected_count:
@@ -161,20 +160,26 @@ def _literaryize_dependency(
     dependency: str,
     part2_resolution: Mapping[str, object],
 ) -> tuple[str, dict[str, object]]:
+    """Apply the already-frozen transclusion controls, then replace six poem calls."""
     validate_part2_resolution_manifest(part2_resolution)
+    transclusion_input, control_counts = preprocess_for_transclusion(dependency)
+    frozen_controls = part2_resolution.get("transclusion_control_counts")
+    if not isinstance(frozen_controls, Mapping) or control_counts != dict(frozen_controls):
+        raise ValueError("Part 2 dependency transclusion-control inventory drift")
+
     rows = part2_resolution.get("poemx1_expansions")
     if not isinstance(rows, list) or len(rows) != 6:
         raise ValueError("Part 2 resolution must freeze six dependency poemx1 calls")
-    observed = find_template_invocations(dependency, template_name="poemx1")
+    observed = find_template_invocations(transclusion_input, template_name="poemx1")
     if len(observed) != 6:
-        raise ValueError("Part 2 dependency poemx1 inventory drift")
+        raise ValueError("Part 2 dependency poemx1 inventory drift after transclusion controls")
     replacements: list[tuple[int, int, str]] = []
     for live, frozen_obj in zip(observed, rows):
         if not isinstance(frozen_obj, Mapping):
             raise ValueError("invalid Part 2 resolution row")
         if live.get("invocation_sha256") != frozen_obj.get("invocation_sha256"):
             raise ValueError("dependency poemx1 invocation identity drift")
-        value, identity = _parameter_two_value(dependency, live)
+        value, identity = _parameter_two_value(transclusion_input, live)
         if identity.get("sha256") != frozen_obj.get("parameter_2_sha256"):
             raise ValueError("dependency poemx1 parameter-2 identity drift")
         start = live.get("parent_start_offset")
@@ -182,10 +187,11 @@ def _literaryize_dependency(
         if not isinstance(start, int) or not isinstance(end, int):
             raise ValueError("dependency poemx1 offsets missing")
         replacements.append((start, end, value))
-    literary = _replace_spans(dependency, replacements)
+    literary = _replace_spans(transclusion_input, replacements)
     if "{{" in literary or "}}" in literary:
         raise ValueError("literaryized Part 2 dependency retains unsupported brace syntax")
     return literary, {
+        "transclusion_control_counts": control_counts,
         "dependency_poemx1_replacement_count": len(replacements),
         "literary_dependency_character_count": len(literary),
         "literary_dependency_utf8_byte_count": len(literary.encode("utf-8")),
@@ -273,14 +279,7 @@ def _protect_nowiki(source: str, *, expected_tag_count: int) -> tuple[str, list[
 
 
 def _protect_literal_line_openers(source: str) -> tuple[str, list[tuple[str, str]]]:
-    """Protect literal line-leading |/! while preserving fail-closed table markers.
-
-    The shared Wikisource renderer conservatively treats every line-leading ``|`` or
-    ``!`` as table syntax. The frozen Klim source graph contains no table opens/rows/
-    ends, so exact line-leading punctuation outside a table is literary text. We keep
-    real table delimiters fatal and protect only the literal punctuation during the
-    shared rendering pass.
-    """
+    """Protect literal line-leading |/! but keep true table delimiters fatal."""
     if _TABLE_OPEN_RE.search(source) or _TABLE_ROW_OR_END_RE.search(source):
         raise ValueError("unsupported Klim table delimiter reached literary extraction")
     marker_prefix = "SCRIPTORIUMKLIMLINEOPENERTOKEN"
@@ -289,9 +288,8 @@ def _protect_literal_line_openers(source: str) -> tuple[str, list[tuple[str, str
     protected: list[tuple[str, str]] = []
 
     def replace(match: re.Match[str]) -> str:
-        mark = match.group("mark")
         token = f"{marker_prefix}{len(protected):04d}END"
-        protected.append((token, mark))
+        protected.append((token, match.group("mark")))
         return match.group("indent") + token
 
     return _LITERAL_LINE_OPENER_RE.sub(replace, source), protected
@@ -427,17 +425,15 @@ def build_manifest(
             direct_poem_part=direct_part,
         )
         bodies.append(body)
-        part_rows.append(
-            {
-                "part": part,
-                "source_revision_id": identity["revision_id"],
-                "source_wikitext_sha256": identity["wikitext_sha256"],
-                "part2_target_dependency_substituted": part == 2,
-                "transforms": transforms,
-                "literary_body_identity": _identity(body),
-                "source_text_included": False,
-            }
-        )
+        part_rows.append({
+            "part": part,
+            "source_revision_id": identity["revision_id"],
+            "source_wikitext_sha256": identity["wikitext_sha256"],
+            "part2_target_dependency_substituted": part == 2,
+            "transforms": transforms,
+            "literary_body_identity": _identity(body),
+            "source_text_included": False,
+        })
 
     composite = COMPOSITION_SEPARATOR.join(bodies)
     if len(composite) < 300_000:
@@ -475,10 +471,11 @@ def build_manifest(
         },
         "boundary": (
             "This source-free identity is a deterministic candidate-specific extraction from the "
-            "pinned Russian Wikisource/Library Moshkov transcription graph. For literary extraction, "
-            "frozen poemx1 calls are replaced by their exact plain parameter-2 values and the target-only "
-            "Part 2 dependency is substituted under the already-frozen graph. This does not prove the "
-            "historical MediaWiki/Poem deployment or identify FantLab's undisclosed analyzer input."
+            "pinned Russian Wikisource/Library Moshkov transcription graph. Frozen poemx1 calls are "
+            "replaced by their exact plain parameter-2 values; the Part 2 dependency first receives "
+            "the already-frozen noinclude/includeonly/onlyinclude transclusion-control semantics and "
+            "is then substituted at the exact frozen #lst span. This does not prove the historical "
+            "MediaWiki/Poem deployment or identify FantLab's undisclosed analyzer input."
         ),
         "source_text_included": False,
         "fantlab_source_edition_match": "unknown",

@@ -1,0 +1,106 @@
+name: Klim Samgin literary body
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-literary-body.yml"
+      - "scriptorium/klim_samgin_literary_body.py"
+      - "scriptorium/klim_samgin_body_surface.py"
+      - "scriptorium/klim_samgin_direct_poemx1_surface.py"
+      - "scriptorium/klim_samgin_freeze.py"
+      - "scriptorium/mediawiki_part2_resolution.py"
+      - "scriptorium/mediawiki_poem_render_surface.py"
+      - "scriptorium/mediawiki_poemx1_content.py"
+      - "scriptorium/mediawiki_template_invocation.py"
+      - "scriptorium/single_page_body.py"
+      - "scriptorium/single_page_revision.py"
+      - "scriptorium/text.py"
+      - "tests/test_klim_samgin_literary_body.py"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part*.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.body-surface.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.direct-parent-poemx1.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-resolution.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.literary-body.json"
+      - "corpus/candidates/gorky-klim-samgin-ru.md"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-020-literary-body-extractor.md"
+      - "project/run-receipts/SCRIP-CORPUS-020-literary-body-extractor.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Replay four-part literary-body extraction
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Re-fetch exact source graph and derive literary body
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.literary-body.json
+          observed=build/repro/gorky-klim-samgin-ru.literary-body.observed.json
+          receipt=build/repro/gorky-klim-samgin-ru.literary-body.replay.json
+          common_args=(
+            --part1-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part1.revision.json
+            --part2-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2.revision.json
+            --part3-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part3.revision.json
+            --part4-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part4.revision.json
+            --dependency-revision-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json
+            --body-surface-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.body-surface.json
+            --direct-poemx1-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.direct-parent-poemx1.json
+            --lst-contract corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json
+            --part2-resolution-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-resolution.json
+          )
+          python -m scriptorium.klim_samgin_literary_body capture \
+            "${common_args[@]}" \
+            --research-date 2026-09-18 \
+            --output "$observed"
+          python - "$observed" <<'PY'
+          import json
+          from pathlib import Path
+          import sys
+          path = Path(sys.argv[1])
+          value = json.loads(path.read_text(encoding='utf-8'))
+          print("SCRIPTORIUM_KLIM_LITERARY_BODY=" + json.dumps(
+              value,
+              ensure_ascii=False,
+              sort_keys=True,
+              separators=(',', ':'),
+          ))
+          PY
+          if [[ -f "$expected" ]]; then
+            cmp "$expected" "$observed"
+            python -m scriptorium.klim_samgin_literary_body replay \
+              "${common_args[@]}" \
+              --manifest "$expected" \
+              --receipt "$receipt"
+          else
+            echo "Initial authoring pass: source-free literary-body evidence generated for independent review/capture."
+          fi
+
+      - name: Upload generated source-free literary-body evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: klim-samgin-literary-body
+          path: build/repro/gorky-klim-samgin-ru.literary-body*
+          if-no-files-found: error
+          retention-days: 7

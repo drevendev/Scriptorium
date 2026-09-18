@@ -1,0 +1,109 @@
+name: Klim Samgin Poem extension source anchor
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-poem-history.yml"
+      - "scriptorium/mediawiki_poem_history.py"
+      - "tests/test_mediawiki_poem_history.py"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poem-extension-anchor.json"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-020-poem-source-anchor.md"
+      - "project/run-receipts/SCRIP-CORPUS-020-poem-source-anchor.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Freeze inferred historical Poem source anchor
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Re-fetch pinned upstream Poem source and generate source-free anchor
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+
+          from scriptorium.mediawiki_poem_history import (
+              UPSTREAM_COMMIT,
+              UPSTREAM_PATH,
+              UPSTREAM_REPOSITORY,
+              build_poem_extension_source_anchor,
+          )
+
+          raw_url = (
+              "https://raw.githubusercontent.com/"
+              f"{UPSTREAM_REPOSITORY}/{UPSTREAM_COMMIT}/{UPSTREAM_PATH}"
+          )
+          request = Request(
+              raw_url,
+              headers={"User-Agent": "Scriptorium provenance replay"},
+          )
+          with urlopen(request, timeout=30) as response:
+              source_text = response.read().decode("utf-8")
+
+          manifest = build_poem_extension_source_anchor(
+              source_text=source_text,
+              research_date="2026-09-18",
+          )
+          observed = Path(
+              "build/repro/gorky-klim-samgin-ru.poem-extension-anchor.json"
+          )
+          observed.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(
+              "SCRIPTORIUM_POEM_SOURCE_ANCHOR="
+              + json.dumps(
+                  {
+                      "commit": manifest["anchor"]["upstream_commit"],
+                      "git_blob_sha1": manifest["anchor"]["upstream_git_blob_sha1"],
+                      "source_sha256": manifest["anchor"]["upstream_source_sha256"],
+                      "semantics": manifest["bounded_source_semantics"],
+                      "historical_deployment_equivalence_proven":
+                          manifest["capture_scope"][
+                              "historical_wikisource_deployment_equivalence_proven"
+                          ],
+                  },
+                  sort_keys=True,
+                  separators=(",", ":"),
+              )
+          )
+          PY
+
+      - name: Upload generated source-free evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: klim-samgin-poem-source-anchor
+          path: build/repro/gorky-klim-samgin-ru.poem-extension-anchor.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Compare committed source-free Poem source anchor
+        run: |
+          set -euo pipefail
+          expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poem-extension-anchor.json
+          observed=build/repro/gorky-klim-samgin-ru.poem-extension-anchor.json
+          test -f "$expected"
+          cmp "$expected" "$observed"

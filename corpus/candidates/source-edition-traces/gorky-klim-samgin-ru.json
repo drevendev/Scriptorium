@@ -65,7 +65,7 @@
     "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
     "source_text_committed": false,
     "immutable_identity": {
-      "status": "part_dependency_lst_poemx1_revision_inclusion_parameter_surface_invocation_bindings_control_flow_and_parameter2_surface_frozen_body_unfrozen",
+      "status": "candidate_specific_literary_body_identity_frozen_fantlab_source_unknown",
       "revision_set_manifest": "gorky-klim-samgin-ru.revisions.json",
       "part2_transclusion_contract": "gorky-klim-samgin-ru.part2-lst.json",
       "poemx1_revision_manifest": "gorky-klim-samgin-ru.poemx1-template.revision.json",
@@ -75,9 +75,31 @@
       "poemx1_invocation_binding_manifest": "gorky-klim-samgin-ru.poemx1-template.bindings.json",
       "poemx1_control_flow_manifest": "gorky-klim-samgin-ru.poemx1-template.control.json",
       "poemx1_parameter_2_content_manifest": "gorky-klim-samgin-ru.poemx1-content.json",
+      "literary_body_manifest": "gorky-klim-samgin-ru.literary-body.json",
+      "literary_body_manifest_version": "scriptorium-klim-samgin-literary-body-v1",
+      "literary_body_extraction_profile": "scriptorium-klim-samgin-wikisource-body-v1",
+      "literary_body_evidence_class": "candidate_specific_inferred_reconstruction",
       "ordered_revision_identity_sha256": "54beabd28d8459bc6a0f1d83187dca56067e337999688d32c809d34340105577",
       "total_part_revision_wikitext_character_count": 3228790,
       "total_part_revision_wikitext_utf8_byte_count": 5902920,
+      "literary_body_composition": {
+        "profile": "scriptorium-klim-samgin-four-part-composite-v1",
+        "part_order": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "separator": "\\n\\n"
+      },
+      "literary_body_identity": {
+        "character_count_including_spaces": 3810618,
+        "utf8_byte_count": 6958930,
+        "raw_sha256": "4f8b61e05cf7d96485d9edc0854d99d994da6ba146fabc3f6a3d509110ce4288",
+        "normalization_profile": "scriptorium-text-v1",
+        "normalized_character_count_including_spaces": 3810618,
+        "normalized_sha256": "4f8b61e05cf7d96485d9edc0854d99d994da6ba146fabc3f6a3d509110ce4288"
+      },
       "frozen_components": [
         "work-index permanent revision locator oldid 5628161",
         "four literary part permanent revision locators: 5733765, 5198033, 5138882 and 5724453",
@@ -91,22 +113,22 @@
         "documented MediaWiki partial-transclusion control semantics applied to pinned poemx1: two noinclude pairs, one includeonly pair, zero onlyinclude pairs; the raw doc invocation and raw PAGENAME occurrence are excluded from transclusion",
         "effective unresolved poemx1 dependency graph after inclusion selection: no ordinary templates and no magic words; #expr x2, #if x5, #ifeq x5, #iferror x1, #tag x1 targeting poem",
         "post-inclusion input SHA-256 86ad628a9d8fc3d904fd513a1b4335f4e9f816ceedfa2af736e8e3a94e32ffbf with 21 literal triple-brace parameter references across names 1, 2, 3, fixed, poem, small and width; missing-versus-defined-empty/default behavior is reproduced only for literal names",
-        "six concrete poemx1 invocations source-freeze to two anonymous arguments each: parameter 1 is explicitly defined empty in all six, parameter 2 is defined non-empty in all six, 3/fixed/poem/small/width are omitted in all six, with no duplicate or out-of-surface effective bindings",
-        "frozen frame control flow resolves #if x4 and #ifeq x3 plus the live #tag:poem; #expr x2, #iferror x1, one #if and two #ifeq occurrences are unreachable for all six observed calls",
-        "all six exact parameter-2 values are revalidated source-free: 324 characters / 589 UTF-8 bytes across 15 value-local lines with 9 newlines, zero brace-expansion constructs, zero XML-like tags, zero wikilinks, zero external links and zero apostrophe-markup runs; template expansion is identity for the observed values and no additional template dependency resolution is required",
+        "six concrete dependency poemx1 invocations source-freeze to two anonymous arguments each: parameter 1 is explicitly defined empty in all six, parameter 2 is defined non-empty in all six, 3/fixed/poem/small/width are omitted in all six, with no duplicate or out-of-surface effective bindings",
+        "frozen dependency-frame control flow resolves #if x4 and #ifeq x3 plus the live #tag:poem; #expr x2, #iferror x1, one #if and two #ifeq occurrences are unreachable for all six observed dependency calls",
+        "all six exact dependency parameter-2 values are revalidated source-free: 324 characters / 589 UTF-8 bytes across 15 value-local lines with 9 newlines, zero brace-expansion constructs, zero XML-like tags, zero wikilinks, zero external links and zero apostrophe-markup runs; template expansion is identity for the observed values and no additional template dependency resolution is required",
+        "seven direct parent-level poemx1 calls are replay-frozen as plain parameter-2 literary-value substitutions: five in Part 1 and two in Part 2, with zero unresolved direct calls",
+        "candidate-specific fail-closed four-part literary-body extraction is frozen by profile scriptorium-klim-samgin-wikisource-body-v1 against the exact pinned source graph",
+        "ordered literary composition is frozen as Parts 1 -> 2 -> 3 -> 4 with a literal double-LF separator by profile scriptorium-klim-samgin-four-part-composite-v1",
+        "source-free literary-body manifest gorky-klim-samgin-ru.literary-body.json freezes 3,810,618 characters / 6,958,930 UTF-8 bytes with raw and scriptorium-text-v1 SHA-256 4f8b61e05cf7d96485d9edc0854d99d994da6ba146fabc3f6a3d509110ce4288",
         "per-part GIKhL 1952/1953 volume declarations exposed by Wikisource"
       ],
       "unfrozen_components": [
-        "the live #tag:poem extension operation and historical Poem extension rendering, including the newline-to-break/wrapper behavior needed to resolve the six exact values",
-        "generic #expr/#iferror behavior outside this frozen frame, although those calls are unreachable for all six observed invocations",
-        "historical render equivalence for the inferred poemx1 as-of revision anchor",
-        "a resolved Part 2 wikitext/body identity after the remaining live parser dependency is reproduced",
-        "a deterministic fail-closed literary-body extraction contract for each part",
-        "a literary-body composition contract bound to the complete frozen source graph",
-        "raw and scriptorium-text-v1 normalized composite literary-body digests",
+        "exact historical Russian Wikisource MediaWiki-core revision and Poem extension deployment equivalence for the pinned page-save timestamps",
+        "generic MediaWiki parser-function and Poem behavior outside the bounded candidate-specific source shapes used by the fail-closed extractor",
+        "historical render/parser-byte equivalence for the inferred poemx1 as-of revision anchor",
         "the relationship between FantLab's uploaded analyzer input and this Wikisource/Library Moshkov transcription family"
       ],
-      "reason": "The retained Part 2 call is target-only and delegates the dependency to normal MediaWiki frame expansion. Scriptorium freezes the exact target revision, an inferred historical poemx1 revision anchor, documented inclusion controls, the literal parameter surface, all six concrete frame bindings, the #if/#ifeq branch choices forced by that shared frame, and the source-free surface of all six exact parameter-2 values. Both #expr calls and #iferror are unreachable, and the exact parameter-2 values contain no nested brace-expansion or other dependency-bearing markup. Historical #tag:poem / Poem extension rendering is now the sole live template-expansion boundary, so no historical render, resolved Part 2 or literary-body digest is claimed."
+      "reason": "The exact pinned source graph now has a replay-verified candidate-specific fail-closed literary-body reconstruction. The extractor substitutes only independently frozen plain literary values for the six dependency and seven direct-parent poemx1 calls, applies the bounded Part 2 target-only dependency layer, extracts all four parts, and composes them deterministically as 1 -> 2 -> 3 -> 4 with a double-LF separator. The canonical source-free manifest freezes the resulting per-part and composite identities. This is an inferred reconstruction, not proof of exact historical Russian Wikisource MediaWiki/Poem rendering or parser-byte equivalence, and it does not identify FantLab's undisclosed analyzer input."
     }
   },
   "legal_boundary": {
@@ -122,33 +144,30 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "revision_wikitext_source_graph_target_only_lst_poemx1_revision_inclusion_parameter_surface_invocation_bindings_control_flow_and_parameter2_surface_frozen_body_unfrozen",
+    "source_identity_status": "candidate_specific_literary_body_identity_frozen_fantlab_source_unknown",
     "fantlab_source_edition_match": "unknown",
-    "diagnostic_ready": false,
+    "diagnostic_ready": true,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "catalog_admission": "deferred_until_immutable_literary_body_identity",
-    "status": "provenance_qualified_lead",
+    "catalog_admission": "diagnostic_candidate_with_immutable_literary_body_identity",
+    "status": "diagnostic_ready_source_match_unknown",
     "reasons": [
       "FantLab reports 3,789,857 characters and 531,192 words for its 19 September 2022 analysis, far above the 300,000-character calibration threshold.",
       "Russian Wikisource supplies explicit public-domain evidence, a stable work-index locator, four literary part locators and per-part GIKhL 1952/1953 source declarations.",
       "All four pinned part revisions have source-free replay-frozen identities, and the Part 2 target dependency is independently pinned at oldid 2366546.",
       "The Part 2 invocation is exactly target-only rather than labeled-section selection; upstream LabeledSectionTransclusion source shows this shape expands the whole target template DOM through the MediaWiki frame.",
-      "The inferred historical poemx1 anchor is pinned at oldid 5142743, and the documented inclusion-control layer proves that its raw doc invocation and raw PAGENAME occurrence are excluded; no ordinary template or magic-word dependency remains.",
-      "The post-inclusion template input has a replay-frozen source-free literal parameter surface: 21 references across 1, 2, 3, fixed, poem, small and width, with literal missing/default/defined-empty behavior captured without source prose.",
-      "All six concrete poemx1 calls are source-free frame-bound: each has two anonymous arguments, parameter 1 explicitly empty and parameter 2 non-empty; all other frozen surface names are omitted.",
-      "The exact shared frame resolves the reachable #if/#ifeq control graph: #if x4 and #ifeq x3 execute, while both #expr calls and #iferror are unreachable; the single #tag:poem remains live.",
-      "All six exact parameter-2 values replay as template-expansion identity inputs: collectively 324 characters / 589 bytes with 9 newlines and no brace constructs, links, XML-like tags, external links or apostrophe markup, so no further template dependency resolution is needed for the inserted content.",
-      "Historical #tag:poem / Poem extension rendering remains outside the reproduced MediaWiki layer.",
-      "Revision/source-semantic freezing is not a literary-body identity: resolved Part 2, deterministic extraction/composition and composite raw/normalized digests remain unfrozen.",
-      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
+      "The inferred historical poemx1 anchor, inclusion controls, literal parameter surface, six dependency-call bindings/control flow and six plain parameter-2 values are source-free replay-frozen.",
+      "Seven direct parent-level poemx1 calls are separately frozen as plain parameter-2 literary-value substitutions: five in Part 1 and two in Part 2.",
+      "Merged candidate-specific extraction reproduces a deterministic source-free four-part literary-body identity and composition without committing source prose.",
+      "The canonical literary-body manifest freezes 3,810,618 characters / 6,958,930 UTF-8 bytes with raw and scriptorium-text-v1 SHA-256 4f8b61e05cf7d96485d9edc0854d99d994da6ba146fabc3f6a3d509110ce4288.",
+      "The literary-body identity is evidence class candidate_specific_inferred_reconstruction; exact historical Russian Wikisource MediaWiki-core/Poem deployment and parser-byte equivalence remain unproven.",
+      "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis, so the frozen public transcription remains diagnostic-only and cannot advance M2."
     ],
     "next_evidence": [
-      "Reproduce and source-freeze the remaining live historical #tag:poem / Poem extension behavior for the six exact parameter-2 values; no additional nested template/parser dependency resolution is required for those values.",
-      "Only after the target-only expansion layer is reproducible, define deterministic fail-closed literary-body extraction for each frozen part and compose Part 1 -> Part 2 -> Part 3 -> Part 4.",
-      "Record raw and scriptorium-text-v1 normalized composite digests only after exact replay succeeds.",
-      "Only after immutable literary-body identity exists, consider main parity-catalog admission and source-bound diagnostics while retaining the unknown FantLab source match.",
-      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliographic compatibility cannot advance M2."
+      "Use the frozen candidate-specific literary-body identity only for source-bound diagnostic comparison while keeping every result non-parity evidence until FantLab analyzer-input identity is independently established.",
+      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliographic compatibility cannot advance M2.",
+      "Investigate historical Russian Wikisource MediaWiki-core and Poem deployment revisions only if stronger historical-render equivalence becomes necessary; do not infer that equivalence from the candidate-specific replay.",
+      "Promote gate_ready or m2_parity_admissible only after exact source-edition/input identity and the repository's reproduction tolerances are independently satisfied."
     ]
   }
 }

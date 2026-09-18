@@ -120,7 +120,7 @@ jobs:
             printf 'Exact-source capture failed on %s: %s\n' "$HEAD_SHA" "$failure"
             if [[ -n "${PR_NUMBER:-}" ]]; then
               body=$(printf 'Source-free exact-source replay diagnostic for `%s`:\n\n```text\n%s\n```\n\nNo source prose is included; this is the terminal exception line only.' "$HEAD_SHA" "$failure")
-              gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null
+              gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null || true
             fi
             exit "$status"
           fi
@@ -162,7 +162,7 @@ jobs:
                 cat "$observed"
                 printf '```\n'
               } > build/repro/manifest-comment.md
-              gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$(cat build/repro/manifest-comment.md)" >/dev/null
+              gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$(cat build/repro/manifest-comment.md)" >/dev/null || true
             fi
           fi
 
@@ -171,6 +171,6 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: klim-samgin-literary-body
-          path: build/repro/gorky-klim-samgin-ru.literary-body*
-          if-no-files-found: warn
+          path: build/repro/*
+          if-no-files-found: error
           retention-days: 7

@@ -10,6 +10,7 @@ on:
       - "scriptorium/mediawiki_part2_resolution.py"
       - "scriptorium/mediawiki_poemx1_content.py"
       - "scriptorium/mediawiki_template_invocation.py"
+      - "scriptorium/mediawiki_transclusion.py"
       - "scriptorium/single_page_body.py"
       - "scriptorium/single_page_revision.py"
       - "scriptorium/wikisource_freeze.py"
@@ -50,6 +51,38 @@ jobs:
 
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
+
+      - name: Inspect source-free Part 2 dependency markup surface
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          import json
+          from pathlib import Path
+          import re
+          from scriptorium.mediawiki_transclusion import preprocess_for_transclusion
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+
+          manifest = json.loads(Path(
+              'corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json'
+          ).read_text(encoding='utf-8'))
+          identity = manifest['source_identity']
+          observed = fetch_pinned_wikitext(title=identity['title'], revision_id=identity['revision_id'])
+          source = observed.pop('wikitext')
+          if observed != identity:
+              raise SystemExit('dependency identity drift before diagnostics')
+          effective, controls = preprocess_for_transclusion(source)
+          tags = Counter(name.casefold() for name in re.findall(r'</?\s*([A-Za-z][A-Za-z0-9]*)\b', effective))
+          print('SCRIPTORIUM_KLIM_DEPENDENCY_MARKUP=' + json.dumps({
+              'transclusion_control_counts': controls,
+              'html_tag_name_counts': dict(sorted(tags.items())),
+              'wikilink_open_count': effective.count('[['),
+              'wikilink_close_count': effective.count(']]'),
+              'angle_open_count': effective.count('<'),
+              'angle_close_count': effective.count('>'),
+              'double_brace_open_count': effective.count('{{'),
+              'double_brace_close_count': effective.count('}}'),
+          }, sort_keys=True, separators=(',', ':')))
+          PY
 
       - name: Re-fetch exact source graph and freeze literary composite
         run: |

@@ -1,12 +1,15 @@
 """Public entry point for the candidate-specific Klim Samgin literary-body extractor.
 
-The Part 2 target is a transcluded Wikisource subpage.  After the six already-frozen
-plain ``poemx1`` values are substituted, the dependency still has MediaWiki
-``noinclude``/``includeonly`` control tags.  Apply the repository's documented
-partial-transclusion layer before handing the result to the literary renderer.
+The Part 2 target is a transcluded Wikisource subpage. After the six already-frozen
+plain ``poemx1`` values are substituted, apply the repository's bounded
+``noinclude``/``includeonly``/``onlyinclude`` transclusion layer before literary
+rendering. The final renderer checks for unresolved markup before HTML entity
+unescaping so literal authorial ``&lt;``/``&gt;`` are not misclassified as tags.
 """
 from __future__ import annotations
 
+import html
+import re
 from typing import Mapping
 
 from . import klim_samgin_literary_body_impl as _impl
@@ -73,11 +76,51 @@ def _resolve_part2_target_to_literary_values(
     }
 
 
-# ``build_manifest`` resolves this name from the implementation module at runtime.
-# Installing the candidate-specific transclusion stage here keeps the generic
-# MediaWiki control processor independently testable and makes the public CLI use
-# the same exact path as the regression tests.
+def _render_candidate_body(source: str) -> str:
+    """Render only the frozen non-template surface and fail closed on live markup."""
+    if _impl._TABLE_START_RE.search(source) or _impl._TABLE_END_RE.search(source):
+        raise ValueError("actual table markup is outside the Klim literary extraction profile")
+    if _impl._HEADING_RE.search(source):
+        raise ValueError("unhandled heading remains in Klim literary body")
+    text = _impl._COMMENT_RE.sub("", source)
+    text = _impl._REF_RE.sub("", text)
+    text = _impl._WIKILINK_RE.sub(lambda match: match.group(1), text)
+    text = _impl._EXTERNAL_LINK_RE.sub(lambda match: match.group(1), text)
+    text = _impl._BR_RE.sub("\n", text)
+    text = _impl._ALLOWED_FORMATTING_TAG_RE.sub("", text)
+    text = _impl._BOLD_ITALIC_RE.sub("", text)
+    if "{{" in text or "}}" in text:
+        raise ValueError("unsupported template remains in Klim literary body")
+    wiki_open = text.count("[[")
+    wiki_close = text.count("]]" )
+    angle_open = text.count("<")
+    angle_close = text.count(">")
+    if wiki_open or wiki_close or angle_open or angle_close:
+        raise ValueError(
+            "unsupported wiki/HTML markup remains in Klim literary body "
+            f"(wiki_open={wiki_open}, wiki_close={wiki_close}, "
+            f"angle_open={angle_open}, angle_close={angle_close})"
+        )
+    text = html.unescape(text)
+    text = text.replace("\r\n", "\n").replace("\r", "\n").strip()
+    paragraphs = re.split(r"\n[ \t]*\n+", text)
+    rendered: list[str] = []
+    for paragraph in paragraphs:
+        collapsed = re.sub(r"[ \t]*\n[ \t]*", " ", paragraph)
+        collapsed = re.sub(r"[ \t]+", " ", collapsed).strip(" \t")
+        if collapsed:
+            rendered.append(collapsed)
+    if not rendered:
+        raise ValueError("empty Klim literary body")
+    return "\n\n".join(rendered)
+
+
+# ``build_manifest`` and ``_extract_part_literary_body`` resolve these names from
+# the implementation module at runtime. Installing the two candidate-specific
+# stages here keeps the generic transclusion processor independent while ensuring
+# the public CLI and regressions exercise the same exact path.
 _impl._resolve_part2_target_to_literary_values = _resolve_part2_target_to_literary_values
+_impl._render_candidate_body = _render_candidate_body
 
 COMPOSITE_SEPARATOR = _impl.COMPOSITE_SEPARATOR
 COMPOSITION_PROFILE = _impl.COMPOSITION_PROFILE

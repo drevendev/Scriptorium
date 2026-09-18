@@ -31,7 +31,6 @@ on:
 
 permissions:
   contents: read
-  issues: write
 
 jobs:
   replay:
@@ -53,51 +52,7 @@ jobs:
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
 
-      - name: Inspect source-free Part 2 dependency markup surface
-        run: |
-          mkdir -p build/repro
-          python - <<'PY'
-          from collections import Counter
-          import json
-          from pathlib import Path
-          import re
-          from scriptorium.mediawiki_transclusion import preprocess_for_transclusion
-          from scriptorium.single_page_body import fetch_pinned_wikitext
-
-          manifest = json.loads(Path(
-              'corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-part2.revision.json'
-          ).read_text(encoding='utf-8'))
-          identity = manifest['source_identity']
-          observed = fetch_pinned_wikitext(title=identity['title'], revision_id=identity['revision_id'])
-          source = observed.pop('wikitext')
-          if observed != identity:
-              raise SystemExit('dependency identity drift before diagnostics')
-          effective, controls = preprocess_for_transclusion(source)
-          tags = Counter(name.casefold() for name in re.findall(r'</?\s*([A-Za-z][A-Za-z0-9]*)\b', effective))
-          diagnostic = {
-              'transclusion_control_counts': controls,
-              'html_tag_name_counts': dict(sorted(tags.items())),
-              'wikilink_open_count': effective.count('[['),
-              'wikilink_close_count': effective.count(']]'),
-              'angle_open_count': effective.count('<'),
-              'angle_close_count': effective.count('>'),
-              'double_brace_open_count': effective.count('{{'),
-              'double_brace_close_count': effective.count('}}'),
-          }
-          Path('build/repro/dependency-markup.json').write_text(
-              json.dumps(diagnostic, sort_keys=True, separators=(',', ':')) + '\n',
-              encoding='utf-8',
-          )
-          print('SCRIPTORIUM_KLIM_DEPENDENCY_MARKUP=' + json.dumps(
-              diagnostic, sort_keys=True, separators=(',', ':')
-          ))
-          PY
-
       - name: Re-fetch exact source graph and freeze literary composite
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
           mkdir -p build/repro
@@ -115,23 +70,10 @@ jobs:
             --lst-contract corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-lst.json
             --part2-resolution-manifest corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.part2-resolution.json
           )
-          set +e
           python -m scriptorium.klim_samgin_literary_body capture \
             "${common[@]}" \
             --research-date 2026-09-18 \
-            --output "$observed" \
-            >build/repro/capture.stdout 2>build/repro/capture.stderr
-          status=$?
-          set -e
-          if [[ $status -ne 0 ]]; then
-            failure=$(tail -n 1 build/repro/capture.stderr | tr -d '\r' | head -c 3000)
-            printf 'Exact-source capture failed on %s: %s\n' "$HEAD_SHA" "$failure"
-            if [[ -n "${PR_NUMBER:-}" ]]; then
-              body=$(printf 'Source-free exact-source replay diagnostic for `%s`:\n\n```text\n%s\n```\n\nNo source prose is included; this is the terminal exception line only.' "$HEAD_SHA" "$failure")
-              gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" >/dev/null || true
-            fi
-            exit "$status"
-          fi
+            --output "$observed"
           python - "$observed" <<'PY'
           import json
           from pathlib import Path
@@ -153,7 +95,7 @@ jobs:
               },
               ensure_ascii=False,
               sort_keys=True,
-              separators=(",", ":"),
+              separators=(',', ':'),
           ))
           PY
           if [[ -f "$expected" ]]; then
@@ -164,14 +106,6 @@ jobs:
               --receipt "$receipt"
           else
             echo "Initial authoring pass: generated source-free body evidence will be committed before final verification."
-            if [[ -n "${PR_NUMBER:-}" ]]; then
-              {
-                printf 'Source-free generated Klim Samgin literary-body manifest for exact head `%s`:\n\n```json\n' "$HEAD_SHA"
-                cat "$observed"
-                printf '```\n'
-              } > build/repro/manifest-comment.md
-              gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$(cat build/repro/manifest-comment.md)" >/dev/null || true
-            fi
           fi
 
       - name: Upload generated source-free literary-body evidence
@@ -179,6 +113,6 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: klim-samgin-literary-body
-          path: build/repro/*
+          path: build/repro/gorky-klim-samgin-ru.literary-body*
           if-no-files-found: error
           retention-days: 7

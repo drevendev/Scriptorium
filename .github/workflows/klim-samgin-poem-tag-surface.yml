@@ -1,0 +1,102 @@
+name: Klim Samgin reached poem tag surface
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-poem-tag-surface.yml"
+      - "scriptorium/mediawiki_poem_tag_surface.py"
+      - "tests/test_mediawiki_poem_tag_surface.py"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.revision.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-template.control.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poemx1-content.json"
+      - "corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poem-tag-surface.json"
+      - "corpus/candidates/gorky-klim-samgin-ru.md"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-020-poem-tag-surface.md"
+      - "project/run-receipts/SCRIP-CORPUS-020-poem-tag-surface.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Freeze concrete reached #tag:poem source surface
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Re-fetch pinned poemx1 source and freeze reached tag surface
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from scriptorium.mediawiki_poem_tag_surface import build_poem_tag_surface_manifest
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+
+          root = Path('corpus/candidates/source-edition-traces')
+          revision = json.loads(
+              (root / 'gorky-klim-samgin-ru.poemx1-template.revision.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          identity = revision['source_identity']
+          fetched = fetch_pinned_wikitext(
+              title=identity['title'], revision_id=identity['revision_id']
+          )
+          template_wikitext = fetched.pop('wikitext')
+          assert fetched == identity
+
+          control = json.loads(
+              (root / 'gorky-klim-samgin-ru.poemx1-template.control.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          content = json.loads(
+              (root / 'gorky-klim-samgin-ru.poemx1-content.json').read_text(
+                  encoding='utf-8'
+              )
+          )
+          manifest = build_poem_tag_surface_manifest(
+              revision_identity=identity,
+              template_wikitext=template_wikitext,
+              control_manifest=control,
+              content_manifest=content,
+              research_date='2026-09-18',
+          )
+          observed = Path('build/repro/gorky-klim-samgin-ru.poem-tag-surface.json')
+          observed.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          print('SCRIPTORIUM_POEM_TAG_SURFACE_BEGIN')
+          print(observed.read_text(encoding='utf-8'))
+          print('SCRIPTORIUM_POEM_TAG_SURFACE_END')
+          PY
+
+      - name: Compare committed source-free tag surface when present
+        run: |
+          set -euo pipefail
+          expected=corpus/candidates/source-edition-traces/gorky-klim-samgin-ru.poem-tag-surface.json
+          observed=build/repro/gorky-klim-samgin-ru.poem-tag-surface.json
+          if test -f "$expected"; then
+            cmp "$expected" "$observed"
+          else
+            echo "DISCOVERY_ONLY_EXPECTED_MANIFEST_NOT_COMMITTED"
+          fi

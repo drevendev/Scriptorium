@@ -1,0 +1,154 @@
+name: Klim Samgin angle diagnostic
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/klim-samgin-angle-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Inspect source-free remaining angle surface
+        run: |
+          mkdir -p build/repro
+          python - <<'PY'
+          from collections import Counter
+          from hashlib import sha256
+          import html
+          import json
+          from pathlib import Path
+          import re
+
+          import scriptorium.wikisource_freeze as wf
+          from scriptorium.klim_samgin_literary_body import (
+              _literaryize_dependency,
+              _literaryize_direct_poemx1,
+              _protect_encoded_angle_spans,
+              _protect_literal_angle_spans,
+              _protect_literal_line_openers,
+              _protect_nowiki,
+              _replace_named_template,
+              _strip_trailing_category,
+              _substitute_part2_dependency,
+          )
+          from scriptorium.single_page_body import fetch_pinned_wikitext
+
+          root = Path('corpus/candidates/source-edition-traces')
+          def load(name):
+              return json.loads((root / name).read_text(encoding='utf-8'))
+          def fetch_revision(name):
+              manifest = load(name)
+              identity = manifest['source_identity']
+              observed = fetch_pinned_wikitext(title=identity['title'], revision_id=identity['revision_id'])
+              text = observed.pop('wikitext')
+              if observed != identity:
+                  raise SystemExit('revision identity drift')
+              return text
+
+          body_surface = load('gorky-klim-samgin-ru.body-surface.json')
+          direct = load('gorky-klim-samgin-ru.direct-parent-poemx1.json')
+          lst = load('gorky-klim-samgin-ru.part2-lst.json')
+          resolution = load('gorky-klim-samgin-ru.part2-resolution.json')
+          dependency = fetch_revision('gorky-klim-samgin-ru.part2-part2.revision.json')
+          parent = fetch_revision('gorky-klim-samgin-ru.part2.revision.json')
+          literary_dependency, _ = _literaryize_dependency(dependency, resolution)
+          source = _substitute_part2_dependency(parent, literary_dependency, lst)
+          surface_part = body_surface['parts'][1]
+          direct_part = direct['parts'][1]
+          source, _ = _literaryize_direct_poemx1(source, part=2, frozen_part=direct_part)
+          templates = surface_part['template_name_counts']
+          tags = surface_part['html_tag_name_counts']
+          source = _replace_named_template(source, 'Жизнь Клима Самгина', expected=1, replacement='')
+          source = _replace_named_template(source, 'примечания', expected=int(templates.get('примечания', 0)), replacement='')
+          source = _replace_named_template(source, 'Ко', expected=int(templates.get('Ко', 0)), replacement='Ко')
+          source = _strip_trailing_category(source, expected_count=int(surface_part.get('category_link_count', 0)))
+
+          entity_patterns = {
+              'lt_named': r'&lt;',
+              'gt_named': r'&gt;',
+              'lt_decimal': r'&#0*60;',
+              'gt_decimal': r'&#0*62;',
+              'lt_hex': r'&#x0*3c;',
+              'gt_hex': r'&#x0*3e;',
+          }
+          facts = {
+              'pre_protection_entity_counts': {
+                  key: len(re.findall(pattern, source, flags=re.IGNORECASE))
+                  for key, pattern in entity_patterns.items()
+              },
+              'pre_protection_raw_angle_open_count': source.count('<'),
+              'pre_protection_raw_angle_close_count': source.count('>'),
+          }
+
+          source, nowiki = _protect_nowiki(source, expected_tag_count=int(tags.get('nowiki', 0)))
+          source, encoded = _protect_encoded_angle_spans(source)
+          source, line_openers = _protect_literal_line_openers(source)
+          source, literal = _protect_literal_angle_spans(source)
+          facts['protection_counts'] = {
+              'nowiki_pairs': len(nowiki),
+              'encoded_angle_spans': len(encoded),
+              'line_openers': len(line_openers),
+              'literal_angle_spans': len(literal),
+          }
+
+          body = wf._COMMENT_RE.sub('', source)
+          body = wf._NOINCLUDE_RE.sub('', body)
+          body = wf._NOTES_HEADING_RE.sub('', body)
+          body = wf._REF_RE.sub('', body)
+          body = body.replace('{{СодержаниеБН}}', '')
+          previous = None
+          loops = 0
+          while previous != body:
+              loops += 1
+              previous = body
+              body = wf._LANG_RE.sub(lambda match: match.group(1), body)
+              body = wf._POEMX1_RE.sub(lambda match: match.group(1), body)
+              body = wf._RIGHT_RE.sub(lambda match: match.group(1), body)
+              body = wf._RAZR_RE.sub(lambda match: match.group(1), body)
+              body = wf._WIKILINK_RE.sub(lambda match: match.group(1), body)
+              body = wf._EXTERNAL_LINK_RE.sub(lambda match: match.group(1), body)
+              body = wf._HTML_TAG_RE.sub('', body)
+              body = wf._BOLD_ITALIC_RE.sub('', body)
+              body = html.unescape(body)
+          residuals = list(re.finditer(r'<([^<>\r\n]*)>', body))
+          facts['post_cleanup'] = {
+              'loop_count': loops,
+              'angle_open_count': body.count('<'),
+              'angle_close_count': body.count('>'),
+              'residual_span_count': len(residuals),
+              'residuals': [
+                  {
+                      'character_count': len(match.group(0)),
+                      'utf8_byte_count': len(match.group(0).encode('utf-8')),
+                      'sha256': sha256(match.group(0).encode('utf-8')).hexdigest(),
+                      'inner_starts_ascii_alpha': bool(re.match(r'[A-Za-z]', match.group(1).lstrip())),
+                      'inner_starts_cyrillic': bool(re.match(r'[А-Яа-яЁё]', match.group(1).lstrip())),
+                      'inner_contains_equals': '=' in match.group(1),
+                      'inner_contains_slash': '/' in match.group(1),
+                  }
+                  for match in residuals
+              ],
+          }
+          Path('build/repro/angle-diagnostic.json').write_text(
+              json.dumps(facts, sort_keys=True, separators=(',', ':')) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(facts, sort_keys=True, separators=(',', ':')))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: klim-samgin-angle-diagnostic
+          path: build/repro/angle-diagnostic.json
+          if-no-files-found: error
+          retention-days: 1

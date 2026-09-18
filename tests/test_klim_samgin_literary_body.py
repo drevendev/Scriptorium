@@ -5,10 +5,11 @@ import unittest
 from scriptorium.klim_samgin_literary_body import (
     COMPOSITION_SEPARATOR,
     _identity,
+    _protect_literal_line_openers,
     _protect_nowiki,
     _replace_named_template,
     _replace_spans,
-    _restore_nowiki,
+    _restore_tokens,
     _strip_trailing_category,
 )
 from scriptorium.text import NORMALIZATION_PROFILE
@@ -46,13 +47,26 @@ class KlimSamginLiteraryBodyHelpersTests(unittest.TestCase):
         self.assertNotIn("[[literal]]", source)
         self.assertEqual(len(protected), 1)
         self.assertEqual(
-            _restore_nowiki(source, protected),
+            _restore_tokens(source, protected, label="nowiki"),
             "before <nowiki>''[[literal]]''</nowiki> after".replace("<nowiki>", "").replace("</nowiki>", ""),
         )
 
     def test_multiline_nowiki_fails_closed(self) -> None:
         with self.assertRaisesRegex(ValueError, "multiline"):
             _protect_nowiki("<nowiki>a\nb</nowiki>", expected_tag_count=2)
+
+    def test_literal_line_openers_are_protected_but_table_delimiters_fail(self) -> None:
+        source, protected = _protect_literal_line_openers("plain\n| literal\n! emphatic")
+        self.assertNotIn("\n|", source)
+        self.assertNotIn("\n!", source)
+        self.assertEqual(len(protected), 2)
+        self.assertEqual(
+            _restore_tokens(source, protected, label="line-opener"),
+            "plain\n| literal\n! emphatic",
+        )
+        for table in ("{| class=x\n| cell\n|}", "|-\ncell", "|}\n"):
+            with self.assertRaisesRegex(ValueError, "table delimiter"):
+                _protect_literal_line_openers(table)
 
     def test_trailing_category_is_removed_only_at_tail(self) -> None:
         source = "literary\n\n[[Категория:Example]]\n"

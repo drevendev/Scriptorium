@@ -1,25 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 148
+STATE_REVISION: 149
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-18T15:58:00Z
-LAST_RESULT: SCRIP-CORPUS-020 / Issue #109 authored Draft PR #128 from master `155a98cadf1595e9bbadd0a2cd63f61a164f8e55` to reconcile the structured Klim provenance trace with the merged literary-body identity. The trace now references canonical `gorky-klim-samgin-ru.literary-body.json`, records the candidate-specific four-part composite identity, removes stale body-unfrozen claims, and sets `diagnostic_ready=true` while preserving `fantlab_source_edition_match=unknown`, `gate_ready=false`, and `m2_parity_admissible=false`. The change deliberately does not promote exact historical Russian Wikisource MediaWiki-core/Poem deployment equivalence or FantLab analyzer-input identity. PR #128 remains Draft for independent later-run review.
-LAST_VERIFIED_PROGRESS: The canonical source-free Klim literary-body identity remains 3,810,618 characters / 6,958,930 UTF-8 bytes with raw and `scriptorium-text-v1` SHA-256 `4f8b61e05cf7d96485d9edc0854d99d994da6ba146fabc3f6a3d509110ce4288`; PR #128 synchronizes the structured trace to that already-merged evidence without changing its `candidate_specific_inferred_reconstruction` class. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-18T16:53:00Z
+LAST_RESULT: SCRIP-CORPUS-020 / Issue #109 independently reviewed PR #128 on exact head `002d420d5a9c104784bc0d8fb5929c6859603625`. The branch was 4 commits ahead / 0 behind master and mergeable-clean, with no prior submitted reviews or inline review threads. All 13 exact-head workflows were green. Dedicated literary-body run `35365496317`, job `105666832888`, explicitly checked out the exact head, ran 255 standard-library tests, re-fetched the exact Klim source graph, regenerated the canonical source-free literary-body manifest, compared it byte-for-byte with `cmp`, and replay-validated it. No blocking defect was found; #128 was marked Ready and squash-merged as `63471f4c539bc8ab22c34e829c056a372d64e5ab`. The structured trace now matches the canonical literary-body identity while retaining `fantlab_source_edition_match=unknown`, `gate_ready=false`, and `m2_parity_admissible=false`. Issue #109 was closed as completed.
+LAST_VERIFIED_PROGRESS: The Klim candidate now has a merged fail-closed four-part extractor, canonical source-free per-part/composite literary-body identity, reconciled structured provenance trace, public representation, and exact-source replay evidence. Ordered composite identity remains 3,810,618 characters / 6,958,930 UTF-8 bytes with raw and `scriptorium-text-v1` SHA-256 `4f8b61e05cf7d96485d9edc0854d99d994da6ba146fabc3f6a3d509110ce4288`. Evidence class remains `candidate_specific_inferred_reconstruction`; exact historical Russian Wikisource MediaWiki/Poem deployment equivalence and FantLab analyzer-input identity remain unresolved. M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-020
-ISSUE:          #109
-STATUS:         TRACE_RECONCILIATION_AUTHORED_REVIEW_PENDING
-PR:             #128 (Draft); #127 (merged); #126 (merged); #125 (closed superseded duplicate)
-MERGED_COMMIT:  7bf0dd79bde5e9df76a4b96ebe56f4792c49e23e
-NEXT_ACTION:    Independently review Draft PR #128 on its exact final head. Verify the structured trace remains
-                consistent with canonical `gorky-klim-samgin-ru.literary-body.json`, that the JSON is valid,
-                and that all relevant exact-head checks are green. If no blocking defect exists, merge it and
-                close #109 only if every issue acceptance criterion is then satisfied. Preserve
-                `fantlab_source_edition_match=unknown`, `gate_ready=false`, `m2_parity_admissible=false`;
-                do not infer historical MediaWiki/Poem deployment or FantLab analyzer-input identity.
+ISSUE:          #109 (closed completed)
+STATUS:         COMPLETE
+PR:             #128 (merged); #127 (merged); #126 (merged); #125 (closed superseded duplicate)
+MERGED_COMMIT:  63471f4c539bc8ab22c34e829c056a372d64e5ab
+NEXT_ACTION:    On the next wake, re-apply the selection ladder. There are no open Scriptorium PRs and no known
+                failing required checks after this review. Select the highest-priority unblocked corpus/provenance
+                continuation, prioritizing a legally usable >=300k twentieth/twenty-first-century, translated or
+                nonfiction candidate when evidence quality is sufficient. Preserve translation/edition identity and
+                do not move M2 without an independently established FantLab analyzer-input/source-edition match.
 ```
 
 ## Current milestone gate
@@ -34,7 +33,6 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-020 review | recovery / corpus provenance | Independently review Draft PR #128, verify exact-head checks and evidence boundaries, merge only if safe, then decide whether #109 is complete | Structured trace reconciliation authored; substantial authoring must not be self-approved in the same run |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
@@ -52,7 +50,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Running on Waves** — Detskaya literatura 1965 source-cited family with 35 chapters plus epilogue; literary subpage identities/composite remain unfrozen.
 - **The White Guard** — Wikisource mixes two bibliographic source families across chapters 1–11 and 12–20; all 20 chapter identities/composite remain unfrozen.
 - **The Twelve Chairs** — keep the 40-chapter later 1938/1961 editorial family distinct from the 41-chapter 1928 first standalone edition; neither literary body is frozen, and coauthorship prevents individual-author attribution without an explicit VOICE model.
-- **The Life of Klim Samgin** — four exact parent revisions and the Part 2 dependency are replay-frozen; merged PRs #111–#124 freeze the target-only `#lst`, inferred `poemx1`/Poem boundaries, structural surface and all thirteen plain literary values; #126 merged the candidate-specific fail-closed extractor; #127 merged the canonical source-free per-part and composite literary-body identities. Draft PR #128 now reconciles the structured provenance trace to that identity, marks it diagnostic-ready only, and retains exact historical MediaWiki/Poem deployment plus FantLab analyzer-input/source-edition identity as unresolved.
+- **The Life of Klim Samgin** — SCRIP-CORPUS-020 is complete. Four exact parent revisions and the Part 2 dependency are replay-frozen; merged PRs #111–#124 freeze the target-only `#lst`, inferred `poemx1`/Poem boundaries, structural surface and all thirteen plain literary values; #126 merged the candidate-specific fail-closed extractor; #127 merged the canonical source-free per-part and composite literary-body identities; #128 reconciled the structured provenance trace. The candidate is diagnostic-ready only. Exact historical MediaWiki/Poem deployment and FantLab analyzer-input/source-edition identity remain unresolved.
 
 ## Deterministic / morphology findings
 
@@ -68,7 +66,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - Static publication remains source-free and deterministic; publication tests reject forbidden source-prose keys.
 - Public corpus navigation exposes retained candidates with provenance boundaries rather than parity claims.
 - Hyperboloid and Road to Nowhere expose frozen source-free literary-body identities with explicit unresolved source-match boundaries.
-- Klim Samgin exposes the source graph, fail-closed extractor, canonical source-free per-part/composite literary-body identities and public candidate page. PR #128 is a machine-readable provenance consistency fix only; it does not add a new Pages slice or change the public evidence class.
+- Klim Samgin now exposes the source graph, fail-closed extractor, canonical source-free per-part/composite literary-body identities, public candidate page, and a structured provenance trace consistent with those identities. Evidence remains explicitly diagnostic-only and source-match unknown.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers
@@ -80,5 +78,5 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 5. Frozen public-source candidates remain unmatched to FantLab input and therefore cannot advance M2.
 6. Petersburg lacks a Scriptorium-recorded PDF snapshot digest and deterministic OCR/page-extraction identity.
 7. Several twentieth-century candidates remain trace-only/unfrozen or bibliographically unresolved at the literary-body level.
-8. Klim Samgin has a replay-verified candidate-specific literary-body identity, but exact historical Russian Wikisource MediaWiki-core/Poem deployment equivalence and FantLab analyzer-input bytes/edition remain unproven. PR #128 reconciles the structured trace but must receive independent review before #109 is closed.
+8. Klim Samgin is fully frozen at the candidate-specific literary-body/provenance level, but exact historical Russian Wikisource MediaWiki-core/Poem deployment equivalence and FantLab analyzer-input bytes/edition remain unproven; these are evidence boundaries, not open acceptance criteria for closed Issue #109.
 9. Pages live activation remains a repository-admin effect and is off.

@@ -48,7 +48,17 @@ jobs:
           expected='corpus/candidates/source-edition-traces/grin-shining-world-ru.source-inventory.json'
           observed='build/repro/grin-shining-world-ru.source-inventory.observed.json'
           if [[ -f "$expected" ]]; then
-            cmp "$expected" "$observed"
+            EXPECTED="$expected" OBSERVED="$observed" python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          expected = json.loads(Path(os.environ['EXPECTED']).read_text(encoding='utf-8'))
+          observed = json.loads(Path(os.environ['OBSERVED']).read_text(encoding='utf-8'))
+          if expected != observed:
+              raise SystemExit('committed Shining World source inventory drifted from live audit')
+          print('Committed source inventory matches live source-free audit semantically.')
+          PY
             python -m scriptorium.shining_world_revisions replay --manifest "$expected"
           else
             echo 'Committed source inventory not present yet; capture artifact is bootstrap evidence.'

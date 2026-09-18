@@ -1,8 +1,8 @@
 """Freeze source-free literary-body identities for the four pinned Klim Samgin parts.
 
-This is a candidate-specific extraction profile, not a generic MediaWiki renderer.
-Pinned prose is fetched transiently, transformed under already-frozen source contracts,
-and reduced to counts/digests before anything is persisted.
+This is a candidate-specific extractor, not a generic MediaWiki renderer. Pinned prose
+is fetched transiently, transformed only under frozen source contracts, and reduced to
+counts/digests before anything is persisted.
 """
 from __future__ import annotations
 
@@ -37,18 +37,16 @@ COMPOSITION_SEPARATOR = "\n\n"
 DEPENDENCY_CANDIDATE_ID = "gorky-klim-samgin-ru-part-2-part2"
 EXPECTED_DEPENDENCY_REVISION_ID = 2366546
 
-_HEADING3_RE = re.compile(
-    r"(?m)^[ \t]*===(?!=)[ \t]*(?P<text>[^\n=].*?)[ \t]*(?<![=])===(?![=])[ \t]*$"
-)
+_HEADING3_RE = re.compile(r"(?m)^[ \t]*===(?!=)[ \t]*(?P<text>[^\n=].*?)[ \t]*(?<![=])===(?![=])[ \t]*$")
 _ANY_HEADING_RE = re.compile(r"(?m)^[ \t]*={2,6}.*?={2,6}[ \t]*$")
-_CATEGORY_LINE_RE = re.compile(
-    r"(?mi)^[ \t]*\[\[\s*(?:Категория|Category)\s*:[^\]\n]+\]\][ \t]*$"
-)
+_CATEGORY_LINE_RE = re.compile(r"(?mi)^[ \t]*\[\[\s*(?:Категория|Category)\s*:[^\]\n]+\]\][ \t]*$")
 _NOWIKI_PAIR_RE = re.compile(r"<nowiki>(.*?)</nowiki\s*>", re.IGNORECASE | re.DOTALL)
 _NOWIKI_ANY_RE = re.compile(r"</?nowiki\b[^>]*>", re.IGNORECASE)
 _TABLE_OPEN_RE = re.compile(r"(?m)^[ \t]*\{\|")
 _TABLE_ROW_OR_END_RE = re.compile(r"(?m)^[ \t]*\|(?:-|\})")
 _LITERAL_LINE_OPENER_RE = re.compile(r"(?m)^(?P<indent>[ \t]*)(?P<mark>[|!])")
+_ANGLE_SPAN_RE = re.compile(r"<(?P<inner>[^<>\r\n]*)>")
+_TAGLIKE_INNER_RE = re.compile(r"^\s*/?\s*[A-Za-z][A-Za-z0-9]*(?:\s|/|$|=)")
 
 
 def _load_json(path: Path) -> dict[str, object]:
@@ -60,10 +58,7 @@ def _load_json(path: Path) -> dict[str, object]:
 
 def _write_json(path: Path, value: Mapping[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def _sha256_text(value: str) -> str:
@@ -105,10 +100,7 @@ def _verified_wikitext(
     if not isinstance(wikitext, str):
         raise ValueError("transient pinned wikitext missing")
     if observed != dict(identity):
-        differing = sorted(
-            key for key in set(observed) | set(identity)
-            if observed.get(key) != identity.get(key)
-        )
+        differing = sorted(key for key in set(observed) | set(identity) if observed.get(key) != identity.get(key))
         raise ValueError(f"pinned revision identity drift: {differing}")
     return wikitext, identity
 
@@ -124,19 +116,12 @@ def _replace_spans(source: str, replacements: Sequence[tuple[int, int, str]]) ->
     return out
 
 
-def _literaryize_direct_poemx1(
-    source: str,
-    *,
-    part: int,
-    frozen_part: Mapping[str, object],
-) -> tuple[str, int]:
+def _literaryize_direct_poemx1(source: str, *, part: int, frozen_part: Mapping[str, object]) -> tuple[str, int]:
     observed = find_template_invocations(source, template_name="poemx1")
     frozen_rows = frozen_part.get("invocations")
     expected_count = EXPECTED_DIRECT_POEMX1_COUNTS[part]
-    if not isinstance(frozen_rows, list) or len(frozen_rows) != expected_count:
-        raise ValueError(f"Klim part {part} frozen direct poemx1 rows drift")
-    if len(observed) != expected_count:
-        raise ValueError(f"Klim part {part} direct poemx1 count drift")
+    if not isinstance(frozen_rows, list) or len(frozen_rows) != expected_count or len(observed) != expected_count:
+        raise ValueError(f"Klim part {part} direct poemx1 inventory drift")
     replacements: list[tuple[int, int, str]] = []
     for live, frozen_obj in zip(observed, frozen_rows):
         if not isinstance(frozen_obj, Mapping):
@@ -148,22 +133,16 @@ def _literaryize_direct_poemx1(
         value, identity = _parameter_two_value(source, live)
         if identity != frozen_obj.get("parameter_2_identity"):
             raise ValueError("direct poemx1 parameter-2 identity drift")
-        start = live.get("parent_start_offset")
-        end = live.get("parent_end_offset")
+        start, end = live.get("parent_start_offset"), live.get("parent_end_offset")
         if not isinstance(start, int) or not isinstance(end, int):
             raise ValueError("direct poemx1 offsets missing")
         replacements.append((start, end, value))
     return _replace_spans(source, replacements), len(replacements)
 
 
-def _literaryize_dependency(
-    dependency: str,
-    part2_resolution: Mapping[str, object],
-) -> tuple[str, dict[str, object]]:
-    """Apply page transclusion controls, then replace the six frozen poem calls."""
+def _literaryize_dependency(dependency: str, part2_resolution: Mapping[str, object]) -> tuple[str, dict[str, object]]:
     validate_part2_resolution_manifest(part2_resolution)
     transclusion_input, control_counts = preprocess_for_transclusion(dependency)
-
     rows = part2_resolution.get("poemx1_expansions")
     if not isinstance(rows, list) or len(rows) != 6:
         raise ValueError("Part 2 resolution must freeze six dependency poemx1 calls")
@@ -179,8 +158,7 @@ def _literaryize_dependency(
         value, identity = _parameter_two_value(transclusion_input, live)
         if identity.get("sha256") != frozen_obj.get("parameter_2_sha256"):
             raise ValueError("dependency poemx1 parameter-2 identity drift")
-        start = live.get("parent_start_offset")
-        end = live.get("parent_end_offset")
+        start, end = live.get("parent_start_offset"), live.get("parent_end_offset")
         if not isinstance(start, int) or not isinstance(end, int):
             raise ValueError("dependency poemx1 offsets missing")
         replacements.append((start, end, value))
@@ -196,18 +174,13 @@ def _literaryize_dependency(
     }
 
 
-def _substitute_part2_dependency(
-    parent: str,
-    dependency_literary: str,
-    lst_contract: Mapping[str, object],
-) -> str:
+def _substitute_part2_dependency(parent: str, dependency_literary: str, lst_contract: Mapping[str, object]) -> str:
     if lst_contract.get("contract_version") != LST_CONTRACT_VERSION:
         raise ValueError("unexpected Part 2 #lst contract")
     invocation = lst_contract.get("invocation")
     if not isinstance(invocation, Mapping):
         raise ValueError("Part 2 #lst invocation missing")
-    start = invocation.get("parent_start_offset")
-    end = invocation.get("parent_end_offset")
+    start, end = invocation.get("parent_start_offset"), invocation.get("parent_end_offset")
     if not isinstance(start, int) or not isinstance(end, int):
         raise ValueError("Part 2 #lst offsets missing")
     if _sha256_text(parent[start:end]) != invocation.get("invocation_sha256"):
@@ -221,8 +194,7 @@ def _replace_named_template(source: str, name: str, *, expected: int, replacemen
         raise ValueError(f"expected {expected} {name} invocations, observed {len(rows)}")
     spans: list[tuple[int, int, str]] = []
     for row in rows:
-        start = row.get("parent_start_offset")
-        end = row.get("parent_end_offset")
+        start, end = row.get("parent_start_offset"), row.get("parent_end_offset")
         if not isinstance(start, int) or not isinstance(end, int):
             raise ValueError(f"{name} offsets missing")
         if name == "Ко" and row.get("argument_count") != 0:
@@ -238,8 +210,7 @@ def _strip_trailing_category(source: str, *, expected_count: int) -> str:
     if not matches:
         return source
     first = matches[0].start()
-    suffix = source[first:]
-    if _CATEGORY_LINE_RE.sub("", suffix).strip():
+    if _CATEGORY_LINE_RE.sub("", source[first:]).strip():
         raise ValueError("unsupported content after trailing Klim category block")
     return source[:first].rstrip()
 
@@ -255,41 +226,63 @@ def _protect_nowiki(source: str, *, expected_tag_count: int) -> tuple[str, list[
     if expected_tag_count % 2:
         raise ValueError("Klim nowiki tag inventory is not paired")
     protected: list[tuple[str, str]] = []
-    marker_prefix = "SCRIPTORIUMKLIMNOWIKITOKEN"
-    if marker_prefix in source:
+    prefix = "SCRIPTORIUMKLIMNOWIKITOKEN"
+    if prefix in source:
         raise ValueError("nowiki placeholder prefix collides with source")
 
     def replace(match: re.Match[str]) -> str:
         value = match.group(1)
         if "\n" in value or "\r" in value:
             raise ValueError("multiline nowiki content outside bounded Klim profile")
-        token = f"{marker_prefix}{len(protected):04d}END"
+        token = f"{prefix}{len(protected):04d}END"
         protected.append((token, value))
         return token
 
     result = _NOWIKI_PAIR_RE.sub(replace, source)
-    if _NOWIKI_ANY_RE.search(result):
-        raise ValueError("unsupported nowiki shape remains")
-    if len(protected) * 2 != expected_tag_count:
-        raise ValueError("Klim nowiki pair count drift")
+    if _NOWIKI_ANY_RE.search(result) or len(protected) * 2 != expected_tag_count:
+        raise ValueError("Klim nowiki pair shape/count drift")
     return result, protected
 
 
 def _protect_literal_line_openers(source: str) -> tuple[str, list[tuple[str, str]]]:
-    """Protect literal line-leading |/! but keep true table delimiters fatal."""
     if _TABLE_OPEN_RE.search(source) or _TABLE_ROW_OR_END_RE.search(source):
         raise ValueError("unsupported Klim table delimiter reached literary extraction")
-    marker_prefix = "SCRIPTORIUMKLIMLINEOPENERTOKEN"
-    if marker_prefix in source:
-        raise ValueError("line-opener placeholder prefix collides with source")
     protected: list[tuple[str, str]] = []
+    prefix = "SCRIPTORIUMKLIMLINEOPENERTOKEN"
+    if prefix in source:
+        raise ValueError("line-opener placeholder prefix collides with source")
 
     def replace(match: re.Match[str]) -> str:
-        token = f"{marker_prefix}{len(protected):04d}END"
+        token = f"{prefix}{len(protected):04d}END"
         protected.append((token, match.group("mark")))
         return match.group("indent") + token
 
     return _LITERAL_LINE_OPENER_RE.sub(replace, source), protected
+
+
+def _protect_literal_angle_spans(source: str) -> tuple[str, list[tuple[str, str]]]:
+    """Protect only non-tag-like one-line <...> literals; leave markup fail-closed.
+
+    The pinned graph contains literal angle-bracket prose that MediaWiki treats as text.
+    We do not generalize HTML parsing: ASCII tag-like spans and comments are left for the
+    conservative renderer, while only clearly non-tag-like balanced spans are tokenized.
+    Any unbalanced/unsupported angle markup still reaches and fails the shared renderer.
+    """
+    protected: list[tuple[str, str]] = []
+    prefix = "SCRIPTORIUMKLIMANGLETOKEN"
+    if prefix in source:
+        raise ValueError("angle placeholder prefix collides with source")
+
+    def replace(match: re.Match[str]) -> str:
+        inner = match.group("inner")
+        stripped = inner.lstrip()
+        if not stripped or stripped.startswith(("!--", "!DOCTYPE", "?")) or _TAGLIKE_INNER_RE.match(inner):
+            return match.group(0)
+        token = f"{prefix}{len(protected):04d}END"
+        protected.append((token, match.group(0)))
+        return token
+
+    return _ANGLE_SPAN_RE.sub(replace, source), protected
 
 
 def _restore_tokens(rendered: str, protected: Sequence[tuple[str, str]], *, label: str) -> str:
@@ -308,9 +301,7 @@ def _extract_part_body(
     frozen_surface_part: Mapping[str, object],
     direct_poem_part: Mapping[str, object],
 ) -> tuple[str, dict[str, object]]:
-    source, direct_count = _literaryize_direct_poemx1(
-        source, part=part, frozen_part=direct_poem_part
-    )
+    source, direct_count = _literaryize_direct_poemx1(source, part=part, frozen_part=direct_poem_part)
     templates = frozen_surface_part.get("template_name_counts")
     tags = frozen_surface_part.get("html_tag_name_counts")
     headings = frozen_surface_part.get("heading_level_counts")
@@ -332,14 +323,15 @@ def _extract_part_body(
         raise ValueError(f"Klim part {part} heading surface drift")
     source = _HEADING3_RE.sub(_plain_heading, source)
 
-    nowiki_tag_count = int(tags.get("nowiki", 0))
-    source, protected_nowiki = _protect_nowiki(source, expected_tag_count=nowiki_tag_count)
-    source, protected_line_openers = _protect_literal_line_openers(source)
+    source, protected_nowiki = _protect_nowiki(source, expected_tag_count=int(tags.get("nowiki", 0)))
+    source, protected_lines = _protect_literal_line_openers(source)
+    source, protected_angles = _protect_literal_angle_spans(source)
     try:
         rendered = extract_transcription_body(f'<div class="text">{source}</div>')
     except ValueError as exc:
         raise ValueError(f"Klim part {part} conservative renderer rejected prepared source: {exc}") from exc
-    rendered = _restore_tokens(rendered, protected_line_openers, label="line-opener")
+    rendered = _restore_tokens(rendered, protected_angles, label="angle")
+    rendered = _restore_tokens(rendered, protected_lines, label="line-opener")
     body = _restore_tokens(rendered, protected_nowiki, label="nowiki")
     if not body:
         raise ValueError(f"Klim part {part} literary body is empty")
@@ -351,7 +343,8 @@ def _extract_part_body(
         "trailing_category_removal_count": category_count,
         "level_three_heading_plain_replacement_count": level3_count,
         "nowiki_pair_preservation_count": len(protected_nowiki),
-        "literal_line_opener_preservation_count": len(protected_line_openers),
+        "literal_line_opener_preservation_count": len(protected_lines),
+        "literal_angle_span_preservation_count": len(protected_angles),
     }
 
 
@@ -366,19 +359,15 @@ def build_manifest(
     research_date: str,
     fetcher: Callable[..., dict[str, object]] = fetch_pinned_wikitext,
 ) -> dict[str, object]:
-    if len(revision_manifests) != 4:
-        raise ValueError("exactly four Klim part revision manifests are required")
-    if not research_date:
-        raise ValueError("research_date must be non-empty")
+    if len(revision_manifests) != 4 or not research_date:
+        raise ValueError("exactly four revisions and a research date are required")
     validate_body_surface_manifest(body_surface_manifest)
     validate_direct_manifest(direct_poem_manifest)
     validate_part2_resolution_manifest(part2_resolution_manifest)
     if direct_poem_manifest.get("all_direct_parent_poemx1_plain_value_safe") is not True:
         raise ValueError("all direct parent poemx1 calls must be frozen plain-safe")
-    if body_surface_manifest.get("candidate_id") != CANDIDATE_ID:
-        raise ValueError("unexpected Klim body-surface candidate")
-    if direct_poem_manifest.get("candidate_id") != CANDIDATE_ID:
-        raise ValueError("unexpected Klim direct-poem candidate")
+    if body_surface_manifest.get("candidate_id") != CANDIDATE_ID or direct_poem_manifest.get("candidate_id") != CANDIDATE_ID:
+        raise ValueError("unexpected Klim source-free prerequisite candidate")
 
     dependency, dependency_identity = _verified_wikitext(
         dependency_revision_manifest,
@@ -387,13 +376,9 @@ def build_manifest(
         fetcher=fetcher,
     )
     source_revisions = part2_resolution_manifest.get("source_revisions")
-    if not isinstance(source_revisions, Mapping):
-        raise ValueError("Part 2 resolution source revisions missing")
-    if dependency_identity.get("wikitext_sha256") != source_revisions.get("dependency_wikitext_sha256"):
+    if not isinstance(source_revisions, Mapping) or dependency_identity.get("wikitext_sha256") != source_revisions.get("dependency_wikitext_sha256"):
         raise ValueError("Part 2 dependency disagrees with frozen resolution graph")
-    literary_dependency, dependency_facts = _literaryize_dependency(
-        dependency, part2_resolution_manifest
-    )
+    literary_dependency, dependency_facts = _literaryize_dependency(dependency, part2_resolution_manifest)
 
     frozen_surface_parts = body_surface_manifest.get("parts")
     frozen_direct_parts = direct_poem_manifest.get("parts")
@@ -411,16 +396,10 @@ def build_manifest(
         )
         if part == 2:
             parent = _substitute_part2_dependency(parent, literary_dependency, lst_contract)
-        surface_part = frozen_surface_parts[part - 1]
-        direct_part = frozen_direct_parts[part - 1]
+        surface_part, direct_part = frozen_surface_parts[part - 1], frozen_direct_parts[part - 1]
         if not isinstance(surface_part, Mapping) or not isinstance(direct_part, Mapping):
             raise ValueError("invalid Klim frozen part row")
-        body, transforms = _extract_part_body(
-            parent,
-            part=part,
-            frozen_surface_part=surface_part,
-            direct_poem_part=direct_part,
-        )
+        body, transforms = _extract_part_body(parent, part=part, frozen_surface_part=surface_part, direct_poem_part=direct_part)
         bodies.append(body)
         part_rows.append({
             "part": part,
@@ -467,12 +446,9 @@ def build_manifest(
             "source_text_committed": False,
         },
         "boundary": (
-            "This source-free identity is a deterministic candidate-specific extraction from the "
-            "pinned Russian Wikisource/Library Moshkov transcription graph. Frozen poemx1 calls are "
-            "replaced by their exact plain parameter-2 values; the Part 2 dependency first receives "
-            "the documented noinclude/includeonly/onlyinclude page-transclusion selection layer and "
-            "is then substituted at the exact frozen #lst span. This does not prove the historical "
-            "MediaWiki/Poem deployment or identify FantLab's undisclosed analyzer input."
+            "This source-free identity is a deterministic candidate-specific extraction from the pinned Russian Wikisource/Library Moshkov graph. "
+            "Frozen poemx1 calls are replaced by exact plain parameter-2 values; the Part 2 dependency receives documented page-transclusion controls and is inserted at the frozen #lst span. "
+            "Only candidate-observed non-tag-like balanced angle literals are protected as prose. This does not prove historical MediaWiki/Poem deployment or FantLab analyzer-input identity."
         ),
         "source_text_included": False,
         "fantlab_source_edition_match": "unknown",
@@ -485,11 +461,7 @@ def build_manifest(
 def _validate_identity(value: object, *, label: str) -> None:
     if not isinstance(value, Mapping):
         raise ValueError(f"{label} identity missing")
-    for key in (
-        "character_count_including_spaces",
-        "utf8_byte_count",
-        "normalized_character_count_including_spaces",
-    ):
+    for key in ("character_count_including_spaces", "utf8_byte_count", "normalized_character_count_including_spaces"):
         if not isinstance(value.get(key), int) or int(value[key]) <= 0:
             raise ValueError(f"invalid {label} {key}")
     for key in ("raw_sha256", "normalized_sha256"):
@@ -501,59 +473,39 @@ def _validate_identity(value: object, *, label: str) -> None:
 
 
 def validate_manifest(manifest: Mapping[str, object]) -> None:
-    if manifest.get("manifest_version") != MANIFEST_VERSION:
-        raise ValueError("unsupported Klim literary-body manifest")
-    if manifest.get("candidate_id") != CANDIDATE_ID or manifest.get("profile") != PROFILE_VERSION:
-        raise ValueError("unexpected Klim literary-body identity")
+    if manifest.get("manifest_version") != MANIFEST_VERSION or manifest.get("candidate_id") != CANDIDATE_ID or manifest.get("profile") != PROFILE_VERSION:
+        raise ValueError("unexpected Klim literary-body manifest identity")
     if manifest.get("evidence_class") != "candidate_specific_source_graph_literary_extraction":
         raise ValueError("Klim literary-body evidence class drift")
     parts = manifest.get("parts")
     if not isinstance(parts, list) or len(parts) != 4:
         raise ValueError("Klim literary-body manifest must contain four parts")
-    for part, row_obj in enumerate(parts, start=1):
-        if not isinstance(row_obj, Mapping) or row_obj.get("part") != part:
-            raise ValueError("Klim literary-body part order drift")
-        if row_obj.get("source_revision_id") != EXPECTED_PART_REVISION_IDS[part]:
-            raise ValueError(f"Klim part {part} source revision drift")
-        _validate_identity(row_obj.get("literary_body_identity"), label=f"part {part}")
-        if row_obj.get("source_text_included") is not False:
+    for part, row in enumerate(parts, start=1):
+        if not isinstance(row, Mapping) or row.get("part") != part or row.get("source_revision_id") != EXPECTED_PART_REVISION_IDS[part]:
+            raise ValueError("Klim literary-body part identity/order drift")
+        _validate_identity(row.get("literary_body_identity"), label=f"part {part}")
+        if row.get("source_text_included") is not False:
             raise ValueError("source prose must remain absent")
     composition = manifest.get("composition")
-    if not isinstance(composition, Mapping):
-        raise ValueError("Klim composition contract missing")
-    if composition.get("profile") != COMPOSITION_PROFILE or composition.get("part_order") != [1, 2, 3, 4]:
-        raise ValueError("Klim composition order/profile drift")
+    if not isinstance(composition, Mapping) or composition.get("profile") != COMPOSITION_PROFILE or composition.get("part_order") != [1, 2, 3, 4]:
+        raise ValueError("Klim composition contract drift")
     if composition.get("separator_escape") != "\\n\\n" or composition.get("separator_sha256") != _sha256_text(COMPOSITION_SEPARATOR):
         raise ValueError("Klim composition separator drift")
     _validate_identity(composition.get("composite_literary_body_identity"), label="composite")
     scope = manifest.get("capture_scope")
     if not isinstance(scope, Mapping):
         raise ValueError("Klim literary-body capture scope missing")
-    for key in (
-        "four_part_literary_body_extraction_frozen",
-        "deterministic_four_part_composition_frozen",
-        "composite_raw_and_normalized_identity_frozen",
-    ):
+    for key in ("four_part_literary_body_extraction_frozen", "deterministic_four_part_composition_frozen", "composite_raw_and_normalized_identity_frozen"):
         if scope.get(key) is not True:
             raise ValueError(f"{key} must be true")
-    for key in (
-        "historical_wikisource_mediawiki_core_revision_proven",
-        "historical_wikisource_poem_deployment_equivalence_proven",
-        "historical_render_equivalence_proven",
-        "source_text_committed",
-    ):
+    for key in ("historical_wikisource_mediawiki_core_revision_proven", "historical_wikisource_poem_deployment_equivalence_proven", "historical_render_equivalence_proven", "source_text_committed"):
         if scope.get(key) is not False:
             raise ValueError(f"{key} must remain false")
-    if manifest.get("source_text_included") is not False:
-        raise ValueError("source prose must remain absent")
-    if manifest.get("fantlab_source_edition_match") != "unknown":
-        raise ValueError("FantLab source identity must remain unknown")
-    if manifest.get("diagnostic_ready") is not True:
-        raise ValueError("frozen literary composite should be diagnostic-ready")
-    if manifest.get("gate_ready") is not False or manifest.get("m2_parity_admissible") is not False:
-        raise ValueError("public-source freeze cannot open M2 gate")
-    forbidden = {"wikitext", "content", "body", "text", "source_text"}
-    if forbidden.intersection(manifest):
+    if manifest.get("source_text_included") is not False or manifest.get("fantlab_source_edition_match") != "unknown":
+        raise ValueError("source/FantLab boundary drift")
+    if manifest.get("diagnostic_ready") is not True or manifest.get("gate_ready") is not False or manifest.get("m2_parity_admissible") is not False:
+        raise ValueError("Klim literary-body gate boundary drift")
+    if {"wikitext", "content", "body", "text", "source_text"}.intersection(manifest):
         raise ValueError("source prose key leaked into Klim literary-body manifest")
 
 
@@ -619,7 +571,6 @@ def main(argv: list[str] | None = None) -> int:
     add_sources(capture)
     capture.add_argument("--research-date", required=True)
     capture.add_argument("--output", type=Path, required=True)
-
     replay = sub.add_parser("replay")
     add_sources(replay)
     replay.add_argument("--manifest", type=Path, required=True)
@@ -632,31 +583,13 @@ def main(argv: list[str] | None = None) -> int:
     direct_poem = _load_json(args.direct_poemx1_manifest)
     lst_contract = _load_json(args.lst_contract)
     part2_resolution = _load_json(args.part2_resolution_manifest)
-
     if args.command == "capture":
-        manifest = build_manifest(
-            revisions,
-            dependency,
-            body_surface,
-            direct_poem,
-            lst_contract,
-            part2_resolution,
-            research_date=args.research_date,
-        )
+        manifest = build_manifest(revisions, dependency, body_surface, direct_poem, lst_contract, part2_resolution, research_date=args.research_date)
         validate_manifest(manifest)
         _write_json(args.output, manifest)
         return 0
-
     manifest = _load_json(args.manifest)
-    receipt = replay_manifest(
-        revisions,
-        dependency,
-        body_surface,
-        direct_poem,
-        lst_contract,
-        part2_resolution,
-        manifest,
-    )
+    receipt = replay_manifest(revisions, dependency, body_surface, direct_poem, lst_contract, part2_resolution, manifest)
     _write_json(args.receipt, receipt)
     return 0
 

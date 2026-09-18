@@ -138,19 +138,22 @@ Canonical evidence:
 - `source-edition-traces/grin-road-nowhere-ru.alternate-body.json` — source-free alternate literary-body counts/digests and extraction-profile binding.
 - `../../scriptorium/road_nowhere_freeze.py` — source-specific fail-closed alternate-body extraction/replay implementation.
 
-## Running on Waves traced Grin candidate
+## Running on Waves route-frozen Grin candidate
 
 `grin-running-on-waves-ru` adds a third long Alexander Grin work and strengthens future same-author voice-profile coverage without treating repeated-author availability as source parity. FantLab's 18 September 2022 linguistic analysis reports **360,987 characters** and **52,985 words**, clearing the >=300,000-character calibration threshold.
 
-Russian Wikisource identifies the original work as **1928**, explicitly marks it public domain, and cites **A. Grin, _Scarlet Sails. Running on Waves. The Golden Chain_, Moscow: Detskaya literatura, 1965 (Biblioteka priklyucheniy)**. The work index exposes **35 numbered chapters plus an epilogue** and permanent revision **`oldid=2595407`**. FantLab's independent edition record `12637` catalogs the same publisher/year/volume and places *Running on Waves* on **pp. 77–276**. This independently corroborates the bibliographic transcription family, not electronic bytes or FantLab's analyzer input.
+Russian Wikisource identifies the original work as **1928**, explicitly marks it public domain, and cites **A. Grin, _Scarlet Sails. Running on Waves. The Golden Chain_, Moscow: Detskaya literatura, 1965 (Biblioteka priklyucheniy)**. The work index exposes permanent revision **`oldid=2595407`**. A second immutable witness, category permanent revision **`oldid=4715419`**, lists exactly **37 pages**: the main work page plus `/1` through `/35` and `/Эпилог`. This freezes the expected 36-title route topology only; the literary pages' own revision/content identities remain unfrozen. FantLab edition record `12637` independently catalogs the same publisher/year/volume and places *Running on Waves* on **pp. 77–276**, corroborating the bibliographic family but not electronic bytes or FantLab's analyzer input.
 
-The identity boundary remains fail-closed. The work-index permanent revision freezes navigation and bibliography only: the 35 chapter pages and epilogue have not been revision-pinned, no deterministic extraction/composition contract is recorded, and there are no raw or `scriptorium-text-v1` normalized composite digests. No source prose is committed. Translations, derivative works and later editorial apparatus remain separate rights and text identities.
+A separate Wikisource route, `/Версия 2`, is explicitly non-composable with the retained family. Permanent revision **`oldid=5655654`** declares `az.lib.ru` and a **Pravda, Moscow, 1980** collected-works context. Scriptorium records that route as a distinct transcription/edition identity rather than silently splicing it into the 1965-source candidate.
 
-Accordingly `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**. A later freeze must pin all 36 literary subpages and define fail-closed extraction/composition before diagnostics can be enabled.
+The identity boundary remains fail-closed. The 36 literary pages are not revision-pinned; no deterministic extraction/composition contract or raw/`scriptorium-text-v1` composite digest exists; no source prose is committed. Accordingly `source_identity_status=route_inventory_frozen_subpage_revisions_unfrozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and the M2 reproduction gate remains **0/5 source-matched works**. A later unit must pin exact `/1` through `/35` plus `/Эпилог` revisions and define fail-closed extraction/composition before diagnostics can be enabled.
 
 Canonical evidence:
 
-- `source-edition-traces/grin-running-on-waves-ru.json` — FantLab counts, source-cited 1965 Wikisource family, work-index permanent locator, independent FantLab bibliography cross-check, public-domain boundary, and next evidence required before diagnostic promotion.
+- [`grin-running-on-waves-ru.md`](grin-running-on-waves-ru.md) — public source-free candidate page and evidence boundary.
+- `source-edition-traces/grin-running-on-waves-ru.json` — FantLab counts, retained 1965-source route, excluded 1980 route, legal boundary and admissibility.
+- `source-edition-traces/grin-running-on-waves-ru.route-inventory.json` — exact source-free 36-title route witness and excluded-route boundary.
+- `../../scriptorium/running_waves_inventory.py` — deterministic fail-closed route-manifest builder/validator.
 
 ## The White Guard traced mixed-source candidate
 

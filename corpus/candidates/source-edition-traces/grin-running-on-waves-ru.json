@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "grin-running-on-waves-ru",
-  "research_date": "2026-09-16",
+  "research_date": "2026-09-18",
   "fantlab": {
     "work_id": 27344,
     "analysis_url": "https://fantlab.ru/work27344/lp",
@@ -28,14 +28,24 @@
       "epilogue": true,
       "literary_subpages_total": 36
     },
-    "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
+    "route_inventory_witness": {
+      "manifest": "grin-running-on-waves-ru.route-inventory.json",
+      "category_permanent_url": "https://ru.wikisource.org/w/index.php?title=Категория:Бегущая_по_волнам_(Грин)&oldid=4715419",
+      "category_oldid": 4715419,
+      "listed_pages_total": 37,
+      "main_work_pages": 1,
+      "expected_literary_subpages_listed": 36,
+      "expected_literary_titles": "exact /1 through /35 plus /Эпилог",
+      "scope": "The immutable category revision witnesses the route topology only; it does not freeze the subpages' own revision/content identities."
+    },
+    "source_provenance_confidence": "strong_for_bibliographic_transcription_family_and_route_inventory",
     "source_text_committed": false,
     "immutable_identity": {
-      "status": "traced_not_frozen",
+      "status": "route_inventory_frozen_subpage_revisions_unfrozen",
       "frozen_components": [
         "work-index permanent revision oldid 2595407",
         "explicit Detskaya literatura 1965 bibliographic source citation on the work index",
-        "work-index navigation exposing 35 numbered chapters plus an epilogue"
+        "permanent category revision oldid 4715419 listing the main page plus exact /1 through /35 and /Эпилог route topology"
       ],
       "unfrozen_components": [
         "exact revision IDs, timestamps and MediaWiki SHA-1 values for all 35 chapter pages and the epilogue",
@@ -44,12 +54,22 @@
         "raw and scriptorium-text-v1 normalized composite digests",
         "the relationship between FantLab's uploaded analyzer input and the 1965-source Wikisource transcription"
       ],
-      "reason": "The permanent work-index revision and explicit bibliography identify a transcription family and page inventory, but the literary body is served through 36 linked subpages whose exact revisions are not frozen by this unit."
+      "reason": "The permanent work-index and category revisions now freeze the bibliographic family and exact 36-title route topology, but they do not identify the literary subpages' own immutable revisions or any composite literary body."
     },
     "edition_identity_boundary": {
-      "status": "source_cited_1965_transcription_family_not_full_text_frozen",
-      "note": "The candidate is specifically the Wikisource transcription family whose index cites the 1965 Detskaya literatura volume. Bibliographic agreement does not establish byte identity with the printed volume, another electronic transcription, or FantLab's undisclosed analyzer input."
+      "status": "source_cited_1965_route_inventory_frozen_not_full_text_frozen",
+      "note": "The candidate is specifically the Wikisource transcription family whose index cites the 1965 Detskaya literatura volume. Bibliographic agreement and route topology do not establish byte identity with the printed volume, another electronic transcription, or FantLab's undisclosed analyzer input."
     }
+  },
+  "excluded_distinct_public_route": {
+    "provider": "Russian Wikisource",
+    "title": "Бегущая по волнам (Грин)/Версия 2",
+    "permanent_url": "https://ru.wikisource.org/w/index.php?title=Бегущая_по_волнам_(Грин)/Версия_2&oldid=5655654",
+    "oldid": 5655654,
+    "declared_source": "az.lib.ru",
+    "bibliographic_identity_shown": "А.С. Грин. Собрание сочинений: Правда; Москва; 1980",
+    "relationship_to_primary_candidate": "distinct_transcription_route_not_composed_into_primary",
+    "reason": "The route declares a different electronic source and 1980 Pravda edition context. Scriptorium must not splice it into the retained 1965-source candidate merely because it contains the same literary work."
   },
   "independent_bibliographic_cross_check": {
     "provider": "FantLab bibliography",
@@ -60,7 +80,7 @@
   },
   "legal_boundary": {
     "basis": "public_domain_original_russian_work_with_wikisource_reuse_terms",
-    "evidence": "The Russian Wikisource work page identifies Alexander Grin as 1880–1932, records the work as created in 1928, and explicitly marks the literary work public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions. The retained scope is the original Russian literary work body only; no source prose is committed, and translations, derivative works or later editorial apparatus require separate rights/provenance review.",
+    "evidence": "Russian Wikisource identifies Alexander Grin as 1880–1932, records the work as created in 1928, and marks the literary work public domain in Russia under Article 1281 of the Civil Code and in life-plus-70-or-less jurisdictions. The retained scope is the original Russian literary work body only; no source prose is committed, and translations, derivative works or later editorial apparatus require separate rights/provenance review.",
     "source_text_committed": false
   },
   "diversity": {
@@ -71,23 +91,24 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "traced_not_frozen",
+    "source_identity_status": "route_inventory_frozen_subpage_revisions_unfrozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "source_edition_traced_not_frozen",
+    "status": "source_route_inventory_frozen_not_literary_body_frozen",
     "reasons": [
       "FantLab reports 360,987 characters and 52,985 words for its 18 September 2022 analysis, above the 300,000-character calibration threshold.",
-      "Russian Wikisource supplies a permanent work-index locator, an explicit 1965 Detskaya literatura source citation, 35 numbered chapter links plus an epilogue, and an explicit public-domain notice for the original Russian work.",
+      "Russian Wikisource supplies a permanent work-index locator, an explicit 1965 Detskaya literatura source citation, and an immutable category revision oldid 4715419 that lists the main page plus all expected /1 through /35 and /Эпилог literary routes.",
       "FantLab bibliography independently corroborates the same 1965 Detskaya literatura volume and lists the novel on pp. 77–276.",
-      "The 36 literary subpages are not revision-pinned and no deterministic extraction/composition contract or composite digest exists yet.",
+      "The separate Wikisource /Версия 2 route declares az.lib.ru and a 1980 Pravda edition context, so it is excluded from the retained 1965 route rather than treated as interchangeable source text.",
+      "The 36 literary subpages are still not revision-pinned and no deterministic extraction/composition contract or composite digest exists yet.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Freeze the exact 35 chapter pages plus epilogue with revision IDs, timestamps and MediaWiki SHA-1 values without committing source prose.",
+      "Freeze the exact /1 through /35 chapter pages plus /Эпилог with revision IDs, timestamps and MediaWiki SHA-1 values without committing source prose.",
       "Define deterministic fail-closed extraction/composition and record raw plus scriptorium-text-v1 normalized composite digests before enabling diagnostics.",
-      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliography, title, structure or count proximity alone cannot advance M2."
+      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliography, title, route topology or count proximity alone cannot advance M2."
     ]
   }
 }

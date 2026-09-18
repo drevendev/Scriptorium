@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/klim-samgin-literary-body.yml"
       - "scriptorium/klim_samgin_literary_body.py"
+      - "scriptorium/klim_samgin_literary_body_impl.py"
       - "scriptorium/klim_samgin_body_surface.py"
       - "scriptorium/klim_samgin_direct_poemx1_surface.py"
       - "scriptorium/klim_samgin_freeze.py"
@@ -12,6 +13,7 @@ on:
       - "scriptorium/mediawiki_poem_render_surface.py"
       - "scriptorium/mediawiki_poemx1_content.py"
       - "scriptorium/mediawiki_template_invocation.py"
+      - "scriptorium/mediawiki_transclusion.py"
       - "scriptorium/single_page_body.py"
       - "scriptorium/single_page_revision.py"
       - "scriptorium/text.py"

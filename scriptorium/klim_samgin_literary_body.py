@@ -3,8 +3,8 @@
 The Part 2 target is a transcluded Wikisource subpage. After the six already-frozen
 plain ``poemx1`` values are substituted, apply the repository's bounded
 ``noinclude``/``includeonly``/``onlyinclude`` transclusion layer before literary
-rendering. The final renderer checks for unresolved markup before HTML entity
-unescaping so literal authorial ``&lt;``/``&gt;`` are not misclassified as tags.
+rendering. Literal authorial angle brackets are preserved; only tag-shaped residual
+markup is rejected after the exact allowed tag inventory has been processed.
 """
 from __future__ import annotations
 
@@ -93,13 +93,11 @@ def _render_candidate_body(source: str) -> str:
         raise ValueError("unsupported template remains in Klim literary body")
     wiki_open = text.count("[[")
     wiki_close = text.count("]]" )
-    angle_open = text.count("<")
-    angle_close = text.count(">")
-    if wiki_open or wiki_close or angle_open or angle_close:
+    residual_tag_like = len(re.findall(r"</?\s*[A-Za-z]", text))
+    if wiki_open or wiki_close or residual_tag_like:
         raise ValueError(
             "unsupported wiki/HTML markup remains in Klim literary body "
-            f"(wiki_open={wiki_open}, wiki_close={wiki_close}, "
-            f"angle_open={angle_open}, angle_close={angle_close})"
+            f"(wiki_open={wiki_open}, wiki_close={wiki_close}, residual_tag_like={residual_tag_like})"
         )
     text = html.unescape(text)
     text = text.replace("\r\n", "\n").replace("\r", "\n").strip()

@@ -1,0 +1,109 @@
+{
+  "manifest_version": "scriptorium-road-nowhere-index-route-audit-v1",
+  "candidate_id": "grin-road-nowhere-ru",
+  "research_date": "2026-09-19",
+  "provider": "Russian Wikisource",
+  "work_index": {
+    "title": "Дорога никуда (Грин)",
+    "permanent_url": "https://ru.wikisource.org/w/index.php?title=Дорога_никуда_(Грин)&oldid=4715367",
+    "revision_id": 4715367,
+    "bibliographic_source": "А. С. Грин. Собрание сочинений, т. 6. М.: Правда, 1965, сс. 3–227; Wikisource names lib.web as the electronic source.",
+    "index_link_graph_scope": "The permanent index revision is the authority for label-to-target routing recorded here. Current target existence is a separate observation and is not an immutable property of oldid 4715367."
+  },
+  "index_surface": {
+    "advertised_label_count": 8,
+    "distinct_target_count": 6,
+    "complete_primary_route_inventory": false,
+    "parts": [
+      {
+        "part": "I",
+        "labels": [
+          {
+            "label": "Глава I",
+            "target_title": "Дорога никуда (Грин)/Часть I/Глава I",
+            "index_target_kind": "article_route",
+            "current_target_observation": "live_page_observed",
+            "same_family_source_citation_observed": true
+          },
+          {
+            "label": "Глава II",
+            "target_title": "Дорога никуда (Грин)/Часть I/Глава II",
+            "index_target_kind": "article_route",
+            "current_target_observation": "live_page_observed",
+            "same_family_source_citation_observed": true
+          },
+          {
+            "label": "Глава III",
+            "target_title": "Дорога никуда (Грин)/Часть I/Глава III",
+            "index_target_kind": "article_route",
+            "current_target_observation": "live_page_observed",
+            "same_family_source_citation_observed": true
+          },
+          {
+            "label": "Глава IV",
+            "target_title": "Дорога никуда (Грин)/Часть I/Глава III",
+            "index_target_kind": "duplicate_of_preceding_label_target",
+            "current_target_observation": "target_is_live_chapter_iii_not_a_chapter_iv_route",
+            "same_family_source_citation_observed": true
+          }
+        ]
+      },
+      {
+        "part": "II",
+        "labels": [
+          {
+            "label": "Глава I",
+            "target_title": "Дорога никуда (Грин)/Часть II/Глава I",
+            "index_target_kind": "redlink_edit_route",
+            "current_target_observation": "redlink_observed",
+            "same_family_source_citation_observed": false
+          },
+          {
+            "label": "Глава II",
+            "target_title": "Дорога никуда (Грин)/Часть II/Глава II",
+            "index_target_kind": "redlink_edit_route",
+            "current_target_observation": "redlink_observed",
+            "same_family_source_citation_observed": false
+          },
+          {
+            "label": "Глава III",
+            "target_title": "Дорога никуда (Грин)/Часть II/Глава III",
+            "index_target_kind": "redlink_edit_route",
+            "current_target_observation": "redlink_observed",
+            "same_family_source_citation_observed": false
+          },
+          {
+            "label": "Глава IV",
+            "target_title": "Дорога никуда (Грин)/Часть II/Глава III",
+            "index_target_kind": "duplicate_of_preceding_redlink_target",
+            "current_target_observation": "same_redlink_as_chapter_iii_label",
+            "same_family_source_citation_observed": false
+          }
+        ]
+      }
+    ]
+  },
+  "evidence": {
+    "index_render_url": "https://ru.wikisource.org/wiki/Дорога_никуда_(Грин)",
+    "part_i_chapter_i_url": "https://ru.wikisource.org/wiki/Дорога_никуда_(Грин)/Часть_I/Глава_I",
+    "part_i_chapter_ii_url": "https://ru.wikisource.org/wiki/Дорога_никуда_(Грин)/Часть_I/Глава_II",
+    "part_i_chapter_iii_url": "https://ru.wikisource.org/wiki/Дорога_никуда_(Грин)/Часть_I/Глава_III",
+    "audit_note": "The permanent index renders four labels per part. In both parts the Chapter IV label shares the Chapter III link target. The Part II Chapter I–III link targets resolve as red links in the audited current surface. This proves that the index cannot be used as a complete primary literary-route inventory without additional same-family evidence."
+  },
+  "source_family_boundary": {
+    "alternate_route": "https://ru.wikisource.org/wiki/Дорога_в_никуда_(Грин)",
+    "alternate_source": "az.lib.ru",
+    "relationship": "distinct_transcription_family_not_admissible_to_fill_primary_route_gaps",
+    "reason": "The alternate transcription has a separately frozen identity and different source provenance. Its 7+17 chapter structure is not evidence for missing or misdirected routes in the Pravda-1965/lib.web family."
+  },
+  "capture_scope": {
+    "index_link_graph_audited": true,
+    "complete_primary_route_inventory_frozen": false,
+    "literary_page_revisions_frozen": false,
+    "literary_body_extraction_frozen": false,
+    "composite_identity_frozen": false,
+    "source_text_committed": false,
+    "fantlab_source_edition_match": "unknown",
+    "m2_parity_admissible": false
+  }
+}

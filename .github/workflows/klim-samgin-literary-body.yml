@@ -55,6 +55,7 @@ jobs:
 
       - name: Inspect source-free Part 2 dependency markup surface
         run: |
+          mkdir -p build/repro
           python - <<'PY'
           from collections import Counter
           import json
@@ -73,7 +74,7 @@ jobs:
               raise SystemExit('dependency identity drift before diagnostics')
           effective, controls = preprocess_for_transclusion(source)
           tags = Counter(name.casefold() for name in re.findall(r'</?\s*([A-Za-z][A-Za-z0-9]*)\b', effective))
-          print('SCRIPTORIUM_KLIM_DEPENDENCY_MARKUP=' + json.dumps({
+          diagnostic = {
               'transclusion_control_counts': controls,
               'html_tag_name_counts': dict(sorted(tags.items())),
               'wikilink_open_count': effective.count('[['),
@@ -82,7 +83,14 @@ jobs:
               'angle_close_count': effective.count('>'),
               'double_brace_open_count': effective.count('{{'),
               'double_brace_close_count': effective.count('}}'),
-          }, sort_keys=True, separators=(',', ':')))
+          }
+          Path('build/repro/dependency-markup.json').write_text(
+              json.dumps(diagnostic, sort_keys=True, separators=(',', ':')) + '\n',
+              encoding='utf-8',
+          )
+          print('SCRIPTORIUM_KLIM_DEPENDENCY_MARKUP=' + json.dumps(
+              diagnostic, sort_keys=True, separators=(',', ':')
+          ))
           PY
 
       - name: Re-fetch exact source graph and freeze literary composite

@@ -72,7 +72,7 @@ class KlimSamginLiteraryBodyTests(unittest.TestCase):
         source = (
             "{{Жизнь Клима Самгина}}\n"
             "=== I ===\n=== II ===\n=== III ===\n=== IV ===\n=== V ===\n"
-            "Проза {{Неизвестный}}\n"
+            "Грегер и {{Ко}}. Проза {{Неизвестный}}\n"
             "[[Категория:Жизнь Клима Самгина (Горький)]]"
         )
         with self.assertRaisesRegex(ValueError, "unsupported template syntax"):

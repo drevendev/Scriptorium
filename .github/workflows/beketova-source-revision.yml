@@ -1,0 +1,95 @@
+name: Beketova translation source revision
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/beketova-source-revision.yml"
+      - "scriptorium/single_page_revision.py"
+      - "tests/test_single_page_revision.py"
+      - "corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze:
+    name: Replay pinned Beketova source revision
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Capture exact pinned revision identity without source prose
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.single_page_revision capture \
+            --candidate-id verne-children-captain-grant-beketova-ru \
+            --title 'Дети капитана Гранта (Верн; Бекетова)' \
+            --revision-id 5304880 \
+            --source-work-url 'https://ru.wikisource.org/wiki/Дети_капитана_Гранта_(Верн;_Бекетова)' \
+            --permanent-source-url 'https://ru.wikisource.org/w/index.php?title=Дети_капитана_Гранта_(Верн;_Бекетова)&oldid=5304880' \
+            --bibliographic-source 'Jules Verne, Дети капитана Гранта, trans. A. A. Beketova, Detgiz 1955; az.lib.ru transcription family' \
+            --legal-basis public_domain_translation_source_statement \
+            --output build/repro/verne-children-captain-grant-beketova-ru.revision.observed.json
+
+      - name: Compare committed revision identity and replay when available
+        run: |
+          set -euo pipefail
+          expected='corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json'
+          observed='build/repro/verne-children-captain-grant-beketova-ru.revision.observed.json'
+          if [[ -f "$expected" ]]; then
+            cmp "$expected" "$observed"
+            python -m scriptorium.single_page_revision replay \
+              --manifest "$expected" \
+              --receipt build/repro/verne-children-captain-grant-beketova-ru.revision.replay.json
+          else
+            echo 'Committed revision manifest not present yet; capture artifact is bootstrap evidence.'
+          fi
+
+      - name: Verify observed artifact is source-free and fail-closed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('build/repro/verne-children-captain-grant-beketova-ru.revision.observed.json')
+          manifest = json.loads(path.read_text(encoding='utf-8'))
+          assert manifest['candidate_id'] == 'verne-children-captain-grant-beketova-ru'
+          assert manifest['source_identity']['revision_id'] == 5304880
+          assert manifest['capture_scope'] == {
+              'revision_wikitext_identity_frozen': True,
+              'literary_body_extraction_frozen': False,
+              'composite_identity_frozen': False,
+              'source_text_committed': False,
+          }
+          forbidden = {'wikitext', 'content', 'body', 'text', 'source_text'}
+          assert not forbidden.intersection(manifest)
+          assert not forbidden.intersection(manifest['source_identity'])
+          print('SCRIPTORIUM_BEKETOVA_REVISION=' + json.dumps({
+              'candidate_id': manifest['candidate_id'],
+              'source_identity': manifest['source_identity'],
+              'capture_scope': manifest['capture_scope'],
+          }, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
+          PY
+
+      - name: Upload source-free capture and replay evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: beketova-source-revision
+          path: build/repro/verne-children-captain-grant-beketova-ru.revision.*.json
+          if-no-files-found: error
+          retention-days: 7

@@ -1,24 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 162
+STATE_REVISION: 163
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-19T06:55:00Z
-LAST_RESULT: SCRIP-CORPUS-026 / Issue #139 independently reviewed final exact head `b0126f1d36d0fe8b2f8ce1e74b2d2da8f79cb85f` of PR #140. The PR was mergeable against unchanged base `f2413278df4e6bc70d48bb9eb2aa6425672d0e78`, had no inline review threads, and all 14 exact-head pull-request workflows completed successfully. Candidate-specific run `35425572354`, job `105850791726`, re-fetched and byte-compared the committed source-revision and literary-body manifests, replayed both identities, verified source-free/fail-closed guards, and uploaded source-free artifact `10578759254` with digest `sha256:6eb04993de0cf30b33cdf4e0e3da9b18722d48a5ee2efe9633b693901e276c01`. Pages run `35425572337`, job `105850791667`, used the same head and passed tests, canonical site build and deterministic rebuild. No blocker was found; PR #140 was marked Ready and squash-merged as `14f5a76ea3aa137554a6b320b49bba81f84bfbfa`, closing Issue #139 as completed.
-LAST_VERIFIED_PROGRESS: `verne-children-captain-grant-beketova-ru` now has a merged source-free frozen revision identity and deterministic literary-body identity for exact Russian Wikisource revision `5304880`. The source identity remains page ID `1012777`, timestamp `2025-02-25T02:24:10Z`, MediaWiki SHA-1 `256d816de6743031ea86f266ed004ee72240c200`, wikitext SHA-256 `71bfbe889cfc91b7dd24831a6a8984f3ac8d010c90d329b99a8f43aa4e3181a0`. Extraction profile `scriptorium-beketova-captain-grant-wikisource-body-v1` freezes the observed direct-transcription topology and produces 1,095,467 characters / 2,040,240 UTF-8 bytes with raw and `scriptorium-text-v1` normalized SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`. The translation is admitted for general Scriptorium calibration/profile use, remains distinct from the French original and other Russian translations, and contributes no M2 weight because FantLab analyzer-input/source-edition identity is still unknown.
+LAST_COMMITTED_RUN_AT: 2026-09-19T07:54:00Z
+LAST_RESULT: SCRIP-CORPUS-027 / Issue #141 authored a source-free exact-revision freeze for the retained 1965-source Russian Wikisource route of Alexander Grin's *Running on Waves* in Draft PR #142. The already frozen route topology (`oldid=4715419`) was used to capture exactly 36 literary pages in order `/1` through `/35` then `/Эпилог`, each with page ID, exact revision ID, UTC timestamp and MediaWiki SHA-1. Bootstrap workflow run `35430448437`, job `105863933461`, completed successfully on substantive head `ce0dbc90ec87b342342d491ece49e98753313dfd`, ran the standard-library suite, captured the source-free manifest, passed fail-closed/source-free guards and uploaded artifact `10581001332` (`sha256:a0c58c00b0e5a1ea0a6649815ef7489b06ca7eecb129cf7f19bd1729bf288572`). The observed manifest was then committed, public candidate/provenance boundaries were updated, and no literary prose was committed. The PR remains Draft for independent exact-head review; this run does not self-merge its substantive changes.
+LAST_VERIFIED_PROGRESS: `grin-running-on-waves-ru` now has a committed source-free manifest for all 36 retained 1965-source literary page revisions. Route inventory and page-revision identity are frozen and replayable; literary-body extraction, composite counts/digests and FantLab analyzer-input/source-edition identity remain deliberately unfrozen/unknown. The distinct 1980/az.lib.ru `/Версия 2` route remains non-composable. M2 remains 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-026
-ISSUE:          #139 (closed completed)
-STATUS:         COMPLETE
-PR:             #140 (merged)
-MERGED_COMMIT:  14f5a76ea3aa137554a6b320b49bba81f84bfbfa
-NEXT_ACTION:    On the next wake, re-apply the selection ladder. There is no known recovery unit from #140. Resume the
-                highest-priority unblocked corpus/provenance continuation, prioritizing legally usable >=300k diversity
-                or strengthening an existing twentieth/twenty-first-century, translated or nonfiction candidate when
-                evidence quality is sufficient. Preserve edition/translation identity and do not move M2 without an
-                independently established FantLab analyzer-input/source-edition match.
+UNIT_ID:        SCRIP-CORPUS-027
+ISSUE:          #141 (open)
+STATUS:         REVIEW_REQUIRED
+PR:             #142 (Draft)
+NEXT_ACTION:    Independently review PR #142 at its exact current head after CI settles. Confirm the committed 36-page
+                source-free revision manifest matches a live capture and replays every pinned revision, inspect tests and
+                provenance/public boundaries, and only then mark Ready / merge if safe. Do not promote literary-body,
+                diagnostic or M2 status: extraction/composition and FantLab analyzer-input identity are still unresolved.
 ```
 
 ## Current milestone gate
@@ -33,6 +31,7 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
+| P0 | SCRIP-CORPUS-027 / #141 / PR #142 | review / recovery | Independent exact-head review of the 36-page Running on Waves revision freeze; merge only if source-free replay, tests, provenance boundaries and checks support it | Authored this run; judgement must be a later run |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
@@ -47,7 +46,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Hyperboloid of Engineer Garin** — frozen Russian Wikisource single-revision candidate at `oldid=5014458`; extraction profile `scriptorium-hyperboloid-wikisource-body-v1` reproduces 499,066 characters / 930,560 bytes with raw and normalized SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`. Print-edition identity and FantLab source match remain unresolved.
 - **Shining World** — reviewed 1965-source Wikisource index advertises 34 chapter links, but the merged SCRIP-CORPUS-021 source-free audit found only 19 existing pages: Part I I-XVI and Part II I-III. Part II IV-XI and all Part III chapters are missing. Exact present-page revision identities are frozen in master; complete literary-body/composite identity remains impossible from this route alone, and FantLab source match is unknown.
 - **Road to Nowhere** — the primary Pravda-1965/lib.web family is still body-unfrozen, but merged SCRIP-CORPUS-023 audits permanent index `oldid=4715367` as an incomplete/misdirected navigation surface: 8 labels map to 6 distinct targets, both Chapter IV labels duplicate Chapter III targets, and the three distinct Part II index targets currently resolve as red links. The distinct `az.lib.ru` route at `oldid=5585836` remains separately frozen at 442,656 characters / 825,899 bytes, SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`. Neither route is identified as FantLab input.
-- **Running on Waves** — retained Detskaya literatura 1965 Wikisource family has a merged source-free route topology frozen by category `oldid=4715419`: main page plus all expected `/1`–`/35` and `/Эпилог` routes. Exact literary-page revision identities and composite remain unfrozen. Distinct `/Версия 2` at `oldid=5655654` declares `az.lib.ru` / Pravda 1980 and is explicitly excluded from composition. FantLab source match remains unknown.
+- **Running on Waves** — SCRIP-CORPUS-027 is in Draft review. The retained Detskaya literatura 1965 Wikisource family has route topology frozen by category `oldid=4715419`, and PR #142 adds a source-free exact identity for all 36 expected literary pages (`/1`–`/35` plus `/Эпилог`) with page IDs, revision IDs, UTC timestamps and MediaWiki SHA-1 values plus deterministic pinned-revision replay. Literary-body extraction/composite identity remain unfrozen. Distinct `/Версия 2` at `oldid=5655654` declares `az.lib.ru` / Pravda 1980 and remains excluded. FantLab source match remains unknown.
 - **The White Guard** — Wikisource mixes two bibliographic source families across chapters 1–11 and 12–20; all 20 chapter identities/composite remain unfrozen.
 - **The Twelve Chairs** — keep the 40-chapter later 1938/1961 editorial family distinct from the 41-chapter 1928 first standalone edition; neither literary body is frozen, and coauthorship prevents individual-author attribution without an explicit VOICE model.
 - **The Life of Klim Samgin** — SCRIP-CORPUS-020 is complete. Four exact parent revisions and the Part 2 dependency are replay-frozen; merged PRs #111–#124 freeze the target-only `#lst`, inferred `poemx1`/Poem boundaries, structural surface and all thirteen plain literary values; #126 merged the candidate-specific fail-closed extractor; #127 merged the canonical source-free per-part and composite literary-body identities; #128 reconciled the structured provenance trace. Exact historical MediaWiki/Poem deployment and FantLab analyzer-input/source-edition identity remain unresolved.
@@ -66,10 +65,10 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 
 - Static publication remains source-free and deterministic; publication tests reject forbidden source-prose keys.
 - Public corpus navigation exposes retained candidates with provenance boundaries rather than parity claims.
-- `corpus/README.md` and the dedicated Beketova candidate page now expose the translated candidate's exact frozen literary-body identity and >=300k general-corpus admission while explicitly keeping FantLab source match and M2 parity closed.
+- `corpus/README.md` and the dedicated Beketova candidate page expose the translated candidate's exact frozen literary-body identity and >=300k general-corpus admission while explicitly keeping FantLab source match and M2 parity closed.
 - Hyperboloid and Road to Nowhere expose frozen source-free alternate literary-body identities with explicit unresolved source-match boundaries; merged SCRIP-CORPUS-023 additionally makes the primary Road to Nowhere index-routing defect inspectable as source-free provenance rather than implying that the primary route is ready to freeze.
 - Shining World exposes a merged inspectable source-free inventory artifact and corrected public/structured provenance that distinguish the 34 links advertised by the reviewed index from the 19 pages that actually exist; missing targets are visible blockers, not silently filled text.
-- Running on Waves exposes a merged inspectable source-free route-inventory artifact, dedicated candidate page, and reconciled top-level corpus navigation that distinguish the retained 1965 Detskaya literatura route from the separate 1980/az.lib.ru `Версия 2` route; literary-page revisions/body identity remain explicitly unfrozen.
+- Running on Waves now exposes in Draft PR #142 a committed source-free 36-page exact revision manifest and dedicated candidate-page wording that distinguishes frozen route/page identities from still-unfrozen literary-body/composite identity and from the separate 1980/az.lib.ru route.
 - Klim Samgin exposes the source graph, fail-closed extractor, canonical source-free per-part/composite literary-body identities, public candidate page, and a structured provenance trace consistent with those identities. Evidence remains explicitly diagnostic-only and source-match unknown.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -82,7 +81,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 5. Frozen public-source candidates remain unmatched to FantLab input and therefore cannot advance M2.
 6. Petersburg lacks a Scriptorium-recorded PDF snapshot digest and deterministic OCR/page-extraction identity.
 7. Shining World's primary 1965-source Wikisource family is incomplete: 15 of 34 advertised chapter targets are missing, so a complete literary body cannot be frozen from that route alone without a separately justified source-complete witness.
-8. Running on Waves has a frozen route topology but not exact literary-page revision/content identities; the separate 1980/az.lib.ru route must remain non-composable unless a future explicit source contract says otherwise.
+8. Running on Waves now has its 1965-route topology and all 36 literary page revisions frozen in PR #142, but no deterministic literary-body extraction/composite identity yet; the separate 1980/az.lib.ru route remains non-composable.
 9. Road to Nowhere's primary Pravda-1965/lib.web index is not a complete route witness: it contains duplicate/misdirected Chapter IV labels and current red links for all three distinct Part II targets exposed there. A complete same-family route set must be established independently before primary page/body freezing; the alternate az.lib.ru body cannot fill those gaps.
 10. Several other twentieth-century candidates remain trace-only/unfrozen or bibliographically unresolved at the literary-body level.
 11. Klim Samgin is fully frozen at the candidate-specific literary-body/provenance level, but exact historical Russian Wikisource MediaWiki-core/Poem deployment equivalence and FantLab analyzer-input bytes/edition remain unproven; these are evidence boundaries, not open acceptance criteria for closed Issue #109.

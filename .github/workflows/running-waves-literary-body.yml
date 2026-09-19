@@ -39,6 +39,28 @@ jobs:
           python -m scriptorium.running_waves_body capture \
             --source-manifest corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json \
             --output /tmp/grin-running-on-waves-ru.literary-body.observed.json
+      - name: Report source-free extraction shape on capture failure
+        if: failure()
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+          from scriptorium.running_waves_revisions import validate_manifest
+          from scriptorium.wikisource_replay import fetch_pinned_chapter_revisions
+
+          source = json.loads(Path('corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json').read_text(encoding='utf-8'))
+          identities = validate_manifest(source)
+          revisions = fetch_pinned_chapter_revisions(identities)
+          body_re = re.compile(r'<div\s+class=["\'](?:text|indent)["\']\s*>(.*?)</div>', re.I | re.S)
+          template_re = re.compile(r'\{\{\s*([^|{}\n]+)')
+          for row in identities:
+              title = str(row['title'])
+              text = revisions[title]
+              matches = body_re.findall(text)
+              names = sorted({name.strip() for fragment in matches for name in template_re.findall(fragment)})
+              print(json.dumps({'ordinal': row['ordinal'], 'title': title, 'body_div_count': len(matches), 'template_names': names}, ensure_ascii=False, sort_keys=True))
+          PY
       - name: Compare committed manifest when present
         run: |
           if test -f corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json; then

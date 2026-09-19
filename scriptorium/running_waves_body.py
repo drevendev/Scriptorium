@@ -1,7 +1,7 @@
 """Freeze and replay the literary-body identity for Grin's *Running on Waves*.
 
 The source text is fetched only transiently from the 36 exact revisions already
-frozen by ``running_waves_revisions``.  Durable output contains only source
+frozen by ``running_waves_revisions``. Durable output contains only source
 identities, derived counts/digests, and the versioned extraction/composition
 contract; literary prose is never serialized.
 """
@@ -12,18 +12,21 @@ import argparse
 from hashlib import sha256
 import json
 from pathlib import Path
+import re
 from typing import Callable, Iterable, Mapping, Sequence
 
 from .running_waves_inventory import CANDIDATE_ID, PRIMARY_BIBLIOGRAPHIC_SOURCE
 from .running_waves_revisions import canonical_json_text, validate_manifest as validate_source_manifest
 from .text import NORMALIZATION_PROFILE, normalize_text
-from .wikisource_freeze import COMPOSITE_PROFILE, extract_transcription_body
+from .wikisource_freeze import COMPOSITE_PROFILE, extract_transcription_body, roman
 from .wikisource_replay import fetch_pinned_chapter_revisions
 
 MANIFEST_VERSION = "scriptorium-running-waves-literary-body-v1"
 EXTRACTION_PROFILE = "scriptorium-running-waves-wikisource-body-v1"
 CHAPTER_SEPARATOR = "\n\n"
 MINIMUM_CORPUS_CHARACTERS = 300_000
+
+_INNER_TEMPLATE_RE = re.compile(r"\{\{([^{}]*)\}\}")
 
 
 def _sha256_text(text: str) -> str:
@@ -49,6 +52,112 @@ def _text_identity(text: str) -> dict[str, object]:
     }
 
 
+def _split_template_fields(inner: str) -> list[str]:
+    """Split an innermost template while preserving pipes inside wikilinks."""
+
+    parts: list[str] = []
+    start = 0
+    bracket_depth = 0
+    index = 0
+    while index < len(inner):
+        pair = inner[index : index + 2]
+        if pair == "[[":
+            bracket_depth += 1
+            index += 2
+            continue
+        if pair == "]]" and bracket_depth:
+            bracket_depth -= 1
+            index += 2
+            continue
+        if inner[index] == "|" and bracket_depth == 0:
+            parts.append(inner[start:index])
+            start = index + 1
+        index += 1
+    if bracket_depth:
+        raise ValueError("unbalanced wikilink inside Running on Waves template")
+    parts.append(inner[start:])
+    return parts
+
+
+def _render_running_waves_template(inner: str) -> str | None:
+    """Render only the template shapes observed in the 36 frozen 1965 pages.
+
+    The contract is intentionally narrower than general MediaWiki expansion. CI first
+    recorded source-free template names/arities from the exact pinned revisions; this
+    renderer accepts only those shapes and preserves only visible literary content.
+    Unknown names or unexpected arities are left for the generic extractor to reject.
+    """
+
+    parts = _split_template_fields(inner)
+    name = parts[0].strip()
+    args = parts[1:]
+
+    if name == "^":
+        return "" if not args else None
+
+    if name == "roman":
+        if len(args) != 1 or not re.fullmatch(r"[0-9]+", args[0].strip()):
+            return None
+        try:
+            return roman(int(args[0].strip()))
+        except ValueError:
+            return None
+
+    if name in {"razr", "razr2"}:
+        return args[0] if len(args) == 1 else None
+
+    if name == "акут":
+        return "\u0301" if not args else None
+
+    if name == "Гравис":
+        return "\u0300" if not args else None
+
+    if name == "Так в тексте":
+        # The optional second parameter is a tooltip/comment; rendered literary text
+        # is the first parameter. Exact pinned pages use one parameter except one
+        # two-parameter invocation.
+        return args[0] if len(args) in {1, 2} else None
+
+    if name == "опечатка2":
+        # In main-namespace transclusion Wikisource displays the corrected second
+        # parameter. The pinned Running on Waves pages use exactly two parameters.
+        return args[1] if len(args) == 2 else None
+
+    if name == "poem1":
+        # Source-free CI established that every pinned invocation has exactly three
+        # positional parameters with empty title/signature slots. Preserve only the
+        # literary poem body in the middle slot; reject any other shape.
+        if len(args) == 3 and not args[0].strip() and not args[2].strip():
+            return args[1]
+        return None
+
+    return None
+
+
+def expand_running_waves_templates(wikitext: str) -> str:
+    """Resolve the frozen candidate's formatting templates without remote expansion."""
+
+    if not isinstance(wikitext, str):
+        raise TypeError("wikitext must be str")
+
+    current = wikitext
+    while True:
+        changed = False
+
+        def replace(match: re.Match[str]) -> str:
+            nonlocal changed
+            rendered = _render_running_waves_template(match.group(1))
+            if rendered is None:
+                return match.group(0)
+            changed = True
+            return rendered
+
+        updated = _INNER_TEMPLATE_RE.sub(replace, current)
+        if not changed:
+            return current
+        current = updated
+
+
 def _extract_bodies(
     source_manifest: Mapping[str, object],
     *,
@@ -64,7 +173,8 @@ def _extract_bodies(
     for row in identities:
         title = str(row["title"])
         try:
-            body = extract_transcription_body(fetched[title])
+            candidate_wikitext = expand_running_waves_templates(fetched[title])
+            body = extract_transcription_body(candidate_wikitext)
         except ValueError as exc:
             raise ValueError(f"failed to extract literary body for {title!r}: {exc}") from exc
         bodies.append(body)

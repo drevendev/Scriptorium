@@ -12,4 +12,12 @@ PR: #140
 - The exact body therefore clears the repository >=300,000-character rule and is admitted for general Scriptorium calibration/profile use. This is not FantLab parity admission.
 - Reconciled the structured trace, dedicated candidate page and corpus-root navigation around the frozen body and translation identity. No book text is committed.
 - No FantLab linguistic result or analyzer-input/source-edition identity is established for this specific Beketova translation. `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`; M2 remains 0/5.
-- PR #140 remains Draft for independent later exact-head review and safe merge; this authoring run does not self-approve or merge it.
+- PR #140 remained Draft for independent later exact-head review; the authoring run did not self-approve or merge it.
+
+## Independent review and merge
+
+- Independently reviewed final exact head `b0126f1d36d0fe8b2f8ce1e74b2d2da8f79cb85f`; master was still at base `f2413278df4e6bc70d48bb9eb2aa6425672d0e78`, the PR was mergeable, and there were no inline review threads.
+- All 14 pull-request workflow runs on that exact head completed successfully. Candidate-specific run `35425572354`, job `105850791726`, re-fetched and byte-compared the committed revision and literary-body manifests, replayed both identities, verified source-free/fail-closed guards, and uploaded source-free artifact `10578759254` with digest `sha256:6eb04993de0cf30b33cdf4e0e3da9b18722d48a5ee2efe9633b693901e276c01`.
+- Pages run `35425572337`, build job `105850791667`, used the same exact head and passed tests, canonical site build, deterministic rebuild and artifact upload; live deployment remained intentionally skipped.
+- No blocking defect was found in the candidate-specific extractor, >=300k general-corpus admission, translation identity boundary, public/provenance synchronization or FantLab/M2 gate wording.
+- PR #140 was marked Ready and squash-merged as `14f5a76ea3aa137554a6b320b49bba81f84bfbfa`; Issue #139 closed as completed.

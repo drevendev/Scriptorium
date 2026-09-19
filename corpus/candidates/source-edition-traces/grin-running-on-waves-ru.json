@@ -1,15 +1,12 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "grin-running-on-waves-ru",
-  "research_date": "2026-09-18",
+  "research_date": "2026-09-19",
   "fantlab": {
     "work_id": 27344,
     "analysis_url": "https://fantlab.ru/work27344/lp",
     "analysis_date": "2022-09-18",
-    "observed_counts": {
-      "characters": 360987,
-      "words": 52985
-    },
+    "observed_counts": {"characters": 360987, "words": 52985},
     "source_edition_disclosed_on_analysis_surface": false,
     "source_bytes_disclosed_on_analysis_surface": false,
     "work_page_url": "https://fantlab.ru/work27344",
@@ -23,11 +20,7 @@
     "work_index_last_edit_shown": "2017-06-15T04:54:00Z",
     "creation_year_shown": 1928,
     "bibliographic_source": "А. Грин. Алые паруса. Бегущая по волнам. Золотая цепь. М.: Детская литература, 1965. Серия: Библиотека приключений.",
-    "observed_structure": {
-      "numbered_chapters": 35,
-      "epilogue": true,
-      "literary_subpages_total": 36
-    },
+    "observed_structure": {"numbered_chapters": 35, "epilogue": true, "literary_subpages_total": 36},
     "route_inventory_witness": {
       "manifest": "grin-running-on-waves-ru.route-inventory.json",
       "category_permanent_url": "https://ru.wikisource.org/w/index.php?title=Категория:Бегущая_по_волнам_(Грин)&oldid=4715419",
@@ -36,29 +29,38 @@
       "main_work_pages": 1,
       "expected_literary_subpages_listed": 36,
       "expected_literary_titles": "exact /1 through /35 plus /Эпилог",
-      "scope": "The immutable category revision witnesses the route topology only; it does not freeze the subpages' own revision/content identities."
+      "scope": "The immutable category revision witnesses the route topology only; exact literary-page identities are frozen separately."
     },
-    "source_provenance_confidence": "strong_for_bibliographic_transcription_family_and_route_inventory",
+    "revision_identity_witness": {
+      "manifest": "grin-running-on-waves-ru.source-revisions.json",
+      "manifest_version": "scriptorium-running-waves-source-revisions-v1",
+      "literary_page_count": 36,
+      "order": "exact /1 through /35 then /Эпилог",
+      "identity_fields": ["page_id", "revision_id", "revision_timestamp", "mediawiki_sha1"],
+      "replayable": true,
+      "source_text_committed": false
+    },
+    "source_provenance_confidence": "strong_for_bibliographic_transcription_family_route_and_page_revision_identity",
     "source_text_committed": false,
     "immutable_identity": {
-      "status": "route_inventory_frozen_subpage_revisions_unfrozen",
+      "status": "route_and_literary_page_revisions_frozen_body_unfrozen",
       "frozen_components": [
         "work-index permanent revision oldid 2595407",
         "explicit Detskaya literatura 1965 bibliographic source citation on the work index",
-        "permanent category revision oldid 4715419 listing the main page plus exact /1 through /35 and /Эпилог route topology"
+        "permanent category revision oldid 4715419 listing the main page plus exact /1 through /35 and /Эпилог route topology",
+        "exact page ID, revision ID, UTC timestamp and MediaWiki SHA-1 for all 36 retained literary pages in route order"
       ],
       "unfrozen_components": [
-        "exact revision IDs, timestamps and MediaWiki SHA-1 values for all 35 chapter pages and the epilogue",
-        "a deterministic literary-body extraction contract",
-        "a deterministic composition order bound to pinned literary-page identities",
-        "raw and scriptorium-text-v1 normalized composite digests",
+        "a deterministic literary-body extraction contract for the pinned literary revisions",
+        "a deterministic composition contract for extracted literary bodies",
+        "raw and scriptorium-text-v1 normalized composite character counts and digests",
         "the relationship between FantLab's uploaded analyzer input and the 1965-source Wikisource transcription"
       ],
-      "reason": "The permanent work-index and category revisions now freeze the bibliographic family and exact 36-title route topology, but they do not identify the literary subpages' own immutable revisions or any composite literary body."
+      "reason": "The retained 36-title route and every literary page revision are now source-free and replay-frozen, but revision identity alone does not define the literary body extracted from wikitext or its composite digest."
     },
     "edition_identity_boundary": {
-      "status": "source_cited_1965_route_inventory_frozen_not_full_text_frozen",
-      "note": "The candidate is specifically the Wikisource transcription family whose index cites the 1965 Detskaya literatura volume. Bibliographic agreement and route topology do not establish byte identity with the printed volume, another electronic transcription, or FantLab's undisclosed analyzer input."
+      "status": "source_cited_1965_route_and_page_revisions_frozen_body_unfrozen",
+      "note": "The candidate is specifically the Wikisource transcription family whose index cites the 1965 Detskaya literatura volume. Bibliographic agreement, route topology and immutable Wikisource page revisions do not establish byte identity with the printed volume or FantLab's undisclosed analyzer input."
     }
   },
   "excluded_distinct_public_route": {
@@ -91,24 +93,25 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "route_inventory_frozen_subpage_revisions_unfrozen",
+    "source_identity_status": "route_and_literary_page_revisions_frozen_body_unfrozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "source_route_inventory_frozen_not_literary_body_frozen",
+    "status": "source_page_revisions_frozen_not_literary_body_frozen",
     "reasons": [
       "FantLab reports 360,987 characters and 52,985 words for its 18 September 2022 analysis, above the 300,000-character calibration threshold.",
-      "Russian Wikisource supplies a permanent work-index locator, an explicit 1965 Detskaya literatura source citation, and an immutable category revision oldid 4715419 that lists the main page plus all expected /1 through /35 and /Эпилог literary routes.",
+      "Russian Wikisource supplies a permanent work-index locator, an explicit 1965 Detskaya literatura source citation, and immutable category revision oldid 4715419 listing the exact 36 literary routes.",
+      "All 36 retained literary pages now have exact source-free page IDs, revision IDs, UTC timestamps and MediaWiki SHA-1 identities in a replayable committed manifest.",
       "FantLab bibliography independently corroborates the same 1965 Detskaya literatura volume and lists the novel on pp. 77–276.",
-      "The separate Wikisource /Версия 2 route declares az.lib.ru and a 1980 Pravda edition context, so it is excluded from the retained 1965 route rather than treated as interchangeable source text.",
-      "The 36 literary subpages are still not revision-pinned and no deterministic extraction/composition contract or composite digest exists yet.",
+      "The separate Wikisource /Версия 2 route declares az.lib.ru and a 1980 Pravda edition context, so it remains excluded from the retained 1965 route.",
+      "No deterministic literary-body extraction/composition contract or composite digest exists yet for the pinned 36 revisions.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Freeze the exact /1 through /35 chapter pages plus /Эпилог with revision IDs, timestamps and MediaWiki SHA-1 values without committing source prose.",
-      "Define deterministic fail-closed extraction/composition and record raw plus scriptorium-text-v1 normalized composite digests before enabling diagnostics.",
-      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliography, title, route topology or count proximity alone cannot advance M2."
+      "Define a deterministic fail-closed literary-body extraction contract over the exact 36 pinned revisions, compose in frozen route order and record raw plus scriptorium-text-v1 normalized composite counts/digests without committing source prose.",
+      "Only after the literary body is frozen may candidate diagnostics compare Scriptorium metrics against FantLab values; source match must still remain unknown unless independently proven.",
+      "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliography, route identity or count proximity alone cannot advance M2."
     ]
   }
 }

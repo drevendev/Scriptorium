@@ -1,0 +1,88 @@
+name: Darwin Rachinsky Page revision identities
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-page-revisions.yml"
+      - "scriptorium/darwin_page_freeze.py"
+      - "scriptorium/darwin_page_shards.py"
+      - "tests/test_darwin_page_freeze.py"
+      - "tests/test_darwin_page_shards.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.*.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  page-identities:
+    name: Capture or replay exact Darwin Page identities
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Capture or replay source-free Page identities
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          index="corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json"
+          if [[ -f "$index" ]]; then
+            python -m scriptorium.darwin_page_shards \
+              --index "$index" \
+              --receipt build/repro/darwin-origin-species-rachinsky-1864-ru.page-revisions.replay.json
+            echo "mode=replay" >> "$GITHUB_ENV"
+          else
+            python -m scriptorium.darwin_page_freeze capture \
+              --manifest build/repro/darwin-origin-species-rachinsky-1864-ru.page-revisions.json
+            echo "mode=capture" >> "$GITHUB_ENV"
+          fi
+
+      - name: Verify source-free artifact boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.darwin_page_freeze import validate_manifest
+
+          replay = Path("build/repro/darwin-origin-species-rachinsky-1864-ru.page-revisions.replay.json")
+          if replay.exists():
+              receipt = json.loads(replay.read_text(encoding="utf-8"))
+              assert receipt["page_revision_count"] == 418
+              assert receipt["identity_replay_match"] is True
+              assert receipt["source_text_included"] is False
+              assert receipt["literary_body_frozen"] is False
+              assert receipt["admitted_for_calibration"] is False
+              assert receipt["fantlab_source_edition_match"] == "unknown"
+              assert receipt["m2_parity_admissible"] is False
+              print("SCRIPTORIUM_DARWIN_PAGE_REPLAY_COUNT=418")
+          else:
+              capture = Path("build/repro/darwin-origin-species-rachinsky-1864-ru.page-revisions.json")
+              payload = json.loads(capture.read_text(encoding="utf-8"))
+              rows = validate_manifest(payload)
+              assert len(rows) == 418
+              assert payload["source_text_included"] is False
+              assert payload["admitted_for_calibration"] is False
+              assert payload["m2_parity_admissible"] is False
+              print("SCRIPTORIUM_DARWIN_PAGE_CAPTURE_COUNT=418")
+          PY
+
+      - name: Upload source-free capture or replay evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-page-revision-${{ env.mode }}
+          path: build/repro/*.json
+          if-no-files-found: error
+          retention-days: 7

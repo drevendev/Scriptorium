@@ -1,0 +1,89 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "capture_artifact": {
+    "artifact_id": 10592834383,
+    "artifact_zip_sha256": "1fe9319448ea932a57c48378381e111cbcd6c7e8ca902d162aea1b93f675a014",
+    "raw_capture_json_sha256": "8979500217049380826c2d8c304dd94dc214087e3c356c16f5779e559115b375",
+    "run_id": 35471807464
+  },
+  "captured_at_utc": "2026-09-19T21:55:06Z",
+  "family_id": "wikisource-rachinsky-glazunov-1864-vt-yo",
+  "fantlab_source_edition_match": "unknown",
+  "literary_body_frozen": false,
+  "m2_parity_admissible": false,
+  "manifest_version": "scriptorium-darwin-page-revision-sharded-manifest-v1",
+  "page_identity_count": 418,
+  "page_identity_fields": [
+    "page_sequence",
+    "revision_id",
+    "timestamp",
+    "mediawiki_sha1"
+  ],
+  "shards": [
+    {
+      "first_page_sequence": 8,
+      "last_page_sequence": 112,
+      "path": "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.01.json",
+      "row_count": 105,
+      "sha256": "9f1ccbc14c7886f058ee3fd281b559be0a14d5b8b1cef6a778569b021d63e857"
+    },
+    {
+      "first_page_sequence": 113,
+      "last_page_sequence": 218,
+      "path": "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.02.json",
+      "row_count": 105,
+      "sha256": "163960d010110e79e348dff97d7306e80592200409b7ed215a9ffa43f6ee84d3"
+    },
+    {
+      "first_page_sequence": 219,
+      "last_page_sequence": 323,
+      "path": "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.03.json",
+      "row_count": 105,
+      "sha256": "a42416467a591babbad476bf08ba3082eb68a914a867e397d237eb4ec70e12f8"
+    },
+    {
+      "first_page_sequence": 324,
+      "last_page_sequence": 427,
+      "path": "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.04.json",
+      "row_count": 103,
+      "sha256": "a8a4de394c575dc50c502ae876f9c46603d6bb3c1edf04ea6ca35d51a6393d48"
+    }
+  ],
+  "source_text_included": false,
+  "title_prefix": "Страница:Дарвин - О происхождении видов, 1864.djvu/",
+  "topology_contract": {
+    "explicit_no_text_non_dependencies": [
+      114,
+      411
+    ],
+    "included_page_count": 418,
+    "parent_ranges": [
+      [
+        8,
+        21
+      ],
+      [
+        423,
+        427
+      ]
+    ],
+    "route_ranges": [
+      {"excluded": [], "from": 22, "to": 56},
+      {"excluded": [], "from": 57, "to": 69},
+      {"excluded": [], "from": 70, "to": 85},
+      {"excluded": [114], "from": 86, "to": 131},
+      {"excluded": [], "from": 132, "to": 161},
+      {"excluded": [], "from": 162, "to": 190},
+      {"excluded": [], "from": 191, "to": 219},
+      {"excluded": [], "from": 220, "to": 245},
+      {"excluded": [], "from": 246, "to": 269},
+      {"excluded": [], "from": 270, "to": 297},
+      {"excluded": [], "from": 298, "to": 326},
+      {"excluded": [], "from": 327, "to": 348},
+      {"excluded": [], "from": 349, "to": 384},
+      {"excluded": [], "from": 385, "to": 410},
+      {"excluded": [], "from": 412, "to": 422}
+    ]
+  }
+}

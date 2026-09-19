@@ -6,22 +6,20 @@ This candidate records **Sergey A. Rachinsky's 1864 Russian translation** of Cha
 
 Russian Wikisource identifies the edition as **Ч. Дарвин. О происхождении видов**, translated by **Сергей Александрович Рачинский**, Saint Petersburg: **Издание книгопродавца А. И. Глазунова**, **1864**, **399 pages**.
 
-Two earlier source-free anchors remain retained:
+Retained source-free anchors are:
 
 - rendered edition-family page `О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)`, permanent revision **`oldid=5628021`**;
-- ProofreadPage index `Индекс:Дарвин - О происхождении видов, 1864.djvu`, permanent revision **`oldid=4494408`**.
+- ProofreadPage index `Индекс:Дарвин - О происхождении видов, 1864.djvu`, permanent revision **`oldid=4494408`**;
+- shared route template, permanent revision **`oldid=3775868`**;
+- parent topology witness, permanent revision **`oldid=5712882`** with `include="8-21,423-427"`.
 
-The ProofreadPage index reports **`Закончено — Все страницы вычитаны и проверены`**. This is useful provenance/quality evidence for the transcription family, but it does not by itself freeze the underlying Page-namespace revisions, scan binary, OCR, or literary body.
+The ProofreadPage index reports **`Закончено — Все страницы вычитаны и проверены`**. This is provenance/quality evidence for the transcription family; it is not by itself a literary-body or scan-binary freeze.
 
-### Rendered route graph
+## Rendered route and ProofreadPage topology
 
-The source-free graph pins the exact rendered-route revisions underneath the edition parent: numbered routes `/1` through `/14` plus `/Указатель`. Their permanent revision IDs are recorded in [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json).
+The source-free route graph pins `/1` through `/14` plus `/Указатель`. Numbered routes cover displayed bibliographic pages **1–387** and the alphabetical index covers **389–399**. These displayed print-page spans are bibliographic route metadata rather than scan-page identity.
 
-The route metadata reports displayed bibliographic print-page spans **1–387** for the introduction/chapter sequence and **389–399** for the alphabetical index. These displayed print-page spans are bibliographic route metadata, not a complete Page-namespace or scan-page identity.
-
-### ProofreadPage transclusion topology
-
-The exact source-free transclusion topology is now frozen one layer below the rendered routes without copying Page prose. The shared Wikisource route template is pinned at permanent revision **`oldid=3775868`**. It defines the following Page-sequence dependencies:
+The exact shared-template topology references:
 
 - `/1`: 22–56
 - `/2`: 57–69
@@ -39,66 +37,58 @@ The exact source-free transclusion topology is now frozen one layer below the re
 - `/14`: 385–410
 - `/Указатель`: 412–422
 
-Those rendered routes reference **399 Page-sequence dependencies** after the explicit route-4 exclusion. A later exact parent topology witness, permanent revision **`oldid=5712882`**, separately transcludes Page sequences **8–21** and **423–427**, adding **19** non-overlapping dependencies. Therefore the exact parent-plus-route topology references **418 distinct Page-sequence numbers**.
+Those routes contribute **399 distinct Page-sequence dependencies**. The parent witness adds sequences **8–21** and **423–427**, another **19** non-overlapping dependencies, for **418 included Page-sequence dependencies** total.
 
-That count freezes topology only. Scriptorium has **not** yet pinned the exact revision ID/timestamp/MediaWiki SHA-1 for each of those 418 referenced Page pages, so it does not claim that their contents are revision-frozen.
+Two omitted positions have exact source-free classification evidence: Page **114**, `oldid=3364724`, is explicitly excluded by route `/4`; Page **411**, `oldid=3364733`, is the sole omission between `/14` and `/Указатель`. Both Wikisource Page surfaces are source-declared `Без текста`. Equal-cardinality adjacent ranges uniquely align displayed print page **388** with Page sequence **411**, so page 388 is recorded as a source-declared no-text non-literary gap without OCR or visual scan interpretation.
 
-Two omitted sequence positions now have exact source-free classification evidence:
+## Exact 418-Page revision identity freeze
 
-- Page sequence **114**, permanent revision **`oldid=3364724`**, is explicitly excluded by route `/4`; its Wikisource Page surface says `Эта страница не требует вычитки` and places it in hidden category **`Без текста`**.
-- Page sequence **411**, permanent revision **`oldid=3364733`**, is the single omitted sequence position between `/14` ending at 410 and `/Указатель` starting at 412; its Page surface carries the same no-proofreading / **`Без текста`** classification.
+**SCRIP-CORPUS-034** now freezes the revision identity of every one of those 418 included Page dependencies without committing Page prose. Hosted capture requested only MediaWiki `ids|timestamp|sha1`; it returned exactly 418 distinct included sequences, excluded 114 and 411, and contained no wikitext/OCR/source-text field.
 
-The page-388 gap is therefore no longer left unclassified. Route `/14` has equal-cardinality displayed/source spans 362–387 ↔ 385–410, while `/Указатель` has 389–399 ↔ 412–422. The sole one-page gap on both surfaces uniquely aligns displayed print page **388** with Page sequence **411**. Because exact Page revision `oldid=3364733` is source-declared `Без текста`, Scriptorium records page 388 as a **source-declared no-text non-literary gap**. This classification does not use OCR or visual interpretation of the scan.
+The capture is committed as four digest-pinned source-free shards plus one index:
 
-No literary prose, Page-namespace payload, DjVu/PDF bytes, OCR, or screenshots are committed by this unit.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json) — topology contract, capture provenance, shard digests and gate boundary;
+- `.page-revisions.01.json` through `.page-revisions.04.json` — compact tuples of **Page sequence, exact revision ID, revision timestamp and MediaWiki SHA-1** only.
 
-### Provider-reported scan-file metadata
+The first included dependency is Page sequence **8**, exact revision **`oldid=4493767`**, timestamp `2022-05-19T10:40:06Z`; the last is sequence **427**, exact revision **`oldid=4494407`**, timestamp `2022-05-22T07:58:34Z`. The inventory also records newer revisions where present—for example sequence 426 is pinned at its captured exact revision rather than assuming all pages share a 2018/2022 edit epoch.
 
-The DjVu file behind the retained ProofreadPage family has a source-free provider-metadata identity recorded from the Wikimedia Commons file description as transcluded on Russian Wikisource. The retained source surface reports:
+The initial hosted capture artifact was produced by workflow run `35471807464`, artifact `10592834383`. Its ZIP SHA-256 is `1fe9319448ea932a57c48378381e111cbcd6c7e8ca902d162aea1b93f675a014`; the extracted verbose capture JSON SHA-256 is `8979500217049380826c2d8c304dd94dc214087e3c356c16f5779e559115b375`. The committed compact shards preserve the same 418 identity tuples and are independently SHA-256 pinned by the index. Hosted replay re-queries the exact revision IDs and fails closed if title, timestamp or MediaWiki SHA-1 differs.
 
-- **27,368,263 bytes**;
-- MIME type **`image/vnd.djvu`**;
-- dimensions **3744 × 5616**;
-- **432 pages**;
-- SHA-1 **`75ef508588194ae74874272ce290f3ec1043ea9b`**;
-- current file-history display **`11:45, 8 March 2016`**, uploader **`Nonexyst`**;
-- source locator `https://archive.org/details/oproiskhozhdenii00darw`.
+No literary prose, Page-namespace payload, DjVu/PDF bytes, OCR or screenshots are committed. Freezing revision identity does **not** mean the literary body has been selected or extracted.
 
-The same source surface describes the file as a mechanical scan/public-domain source and shows Public Domain Mark 1.0. Scriptorium records those statements as source provenance.
+## Provider-reported scan-file metadata
 
-This is deliberately **not a local binary freeze**. Scriptorium has not retrieved one exact DjVu byte stream in this unit, has not independently recomputed the provider SHA-1, and has not computed a SHA-256 over the binary. Provider-reported size/checksum metadata therefore strengthens source identity without substituting for independent byte-level verification.
+The retained source surface reports **27,368,263 bytes**, MIME `image/vnd.djvu`, dimensions **3744 × 5616**, **432 pages**, SHA-1 `75ef508588194ae74874272ce290f3ec1043ea9b`, current file-history display `11:45, 8 March 2016` by `Nonexyst`, and Archive.org locator `https://archive.org/details/oproiskhozhdenii00darw`.
+
+That is deliberately only **provider-reported remote metadata**. Scriptorium has not independently frozen the DjVu byte stream or computed a local SHA-256 over it.
 
 ## Rights evidence
 
-The retained Wikisource work surface explicitly states that the work is in the public domain in Russia and jurisdictions with a life-plus-70-or-shorter term; its translation-specific notice says the exclusive rights have expired for all authors of the original and translation. Scriptorium records that source declaration as provenance evidence, not as independent legal advice.
-
-The source page also exposes site text under CC BY-SA subject to Wikisource terms. Source-site licensing of page content is kept separate from the public-domain status asserted for the literary work/translation.
+The retained Wikisource work surface explicitly states that the work is in the public domain in Russia and jurisdictions with a life-plus-70-or-shorter term; its translation-specific notice says exclusive rights have expired for all authors of the original and translation. This page records that source declaration as provenance evidence, not independent legal advice. Wikisource site text licensing remains separate from the public-domain status asserted for the work/translation.
 
 ## Corpus boundary
 
-This candidate is deliberately **not yet admitted** to the >=300,000-character calibration/profile corpus. The 399-page bibliographic length, rendered route graph, and now-frozen **418-dependency ProofreadPage topology** make the source identity materially stronger, but none is a substitute for the required literary-body character count including spaces.
+This candidate is still **not admitted** to the >=300,000-character calibration/profile corpus. The source family, rendered route graph, exact 418-dependency topology and now the exact revision identities of all 418 included Page pages are frozen source-free, but the literary body has not yet been deterministically composed or counted.
 
 Still required before corpus admission:
 
-- exact source-free revision identities for the 418 included Page-namespace dependencies actually referenced by the frozen topology;
-- an evidence-based literary-body composition decision for the parent/front matter, numbered routes, alphabetical index, and any other apparatus, while preserving the now-resolved no-text exclusions at Page sequences 114 and 411;
-- a deterministic fail-closed extraction/composition contract;
-- literary-body character count including spaces and raw/normalized digests;
-- verification that the frozen body, not merely the print edition's nominal page count or transclusion topology, clears 300,000 characters.
+- define an evidence-based literary-body composition rule for parent/front matter, numbered routes, alphabetical index and other apparatus while preserving no-text exclusions 114 and 411;
+- implement deterministic fail-closed extraction/composition from the now-pinned Page revisions;
+- compute literary-body character count including spaces plus raw/normalized digests;
+- verify that the frozen body itself, not nominal page count or topology, clears **300,000 characters**.
 
-Accordingly `source_identity_status=rendered_route_graph_proofreadpage_transclusion_topology_and_remote_scan_metadata_frozen_page_revision_set_unfrozen` and `admitted_for_calibration=false`. Transclusion topology and provider-reported scan metadata do not satisfy the literary-body threshold or complete Page-revision identity requirements.
+Accordingly `source_identity_status=rendered_route_graph_proofreadpage_topology_and_418_page_revision_identities_frozen_literary_body_unfrozen` and `admitted_for_calibration=false`.
 
 ## FantLab boundary
 
-FantLab work **`work969964`** identifies Darwin's 1859 English monograph *On the Origin of Species*. The currently exposed Russian translation in that record is **K. Timiryazev**, not Rachinsky's 1864 translation. The work-level relation therefore does not establish that FantLab has a linguistic result for this Rachinsky text, nor that any analyzer input matches the Wikisource family.
-
-No `/lp` result attributable to this exact translation/source edition has been established. Keep `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`; M2 remains **0/5 source-matched works**.
+FantLab work **`work969964`** identifies Darwin's 1859 English monograph. The currently exposed Russian translation there is **K. Timiryazev**, not Rachinsky's 1864 translation. No `/lp` result attributable to this exact Rachinsky source edition has been established. Keep `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`; M2 remains **0/5 source-matched works**.
 
 ## Canonical evidence
 
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json) — translation identity, parent/index locators, exact transclusion-topology boundary, provider-reported scan metadata, bibliography, rights evidence, corpus boundary, and FantLab boundary.
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json) — exact rendered route revisions, exact shared-template/parent Page-sequence topology, explicit no-text Page 114 / Page 411 evidence, resolved displayed page 388, provider scan metadata, and the still-unfrozen complete Page-revision/body boundary.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json) — current translation/source identity and gate boundary.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json) — route/topology evidence captured before the Page-identity freeze; its historical `page_revision_set_unfrozen` boundary is superseded for Page identity by the index below, not for literary-body selection.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json) — authoritative source-free index for the 418 exact Page revision identities and four committed shards.
 
 ## Next evidence
 
-A later bounded unit should pin the exact revision ID/timestamp/MediaWiki SHA-1 for each of the **418 Page-sequence dependencies** referenced by the now-frozen topology. Only after those included Page revisions are frozen should Scriptorium define a candidate-specific fail-closed literary-body extraction/composition contract and compute source-free counts/digests. If a scan-byte identity becomes necessary, retrieve one exact DjVu byte stream and independently record its byte count plus SHA-256 rather than promoting provider metadata. Only after the exact literary body proves >=300,000 characters may this translation be admitted to the general calibration/profile corpus. FantLab parity remains a separate, stricter source-matching problem.
+A later bounded unit should use the pinned 418 Page identities to define a candidate-specific fail-closed literary-body extraction/composition contract, then compute source-free counts/digests and independently prove the >=300,000-character threshold. If byte-level scan identity becomes necessary, retrieve one exact DjVu byte stream and record independent byte count plus SHA-256 rather than promoting provider metadata. FantLab parity remains a separate, stricter source-matching problem.

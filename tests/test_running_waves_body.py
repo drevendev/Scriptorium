@@ -52,7 +52,7 @@ class RunningWavesBodyTests(unittest.TestCase):
     def test_candidate_template_renderer_matches_frozen_observed_shapes(self) -> None:
         source = (
             '<div class="text">{{roman|24}}{{^}} '
-            '{{poem1||Строка первая.\nСтрока вторая.|}} '
+            '{{poem1||<poem>Строка первая.\nСтрока вторая.</poem>|}} '
             '{{razr|Разрядка}} {{razr2|Ещё}} '
             'ударе{{акут}}ние грави{{Гравис}}с '
             '{{опечатка2|ошипка|ошибка}} '
@@ -63,6 +63,7 @@ class RunningWavesBodyTests(unittest.TestCase):
         self.assertIn("XXIV", rendered)
         self.assertNotIn("{{^}}", rendered)
         self.assertIn("Строка первая.\nСтрока вторая.", rendered)
+        self.assertNotIn("<poem>", rendered.lower())
         self.assertIn("Разрядка", rendered)
         self.assertIn("ударе\u0301ние", rendered)
         self.assertIn("грави\u0300с", rendered)

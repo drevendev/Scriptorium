@@ -17,7 +17,7 @@
       "rendered orthography transformations unless a deterministic transform/identity contract is established"
     ]
   },
-  "source_identity_status": "rendered_route_graph_and_remote_scan_metadata_frozen_underlying_pages_unfrozen",
+  "source_identity_status": "rendered_route_graph_proofreadpage_transclusion_topology_and_remote_scan_metadata_frozen_page_revision_set_unfrozen",
   "source": {
     "provider": "Russian Wikisource",
     "observed_at": "2026-09-19",
@@ -25,7 +25,14 @@
       "page_title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)",
       "permanent_revision_id": 5628021,
       "permanent_url": "https://ru.wikisource.org/w/index.php?title=О_происхождении_видов_(Дарвин;_Рачинский)/1864_(ВТ:Ё)&oldid=5628021",
-      "identity_scope": "rendered/transclusion parent locator; child route graph is frozen separately but underlying Page inputs are not"
+      "identity_scope": "retained rendered/transclusion parent locator; child rendered routes are frozen separately and Page-sequence topology is now frozen through exact topology witnesses, but the complete Page revision set is not"
+    },
+    "parent_topology_witness": {
+      "permanent_revision_id": 5712882,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5712882",
+      "include_expression": "8-21,423-427",
+      "dependency_count": 19,
+      "identity_scope": "later exact parent revision used only as the current parent-level ProofreadPage include-topology witness; it does not replace the retained bibliographic anchor"
     },
     "proofread_index": {
       "page_title": "Индекс:Дарвин - О происхождении видов, 1864.djvu",
@@ -33,7 +40,7 @@
       "permanent_url": "https://ru.wikisource.org/w/index.php?title=Индекс:Дарвин_-_О_происхождении_видов,_1864.djvu&oldid=4494408",
       "progress_displayed": "Закончено — Все страницы вычитаны и проверены",
       "source_field": "djvu",
-      "identity_scope": "ProofreadPage index metadata/route anchor; underlying Page revisions remain unfrozen. Provider-reported scan-file metadata is frozen separately, but Scriptorium has not independently retrieved or hashed the binary."
+      "identity_scope": "ProofreadPage index metadata/route anchor; exact Page-sequence topology is frozen separately, but the complete underlying Page revision set remains unfrozen. Provider-reported scan-file metadata is frozen separately, but Scriptorium has not independently retrieved or hashed the binary."
     },
     "rendered_route_graph": {
       "manifest": "darwin-origin-species-rachinsky-1864-ru.source-graph.json",
@@ -42,9 +49,33 @@
       "alphabetical_index_route_count": 1,
       "chapter_and_introduction_displayed_print_page_span": "1-387",
       "alphabetical_index_displayed_print_page_span": "389-399",
-      "unclassified_displayed_print_page_gap": "388",
-      "displayed_print_page_spans_are_not_page_namespace_identity": true,
+      "displayed_print_page_388_status": "resolved_to_page_sequence_411_source_declared_no_text",
+      "displayed_print_page_spans_are_not_full_page_namespace_identity": true,
       "underlying_page_revision_identities_frozen": false
+    },
+    "proofreadpage_transclusion_topology": {
+      "shared_route_template_revision_id": 3775868,
+      "shared_route_template_permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3775868",
+      "route_dependency_count": 399,
+      "parent_dependency_count": 19,
+      "parent_plus_route_dependency_count": 418,
+      "explicit_no_text_non_dependencies": [
+        {
+          "page_sequence": 114,
+          "revision_id": 3364724,
+          "relation": "excluded by route /4 via exclude=114",
+          "source_classification": "Без текста"
+        },
+        {
+          "page_sequence": 411,
+          "revision_id": 3364733,
+          "relation": "single omitted sequence between route /14 and /Указатель; uniquely aligned with displayed print page 388",
+          "source_classification": "Без текста"
+        }
+      ],
+      "topology_frozen": true,
+      "complete_page_revision_set_frozen": false,
+      "identity_scope": "exact Page-sequence ranges/exclusions only; dependency counts do not identify or freeze the contents/revisions of the 418 referenced Page pages"
     },
     "source_text_committed": false,
     "scan_bytes_committed": false,
@@ -87,24 +118,28 @@
   },
   "freeze_boundary": {
     "frozen": [
-      "rendered edition-family parent revision locator oldid=5628021",
+      "retained rendered edition-family parent revision locator oldid=5628021",
+      "current parent topology witness oldid=5712882 with exact include expression 8-21,423-427",
       "ProofreadPage index revision locator oldid=4494408",
       "1864 Rachinsky/Glazunov bibliographic family",
       "source-declared completed proofread status as an observed metadata fact",
       "15 rendered child-route revision locators: /1 through /14 plus /Указатель",
-      "displayed bibliographic print-page spans 1-387 and 389-399 attached to those routes",
-      "displayed print page 388 as an explicit unclassified gap",
+      "shared route-template revision oldid=3775868 and exact pages ranges/exclude=114 topology",
+      "source-free topology counts: 399 rendered-route Page dependencies and 418 parent+route dependencies",
+      "Page-sequence 114 oldid=3364724 source-declared no-text and explicitly excluded from route /4",
+      "Page-sequence 411 oldid=3364733 source-declared no-text and uniquely aligned with displayed print page 388",
+      "displayed bibliographic print-page spans 1-387 and 389-399 attached to the rendered routes",
       "provider-reported scan metadata: 27,368,263 bytes, image/vnd.djvu, 3744x5616, 432 pages",
       "provider-reported scan SHA-1 75ef508588194ae74874272ce290f3ec1043ea9b",
       "current provider file-history display 11:45, 8 March 2016 by Nonexyst",
       "Archive.org source locator and source-declared mechanical-scan/public-domain status"
     ],
     "unfrozen": [
-      "underlying Page-namespace revision identities",
-      "mapping from displayed print page numbers to ProofreadPage scan/Page sequence positions",
+      "exact revision IDs/timestamps/MediaWiki SHA-1 identities for the 418 Page-sequence dependencies referenced by the frozen topology",
+      "full mapping from displayed print page numbers to ProofreadPage sequence positions outside the uniquely resolved page-388 gap",
       "independently retrieved DjVu byte stream and Scriptorium-computed SHA-256",
       "OCR or Page-markup extraction behavior",
-      "literary-body composition decision for front matter, alphabetical index, page 388, or other apparatus",
+      "literary-body composition decision for front matter, alphabetical index, or other apparatus beyond the now-resolved no-text exclusions",
       "literary-body character count and raw/normalized digests",
       "FantLab analyzer-input bytes/source edition"
     ]
@@ -116,8 +151,9 @@
     "displayed_print_page_count": 399,
     "page_count_is_not_threshold_proof": true,
     "rendered_route_graph_is_not_threshold_proof": true,
+    "transclusion_topology_is_not_threshold_proof": true,
     "admitted_for_calibration": false,
-    "reason": "The rendered route topology is now frozen, but the underlying Page inputs and deterministic literary body are not; neither a 399-page bibliography nor rendered page spans prove the >=300,000-character rule."
+    "reason": "The exact Page-sequence topology and its two no-text omissions are now source-free frozen, but the 418 referenced Page revisions and deterministic literary body are not; topology and nominal page count cannot prove the >=300,000-character rule."
   },
   "fantlab": {
     "work_id": 969964,
@@ -136,10 +172,9 @@
     "m2_parity_admissible": false
   },
   "next_evidence": [
-    "Resolve the exact underlying ProofreadPage/Page-namespace route for the retained rendered family and pin every revision identity actually used; provider scan metadata does not substitute for Page-level identity.",
-    "Classify displayed print page 388 only from exact source evidence rather than page-number continuity.",
+    "Pin exact revision IDs/timestamps/MediaWiki SHA-1 identities for the 418 Page-sequence dependencies referenced by the frozen transclusion topology.",
+    "Define a candidate-specific deterministic fail-closed literary-body extraction/composition contract only after the included Page revisions are frozen; retain the exact no-text exclusions at Page sequences 114 and 411.",
     "If binary-level scan identity becomes necessary, retrieve one exact DjVu byte stream and independently record its byte count plus SHA-256; do not promote provider-reported metadata to a local binary freeze.",
-    "Define a candidate-specific deterministic fail-closed literary-body extraction/composition contract without committing source prose.",
     "Freeze literary-body character count plus raw and scriptorium-text-v1 normalized digests; admit to general calibration/profile corpus only if the body independently clears 300,000 characters including spaces.",
     "Keep FantLab matching separate: locate a linguistic result and analyzer-input/source-edition evidence attributable specifically to the Rachinsky translation before assigning diagnostic or M2 weight."
   ]

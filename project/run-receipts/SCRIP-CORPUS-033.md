@@ -27,7 +27,7 @@ The route/display spans 362–387 ↔ 385–410 and 389–399 ↔ 412–422 have
 - Updated `corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json` with exact template/parent topology witnesses, route ranges, dependency counts and exact no-text Page evidence.
 - Updated `corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json` to synchronize the stronger topology and freeze boundary.
 - Updated `corpus/candidates/darwin-origin-species-rachinsky-1864-ru.md` so public repository visitors can inspect the topology and p.388 resolution without seeing source prose.
-- Added this run receipt and semantic changelog fragment; canonical state is advanced in the same Draft PR for later stateless recovery.
+- Added this run receipt and semantic changelog fragment; canonical state was advanced in the authored PR for stateless recovery.
 
 ## Freeze boundary
 
@@ -60,6 +60,14 @@ The stronger transclusion topology is provenance, not the literary-body threshol
 - `m2_parity_admissible=false`
 - M2 remains **0/5 source-matched works**
 
-## Handoff
+## Independent review and completion
 
-Draft PR #154 must be reviewed on its exact final head by a later run. The review should independently re-check the official template revision/ranges, parent include topology, Page-114/Page-411 no-text classifications, inspect changed files for source-prose/binary leakage or boundary promotion, and require exact-head CI before any Ready/merge decision.
+Independent review was performed on exact authored head **`241bc6ce0ce0ae1715bd44c8b06f40bd1f1d3806`** against unchanged base `f61586ec9ab03f9ccc1668c66a416b8895392cf6`.
+
+Fresh source checks independently verified the route-template ranges/exclusion, parent `include="8-21,423-427"`, and Page 114 / Page 411 no-text permanent revisions. The ProofreadPage index source provided an additional direct mapping witness: `22=1`, `114="—"`, `115="схема"`, `116=93`, with no later label reset before 423. Consequently Page sequence 411 carries displayed print label 388, independently supporting the source-declared no-text p.388 classification rather than relying on continuity alone.
+
+All six changed paths were reviewed and contain only provenance/control metadata; no literary prose payload, Page-namespace source payload, OCR, DjVu/PDF bytes, or screenshots were introduced. The complete 418 referenced Page revision set, independently retrieved scan bytes/SHA-256, literary-body extraction/composition, body count/digests, >=300k admission, FantLab source match and M2 status remain explicitly closed.
+
+All **13** pull-request-triggered workflows completed successfully on the exact reviewed head. `Scriptorium Pages` run **`35465902112`**, job **`105958057742`**, checked out the exact head and completed the standard-library test suite, canonical Pages build, deterministic rebuild and artifact upload. Artifact **`10590908696`** has digest **`sha256:e038fb9f7bbcdc84e0ee4d7b3699d58987b97e2a38a03245e08790c42f40e45d`**.
+
+No blocking finding remained. PR #154 was marked Ready and squash-merged as **`6ec86ee09a0c4c8a2d80d3cfafeabbe1cc302d08`**; Issue #153 closed as completed. The next stateless wake should resume normal-flow P2 corpus/provenance work from canonical state.

@@ -17,7 +17,7 @@
       "rendered orthography transformations unless a deterministic transform/identity contract is established"
     ]
   },
-  "source_identity_status": "parent_and_index_revisions_pinned_body_unfrozen",
+  "source_identity_status": "rendered_route_graph_frozen_underlying_pages_unfrozen",
   "source": {
     "provider": "Russian Wikisource",
     "observed_at": "2026-09-19",
@@ -25,7 +25,7 @@
       "page_title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)",
       "permanent_revision_id": 5628021,
       "permanent_url": "https://ru.wikisource.org/w/index.php?title=О_происхождении_видов_(Дарвин;_Рачинский)/1864_(ВТ:Ё)&oldid=5628021",
-      "identity_scope": "rendered/transclusion parent locator only; not a frozen literary body"
+      "identity_scope": "rendered/transclusion parent locator; child route graph is frozen separately but underlying Page inputs are not"
     },
     "proofread_index": {
       "page_title": "Индекс:Дарвин - О происхождении видов, 1864.djvu",
@@ -34,6 +34,17 @@
       "progress_displayed": "Закончено — Все страницы вычитаны и проверены",
       "source_field": "djvu",
       "identity_scope": "ProofreadPage index metadata/route anchor; underlying Page revisions and scan bytes are not frozen"
+    },
+    "rendered_route_graph": {
+      "manifest": "darwin-origin-species-rachinsky-1864-ru.source-graph.json",
+      "rendered_route_count": 15,
+      "numbered_route_count": 14,
+      "alphabetical_index_route_count": 1,
+      "chapter_and_introduction_displayed_print_page_span": "1-387",
+      "alphabetical_index_displayed_print_page_span": "389-399",
+      "unclassified_displayed_print_page_gap": "388",
+      "displayed_print_page_spans_are_not_page_namespace_identity": true,
+      "underlying_page_revision_identities_frozen": false
     },
     "source_text_committed": false,
     "scan_bytes_committed": false
@@ -59,13 +70,17 @@
       "rendered edition-family parent revision locator oldid=5628021",
       "ProofreadPage index revision locator oldid=4494408",
       "1864 Rachinsky/Glazunov bibliographic family",
-      "source-declared completed proofread status as an observed metadata fact"
+      "source-declared completed proofread status as an observed metadata fact",
+      "15 rendered child-route revision locators: /1 through /14 plus /Указатель",
+      "displayed bibliographic print-page spans 1-387 and 389-399 attached to those routes",
+      "displayed print page 388 as an explicit unclassified gap"
     ],
     "unfrozen": [
       "underlying Page-namespace revision identities",
+      "mapping from displayed print page numbers to ProofreadPage scan/Page sequence positions",
       "DjVu/PDF binary bytes and digest",
       "OCR or Page-markup extraction behavior",
-      "literary-body composition order beyond the parent/index route indication",
+      "literary-body composition decision for front matter, alphabetical index, page 388, or other apparatus",
       "literary-body character count and raw/normalized digests",
       "FantLab analyzer-input bytes/source edition"
     ]
@@ -76,8 +91,9 @@
     "literary_body_character_count": null,
     "displayed_print_page_count": 399,
     "page_count_is_not_threshold_proof": true,
+    "rendered_route_graph_is_not_threshold_proof": true,
     "admitted_for_calibration": false,
-    "reason": "A deterministic frozen literary body does not yet exist, so the >=300,000-character rule cannot be asserted from bibliographic page count alone."
+    "reason": "The rendered route topology is now frozen, but the underlying Page inputs and deterministic literary body are not; neither a 399-page bibliography nor rendered page spans prove the >=300,000-character rule."
   },
   "fantlab": {
     "work_id": 969964,
@@ -96,7 +112,8 @@
     "m2_parity_admissible": false
   },
   "next_evidence": [
-    "Inventory and pin the exact Page-namespace revision identities used by the retained 1864 ProofreadPage route.",
+    "Resolve the exact underlying ProofreadPage/Page-namespace route for the retained rendered family and pin every revision identity actually used.",
+    "Classify displayed print page 388 only from exact source evidence rather than page-number continuity.",
     "Define a candidate-specific deterministic fail-closed literary-body extraction/composition contract without committing source prose.",
     "Freeze literary-body character count plus raw and scriptorium-text-v1 normalized digests; admit to general calibration/profile corpus only if the body independently clears 300,000 characters including spaces.",
     "Keep FantLab matching separate: locate a linguistic result and analyzer-input/source-edition evidence attributable specifically to the Rachinsky translation before assigning diagnostic or M2 weight."

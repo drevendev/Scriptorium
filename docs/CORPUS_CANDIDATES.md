@@ -129,11 +129,14 @@ public-domain transcription happens to be numerically closest.
 
 `darwin-origin-species-rachinsky-1864-ru` is a source-traced **nonfiction / history-of-science** lead added to reduce the retained corpus's fiction-heavy concentration. Russian Wikisource identifies the translation as Sergey A. Rachinsky's 1864 Saint Petersburg edition from bookseller A. I. Glazunov and exposes a completed 399-page ProofreadPage index.
 
-Scriptorium pins only source-free parent/index locators at this stage: rendered edition-family revision `oldid=5628021` and ProofreadPage index revision `oldid=4494408`. The underlying Page revisions, scan binary, extraction/composition contract, literary-body count and digests remain unfrozen. The **399-page bibliographic length is not accepted as proof of the >=300,000-character rule**, so this candidate is not yet admitted to calibration/profile work.
+Scriptorium now pins three source-free layers of route evidence: rendered edition-family revision `oldid=5628021`, ProofreadPage index revision `oldid=4494408`, and a machine-readable child graph with exact permanent revisions for numbered rendered routes `/1`–`/14` plus `/Указатель`. The numbered route metadata covers displayed bibliographic pp. **1–387**; the alphabetical index covers **389–399**; displayed p. **388** is explicitly unclassified rather than silently composed.
+
+The rendered route graph still does **not** freeze the underlying Page-namespace revisions, mapping from displayed print pages to scan/Page sequence positions, scan binary, extraction/composition contract, literary-body count or digests. The **399-page bibliographic length and rendered page spans are not accepted as proof of the >=300,000-character rule**, so this candidate is not yet admitted to calibration/profile work.
 
 FantLab work `969964` is retained only as a work-level cross-reference: its currently exposed Russian translation is K. Timiryazev, not Rachinsky. Therefore no FantLab source/analyzer-input identity or linguistic-result match is claimed, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and M2 remains 0/5.
 
 Canonical evidence:
 
 - `../corpus/candidates/darwin-origin-species-rachinsky-1864-ru.md` — public source-free candidate note and strict admission boundary.
-- `../corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json` — exact parent/index locators, bibliography, rights evidence and next freeze requirements.
+- `../corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json` — structured translation identity, parent/index locators, rights evidence, route-graph pointer and next freeze requirements.
+- `../corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json` — exact 15-route revision graph, displayed print-page spans, explicit p. 388 gap and underlying-Page freeze boundary.

@@ -1,0 +1,12 @@
+# SCRIP-CORPUS-033 — Darwin / Rachinsky ProofreadPage transclusion topology
+
+- Continued normal-flow P2 corpus/provenance work by strengthening the retained Darwin/Rachinsky 1864 nonfiction/history-of-science candidate rather than opening another shallow lead.
+- Pinned the exact shared Wikisource route template `Шаблон:О происхождении видов (Дарвин; Рачинский)/1864` at **`oldid=3775868`** and recorded its exact `pages` switch for `/1` through `/14` plus `/Указатель`.
+- Recorded the exact current parent-level topology witness **`oldid=5712882`** with `include="8-21,423-427"`, while preserving the earlier retained parent `oldid=5628021` as the bibliographic/rendered-family anchor rather than silently replacing source identity.
+- The exact route expressions reference **399** Page-sequence dependencies; parent-level front/back matter adds **19** non-overlapping dependencies, for **418 distinct referenced Page-sequence numbers**. These are topology counts only: the 418 included Page revisions/content identities remain unfrozen.
+- Route `/4` explicitly excludes Page sequence **114**. Exact Page revision **`oldid=3364724`** is source-declared `Эта страница не требует вычитки` / hidden category **`Без текста`**, so the exclusion is now source-classified rather than unexplained.
+- The sole Page-sequence gap between `/14` (385–410) and `/Указатель` (412–422) is **411**. Exact Page revision **`oldid=3364733`** carries the same no-text classification. Because the adjacent route/source spans have equal cardinality with displayed print spans 362–387 and 389–399, the sole displayed print-page gap **388** uniquely aligns to Page sequence 411 and is now recorded as a source-declared no-text non-literary gap; no OCR/image interpretation is used.
+- Synchronized the machine-readable source graph, structured provenance trace and dedicated public candidate page to `rendered_route_graph_proofreadpage_transclusion_topology_and_remote_scan_metadata_frozen_page_revision_set_unfrozen`.
+- No literary source prose, Page payload, OCR, DjVu/PDF bytes or screenshots were committed.
+- Corpus admission remains closed: no deterministic literary body/count/digests exist yet, so `admitted_for_calibration=false` despite the stronger topology. FantLab remains a separate boundary: the observed Russian translation is Timiryazev, not Rachinsky; source match stays unknown and M2 remains **0/5**.
+- Authored work is intentionally left in Draft PR #154 for a later independent exact-head review before any Ready/merge decision.

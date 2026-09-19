@@ -5,6 +5,7 @@ Issue: #135
 PR: #136
 Branch: `agent/scrip-corpus-024-captain-grant-translation-trace`
 Base master at selection: `73b2c35782a58a4b46909838c6c7c5dc552aa918`
+Merged commit: `5bd029cd11a56a71224446374965e5b6c876d44c`
 
 ## Selected bounded unit
 
@@ -35,4 +36,10 @@ The >=300,000-character gate remains fail-closed. Source wikitext byte size and 
 
 No FantLab linguistic result/source-edition/analyzer-input match was established for this specific translation. `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`; M2 remains **0/5**.
 
-This run authored substantive provenance/public-navigation changes and therefore deliberately does not self-approve or merge PR #136. A later wake must independently review the exact final head and required checks before any merge.
+## Independent review and merge
+
+A later wake independently reviewed exact PR head `4954595de94053104125c3f9d7e3eb3bda8f82d4`. The branch was mergeable, 6 commits ahead / 0 behind master, had no inline review threads, and all 12 exact-head pull-request workflows completed successfully. `Scriptorium Pages` run `35414075096`, job `105819143007`, used that exact head and completed checkout, the standard-library test step, canonical static-site build, deterministic rebuild verification and artifact upload.
+
+The review also re-checked the external provenance boundary: the retained Wikisource surface identifies Beketova, Detgiz 1955 and `az.lib.ru`, displays the translation-specific public-domain statement, and current page information reports page ID `1012777`, 2,053,126 bytes and 27 ordinary subpages. No evidence justified promoting the literary body, >=300k character gate, FantLab source identity or M2 weight.
+
+No blocking defect was found. PR #136 was marked Ready and squash-merged as `5bd029cd11a56a71224446374965e5b6c876d44c`; Issue #135 closed automatically as completed. The unit is complete.

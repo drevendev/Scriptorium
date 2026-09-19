@@ -5,8 +5,10 @@ on:
     paths:
       - ".github/workflows/darwin-page-revisions.yml"
       - "scriptorium/darwin_page_freeze.py"
+      - "scriptorium/darwin_page_shards.py"
       - "tests/test_darwin_page_freeze.py"
-      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.json"
+      - "tests/test_darwin_page_shards.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.*.json"
   workflow_dispatch:
 
 permissions:
@@ -36,10 +38,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/repro
-          manifest="corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.json"
-          if [[ -f "$manifest" ]]; then
-            python -m scriptorium.darwin_page_freeze replay \
-              --manifest "$manifest" \
+          index="corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json"
+          if [[ -f "$index" ]]; then
+            python -m scriptorium.darwin_page_shards \
+              --index "$index" \
               --receipt build/repro/darwin-origin-species-rachinsky-1864-ru.page-revisions.replay.json
             echo "mode=replay" >> "$GITHUB_ENV"
           else
@@ -55,8 +57,19 @@ jobs:
           from pathlib import Path
           from scriptorium.darwin_page_freeze import validate_manifest
 
-          capture = Path("build/repro/darwin-origin-species-rachinsky-1864-ru.page-revisions.json")
-          if capture.exists():
+          replay = Path("build/repro/darwin-origin-species-rachinsky-1864-ru.page-revisions.replay.json")
+          if replay.exists():
+              receipt = json.loads(replay.read_text(encoding="utf-8"))
+              assert receipt["page_revision_count"] == 418
+              assert receipt["identity_replay_match"] is True
+              assert receipt["source_text_included"] is False
+              assert receipt["literary_body_frozen"] is False
+              assert receipt["admitted_for_calibration"] is False
+              assert receipt["fantlab_source_edition_match"] == "unknown"
+              assert receipt["m2_parity_admissible"] is False
+              print("SCRIPTORIUM_DARWIN_PAGE_REPLAY_COUNT=418")
+          else:
+              capture = Path("build/repro/darwin-origin-species-rachinsky-1864-ru.page-revisions.json")
               payload = json.loads(capture.read_text(encoding="utf-8"))
               rows = validate_manifest(payload)
               assert len(rows) == 418
@@ -64,17 +77,6 @@ jobs:
               assert payload["admitted_for_calibration"] is False
               assert payload["m2_parity_admissible"] is False
               print("SCRIPTORIUM_DARWIN_PAGE_CAPTURE_COUNT=418")
-          else:
-              receipt = json.loads(
-                  Path("build/repro/darwin-origin-species-rachinsky-1864-ru.page-revisions.replay.json")
-                  .read_text(encoding="utf-8")
-              )
-              assert receipt["page_revision_count"] == 418
-              assert receipt["identity_replay_match"] is True
-              assert receipt["source_text_included"] is False
-              assert receipt["admitted_for_calibration"] is False
-              assert receipt["m2_parity_admissible"] is False
-              print("SCRIPTORIUM_DARWIN_PAGE_REPLAY_COUNT=418")
           PY
 
       - name: Upload source-free capture or replay evidence

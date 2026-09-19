@@ -16,22 +16,30 @@
       "later edited or modernized Beketova-derived texts unless independently identified"
     ]
   },
-  "source_identity_status": "permanent_revision_witnessed_body_unfrozen",
+  "source_identity_status": "revision_identity_frozen_body_unfrozen",
   "source": {
     "provider": "Russian Wikisource",
     "page_title": "Дети капитана Гранта (Верн; Бекетова)",
     "page_id": 1012777,
     "permanent_revision_id": 5304880,
-    "permanent_revision_timestamp": "2025-02-25T02:24:00Z",
+    "permanent_revision_timestamp": "2025-02-25T02:24:10Z",
     "page_url": "https://ru.wikisource.org/wiki/Дети_капитана_Гранта_(Верн;_Бекетова)",
     "permanent_url": "https://ru.wikisource.org/w/index.php?title=Дети_капитана_Гранта_(Верн;_Бекетова)&oldid=5304880",
     "observed_at": "2026-09-19",
     "rendered_full_work_surface_observed": true,
+    "frozen_revision_identity": {
+      "manifest": "verne-children-captain-grant-beketova-ru.revision.json",
+      "mediawiki_sha1": "256d816de6743031ea86f266ed004ee72240c200",
+      "wikitext_character_count": 1107187,
+      "wikitext_utf8_byte_count": 2053126,
+      "wikitext_sha256": "71bfbe889cfc91b7dd24831a6a8984f3ac8d010c90d329b99a8f43aa4e3181a0",
+      "source_text_committed": false
+    },
     "current_page_info": {
       "content_model": "wikitext",
       "page_length_bytes": 2053126,
       "ordinary_subpages": 27,
-      "note": "These are current page-information observations. They are not a frozen literary-body identity and do not establish that the subpages are the canonical composition source."
+      "note": "The byte count agrees with the pinned revision identity, but ordinary subpage count remains a current page-information observation and does not establish a composition source."
     }
   },
   "source_bibliography": {
@@ -59,9 +67,10 @@
     "required_characters_including_spaces": 300000,
     "literary_body_character_count_verified": false,
     "supporting_source_surface_bytes": 2053126,
+    "supporting_source_wikitext_characters": 1107187,
     "supporting_source_category": "Импорт/lib.ru/Длина текста более 1000 Кб",
     "admitted_for_calibration": false,
-    "reason": "A deterministic fail-closed extraction and exact literary-body character count have not yet been frozen. Source-page byte length is not a substitute for the corpus character threshold."
+    "reason": "The exact revision wikitext identity is frozen, but deterministic fail-closed literary-body extraction and an exact literary-body character count are not. Wikitext size/count is not a substitute for the corpus character threshold."
   },
   "fantlab": {
     "linguistic_result_located_for_this_translation": false,
@@ -76,8 +85,7 @@
     "m2_parity_admissible": false
   },
   "next_evidence": [
-    "Fetch and record exact revision-level wikitext identity (MediaWiki SHA-1 and source-free digest) for oldid=5304880.",
-    "Define a candidate-specific fail-closed literary-body extraction contract for the permanent revision without using current subpages as composition inputs unless separately justified.",
+    "Define a candidate-specific fail-closed literary-body extraction contract for exact revision oldid=5304880 without using current subpages as composition inputs unless separately justified.",
     "Compute exact literary-body character/byte counts and raw plus scriptorium-text-v1 digests; only then decide >=300k corpus admission.",
     "Keep the Beketova translation identity distinct when looking for FantLab linguistic results or source-edition evidence; do not infer a match from title or translator alone."
   ]

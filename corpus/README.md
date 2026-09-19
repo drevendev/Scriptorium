@@ -6,6 +6,6 @@ The detailed retained-candidate catalogue is in [`candidates/README.md`](candida
 
 ## Translation candidates
 
-- [`verne-children-captain-grant-beketova-ru`](candidates/verne-children-captain-grant-beketova-ru.md) — Jules Verne's *Children of Captain Grant* in Alexandra A. Beketova's Russian translation. Russian Wikisource provides a permanent Detgiz-1955 / `az.lib.ru` source witness and explicit public-domain statement covering the translation, but Scriptorium has **not yet frozen the literary body or verified the >=300k character threshold**, so this is a provenance candidate rather than an admitted calibration work.
+- [`verne-children-captain-grant-beketova-ru`](candidates/verne-children-captain-grant-beketova-ru.md) — Jules Verne's *Children of Captain Grant* in Alexandra A. Beketova's Russian translation. Russian Wikisource provides a permanent Detgiz-1955 / `az.lib.ru` source witness and explicit public-domain statement covering the translation. Scriptorium now replay-freezes exact revision `oldid=5304880` as a source-free MediaWiki/wikitext identity, but has **not yet frozen the literary body or verified the >=300k literary-character threshold**, so this remains a provenance candidate rather than an admitted calibration work.
 
 Translations are always distinct work identities: translator, edition/transcription provenance, exact source digest and derived analysis belong to that translation, not to the source-language work or to other translations.

@@ -1,24 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 158
+STATE_REVISION: 159
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-19T02:52:00Z
-LAST_RESULT: SCRIP-CORPUS-024 / Issue #135 independently reviewed exact head `4954595de94053104125c3f9d7e3eb3bda8f82d4` of PR #136. The branch was mergeable, 6 commits ahead / 0 behind master, with no inline review threads. All 12 exact-head pull-request workflows completed successfully. `Scriptorium Pages` run `35414075096`, job `105819143007`, checked out that exact SHA and completed the standard-library test, canonical static-site build, deterministic rebuild verification and artifact upload. Independent review found no blocking provenance, legal-boundary, corpus-gate or public-navigation defect. PR #136 was marked Ready and squash-merged as `5bd029cd11a56a71224446374965e5b6c876d44c`; Issue #135 closed as completed.
-LAST_VERIFIED_PROGRESS: `verne-children-captain-grant-beketova-ru` is now merged as a source-free permanent-revision/bibliographic/legal provenance candidate. Russian Wikisource permanent revision `oldid=5304880` (page ID `1012777`, 2025-02-25 02:24 UTC) identifies the Beketova / Detgiz 1955 / `az.lib.ru` source family, renders a three-part 26 + 22 + 22 = 70 chapter full-work surface, and exposes an explicit source public-domain statement covering the translation. Translation identity remains distinct from the French original and other Russian translations. Exact revision wikitext digest, deterministic literary-body extraction, exact literary-character count/digests, FantLab linguistic result/source match and M2 weight remain unresolved; M2 stays 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-19T03:52:00Z
+LAST_RESULT: SCRIP-CORPUS-025 / Issue #137 advanced the retained Beketova translation candidate by freezing the exact Russian Wikisource revision-wikitext identity for permanent revision `oldid=5304880` without committing source prose. Hosted bootstrap workflow run `35419728091`, job `105834985697`, completed successfully on PR #138 head `9e77bbb41263f48e2c1184f6303496b6812ef700`, produced source-free artifact `10577820530`, and established page ID `1012777`, exact timestamp `2025-02-25T02:24:10Z`, MediaWiki SHA-1 `256d816de6743031ea86f266ed004ee72240c200`, 1,107,187 wikitext characters / 2,053,126 UTF-8 bytes, and wikitext SHA-256 `71bfbe889cfc91b7dd24831a6a8984f3ac8d010c90d329b99a8f43aa4e3181a0`. Draft PR #138 remains open for an independent later exact-head review; this authoring run does not self-approve or merge it.
+LAST_VERIFIED_PROGRESS: `verne-children-captain-grant-beketova-ru` now has a committed source-free `scriptorium-single-page-source-revision-v1` identity for exact revision `5304880`. The hosted artifact ZIP digest is `215ab04fa6dd3697ef578a5ecad81e2dd195a12443f787afe45d15a88871fc62`; the contained observed manifest digest is `b14aa6dc2e8ab712edfb559e9cb825a6b12dc203fbd412b9ecfb9267f5e22740`. The earlier rounded timestamp was corrected from `02:24:00Z` to the API-reported `02:24:10Z`. Translation identity remains distinct from the French original and other Russian translations. Deterministic literary-body extraction, exact literary-character count/body digests, FantLab linguistic result/source match and M2 weight remain unresolved; the wikitext count is not substituted for the corpus threshold and M2 stays 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-024
-ISSUE:          #135 (closed completed)
-STATUS:         COMPLETE
-PR:             #136 (merged)
-MERGED_COMMIT:  5bd029cd11a56a71224446374965e5b6c876d44c
-NEXT_ACTION:    On the next wake, re-apply the selection ladder. There are no known open Scriptorium PRs or failing
-                required checks after this merge. Select the highest-priority unblocked corpus/provenance continuation,
-                prioritizing a legally usable >=300k twentieth/twenty-first-century, translated or nonfiction candidate
-                when evidence quality is sufficient. Preserve translation/edition identity and do not move M2 without an
-                independently established FantLab analyzer-input/source-edition match.
+UNIT_ID:        SCRIP-CORPUS-025
+ISSUE:          #137 (open)
+STATUS:         REVIEW_READY
+PR:             #138 (draft)
+NEXT_ACTION:    Recover Draft PR #138 before selecting new work. Independently review its exact final head, verify the
+                committed source-free revision manifest against hosted exact-revision replay evidence, inspect public and
+                structured provenance wording, and require successful exact-head checks. If no blocker remains, mark the PR
+                Ready and squash-merge it, then close Issue #137 as completed. Do not treat revision-wikitext character count
+                as literary-body admission evidence and do not move M2 without an independently established FantLab input match.
 ```
 
 ## Current milestone gate
@@ -51,7 +50,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **The White Guard** — Wikisource mixes two bibliographic source families across chapters 1–11 and 12–20; all 20 chapter identities/composite remain unfrozen.
 - **The Twelve Chairs** — keep the 40-chapter later 1938/1961 editorial family distinct from the 41-chapter 1928 first standalone edition; neither literary body is frozen, and coauthorship prevents individual-author attribution without an explicit VOICE model.
 - **The Life of Klim Samgin** — SCRIP-CORPUS-020 is complete. Four exact parent revisions and the Part 2 dependency are replay-frozen; merged PRs #111–#124 freeze the target-only `#lst`, inferred `poemx1`/Poem boundaries, structural surface and all thirteen plain literary values; #126 merged the candidate-specific fail-closed extractor; #127 merged the canonical source-free per-part and composite literary-body identities; #128 reconciled the structured provenance trace. Exact historical MediaWiki/Poem deployment and FantLab analyzer-input/source-edition identity remain unresolved.
-- **Children of Captain Grant — Beketova translation** — SCRIP-CORPUS-024 is complete. Merged PR #136 traces Russian Wikisource permanent revision `oldid=5304880`, page ID `1012777`, Beketova / Detgiz 1955 / `az.lib.ru` bibliography, explicit source PD statement covering the translation, and rendered 26 + 22 + 22 chapter structure. Current 2,053,126-byte wikitext size is not an exact literary-character count; deterministic body identity and >=300k admission remain unfrozen, and FantLab source match is unknown.
+- **Children of Captain Grant — Beketova translation** — SCRIP-CORPUS-025 is review-ready in Draft PR #138. Exact Russian Wikisource revision `oldid=5304880` is source-free/replay-frozen as page ID `1012777`, timestamp `2025-02-25T02:24:10Z`, MediaWiki SHA-1 `256d816de6743031ea86f266ed004ee72240c200`, 1,107,187 wikitext characters / 2,053,126 UTF-8 bytes, and wikitext SHA-256 `71bfbe889cfc91b7dd24831a6a8984f3ac8d010c90d329b99a8f43aa4e3181a0`. Beketova / Detgiz 1955 / `az.lib.ru` bibliography and the explicit source PD statement covering the translation remain retained. Deterministic literary-body extraction/count/digests and >=300k calibration admission remain unfrozen; FantLab source match is unknown.
 
 ## Deterministic / morphology findings
 
@@ -66,7 +65,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 
 - Static publication remains source-free and deterministic; publication tests reject forbidden source-prose keys.
 - Public corpus navigation exposes retained candidates with provenance boundaries rather than parity claims.
-- `corpus/README.md` now provides a public corpus-root entry point and a translated-candidate section; Beketova's *Children of Captain Grant* is visible there as provenance-only until exact body/count admission is proven.
+- `corpus/README.md` provides a public corpus-root entry point and translated-candidate section; Beketova's *Children of Captain Grant* now exposes an exact source-free replay-frozen revision identity while clearly remaining literary-body-unfrozen and not calibration-admitted.
 - Hyperboloid and Road to Nowhere expose frozen source-free alternate literary-body identities with explicit unresolved source-match boundaries; merged SCRIP-CORPUS-023 additionally makes the primary Road to Nowhere index-routing defect inspectable as source-free provenance rather than implying that the primary route is ready to freeze.
 - Shining World exposes a merged inspectable source-free inventory artifact and corrected public/structured provenance that distinguish the 34 links advertised by the reviewed index from the 19 pages that actually exist; missing targets are visible blockers, not silently filled text.
 - Running on Waves exposes a merged inspectable source-free route-inventory artifact, dedicated candidate page, and reconciled top-level corpus navigation that distinguish the retained 1965 Detskaya literatura route from the separate 1980/az.lib.ru `Версия 2` route; literary-page revisions/body identity remain explicitly unfrozen.
@@ -86,5 +85,5 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 9. Road to Nowhere's primary Pravda-1965/lib.web index is not a complete route witness: it contains duplicate/misdirected Chapter IV labels and current red links for all three distinct Part II targets exposed there. A complete same-family route set must be established independently before primary page/body freezing; the alternate az.lib.ru body cannot fill those gaps.
 10. Several other twentieth-century candidates remain trace-only/unfrozen or bibliographically unresolved at the literary-body level.
 11. Klim Samgin is fully frozen at the candidate-specific literary-body/provenance level, but exact historical Russian Wikisource MediaWiki-core/Poem deployment equivalence and FantLab analyzer-input bytes/edition remain unproven; these are evidence boundaries, not open acceptance criteria for closed Issue #109.
-12. The Beketova *Children of Captain Grant* translation has a strong legal/provenance witness but no deterministic literary-body extraction/count yet; current page byte size cannot be used as the >=300k character gate.
+12. The Beketova *Children of Captain Grant* translation now has an exact source-revision identity, but no deterministic literary-body extraction/count yet; its 1,107,187 wikitext characters / 2,053,126 bytes cannot be used as the >=300k literary-character gate.
 13. Pages live activation remains a repository-admin effect and is off.

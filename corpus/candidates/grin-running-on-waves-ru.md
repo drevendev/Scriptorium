@@ -1,4 +1,4 @@
-# Running on Waves — route-frozen corpus candidate
+# Running on Waves — revision-frozen corpus candidate
 
 `grin-running-on-waves-ru` is a source-free provenance candidate for Alexander Grin's 1928 novel *Running on Waves* (`Бегущая по волнам`). FantLab's 18 September 2022 linguistic analysis reports **360,987 characters** and **52,985 words**, so the work clears Scriptorium's >=300,000-character calibration threshold.
 
@@ -6,9 +6,11 @@
 
 Russian Wikisource identifies the retained transcription family with **A. Grin, _Алые паруса. Бегущая по волнам. Золотая цепь_, Moscow: Detskaya literatura, 1965 (Biblioteka priklyucheniy)**. The work-index permanent revision is `oldid=2595407`.
 
-A second immutable witness now freezes the **route topology** without storing prose: category permanent revision `oldid=4715419` lists exactly 37 pages — the main work page plus `/1` through `/35` and `/Эпилог`. The committed route manifest records those 36 literary titles exactly.
+A second immutable witness freezes the **route topology** without storing prose: category permanent revision `oldid=4715419` lists exactly 37 pages — the main work page plus `/1` through `/35` and `/Эпилог`. The committed route manifest records those 36 literary titles exactly.
 
-This is **not** a literary-page revision freeze. The 36 subpages' own revision IDs, timestamps and MediaWiki SHA-1 values are not yet pinned; no deterministic literary-body extraction/composition contract or composite digest is claimed.
+The 36 literary subpages are now also **revision-frozen**. `grin-running-on-waves-ru.source-revisions.json` records, in the route order `/1` through `/35` then `/Эпилог`, each page ID, exact revision ID, UTC revision timestamp and MediaWiki SHA-1. Candidate-specific CI can capture the current source-free identities, compare them semantically with the committed manifest and replay every pinned revision without storing literary prose.
+
+This is **not yet a literary-body freeze**. Scriptorium has not defined the extraction rules for these 36 wikitext revisions, the composition contract beyond route order, the composite character count, or raw/normalized composite digests. Revision identity must not be presented as analyzed-text identity.
 
 ## Distinct route boundary
 
@@ -20,7 +22,7 @@ FantLab edition record `12637` independently corroborates the same 1965 Detskaya
 
 Therefore:
 
-- `source_identity_status=route_inventory_frozen_subpage_revisions_unfrozen`
+- `source_identity_status=route_and_literary_page_revisions_frozen_body_unfrozen`
 - `fantlab_source_edition_match=unknown`
 - `diagnostic_ready=false`
 - `gate_ready=false`
@@ -31,6 +33,8 @@ Therefore:
 
 - `source-edition-traces/grin-running-on-waves-ru.json` — structured provenance and admissibility boundary.
 - `source-edition-traces/grin-running-on-waves-ru.route-inventory.json` — exact 36-title route witness and excluded 1980 route.
+- `source-edition-traces/grin-running-on-waves-ru.source-revisions.json` — exact source-free identities for all 36 retained literary pages.
 - `../../scriptorium/running_waves_inventory.py` — deterministic fail-closed route-manifest builder/validator.
+- `../../scriptorium/running_waves_revisions.py` — deterministic source-free revision capture/validation/replay.
 
 No literary source text is committed by this candidate surface.

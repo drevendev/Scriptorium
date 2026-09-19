@@ -1,0 +1,76 @@
+name: Running on Waves literary body
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/running-waves-literary-body.yml'
+      - 'scriptorium/running_waves_body.py'
+      - 'scriptorium/running_waves_revisions.py'
+      - 'scriptorium/wikisource_freeze.py'
+      - 'scriptorium/wikisource_replay.py'
+      - 'scriptorium/text.py'
+      - 'tests/test_running_waves_body.py'
+      - 'corpus/candidates/grin-running-on-waves-ru.md'
+      - 'corpus/candidates/source-edition-traces/grin-running-on-waves-ru.json'
+      - 'corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json'
+      - 'corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json'
+      - 'project/STATE_AND_QUEUE.md'
+      - 'project/CHANGELOG.md'
+      - 'project/CHANGELOG.d/SCRIP-CORPUS-028.md'
+      - 'project/run-receipts/SCRIP-CORPUS-028.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests
+      - name: Capture observed source-free literary-body manifest
+        run: |
+          python -m scriptorium.running_waves_body capture \
+            --source-manifest corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json \
+            --output /tmp/grin-running-on-waves-ru.literary-body.observed.json
+      - name: Compare committed manifest when present
+        run: |
+          if test -f corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json; then
+            cmp \
+              corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json \
+              /tmp/grin-running-on-waves-ru.literary-body.observed.json
+            python -m scriptorium.running_waves_body replay \
+              --source-manifest corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json \
+              --body-manifest corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json
+          else
+            echo 'Canonical body manifest not committed yet; capture artifact is the review input for this bootstrap pass.'
+          fi
+      - name: Guard source-free artifact
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('/tmp/grin-running-on-waves-ru.literary-body.observed.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          text = path.read_text(encoding='utf-8').lower()
+          forbidden = ('"wikitext"', '"source_text"', '"prose"')
+          if any(token in text for token in forbidden):
+              raise SystemExit('source-text-like key leaked into source-free artifact')
+          if data['composition']['source_text_committed'] is not False:
+              raise SystemExit('source-text boundary drift')
+          if data['corpus_admission']['m2_parity_admissible'] is not False:
+              raise SystemExit('M2 boundary drift')
+          print(data['composite_identity']['character_count_including_spaces'])
+          print(data['composite_identity']['raw_sha256'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: running-waves-literary-body-source-free
+          path: /tmp/grin-running-on-waves-ru.literary-body.observed.json
+          if-no-files-found: error

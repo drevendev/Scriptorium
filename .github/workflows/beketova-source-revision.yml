@@ -61,105 +61,23 @@ jobs:
             --manifest "$expected" \
             --receipt build/repro/verne-children-captain-grant-beketova-ru.revision.replay.json
 
-      - name: Probe exact revision markup shape without source prose
-        run: |
-          python - <<'PY'
-          import json
-          import re
-          from collections import Counter
-          from pathlib import Path
-          from scriptorium.single_page_body import fetch_pinned_wikitext
-
-          expected = json.loads(Path('corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json').read_text(encoding='utf-8'))
-          observed = fetch_pinned_wikitext(title=expected['source_identity']['title'], revision_id=expected['source_identity']['revision_id'])
-          text = observed.pop('wikitext')
-          assert observed == expected['source_identity']
-          template_matches = list(re.finditer(r'\{\{\s*([^|{}\n]+)', text))
-          template_names = Counter(m.group(1).strip() for m in template_matches)
-          tag_matches = list(re.finditer(r'<\/?\s*([A-Za-z][A-Za-z0-9]*)\b', text))
-          tag_names = Counter(m.group(1).lower() for m in tag_matches)
-          heading_matches = list(re.finditer(r'(?m)^\s*(={2,6})(.*?)\1\s*$', text))
-          heading_levels = Counter(len(m.group(1)) for m in heading_matches)
-          lines = text.splitlines()
-          offsets=[]
-          cursor=0
-          for i,line in enumerate(lines, start=1):
-              offsets.append((cursor,i))
-              cursor += len(line)+1
-          def line_number(offset):
-              lo,hi=0,len(offsets)
-              while lo+1<hi:
-                  mid=(lo+hi)//2
-                  if offsets[mid][0] <= offset: lo=mid
-                  else: hi=mid
-              return offsets[lo][1]
-          def cls(line):
-              s=line.strip()
-              if not s: return 'blank'
-              if re.fullmatch(r'=+.*=+', s): return 'heading'
-              if s.startswith('{{') and s.endswith('}}'): return 'template_line'
-              if s.startswith('[[Категория:'): return 'category'
-              if s.startswith('<') and s.endswith('>'): return 'tag_line'
-              if '{{' in s or '}}' in s: return 'mixed_template'
-              if '[[' in s or ']]' in s: return 'mixed_wikilink'
-              if '<' in s or '>' in s: return 'mixed_tag'
-              return 'plain'
-          line_classes = Counter(cls(line) for line in lines)
-          shape = {
-              'line_count': len(lines),
-              'line_classes': dict(sorted(line_classes.items())),
-              'heading_levels': dict(sorted((str(k), v) for k, v in heading_levels.items())),
-              'heading_positions': [{'line': line_number(m.start()), 'level': len(m.group(1)), 'content_length': len(m.group(2).strip())} for m in (heading_matches[:8]+heading_matches[-8:])],
-              'template_names': template_names.most_common(80),
-              'template_positions': [{'name': m.group(1).strip(), 'line': line_number(m.start()), 'offset': m.start()} for m in template_matches],
-              'tag_names': tag_names.most_common(40),
-              'tag_positions': [{'name': m.group(1).lower(), 'line': line_number(m.start()), 'offset': m.start()} for m in tag_matches],
-              'category_lines': [i for i,line in enumerate(lines, start=1) if line.strip().startswith('[[Категория:')],
-              'markers': {marker: text.count(marker) for marker in [
-                  '<noinclude', '</noinclude>', '<includeonly', '</includeonly>', '<onlyinclude', '</onlyinclude>',
-                  '<div', '</div>', '<poem', '</poem>', '[[Категория:', '{{Отексте', '{{Заголовок', '{{конец', '{{начало'
-              ]},
-              'first_30_line_shapes': [{'class': cls(line), 'length': len(line)} for line in lines[:30]],
-              'last_30_line_shapes': [{'class': cls(line), 'length': len(line)} for line in lines[-30:]],
-          }
-          Path('build/repro/verne-children-captain-grant-beketova-ru.shape.json').write_text(json.dumps(shape, ensure_ascii=False, indent=2, sort_keys=True)+'\n', encoding='utf-8')
-          print('SCRIPTORIUM_BEKETOVA_SHAPE=' + json.dumps(shape, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
-          PY
-
       - name: Capture exact literary-body identity without source prose
         run: |
           set -euo pipefail
-          if [[ -f scriptorium/beketova_body.py ]]; then
-            python -m scriptorium.beketova_body capture \
-              --revision-manifest corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json \
-              --output build/repro/verne-children-captain-grant-beketova-ru.body.observed.json
-          else
-            python -m scriptorium.single_page_body capture \
-              --revision-manifest corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json \
-              --output build/repro/verne-children-captain-grant-beketova-ru.body.observed.json
-          fi
+          python -m scriptorium.beketova_body capture \
+            --revision-manifest corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json \
+            --output build/repro/verne-children-captain-grant-beketova-ru.body.observed.json
 
-      - name: Compare committed literary-body identity and replay when available
+      - name: Compare committed literary-body identity and replay
         run: |
           set -euo pipefail
           expected='corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.body.json'
           observed='build/repro/verne-children-captain-grant-beketova-ru.body.observed.json'
-          if [[ -f "$expected" ]]; then
-            cmp "$expected" "$observed"
-            if [[ -f scriptorium/beketova_body.py ]]; then
-              python -m scriptorium.beketova_body replay \
-                --revision-manifest corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json \
-                --body-manifest "$expected" \
-                --receipt build/repro/verne-children-captain-grant-beketova-ru.body.replay.json
-            else
-              python -m scriptorium.single_page_body replay \
-                --revision-manifest corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json \
-                --body-manifest "$expected" \
-                --receipt build/repro/verne-children-captain-grant-beketova-ru.body.replay.json
-            fi
-          else
-            echo 'Committed literary-body manifest not present yet; capture artifact is bootstrap evidence.'
-          fi
+          cmp "$expected" "$observed"
+          python -m scriptorium.beketova_body replay \
+            --revision-manifest corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json \
+            --body-manifest "$expected" \
+            --receipt build/repro/verne-children-captain-grant-beketova-ru.body.replay.json
 
       - name: Verify observed artifacts are source-free and fail-closed
         run: |
@@ -173,8 +91,10 @@ jobs:
           assert revision['source_identity']['revision_id'] == 5304880
           assert body['candidate_id'] == revision['candidate_id']
           assert body['source_revision']['revision_id'] == 5304880
-          assert body['literary_body_identity']['character_count_including_spaces'] >= 300000
+          assert body['literary_body_identity']['character_count_including_spaces'] == 1095467
+          assert body['literary_body_identity']['raw_sha256'] == '4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161'
           assert body['fantlab_source_edition_match'] == 'unknown'
+          assert body['diagnostic_comparison_admissible'] is True
           assert body['m2_parity_admissible'] is False
           forbidden = {'wikitext', 'content', 'body', 'text', 'source_text'}
           assert not forbidden.intersection(revision)
@@ -186,6 +106,7 @@ jobs:
               'extraction': body['extraction'],
               'literary_body_identity': body['literary_body_identity'],
               'fantlab_source_edition_match': body['fantlab_source_edition_match'],
+              'diagnostic_comparison_admissible': body['diagnostic_comparison_admissible'],
               'm2_parity_admissible': body['m2_parity_admissible'],
           }, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
           PY
@@ -197,6 +118,5 @@ jobs:
           path: |
             build/repro/verne-children-captain-grant-beketova-ru.revision.*.json
             build/repro/verne-children-captain-grant-beketova-ru.body.*.json
-            build/repro/verne-children-captain-grant-beketova-ru.shape.json
           if-no-files-found: error
           retention-days: 7

@@ -10,4 +10,8 @@
 - Kept the >=300,000-character admission gate closed: **399 pages are not character-count evidence**, and no deterministic literary-body count/digest exists yet. `admitted_for_calibration=false`.
 - FantLab work `969964` is retained only as a work-level cross-reference; its currently exposed Russian translation is K. Timiryazev, not Rachinsky. No attributable Rachinsky linguistic result/analyzer-input identity was established.
 - Therefore `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and M2 remains **0/5 source-matched works**.
-- Authored work is intentionally left in Draft PR #148 for a later independent exact-head review before any merge.
+- Authored work was intentionally left in Draft PR #148 for a later independent exact-head review before any merge.
+- Independent review verified final head `dc58cd10574371e03b19481d2813d55208bc3060` against unchanged base `17d78d5fd32ae24dc1e73aa529ad5995b5a6322a`: 6 commits ahead / 0 behind, mergeable, no inline review threads, and all 13 pull-request-triggered workflows completed successfully.
+- Fresh external checks independently reconfirmed the Russian Wikisource Rachinsky/Glazunov 1864 bibliography, completed ProofreadPage status and explicit public-domain statement, while FantLab work `969964` still exposed K. Timiryazev rather than Rachinsky.
+- Reviewed GitHub Pages artifact `10585476252` from run `35447501952` matched SHA-256 `9f4eaff8707c5378c88e1f4b63d243013dc65f9a8c417ba48b3aaa27a051d3fa`; artifact inspection found no Darwin/Rachinsky literary prose.
+- No blocking defect was found. PR #148 was marked Ready and squash-merged as `e5fefb15d74fcd30786e2897a9900cfe47371032`; Issue #147 closed completed.

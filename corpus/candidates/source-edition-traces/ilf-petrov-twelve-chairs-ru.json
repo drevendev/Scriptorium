@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "ilf-petrov-twelve-chairs-ru",
-  "research_date": "2026-09-16",
+  "research_date": "2026-09-19",
   "fantlab": {
     "work_id": 182817,
     "analysis_url": "https://fantlab.ru/work182817/lp",
@@ -51,15 +51,55 @@
       "observed_chapters": 41,
       "source_provenance_confidence": "strong_for_bibliographic_edition_family",
       "immutable_identity": {
-        "status": "traced_not_frozen",
+        "status": "route_graph_frozen_underlying_pages_unfrozen",
         "frozen_components": [
           "work-index permanent revision oldid 5706135",
-          "bibliographic first-edition declaration on that index"
+          "bibliographic first-edition declaration on that index",
+          "ProofreadPage index permanent revision oldid 5702510",
+          "three part-page permanent revisions oldid 5702507, 5704332 and 5702508",
+          "three exact transclusion ranges 8-149, 152-313 and 316-421 referencing 410 Page-namespace dependencies",
+          "two explicit non-transcluded scan-index gaps 150-151 and 314-315"
         ],
         "unfrozen_components": [
-          "exact identities for all literary pages used by the 1928 transcription",
+          "exact revision IDs/timestamps/MediaWiki SHA-1 identities for all 410 referenced Page-namespace pages",
           "deterministic literary-body extraction and composition",
-          "raw and scriptorium-text-v1 normalized composite digests"
+          "raw and scriptorium-text-v1 normalized composite digests",
+          "facsimile PDF byte stream identity"
+        ]
+      },
+      "source_graph_manifest": "ilf-petrov-twelve-chairs-zif-1928.source-graph.json",
+      "route_graph": {
+        "status": "frozen_parent_route_topology_underlying_pages_unfrozen",
+        "proofread_index_oldid": 5702510,
+        "part_parent_oldids": [
+          5702507,
+          5704332,
+          5702508
+        ],
+        "transclusion_ranges": [
+          [
+            8,
+            149
+          ],
+          [
+            152,
+            313
+          ],
+          [
+            316,
+            421
+          ]
+        ],
+        "referenced_page_namespace_count": 410,
+        "non_transcluded_scan_gaps": [
+          [
+            150,
+            151
+          ],
+          [
+            314,
+            315
+          ]
         ]
       }
     }
@@ -95,24 +135,26 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "traced_not_frozen",
+    "source_identity_status": "1928_route_graph_frozen_body_unfrozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "multi_edition_traced_not_frozen",
+    "status": "multi_edition_traced_1928_route_graph_frozen_body_unfrozen",
     "reasons": [
       "FantLab reports 572,654 characters and 80,203 words for its 17 September 2022 analysis, above the 300,000-character calibration threshold.",
       "Russian Wikisource provides explicit public-domain evidence and stable work-index locators for two distinct bibliographic/text families.",
       "The later family has 40 visible chapters while the first standalone 1928 family has 41, so Scriptorium must not flatten them into one edition identity.",
-      "Neither public literary body is fully revision-pinned under a deterministic extraction/composition contract with composite digests.",
+      "The 1928 family now has a source-free frozen parent route graph: work/index revisions plus three part-parent revisions transcluding scan ranges 8-149, 152-313 and 316-421 (410 Page-namespace dependencies).",
+      "The 410 underlying Page-namespace revision identities and literary-body extraction/composition remain unfrozen, so this is not a frozen literary text.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Freeze one selected public text family by exact literary-page identities and a deterministic fail-closed extraction/composition manifest.",
-      "Record raw and scriptorium-text-v1 normalized composite digests before enabling source-bound diagnostics.",
-      "If the 1928 facsimile is used, capture a specific binary snapshot with byte count/SHA-256 and define OCR/page-extraction provenance before relating it to a transcription.",
-      "Seek independent evidence that can identify FantLab's uploaded analyzer input; bibliographic compatibility and chapter structure cannot advance M2.",
+      "Capture exact source-free revision identities for all 410 Page-namespace dependencies referenced by the frozen 1928 part routes.",
+      "Inspect scan-index gaps 150-151 and 314-315 independently and preserve them as non-composable unless literary-body evidence justifies inclusion.",
+      "Define a deterministic fail-closed literary-body extraction/composition profile over the pinned Page revisions, then record raw and scriptorium-text-v1 normalized composite digests.",
+      "If the 1928 facsimile is used as a binary witness, capture a specific byte snapshot with byte count/SHA-256 and define OCR/page-extraction provenance.",
+      "Seek independent evidence that can identify FantLab's uploaded analyzer input; bibliographic compatibility, route topology and chapter structure cannot advance M2.",
       "When author-voice work begins, model this work as coauthored evidence rather than silently assigning its statistics to either individual author."
     ]
   }

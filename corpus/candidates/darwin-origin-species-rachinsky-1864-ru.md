@@ -21,6 +21,22 @@ The route metadata reports displayed bibliographic print-page spans **1–387** 
 
 These displayed print-page spans are bibliographic route metadata, **not Page-namespace or scan-page identities**. Freezing the 15 rendered route revisions therefore does not freeze the underlying ProofreadPage inputs or a composite text.
 
+### Provider-reported scan-file metadata
+
+The exact DjVu file behind the retained ProofreadPage family now has a **source-free provider-metadata identity** recorded from the Wikimedia Commons file description as transcluded on Russian Wikisource. The current source surface reports:
+
+- **27,368,263 bytes**;
+- MIME type **`image/vnd.djvu`**;
+- dimensions **3744 × 5616**;
+- **432 pages**;
+- SHA-1 **`75ef508588194ae74874272ce290f3ec1043ea9b`**;
+- current file-history display **`11:45, 8 March 2016`**, uploader **`Nonexyst`**;
+- source locator `https://archive.org/details/oproiskhozhdenii00darw`.
+
+The same source surface describes the file as a mechanical scan/public-domain source and shows Public Domain Mark 1.0. Scriptorium records those statements as source provenance.
+
+This is deliberately **not a local binary freeze**. Scriptorium has not retrieved one exact DjVu byte stream in this unit, has not independently recomputed the provider SHA-1, and has not computed a SHA-256 over the binary. Provider-reported size/checksum metadata therefore strengthens source identity without substituting for independent byte-level verification.
+
 No literary prose, Page-namespace source content, DjVu/PDF bytes, or OCR are committed by this unit.
 
 ## Rights evidence
@@ -41,7 +57,7 @@ Still required before corpus admission:
 - literary-body character count including spaces and raw/normalized digests;
 - verification that the frozen body, not merely the print edition's nominal page count or rendered route spans, clears 300,000 characters.
 
-Accordingly `source_identity_status=rendered_route_graph_frozen_underlying_pages_unfrozen` and `admitted_for_calibration=false`.
+Accordingly `source_identity_status=rendered_route_graph_and_remote_scan_metadata_frozen_underlying_pages_unfrozen` and `admitted_for_calibration=false`. Provider-reported scan metadata does not satisfy the literary-body threshold or Page-level identity requirements.
 
 ## FantLab boundary
 
@@ -51,9 +67,9 @@ No `/lp` result attributable to this exact translation/source edition has been e
 
 ## Canonical evidence
 
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json) — translation identity, exact parent/index locators, bibliography, rights evidence, corpus boundary, and FantLab boundary.
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json) — exact rendered route revisions, displayed print-page spans, explicit page-388 gap, and the underlying-Page freeze boundary.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json) — translation identity, exact parent/index locators, provider-reported scan metadata, bibliography, rights evidence, corpus boundary, and FantLab boundary.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json) — exact rendered route revisions, displayed print-page spans, explicit page-388 gap, provider-reported scan-file identity metadata, and the underlying-Page/binary freeze boundary.
 
 ## Next evidence
 
-A later bounded unit should resolve the exact underlying ProofreadPage/Page-namespace route used by this rendered family, pin every revision identity actually used, and classify the displayed page-388 gap from exact source evidence. Only then should Scriptorium define a candidate-specific fail-closed literary-body extraction/composition contract and compute source-free counts/digests. Only after the exact literary body proves >=300,000 characters may this translation be admitted to the general calibration/profile corpus. FantLab parity remains a separate, stricter source-matching problem.
+A later bounded unit should resolve the exact underlying ProofreadPage/Page-namespace route used by this rendered family, pin every revision identity actually used, and classify the displayed page-388 gap from exact source evidence. If a scan-byte identity becomes necessary, retrieve one exact DjVu byte stream and independently record its byte count plus SHA-256 rather than promoting provider metadata. Only after Page-level identity is frozen should Scriptorium define a candidate-specific fail-closed literary-body extraction/composition contract and compute source-free counts/digests. Only after the exact literary body proves >=300,000 characters may this translation be admitted to the general calibration/profile corpus. FantLab parity remains a separate, stricter source-matching problem.

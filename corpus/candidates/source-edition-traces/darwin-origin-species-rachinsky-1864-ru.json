@@ -17,7 +17,7 @@
       "rendered orthography transformations unless a deterministic transform/identity contract is established"
     ]
   },
-  "source_identity_status": "rendered_route_graph_frozen_underlying_pages_unfrozen",
+  "source_identity_status": "rendered_route_graph_and_remote_scan_metadata_frozen_underlying_pages_unfrozen",
   "source": {
     "provider": "Russian Wikisource",
     "observed_at": "2026-09-19",
@@ -33,7 +33,7 @@
       "permanent_url": "https://ru.wikisource.org/w/index.php?title=Индекс:Дарвин_-_О_происхождении_видов,_1864.djvu&oldid=4494408",
       "progress_displayed": "Закончено — Все страницы вычитаны и проверены",
       "source_field": "djvu",
-      "identity_scope": "ProofreadPage index metadata/route anchor; underlying Page revisions and scan bytes are not frozen"
+      "identity_scope": "ProofreadPage index metadata/route anchor; underlying Page revisions remain unfrozen. Provider-reported scan-file metadata is frozen separately, but Scriptorium has not independently retrieved or hashed the binary."
     },
     "rendered_route_graph": {
       "manifest": "darwin-origin-species-rachinsky-1864-ru.source-graph.json",
@@ -47,7 +47,25 @@
       "underlying_page_revision_identities_frozen": false
     },
     "source_text_committed": false,
-    "scan_bytes_committed": false
+    "scan_bytes_committed": false,
+    "scan_file_metadata": {
+      "file_page_title": "Файл:Дарвин - О происхождении видов, 1864.djvu",
+      "provider": "Wikimedia Commons metadata transcluded on Russian Wikisource",
+      "observed_at": "2026-09-19",
+      "archive_org_source": "https://archive.org/details/oproiskhozhdenii00darw",
+      "data_size_bytes": 27368263,
+      "mime_type": "image/vnd.djvu",
+      "pixel_width": 3744,
+      "pixel_height": 5616,
+      "page_count": 432,
+      "sha1": "75ef508588194ae74874272ce290f3ec1043ea9b",
+      "sha1_scope": "provider-reported file checksum; not independently recomputed by Scriptorium",
+      "current_file_history_display": "11:45, 8 March 2016",
+      "current_uploader": "Nonexyst",
+      "metadata_identity_status": "provider_reported_remote_file_metadata_frozen",
+      "binary_bytes_retrieved_by_scriptorium": false,
+      "binary_sha256_computed_by_scriptorium": false
+    }
   },
   "source_bibliography": {
     "displayed_citation": "Ч. Дарвин. О происхождении видов. Пер. С. А. Рачинского. СПб.: Издание книгопродавца А. И. Глазунова, 1864",
@@ -56,14 +74,16 @@
     "publication_year": 1864,
     "displayed_page_count": 399,
     "page_count_is_not_character_count_evidence": true,
-    "byte_identity_to_print_or_scan_established": false
+    "byte_identity_to_print_or_scan_established": false,
+    "provider_reported_scan_metadata_frozen": true
   },
   "legal_evidence": {
     "source_declared_status": "public domain for the work/translation on the retained Wikisource surface",
     "source_statement": "Russian Wikisource states that the work is public domain in Russia and life-plus-70-or-less jurisdictions and, for translations, that exclusive rights have expired for all authors of the original and translation.",
     "translation_scope_explicitly_covered_by_source_statement": true,
     "site_text_license": "CC BY-SA subject to Wikisource terms",
-    "legal_interpretation_boundary": "This trace records the source's explicit rights statement; it is not independent legal advice."
+    "legal_interpretation_boundary": "This trace records the source's explicit rights statement; it is not independent legal advice.",
+    "scan_source_statement": "The retained file surface describes the DjVu as a mechanical scan/public-domain source file and shows Public Domain Mark 1.0."
   },
   "freeze_boundary": {
     "frozen": [
@@ -73,12 +93,16 @@
       "source-declared completed proofread status as an observed metadata fact",
       "15 rendered child-route revision locators: /1 through /14 plus /Указатель",
       "displayed bibliographic print-page spans 1-387 and 389-399 attached to those routes",
-      "displayed print page 388 as an explicit unclassified gap"
+      "displayed print page 388 as an explicit unclassified gap",
+      "provider-reported scan metadata: 27,368,263 bytes, image/vnd.djvu, 3744x5616, 432 pages",
+      "provider-reported scan SHA-1 75ef508588194ae74874272ce290f3ec1043ea9b",
+      "current provider file-history display 11:45, 8 March 2016 by Nonexyst",
+      "Archive.org source locator and source-declared mechanical-scan/public-domain status"
     ],
     "unfrozen": [
       "underlying Page-namespace revision identities",
       "mapping from displayed print page numbers to ProofreadPage scan/Page sequence positions",
-      "DjVu/PDF binary bytes and digest",
+      "independently retrieved DjVu byte stream and Scriptorium-computed SHA-256",
       "OCR or Page-markup extraction behavior",
       "literary-body composition decision for front matter, alphabetical index, page 388, or other apparatus",
       "literary-body character count and raw/normalized digests",
@@ -112,8 +136,9 @@
     "m2_parity_admissible": false
   },
   "next_evidence": [
-    "Resolve the exact underlying ProofreadPage/Page-namespace route for the retained rendered family and pin every revision identity actually used.",
+    "Resolve the exact underlying ProofreadPage/Page-namespace route for the retained rendered family and pin every revision identity actually used; provider scan metadata does not substitute for Page-level identity.",
     "Classify displayed print page 388 only from exact source evidence rather than page-number continuity.",
+    "If binary-level scan identity becomes necessary, retrieve one exact DjVu byte stream and independently record its byte count plus SHA-256; do not promote provider-reported metadata to a local binary freeze.",
     "Define a candidate-specific deterministic fail-closed literary-body extraction/composition contract without committing source prose.",
     "Freeze literary-body character count plus raw and scriptorium-text-v1 normalized digests; admit to general calibration/profile corpus only if the body independently clears 300,000 characters including spaces.",
     "Keep FantLab matching separate: locate a linguistic result and analyzer-input/source-edition evidence attributable specifically to the Rachinsky translation before assigning diagnostic or M2 weight."

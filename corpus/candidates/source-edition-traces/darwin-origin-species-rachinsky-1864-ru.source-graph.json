@@ -3,7 +3,7 @@
   "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
   "family_id": "wikisource-rachinsky-glazunov-1864-vt-yo",
   "captured_on": "2026-09-19",
-  "purpose": "Freeze the source-free rendered subpage route topology of the Rachinsky/Glazunov 1864 Wikisource family without claiming that the underlying Page-namespace inputs, scan bytes, or literary body are revision-frozen.",
+  "purpose": "Freeze the source-free rendered subpage route topology and provider-reported scan-file metadata of the Rachinsky/Glazunov 1864 Wikisource family without claiming that the underlying Page-namespace inputs, independently retrieved scan bytes, or literary body are revision-frozen.",
   "source_text_committed": false,
   "bibliographic_identity": {
     "author": "Charles Darwin",
@@ -26,7 +26,7 @@
     "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=4494408",
     "progress_displayed": "Закончено — Все страницы вычитаны и проверены",
     "underlying_page_revision_identities_frozen": false,
-    "binary_identity_status": "not_frozen"
+    "binary_identity_status": "provider_reported_file_metadata_frozen_binary_bytes_unverified"
   },
   "rendered_routes": [
     {
@@ -203,19 +203,23 @@
     }
   ],
   "freeze_boundary": {
-    "status": "rendered_route_graph_frozen_underlying_pages_unfrozen",
+    "status": "rendered_route_graph_and_remote_scan_metadata_frozen_underlying_pages_unfrozen",
     "frozen": [
       "rendered edition-family parent revision locator",
       "ProofreadPage index revision locator and bibliographic family",
       "14 numbered rendered-route revision locators",
       "alphabetical-index rendered-route revision locator",
       "displayed bibliographic print-page spans attached to those 15 routes",
-      "explicit unclassified displayed print-page gap at page 388"
+      "explicit unclassified displayed print-page gap at page 388",
+      "provider-reported remote scan metadata: 27,368,263 bytes, image/vnd.djvu, 3744x5616, 432 pages",
+      "provider-reported scan SHA-1 75ef508588194ae74874272ce290f3ec1043ea9b",
+      "current provider file-history display 11:45, 8 March 2016 by Nonexyst",
+      "Archive.org source locator and source-declared mechanical-scan/public-domain status"
     ],
     "not_frozen": [
       "exact revision IDs/timestamps/MediaWiki SHA-1 identities of underlying Page-namespace inputs",
       "mapping from displayed print page numbers to scan/Page-namespace sequence positions",
-      "DjVu/PDF binary byte stream, byte count and SHA-256",
+      "independently retrieved DjVu byte stream and Scriptorium-computed SHA-256",
       "literary-body extraction/rendering behavior",
       "literary-body composition decision about front matter, alphabetical index, page 388, or other apparatus",
       "literary-body character count and raw/normalized digests",
@@ -230,10 +234,30 @@
     "m2_source_matched_work_count": 0
   },
   "next_evidence": [
-    "Resolve the exact underlying ProofreadPage/Page-namespace route for the retained rendered family and pin every revision identity used by that route.",
+    "Resolve the exact underlying ProofreadPage/Page-namespace route for the retained rendered family and pin every revision identity used by that route; provider file metadata does not substitute for Page-level identity.",
     "Classify displayed print page 388 only from exact source evidence; do not compose it by page-number continuity.",
+    "If binary-level scan identity becomes necessary, retrieve one exact DjVu byte stream and independently record its byte count plus SHA-256; do not promote provider-reported metadata to a local binary freeze.",
     "Define a deterministic fail-closed literary-body extraction/composition profile over frozen Page revisions and record character count plus raw and scriptorium-text-v1 normalized digests.",
     "Admit this translation to the general calibration/profile corpus only if the frozen literary body independently clears 300,000 characters including spaces.",
     "Keep FantLab matching separate: the currently exposed Russian translation is Timiryazev, not Rachinsky."
-  ]
+  ],
+  "scan_file_metadata": {
+    "file_page_title": "Файл:Дарвин - О происхождении видов, 1864.djvu",
+    "provider": "Wikimedia Commons metadata transcluded on Russian Wikisource",
+    "observed_at": "2026-09-19",
+    "archive_org_source": "https://archive.org/details/oproiskhozhdenii00darw",
+    "data_size_bytes": 27368263,
+    "mime_type": "image/vnd.djvu",
+    "pixel_width": 3744,
+    "pixel_height": 5616,
+    "page_count": 432,
+    "sha1": "75ef508588194ae74874272ce290f3ec1043ea9b",
+    "sha1_scope": "provider-reported file checksum; not independently recomputed by Scriptorium",
+    "current_file_history_display": "11:45, 8 March 2016",
+    "current_uploader": "Nonexyst",
+    "source_declared_scan_status": "mechanical scan/public-domain source file; Public Domain Mark 1.0 shown on the retained file surface",
+    "metadata_identity_status": "provider_reported_remote_file_metadata_frozen",
+    "binary_bytes_retrieved_by_scriptorium": false,
+    "binary_sha256_computed_by_scriptorium": false
+  }
 }

@@ -1,12 +1,15 @@
-name: Beketova translation source revision
+name: Beketova translation source revision and literary body
 
 on:
   pull_request:
     paths:
       - ".github/workflows/beketova-source-revision.yml"
       - "scriptorium/single_page_revision.py"
+      - "scriptorium/single_page_body.py"
       - "tests/test_single_page_revision.py"
+      - "tests/test_single_page_body.py"
       - "corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json"
+      - "corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.body.json"
   workflow_dispatch:
 
 permissions:
@@ -14,7 +17,7 @@ permissions:
 
 jobs:
   freeze:
-    name: Replay pinned Beketova source revision
+    name: Replay pinned Beketova source and literary body
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -46,50 +49,73 @@ jobs:
             --legal-basis public_domain_translation_source_statement \
             --output build/repro/verne-children-captain-grant-beketova-ru.revision.observed.json
 
-      - name: Compare committed revision identity and replay when available
+      - name: Compare committed revision identity and replay
         run: |
           set -euo pipefail
           expected='corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json'
           observed='build/repro/verne-children-captain-grant-beketova-ru.revision.observed.json'
+          cmp "$expected" "$observed"
+          python -m scriptorium.single_page_revision replay \
+            --manifest "$expected" \
+            --receipt build/repro/verne-children-captain-grant-beketova-ru.revision.replay.json
+
+      - name: Capture exact literary-body identity without source prose
+        run: |
+          set -euo pipefail
+          python -m scriptorium.single_page_body capture \
+            --revision-manifest corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json \
+            --output build/repro/verne-children-captain-grant-beketova-ru.body.observed.json
+
+      - name: Compare committed literary-body identity and replay when available
+        run: |
+          set -euo pipefail
+          expected='corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.body.json'
+          observed='build/repro/verne-children-captain-grant-beketova-ru.body.observed.json'
           if [[ -f "$expected" ]]; then
             cmp "$expected" "$observed"
-            python -m scriptorium.single_page_revision replay \
-              --manifest "$expected" \
-              --receipt build/repro/verne-children-captain-grant-beketova-ru.revision.replay.json
+            python -m scriptorium.single_page_body replay \
+              --revision-manifest corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json \
+              --body-manifest "$expected" \
+              --receipt build/repro/verne-children-captain-grant-beketova-ru.body.replay.json
           else
-            echo 'Committed revision manifest not present yet; capture artifact is bootstrap evidence.'
+            echo 'Committed literary-body manifest not present yet; capture artifact is bootstrap evidence.'
           fi
 
-      - name: Verify observed artifact is source-free and fail-closed
+      - name: Verify observed artifacts are source-free and fail-closed
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
 
-          path = Path('build/repro/verne-children-captain-grant-beketova-ru.revision.observed.json')
-          manifest = json.loads(path.read_text(encoding='utf-8'))
-          assert manifest['candidate_id'] == 'verne-children-captain-grant-beketova-ru'
-          assert manifest['source_identity']['revision_id'] == 5304880
-          assert manifest['capture_scope'] == {
-              'revision_wikitext_identity_frozen': True,
-              'literary_body_extraction_frozen': False,
-              'composite_identity_frozen': False,
-              'source_text_committed': False,
-          }
+          revision = json.loads(Path('build/repro/verne-children-captain-grant-beketova-ru.revision.observed.json').read_text(encoding='utf-8'))
+          body = json.loads(Path('build/repro/verne-children-captain-grant-beketova-ru.body.observed.json').read_text(encoding='utf-8'))
+          assert revision['candidate_id'] == 'verne-children-captain-grant-beketova-ru'
+          assert revision['source_identity']['revision_id'] == 5304880
+          assert body['candidate_id'] == revision['candidate_id']
+          assert body['source_revision']['revision_id'] == 5304880
+          assert body['literary_body_identity']['character_count_including_spaces'] >= 300000
+          assert body['fantlab_source_edition_match'] == 'unknown'
+          assert body['m2_parity_admissible'] is False
           forbidden = {'wikitext', 'content', 'body', 'text', 'source_text'}
-          assert not forbidden.intersection(manifest)
-          assert not forbidden.intersection(manifest['source_identity'])
-          print('SCRIPTORIUM_BEKETOVA_REVISION=' + json.dumps({
-              'candidate_id': manifest['candidate_id'],
-              'source_identity': manifest['source_identity'],
-              'capture_scope': manifest['capture_scope'],
+          assert not forbidden.intersection(revision)
+          assert not forbidden.intersection(revision['source_identity'])
+          assert not forbidden.intersection(body)
+          print('SCRIPTORIUM_BEKETOVA_BODY=' + json.dumps({
+              'candidate_id': body['candidate_id'],
+              'source_revision': body['source_revision'],
+              'extraction': body['extraction'],
+              'literary_body_identity': body['literary_body_identity'],
+              'fantlab_source_edition_match': body['fantlab_source_edition_match'],
+              'm2_parity_admissible': body['m2_parity_admissible'],
           }, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
           PY
 
       - name: Upload source-free capture and replay evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: beketova-source-revision
-          path: build/repro/verne-children-captain-grant-beketova-ru.revision.*.json
+          name: beketova-source-revision-and-body
+          path: |
+            build/repro/verne-children-captain-grant-beketova-ru.revision.*.json
+            build/repro/verne-children-captain-grant-beketova-ru.body.*.json
           if-no-files-found: error
           retention-days: 7

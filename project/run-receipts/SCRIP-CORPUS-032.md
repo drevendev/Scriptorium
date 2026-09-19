@@ -65,3 +65,15 @@ Provider file metadata cannot prove the repository's >=300,000-character literar
 ## Handoff
 
 Draft PR #152 must be reviewed on its exact final head by a later run. That review should independently verify the official provider metadata against the current source surface, inspect changed files for any binary/source-prose leak or boundary promotion, and require exact-head CI before any Ready/merge decision.
+
+## Independent exact-head review and merge
+
+A later run independently reviewed exact authored head **`638c30a329f49f1afa55ecb39b8f5b98a55cebc7`** against unchanged base **`c6b1567ff9918dbf7b9d024256eb8743ebd633ad`**.
+
+- The current official Russian Wikisource/Commons file surface independently re-confirmed 27,368,263 bytes, `image/vnd.djvu`, 3744 × 5616, 432 pages, SHA-1 `75ef508588194ae74874272ce290f3ec1043ea9b`, file-history display `11:45, 8 March 2016` by `Nonexyst`, the Archive.org source locator, and the mechanical-scan/public-domain declaration.
+- All six changed paths were inspected and remained source-free metadata/control records; no literary prose, Page payload, OCR, DjVu/PDF bytes, or other binary content was introduced.
+- The provider/local-verification boundary remained intact: no independently recomputed SHA-1, local scan-byte freeze, binary SHA-256, Page-level identity, p.388 classification, literary-body count/digest, >=300k admission, FantLab source match, or M2 promotion was claimed.
+- All **13/13** pull-request-triggered workflows completed successfully on the exact head. `Scriptorium Pages` run `35459774460`, job `105941434196`, passed the standard-library suite, canonical build, deterministic rebuild and artifact upload; artifact `10588992640` is tied to the reviewed head with digest `sha256:4042d0e49a2054a24de678ae4d4e6e05b0a9a619f7c9f12cebf5e825c893d793`. `Scriptorium pinned pylem provider` run `35459774480` also completed successfully.
+- No inline review threads or blocking defects were present.
+
+PR #152 was marked Ready and squash-merged as **`63e1de382af32866cc669b9549017899fbe9b399`**. Issue #151 closed as completed. The unit is complete; normal-flow P2 corpus/provenance selection may resume on the next wake.

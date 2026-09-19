@@ -3,7 +3,7 @@
 Date: 2026-09-19
 Issue: #143
 Pull request: #144 (`scrip-corpus-028-running-waves-body`)
-Mode: recovery-first corpus/provenance implementation
+Mode: recovery-first corpus/provenance implementation + later independent review
 
 ## Selected bounded unit
 
@@ -29,7 +29,7 @@ Official/source-behavior checks and synthetic MediaWiki expansion evidence estab
 - Source text committed: **false**
 - >=300k general calibration/profile admission: **true**
 
-The bootstrap live capture that produced the canonical source-free manifest was workflow run `35436513374`; its artifact `10582375841` has digest `sha256:2bc3f6d89035fdae447f45433d78d287cef3c2be000528eeb418ae890b760077`. Final-head replay evidence is recorded separately once the branch containing the committed manifest finishes CI.
+The bootstrap live capture that produced the canonical source-free manifest was workflow run `35436513374`; its artifact `10582375841` has digest `sha256:2bc3f6d89035fdae447f45433d78d287cef3c2be000528eeb418ae890b760077`.
 
 ## FantLab / gate boundary
 
@@ -43,6 +43,12 @@ FantLab displays 360,987 characters for its 18 September 2022 analysis, which is
 
 The separate Wikisource `/Версия 2` route declaring `az.lib.ru` / Pravda 1980 is not composed into the retained 1965 route.
 
-## Review boundary
+## Independent exact-head review and merge
 
-This run authored a substantial recovery and literary-body freeze. PR #144 therefore remains Draft and must receive independent exact-head review after its final checks complete. The next run must verify the canonical manifest against a fresh live source-free capture and exact-revision replay before considering Ready/merge.
+A later run independently reviewed final authored head `01e8624da0ac7a23527932bdd3d93d46345ae2ce`. Current `master` was still the PR base, so the branch was **17 commits ahead / 0 behind**, mergeable, and had no inline review threads. All **15 exact-head pull-request workflows** completed successfully.
+
+Candidate-specific run `35436771725`, job `105880664668`, checked out that exact SHA and successfully completed the standard-library suite, a fresh live source-free literary-body capture, byte-for-byte comparison against the committed manifest, exact pinned-revision replay, source-free/M2 guards, and artifact upload. Artifact `10582546118` is `sha256:34d2bde7347d7d29718f577c460a5d0bf60106bcf4893477efe4a712bf503133`.
+
+The independent code/provenance review found no blocking defect: the extractor remains bounded to observed shapes, unsupported residual markup still fails closed, only the retained 36-page 1965-family route is composed, the distinct 1980 `az.lib.ru` route remains excluded, and public wording does not promote bibliography/count proximity into source identity or M2 evidence.
+
+PR #144 was marked Ready and squash-merged as `953b3e0ec7ca657ec3371373fafcf3d472c88dd6`; Issue #143 closed completed. Post-merge durable bookkeeping advanced `STATE_AND_QUEUE` to revision 166. The literary-body freeze is now canonical in `master` while FantLab source match remains unknown and M2 remains 0/5.

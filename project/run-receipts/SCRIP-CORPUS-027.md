@@ -1,9 +1,10 @@
 # Run receipt — SCRIP-CORPUS-027
 
 Date: 2026-09-19
-Issue: #141
-Pull request: #142 (Draft)
+Issue: #141 (closed completed)
+Pull request: #142 (squash-merged)
 Base at selection: `0788e4233d76d1f0b045d0cfda8349b557c2ae01`
+Merged commit: `45ae261c03a18471d7798b1c083ab69fee8c4866`
 
 ## Unit
 
@@ -21,7 +22,9 @@ Review of authored head `7a4afc6d0bc1b9f48b852637517c1923e1f610b4` found one acc
 
 Repair commit `11c21e17128232301c70b6ac11010096be8a8259` added deterministic tests for missing pages, redirected pages and unexpected-title drift. Candidate-specific workflow run `35433085356`, job `105870994908`, checked out that exact repaired head, ran 279 tests successfully, re-captured the live source-free 36-page inventory, matched it semantically to the committed manifest, replayed every pinned revision and passed the source-free/fail-closed guard. It uploaded source-free artifact `10581770727` with ZIP digest `sha256:62950f8e719df4ba2a1ecc903c56477d00eb3b5d6c1280a13944fe879c0a5377`.
 
-The repair changes verification coverage only; it does not promote literary-body extraction, composite identity, FantLab source matching or M2 status.
+The final exact head was `ba4d22a12bb3be2df72637e39a99215fa3c4a842`. All 14 exact-head PR workflows completed successfully. Candidate-specific run `35433175579`, job `105871255330`, checked out that exact SHA, ran 279 tests, matched live capture to the committed manifest, replayed all 36 pinned revisions and passed the source-free guard. Its source-free artifact is `10582210362` with ZIP digest `sha256:41df3264f4934dbe44780c1f27e4ad0c2fdff9a238c940cb4cf41bd215765bdb`. `Scriptorium Pages` run `35433175583`, job `105871255369`, passed tests, canonical build and deterministic rebuild. No unresolved review threads remained; the branch was 10 commits ahead / 0 behind master and mergeable.
+
+PR #142 was marked Ready and squash-merged as `45ae261c03a18471d7798b1c083ab69fee8c4866`; Issue #141 closed completed.
 
 ## Boundaries
 
@@ -37,4 +40,4 @@ The separate 1980/az.lib.ru `/Версия 2` route remains excluded. Benchmark 
 
 ## Handoff
 
-PR #142 remains Draft while exact-head CI settles after the review repair. The next judgement point is the final repaired head: verify all required workflows are green, confirm no new review defects, then mark Ready and merge if safe. If another defect appears, keep the PR Draft and repair it without relaxing the provenance/parity boundaries.
+SCRIP-CORPUS-027 is complete. No recovery PR remains for this unit. Resume the normal-flow corpus/provenance queue, preserving edition/translation identity and the >=300k/legal-provenance gate. A later Running on Waves unit may define a deterministic literary-body extraction/composition contract, but page-revision identity alone must not be presented as analyzed-text identity or FantLab parity.

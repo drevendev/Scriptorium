@@ -13,6 +13,14 @@ Two source-free parent anchors are retained:
 
 The ProofreadPage index reports **`Закончено — Все страницы вычитаны и проверены`**. This is useful provenance/quality evidence for the transcription family, but it does not freeze the underlying Page-namespace revisions, scan binary, OCR, or literary body.
 
+### Rendered route graph
+
+A second source-free freeze now pins the exact rendered-route revisions underneath the edition parent: numbered routes `/1` through `/14` plus `/Указатель`. Their permanent revision IDs are recorded in [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json).
+
+The route metadata reports displayed bibliographic print-page spans **1–387** for the introduction/chapter sequence and **389–399** for the alphabetical index. Displayed print page **388** is deliberately retained as an **unclassified gap**. Scriptorium does not infer whether it is literary text, a correction, a blank page, or other apparatus without exact underlying source evidence.
+
+These displayed print-page spans are bibliographic route metadata, **not Page-namespace or scan-page identities**. Freezing the 15 rendered route revisions therefore does not freeze the underlying ProofreadPage inputs or a composite text.
+
 No literary prose, Page-namespace source content, DjVu/PDF bytes, or OCR are committed by this unit.
 
 ## Rights evidence
@@ -23,16 +31,17 @@ The source page also exposes site text under CC BY-SA subject to Wikisource term
 
 ## Corpus boundary
 
-This candidate is deliberately **not yet admitted** to the >=300,000-character calibration/profile corpus. The 399-page bibliographic length makes the work a strong long-form lead, but page count is not a substitute for the repository's required literary-body character count including spaces.
+This candidate is deliberately **not yet admitted** to the >=300,000-character calibration/profile corpus. The 399-page bibliographic length and the newly frozen rendered route topology make the work a stronger long-form lead, but neither is a substitute for the repository's required literary-body character count including spaces.
 
 Still required before corpus admission:
 
-- exact source-free identities for the Page-namespace inputs actually used by the retained route;
+- exact source-free identities for the underlying Page-namespace inputs actually used by the retained route;
+- an evidence-based classification of the displayed page-388 gap and any other apparatus relevant to composition;
 - a deterministic fail-closed extraction/composition contract;
 - literary-body character count including spaces and raw/normalized digests;
-- verification that the frozen body, not merely the print edition's nominal page count, clears 300,000 characters.
+- verification that the frozen body, not merely the print edition's nominal page count or rendered route spans, clears 300,000 characters.
 
-Accordingly `source_identity_status=parent_and_index_revisions_pinned_body_unfrozen` and `admitted_for_calibration=false`.
+Accordingly `source_identity_status=rendered_route_graph_frozen_underlying_pages_unfrozen` and `admitted_for_calibration=false`.
 
 ## FantLab boundary
 
@@ -43,7 +52,8 @@ No `/lp` result attributable to this exact translation/source edition has been e
 ## Canonical evidence
 
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json) — translation identity, exact parent/index locators, bibliography, rights evidence, corpus boundary, and FantLab boundary.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json) — exact rendered route revisions, displayed print-page spans, explicit page-388 gap, and the underlying-Page freeze boundary.
 
 ## Next evidence
 
-A later bounded unit should inventory and pin the exact Page-namespace revision set used by the 1864 ProofreadPage route, then define a candidate-specific fail-closed literary-body extraction/composition contract and compute source-free counts/digests. Only after the exact literary body proves >=300,000 characters may this translation be admitted to the general calibration/profile corpus. FantLab parity remains a separate, stricter source-matching problem.
+A later bounded unit should resolve the exact underlying ProofreadPage/Page-namespace route used by this rendered family, pin every revision identity actually used, and classify the displayed page-388 gap from exact source evidence. Only then should Scriptorium define a candidate-specific fail-closed literary-body extraction/composition contract and compute source-free counts/digests. Only after the exact literary body proves >=300,000 characters may this translation be admitted to the general calibration/profile corpus. FantLab parity remains a separate, stricter source-matching problem.

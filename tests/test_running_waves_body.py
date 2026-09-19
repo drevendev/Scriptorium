@@ -8,6 +8,7 @@ import unittest
 from scriptorium.running_waves_body import (
     MINIMUM_CORPUS_CHARACTERS,
     build_manifest,
+    expand_running_waves_templates,
     replay_manifest,
     source_manifest_sha256,
     validate_manifest,
@@ -48,6 +49,43 @@ class RunningWavesBodyTests(unittest.TestCase):
         self.assertEqual(len(digest), 64)
         self.assertEqual(digest, source_manifest_sha256(copy.deepcopy(source)))
 
+    def test_candidate_template_renderer_matches_frozen_observed_shapes(self) -> None:
+        source = (
+            '<div class="text">{{roman|24}}{{^}} '
+            '{{poem1||Строка первая.\nСтрока вторая.|}} '
+            '{{razr|Разрядка}} {{razr2|Ещё}} '
+            'ударе{{акут}}ние грави{{Гравис}}с '
+            '{{опечатка2|ошипка|ошибка}} '
+            '{{Так в тексте|исходное}} '
+            '{{Так в тексте|слово{{акут}}|подсказка}}</div>'
+        )
+        rendered = expand_running_waves_templates(source)
+        self.assertIn("XXIV", rendered)
+        self.assertNotIn("{{^}}", rendered)
+        self.assertIn("Строка первая.\nСтрока вторая.", rendered)
+        self.assertIn("Разрядка", rendered)
+        self.assertIn("ударе\u0301ние", rendered)
+        self.assertIn("грави\u0300с", rendered)
+        self.assertIn("ошибка", rendered)
+        self.assertNotIn("ошипка", rendered)
+        self.assertIn("слово\u0301", rendered)
+        self.assertNotIn("подсказка", rendered)
+        self.assertNotIn("{{", rendered)
+
+    def test_candidate_template_renderer_rejects_unobserved_shapes(self) -> None:
+        unsupported = (
+            '<div class="text">'
+            '{{roman|IV}} {{^|2em}} {{poem1|Заголовок|Текст|}} '
+            '{{опечатка2|a|b|comment}} {{Так в тексте|a|b|c}}'
+            '</div>'
+        )
+        rendered = expand_running_waves_templates(unsupported)
+        self.assertIn("{{roman|IV}}", rendered)
+        self.assertIn("{{^|2em}}", rendered)
+        self.assertIn("{{poem1|Заголовок|Текст|}}", rendered)
+        self.assertIn("{{опечатка2|a|b|comment}}", rendered)
+        self.assertIn("{{Так в тексте|a|b|c}}", rendered)
+
     def test_build_manifest_is_source_free_and_replayable(self) -> None:
         source = load_source_manifest()
         manifest = build_manifest(source, fetcher=synthetic_fetcher)
@@ -78,6 +116,18 @@ class RunningWavesBodyTests(unittest.TestCase):
             records = synthetic_fetcher(identities)
             first = str(next(iter(identities))["title"])
             records[first] = '<div class="text">До {{неподдерживаемый|шаблон}} после.</div>'
+            return records
+
+        with self.assertRaisesRegex(ValueError, "failed to extract literary body"):
+            build_manifest(source, fetcher=broken_fetcher)
+
+    def test_extraction_fails_closed_on_supported_name_with_unobserved_shape(self) -> None:
+        source = load_source_manifest()
+
+        def broken_fetcher(identities):
+            records = synthetic_fetcher(identities)
+            first = str(next(iter(identities))["title"])
+            records[first] = '<div class="text">{{poem1|Новый заголовок|Текст|}}</div>'
             return records
 
         with self.assertRaisesRegex(ValueError, "failed to extract literary body"):

@@ -1,0 +1,25 @@
+{
+  "bibliographic_source": "Jules Verne, Дети капитана Гранта, trans. A. A. Beketova, Detgiz 1955; az.lib.ru transcription family",
+  "candidate_id": "verne-children-captain-grant-beketova-ru",
+  "capture_scope": {
+    "composite_identity_frozen": false,
+    "literary_body_extraction_frozen": false,
+    "revision_wikitext_identity_frozen": true,
+    "source_text_committed": false
+  },
+  "legal_basis": "public_domain_translation_source_statement",
+  "manifest_version": "scriptorium-single-page-source-revision-v1",
+  "permanent_source_url": "https://ru.wikisource.org/w/index.php?title=Дети_капитана_Гранта_(Верн;_Бекетова)&oldid=5304880",
+  "provider": "Russian Wikisource",
+  "source_identity": {
+    "mediawiki_sha1": "256d816de6743031ea86f266ed004ee72240c200",
+    "page_id": 1012777,
+    "revision_id": 5304880,
+    "revision_timestamp": "2025-02-25T02:24:10Z",
+    "title": "Дети капитана Гранта (Верн; Бекетова)",
+    "wikitext_character_count": 1107187,
+    "wikitext_sha256": "71bfbe889cfc91b7dd24831a6a8984f3ac8d010c90d329b99a8f43aa4e3181a0",
+    "wikitext_utf8_byte_count": 2053126
+  },
+  "source_work_url": "https://ru.wikisource.org/wiki/Дети_капитана_Гранта_(Верн;_Бекетова)"
+}

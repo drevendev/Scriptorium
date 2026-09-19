@@ -124,3 +124,16 @@ M2 only when all of the following exist:
 
 Do not compensate for an unknown edition by weakening tolerance or by selecting whichever
 public-domain transcription happens to be numerically closest.
+
+## Diversification trace: Darwin / Rachinsky 1864
+
+`darwin-origin-species-rachinsky-1864-ru` is a source-traced **nonfiction / history-of-science** lead added to reduce the retained corpus's fiction-heavy concentration. Russian Wikisource identifies the translation as Sergey A. Rachinsky's 1864 Saint Petersburg edition from bookseller A. I. Glazunov and exposes a completed 399-page ProofreadPage index.
+
+Scriptorium pins only source-free parent/index locators at this stage: rendered edition-family revision `oldid=5628021` and ProofreadPage index revision `oldid=4494408`. The underlying Page revisions, scan binary, extraction/composition contract, literary-body count and digests remain unfrozen. The **399-page bibliographic length is not accepted as proof of the >=300,000-character rule**, so this candidate is not yet admitted to calibration/profile work.
+
+FantLab work `969964` is retained only as a work-level cross-reference: its currently exposed Russian translation is K. Timiryazev, not Rachinsky. Therefore no FantLab source/analyzer-input identity or linguistic-result match is claimed, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and M2 remains 0/5.
+
+Canonical evidence:
+
+- `../corpus/candidates/darwin-origin-species-rachinsky-1864-ru.md` — public source-free candidate note and strict admission boundary.
+- `../corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json` — exact parent/index locators, bibliography, rights evidence and next freeze requirements.

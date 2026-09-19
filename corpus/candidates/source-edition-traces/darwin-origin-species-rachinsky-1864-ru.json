@@ -1,0 +1,104 @@
+{
+  "schema_version": "scriptorium-source-edition-trace-v1",
+  "work_id": "darwin-origin-species-rachinsky-1864-ru",
+  "title": "О происхождении видов",
+  "original_title": "On the Origin of Species",
+  "author": "Charles Darwin",
+  "translator": "Sergey Alexandrovich Rachinsky",
+  "original_language": "en",
+  "analysis_language": "ru",
+  "work_identity": {
+    "scope": "Russian translation by S. A. Rachinsky, 1864 Glazunov edition family",
+    "translation_is_distinct_work_identity": true,
+    "do_not_collapse_with": [
+      "English original",
+      "K. A. Timiryazev Russian translation",
+      "other Russian translations",
+      "rendered orthography transformations unless a deterministic transform/identity contract is established"
+    ]
+  },
+  "source_identity_status": "parent_and_index_revisions_pinned_body_unfrozen",
+  "source": {
+    "provider": "Russian Wikisource",
+    "observed_at": "2026-09-19",
+    "rendered_parent": {
+      "page_title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)",
+      "permanent_revision_id": 5628021,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?title=О_происхождении_видов_(Дарвин;_Рачинский)/1864_(ВТ:Ё)&oldid=5628021",
+      "identity_scope": "rendered/transclusion parent locator only; not a frozen literary body"
+    },
+    "proofread_index": {
+      "page_title": "Индекс:Дарвин - О происхождении видов, 1864.djvu",
+      "permanent_revision_id": 4494408,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?title=Индекс:Дарвин_-_О_происхождении_видов,_1864.djvu&oldid=4494408",
+      "progress_displayed": "Закончено — Все страницы вычитаны и проверены",
+      "source_field": "djvu",
+      "identity_scope": "ProofreadPage index metadata/route anchor; underlying Page revisions and scan bytes are not frozen"
+    },
+    "source_text_committed": false,
+    "scan_bytes_committed": false
+  },
+  "source_bibliography": {
+    "displayed_citation": "Ч. Дарвин. О происхождении видов. Пер. С. А. Рачинского. СПб.: Издание книгопродавца А. И. Глазунова, 1864",
+    "publication_place": "Saint Petersburg",
+    "publisher": "Издание книгопродавца А. И. Глазунова",
+    "publication_year": 1864,
+    "displayed_page_count": 399,
+    "page_count_is_not_character_count_evidence": true,
+    "byte_identity_to_print_or_scan_established": false
+  },
+  "legal_evidence": {
+    "source_declared_status": "public domain for the work/translation on the retained Wikisource surface",
+    "source_statement": "Russian Wikisource states that the work is public domain in Russia and life-plus-70-or-less jurisdictions and, for translations, that exclusive rights have expired for all authors of the original and translation.",
+    "translation_scope_explicitly_covered_by_source_statement": true,
+    "site_text_license": "CC BY-SA subject to Wikisource terms",
+    "legal_interpretation_boundary": "This trace records the source's explicit rights statement; it is not independent legal advice."
+  },
+  "freeze_boundary": {
+    "frozen": [
+      "rendered edition-family parent revision locator oldid=5628021",
+      "ProofreadPage index revision locator oldid=4494408",
+      "1864 Rachinsky/Glazunov bibliographic family",
+      "source-declared completed proofread status as an observed metadata fact"
+    ],
+    "unfrozen": [
+      "underlying Page-namespace revision identities",
+      "DjVu/PDF binary bytes and digest",
+      "OCR or Page-markup extraction behavior",
+      "literary-body composition order beyond the parent/index route indication",
+      "literary-body character count and raw/normalized digests",
+      "FantLab analyzer-input bytes/source edition"
+    ]
+  },
+  "corpus_threshold": {
+    "required_characters_including_spaces": 300000,
+    "literary_body_character_count_verified": false,
+    "literary_body_character_count": null,
+    "displayed_print_page_count": 399,
+    "page_count_is_not_threshold_proof": true,
+    "admitted_for_calibration": false,
+    "reason": "A deterministic frozen literary body does not yet exist, so the >=300,000-character rule cannot be asserted from bibliographic page count alone."
+  },
+  "fantlab": {
+    "work_id": 969964,
+    "work_level_identity": "Charles Darwin, On the Origin of Species, monograph, 1859, English",
+    "currently_exposed_russian_translation": "K. Timiryazev",
+    "rachinsky_translation_listed_on_observed_work_surface": false,
+    "linguistic_result_located_for_this_translation": false,
+    "analyzer_input_identity_established": false,
+    "source_edition_match": "unknown",
+    "parity_weight": "none"
+  },
+  "admissibility": {
+    "provenance_trace_ready": true,
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false
+  },
+  "next_evidence": [
+    "Inventory and pin the exact Page-namespace revision identities used by the retained 1864 ProofreadPage route.",
+    "Define a candidate-specific deterministic fail-closed literary-body extraction/composition contract without committing source prose.",
+    "Freeze literary-body character count plus raw and scriptorium-text-v1 normalized digests; admit to general calibration/profile corpus only if the body independently clears 300,000 characters including spaces.",
+    "Keep FantLab matching separate: locate a linguistic result and analyzer-input/source-edition evidence attributable specifically to the Rachinsky translation before assigning diagnostic or M2 weight."
+  ]
+}

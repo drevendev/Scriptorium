@@ -8,6 +8,7 @@ from scriptorium.running_waves_revisions import (
     MANIFEST_VERSION,
     build_manifest,
     expected_pages,
+    fetch_page_revisions,
     replay_manifest,
     validate_manifest,
 )
@@ -24,6 +25,22 @@ class RunningWavesRevisionTests(unittest.TestCase):
             }
             for page in expected_pages()
         }
+
+    def _api_pages(self):
+        return [
+            {
+                "title": page["title"],
+                "pageid": 1000 + page["ordinal"],
+                "revisions": [
+                    {
+                        "revid": 2000 + page["ordinal"],
+                        "timestamp": f"2026-01-{((page['ordinal'] - 1) % 28) + 1:02d}T00:00:00Z",
+                        "sha1": f"{page['ordinal']:040x}",
+                    }
+                ],
+            }
+            for page in expected_pages()
+        ]
 
     def test_expected_route_is_35_numbered_pages_plus_epilogue(self):
         pages = expected_pages()
@@ -46,6 +63,36 @@ class RunningWavesRevisionTests(unittest.TestCase):
         serialized = repr(manifest).lower()
         for forbidden in ("wikitext", "source_text", "literary_body"):
             self.assertNotIn(forbidden + "':", serialized)
+
+    def test_capture_rejects_missing_page(self):
+        pages = self._api_pages()
+        pages[7] = {"title": pages[7]["title"], "missing": True}
+
+        with self.assertRaisesRegex(ValueError, "expected literary page is missing"):
+            fetch_page_revisions(
+                expected_pages(),
+                query=lambda params: {"query": {"pages": pages}},
+            )
+
+    def test_capture_rejects_redirected_page(self):
+        pages = self._api_pages()
+        pages[11]["redirect"] = True
+
+        with self.assertRaisesRegex(ValueError, "expected literary page became a redirect"):
+            fetch_page_revisions(
+                expected_pages(),
+                query=lambda params: {"query": {"pages": pages}},
+            )
+
+    def test_capture_rejects_unexpected_title_drift(self):
+        pages = self._api_pages()
+        pages[15]["title"] = "Бегущая по волнам (Грин)/unexpected"
+
+        with self.assertRaisesRegex(ValueError, "unexpected literary title"):
+            fetch_page_revisions(
+                expected_pages(),
+                query=lambda params: {"query": {"pages": pages}},
+            )
 
     def test_manifest_rejects_route_order_drift(self):
         manifest = build_manifest(fetcher=lambda pages: self._records())

@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "grin-road-nowhere-ru",
-  "research_date": "2026-09-17",
+  "research_date": "2026-09-19",
   "fantlab": {
     "work_id": 27346,
     "analysis_url": "https://fantlab.ru/work27346/lp",
@@ -24,23 +24,24 @@
     "source_provenance_confidence": "strong_for_bibliographic_transcription_family",
     "source_text_committed": false,
     "immutable_identity": {
-      "status": "traced_not_frozen",
+      "status": "index_route_surface_audited_not_complete",
       "frozen_components": [
         "work-index permanent revision oldid 4715367",
-        "explicit Pravda 1965 volume-6 pp. 3–227 bibliographic source citation on the work index"
+        "explicit Pravda 1965 volume-6 pp. 3–227 bibliographic source citation on the work index",
+        "source-free label-to-target audit in grin-road-nowhere-ru.index-route-audit.json"
       ],
       "unfrozen_components": [
-        "exact revision IDs, timestamps and MediaWiki SHA-1 values for the literary chapter subpages",
+        "a complete same-family literary route inventory and exact revision IDs, timestamps and MediaWiki SHA-1 values for its pages",
         "a deterministic literary-body extraction contract",
         "a deterministic composition order bound to pinned literary-page identities",
         "raw and scriptorium-text-v1 normalized composite digests",
         "the relationship between FantLab's uploaded analyzer input and the 1965-source Wikisource transcription"
       ],
-      "reason": "The permanent work-index revision and explicit bibliography identify a transcription family, but the literary body is served through linked chapter pages whose exact revisions are not frozen by this unit."
+      "reason": "The permanent work-index revision and explicit bibliography identify a transcription family, but the index itself is not a complete literary-route witness. It renders eight chapter labels across two parts but only six distinct targets: both Chapter IV labels duplicate the corresponding Chapter III target, and the Part II Chapter I–III targets resolve as red links in the audited current surface. Additional same-family evidence is required before literary-page freezing can begin."
     },
     "edition_identity_boundary": {
-      "status": "source_cited_1965_transcription_family_not_full_text_frozen",
-      "note": "The primary candidate is specifically the Wikisource transcription family whose index cites Pravda 1965 volume 6 pp. 3–227. Bibliographic agreement does not establish byte identity with the printed volume, another electronic transcription, or FantLab's undisclosed analyzer input."
+      "status": "source_cited_1965_transcription_family_index_audited_body_unfrozen",
+      "note": "The primary candidate is specifically the Wikisource transcription family whose index cites Pravda 1965 volume 6 pp. 3–227. Its index routing is now audited as incomplete/misdirected rather than treated as a complete chapter inventory. Bibliographic agreement does not establish byte identity with the printed volume, another electronic transcription, or FantLab's undisclosed analyzer input."
     }
   },
   "alternate_public_transcription": {
@@ -112,24 +113,25 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "primary_traced_alternate_body_frozen",
+    "source_identity_status": "primary_index_route_surface_audited_alternate_body_frozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "primary_source_edition_traced_alternate_source_identity_frozen",
+    "status": "primary_index_routing_incomplete_alternate_source_identity_frozen",
     "reasons": [
       "FantLab reports 438,439 characters and 61,299 words for its 18 September 2022 analysis, comfortably above the 300,000-character calibration threshold.",
       "Russian Wikisource supplies a permanent work-index locator and an explicit Pravda 1965 volume-6 pp. 3–227 source citation; FantLab bibliography independently corroborates that edition and page range.",
+      "The permanent primary index is not a complete literary-route witness: it advertises eight labels but only six distinct link targets, both Chapter IV labels duplicate Chapter III targets, and all three distinct Part II targets currently resolve as red links.",
       "The alternate Wikisource/az.lib single-page transcription now has source-free exact revision-wikitext and literary-body identities. Its fail-closed body contains 442,656 characters / 825,899 UTF-8 bytes with raw and normalized SHA-256 e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee.",
       "The alternate body is 4,217 characters larger than FantLab's displayed count; that delta is diagnostic-only and does not establish either equivalence or a specific normalization difference.",
-      "The literary pages behind the primary 1965-source work index are not revision-pinned and no deterministic extraction/composition contract or composite digest exists yet.",
+      "A complete same-family literary route set for the primary 1965-source transcription is not established, so page-revision freezing, deterministic primary extraction/composition and a primary composite digest remain blocked.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Freeze the exact literary-page inventory for the primary 1965-source Wikisource transcription with revision IDs, timestamps and MediaWiki SHA-1 values without committing source prose.",
-      "Define deterministic fail-closed extraction/composition for the primary route and record raw plus scriptorium-text-v1 normalized composite digests.",
-      "Only after the primary route is independently frozen, compare its body identity with the already-frozen alternate body; do not infer equivalence from title, plot, chapter labels or count proximity.",
+      "Recover or independently establish the complete literary route set for the Pravda-1965/lib.web Wikisource family from same-family evidence. Explicitly resolve the two Chapter IV labels that duplicate Chapter III targets and the Part II red-link targets; do not fill any gap from the distinct az.lib.ru transcription.",
+      "After a complete same-family route set is evidenced, freeze exact literary-page revision IDs, timestamps and MediaWiki SHA-1 values without committing source prose.",
+      "Only then define deterministic fail-closed extraction/composition for the primary route, record raw plus scriptorium-text-v1 normalized composite digests, and compare that primary identity with the already-frozen alternate body.",
       "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or transcription; bibliography or public-source freezing alone cannot advance M2."
     ]
   }

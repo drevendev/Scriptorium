@@ -1,9 +1,9 @@
 # Run receipt — SCRIP-CORPUS-034
 
 Date: 2026-09-19
-Issue: #155
-Pull request: #156 (`scrip-corpus-034-darwin-page-revisions`, Draft)
-Mode: normal-flow P2 corpus/provenance strengthening
+Issue: #155 (closed completed)
+Pull request: #156 (`scrip-corpus-034-darwin-page-revisions`, squash-merged)
+Mode: normal-flow P2 corpus/provenance strengthening, followed by independent recovery/review
 
 ## Selected bounded unit
 
@@ -26,6 +26,18 @@ The uploaded capture artifact is **10592834383**. Its ZIP SHA-256 is **`1fe93194
 - Committed **418 exact Page revision identities** as four source-free shards plus an authoritative index. Each tuple contains only Page sequence, revision ID, timestamp and MediaWiki SHA-1.
 - Updated the public Darwin/Rachinsky candidate page and structured source-edition trace to expose the stronger identity freeze while explicitly preserving the remaining gates.
 - Added this receipt and semantic changelog fragment and advanced canonical state for stateless recovery.
+
+## Independent exact-head review
+
+A later stateless wake independently resolved PR #156 at exact head **`dd1cd6083e44cd4bfeac8df932a50721a3e41cad`** against unchanged base **`3aa62c1dac2a9f7b4b4449d753226267eed61160`**. The comparison was **17 commits ahead / 0 behind**, the PR was mergeable, and there were no inline review threads.
+
+All 15 changed paths were inspected by type: hosted workflow, capture/replay implementation, sharded-manifest loader, focused tests, four identity shards, authoritative index, public candidate/provenance records, state, changelog and this receipt. No literary source prose, OCR, rendered Page payload, scan bytes or downstream-gate promotion was found.
+
+All **15/15** pull-request-triggered workflows on the exact reviewed head completed **successfully**. `Darwin Rachinsky Page revision identities` run **35472282171**, job **105975295568**, checked out that exact SHA, used Python 3.13.15, ran **293 tests — OK**, replayed all 418 pinned revisions against MediaWiki and emitted `identity_replay_match=true`, `source_text_included=false`, `literary_body_frozen=false`, `admitted_for_calibration=false`, `fantlab_source_edition_match=unknown`, and `m2_parity_admissible=false`.
+
+Exact-head replay artifact **10593275396** is **538 bytes** with SHA-256 **`82008b4c69a7c4d65f874d5595a6494405ba527c9f0fe5d2091f311c91c9ef9a`**. `Scriptorium Pages` and `Scriptorium pinned pylem provider` were also green on the reviewed SHA.
+
+No blocking defect was found. The PR was marked Ready and squash-merged as **`a8429d82a33e3a0e2606c72a398343b00d604da8`**; Issue #155 closed completed.
 
 ## Freeze boundary
 
@@ -55,4 +67,4 @@ Still unfrozen:
 
 ## Handoff
 
-PR #156 is intentionally still **Draft**. This wake authored the substantial change and therefore does not self-approve or merge it. The next stateless wake must resolve the PR's then-current exact head, inspect every changed path, confirm all required checks/replay evidence on that exact head, and only then decide whether it can be marked Ready and merged.
+SCRIP-CORPUS-034 is complete and canonical in `master`. Resume normal-flow P2 corpus/provenance work. For Darwin/Rachinsky, the next evidence-bearing unit is a candidate-specific fail-closed literary-body extraction/composition contract over the frozen 418 Page identities, followed by body count/digests and >=300k admission only if independently demonstrated. Independent scan-byte SHA-256 and FantLab source/analyzer-input matching remain separate gates.

@@ -43,18 +43,31 @@ Two omitted positions have exact source-free classification evidence: Page **114
 
 ## Exact 418-Page revision identity freeze
 
-**SCRIP-CORPUS-034** now freezes the revision identity of every one of those 418 included Page dependencies without committing Page prose. Hosted capture requested only MediaWiki `ids|timestamp|sha1`; it returned exactly 418 distinct included sequences, excluded 114 and 411, and contained no wikitext/OCR/source-text field.
+**SCRIP-CORPUS-034** freezes the revision identity of every one of those 418 included Page dependencies without committing Page prose. Hosted capture requested only MediaWiki `ids|timestamp|sha1`; it returned exactly 418 distinct included sequences, excluded 114 and 411, and contained no wikitext/OCR/source-text field.
 
 The capture is committed as four digest-pinned source-free shards plus one index:
 
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json) — topology contract, capture provenance, shard digests and gate boundary;
 - `.page-revisions.01.json` through `.page-revisions.04.json` — compact tuples of **Page sequence, exact revision ID, revision timestamp and MediaWiki SHA-1** only.
 
-The first included dependency is Page sequence **8**, exact revision **`oldid=4493767`**, timestamp `2022-05-19T10:40:06Z`; the last is sequence **427**, exact revision **`oldid=4494407`**, timestamp `2022-05-22T07:58:34Z`. The inventory also records newer revisions where present—for example sequence 426 is pinned at its captured exact revision rather than assuming all pages share a 2018/2022 edit epoch.
+Hosted replay re-queries the exact revision IDs and fails closed if title, timestamp or MediaWiki SHA-1 differs. No literary prose, Page-namespace payload, DjVu/PDF bytes, OCR or screenshots are committed.
 
-The initial hosted capture artifact was produced by workflow run `35471807464`, artifact `10592834383`. Its ZIP SHA-256 is `1fe9319448ea932a57c48378381e111cbcd6c7e8ca902d162aea1b93f675a014`; the extracted verbose capture JSON SHA-256 is `8979500217049380826c2d8c304dd94dc214087e3c356c16f5779e559115b375`. The committed compact shards preserve the same 418 identity tuples and are independently SHA-256 pinned by the index. Hosted replay re-queries the exact revision IDs and fails closed if title, timestamp or MediaWiki SHA-1 differs.
+## Literary-body composition contract
 
-No literary prose, Page-namespace payload, DjVu/PDF bytes, OCR or screenshots are committed. Freezing revision identity does **not** mean the literary body has been selected or extracted.
+**SCRIP-CORPUS-035 / Draft PR #158** adds `scriptorium-darwin-literary-body-contract-v1`, a source-free composition contract bound to the frozen 418-Page identity inventory.
+
+The contract selects only rendered numbered routes **`/1` through `/14`** as the literary input surface. That is **388 exact Page dependencies**, kept in frozen route/Page-sequence order. It intentionally excludes **30 frozen apparatus dependencies**:
+
+- parent-only Page sequences **8–21** and **423–427** (19 dependencies total);
+- alphabetical-index route **`/Указатель`**, Page sequences **412–422** (11 dependencies).
+
+Source-declared no-text positions **114** and **411** remain explicit non-dependencies and therefore never enter either the 388 literary set or the 30 frozen-apparatus set.
+
+The boundary is evidence-based rather than inferred from nominal page count. The frozen source graph already labels `/1` as introduction + chapter 1, `/2`–`/14` as chapter routes, and `/Указатель` as the alphabetical index. Fresh public-source inspection also shows Page 419 carrying alphabetical-index entries and Pages 425–426 carrying publisher-advertising/back-matter material. This supports excluding the index and parent-only framing surfaces from the literary composition without copying their prose into repository artifacts.
+
+The implementation fails closed if the 418-Page identity inventory, identity-row shape, topology partition or generated contract drifts. It may later permit **transient exact-revision MediaWiki main-slot fetches only after identity verification**, but it does not serialize Page wikitext or rendered prose.
+
+This is deliberately a composition/input freeze, **not yet a literary-body identity freeze**. The Page-wikitext-to-prose rendering profile and composite separator semantics remain unfrozen, so no body count or body digest is claimed by this unit.
 
 ## Provider-reported scan-file metadata
 
@@ -68,16 +81,15 @@ The retained Wikisource work surface explicitly states that the work is in the p
 
 ## Corpus boundary
 
-This candidate is still **not admitted** to the >=300,000-character calibration/profile corpus. The source family, rendered route graph, exact 418-dependency topology and now the exact revision identities of all 418 included Page pages are frozen source-free, but the literary body has not yet been deterministically composed or counted.
+This candidate is still **not admitted** to the >=300,000-character calibration/profile corpus. The source family, route graph, 418-dependency topology, exact 418 Page revision identities and now the proposed 388/30 literary-versus-apparatus composition boundary are source-free frozen/proposed, but the actual literary prose has not yet been deterministically rendered or counted.
 
 Still required before corpus admission:
 
-- define an evidence-based literary-body composition rule for parent/front matter, numbered routes, alphabetical index and other apparatus while preserving no-text exclusions 114 and 411;
-- implement deterministic fail-closed extraction/composition from the now-pinned Page revisions;
-- compute literary-body character count including spaces plus raw/normalized digests;
+- define and verify a candidate-specific fail-closed Page-wikitext-to-prose rendering profile over the 388 exact literary dependencies;
+- freeze the rendered literary-body character count including spaces plus raw/normalized digests;
 - verify that the frozen body itself, not nominal page count or topology, clears **300,000 characters**.
 
-Accordingly `source_identity_status=rendered_route_graph_proofreadpage_topology_and_418_page_revision_identities_frozen_literary_body_unfrozen` and `admitted_for_calibration=false`.
+Accordingly `admitted_for_calibration=false` remains mandatory.
 
 ## FantLab boundary
 
@@ -85,10 +97,11 @@ FantLab work **`work969964`** identifies Darwin's 1859 English monograph. The cu
 
 ## Canonical evidence
 
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json) — current translation/source identity and gate boundary.
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json) — route/topology evidence captured before the Page-identity freeze; its historical `page_revision_set_unfrozen` boundary is superseded for Page identity by the index below, not for literary-body selection.
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json) — authoritative source-free index for the 418 exact Page revision identities and four committed shards.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json) — retained translation/source identity and gate boundary from the earlier provenance stages.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json) — exact route/topology evidence and apparatus roles.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json) — authoritative source-free index for all 418 exact Page revision identities and four committed shards.
+- [`../../scriptorium/darwin_body_contract.py`](../../scriptorium/darwin_body_contract.py) — deterministic source-free 388/30 composition contract generator and fail-closed validator.
 
 ## Next evidence
 
-A later bounded unit should use the pinned 418 Page identities to define a candidate-specific fail-closed literary-body extraction/composition contract, then compute source-free counts/digests and independently prove the >=300,000-character threshold. If byte-level scan identity becomes necessary, retrieve one exact DjVu byte stream and record independent byte count plus SHA-256 rather than promoting provider metadata. FantLab parity remains a separate, stricter source-matching problem.
+After independent review/merge of SCRIP-CORPUS-035, a later bounded unit should inspect the exact pinned Page wikitext shapes and freeze a candidate-specific fail-closed rendering profile for the 388 literary dependencies without persisting source prose. Only then should a separate identity/admission unit compute source-free counts/digests and independently prove the >=300,000-character threshold. FantLab parity remains a separate, stricter source-matching problem.

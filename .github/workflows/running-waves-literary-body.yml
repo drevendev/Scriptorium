@@ -28,8 +28,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.13'
       - name: Run standard-library test suite
@@ -54,28 +57,105 @@ jobs:
           identities = validate_manifest(source)
           revisions = fetch_pinned_chapter_revisions(identities)
           body_re = re.compile(r'<div\s+class=["\'](?:text|indent)["\']\s*>(.*?)</div>', re.I | re.S)
-          template_re = re.compile(r'\{\{\s*([^|{}\n]+)')
-          all_names = set()
+
+          def template_calls(fragment):
+              calls = []
+              stack = []
+              index = 0
+              while index < len(fragment) - 1:
+                  pair = fragment[index:index + 2]
+                  if pair == '{{':
+                      stack.append(index)
+                      index += 2
+                      continue
+                  if pair == '}}' and stack:
+                      start = stack.pop()
+                      if not stack:
+                          calls.append(fragment[start + 2:index])
+                      index += 2
+                      continue
+                  index += 1
+              return calls
+
+          def split_top_level(inner):
+              parts = []
+              start = 0
+              brace = bracket = 0
+              index = 0
+              while index < len(inner):
+                  pair = inner[index:index + 2]
+                  if pair == '{{':
+                      brace += 1
+                      index += 2
+                      continue
+                  if pair == '}}' and brace:
+                      brace -= 1
+                      index += 2
+                      continue
+                  if pair == '[[':
+                      bracket += 1
+                      index += 2
+                      continue
+                  if pair == ']]' and bracket:
+                      bracket -= 1
+                      index += 2
+                      continue
+                  if inner[index] == '|' and brace == 0 and bracket == 0:
+                      parts.append(inner[start:index])
+                      start = index + 1
+                  index += 1
+              parts.append(inner[start:])
+              return parts
+
+          observed_names = set()
           for row in identities:
               title = str(row['title'])
-              text = revisions[title]
-              matches = body_re.findall(text)
-              names = sorted({name.strip() for fragment in matches for name in template_re.findall(fragment)})
-              all_names.update(names)
-              print(json.dumps({'ordinal': row['ordinal'], 'title': title, 'body_div_count': len(matches), 'template_names': names}, ensure_ascii=False, sort_keys=True))
+              matches = body_re.findall(revisions[title])
+              shapes = []
+              for fragment in matches:
+                  for inner in template_calls(fragment):
+                      parts = split_top_level(inner)
+                      if not parts:
+                          continue
+                      name = parts[0].strip()
+                      observed_names.add(name)
+                      positional = []
+                      named_keys = []
+                      empty_positions = []
+                      numeric = {}
+                      for arg_index, raw in enumerate(parts[1:], start=1):
+                          value = raw.strip()
+                          if '=' in value:
+                              key, _ = value.split('=', 1)
+                              if key.strip() and not key.strip().isdigit():
+                                  named_keys.append(key.strip())
+                                  continue
+                          positional.append(value)
+                          if not value:
+                              empty_positions.append(len(positional))
+                          if re.fullmatch(r'[0-9]+', value):
+                              numeric[str(len(positional))] = value
+                      shapes.append({
+                          'template': name,
+                          'positional_count': len(positional),
+                          'empty_positions': empty_positions,
+                          'named_keys': sorted(named_keys),
+                          'numeric_positional_values': numeric,
+                      })
+              print(json.dumps({'ordinal': row['ordinal'], 'title': title, 'body_div_count': len(matches), 'template_shapes': shapes}, ensure_ascii=False, sort_keys=True))
 
           samples = {
               '^': '{{^|A}}',
-              'roman': '{{roman|A}}',
+              'roman': '{{roman|1}}',
               'poem1': '{{poem1|A|B|C}}',
               'razr': '{{razr|A}}',
               'razr2': '{{razr2|A}}',
-              'акут': '{{акут|A}}',
-              'Гравис': '{{Гравис|A}}',
+              'акут': '{{акут}}',
+              'Гравис': '{{Гравис}}',
               'опечатка2': '{{опечатка2|A|B|C|nocat=1}}',
               'Так в тексте': '{{Так в тексте|A}}',
           }
-          for name in sorted(all_names):
+          for name in sorted(observed_names):
               sample = samples.get(name)
               if sample is None:
                   continue
@@ -112,7 +192,7 @@ jobs:
           print(data['composite_identity']['character_count_including_spaces'])
           print(data['composite_identity']['raw_sha256'])
           PY
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: running-waves-literary-body-source-free
           path: /tmp/grin-running-on-waves-ru.literary-body.observed.json

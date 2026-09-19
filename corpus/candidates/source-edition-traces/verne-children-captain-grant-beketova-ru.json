@@ -16,7 +16,7 @@
       "later edited or modernized Beketova-derived texts unless independently identified"
     ]
   },
-  "source_identity_status": "revision_identity_frozen_body_unfrozen",
+  "source_identity_status": "literary_body_frozen_fantlab_source_unmatched",
   "source": {
     "provider": "Russian Wikisource",
     "page_title": "Дети капитана Гранта (Верн; Бекетова)",
@@ -35,11 +35,22 @@
       "wikitext_sha256": "71bfbe889cfc91b7dd24831a6a8984f3ac8d010c90d329b99a8f43aa4e3181a0",
       "source_text_committed": false
     },
+    "frozen_literary_body_identity": {
+      "manifest": "verne-children-captain-grant-beketova-ru.body.json",
+      "extraction_profile": "scriptorium-beketova-captain-grant-wikisource-body-v1",
+      "character_count_including_spaces": 1095467,
+      "utf8_byte_count": 2040240,
+      "raw_sha256": "4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161",
+      "normalization_profile": "scriptorium-text-v1",
+      "normalized_character_count_including_spaces": 1095467,
+      "normalized_sha256": "4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161",
+      "source_text_committed": false
+    },
     "current_page_info": {
       "content_model": "wikitext",
       "page_length_bytes": 2053126,
       "ordinary_subpages": 27,
-      "note": "The byte count agrees with the pinned revision identity, but ordinary subpage count remains a current page-information observation and does not establish a composition source."
+      "note": "The byte count agrees with the pinned revision identity, but ordinary subpage count remains a current page-information observation and is not used as a composition source. The literary body is extracted only from exact revision oldid=5304880."
     }
   },
   "source_bibliography": {
@@ -53,8 +64,24 @@
     "parts": 3,
     "chapters_by_part": [26, 22, 22],
     "total_chapters": 70,
-    "basis": "Permanent revision oldid=5304880 rendered table of contents",
-    "structure_is_not_body_identity": true
+    "basis": "Permanent revision oldid=5304880 rendered table of contents and fail-closed source-shape inventory",
+    "structure_is_not_print_edition_identity": true
+  },
+  "extraction_contract": {
+    "profile": "scriptorium-beketova-captain-grant-wikisource-body-v1",
+    "source_revision": 5304880,
+    "observed_wikitext_lines": 11028,
+    "literary_body_line_start": 37,
+    "trailing_category_lines": 8,
+    "literary_heading_inventory": {
+      "level_3_part_headings": 3,
+      "level_4_chapter_headings": 140
+    },
+    "source_scaffold_before_body": {
+      "templates": ["Отексте", "книга", "uc", "h"],
+      "center_tags": 6
+    },
+    "fail_closed_boundary": "The extractor requires the exact observed line, scaffold, heading, category and in-body markup topology. Unsupported drift fails instead of rendering or inferring a replacement source."
   },
   "legal_evidence": {
     "source_declared_status": "PD-old-70",
@@ -65,12 +92,11 @@
   },
   "corpus_threshold": {
     "required_characters_including_spaces": 300000,
-    "literary_body_character_count_verified": false,
-    "supporting_source_surface_bytes": 2053126,
-    "supporting_source_wikitext_characters": 1107187,
-    "supporting_source_category": "Импорт/lib.ru/Длина текста более 1000 Кб",
-    "admitted_for_calibration": false,
-    "reason": "The exact revision wikitext identity is frozen, but deterministic fail-closed literary-body extraction and an exact literary-body character count are not. Wikitext size/count is not a substitute for the corpus character threshold."
+    "literary_body_character_count_verified": true,
+    "literary_body_character_count": 1095467,
+    "admitted_for_calibration": true,
+    "admission_scope": "general Scriptorium calibration/profile corpus; not M2 parity evidence",
+    "reason": "The exact pinned revision is legally/provenance qualified and the deterministic fail-closed literary body contains 1,095,467 characters including spaces, exceeding the 300,000-character corpus threshold."
   },
   "fantlab": {
     "linguistic_result_located_for_this_translation": false,
@@ -80,13 +106,14 @@
   },
   "admissibility": {
     "provenance_trace_ready": true,
+    "source_frozen_diagnostic_comparison_admissible": true,
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false
   },
   "next_evidence": [
-    "Define a candidate-specific fail-closed literary-body extraction contract for exact revision oldid=5304880 without using current subpages as composition inputs unless separately justified.",
-    "Compute exact literary-body character/byte counts and raw plus scriptorium-text-v1 digests; only then decide >=300k corpus admission.",
-    "Keep the Beketova translation identity distinct when looking for FantLab linguistic results or source-edition evidence; do not infer a match from title or translator alone."
+    "Locate a FantLab linguistic result that can be attributed specifically to the Beketova Russian translation rather than the French original or another translation.",
+    "Establish FantLab analyzer-input/source-edition identity independently before assigning any parity weight; title, translator or bibliographic similarity alone is insufficient.",
+    "Use the frozen body for source-stable derived Scriptorium analyses/showcase slices without publishing source prose."
   ]
 }

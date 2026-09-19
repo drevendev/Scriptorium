@@ -15,6 +15,7 @@ from scriptorium.running_waves_revisions import (
 
 
 class RunningWavesRevisionTests(unittest.TestCase):
+    # Issue #141 acceptance explicitly requires live-capture missing/redirect/drift coverage.
     def _records(self):
         return {
             page["title"]: {

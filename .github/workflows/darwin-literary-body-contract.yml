@@ -1,0 +1,70 @@
+name: Darwin Rachinsky literary-body contract
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-literary-body-contract.yml"
+      - "scriptorium/darwin_body_contract.py"
+      - "scriptorium/darwin_page_freeze.py"
+      - "scriptorium/darwin_page_shards.py"
+      - "tests/test_darwin_body_contract.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.*.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: Verify source-free composition contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run Darwin contract tests
+        run: python -m unittest tests.test_darwin_body_contract -v
+
+      - name: Materialize source-free contract receipt
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_body_contract \
+            --index corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json \
+            --receipt build/repro/darwin-origin-species-rachinsky-1864-ru.body-contract.json
+
+      - name: Verify gate boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path("build/repro/darwin-origin-species-rachinsky-1864-ru.body-contract.json").read_text(encoding="utf-8"))
+          assert receipt["source_text_included"] is False
+          assert receipt["frozen_dependency_count"] == 418
+          assert receipt["composition"]["literary_dependency_count"] == 388
+          assert receipt["composition"]["apparatus_excluded"]["apparatus_dependency_count"] == 30
+          assert receipt["deferred_gates"]["literary_body_rendering_profile_frozen"] is False
+          assert receipt["deferred_gates"]["literary_body_count_and_digests_frozen"] is False
+          assert receipt["deferred_gates"]["minimum_300k_proved"] is False
+          assert receipt["admitted_for_calibration"] is False
+          assert receipt["fantlab_source_edition_match"] == "unknown"
+          assert receipt["m2_parity_admissible"] is False
+          print("SCRIPTORIUM_DARWIN_LITERARY_DEPENDENCIES=388")
+          PY
+
+      - name: Upload source-free contract evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-literary-body-contract
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.body-contract.json
+          if-no-files-found: error
+          retention-days: 7

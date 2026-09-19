@@ -3,7 +3,7 @@
   "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
   "family_id": "wikisource-rachinsky-glazunov-1864-vt-yo",
   "captured_on": "2026-09-19",
-  "purpose": "Freeze the source-free rendered subpage route topology and provider-reported scan-file metadata of the Rachinsky/Glazunov 1864 Wikisource family without claiming that the underlying Page-namespace inputs, independently retrieved scan bytes, or literary body are revision-frozen.",
+  "purpose": "Freeze the source-free rendered route graph, exact ProofreadPage transclusion topology and provider-reported scan metadata for the Rachinsky/Glazunov 1864 Wikisource family without claiming that the complete underlying Page-namespace revision set, independently retrieved scan bytes, or literary body are frozen.",
   "source_text_committed": false,
   "bibliographic_identity": {
     "author": "Charles Darwin",
@@ -18,7 +18,10 @@
     "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)",
     "revision_id": 5628021,
     "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5628021",
-    "role": "rendered edition-family parent and route table of contents"
+    "role": "retained rendered edition-family parent and route-table anchor",
+    "proofreadpage_topology_witness_revision_id": 5712882,
+    "proofreadpage_topology_witness_permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5712882",
+    "topology_witness_role": "later exact parent revision used only to freeze the parent-level pages include topology; it does not replace the retained bibliographic anchor"
   },
   "proofread_index": {
     "title": "Индекс:Дарвин - О происхождении видов, 1864.djvu",
@@ -28,157 +31,99 @@
     "underlying_page_revision_identities_frozen": false,
     "binary_identity_status": "provider_reported_file_metadata_frozen_binary_bytes_unverified"
   },
-  "rendered_routes": [
-    {
-      "order": 1,
-      "route": "1",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/1",
-      "revision_id": 3738261,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738261",
-      "role": "introduction_and_chapter_1_rendered_route",
-      "displayed_print_page_from": 1,
-      "displayed_print_page_to": 35
+  "proofreadpage_transclusion_topology": {
+    "status": "exact_transclusion_topology_frozen_page_revision_set_unfrozen",
+    "shared_route_template": {
+      "title": "Шаблон:О происхождении видов (Дарвин; Рачинский)/1864",
+      "revision_id": 3775868,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3775868",
+      "last_edit_displayed": "26 June 2019 02:59",
+      "role": "exact switch/template revision defining the pages ranges for rendered routes /1 through /14 and /Указатель"
     },
-    {
-      "order": 2,
-      "route": "2",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/2",
-      "revision_id": 3738286,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738286",
-      "role": "chapter_2_rendered_route",
-      "displayed_print_page_from": 36,
-      "displayed_print_page_to": 48
+    "edition_parent_include": {
+      "witness_revision_id": 5712882,
+      "include_expression": "8-21,423-427",
+      "ranges": [
+        {
+          "from": 8,
+          "to": 21,
+          "count": 14
+        },
+        {
+          "from": 423,
+          "to": 427,
+          "count": 5
+        }
+      ],
+      "dependency_count": 19
     },
-    {
-      "order": 3,
-      "route": "3",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/3",
-      "revision_id": 3738290,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738290",
-      "role": "chapter_3_rendered_route",
-      "displayed_print_page_from": 49,
-      "displayed_print_page_to": 64
-    },
-    {
-      "order": 4,
-      "route": "4",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/4",
-      "revision_id": 3738294,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738294",
-      "role": "chapter_4_rendered_route",
-      "displayed_print_page_from": 65,
-      "displayed_print_page_to": 108
-    },
-    {
-      "order": 5,
-      "route": "5",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/5",
-      "revision_id": 3738299,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738299",
-      "role": "chapter_5_rendered_route",
-      "displayed_print_page_from": 109,
-      "displayed_print_page_to": 138
-    },
-    {
-      "order": 6,
-      "route": "6",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/6",
-      "revision_id": 3738303,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738303",
-      "role": "chapter_6_rendered_route",
-      "displayed_print_page_from": 139,
-      "displayed_print_page_to": 167
-    },
-    {
-      "order": 7,
-      "route": "7",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/7",
-      "revision_id": 3738307,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738307",
-      "role": "chapter_7_rendered_route",
-      "displayed_print_page_from": 168,
-      "displayed_print_page_to": 196
-    },
-    {
-      "order": 8,
-      "route": "8",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/8",
-      "revision_id": 3738312,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738312",
-      "role": "chapter_8_rendered_route",
-      "displayed_print_page_from": 197,
-      "displayed_print_page_to": 222
-    },
-    {
-      "order": 9,
-      "route": "9",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/9",
-      "revision_id": 3738315,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738315",
-      "role": "chapter_9_rendered_route",
-      "displayed_print_page_from": 223,
-      "displayed_print_page_to": 246
-    },
-    {
-      "order": 10,
-      "route": "10",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/10",
-      "revision_id": 3738265,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738265",
-      "role": "chapter_10_rendered_route",
-      "displayed_print_page_from": 247,
-      "displayed_print_page_to": 274
-    },
-    {
-      "order": 11,
-      "route": "11",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/11",
-      "revision_id": 3738270,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738270",
-      "role": "chapter_11_rendered_route",
-      "displayed_print_page_from": 275,
-      "displayed_print_page_to": 303
-    },
-    {
-      "order": 12,
-      "route": "12",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/12",
-      "revision_id": 3738274,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738274",
-      "role": "chapter_12_rendered_route",
-      "displayed_print_page_from": 304,
-      "displayed_print_page_to": 325
-    },
-    {
-      "order": 13,
-      "route": "13",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/13",
-      "revision_id": 3738278,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738278",
-      "role": "chapter_13_rendered_route",
-      "displayed_print_page_from": 326,
-      "displayed_print_page_to": 361
-    },
-    {
-      "order": 14,
-      "route": "14",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/14",
-      "revision_id": 3738282,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738282",
-      "role": "chapter_14_rendered_route",
-      "displayed_print_page_from": 362,
-      "displayed_print_page_to": 387
-    },
-    {
-      "order": 15,
-      "route": "Указатель",
-      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/Указатель",
-      "revision_id": 3738318,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738318",
-      "role": "alphabetical_index_rendered_route",
-      "displayed_print_page_from": 389,
-      "displayed_print_page_to": 399
+    "rendered_route_dependencies": [
+      {"route": "1", "from": 22, "to": 56, "excluded": [], "dependency_count": 35},
+      {"route": "2", "from": 57, "to": 69, "excluded": [], "dependency_count": 13},
+      {"route": "3", "from": 70, "to": 85, "excluded": [], "dependency_count": 16},
+      {"route": "4", "from": 86, "to": 131, "excluded": [114], "dependency_count": 45},
+      {"route": "5", "from": 132, "to": 161, "excluded": [], "dependency_count": 30},
+      {"route": "6", "from": 162, "to": 190, "excluded": [], "dependency_count": 29},
+      {"route": "7", "from": 191, "to": 219, "excluded": [], "dependency_count": 29},
+      {"route": "8", "from": 220, "to": 245, "excluded": [], "dependency_count": 26},
+      {"route": "9", "from": 246, "to": 269, "excluded": [], "dependency_count": 24},
+      {"route": "10", "from": 270, "to": 297, "excluded": [], "dependency_count": 28},
+      {"route": "11", "from": 298, "to": 326, "excluded": [], "dependency_count": 29},
+      {"route": "12", "from": 327, "to": 348, "excluded": [], "dependency_count": 22},
+      {"route": "13", "from": 349, "to": 384, "excluded": [], "dependency_count": 36},
+      {"route": "14", "from": 385, "to": 410, "excluded": [], "dependency_count": 26},
+      {"route": "Указатель", "from": 412, "to": 422, "excluded": [], "dependency_count": 11}
+    ],
+    "rendered_route_dependency_count": 399,
+    "parent_plus_route_dependency_count": 418,
+    "dependency_count_scope": "distinct Page-sequence numbers referenced by the exact parent include and shared route-template pages expressions; this is topology only, not a freeze of those Page revisions or their contents",
+    "explicit_non_dependencies": [114, 411],
+    "explicit_non_dependency_evidence": [
+      {
+        "page_sequence": 114,
+        "revision_id": 3364724,
+        "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3364724",
+        "source_display": "Эта страница не требует вычитки",
+        "hidden_category": "Без текста",
+        "topology_relation": "explicitly excluded by route /4 with exclude=114",
+        "classification": "source_declared_no_text"
+      },
+      {
+        "page_sequence": 411,
+        "revision_id": 3364733,
+        "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3364733",
+        "source_display": "Эта страница не требует вычитки",
+        "hidden_category": "Без текста",
+        "topology_relation": "single omitted Page-sequence position between route /14 ending at 410 and /Указатель starting at 412",
+        "classification": "source_declared_no_text"
+      }
+    ],
+    "displayed_print_page_388_resolution": {
+      "status": "resolved_no_text_gap",
+      "displayed_print_page": 388,
+      "page_sequence": 411,
+      "mapping_basis": "route /14 maps displayed print pages 362-387 to Page-sequence 385-410 with equal cardinality; /Указатель maps displayed print pages 389-399 to Page-sequence 412-422 with equal cardinality; the sole one-page gap on both surfaces is therefore Page-sequence 411 / displayed print page 388",
+      "classification_basis": "exact Page-sequence 411 revision oldid=3364733 is source-declared 'Без текста' and 'Эта страница не требует вычитки'",
+      "classification": "source_declared_no_text_non_literary_gap",
+      "image_or_ocr_interpretation_used": false
     }
+  },
+  "rendered_routes": [
+    {"order": 1, "route": "1", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/1", "revision_id": 3738261, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738261", "role": "introduction_and_chapter_1_rendered_route", "displayed_print_page_from": 1, "displayed_print_page_to": 35},
+    {"order": 2, "route": "2", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/2", "revision_id": 3738286, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738286", "role": "chapter_2_rendered_route", "displayed_print_page_from": 36, "displayed_print_page_to": 48},
+    {"order": 3, "route": "3", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/3", "revision_id": 3738290, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738290", "role": "chapter_3_rendered_route", "displayed_print_page_from": 49, "displayed_print_page_to": 64},
+    {"order": 4, "route": "4", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/4", "revision_id": 3738294, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738294", "role": "chapter_4_rendered_route", "displayed_print_page_from": 65, "displayed_print_page_to": 108},
+    {"order": 5, "route": "5", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/5", "revision_id": 3738299, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738299", "role": "chapter_5_rendered_route", "displayed_print_page_from": 109, "displayed_print_page_to": 138},
+    {"order": 6, "route": "6", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/6", "revision_id": 3738303, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738303", "role": "chapter_6_rendered_route", "displayed_print_page_from": 139, "displayed_print_page_to": 167},
+    {"order": 7, "route": "7", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/7", "revision_id": 3738307, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738307", "role": "chapter_7_rendered_route", "displayed_print_page_from": 168, "displayed_print_page_to": 196},
+    {"order": 8, "route": "8", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/8", "revision_id": 3738312, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738312", "role": "chapter_8_rendered_route", "displayed_print_page_from": 197, "displayed_print_page_to": 222},
+    {"order": 9, "route": "9", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/9", "revision_id": 3738315, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738315", "role": "chapter_9_rendered_route", "displayed_print_page_from": 223, "displayed_print_page_to": 246},
+    {"order": 10, "route": "10", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/10", "revision_id": 3738265, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738265", "role": "chapter_10_rendered_route", "displayed_print_page_from": 247, "displayed_print_page_to": 274},
+    {"order": 11, "route": "11", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/11", "revision_id": 3738270, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738270", "role": "chapter_11_rendered_route", "displayed_print_page_from": 275, "displayed_print_page_to": 303},
+    {"order": 12, "route": "12", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/12", "revision_id": 3738274, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738274", "role": "chapter_12_rendered_route", "displayed_print_page_from": 304, "displayed_print_page_to": 325},
+    {"order": 13, "route": "13", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/13", "revision_id": 3738278, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738278", "role": "chapter_13_rendered_route", "displayed_print_page_from": 326, "displayed_print_page_to": 361},
+    {"order": 14, "route": "14", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/14", "revision_id": 3738282, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738282", "role": "chapter_14_rendered_route", "displayed_print_page_from": 362, "displayed_print_page_to": 387},
+    {"order": 15, "route": "Указатель", "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/Указатель", "revision_id": 3738318, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738318", "role": "alphabetical_index_rendered_route", "displayed_print_page_from": 389, "displayed_print_page_to": 399}
   ],
   "route_summary": {
     "rendered_route_count": 15,
@@ -190,38 +135,45 @@
     "displayed_print_page_spans_are_monotonic": true,
     "displayed_print_page_spans_are_non_overlapping": true,
     "displayed_print_page_spans_are_not_scan_page_identity": true,
+    "proofreadpage_transclusion_topology_frozen": true,
     "underlying_page_revision_identities_frozen": false,
     "literary_body_frozen": false
   },
-  "unclassified_print_page_gaps": [
+  "resolved_print_page_gaps": [
     {
       "displayed_print_page_from": 388,
       "displayed_print_page_to": 388,
       "count": 1,
-      "classification": "unclassified_between_chapter_body_and_alphabetical_index",
-      "rule": "Do not infer literary, correction, blank, or other status until the exact underlying source route/Page revision is inspected."
+      "page_sequence": 411,
+      "page_revision_id": 3364733,
+      "classification": "source_declared_no_text_non_literary_gap",
+      "rule": "Resolved from exact adjacent transclusion topology plus the exact Page 411 source declaration; no OCR/image inference is used."
     }
   ],
   "freeze_boundary": {
-    "status": "rendered_route_graph_and_remote_scan_metadata_frozen_underlying_pages_unfrozen",
+    "status": "rendered_route_graph_proofreadpage_transclusion_topology_and_remote_scan_metadata_frozen_page_revision_set_unfrozen",
     "frozen": [
-      "rendered edition-family parent revision locator",
+      "retained rendered edition-family parent revision locator oldid=5628021",
+      "current parent topology witness oldid=5712882 with exact include expression 8-21,423-427",
       "ProofreadPage index revision locator and bibliographic family",
       "14 numbered rendered-route revision locators",
       "alphabetical-index rendered-route revision locator",
-      "displayed bibliographic print-page spans attached to those 15 routes",
-      "explicit unclassified displayed print-page gap at page 388",
+      "shared route-template revision oldid=3775868 and its exact route Page-sequence ranges/exclude=114 topology",
+      "source-free topology count of 399 route Page dependencies and 418 parent+route Page dependencies",
+      "Page-sequence 114 oldid=3364724 as source-declared no-text and explicitly excluded by route /4",
+      "Page-sequence 411 oldid=3364733 as source-declared no-text and the resolved displayed-print-page-388 gap",
+      "displayed bibliographic print-page spans attached to the 15 rendered routes",
       "provider-reported remote scan metadata: 27,368,263 bytes, image/vnd.djvu, 3744x5616, 432 pages",
       "provider-reported scan SHA-1 75ef508588194ae74874272ce290f3ec1043ea9b",
       "current provider file-history display 11:45, 8 March 2016 by Nonexyst",
       "Archive.org source locator and source-declared mechanical-scan/public-domain status"
     ],
     "not_frozen": [
-      "exact revision IDs/timestamps/MediaWiki SHA-1 identities of underlying Page-namespace inputs",
-      "mapping from displayed print page numbers to scan/Page-namespace sequence positions",
+      "exact revision IDs/timestamps/MediaWiki SHA-1 identities for the 418 Page-sequence dependencies referenced by the topology",
+      "full Page-sequence-to-displayed-print-page mapping outside the uniquely resolved page-388 gap",
       "independently retrieved DjVu byte stream and Scriptorium-computed SHA-256",
       "literary-body extraction/rendering behavior",
-      "literary-body composition decision about front matter, alphabetical index, page 388, or other apparatus",
+      "literary-body composition decision about front matter, alphabetical index, or other apparatus beyond the now-resolved no-text exclusions",
       "literary-body character count and raw/normalized digests",
       "relationship between this public transcription and FantLab analyzer input"
     ]
@@ -234,8 +186,8 @@
     "m2_source_matched_work_count": 0
   },
   "next_evidence": [
-    "Resolve the exact underlying ProofreadPage/Page-namespace route for the retained rendered family and pin every revision identity used by that route; provider file metadata does not substitute for Page-level identity.",
-    "Classify displayed print page 388 only from exact source evidence; do not compose it by page-number continuity.",
+    "Pin exact revision IDs/timestamps/MediaWiki SHA-1 identities for the 418 Page-sequence dependencies referenced by the now-frozen topology; topology alone does not freeze Page contents.",
+    "Define an evidence-based literary-body composition policy for the parent/front matter, numbered routes and alphabetical index while preserving the exact no-text exclusions at Page sequences 114 and 411.",
     "If binary-level scan identity becomes necessary, retrieve one exact DjVu byte stream and independently record its byte count plus SHA-256; do not promote provider-reported metadata to a local binary freeze.",
     "Define a deterministic fail-closed literary-body extraction/composition profile over frozen Page revisions and record character count plus raw and scriptorium-text-v1 normalized digests.",
     "Admit this translation to the general calibration/profile corpus only if the frozen literary body independently clears 300,000 characters including spaces.",

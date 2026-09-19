@@ -8,4 +8,6 @@
 - Underlying Page-namespace revisions, displayed-print-page ↔ scan/Page mapping, displayed p. 388 classification, literary extraction/composition, literary-body count/digests and the >=300,000-character gate remain unfrozen/false.
 - FantLab remains a separate boundary: work `969964` currently exposes Timiryazev rather than Rachinsky; `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and M2 remains **0/5 source-matched works**.
 - No literary source prose, Page-namespace payload, scan bytes or OCR were committed.
-- Authored work is intentionally left in Draft PR #152 for a later independent exact-head review before any Ready/merge decision.
+- Authored work was intentionally left in Draft PR #152 for a later independent exact-head review before any Ready/merge decision.
+- Independent review later re-verified the official provider surface against exact head `638c30a329f49f1afa55ecb39b8f5b98a55cebc7`, found no boundary promotion or source/binary leakage, and confirmed **13/13** pull-request workflows successful. `Scriptorium Pages` run `35459774460` / job `105941434196` passed tests, canonical build and deterministic rebuild; artifact `10588992640` has digest `sha256:4042d0e49a2054a24de678ae4d4e6e05b0a9a619f7c9f12cebf5e825c893d793`.
+- PR #152 was marked Ready and squash-merged as `63e1de382af32866cc669b9549017899fbe9b399`; Issue #151 closed completed. M2 remains **0/5** and normal-flow P2 corpus/provenance work resumes.

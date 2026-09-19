@@ -63,3 +63,14 @@ A 399-page bibliography and a frozen rendered route topology do **not** prove th
 ## Handoff
 
 Draft PR #150 must be reviewed on its exact final head by a later run. That review should verify the source-free manifest, route/page-span evidence, absence of source prose, required CI, and the strict non-promotion boundary before any Ready/merge decision.
+
+## Independent review completion
+
+A later review run evaluated exact head `8b659b84384657d2815e97ec6bbe84f9d8a3942b` rather than relying on the authoring handoff.
+
+- `master` was still `75e36de78937fba87e19c918fa29a655297cea4e`, exactly the PR base. The branch compared 7 commits ahead / 0 behind, remained mergeable, and had no inline review threads.
+- Fresh Russian Wikisource reads independently matched all 15 rendered route permanent revision IDs and displayed spans to the committed source graph: `/1`–`/14` cover pp. 1–387 and `/Указатель` covers pp. 389–399. Displayed p. 388 remained an evidence gap and was not classified by inference.
+- Full changed-file review found only source-free provenance/metadata, documentation and project-control updates; no literary source prose, Page-namespace payload, scan bytes or OCR were added.
+- All 13 pull-request-triggered workflows on the reviewed head completed successfully. `Scriptorium Pages` run `35453635769`, job `105924979260`, passed the standard-library suite, canonical build, deterministic rebuild and artifact upload. Artifact `10587471934` has digest `sha256:e9cbee540ec61dd7e18bca93edad4069b007c350c29e04171c0a97457372c636` and is tied to the reviewed head. Live deploy remained skipped by the repository interlock.
+- No boundary promotion occurred: underlying Page revisions, scan mapping/bytes, literary-body extraction/composition, count/digests, >=300k admission and FantLab source identity remain unfrozen/false/unknown; M2 stays 0/5.
+- No blocking defect was found. PR #150 was marked Ready and squash-merged as `b64d243f515bf13df1183f53c1c0d5e1fd542615`; Issue #149 closed completed.

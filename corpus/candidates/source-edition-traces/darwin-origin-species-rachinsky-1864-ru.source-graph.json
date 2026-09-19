@@ -1,0 +1,239 @@
+{
+  "manifest_version": "scriptorium-wikisource-source-graph-v1",
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "family_id": "wikisource-rachinsky-glazunov-1864-vt-yo",
+  "captured_on": "2026-09-19",
+  "purpose": "Freeze the source-free rendered subpage route topology of the Rachinsky/Glazunov 1864 Wikisource family without claiming that the underlying Page-namespace inputs, scan bytes, or literary body are revision-frozen.",
+  "source_text_committed": false,
+  "bibliographic_identity": {
+    "author": "Charles Darwin",
+    "translator": "Sergey Alexandrovich Rachinsky",
+    "title": "О происхождении видов",
+    "publication_year": 1864,
+    "publisher": "Издание книгопродавца А. И. Глазунова",
+    "publication_place": "Saint Petersburg",
+    "edition_identity": "rachinsky_glazunov_1864"
+  },
+  "edition_parent": {
+    "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)",
+    "revision_id": 5628021,
+    "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5628021",
+    "role": "rendered edition-family parent and route table of contents"
+  },
+  "proofread_index": {
+    "title": "Индекс:Дарвин - О происхождении видов, 1864.djvu",
+    "revision_id": 4494408,
+    "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=4494408",
+    "progress_displayed": "Закончено — Все страницы вычитаны и проверены",
+    "underlying_page_revision_identities_frozen": false,
+    "binary_identity_status": "not_frozen"
+  },
+  "rendered_routes": [
+    {
+      "order": 1,
+      "route": "1",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/1",
+      "revision_id": 3738261,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738261",
+      "role": "introduction_and_chapter_1_rendered_route",
+      "displayed_print_page_from": 1,
+      "displayed_print_page_to": 35
+    },
+    {
+      "order": 2,
+      "route": "2",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/2",
+      "revision_id": 3738286,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738286",
+      "role": "chapter_2_rendered_route",
+      "displayed_print_page_from": 36,
+      "displayed_print_page_to": 48
+    },
+    {
+      "order": 3,
+      "route": "3",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/3",
+      "revision_id": 3738290,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738290",
+      "role": "chapter_3_rendered_route",
+      "displayed_print_page_from": 49,
+      "displayed_print_page_to": 64
+    },
+    {
+      "order": 4,
+      "route": "4",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/4",
+      "revision_id": 3738294,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738294",
+      "role": "chapter_4_rendered_route",
+      "displayed_print_page_from": 65,
+      "displayed_print_page_to": 108
+    },
+    {
+      "order": 5,
+      "route": "5",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/5",
+      "revision_id": 3738299,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738299",
+      "role": "chapter_5_rendered_route",
+      "displayed_print_page_from": 109,
+      "displayed_print_page_to": 138
+    },
+    {
+      "order": 6,
+      "route": "6",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/6",
+      "revision_id": 3738303,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738303",
+      "role": "chapter_6_rendered_route",
+      "displayed_print_page_from": 139,
+      "displayed_print_page_to": 167
+    },
+    {
+      "order": 7,
+      "route": "7",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/7",
+      "revision_id": 3738307,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738307",
+      "role": "chapter_7_rendered_route",
+      "displayed_print_page_from": 168,
+      "displayed_print_page_to": 196
+    },
+    {
+      "order": 8,
+      "route": "8",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/8",
+      "revision_id": 3738312,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738312",
+      "role": "chapter_8_rendered_route",
+      "displayed_print_page_from": 197,
+      "displayed_print_page_to": 222
+    },
+    {
+      "order": 9,
+      "route": "9",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/9",
+      "revision_id": 3738315,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738315",
+      "role": "chapter_9_rendered_route",
+      "displayed_print_page_from": 223,
+      "displayed_print_page_to": 246
+    },
+    {
+      "order": 10,
+      "route": "10",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/10",
+      "revision_id": 3738265,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738265",
+      "role": "chapter_10_rendered_route",
+      "displayed_print_page_from": 247,
+      "displayed_print_page_to": 274
+    },
+    {
+      "order": 11,
+      "route": "11",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/11",
+      "revision_id": 3738270,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738270",
+      "role": "chapter_11_rendered_route",
+      "displayed_print_page_from": 275,
+      "displayed_print_page_to": 303
+    },
+    {
+      "order": 12,
+      "route": "12",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/12",
+      "revision_id": 3738274,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738274",
+      "role": "chapter_12_rendered_route",
+      "displayed_print_page_from": 304,
+      "displayed_print_page_to": 325
+    },
+    {
+      "order": 13,
+      "route": "13",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/13",
+      "revision_id": 3738278,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738278",
+      "role": "chapter_13_rendered_route",
+      "displayed_print_page_from": 326,
+      "displayed_print_page_to": 361
+    },
+    {
+      "order": 14,
+      "route": "14",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/14",
+      "revision_id": 3738282,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738282",
+      "role": "chapter_14_rendered_route",
+      "displayed_print_page_from": 362,
+      "displayed_print_page_to": 387
+    },
+    {
+      "order": 15,
+      "route": "Указатель",
+      "title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)/Указатель",
+      "revision_id": 3738318,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=3738318",
+      "role": "alphabetical_index_rendered_route",
+      "displayed_print_page_from": 389,
+      "displayed_print_page_to": 399
+    }
+  ],
+  "route_summary": {
+    "rendered_route_count": 15,
+    "numbered_route_count": 14,
+    "alphabetical_index_route_count": 1,
+    "chapter_and_introduction_print_page_span": "1-387",
+    "alphabetical_index_print_page_span": "389-399",
+    "displayed_print_pages_represented_by_route_spans": 398,
+    "displayed_print_page_spans_are_monotonic": true,
+    "displayed_print_page_spans_are_non_overlapping": true,
+    "displayed_print_page_spans_are_not_scan_page_identity": true,
+    "underlying_page_revision_identities_frozen": false,
+    "literary_body_frozen": false
+  },
+  "unclassified_print_page_gaps": [
+    {
+      "displayed_print_page_from": 388,
+      "displayed_print_page_to": 388,
+      "count": 1,
+      "classification": "unclassified_between_chapter_body_and_alphabetical_index",
+      "rule": "Do not infer literary, correction, blank, or other status until the exact underlying source route/Page revision is inspected."
+    }
+  ],
+  "freeze_boundary": {
+    "status": "rendered_route_graph_frozen_underlying_pages_unfrozen",
+    "frozen": [
+      "rendered edition-family parent revision locator",
+      "ProofreadPage index revision locator and bibliographic family",
+      "14 numbered rendered-route revision locators",
+      "alphabetical-index rendered-route revision locator",
+      "displayed bibliographic print-page spans attached to those 15 routes",
+      "explicit unclassified displayed print-page gap at page 388"
+    ],
+    "not_frozen": [
+      "exact revision IDs/timestamps/MediaWiki SHA-1 identities of underlying Page-namespace inputs",
+      "mapping from displayed print page numbers to scan/Page-namespace sequence positions",
+      "DjVu/PDF binary byte stream, byte count and SHA-256",
+      "literary-body extraction/rendering behavior",
+      "literary-body composition decision about front matter, alphabetical index, page 388, or other apparatus",
+      "literary-body character count and raw/normalized digests",
+      "relationship between this public transcription and FantLab analyzer input"
+    ]
+  },
+  "fantlab_boundary": {
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "m2_source_matched_work_count": 0
+  },
+  "next_evidence": [
+    "Resolve the exact underlying ProofreadPage/Page-namespace route for the retained rendered family and pin every revision identity used by that route.",
+    "Classify displayed print page 388 only from exact source evidence; do not compose it by page-number continuity.",
+    "Define a deterministic fail-closed literary-body extraction/composition profile over frozen Page revisions and record character count plus raw and scriptorium-text-v1 normalized digests.",
+    "Admit this translation to the general calibration/profile corpus only if the frozen literary body independently clears 300,000 characters including spaces.",
+    "Keep FantLab matching separate: the currently exposed Russian translation is Timiryazev, not Rachinsky."
+  ]
+}

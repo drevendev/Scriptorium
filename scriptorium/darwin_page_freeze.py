@@ -1,8 +1,8 @@
 """Freeze source-free revision identities for Darwin/Rachinsky ProofreadPage pages.
 
-This module deliberately freezes only Page-namespace identity metadata. It never stores
-Page wikitext, OCR, rendered prose, or scan bytes. Literary-body extraction and corpus
-admission remain separate gates.
+Only Page-namespace identity metadata is persisted. Wikitext, OCR, rendered prose and
+scan bytes are deliberately outside this unit; literary-body and corpus-admission gates
+remain separate.
 """
 
 from __future__ import annotations
@@ -16,7 +16,6 @@ from typing import Callable, Iterable, Mapping, Sequence
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-
 API_URL = "https://ru.wikisource.org/w/api.php"
 USER_AGENT = "Scriptorium provenance research/1.0 (+https://github.com/drevendev/Scriptorium)"
 CANDIDATE_ID = "darwin-origin-species-rachinsky-1864-ru"
@@ -25,25 +24,16 @@ PAGE_FILE = "Дарвин - О происхождении видов, 1864.djvu"
 PAGE_TITLE_PREFIX = f"Страница:{PAGE_FILE}/"
 MANIFEST_VERSION = "scriptorium-darwin-page-revision-manifest-v1"
 RECEIPT_VERSION = "scriptorium-darwin-page-revision-replay-v1"
-CAPTURE_BATCH_SIZE = 40
+# Long Cyrillic Page titles expand heavily under URL encoding. Eight keeps every GET
+# safely below the server URI limit; the first hosted capture proved 40 returns HTTP 414.
+CAPTURE_BATCH_SIZE = 8
 
 PARENT_RANGES = ((8, 21), (423, 427))
 ROUTE_RANGES = (
-    (22, 56, ()),
-    (57, 69, ()),
-    (70, 85, ()),
-    (86, 131, (114,)),
-    (132, 161, ()),
-    (162, 190, ()),
-    (191, 219, ()),
-    (220, 245, ()),
-    (246, 269, ()),
-    (270, 297, ()),
-    (298, 326, ()),
-    (327, 348, ()),
-    (349, 384, ()),
-    (385, 410, ()),
-    (412, 422, ()),
+    (22, 56, ()), (57, 69, ()), (70, 85, ()), (86, 131, (114,)),
+    (132, 161, ()), (162, 190, ()), (191, 219, ()), (220, 245, ()),
+    (246, 269, ()), (270, 297, ()), (298, 326, ()), (327, 348, ()),
+    (349, 384, ()), (385, 410, ()), (412, 422, ()),
 )
 EXPLICIT_NO_TEXT_NON_DEPENDENCIES = (114, 411)
 EXPECTED_PAGE_COUNT = 418
@@ -80,11 +70,7 @@ def expected_page_sequences() -> tuple[int, ...]:
 
 def expected_pages() -> tuple[dict[str, object], ...]:
     return tuple(
-        {
-            "ordinal": ordinal,
-            "page_sequence": sequence,
-            "title": f"{PAGE_TITLE_PREFIX}{sequence}",
-        }
+        {"ordinal": ordinal, "page_sequence": sequence, "title": f"{PAGE_TITLE_PREFIX}{sequence}"}
         for ordinal, sequence in enumerate(expected_page_sequences(), start=1)
     )
 
@@ -99,15 +85,10 @@ def _current_revision_query(
     for offset in range(0, len(expected), CAPTURE_BATCH_SIZE):
         batch = expected[offset : offset + CAPTURE_BATCH_SIZE]
         titles = [str(row["title"]) for row in batch]
-        payload = query(
-            {
-                "action": "query",
-                "prop": "revisions",
-                "titles": "|".join(titles),
-                "rvprop": "ids|timestamp|sha1",
-                "redirects": "0",
-            }
-        )
+        payload = query({
+            "action": "query", "prop": "revisions", "titles": "|".join(titles),
+            "rvprop": "ids|timestamp|sha1", "redirects": "0",
+        })
         query_obj = payload.get("query")
         pages_obj = query_obj.get("pages") if isinstance(query_obj, dict) else None
         if not isinstance(pages_obj, list):
@@ -126,9 +107,9 @@ def _current_revision_query(
             revision = revisions[0]
             if not isinstance(revision, dict):
                 raise ValueError(f"unexpected revision object for {title}")
-            revid = revision.get("revid")
-            timestamp = revision.get("timestamp")
-            mediawiki_sha1 = revision.get("sha1")
+            revid, timestamp, mediawiki_sha1 = (
+                revision.get("revid"), revision.get("timestamp"), revision.get("sha1")
+            )
             if not isinstance(revid, int):
                 raise ValueError(f"missing revision ID for {title}")
             if not isinstance(timestamp, str) or not isinstance(mediawiki_sha1, str):
@@ -136,23 +117,20 @@ def _current_revision_query(
             if title in records:
                 raise ValueError(f"duplicate Page response: {title}")
             records[title] = {
-                "revision_id": revid,
-                "timestamp": timestamp,
-                "mediawiki_sha1": mediawiki_sha1,
+                "revision_id": revid, "timestamp": timestamp, "mediawiki_sha1": mediawiki_sha1
             }
     expected_titles = {str(row["title"]) for row in expected}
     if set(records) != expected_titles:
-        missing = sorted(expected_titles - set(records))
-        extra = sorted(set(records) - expected_titles)
-        raise ValueError(f"Page inventory mismatch; missing={missing!r} extra={extra!r}")
+        raise ValueError(
+            f"Page inventory mismatch; missing={sorted(expected_titles-set(records))!r} "
+            f"extra={sorted(set(records)-expected_titles)!r}"
+        )
     return records
 
 
 def build_manifest(
     *,
-    fetcher: Callable[
-        [Iterable[dict[str, object]]], dict[str, dict[str, object]]
-    ] = _current_revision_query,
+    fetcher: Callable[[Iterable[dict[str, object]]], dict[str, dict[str, object]]] = _current_revision_query,
     captured_at: str | None = None,
 ) -> dict[str, object]:
     inventory = expected_pages()
@@ -166,17 +144,15 @@ def build_manifest(
         if not isinstance(revid, int) or revid in seen_revision_ids:
             raise ValueError(f"duplicate/invalid revision ID for {title}")
         seen_revision_ids.add(revid)
-        rows.append(
-            {
-                "ordinal": expected["ordinal"],
-                "page_sequence": expected["page_sequence"],
-                "title": title,
-                "revision_id": revid,
-                "timestamp": revision["timestamp"],
-                "mediawiki_sha1": revision["mediawiki_sha1"],
-                "permanent_url": f"https://ru.wikisource.org/w/index.php?oldid={revid}",
-            }
-        )
+        rows.append({
+            "ordinal": expected["ordinal"],
+            "page_sequence": expected["page_sequence"],
+            "title": title,
+            "revision_id": revid,
+            "timestamp": revision["timestamp"],
+            "mediawiki_sha1": revision["mediawiki_sha1"],
+            "permanent_url": f"https://ru.wikisource.org/w/index.php?oldid={revid}",
+        })
     return {
         "manifest_version": MANIFEST_VERSION,
         "candidate_id": CANDIDATE_ID,
@@ -216,33 +192,26 @@ def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object]
     pages = manifest.get("pages")
     if not isinstance(pages, list) or len(pages) != EXPECTED_PAGE_COUNT:
         raise ValueError(f"manifest must contain exactly {EXPECTED_PAGE_COUNT} pages")
-    expected = expected_pages()
-    expected_by_sequence = {int(row["page_sequence"]): row for row in expected}
+    expected_by_sequence = {int(row["page_sequence"]): row for row in expected_pages()}
     seen_sequences: set[int] = set()
     seen_revision_ids: set[int] = set()
     normalized: list[dict[str, object]] = []
     allowed_keys = {
-        "ordinal",
-        "page_sequence",
-        "title",
-        "revision_id",
-        "timestamp",
-        "mediawiki_sha1",
-        "permanent_url",
+        "ordinal", "page_sequence", "title", "revision_id", "timestamp",
+        "mediawiki_sha1", "permanent_url",
     }
     for raw in pages:
         if not isinstance(raw, dict) or set(raw) != allowed_keys:
             raise ValueError("Page row shape drift or source payload key detected")
-        sequence = raw.get("page_sequence")
-        revid = raw.get("revision_id")
+        sequence, revid = raw.get("page_sequence"), raw.get("revision_id")
         if not isinstance(sequence, int) or sequence not in expected_by_sequence:
             raise ValueError(f"unexpected Page sequence: {sequence!r}")
         if sequence in seen_sequences:
             raise ValueError(f"duplicate Page sequence: {sequence}")
         if not isinstance(revid, int) or revid in seen_revision_ids:
             raise ValueError(f"duplicate/invalid revision ID for Page sequence {sequence}")
-        expected_row = expected_by_sequence[sequence]
-        if raw.get("ordinal") != expected_row["ordinal"] or raw.get("title") != expected_row["title"]:
+        expected = expected_by_sequence[sequence]
+        if raw.get("ordinal") != expected["ordinal"] or raw.get("title") != expected["title"]:
             raise ValueError(f"Page inventory identity mismatch for sequence {sequence}")
         if raw.get("permanent_url") != f"https://ru.wikisource.org/w/index.php?oldid={revid}":
             raise ValueError(f"permanent URL mismatch for sequence {sequence}")
@@ -264,14 +233,10 @@ def _pinned_revision_query(
     records: dict[int, dict[str, object]] = {}
     for offset in range(0, len(revision_ids), CAPTURE_BATCH_SIZE):
         batch = revision_ids[offset : offset + CAPTURE_BATCH_SIZE]
-        payload = query(
-            {
-                "action": "query",
-                "prop": "revisions",
-                "revids": "|".join(str(item) for item in batch),
-                "rvprop": "ids|timestamp|sha1",
-            }
-        )
+        payload = query({
+            "action": "query", "prop": "revisions",
+            "revids": "|".join(str(item) for item in batch), "rvprop": "ids|timestamp|sha1",
+        })
         query_obj = payload.get("query")
         pages_obj = query_obj.get("pages") if isinstance(query_obj, dict) else None
         if not isinstance(pages_obj, list):
@@ -279,16 +244,15 @@ def _pinned_revision_query(
         for page in pages_obj:
             if not isinstance(page, dict):
                 raise ValueError("unexpected MediaWiki replay page object")
-            title = page.get("title")
-            revisions = page.get("revisions")
+            title, revisions = page.get("title"), page.get("revisions")
             if not isinstance(title, str) or not isinstance(revisions, list) or len(revisions) != 1:
                 raise ValueError("unexpected pinned revision response shape")
             revision = revisions[0]
             if not isinstance(revision, dict):
                 raise ValueError("unexpected pinned revision object")
-            revid = revision.get("revid")
-            timestamp = revision.get("timestamp")
-            mediawiki_sha1 = revision.get("sha1")
+            revid, timestamp, mediawiki_sha1 = (
+                revision.get("revid"), revision.get("timestamp"), revision.get("sha1")
+            )
             if not isinstance(revid, int) or revid not in batch:
                 raise ValueError(f"unexpected pinned revision ID: {revid!r}")
             if revid in records:
@@ -296,14 +260,13 @@ def _pinned_revision_query(
             if not isinstance(timestamp, str) or not isinstance(mediawiki_sha1, str):
                 raise ValueError(f"incomplete pinned revision identity for {revid}")
             records[revid] = {
-                "title": title,
-                "timestamp": timestamp,
-                "mediawiki_sha1": mediawiki_sha1,
+                "title": title, "timestamp": timestamp, "mediawiki_sha1": mediawiki_sha1
             }
     if set(records) != set(revision_ids):
-        missing = sorted(set(revision_ids) - set(records))
-        extra = sorted(set(records) - set(revision_ids))
-        raise ValueError(f"pinned revision inventory mismatch; missing={missing!r} extra={extra!r}")
+        raise ValueError(
+            f"pinned revision inventory mismatch; missing={sorted(set(revision_ids)-set(records))!r} "
+            f"extra={sorted(set(records)-set(revision_ids))!r}"
+        )
     return records
 
 
@@ -320,8 +283,7 @@ def replay_manifest(
         revid = int(row["revision_id"])
         actual = fetched[revid]
         expected = {
-            "title": row["title"],
-            "timestamp": row["timestamp"],
+            "title": row["title"], "timestamp": row["timestamp"],
             "mediawiki_sha1": row["mediawiki_sha1"],
         }
         if actual != expected:
@@ -352,7 +314,9 @@ def _read_json(path: Path) -> dict[str, object]:
 
 def _write_json(path: Path, payload: Mapping[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
 
 
 def main(argv: Sequence[str] | None = None) -> int:

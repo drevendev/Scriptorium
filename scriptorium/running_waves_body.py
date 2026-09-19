@@ -27,6 +27,7 @@ CHAPTER_SEPARATOR = "\n\n"
 MINIMUM_CORPUS_CHARACTERS = 300_000
 
 _INNER_TEMPLATE_RE = re.compile(r"\{\{([^{}]*)\}\}")
+_POEM_TAG_RE = re.compile(r"</?poem\s*>", re.IGNORECASE)
 
 
 def _sha256_text(text: str) -> str:
@@ -154,7 +155,10 @@ def expand_running_waves_templates(wikitext: str) -> str:
 
         updated = _INNER_TEMPLATE_RE.sub(replace, current)
         if not changed:
-            return current
+            # The pinned poem1 bodies use plain <poem>...</poem> solely to preserve
+            # verse line layout. Once poem1 itself is removed, these tags carry no
+            # lexical content and are stripped before the generic text renderer.
+            return _POEM_TAG_RE.sub("", current)
         current = updated
 
 

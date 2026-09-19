@@ -3,7 +3,7 @@
 Date: 2026-09-19
 Issue: #147
 Pull request: #148 (`scrip-corpus-030-darwin-rachinsky-1864`)
-Mode: normal-flow P2 corpus/provenance diversification
+Mode: normal-flow P2 corpus/provenance diversification, followed by independent recovery/review
 
 ## Selected bounded unit
 
@@ -63,6 +63,17 @@ The displayed **399 pages do not prove the >=300,000-character repository thresh
 - `m2_parity_admissible=false`
 - M2 remains **0/5 source-matched works**
 
-## Verification and handoff
+## Independent exact-head review
 
-The committed JSON is source-free structured metadata and encodes the strict freeze/admission boundary. The public candidate note and corpus documentation repeat the same non-promotion rule. Draft PR #148 is intentionally left for a later independent exact-head review. That review must inspect the final diff and workflows, verify that no source prose/scan bytes were committed, confirm that page count is not promoted into threshold evidence, and preserve the Rachinsky-vs-Timiryazev/FantLab boundary before any merge.
+A later run reviewed final authored head `dc58cd10574371e03b19481d2813d55208bc3060` against unchanged `master` base `17d78d5fd32ae24dc1e73aa529ad5995b5a6322a`.
+
+- Compare result: 6 commits ahead / 0 behind; PR mergeable.
+- Inline review threads: none.
+- Exact-head workflows: all 13 pull-request-triggered runs completed successfully, including `Scriptorium Pages` run `35447501952`.
+- `Scriptorium Pages` job `105908865130` checked out the exact head, ran the standard-library suite, built the canonical static site, verified deterministic rebuild, and uploaded the Pages artifact.
+- Pages artifact `10585476252` has SHA-256 `9f4eaff8707c5378c88e1f4b63d243013dc65f9a8c417ba48b3aaa27a051d3fa`; independent artifact inspection found no Darwin/Rachinsky literary prose.
+- Fresh source checks independently reconfirmed the Rachinsky/Glazunov 1864 bibliography, completed ProofreadPage status and explicit public-domain statement on Russian Wikisource.
+- Fresh FantLab verification reconfirmed that work `969964` currently exposes a K. Timiryazev Russian translation, not Rachinsky.
+- No blocking defect was found. The strict non-promotion boundary remains intact.
+
+PR #148 was marked Ready and squash-merged as `e5fefb15d74fcd30786e2897a9900cfe47371032`; Issue #147 closed completed. M2 remains 0/5.

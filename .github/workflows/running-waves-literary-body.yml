@@ -71,7 +71,9 @@ jobs:
                   if pair == '}}' and stack:
                       start = stack.pop()
                       if not stack:
-                          calls.append(fragment[start + 2:index])
+                          inner = fragment[start + 2:index]
+                          calls.append(inner)
+                          calls.extend(template_calls(inner))
                       index += 2
                       continue
                   index += 1
@@ -123,7 +125,7 @@ jobs:
                       named_keys = []
                       empty_positions = []
                       numeric = {}
-                      for arg_index, raw in enumerate(parts[1:], start=1):
+                      for raw in parts[1:]:
                           value = raw.strip()
                           if '=' in value:
                               key, _ = value.split('=', 1)
@@ -145,15 +147,15 @@ jobs:
               print(json.dumps({'ordinal': row['ordinal'], 'title': title, 'body_div_count': len(matches), 'template_shapes': shapes}, ensure_ascii=False, sort_keys=True))
 
           samples = {
-              '^': '{{^|A}}',
+              '^': '{{^}}',
               'roman': '{{roman|1}}',
-              'poem1': '{{poem1|A|B|C}}',
+              'poem1': '{{poem1||B|}}',
               'razr': '{{razr|A}}',
               'razr2': '{{razr2|A}}',
               'акут': '{{акут}}',
               'Гравис': '{{Гравис}}',
-              'опечатка2': '{{опечатка2|A|B|C|nocat=1}}',
-              'Так в тексте': '{{Так в тексте|A}}',
+              'опечатка2': '{{опечатка2|A|B}}',
+              'Так в тексте': '{{Так в тексте|A|B}}',
           }
           for name in sorted(observed_names):
               sample = samples.get(name)

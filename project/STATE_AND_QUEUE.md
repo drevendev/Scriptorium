@@ -1,23 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 167
+STATE_REVISION: 168
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-19T12:04:00Z
-LAST_RESULT: SCRIP-CORPUS-029 / Issue #145 authored as Draft PR #146. The distinct Zemlya i Fabrika 1928 *Twelve Chairs* family now has a source-free parent route graph on the PR branch: retained work index `oldid=5706135`, ProofreadPage index `oldid=5702510`, and part-parent revisions `5702507`, `5704332`, and `5702508` encode exact transclusion ranges 8–149, 152–313, and 316–421. Those ranges reference 410 Page-namespace dependencies; gaps 150–151 and 314–315 remain explicit and unclassified. No literary prose or scan bytes are committed. The 410 underlying Page revisions, PDF bytes, literary extraction/composition contract, body counts, and body digests remain unfrozen. FantLab source identity remains unknown and M2 remains 0/5. The authored PR is intentionally Draft and requires a later independent exact-head review before merge.
-LAST_VERIFIED_PROGRESS: `ilf-petrov-twelve-chairs-ru` now has a machine-readable source-graph boundary for the first standalone 1928 Wikisource family on Draft PR #146. The route topology is pinned at parent revision locators and exact ProofreadPage ranges totaling 410 dynamic Page dependencies while preserving the two two-page gaps as unclassified. This is deliberately weaker than a literary-body freeze: exact Page-namespace revision identities and all body digests remain open. The separate 40-chapter 1938/1961 editorial family remains distinct, coauthorship remains a VOICE-model caveat, and no FantLab/M2 status is promoted.
+LAST_COMMITTED_RUN_AT: 2026-09-19T12:56:00Z
+LAST_RESULT: SCRIP-CORPUS-029 / Issue #145 completed after independent exact-head review of PR #146. Final authored head `4976172850b375ce34357fdf0e0c860188258d35` remained mergeable against unchanged base `8a1195878757126511902625ffbdbbc38a178156`, 7 commits ahead / 0 behind, with no inline review threads. Official Russian Wikisource source views independently confirmed the three 1928 Zemlya i Fabrika ProofreadPage transclusion ranges 8–149, 152–313, and 316–421; inclusive counts are 142 + 162 + 106 = 410. All 13 pull-request-triggered workflows completed successfully. `Scriptorium Pages` run `35441912697`, job `105894074343`, checked out the exact authored head, ran 287 tests, built the canonical static site, verified deterministic rebuild, and uploaded artifact `10583813114` (`sha256:efed0b1a23842e721bb04e9a824703a6f3e64a53e8ba8c522b9e9372b4690789`). Review found no blocking defect. PR #146 was marked Ready and squash-merged as `a9abd3c01134683a0bc50aea204d2a2c05de9f93`; Issue #145 closed completed.
+LAST_VERIFIED_PROGRESS: `ilf-petrov-twelve-chairs-ru` now canonically has a machine-readable source-free parent route graph for the distinct first standalone 1928 Wikisource family in `master`. The retained work index `oldid=5706135`, ProofreadPage index `oldid=5702510`, part-parent revisions `5702507` / `5704332` / `5702508`, and exact transclusion ranges 8–149 / 152–313 / 316–421 define 410 referenced Page-namespace dependencies while keeping gaps 150–151 and 314–315 explicit and unclassified. This remains deliberately weaker than a literary-body freeze: the 410 Page revision identities, facsimile PDF bytes, extraction/composition contract, body counts/digests and FantLab analyzer-input identity remain unfrozen/unknown. The later 40-chapter 1938/1961 editorial family remains distinct, coauthorship remains a VOICE-model caveat, and M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-029
-ISSUE:          #145 (open)
-STATUS:         REVIEW_REQUIRED
-PR:             #146 (Draft)
-BRANCH:         scrip-corpus-029-twelve-chairs-1928-source-graph
-NEXT_ACTION:    Independently review the current exact head of PR #146 after its workflows settle. Verify the pinned parent
-                revisions, the three ranges 8–149 / 152–313 / 316–421 and 410-page dependency count, the explicit gaps,
-                source-free boundary, and that the underlying Page revisions/literary body remain unfrozen. Merge only if
-                exact-head checks and review evidence are clean; otherwise repair the discovered defect first.
+ISSUE:          #145 (closed completed)
+STATUS:         COMPLETE
+PR:             #146 (squash-merged)
+MERGED_COMMIT:  a9abd3c01134683a0bc50aea204d2a2c05de9f93
+NEXT_ACTION:    Resume normal-flow P2 corpus/provenance work. Add or strengthen a legally usable >=300k candidate,
+                biasing toward diversity beyond 19th-century Russian classics where source identity and rights evidence are
+                strong. Preserve translation/edition identity and do not promote FantLab/M2 status without exact source match.
 ```
 
 ## Current milestone gate
@@ -32,7 +31,6 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-029 / PR #146 independent review | recovery / review | Review current exact head, inspect workflows and evidence, repair blockers if found, otherwise mark Ready and safe-merge | Do not self-approve authored work; all exact-head required checks/evidence must support merge |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
@@ -49,7 +47,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Road to Nowhere** — the primary Pravda-1965/lib.web family is still body-unfrozen, but merged SCRIP-CORPUS-023 audits permanent index `oldid=4715367` as an incomplete/misdirected navigation surface: 8 labels map to 6 distinct targets, both Chapter IV labels duplicate Chapter III targets, and the three distinct Part II index targets currently resolve as red links. The distinct `az.lib.ru` route at `oldid=5585836` remains separately frozen at 442,656 characters / 825,899 bytes, SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`. Neither route is identified as FantLab input.
 - **Running on Waves** — SCRIP-CORPUS-028 is complete. The retained Detskaya literatura 1965 Wikisource family has route topology frozen by category `oldid=4715419`, exact source-free identities for all 36 literary pages, and a merged candidate-specific fail-closed literary-body freeze: 363,819 characters / 656,239 UTF-8 bytes, raw and normalized SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`. It clears the general >=300k corpus rule. FantLab displays 360,987 characters, but source/analyzer-input match remains unknown and M2 weight remains zero. Distinct `/Версия 2` at `oldid=5655654` declares `az.lib.ru` / Pravda 1980 and remains excluded.
 - **The White Guard** — Wikisource mixes two bibliographic source families across chapters 1–11 and 12–20; all 20 chapter identities/composite remain unfrozen.
-- **The Twelve Chairs** — Draft PR #146 strengthens the distinct 41-chapter 1928 first-standalone family with a source-free parent route graph: work index `oldid=5706135`, ProofreadPage index `oldid=5702510`, part parents `5702507` / `5704332` / `5702508`, and exact transclusion ranges 8–149, 152–313, and 316–421 totaling 410 Page dependencies. The 410 Page revision identities and literary body remain unfrozen. The 40-chapter later 1938/1961 editorial family stays distinct; coauthorship prevents individual-author attribution without an explicit VOICE model.
+- **The Twelve Chairs** — SCRIP-CORPUS-029 is complete. The distinct 41-chapter 1928 first-standalone family now has a merged source-free parent route graph: work index `oldid=5706135`, ProofreadPage index `oldid=5702510`, part parents `5702507` / `5704332` / `5702508`, and exact transclusion ranges 8–149, 152–313, and 316–421 totaling 410 Page dependencies. The 410 Page revision identities, PDF bytes and literary body remain unfrozen. The 40-chapter later 1938/1961 editorial family stays distinct; coauthorship prevents individual-author attribution without an explicit VOICE model.
 - **The Life of Klim Samgin** — SCRIP-CORPUS-020 is complete. Four exact parent revisions and the Part 2 dependency are replay-frozen; merged PRs #111–#124 freeze the target-only `#lst`, inferred `poemx1`/Poem boundaries, structural surface and all thirteen plain literary values; #126 merged the candidate-specific fail-closed extractor; #127 merged the canonical source-free per-part and composite literary-body identities; #128 reconciled the structured provenance trace. Exact historical MediaWiki/Poem deployment and FantLab analyzer-input/source-edition identity remain unresolved.
 - **Children of Captain Grant — Beketova translation** — SCRIP-CORPUS-026 is complete. Merged PR #140 keeps exact Russian Wikisource revision `oldid=5304880` replay-frozen and adds candidate-specific `scriptorium-beketova-captain-grant-wikisource-body-v1`, freezing a 1,095,467-character / 2,040,240-byte literary body with raw and normalized SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`. Beketova / Detgiz 1955 / `az.lib.ru` bibliography and explicit source PD evidence covering the translation remain retained. The frozen body clears the >=300k rule for general calibration/profile use. No FantLab linguistic result or analyzer-input identity is established for this translation; M2 weight remains zero.
 
@@ -70,7 +68,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - Hyperboloid and Road to Nowhere expose frozen source-free alternate literary-body identities with explicit unresolved source-match boundaries; merged SCRIP-CORPUS-023 additionally makes the primary Road to Nowhere index-routing defect inspectable as source-free provenance rather than implying that the primary route is ready to freeze.
 - Shining World exposes a merged inspectable source-free inventory artifact and corrected public/structured provenance that distinguish the 34 links advertised by the reviewed index from the 19 pages that actually exist; missing targets are visible blockers, not silently filled text.
 - Running on Waves now exposes in master a source-free frozen literary-body identity and >=300k general-corpus admission while preserving the separate 1980/az.lib.ru route and keeping FantLab source match/M2 closed.
-- Draft PR #146 makes the 1928 *Twelve Chairs* parent route graph inspectable on the dedicated candidate page and in a machine-readable source-free manifest while explicitly keeping the 410 Page revisions and literary body unfrozen.
+- Merged SCRIP-CORPUS-029 makes the 1928 *Twelve Chairs* parent route graph inspectable on the dedicated candidate page and in a machine-readable source-free manifest while explicitly keeping the 410 Page revisions and literary body unfrozen.
 - Klim Samgin exposes the source graph, fail-closed extractor, canonical source-free per-part/composite literary-body identities, public candidate page, and a structured provenance trace consistent with those identities. Evidence remains explicitly diagnostic-only and source-match unknown.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -88,5 +86,5 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 10. Several other twentieth-century candidates remain trace-only/unfrozen or bibliographically unresolved at the literary-body level.
 11. Klim Samgin is fully frozen at the candidate-specific literary-body/provenance level, but exact historical Russian Wikisource MediaWiki-core/Poem deployment equivalence and FantLab analyzer-input bytes/edition remain unproven; these are evidence boundaries, not open acceptance criteria for closed Issue #109.
 12. The Beketova *Children of Captain Grant* translation now has a frozen literary body large enough for general corpus admission, but no FantLab linguistic result/analyzer-input identity has been established for this translation; it cannot advance M2 until that evidence exists.
-13. The 1928 *Twelve Chairs* parent route graph is frozen only on Draft PR #146; all 410 underlying Page-namespace revisions, the PDF byte stream, literary extraction/composition and body digests remain unfrozen, and FantLab source identity is unknown.
+13. The merged 1928 *Twelve Chairs* parent route graph leaves all 410 underlying Page-namespace revisions, the PDF byte stream, literary extraction/composition and body digests unfrozen; FantLab source identity remains unknown.
 14. Pages live activation remains a repository-admin effect and is off.

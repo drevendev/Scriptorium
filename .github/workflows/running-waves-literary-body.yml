@@ -47,6 +47,7 @@ jobs:
           import re
           from pathlib import Path
           from scriptorium.running_waves_revisions import validate_manifest
+          from scriptorium.wikisource_freeze import _api_query
           from scriptorium.wikisource_replay import fetch_pinned_chapter_revisions
 
           source = json.loads(Path('corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json').read_text(encoding='utf-8'))
@@ -54,12 +55,32 @@ jobs:
           revisions = fetch_pinned_chapter_revisions(identities)
           body_re = re.compile(r'<div\s+class=["\'](?:text|indent)["\']\s*>(.*?)</div>', re.I | re.S)
           template_re = re.compile(r'\{\{\s*([^|{}\n]+)')
+          all_names = set()
           for row in identities:
               title = str(row['title'])
               text = revisions[title]
               matches = body_re.findall(text)
               names = sorted({name.strip() for fragment in matches for name in template_re.findall(fragment)})
+              all_names.update(names)
               print(json.dumps({'ordinal': row['ordinal'], 'title': title, 'body_div_count': len(matches), 'template_names': names}, ensure_ascii=False, sort_keys=True))
+
+          samples = {
+              '^': '{{^|A}}',
+              'roman': '{{roman|A}}',
+              'poem1': '{{poem1|A|B|C}}',
+              'razr': '{{razr|A}}',
+              'razr2': '{{razr2|A}}',
+              'акут': '{{акут|A}}',
+              'Гравис': '{{Гравис|A}}',
+              'опечатка2': '{{опечатка2|A|B|C|nocat=1}}',
+              'Так в тексте': '{{Так в тексте|A}}',
+          }
+          for name in sorted(all_names):
+              sample = samples.get(name)
+              if sample is None:
+                  continue
+              payload = _api_query({'action': 'expandtemplates', 'text': sample, 'prop': 'wikitext'})
+              print(json.dumps({'template': name, 'synthetic_input': sample, 'expanded': payload.get('expandtemplates', {}).get('wikitext')}, ensure_ascii=False, sort_keys=True))
           PY
       - name: Compare committed manifest when present
         run: |

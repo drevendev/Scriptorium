@@ -1,0 +1,77 @@
+name: Darwin Rachinsky rendering surface
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-render-surface.yml"
+      - "scriptorium/darwin_render_surface.py"
+      - "scriptorium/darwin_body_contract.py"
+      - "scriptorium/darwin_page_freeze.py"
+      - "scriptorium/darwin_page_shards.py"
+      - "tests/test_darwin_render_surface.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.*.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Audit 388 exact literary Page revisions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run source-free audit tests
+        run: python -m unittest tests.test_darwin_render_surface -v
+
+      - name: Replay exact revisions and inventory markup surface
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_render_surface \
+            --index corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.render-surface.json
+
+      - name: Verify source and gate boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("build/repro/darwin-origin-species-rachinsky-1864-ru.render-surface.json")
+          audit = json.loads(path.read_text(encoding="utf-8"))
+          assert audit["literary_dependency_count"] == 388
+          assert audit["identity_replay_match"] is True
+          assert audit["source_text_included"] is False
+          assert audit["rendering_profile_frozen"] is False
+          assert audit["literary_body_count_and_digests_frozen"] is False
+          assert audit["minimum_300k_proved"] is False
+          assert audit["admitted_for_calibration"] is False
+          assert audit["fantlab_source_edition_match"] == "unknown"
+          assert audit["diagnostic_ready"] is False
+          assert audit["m2_parity_admissible"] is False
+          assert len(audit["page_surface_receipts"]) == 388
+          print("SCRIPTORIUM_DARWIN_RENDER_SURFACE_PAGES=388")
+          print("SCRIPTORIUM_DARWIN_RENDER_SURFACE_AUDIT_SHA256=" + audit["audit_sha256"])
+          PY
+
+      - name: Print source-free audit for durable capture
+        run: cat build/repro/darwin-origin-species-rachinsky-1864-ru.render-surface.json
+
+      - name: Upload source-free audit evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-render-surface
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.render-surface.json
+          if-no-files-found: error
+          retention-days: 7

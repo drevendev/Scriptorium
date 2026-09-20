@@ -36,10 +36,7 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
         )
 
     def test_scan_identity_is_exact_source_free_and_bound_to_trace(self):
-        self.assertEqual(
-            self.family["scan_identity_receipt"],
-            SCAN.name,
-        )
+        self.assertEqual(self.family["scan_identity_receipt"], SCAN.name)
         self.assertEqual(self.trace["facsimile_lead"]["byte_snapshot_status"], "frozen_exact_binary_identity")
         self.assertEqual(self.trace["facsimile_lead"]["scriptorium_binary_sha256"], self.scan["identity"]["sha256"])
         self.assertEqual(self.scan["identity"]["byte_count"], 77978350)
@@ -82,7 +79,7 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
         self.assertFalse(self.scan["m2_parity_admissible"])
 
     def test_public_candidate_exposes_scan_identity_without_promoting_body(self):
-        self.assertIn("410 exact Page revision identities frozen", self.public)
+        self.assertIn("410 Page-namespace dependencies", self.public)
         self.assertIn("77,978,350 bytes", self.public)
         self.assertIn("5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4", self.public)
         self.assertIn("not a literary-body freeze", self.public)

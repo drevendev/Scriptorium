@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "bely-petersburg-1916-ru",
-  "research_date": "2026-09-16",
+  "research_date": "2026-09-20",
   "fantlab": {
     "work_id": 293513,
     "analysis_url": "https://fantlab.ru/work293513/lp",
@@ -44,13 +44,13 @@
       "note": "Petersburg has materially different edition families. Scriptorium records this 1916 facsimile as its own candidate identity and does not collapse it with the revised 1922 text."
     },
     "commons_binary_identity_boundary": {
-      "observed_on": "2026-09-16",
+      "observed_on": "2026-09-20",
       "description_revision_oldid": 1046280975,
       "description_revision_pins_file_page_wikitext": true,
       "description_revision_pins_pdf_bytes": false,
       "commons_page_id": 47639472,
       "page_information_hash": "682476934dd6ed49c6bbcdb0720127c1812ff477",
-      "page_information_hash_scope": "Commons page/content metadata; not asserted to be the PDF binary checksum",
+      "page_information_hash_scope": "Originally retained conservatively as Commons page/content metadata rather than asserted as a PDF checksum. SCRIP-CORPUS-038 independently streamed the exact Commons original and demonstrated that this value equals the SHA-1 of the 3,621,459-byte PDF for this frozen snapshot; no general claim is made about other Page Information hash fields.",
       "page_protection_upload_level": "Allow all users (infinite)",
       "page_protection_interpretation": "This value is listed under Commons Page protection. Scriptorium treats it only as protection metadata and does not infer from it that the current PDF can be overwritten or that the binary is mutable.",
       "current_file_history_observation": {
@@ -60,27 +60,30 @@
         "upload_user": "M5"
       },
       "current_file_page_overwrite_notice": "You cannot overwrite this file.",
-      "current_file_page_overwrite_notice_scope": "Observed on the current rendered Commons file page. This is operational surface evidence, not a PDF content digest or a historical byte identity.",
+      "current_file_page_overwrite_notice_scope": "Observed on the current rendered Commons file page. This remains operational surface evidence; binary identity is established independently by streaming the exact original and hashing its bytes.",
       "current_direct_file_url_is_immutable_identity": false,
-      "scriptorium_pdf_sha256": null,
-      "byte_snapshot_status": "not_frozen",
-      "reason": "A permanent revision of the Commons description page freezes descriptive wikitext, not the uploaded PDF bytes. The current file page separately states that the file cannot be overwritten, while Page Information lists an unprotected upload action; those observations describe current Commons behavior and protection state rather than the file contents. Scriptorium therefore requires an independently retrieved byte snapshot with exact byte count and SHA-256 before claiming a frozen PDF identity."
+      "scriptorium_pdf_byte_count": 3621459,
+      "scriptorium_pdf_sha1": "682476934dd6ed49c6bbcdb0720127c1812ff477",
+      "scriptorium_pdf_sha256": "b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5",
+      "source_free_receipt": "bely-petersburg-1916-ru.scan-identity.json",
+      "byte_snapshot_status": "frozen",
+      "reason": "SCRIP-CORPUS-038 independently streamed the exact retained Commons original on 2026-09-20 and froze a source-free identity of 3,621,459 bytes, SHA-1 682476934dd6ed49c6bbcdb0720127c1812ff477 and SHA-256 b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5. No PDF bytes, page images or OCR are committed. The scan identity does not define literary-page selection, OCR/extraction semantics or FantLab analyzer-input identity."
     },
     "immutable_identity": {
-      "status": "traced_not_frozen",
+      "status": "scan_binary_frozen_text_body_unfrozen",
       "frozen_components": [
         "Wikimedia Commons file-description revision oldid 1046280975",
         "Commons file page ID 47639472 and observed file-history metadata",
         "explicit first-book-publication year 1916 and 632-page facsimile description",
-        "public-domain status on the file description"
+        "public-domain status on the file description",
+        "exact Commons PDF snapshot: 3,621,459 bytes; SHA-1 682476934dd6ed49c6bbcdb0720127c1812ff477; SHA-256 b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5"
       ],
       "unfrozen_components": [
-        "an exact retrieved PDF byte snapshot plus Scriptorium-recorded byte count and SHA-256",
-        "page/OCR selection and deterministic extraction profile",
-        "raw and normalized literary-text digests",
+        "literary-page/OCR selection and deterministic extraction profile",
+        "raw and normalized literary-text counts and digests",
         "the relationship between FantLab's uploaded analyzer input and this 1916 edition"
       ],
-      "reason": "The public scan provides strong source-edition and legal provenance, but the description-page oldid and current Commons operational notices do not identify the PDF contents. Scriptorium has not yet recorded a PDF snapshot digest or deterministic OCR/extraction result."
+      "reason": "The public scan now has independently frozen byte identity plus strong source-edition/legal provenance. The binary freeze is intentionally separate from OCR, literary-body construction and FantLab source matching, which remain unproven."
     }
   },
   "wikisource_cross_check": {
@@ -102,18 +105,19 @@
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "source_edition_traced_not_frozen",
+    "status": "scan_binary_frozen_ocr_body_unfrozen",
     "reasons": [
-      "FantLab reports 944,182 characters, above the 300,000-character calibration threshold.",
+      "FantLab reports 944,182 characters, above the 300,000-character calibration threshold, but this nominal count does not admit a different public byte stream to the corpus.",
       "Wikimedia Commons supplies an explicit 632-page facsimile identity for the 1916 first book edition and marks it public domain.",
-      "The recorded Commons description-page oldid freezes descriptive wikitext but not the PDF binary. Page Information's Upload value is protection metadata, while the current file page separately says the file cannot be overwritten; neither observation is treated as a PDF content identity.",
-      "The public scan has not yet been frozen into a Scriptorium PDF byte-count/SHA-256 snapshot plus deterministic OCR/extraction contract, so no full-work diagnostic input exists yet.",
+      "The exact retained Commons PDF is independently frozen as 3,621,459 bytes, SHA-1 682476934dd6ed49c6bbcdb0720127c1812ff477 and SHA-256 b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5; no scan bytes are committed.",
+      "The prior Page Information hash happens to equal the independently observed PDF SHA-1 for this exact snapshot; that equality is now verified rather than assumed from metadata semantics.",
+      "No deterministic literary-page/OCR extraction contract or frozen literary-body count/digest exists yet, so >=300,000 characters have not been proved for Scriptorium's candidate body and general-corpus admission remains closed.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis.",
       "The 1916 first book edition must remain distinct from Bely's revised 1922 edition; no edition-family equivalence is inferred."
     ],
     "next_evidence": [
-      "Retrieve one specific Commons PDF snapshot and record its exact byte count plus SHA-256 in a source-free manifest without committing the scan itself; do not treat the description-page oldid, Page Information hash, file-history row, current overwrite notice, or direct file URL as a substitute for a content digest.",
-      "Define and verify a deterministic, fail-closed page/OCR extraction contract for the 1916 edition before enabling full-work diagnostics.",
+      "Define and verify a deterministic, fail-closed literary-page/OCR extraction contract for this exact 3,621,459-byte 1916 PDF before enabling full-work diagnostics or corpus admission.",
+      "Freeze the extracted literary-body character count including spaces plus raw/normalized digests and require the frozen body itself to clear 300,000 characters before general-corpus admission.",
       "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to the 1916 edition or another explicit Petersburg edition; never infer identity from title or count proximity."
     ]
   }

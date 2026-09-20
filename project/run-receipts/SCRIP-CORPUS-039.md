@@ -1,9 +1,10 @@
 # Run receipt — SCRIP-CORPUS-039
 
-Status: `AUTHORED_PENDING_INDEPENDENT_REVIEW`
-Issue: #165
-Pull request: #166 (Draft)
+Status: `COMPLETE`
+Issue: #165 (closed completed)
+Pull request: #166 (squash-merged as `b15781f3de65b647af9a799ce709c7947c5cf799`)
 Base master at selection: `df2d302183f36cc14e9ac7b5ad7dff6506739e3c`
+Reviewed exact head: `40bf4f873b4c4255b4df6ae63155350ff152636f`
 
 ## Selected bounded unit
 
@@ -39,10 +40,24 @@ Pinned replay on authored head `abaf6e3f2ee8fa95df6ba36d08775360415bad8d`:
 - source-free replay artifact: `10602883416`, **531 bytes**
 - replay artifact ZIP SHA-256: `b8d219c901ba6f7261b149bd12e5f8c6e8e6cf193e862d25bb938fd797b17190`
 
-The replay receipt asserts `identity_replay_match=true`, `source_text_included=false`, `literary_body_frozen=false`, `admitted_for_calibration=false`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, and `m2_parity_admissible=false`.
+Final exact-head replay on `40bf4f873b4c4255b4df6ae63155350ff152636f`:
+
+- workflow run: `35504023812`
+- job: `106060655965`
+- all **15/15** pull-request workflows settled `success`
+- dedicated job checked out the exact reviewed SHA and completed the standard-library suite, exact 410/410 pinned identity replay and source-free boundary assertions
+- reproduced index SHA-256: `c1e3280984e640b8fe739a752ff49a3327633f49b52a635bd2d2d1e6a09f538f`
+- source-free replay artifact: `10603506613`, **531 bytes**
+- GitHub artifact digest and independently recomputed ZIP SHA-256: `656986bfe5f92e545b7f05189d76ea8af6936118f78afc72676371688f7dbbbf`
+- independently inspected ZIP contained exactly one 493-byte replay JSON; its SHA-256 was `2aed3d29b729e303c9ab1e292d3d9a5dccb1836bd9b259a83e6ccf99fdab0aa8`
+- receipt asserted `identity_replay_match=true`, `source_text_included=false`, `literary_body_frozen=false`, `admitted_for_calibration=false`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, and `m2_parity_admissible=false`
+
+## Independent review and merge
+
+A later independent review-run re-read the exact PR head and unchanged base, verified **15 commits ahead / 0 behind**, no inline review threads, the fail-closed helper/tests, digest-bound shards/index, canonical structured/source-graph provenance, public candidate boundary and settled CI. No blocker was found. Review was recorded as a COMMENT rather than self-approval; PR #166 was marked Ready and squash-merged as `b15781f3de65b647af9a799ce709c7947c5cf799`, automatically closing Issue #165 completed.
 
 ## Closed boundaries
 
 No Page wikitext, OCR, rendered prose, scan/PDF bytes or extracted literary source text are committed. This unit does not freeze or promote the candidate-specific rendering/extraction contract, literary-body composition/count/digests, Scriptorium-proven >=300k admission, PDF byte identity, FantLab analyzer-input/source-edition identity, diagnostic readiness or M2 parity.
 
-A later run must independently review the final exact PR head and settled CI before marking #166 Ready or merging it. Benchmark movement: none. M2 remains **0/5**.
+Benchmark movement: none. M2 remains **0/5**.

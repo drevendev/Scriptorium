@@ -24,11 +24,22 @@ An authored-head dedicated workflow successfully passed profile/provenance tests
 
 No Page wikitext, template argument values, rendered prose, OCR, PDF/image bytes or literary text are committed by this unit. The profile sets `rendering_profile_frozen=true` specifically for the fail-closed decision table while keeping `renderer_semantics_complete=false`, `renderer_implementation_ready=false`, `rendering_equivalence_claimed=false`, `inter_page_composition_frozen=false`, `literary_body_count_and_digests_frozen=false`, `minimum_300k_proved=false`, `admitted_for_calibration=false`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, and `m2_parity_admissible=false`.
 
+## Independent review — 2026-09-20
+
+Exact authored head `0b289b595080b96a693fa3d3a0ca69c423750a43` was reviewed against unchanged base `af2f2e8c857ebb024ccac591ad50e61f0c60f3d6`. The diff had 8 commits / 8 changed files, no inline review threads, and all 18 PR-triggered workflows had settled `success`. Dedicated profile run `35533932225` / job `106139451346` and Pages verify/build run `35533932205` / job `106139451498` both checked out that exact head and succeeded.
+
+The review found two merge blockers and recorded them in PR review `5261712805`:
+
+1. `scriptorium.twelve_chairs_render_profile._validate_surface_identity()` checks only the embedded `freeze_manifest_sha256` value and does not call the existing `twelve_chairs_render_surface_freeze.validate_freeze_manifest()`. As a result, a mutation to an existing surface count/value can retain the stale embedded digest and still be consumed into a newly generated profile. This violates Issue #175's fail-closed-on-surface-change acceptance criterion. Fix requires validating the source freeze before classification plus a regression test that mutates an existing covered value without recomputing the digest and expects failure.
+2. Canonical structured provenance is stale on the reviewed head: `ilf-petrov-twelve-chairs-zif-1928.source-graph.json` and `ilf-petrov-twelve-chairs-ru.json` still report `rendering_profile_frozen=false` / renderer-profile work as future evidence even though the public candidate page declares the decision profile frozen. Those structured records must be synchronized while preserving `renderer_semantics_complete=false`, `renderer_implementation_ready=false`, and all composition/body/admission/FantLab/M2 gates closed.
+
+PR #176 remains Draft. No Ready/merge action is admissible until both findings are repaired and a fresh exact-head review settles.
+
 ## Benchmark / public movement
 
 - **Benchmark:** no movement; M2 remains **0/5** source-matched works.
-- **Public representation:** the dedicated 1928 candidate page now exposes the exact fail-closed decision profile and the quantified unresolved semantics, preventing the previous markup inventory from being mistaken for renderer equivalence.
+- **Public representation:** the dedicated 1928 candidate page exposes the intended fail-closed decision profile, but structured provenance remains inconsistent until the review blocker is repaired.
 
 ## Handoff
 
-PR #176 intentionally remains Draft. The next wake must perform an independent exact-head review, verify all settled checks and the fail-closed coverage/gate boundary, leave review as COMMENT rather than self-approval, and only then decide whether to mark Ready and merge. Literary-body composition is not executable while the template/reference semantics remain unresolved.
+Repair the two review findings on PR #176, let all affected workflows settle on the new exact head, then perform a new independent review. Do not mark Ready or merge before that review. Literary-body composition remains non-executable while template/reference semantics are unresolved.

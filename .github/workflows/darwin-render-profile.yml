@@ -1,0 +1,79 @@
+name: Darwin/Rachinsky 1864 render profile
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-render-profile.yml"
+      - "scriptorium/darwin_render_profile.py"
+      - "tests/test_darwin_render_profile.py"
+      - "tests/test_darwin_provenance_trace.py"
+      - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru.md"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.source-graph.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify source-free fail-closed profile
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run profile and provenance tests
+        run: |
+          python -m unittest tests.test_darwin_render_profile -v
+          python -m unittest tests.test_darwin_provenance_trace -v
+
+      - name: Deterministically rebuild and compare profile
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_render_profile \
+            --surface corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.render-profile.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          expected = json.loads(Path("corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile.json").read_text(encoding="utf-8"))
+          rebuilt = json.loads(Path("build/repro/darwin-origin-species-rachinsky-1864-ru.render-profile.json").read_text(encoding="utf-8"))
+          assert rebuilt == expected
+          assert rebuilt["profile_sha256"] == "2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d"
+          assert rebuilt["rendering_profile_frozen"] is True
+          assert rebuilt["renderer_semantics_complete"] is False
+          assert rebuilt["renderer_implementation_ready"] is False
+          assert rebuilt["coverage"]["unresolved_template_shape_count"] == 38
+          assert rebuilt["coverage"]["unresolved_template_invocation_count"] == 4583
+          assert rebuilt["coverage"]["unresolved_tag_shape_count"] == 5
+          assert rebuilt["coverage"]["unresolved_tag_token_count"] == 518
+          assert rebuilt["inter_page_composition_frozen"] is False
+          assert rebuilt["literary_body_count_and_digests_frozen"] is False
+          assert rebuilt["minimum_300k_proved"] is False
+          assert rebuilt["admitted_for_calibration"] is False
+          assert rebuilt["fantlab_source_edition_match"] == "unknown"
+          assert rebuilt["diagnostic_ready"] is False
+          assert rebuilt["m2_parity_admissible"] is False
+          print("SCRIPTORIUM_DARWIN_RENDER_PROFILE_SHA256=" + rebuilt["profile_sha256"])
+          PY
+
+      - name: Upload source-free profile evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-1864-render-profile
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.render-profile.json
+          if-no-files-found: error
+          retention-days: 7

@@ -5,11 +5,14 @@ on:
     paths:
       - ".github/workflows/twelve-chairs-render-surface.yml"
       - "scriptorium/twelve_chairs_render_surface.py"
+      - "scriptorium/twelve_chairs_render_surface_freeze.py"
       - "scriptorium/twelve_chairs_page_freeze.py"
       - "scriptorium/darwin_render_surface.py"
       - "scriptorium/darwin_page_freeze.py"
       - "tests/test_twelve_chairs_render_surface.py"
+      - "tests/test_twelve_chairs_render_surface_freeze.py"
       - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.*.json"
+      - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.render-surface.json"
   workflow_dispatch:
 
 permissions:
@@ -33,7 +36,9 @@ jobs:
           python-version: "3.13"
 
       - name: Run source-free contract tests
-        run: python -m unittest tests.test_twelve_chairs_render_surface -v
+        run: |
+          python -m unittest tests.test_twelve_chairs_render_surface -v
+          python -m unittest tests.test_twelve_chairs_render_surface_freeze -v
 
       - name: Replay exact revisions and audit markup surface
         run: |
@@ -43,15 +48,25 @@ jobs:
             --index corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.index.json \
             --output build/repro/ilf-petrov-twelve-chairs-zif-1928.render-surface.full.json
 
+      - name: Rebuild and compare durable source-free freeze
+        run: |
+          set -euo pipefail
+          python -m scriptorium.twelve_chairs_render_surface_freeze \
+            --input build/repro/ilf-petrov-twelve-chairs-zif-1928.render-surface.full.json \
+            --output build/repro/ilf-petrov-twelve-chairs-zif-1928.render-surface.json
+          cmp \
+            build/repro/ilf-petrov-twelve-chairs-zif-1928.render-surface.json \
+            corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.render-surface.json
+
       - name: Verify source and gate boundary
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          path = Path("build/repro/ilf-petrov-twelve-chairs-zif-1928.render-surface.full.json")
+          path = Path("build/repro/ilf-petrov-twelve-chairs-zif-1928.render-surface.json")
           audit = json.loads(path.read_text(encoding="utf-8"))
           assert audit["dependency_count"] == 410
-          assert len(audit["page_surface_receipts"]) == 410
+          assert audit["page_surface_receipts_count"] == 410
           assert audit["identity_replay_match"] is True
           assert audit["source_text_included"] is False
           assert audit["rendering_profile_frozen"] is False
@@ -63,13 +78,18 @@ jobs:
           assert audit["diagnostic_ready"] is False
           assert audit["m2_parity_admissible"] is False
           print("SCRIPTORIUM_TWELVE_CHAIRS_RENDER_SURFACE_PAGES=410")
-          print("SCRIPTORIUM_TWELVE_CHAIRS_RENDER_SURFACE_AUDIT_SHA256=" + audit["audit_sha256"])
+          print("SCRIPTORIUM_TWELVE_CHAIRS_RENDER_SURFACE_FREEZE_SHA256=" + audit["freeze_manifest_sha256"])
           PY
+
+      - name: Print source-free durable freeze for evidence
+        run: cat build/repro/ilf-petrov-twelve-chairs-zif-1928.render-surface.json
 
       - name: Upload source-free audit evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: twelve-chairs-1928-render-surface
-          path: build/repro/ilf-petrov-twelve-chairs-zif-1928.render-surface.full.json
+          path: |
+            build/repro/ilf-petrov-twelve-chairs-zif-1928.render-surface.full.json
+            build/repro/ilf-petrov-twelve-chairs-zif-1928.render-surface.json
           if-no-files-found: error
           retention-days: 7

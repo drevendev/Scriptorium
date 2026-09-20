@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   scan-identity:
-    name: Capture exact Commons PDF identity
+    name: Retrieve and verify exact Commons PDF
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -33,28 +33,28 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Run scan-identity tests
-        run: python -m unittest tests.test_petersburg_scan_identity -v
+      - name: Run scan-identity and provenance tests
+        run: python -m unittest tests.test_petersburg_scan_identity tests.test_petersburg_provenance_trace -v
 
-      - name: Independently retrieve exact Commons original
+      - name: Independently retrieve and verify exact Commons original
         run: |
           set -euo pipefail
           mkdir -p build/repro
-          python -m scriptorium.petersburg_scan_identity capture \
-            --output build/repro/bely-petersburg-1916-ru.scan-identity.capture.json \
-            | tee build/repro/bely-petersburg-1916-ru.scan-identity.capture.log.json
+          python -m scriptorium.petersburg_scan_identity verify \
+            --receipt corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.scan-identity.json \
+            | tee build/repro/bely-petersburg-1916-ru.scan-identity.verify.json
 
-      - name: Verify capture gate boundary
+      - name: Verify gate boundary
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          receipt = json.loads(Path("build/repro/bely-petersburg-1916-ru.scan-identity.capture.json").read_text(encoding="utf-8"))
+          receipt = json.loads(Path("corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.scan-identity.json").read_text(encoding="utf-8"))
           assert receipt["candidate_id"] == "bely-petersburg-1916-ru"
           assert receipt["edition_identity"] == "1916_first_book_edition_facsimile"
-          assert receipt["identity"]["byte_count"] > 0
-          assert len(receipt["identity"]["sha1"]) == 40
-          assert len(receipt["identity"]["sha256"]) == 64
+          assert receipt["identity"]["byte_count"] == 3621459
+          assert receipt["identity"]["sha1"] == "682476934dd6ed49c6bbcdb0720127c1812ff477"
+          assert receipt["identity"]["sha256"] == "b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5"
           assert receipt["binary_bytes_committed"] is False
           assert receipt["ocr_included"] is False
           assert receipt["literary_source_text_included"] is False
@@ -65,17 +65,15 @@ jobs:
           assert receipt["fantlab_source_edition_match"] == "unknown"
           assert receipt["diagnostic_ready"] is False
           assert receipt["m2_parity_admissible"] is False
-          print("SCRIPTORIUM_PETERSBURG_SCAN_BYTES=" + str(receipt["identity"]["byte_count"]))
-          print("SCRIPTORIUM_PETERSBURG_SCAN_SHA1=" + receipt["identity"]["sha1"])
           print("SCRIPTORIUM_PETERSBURG_SCAN_SHA256=" + receipt["identity"]["sha256"])
           PY
 
-      - name: Upload source-free capture evidence
+      - name: Upload source-free scan identity evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: petersburg-1916-scan-identity-capture
+          name: petersburg-1916-scan-identity
           path: |
-            build/repro/bely-petersburg-1916-ru.scan-identity.capture.json
-            build/repro/bely-petersburg-1916-ru.scan-identity.capture.log.json
+            corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.scan-identity.json
+            build/repro/bely-petersburg-1916-ru.scan-identity.verify.json
           if-no-files-found: error
           retention-days: 7

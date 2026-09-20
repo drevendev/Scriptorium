@@ -11,6 +11,7 @@ SCAN = ROOT / "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-
 GAPS = ROOT / "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.gap-audit.json"
 GAP_MEMBERSHIP = ROOT / "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.gap-membership.json"
 RENDER_SURFACE = ROOT / "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.render-surface.json"
+RENDER_PROFILE = ROOT / "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.render-profile.json"
 PUBLIC = ROOT / "corpus/candidates/ilf-petrov-twelve-chairs-ru.md"
 
 
@@ -24,6 +25,7 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
         cls.gaps = json.loads(GAPS.read_text(encoding="utf-8"))
         cls.gap_membership = json.loads(GAP_MEMBERSHIP.read_text(encoding="utf-8"))
         cls.render_surface = json.loads(RENDER_SURFACE.read_text(encoding="utf-8"))
+        cls.render_profile = json.loads(RENDER_PROFILE.read_text(encoding="utf-8"))
         cls.public = PUBLIC.read_text(encoding="utf-8")
         cls.family = next(
             row
@@ -31,21 +33,24 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
             if row["family_id"] == "wikisource-zif-1928-first-standalone-edition"
         )
 
-    def test_structured_trace_binds_exact_410_page_identity_and_surface_manifests(self):
+    def test_structured_trace_binds_exact_410_page_identity_surface_and_profile_manifests(self):
         self.assertEqual(self.family["page_revision_identity_manifest"], INDEX.name)
         self.assertTrue(self.family["route_graph"]["page_revision_identities_frozen"])
         self.assertEqual(self.family["route_graph"]["referenced_page_namespace_count"], 410)
         self.assertEqual(self.index["page_identity_count"], 410)
         self.assertEqual(
             self.family["immutable_identity"]["status"],
-            "route_graph_410_page_revision_identities_scan_binary_gap_surface_gap_membership_and_markup_surface_frozen_body_unfrozen",
+            "route_graph_410_page_revision_identities_scan_binary_gap_surface_gap_membership_markup_surface_and_render_profile_frozen_body_unfrozen",
         )
         self.assertEqual(self.family["gap_audit_manifest"], GAPS.name)
         self.assertEqual(self.family["gap_membership_decision_manifest"], GAP_MEMBERSHIP.name)
         self.assertEqual(self.family["render_surface_manifest"], RENDER_SURFACE.name)
+        self.assertEqual(self.family["render_profile_manifest"], RENDER_PROFILE.name)
         self.assertTrue(self.family["route_graph"]["gap_page_revisions_inspected"])
         self.assertTrue(self.family["route_graph"]["gap_composition_membership_frozen"])
         self.assertTrue(self.family["route_graph"]["page_markup_surface_frozen"])
+        self.assertTrue(self.family["route_graph"]["rendering_profile_frozen"])
+        self.assertFalse(self.family["route_graph"]["renderer_semantics_complete"])
         self.assertEqual(self.render_surface["dependency_count"], 410)
         self.assertEqual(self.render_surface["page_surface_receipts_count"], 410)
         self.assertEqual(
@@ -56,6 +61,24 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
             self.render_surface["freeze_manifest_sha256"],
             "8a4f04238c68c40e59464e76a7911f0bee9488e09daab9f8772b1af970768d23",
         )
+        self.assertEqual(
+            self.family["render_profile"]["profile_sha256"],
+            self.render_profile["profile_sha256"],
+        )
+        self.assertEqual(
+            self.family["render_profile"]["source_surface_freeze_sha256"],
+            self.render_surface["freeze_manifest_sha256"],
+        )
+        self.assertTrue(self.family["render_profile"]["rendering_profile_frozen"])
+        self.assertFalse(self.family["render_profile"]["renderer_semantics_complete"])
+        self.assertFalse(self.family["render_profile"]["renderer_implementation_ready"])
+        self.assertFalse(self.family["render_profile"]["rendering_equivalence_claimed"])
+        self.assertEqual(
+            self.graph["render_profile_manifest"]["profile_sha256"],
+            self.render_profile["profile_sha256"],
+        )
+        self.assertTrue(self.graph["dependency_summary"]["rendering_profile_frozen"])
+        self.assertFalse(self.graph["dependency_summary"]["renderer_semantics_complete"])
 
     def test_scan_identity_is_exact_source_free_and_bound_to_trace(self):
         self.assertEqual(self.family["scan_identity_receipt"], SCAN.name)
@@ -165,6 +188,17 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
         self.assertEqual(self.render_surface["fantlab_source_edition_match"], "unknown")
         self.assertFalse(self.render_surface["diagnostic_ready"])
         self.assertFalse(self.render_surface["m2_parity_admissible"])
+        self.assertTrue(self.render_profile["rendering_profile_frozen"])
+        self.assertFalse(self.render_profile["renderer_semantics_complete"])
+        self.assertFalse(self.render_profile["renderer_implementation_ready"])
+        self.assertFalse(self.render_profile["rendering_equivalence_claimed"])
+        self.assertFalse(self.render_profile["inter_page_composition_frozen"])
+        self.assertFalse(self.render_profile["literary_body_count_and_digests_frozen"])
+        self.assertFalse(self.render_profile["minimum_300k_proved"])
+        self.assertFalse(self.render_profile["admitted_for_calibration"])
+        self.assertEqual(self.render_profile["fantlab_source_edition_match"], "unknown")
+        self.assertFalse(self.render_profile["diagnostic_ready"])
+        self.assertFalse(self.render_profile["m2_parity_admissible"])
 
     def test_public_candidate_exposes_markup_surface_without_promoting_body(self):
         self.assertIn("410 Page-namespace dependencies", self.public)
@@ -178,6 +212,8 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
         self.assertIn("not** a claim that the printed-page content is non-literary", self.public)
         self.assertIn("render-surface.json", self.public)
         self.assertIn("not** a claim that those constructs are already rendered", self.public)
+        self.assertIn("render-profile.json", self.public)
+        self.assertIn("renderer_semantics_complete=false", self.public)
         self.assertIn("m2_parity_admissible=false", self.public)
 
 

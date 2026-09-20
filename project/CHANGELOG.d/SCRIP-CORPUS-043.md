@@ -5,5 +5,8 @@
 - Frozen surface evidence is bound to Page index SHA-256 `c1e3280984e640b8fe739a752ff49a3327633f49b52a635bd2d2d1e6a09f538f`, 410 Page-receipt digest `2d4483b7296cfcc18288816f8d4c3bde2e71750808e1d57be932768a1e82c6f2`, and freeze SHA-256 `8a4f04238c68c40e59464e76a7911f0bee9488e09daab9f8772b1af970768d23`.
 - The observed exact surface includes ProofreadPage wrappers/tags and a finite template-shape inventory, but `rendering_profile_frozen=false`: inventory is not renderer equivalence.
 - The reviewed four-gap composition decision remains unchanged; pages 150/151/314/315 are still outside the 410 canonical dependency set.
+- Final exact-head review verified 16 commits / 13 changed files, no review threads, all 17 PR-triggered workflows green, dedicated exact-410 replay/freeze on `3784a7e3380bb9a9e5dd7a380d6f38fc9497bab7`, and an independent download of the source-free evidence artifact.
+- Scriptorium Pages ran the full Python 3.13 standard-library suite on that exact head: 362 tests, all OK, with deterministic site rebuild.
+- PR #174 was reviewed as COMMENT rather than self-approval, marked Ready, and squash-merged as `096d551b4f55ddfe3e76d61f0d3e067c40e9502d`; Issue #173 closed `completed`.
 - Rendering semantics, inter-page composition/separators, literary-body counts/digests, Scriptorium-proven >=300k admission, FantLab source identity, diagnostics and M2 parity remain closed/unresolved.
-- Public candidate documentation now exposes the markup-surface boundary without implying a frozen literary body.
+- Public candidate documentation now exposes the independently reviewed markup-surface boundary on master without implying a frozen literary body.

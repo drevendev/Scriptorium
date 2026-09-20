@@ -1,0 +1,24 @@
+{
+  "admitted_for_calibration": false,
+  "binary_bytes_committed": false,
+  "binary_bytes_retrieved_transiently": true,
+  "candidate_id": "bely-petersburg-1916-ru",
+  "diagnostic_ready": false,
+  "edition_identity": "1916_first_book_edition_facsimile",
+  "exact_original_url": "https://upload.wikimedia.org/wikipedia/commons/3/3c/%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B9_%D0%91%D0%B5%D0%BB%D1%8B%D0%B9._%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3_%281916%29.pdf",
+  "fantlab_source_edition_match": "unknown",
+  "file_page_url": "https://commons.wikimedia.org/wiki/File:%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B9_%D0%91%D0%B5%D0%BB%D1%8B%D0%B9._%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3_%281916%29.pdf",
+  "identity": {
+    "byte_count": 3621459,
+    "sha1": "682476934dd6ed49c6bbcdb0720127c1812ff477",
+    "sha256": "b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5"
+  },
+  "literary_body_count_and_digests_frozen": false,
+  "literary_source_text_included": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved_from_frozen_body": false,
+  "ocr_extraction_profile_frozen": false,
+  "ocr_included": false,
+  "provider": "Wikimedia Commons",
+  "receipt_version": "scriptorium-petersburg-scan-identity-v1"
+}

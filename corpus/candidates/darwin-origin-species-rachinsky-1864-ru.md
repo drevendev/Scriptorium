@@ -71,11 +71,13 @@ This is deliberately a composition/input freeze, **not yet a literary-body ident
 
 ## Source-free rendering-surface inventory
 
-**SCRIP-CORPUS-036 / Draft PR #160** adds the bounded prerequisite needed before a renderer can be specified without guessing at MediaWiki/template behavior. The hosted audit replays the exact **388 already-frozen literary Page revisions**, verifies each title/revision/timestamp/MediaWiki SHA-1 identity before inspecting content, and reduces the transient wikitext to a source-free construct inventory.
+**SCRIP-CORPUS-036 / merged PR #160** freezes the bounded prerequisite needed before a renderer can be specified without guessing at MediaWiki/template behavior. The hosted audit replays the exact **388 already-frozen literary Page revisions**, verifies each title/revision/timestamp/MediaWiki SHA-1 identity before inspecting content, and reduces the transient wikitext to a source-free construct inventory.
 
 The durable freeze contains **38 template name/arity shapes** and **18 HTML/ProofreadPage tag name/kind shapes**. Aggregate observations include **1,069 comments**, **776 `<noinclude>` blocks**, **8 wikilinks**, no external links, no headings, no table opens/closes, and no triple-brace template-parameter constructs on this exact literary surface. The inventory records construct identities/counts and cryptographic digests only; template arguments, lexical snippets, Page wikitext and rendered prose are not committed.
 
 The full hosted audit covered all **388/388** literary dependencies with `identity_replay_match=true`. Its per-Page source-free receipt list is represented durably by SHA-256 `7c170f513bf21f2c9e0d7736bc9fc20b4c9a40fdfe942a7b1dd1b0ac048ba09b`; the compact deterministic freeze has SHA-256 `e5ae625fef6afb2e890de990e1ef3b9e108a409a2e0ea2136947c2c3e1cea44d`.
+
+Independent exact-head review re-read all settled CI on `ee97e29af7225131002b6e0922c731536d903d13`, independently downloaded the exact-head artifact, recomputed its audit/receipt/freeze digests, and found no blocker before squash merge `1d9a7795724a68747ea1bb6e1fe1e7ea8b590519`.
 
 This **does not freeze the renderer**. It freezes only the set of markup constructs the future candidate-specific renderer must handle or explicitly reject. `rendering_profile_frozen=false` remains mandatory until a separate implementation proves deterministic semantics for this exact inventory.
 

@@ -69,6 +69,16 @@ The implementation fails closed if the 418-Page identity inventory, identity-row
 
 This is deliberately a composition/input freeze, **not yet a literary-body identity freeze**. The Page-wikitext-to-prose rendering profile and composite separator semantics remain unfrozen, so no body count or body digest is claimed by this unit.
 
+## Source-free rendering-surface inventory
+
+**SCRIP-CORPUS-036 / Draft PR #160** adds the bounded prerequisite needed before a renderer can be specified without guessing at MediaWiki/template behavior. The hosted audit replays the exact **388 already-frozen literary Page revisions**, verifies each title/revision/timestamp/MediaWiki SHA-1 identity before inspecting content, and reduces the transient wikitext to a source-free construct inventory.
+
+The durable freeze contains **38 template name/arity shapes** and **18 HTML/ProofreadPage tag name/kind shapes**. Aggregate observations include **1,069 comments**, **776 `<noinclude>` blocks**, **8 wikilinks**, no external links, no headings, no table opens/closes, and no triple-brace template-parameter constructs on this exact literary surface. The inventory records construct identities/counts and cryptographic digests only; template arguments, lexical snippets, Page wikitext and rendered prose are not committed.
+
+The full hosted audit covered all **388/388** literary dependencies with `identity_replay_match=true`. Its per-Page source-free receipt list is represented durably by SHA-256 `7c170f513bf21f2c9e0d7736bc9fc20b4c9a40fdfe942a7b1dd1b0ac048ba09b`; the compact deterministic freeze has SHA-256 `e5ae625fef6afb2e890de990e1ef3b9e108a409a2e0ea2136947c2c3e1cea44d`.
+
+This **does not freeze the renderer**. It freezes only the set of markup constructs the future candidate-specific renderer must handle or explicitly reject. `rendering_profile_frozen=false` remains mandatory until a separate implementation proves deterministic semantics for this exact inventory.
+
 ## Provider-reported scan-file metadata
 
 The retained source surface reports **27,368,263 bytes**, MIME `image/vnd.djvu`, dimensions **3744 × 5616**, **432 pages**, SHA-1 `75ef508588194ae74874272ce290f3ec1043ea9b`, current file-history display `11:45, 8 March 2016` by `Nonexyst`, and Archive.org locator `https://archive.org/details/oproiskhozhdenii00darw`.
@@ -81,13 +91,13 @@ The retained Wikisource work surface explicitly states that the work is in the p
 
 ## Corpus boundary
 
-This candidate is still **not admitted** to the >=300,000-character calibration/profile corpus. The source family, route graph, 418-dependency topology, exact 418 Page revision identities and the 388/30 literary-versus-apparatus composition boundary are now source-free frozen, but the actual literary prose has not yet been deterministically rendered or counted.
+This candidate is still **not admitted** to the >=300,000-character calibration/profile corpus. The source family, route graph, 418-dependency topology, exact 418 Page revision identities, the 388/30 literary-versus-apparatus composition boundary, and the exact 388-Page source-free markup-surface inventory are now frozen, but the actual literary prose has not yet been deterministically rendered or counted.
 
 Still required before corpus admission:
 
-- define and verify a candidate-specific fail-closed Page-wikitext-to-prose rendering profile over the 388 exact literary dependencies;
+- define and verify a candidate-specific fail-closed Page-wikitext-to-prose rendering profile that covers the frozen construct inventory;
 - freeze the rendered literary-body character count including spaces plus raw/normalized digests;
-- verify that the frozen body itself, not nominal page count or topology, clears **300,000 characters**.
+- verify that the frozen body itself, not nominal page count, topology or construct counts, clears **300,000 characters**.
 
 Accordingly `admitted_for_calibration=false` remains mandatory.
 
@@ -100,8 +110,12 @@ FantLab work **`work969964`** identifies Darwin's 1859 English monograph. The cu
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json) — retained translation/source identity and gate boundary from the earlier provenance stages.
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json) — exact route/topology evidence and apparatus roles.
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json) — authoritative source-free index for all 418 exact Page revision identities and four committed shards.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json) — deterministic source-free 388-Page construct inventory with no source payload.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.source-graph.json) — provenance edges from frozen Page identities through literary composition and hosted markup audit to the durable inventory.
 - [`../../scriptorium/darwin_body_contract.py`](../../scriptorium/darwin_body_contract.py) — deterministic source-free 388/30 composition contract generator and fail-closed validator.
+- [`../../scriptorium/darwin_render_surface.py`](../../scriptorium/darwin_render_surface.py) — exact-revision identity-verifying hosted construct audit.
+- [`../../scriptorium/darwin_render_surface_freeze.py`](../../scriptorium/darwin_render_surface_freeze.py) — deterministic compact freeze reducer/validator.
 
 ## Next evidence
 
-A later bounded unit should inspect the exact pinned Page wikitext shapes and freeze a candidate-specific fail-closed rendering profile for the 388 literary dependencies without persisting source prose. Only then should a separate identity/admission unit compute source-free counts/digests and independently prove the >=300,000-character threshold. FantLab parity remains a separate, stricter source-matching problem.
+A later bounded unit should use the now-frozen template/tag surface to define and verify a candidate-specific fail-closed rendering profile for the 388 literary dependencies without persisting source prose. Only then should a separate identity/admission unit compute source-free counts/digests and independently prove the >=300,000-character threshold. FantLab parity remains a separate, stricter source-matching problem.

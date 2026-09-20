@@ -60,19 +60,22 @@ Canonical evidence:
 - `source-edition-traces/bely-silver-dove-ru.revisions.json` — source-free exact revision identity and composite hashes.
 - `../../scriptorium/silver_dove_freeze.py` — versioned source-specific extraction and exact-revision replay implementation.
 
-## Petersburg traced modernist candidate
+## Petersburg scan-frozen modernist candidate
 
-`bely-petersburg-1916-ru` adds a second long Andrei Bely work while preserving a concrete edition identity. FantLab's 19 September 2022 linguistic analysis reports **944,182 characters** and **130,217 words**, so the work clears the >=300,000-character calibration threshold.
+[`bely-petersburg-1916-ru`](bely-petersburg-1916-ru.md) adds a second long Andrei Bely work while preserving a concrete edition identity. FantLab's 19 September 2022 linguistic analysis reports **944,182 characters** and **130,217 words**, so its analyzed input is nominally above the >=300,000-character threshold; that external count does not admit a different unfrozen public body.
 
-The retained source candidate is not the generic Russian Wikisource landing page. That landing page explicitly sits in the `Тексты без ссылок на источники` category and exposes edition navigation rather than a source-identified complete transcription, so it is useful only as a public-domain/bibliographic cross-check. Instead, Scriptorium records the Wikimedia Commons **632-page facsimile of the first 1916 book publication**, described there as a mechanical reproduction of the three *Sirin* installments from 1913–1914. Commons explicitly marks the work public domain. No scan pages, OCR, or source prose are committed.
+The retained source candidate is not the generic Russian Wikisource landing page. That landing page explicitly sits in the `Тексты без ссылок на источники` category and exposes edition navigation rather than a source-identified complete transcription, so it remains only a public-domain/bibliographic cross-check. Scriptorium instead records the Wikimedia Commons **632-page facsimile of the first 1916 book publication**, described there as a mechanical reproduction of the three *Sirin* installments from 1913–1914. Commons explicitly marks the work public domain. The 1916 first-book identity stays distinct from Bely's materially revised 1922 edition.
 
-The permanent Commons file-description revision **`oldid=1046280975` freezes descriptive page wikitext, not the PDF binary**. Current Page Information for file page ID **47639472** lists `Upload: Allow all users (infinite)` inside the **Page protection** table; Scriptorium treats that only as protection metadata and does not infer overwrite capability from it. The current rendered file page separately states **`You cannot overwrite this file.`** Neither operational observation identifies the PDF contents. A later freeze must therefore retrieve one specific PDF byte stream and record its exact byte count plus SHA-256 in source-free metadata before Scriptorium can claim that binary as frozen.
+SCRIP-CORPUS-038 independently streamed the exact retained Commons original without committing the PDF. The frozen source-free binary identity is **3,621,459 bytes**, SHA-1 **`682476934dd6ed49c6bbcdb0720127c1812ff477`**, SHA-256 **`b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`**. The independent byte stream also demonstrated that the previously retained Commons Page Information hash equals this exact PDF SHA-1 for this snapshot; Scriptorium records that verified equality without generalizing the semantics of Commons metadata fields.
 
-This unit deliberately remains at **source-edition tracing**. Scriptorium has not yet recorded a PDF snapshot digest, selected literary pages, or a deterministic OCR/extraction contract, and FantLab does not disclose which Petersburg edition or byte stream it analyzed. The 1916 first book edition is also kept distinct from Bely's materially revised 1922 edition. Therefore `source_identity_status=traced_not_frozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+This is a **scan-binary freeze, not a literary-body freeze**. No page images, OCR or source prose are committed. Scriptorium has not yet frozen literary-page selection, a deterministic OCR/extraction profile, literary-body character count/digests, or proof that the frozen Scriptorium body itself clears 300,000 characters. FantLab also does not disclose which Petersburg edition or immutable bytes it analyzed. Therefore `source_identity_status=scan_binary_frozen_text_body_unfrozen`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
 
 Canonical evidence:
 
-- `source-edition-traces/bely-petersburg-1916-ru.json` — FantLab counts, explicit 1916 facsimile identity, public-domain evidence, Commons description-vs-binary identity boundary, Wikisource provenance warning, edition-family boundary and next evidence required before diagnostics.
+- [`bely-petersburg-1916-ru.md`](bely-petersburg-1916-ru.md) — public source-free candidate page and exact scan boundary.
+- `source-edition-traces/bely-petersburg-1916-ru.json` — FantLab counts, explicit 1916 facsimile identity, public-domain evidence, exact scan identity, Wikisource provenance warning, edition-family boundary and next evidence required before diagnostics.
+- `source-edition-traces/bely-petersburg-1916-ru.scan-identity.json` — source-free exact PDF byte identity and closed-gate receipt.
+- `../../scriptorium/petersburg_scan_identity.py` — transient streaming capture/replay implementation with no binary persistence.
 
 ## Hyperboloid of Engineer Garin frozen early-Soviet SF candidate
 
@@ -129,7 +132,7 @@ A second Wikisource route makes that distinction concrete rather than theoretica
 
 That alternate frozen body is **4,217 characters larger** than FantLab's displayed count. The delta is diagnostic evidence of non-identity or differing extraction/counting policy, not evidence that the alternate transcription matches FantLab and not permission to tune the extractor toward the FantLab number. The alternate route also is **not** collapsed with the source-cited 1965 family merely because both represent the same novel.
 
-The primary 1965-source index still does not freeze the linked literary-page revisions, deterministic extraction/composition, or raw/normalized composite digests. Accordingly the retained primary family remains trace-only while the alternate route has a reproducibly frozen public body; `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
+The primary 1965-source index still does not freeze the linked literary-page revisions, deterministic extraction/composition, or raw/`scriptorium-text-v1` composite digests. Accordingly the retained primary family remains trace-only while the alternate route has a reproducibly frozen public body; `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`, and the M2 reproduction gate remains **0/5 source-matched works**.
 
 Canonical evidence:
 

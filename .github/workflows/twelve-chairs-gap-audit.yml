@@ -1,0 +1,96 @@
+name: Twelve Chairs 1928 gap audit
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/twelve-chairs-gap-audit.yml"
+      - "scriptorium/twelve_chairs_gap_audit.py"
+      - "tests/test_twelve_chairs_gap_audit.py"
+      - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.gap-audit.json"
+      - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json"
+      - "corpus/candidates/ilf-petrov-twelve-chairs-ru.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gap-audit:
+    name: Capture or replay exact non-transcluded gap evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Capture or replay source-free gap audit
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          manifest="corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.gap-audit.json"
+          if [[ -f "$manifest" ]]; then
+            python -m scriptorium.twelve_chairs_gap_audit replay \
+              --manifest "$manifest" \
+              --receipt build/repro/ilf-petrov-twelve-chairs-zif-1928.gap-audit.replay.json
+            echo "mode=replay" >> "$GITHUB_ENV"
+          else
+            python -m scriptorium.twelve_chairs_gap_audit capture \
+              --manifest build/repro/ilf-petrov-twelve-chairs-zif-1928.gap-audit.capture.json
+            echo "mode=capture" >> "$GITHUB_ENV"
+          fi
+
+      - name: Verify source-free boundary and closed gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.twelve_chairs_gap_audit import GAP_SEQUENCES, validate_gap_audit_manifest
+
+          replay = Path("build/repro/ilf-petrov-twelve-chairs-zif-1928.gap-audit.replay.json")
+          if replay.exists():
+              receipt = json.loads(replay.read_text(encoding="utf-8"))
+              assert receipt["gap_page_count"] == 4
+              assert receipt["gap_sequences"] == list(GAP_SEQUENCES)
+              assert receipt["identity_and_source_free_summary_replay_match"] is True
+              assert receipt["source_text_included"] is False
+              assert receipt["dependency_inventory_unchanged"] is True
+              assert receipt["literary_body_frozen"] is False
+              assert receipt["admitted_for_calibration"] is False
+              assert receipt["diagnostic_ready"] is False
+              assert receipt["fantlab_source_edition_match"] == "unknown"
+              assert receipt["m2_parity_admissible"] is False
+              print("SCRIPTORIUM_TWELVE_CHAIRS_GAP_REPLAY_COUNT=4")
+          else:
+              capture = Path("build/repro/ilf-petrov-twelve-chairs-zif-1928.gap-audit.capture.json")
+              payload = json.loads(capture.read_text(encoding="utf-8"))
+              rows = validate_gap_audit_manifest(payload)
+              assert len(rows) == 4
+              assert payload["source_text_included"] is False
+              assert payload["dependency_inventory_unchanged"] is True
+              assert payload["literary_membership_frozen"] is False
+              assert payload["literary_body_frozen"] is False
+              assert payload["admitted_for_calibration"] is False
+              assert payload["diagnostic_ready"] is False
+              assert payload["m2_parity_admissible"] is False
+              print("SCRIPTORIUM_TWELVE_CHAIRS_GAP_CAPTURE_COUNT=4")
+              print("SCRIPTORIUM_TWELVE_CHAIRS_GAP_CLASSES=" + ",".join(row["body_presence_class"] for row in rows))
+          PY
+
+      - name: Upload source-free gap capture or replay evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: twelve-chairs-1928-gap-audit-${{ env.mode }}
+          path: build/repro/*.json
+          if-no-files-found: error
+          retention-days: 7

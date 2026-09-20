@@ -13,7 +13,7 @@ Retained source-free anchors are:
 - shared route template, permanent revision **`oldid=3775868`**;
 - parent topology witness, permanent revision **`oldid=5712882`** with `include="8-21,423-427"`.
 
-The ProofreadPage index reports **`Закончено — Все страницы вычитаны и проверены`**. This is provenance/quality evidence for the transcription family; it is not by itself a literary-body or scan-binary freeze.
+The ProofreadPage index reports **`Закончено — Все страницы вычитаны и проверены`**. This is provenance/quality evidence for the transcription family; it is not by itself a literary-body freeze.
 
 ## Rendered route and ProofreadPage topology
 
@@ -81,11 +81,15 @@ Independent exact-head review re-read all settled CI on `ee97e29af7225131002b6e0
 
 This **does not freeze the renderer**. It freezes only the set of markup constructs the future candidate-specific renderer must handle or explicitly reject. `rendering_profile_frozen=false` remains mandatory until a separate implementation proves deterministic semantics for this exact inventory.
 
-## Provider-reported scan-file metadata
+## Independent scan binary identity
 
-The retained source surface reports **27,368,263 bytes**, MIME `image/vnd.djvu`, dimensions **3744 × 5616**, **432 pages**, SHA-1 `75ef508588194ae74874272ce290f3ec1043ea9b`, current file-history display `11:45, 8 March 2016` by `Nonexyst`, and Archive.org locator `https://archive.org/details/oproiskhozhdenii00darw`.
+**SCRIP-CORPUS-037 / Draft PR #162** independently retrieved the exact Wikimedia Commons DjVu backing this ProofreadPage family and streamed it through Scriptorium without writing the binary into the repository. The hosted capture observed **27,368,263 bytes** and SHA-1 `75ef508588194ae74874272ce290f3ec1043ea9b`, exactly matching the provider metadata that had already been frozen from the source surface.
 
-That is deliberately only **provider-reported remote metadata**. Scriptorium has not independently frozen the DjVu byte stream or computed a local SHA-256 over it.
+The same transient byte stream produced Scriptorium-computed SHA-256 **`7f3ae1aadd4a844b193783a0c350e23815a76e7bb14a92bae7fa1c077354a2c8`**. This source-free identity is frozen in [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json). The first hosted capture was run `35492937897`, job `106030871176`; its source-free artifact `10599691841` has ZIP SHA-256 `95cece9716e721b2fc2f98ecdc8bb10e4ba1ed2a27db514572d30cea186f1592`.
+
+The provider surface also reports MIME `image/vnd.djvu`, dimensions **3744 × 5616**, **432 pages**, current file-history display `11:45, 8 March 2016` by `Nonexyst`, and Archive.org locator `https://archive.org/details/oproiskhozhdenii00darw`. Those descriptive fields remain provider metadata; the byte count/SHA-1/SHA-256 identity above is the independently verified binary boundary. **No scan bytes are committed.**
+
+This binary freeze does not define Page-wikitext rendering, does not prove the literary body is >=300,000 characters, and does not establish FantLab analyzer-input identity.
 
 ## Rights evidence
 
@@ -93,13 +97,13 @@ The retained Wikisource work surface explicitly states that the work is in the p
 
 ## Corpus boundary
 
-This candidate is still **not admitted** to the >=300,000-character calibration/profile corpus. The source family, route graph, 418-dependency topology, exact 418 Page revision identities, the 388/30 literary-versus-apparatus composition boundary, and the exact 388-Page source-free markup-surface inventory are now frozen, but the actual literary prose has not yet been deterministically rendered or counted.
+This candidate is still **not admitted** to the >=300,000-character calibration/profile corpus. The source family, route graph, 418-dependency topology, exact 418 Page revision identities, the 388/30 literary-versus-apparatus composition boundary, the exact 388-Page source-free markup-surface inventory, and the backing DjVu byte identity are now frozen, but the actual literary prose has not yet been deterministically rendered or counted.
 
 Still required before corpus admission:
 
 - define and verify a candidate-specific fail-closed Page-wikitext-to-prose rendering profile that covers the frozen construct inventory;
 - freeze the rendered literary-body character count including spaces plus raw/normalized digests;
-- verify that the frozen body itself, not nominal page count, topology or construct counts, clears **300,000 characters**.
+- verify that the frozen body itself, not nominal page count, topology, construct counts or scan byte size, clears **300,000 characters**.
 
 Accordingly `admitted_for_calibration=false` remains mandatory.
 
@@ -109,14 +113,16 @@ FantLab work **`work969964`** identifies Darwin's 1859 English monograph. The cu
 
 ## Canonical evidence
 
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json) — retained translation/source identity and gate boundary from the earlier provenance stages.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json) — retained translation/source identity and gate boundary.
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.source-graph.json) — exact route/topology evidence and apparatus roles.
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json) — authoritative source-free index for all 418 exact Page revision identities and four committed shards.
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json) — deterministic source-free 388-Page construct inventory with no source payload.
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.source-graph.json) — provenance edges from frozen Page identities through literary composition and hosted markup audit to the durable inventory.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json) — independently verified source-free DjVu byte count, SHA-1 cross-check and SHA-256; scan bytes are not stored.
 - [`../../scriptorium/darwin_body_contract.py`](../../scriptorium/darwin_body_contract.py) — deterministic source-free 388/30 composition contract generator and fail-closed validator.
 - [`../../scriptorium/darwin_render_surface.py`](../../scriptorium/darwin_render_surface.py) — exact-revision identity-verifying hosted construct audit.
 - [`../../scriptorium/darwin_render_surface_freeze.py`](../../scriptorium/darwin_render_surface_freeze.py) — deterministic compact freeze reducer/validator.
+- [`../../scriptorium/darwin_scan_identity.py`](../../scriptorium/darwin_scan_identity.py) — streaming scan-identity capture/replay with provider cross-checks and no binary persistence.
 
 ## Next evidence
 

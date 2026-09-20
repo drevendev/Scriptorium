@@ -1,0 +1,74 @@
+name: Darwin Rachinsky scan identity
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-scan-identity.yml"
+      - "scriptorium/darwin_scan_identity.py"
+      - "tests/test_darwin_scan_identity.py"
+      - "tests/test_darwin_provenance_trace.py"
+      - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru.md"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan-identity:
+    name: Retrieve and verify exact Commons DjVu
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run scan-identity and provenance tests
+        run: python -m unittest tests.test_darwin_scan_identity tests.test_darwin_provenance_trace -v
+
+      - name: Independently retrieve and verify exact Commons original
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_scan_identity verify \
+            --receipt corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json \
+            | tee build/repro/darwin-origin-species-rachinsky-1864-ru.scan-identity.verify.json
+
+      - name: Verify gate boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path("corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json").read_text(encoding="utf-8"))
+          assert receipt["identity"]["byte_count"] == 27368263
+          assert receipt["identity"]["sha1"] == "75ef508588194ae74874272ce290f3ec1043ea9b"
+          assert receipt["identity"]["sha256"] == "7f3ae1aadd4a844b193783a0c350e23815a76e7bb14a92bae7fa1c077354a2c8"
+          assert receipt["binary_bytes_committed"] is False
+          assert receipt["source_text_included"] is False
+          assert receipt["literary_body_count_and_digests_frozen"] is False
+          assert receipt["minimum_300k_proved"] is False
+          assert receipt["admitted_for_calibration"] is False
+          assert receipt["fantlab_source_edition_match"] == "unknown"
+          assert receipt["diagnostic_ready"] is False
+          assert receipt["m2_parity_admissible"] is False
+          print("SCRIPTORIUM_DARWIN_SCAN_SHA256=" + receipt["identity"]["sha256"])
+          PY
+
+      - name: Upload source-free scan identity evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-scan-identity
+          path: |
+            corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json
+            build/repro/darwin-origin-species-rachinsky-1864-ru.scan-identity.verify.json
+          if-no-files-found: error
+          retention-days: 7

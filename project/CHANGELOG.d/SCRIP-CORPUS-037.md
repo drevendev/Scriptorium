@@ -1,0 +1,11 @@
+## SCRIP-CORPUS-037 — Darwin/Rachinsky independent DjVu binary identity
+
+- Opened Issue #161 and Draft PR #162 from `master` `8abb6e346ab4fd0b78555084e90abec4090a9f4b` after STATE_REVISION 182 normal-flow selection.
+- Added `scriptorium.darwin_scan_identity`, a source-free streaming verifier for the exact Wikimedia Commons original backing the retained Darwin/Rachinsky 1864 ProofreadPage family. The module computes byte count, SHA-1 and SHA-256 without writing the binary and fails closed unless the independently observed byte count/SHA-1 match the already-frozen provider metadata.
+- Added standard-library tests for deterministic chunk hashing, malformed/empty input rejection, provider drift, forbidden payload/gate promotion and observed-binary drift.
+- The first hosted capture on PR head `50fea7dd6961296200352077f9cdcb150211bb87` succeeded: workflow run `35492937897`, job `106030871176`, independently retrieved the exact Commons original and observed **27,368,263 bytes**, SHA-1 `75ef508588194ae74874272ce290f3ec1043ea9b`, matching provider metadata exactly, plus Scriptorium-computed SHA-256 `7f3ae1aadd4a844b193783a0c350e23815a76e7bb14a92bae7fa1c077354a2c8`.
+- The source-free first-capture artifact `10599691841` has ZIP digest `sha256:95cece9716e721b2fc2f98ecdc8bb10e4ba1ed2a27db514572d30cea186f1592`; no scan bytes, OCR, Page wikitext or literary prose were uploaded.
+- Froze the source-free receipt `darwin-origin-species-rachinsky-1864-ru.scan-identity.json` and converted the hosted workflow from discovery/capture to deterministic exact-original replay against that receipt.
+- Reconciled the public candidate page and canonical structured source-edition trace: the scan binary identity is now frozen independently while Page-wikitext rendering, literary-body count/digests, >=300k corpus admission, FantLab analyzer-input identity and M2 parity remain closed.
+- Added provenance regression coverage that binds the parent trace to the source-free scan receipt and prevents future state from claiming the binary identity is still unfrozen or silently promoting downstream gates.
+- PR #162 remains Draft for a separate independent exact-head review; this authored run does not self-approve or merge the substantial change.

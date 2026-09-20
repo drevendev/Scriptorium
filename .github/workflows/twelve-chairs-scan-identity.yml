@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   scan-identity:
-    name: Retrieve exact Commons PDF and capture source-free identity
+    name: Retrieve and verify exact Commons PDF
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -33,28 +33,28 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Run scan-identity tests
-        run: python -m unittest tests.test_twelve_chairs_scan_identity -v
+      - name: Run scan-identity and provenance tests
+        run: python -m unittest tests.test_twelve_chairs_scan_identity tests.test_twelve_chairs_provenance_trace -v
 
-      - name: Independently retrieve exact Commons original
+      - name: Independently retrieve and verify exact Commons original
         run: |
           set -euo pipefail
           mkdir -p build/repro
-          python -m scriptorium.twelve_chairs_scan_identity capture \
-            --output build/repro/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json \
-            | tee build/repro/ilf-petrov-twelve-chairs-zif-1928.scan-identity.capture.log
+          python -m scriptorium.twelve_chairs_scan_identity verify \
+            --receipt corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json \
+            | tee build/repro/ilf-petrov-twelve-chairs-zif-1928.scan-identity.verify.json
 
-      - name: Verify provider boundary and source-free shape
+      - name: Verify gate boundary
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          receipt = json.loads(Path("build/repro/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json").read_text(encoding="utf-8"))
+          receipt = json.loads(Path("corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json").read_text(encoding="utf-8"))
           assert receipt["candidate_id"] == "ilf-petrov-twelve-chairs-ru"
           assert receipt["edition_identity"] == "1928_first_standalone_zemlya_i_fabrika_facsimile"
           assert receipt["identity"]["byte_count"] == 77978350
           assert receipt["identity"]["sha1"] == "4ab6aa42c3517169e99c1177b6fb6412cfe9187d"
-          assert len(receipt["identity"]["sha256"]) == 64
+          assert receipt["identity"]["sha256"] == "5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4"
           assert receipt["binary_bytes_committed"] is False
           assert receipt["ocr_included"] is False
           assert receipt["literary_source_text_included"] is False
@@ -72,7 +72,9 @@ jobs:
       - name: Upload source-free scan identity evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: twelve-chairs-1928-scan-identity-capture
-          path: build/repro/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json
+          name: twelve-chairs-1928-scan-identity
+          path: |
+            corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json
+            build/repro/ilf-petrov-twelve-chairs-zif-1928.scan-identity.verify.json
           if-no-files-found: error
           retention-days: 7

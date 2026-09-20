@@ -6,10 +6,7 @@
     "work_id": 182817,
     "analysis_url": "https://fantlab.ru/work182817/lp",
     "analysis_date": "2022-09-17",
-    "observed_counts": {
-      "characters": 572654,
-      "words": 80203
-    },
+    "observed_counts": {"characters": 572654, "words": 80203},
     "source_edition_disclosed_on_analysis_surface": false,
     "source_bytes_disclosed_on_analysis_surface": false,
     "work_page_url": "https://fantlab.ru/work182817",
@@ -29,15 +26,8 @@
       "source_provenance_confidence": "strong_for_bibliographic_and_editorial_family",
       "immutable_identity": {
         "status": "traced_not_frozen",
-        "frozen_components": [
-          "work-index permanent revision oldid 5706136",
-          "bibliographic/editorial-family declaration on that index"
-        ],
-        "unfrozen_components": [
-          "exact identities for the literary chapter bodies",
-          "deterministic literary-body extraction and composition",
-          "raw and scriptorium-text-v1 normalized composite digests"
-        ]
+        "frozen_components": ["work-index permanent revision oldid 5706136", "bibliographic/editorial-family declaration on that index"],
+        "unfrozen_components": ["exact identities for the literary chapter bodies", "deterministic literary-body extraction and composition", "raw and scriptorium-text-v1 normalized composite digests"]
       }
     },
     {
@@ -49,9 +39,9 @@
       "bibliographic_source": "И. Ильф, Е. Петров. Двенадцать стульев. М.-Л.: Земля и фабрика, 1928.",
       "edition_identity": "first_standalone_1928_zemlya_i_fabrika",
       "observed_chapters": 41,
-      "source_provenance_confidence": "strong_for_bibliographic_edition_family_page_revision_scan_binary_gap_surface_gap_membership_and_markup_surface_identity",
+      "source_provenance_confidence": "strong_for_bibliographic_edition_family_page_revision_scan_binary_gap_surface_gap_membership_markup_surface_and_render_profile_identity",
       "immutable_identity": {
-        "status": "route_graph_410_page_revision_identities_scan_binary_gap_surface_gap_membership_and_markup_surface_frozen_body_unfrozen",
+        "status": "route_graph_410_page_revision_identities_scan_binary_gap_surface_gap_membership_markup_surface_and_render_profile_frozen_body_unfrozen",
         "frozen_components": [
           "work-index permanent revision oldid 5706135",
           "bibliographic first-edition declaration on that index",
@@ -62,10 +52,11 @@
           "exact source-free identities and body-presence summaries for non-transcluded scan-index pages 150, 151, 314 and 315; 150/314 are nonempty-unclassified and 151/315 have no transcluded body",
           "source-free canonical-route composition membership for gap pages 150, 151, 314 and 315: all four excluded because the frozen part routes do not transclude them; nonempty pages 150/314 remain semantically unclassified",
           "exact source-free markup-surface inventory for all 410 pinned dependency revisions, including aggregate construct shapes/counts and a digest over 410 per-Page source-free receipts",
+          "fail-closed rendering decision profile bound to the exact render-surface freeze; all observed shapes are classified while template/reference semantics remain unresolved",
           "exact Wikimedia Commons original PDF byte identity: 77,978,350 bytes, SHA-1 4ab6aa42c3517169e99c1177b6fb6412cfe9187d, SHA-256 5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4"
         ],
         "unfrozen_components": [
-          "deterministic rendering/extraction semantics over the frozen Page-markup construct surface",
+          "complete template/reference rendering semantics over the frozen decision profile",
           "inter-page composition/separator behavior across the 410 canonical dependencies",
           "raw and scriptorium-text-v1 normalized composite digests",
           "OCR/page-to-literary-text extraction profile"
@@ -77,6 +68,7 @@
       "gap_audit_manifest": "ilf-petrov-twelve-chairs-zif-1928.gap-audit.json",
       "gap_membership_decision_manifest": "ilf-petrov-twelve-chairs-zif-1928.gap-membership.json",
       "render_surface_manifest": "ilf-petrov-twelve-chairs-zif-1928.render-surface.json",
+      "render_profile_manifest": "ilf-petrov-twelve-chairs-zif-1928.render-profile.json",
       "page_revision_identity_capture": {
         "workflow_run_id": 35503562530,
         "artifact_id": 10603441105,
@@ -102,12 +94,7 @@
         "source_text_included": false,
         "dependency_inventory_unchanged": true,
         "literary_membership_frozen": false,
-        "page_body_presence": {
-          "150": "nonempty_body_unclassified",
-          "151": "no_transcluded_body",
-          "314": "nonempty_body_unclassified",
-          "315": "no_transcluded_body"
-        }
+        "page_body_presence": {"150": "nonempty_body_unclassified", "151": "no_transcluded_body", "314": "nonempty_body_unclassified", "315": "no_transcluded_body"}
       },
       "gap_membership_decision": {
         "decision_version": "scriptorium-twelve-chairs-gap-membership-v1",
@@ -126,33 +113,37 @@
         "page_surface_receipts_sha256": "2d4483b7296cfcc18288816f8d4c3bde2e71750808e1d57be932768a1e82c6f2",
         "freeze_manifest_sha256": "8a4f04238c68c40e59464e76a7911f0bee9488e09daab9f8772b1af970768d23",
         "source_text_included": false,
-        "rendering_profile_frozen": false,
+        "rendering_profile_frozen_at_surface_capture": false,
         "inter_page_composition_frozen": false,
         "literary_body_count_and_digests_frozen": false
       },
+      "render_profile": {
+        "profile_version": "scriptorium-twelve-chairs-page-render-profile-v1",
+        "status": "fail_closed_profile_frozen_template_semantics_pending",
+        "profile_sha256": "88e410311435ab6bcfbd70ab0a2cea73ffe304e3ce2876d241d25ea38cc5d5cd",
+        "source_surface_freeze_sha256": "8a4f04238c68c40e59464e76a7911f0bee9488e09daab9f8772b1af970768d23",
+        "rendering_profile_frozen": true,
+        "renderer_semantics_complete": false,
+        "renderer_implementation_ready": false,
+        "rendering_equivalence_claimed": false,
+        "inter_page_composition_frozen": false,
+        "literary_body_count_and_digests_frozen": false,
+        "source_text_included": false
+      },
       "route_graph": {
-        "status": "frozen_parent_route_topology_410_page_revision_identities_scan_binary_gap_surface_gap_membership_and_markup_surface_body_unfrozen",
+        "status": "frozen_parent_route_topology_410_page_revision_identities_scan_binary_gap_surface_gap_membership_markup_surface_and_render_profile_body_unfrozen",
         "proofread_index_oldid": 5702510,
-        "part_parent_oldids": [
-          5702507,
-          5704332,
-          5702508
-        ],
-        "transclusion_ranges": [
-          [8, 149],
-          [152, 313],
-          [316, 421]
-        ],
+        "part_parent_oldids": [5702507, 5704332, 5702508],
+        "transclusion_ranges": [[8, 149], [152, 313], [316, 421]],
         "referenced_page_namespace_count": 410,
         "page_revision_identities_frozen": true,
         "scan_binary_identity_frozen": true,
         "gap_page_revisions_inspected": true,
         "gap_composition_membership_frozen": true,
         "page_markup_surface_frozen": true,
-        "non_transcluded_scan_gaps": [
-          [150, 151],
-          [314, 315]
-        ]
+        "rendering_profile_frozen": true,
+        "renderer_semantics_complete": false,
+        "non_transcluded_scan_gaps": [[150, 151], [314, 315]]
       }
     }
   ],
@@ -160,7 +151,7 @@
     "status": "distinct_text_families_required",
     "evidence": "The current later editorial family exposes 40 chapters while the separately identified 1928 first standalone edition exposes 41 chapters. This structural difference is sufficient to prohibit collapsing the two public routes into one edition/text identity, but it is not by itself a byte-level comparison or proof of every textual difference.",
     "fantlab_relation": "unknown",
-    "rule": "Do not infer FantLab analyzer-input identity from title, authorship, publication history, chapter count, bibliographic compatibility, public availability, route topology, Page revision identity, gap surface identity, gap membership decision, Page markup-surface identity or scan binary identity alone. Each edition/transcription family requires its own frozen literary-body identity before diagnostics."
+    "rule": "Do not infer FantLab analyzer-input identity from title, authorship, publication history, chapter count, bibliographic compatibility, public availability, route topology, Page revision identity, gap surface identity, gap membership decision, Page markup-surface identity, rendering-profile identity or scan binary identity alone. Each edition/transcription family requires its own frozen literary-body identity before diagnostics."
   },
   "facsimile_lead": {
     "provider": "Russian Wikisource / Wikimedia Commons",
@@ -189,12 +180,12 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "1928_route_graph_410_page_revision_identities_scan_binary_gap_surface_gap_membership_and_markup_surface_frozen_body_unfrozen",
+    "source_identity_status": "1928_route_graph_410_page_revision_identities_scan_binary_gap_surface_gap_membership_markup_surface_and_render_profile_frozen_body_unfrozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "multi_edition_traced_1928_page_revision_scan_binary_gap_surface_gap_membership_and_markup_surface_identity_frozen_body_unfrozen",
+    "status": "multi_edition_traced_1928_page_revision_scan_binary_gap_surface_gap_membership_markup_surface_and_render_profile_identity_frozen_body_unfrozen",
     "reasons": [
       "FantLab reports 572,654 characters and 80,203 words for its 17 September 2022 analysis, above the 300,000-character calibration threshold.",
       "Russian Wikisource provides explicit public-domain evidence and stable work-index locators for two distinct bibliographic/text families.",
@@ -203,17 +194,18 @@
       "All 410 referenced Page-namespace dependencies have source-free exact revision ID/timestamp/MediaWiki SHA-1 identities frozen in a sharded manifest.",
       "The four non-transcluded scan-index gap pages have exact source-free revision/body-presence evidence: 150 and 314 are nonempty but remain semantically unclassified; 151 and 315 have no transcluded body.",
       "A separate source-free decision freezes all four gap pages as excluded from the current composition surface because the canonical part routes do not transclude them; this does not classify nonempty pages 150/314 as non-literary. The dependency inventory remains exactly 410 pages.",
-      "A source-free exact-410 markup-surface freeze now records aggregate construct shapes/counts plus a digest over per-Page receipts after replaying the same pinned identities; it inventories what a renderer must handle but does not claim rendering equivalence.",
+      "A source-free exact-410 markup-surface freeze records aggregate construct shapes/counts plus a digest over per-Page receipts after replaying the same pinned identities.",
+      "A fail-closed rendering decision profile is now bound to that exact surface freeze and classifies every observed shape, but all 30 template shapes / 602 invocations and the 410 references tokens remain semantically unresolved; renderer implementation/readiness/equivalence remain false.",
       "The exact backing Commons original is frozen source-free as 77,978,350 bytes, SHA-1 4ab6aa42c3517169e99c1177b6fb6412cfe9187d and SHA-256 5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4; no scan bytes are committed.",
-      "Rendering/extraction semantics, inter-page composition/separators and body digests remain unfrozen, so this is not yet a frozen literary text or Scriptorium-proven >=300k corpus admission.",
+      "Complete rendering semantics, inter-page composition/separators and body digests remain unfrozen, so this is not yet a frozen literary text or Scriptorium-proven >=300k corpus admission.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Implement and independently review a deterministic fail-closed Page-markup rendering/extraction profile against the frozen exact-410 construct surface; the four audited gaps are already excluded by the frozen membership decision.",
+      "Resolve and independently review the template/reference semantics explicitly left unresolved by the frozen fail-closed rendering profile; the four audited gaps are already excluded by the frozen membership decision.",
       "Define inter-page composition/separator behavior across the pinned 410 canonical Page revisions.",
       "Record raw and scriptorium-text-v1 normalized composite digests only after renderer/composition semantics are independently reviewable.",
       "If OCR or scan-page extraction is used to cross-check the public transcription, define that OCR/page-extraction profile separately from the frozen PDF binary identity.",
-      "Seek independent evidence that can identify FantLab's uploaded analyzer input; bibliographic compatibility, route topology, Page revision identity, gap surface identity, gap membership decision, markup-surface identity, scan binary identity and chapter structure cannot advance M2.",
+      "Seek independent evidence that can identify FantLab's uploaded analyzer input; bibliographic compatibility, route topology, Page revision identity, gap surface identity, gap membership decision, markup-surface identity, rendering-profile identity, scan binary identity and chapter structure cannot advance M2.",
       "When author-voice work begins, model this work as coauthored evidence rather than silently assigning its statistics to either individual author."
     ]
   }

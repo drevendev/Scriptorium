@@ -3,13 +3,10 @@
   "candidate_id": "ilf-petrov-twelve-chairs-ru",
   "family_id": "wikisource-zif-1928-first-standalone-edition",
   "captured_on": "2026-09-20",
-  "purpose": "Freeze the source-free route topology, exact Page-namespace revision identities, exact backing scan binary identity, four-gap audit, canonical-route gap composition-membership decision and exact-410 Page markup-surface inventory for the 1928 Zemlya i Fabrika Wikisource transcription without claiming a renderer or frozen literary body.",
+  "purpose": "Freeze the source-free route topology, exact Page-namespace revision identities, exact backing scan binary identity, four-gap audit, canonical-route gap composition-membership decision, exact-410 Page markup-surface inventory and fail-closed rendering decision profile for the 1928 Zemlya i Fabrika Wikisource transcription without claiming complete renderer semantics or a frozen literary body.",
   "source_text_committed": false,
   "bibliographic_identity": {
-    "authors": [
-      "Ilya Ilf",
-      "Evgeny Petrov"
-    ],
+    "authors": ["Ilya Ilf", "Evgeny Petrov"],
     "title": "Двенадцать стульев",
     "publication_year": 1928,
     "publisher": "Земля и Фабрика",
@@ -27,59 +24,20 @@
     "revision_id": 5702510,
     "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5702510",
     "observed_revision_time_display": "20:18, 28 марта 2026",
-    "bibliographic_fields_observed": {
-      "year": 1928,
-      "publisher": "Земля и Фабрика",
-      "publication_places": "Москва—Ленинград"
-    },
+    "bibliographic_fields_observed": {"year": 1928, "publisher": "Земля и Фабрика", "publication_places": "Москва—Ленинград"},
     "transclusion_status_observed": "Трансклюзии требует проверки",
     "binary_identity_status": "frozen_exact_commons_original"
   },
   "part_routes": [
-    {
-      "order": 1,
-      "title": "Двенадцать стульев (Ильф и Петров)/ЗиФ 1928/Часть 1",
-      "revision_id": 5702507,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5702507",
-      "observed_revision_time_display": "20:17, 28 марта 2026",
-      "proofread_index_title": "Ильф И. Петров Е. Двенадцать стульев (ЗиФ, 1928).pdf",
-      "from_scan_page": 8,
-      "to_scan_page": 149,
-      "referenced_page_namespace_count": 142
-    },
-    {
-      "order": 2,
-      "title": "Двенадцать стульев (Ильф и Петров)/ЗиФ 1928/Часть 2",
-      "revision_id": 5704332,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5704332",
-      "observed_revision_time_display": "08:48, 10 апреля 2026",
-      "proofread_index_title": "Ильф И. Петров Е. Двенадцать стульев (ЗиФ, 1928).pdf",
-      "from_scan_page": 152,
-      "to_scan_page": 313,
-      "referenced_page_namespace_count": 162
-    },
-    {
-      "order": 3,
-      "title": "Двенадцать стульев (Ильф и Петров)/ЗиФ 1928/Часть 3",
-      "revision_id": 5702508,
-      "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5702508",
-      "observed_revision_time_display": "20:17, 28 марта 2026",
-      "proofread_index_title": "Ильф И. Петров Е. Двенадцать стульев (ЗиФ, 1928).pdf",
-      "from_scan_page": 316,
-      "to_scan_page": 421,
-      "referenced_page_namespace_count": 106
-    }
+    {"order": 1, "title": "Двенадцать стульев (Ильф и Петров)/ЗиФ 1928/Часть 1", "revision_id": 5702507, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5702507", "observed_revision_time_display": "20:17, 28 марта 2026", "proofread_index_title": "Ильф И. Петров Е. Двенадцать стульев (ЗиФ, 1928).pdf", "from_scan_page": 8, "to_scan_page": 149, "referenced_page_namespace_count": 142},
+    {"order": 2, "title": "Двенадцать стульев (Ильф и Петров)/ЗиФ 1928/Часть 2", "revision_id": 5704332, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5704332", "observed_revision_time_display": "08:48, 10 апреля 2026", "proofread_index_title": "Ильф И. Петров Е. Двенадцать стульев (ЗиФ, 1928).pdf", "from_scan_page": 152, "to_scan_page": 313, "referenced_page_namespace_count": 162},
+    {"order": 3, "title": "Двенадцать стульев (Ильф и Петров)/ЗиФ 1928/Часть 3", "revision_id": 5702508, "permanent_url": "https://ru.wikisource.org/w/index.php?oldid=5702508", "observed_revision_time_display": "20:17, 28 марта 2026", "proofread_index_title": "Ильф И. Петров Е. Двенадцать стульев (ЗиФ, 1928).pdf", "from_scan_page": 316, "to_scan_page": 421, "referenced_page_namespace_count": 106}
   ],
   "page_revision_identity_manifest": {
     "path": "ilf-petrov-twelve-chairs-zif-1928.page-revisions.index.json",
     "manifest_version": "scriptorium-twelve-chairs-page-revision-sharded-manifest-v1",
     "page_identity_count": 410,
-    "fields": [
-      "page_sequence",
-      "revision_id",
-      "timestamp",
-      "mediawiki_sha1"
-    ],
+    "fields": ["page_sequence", "revision_id", "timestamp", "mediawiki_sha1"],
     "capture_workflow_run_id": 35503562530,
     "capture_artifact_id": 10603441105,
     "capture_artifact_zip_sha256": "431558255b168e99f26ac7f5567bda7bb30d69288120b34f918ad3d0e50062c9",
@@ -103,12 +61,7 @@
     "path": "ilf-petrov-twelve-chairs-zif-1928.gap-audit.json",
     "manifest_version": "scriptorium-twelve-chairs-gap-audit-v1",
     "gap_page_count": 4,
-    "sequences": [
-      150,
-      151,
-      314,
-      315
-    ],
+    "sequences": [150, 151, 314, 315],
     "capture_workflow_run_id": 35515025304,
     "capture_artifact_id": 10606587097,
     "capture_artifact_zip_sha256": "8171ce8c0dcd6d9f20a117e22cc35d0cee4a04d30b4a24c3d8d9befeaf55daa6",
@@ -136,9 +89,23 @@
     "page_surface_receipts_sha256": "2d4483b7296cfcc18288816f8d4c3bde2e71750808e1d57be932768a1e82c6f2",
     "freeze_manifest_sha256": "8a4f04238c68c40e59464e76a7911f0bee9488e09daab9f8772b1af970768d23",
     "source_text_included": false,
-    "rendering_profile_frozen": false,
+    "rendering_profile_frozen_at_surface_capture": false,
     "inter_page_composition_frozen": false,
     "literary_body_count_and_digests_frozen": false
+  },
+  "render_profile_manifest": {
+    "path": "ilf-petrov-twelve-chairs-zif-1928.render-profile.json",
+    "profile_version": "scriptorium-twelve-chairs-page-render-profile-v1",
+    "status": "fail_closed_profile_frozen_template_semantics_pending",
+    "profile_sha256": "88e410311435ab6bcfbd70ab0a2cea73ffe304e3ce2876d241d25ea38cc5d5cd",
+    "source_surface_freeze_sha256": "8a4f04238c68c40e59464e76a7911f0bee9488e09daab9f8772b1af970768d23",
+    "rendering_profile_frozen": true,
+    "renderer_semantics_complete": false,
+    "renderer_implementation_ready": false,
+    "rendering_equivalence_claimed": false,
+    "inter_page_composition_frozen": false,
+    "literary_body_count_and_digests_frozen": false,
+    "source_text_included": false
   },
   "dependency_summary": {
     "part_route_count": 3,
@@ -150,6 +117,8 @@
     "non_transcluded_gap_revisions_inspected": true,
     "non_transcluded_gap_membership_decided": true,
     "exact_page_markup_surface_frozen": true,
+    "rendering_profile_frozen": true,
+    "renderer_semantics_complete": false,
     "literary_body_frozen": false
   },
   "non_transcluded_scan_gaps": [
@@ -159,18 +128,8 @@
       "count": 2,
       "classification": "inspected_mixed_body_presence_excluded_from_canonical_route_composition",
       "pages": [
-        {
-          "page_sequence": 150,
-          "revision_id": 5702065,
-          "body_presence_class": "nonempty_body_unclassified",
-          "composition_membership": "excluded"
-        },
-        {
-          "page_sequence": 151,
-          "revision_id": 5702062,
-          "body_presence_class": "no_transcluded_body",
-          "composition_membership": "excluded"
-        }
+        {"page_sequence": 150, "revision_id": 5702065, "body_presence_class": "nonempty_body_unclassified", "composition_membership": "excluded"},
+        {"page_sequence": 151, "revision_id": 5702062, "body_presence_class": "no_transcluded_body", "composition_membership": "excluded"}
       ],
       "rule": "Both exact revisions are frozen source-free and excluded from the current Scriptorium composition surface because the canonical part routes do not transclude them. Page 150 remains semantically unclassified despite its nonempty body; page 151 has no transcluded body."
     },
@@ -180,24 +139,14 @@
       "count": 2,
       "classification": "inspected_mixed_body_presence_excluded_from_canonical_route_composition",
       "pages": [
-        {
-          "page_sequence": 314,
-          "revision_id": 5702066,
-          "body_presence_class": "nonempty_body_unclassified",
-          "composition_membership": "excluded"
-        },
-        {
-          "page_sequence": 315,
-          "revision_id": 5701572,
-          "body_presence_class": "no_transcluded_body",
-          "composition_membership": "excluded"
-        }
+        {"page_sequence": 314, "revision_id": 5702066, "body_presence_class": "nonempty_body_unclassified", "composition_membership": "excluded"},
+        {"page_sequence": 315, "revision_id": 5701572, "body_presence_class": "no_transcluded_body", "composition_membership": "excluded"}
       ],
       "rule": "Both exact revisions are frozen source-free and excluded from the current Scriptorium composition surface because the canonical part routes do not transclude them. Page 314 remains semantically unclassified despite its nonempty body; page 315 has no transcluded body."
     }
   ],
   "freeze_boundary": {
-    "status": "route_graph_410_page_revision_identities_scan_binary_gap_surface_gap_membership_and_markup_surface_frozen_body_unfrozen",
+    "status": "route_graph_410_page_revision_identities_scan_binary_gap_surface_gap_membership_markup_surface_and_render_profile_frozen_body_unfrozen",
     "frozen": [
       "1928 work-index revision locator",
       "ProofreadPage index revision locator and bibliographic family",
@@ -208,10 +157,11 @@
       "exact source-free revision identities plus body-presence hashes/counts for non-transcluded scan pages 150, 151, 314 and 315; pages 150/314 are nonempty but unclassified, pages 151/315 have no transcluded body",
       "canonical-route composition membership for the four non-transcluded gaps: all four excluded; nonempty pages 150/314 remain semantically unclassified",
       "exact source-free markup-surface inventory for all 410 pinned dependency revisions, including aggregate construct shapes/counts and a digest over 410 per-Page source-free receipts",
+      "fail-closed rendering decision profile bound to the exact render-surface digest; all observed shapes are classified while template/reference semantics remain unresolved",
       "exact source-free backing Commons PDF identity: 77,978,350 bytes, SHA-1 4ab6aa42c3517169e99c1177b6fb6412cfe9187d, SHA-256 5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4"
     ],
     "not_frozen": [
-      "Page-markup rendering/extraction semantics over the frozen construct surface",
+      "complete template/reference rendering semantics over the frozen decision profile",
       "inter-page composition/separator behavior across the 410 canonical dependencies",
       "part/composite literary-body character counts and digests",
       "OCR/page-to-literary-text extraction profile",
@@ -226,7 +176,7 @@
     "m2_source_matched_work_count": 0
   },
   "next_evidence": [
-    "Implement and independently review a deterministic fail-closed Page-markup rendering/extraction profile against the frozen exact-410 construct surface; inventory alone is not rendering equivalence.",
+    "Resolve and independently review the template/reference semantics explicitly left unresolved by the frozen fail-closed rendering profile; profile coverage is not rendering equivalence.",
     "Define inter-page composition/separator behavior across the 410 canonical dependency pages; the four audited gaps are already excluded from this composition surface by a separate source-free decision.",
     "Record raw plus scriptorium-text-v1 normalized composite counts/digests only after renderer/composition semantics are independently reviewable.",
     "Define OCR/page-extraction provenance separately if scan OCR is used to cross-check the public transcription; the PDF binary identity alone does not define literary text.",

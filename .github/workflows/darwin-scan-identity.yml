@@ -1,0 +1,51 @@
+name: Darwin Rachinsky scan identity
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-scan-identity.yml"
+      - "scriptorium/darwin_scan_identity.py"
+      - "tests/test_darwin_scan_identity.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan-identity:
+    name: Retrieve and hash exact Commons DjVu
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run scan-identity unit tests
+        run: python -m unittest tests.test_darwin_scan_identity -v
+
+      - name: Independently retrieve and hash exact Commons original
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_scan_identity capture \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.scan-identity.json
+
+      - name: Print source-free capture for evidence
+        run: cat build/repro/darwin-origin-species-rachinsky-1864-ru.scan-identity.json
+
+      - name: Upload source-free scan identity evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-scan-identity
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.scan-identity.json
+          if-no-files-found: error
+          retention-days: 7

@@ -51,13 +51,20 @@ class TwelveChairsRenderProfileTests(unittest.TestCase):
         surface = deepcopy(load_surface())
         surface["template_shapes"] = list(surface["template_shapes"])
         surface["template_shapes"].append({"name": "unexpected", "positional": 0, "named": 0, "count": 1})
-        with self.assertRaisesRegex(ValueError, "template decision coverage drift"):
+        with self.assertRaisesRegex(ValueError, "rendering-surface freeze digest drift"):
             build_profile(surface)
 
     def test_profile_fails_closed_on_missing_tag_shape(self) -> None:
         surface = deepcopy(load_surface())
         surface["tag_shapes"] = list(surface["tag_shapes"])[1:]
-        with self.assertRaisesRegex(ValueError, "tag decision coverage drift"):
+        with self.assertRaisesRegex(ValueError, "rendering-surface freeze digest drift"):
+            build_profile(surface)
+
+    def test_profile_fails_closed_when_existing_frozen_count_changes_without_digest_update(self) -> None:
+        surface = deepcopy(load_surface())
+        surface["tag_shapes"] = [dict(row) for row in surface["tag_shapes"]]
+        surface["tag_shapes"][0]["count"] += 1
+        with self.assertRaisesRegex(ValueError, "rendering-surface freeze digest drift"):
             build_profile(surface)
 
     def test_profile_keeps_composition_body_and_parity_gates_closed(self) -> None:

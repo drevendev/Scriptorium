@@ -83,9 +83,11 @@ This **does not freeze the renderer**. It freezes only the set of markup constru
 
 ## Independent scan binary identity
 
-**SCRIP-CORPUS-037 / Draft PR #162** independently retrieved the exact Wikimedia Commons DjVu backing this ProofreadPage family and streamed it through Scriptorium without writing the binary into the repository. The hosted capture observed **27,368,263 bytes** and SHA-1 `75ef508588194ae74874272ce290f3ec1043ea9b`, exactly matching the provider metadata that had already been frozen from the source surface.
+**SCRIP-CORPUS-037 / merged PR #162** independently retrieved the exact Wikimedia Commons DjVu backing this ProofreadPage family and streamed it through Scriptorium without writing the binary into the repository. The hosted capture observed **27,368,263 bytes** and SHA-1 `75ef508588194ae74874272ce290f3ec1043ea9b`, exactly matching the provider metadata that had already been frozen from the source surface.
 
 The same transient byte stream produced Scriptorium-computed SHA-256 **`7f3ae1aadd4a844b193783a0c350e23815a76e7bb14a92bae7fa1c077354a2c8`**. This source-free identity is frozen in [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json). The first hosted capture was run `35492937897`, job `106030871176`; its source-free artifact `10599691841` has ZIP SHA-256 `95cece9716e721b2fc2f98ecdc8bb10e4ba1ed2a27db514572d30cea186f1592`.
+
+Independent exact-head review on `9d78a8a447b89d82e88f91c8c9d2d4d38d2ea167` found all **15/15** pull-request workflows successful. Dedicated run `35493249103`, job `106031676386`, replayed the exact original and reproduced the byte count/SHA-1/SHA-256. Review independently downloaded artifact `10600065977`, recomputed its ZIP SHA-256 as `54f11622eb549847118ed06555294dd97f84c9ba1d110a11ec9e7d9eb719a51d`, and confirmed it contains only the committed source-free receipt plus verification JSON. PR #162 was then squash-merged as `102c64a3e9c8149ac43c6d58ab044860fad511c2`.
 
 The provider surface also reports MIME `image/vnd.djvu`, dimensions **3744 × 5616**, **432 pages**, current file-history display `11:45, 8 March 2016` by `Nonexyst`, and Archive.org locator `https://archive.org/details/oproiskhozhdenii00darw`. Those descriptive fields remain provider metadata; the byte count/SHA-1/SHA-256 identity above is the independently verified binary boundary. **No scan bytes are committed.**
 

@@ -3,9 +3,9 @@
 ## Selection
 
 - **Issue:** #161 — independently freeze Darwin/Rachinsky DjVu binary identity.
-- **Pull request:** #162 (Draft; independent review required before Ready/merge).
+- **Pull request:** #162.
 - **Starting master:** `8abb6e346ab4fd0b78555084e90abec4090a9f4b`.
-- **Mode:** corpus / provenance.
+- **Mode:** corpus / provenance, followed by an independent later review/recovery run.
 - **Reason selected:** STATE_REVISION 182 returned to normal-flow SCRIP-CORPUS continuation; the Darwin/Rachinsky source graph already retained provider byte count/SHA-1 but explicitly lacked an independent scan-byte/SHA-256 identity. This unit closes that narrow provenance gap without depending on the still-unfrozen renderer.
 
 ## Produced
@@ -45,8 +45,22 @@ This unit freezes **only the backing DjVu byte identity**. It does not freeze or
 
 Required states remain `literary_body_count_and_digests_frozen=false`, `minimum_300k_proved=false`, `admitted_for_calibration=false`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, and `m2_parity_admissible=false`.
 
-## Verification status / handoff
+## Independent exact-head review and merge
 
-The initial discovery capture succeeded and established the independent SHA-256. The branch then froze that source-free receipt and changed the hosted workflow to replay the exact Commons original against the committed byte count/SHA-1/SHA-256. Because this wake authored the substantial change, PR #162 remains Draft and must receive an independent exact-head review after all current CI settles. Do not merge solely from this receipt; the reviewer must re-read the final diff and exact-head checks.
+A later run independently reviewed exact PR head `9d78a8a447b89d82e88f91c8c9d2d4d38d2ea167` against unchanged base `8abb6e346ab4fd0b78555084e90abec4090a9f4b`.
+
+- compare: **12 commits ahead / 0 behind**;
+- inline review threads: **0**;
+- pull-request workflows: **15/15 completed success**;
+- dedicated replay run: `35493249103`;
+- dedicated job: `106031676386`;
+- dedicated tests: **10 passed**;
+- replayed byte count: **27,368,263**;
+- replayed SHA-1: `75ef508588194ae74874272ce290f3ec1043ea9b`;
+- replayed SHA-256: `7f3ae1aadd4a844b193783a0c350e23815a76e7bb14a92bae7fa1c077354a2c8`;
+- exact-head artifact: `10600065977`, **1,372 bytes**, independently recomputed ZIP SHA-256 `54f11622eb549847118ed06555294dd97f84c9ba1d110a11ec9e7d9eb719a51d`;
+- artifact contents: exactly the committed source-free scan receipt plus verification JSON; no scan/image/OCR/Page-wikitext/rendered-prose payload.
+
+No blocker remained. The review was submitted as a COMMENT rather than self-approval because the connected identity authored the PR. PR #162 was marked Ready and squash-merged as `102c64a3e9c8149ac43c6d58ab044860fad511c2`; Issue #161 closed automatically with reason `completed`.
 
 **Benchmark movement:** none. M2 remains **0/5** source-matched works.

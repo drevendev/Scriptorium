@@ -1,0 +1,9 @@
+## SCRIP-CORPUS-036 — Darwin/Rachinsky rendering-surface inventory
+
+- Opened Issue #159 and Draft PR #160 from `master` `f5687b95d20e2714cebfcef8370883377c25f0bb`.
+- Added an exact-revision hosted audit over the 388 frozen literary Page dependencies selected by `scriptorium-darwin-literary-body-contract-v1`. Every fetched Page is checked against frozen title/revision/timestamp/MediaWiki SHA-1 before transient markup inspection.
+- The first hosted audit correctly exposed a parser defect: nested template closing braces were being mistaken for triple-brace parameter syntax. The unit recovered by replacing substring rejection with stack-based curly-construct parsing and adding regressions for nested templates and real parameter constructs.
+- Successful exact-revision replay then froze a source-free markup inventory: 38 template name/arity shapes, 18 tag name/kind shapes, 1,069 comments, 776 `noinclude` blocks, 8 wikilinks, and zero external links/headings/tables/template-parameter constructs across all 388 literary revisions.
+- Added a deterministic compact freeze reducer. The committed freeze stores no wikitext, rendered prose, template arguments or lexical snippets; the 388 per-Page source-free receipts are represented by SHA-256 `7c170f513bf21f2c9e0d7736bc9fc20b4c9a40fdfe942a7b1dd1b0ac048ba09b` and the compact manifest by SHA-256 `e5ae625fef6afb2e890de990e1ef3b9e108a409a2e0ea2136947c2c3e1cea44d`.
+- Added a source-free rendering-surface provenance graph and synchronized the public candidate page. The renderer itself remains deliberately unfrozen: body count/digests, >=300k admission, independent scan SHA-256, FantLab source matching and M2 parity remain closed.
+- This authored PR remains Draft for a later independent exact-head review; no self-approval or merge is performed in this run.

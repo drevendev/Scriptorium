@@ -8,6 +8,7 @@ TRACE = ROOT / "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs
 GRAPH = ROOT / "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json"
 INDEX = ROOT / "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.index.json"
 SCAN = ROOT / "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json"
+GAPS = ROOT / "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.gap-audit.json"
 PUBLIC = ROOT / "corpus/candidates/ilf-petrov-twelve-chairs-ru.md"
 
 
@@ -18,6 +19,7 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
         cls.graph = json.loads(GRAPH.read_text(encoding="utf-8"))
         cls.index = json.loads(INDEX.read_text(encoding="utf-8"))
         cls.scan = json.loads(SCAN.read_text(encoding="utf-8"))
+        cls.gaps = json.loads(GAPS.read_text(encoding="utf-8"))
         cls.public = PUBLIC.read_text(encoding="utf-8")
         cls.family = next(
             row
@@ -32,8 +34,10 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
         self.assertEqual(self.index["page_identity_count"], 410)
         self.assertEqual(
             self.family["immutable_identity"]["status"],
-            "route_graph_410_page_revision_identities_and_scan_binary_frozen_body_unfrozen",
+            "route_graph_410_page_revision_identities_scan_binary_and_gap_surface_frozen_body_unfrozen",
         )
+        self.assertEqual(self.family["gap_audit_manifest"], GAPS.name)
+        self.assertTrue(self.family["route_graph"]["gap_page_revisions_inspected"])
 
     def test_scan_identity_is_exact_source_free_and_bound_to_trace(self):
         self.assertEqual(self.family["scan_identity_receipt"], SCAN.name)
@@ -48,18 +52,50 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
         self.assertEqual(self.graph["proofread_index"]["binary_identity_status"], "frozen_exact_commons_original")
         self.assertEqual(self.graph["scan_identity_receipt"], SCAN.name)
 
-    def test_source_graph_and_index_agree_on_topology_and_gaps(self):
+    def test_source_graph_index_and_gap_audit_agree_without_changing_dependencies(self):
         self.assertTrue(self.graph["dependency_summary"]["underlying_page_revision_identities_frozen"])
+        self.assertTrue(self.graph["dependency_summary"]["non_transcluded_gap_revisions_inspected"])
         self.assertFalse(self.graph["dependency_summary"]["literary_body_frozen"])
         self.assertEqual(self.graph["dependency_summary"]["referenced_page_namespace_count"], 410)
+        self.assertEqual(self.index["page_identity_count"], 410)
         self.assertEqual(self.index["topology_contract"]["non_transcluded_gaps"], [[150, 151], [314, 315]])
         self.assertEqual(
             [[row["from_scan_page"], row["to_scan_page"]] for row in self.graph["non_transcluded_scan_gaps"]],
             [[150, 151], [314, 315]],
         )
-        self.assertTrue(all(row["classification"] == "unclassified_non_transcluded_gap" for row in self.graph["non_transcluded_scan_gaps"]))
+        self.assertTrue(
+            all(
+                row["classification"] == "inspected_mixed_body_presence_not_composed"
+                for row in self.graph["non_transcluded_scan_gaps"]
+            )
+        )
+        self.assertTrue(self.gaps["dependency_inventory_unchanged"])
+        self.assertEqual(self.gaps["gap_sequences"], [150, 151, 314, 315])
+        self.assertEqual(
+            [row["body_presence_class"] for row in self.gaps["gap_pages"]],
+            [
+                "nonempty_body_unclassified",
+                "no_transcluded_body",
+                "nonempty_body_unclassified",
+                "no_transcluded_body",
+            ],
+        )
         self.assertFalse(self.scan["page_dependency_set_changed"])
-        self.assertFalse(self.scan["gap_pages_classified"])
+
+    def test_gap_audit_is_source_free_and_keeps_membership_unfrozen(self):
+        self.assertEqual(self.gaps["manifest_version"], "scriptorium-twelve-chairs-gap-audit-v1")
+        self.assertFalse(self.gaps["source_text_included"])
+        self.assertFalse(self.gaps["all_gap_pages_have_no_transcluded_body"])
+        self.assertFalse(self.gaps["literary_membership_frozen"])
+        self.assertFalse(self.gaps["literary_body_frozen"])
+        self.assertFalse(self.gaps["admitted_for_calibration"])
+        self.assertEqual(self.gaps["fantlab_source_edition_match"], "unknown")
+        self.assertFalse(self.gaps["diagnostic_ready"])
+        self.assertFalse(self.gaps["m2_parity_admissible"])
+        self.assertEqual(self.gaps["gap_pages"][1]["transcluded_body_codepoints"], 0)
+        self.assertEqual(self.gaps["gap_pages"][3]["transcluded_body_codepoints"], 0)
+        self.assertGreater(self.gaps["gap_pages"][0]["transcluded_body_letter_codepoints"], 0)
+        self.assertGreater(self.gaps["gap_pages"][2]["transcluded_body_letter_codepoints"], 0)
 
     def test_downstream_gates_remain_closed(self):
         admissibility = self.trace["admissibility"]
@@ -77,14 +113,21 @@ class TwelveChairsProvenanceTraceTests(unittest.TestCase):
         self.assertEqual(self.scan["fantlab_source_edition_match"], "unknown")
         self.assertFalse(self.scan["diagnostic_ready"])
         self.assertFalse(self.scan["m2_parity_admissible"])
+        self.assertFalse(self.gaps["literary_body_frozen"])
+        self.assertFalse(self.gaps["admitted_for_calibration"])
+        self.assertEqual(self.gaps["fantlab_source_edition_match"], "unknown")
+        self.assertFalse(self.gaps["diagnostic_ready"])
+        self.assertFalse(self.gaps["m2_parity_admissible"])
 
-    def test_public_candidate_exposes_scan_identity_without_promoting_body(self):
+    def test_public_candidate_exposes_gap_evidence_without_promoting_body(self):
         self.assertIn("410 Page-namespace dependencies", self.public)
         self.assertIn("77,978,350 bytes", self.public)
         self.assertIn("5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4", self.public)
         self.assertIn("not a literary-body freeze", self.public)
-        self.assertIn("150–151", self.public)
-        self.assertIn("314–315", self.public)
+        self.assertIn("nonempty_body_unclassified", self.public)
+        self.assertIn("no_transcluded_body", self.public)
+        self.assertIn("page **150**", self.public)
+        self.assertIn("page **314**", self.public)
         self.assertIn("m2_parity_admissible=false", self.public)
 
 

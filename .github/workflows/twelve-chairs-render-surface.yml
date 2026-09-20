@@ -11,6 +11,10 @@ on:
       - "scriptorium/darwin_page_freeze.py"
       - "tests/test_twelve_chairs_render_surface.py"
       - "tests/test_twelve_chairs_render_surface_freeze.py"
+      - "tests/test_twelve_chairs_provenance_trace.py"
+      - "corpus/candidates/ilf-petrov-twelve-chairs-ru.md"
+      - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-ru.json"
+      - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json"
       - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.*.json"
       - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.render-surface.json"
   workflow_dispatch:
@@ -39,6 +43,7 @@ jobs:
         run: |
           python -m unittest tests.test_twelve_chairs_render_surface -v
           python -m unittest tests.test_twelve_chairs_render_surface_freeze -v
+          python -m unittest tests.test_twelve_chairs_provenance_trace -v
 
       - name: Replay exact revisions and audit markup surface
         run: |

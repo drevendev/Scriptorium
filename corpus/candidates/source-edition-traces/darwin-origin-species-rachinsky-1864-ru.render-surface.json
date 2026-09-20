@@ -1,0 +1,351 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "construct_totals": {
+    "comment_count": 1069,
+    "external_link_count": 0,
+    "heading_count": 0,
+    "noinclude_block_count": 776,
+    "table_close_count": 0,
+    "table_open_count": 0,
+    "template_parameter_count": 0,
+    "wikilink_count": 8
+  },
+  "diagnostic_ready": false,
+  "fantlab_source_edition_match": "unknown",
+  "freeze_manifest_sha256": "e5ae625fef6afb2e890de990e1ef3b9e108a409a2e0ea2136947c2c3e1cea44d",
+  "identity_replay_match": true,
+  "literary_body_count_and_digests_frozen": false,
+  "literary_dependency_count": 388,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "page_surface_receipts_count": 388,
+  "page_surface_receipts_sha256": "7c170f513bf21f2c9e0d7736bc9fc20b4c9a40fdfe942a7b1dd1b0ac048ba09b",
+  "rendering_profile_frozen": false,
+  "schema_version": "scriptorium-darwin-render-surface-freeze-v1",
+  "source_revision_index_sha256": "a1b1011095dc84ab0a5cd3ef45b2a46ce99588a0ef9cf507c1f711c925ba86dd",
+  "source_text_included": false,
+  "status": "surface_inventory_frozen_renderer_unfrozen",
+  "tag_shapes": [
+    {
+      "count": 64,
+      "kind": "close",
+      "name": "big"
+    },
+    {
+      "count": 64,
+      "kind": "open",
+      "name": "big"
+    },
+    {
+      "count": 386,
+      "kind": "close",
+      "name": "div"
+    },
+    {
+      "count": 388,
+      "kind": "open",
+      "name": "div"
+    },
+    {
+      "count": 26,
+      "kind": "close",
+      "name": "math"
+    },
+    {
+      "count": 26,
+      "kind": "open",
+      "name": "math"
+    },
+    {
+      "count": 776,
+      "kind": "close",
+      "name": "noinclude"
+    },
+    {
+      "count": 776,
+      "kind": "open",
+      "name": "noinclude"
+    },
+    {
+      "count": 388,
+      "kind": "self_closing",
+      "name": "pagequality"
+    },
+    {
+      "count": 39,
+      "kind": "close",
+      "name": "ref"
+    },
+    {
+      "count": 39,
+      "kind": "open",
+      "name": "ref"
+    },
+    {
+      "count": 388,
+      "kind": "self_closing",
+      "name": "references"
+    },
+    {
+      "count": 808,
+      "kind": "close",
+      "name": "small"
+    },
+    {
+      "count": 808,
+      "kind": "open",
+      "name": "small"
+    },
+    {
+      "count": 2,
+      "kind": "close",
+      "name": "sub"
+    },
+    {
+      "count": 2,
+      "kind": "open",
+      "name": "sub"
+    },
+    {
+      "count": 92,
+      "kind": "close",
+      "name": "sup"
+    },
+    {
+      "count": 92,
+      "kind": "open",
+      "name": "sup"
+    }
+  ],
+  "template_shapes": [
+    {
+      "count": 2,
+      "name": "=",
+      "named": 0,
+      "positional": 0
+    },
+    {
+      "count": 255,
+      "name": "Lang",
+      "named": 0,
+      "positional": 2
+    },
+    {
+      "count": 122,
+      "name": "^",
+      "named": 0,
+      "positional": 0
+    },
+    {
+      "count": 90,
+      "name": "^",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 6,
+      "name": "dotted TOC",
+      "named": 0,
+      "positional": 3
+    },
+    {
+      "count": 7,
+      "name": "fsp",
+      "named": 0,
+      "positional": 0
+    },
+    {
+      "count": 2,
+      "name": "inline float",
+      "named": 2,
+      "positional": 4
+    },
+    {
+      "count": 179,
+      "name": "lang",
+      "named": 0,
+      "positional": 2
+    },
+    {
+      "count": 2,
+      "name": "lang-en",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 1,
+      "name": "lang-la",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 22,
+      "name": "nobr",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 14,
+      "name": "noindent",
+      "named": 0,
+      "positional": 0
+    },
+    {
+      "count": 14,
+      "name": "noindent",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 4,
+      "name": "nop",
+      "named": 0,
+      "positional": 0
+    },
+    {
+      "count": 13,
+      "name": "psp",
+      "named": 0,
+      "positional": 0
+    },
+    {
+      "count": 8,
+      "name": "razr2",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 2,
+      "name": "right",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 30,
+      "name": "roman",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 52,
+      "name": "sc",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 388,
+      "name": "ВАР",
+      "named": 0,
+      "positional": 2
+    },
+    {
+      "count": 2,
+      "name": "ВАР2",
+      "named": 0,
+      "positional": 2
+    },
+    {
+      "count": 21,
+      "name": "Градус",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 253,
+      "name": "Перенос",
+      "named": 0,
+      "positional": 2
+    },
+    {
+      "count": 2,
+      "name": "Перенос",
+      "named": 1,
+      "positional": 2
+    },
+    {
+      "count": 259,
+      "name": "Перенос2",
+      "named": 0,
+      "positional": 2
+    },
+    {
+      "count": 15,
+      "name": "ПримВТ",
+      "named": 0,
+      "positional": 0
+    },
+    {
+      "count": 1,
+      "name": "Так в тексте",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 46,
+      "name": "акут",
+      "named": 0,
+      "positional": 0
+    },
+    {
+      "count": 28,
+      "name": "во",
+      "named": 1,
+      "positional": 1
+    },
+    {
+      "count": 108,
+      "name": "гравис",
+      "named": 0,
+      "positional": 0
+    },
+    {
+      "count": 16,
+      "name": "дробь",
+      "named": 0,
+      "positional": 2
+    },
+    {
+      "count": 76,
+      "name": "мби",
+      "named": 0,
+      "positional": 3
+    },
+    {
+      "count": 99,
+      "name": "нп",
+      "named": 0,
+      "positional": 0
+    },
+    {
+      "count": 3,
+      "name": "опечатка",
+      "named": 0,
+      "positional": 2
+    },
+    {
+      "count": 135,
+      "name": "опечатка2",
+      "named": 0,
+      "positional": 2
+    },
+    {
+      "count": 17,
+      "name": "разделитель",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 62,
+      "name": "ц",
+      "named": 0,
+      "positional": 1
+    },
+    {
+      "count": 2227,
+      "name": "ё",
+      "named": 0,
+      "positional": 0
+    }
+  ]
+}

@@ -15,6 +15,8 @@ import json
 from pathlib import Path
 from typing import Mapping, Sequence
 
+from .twelve_chairs_render_surface_freeze import validate_freeze_manifest
+
 PROFILE_VERSION = "scriptorium-twelve-chairs-page-render-profile-v1"
 PROFILE_STATUS = "fail_closed_profile_frozen_template_semantics_pending"
 CANDIDATE_ID = "ilf-petrov-twelve-chairs-ru"
@@ -121,6 +123,10 @@ def _shape_key_template(row: Mapping[str, object]) -> tuple[str, int, int]:
 
 
 def _validate_surface_identity(surface: Mapping[str, object]) -> None:
+    # The profile must consume the exact independently reviewed freeze, not merely trust
+    # the freeze's embedded digest string. Validate the freeze's canonical self-digest
+    # before checking the candidate-specific expected identity below.
+    validate_freeze_manifest(surface)
     expected = {
         "schema_version": SURFACE_SCHEMA,
         "status": SURFACE_STATUS,

@@ -1,23 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 185
+STATE_REVISION: 186
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-20T07:58:00Z
-LAST_RESULT: SCRIP-CORPUS-038 / Issue #163 authored in Draft PR #164 from master `1108fb5bf04af7bf1a6b11e78ff31d7e082cd9f0`. The bounded corpus/provenance unit independently streamed the retained Wikimedia Commons PDF for Andrei Bely's 1916 first-book-edition *Petersburg* facsimile without committing scan bytes. Hosted capture run `35498115419`, job `106044817170`, checked out exact head `5ebabf54e29ad990ae4dd860f6290ee8ee61d3b1`, passed 6/6 focused tests, and observed 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`. Source-free artifact `10601567738` was 1,565 bytes with uploaded ZIP SHA-256 `8b9915a05d554f9ca5bdd12ea0d760b57cd2d2d0fc81e1c164058d81cad6a2e2`. The branch now freezes that source-free receipt, switches CI to exact-original replay, binds the structured trace with regression tests and exposes a dedicated public candidate page/corpus navigation while keeping OCR/body/admission/FantLab/M2 gates closed.
-LAST_VERIFIED_PROGRESS: `bely-petersburg-1916-ru` now has, on review-pending PR #164, an independently observed exact backing Commons PDF identity for the explicit 1916 first-book-edition facsimile: 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`. The independent byte stream demonstrates that the trace's previously cautious Commons Page Information hash equals this exact PDF SHA-1 for this snapshot. No PDF/image bytes, OCR or literary source text are committed. `ocr_extraction_profile_frozen=false`, literary-body count/digests and >=300k admission remain unfrozen/false; FantLab source identity is unknown and M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-20T08:53:00Z
+LAST_RESULT: SCRIP-CORPUS-038 / Issue #163 completed. Independent exact-head review re-read PR #164 at `11ca95744ce0b28c213d21b2221a6fc1f6d6b831` against unchanged base `1108fb5bf04af7bf1a6b11e78ff31d7e082cd9f0`, verified 13 commits ahead / 0 behind, no inline review threads, and all 15 pull-request workflows settled `success`. Dedicated run `35498451938`, job `106045731420`, checked out the exact reviewed SHA, passed all 10 Petersburg scan/provenance tests, re-retrieved the exact Commons original and reproduced 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477` and SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5` while keeping downstream gates closed. Independent artifact inspection downloaded `10601673060`, recomputed its 1,313-byte ZIP as `sha256:1ceb12a969e98e46178c785a956a70c63b4517b16660c1ba99278e6a9f83c0b2`, and confirmed it contains only the committed source-free receipt plus verification JSON. No blocker was found; PR #164 was marked Ready and squash-merged as `fac5aab20f5426e1d3e01853027222c5cd8c04ed`, automatically closing Issue #163 completed.
+LAST_VERIFIED_PROGRESS: `bely-petersburg-1916-ru` now retains, in master, an independently reviewed exact backing Commons PDF identity for the explicit 1916 first-book-edition facsimile: 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`. The independent byte stream demonstrates that the trace's previously cautious Commons Page Information hash equals this exact PDF SHA-1 for this snapshot. No PDF/image bytes, OCR or literary source text are committed. `ocr_extraction_profile_frozen=false`, literary-body count/digests and >=300k admission remain unfrozen/false; FantLab source identity is unknown and M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-038
-ISSUE:          #163 (open)
-STATUS:         REVIEW_PENDING
-PR:             #164 (Draft)
-NEXT_ACTION:    Independently review the exact current head of PR #164 after CI settles. Re-read the diff and verify
-                that hosted replay retrieves the exact 1916 Commons PDF and reproduces byte count/SHA-1/SHA-256,
-                persists no PDF/OCR/source payload, preserves the 1916/1922 edition boundary, and leaves OCR/body/
-                >=300k admission/FantLab/M2 gates closed. If clean, mark Ready and merge; otherwise record a precise
-                blocker and repair on a new exact head.
+ISSUE:          #163 (closed completed)
+STATUS:         COMPLETE
+PR:             #164 (squash-merged as fac5aab20f5426e1d3e01853027222c5cd8c04ed)
+NEXT_ACTION:    Resume normal-flow selection from the queue. Petersburg now has the explicit 1916 edition/legal source
+                boundary and exact backing PDF byte identity frozen. A separate future unit may define the candidate-
+                specific fail-closed literary-page/OCR extraction contract against that exact scan, but it must keep
+                body/admission/FantLab gates closed until independently verified.
 ```
 
 ## Current milestone gate
@@ -32,8 +31,7 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P0 | SCRIP-CORPUS-038 review | recovery / review | Independent exact-head review of Draft PR #164 and settled CI; Ready/merge only if exact PDF replay, source-free boundary and all downstream gates hold | Do not self-approve the authored change; exact-head evidence required |
-| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough; Darwin/Rachinsky's frozen source/surface/scan identities also make a separate candidate-specific renderer unit executable when selected | Preserve translation/edition identity and explicit legal provenance; renderer/OCR work must keep body/admission/FantLab gates closed until separately verified |
+| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough; Petersburg's frozen scan and Darwin/Rachinsky's frozen source/surface/scan identities make separate candidate-specific OCR/renderer units executable when selected | Preserve translation/edition identity and explicit legal provenance; renderer/OCR work must keep body/admission/FantLab gates closed until separately verified |
 
 ## Retained corpus / provenance status
 
@@ -43,7 +41,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Resurrection** — frozen public-source candidate: 129 pinned chapter revisions; composite 890,835 characters; SHA-256 `2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`; FantLab source match unknown.
 - **Brothers Karamazov** — frozen public-source candidate: 98 admitted revisions; composite 1,810,351 characters; SHA-256 `26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6`; FantLab source match unknown.
 - **Silver Dove** — frozen single-revision public-source candidate at `oldid=5588003`; composite 563,125 characters; SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`; FantLab source match unknown.
-- **Petersburg** — SCRIP-CORPUS-038 is review-pending in Draft PR #164. The explicit 632-page 1916 first-book-edition Commons facsimile is independently byte-frozen as 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`; the 1916 identity stays distinct from the 1922 revision. OCR/page selection, literary-body identity and >=300k admission remain unfrozen; FantLab source match is unknown.
+- **Petersburg** — SCRIP-CORPUS-038 is complete. Master retains an independently reviewed exact backing Commons PDF identity for the explicit 632-page 1916 first-book-edition facsimile: 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`; the 1916 identity stays distinct from the 1922 revision. OCR/page selection, literary-body identity and >=300k admission remain unfrozen; FantLab source match is unknown.
 - **Hyperboloid of Engineer Garin** — frozen Russian Wikisource single-revision candidate at `oldid=5014458`; extraction profile `scriptorium-hyperboloid-wikisource-body-v1` reproduces 499,066 characters / 930,560 bytes with raw and normalized SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`. Print-edition identity and FantLab source match remain unresolved.
 - **Shining World** — reviewed 1965-source Wikisource index advertises 34 chapter links, but the merged SCRIP-CORPUS-021 source-free audit found only 19 existing pages: Part I I-XVI and Part II I-III. Part II IV-XI and all Part III chapters are missing. Exact present-page revision identities are frozen in master; complete literary-body/composite identity remains impossible from this route alone, and FantLab source match is unknown.
 - **Road to Nowhere** — the primary Pravda-1965/lib.web family is still body-unfrozen, but merged SCRIP-CORPUS-023 audits permanent index `oldid=4715367` as an incomplete/misdirected navigation surface: 8 labels map to 6 distinct targets, both Chapter IV labels duplicate Chapter III targets, and the three distinct Part II index targets currently resolve as red links. The distinct `az.lib.ru` route at `oldid=5585836` remains separately frozen at 442,656 characters / 825,899 bytes, SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`. Neither route is identified as FantLab input.
@@ -68,7 +66,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - Static publication remains source-free and deterministic; publication tests reject forbidden source-prose keys.
 - Public corpus navigation exposes retained candidates with provenance boundaries rather than parity claims.
 - `corpus/README.md` and the dedicated Beketova candidate page expose the translated candidate's exact frozen literary-body identity and >=300k general-corpus admission while explicitly keeping FantLab source match and M2 parity closed.
-- Review-pending SCRIP-CORPUS-038 adds a dedicated Petersburg 1916 candidate page and `corpus/README.md` navigation exposing the exact source-free PDF byte identity plus 1916/1922 edition boundary while explicitly keeping OCR/body/admission/FantLab gates open.
+- Merged SCRIP-CORPUS-038 exposes a dedicated Petersburg 1916 candidate page and `corpus/README.md` navigation with the independently reviewed exact source-free PDF byte identity plus 1916/1922 edition boundary while explicitly keeping OCR/body/admission/FantLab gates open.
 - Hyperboloid and Road to Nowhere expose frozen source-free alternate literary-body identities with explicit unresolved source-match boundaries; merged SCRIP-CORPUS-023 additionally makes the primary Road to Nowhere index-routing defect inspectable as source-free provenance rather than implying that the primary route is ready to freeze.
 - Shining World exposes a merged inspectable source-free inventory artifact and corrected public/structured provenance that distinguish the 34 links advertised by the reviewed index from the 19 pages that actually exist; missing targets are visible blockers, not silently filled text.
 - Running on Waves now exposes in master a source-free frozen literary-body identity and >=300k general-corpus admission while preserving the separate 1980/az.lib.ru route and keeping FantLab source match/M2 closed.

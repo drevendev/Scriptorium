@@ -6,13 +6,15 @@ This retained candidate is the **1916 first book edition** of Andrei Bely's *Pet
 
 ## Frozen scan identity
 
-**SCRIP-CORPUS-038 / Draft PR #164** independently streamed the exact Commons original without writing the PDF into the repository. The source-free frozen binary identity is:
+**SCRIP-CORPUS-038 / merged PR #164** independently streamed the exact Commons original without writing the PDF into the repository. The source-free frozen binary identity is:
 
 - byte count: **3,621,459**;
 - SHA-1: **`682476934dd6ed49c6bbcdb0720127c1812ff477`**;
 - SHA-256: **`b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`**.
 
 The hosted capture also established that the previously retained Commons Page Information hash `682476934dd6ed49c6bbcdb0720127c1812ff477` equals the SHA-1 of this exact current PDF byte stream. Scriptorium records that equality as independently verified for this snapshot rather than assuming a general meaning for Commons metadata fields.
+
+Independent exact-head review of `11ca95744ce0b28c213d21b2221a6fc1f6d6b831` found all **15/15** pull-request workflows successful. Dedicated run `35498451938`, job `106045731420`, replayed the exact original and reproduced the byte count/SHA-1/SHA-256. Review independently downloaded artifact `10601673060`, recomputed its 1,313-byte ZIP SHA-256 as `1ceb12a969e98e46178c785a956a70c63b4517b16660c1ba99278e6a9f83c0b2`, and confirmed it contains only the committed source-free receipt plus verification JSON. PR #164 was then squash-merged as `fac5aab20f5426e1d3e01853027222c5cd8c04ed`.
 
 No PDF bytes, page images, OCR, or literary source text are committed. The durable receipt stores only the locator, edition identity, byte count, hashes, and closed-gate metadata.
 

@@ -4,11 +4,7 @@ from copy import deepcopy
 from pathlib import Path
 import unittest
 
-from scriptorium.darwin_render_surface import (
-    audit_wikitext,
-    build_audit_manifest,
-    validate_audit_manifest,
-)
+from scriptorium.darwin_render_surface import audit_wikitext, build_audit_manifest, validate_audit_manifest
 from scriptorium.darwin_page_shards import load_sharded_manifest
 
 
@@ -34,28 +30,35 @@ class DarwinRenderSurfaceTests(unittest.TestCase):
         self.assertIn(("outer", 1, 1, 1), shapes)
         self.assertFalse(any(item["name"] == "ignored" for item in audit["template_shapes"]))
         serialized = str(audit)
-        self.assertNotIn("lexical value", serialized)
-        self.assertNotIn("private", serialized)
-        self.assertNotIn("Target", serialized)
-        self.assertNotIn("Label", serialized)
+        for forbidden in ("lexical value", "private", "Target", "Label"):
+            self.assertNotIn(forbidden, serialized)
         self.assertEqual(audit["comment_count"], 1)
         self.assertEqual(audit["noinclude_block_count"], 2)
         self.assertEqual(audit["wikilink_count"], 1)
 
+    def test_nested_template_closing_is_not_mistaken_for_parameter_braces(self) -> None:
+        audit = audit_wikitext("{{outer|{{inner|x}}}}")
+        names = [item["name"] for item in audit["template_shapes"]]
+        self.assertEqual(names, ["inner", "outer"])
+        self.assertEqual(audit["template_parameter_count"], 0)
+
+    def test_parameter_construct_is_counted_without_serializing_value(self) -> None:
+        audit = audit_wikitext("{{outer|{{{parameter|secret default}}}}}")
+        self.assertEqual(audit["template_parameter_count"], 1)
+        self.assertNotIn("secret default", str(audit))
+
     def test_audit_fails_closed_on_unbalanced_constructs(self) -> None:
-        with self.assertRaisesRegex(ValueError, "unbalanced template open"):
+        with self.assertRaisesRegex(ValueError, "unbalanced curly construct"):
             audit_wikitext("visible {{broken|value")
         with self.assertRaisesRegex(ValueError, "unbalanced noinclude"):
             audit_wikitext("<noinclude>header visible")
-        with self.assertRaisesRegex(ValueError, "template-parameter braces"):
-            audit_wikitext("{{{dynamic}}}")
 
     def test_literal_blocks_do_not_create_false_template_shapes(self) -> None:
         audit = audit_wikitext("<nowiki>{{not-a-template|x}}</nowiki>{{real|x}}")
         names = [item["name"] for item in audit["template_shapes"]]
         self.assertEqual(names, ["real"])
 
-    def test_build_selects_exactly_388_literary_dependencies_and_keeps_gates_closed(self) -> None:
+    def test_build_selects_388_literary_dependencies_and_keeps_gates_closed(self) -> None:
         rows = load_sharded_manifest(INDEX)
         by_id = {int(row["revision_id"]): row for row in rows}
 

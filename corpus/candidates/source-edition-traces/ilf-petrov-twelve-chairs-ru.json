@@ -49,9 +49,9 @@
       "bibliographic_source": "И. Ильф, Е. Петров. Двенадцать стульев. М.-Л.: Земля и фабрика, 1928.",
       "edition_identity": "first_standalone_1928_zemlya_i_fabrika",
       "observed_chapters": 41,
-      "source_provenance_confidence": "strong_for_bibliographic_edition_family_page_revision_and_scan_binary_identity",
+      "source_provenance_confidence": "strong_for_bibliographic_edition_family_page_revision_scan_binary_and_gap_surface_identity",
       "immutable_identity": {
-        "status": "route_graph_410_page_revision_identities_and_scan_binary_frozen_body_unfrozen",
+        "status": "route_graph_410_page_revision_identities_scan_binary_and_gap_surface_frozen_body_unfrozen",
         "frozen_components": [
           "work-index permanent revision oldid 5706135",
           "bibliographic first-edition declaration on that index",
@@ -59,10 +59,11 @@
           "three part-page permanent revisions oldid 5702507, 5704332 and 5702508",
           "three exact transclusion ranges 8-149, 152-313 and 316-421 referencing 410 Page-namespace dependencies",
           "exact revision IDs/timestamps/MediaWiki SHA-1 identities for all 410 referenced Page-namespace pages",
-          "two explicit non-transcluded scan-index gaps 150-151 and 314-315, retained outside the dependency set and unclassified",
+          "exact source-free identities and body-presence summaries for non-transcluded scan-index pages 150, 151, 314 and 315; 150/314 are nonempty-unclassified and 151/315 have no transcluded body",
           "exact Wikimedia Commons original PDF byte identity: 77,978,350 bytes, SHA-1 4ab6aa42c3517169e99c1177b6fb6412cfe9187d, SHA-256 5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4"
         ],
         "unfrozen_components": [
+          "literary membership of nonempty non-transcluded pages 150 and 314",
           "deterministic literary-body extraction and composition",
           "raw and scriptorium-text-v1 normalized composite digests",
           "OCR/page-to-literary-text extraction profile"
@@ -71,6 +72,7 @@
       "source_graph_manifest": "ilf-petrov-twelve-chairs-zif-1928.source-graph.json",
       "page_revision_identity_manifest": "ilf-petrov-twelve-chairs-zif-1928.page-revisions.index.json",
       "scan_identity_receipt": "ilf-petrov-twelve-chairs-zif-1928.scan-identity.json",
+      "gap_audit_manifest": "ilf-petrov-twelve-chairs-zif-1928.gap-audit.json",
       "page_revision_identity_capture": {
         "workflow_run_id": 35503562530,
         "artifact_id": 10603441105,
@@ -87,8 +89,24 @@
         "source_text_included": false,
         "scan_bytes_committed": false
       },
+      "gap_audit_capture": {
+        "workflow_run_id": 35515025304,
+        "artifact_id": 10606587097,
+        "artifact_zip_sha256": "8171ce8c0dcd6d9f20a117e22cc35d0cee4a04d30b4a24c3d8d9befeaf55daa6",
+        "capture_json_sha256": "f1ca4fb4b0ac475be548c0b51efc08b7c1acbbdca3484101de128501862386ad",
+        "captured_at_utc": "2026-09-20T13:57:55Z",
+        "source_text_included": false,
+        "dependency_inventory_unchanged": true,
+        "literary_membership_frozen": false,
+        "page_body_presence": {
+          "150": "nonempty_body_unclassified",
+          "151": "no_transcluded_body",
+          "314": "nonempty_body_unclassified",
+          "315": "no_transcluded_body"
+        }
+      },
       "route_graph": {
-        "status": "frozen_parent_route_topology_410_page_revision_identities_and_scan_binary_body_unfrozen",
+        "status": "frozen_parent_route_topology_410_page_revision_identities_scan_binary_and_gap_surface_body_unfrozen",
         "proofread_index_oldid": 5702510,
         "part_parent_oldids": [
           5702507,
@@ -103,6 +121,7 @@
         "referenced_page_namespace_count": 410,
         "page_revision_identities_frozen": true,
         "scan_binary_identity_frozen": true,
+        "gap_page_revisions_inspected": true,
         "non_transcluded_scan_gaps": [
           [150, 151],
           [314, 315]
@@ -114,7 +133,7 @@
     "status": "distinct_text_families_required",
     "evidence": "The current later editorial family exposes 40 chapters while the separately identified 1928 first standalone edition exposes 41 chapters. This structural difference is sufficient to prohibit collapsing the two public routes into one edition/text identity, but it is not by itself a byte-level comparison or proof of every textual difference.",
     "fantlab_relation": "unknown",
-    "rule": "Do not infer FantLab analyzer-input identity from title, authorship, publication history, chapter count, bibliographic compatibility, public availability, route topology, Page revision identity or scan binary identity alone. Each edition/transcription family requires its own frozen literary-body identity before diagnostics."
+    "rule": "Do not infer FantLab analyzer-input identity from title, authorship, publication history, chapter count, bibliographic compatibility, public availability, route topology, Page revision identity, gap surface identity or scan binary identity alone. Each edition/transcription family requires its own frozen literary-body identity before diagnostics."
   },
   "facsimile_lead": {
     "provider": "Russian Wikisource / Wikimedia Commons",
@@ -143,27 +162,28 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "1928_route_graph_410_page_revision_identities_and_scan_binary_frozen_body_unfrozen",
+    "source_identity_status": "1928_route_graph_410_page_revision_identities_scan_binary_and_gap_surface_frozen_body_unfrozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "multi_edition_traced_1928_page_revision_and_scan_binary_identity_frozen_body_unfrozen",
+    "status": "multi_edition_traced_1928_page_revision_scan_binary_and_gap_surface_identity_frozen_body_unfrozen",
     "reasons": [
       "FantLab reports 572,654 characters and 80,203 words for its 17 September 2022 analysis, above the 300,000-character calibration threshold.",
       "Russian Wikisource provides explicit public-domain evidence and stable work-index locators for two distinct bibliographic/text families.",
       "The later family has 40 visible chapters while the first standalone 1928 family has 41, so Scriptorium must not flatten them into one edition identity.",
       "The 1928 family has a source-free frozen parent route graph: work/index revisions plus three part-parent revisions transcluding scan ranges 8-149, 152-313 and 316-421 (410 Page-namespace dependencies).",
-      "All 410 referenced Page-namespace dependencies have source-free exact revision ID/timestamp/MediaWiki SHA-1 identities frozen in a sharded manifest; scan-index gaps 150-151 and 314-315 remain outside that dependency set and unclassified.",
+      "All 410 referenced Page-namespace dependencies have source-free exact revision ID/timestamp/MediaWiki SHA-1 identities frozen in a sharded manifest.",
+      "The four non-transcluded scan-index gap pages now have exact source-free revision/body-presence evidence: 150 and 314 are nonempty but remain unclassified; 151 and 315 have no transcluded body. The 410 dependency inventory is unchanged.",
       "The exact backing Commons original is frozen source-free as 77,978,350 bytes, SHA-1 4ab6aa42c3517169e99c1177b6fb6412cfe9187d and SHA-256 5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4; no scan bytes are committed.",
-      "Literary-body extraction/composition and body digests remain unfrozen, so this is not yet a frozen literary text or Scriptorium-proven >=300k corpus admission.",
+      "Literary membership for nonempty gap pages plus literary-body extraction/composition and body digests remain unfrozen, so this is not yet a frozen literary text or Scriptorium-proven >=300k corpus admission.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Inspect scan-index gaps 150-151 and 314-315 independently and preserve them as non-composable unless literary-body evidence justifies inclusion.",
-      "Define a deterministic fail-closed literary-body extraction/composition profile over the pinned 410 Page revisions, then record raw and scriptorium-text-v1 normalized composite digests.",
-      "If OCR or scan-page extraction is used to cross-check the public transcription, define that OCR/page-extraction profile separately from the now-frozen PDF binary identity.",
-      "Seek independent evidence that can identify FantLab's uploaded analyzer input; bibliographic compatibility, route topology, Page revision identity, scan binary identity and chapter structure cannot advance M2.",
+      "Define a deterministic fail-closed literary-body extraction/composition profile over the pinned 410 Page revisions and explicitly decide whether nonempty gap pages 150 and 314 belong to the literary body; pages 151 and 315 have no transcluded body at their frozen revisions.",
+      "Record raw and scriptorium-text-v1 normalized composite digests only after that composition decision is reviewable.",
+      "If OCR or scan-page extraction is used to cross-check the public transcription, define that OCR/page-extraction profile separately from the frozen PDF binary identity.",
+      "Seek independent evidence that can identify FantLab's uploaded analyzer input; bibliographic compatibility, route topology, Page revision identity, gap surface identity, scan binary identity and chapter structure cannot advance M2.",
       "When author-voice work begins, model this work as coauthored evidence rather than silently assigning its statistics to either individual author."
     ]
   }

@@ -3,7 +3,7 @@
 **Candidate ID:** `ilf-petrov-twelve-chairs-ru`  
 **Authors:** Ilya Ilf and Evgeny Petrov  
 **Language:** Russian  
-**Current status:** 1928 route graph + 410 exact Page revision identities + exact scan binary identity frozen / literary body unfrozen / not M2-admissible
+**Current status:** 1928 route graph + 410 exact Page revision identities + exact scan binary identity + source-free four-gap audit frozen / literary body unfrozen / not M2-admissible
 
 This candidate is retained because FantLab's 17 September 2022 linguistic analysis reports **572,654 characters** and **80,203 words**, comfortably above Scriptorium's 300,000-character corpus threshold. FantLab does not disclose the edition or immutable bytes uploaded for that analysis, so the numbers are a public reference surface rather than source-match evidence.
 
@@ -16,7 +16,7 @@ Russian Wikisource exposes at least two materially distinct public text families
 
 The 40-versus-41 chapter difference is enough to require distinct edition/transcription identities in Scriptorium. It is **not** treated as a byte-level diff, proof of every textual change, or evidence that either route was FantLab's analyzer input.
 
-The 1928 facsimile behind the retained Wikisource ProofreadPage family is now frozen as an exact source-free binary identity. Hosted Scriptorium capture streamed the Wikimedia Commons original transiently and reproduced the provider's **77,978,350 bytes** and SHA-1 `4ab6aa42c3517169e99c1177b6fb6412cfe9187d`; Scriptorium independently computed SHA-256 `5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4`. The PDF itself is not committed. The canonical source-free receipt is [`source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json).
+The 1928 facsimile behind the retained Wikisource ProofreadPage family is frozen as an exact source-free binary identity. Hosted Scriptorium capture streamed the Wikimedia Commons original transiently and reproduced the provider's **77,978,350 bytes** and SHA-1 `4ab6aa42c3517169e99c1177b6fb6412cfe9187d`; Scriptorium independently computed SHA-256 `5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4`. The PDF itself is not committed. The canonical source-free receipt is [`source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json).
 
 ## 1928 route and Page-identity freeze
 
@@ -28,9 +28,13 @@ The first-edition route is bounded without committing literary prose. The Proofr
 
 Together these routes reference **410 Page-namespace dependencies**. Scriptorium freezes the exact source-free identity of every one of those dependencies: Page sequence, revision ID, revision timestamp and MediaWiki SHA-1. The deterministic identity set is stored as three source-free shards behind [`source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.index.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.index.json). The initial hosted capture is recorded as workflow run `35503562530`, artifact `10603441105`, artifact ZIP SHA-256 `431558255b168e99f26ac7f5567bda7bb30d69288120b34f918ad3d0e50062c9`, with capture JSON SHA-256 `e5182724d8188fca48807c58720d17f1e40e55b121d1b172fa414e317859420c`.
 
-Scan-index gaps **150–151** and **314–315** remain deliberately outside the 410 dependency set and unclassified. The binary-identity unit did not change this set or silently assume that the gap pages are either literary text or disposable separators.
+## Non-transcluded gap audit
 
-This is still **not a literary-body freeze**. Exact Page revisions and the backing PDF bytes are identified, but no Page-markup rendering/extraction contract, OCR/page-to-literary-text profile, body composition, body character count, or raw/normalized literary-body digest is claimed. The source-free graph manifest is [`source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json).
+Scan-index pages **150–151** and **314–315** remain outside the frozen 410 dependency set, but they are no longer an entirely uninspected hole. Scriptorium transiently read the four exact Page revisions and committed only source-free identity, digest/count and body-presence evidence in [`source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.gap-audit.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.gap-audit.json). Hosted capture run `35515025304` produced artifact `10606587097`; its ZIP SHA-256 is `8171ce8c0dcd6d9f20a117e22cc35d0cee4a04d30b4a24c3d8d9befeaf55daa6`, and the exact capture JSON SHA-256 is `f1ca4fb4b0ac475be548c0b51efc08b7c1acbbdca3484101de128501862386ad`.
+
+The result is deliberately conservative: page **150** (`oldid=5702065`) and page **314** (`oldid=5702066`) have nonempty transcluded bodies at their frozen revisions, so they are classified only as `nonempty_body_unclassified`; page **151** (`oldid=5702062`) and page **315** (`oldid=5701572`) have `no_transcluded_body` after removing comments and `<noinclude>` regions. This does **not** add any of the four pages to the 410 dependency set and does not decide that the nonempty pages are literary prose. That membership decision belongs to the later candidate-specific composition contract.
+
+This is still **not a literary-body freeze**. Exact Page revisions, the backing PDF bytes and the gap body-presence surface are identified, but no Page-markup rendering/extraction contract, OCR/page-to-literary-text profile, body composition, body character count, or raw/normalized literary-body digest is claimed. The source-free graph manifest is [`source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json).
 
 ## Legal and publication boundary
 
@@ -42,7 +46,7 @@ FantLab itself warns on the work's author-recognition surface that the text has 
 
 ## What is still required
 
-A later unit may inspect the two explicit two-page gaps independently, then define and verify a candidate-specific fail-closed literary-body extraction/composition contract over the **410 pinned Page revisions**. Only after that can Scriptorium record raw plus `scriptorium-text-v1` normalized composite counts/digests and determine whether its own frozen body satisfies the >=300k corpus rule. If scan OCR is used to cross-check the public transcription, its OCR/page-extraction provenance must be frozen separately; exact PDF identity alone is not a literary-body extraction contract.
+A later unit must define and verify a candidate-specific fail-closed literary-body extraction/composition contract over the **410 pinned Page revisions** and explicitly decide whether the nonempty gap pages **150** and **314** belong to the literary body; pages **151** and **315** are frozen with no transcluded body. Only after that can Scriptorium record raw plus `scriptorium-text-v1` normalized composite counts/digests and determine whether its own frozen body satisfies the >=300k corpus rule. If scan OCR is used to cross-check the public transcription, its OCR/page-extraction provenance must be frozen separately; exact PDF identity alone is not a literary-body extraction contract.
 
 FantLab still does not disclose which edition or immutable byte stream it analyzed. Therefore `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`; the M2 reproduction gate remains **0/5 source-matched works**.
 

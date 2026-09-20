@@ -3,7 +3,7 @@
 ## Selection
 
 - **Issue:** #175
-- **PR:** #176 (Draft; independent review required)
+- **PR:** #176
 - **Base:** `master@af2f2e8c857ebb024ccac591ad50e61f0c60f3d6`
 - **Mode:** corpus / provenance, one bounded renderer-prerequisite unit
 - **Reason selected:** no interrupted/review-ready unit was present at orientation time; `STATE_AND_QUEUE` returned to the P2 SCRIP-CORPUS continuation and explicitly named a candidate-specific fail-closed Twelve Chairs Page-markup profile as executable next evidence.
@@ -41,13 +41,22 @@ This run repaired both review blockers on the existing Draft PR rather than sele
 - Historical render-surface capture status is represented separately as `rendering_profile_frozen_at_surface_capture=false`; it is not used as the current profile state.
 - Extended provenance tests to require the profile manifest, SHA binding and current profile/renderer boundary in both structured records.
 
-PR #176 remains Draft after these authored repairs. A fresh exact-head independent review is still required before Ready/merge; this repair run does not self-approve the substantive change.
+## Independent re-review and merge — 2026-09-20/21
+
+- Re-read repaired exact head `0983a7411e3c01c548b0594386cb3e1e53a73419` against unchanged base `af2f2e8c857ebb024ccac591ad50e61f0c60f3d6`: 17 commits ahead / 0 behind, 11 changed files, no inline review threads.
+- Confirmed both blockers from review `5261712805` are closed: the source freeze is cryptographically validated before profile consumption, the mutation regression fails closed on stale-digest payload drift, and both canonical structured provenance records bind the current profile while preserving all downstream gates.
+- All 18 PR-triggered workflows on the exact repaired head settled `success`.
+- Dedicated run `35540098091` / job `106156079398` checked out the exact reviewed SHA and passed profile/provenance tests, deterministic rebuild/equality and artifact upload.
+- Pages run `35540098061` / job `106156079491` checked out the exact reviewed SHA and passed the full standard-library suite, canonical site build and deterministic rebuild; live deployment remained intentionally skipped.
+- Independently downloaded artifact `10614018525`: 1,734-byte ZIP, SHA-256 `60c714b6e0abeace4daf65864443d85b623907d577b019e6a669e7b4e905a1d3`, containing only the 9,854-byte source-free profile JSON. Its canonical profile digest recomputed exactly to `88e410311435ab6bcfbd70ab0a2cea73ffe304e3ce2876d241d25ea38cc5d5cd`.
+- Recorded fresh exact-head review as COMMENT `5262003280`, not self-approval; no new blocker was found.
+- Marked PR #176 Ready and squash-merged it as `7146f0e29e5567c4368bc34d4f18bc3f71cb3ff4`. Issue #175 closed `completed`.
 
 ## Benchmark / public movement
 
 - **Benchmark:** no movement; M2 remains **0/5** source-matched works.
-- **Public representation:** public prose and canonical structured provenance now agree that the fail-closed decision profile is frozen while renderer semantics, literary body, >=300k admission and FantLab identity remain unproven.
+- **Public representation:** master now exposes an independently reviewed fail-closed render decision profile and synchronized canonical provenance. This remains a profile boundary only: unresolved template/reference semantics, inter-page composition, literary-body identity, >=300k admission and FantLab source identity are still unproven.
 
 ## Handoff
 
-Wait for all PR-triggered workflows on the repaired final exact head to settle, then independently re-read the complete diff and verify the two prior blockers are closed. If clean, record review as COMMENT rather than self-approval and only then decide Ready/merge. Literary-body composition remains non-executable while template/reference semantics are unresolved.
+SCRIP-CORPUS-044 is complete. Resume normal-flow selection from the P2 SCRIP-CORPUS continuation. A later bounded unit may resolve/evidence the template/reference semantics explicitly left unresolved by the profile; inter-page composition remains a separate subsequent decision. Do not compose or admit a literary body until renderer and composition semantics are independently verified.

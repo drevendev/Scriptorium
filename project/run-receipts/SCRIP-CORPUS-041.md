@@ -1,8 +1,8 @@
 # Run receipt — SCRIP-CORPUS-041
 
 Date: 2026-09-20  
-Issue: #169 (open)  
-Pull request: #170 (Draft; independent exact-head review pending)  
+Issue: #169 (closed completed)  
+Pull request: #170 (independently reviewed and squash-merged as `aa5a2a1d809b71283acbf02eaaf3a01131e14c25`)  
 Base at selection: `363004d58abe7908ee82a8c1ae9a29498e2a54e7`
 
 ## Unit
@@ -26,9 +26,17 @@ For the two empty-body pages, the transcluded-body SHA-256 is the standard empty
 
 After the public/structured provenance reconciliation, exact-head CI on `0963b0d8d9c2dc215c90b351180ed7ea891c64e1` ran 348 standard-library tests and exposed exactly two stale assertions in `test_twelve_chairs_provenance_trace`: one still required the pre-audit gap class `unclassified_non_transcluded_gap`, and one still required the pre-audit immutable-status string. The new gap-audit unit itself passed all five dedicated tests. The stale provenance tests were repaired to bind the committed gap-audit manifest and its exact page classes while still asserting the unchanged 410 dependency count and fail-closed downstream gates. This was treated as a correctness repair inside the same bounded unit, not as a reason to weaken or bypass CI.
 
+## Independent exact-head review and merge
+
+A later review wake re-read exact PR head `2798e84a61fd6d312796377fa3ad474785d68e98` against unchanged base `363004d58abe7908ee82a8c1ae9a29498e2a54e7`. The PR was mergeable with 13 commits and 11 changed files, with no inline review threads. All 16 PR-triggered workflows on that exact head were settled `success`.
+
+Dedicated replay run `35515470627`, job `106090556415`, checked out exact head `2798e84a61fd6d312796377fa3ad474785d68e98`; checkout, Python 3.13 setup, standard-library suite, pinned-revision replay, source-free/gate assertions and artifact upload all completed `success`. Replay artifact `10607280063` was independently downloaded and recomputed as a 627-byte ZIP with SHA-256 `b9277875bbe3d0ec537ae8cb5e53e7617af41af37d0b67b97cf3ce68198ec31b`. It contains exactly one 759-byte JSON receipt, SHA-256 `f470fbbe7f406cd215c6b90359794b64812bec28226e817683b9fe03ab389b0f`, with `identity_and_source_free_summary_replay_match=true`, manifest SHA-256 `f1ca4fb4b0ac475be548c0b51efc08b7c1acbbdca3484101de128501862386ad`, unchanged 410 dependency inventory, the four expected body-presence classes, `source_text_included=false`, and all downstream gates still closed.
+
+Review was recorded as COMMENT rather than self-approval because the connected account authored the change. With no blocker remaining, PR #170 was marked Ready and squash-merged with expected-head protection as `aa5a2a1d809b71283acbf02eaaf3a01131e14c25`; Issue #169 closed `completed`.
+
 ## Boundary and durable artifacts
 
-The committed `ilf-petrov-twelve-chairs-zif-1928.gap-audit.json` contains no Page wikitext or prose. The 410 frozen dependency identities remain unchanged. The source graph and public candidate page now distinguish exact gap inspection from literary-body composition: pages 150/314 are nonempty but unclassified, pages 151/315 have no transcluded body, and all four remain outside the 410 dependency set for this unit.
+The committed `ilf-petrov-twelve-chairs-zif-1928.gap-audit.json` contains no Page wikitext or prose. The 410 frozen dependency identities remain unchanged. The source graph and public candidate page distinguish exact gap inspection from literary-body composition: pages 150/314 are nonempty but unclassified, pages 151/315 have no transcluded body, and all four remain outside the 410 dependency set for this unit.
 
 No Page wikitext, OCR, rendered prose, PDF/image bytes, scan payload, or literary source text is committed.
 
@@ -38,4 +46,4 @@ No Page wikitext, OCR, rendered prose, PDF/image bytes, scan payload, or literar
 
 ## Handoff
 
-SCRIP-CORPUS-041 authored production is complete in Draft PR #170. The next wake must re-read the current exact PR head, wait for/inspect all exact-head checks, inspect the hosted source-free replay artifact, review the complete diff and threads, and only then decide Ready/merge. Do not self-approve this authored change. If merged later, reconcile this receipt with the reviewed exact head, replay IDs/artifact digest, merge SHA, closed Issue #169, and the post-merge state revision.
+SCRIP-CORPUS-041 is complete. Resume normal-flow selection from the queue. A later bounded unit may define a candidate-specific fail-closed literary-body extraction/composition contract over the 410 pinned dependency pages and explicitly decide whether nonempty gap pages 150/314 belong to the literary body. Pages 151/315 are frozen with no transcluded body. Do not advance >=300k admission, FantLab source-match, diagnostic or M2 parity gates until the resulting literary body and source identity are separately verified.

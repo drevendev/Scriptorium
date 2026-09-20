@@ -1,0 +1,13 @@
+# SCRIP-CORPUS-038 — Petersburg 1916 scan binary identity
+
+- Selected the retained Andrei Bely *Petersburg* 1916 first-book-edition facsimile from STATE_REVISION 184 as a bounded corpus/provenance strengthening unit. It improves early-20th-century modernist coverage while preserving the 1916/1922 edition distinction.
+- Opened Issue #163 and Draft PR #164 from master `1108fb5bf04af7bf1a6b11e78ff31d7e082cd9f0`.
+- Added `scriptorium-petersburg-scan-identity-v1`, a standard-library streaming helper that retrieves the retained Commons original transiently and persists only byte count plus SHA-1/SHA-256; PDF bytes, images, OCR and literary source text are never written by the helper.
+- Added six synthetic/no-network unit tests covering streaming identity, invalid streams/digests, exact receipt shape, closed gates, edition drift and exact replay.
+- First hosted capture on PR head `5ebabf54e29ad990ae4dd860f6290ee8ee61d3b1` used run `35498115419`, job `106044817170`. All six unit tests passed and the exact retained Commons PDF was observed as **3,621,459 bytes**, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`.
+- Capture artifact `10601567738` contained only source-free JSON/log evidence, size **1,565 bytes**, with uploaded ZIP SHA-256 `8b9915a05d554f9ca5bdd12ea0d760b57cd2d2d0fc81e1c164058d81cad6a2e2`.
+- The independent byte replay resolved a previously cautious provenance ambiguity: the retained Commons Page Information hash `682476934dd6ed49c6bbcdb0720127c1812ff477` equals the SHA-1 of this exact PDF snapshot. Scriptorium now records that verified equality for this file/snapshot without generalizing the semantics of Commons Page Information hashes.
+- Froze the source-free receipt `bely-petersburg-1916-ru.scan-identity.json`, converted the hosted workflow from discovery/capture to deterministic exact-original replay, and bound the structured trace to the receipt with provenance regression tests.
+- Added a dedicated public candidate page plus `corpus/README.md` navigation exposing the exact scan identity and 1916-edition boundary without publishing source bytes.
+- Kept downstream gates closed: no OCR/extraction profile, literary-body count/digests or >=300k proof exists for Scriptorium's candidate body; `admitted_for_calibration=false`, `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`. FantLab's nominal 944,182-character display is not corpus admission or source-match evidence.
+- The substantive PR remains Draft for a later independent exact-head review. This authored run does not self-approve or merge it.

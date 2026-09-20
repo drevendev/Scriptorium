@@ -22,6 +22,10 @@ The frozen Page evidence is:
 
 For the two empty-body pages, the transcluded-body SHA-256 is the standard empty digest `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. Page 150's source-free transcluded-body counts are 22 codepoints / 40 UTF-8 bytes / 18 letters; page 314's are 40 codepoints / 74 UTF-8 bytes / 34 letters. These counts are evidence of nonempty bodies only, not semantic or literary classification.
 
+## Exact-head repair
+
+After the public/structured provenance reconciliation, exact-head CI on `0963b0d8d9c2dc215c90b351180ed7ea891c64e1` ran 348 standard-library tests and exposed exactly two stale assertions in `test_twelve_chairs_provenance_trace`: one still required the pre-audit gap class `unclassified_non_transcluded_gap`, and one still required the pre-audit immutable-status string. The new gap-audit unit itself passed all five dedicated tests. The stale provenance tests were repaired to bind the committed gap-audit manifest and its exact page classes while still asserting the unchanged 410 dependency count and fail-closed downstream gates. This was treated as a correctness repair inside the same bounded unit, not as a reason to weaken or bypass CI.
+
 ## Boundary and durable artifacts
 
 The committed `ilf-petrov-twelve-chairs-zif-1928.gap-audit.json` contains no Page wikitext or prose. The 410 frozen dependency identities remain unchanged. The source graph and public candidate page now distinguish exact gap inspection from literary-body composition: pages 150/314 are nonempty but unclassified, pages 151/315 have no transcluded body, and all four remain outside the 410 dependency set for this unit.

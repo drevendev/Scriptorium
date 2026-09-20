@@ -1,0 +1,84 @@
+{
+  "schema_version": "scriptorium-darwin-render-surface-source-graph-v1",
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "source_text_committed": false,
+  "nodes": [
+    {
+      "id": "page-revision-index",
+      "kind": "frozen_source_free_page_identity_index",
+      "path": "darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json",
+      "sha256": "a1b1011095dc84ab0a5cd3ef45b2a46ce99588a0ef9cf507c1f711c925ba86dd",
+      "included_dependency_count": 418
+    },
+    {
+      "id": "literary-composition",
+      "kind": "frozen_source_free_composition_contract",
+      "contract_version": "scriptorium-darwin-literary-body-contract-v1",
+      "literary_dependency_count": 388,
+      "apparatus_dependency_count": 30,
+      "explicit_no_text_non_dependencies": [114, 411]
+    },
+    {
+      "id": "hosted-render-surface-audit",
+      "kind": "transient_exact_revision_markup_audit",
+      "workflow_run_id": 35487766954,
+      "workflow_job_id": 106017178554,
+      "head_sha": "708e780417efa43c80332a782181348aea3e79fb",
+      "artifact_id": 10598162631,
+      "artifact_zip_digest": "sha256:49fdcce34d1e30a10b335024a90c27feb8042d4f48a819e6ff3bb21cc3a8ca1c",
+      "full_audit_sha256": "cd6b748090298a5a1a4fe0b1bc63feb7e1ba9c49332bb6217e744b3fd7197b49",
+      "identity_replay_match": true,
+      "literary_dependency_count": 388,
+      "source_text_persisted": false
+    },
+    {
+      "id": "durable-render-surface-freeze",
+      "kind": "frozen_source_free_markup_surface_inventory",
+      "path": "darwin-origin-species-rachinsky-1864-ru.render-surface.json",
+      "freeze_manifest_sha256": "e5ae625fef6afb2e890de990e1ef3b9e108a409a2e0ea2136947c2c3e1cea44d",
+      "page_surface_receipts_count": 388,
+      "page_surface_receipts_sha256": "7c170f513bf21f2c9e0d7736bc9fc20b4c9a40fdfe942a7b1dd1b0ac048ba09b",
+      "template_shape_count": 38,
+      "tag_shape_count": 18,
+      "source_text_included": false
+    },
+    {
+      "id": "future-renderer",
+      "kind": "unfrozen_page_wikitext_to_prose_profile",
+      "status": "unfrozen",
+      "must_cover_exactly_frozen_surface": true
+    }
+  ],
+  "edges": [
+    {
+      "from": "page-revision-index",
+      "to": "literary-composition",
+      "relation": "partitioned_by"
+    },
+    {
+      "from": "literary-composition",
+      "to": "hosted-render-surface-audit",
+      "relation": "exact_388_literary_revisions_replayed_for_transient_markup_inspection"
+    },
+    {
+      "from": "hosted-render-surface-audit",
+      "to": "durable-render-surface-freeze",
+      "relation": "reduced_to_source_free_deterministic_construct_inventory"
+    },
+    {
+      "from": "durable-render-surface-freeze",
+      "to": "future-renderer",
+      "relation": "constrains_supported_construct_surface"
+    }
+  ],
+  "gate_boundary": {
+    "surface_inventory_frozen": true,
+    "rendering_profile_frozen": false,
+    "literary_body_count_and_digests_frozen": false,
+    "minimum_300k_proved": false,
+    "admitted_for_calibration": false,
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "m2_parity_admissible": false
+  }
+}

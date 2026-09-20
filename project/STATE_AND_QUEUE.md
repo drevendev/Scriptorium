@@ -1,22 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 180
+STATE_REVISION: 181
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-20T02:52:00Z
-LAST_RESULT: SCRIP-CORPUS-035 / Issue #157 completed after independent exact-head review of PR #158. Exact reviewed head `b78396377612a254dda7605425355b2f435b2e78` remained mergeable against unchanged base `c885600f528e2883396d58e14f229824c61b0902`, 12 commits ahead / 0 behind, with no inline review threads. The prior structured-provenance blocker was resolved: the canonical trace now freezes the 418-identity plus 388-literary / 30-apparatus composition boundary while keeping rendering/body/admission/FantLab gates closed. All 15 pull-request-triggered workflows completed successfully; dedicated run `35482586257`, job `106002941641`, passed exact-head contract verification and produced source-free artifact `10596435931` (1,346 bytes, `sha256:ce2e734417f45ed18effd563af720af6ad31ae6a27d71e1f21319cb1cb1ae392`). PR #158 was marked Ready and squash-merged as `ad2439baa4585759558b5eccb93ae2bf58979f00`; Issue #157 closed completed.
-LAST_VERIFIED_PROGRESS: `darwin-origin-species-rachinsky-1864-ru` now canonically retains the 418 exact Page revision identities plus `scriptorium-darwin-literary-body-contract-v1`: 388 dependencies from numbered routes `/1`–`/14` are the frozen literary composition surface and 30 parent-only/alphabetical-index dependencies are frozen apparatus; no-text 114 and 411 remain non-dependencies. Structured provenance and the public candidate surface are reconciled with that boundary. Page-wikitext-to-prose rendering semantics, composite separator/body-rendering semantics, literary-body count/digests, independent scan bytes/SHA-256 and >=300k admission remain unfrozen/false. FantLab still exposes Timiryazev rather than Rachinsky and M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-20T03:55:00Z
+LAST_RESULT: SCRIP-CORPUS-036 / Issue #159 advanced in Draft PR #160. The unit added an identity-verifying hosted audit over the 388 exact literary Darwin/Rachinsky Page revisions, recovered a real nested-template-brace parser defect found by the first hosted replay, and then successfully froze a source-free rendering-surface inventory. Successful run `35487766954`, job `106017178554`, replayed 388/388 exact literary revisions with `identity_replay_match=true`; artifact `10598162631` is 43,615 bytes with `sha256:49fdcce34d1e30a10b335024a90c27feb8042d4f48a819e6ff3bb21cc3a8ca1c`. The durable compact freeze records 38 template name/arity shapes, 18 tag name/kind shapes, aggregate construct counts, a digest over the 388 per-Page source-free receipts (`7c170f513bf21f2c9e0d7736bc9fc20b4c9a40fdfe942a7b1dd1b0ac048ba09b`) and compact manifest digest `e5ae625fef6afb2e890de990e1ef3b9e108a409a2e0ea2136947c2c3e1cea44d`, without source wikitext/prose or template arguments. The authored PR remains Draft for independent exact-head review.
+LAST_VERIFIED_PROGRESS: `darwin-origin-species-rachinsky-1864-ru` now retains 418 exact Page revision identities, the reviewed 388-literary / 30-apparatus composition contract, and a source-free exact-388 markup-surface inventory. Hosted evidence observed 1,069 comments, 776 noinclude blocks, 8 wikilinks, zero external links/headings/tables/template-parameter constructs, and complete 388/388 identity replay. This inventory constrains the next renderer but does not define rendering semantics. `rendering_profile_frozen=false`, literary-body count/digests, independent scan bytes/SHA-256 and >=300k admission remain unfrozen/false. FantLab still exposes Timiryazev rather than Rachinsky and M2 remains 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-035
-ISSUE:          #157 (closed completed)
-STATUS:         COMPLETE
-PR:             #158 (squash-merged)
-MERGED_COMMIT:  ad2439baa4585759558b5eccb93ae2bf58979f00
-NEXT_ACTION:    Resume normal-flow P2 corpus/provenance work. For Darwin/Rachinsky, the next evidence-bearing strengthening
-                is a candidate-specific fail-closed Page-wikitext-to-prose rendering profile over the 388 frozen literary
-                dependencies; literary-body count/digests and >=300k admission remain separate gates and must be independently proved.
+UNIT_ID:        SCRIP-CORPUS-036
+ISSUE:          #159 (open)
+STATUS:         REVIEW_PENDING
+PR:             #160 (Draft; authored, not self-approved)
+NEXT_ACTION:    Independently review the exact current PR #160 head and all settled exact-head CI. Confirm that the committed
+                render-surface freeze is deterministically reproduced from 388 exact pinned literary revisions, contains no
+                source payload, and keeps renderer/body/admission/FantLab gates closed. If clean, mark Ready and merge; otherwise
+                record a precise blocker and repair in a later production run.
 ```
 
 ## Current milestone gate
@@ -31,6 +31,7 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
+| P0 | SCRIP-CORPUS-036 review | review / verification | Independently review Draft PR #160 exact head, source-free freeze and settled CI; merge only if evidence is clean | Do not self-approve production-authored changes; all downstream gates must stay closed |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough | Preserve translation/edition identity and explicit legal provenance |
 
 ## Retained corpus / provenance status
@@ -50,7 +51,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **The Twelve Chairs** — SCRIP-CORPUS-029 is complete. The distinct 41-chapter 1928 first-standalone family now has a merged source-free parent route graph: work index `oldid=5706135`, ProofreadPage index `oldid=5702510`, part parents `5702507` / `5704332` / `5702508`, and exact transclusion ranges 8–149, 152–313, and 316–421 totaling 410 Page dependencies. The 410 Page revision identities, PDF bytes and literary body remain unfrozen. The 40-chapter later 1938/1961 editorial family stays distinct; coauthorship prevents individual-author attribution without an explicit VOICE model.
 - **The Life of Klim Samgin** — SCRIP-CORPUS-020 is complete. Four exact parent revisions and the Part 2 dependency are replay-frozen; merged PRs #111–#124 freeze the target-only `#lst`, inferred `poemx1`/Poem boundaries, structural surface and all thirteen plain literary values; #126 merged the candidate-specific fail-closed extractor; #127 merged the canonical source-free per-part and composite literary-body identities; #128 reconciled the structured provenance trace. Exact historical MediaWiki/Poem deployment and FantLab analyzer-input/source-edition identity remain unresolved.
 - **Children of Captain Grant — Beketova translation** — SCRIP-CORPUS-026 is complete. Merged PR #140 keeps exact Russian Wikisource revision `oldid=5304880` replay-frozen and adds candidate-specific `scriptorium-beketova-captain-grant-wikisource-body-v1`, freezing a 1,095,467-character / 2,040,240-byte literary body with raw and normalized SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`. Beketova / Detgiz 1955 / `az.lib.ru` bibliography and explicit source PD evidence covering the translation remain retained. The frozen body clears the >=300k rule for general calibration/profile use. No FantLab linguistic result or analyzer-input identity is established for this translation; M2 weight remains zero.
-- **On the Origin of Species — Rachinsky translation** — SCRIP-CORPUS-035 is complete. Master freezes all 418 included Page revision identities and `scriptorium-darwin-literary-body-contract-v1`: 388 dependencies from numbered rendered routes `/1`–`/14` are the canonical literary composition surface; 30 parent-only/alphabetical-index dependencies are excluded as apparatus; no-text 114/411 remain non-dependencies. Page-wikitext rendering, literary-body counts/digests, independent scan SHA-256 and >=300k admission remain unfrozen, so `admitted_for_calibration=false`. FantLab work 969964 currently exposes Timiryazev rather than Rachinsky; source match/M2 remain unknown/zero.
+- **On the Origin of Species — Rachinsky translation** — SCRIP-CORPUS-036 is in review. The branch retains the 418 exact Page revision identities and reviewed 388-literary/30-apparatus composition contract, then adds a source-free hosted inventory of the exact 388 literary Page markup surface: 38 template shapes, 18 tag shapes and a digest-pinned 388-entry source-free Page receipt set. No Page prose or template arguments are committed. Rendering semantics, literary-body count/digests, independent scan SHA-256 and >=300k admission remain unfrozen; `admitted_for_calibration=false`. FantLab work 969964 currently exposes Timiryazev rather than Rachinsky; source match/M2 remain unknown/zero.
 
 ## Deterministic / morphology findings
 
@@ -70,7 +71,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - Shining World exposes a merged inspectable source-free inventory artifact and corrected public/structured provenance that distinguish the 34 links advertised by the reviewed index from the 19 pages that actually exist; missing targets are visible blockers, not silently filled text.
 - Running on Waves now exposes in master a source-free frozen literary-body identity and >=300k general-corpus admission while preserving the separate 1980/az.lib.ru route and keeping FantLab source match/M2 closed.
 - Merged SCRIP-CORPUS-029 makes the 1928 *Twelve Chairs* parent route graph inspectable on the dedicated candidate page and in a machine-readable source-free manifest while explicitly keeping the 410 Page revisions and literary body unfrozen.
-- Merged SCRIP-CORPUS-035 makes Darwin/Rachinsky's source-free 388-literary / 30-apparatus composition contract canonical and inspectable on top of the frozen 418 exact Page revision identities without publishing Page prose; all literary-body identity/admission and FantLab gates remain visibly closed.
+- Draft SCRIP-CORPUS-036 makes Darwin/Rachinsky's exact-388 markup surface inspectable as a source-free deterministic construct inventory on top of the frozen 418 identities and 388/30 composition contract. The page explicitly labels the renderer, body identity/admission and FantLab gates as still open rather than implying rendered-body parity.
 - Klim Samgin exposes the source graph, fail-closed extractor, canonical source-free per-part/composite literary-body identities, public candidate page, and a structured provenance trace consistent with those identities. Evidence remains explicitly diagnostic-only and source-match unknown.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -89,5 +90,5 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 11. Klim Samgin is fully frozen at the candidate-specific literary-body/provenance level, but exact historical Russian Wikisource MediaWiki-core/Poem deployment equivalence and FantLab analyzer-input bytes/edition remain unproven; these are evidence boundaries, not open acceptance criteria for closed Issue #109.
 12. The Beketova *Children of Captain Grant* translation now has a frozen literary body large enough for general corpus admission, but no FantLab linguistic result/analyzer-input identity has been established for this translation; it cannot advance M2 until that evidence exists.
 13. The merged 1928 *Twelve Chairs* parent route graph leaves all 410 underlying Page-namespace revisions, the PDF byte stream, literary extraction/composition and body digests unfrozen; FantLab source identity remains unknown.
-14. Darwin/Rachinsky 1864 now has a canonical source-free 388/30 literary-versus-apparatus composition contract on top of the canonical 418-Page identity freeze, but Page-wikitext rendering semantics, body count/digests, independent scan-byte/SHA-256 identity and >=300k admission remain unresolved; FantLab's current Russian translation surface is a different translation.
+14. Darwin/Rachinsky 1864 now has a reviewed source-free 388/30 composition contract plus a Draft source-free inventory of the exact 388 literary Page markup surface. The renderer semantics, body count/digests, independent scan-byte/SHA-256 identity and >=300k admission remain unresolved; FantLab's current Russian translation surface is a different translation.
 15. Pages live activation remains a repository-admin effect and is off.

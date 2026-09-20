@@ -17,7 +17,7 @@
       "rendered orthography transformations unless a deterministic transform/identity contract is established"
     ]
   },
-  "source_identity_status": "rendered_route_graph_proofreadpage_topology_and_418_page_revision_identities_frozen_literary_body_unfrozen",
+  "source_identity_status": "rendered_route_graph_proofreadpage_topology_418_page_revision_identities_and_388_30_composition_contract_frozen_rendered_body_unfrozen",
   "source": {
     "provider": "Russian Wikisource",
     "observed_at": "2026-09-19",
@@ -25,7 +25,7 @@
       "page_title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)",
       "permanent_revision_id": 5628021,
       "permanent_url": "https://ru.wikisource.org/w/index.php?title=О_происхождении_видов_(Дарвин;_Рачинский)/1864_(ВТ:Ё)&oldid=5628021",
-      "identity_scope": "retained rendered/transclusion parent locator; child routes, exact transclusion topology and all 418 included Page revision identities are frozen separately"
+      "identity_scope": "retained rendered/transclusion parent locator; child routes, exact transclusion topology, all 418 included Page revision identities and the 388/30 literary-versus-apparatus composition contract are frozen separately"
     },
     "parent_topology_witness": {
       "permanent_revision_id": 5712882,
@@ -40,7 +40,7 @@
       "permanent_url": "https://ru.wikisource.org/w/index.php?title=Индекс:Дарвин_-_О_происхождении_видов,_1864.djvu&oldid=4494408",
       "progress_displayed": "Закончено — Все страницы вычитаны и проверены",
       "source_field": "djvu",
-      "identity_scope": "ProofreadPage index metadata/route anchor; exact topology and the complete 418 included Page revision identity set are frozen separately. Provider-reported scan metadata is frozen separately, but Scriptorium has not independently retrieved or hashed the binary."
+      "identity_scope": "ProofreadPage index metadata/route anchor; exact topology, the complete 418 included Page revision identity set and the source-free 388/30 composition contract are frozen separately. Provider-reported scan metadata is frozen separately, but Scriptorium has not independently retrieved or hashed the binary."
     },
     "rendered_route_graph": {
       "manifest": "darwin-origin-species-rachinsky-1864-ru.source-graph.json",
@@ -77,7 +77,7 @@
       ],
       "topology_frozen": true,
       "complete_page_revision_set_frozen": true,
-      "identity_scope": "all 418 included Page-sequence dependencies now have exact captured revision ID, revision timestamp and MediaWiki SHA-1 in a source-free digest-pinned sharded manifest; Page prose and literary-body composition remain unfrozen"
+      "identity_scope": "all 418 included Page-sequence dependencies have exact captured revision ID, revision timestamp and MediaWiki SHA-1 in a source-free digest-pinned sharded manifest; the 388 literary versus 30 apparatus composition decision is frozen by scriptorium-darwin-literary-body-contract-v1, while Page-wikitext-to-prose rendering and final literary-body identity remain unfrozen"
     },
     "page_revision_identity_manifest": {
       "index": "darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json",
@@ -122,6 +122,24 @@
       },
       "source_text_committed": false,
       "literary_body_frozen": false
+    },
+    "literary_body_composition_contract": {
+      "contract_version": "scriptorium-darwin-literary-body-contract-v1",
+      "composition_profile": "scriptorium-darwin-numbered-routes-1-through-14-v1",
+      "frozen_dependency_count": 418,
+      "literary_dependency_count": 388,
+      "literary_routes": "/1 through /14 in frozen route/Page-sequence order",
+      "apparatus_dependency_count": 30,
+      "apparatus_excluded": "parent-only sequences 8-21 and 423-427 plus alphabetical-index route /Указатель sequences 412-422",
+      "explicit_no_text_non_dependencies": [
+        114,
+        411
+      ],
+      "selection_and_partition_frozen": true,
+      "page_wikitext_to_prose_rendering_profile_frozen": false,
+      "composite_separator_semantics_frozen": false,
+      "literary_body_count_and_digests_frozen": false,
+      "source_text_committed": false
     },
     "source_text_committed": false,
     "scan_bytes_committed": false,
@@ -173,6 +191,7 @@
       "shared route-template revision oldid=3775868 and exact pages ranges/exclude=114 topology",
       "source-free topology counts: 399 rendered-route Page dependencies and 418 parent+route dependencies",
       "exact revision ID, revision timestamp and MediaWiki SHA-1 for all 418 included Page dependencies, committed source-free in four SHA-256-pinned shards",
+      "scriptorium-darwin-literary-body-contract-v1 selection/partition: 388 exact Page dependencies from numbered routes /1 through /14 are literary inputs and 30 frozen dependencies are apparatus",
       "Page-sequence 114 oldid=3364724 source-declared no-text and explicitly excluded from route /4",
       "Page-sequence 411 oldid=3364733 source-declared no-text and uniquely aligned with displayed print page 388",
       "displayed bibliographic print-page spans 1-387 and 389-399 attached to the rendered routes",
@@ -184,8 +203,8 @@
     "unfrozen": [
       "full mapping from displayed print page numbers to ProofreadPage sequence positions outside the uniquely resolved page-388 gap",
       "independently retrieved DjVu byte stream and Scriptorium-computed SHA-256",
-      "OCR or Page-markup extraction behavior",
-      "literary-body composition decision for front matter, alphabetical index or other apparatus beyond the resolved no-text exclusions",
+      "candidate-specific Page-wikitext-to-prose rendering behavior over the 388 frozen literary dependencies",
+      "composite separator/body-rendering semantics needed to materialize one literary body",
       "literary-body character count and raw/normalized digests",
       "FantLab analyzer-input bytes/source edition"
     ]
@@ -199,8 +218,9 @@
     "rendered_route_graph_is_not_threshold_proof": true,
     "transclusion_topology_is_not_threshold_proof": true,
     "page_revision_identity_freeze_is_not_threshold_proof": true,
+    "composition_contract_is_not_threshold_proof": true,
     "admitted_for_calibration": false,
-    "reason": "All 418 included Page revision identities are now frozen source-free, but deterministic literary-body composition/extraction and the resulting character count are not; exact revision identity alone cannot prove the >=300,000-character rule."
+    "reason": "The 418 exact Page identities and the 388-literary/30-apparatus composition partition are now frozen source-free, but Page-wikitext rendering, final body composition semantics, literary-body count and digests remain unfrozen; the composition contract alone cannot prove the >=300,000-character rule."
   },
   "fantlab": {
     "work_id": 969964,
@@ -219,9 +239,9 @@
     "m2_parity_admissible": false
   },
   "next_evidence": [
-    "Define a candidate-specific deterministic fail-closed literary-body extraction/composition contract over the now-frozen 418 included Page revisions, retaining exact no-text exclusions 114 and 411 and making apparatus inclusion explicit.",
+    "Define and verify a candidate-specific fail-closed Page-wikitext-to-prose rendering profile over the 388 exact literary dependencies selected by scriptorium-darwin-literary-body-contract-v1, without persisting source prose.",
     "If binary-level scan identity becomes necessary, retrieve one exact DjVu byte stream and independently record its byte count plus SHA-256; do not promote provider-reported metadata to a local binary freeze.",
-    "Freeze literary-body character count plus raw and scriptorium-text-v1 normalized digests; admit to general calibration/profile corpus only if the body independently clears 300,000 characters including spaces.",
+    "Freeze literary-body character count plus raw and scriptorium-text-v1 normalized digests; admit to general calibration/profile corpus only if the rendered body independently clears 300,000 characters including spaces.",
     "Keep FantLab matching separate: locate a linguistic result and analyzer-input/source-edition evidence attributable specifically to the Rachinsky translation before assigning diagnostic or M2 weight."
   ]
 }

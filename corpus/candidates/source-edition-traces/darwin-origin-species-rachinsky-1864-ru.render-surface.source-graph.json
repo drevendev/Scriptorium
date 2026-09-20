@@ -43,10 +43,18 @@
       "source_text_included": false
     },
     {
-      "id": "future-renderer",
-      "kind": "unfrozen_page_wikitext_to_prose_profile",
-      "status": "unfrozen",
-      "must_cover_exactly_frozen_surface": true
+      "id": "durable-render-profile",
+      "kind": "frozen_source_free_fail_closed_render_decision_profile",
+      "path": "darwin-origin-species-rachinsky-1864-ru.render-profile.json",
+      "profile_version": "scriptorium-darwin-page-render-profile-v1",
+      "profile_sha256": "2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d",
+      "rendering_profile_frozen": true,
+      "renderer_semantics_complete": false,
+      "renderer_implementation_ready": false,
+      "rendering_equivalence_claimed": false,
+      "unresolved_tag_shape_count": 5,
+      "unresolved_template_shape_count": 38,
+      "source_text_included": false
     }
   ],
   "edges": [
@@ -67,13 +75,17 @@
     },
     {
       "from": "durable-render-surface-freeze",
-      "to": "future-renderer",
-      "relation": "constrains_supported_construct_surface"
+      "to": "durable-render-profile",
+      "relation": "classified_fail_closed_without_guessing_unresolved_provider_semantics"
     }
   ],
   "gate_boundary": {
     "surface_inventory_frozen": true,
-    "rendering_profile_frozen": false,
+    "rendering_profile_frozen": true,
+    "renderer_semantics_complete": false,
+    "renderer_implementation_ready": false,
+    "rendering_equivalence_claimed": false,
+    "inter_page_composition_frozen": false,
     "literary_body_count_and_digests_frozen": false,
     "minimum_300k_proved": false,
     "admitted_for_calibration": false,

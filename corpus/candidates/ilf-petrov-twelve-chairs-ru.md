@@ -3,7 +3,7 @@
 **Candidate ID:** `ilf-petrov-twelve-chairs-ru`  
 **Authors:** Ilya Ilf and Evgeny Petrov  
 **Language:** Russian  
-**Current status:** 1928 route graph + 410 exact Page revision identities + exact scan binary identity + source-free four-gap audit + gap composition-membership decision frozen / literary body unfrozen / not M2-admissible
+**Current status:** 1928 route graph + 410 exact Page revision identities + exact scan binary identity + source-free four-gap audit + gap composition-membership decision + exact-410 source-free markup-surface inventory frozen / renderer and literary body unfrozen / not M2-admissible
 
 This candidate is retained because FantLab's 17 September 2022 linguistic analysis reports **572,654 characters** and **80,203 words**, comfortably above Scriptorium's 300,000-character corpus threshold. FantLab does not disclose the edition or immutable bytes uploaded for that analysis, so the numbers are a public reference surface rather than source-match evidence.
 
@@ -34,9 +34,15 @@ Scan-index pages **150–151** and **314–315** remain outside the frozen 410 d
 
 The audit remains deliberately conservative: page **150** (`oldid=5702065`) and page **314** (`oldid=5702066`) have nonempty transcluded bodies at their frozen revisions and remain `nonempty_body_unclassified`; page **151** (`oldid=5702062`) and page **315** (`oldid=5701572`) have `no_transcluded_body` after removing comments and `<noinclude>` regions.
 
-The source-free [`gap-membership.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.gap-membership.json) now freezes the **composition-membership** decision separately from semantic classification: all four pages stay excluded because the three frozen canonical part routes do not transclude them. For nonempty pages 150 and 314 this is explicitly **not** a claim that the printed-page content is non-literary; body presence alone is insufficient to override the canonical route topology. The frozen literary dependency surface therefore remains exactly **410 pages**.
+The source-free [`gap-membership.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.gap-membership.json) freezes the **composition-membership** decision separately from semantic classification: all four pages stay excluded because the three frozen canonical part routes do not transclude them. For nonempty pages 150 and 314 this is explicitly **not** a claim that the printed-page content is non-literary; body presence alone is insufficient to override the canonical route topology. The frozen literary dependency surface therefore remains exactly **410 pages**.
 
-This is still **not a literary-body freeze**. Exact Page revisions, the backing PDF bytes, the gap body-presence surface and gap composition membership are identified, but no Page-markup rendering/extraction contract, inter-page composition/separator rule, body character count, or raw/normalized literary-body digest is claimed. The source-free graph manifest is [`source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json).
+## Exact-410 Page markup surface
+
+Scriptorium now has a source-free structural inventory over those same **410 exact pinned Page revisions**. The hosted auditor replays each pinned revision, verifies title, timestamp and MediaWiki SHA-1 before reading the exact Page wikitext transiently, then reduces it to construct shapes/counts and cryptographic per-Page receipts. It never serializes wikitext, template argument values, OCR, rendered prose, scan bytes or literary text.
+
+The compact durable freeze is [`source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.render-surface.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.render-surface.json). It binds the inventory to the existing page-revision index SHA-256 `c1e3280984e640b8fe739a752ff49a3327633f49b52a635bd2d2d1e6a09f538f` and to a digest over all 410 transient source-free Page receipts. The observed surface includes ProofreadPage `noinclude`/`pagequality` wrappers plus a bounded set of tags/templates such as `poem`, `section`, `references`, `nop`, `razr2`, `heading`, `опечатка2`, accents and layout helpers. This is evidence about the exact markup surface that a future renderer must support; it is **not** a claim that those constructs are already rendered with Wikisource-equivalent semantics.
+
+This is still **not a literary-body freeze**. Exact Page revisions, the backing PDF bytes, the gap body-presence/membership surface and the source-free markup inventory are identified, but no Page-markup rendering/extraction profile, inter-page composition/separator rule, body character count, or raw/normalized literary-body digest is claimed. The source-free graph manifest is [`source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json`](source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json).
 
 ## Legal and publication boundary
 
@@ -48,7 +54,7 @@ FantLab itself warns on the work's author-recognition surface that the text has 
 
 ## What is still required
 
-A later unit must define and verify a candidate-specific fail-closed Page-markup rendering/extraction and composition contract over the **410 pinned Page revisions**. The gap membership decision is already frozen: pages **150/151/314/315** remain outside that canonical composition surface unless new evidence explicitly revises the route contract. Only after the renderer/composition contract is independently reviewable can Scriptorium record raw plus `scriptorium-text-v1` normalized composite counts/digests and determine whether its own frozen body satisfies the >=300k corpus rule. If scan OCR is used to cross-check the public transcription, its OCR/page-extraction provenance must be frozen separately; exact PDF identity alone is not a literary-body extraction contract.
+A later unit must convert the now-frozen exact-410 markup surface into a candidate-specific fail-closed rendering/extraction contract and define the inter-page composition/separator rule over the **410 pinned Page revisions**. The gap membership decision is already frozen: pages **150/151/314/315** remain outside that canonical composition surface unless new evidence explicitly revises the route contract. Only after renderer/composition semantics are independently reviewed can Scriptorium record raw plus `scriptorium-text-v1` normalized composite counts/digests and determine whether its own frozen body satisfies the >=300k corpus rule. If scan OCR is used to cross-check the public transcription, its OCR/page-extraction provenance must be frozen separately; exact PDF identity alone is not a literary-body extraction contract.
 
 FantLab still does not disclose which edition or immutable byte stream it analyzed. Therefore `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, `m2_parity_admissible=false`; the M2 reproduction gate remains **0/5 source-matched works**.
 

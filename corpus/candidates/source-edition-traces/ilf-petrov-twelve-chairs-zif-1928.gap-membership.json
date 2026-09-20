@@ -1,0 +1,105 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "ilf-petrov-twelve-chairs-ru",
+  "composition_surface": "scriptorium-twelve-chairs-zif-1928-canonical-part-routes-v1",
+  "decision_basis": "The three frozen canonical part routes define the current composition surface. Pages outside those routes remain excluded even when their audited Page body is nonempty; body presence alone is not evidence of literary membership.",
+  "decision_version": "scriptorium-twelve-chairs-gap-membership-v1",
+  "decisions": [
+    {
+      "body_presence_class": "nonempty_body_unclassified",
+      "composition_membership": "excluded",
+      "mediawiki_sha1": "ec8cf1e4be633102be57d24e7f92ce5b8f5b2a09",
+      "page_sequence": 150,
+      "rationale": "nonempty_but_not_transcluded_by_frozen_canonical_part_routes",
+      "revision_id": 5702065,
+      "semantic_literary_classification": "not_claimed",
+      "transcluded_body_sha256": "19bf0e54259a1de91a210902a7fc10c72371cbd61978d9e0e58f8243740f0188"
+    },
+    {
+      "body_presence_class": "no_transcluded_body",
+      "composition_membership": "excluded",
+      "mediawiki_sha1": "a5e9448c366881761d9792d458c8e33ec4653999",
+      "page_sequence": 151,
+      "rationale": "no_transcluded_body_and_not_transcluded_by_frozen_canonical_part_routes",
+      "revision_id": 5702062,
+      "semantic_literary_classification": "not_claimed",
+      "transcluded_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "body_presence_class": "nonempty_body_unclassified",
+      "composition_membership": "excluded",
+      "mediawiki_sha1": "db7f57fc08df092cbed2ce31da776404ba5ed329",
+      "page_sequence": 314,
+      "rationale": "nonempty_but_not_transcluded_by_frozen_canonical_part_routes",
+      "revision_id": 5702066,
+      "semantic_literary_classification": "not_claimed",
+      "transcluded_body_sha256": "f87136785851022215d22b2985b963643bdb60b09febdf40ec5410ba3a479146"
+    },
+    {
+      "body_presence_class": "no_transcluded_body",
+      "composition_membership": "excluded",
+      "mediawiki_sha1": "667deafe474f3fac76671c04a2ba3d2be40a2bb5",
+      "page_sequence": 315,
+      "rationale": "no_transcluded_body_and_not_transcluded_by_frozen_canonical_part_routes",
+      "revision_id": 5701572,
+      "semantic_literary_classification": "not_claimed",
+      "transcluded_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "dependency_inventory_unchanged": true,
+  "diagnostic_ready": false,
+  "family_id": "wikisource-zif-1928-first-standalone-edition",
+  "fantlab_source_edition_match": "unknown",
+  "gap_audit_anchor": {
+    "captured_at_utc": "2026-09-20T13:57:55Z",
+    "dependency_inventory_unchanged": true,
+    "manifest_version": "scriptorium-twelve-chairs-gap-audit-v1"
+  },
+  "gap_membership_frozen": true,
+  "gate_ready": false,
+  "literary_body_composition_frozen": false,
+  "literary_body_count_and_digests_frozen": false,
+  "literary_dependency_count": 410,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "page_body_rendering_profile_frozen": false,
+  "source_revision_anchor": {
+    "manifest_version": "scriptorium-twelve-chairs-page-revision-sharded-manifest-v1",
+    "page_identity_count": 410,
+    "shards": [
+      {
+        "first_page_sequence": 8,
+        "last_page_sequence": 110,
+        "path": "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.01.json",
+        "row_count": 103,
+        "sha256": "648e0ff33b181932f69802e7a89d508b1c477656ebe93493c37afa6434cbb312"
+      },
+      {
+        "first_page_sequence": 111,
+        "last_page_sequence": 215,
+        "path": "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.02.json",
+        "row_count": 103,
+        "sha256": "46e5337e8054972946b64c4880337a6e098b826cf9d3787358ea803aa7073399"
+      },
+      {
+        "first_page_sequence": 216,
+        "last_page_sequence": 421,
+        "path": "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.03.json",
+        "row_count": 204,
+        "sha256": "183a92af5055e4e38a170f46670b1a7a5127cb3c4e1a568c5afd632ef6e7d4d2"
+      }
+    ],
+    "topology_contract": {
+      "non_transcluded_gaps": [
+        [150, 151],
+        [314, 315]
+      ],
+      "ranges": [
+        [8, 149],
+        [152, 313],
+        [316, 421]
+      ]
+    }
+  },
+  "source_text_included": false
+}

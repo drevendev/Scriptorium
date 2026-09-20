@@ -1,0 +1,27 @@
+{
+  "admitted_for_calibration": false,
+  "binary_bytes_committed": false,
+  "binary_bytes_retrieved_transiently": true,
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "diagnostic_ready": false,
+  "exact_original_url": "https://upload.wikimedia.org/wikipedia/commons/2/2f/%D0%94%D0%B0%D1%80%D0%B2%D0%B8%D0%BD_-_%D0%9E_%D0%BF%D1%80%D0%BE%D0%B8%D1%81%D1%85%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B8_%D0%B2%D0%B8%D0%B4%D0%BE%D0%B2%2C_1864.djvu",
+  "fantlab_source_edition_match": "unknown",
+  "file_page_url": "https://commons.wikimedia.org/wiki/File:%D0%94%D0%B0%D1%80%D0%B2%D0%B8%D0%BD_-_%D0%9E_%D0%BF%D1%80%D0%BE%D0%B8%D1%81%D1%85%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B8_%D0%B2%D0%B8%D0%B4%D0%BE%D0%B2%2C_1864.djvu",
+  "identity": {
+    "byte_count": 27368263,
+    "sha1": "75ef508588194ae74874272ce290f3ec1043ea9b",
+    "sha256": "7f3ae1aadd4a844b193783a0c350e23815a76e7bb14a92bae7fa1c077354a2c8"
+  },
+  "literary_body_count_and_digests_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "provider": "Wikimedia Commons",
+  "provider_metadata_crosscheck": {
+    "byte_count_match": true,
+    "expected_byte_count": 27368263,
+    "expected_sha1": "75ef508588194ae74874272ce290f3ec1043ea9b",
+    "sha1_match": true
+  },
+  "receipt_version": "scriptorium-darwin-scan-identity-v1",
+  "source_text_included": false
+}

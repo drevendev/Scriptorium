@@ -54,7 +54,7 @@ Hosted replay re-queries the exact revision IDs and fails closed if title, times
 
 ## Literary-body composition contract
 
-**SCRIP-CORPUS-035 / Draft PR #158** adds `scriptorium-darwin-literary-body-contract-v1`, a source-free composition contract bound to the frozen 418-Page identity inventory.
+**SCRIP-CORPUS-035 / PR #158** freezes `scriptorium-darwin-literary-body-contract-v1`, a source-free composition contract bound to the frozen 418-Page identity inventory.
 
 The contract selects only rendered numbered routes **`/1` through `/14`** as the literary input surface. That is **388 exact Page dependencies**, kept in frozen route/Page-sequence order. It intentionally excludes **30 frozen apparatus dependencies**:
 
@@ -81,7 +81,7 @@ The retained Wikisource work surface explicitly states that the work is in the p
 
 ## Corpus boundary
 
-This candidate is still **not admitted** to the >=300,000-character calibration/profile corpus. The source family, route graph, 418-dependency topology, exact 418 Page revision identities and now the proposed 388/30 literary-versus-apparatus composition boundary are source-free frozen/proposed, but the actual literary prose has not yet been deterministically rendered or counted.
+This candidate is still **not admitted** to the >=300,000-character calibration/profile corpus. The source family, route graph, 418-dependency topology, exact 418 Page revision identities and the 388/30 literary-versus-apparatus composition boundary are now source-free frozen, but the actual literary prose has not yet been deterministically rendered or counted.
 
 Still required before corpus admission:
 
@@ -104,4 +104,4 @@ FantLab work **`work969964`** identifies Darwin's 1859 English monograph. The cu
 
 ## Next evidence
 
-After independent review/merge of SCRIP-CORPUS-035, a later bounded unit should inspect the exact pinned Page wikitext shapes and freeze a candidate-specific fail-closed rendering profile for the 388 literary dependencies without persisting source prose. Only then should a separate identity/admission unit compute source-free counts/digests and independently prove the >=300,000-character threshold. FantLab parity remains a separate, stricter source-matching problem.
+A later bounded unit should inspect the exact pinned Page wikitext shapes and freeze a candidate-specific fail-closed rendering profile for the 388 literary dependencies without persisting source prose. Only then should a separate identity/admission unit compute source-free counts/digests and independently prove the >=300,000-character threshold. FantLab parity remains a separate, stricter source-matching problem.

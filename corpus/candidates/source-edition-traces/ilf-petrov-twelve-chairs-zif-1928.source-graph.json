@@ -3,7 +3,7 @@
   "candidate_id": "ilf-petrov-twelve-chairs-ru",
   "family_id": "wikisource-zif-1928-first-standalone-edition",
   "captured_on": "2026-09-19",
-  "purpose": "Freeze the source-free route topology, exact Page-namespace revision identities, exact backing scan binary identity and source-free evidence for the four non-transcluded scan gaps of the 1928 Zemlya i Fabrika Wikisource transcription without claiming a frozen literary body.",
+  "purpose": "Freeze the source-free route topology, exact Page-namespace revision identities, exact backing scan binary identity, four-gap audit and canonical-route gap composition-membership decision for the 1928 Zemlya i Fabrika Wikisource transcription without claiming a frozen literary body.",
   "source_text_committed": false,
   "bibliographic_identity": {
     "authors": [
@@ -117,6 +117,16 @@
     "dependency_inventory_unchanged": true,
     "literary_membership_frozen": false
   },
+  "gap_membership_decision_manifest": {
+    "path": "ilf-petrov-twelve-chairs-zif-1928.gap-membership.json",
+    "decision_version": "scriptorium-twelve-chairs-gap-membership-v1",
+    "composition_surface": "scriptorium-twelve-chairs-zif-1928-canonical-part-routes-v1",
+    "gap_membership_frozen": true,
+    "dependency_inventory_unchanged": true,
+    "literary_dependency_count": 410,
+    "source_text_included": false,
+    "rule": "All four gap pages remain excluded from the current composition surface because none is transcluded by the three frozen canonical part routes. Nonempty bodies on pages 150 and 314 remain semantically unclassified; exclusion is not a claim that their printed-page content is non-literary."
+  },
   "dependency_summary": {
     "part_route_count": 3,
     "referenced_page_namespace_count": 410,
@@ -125,6 +135,7 @@
     "underlying_page_revision_identities_frozen": true,
     "scan_binary_identity_frozen": true,
     "non_transcluded_gap_revisions_inspected": true,
+    "non_transcluded_gap_membership_decided": true,
     "literary_body_frozen": false
   },
   "non_transcluded_scan_gaps": [
@@ -132,43 +143,47 @@
       "from_scan_page": 150,
       "to_scan_page": 151,
       "count": 2,
-      "classification": "inspected_mixed_body_presence_not_composed",
+      "classification": "inspected_mixed_body_presence_excluded_from_canonical_route_composition",
       "pages": [
         {
           "page_sequence": 150,
           "revision_id": 5702065,
-          "body_presence_class": "nonempty_body_unclassified"
+          "body_presence_class": "nonempty_body_unclassified",
+          "composition_membership": "excluded"
         },
         {
           "page_sequence": 151,
           "revision_id": 5702062,
-          "body_presence_class": "no_transcluded_body"
+          "body_presence_class": "no_transcluded_body",
+          "composition_membership": "excluded"
         }
       ],
-      "rule": "Both exact revisions are frozen source-free. Page 150 has a nonempty transcluded body but literary membership is not inferred; page 151 has no transcluded body. Neither page enters the 410 dependency set in this unit."
+      "rule": "Both exact revisions are frozen source-free and excluded from the current Scriptorium composition surface because the canonical part routes do not transclude them. Page 150 remains semantically unclassified despite its nonempty body; page 151 has no transcluded body."
     },
     {
       "from_scan_page": 314,
       "to_scan_page": 315,
       "count": 2,
-      "classification": "inspected_mixed_body_presence_not_composed",
+      "classification": "inspected_mixed_body_presence_excluded_from_canonical_route_composition",
       "pages": [
         {
           "page_sequence": 314,
           "revision_id": 5702066,
-          "body_presence_class": "nonempty_body_unclassified"
+          "body_presence_class": "nonempty_body_unclassified",
+          "composition_membership": "excluded"
         },
         {
           "page_sequence": 315,
           "revision_id": 5701572,
-          "body_presence_class": "no_transcluded_body"
+          "body_presence_class": "no_transcluded_body",
+          "composition_membership": "excluded"
         }
       ],
-      "rule": "Both exact revisions are frozen source-free. Page 314 has a nonempty transcluded body but literary membership is not inferred; page 315 has no transcluded body. Neither page enters the 410 dependency set in this unit."
+      "rule": "Both exact revisions are frozen source-free and excluded from the current Scriptorium composition surface because the canonical part routes do not transclude them. Page 314 remains semantically unclassified despite its nonempty body; page 315 has no transcluded body."
     }
   ],
   "freeze_boundary": {
-    "status": "route_graph_410_page_revision_identities_scan_binary_and_gap_surface_frozen_body_unfrozen",
+    "status": "route_graph_410_page_revision_identities_scan_binary_gap_surface_and_gap_membership_frozen_body_unfrozen",
     "frozen": [
       "1928 work-index revision locator",
       "ProofreadPage index revision locator and bibliographic family",
@@ -177,11 +192,12 @@
       "410-page dependency cardinality",
       "exact source-free revision ID/timestamp/MediaWiki SHA-1 identities for all 410 referenced Page-namespace pages",
       "exact source-free revision identities plus body-presence hashes/counts for non-transcluded scan pages 150, 151, 314 and 315; pages 150/314 are nonempty but unclassified, pages 151/315 have no transcluded body",
+      "canonical-route composition membership for the four non-transcluded gaps: all four excluded; nonempty pages 150/314 remain semantically unclassified",
       "exact source-free backing Commons PDF identity: 77,978,350 bytes, SHA-1 4ab6aa42c3517169e99c1177b6fb6412cfe9187d, SHA-256 5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4"
     ],
     "not_frozen": [
-      "literary membership of nonempty non-transcluded scan pages 150 and 314",
       "literary-body extraction/rendering behavior for Page-namespace markup",
+      "inter-page composition/separator behavior across the 410 canonical dependencies",
       "part/composite literary-body character counts and digests",
       "OCR/page-to-literary-text extraction profile",
       "relationship between this public transcription/facsimile and FantLab analyzer input"
@@ -195,8 +211,8 @@
     "m2_source_matched_work_count": 0
   },
   "next_evidence": [
-    "Define a deterministic fail-closed literary-body extraction/composition profile over the frozen 410 dependency pages and explicitly decide whether nonempty gap pages 150 and 314 belong to the literary body; pages 151 and 315 are frozen with no transcluded body.",
-    "Record raw plus scriptorium-text-v1 normalized composite counts/digests only after that composition rule is independently reviewable.",
+    "Define a deterministic fail-closed Page-markup rendering/extraction and inter-page composition profile over the frozen 410 canonical dependency pages; the four audited gaps are already excluded from this composition surface by a separate source-free decision.",
+    "Record raw plus scriptorium-text-v1 normalized composite counts/digests only after that renderer/composition rule is independently reviewable.",
     "Define OCR/page-extraction provenance separately if scan OCR is used to cross-check the public transcription; the PDF binary identity alone does not define literary text.",
     "Keep the 40-chapter 1938/1961 editorial family separate and seek independent evidence for FantLab analyzer-input identity before any M2 promotion."
   ]

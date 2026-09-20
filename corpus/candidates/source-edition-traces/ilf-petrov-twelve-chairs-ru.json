@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "ilf-petrov-twelve-chairs-ru",
-  "research_date": "2026-09-19",
+  "research_date": "2026-09-20",
   "fantlab": {
     "work_id": 182817,
     "analysis_url": "https://fantlab.ru/work182817/lp",
@@ -49,27 +49,36 @@
       "bibliographic_source": "И. Ильф, Е. Петров. Двенадцать стульев. М.-Л.: Земля и фабрика, 1928.",
       "edition_identity": "first_standalone_1928_zemlya_i_fabrika",
       "observed_chapters": 41,
-      "source_provenance_confidence": "strong_for_bibliographic_edition_family",
+      "source_provenance_confidence": "strong_for_bibliographic_edition_family_and_page_revision_identity",
       "immutable_identity": {
-        "status": "route_graph_frozen_underlying_pages_unfrozen",
+        "status": "route_graph_and_410_page_revision_identities_frozen_body_unfrozen",
         "frozen_components": [
           "work-index permanent revision oldid 5706135",
           "bibliographic first-edition declaration on that index",
           "ProofreadPage index permanent revision oldid 5702510",
           "three part-page permanent revisions oldid 5702507, 5704332 and 5702508",
           "three exact transclusion ranges 8-149, 152-313 and 316-421 referencing 410 Page-namespace dependencies",
-          "two explicit non-transcluded scan-index gaps 150-151 and 314-315"
+          "exact revision IDs/timestamps/MediaWiki SHA-1 identities for all 410 referenced Page-namespace pages",
+          "two explicit non-transcluded scan-index gaps 150-151 and 314-315, retained outside the dependency set and unclassified"
         ],
         "unfrozen_components": [
-          "exact revision IDs/timestamps/MediaWiki SHA-1 identities for all 410 referenced Page-namespace pages",
           "deterministic literary-body extraction and composition",
           "raw and scriptorium-text-v1 normalized composite digests",
           "facsimile PDF byte stream identity"
         ]
       },
       "source_graph_manifest": "ilf-petrov-twelve-chairs-zif-1928.source-graph.json",
+      "page_revision_identity_manifest": "ilf-petrov-twelve-chairs-zif-1928.page-revisions.index.json",
+      "page_revision_identity_capture": {
+        "workflow_run_id": 35503562530,
+        "artifact_id": 10603441105,
+        "artifact_zip_sha256": "431558255b168e99f26ac7f5567bda7bb30d69288120b34f918ad3d0e50062c9",
+        "capture_json_sha256": "e5182724d8188fca48807c58720d17f1e40e55b121d1b172fa414e317859420c",
+        "captured_at_utc": "2026-09-20T09:54:08Z",
+        "source_text_included": false
+      },
       "route_graph": {
-        "status": "frozen_parent_route_topology_underlying_pages_unfrozen",
+        "status": "frozen_parent_route_topology_and_410_page_revision_identities_body_unfrozen",
         "proofread_index_oldid": 5702510,
         "part_parent_oldids": [
           5702507,
@@ -77,29 +86,15 @@
           5702508
         ],
         "transclusion_ranges": [
-          [
-            8,
-            149
-          ],
-          [
-            152,
-            313
-          ],
-          [
-            316,
-            421
-          ]
+          [8, 149],
+          [152, 313],
+          [316, 421]
         ],
         "referenced_page_namespace_count": 410,
+        "page_revision_identities_frozen": true,
         "non_transcluded_scan_gaps": [
-          [
-            150,
-            151
-          ],
-          [
-            314,
-            315
-          ]
+          [150, 151],
+          [314, 315]
         ]
       }
     }
@@ -108,7 +103,7 @@
     "status": "distinct_text_families_required",
     "evidence": "The current later editorial family exposes 40 chapters while the separately identified 1928 first standalone edition exposes 41 chapters. This structural difference is sufficient to prohibit collapsing the two public routes into one edition/text identity, but it is not by itself a byte-level comparison or proof of every textual difference.",
     "fantlab_relation": "unknown",
-    "rule": "Do not infer FantLab analyzer-input identity from title, authorship, publication history, chapter count, bibliographic compatibility, or public availability. Each edition/transcription family requires its own immutable literary-text identity before diagnostics."
+    "rule": "Do not infer FantLab analyzer-input identity from title, authorship, publication history, chapter count, bibliographic compatibility, public availability, route topology or Page revision identity alone. Each edition/transcription family requires its own frozen literary-body identity before diagnostics."
   },
   "facsimile_lead": {
     "provider": "Russian Wikisource / Wikimedia Commons",
@@ -135,26 +130,26 @@
   },
   "admissibility": {
     "length_threshold_met_from_fantlab": true,
-    "source_identity_status": "1928_route_graph_frozen_body_unfrozen",
+    "source_identity_status": "1928_route_graph_and_410_page_revision_identities_frozen_body_unfrozen",
     "fantlab_source_edition_match": "unknown",
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "multi_edition_traced_1928_route_graph_frozen_body_unfrozen",
+    "status": "multi_edition_traced_1928_page_revision_identity_frozen_body_unfrozen",
     "reasons": [
       "FantLab reports 572,654 characters and 80,203 words for its 17 September 2022 analysis, above the 300,000-character calibration threshold.",
       "Russian Wikisource provides explicit public-domain evidence and stable work-index locators for two distinct bibliographic/text families.",
       "The later family has 40 visible chapters while the first standalone 1928 family has 41, so Scriptorium must not flatten them into one edition identity.",
-      "The 1928 family now has a source-free frozen parent route graph: work/index revisions plus three part-parent revisions transcluding scan ranges 8-149, 152-313 and 316-421 (410 Page-namespace dependencies).",
-      "The 410 underlying Page-namespace revision identities and literary-body extraction/composition remain unfrozen, so this is not a frozen literary text.",
+      "The 1928 family has a source-free frozen parent route graph: work/index revisions plus three part-parent revisions transcluding scan ranges 8-149, 152-313 and 316-421 (410 Page-namespace dependencies).",
+      "All 410 referenced Page-namespace dependencies now have source-free exact revision ID/timestamp/MediaWiki SHA-1 identities frozen in a sharded manifest; scan-index gaps 150-151 and 314-315 remain outside that dependency set and unclassified.",
+      "Literary-body extraction/composition and body digests remain unfrozen, so this is not yet a frozen literary text or Scriptorium-proven >=300k corpus admission.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis."
     ],
     "next_evidence": [
-      "Capture exact source-free revision identities for all 410 Page-namespace dependencies referenced by the frozen 1928 part routes.",
       "Inspect scan-index gaps 150-151 and 314-315 independently and preserve them as non-composable unless literary-body evidence justifies inclusion.",
-      "Define a deterministic fail-closed literary-body extraction/composition profile over the pinned Page revisions, then record raw and scriptorium-text-v1 normalized composite digests.",
+      "Define a deterministic fail-closed literary-body extraction/composition profile over the pinned 410 Page revisions, then record raw and scriptorium-text-v1 normalized composite digests.",
       "If the 1928 facsimile is used as a binary witness, capture a specific byte snapshot with byte count/SHA-256 and define OCR/page-extraction provenance.",
-      "Seek independent evidence that can identify FantLab's uploaded analyzer input; bibliographic compatibility, route topology and chapter structure cannot advance M2.",
+      "Seek independent evidence that can identify FantLab's uploaded analyzer input; bibliographic compatibility, route topology, Page revision identity and chapter structure cannot advance M2.",
       "When author-voice work begins, model this work as coauthored evidence rather than silently assigning its statistics to either individual author."
     ]
   }

@@ -1,0 +1,11 @@
+# SCRIP-CORPUS-039 — Twelve Chairs 1928 Page revision identities
+
+- Selected the retained Ilf/Petrov *The Twelve Chairs* 1928 first-standalone *Zemlya i Fabrika* family from STATE_REVISION 186 as a bounded corpus/provenance strengthening unit.
+- Opened Issue #165 and Draft PR #166 from master `df2d302183f36cc14e9ac7b5ad7dff6506739e3c`.
+- Added `scriptorium/twelve_chairs_page_freeze.py`, synthetic/no-network regression tests and a hosted capture/replay workflow for the exact 410 Page-namespace dependencies already frozen by the three parent transclusion ranges 8–149, 152–313 and 316–421.
+- Initial hosted capture run `35503562530`, job `106059457719`, passed the full standard-library suite and captured exactly 410 source-free identities (Page sequence, revision ID, revision timestamp and MediaWiki SHA-1). Capture artifact `10603441105` was 19,925 bytes with ZIP SHA-256 `431558255b168e99f26ac7f5567bda7bb30d69288120b34f918ad3d0e50062c9`; the contained capture JSON SHA-256 is `e5182724d8188fca48807c58720d17f1e40e55b121d1b172fa414e317859420c`.
+- Converted the capture into three deterministic source-free shards plus a digest-binding index. The index keeps gaps 150–151 and 314–315 outside the dependency set and unclassified.
+- Exact pinned-revision replay on authored head `abaf6e3f2ee8fa95df6ba36d08775360415bad8d` used run `35503833620`, job `106060165964`: all 331 standard-library tests passed, all 410 identities replayed exactly, and index SHA-256 `c1e3280984e640b8fe739a752ff49a3327633f49b52a635bd2d2d1e6a09f538f` was emitted. Replay artifact `10602883416` was 531 bytes with ZIP SHA-256 `b8d219c901ba6f7261b149bd12e5f8c6e8e6cf193e862d25bb938fd797b17190`.
+- Reconciled the canonical structured trace, source graph and public candidate page. No Page wikitext, OCR, rendered prose, scan/PDF bytes or extracted literary source text are committed.
+- Kept downstream gates closed: literary-body extraction/composition, body count/digests, Scriptorium-proven >=300k admission, PDF byte identity, FantLab source match, diagnostic readiness and M2 parity all remain unresolved/false. Benchmark movement: none; M2 remains **0/5**.
+- PR #166 remains Draft for a later independent exact-head review; this authored run does not self-approve or merge it.

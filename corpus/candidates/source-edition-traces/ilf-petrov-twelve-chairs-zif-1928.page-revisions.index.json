@@ -1,0 +1,60 @@
+{
+  "manifest_version": "scriptorium-twelve-chairs-page-revision-sharded-manifest-v1",
+  "candidate_id": "ilf-petrov-twelve-chairs-ru",
+  "family_id": "wikisource-zif-1928-first-standalone-edition",
+  "title_prefix": "Страница:Ильф И. Петров Е. Двенадцать стульев (ЗиФ, 1928).pdf/",
+  "page_identity_fields": [
+    "page_sequence",
+    "revision_id",
+    "timestamp",
+    "mediawiki_sha1"
+  ],
+  "page_identity_count": 410,
+  "topology_contract": {
+    "ranges": [
+      [8, 149],
+      [152, 313],
+      [316, 421]
+    ],
+    "non_transcluded_gaps": [
+      [150, 151],
+      [314, 315]
+    ]
+  },
+  "source_text_included": false,
+  "literary_body_frozen": false,
+  "admitted_for_calibration": false,
+  "fantlab_source_edition_match": "unknown",
+  "diagnostic_ready": false,
+  "m2_parity_admissible": false,
+  "capture_provenance": {
+    "workflow_run_id": 35503562530,
+    "artifact_id": 10603441105,
+    "artifact_zip_sha256": "431558255b168e99f26ac7f5567bda7bb30d69288120b34f918ad3d0e50062c9",
+    "capture_json_sha256": "e5182724d8188fca48807c58720d17f1e40e55b121d1b172fa414e317859420c",
+    "captured_at_utc": "2026-09-20T09:54:08Z"
+  },
+  "shards": [
+    {
+      "path": "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.01.json",
+      "sha256": "648e0ff33b181932f69802e7a89d508b1c477656ebe93493c37afa6434cbb312",
+      "row_count": 103,
+      "first_page_sequence": 8,
+      "last_page_sequence": 110
+    },
+    {
+      "path": "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.02.json",
+      "sha256": "46e5337e8054972946b64c4880337a6e098b826cf9d3787358ea803aa7073399",
+      "row_count": 103,
+      "first_page_sequence": 111,
+      "last_page_sequence": 215
+    },
+    {
+      "path": "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.page-revisions.03.json",
+      "sha256": "183a92af5055e4e38a170f46670b1a7a5127cb3c4e1a568c5afd632ef6e7d4d2",
+      "row_count": 204,
+      "first_page_sequence": 216,
+      "last_page_sequence": 421
+    }
+  ]
+}

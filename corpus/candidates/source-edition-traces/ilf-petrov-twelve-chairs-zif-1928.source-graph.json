@@ -3,7 +3,7 @@
   "candidate_id": "ilf-petrov-twelve-chairs-ru",
   "family_id": "wikisource-zif-1928-first-standalone-edition",
   "captured_on": "2026-09-19",
-  "purpose": "Freeze the source-free route topology of the 1928 Zemlya i Fabrika Wikisource transcription without claiming that the underlying Page-namespace literary bodies are revision-frozen.",
+  "purpose": "Freeze the source-free route topology and exact Page-namespace revision identities of the 1928 Zemlya i Fabrika Wikisource transcription without claiming a frozen literary body.",
   "source_text_committed": false,
   "bibliographic_identity": {
     "authors": [
@@ -70,12 +70,28 @@
       "referenced_page_namespace_count": 106
     }
   ],
+  "page_revision_identity_manifest": {
+    "path": "ilf-petrov-twelve-chairs-zif-1928.page-revisions.index.json",
+    "manifest_version": "scriptorium-twelve-chairs-page-revision-sharded-manifest-v1",
+    "page_identity_count": 410,
+    "fields": [
+      "page_sequence",
+      "revision_id",
+      "timestamp",
+      "mediawiki_sha1"
+    ],
+    "capture_workflow_run_id": 35503562530,
+    "capture_artifact_id": 10603441105,
+    "capture_artifact_zip_sha256": "431558255b168e99f26ac7f5567bda7bb30d69288120b34f918ad3d0e50062c9",
+    "capture_json_sha256": "e5182724d8188fca48807c58720d17f1e40e55b121d1b172fa414e317859420c",
+    "source_text_included": false
+  },
   "dependency_summary": {
     "part_route_count": 3,
     "referenced_page_namespace_count": 410,
     "ranges_are_non_overlapping": true,
     "ranges_are_monotonic": true,
-    "underlying_page_revision_identities_frozen": false,
+    "underlying_page_revision_identities_frozen": true,
     "literary_body_frozen": false
   },
   "non_transcluded_scan_gaps": [
@@ -84,28 +100,28 @@
       "to_scan_page": 151,
       "count": 2,
       "classification": "unclassified_non_transcluded_gap",
-      "rule": "Do not infer literary/non-literary status until the exact Page-namespace revisions are inspected."
+      "rule": "Do not infer literary/non-literary status until the exact Page-namespace revisions are inspected separately."
     },
     {
       "from_scan_page": 314,
       "to_scan_page": 315,
       "count": 2,
       "classification": "unclassified_non_transcluded_gap",
-      "rule": "Do not infer literary/non-literary status until the exact Page-namespace revisions are inspected."
+      "rule": "Do not infer literary/non-literary status until the exact Page-namespace revisions are inspected separately."
     }
   ],
   "freeze_boundary": {
-    "status": "route_graph_frozen_underlying_pages_unfrozen",
+    "status": "route_graph_and_410_page_revision_identities_frozen_body_unfrozen",
     "frozen": [
       "1928 work-index revision locator",
       "ProofreadPage index revision locator and bibliographic family",
       "three part-page revision locators",
       "three exact ProofreadPage transclusion ranges",
       "410-page dependency cardinality",
-      "two explicit non-transcluded two-page gaps"
+      "exact source-free revision ID/timestamp/MediaWiki SHA-1 identities for all 410 referenced Page-namespace pages",
+      "two explicit non-transcluded two-page gaps as outside the dependency set and still unclassified"
     ],
     "not_frozen": [
-      "exact revision IDs/timestamps/MediaWiki SHA-1 identities of the 410 referenced Page-namespace pages",
       "facsimile PDF byte stream, byte count and SHA-256",
       "literary-body extraction/rendering behavior for Page-namespace markup",
       "part/composite literary-body character counts and digests",
@@ -120,9 +136,9 @@
     "m2_source_matched_work_count": 0
   },
   "next_evidence": [
-    "Capture exact source-free revision identities for every one of the 410 referenced Page-namespace pages under these three ranges.",
     "Inspect the two explicit two-page gaps separately; do not compose them unless a literary-body rule justifies doing so.",
-    "Define a deterministic fail-closed extraction/composition profile over the frozen Page revisions and record raw plus scriptorium-text-v1 normalized composite digests.",
+    "Define a deterministic fail-closed extraction/composition profile over the frozen 410 Page revisions and record raw plus scriptorium-text-v1 normalized composite digests.",
+    "If the 1928 facsimile is used as a binary witness, capture a specific byte snapshot with byte count/SHA-256 and define OCR/page-extraction provenance.",
     "Keep the 40-chapter 1938/1961 editorial family separate and seek independent evidence for FantLab analyzer-input identity before any M2 promotion."
   ]
 }

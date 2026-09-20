@@ -1,0 +1,29 @@
+{
+  "admitted_for_calibration": false,
+  "binary_bytes_committed": false,
+  "binary_bytes_retrieved_transiently": true,
+  "candidate_id": "ilf-petrov-twelve-chairs-ru",
+  "diagnostic_ready": false,
+  "edition_identity": "1928_first_standalone_zemlya_i_fabrika_facsimile",
+  "exact_original_url": "https://upload.wikimedia.org/wikipedia/commons/0/00/%D0%98%D0%BB%D1%8C%D1%84_%D0%98._%D0%9F%D0%B5%D1%82%D1%80%D0%BE%D0%B2_%D0%95._%D0%94%D0%B2%D0%B5%D0%BD%D0%B0%D0%B4%D1%86%D0%B0%D1%82%D1%8C_%D1%81%D1%82%D1%83%D0%BB%D1%8C%D0%B5%D0%B2_%28%D0%97%D0%B8%D0%A4%2C_1928%29.pdf",
+  "fantlab_source_edition_match": "unknown",
+  "file_page_url": "https://commons.wikimedia.org/wiki/File:%D0%98%D0%BB%D1%8C%D1%84_%D0%98._%D0%9F%D0%B5%D1%82%D1%80%D0%BE%D0%B2_%D0%95._%D0%94%D0%B2%D0%B5%D0%BD%D0%B0%D0%B4%D1%86%D0%B0%D1%82%D1%8C_%D1%81%D1%82%D1%83%D0%BB%D1%8C%D0%B5%D0%B2_%28%D0%97%D0%B8%D0%A4%2C_1928%29.pdf",
+  "gap_pages_classified": false,
+  "identity": {
+    "byte_count": 77978350,
+    "sha1": "4ab6aa42c3517169e99c1177b6fb6412cfe9187d",
+    "sha256": "5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4"
+  },
+  "literary_body_count_and_digests_frozen": false,
+  "literary_source_text_included": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved_from_frozen_body": false,
+  "ocr_included": false,
+  "page_dependency_set_changed": false,
+  "provider": "Wikimedia Commons",
+  "provider_reported_identity": {
+    "byte_count": 77978350,
+    "sha1": "4ab6aa42c3517169e99c1177b6fb6412cfe9187d"
+  },
+  "receipt_version": "scriptorium-twelve-chairs-scan-identity-v1"
+}

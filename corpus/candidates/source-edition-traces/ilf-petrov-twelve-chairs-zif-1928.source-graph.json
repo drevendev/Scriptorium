@@ -3,7 +3,7 @@
   "candidate_id": "ilf-petrov-twelve-chairs-ru",
   "family_id": "wikisource-zif-1928-first-standalone-edition",
   "captured_on": "2026-09-19",
-  "purpose": "Freeze the source-free route topology and exact Page-namespace revision identities of the 1928 Zemlya i Fabrika Wikisource transcription without claiming a frozen literary body.",
+  "purpose": "Freeze the source-free route topology, exact Page-namespace revision identities and exact backing scan binary identity of the 1928 Zemlya i Fabrika Wikisource transcription without claiming a frozen literary body.",
   "source_text_committed": false,
   "bibliographic_identity": {
     "authors": [
@@ -33,7 +33,7 @@
       "publication_places": "Москва—Ленинград"
     },
     "transclusion_status_observed": "Трансклюзии требует проверки",
-    "binary_identity_status": "not_frozen"
+    "binary_identity_status": "frozen_exact_commons_original"
   },
   "part_routes": [
     {
@@ -86,12 +86,26 @@
     "capture_json_sha256": "e5182724d8188fca48807c58720d17f1e40e55b121d1b172fa414e317859420c",
     "source_text_included": false
   },
+  "scan_identity_receipt": "ilf-petrov-twelve-chairs-zif-1928.scan-identity.json",
+  "scan_identity": {
+    "provider": "Wikimedia Commons",
+    "edition_identity": "1928_first_standalone_zemlya_i_fabrika_facsimile",
+    "byte_count": 77978350,
+    "sha1": "4ab6aa42c3517169e99c1177b6fb6412cfe9187d",
+    "sha256": "5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4",
+    "capture_workflow_run_id": 35509143401,
+    "capture_artifact_id": 10603893998,
+    "capture_artifact_zip_sha256": "0807a0489aacc6d10ab752d6e3e1ec240d0eede1344f3271f0206f179d3c4cdb",
+    "binary_bytes_committed": false,
+    "ocr_included": false
+  },
   "dependency_summary": {
     "part_route_count": 3,
     "referenced_page_namespace_count": 410,
     "ranges_are_non_overlapping": true,
     "ranges_are_monotonic": true,
     "underlying_page_revision_identities_frozen": true,
+    "scan_binary_identity_frozen": true,
     "literary_body_frozen": false
   },
   "non_transcluded_scan_gaps": [
@@ -111,7 +125,7 @@
     }
   ],
   "freeze_boundary": {
-    "status": "route_graph_and_410_page_revision_identities_frozen_body_unfrozen",
+    "status": "route_graph_410_page_revision_identities_and_scan_binary_frozen_body_unfrozen",
     "frozen": [
       "1928 work-index revision locator",
       "ProofreadPage index revision locator and bibliographic family",
@@ -119,13 +133,14 @@
       "three exact ProofreadPage transclusion ranges",
       "410-page dependency cardinality",
       "exact source-free revision ID/timestamp/MediaWiki SHA-1 identities for all 410 referenced Page-namespace pages",
-      "two explicit non-transcluded two-page gaps as outside the dependency set and still unclassified"
+      "two explicit non-transcluded two-page gaps as outside the dependency set and still unclassified",
+      "exact source-free backing Commons PDF identity: 77,978,350 bytes, SHA-1 4ab6aa42c3517169e99c1177b6fb6412cfe9187d, SHA-256 5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4"
     ],
     "not_frozen": [
-      "facsimile PDF byte stream, byte count and SHA-256",
       "literary-body extraction/rendering behavior for Page-namespace markup",
       "part/composite literary-body character counts and digests",
-      "relationship between this public transcription and FantLab analyzer input"
+      "OCR/page-to-literary-text extraction profile",
+      "relationship between this public transcription/facsimile and FantLab analyzer input"
     ]
   },
   "fantlab_boundary": {
@@ -138,7 +153,7 @@
   "next_evidence": [
     "Inspect the two explicit two-page gaps separately; do not compose them unless a literary-body rule justifies doing so.",
     "Define a deterministic fail-closed extraction/composition profile over the frozen 410 Page revisions and record raw plus scriptorium-text-v1 normalized composite digests.",
-    "If the 1928 facsimile is used as a binary witness, capture a specific byte snapshot with byte count/SHA-256 and define OCR/page-extraction provenance.",
+    "Define OCR/page-extraction provenance separately if scan OCR is used to cross-check the public transcription; the PDF binary identity alone does not define literary text.",
     "Keep the 40-chapter 1938/1961 editorial family separate and seek independent evidence for FantLab analyzer-input identity before any M2 promotion."
   ]
 }

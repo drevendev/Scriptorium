@@ -1,0 +1,10 @@
+# SCRIP-CORPUS-040 — freeze Twelve Chairs 1928 scan binary identity
+
+- Selected the scan-binary identity unit from STATE_REVISION 188 after confirming there was no recovery/review-ready PR or failing required check.
+- Opened Issue #167 and Draft PR #168 against master `ea69d44b5bd15802dee10dc2f3188093a53eb69a`.
+- Added a source-free streaming identity helper for the exact Wikimedia Commons original backing the retained 1928 *Zemlya i Fabrika* first-standalone edition route. The helper persists only locators, byte count, SHA-1/SHA-256 and closed-gate metadata; it never writes PDF/image bytes, OCR, Page wikitext or literary source text.
+- Hosted capture run `35509143401`, job `106073891876`, checked out authored head `79fbc45d2056aea1adcb0f4b65da965b30b555c2`, passed 7 synthetic boundary tests and streamed the exact Commons original. It reproduced the provider-published **77,978,350-byte** size and SHA-1 `4ab6aa42c3517169e99c1177b6fb6412cfe9187d`, and independently computed SHA-256 `5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4`.
+- Capture artifact `10603893998` contains only the source-free receipt, is 875 bytes, and GitHub reports archive digest `sha256:0807a0489aacc6d10ab752d6e3e1ec240d0eede1344f3271f0206f179d3c4cdb`.
+- Committed the source-free receipt and changed CI from capture to exact replay. Reconciled the canonical structured trace, source graph and public candidate page with the binary identity while keeping the already frozen 410 Page dependency set unchanged and gaps 150–151 / 314–315 unclassified.
+- Kept downstream gates closed: literary-body rendering/extraction/composition and counts/digests remain unfrozen; Scriptorium has not yet proved >=300k from its own frozen body; FantLab analyzer-input/source-edition identity remains unknown; diagnostic readiness and M2 parity remain false. Benchmark movement: none; M2 remains **0/5**.
+- PR #168 remains Draft for a later independent exact-head review. This authored run does not self-approve or merge it.

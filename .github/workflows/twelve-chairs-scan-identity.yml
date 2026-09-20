@@ -1,0 +1,80 @@
+name: Twelve Chairs 1928 scan identity
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/twelve-chairs-scan-identity.yml"
+      - "scriptorium/twelve_chairs_scan_identity.py"
+      - "tests/test_twelve_chairs_scan_identity.py"
+      - "tests/test_twelve_chairs_provenance_trace.py"
+      - "corpus/candidates/ilf-petrov-twelve-chairs-ru.md"
+      - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-ru.json"
+      - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.source-graph.json"
+      - "corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan-identity:
+    name: Retrieve and verify exact Commons PDF
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run scan-identity and provenance tests
+        run: python -m unittest tests.test_twelve_chairs_scan_identity tests.test_twelve_chairs_provenance_trace -v
+
+      - name: Independently retrieve and verify exact Commons original
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.twelve_chairs_scan_identity verify \
+            --receipt corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json \
+            | tee build/repro/ilf-petrov-twelve-chairs-zif-1928.scan-identity.verify.json
+
+      - name: Verify gate boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path("corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json").read_text(encoding="utf-8"))
+          assert receipt["candidate_id"] == "ilf-petrov-twelve-chairs-ru"
+          assert receipt["edition_identity"] == "1928_first_standalone_zemlya_i_fabrika_facsimile"
+          assert receipt["identity"]["byte_count"] == 77978350
+          assert receipt["identity"]["sha1"] == "4ab6aa42c3517169e99c1177b6fb6412cfe9187d"
+          assert receipt["identity"]["sha256"] == "5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4"
+          assert receipt["binary_bytes_committed"] is False
+          assert receipt["ocr_included"] is False
+          assert receipt["literary_source_text_included"] is False
+          assert receipt["page_dependency_set_changed"] is False
+          assert receipt["gap_pages_classified"] is False
+          assert receipt["literary_body_count_and_digests_frozen"] is False
+          assert receipt["minimum_300k_proved_from_frozen_body"] is False
+          assert receipt["admitted_for_calibration"] is False
+          assert receipt["fantlab_source_edition_match"] == "unknown"
+          assert receipt["diagnostic_ready"] is False
+          assert receipt["m2_parity_admissible"] is False
+          print("SCRIPTORIUM_TWELVE_CHAIRS_SCAN_SHA256=" + receipt["identity"]["sha256"])
+          PY
+
+      - name: Upload source-free scan identity evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: twelve-chairs-1928-scan-identity
+          path: |
+            corpus/candidates/source-edition-traces/ilf-petrov-twelve-chairs-zif-1928.scan-identity.json
+            build/repro/ilf-petrov-twelve-chairs-zif-1928.scan-identity.verify.json
+          if-no-files-found: error
+          retention-days: 7

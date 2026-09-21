@@ -1,9 +1,9 @@
-"""Freeze source-free documentation evidence for Darwin/Rachinsky {{ё}} semantics.
+"""Freeze source-free evidence for Darwin/Rachinsky {{ё}} semantics and replay dependencies.
 
 This unit records what official Russian Wikisource documentation says about the
-zero-argument ``{{ё}}`` shorthand while deliberately refusing to treat current
-documentation as proof of the historical template/dependency state used by the
-retained 2018/2022 Page revisions.
+zero-argument ``{{ё}}`` shorthand and what official MediaWiki documentation says
+about rendering an old page revision: page ``oldid`` freezes the page wikitext,
+while transcluded templates remain live/current unless separately version-pinned.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Mapping, Sequence
 
 
-EVIDENCE_VERSION = "scriptorium-darwin-template-yo-documentation-evidence-v1"
+EVIDENCE_VERSION = "scriptorium-darwin-template-yo-documentation-evidence-v2"
 CANDIDATE_ID = "darwin-origin-species-rachinsky-1864-ru"
 BACKLOG_VERSION = "scriptorium-darwin-render-semantic-backlog-v1"
 DOCUMENTATION_REVISION_ID = 5090323
@@ -31,6 +31,20 @@ HELP_TITLE = "Справка:Вычитка"
 HELP_URL = (
     "https://ru.wikisource.org/w/index.php?title=Справка:Вычитка"
     f"&oldid={HELP_REVISION_ID}"
+)
+MEDIAWIKI_HISTORY_REVISION_ID = 8524540
+MEDIAWIKI_HISTORY_REVISION_DATE = "2026-07-25"
+MEDIAWIKI_HISTORY_TITLE = "Help:History"
+MEDIAWIKI_HISTORY_URL = (
+    "https://www.mediawiki.org/w/index.php?title=Help:History"
+    f"&oldid={MEDIAWIKI_HISTORY_REVISION_ID}"
+)
+MEDIAWIKI_TRANSCLUSION_REVISION_ID = 8551508
+MEDIAWIKI_TRANSCLUSION_REVISION_DATE = "2026-08-09"
+MEDIAWIKI_TRANSCLUSION_TITLE = "Transclusion/en"
+MEDIAWIKI_TRANSCLUSION_URL = (
+    "https://www.mediawiki.org/w/index.php?title=Transclusion/en"
+    f"&oldid={MEDIAWIKI_TRANSCLUSION_REVISION_ID}"
 )
 RESEARCH_DATE = "2026-09-21"
 
@@ -88,7 +102,9 @@ def _target_from_backlog(backlog: Mapping[str, object]) -> dict[str, object]:
     return {**expected, "backlog_priority_rank": 1}
 
 
-def _historical_gap_witness(shard: Mapping[str, object]) -> dict[str, object]:
+def _page_revision_context(shard: Mapping[str, object]) -> dict[str, object]:
+    """Retain one exact old Page revision as context, not as a template binding."""
+
     rows = shard.get("page_identities")
     if not isinstance(rows, list) or not rows:
         raise ValueError("Darwin page-revision shard missing identities")
@@ -117,6 +133,7 @@ def _historical_gap_witness(shard: Mapping[str, object]) -> dict[str, object]:
         "revision_timestamp": timestamp,
         "mediawiki_sha1": mediawiki_sha1,
         "documentation_revision_postdates_page_revision": True,
+        "page_oldid_binds_transcluded_template_revision": False,
     }
 
 
@@ -124,11 +141,11 @@ def build_evidence(
     backlog: Mapping[str, object],
     page_revision_shard: Mapping[str, object],
 ) -> dict[str, object]:
-    """Build a deterministic source-free documentation evidence record."""
+    """Build deterministic source-free documentation/replay evidence."""
 
     backlog_sha = _verified_backlog_sha(backlog)
     target = _target_from_backlog(backlog)
-    witness = _historical_gap_witness(page_revision_shard)
+    page_context = _page_revision_context(page_revision_shard)
 
     manifest: dict[str, object] = {
         "schema_version": EVIDENCE_VERSION,
@@ -145,7 +162,7 @@ def build_evidence(
             "revision_id": DOCUMENTATION_REVISION_ID,
             "revision_date": DOCUMENTATION_REVISION_DATE,
             "permanent_url": DOCUMENTATION_URL,
-            "evidence_scope": "documented_semantics_at_revision_not_historical_render_equivalence",
+            "evidence_scope": "documented_semantics_at_revision_not_replay_dependency_identity",
         },
         "proofread_help": {
             "provider": "Russian Wikisource",
@@ -155,6 +172,30 @@ def build_evidence(
             "permanent_url": HELP_URL,
             "researched_on": RESEARCH_DATE,
             "evidence_scope": "current_workflow_documentation",
+        },
+        "mediawiki_rendering_model": {
+            "provider": "MediaWiki.org",
+            "researched_on": RESEARCH_DATE,
+            "old_revision_rendering": {
+                "title": MEDIAWIKI_HISTORY_TITLE,
+                "revision_id": MEDIAWIKI_HISTORY_REVISION_ID,
+                "revision_date": MEDIAWIKI_HISTORY_REVISION_DATE,
+                "permanent_url": MEDIAWIKI_HISTORY_URL,
+                "evidence_scope": (
+                    "old_page_revision_rendering_uses_current_template_and_image_versions"
+                ),
+                "current_template_versions_used": True,
+            },
+            "transclusion_model": {
+                "title": MEDIAWIKI_TRANSCLUSION_TITLE,
+                "revision_id": MEDIAWIKI_TRANSCLUSION_REVISION_ID,
+                "revision_date": MEDIAWIKI_TRANSCLUSION_REVISION_DATE,
+                "permanent_url": MEDIAWIKI_TRANSCLUSION_URL,
+                "evidence_scope": "live_transclusion_and_no_versioned_transclusion_support",
+                "live_link_updates_targets_when_template_changes": True,
+                "versioned_transclusion_supported": False,
+                "phabricator_reference": "T31051",
+            },
         },
         "documented_semantics": {
             "template_family": "ЕЁ conditional yoification family",
@@ -168,18 +209,22 @@ def build_evidence(
             ),
             "historical_equivalence_proven": False,
         },
-        "historical_gap_witness": witness,
+        "page_revision_context": page_context,
         "promotion_decision": {
             "render_profile_rule_promoted": False,
             "backlog_item_removed": False,
+            "page_save_time_template_lookup_required": False,
             "reason": (
-                "official 2024 documentation establishes conditional semantics but does not "
-                "prove the historical template/dependency state applicable to retained "
-                "2018/2022 Page revisions"
+                "official MediaWiki history semantics show that an old page revision renders "
+                "with current template/image versions, so Page-save-time template revisions "
+                "do not bind deterministic replay; documented {{ё}} semantics still need an "
+                "exact replay-time dependency freeze before promotion"
             ),
             "next_evidence_required": (
-                "freeze historical Шаблон:ЕЁ/Шаблон:ё revision/dependency identity at "
-                "retained Page-save anchors before renderer promotion"
+                "freeze exact Шаблон:ё and Шаблон:ЕЁ revisions plus nested dependencies used "
+                "by the chosen replay/rendering environment at analysis time, or use an "
+                "explicitly version-pinned template expansion mechanism, then validate the "
+                "conditional outputs before renderer-profile promotion"
             ),
         },
         "renderer_semantics_complete": False,
@@ -212,11 +257,24 @@ def validate_evidence(
     semantics = manifest.get("documented_semantics")
     if not isinstance(semantics, dict) or semantics.get("historical_equivalence_proven") is not False:
         raise ValueError("historical {{ё}} equivalence must remain unproven")
+    rendering = manifest.get("mediawiki_rendering_model")
+    if not isinstance(rendering, dict):
+        raise ValueError("MediaWiki rendering evidence missing")
+    old_revision = rendering.get("old_revision_rendering")
+    transclusion = rendering.get("transclusion_model")
+    if not isinstance(old_revision, dict) or old_revision.get("current_template_versions_used") is not True:
+        raise ValueError("oldid current-template rendering evidence drift")
+    if not isinstance(transclusion, dict) or transclusion.get("versioned_transclusion_supported") is not False:
+        raise ValueError("versioned-transclusion evidence drift")
+    page_context = manifest.get("page_revision_context")
+    if not isinstance(page_context, dict) or page_context.get("page_oldid_binds_transcluded_template_revision") is not False:
+        raise ValueError("Page oldid must not be treated as a template revision binding")
     decision = manifest.get("promotion_decision")
     if (
         not isinstance(decision, dict)
         or decision.get("render_profile_rule_promoted") is not False
         or decision.get("backlog_item_removed") is not False
+        or decision.get("page_save_time_template_lookup_required") is not False
     ):
         raise ValueError("Darwin {{ё}} profile/backlog promotion must remain closed")
     for key in (

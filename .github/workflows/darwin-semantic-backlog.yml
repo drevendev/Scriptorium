@@ -1,0 +1,84 @@
+name: Darwin/Rachinsky 1864 semantic backlog
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-semantic-backlog.yml"
+      - "scriptorium/darwin_semantic_backlog.py"
+      - "scriptorium/darwin_render_profile.py"
+      - "tests/test_darwin_semantic_backlog.py"
+      - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru.md"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify source-free unresolved-semantic backlog
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run semantic backlog and render-profile regression tests
+        run: |
+          python -m unittest tests.test_darwin_semantic_backlog -v
+          python -m unittest tests.test_darwin_render_profile -v
+
+      - name: Deterministically rebuild and compare backlog
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_semantic_backlog \
+            --profile corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile.json \
+            --surface corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          expected = json.loads(Path("corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json").read_text(encoding="utf-8"))
+          rebuilt = json.loads(Path("build/repro/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json").read_text(encoding="utf-8"))
+          assert rebuilt == expected
+          assert rebuilt["backlog_sha256"] == "4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2"
+          assert rebuilt["unresolved_totals"] == {
+              "tag_shape_count": 5,
+              "tag_token_count": 518,
+              "template_shape_count": 38,
+              "template_invocation_count": 4583,
+          }
+          assert len(rebuilt["prioritized_items"]) == 43
+          assert rebuilt["next_research_slice"]["name"] == "ё"
+          assert rebuilt["next_research_slice"]["count"] == 2227
+          assert rebuilt["next_research_slice"]["semantic_status"] == "unresolved"
+          assert rebuilt["renderer_semantics_complete"] is False
+          assert rebuilt["renderer_implementation_ready"] is False
+          assert rebuilt["inter_page_composition_frozen"] is False
+          assert rebuilt["literary_body_count_and_digests_frozen"] is False
+          assert rebuilt["minimum_300k_proved"] is False
+          assert rebuilt["admitted_for_calibration"] is False
+          assert rebuilt["fantlab_source_edition_match"] == "unknown"
+          assert rebuilt["diagnostic_ready"] is False
+          assert rebuilt["m2_parity_admissible"] is False
+          print("SCRIPTORIUM_DARWIN_SEMANTIC_BACKLOG_SHA256=" + rebuilt["backlog_sha256"])
+          PY
+
+      - name: Upload source-free semantic backlog evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-1864-semantic-backlog
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json
+          if-no-files-found: error
+          retention-days: 7

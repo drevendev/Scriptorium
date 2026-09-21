@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 217
+STATE_REVISION: 218
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-21T21:47:00Z
-LAST_RESULT: SCRIP-CORPUS-052 / Issue #191 recovery repair in Draft PR #192. Independent settlement of authored head `1d43935ba62f9d175d2bc981ec2284a302ab0289` found required CI failures: Pages run `35654095114` ran 426 tests and Perelman scan run `35654095223` ran 11 focused tests; both failed on the same two stale `tests/test_perelman_provenance_trace.py` assertions after the contract-defined status and next-evidence wording changed. This wake repaired those assertions and strengthened trace-to-contract binding checks for exact contract version/path/SHA-256 and unbound page/rasterization/OCR/body state. Independent diff review also found and corrected a branch-only Road to Nowhere SHA-256 transcription regression. Fresh hosted settlement and a later independent judgement are required before Ready/merge.
-LAST_VERIFIED_PROGRESS: Perelman's exact scan identity retains versioned source-free OCR/body promotion contract v1 at canonical SHA-256 `f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5`; recovery now keeps its provenance integration tests synchronized with that boundary. No PDF bytes, page images, OCR or source prose are retained. Page selection, renderer/OCR identity, literary-body digests/count, >=300k admission, work-specific FantLab linguistic-analysis/input identity, diagnostic readiness and M2 remain deliberately unverified. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-21T22:51:00Z
+LAST_RESULT: SCRIP-CORPUS-052 / Issue #191 completed. Independent exact-head review `5272577616` re-read repaired PR #192 at `742f19c88fffac29974f31cc21cdebb1390f7255` against unchanged base `257754861c1ef590d0dc85176563c8e75ec19926`, reviewed all 10 changed files, found no remaining merge blocker and confirmed no open review threads. All 16 PR-triggered workflows for that exact head settled `success`; dedicated OCR-contract run `35659674619`, Pages run `35659674823`, and Perelman scan replay completed successfully. PR #192 was marked Ready and squash-merged with expected-head protection as `20ec3654240efdfc6105f8a65eb156380140a4ff`, closing Issue #191 completed.
+LAST_VERIFIED_PROGRESS: Perelman's exact scan identity now retains an independently reviewed source-free OCR/body promotion contract v1 at canonical SHA-256 `f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5`, with provenance integration tests bound to that exact contract identity. No PDF bytes, page images, OCR or source prose are retained. Page selection, renderer/OCR identity, literary-body digests/count, >=300k admission, work-specific FantLab linguistic-analysis/input identity, diagnostic readiness and M2 remain deliberately unverified. M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-052
-ISSUE:          #191 (open)
-STATUS:         REVIEW_PENDING
-PR:             #192 (Draft; recovery repair authored in latest wake)
-NEXT_ACTION:    Wait for fresh hosted checks on the repaired exact final head to settle, then independently review that
-                exact head in a later wake. Do not merge from the repair-authoring wake. If accepted, a later Perelman
-                unit may bind exact literary-page selection and reproducible renderer/OCR identities/settings under a
-                new contract version, then freeze source-free body counts/digests and evaluate >=300k. Keep
+ISSUE:          #191 (closed completed)
+STATUS:         COMPLETE
+PR:             #192 (independently reviewed; squash-merged as 20ec3654240efdfc6105f8a65eb156380140a4ff)
+NEXT_ACTION:    Resume normal-flow selection from the queue. A later Perelman unit may bind exact literary-page
+                selection and reproducible renderer/OCR identities/settings under a new independently evidenced
+                contract version, then freeze source-free body counts/digests and evaluate >=300k. Keep
                 FantLab/diagnostic/M2 gates closed until separately proved.
 ```
 
@@ -32,7 +31,6 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-CORPUS-052 review/merge recovery | review / corpus provenance | Independently review repaired Draft PR #192 at its exact settled head; verify source-free contract/provenance synchronization, repaired repository-wide tests, public wording and checks, then Ready/merge only if no blocker remains | This row preempts new production while #192 is open; latest wake authored substantive repair and must not self-approve |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough; Petersburg's frozen scan and Darwin/Rachinsky's frozen source/surface/scan/profile identities make separate candidate-specific OCR/renderer units executable when selected | Preserve translation/edition identity and explicit legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
 
 ## Retained corpus / provenance status
@@ -53,7 +51,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **The Life of Klim Samgin** — candidate-specific source graph, fail-closed extractor, per-part/composite body identities and provenance are frozen; exact historical MediaWiki/Poem deployment and FantLab input identity remain unresolved.
 - **Children of Captain Grant — Beketova translation** — 1,095,467 characters / 2,040,240 bytes; SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`; clears >=300k with explicit source/PD evidence. No FantLab result/input identity for this translation; M2 weight zero.
 - **On the Origin of Species — Rachinsky translation** — 418 exact Page identities, 388-literary/30-apparatus composition, exact-388 markup inventory, backing scan identity, render profile SHA-256 `2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`, semantic backlog SHA-256 `4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`, and documentation evidence SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc` are retained. SCRIP-CORPUS-049 is independently reviewed and complete on master with replay contract SHA-256 `35bed756f4fafa4f443315c09d04a35c66441eb2249eced3c7540ac20c981afe`: `expandtemplates.revid` is context, not version pin; exact recursive dependency closure is still empty/unfrozen, and any future complete closure must carry per-node source-free discovery proof whose SHA-256 is recomputed from exact node revision identity plus direct-dependency set and whose child relations exactly match the graph. All 43 semantic shapes remain unresolved, `ё` remains priority 1 at 2,227 calls, and renderer/body/>=300k/FantLab/M2 remain closed.
-- **Entertaining Physics, Book 1 — Perelman 1913 first edition** — SCRIP-CORPUS-051 independently froze the current Commons PDF at 28,168,847 bytes, SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`, SHA-256 `3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61`; description `oldid=1045983412` remains bibliographic/legal provenance only. SCRIP-CORPUS-052 defines source-free OCR/body promotion contract v1, SHA-256 `f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5`, and its recovery repair synchronizes provenance tests with that contract, but page selection, renderer/OCR bindings, body outputs, >=300k, work-specific FantLab identity and M2 remain open pending later independent review of PR #192.
+- **Entertaining Physics, Book 1 — Perelman 1913 first edition** — SCRIP-CORPUS-051 independently froze the current Commons PDF at 28,168,847 bytes, SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`, SHA-256 `3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61`; description `oldid=1045983412` remains bibliographic/legal provenance only. SCRIP-CORPUS-052 is independently reviewed and complete on master with source-free OCR/body promotion contract v1, SHA-256 `f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5`, and provenance tests bound to its exact identity. Page selection, renderer/OCR bindings, body outputs, >=300k, work-specific FantLab identity and M2 remain open.
 
 ## Deterministic / morphology findings
 
@@ -90,4 +88,4 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 11. The 1928 *Twelve Chairs* route still has unresolved template/reference semantics, inter-page composition, body identity and FantLab source identity.
 12. Darwin/Rachinsky `{{ё}}` has documented semantics and a corrected live-transclusion model, but exact replay-time recursive dependency identities are not yet bound. `expandtemplates.revid` is only revision context, a single TemplateSandbox override is insufficient to prove closure, and complete closure requires revision-pinned recursive-expansion provenance plus per-node discovery evidence whose digest is bound to exact revision identity and direct-dependency set. Both forced/non-forced replay outputs remain unverified; body/>=300k and FantLab identity remain open.
 13. Pages live activation remains a repository-admin effect and is off.
-14. Perelman 1913 has an exact independently streamed PDF identity and a fail-closed source-free OCR/body promotion protocol, but the v1 profile is intentionally unbound: exact literary-page selection, reproducible renderer/OCR identities/settings, body outputs, >=300k admission and work-specific FantLab identity remain unverified.
+14. Perelman 1913 has an exact independently streamed PDF identity and an independently reviewed fail-closed source-free OCR/body promotion protocol, but the v1 profile is intentionally unbound: exact literary-page selection, reproducible renderer/OCR identities/settings, body outputs, >=300k admission and work-specific FantLab identity remain unverified.

@@ -1,22 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 207
+STATE_REVISION: 208
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-21T09:55:11Z
-LAST_RESULT: SCRIP-CORPUS-048 / Issue #183 completed. Independent exact-head review `5265215135` re-read PR #184 at `cb725ba8f8df5cc0ebdacbf0441ff6451a1c94c0` against unchanged base `c2bb1bfe693867b44f8a6bf48e94e0a31cee99ad`, confirmed 8 commits ahead / 0 behind, 8 changed files, no review threads and all 15 PR-triggered workflows settled `success`. Dedicated run `35580775932` / job `106272898196` checked out the exact reviewed SHA, passed 10 template-yo evidence tests plus 5 semantic-backlog regressions and reproduced canonical evidence SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc`. Artifact `10630062217` was independently downloaded and verified as a 1,965-byte source-free ZIP / SHA-256 `023392ca893de3a8ac9e3eb04e160a4fdc0b1deed0e5ac6b530043547e6c6a2d`, containing one 4,307-byte JSON / SHA-256 `dd5dba3cb20827f3b163a59ca133e82e997158faf5f0be3506690c0a8d4b61ad`; recomputing the embedded canonical digest reproduced `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc`. Pages run `35580775985` / job `106272898492` checked out the same SHA and passed the full 391-test suite, canonical site build and deterministic rebuild. PR #184 was marked Ready and squash-merged as `634331346f1afadd26c054f9f09b6ada71d964b2`, closing Issue #183 completed.
-LAST_VERIFIED_PROGRESS: Master now retains the independently reviewed source-free correction to the MediaWiki dependency model underlying old Page revisions: retained Page `oldid`s freeze Page wikitext but do not bind transcluded template revisions. The documented `{{ё}}` class remains conditional `е`/`ё`; however the exact replay-time template dependency graph is not yet frozen, so all 43 backlog shapes remain unresolved and `ё` remains the priority-1 provider-template target with 2,227 invocations. Renderer semantics/implementation/equivalence, inter-page composition, literary-body counts/digests, >=300k admission, FantLab source match, diagnostic readiness and M2 parity remain closed; M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-21T10:58:00Z
+LAST_RESULT: SCRIP-CORPUS-049 / Issue #185 authored on Draft PR #186. Official MediaWiki `API:Expandtemplates/ru` permanent revision `oldid=6729113` is retained as evidence that `revid` supplies revision context for `{{REVISIONID}}` and similar variables rather than selecting historical transcluded-template revisions. A new source-free fail-closed replay contract (`scriptorium-darwin-template-yo-replay-contract-v1`, canonical SHA-256 `9ac0e52c8253ef523aefe9fd54b8e90edf69095ac6f7c45ac2a0bbd584049e2b`) requires exact title/revision/timestamp/MediaWiki-SHA1 identities for `Шаблон:ё`, `Шаблон:ЕЁ` and every nested template/module dependency before replay can be called closed. This authored unit intentionally binds zero dependencies and verifies no renderer outputs. `{{ё}}` remains unresolved; all renderer/body/>=300k/FantLab/diagnostic/M2 gates remain closed. PR #186 is Draft for independent later review and must not be self-merged by this authoring run.
+LAST_VERIFIED_PROGRESS: The Darwin/Rachinsky renderer research now has two separate fail-closed boundaries: v2 documentation evidence establishes the conditional `е`/`ё` semantic class and correct oldid/live-transclusion model, while the new replay contract prevents `expandtemplates.revid` or a single TemplateSandbox override from being mistaken for a version-pinned recursive dependency graph. The replay contract is intentionally incomplete until exact dependency closure plus both forced/non-forced deterministic output identities are frozen. All 43 semantic shapes remain unresolved and `ё` stays priority 1 at 2,227 invocations. M2 remains 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-048
-ISSUE:          #183 (closed completed)
-STATUS:         COMPLETE
-PR:             #184 (squash-merged as 634331346f1afadd26c054f9f09b6ada71d964b2)
-NEXT_ACTION:    Resume normal-flow selection from the queue. A later bounded Darwin/Rachinsky renderer-research unit may
-                freeze exact replay-time Шаблон:ё / Шаблон:ЕЁ revisions plus nested dependencies, or implement explicit
-                version-pinned expansion, before considering renderer-profile promotion. Keep renderer/body/>=300k/
-                FantLab/diagnostic/M2 gates closed until separately evidenced.
+UNIT_ID:        SCRIP-CORPUS-049
+ISSUE:          #185 (open)
+STATUS:         REVIEW_PENDING
+PR:             #186 (Draft)
+NEXT_ACTION:    Independently re-read the exact final PR #186 head against unchanged master after CI settles. Verify the
+                source-free replay-contract artifact rebuild, upstream-evidence self-digest binding, graph-validation
+                regressions and public companion. If clean, a later judgement run may mark Ready and merge. Do not bind
+                or infer template revisions, promote {{ё}}, or advance renderer/body/>=300k/FantLab/diagnostic/M2 gates
+                without a separate evidence unit.
 ```
 
 ## Current milestone gate
@@ -35,22 +36,22 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 ## Retained corpus / provenance status
 
-Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-receipts/`, `project/CHANGELOG.md`, and `project/CHANGELOG.d/`; this state file keeps only the orientation-critical summary.
+Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-receipts/`, `project/CHANGELOG.md`, and `project/CHANGELOG.d/`; this file keeps the orientation-critical summary.
 
-- **Anna Karenina** — frozen public-source candidate: 239 pinned chapter revisions; composite 1,705,605 characters; SHA-256 `1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`; FantLab source match unknown.
-- **Resurrection** — frozen public-source candidate: 129 pinned chapter revisions; composite 890,835 characters; SHA-256 `2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`; FantLab source match unknown.
-- **Brothers Karamazov** — frozen public-source candidate: 98 admitted revisions; composite 1,810,351 characters; SHA-256 `26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6`; FantLab source match unknown.
-- **Silver Dove** — frozen single-revision public-source candidate at `oldid=5588003`; composite 563,125 characters; SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`; FantLab source match unknown.
-- **Petersburg** — SCRIP-CORPUS-038 complete. Exact backing Commons PDF identity for the explicit 632-page 1916 first-book-edition facsimile is independently reviewed: 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`; the 1916 identity stays distinct from the 1922 revision. OCR/page selection, literary-body identity and >=300k admission remain unfrozen; FantLab source match unknown.
-- **Hyperboloid of Engineer Garin** — frozen Russian Wikisource single-revision candidate at `oldid=5014458`; extraction profile `scriptorium-hyperboloid-wikisource-body-v1` reproduces 499,066 characters / 930,560 bytes with raw and normalized SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`. Print-edition identity and FantLab source match remain unresolved.
-- **Shining World** — the reviewed 1965-source Wikisource index advertises 34 chapter links but only 19 pages currently exist: Part I I-XVI and Part II I-III. Part II IV-XI and all Part III chapters are missing. Exact present-page revision identities are frozen; a complete literary body cannot be frozen from this route alone and FantLab source match is unknown.
-- **Road to Nowhere** — the primary Pravda-1965/lib.web family remains body-unfrozen; permanent index `oldid=4715367` has 8 labels mapping to 6 targets, duplicate/misdirected Chapter IV labels, and current red links for all three distinct Part II targets. Distinct `az.lib.ru` route `oldid=5585836` remains separately frozen at 442,656 characters / 825,899 bytes, SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`. Neither route is identified as FantLab input.
-- **Running on Waves** — SCRIP-CORPUS-028 complete. The Detskaya literatura 1965 family has exact source-free identities for all 36 literary pages and a fail-closed literary-body freeze: 363,819 characters / 656,239 UTF-8 bytes, raw and normalized SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`. It clears the general >=300k rule. FantLab displays 360,987 characters, but source/analyzer-input match remains unknown and M2 weight is zero. Distinct `/Версия 2` at `oldid=5655654` declares `az.lib.ru` / Pravda 1980 and remains excluded.
-- **The White Guard** — Wikisource mixes two bibliographic source families across chapters 1–11 and 12–20; all 20 chapter identities/composite remain unfrozen.
-- **The Twelve Chairs** — SCRIP-CORPUS-044 complete. Master retains the independently reviewed parent route graph, all 410 exact Page dependency identities, exact backing Commons PDF identity (77,978,350 bytes; SHA-1 `4ab6aa42c3517169e99c1177b6fb6412cfe9187d`; SHA-256 `5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4`), four-gap audit/membership decision, exact-410 source-free markup inventory and fail-closed rendering profile. All 30 template shapes / 602 invocations and 410 `<references/>` remain semantically unresolved; inter-page composition, literary-body counts/digests, >=300k admission and FantLab source identity remain unresolved. The later 1938/1961 editorial family stays distinct; coauthorship prevents individual-author attribution without an explicit VOICE model.
-- **The Life of Klim Samgin** — SCRIP-CORPUS-020 complete. Four exact parent revisions and Part 2 dependency are replay-frozen; merged PRs #111–#124 freeze target-only `#lst`, inferred `poemx1`/Poem boundaries, structural surface and thirteen plain literary values; #126 merged fail-closed extraction; #127 merged canonical source-free per-part/composite literary-body identities; #128 reconciled structured provenance. Exact historical MediaWiki/Poem deployment and FantLab analyzer-input/source-edition identity remain unresolved.
-- **Children of Captain Grant — Beketova translation** — SCRIP-CORPUS-026 complete. `oldid=5304880` plus `scriptorium-beketova-captain-grant-wikisource-body-v1` freeze a 1,095,467-character / 2,040,240-byte literary body with raw and normalized SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`. Beketova / Detgiz 1955 / `az.lib.ru` bibliography and explicit source PD evidence are retained. It clears the >=300k general-corpus rule. No FantLab linguistic result/analyzer-input identity is established for this translation; M2 weight remains zero.
-- **On the Origin of Species — Rachinsky translation** — SCRIP-CORPUS-048 is independently reviewed and complete on master. Master retains the independently reviewed 418 exact Page revision identities, 388-literary/30-apparatus composition, exact-388 source-free markup inventory, backing Commons DjVu identity, fail-closed render profile SHA-256 `2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`, unresolved-semantic backlog SHA-256 `4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`, and source-free `{{ё}}` evidence v2 SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc`. Wikisource documentation establishes conditional `е`/`ё` semantics, while official MediaWiki evidence corrects the replay model: Page `oldid` does not pin transcluded template revisions, so Page-save-time template-history lookup is not a deterministic replay binding. The exact replay-time `Шаблон:ё` / `Шаблон:ЕЁ` dependency graph remains unfrozen; all 43 shapes remain unresolved and `ё` stays priority 1 at 2,227 invocations. Renderer implementation/equivalence, body count/digests, >=300k admission and FantLab source match remain closed; M2 weight remains zero.
+- **Anna Karenina** — 239 pinned chapter revisions; 1,705,605 characters; SHA-256 `1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`; FantLab source match unknown.
+- **Resurrection** — 129 pinned chapter revisions; 890,835 characters; SHA-256 `2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`; FantLab source match unknown.
+- **Brothers Karamazov** — 98 admitted revisions; 1,810,351 characters; SHA-256 `26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6`; FantLab source match unknown.
+- **Silver Dove** — single revision `oldid=5588003`; 563,125 characters; SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`; FantLab source match unknown.
+- **Petersburg** — SCRIP-CORPUS-038 complete. Exact 632-page 1916 first-book-edition Commons PDF: 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`; distinct from 1922. OCR/page selection/body/>=300k/FantLab identity remain open.
+- **Hyperboloid of Engineer Garin** — `oldid=5014458`; frozen body 499,066 characters / 930,560 bytes; SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`; print-edition/FantLab identity unresolved.
+- **Shining World** — 34 advertised chapter links but only 19 pages exist; complete body unavailable from this route and FantLab match unknown.
+- **Road to Nowhere** — primary Pravda-1965/lib.web route remains incomplete; distinct `az.lib.ru` route `oldid=5585836` is 442,656 characters / 825,899 bytes, SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`; neither is identified as FantLab input.
+- **Running on Waves** — SCRIP-CORPUS-028 complete. Detskaya literatura 1965 family: 36 literary pages, 363,819 characters / 656,239 bytes, SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`; clears >=300k. FantLab shows 360,987 characters but source match remains unknown. Separate 1980 route stays distinct.
+- **The White Guard** — Wikisource mixes two bibliographic source families across chapters 1–11 and 12–20; body remains unfrozen.
+- **The Twelve Chairs** — SCRIP-CORPUS-044 complete. 410 exact Page identities and exact Commons PDF (77,978,350 bytes; SHA-1 `4ab6aa42c3517169e99c1177b6fb6412cfe9187d`; SHA-256 `5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4`) plus fail-closed surface/profile are frozen. 30 template shapes / 602 invocations and 410 `<references/>` remain unresolved; body/>=300k/FantLab identity remain open.
+- **The Life of Klim Samgin** — candidate-specific source graph, fail-closed extractor, per-part/composite body identities and provenance are frozen; exact historical MediaWiki/Poem deployment and FantLab input identity remain unresolved.
+- **Children of Captain Grant — Beketova translation** — 1,095,467 characters / 2,040,240 bytes; SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`; clears >=300k with explicit source/PD evidence. No FantLab result/input identity for this translation; M2 weight zero.
+- **On the Origin of Species — Rachinsky translation** — 418 exact Page identities, 388-literary/30-apparatus composition, exact-388 markup inventory, backing scan identity, render profile SHA-256 `2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`, semantic backlog SHA-256 `4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`, and documentation evidence SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc` are retained. SCRIP-CORPUS-049 adds Draft replay contract SHA-256 `9ac0e52c8253ef523aefe9fd54b8e90edf69095ac6f7c45ac2a0bbd584049e2b`: `expandtemplates.revid` is context, not version pin; exact recursive dependency closure is still empty/unfrozen. All 43 semantic shapes remain unresolved, `ё` remains priority 1 at 2,227 calls, and renderer/body/>=300k/FantLab/M2 remain closed.
 
 ## Deterministic / morphology findings
 
@@ -65,14 +66,10 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 
 - Static publication remains source-free and deterministic; publication tests reject forbidden source-prose keys.
 - Public corpus navigation exposes retained candidates with provenance boundaries rather than parity claims.
-- Beketova exposes exact frozen literary-body identity and >=300k general-corpus admission while FantLab source match/M2 remain closed.
-- Petersburg exposes its exact source-free 1916 PDF identity and 1916/1922 edition boundary while OCR/body/admission/FantLab gates remain open.
-- Hyperboloid and Road to Nowhere expose frozen source-free alternate literary-body identities with explicit unresolved source-match boundaries; Road to Nowhere also exposes the primary-route defect instead of implying readiness.
-- Shining World exposes the mismatch between 34 advertised links and 19 existing pages as an explicit blocker.
-- Running on Waves exposes a frozen 363,819-character literary body while preserving the separate 1980 route and keeping FantLab source match/M2 closed.
-- The Twelve Chairs exposes the independently reviewed fail-closed exact-surface rendering decision profile and unresolved template/reference counts without claiming renderer/body equivalence.
-- The Darwin/Rachinsky semantic-backlog companion now distinguishes documented conditional `{{ё}}` semantics from the separate replay-dependency problem and records that old Page revisions use live/current template versions unless dependencies are explicitly version-pinned.
-- Klim Samgin exposes the source graph, fail-closed extractor, canonical source-free per-part/composite literary-body identities and structured provenance; FantLab source match remains unknown.
+- Beketova and Running on Waves expose >=300k frozen bodies while FantLab/M2 remain closed; Petersburg exposes exact 1916 PDF identity while OCR/body gates remain open.
+- The Twelve Chairs exposes exact-surface rendering decisions plus unresolved template/reference counts without claiming renderer/body equivalence.
+- The Darwin/Rachinsky semantic-backlog companion now separates documented conditional `{{ё}}` semantics, the oldid/live-transclusion model, and the new fail-closed replay contract. It explicitly records that `expandtemplates.revid` is not accepted as a template-version pin and that recursive dependency closure is still empty.
+- Klim Samgin exposes its source graph, extractor, body identities and structured provenance; FantLab source match remains unknown.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers
@@ -80,15 +77,13 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 1. FantLab analyzer-input bytes/edition identity remain undisclosed for retained benchmark works; M2 remains 0/5.
 2. FantLab corrective coefficients, parser details, word-boundary semantics, dash classifier and dialogue grammar/denominators remain partly unpublished.
 3. FantLab dictionary/version, homonym selection/prediction and service-word aggregation remain unknown.
-4. pylem runtime `N` loses noun/cardinal distinction; methodology-only categories are diagnostic until their visible work-page relation is evidenced.
+4. pylem runtime `N` loses noun/cardinal distinction; methodology-only categories remain diagnostic.
 5. Frozen public-source candidates remain unmatched to FantLab input and therefore cannot advance M2.
-6. Petersburg has an exact 1916 Commons PDF byte identity, but deterministic literary-page/OCR extraction, literary-body count/digests and >=300k admission remain unfrozen; FantLab source identity is unknown.
-7. Shining World's primary 1965-source family is incomplete: 15 of 34 advertised chapter targets are missing; a complete body needs a separately justified source-complete witness.
-8. Running on Waves has a replay-frozen 363,819-character body, but FantLab analyzer-input/source-edition identity remains unknown; the separate 1980 route remains non-composable.
-9. Road to Nowhere's primary Pravda-1965/lib.web index is not a complete route witness; a complete same-family route set must be established independently before primary page/body freezing and the alternate az.lib.ru body cannot fill those gaps.
-10. Several other twentieth-century candidates remain trace-only/unfrozen or bibliographically unresolved at the literary-body level.
-11. Klim Samgin is frozen at candidate-specific literary-body/provenance level, but exact historical MediaWiki-core/Poem deployment equivalence and FantLab analyzer-input bytes/edition remain unproven.
-12. The Beketova *Children of Captain Grant* translation has a frozen >=300k literary body, but no FantLab linguistic result/analyzer-input identity for this translation; it cannot advance M2 yet.
-13. The 1928 *Twelve Chairs* route has exact source-free dependencies/scan/gap/surface/profile evidence, but all 30 template shapes / 602 invocations and 410 `<references/>` tokens still require evidenced semantics; inter-page composition, body identity and FantLab source identity remain unresolved.
-14. Darwin/Rachinsky 1864 has reviewed source-free 388/30 composition, exact-388 markup inventory, backing scan identity, fail-closed decision profile and deterministic unresolved-semantic backlog. SCRIP-CORPUS-048 corrects the oldid dependency model: Page revision timestamps do not bind template revisions because old revisions render through current/live transclusions. The exact replay-time `Шаблон:ё` / `Шаблон:ЕЁ` dependency graph remains unfrozen, so all 43 backlog rows stay unresolved. Body count/digests and >=300k admission remain unresolved, and FantLab's current Russian translation surface is a different translation.
-15. Pages live activation remains a repository-admin effect and is off.
+6. Petersburg scan identity is exact but deterministic OCR/body/>=300k admission remains unfrozen.
+7. Shining World's primary route is incomplete; Road to Nowhere's primary route is not a complete route witness.
+8. Running on Waves clears >=300k but FantLab analyzer-input/source identity remains unknown.
+9. Klim Samgin still lacks exact historical MediaWiki-core/Poem deployment equivalence and FantLab input identity.
+10. Beketova *Children of Captain Grant* clears >=300k but lacks a matching FantLab linguistic-result/input identity.
+11. The 1928 *Twelve Chairs* route still has unresolved template/reference semantics, inter-page composition, body identity and FantLab source identity.
+12. Darwin/Rachinsky `{{ё}}` has documented semantics and a corrected live-transclusion model, but exact replay-time recursive dependency identities are not yet bound. `expandtemplates.revid` is only revision context and a single TemplateSandbox override is insufficient to prove closure. Both forced/non-forced replay outputs remain unverified; body/>=300k and FantLab identity remain open.
+13. Pages live activation remains a repository-admin effect and is off.

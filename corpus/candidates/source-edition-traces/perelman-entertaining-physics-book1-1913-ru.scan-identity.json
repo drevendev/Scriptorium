@@ -1,0 +1,30 @@
+{
+  "admitted_for_calibration": false,
+  "binary_bytes_committed": false,
+  "binary_bytes_retrieved_transiently": true,
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "current_file_revision_timestamp": "2021-09-03T09:12:00Z",
+  "diagnostic_ready": false,
+  "edition_identity": "1913_first_edition_facsimile_current_2021_revision",
+  "exact_original_url": "https://upload.wikimedia.org/wikipedia/commons/8/8c/%D0%9F%D0%B5%D1%80%D0%B5%D0%BB%D1%8C%D0%BC%D0%B0%D0%BD_%D0%AF.%D0%98._%D0%97%D0%B0%D0%BD%D0%B8%D0%BC%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D1%84%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0._%D0%9A%D0%BD%D0%B8%D0%B3%D0%B0_1_%281913%29.pdf",
+  "fantlab_source_edition_match": "unknown",
+  "file_page_url": "https://commons.wikimedia.org/wiki/File:%D0%9F%D0%B5%D1%80%D0%B5%D0%BB%D1%8C%D0%BC%D0%B0%D0%BD_%D0%AF.%D0%98._%D0%97%D0%B0%D0%BD%D0%B8%D0%BC%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D1%84%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0._%D0%9A%D0%BD%D0%B8%D0%B3%D0%B0_1_%281913%29.pdf",
+  "identity": {
+    "byte_count": 28168847,
+    "sha1": "3c616f547ff283a2cafd1ac26b448a8e8013f648",
+    "sha256": "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
+  },
+  "literary_body_count_and_digests_frozen": false,
+  "literary_source_text_included": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved_from_frozen_body": false,
+  "ocr_extraction_profile_frozen": false,
+  "ocr_included": false,
+  "provider": "Wikimedia Commons",
+  "provider_expected_identity": {
+    "byte_count": 28168847,
+    "sha1": "3c616f547ff283a2cafd1ac26b448a8e8013f648"
+  },
+  "provider_metadata_crosscheck_passed": true,
+  "receipt_version": "scriptorium-perelman-1913-scan-identity-v1"
+}

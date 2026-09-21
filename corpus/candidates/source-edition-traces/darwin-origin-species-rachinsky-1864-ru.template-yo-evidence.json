@@ -1,0 +1,71 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "diagnostic_ready": false,
+  "documented_semantics": {
+    "arity": {
+      "named": 0,
+      "positional": 0
+    },
+    "forced_yoification_output": "ё",
+    "historical_equivalence_proven": false,
+    "invocation": "{{ё}}",
+    "non_forced_yoification_output": "е",
+    "output_kind": "conditional_single_character",
+    "proofread_help_role": "marks yoification so finished text can support yoified and non-yoified variants",
+    "template_family": "ЕЁ conditional yoification family"
+  },
+  "evidence_sha256": "9123d9f2901b4995deac5c4e09ca09af386befc8129f62e844446d44b864bfd2",
+  "fantlab_source_edition_match": "unknown",
+  "historical_gap_witness": {
+    "documentation_revision_postdates_page_revision": true,
+    "mediawiki_sha1": "3fe692545a92d2103d667ce02dd7237889fa2ccc",
+    "page_sequence": 11,
+    "revision_id": 3358032,
+    "revision_timestamp": "2018-08-13T19:18:33Z"
+  },
+  "inter_page_composition_frozen": false,
+  "literary_body_count_and_digests_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "official_documentation": {
+    "evidence_scope": "documented_semantics_at_revision_not_historical_render_equivalence",
+    "permanent_url": "https://ru.wikisource.org/w/index.php?title=Шаблон:ЕЁ/Документация&oldid=5090323",
+    "provider": "Russian Wikisource",
+    "revision_date": "2024-01-11",
+    "revision_id": 5090323,
+    "title": "Шаблон:ЕЁ/Документация"
+  },
+  "promotion_decision": {
+    "backlog_item_removed": false,
+    "next_evidence_required": "freeze historical Шаблон:ЕЁ/Шаблон:ё revision/dependency identity at retained Page-save anchors before renderer promotion",
+    "reason": "official 2024 documentation establishes conditional semantics but does not prove the historical template/dependency state applicable to retained 2018/2022 Page revisions",
+    "render_profile_rule_promoted": false
+  },
+  "proofread_help": {
+    "evidence_scope": "current_workflow_documentation",
+    "permanent_url": "https://ru.wikisource.org/w/index.php?title=Справка:Вычитка&oldid=5731079",
+    "provider": "Russian Wikisource",
+    "researched_on": "2026-09-21",
+    "revision_date": "2026-07-19",
+    "revision_id": 5731079,
+    "title": "Справка:Вычитка"
+  },
+  "renderer_implementation_ready": false,
+  "renderer_semantics_complete": false,
+  "schema_version": "scriptorium-darwin-template-yo-documentation-evidence-v1",
+  "source_backlog": {
+    "backlog_sha256": "4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2",
+    "schema_version": "scriptorium-darwin-render-semantic-backlog-v1"
+  },
+  "source_text_included": false,
+  "target": {
+    "backlog_priority_rank": 1,
+    "count": 2227,
+    "name": "ё",
+    "named": 0,
+    "positional": 0,
+    "semantic_status": "unresolved",
+    "source_kind": "template"
+  }
+}

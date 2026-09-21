@@ -1,0 +1,78 @@
+name: Darwin/Rachinsky 1864 template yo evidence
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-template-yo-evidence.yml"
+      - "scriptorium/darwin_template_yo_evidence.py"
+      - "tests/test_darwin_template_yo_evidence.py"
+      - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-semantic-backlog.md"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.01.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify source-free template yo documentation evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run template-yo evidence and backlog regressions
+        run: |
+          python -m unittest tests.test_darwin_template_yo_evidence -v
+          python -m unittest tests.test_darwin_semantic_backlog -v
+
+      - name: Deterministically rebuild and compare evidence
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_template_yo_evidence \
+            --backlog corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json \
+            --page-revision-shard corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.01.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          committed = Path("corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json")
+          rebuilt = Path("build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json")
+          expected = json.loads(committed.read_text(encoding="utf-8"))
+          actual = json.loads(rebuilt.read_text(encoding="utf-8"))
+          assert actual == expected
+          assert actual["evidence_sha256"] == "9123d9f2901b4995deac5c4e09ca09af386befc8129f62e844446d44b864bfd2"
+          assert actual["proofread_help"]["revision_id"] == 5731079
+          assert actual["proofread_help"]["revision_date"] == "2026-07-19"
+          assert actual["target"]["name"] == "ё"
+          assert actual["target"]["count"] == 2227
+          assert actual["target"]["semantic_status"] == "unresolved"
+          assert actual["documented_semantics"]["output_kind"] == "conditional_single_character"
+          assert actual["documented_semantics"]["historical_equivalence_proven"] is False
+          assert actual["promotion_decision"]["render_profile_rule_promoted"] is False
+          assert actual["renderer_semantics_complete"] is False
+          assert actual["minimum_300k_proved"] is False
+          assert actual["fantlab_source_edition_match"] == "unknown"
+          assert actual["m2_parity_admissible"] is False
+          print("SCRIPTORIUM_DARWIN_TEMPLATE_YO_EVIDENCE_SHA256=" + actual["evidence_sha256"])
+          PY
+
+      - name: Upload source-free template yo evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-1864-template-yo-evidence
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json
+          if-no-files-found: error
+          retention-days: 7

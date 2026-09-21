@@ -32,7 +32,7 @@ class DarwinTemplateYoEvidenceTests(unittest.TestCase):
         validate_evidence(committed, load(BACKLOG), load(SHARD))
         self.assertEqual(
             committed["evidence_sha256"],
-            "3c0af5dfe8d23cd6d47ce2f92b30c58b83e352df692c18e6d4f59a14928eb06a",
+            "9123d9f2901b4995deac5c4e09ca09af386befc8129f62e844446d44b864bfd2",
         )
 
     def test_documented_semantics_are_conditional_not_literal(self) -> None:
@@ -44,6 +44,16 @@ class DarwinTemplateYoEvidenceTests(unittest.TestCase):
         self.assertFalse(semantics["historical_equivalence_proven"])
         self.assertEqual(evidence["target"]["count"], 2227)
         self.assertEqual(evidence["target"]["semantic_status"], "unresolved")
+
+    def test_proofread_help_is_revision_pinned(self) -> None:
+        evidence = build_evidence(load(BACKLOG), load(SHARD))
+        help_evidence = evidence["proofread_help"]
+        self.assertEqual(help_evidence["revision_id"], 5731079)
+        self.assertEqual(help_evidence["revision_date"], "2026-07-19")
+        self.assertEqual(
+            help_evidence["permanent_url"],
+            "https://ru.wikisource.org/w/index.php?title=Справка:Вычитка&oldid=5731079",
+        )
 
     def test_historical_gap_uses_retained_pre_documentation_page_revision(self) -> None:
         evidence = build_evidence(load(BACKLOG), load(SHARD))
@@ -65,7 +75,16 @@ class DarwinTemplateYoEvidenceTests(unittest.TestCase):
         backlog = deepcopy(load(BACKLOG))
         backlog["next_research_slice"] = dict(backlog["next_research_slice"])
         backlog["next_research_slice"]["count"] += 1
-        with self.assertRaisesRegex(ValueError, "research target drift: count"):
+        with self.assertRaisesRegex(ValueError, "semantic backlog digest drift"):
+            build_evidence(backlog, load(SHARD))
+
+    def test_non_target_backlog_drift_with_stale_digest_fails_closed(self) -> None:
+        backlog = deepcopy(load(BACKLOG))
+        rows = list(backlog["prioritized_items"])
+        rows[-1] = dict(rows[-1])
+        rows[-1]["count"] += 1
+        backlog["prioritized_items"] = rows
+        with self.assertRaisesRegex(ValueError, "semantic backlog digest drift"):
             build_evidence(backlog, load(SHARD))
 
     def test_profile_and_downstream_gates_remain_closed(self) -> None:

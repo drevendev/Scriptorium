@@ -17,7 +17,7 @@
       "rendered orthography transformations unless a deterministic transform/identity contract is established"
     ]
   },
-  "source_identity_status": "rendered_route_graph_418_page_revision_identities_388_30_composition_markup_surface_and_independent_scan_binary_identity_frozen_rendered_body_unfrozen",
+  "source_identity_status": "rendered_route_graph_418_page_revision_identities_388_30_composition_markup_surface_render_profile_and_independent_scan_binary_identity_frozen_rendered_body_unfrozen",
   "source": {
     "provider": "Russian Wikisource",
     "observed_at": "2026-09-19",
@@ -77,7 +77,7 @@
       ],
       "topology_frozen": true,
       "complete_page_revision_set_frozen": true,
-      "identity_scope": "all 418 included Page-sequence dependencies have exact captured revision ID, revision timestamp and MediaWiki SHA-1 in a source-free digest-pinned sharded manifest; the 388 literary versus 30 apparatus composition decision is frozen by scriptorium-darwin-literary-body-contract-v1, while Page-wikitext-to-prose rendering and final literary-body identity remain unfrozen"
+      "identity_scope": "all 418 included Page-sequence dependencies have exact captured revision ID, revision timestamp and MediaWiki SHA-1 in a source-free digest-pinned sharded manifest; the 388 literary versus 30 apparatus composition decision and fail-closed rendering decision profile are frozen, while unresolved provider/template/reference/math/inter-page semantics and final literary-body identity remain unfrozen"
     },
     "page_revision_identity_manifest": {
       "index": "darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json",
@@ -136,7 +136,12 @@
         411
       ],
       "selection_and_partition_frozen": true,
-      "page_wikitext_to_prose_rendering_profile_frozen": false,
+      "page_wikitext_to_prose_rendering_profile_frozen": true,
+      "render_profile_version": "scriptorium-darwin-page-render-profile-v1",
+      "render_profile_sha256": "2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d",
+      "renderer_semantics_complete": false,
+      "renderer_implementation_ready": false,
+      "rendering_equivalence_claimed": false,
       "composite_separator_semantics_frozen": false,
       "literary_body_count_and_digests_frozen": false,
       "source_text_committed": false
@@ -207,6 +212,7 @@
       "source-free topology counts: 399 rendered-route Page dependencies and 418 parent+route dependencies",
       "exact revision ID, revision timestamp and MediaWiki SHA-1 for all 418 included Page dependencies, committed source-free in four SHA-256-pinned shards",
       "scriptorium-darwin-literary-body-contract-v1 selection/partition: 388 exact Page dependencies from numbered routes /1 through /14 are literary inputs and 30 frozen dependencies are apparatus",
+      "scriptorium-darwin-page-render-profile-v1 fail-closed decision profile over all 18 tag shapes / 5,164 tag tokens and 38 template shapes / 4,583 invocations; profile SHA-256 2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d; unresolved semantics are not promoted",
       "Page-sequence 114 oldid=3364724 source-declared no-text and explicitly excluded from route /4",
       "Page-sequence 411 oldid=3364733 source-declared no-text and uniquely aligned with displayed print page 388",
       "displayed bibliographic print-page spans 1-387 and 389-399 attached to the rendered routes",
@@ -218,7 +224,7 @@
     ],
     "unfrozen": [
       "full mapping from displayed print page numbers to ProofreadPage sequence positions outside the uniquely resolved page-388 gap",
-      "candidate-specific Page-wikitext-to-prose rendering behavior over the 388 frozen literary dependencies",
+      "provider/template/reference/math semantics explicitly marked unresolved by the frozen fail-closed profile",
       "composite separator/body-rendering semantics needed to materialize one literary body",
       "literary-body character count and raw/normalized digests",
       "FantLab analyzer-input bytes/source edition"
@@ -235,7 +241,7 @@
     "page_revision_identity_freeze_is_not_threshold_proof": true,
     "composition_contract_is_not_threshold_proof": true,
     "admitted_for_calibration": false,
-    "reason": "The 418 exact Page identities and the 388-literary/30-apparatus composition partition are frozen source-free, and the exact backing DjVu now has an independent byte identity; Page-wikitext rendering, final body composition semantics, literary-body count and digests remain unfrozen, so scan identity does not prove the >=300,000-character rule."
+    "reason": "The 418 exact Page identities, 388-literary/30-apparatus partition, exact backing DjVu identity and fail-closed render decision profile are frozen source-free; unresolved provider/template/reference/math/inter-page semantics, literary-body count and digests remain unfrozen, so these prerequisites do not prove the >=300,000-character rule."
   },
   "fantlab": {
     "work_id": 969964,
@@ -254,7 +260,7 @@
     "m2_parity_admissible": false
   },
   "next_evidence": [
-    "Define and verify a candidate-specific fail-closed Page-wikitext-to-prose rendering profile over the 388 exact literary dependencies selected by scriptorium-darwin-literary-body-contract-v1, without persisting source prose.",
+    "Resolve and independently freeze the provider/template/reference/math semantics left explicit by scriptorium-darwin-page-render-profile-v1, then implement deterministic exact-revision rendering without persisting source prose; inter-page separator/composition semantics remain a separate decision.",
     "Freeze literary-body character count plus raw and scriptorium-text-v1 normalized digests; admit to general calibration/profile corpus only if the rendered body independently clears 300,000 characters including spaces.",
     "Keep FantLab matching separate: locate a linguistic result and analyzer-input/source-edition evidence attributable specifically to the Rachinsky translation before assigning diagnostic or M2 weight."
   ]

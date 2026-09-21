@@ -27,7 +27,13 @@ API_DOC_URL = (
     "https://www.mediawiki.org/w/index.php?title=API:Expandtemplates/ru"
     f"&oldid={API_DOC_REVISION_ID}"
 )
-HELP_EXPAND_URL = "https://www.mediawiki.org/wiki/Help:ExpandTemplates"
+HELP_EXPAND_TITLE = "Help:ExpandTemplates"
+HELP_EXPAND_REVISION_ID = 8168760
+HELP_EXPAND_REVISION_DATE = "2026-01-23"
+HELP_EXPAND_URL = (
+    "https://www.mediawiki.org/w/index.php?title=Help:ExpandTemplates"
+    f"&oldid={HELP_EXPAND_REVISION_ID}"
+)
 RESEARCH_DATE = "2026-09-21"
 REQUIRED_ROOT_TITLES = ("Шаблон:ё", "Шаблон:ЕЁ")
 REQUIRED_DEPENDENCY_FIELDS = (
@@ -35,6 +41,12 @@ REQUIRED_DEPENDENCY_FIELDS = (
     "revision_id",
     "revision_timestamp",
     "mediawiki_sha1",
+)
+REQUIRED_DISCOVERY_FIELDS = (
+    "status",
+    "method",
+    "direct_dependencies",
+    "evidence_sha256",
 )
 
 
@@ -73,13 +85,48 @@ def _verified_upstream_sha(evidence: Mapping[str, object]) -> str:
     return stored
 
 
+def _validate_sha256(value: object, *, field: str) -> None:
+    if (
+        not isinstance(value, str)
+        or len(value) != 64
+        or any(ch not in "0123456789abcdef" for ch in value)
+    ):
+        raise ValueError(f"Darwin {{ё}} {field} invalid")
+
+
+def _validate_discovery_proof(title: str, proof: object) -> tuple[str, ...]:
+    if not isinstance(proof, dict) or set(proof) != set(REQUIRED_DISCOVERY_FIELDS):
+        raise ValueError("Darwin {{ё}} dependency discovery proof missing or malformed")
+    if proof.get("status") != "complete":
+        raise ValueError("Darwin {{ё}} dependency discovery proof not complete")
+    method = proof.get("method")
+    if not isinstance(method, str) or not method:
+        raise ValueError("Darwin {{ё}} dependency discovery method invalid")
+    _validate_sha256(proof.get("evidence_sha256"), field="dependency discovery evidence_sha256")
+    children = proof.get("direct_dependencies")
+    if not isinstance(children, list):
+        raise ValueError("Darwin {{ё}} direct dependency discovery list invalid")
+    seen: set[str] = set()
+    normalized: list[str] = []
+    for child in children:
+        if not isinstance(child, str) or not child:
+            raise ValueError("Darwin {{ё}} discovered dependency title invalid")
+        if not (child.startswith("Шаблон:") or child.startswith("Модуль:")):
+            raise ValueError("Darwin {{ё}} discovered dependency is not a template/module title")
+        if child in seen:
+            raise ValueError("Darwin {{ё}} discovered dependency duplicated")
+        seen.add(child)
+        normalized.append(child)
+    return tuple(normalized)
+
+
 def validate_dependency_closure(
     dependencies: Sequence[Mapping[str, object]],
     edges: Sequence[Mapping[str, object]],
     *,
     require_complete: bool,
 ) -> None:
-    """Validate only source-free dependency identities and graph closure."""
+    """Validate source-free dependency identities and explicit discovery closure."""
 
     by_title: dict[str, Mapping[str, object]] = {}
     for row in dependencies:
@@ -107,8 +154,11 @@ def validate_dependency_closure(
         forbidden = {"content", "text", "wikitext", "body", "source_text", "rendered_prose"}
         if forbidden.intersection(row):
             raise ValueError("source/template prose leaked into Darwin {{ё}} dependency identity")
+        if "discovery" in row:
+            _validate_discovery_proof(title, row["discovery"])
         by_title[title] = row
 
+    actual_edges: set[tuple[str, str]] = set()
     for edge in edges:
         if set(edge) != {"from", "to"}:
             raise ValueError("Darwin {{ё}} dependency edge schema drift")
@@ -118,6 +168,10 @@ def validate_dependency_closure(
             raise ValueError("Darwin {{ё}} dependency edge title invalid")
         if source not in by_title or target not in by_title:
             raise ValueError("Darwin {{ё}} dependency edge references unbound title")
+        pair = (source, target)
+        if pair in actual_edges:
+            raise ValueError("Darwin {{ё}} dependency edge duplicated")
+        actual_edges.add(pair)
 
     if require_complete:
         missing_roots = [title for title in REQUIRED_ROOT_TITLES if title not in by_title]
@@ -125,6 +179,19 @@ def validate_dependency_closure(
             raise ValueError("Darwin {{ё}} required root dependency missing")
         if not dependencies:
             raise ValueError("Darwin {{ё}} dependency closure empty")
+
+        expected_edges: set[tuple[str, str]] = set()
+        for title, row in by_title.items():
+            if "discovery" not in row:
+                raise ValueError("Darwin {{ё}} complete closure lacks dependency discovery proof")
+            children = _validate_discovery_proof(title, row["discovery"])
+            for child in children:
+                if child not in by_title:
+                    raise ValueError("Darwin {{ё}} discovered dependency remains unbound")
+                expected_edges.add((title, child))
+
+        if actual_edges != expected_edges:
+            raise ValueError("Darwin {{ё}} dependency edges do not match discovery proof")
 
 
 def build_contract(evidence: Mapping[str, object]) -> dict[str, object]:
@@ -156,23 +223,30 @@ def build_contract(evidence: Mapping[str, object]) -> dict[str, object]:
                 "single_override_proves_recursive_dependency_closure": False,
             },
             "recursive_expansion": {
-                "help_url": HELP_EXPAND_URL,
+                "title": HELP_EXPAND_TITLE,
+                "revision_id": HELP_EXPAND_REVISION_ID,
+                "revision_date": HELP_EXPAND_REVISION_DATE,
+                "permanent_url": HELP_EXPAND_URL,
                 "templates_parser_functions_and_variables_expand_recursively": True,
             },
         },
         "replay_contract": {
             "required_root_titles": list(REQUIRED_ROOT_TITLES),
             "required_dependency_fields": list(REQUIRED_DEPENDENCY_FIELDS),
+            "required_discovery_proof_fields": list(REQUIRED_DISCOVERY_FIELDS),
             "dependency_identity_scope": (
                 "exact page title plus revision id, revision timestamp and MediaWiki content SHA-1"
             ),
+            "dependency_discovery_proof_required": True,
             "dependency_graph_must_be_transitively_closed": True,
             "live_or_unbound_dependency_allowed": False,
             "native_expandtemplates_revid_is_version_pin": False,
             "single_templatesandbox_override_is_closed_graph": False,
             "strategy": (
                 "bind every template/module revision in the transitive replay graph explicitly; "
-                "evaluate only in a controlled environment that consumes those bound identities"
+                "for every bound node retain source-free complete direct-dependency discovery evidence "
+                "and require graph edges to exactly match that evidence; evaluate only in a controlled "
+                "environment that consumes those bound identities"
             ),
             "dependencies": [],
             "edges": [],
@@ -195,11 +269,13 @@ def build_contract(evidence: Mapping[str, object]) -> dict[str, object]:
             "reason": (
                 "MediaWiki expandtemplates revid supplies revision context rather than a "
                 "historical transclusion-version pin; recursive template dependencies remain "
-                "unbound, so deterministic replay equivalence is not yet demonstrated"
+                "unbound and no complete per-node discovery proof exists, so deterministic replay "
+                "equivalence is not yet demonstrated"
             ),
             "next_evidence_required": (
                 "freeze exact source-free identities for Шаблон:ё, Шаблон:ЕЁ and every nested "
-                "template/module dependency in one replay environment, then verify deterministic "
+                "template/module dependency in one replay environment; retain complete source-free "
+                "direct-dependency discovery evidence for every bound node; then verify deterministic "
                 "forced and non-forced outputs before promotion"
             ),
         },
@@ -234,6 +310,8 @@ def validate_contract(contract: Mapping[str, object], evidence: Mapping[str, obj
     validate_dependency_closure(dependencies, edges, require_complete=False)
     if replay.get("dependency_closure_complete") is not False:
         raise ValueError("Darwin {{ё}} dependency closure must remain open")
+    if replay.get("dependency_discovery_proof_required") is not True:
+        raise ValueError("Darwin {{ё}} dependency discovery proof must be required")
     if replay.get("native_expandtemplates_revid_is_version_pin") is not False:
         raise ValueError("expandtemplates revid must not be treated as a version pin")
     if replay.get("single_templatesandbox_override_is_closed_graph") is not False:

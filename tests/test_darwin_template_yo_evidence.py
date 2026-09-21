@@ -32,7 +32,11 @@ class DarwinTemplateYoEvidenceTests(unittest.TestCase):
         validate_evidence(committed, load(BACKLOG), load(SHARD))
         self.assertEqual(
             committed["evidence_sha256"],
-            "9123d9f2901b4995deac5c4e09ca09af386befc8129f62e844446d44b864bfd2",
+            "d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc",
+        )
+        self.assertEqual(
+            committed["schema_version"],
+            "scriptorium-darwin-template-yo-documentation-evidence-v2",
         )
 
     def test_documented_semantics_are_conditional_not_literal(self) -> None:
@@ -55,13 +59,26 @@ class DarwinTemplateYoEvidenceTests(unittest.TestCase):
             "https://ru.wikisource.org/w/index.php?title=Справка:Вычитка&oldid=5731079",
         )
 
-    def test_historical_gap_uses_retained_pre_documentation_page_revision(self) -> None:
+    def test_mediawiki_oldid_rendering_uses_current_template_versions(self) -> None:
         evidence = build_evidence(load(BACKLOG), load(SHARD))
-        witness = evidence["historical_gap_witness"]
+        model = evidence["mediawiki_rendering_model"]
+        old_revision = model["old_revision_rendering"]
+        transclusion = model["transclusion_model"]
+        self.assertEqual(old_revision["revision_id"], 8524540)
+        self.assertTrue(old_revision["current_template_versions_used"])
+        self.assertEqual(transclusion["revision_id"], 8551508)
+        self.assertTrue(transclusion["live_link_updates_targets_when_template_changes"])
+        self.assertFalse(transclusion["versioned_transclusion_supported"])
+        self.assertEqual(transclusion["phabricator_reference"], "T31051")
+
+    def test_page_revision_is_context_not_template_binding(self) -> None:
+        evidence = build_evidence(load(BACKLOG), load(SHARD))
+        witness = evidence["page_revision_context"]
         self.assertEqual(witness["page_sequence"], 11)
         self.assertEqual(witness["revision_id"], 3358032)
         self.assertEqual(witness["revision_timestamp"], "2018-08-13T19:18:33Z")
         self.assertTrue(witness["documentation_revision_postdates_page_revision"])
+        self.assertFalse(witness["page_oldid_binds_transcluded_template_revision"])
 
     def test_without_pre_documentation_page_revision_evidence_fails_closed(self) -> None:
         shard = deepcopy(load(SHARD))
@@ -87,11 +104,20 @@ class DarwinTemplateYoEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "semantic backlog digest drift"):
             build_evidence(backlog, load(SHARD))
 
+    def test_next_evidence_is_replay_time_dependency_freeze(self) -> None:
+        evidence = build_evidence(load(BACKLOG), load(SHARD))
+        decision = evidence["promotion_decision"]
+        self.assertFalse(decision["page_save_time_template_lookup_required"])
+        self.assertIn("analysis time", decision["next_evidence_required"])
+        self.assertIn("Шаблон:ё", decision["next_evidence_required"])
+        self.assertIn("Шаблон:ЕЁ", decision["next_evidence_required"])
+
     def test_profile_and_downstream_gates_remain_closed(self) -> None:
         evidence = build_evidence(load(BACKLOG), load(SHARD))
         decision = evidence["promotion_decision"]
         self.assertFalse(decision["render_profile_rule_promoted"])
         self.assertFalse(decision["backlog_item_removed"])
+        self.assertFalse(decision["page_save_time_template_lookup_required"])
         for key in (
             "renderer_semantics_complete",
             "renderer_implementation_ready",

@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 212
+STATE_REVISION: 213
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-21T16:58:00Z
-LAST_RESULT: SCRIP-CORPUS-050 / Issue #187 authored a source-safe popular-science provenance lead for Yakov Perelman's 1913 *Entertaining Physics, Book 1*. Draft PR #188 pins Wikimedia Commons file-description revision `oldid=1045983412` for the first-edition bibliographic/legal description and separately records current Commons file/structured metadata observed on 2026-09-21: 223 pages, provider-reported 28,168,847 bytes, provider SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`, and the 2021 file-history note that pages 193–194 were added. The oldid is not treated as a version pin for structured data or PDF bytes. FantLab `work191634` is retained only as catalogue identity evidence; a work-specific linguistic-analysis surface was not independently established. No Scriptorium PDF SHA-256, OCR/body or >=300k proof exists yet. PR #188 remains Draft for independent exact-head review.
-LAST_VERIFIED_PROGRESS: The retained corpus now has an explicit early-20th-century Russian popular-science/nonfiction lead with a concrete first-edition and legal description surface. Current provider binary metadata is retained as an observation rather than promoted to independently replayed identity. The PDF binary, OCR/body, >=300k admission, FantLab linguistic-analysis/input identity, diagnostic readiness and M2 remain deliberately unverified. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-21T17:56:15Z
+LAST_RESULT: SCRIP-CORPUS-050 / Issue #187 completed. Independent exact-head review `5270049146` re-read PR #188 at `734c36c9dab4f9d461ef53c08b1077914d90d42c` against unchanged base `644a1db54f637222bf603865bd1bde4045ed89c5`, confirmed 10 commits ahead / 0 behind, five changed files and no review threads. The Commons/FantLab evidence boundary was independently rechecked: description `oldid=1045983412` remains bibliographic/legal provenance only; current 223-page / 28,168,847-byte / SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648` data and the 2021-09-03 page-restoration note remain provider observations, not an independently replayed immutable binary. All 13 PR-triggered workflow runs returned for the exact head settled `success`; Pages run `35628918792` checked out the reviewed SHA, passed the full 408-test suite, canonical site build and deterministic rebuild. PR #188 was marked Ready and squash-merged as `41dd7a750e82a29e1d5f6829aa0d853b881e1373`, closing Issue #187 completed.
+LAST_VERIFIED_PROGRESS: Master now retains an independently reviewed early-20th-century Russian popular-science/nonfiction provenance lead for Perelman's 1913 first edition. The permanent Commons description revision freezes the bibliographic/legal description; current provider binary metadata remains an observation rather than promoted byte identity. Exact PDF replay/SHA-256, deterministic OCR/body, >=300k admission, work-specific FantLab linguistic-analysis/input identity, diagnostic readiness and M2 remain deliberately unverified. M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-050
-ISSUE:          #187 (open)
-STATUS:         REVIEW_PENDING
-PR:             #188 (Draft)
-NEXT_ACTION:    Independently re-read the final exact PR #188 head and settled checks. Verify the Commons/FantLab evidence
-                boundary, including that description oldid is not presented as a structured-data/PDF pin and provider
-                metadata is not promoted to binary/body/FantLab identity. If clean, mark Ready and merge in a later run;
-                do not advance >=300k, diagnostics or M2 without separate evidence.
+ISSUE:          #187 (closed completed)
+STATUS:         COMPLETE
+PR:             #188 (independently reviewed; squash-merged as 41dd7a750e82a29e1d5f6829aa0d853b881e1373)
+NEXT_ACTION:    Resume normal-flow selection from the queue. A later bounded Perelman unit may independently stream/hash
+                the exact Commons original and define a fail-closed OCR/body contract. Keep >=300k, FantLab diagnostic,
+                source-edition and M2 gates closed until separately proved.
 ```
 
 ## Current milestone gate
@@ -51,7 +50,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **The Life of Klim Samgin** — candidate-specific source graph, fail-closed extractor, per-part/composite body identities and provenance are frozen; exact historical MediaWiki/Poem deployment and FantLab input identity remain unresolved.
 - **Children of Captain Grant — Beketova translation** — 1,095,467 characters / 2,040,240 bytes; SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`; clears >=300k with explicit source/PD evidence. No FantLab result/input identity for this translation; M2 weight zero.
 - **On the Origin of Species — Rachinsky translation** — 418 exact Page identities, 388-literary/30-apparatus composition, exact-388 markup inventory, backing scan identity, render profile SHA-256 `2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`, semantic backlog SHA-256 `4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`, and documentation evidence SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc` are retained. SCRIP-CORPUS-049 is independently reviewed and complete on master with replay contract SHA-256 `35bed756f4fafa4f443315c09d04a35c66441eb2249eced3c7540ac20c981afe`: `expandtemplates.revid` is context, not version pin; exact recursive dependency closure is still empty/unfrozen, and any future complete closure must carry per-node source-free discovery proof whose SHA-256 is recomputed from exact node revision identity plus direct-dependency set and whose child relations exactly match the graph. All 43 semantic shapes remain unresolved, `ё` remains priority 1 at 2,227 calls, and renderer/body/>=300k/FantLab/M2 remain closed.
-- **Entertaining Physics, Book 1 — Perelman 1913 first edition** — SCRIP-CORPUS-050 Draft. Commons description `oldid=1045983412` freezes the first-edition bibliographic/legal description surface. Separately, the current file surface observed on 2026-09-21 reports 223 pages, 28,168,847 bytes and SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`; the 2021 file revision says pages 193–194 were added. Those current structured/binary fields are not claimed to be version-pinned by the oldid. The PDF bytes are not independently replayed, no Scriptorium SHA-256/OCR/body exists, >=300k is unproved, and FantLab `work191634` is catalogue-only evidence with analyzer-input identity unknown.
+- **Entertaining Physics, Book 1 — Perelman 1913 first edition** — SCRIP-CORPUS-050 independently reviewed and complete. Commons description `oldid=1045983412` freezes the first-edition bibliographic/legal description surface. Separately, the current file surface observed on 2026-09-21 reports 223 pages, 28,168,847 bytes and SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`; the 2021 file revision says pages 193–194 were added. Those current structured/binary fields are not claimed to be version-pinned by the oldid. The PDF bytes are not independently replayed, no Scriptorium SHA-256/OCR/body exists, >=300k is unproved, and FantLab `work191634` is catalogue-only evidence with analyzer-input identity unknown.
 
 ## Deterministic / morphology findings
 

@@ -1,0 +1,62 @@
+{
+  "contract_version": "scriptorium-perelman-1913-ocr-body-contract-v1",
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "purpose": "Fail-closed promotion boundary from the frozen 1913 scan identity to a future deterministic OCR-derived literary body.",
+  "scan_identity": {
+    "byte_count": 28168847,
+    "sha1": "3c616f547ff283a2cafd1ac26b448a8e8013f648",
+    "sha256": "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
+  },
+  "source_pdf_page_count": 223,
+  "page_selection": {
+    "status": "unbound",
+    "included_pdf_pages": [],
+    "excluded_pdf_pages": [],
+    "evidence": null
+  },
+  "rasterization": {
+    "status": "unbound",
+    "engine": null,
+    "version": null,
+    "artifact_sha256": null,
+    "settings": null
+  },
+  "ocr": {
+    "status": "unbound",
+    "engine": null,
+    "version": null,
+    "engine_artifact_sha256": null,
+    "language_data": [],
+    "language_data_sha256": null,
+    "settings": null
+  },
+  "composition": {
+    "status": "defined",
+    "page_order": "ascending_pdf_page_number",
+    "per_page_trailing_newlines": "strip_all",
+    "page_joiner": "\n\n",
+    "raw_body_encoding": "utf-8",
+    "normalized_profile": "scriptorium-text-v1"
+  },
+  "outputs": {
+    "raw_character_count": null,
+    "raw_sha256": null,
+    "normalized_character_count": null,
+    "normalized_sha256": null
+  },
+  "gates": {
+    "extraction_profile_frozen": false,
+    "literary_body_frozen": false,
+    "minimum_300k_proved_from_frozen_body": false,
+    "admitted_for_calibration": false,
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "m2_parity_admissible": false
+  },
+  "publication": {
+    "pdf_bytes_committed": false,
+    "page_images_committed": false,
+    "ocr_text_committed": false,
+    "literary_source_text_committed": false
+  }
+}

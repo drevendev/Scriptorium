@@ -53,26 +53,39 @@
       "direct_file_url_is_immutable_identity": false,
       "description_revision_pins_pdf_bytes": false
     },
+    "ocr_body_promotion_contract": {
+      "contract_version": "scriptorium-perelman-1913-ocr-body-contract-v1",
+      "source_free_contract": "perelman-entertaining-physics-book1-1913-ru.ocr-contract.json",
+      "canonical_sha256": "f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5",
+      "status": "defined_unbound",
+      "scan_identity_bound": true,
+      "page_selection_bound": false,
+      "rasterization_toolchain_bound": false,
+      "ocr_toolchain_bound": false,
+      "body_outputs_frozen": false
+    },
     "immutable_identity": {
-      "status": "scan_binary_frozen_ocr_body_unverified",
+      "status": "scan_binary_frozen_ocr_contract_defined_body_unverified",
       "frozen_components": [
         "Wikimedia Commons file-description revision oldid 1045983412 for bibliographic/legal provenance",
         "first-edition bibliographic description for the 1913 P. P. Soikin publication",
         "public-domain licensing surface carried by the retained file-description revision",
-        "exact current 2021 Commons PDF byte stream: 28,168,847 bytes; SHA-1 3c616f547ff283a2cafd1ac26b448a8e8013f648; SHA-256 3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
+        "exact current 2021 Commons PDF byte stream: 28,168,847 bytes; SHA-1 3c616f547ff283a2cafd1ac26b448a8e8013f648; SHA-256 3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61",
+        "source-free OCR/body promotion contract v1: SHA-256 f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5"
       ],
       "observed_current_components": [
         "223-page count on the Commons file surface observed 2026-09-21",
         "2021-09-03 current file-history revision note that pages 193-194 were added"
       ],
       "unfrozen_components": [
-        "deterministic literary-page selection and OCR extraction profile",
+        "exact literary-page selection over the frozen PDF",
+        "reproducible rasterization and OCR toolchain identities/settings under a future bound contract version",
         "raw and normalized literary-body character counts and digests",
         "whether the exact frozen literary body clears 300,000 characters including spaces",
         "whether FantLab exposes a work-specific linguistic-analysis result for this work",
         "the relationship between any FantLab analyzer input and this exact 1913 scan/source edition"
       ],
-      "reason": "Hosted CI independently streamed the exact current Commons original, reproduced the provider-observed byte count and SHA-1, and froze a Scriptorium SHA-256 without persisting source bytes. This advances binary identity only; OCR/body/admission/FantLab identity remain separate unproved gates."
+      "reason": "Hosted CI independently froze the scan byte identity in SCRIP-CORPUS-051. SCRIP-CORPUS-052 adds a source-free fail-closed promotion contract bound to that scan, but intentionally leaves page selection, renderer/OCR identity, body outputs, admission and FantLab identity unproved."
     }
   },
   "diversity": {
@@ -88,16 +101,17 @@
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "scan_binary_frozen_ocr_body_unverified",
+    "status": "scan_binary_frozen_ocr_contract_defined_body_unverified",
     "reasons": [
       "The retained Commons description revision identifies a concrete first-edition 1913 bibliographic/legal surface and public-domain status.",
       "Hosted CI independently streamed the exact current Commons original and reproduced 28,168,847 bytes plus SHA-1 3c616f547ff283a2cafd1ac26b448a8e8013f648, establishing Scriptorium SHA-256 3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61 in a source-free receipt.",
-      "No deterministic page-selection/OCR/extraction contract or frozen literary-body count/digest exists, so the >=300,000-character corpus rule has not been proved for this exact edition.",
+      "A source-free fail-closed OCR/body promotion contract is now defined and bound to the frozen scan, but its page-selection, rasterization and OCR bindings deliberately remain unbound.",
+      "No frozen literary-body count/digest exists, so the >=300,000-character corpus rule has not been proved for this exact edition.",
       "FantLab catalogue work 191634 was observed, but a work-specific linguistic-analysis surface was not independently established.",
       "No evidence ties a FantLab analyzer input to this exact 1913 edition or byte stream."
     ],
     "next_evidence": [
-      "Define a deterministic, fail-closed literary-page selection and OCR extraction contract over the frozen PDF and freeze a source-free literary-body character count plus raw/normalized digests; require the frozen body itself to clear 300,000 characters before calibration admission.",
+      "Under a new independently evidenced contract version, bind exact literary-page selection plus reproducible rasterization/OCR toolchain identities and settings; then freeze source-free raw/normalized literary-body counts and digests and require the body itself to clear 300,000 characters before calibration admission.",
       "Establish a real work-specific FantLab linguistic-analysis surface and exact analyzer-input/source-edition identity before any diagnostic or M2 promotion."
     ]
   }

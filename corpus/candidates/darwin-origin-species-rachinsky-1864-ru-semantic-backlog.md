@@ -27,9 +27,9 @@ The next two rows are self-closing `<references/>` (**388**) and template `ВА�
 
 ## `{{ё}}` documentation evidence boundary
 
-SCRIP-CORPUS-047 adds a narrower source-free evidence record for this first target. Official Russian Wikisource documentation at permanent revision `oldid=5090323` identifies zero-argument `{{ё}}` as the lowercase shorthand of the conditional `ЕЁ` yoification family: the documented output is **`ё` in forced-yoification mode and `е` otherwise**. Current proofread help also describes `{{ё}}` / `{{ё!}}` as the mechanism used to support yoified and non-yoified finished-text variants.
+SCRIP-CORPUS-047 adds a narrower source-free evidence record for this first target. Official Russian Wikisource documentation at permanent revision `oldid=5090323` identifies zero-argument `{{ё}}` as the lowercase shorthand of the conditional `ЕЁ` yoification family: the documented output is **`ё` in forced-yoification mode and `е` otherwise**. Proofread help is independently pinned at permanent revision `oldid=5731079` (2026-07-19), where `{{ё}}` / `{{ё!}}` are described as the mechanism used to support yoified and non-yoified finished-text variants.
 
-That establishes a **conditional semantic class**, not a historical renderer rule for this candidate. The documentation revision is dated 2024-01-11, while the retained Darwin Page identities include revisions from 2018 (for example Page sequence 11, revision `3358032`, timestamp `2018-08-13T19:18:33Z`) and 2022. Current documentation therefore postdates retained Page saves and cannot, by itself, prove which template revision/dependency graph MediaWiki used for those historical renders.
+That establishes a **conditional semantic class**, not a historical renderer rule for this candidate. The template documentation revision is dated 2024-01-11, while the retained Darwin Page identities include revisions from 2018 (for example Page sequence 11, revision `3358032`, timestamp `2018-08-13T19:18:33Z`) and 2022. Current documentation therefore postdates retained Page saves and cannot, by itself, prove which template revision/dependency graph MediaWiki used for those historical renders.
 
 Consequently `ё` deliberately remains in the unresolved backlog and the render profile is unchanged. The next evidence needed is historical `Шаблон:ЕЁ` / `Шаблон:ё` revision and dependency identity at retained Page-save anchors; only then can a later unit decide whether promotion is justified.
 
@@ -37,9 +37,12 @@ Source-free evidence artifact:
 
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json)
 - schema: `scriptorium-darwin-template-yo-documentation-evidence-v1`
-- evidence SHA-256: `3c0af5dfe8d23cd6d47ce2f92b30c58b83e352df692c18e6d4f59a14928eb06a`
-- official documentation permalink: `https://ru.wikisource.org/w/index.php?title=Шаблон:ЕЁ/Документация&oldid=5090323`
+- evidence SHA-256: `9123d9f2901b4995deac5c4e09ca09af386befc8129f62e844446d44b864bfd2`
+- official template-documentation permalink: `https://ru.wikisource.org/w/index.php?title=Шаблон:ЕЁ/Документация&oldid=5090323`
+- proofread-help permalink: `https://ru.wikisource.org/w/index.php?title=Справка:Вычитка&oldid=5731079`
 - builder/validator: [`../../scriptorium/darwin_template_yo_evidence.py`](../../scriptorium/darwin_template_yo_evidence.py)
+
+The evidence builder also recomputes the full canonical semantic-backlog self-digest before deriving this record. A stale `backlog_sha256` with any non-target backlog mutation therefore fails closed instead of being copied into a new evidence artifact.
 
 ## Frozen backlog artifact
 

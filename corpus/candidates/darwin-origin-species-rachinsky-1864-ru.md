@@ -89,11 +89,13 @@ This is a **frozen decision boundary, not a renderer**. `rendering_profile_froze
 
 ## Source-free unresolved-semantic backlog
 
-**SCRIP-CORPUS-046 / Draft PR #180** derives a deterministic research backlog only after validating the frozen render-profile/source-surface boundary. The durable artifact preserves all **43 unresolved shapes**: **5 tag shapes / 518 tokens** and **38 template shapes / 4,583 invocations**.
+**SCRIP-CORPUS-046 / merged PR #180** derives a deterministic research backlog only after validating the frozen render-profile/source-surface boundary. The durable artifact preserves all **43 unresolved shapes**: **5 tag shapes / 518 tokens** and **38 template shapes / 4,583 invocations**.
 
 The backlog groups them into four independently reviewable tracks: provider-template (**37 shapes / 4,579 occurrences**), provider-reference (**3 / 466**), provider-math (**2 / 52**), and inter-page (**1 / 4**). Items are ranked mechanically by descending observed occurrence count with stable tie-breaking. The current next research target is template **`ё`**, arity **0 positional / 0 named**, observed **2,227 times**. That target remains explicitly `semantic_status=unresolved`; selection priority is not a semantics claim.
 
 Canonical backlog SHA-256 is **`4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`**. The source-free public companion is [`darwin-origin-species-rachinsky-1864-ru-semantic-backlog.md`](darwin-origin-species-rachinsky-1864-ru-semantic-backlog.md), and the machine-readable artifact is [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json).
+
+Independent exact-head review `5263138005` re-read the repaired head `6b9f17c8c2d86e1920c63017325deabecd68dab0`, verified all 17 PR-triggered workflows, independently checked the source-free workflow artifact and found no remaining blocker before squash merge `10ae3c380bfe468e684625f912540392fff9dda1`.
 
 This backlog does **not** implement rendering or advance any downstream gate. `renderer_semantics_complete=false`, `renderer_implementation_ready=false`, `inter_page_composition_frozen=false`, `literary_body_count_and_digests_frozen=false`, `minimum_300k_proved=false`, `admitted_for_calibration=false`, `diagnostic_ready=false`, `m2_parity_admissible=false`, and `fantlab_source_edition_match=unknown` remain mandatory.
 

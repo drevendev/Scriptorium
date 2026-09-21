@@ -1,0 +1,105 @@
+{
+  "trace_version": "scriptorium-source-edition-trace-v1",
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "research_date": "2026-09-21",
+  "fantlab": {
+    "work_id": 191634,
+    "work_page_url": "https://fantlab.ru/work191634",
+    "catalogue_identity_observed": true,
+    "work_title": "Занимательная физика. Книга 1",
+    "work_kind": "monograph",
+    "work_year": 1913,
+    "language": "Russian",
+    "linguistic_analysis_surface_observed": false,
+    "analysis_url": null,
+    "source_edition_disclosed": false,
+    "source_bytes_disclosed": false,
+    "relationship_to_public_edition": "unproven"
+  },
+  "public_edition": {
+    "provider": "Wikimedia Commons",
+    "file_page_url": "https://commons.wikimedia.org/wiki/File:Перельман_Я.И._Занимательная_физика._Книга_1_(1913).pdf",
+    "file_description_revision_url": "https://commons.wikimedia.org/w/index.php?title=File:Перельман_Я.И._Занимательная_физика._Книга_1_(1913).pdf&oldid=1045983412",
+    "description_revision_oldid": 1045983412,
+    "edition_label": "Занимательная физика. Кн. 1. СПб., Изд-во П. П. Сойкина, 1913",
+    "author": "Яков Исидорович Перельман",
+    "author_lifespan": "1882–1942",
+    "legal_basis": "public_domain",
+    "legal_evidence": "The retained Commons file-description revision carries the public-domain licensing surface. The current file surface also identifies the file as free of known copyright restrictions. Scriptorium stores only source-free provenance metadata in this unit.",
+    "description_revision_scope": {
+      "pins_file_description_revision": true,
+      "pins_commons_structured_data": false,
+      "pins_pdf_bytes": false,
+      "note": "The oldid is retained for bibliographic/legal description provenance. Current structured file metadata is recorded separately as an observation and is not claimed to be version-bound by the description oldid."
+    },
+    "current_file_surface_observation": {
+      "observed_on": "2026-09-21",
+      "kind": "facsimile_scan",
+      "media_type": "application/pdf",
+      "page_count": 223,
+      "provider_reported_byte_count": 28168847,
+      "current_file_revision_timestamp": "2021-09-03T09:12:00Z",
+      "current_file_revision_note": "added pages 193-194 (without text layout)",
+      "provider_reported_sha1": "3c616f547ff283a2cafd1ac26b448a8e8013f648",
+      "source_text_committed": false
+    },
+    "provider_binary_metadata": {
+      "sha1": "3c616f547ff283a2cafd1ac26b448a8e8013f648",
+      "sha1_scope": "provider-declared current structured file metadata observed on 2026-09-21; not claimed to be cryptographically bound to description oldid 1045983412",
+      "scriptorium_independently_streamed_binary": false,
+      "scriptorium_sha256": null,
+      "direct_file_url_is_immutable_identity": false,
+      "description_revision_pins_pdf_bytes": false
+    },
+    "immutable_identity": {
+      "status": "description_surface_frozen_current_binary_metadata_observed_body_unverified",
+      "frozen_components": [
+        "Wikimedia Commons file-description revision oldid 1045983412",
+        "first-edition bibliographic description for the 1913 P. P. Soikin publication",
+        "public-domain licensing surface carried by the retained file-description revision"
+      ],
+      "observed_current_components": [
+        "223-page count on the Commons file surface observed 2026-09-21",
+        "provider-reported current file size of 28,168,847 bytes",
+        "provider-reported SHA-1 3c616f547ff283a2cafd1ac26b448a8e8013f648",
+        "2021-09-03 current file-history revision note that pages 193-194 were added"
+      ],
+      "unfrozen_components": [
+        "independently replayed PDF byte identity and Scriptorium SHA-256",
+        "literary-page/OCR selection and deterministic extraction profile",
+        "raw and normalized literary-body counts and digests",
+        "whether the exact frozen body clears 300,000 characters including spaces",
+        "whether FantLab exposes a linguistic-analysis result for this work",
+        "the relationship between any FantLab analyzer input and this 1913 edition"
+      ],
+      "reason": "This unit freezes the permanent bibliographic/legal description revision and separately records current provider file metadata. It does not claim that Commons structured data is revision-pinned by the oldid, that the direct file URL is immutable, or that the PDF bytes were independently replayed."
+    }
+  },
+  "diversity": {
+    "period": "early_20th_century",
+    "genre": "popular_science_nonfiction",
+    "work_identity": "original_russian_1913_first_edition",
+    "reason_selected": "Adds a legally explicit Russian popular-science/nonfiction lead to a retained corpus that is still weighted toward fiction, while preserving a concrete historical edition identity."
+  },
+  "admissibility": {
+    "minimum_300k_proved_from_frozen_body": false,
+    "admitted_for_calibration": false,
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "status": "description_surface_frozen_current_binary_metadata_observed_body_unverified",
+    "reasons": [
+      "The retained Commons description revision identifies a concrete first-edition 1913 bibliographic/legal surface and public-domain status.",
+      "The current Commons file surface observed on 2026-09-21 reports 223 pages, 28,168,847 bytes and SHA-1 3c616f547ff283a2cafd1ac26b448a8e8013f648, but those structured/binary metadata are not claimed to be version-pinned by the description oldid and Scriptorium has not independently streamed the PDF bytes.",
+      "No deterministic OCR/extraction contract or frozen literary-body count/digest exists, so the >=300,000-character corpus rule has not been proved for this edition.",
+      "FantLab catalogue work 191634 was observed, but a work-specific linguistic-analysis surface was not independently established in this unit.",
+      "No evidence ties a FantLab analyzer input to this exact 1913 edition or byte stream."
+    ],
+    "next_evidence": [
+      "Independently stream and hash the exact Commons original, freeze a Scriptorium SHA-256 receipt without committing PDF bytes, and compare the observed stream to the provider-reported current SHA-1/byte count.",
+      "Define a deterministic, fail-closed literary-page/OCR extraction contract and freeze body character count plus raw/normalized digests; require the frozen body itself to clear 300,000 characters before calibration admission.",
+      "Establish a real work-specific FantLab linguistic-analysis surface and exact analyzer-input/source-edition identity before any diagnostic or M2 promotion."
+    ]
+  }
+}

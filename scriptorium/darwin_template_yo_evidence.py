@@ -25,8 +25,13 @@ DOCUMENTATION_URL = (
     "https://ru.wikisource.org/w/index.php?title=Шаблон:ЕЁ/Документация"
     f"&oldid={DOCUMENTATION_REVISION_ID}"
 )
+HELP_REVISION_ID = 5731079
+HELP_REVISION_DATE = "2026-07-19"
 HELP_TITLE = "Справка:Вычитка"
-HELP_URL = "https://ru.wikisource.org/wiki/Справка:Вычитка"
+HELP_URL = (
+    "https://ru.wikisource.org/w/index.php?title=Справка:Вычитка"
+    f"&oldid={HELP_REVISION_ID}"
+)
 RESEARCH_DATE = "2026-09-21"
 
 
@@ -36,6 +41,20 @@ def _canonical_json(value: object) -> str:
 
 def _sha256_json(value: object) -> str:
     return sha256(_canonical_json(value).encode("utf-8")).hexdigest()
+
+
+def _verified_backlog_sha(backlog: Mapping[str, object]) -> str:
+    """Verify the semantic backlog self-digest before deriving evidence from it."""
+
+    stored = backlog.get("backlog_sha256")
+    if not isinstance(stored, str) or len(stored) != 64:
+        raise ValueError("Darwin semantic backlog digest missing")
+    unsigned = dict(backlog)
+    unsigned.pop("backlog_sha256", None)
+    actual = _sha256_json(unsigned)
+    if actual != stored:
+        raise ValueError("Darwin semantic backlog digest drift")
+    return stored
 
 
 def _target_from_backlog(backlog: Mapping[str, object]) -> dict[str, object]:
@@ -107,11 +126,9 @@ def build_evidence(
 ) -> dict[str, object]:
     """Build a deterministic source-free documentation evidence record."""
 
+    backlog_sha = _verified_backlog_sha(backlog)
     target = _target_from_backlog(backlog)
     witness = _historical_gap_witness(page_revision_shard)
-    backlog_sha = backlog.get("backlog_sha256")
-    if not isinstance(backlog_sha, str) or len(backlog_sha) != 64:
-        raise ValueError("Darwin semantic backlog digest missing")
 
     manifest: dict[str, object] = {
         "schema_version": EVIDENCE_VERSION,
@@ -133,7 +150,9 @@ def build_evidence(
         "proofread_help": {
             "provider": "Russian Wikisource",
             "title": HELP_TITLE,
-            "url": HELP_URL,
+            "revision_id": HELP_REVISION_ID,
+            "revision_date": HELP_REVISION_DATE,
+            "permanent_url": HELP_URL,
             "researched_on": RESEARCH_DATE,
             "evidence_scope": "current_workflow_documentation",
         },

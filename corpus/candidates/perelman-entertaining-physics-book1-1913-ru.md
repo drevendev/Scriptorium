@@ -24,18 +24,26 @@ The permanent Commons `oldid` pins only the file-description revision and its bi
 
 This is a **scan-binary freeze, not an OCR or literary-body freeze**. No PDF bytes, page images, OCR or literary source text are stored in this repository or uploaded as evidence. No page-selection/OCR profile, raw or normalized literary body, character count or body digest has been frozen. Therefore the exact edition has **not yet proved the >=300,000-character calibration rule from a Scriptorium body**.
 
+## OCR/body promotion boundary
+
+SCRIP-CORPUS-052 defines a source-free, versioned promotion contract bound to the exact frozen scan: [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.ocr-contract.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.ocr-contract.json). Its canonical SHA-256 is **`f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5`**.
+
+The v1 contract deliberately remains **unbound** for literary-page selection, rasterizer identity/settings, OCR engine/language-data identity/settings, and all body outputs. It does freeze the future composition policy: selected PDF pages must be ordered by ascending PDF page number, trailing newlines are stripped per page, pages are joined with two LF characters, raw output is UTF-8, and normalization uses `scriptorium-text-v1`. The validator rejects scan-identity drift, shape drift, invented page/toolchain bindings, source-text payload keys, non-null body outputs, and premature >=300k/calibration/FantLab/M2 promotion. A real bound extraction profile must therefore arrive as a new independently evidenced contract version rather than mutating v1 in place.
+
 ## FantLab boundary
 
 FantLab work `191634` confirms catalogue identity and the 1913 work date only. A work-specific linguistic-analysis artifact and its analyzer-input edition/bytes remain unestablished. `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, and `m2_parity_admissible=false`.
 
 ## What is still open
 
-The next candidate-specific evidence unit is a deterministic, fail-closed page-selection/OCR/body contract that can produce a source-free character count and raw/normalized body digests from this exact frozen scan. Only that frozen literary body can prove or reject the >=300,000-character rule. Any later FantLab comparison must independently establish a real work-specific linguistic-analysis surface and analyzer-input/source-edition identity.
+The next candidate-specific evidence step is to establish exact literary-page selection and reproducible renderer/OCR toolchain identities over the frozen PDF, then freeze source-free raw/normalized body counts and digests under a new contract version. Only that frozen literary body can prove or reject the >=300,000-character rule. Any later FantLab comparison must independently establish a real work-specific linguistic-analysis surface and analyzer-input/source-edition identity.
 
 ## Canonical evidence
 
 - [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.json) — source/legal/catalogue provenance and closed-gate machine record.
 - [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.scan-identity.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.scan-identity.json) — exact current PDF byte identity and closed-gate receipt.
+- [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.ocr-contract.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.ocr-contract.json) — source-free fail-closed OCR/body promotion contract; page selection and OCR toolchain remain unbound.
 - [`../../scriptorium/perelman_scan_identity.py`](../../scriptorium/perelman_scan_identity.py) — transient streaming capture/replay implementation.
+- [`../../scriptorium/perelman_ocr_contract.py`](../../scriptorium/perelman_ocr_contract.py) — contract validator and canonical digest implementation.
 - Wikimedia Commons permanent description revision: `https://commons.wikimedia.org/w/index.php?title=File:Перельман_Я.И._Занимательная_физика._Книга_1_(1913).pdf&oldid=1045983412`.
 - FantLab catalogue work: `https://fantlab.ru/work191634`.

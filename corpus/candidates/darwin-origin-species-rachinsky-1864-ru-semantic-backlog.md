@@ -29,17 +29,13 @@ The next two rows are self-closing `<references/>` (**388**) and template `ВА�
 
 SCRIP-CORPUS-047 established the documented semantic class. Official Russian Wikisource documentation at permanent revision `oldid=5090323` identifies zero-argument `{{ё}}` as the lowercase shorthand of the conditional `ЕЁ` yoification family: the documented output is **`ё` in forced-yoification mode and `е` otherwise**. Proofread help is independently pinned at permanent revision `oldid=5731079` (2026-07-19), where `{{ё}}` / `{{ё!}}` are described as the mechanism used to support yoified and non-yoified finished-text variants.
 
-SCRIP-CORPUS-048 corrects the dependency model used to interpret old Page revisions. Official MediaWiki `Help:History` at permanent revision `oldid=8524540` states that wikitext history and rendered-page history are different and that an old page revision still uses the **current versions of templates and images** unless old versions have been renamed. MediaWiki `Transclusion/en` at permanent revision `oldid=8551508` describes transclusion as a live link whose targets update when the template changes and references the lack of versioned transclusion support (`T31051`).
+SCRIP-CORPUS-048 corrected the dependency model used to interpret old Page revisions. Official MediaWiki `Help:History` at permanent revision `oldid=8524540` states that wikitext history and rendered-page history are different and that an old page revision still uses the **current versions of templates and images** unless old versions have been renamed. MediaWiki `Transclusion/en` at permanent revision `oldid=8551508` describes transclusion as a live link whose targets update when the template changes and references the lack of versioned transclusion support (`T31051`).
 
-Therefore the retained Darwin Page `oldid`s freeze Page wikitext identity, **not** the `Шаблон:ё` / `Шаблон:ЕЁ` revisions that will be used by a later replay. Looking up those template revisions at the 2018/2022 Page-save timestamps would not bind deterministic rendering and is no longer the queued prerequisite.
-
-The corrected prerequisite is to freeze the exact `Шаблон:ё` and `Шаблон:ЕЁ` revisions, plus any nested dependencies, used by the chosen replay/rendering environment at analysis time — or to use an explicitly version-pinned template-expansion mechanism — and then validate the conditional outputs before any render-profile promotion.
+Therefore the retained Darwin Page `oldid`s freeze Page wikitext identity, **not** the `Шаблон:ё` / `Шаблон:ЕЁ` revisions that will be used by a later replay. Looking up those template revisions at the 2018/2022 Page-save timestamps would not bind deterministic rendering.
 
 A retained 2018 Page witness remains useful as Page-wikitext provenance context (Page sequence 11, revision `3358032`, timestamp `2018-08-13T19:18:33Z`), but its save timestamp is explicitly **not** a template-revision binding.
 
-Consequently `ё` deliberately remains in the unresolved backlog and the render profile is unchanged.
-
-Source-free evidence artifact:
+Source-free documentation evidence:
 
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json)
 - schema: `scriptorium-darwin-template-yo-documentation-evidence-v2`
@@ -50,7 +46,25 @@ Source-free evidence artifact:
 - MediaWiki transclusion-model permalink: `https://www.mediawiki.org/w/index.php?title=Transclusion/en&oldid=8551508`
 - builder/validator: [`../../scriptorium/darwin_template_yo_evidence.py`](../../scriptorium/darwin_template_yo_evidence.py)
 
-The evidence builder recomputes the full canonical semantic-backlog self-digest before deriving this record. A stale `backlog_sha256` with any non-target backlog mutation therefore fails closed instead of being copied into a new evidence artifact.
+The evidence builder recomputes the full canonical semantic-backlog self-digest before deriving this record. A stale `backlog_sha256` with any non-target backlog mutation therefore fails closed.
+
+## `{{ё}}` version-pinned replay contract
+
+SCRIP-CORPUS-049 closes another tempting shortcut without claiming renderer equivalence. MediaWiki `API:Expandtemplates/ru` permanent revision `oldid=6729113` documents `revid` as revision context for `{{REVISIONID}}` and similar variables; it does **not** document `revid` as a historical transcluded-template version selector. The same API exposes TemplateSandbox title/text substitution, while `Help:ExpandTemplates` documents recursive expansion of templates, parser functions and variables.
+
+Accordingly, neither `action=expandtemplates&revid=...` nor one direct TemplateSandbox override is accepted as a closed historical dependency graph. Before promotion, replay must bind source-free identities for **both** `Шаблон:ё` and `Шаблон:ЕЁ` and every recursively discovered template/module dependency: exact title, revision ID, revision timestamp and MediaWiki content SHA-1. Any live or unbound dependency keeps the closure open.
+
+The committed contract intentionally contains **zero bound dependencies** in this unit. It therefore remains `dependency_closure_complete=false`; it is a fail-closed specification for the next evidence slice, not a renderer implementation. Later replay must also independently verify deterministic output identities for both documented modes (`ё` when forced, `е` otherwise) before `ё` may leave the unresolved backlog.
+
+Source-free replay contract:
+
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract.json)
+- schema: `scriptorium-darwin-template-yo-replay-contract-v1`
+- contract SHA-256: `9ac0e52c8253ef523aefe9fd54b8e90edf69095ac6f7c45ac2a0bbd584049e2b`
+- MediaWiki API permalink: `https://www.mediawiki.org/w/index.php?title=API:Expandtemplates/ru&oldid=6729113`
+- builder/validator: [`../../scriptorium/darwin_template_yo_replay_contract.py`](../../scriptorium/darwin_template_yo_replay_contract.py)
+
+Consequently `ё` deliberately remains in the unresolved backlog and the render profile is unchanged.
 
 ## Frozen backlog artifact
 

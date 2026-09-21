@@ -2,9 +2,9 @@
 
 STATE_REVISION: 212
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-21T16:53:38Z
-LAST_RESULT: SCRIP-CORPUS-050 / Issue #187 authored a source-safe popular-science provenance lead for Yakov Perelman's 1913 *Entertaining Physics, Book 1*. Draft PR #188 pins Wikimedia Commons file-description revision `oldid=1045983412`, the first-edition bibliographic/public-domain surface, 223 pages, provider-reported 28,168,847 bytes, provider SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`, and the 2021 file-history note that pages 193–194 were added. FantLab `work191634` is retained only as catalogue identity evidence; a work-specific linguistic-analysis surface was not independently established. The provider metadata is not promoted to independently replayed binary identity: no Scriptorium SHA-256, OCR/body or >=300k proof exists yet. PR #188 remains Draft for independent exact-head review.
-LAST_VERIFIED_PROGRESS: The retained corpus now has an explicit early-20th-century Russian popular-science/nonfiction lead with a concrete first-edition and legal surface. The permanent description revision is frozen as provenance, while the PDF binary, OCR/body, >=300k admission, FantLab linguistic-analysis/input identity, diagnostic readiness and M2 remain deliberately unverified. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-21T16:58:00Z
+LAST_RESULT: SCRIP-CORPUS-050 / Issue #187 authored a source-safe popular-science provenance lead for Yakov Perelman's 1913 *Entertaining Physics, Book 1*. Draft PR #188 pins Wikimedia Commons file-description revision `oldid=1045983412` for the first-edition bibliographic/legal description and separately records current Commons file/structured metadata observed on 2026-09-21: 223 pages, provider-reported 28,168,847 bytes, provider SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`, and the 2021 file-history note that pages 193–194 were added. The oldid is not treated as a version pin for structured data or PDF bytes. FantLab `work191634` is retained only as catalogue identity evidence; a work-specific linguistic-analysis surface was not independently established. No Scriptorium PDF SHA-256, OCR/body or >=300k proof exists yet. PR #188 remains Draft for independent exact-head review.
+LAST_VERIFIED_PROGRESS: The retained corpus now has an explicit early-20th-century Russian popular-science/nonfiction lead with a concrete first-edition and legal description surface. Current provider binary metadata is retained as an observation rather than promoted to independently replayed identity. The PDF binary, OCR/body, >=300k admission, FantLab linguistic-analysis/input identity, diagnostic readiness and M2 remain deliberately unverified. M2 remains 0/5.
 
 ## Current unit
 
@@ -14,8 +14,9 @@ ISSUE:          #187 (open)
 STATUS:         REVIEW_PENDING
 PR:             #188 (Draft)
 NEXT_ACTION:    Independently re-read the final exact PR #188 head and settled checks. Verify the Commons/FantLab evidence
-                boundary and that provider metadata has not been promoted to binary/body/FantLab identity. If clean, mark
-                Ready and merge in a later run; do not advance >=300k, diagnostics or M2 without separate evidence.
+                boundary, including that description oldid is not presented as a structured-data/PDF pin and provider
+                metadata is not promoted to binary/body/FantLab identity. If clean, mark Ready and merge in a later run;
+                do not advance >=300k, diagnostics or M2 without separate evidence.
 ```
 
 ## Current milestone gate
@@ -50,7 +51,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **The Life of Klim Samgin** — candidate-specific source graph, fail-closed extractor, per-part/composite body identities and provenance are frozen; exact historical MediaWiki/Poem deployment and FantLab input identity remain unresolved.
 - **Children of Captain Grant — Beketova translation** — 1,095,467 characters / 2,040,240 bytes; SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`; clears >=300k with explicit source/PD evidence. No FantLab result/input identity for this translation; M2 weight zero.
 - **On the Origin of Species — Rachinsky translation** — 418 exact Page identities, 388-literary/30-apparatus composition, exact-388 markup inventory, backing scan identity, render profile SHA-256 `2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`, semantic backlog SHA-256 `4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`, and documentation evidence SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc` are retained. SCRIP-CORPUS-049 is independently reviewed and complete on master with replay contract SHA-256 `35bed756f4fafa4f443315c09d04a35c66441eb2249eced3c7540ac20c981afe`: `expandtemplates.revid` is context, not version pin; exact recursive dependency closure is still empty/unfrozen, and any future complete closure must carry per-node source-free discovery proof whose SHA-256 is recomputed from exact node revision identity plus direct-dependency set and whose child relations exactly match the graph. All 43 semantic shapes remain unresolved, `ё` remains priority 1 at 2,227 calls, and renderer/body/>=300k/FantLab/M2 remain closed.
-- **Entertaining Physics, Book 1 — Perelman 1913 first edition** — SCRIP-CORPUS-050 Draft. Commons permanent description `oldid=1045983412` records the first-edition/public-domain source surface, 223 pages, provider-reported 28,168,847 bytes and SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`; the 2021 file revision says pages 193–194 were added. The PDF bytes are not independently replayed, no Scriptorium SHA-256/OCR/body exists, >=300k is unproved, and FantLab `work191634` is catalogue-only evidence with analyzer-input identity unknown.
+- **Entertaining Physics, Book 1 — Perelman 1913 first edition** — SCRIP-CORPUS-050 Draft. Commons description `oldid=1045983412` freezes the first-edition bibliographic/legal description surface. Separately, the current file surface observed on 2026-09-21 reports 223 pages, 28,168,847 bytes and SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`; the 2021 file revision says pages 193–194 were added. Those current structured/binary fields are not claimed to be version-pinned by the oldid. The PDF bytes are not independently replayed, no Scriptorium SHA-256/OCR/body exists, >=300k is unproved, and FantLab `work191634` is catalogue-only evidence with analyzer-input identity unknown.
 
 ## Deterministic / morphology findings
 
@@ -69,7 +70,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - The Twelve Chairs exposes exact-surface rendering decisions plus unresolved template/reference counts without claiming renderer/body equivalence.
 - The Darwin/Rachinsky semantic-backlog companion now separates documented conditional `{{ё}}` semantics, the oldid/live-transclusion model, and the fail-closed replay contract. It explicitly records that `expandtemplates.revid` is not accepted as a template-version pin, recursive dependency closure is still empty, and future per-node discovery digests are recomputed from exact revision identity plus direct-dependency set before edge agreement can satisfy closure.
 - Klim Samgin exposes its source graph, extractor, body identities and structured provenance; FantLab source match remains unknown.
-- The Perelman 1913 candidate adds a source-free popular-science/nonfiction public provenance page with exact first-edition/legal source-surface metadata and explicit closed binary/body/FantLab gates; no scan or book text is published.
+- The Perelman 1913 candidate adds a source-free popular-science/nonfiction public provenance page with exact first-edition/legal description provenance plus separately scoped current provider metadata and explicit closed binary/body/FantLab gates; no scan or book text is published.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers
@@ -87,4 +88,4 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 11. The 1928 *Twelve Chairs* route still has unresolved template/reference semantics, inter-page composition, body identity and FantLab source identity.
 12. Darwin/Rachinsky `{{ё}}` has documented semantics and a corrected live-transclusion model, but exact replay-time recursive dependency identities are not yet bound. `expandtemplates.revid` is only revision context, a single TemplateSandbox override is insufficient to prove closure, and complete closure requires revision-pinned recursive-expansion provenance plus per-node discovery evidence whose digest is bound to exact revision identity and direct-dependency set. Both forced/non-forced replay outputs remain unverified; body/>=300k and FantLab identity remain open.
 13. Pages live activation remains a repository-admin effect and is off.
-14. Perelman 1913 currently has only a permanent provider source/legal surface plus provider-declared file metadata. Exact PDF byte replay/SHA-256, deterministic OCR/body, >=300k admission and any FantLab work-specific analysis/input identity remain unverified.
+14. Perelman 1913 currently has a permanent provider bibliographic/legal description revision plus separately observed current file metadata. Exact PDF byte replay/SHA-256, deterministic OCR/body, >=300k admission and any FantLab work-specific analysis/input identity remain unverified.

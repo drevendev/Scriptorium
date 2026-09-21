@@ -1,7 +1,7 @@
 {
   "admitted_for_calibration": false,
   "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
-  "contract_sha256": "9ac0e52c8253ef523aefe9fd54b8e90edf69095ac6f7c45ac2a0bbd584049e2b",
+  "contract_sha256": "bb67d05c5aed51cc03917638cbd6d49257d51933e0adb88982ac73826849366c",
   "diagnostic_ready": false,
   "fantlab_source_edition_match": "unknown",
   "inter_page_composition_frozen": false,
@@ -27,8 +27,11 @@
     "permanent_url": "https://www.mediawiki.org/w/index.php?title=API:Expandtemplates/ru&oldid=6729113",
     "provider": "MediaWiki.org",
     "recursive_expansion": {
-      "help_url": "https://www.mediawiki.org/wiki/Help:ExpandTemplates",
-      "templates_parser_functions_and_variables_expand_recursively": true
+      "permanent_url": "https://www.mediawiki.org/w/index.php?title=Help:ExpandTemplates&oldid=8168760",
+      "revision_date": "2026-01-23",
+      "revision_id": 8168760,
+      "templates_parser_functions_and_variables_expand_recursively": true,
+      "title": "Help:ExpandTemplates"
     },
     "researched_on": "2026-09-21",
     "revision_date": "2024-08-29",
@@ -41,8 +44,8 @@
   },
   "promotion_decision": {
     "backlog_item_removed": false,
-    "next_evidence_required": "freeze exact source-free identities for Шаблон:ё, Шаблон:ЕЁ and every nested template/module dependency in one replay environment, then verify deterministic forced and non-forced outputs before promotion",
-    "reason": "MediaWiki expandtemplates revid supplies revision context rather than a historical transclusion-version pin; recursive template dependencies remain unbound, so deterministic replay equivalence is not yet demonstrated",
+    "next_evidence_required": "freeze exact source-free identities for Шаблон:ё, Шаблон:ЕЁ and every nested template/module dependency in one replay environment; retain complete source-free direct-dependency discovery evidence for every bound node; then verify deterministic forced and non-forced outputs before promotion",
+    "reason": "MediaWiki expandtemplates revid supplies revision context rather than a historical transclusion-version pin; recursive template dependencies remain unbound and no complete per-node discovery proof exists, so deterministic replay equivalence is not yet demonstrated",
     "render_profile_rule_promoted": false
   },
   "renderer_implementation_ready": false,
@@ -50,6 +53,7 @@
   "replay_contract": {
     "dependencies": [],
     "dependency_closure_complete": false,
+    "dependency_discovery_proof_required": true,
     "dependency_graph_must_be_transitively_closed": true,
     "dependency_identity_scope": "exact page title plus revision id, revision timestamp and MediaWiki content SHA-1",
     "edges": [],
@@ -61,12 +65,18 @@
       "revision_timestamp",
       "mediawiki_sha1"
     ],
+    "required_discovery_proof_fields": [
+      "status",
+      "method",
+      "direct_dependencies",
+      "evidence_sha256"
+    ],
     "required_root_titles": [
       "Шаблон:ё",
       "Шаблон:ЕЁ"
     ],
     "single_templatesandbox_override_is_closed_graph": false,
-    "strategy": "bind every template/module revision in the transitive replay graph explicitly; evaluate only in a controlled environment that consumes those bound identities"
+    "strategy": "bind every template/module revision in the transitive replay graph explicitly; for every bound node retain source-free complete direct-dependency discovery evidence and require graph edges to exactly match that evidence; evaluate only in a controlled environment that consumes those bound identities"
   },
   "schema_version": "scriptorium-darwin-template-yo-replay-contract-v1",
   "source_evidence": {

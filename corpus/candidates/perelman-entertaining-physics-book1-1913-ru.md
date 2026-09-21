@@ -6,10 +6,10 @@ This retained provenance lead adds **early-20th-century Russian popular science*
 
 ## Frozen public source surface
 
-The retained public source is Wikimedia Commons file-description revision **`oldid=1045983412`** for `Перельман Я.И. Занимательная физика. Книга 1 (1913).pdf`. That permanent description identifies:
+The retained bibliographic/legal source is Wikimedia Commons file-description revision **`oldid=1045983412`** for `Перельман Я.И. Занимательная физика. Книга 1 (1913).pdf`. Its description identifies the edition as **Занимательная физика. Кн. 1. СПб., Изд-во П. П. Сойкина, 1913**, names Yakov Isidorovich Perelman (1882–1942), and carries the public-domain licensing surface.
 
-- edition: **Занимательная физика. Кн. 1. СПб., Изд-во П. П. Сойкина, 1913**;
-- author: Yakov Isidorovich Perelman (1882–1942);
+Separately, the Commons file surface observed on **2026-09-21** reports current file/history and structured metadata:
+
 - file format: PDF;
 - page count: **223**;
 - provider-reported data size: **28,168,847 bytes**;
@@ -21,7 +21,9 @@ Commons marks the work **public domain** and identifies the file as free of know
 
 ## Identity boundary
 
-The Commons SHA-1 above is recorded as **provider-declared structured file metadata**. SCRIPTORIUM has not independently streamed the current PDF bytes in this unit, so there is deliberately **no Scriptorium SHA-256**, no claim that the direct `upload.wikimedia.org` URL is immutable identity, and no claim that the permanent file-description revision pins the binary bytes.
+The permanent `oldid` pins the file-description revision; Scriptorium does **not** claim that it version-pins Commons structured data or the PDF binary. The current byte count, page count and SHA-1 above are therefore recorded as provider metadata observed on 2026-09-21, not as fields cryptographically bound to `oldid=1045983412`.
+
+The Commons SHA-1 is likewise **provider-declared structured file metadata**. Scriptorium has not independently streamed the current PDF bytes in this unit, so there is deliberately **no Scriptorium SHA-256**, no claim that the direct `upload.wikimedia.org` URL is immutable identity, and no claim that the permanent file-description revision pins the binary bytes.
 
 Likewise, the scan is **not yet a frozen literary body**. No OCR, page-selection contract, source prose, normalized body, character count or body digest is committed. The candidate has therefore **not** proved the repository's >=300,000-character admission rule from a frozen Scriptorium body.
 

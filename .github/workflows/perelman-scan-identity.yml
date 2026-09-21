@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   scan-identity:
-    name: Capture exact Commons PDF identity
+    name: Retrieve and verify exact Commons PDF
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -33,31 +33,33 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Run scan-identity tests
-        run: python -m unittest tests.test_perelman_scan_identity -v
+      - name: Run scan-identity and provenance tests
+        run: python -m unittest tests.test_perelman_scan_identity tests.test_perelman_provenance_trace -v
 
-      - name: Capture and cross-check exact Commons original
+      - name: Independently retrieve and verify exact Commons original
         run: |
           set -euo pipefail
           mkdir -p build/repro
-          python -m scriptorium.perelman_scan_identity capture \
-            --output build/repro/perelman-entertaining-physics-book1-1913-ru.scan-identity.json
+          python -m scriptorium.perelman_scan_identity verify \
+            --receipt corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.scan-identity.json \
+            | tee build/repro/perelman-entertaining-physics-book1-1913-ru.scan-identity.verify.json
 
-      - name: Verify source-free capture boundary
+      - name: Verify gate boundary
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          receipt = json.loads(Path("build/repro/perelman-entertaining-physics-book1-1913-ru.scan-identity.json").read_text(encoding="utf-8"))
+          receipt = json.loads(Path("corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.scan-identity.json").read_text(encoding="utf-8"))
           assert receipt["candidate_id"] == "perelman-entertaining-physics-book1-1913-ru"
           assert receipt["identity"]["byte_count"] == 28168847
           assert receipt["identity"]["sha1"] == "3c616f547ff283a2cafd1ac26b448a8e8013f648"
-          assert len(receipt["identity"]["sha256"]) == 64
+          assert receipt["identity"]["sha256"] == "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
           assert receipt["provider_metadata_crosscheck_passed"] is True
           assert receipt["binary_bytes_committed"] is False
           assert receipt["ocr_included"] is False
           assert receipt["literary_source_text_included"] is False
           assert receipt["ocr_extraction_profile_frozen"] is False
+          assert receipt["literary_body_count_and_digests_frozen"] is False
           assert receipt["minimum_300k_proved_from_frozen_body"] is False
           assert receipt["admitted_for_calibration"] is False
           assert receipt["fantlab_source_edition_match"] == "unknown"
@@ -66,10 +68,12 @@ jobs:
           print("SCRIPTORIUM_PERELMAN_SCAN_SHA256=" + receipt["identity"]["sha256"])
           PY
 
-      - name: Upload source-free scan identity capture
+      - name: Upload source-free scan identity evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: perelman-1913-scan-identity-capture
-          path: build/repro/perelman-entertaining-physics-book1-1913-ru.scan-identity.json
+          name: perelman-1913-scan-identity
+          path: |
+            corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.scan-identity.json
+            build/repro/perelman-entertaining-physics-book1-1913-ru.scan-identity.verify.json
           if-no-files-found: error
           retention-days: 7

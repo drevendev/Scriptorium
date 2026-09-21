@@ -2,43 +2,40 @@
 
 Candidate ID: `perelman-entertaining-physics-book1-1913-ru`
 
-This retained provenance lead adds **early-20th-century Russian popular science** to Scriptorium's corpus research. FantLab catalogues Yakov Perelman's *Занимательная физика. Книга 1* as work `191634`, a Russian-language monograph first published in 1913. This unit records that catalogue identity only; it does **not** claim that FantLab exposes a linguistic-analysis surface for the work or that any FantLab analyzer input matches the public scan below.
+This retained provenance lead adds **early-20th-century Russian popular science** to Scriptorium's corpus research. FantLab catalogues Yakov Perelman's *Занимательная физика. Книга 1* as work `191634`, a Russian-language monograph first published in 1913. This record keeps that catalogue identity separate from source-byte and linguistic-analysis identity: no work-specific FantLab analyzer input has been established.
 
 ## Frozen public source surface
 
 The retained bibliographic/legal source is Wikimedia Commons file-description revision **`oldid=1045983412`** for `Перельман Я.И. Занимательная физика. Книга 1 (1913).pdf`. Its description identifies the edition as **Занимательная физика. Кн. 1. СПб., Изд-во П. П. Сойкина, 1913**, names Yakov Isidorovich Perelman (1882–1942), and carries the public-domain licensing surface.
 
-Separately, the Commons file surface observed on **2026-09-21** reports current file/history and structured metadata:
+The Commons current file-history revision is **3 September 2021, 09:12 UTC** and notes that pages **193–194 were added**. The current file surface reports **223 pages**, **28,168,847 bytes**, and SHA-1 **`3c616f547ff283a2cafd1ac26b448a8e8013f648`**.
 
-- file format: PDF;
-- page count: **223**;
-- provider-reported data size: **28,168,847 bytes**;
-- current file-history revision: **3 September 2021, 09:12 UTC**;
-- provider-reported SHA-1: **`3c616f547ff283a2cafd1ac26b448a8e8013f648`**;
-- 2021 revision note: pages **193–194 were added** to the PDF.
+SCRIP-CORPUS-051 independently streamed that exact current Commons original in hosted CI without persisting the PDF. The streamed bytes reproduced the provider-reported byte count and SHA-1 and established the Scriptorium byte identity:
 
-Commons marks the work **public domain** and identifies the file as free of known copyright restrictions. Scriptorium records that explicit source/legal surface rather than inferring permission from web accessibility.
+- exact byte count: **28,168,847 bytes**;
+- SHA-1: **`3c616f547ff283a2cafd1ac26b448a8e8013f648`**;
+- SHA-256: **`3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61`**.
+
+The source-free receipt is [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.scan-identity.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.scan-identity.json). Ordinary PR verification re-streams the original and fails closed if any byte changes.
 
 ## Identity boundary
 
-The permanent `oldid` pins the file-description revision; Scriptorium does **not** claim that it version-pins Commons structured data or the PDF binary. The current byte count, page count and SHA-1 above are therefore recorded as provider metadata observed on 2026-09-21, not as fields cryptographically bound to `oldid=1045983412`.
+The permanent Commons `oldid` pins only the file-description revision and its bibliographic/legal assertions; it is not treated as a binary version pin. Conversely, the scan receipt freezes the bytes independently observed from the exact original URL. The direct `upload.wikimedia.org` locator is a retrieval locator, not itself immutable identity: the frozen byte count and digests are the durable identity.
 
-The Commons SHA-1 is likewise **provider-declared structured file metadata**. Scriptorium has not independently streamed the current PDF bytes in this unit, so there is deliberately **no Scriptorium SHA-256**, no claim that the direct `upload.wikimedia.org` URL is immutable identity, and no claim that the permanent file-description revision pins the binary bytes.
-
-Likewise, the scan is **not yet a frozen literary body**. No OCR, page-selection contract, source prose, normalized body, character count or body digest is committed. The candidate has therefore **not** proved the repository's >=300,000-character admission rule from a frozen Scriptorium body.
+This is a **scan-binary freeze, not an OCR or literary-body freeze**. No PDF bytes, page images, OCR or literary source text are stored in this repository or uploaded as evidence. No page-selection/OCR profile, raw or normalized literary body, character count or body digest has been frozen. Therefore the exact edition has **not yet proved the >=300,000-character calibration rule from a Scriptorium body**.
 
 ## FantLab boundary
 
-FantLab work `191634` confirms the catalogue identity and 1913 work date. This unit does not independently observe a `/lp` linguistic-analysis artifact for the work and does not infer one from the existence of FantLab's generic linguistic-ranking surface. `fantlab_source_edition_match` remains `unknown`; diagnostic and M2 parity weight remain zero.
+FantLab work `191634` confirms catalogue identity and the 1913 work date only. A work-specific linguistic-analysis artifact and its analyzer-input edition/bytes remain unestablished. `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, and `m2_parity_admissible=false`.
 
 ## What is still open
 
-A later bounded unit may independently stream and hash the exact Commons original, then define a fail-closed page/OCR extraction contract. Only a verified literary-body character count can decide whether this exact edition clears the >=300,000-character calibration threshold. Any FantLab comparison must separately establish a real FantLab analysis surface and source-edition/input identity.
-
-No PDF bytes, page images, OCR or literary source text are stored in this repository.
+The next candidate-specific evidence unit is a deterministic, fail-closed page-selection/OCR/body contract that can produce a source-free character count and raw/normalized body digests from this exact frozen scan. Only that frozen literary body can prove or reject the >=300,000-character rule. Any later FantLab comparison must independently establish a real work-specific linguistic-analysis surface and analyzer-input/source-edition identity.
 
 ## Canonical evidence
 
 - [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.json) — source/legal/catalogue provenance and closed-gate machine record.
+- [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.scan-identity.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.scan-identity.json) — exact current PDF byte identity and closed-gate receipt.
+- [`../../scriptorium/perelman_scan_identity.py`](../../scriptorium/perelman_scan_identity.py) — transient streaming capture/replay implementation.
 - Wikimedia Commons permanent description revision: `https://commons.wikimedia.org/w/index.php?title=File:Перельман_Я.И._Занимательная_физика._Книга_1_(1913).pdf&oldid=1045983412`.
 - FantLab catalogue work: `https://fantlab.ru/work191634`.

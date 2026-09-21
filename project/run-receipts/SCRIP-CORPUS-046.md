@@ -17,6 +17,8 @@ Freeze a deterministic source-free priority backlog for the unresolved Darwin/Ra
 - `tests/test_darwin_semantic_backlog.py` — rebuild, coverage, deterministic-next-target, drift and gate-boundary regressions.
 - `.github/workflows/darwin-semantic-backlog.yml` — exact-head deterministic rebuild/artifact verification.
 - public companion page `corpus/candidates/darwin-origin-species-rachinsky-1864-ru-semantic-backlog.md`.
+- canonical candidate page `corpus/candidates/darwin-origin-species-rachinsky-1864-ru.md` now links and summarizes the backlog while preserving closed downstream gates.
+- `project/STATE_AND_QUEUE.md` now records SCRIP-CORPUS-046 / #179 / #180 as the current `REVIEW_PENDING` unit for stateless recovery.
 
 ## Frozen findings
 
@@ -26,7 +28,9 @@ The deterministic next research target is template `ё`, arity 0 positional / 0 
 
 ## Verification / repair history
 
-The first PR-triggered run on head `b69bce39a35297c305c8267868fecbb2577d7787` correctly failed because one regression expected the wrong existing validator error string (`profile digest drift` versus `Darwin/Rachinsky rendering profile drift`). The test expectation was repaired in commit `e62e4401807037afdeec2d0714bd5176e94da24b`; no production boundary was weakened. Final exact-head workflow settlement is recorded in the PR handoff comment after all authored commits.
+The first PR-triggered run on head `b69bce39a35297c305c8267868fecbb2577d7787` correctly failed because one regression expected the wrong existing validator error string (`profile digest drift` versus `Darwin/Rachinsky rendering profile drift`). The test expectation was repaired in commit `e62e4401807037afdeec2d0714bd5176e94da24b`; no production boundary was weakened. The authored exact-head handoff for `b1e7e63afcf293cc31d827ea9a526cec216223ac` recorded the dedicated backlog workflow, Pages workflow and frozen diagnostic as green.
+
+Independent review COMMENT `5262708679` on that exact authored head found two acceptance/recoverability blockers outside the backlog semantics: canonical state still pointed at completed SCRIP-CORPUS-045, and the canonical Darwin candidate page still called merged PR #178 Draft while omitting the new semantic-backlog artifact. This recovery unit repaired both surfaces. Because those commits changed the PR head, the repaired exact head must receive fresh settled checks and a later independent review; the recovery run does not self-approve or merge.
 
 ## Gates
 
@@ -34,4 +38,4 @@ No Page wikitext, template arguments, rendered prose, OCR, scan bytes or literar
 
 ## Handoff
 
-Do not merge from this authored run. A later independent wake must read PR #180 at its exact final head, inspect all settled checks and the source-free artifact, review the diff, and only then decide Ready/merge. If accepted, the next renderer-research slice should investigate template `ё` with independent provider/history evidence rather than inferring semantics from its name.
+PR #180 remains Draft and `REVIEW_PENDING`. A later independent wake must re-read the final repaired exact head, inspect all settled checks and the source-free artifact, verify the canonical candidate/state repair plus the backlog diff, and only then decide Ready/merge. If accepted, the next renderer-research slice should investigate template `ё` with independent provider/history evidence rather than inferring semantics from its name.

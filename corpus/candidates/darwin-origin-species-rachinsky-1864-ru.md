@@ -81,11 +81,21 @@ Independent exact-head review re-read all settled CI on `ee97e29af7225131002b6e0
 
 ## Fail-closed rendering decision profile
 
-**SCRIP-CORPUS-045 / Draft PR #178** adds `scriptorium-darwin-page-render-profile-v1`, bound cryptographically to the reviewed exact-388 source-free surface freeze before any shape classification is accepted. The profile covers all **18 tag shapes / 5,164 tag tokens** and all **38 template shapes / 4,583 template invocations**. Its canonical profile SHA-256 is **`2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`**.
+**SCRIP-CORPUS-045 / merged PR #178** adds `scriptorium-darwin-page-render-profile-v1`, bound cryptographically to the reviewed exact-388 source-free surface freeze before any shape classification is accepted. The profile covers all **18 tag shapes / 5,164 tag tokens** and all **38 template shapes / 4,583 template invocations**. Its canonical profile SHA-256 is **`2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`**.
 
 The decision table defines only conservative local markup handling: ordinary `big`, `div`, `small`, `sub` and `sup` wrappers preserve inner text; `<noinclude>` is excluded from transcluded content; ProofreadPage `pagequality` metadata is dropped. It intentionally leaves **5 tag shapes / 518 tokens** unresolved for provider semantics: `<math>` open/close, `<ref>` open/close and self-closing `<references/>`. All **38 template shapes / 4,583 invocations** remain unresolved rather than inferring expansion from names; `nop` is additionally marked as inter-page-sensitive.
 
 This is a **frozen decision boundary, not a renderer**. `rendering_profile_frozen=true` coexists deliberately with `renderer_semantics_complete=false`, `renderer_implementation_ready=false`, `rendering_equivalence_claimed=false`, and `inter_page_composition_frozen=false`. Any changed count, new/missing shape, stale surface digest or wrong candidate identity fails closed. No Page wikitext, template argument values, rendered prose, OCR, DjVu/PDF bytes or literary text are committed.
+
+## Source-free unresolved-semantic backlog
+
+**SCRIP-CORPUS-046 / Draft PR #180** derives a deterministic research backlog only after validating the frozen render-profile/source-surface boundary. The durable artifact preserves all **43 unresolved shapes**: **5 tag shapes / 518 tokens** and **38 template shapes / 4,583 invocations**.
+
+The backlog groups them into four independently reviewable tracks: provider-template (**37 shapes / 4,579 occurrences**), provider-reference (**3 / 466**), provider-math (**2 / 52**), and inter-page (**1 / 4**). Items are ranked mechanically by descending observed occurrence count with stable tie-breaking. The current next research target is template **`ё`**, arity **0 positional / 0 named**, observed **2,227 times**. That target remains explicitly `semantic_status=unresolved`; selection priority is not a semantics claim.
+
+Canonical backlog SHA-256 is **`4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`**. The source-free public companion is [`darwin-origin-species-rachinsky-1864-ru-semantic-backlog.md`](darwin-origin-species-rachinsky-1864-ru-semantic-backlog.md), and the machine-readable artifact is [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json).
+
+This backlog does **not** implement rendering or advance any downstream gate. `renderer_semantics_complete=false`, `renderer_implementation_ready=false`, `inter_page_composition_frozen=false`, `literary_body_count_and_digests_frozen=false`, `minimum_300k_proved=false`, `admitted_for_calibration=false`, `diagnostic_ready=false`, `m2_parity_admissible=false`, and `fantlab_source_edition_match=unknown` remain mandatory.
 
 ## Independent scan binary identity
 
@@ -128,13 +138,15 @@ FantLab work **`work969964`** identifies Darwin's 1859 English monograph. The cu
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json) — deterministic source-free 388-Page construct inventory with no source payload.
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.source-graph.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.source-graph.json) — provenance edges from frozen Page identities through literary composition and hosted markup audit to the durable inventory and frozen decision profile.
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile.json) — deterministic fail-closed source-free rendering decision profile with explicit unresolved semantics and closed downstream gates.
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json) — deterministic source-free unresolved-semantic priority backlog; every listed shape remains unresolved.
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.scan-identity.json) — independently verified source-free DjVu byte count, SHA-1 cross-check and SHA-256; scan bytes are not stored.
 - [`../../scriptorium/darwin_body_contract.py`](../../scriptorium/darwin_body_contract.py) — deterministic source-free 388/30 composition contract generator and fail-closed validator.
 - [`../../scriptorium/darwin_render_surface.py`](../../scriptorium/darwin_render_surface.py) — exact-revision identity-verifying hosted construct audit.
 - [`../../scriptorium/darwin_render_surface_freeze.py`](../../scriptorium/darwin_render_surface_freeze.py) — deterministic compact freeze reducer/validator.
 - [`../../scriptorium/darwin_render_profile.py`](../../scriptorium/darwin_render_profile.py) — deterministic fail-closed source-free decision-profile builder/validator.
+- [`../../scriptorium/darwin_semantic_backlog.py`](../../scriptorium/darwin_semantic_backlog.py) — deterministic source-free unresolved-semantic backlog builder/validator.
 - [`../../scriptorium/darwin_scan_identity.py`](../../scriptorium/darwin_scan_identity.py) — streaming scan-identity capture/replay with provider cross-checks and no binary persistence.
 
 ## Next evidence
 
-A later bounded unit should resolve and independently freeze the provider/template/reference/math semantics explicitly left unresolved by `scriptorium-darwin-page-render-profile-v1`; inter-page separator/composition semantics should remain a separately reviewable decision. Only after deterministic rendering exists should a separate identity/admission unit compute source-free counts/digests and independently prove the >=300,000-character threshold. FantLab parity remains a separate, stricter source-matching problem.
+The mechanically selected next renderer-research slice is template `ё` (2,227 observed invocations), but its semantics remain unresolved. A later bounded unit should establish provider behavior with independent evidence before the render profile changes. Reference/math behavior and inter-page separator/composition semantics remain separate reviewable decisions. Only after deterministic rendering exists should a separate identity/admission unit compute source-free counts/digests and independently prove the >=300,000-character threshold. FantLab parity remains a separate, stricter source-matching problem.

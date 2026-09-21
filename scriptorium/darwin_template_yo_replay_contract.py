@@ -16,6 +16,7 @@ from typing import Mapping, Sequence
 
 
 CONTRACT_VERSION = "scriptorium-darwin-template-yo-replay-contract-v1"
+DISCOVERY_EVIDENCE_VERSION = "scriptorium-template-dependency-discovery-evidence-v1"
 CANDIDATE_ID = "darwin-origin-species-rachinsky-1864-ru"
 UPSTREAM_EVIDENCE_VERSION = "scriptorium-darwin-template-yo-documentation-evidence-v2"
 UPSTREAM_EVIDENCE_SHA256 = "d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc"
@@ -94,7 +95,30 @@ def _validate_sha256(value: object, *, field: str) -> None:
         raise ValueError(f"Darwin {{ё}} {field} invalid")
 
 
-def _validate_discovery_proof(title: str, proof: object) -> tuple[str, ...]:
+def dependency_discovery_evidence_sha256(row: Mapping[str, object]) -> str:
+    """Return the canonical source-free discovery digest bound to one exact dependency."""
+
+    proof = row.get("discovery")
+    if not isinstance(proof, dict):
+        raise ValueError("Darwin {{ё}} dependency discovery proof missing or malformed")
+    payload = {
+        "schema_version": DISCOVERY_EVIDENCE_VERSION,
+        "candidate_id": CANDIDATE_ID,
+        "dependency_identity": {
+            field: row.get(field)
+            for field in REQUIRED_DEPENDENCY_FIELDS
+        },
+        "discovery": {
+            "status": proof.get("status"),
+            "method": proof.get("method"),
+            "direct_dependencies": proof.get("direct_dependencies"),
+        },
+    }
+    return _sha256_json(payload)
+
+
+def _validate_discovery_proof(row: Mapping[str, object]) -> tuple[str, ...]:
+    proof = row.get("discovery")
     if not isinstance(proof, dict) or set(proof) != set(REQUIRED_DISCOVERY_FIELDS):
         raise ValueError("Darwin {{ё}} dependency discovery proof missing or malformed")
     if proof.get("status") != "complete":
@@ -117,6 +141,9 @@ def _validate_discovery_proof(title: str, proof: object) -> tuple[str, ...]:
             raise ValueError("Darwin {{ё}} discovered dependency duplicated")
         seen.add(child)
         normalized.append(child)
+    expected_digest = dependency_discovery_evidence_sha256(row)
+    if proof["evidence_sha256"] != expected_digest:
+        raise ValueError("Darwin {{ё}} dependency discovery evidence digest drift")
     return tuple(normalized)
 
 
@@ -155,7 +182,7 @@ def validate_dependency_closure(
         if forbidden.intersection(row):
             raise ValueError("source/template prose leaked into Darwin {{ё}} dependency identity")
         if "discovery" in row:
-            _validate_discovery_proof(title, row["discovery"])
+            _validate_discovery_proof(row)
         by_title[title] = row
 
     actual_edges: set[tuple[str, str]] = set()
@@ -184,7 +211,7 @@ def validate_dependency_closure(
         for title, row in by_title.items():
             if "discovery" not in row:
                 raise ValueError("Darwin {{ё}} complete closure lacks dependency discovery proof")
-            children = _validate_discovery_proof(title, row["discovery"])
+            children = _validate_discovery_proof(row)
             for child in children:
                 if child not in by_title:
                     raise ValueError("Darwin {{ё}} discovered dependency remains unbound")
@@ -238,6 +265,11 @@ def build_contract(evidence: Mapping[str, object]) -> dict[str, object]:
                 "exact page title plus revision id, revision timestamp and MediaWiki content SHA-1"
             ),
             "dependency_discovery_proof_required": True,
+            "dependency_discovery_evidence_schema_version": DISCOVERY_EVIDENCE_VERSION,
+            "dependency_discovery_evidence_sha256_scope": (
+                "canonical source-free JSON over candidate id, exact dependency identity, "
+                "discovery status/method and exact direct-dependency title list"
+            ),
             "dependency_graph_must_be_transitively_closed": True,
             "live_or_unbound_dependency_allowed": False,
             "native_expandtemplates_revid_is_version_pin": False,
@@ -245,7 +277,8 @@ def build_contract(evidence: Mapping[str, object]) -> dict[str, object]:
             "strategy": (
                 "bind every template/module revision in the transitive replay graph explicitly; "
                 "for every bound node retain source-free complete direct-dependency discovery evidence "
-                "and require graph edges to exactly match that evidence; evaluate only in a controlled "
+                "whose SHA-256 is recomputed from that exact node identity and dependency set, and "
+                "require graph edges to exactly match that evidence; evaluate only in a controlled "
                 "environment that consumes those bound identities"
             ),
             "dependencies": [],
@@ -275,8 +308,9 @@ def build_contract(evidence: Mapping[str, object]) -> dict[str, object]:
             "next_evidence_required": (
                 "freeze exact source-free identities for Шаблон:ё, Шаблон:ЕЁ and every nested "
                 "template/module dependency in one replay environment; retain complete source-free "
-                "direct-dependency discovery evidence for every bound node; then verify deterministic "
-                "forced and non-forced outputs before promotion"
+                "direct-dependency discovery evidence cryptographically bound to each exact node "
+                "revision and dependency set; then verify deterministic forced and non-forced "
+                "outputs before promotion"
             ),
         },
         "renderer_semantics_complete": False,
@@ -312,6 +346,8 @@ def validate_contract(contract: Mapping[str, object], evidence: Mapping[str, obj
         raise ValueError("Darwin {{ё}} dependency closure must remain open")
     if replay.get("dependency_discovery_proof_required") is not True:
         raise ValueError("Darwin {{ё}} dependency discovery proof must be required")
+    if replay.get("dependency_discovery_evidence_schema_version") != DISCOVERY_EVIDENCE_VERSION:
+        raise ValueError("Darwin {{ё}} dependency discovery evidence schema drift")
     if replay.get("native_expandtemplates_revid_is_version_pin") is not False:
         raise ValueError("expandtemplates revid must not be treated as a version pin")
     if replay.get("single_templatesandbox_override_is_closed_graph") is not False:

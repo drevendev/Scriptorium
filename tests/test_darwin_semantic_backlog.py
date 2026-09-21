@@ -65,7 +65,7 @@ class DarwinSemanticBacklogTests(unittest.TestCase):
         profile = deepcopy(load(PROFILE))
         profile["template_rules"] = [dict(row) for row in profile["template_rules"]]
         profile["template_rules"][-1]["count"] += 1
-        with self.assertRaisesRegex(ValueError, "profile digest drift"):
+        with self.assertRaisesRegex(ValueError, "rendering profile drift"):
             build_backlog(profile, load(SURFACE))
 
     def test_backlog_keeps_source_and_downstream_gates_closed(self) -> None:

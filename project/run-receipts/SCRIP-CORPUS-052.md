@@ -1,9 +1,9 @@
 # Run receipt — SCRIP-CORPUS-052
 
 Date: 2026-09-21
-Mode: corpus / provenance + recovery
-Issue: #191 (open)
-Pull request: #192 (Draft; independent review required)
+Mode: corpus / provenance + recovery + independent review
+Issue: #191 (closed completed)
+Pull request: #192 (independently reviewed; squash-merged as `20ec3654240efdfc6105f8a65eb156380140a4ff`)
 Base at selection: `257754861c1ef590d0dc85176563c8e75ec19926`
 
 ## Selection
@@ -53,6 +53,18 @@ The recovery wake repaired the stale provenance tests instead of merging around 
 
 Independent diff review also found a branch-only accidental transcription error in the retained Road to Nowhere SHA-256 summary. The recovery restores the canonical value `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`; this does not change that candidate's body identity.
 
+## Independent review and settlement
+
+Independent COMMENT review `5272577616` re-read repaired exact head `742f19c88fffac29974f31cc21cdebb1390f7255` against unchanged `master@257754861c1ef590d0dc85176563c8e75ec19926`. It reviewed all 10 changed files, the repaired provenance integration boundary and public wording, found no remaining merge blocker, and confirmed there were no open review threads.
+
+All **16/16 PR-triggered workflows** associated with the exact reviewed head settled `success`. In particular:
+
+- dedicated OCR-contract run `35659674619`, job `106531677985`, checked out `742f19c...`, passed the focused fail-closed tests and canonical contract validation;
+- `Scriptorium Pages` run `35659674823`, job `106531679451`, checked out the exact reviewed SHA and completed the repository suite, canonical static-site build and deterministic rebuild successfully; live deploy remained policy-skipped;
+- `Perelman 1913 scan identity` run `35659674675` completed its scan/provenance tests, exact Commons replay, gate verification and source-free evidence upload successfully.
+
+PR #192 was marked Ready and squash-merged with expected-head protection as `20ec3654240efdfc6105f8a65eb156380140a4ff`. Issue #191 closed automatically with reason `completed`.
+
 ## Gate judgement
 
 Advanced:
@@ -73,6 +85,6 @@ Not advanced:
 - work-specific FantLab linguistic-analysis/input identity;
 - diagnostics, parity, or M2. M2 remains 0/5.
 
-## Handoff
+## Completion
 
-The recovery wake authored substantive repair changes, so PR #192 remains Draft and is not merged in this wake. Fresh hosted checks must settle on the repaired exact final head, then a later independent wake must review that exact head before Ready/merge. If accepted, a later candidate-specific evidence unit may bind exact literary-page selection and reproducible renderer/OCR identities/settings under a new contract version, then freeze source-free body counts/digests and evaluate the >=300k gate.
+SCRIP-CORPUS-052 is independently reviewed and complete on `master`. Normal-flow selection may resume. A later candidate-specific Perelman unit may bind exact literary-page selection and reproducible renderer/OCR identities/settings under a new independently evidenced contract version, then freeze source-free body counts/digests and evaluate the >=300k gate. FantLab/diagnostic/M2 gates remain closed until separately proved.

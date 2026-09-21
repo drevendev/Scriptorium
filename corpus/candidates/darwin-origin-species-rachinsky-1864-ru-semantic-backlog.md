@@ -25,16 +25,32 @@ This ranking is **not a semantics claim**. `ё` remains `semantic_status=unresol
 
 The next two rows are self-closing `<references/>` (**388**) and template `ВАР` with arity 2/0 (**388**). Reference/math behavior and the inter-page-sensitive `nop` track remain independently reviewable rather than being folded into one guessed renderer policy.
 
-## Frozen artifact
+## `{{ё}}` documentation evidence boundary
 
-Canonical source-free artifact:
+SCRIP-CORPUS-047 adds a narrower source-free evidence record for this first target. Official Russian Wikisource documentation at permanent revision `oldid=5090323` identifies zero-argument `{{ё}}` as the lowercase shorthand of the conditional `ЕЁ` yoification family: the documented output is **`ё` in forced-yoification mode and `е` otherwise**. Current proofread help also describes `{{ё}}` / `{{ё!}}` as the mechanism used to support yoified and non-yoified finished-text variants.
+
+That establishes a **conditional semantic class**, not a historical renderer rule for this candidate. The documentation revision is dated 2024-01-11, while the retained Darwin Page identities include revisions from 2018 (for example Page sequence 11, revision `3358032`, timestamp `2018-08-13T19:18:33Z`) and 2022. Current documentation therefore postdates retained Page saves and cannot, by itself, prove which template revision/dependency graph MediaWiki used for those historical renders.
+
+Consequently `ё` deliberately remains in the unresolved backlog and the render profile is unchanged. The next evidence needed is historical `Шаблон:ЕЁ` / `Шаблон:ё` revision and dependency identity at retained Page-save anchors; only then can a later unit decide whether promotion is justified.
+
+Source-free evidence artifact:
+
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json)
+- schema: `scriptorium-darwin-template-yo-documentation-evidence-v1`
+- evidence SHA-256: `3c0af5dfe8d23cd6d47ce2f92b30c58b83e352df692c18e6d4f59a14928eb06a`
+- official documentation permalink: `https://ru.wikisource.org/w/index.php?title=Шаблон:ЕЁ/Документация&oldid=5090323`
+- builder/validator: [`../../scriptorium/darwin_template_yo_evidence.py`](../../scriptorium/darwin_template_yo_evidence.py)
+
+## Frozen backlog artifact
+
+Canonical source-free backlog artifact:
 
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json)
 - schema: `scriptorium-darwin-render-semantic-backlog-v1`
 - backlog SHA-256: `4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`
 - builder/validator: [`../../scriptorium/darwin_semantic_backlog.py`](../../scriptorium/darwin_semantic_backlog.py)
 
-The artifact is derived only after the existing render profile validates against its frozen source surface. Any profile/surface drift fails before backlog derivation.
+The backlog artifact is derived only after the existing render profile validates against its frozen source surface. Any profile/surface drift fails before backlog derivation.
 
 ## Gates unchanged
 

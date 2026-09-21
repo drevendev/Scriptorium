@@ -8,6 +8,7 @@ import unittest
 from scriptorium.darwin_template_yo_replay_contract import (
     build_contract,
     build_contract_from_path,
+    dependency_discovery_evidence_sha256,
     validate_contract,
     validate_dependency_closure,
 )
@@ -29,7 +30,7 @@ def dependency(
     revision_id: int,
     sha1_char: str,
     *,
-    discovery: dict[str, object] | None = None,
+    children: tuple[str, ...] | None = None,
 ) -> dict[str, object]:
     row: dict[str, object] = {
         "title": title,
@@ -37,18 +38,15 @@ def dependency(
         "revision_timestamp": "2026-09-21T00:00:00Z",
         "mediawiki_sha1": sha1_char * 40,
     }
-    if discovery is not None:
-        row["discovery"] = discovery
+    if children is not None:
+        row["discovery"] = {
+            "status": "complete",
+            "method": "version_pinned_parser_trace",
+            "direct_dependencies": list(children),
+            "evidence_sha256": "0" * 64,
+        }
+        row["discovery"]["evidence_sha256"] = dependency_discovery_evidence_sha256(row)
     return row
-
-
-def discovery(*children: str, digest_char: str = "a") -> dict[str, object]:
-    return {
-        "status": "complete",
-        "method": "version_pinned_parser_trace",
-        "direct_dependencies": list(children),
-        "evidence_sha256": digest_char * 64,
-    }
 
 
 class DarwinTemplateYoReplayContractTests(unittest.TestCase):
@@ -59,7 +57,7 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
         validate_contract(committed, load(EVIDENCE))
         self.assertEqual(
             committed["contract_sha256"],
-            "bb67d05c5aed51cc03917638cbd6d49257d51933e0adb88982ac73826849366c",
+            "35bed756f4fafa4f443315c09d04a35c66441eb2249eced3c7540ac20c981afe",
         )
 
     def test_expandtemplates_revid_is_context_not_version_pin(self) -> None:
@@ -102,6 +100,11 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
             replay["required_discovery_proof_fields"],
             ["status", "method", "direct_dependencies", "evidence_sha256"],
         )
+        self.assertEqual(
+            replay["dependency_discovery_evidence_schema_version"],
+            "scriptorium-template-dependency-discovery-evidence-v1",
+        )
+        self.assertIn("exact dependency identity", replay["dependency_discovery_evidence_sha256_scope"])
         self.assertTrue(replay["dependency_discovery_proof_required"])
         self.assertTrue(replay["dependency_graph_must_be_transitively_closed"])
         self.assertFalse(replay["live_or_unbound_dependency_allowed"])
@@ -129,20 +132,46 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
 
     def test_explicit_discovered_leaf_roots_can_form_complete_closure(self) -> None:
         rows = [
-            dependency("Шаблон:ё", 1, "0", discovery=discovery(digest_char="a")),
-            dependency("Шаблон:ЕЁ", 2, "1", discovery=discovery(digest_char="b")),
+            dependency("Шаблон:ё", 1, "0", children=()),
+            dependency("Шаблон:ЕЁ", 2, "1", children=()),
         ]
         validate_dependency_closure(rows, [], require_complete=True)
 
+    def test_arbitrary_discovery_digest_cannot_prove_leaf(self) -> None:
+        rows = [
+            dependency("Шаблон:ё", 1, "0", children=()),
+            dependency("Шаблон:ЕЁ", 2, "1", children=()),
+        ]
+        rows[0]["discovery"]["evidence_sha256"] = "a" * 64
+        with self.assertRaisesRegex(ValueError, "discovery evidence digest drift"):
+            validate_dependency_closure(rows, [], require_complete=True)
+
+    def test_stale_digest_after_direct_dependency_change_fails_closed(self) -> None:
+        rows = [
+            dependency("Шаблон:ё", 1, "0", children=()),
+            dependency("Шаблон:ЕЁ", 2, "1", children=()),
+        ]
+        rows[0]["discovery"]["direct_dependencies"] = ["Шаблон:ЕЁ"]
+        with self.assertRaisesRegex(ValueError, "discovery evidence digest drift"):
+            validate_dependency_closure(
+                rows,
+                [{"from": "Шаблон:ё", "to": "Шаблон:ЕЁ"}],
+                require_complete=True,
+            )
+
+    def test_stale_digest_after_revision_change_fails_closed(self) -> None:
+        rows = [
+            dependency("Шаблон:ё", 1, "0", children=()),
+            dependency("Шаблон:ЕЁ", 2, "1", children=()),
+        ]
+        rows[0]["revision_id"] = 999
+        with self.assertRaisesRegex(ValueError, "discovery evidence digest drift"):
+            validate_dependency_closure(rows, [], require_complete=True)
+
     def test_discovered_child_must_be_bound_and_edge_exact(self) -> None:
         rows = [
-            dependency(
-                "Шаблон:ё",
-                1,
-                "0",
-                discovery=discovery("Шаблон:ЕЁ", digest_char="a"),
-            ),
-            dependency("Шаблон:ЕЁ", 2, "1", discovery=discovery(digest_char="b")),
+            dependency("Шаблон:ё", 1, "0", children=("Шаблон:ЕЁ",)),
+            dependency("Шаблон:ЕЁ", 2, "1", children=()),
         ]
         with self.assertRaisesRegex(ValueError, "edges do not match discovery proof"):
             validate_dependency_closure(rows, [], require_complete=True)
@@ -154,13 +183,8 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
 
     def test_discovered_unbound_child_fails_closed(self) -> None:
         rows = [
-            dependency(
-                "Шаблон:ё",
-                1,
-                "0",
-                discovery=discovery("Модуль:missing", digest_char="a"),
-            ),
-            dependency("Шаблон:ЕЁ", 2, "1", discovery=discovery(digest_char="b")),
+            dependency("Шаблон:ё", 1, "0", children=("Модуль:missing",)),
+            dependency("Шаблон:ЕЁ", 2, "1", children=()),
         ]
         with self.assertRaisesRegex(ValueError, "discovered dependency remains unbound"):
             validate_dependency_closure(rows, [], require_complete=True)

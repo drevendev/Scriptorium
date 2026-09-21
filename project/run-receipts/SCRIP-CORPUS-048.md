@@ -1,12 +1,12 @@
 # SCRIP-CORPUS-048 run receipt
 
 - Unit: `SCRIP-CORPUS-048`
-- Issue: #183
-- Pull request: #184 (Draft; authored in this run and intentionally left for independent later review)
+- Issue: #183 (closed completed)
+- Pull request: #184 (squash-merged as `634331346f1afadd26c054f9f09b6ada71d964b2`)
 - Base: `master@c2bb1bfe693867b44f8a6bf48e94e0a31cee99ad`
 - Authored branch: `scrip-corpus-048-template-dependency-model`
-- Pre-receipt authored head: `76f54850bdcd24771ae2dd081a3c632a3b19257a`
-- Exact final PR head and settled CI/artifact evidence are recorded in the PR handoff comment after the final commit.
+- Exact reviewed PR head: `cb725ba8f8df5cc0ebdacbf0441ff6451a1c94c0`
+- Independent review: COMMENT review `5265215135`
 
 ## Decision advanced
 
@@ -19,7 +19,19 @@ Source-free evidence is pinned to:
 - Russian Wikisource `Шаблон:ЕЁ/Документация`, `oldid=5090323`;
 - Russian Wikisource `Справка:Вычитка`, `oldid=5731079`.
 
-The deterministic evidence artifact is advanced to schema `scriptorium-darwin-template-yo-documentation-evidence-v2`, canonical SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc`.
+The deterministic evidence artifact is schema `scriptorium-darwin-template-yo-documentation-evidence-v2`, canonical SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc`.
+
+## Independent review and verification
+
+The later judgement run re-read exact head `cb725ba8f8df5cc0ebdacbf0441ff6451a1c94c0` against unchanged base `c2bb1bfe693867b44f8a6bf48e94e0a31cee99ad`: 8 commits ahead / 0 behind, 8 changed files, no review threads. All 15 PR-triggered workflows settled `success`.
+
+Dedicated run `35580775932`, job `106272898196`, checked out the exact reviewed SHA, passed 10 template-yo evidence tests plus 5 semantic-backlog regressions, reproduced canonical evidence SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc`, and uploaded artifact `10630062217`.
+
+The artifact was independently downloaded and verified as a 1,965-byte ZIP with SHA-256 `023392ca893de3a8ac9e3eb04e160a4fdc0b1deed0e5ac6b530043547e6c6a2d`. It contains exactly one 4,307-byte source-free JSON with SHA-256 `dd5dba3cb20827f3b163a59ca133e82e997158faf5f0be3506690c0a8d4b61ad`; recomputing its canonical self-digest reproduced `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc`.
+
+Pages run `35580775985`, job `106272898492`, checked out the same exact head, passed the full 391-test standard-library suite, canonical site build and deterministic rebuild; deployment remained intentionally skipped.
+
+No merge blockers were found. PR #184 was marked Ready and squash-merged with an expected-head guard as `634331346f1afadd26c054f9f09b6ada71d964b2`, which closed Issue #183 completed.
 
 ## Boundary preserved
 
@@ -29,4 +41,4 @@ No Page prose, template source bodies, rendered literary prose, OCR or scan byte
 
 ## Handoff
 
-This run authored the substantive correction and therefore does not self-approve, mark Ready or merge PR #184. A later independent run must re-read the exact final head, inspect settled PR-triggered checks and independently verify the source-free rebuilt artifact before judgement.
+SCRIP-CORPUS-048 is complete. Resume normal-flow selection from the queue. A later bounded Darwin/Rachinsky renderer unit may freeze the exact replay-time `Шаблон:ё` / `Шаблон:ЕЁ` dependency graph (including nested dependencies) or implement explicit version-pinned expansion before any renderer-profile promotion.

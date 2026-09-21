@@ -1,0 +1,90 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "contract_sha256": "35bed756f4fafa4f443315c09d04a35c66441eb2249eced3c7540ac20c981afe",
+  "diagnostic_ready": false,
+  "fantlab_source_edition_match": "unknown",
+  "inter_page_composition_frozen": false,
+  "literary_body_count_and_digests_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "mode_verification": {
+    "forced_yoification": {
+      "documented_expected_output": "ё",
+      "verified_output_sha256": null
+    },
+    "non_forced_yoification": {
+      "documented_expected_output": "е",
+      "verified_output_sha256": null
+    },
+    "outputs_verified": false
+  },
+  "official_api_evidence": {
+    "expandtemplates_revid": {
+      "documented_scope": "revision_context_for_REVISIONID_and_similar_variables",
+      "pins_transcluded_template_revisions": false
+    },
+    "permanent_url": "https://www.mediawiki.org/w/index.php?title=API:Expandtemplates/ru&oldid=6729113",
+    "provider": "MediaWiki.org",
+    "recursive_expansion": {
+      "permanent_url": "https://www.mediawiki.org/w/index.php?title=Help:ExpandTemplates&oldid=8168760",
+      "revision_date": "2026-01-23",
+      "revision_id": 8168760,
+      "templates_parser_functions_and_variables_expand_recursively": true,
+      "title": "Help:ExpandTemplates"
+    },
+    "researched_on": "2026-09-21",
+    "revision_date": "2024-08-29",
+    "revision_id": 6729113,
+    "templatesandbox": {
+      "direct_title_text_override_supported": true,
+      "single_override_proves_recursive_dependency_closure": false
+    },
+    "title": "API:Expandtemplates/ru"
+  },
+  "promotion_decision": {
+    "backlog_item_removed": false,
+    "next_evidence_required": "freeze exact source-free identities for Шаблон:ё, Шаблон:ЕЁ and every nested template/module dependency in one replay environment; retain complete source-free direct-dependency discovery evidence cryptographically bound to each exact node revision and dependency set; then verify deterministic forced and non-forced outputs before promotion",
+    "reason": "MediaWiki expandtemplates revid supplies revision context rather than a historical transclusion-version pin; recursive template dependencies remain unbound and no complete per-node discovery proof exists, so deterministic replay equivalence is not yet demonstrated",
+    "render_profile_rule_promoted": false
+  },
+  "renderer_implementation_ready": false,
+  "renderer_semantics_complete": false,
+  "replay_contract": {
+    "dependencies": [],
+    "dependency_closure_complete": false,
+    "dependency_discovery_evidence_schema_version": "scriptorium-template-dependency-discovery-evidence-v1",
+    "dependency_discovery_evidence_sha256_scope": "canonical source-free JSON over candidate id, exact dependency identity, discovery status/method and exact direct-dependency title list",
+    "dependency_discovery_proof_required": true,
+    "dependency_graph_must_be_transitively_closed": true,
+    "dependency_identity_scope": "exact page title plus revision id, revision timestamp and MediaWiki content SHA-1",
+    "edges": [],
+    "live_or_unbound_dependency_allowed": false,
+    "native_expandtemplates_revid_is_version_pin": false,
+    "required_dependency_fields": [
+      "title",
+      "revision_id",
+      "revision_timestamp",
+      "mediawiki_sha1"
+    ],
+    "required_discovery_proof_fields": [
+      "status",
+      "method",
+      "direct_dependencies",
+      "evidence_sha256"
+    ],
+    "required_root_titles": [
+      "Шаблон:ё",
+      "Шаблон:ЕЁ"
+    ],
+    "single_templatesandbox_override_is_closed_graph": false,
+    "strategy": "bind every template/module revision in the transitive replay graph explicitly; for every bound node retain source-free complete direct-dependency discovery evidence whose SHA-256 is recomputed from that exact node identity and dependency set, and require graph edges to exactly match that evidence; evaluate only in a controlled environment that consumes those bound identities"
+  },
+  "schema_version": "scriptorium-darwin-template-yo-replay-contract-v1",
+  "source_evidence": {
+    "backlog_sha256": "4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2",
+    "evidence_sha256": "d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc",
+    "schema_version": "scriptorium-darwin-template-yo-documentation-evidence-v2"
+  },
+  "source_text_included": false
+}

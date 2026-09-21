@@ -53,14 +53,21 @@ jobs:
           expected = json.loads(committed.read_text(encoding="utf-8"))
           actual = json.loads(rebuilt.read_text(encoding="utf-8"))
           assert actual == expected
-          assert actual["evidence_sha256"] == "9123d9f2901b4995deac5c4e09ca09af386befc8129f62e844446d44b864bfd2"
+          assert actual["schema_version"] == "scriptorium-darwin-template-yo-documentation-evidence-v2"
+          assert actual["evidence_sha256"] == "d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc"
           assert actual["proofread_help"]["revision_id"] == 5731079
           assert actual["proofread_help"]["revision_date"] == "2026-07-19"
+          assert actual["mediawiki_rendering_model"]["old_revision_rendering"]["revision_id"] == 8524540
+          assert actual["mediawiki_rendering_model"]["old_revision_rendering"]["current_template_versions_used"] is True
+          assert actual["mediawiki_rendering_model"]["transclusion_model"]["revision_id"] == 8551508
+          assert actual["mediawiki_rendering_model"]["transclusion_model"]["versioned_transclusion_supported"] is False
+          assert actual["page_revision_context"]["page_oldid_binds_transcluded_template_revision"] is False
           assert actual["target"]["name"] == "ё"
           assert actual["target"]["count"] == 2227
           assert actual["target"]["semantic_status"] == "unresolved"
           assert actual["documented_semantics"]["output_kind"] == "conditional_single_character"
           assert actual["documented_semantics"]["historical_equivalence_proven"] is False
+          assert actual["promotion_decision"]["page_save_time_template_lookup_required"] is False
           assert actual["promotion_decision"]["render_profile_rule_promoted"] is False
           assert actual["renderer_semantics_complete"] is False
           assert actual["minimum_300k_proved"] is False

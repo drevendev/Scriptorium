@@ -2,8 +2,8 @@
 
 Date: 2026-09-21
 Mode: corpus / provenance
-Issue: #189
-Pull request: #190 (Draft)
+Issue: #189 (closed completed)
+Pull request: #190 (independently reviewed; squash-merged as `834606c494b2c1aac94cc75f6ebf4b0c816e0d9d`)
 Base at selection: `5262067b7fda3d7cb2b3aa898f719fbf588c705d`
 
 ## Selection
@@ -25,7 +25,17 @@ GitHub Actions run `35641285926`, job `106470938299`:
 - established SHA-256 `3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61`;
 - uploaded only the source-free JSON capture as artifact `10658576419` (941-byte ZIP, ZIP SHA-256 `a2814db9f4755db8dff262c171502a903c329977bfbf9e8b47716d40c37341b5`).
 
-The authored follow-up commits the source-free receipt, binds the machine provenance trace and public candidate page to that byte identity, adds provenance regressions, and changes the dedicated workflow from capture mode to replay/verify mode.
+The authored follow-up committed the source-free receipt, bound the machine provenance trace and public candidate page to that byte identity, added provenance regressions, and changed the dedicated workflow from capture mode to replay/verify mode.
+
+## Independent review and merge
+
+Independent review `5271171588` re-read final exact head `75d6a862e9ed31ff4c9d71d2a3524569ab21c0ec` against unchanged base `5262067b7fda3d7cb2b3aa898f719fbf588c705d`. The branch was 2 commits ahead / 0 behind with 10 changed files, mergeable, and had no review threads. No merge blockers were found.
+
+All 15 PR-triggered workflow runs returned for that exact head settled `success`. Dedicated replay run `35642318440` / job `106474350077` checked out the reviewed SHA, passed 11 focused scan/provenance tests, re-streamed the exact Commons original, and reproduced byte count `28168847`, SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`, and SHA-256 `3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61`.
+
+Artifact `10658293142` was independently downloaded and inspected. Its ZIP is 1,551 bytes with SHA-256 `b7422205be15b395bfad9cf61b47060db688ae201824834dedfea5fb400296cb`; it contains exactly the source-free committed receipt plus the source-free verification JSON, and no scan bytes, images, OCR, or literary source text. Pages run `35642318393` checked out the same reviewed SHA, passed the full 419-test standard-library suite, canonical static-site build and deterministic rebuild; live deployment remained policy-skipped.
+
+PR #190 was marked Ready and squash-merged as `834606c494b2c1aac94cc75f6ebf4b0c816e0d9d`; Issue #189 closed automatically as completed.
 
 ## Gate judgement
 
@@ -46,4 +56,4 @@ Not advanced:
 
 ## Handoff
 
-PR #190 remains Draft because this run authored the substantive provenance change. The next independent wake must re-read the final exact head, inspect settled PR workflows, confirm that the committed receipt is replayed rather than refreshed, and verify that no OCR/body/FantLab gate was promoted. If clean, a later run may mark Ready and merge.
+SCRIP-CORPUS-051 is complete. Resume normal-flow selection from the P2 `SCRIP-CORPUS continuation` queue. A later bounded Perelman unit may define and verify a deterministic page-selection/OCR/body contract over this frozen scan identity; keep >=300k, FantLab diagnostic/source-match, and M2 gates closed until separately proved.

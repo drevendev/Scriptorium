@@ -1,10 +1,10 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 209
+STATE_REVISION: 210
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-21T12:47:54Z
-LAST_RESULT: SCRIP-CORPUS-049 / Issue #185 recovery repair on Draft PR #186 after independent review `5266226440`. The two merge blockers were repaired without advancing renderer semantics: recursive-expansion provenance is now pinned to MediaWiki `Help:ExpandTemplates` permanent revision `oldid=8168760` (2026-01-23), and complete replay closure now requires explicit source-free per-node discovery proof (`status`, discovery method, exact direct-dependency titles and evidence SHA-256) whose declared children must all be bound and whose graph edges must exactly match the proof. Two root identities with no discovery proof can no longer pass `require_complete=True`. The rebuilt replay contract remains intentionally open with zero bound dependencies and canonical SHA-256 `bb67d05c5aed51cc03917638cbd6d49257d51933e0adb88982ac73826849366c`. Local focused verification passed 14/14 replay-contract tests; PR #186 remains Draft for a fresh independent exact-head review.
-LAST_VERIFIED_PROGRESS: The Darwin/Rachinsky replay boundary is now fail-closed at both provenance and graph-discovery layers: `expandtemplates.revid` remains context-only, recursive expansion evidence is revision-pinned, and a future complete closure must distinguish an evidenced leaf from an undiscovered child. All 43 semantic shapes remain unresolved, `ё` stays priority 1 at 2,227 invocations, dependency closure/output verification remain open, and renderer/body/>=300k/FantLab/diagnostic/M2 gates remain closed. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-21T14:46:56Z
+LAST_RESULT: SCRIP-CORPUS-049 / Issue #185 recovery repair on Draft PR #186 after independent review `5267466282`. The remaining fail-closed integrity blocker was repaired without advancing renderer semantics: per-node discovery `evidence_sha256` is no longer shape-only. It is recomputed from canonical source-free JSON binding candidate identity, exact dependency title/revision ID/revision timestamp/MediaWiki SHA-1, discovery status/method and the exact direct-dependency list. Arbitrary digests and stale digests after revision/dependency mutation now fail closed. The rebuilt replay contract remains intentionally open with zero bound dependencies and canonical SHA-256 `35bed756f4fafa4f443315c09d04a35c66441eb2249eced3c7540ac20c981afe`. Reconstructed local focused verification passed 17/17 replay-contract tests; PR #186 remains Draft for a fresh independent exact-head review after CI settles.
+LAST_VERIFIED_PROGRESS: The Darwin/Rachinsky replay boundary is now fail-closed at provenance, graph-discovery and discovery-digest binding layers: `expandtemplates.revid` remains context-only, recursive expansion evidence is revision-pinned, a future complete closure must distinguish an evidenced leaf from an undiscovered child, and each discovery proof digest is cryptographically bound to the exact node revision identity plus direct-dependency set. All 43 semantic shapes remain unresolved, `ё` stays priority 1 at 2,227 invocations, dependency closure/output verification remain open, and renderer/body/>=300k/FantLab/diagnostic/M2 gates remain closed. M2 remains 0/5.
 
 ## Current unit
 
@@ -13,11 +13,10 @@ UNIT_ID:        SCRIP-CORPUS-049
 ISSUE:          #185 (open)
 STATUS:         REVIEW_PENDING
 PR:             #186 (Draft)
-NEXT_ACTION:    Independently re-read the repaired exact PR #186 head against unchanged master after fresh CI settles.
-                Verify the revision-pinned Help evidence, discovery-proof closure regressions, deterministic contract rebuild
-                and public companion. If clean, a later judgement run may mark Ready and merge. Do not bind or infer template
-                revisions, promote {{ё}}, or advance renderer/body/>=300k/FantLab/diagnostic/M2 gates without a separate
-                evidence unit.
+NEXT_ACTION:    Independently re-read the final exact PR #186 head against unchanged master after fresh CI settles.
+                Verify the cryptographic discovery-digest binding regressions, deterministic contract rebuild and public
+                companion. If clean, a later judgement run may mark Ready and merge. Do not bind or infer template revisions,
+                promote {{ё}}, or advance renderer/body/>=300k/FantLab/diagnostic/M2 gates without a separate evidence unit.
 ```
 
 ## Current milestone gate
@@ -51,7 +50,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **The Twelve Chairs** — SCRIP-CORPUS-044 complete. 410 exact Page identities and exact Commons PDF (77,978,350 bytes; SHA-1 `4ab6aa42c3517169e99c1177b6fb6412cfe9187d`; SHA-256 `5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4`) plus fail-closed surface/profile are frozen. 30 template shapes / 602 invocations and 410 `<references/>` remain unresolved; body/>=300k/FantLab identity remain open.
 - **The Life of Klim Samgin** — candidate-specific source graph, fail-closed extractor, per-part/composite body identities and provenance are frozen; exact historical MediaWiki/Poem deployment and FantLab input identity remain unresolved.
 - **Children of Captain Grant — Beketova translation** — 1,095,467 characters / 2,040,240 bytes; SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`; clears >=300k with explicit source/PD evidence. No FantLab result/input identity for this translation; M2 weight zero.
-- **On the Origin of Species — Rachinsky translation** — 418 exact Page identities, 388-literary/30-apparatus composition, exact-388 markup inventory, backing scan identity, render profile SHA-256 `2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`, semantic backlog SHA-256 `4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`, and documentation evidence SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc` are retained. SCRIP-CORPUS-049 adds Draft replay contract SHA-256 `bb67d05c5aed51cc03917638cbd6d49257d51933e0adb88982ac73826849366c`: `expandtemplates.revid` is context, not version pin; exact recursive dependency closure is still empty/unfrozen, and any future complete closure must carry per-node source-free discovery proof whose direct-dependency set exactly matches the graph. All 43 semantic shapes remain unresolved, `ё` remains priority 1 at 2,227 calls, and renderer/body/>=300k/FantLab/M2 remain closed.
+- **On the Origin of Species — Rachinsky translation** — 418 exact Page identities, 388-literary/30-apparatus composition, exact-388 markup inventory, backing scan identity, render profile SHA-256 `2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`, semantic backlog SHA-256 `4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`, and documentation evidence SHA-256 `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc` are retained. SCRIP-CORPUS-049 Draft replay contract SHA-256 is now `35bed756f4fafa4f443315c09d04a35c66441eb2249eced3c7540ac20c981afe`: `expandtemplates.revid` is context, not version pin; exact recursive dependency closure is still empty/unfrozen, and any future complete closure must carry per-node source-free discovery proof whose SHA-256 is recomputed from exact node revision identity plus direct-dependency set and whose child relations exactly match the graph. All 43 semantic shapes remain unresolved, `ё` remains priority 1 at 2,227 calls, and renderer/body/>=300k/FantLab/M2 remain closed.
 
 ## Deterministic / morphology findings
 
@@ -68,7 +67,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - Public corpus navigation exposes retained candidates with provenance boundaries rather than parity claims.
 - Beketova and Running on Waves expose >=300k frozen bodies while FantLab/M2 remain closed; Petersburg exposes exact 1916 PDF identity while OCR/body gates remain open.
 - The Twelve Chairs exposes exact-surface rendering decisions plus unresolved template/reference counts without claiming renderer/body equivalence.
-- The Darwin/Rachinsky semantic-backlog companion now separates documented conditional `{{ё}}` semantics, the oldid/live-transclusion model, and the new fail-closed replay contract. It explicitly records that `expandtemplates.revid` is not accepted as a template-version pin and that recursive dependency closure is still empty and future closure requires explicit per-node discovery evidence plus exact edge agreement.
+- The Darwin/Rachinsky semantic-backlog companion now separates documented conditional `{{ё}}` semantics, the oldid/live-transclusion model, and the fail-closed replay contract. It explicitly records that `expandtemplates.revid` is not accepted as a template-version pin, recursive dependency closure is still empty, and future per-node discovery digests are recomputed from exact revision identity plus direct-dependency set before edge agreement can satisfy closure.
 - Klim Samgin exposes its source graph, extractor, body identities and structured provenance; FantLab source match remains unknown.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
@@ -85,5 +84,5 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 9. Klim Samgin still lacks exact historical MediaWiki-core/Poem deployment equivalence and FantLab input identity.
 10. Beketova *Children of Captain Grant* clears >=300k but lacks a matching FantLab linguistic-result/input identity.
 11. The 1928 *Twelve Chairs* route still has unresolved template/reference semantics, inter-page composition, body identity and FantLab source identity.
-12. Darwin/Rachinsky `{{ё}}` has documented semantics and a corrected live-transclusion model, but exact replay-time recursive dependency identities are not yet bound. `expandtemplates.revid` is only revision context, a single TemplateSandbox override is insufficient to prove closure, and complete closure now requires revision-pinned recursive-expansion provenance plus explicit per-node discovery proof. Both forced/non-forced replay outputs remain unverified; body/>=300k and FantLab identity remain open.
+12. Darwin/Rachinsky `{{ё}}` has documented semantics and a corrected live-transclusion model, but exact replay-time recursive dependency identities are not yet bound. `expandtemplates.revid` is only revision context, a single TemplateSandbox override is insufficient to prove closure, and complete closure requires revision-pinned recursive-expansion provenance plus per-node discovery evidence whose digest is bound to exact revision identity and direct-dependency set. Both forced/non-forced replay outputs remain unverified; body/>=300k and FantLab identity remain open.
 13. Pages live activation remains a repository-admin effect and is off.

@@ -15,7 +15,7 @@
     "proofread_help_role": "marks yoification so finished text can support yoified and non-yoified variants",
     "template_family": "ЕЁ conditional yoification family"
   },
-  "evidence_sha256": "3c0af5dfe8d23cd6d47ce2f92b30c58b83e352df692c18e6d4f59a14928eb06a",
+  "evidence_sha256": "9123d9f2901b4995deac5c4e09ca09af386befc8129f62e844446d44b864bfd2",
   "fantlab_source_edition_match": "unknown",
   "historical_gap_witness": {
     "documentation_revision_postdates_page_revision": true,
@@ -44,10 +44,12 @@
   },
   "proofread_help": {
     "evidence_scope": "current_workflow_documentation",
+    "permanent_url": "https://ru.wikisource.org/w/index.php?title=Справка:Вычитка&oldid=5731079",
     "provider": "Russian Wikisource",
     "researched_on": "2026-09-21",
-    "title": "Справка:Вычитка",
-    "url": "https://ru.wikisource.org/wiki/Справка:Вычитка"
+    "revision_date": "2026-07-19",
+    "revision_id": 5731079,
+    "title": "Справка:Вычитка"
   },
   "renderer_implementation_ready": false,
   "renderer_semantics_complete": false,

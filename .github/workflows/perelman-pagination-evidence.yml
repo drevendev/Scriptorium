@@ -1,0 +1,61 @@
+name: Perelman 1913 pagination evidence
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/perelman-pagination-evidence.yml"
+      - "scriptorium/perelman_pagination_evidence.py"
+      - "tests/test_perelman_pagination_evidence.py"
+      - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.md"
+      - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pagination-evidence.json"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/**"
+      - "project/run-receipts/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pagination-evidence:
+    name: Validate source-free pagination decision
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run focused pagination-evidence tests
+        run: python -m unittest tests.test_perelman_pagination_evidence -v
+
+      - name: Validate committed source-free evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.perelman_pagination_evidence import validate_pagination_evidence
+
+          path = Path("corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pagination-evidence.json")
+          evidence = json.loads(path.read_text(encoding="utf-8"))
+          validate_pagination_evidence(evidence)
+          assert evidence["decision"]["page_count_arithmetic_may_select_literary_pages"] is False
+          assert evidence["literary_page_selection_frozen"] is False
+          assert evidence["minimum_300k_proved_from_frozen_body"] is False
+          assert evidence["admitted_for_calibration"] is False
+          assert evidence["fantlab_source_edition_match"] == "unknown"
+          assert evidence["m2_parity_admissible"] is False
+          print(json.dumps({
+              "evidence_version": evidence["evidence_version"],
+              "rsl_collation": evidence["bibliographic_surfaces"][0]["collation_display"],
+              "google_displayed_pages": evidence["bibliographic_surfaces"][1]["displayed_page_count"],
+              "djvu_carrier_pages": evidence["carrier_context"]["djvu"]["page_count"],
+          }, ensure_ascii=False, sort_keys=True))
+          PY

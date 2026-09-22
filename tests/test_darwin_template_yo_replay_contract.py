@@ -35,7 +35,7 @@ def dependency(
     row: dict[str, object] = {
         "title": title,
         "revision_id": revision_id,
-        "revision_timestamp": "2026-09-21T00:00:00Z",
+        "revision_timestamp": "2026-09-22T00:00:00Z",
         "mediawiki_sha1": sha1_char * 40,
     }
     if children is not None:
@@ -57,8 +57,9 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
         validate_contract(committed, load(EVIDENCE))
         self.assertEqual(
             committed["contract_sha256"],
-            "35bed756f4fafa4f443315c09d04a35c66441eb2249eced3c7540ac20c981afe",
+            "9b2e8914a5b4c3518ef331c27dc09a6a30d4d6433e90169c677348048f3dcd52",
         )
+        self.assertEqual(committed["schema_version"], "scriptorium-darwin-template-yo-replay-contract-v2")
 
     def test_expandtemplates_revid_is_context_not_version_pin(self) -> None:
         contract = build_contract(load(EVIDENCE))
@@ -82,6 +83,40 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
         )
         self.assertTrue(recursive["templates_parser_functions_and_variables_expand_recursively"])
 
+    def test_title_canonicalization_evidence_and_root_observations_are_pinned(self) -> None:
+        contract = build_contract(load(EVIDENCE))
+        title_evidence = contract["official_api_evidence"]["title_canonicalization"]
+        self.assertEqual(title_evidence["title"], "Manual:Page naming/en")
+        self.assertEqual(title_evidence["revision_id"], 8270202)
+        self.assertEqual(title_evidence["revision_date"], "2026-03-07")
+        self.assertTrue(title_evidence["first_page_name_character_auto_capitalized_by_default"])
+        self.assertTrue(title_evidence["canonical_form_capitalizes_first_page_name_character"])
+
+        observations = contract["root_title_observations"]
+        self.assertEqual(
+            observations,
+            [
+                {
+                    "provider": "Russian Wikisource",
+                    "invocation_spelling": "Шаблон:ё",
+                    "canonical_title": "Шаблон:Ё",
+                    "revision_id": 5687302,
+                    "revision_date": "2026-01-21",
+                    "permanent_url": "https://ru.wikisource.org/w/index.php?title=Шаблон:Ё&oldid=5687302",
+                    "mediawiki_sha1_bound": False,
+                },
+                {
+                    "provider": "Russian Wikisource",
+                    "invocation_spelling": "Шаблон:ЕЁ",
+                    "canonical_title": "Шаблон:ЕЁ",
+                    "revision_id": 3684646,
+                    "revision_date": "2019-06-04",
+                    "permanent_url": "https://ru.wikisource.org/w/index.php?title=Шаблон:ЕЁ&oldid=3684646",
+                    "mediawiki_sha1_bound": False,
+                },
+            ],
+        )
+
     def test_templatesandbox_single_override_does_not_close_recursive_graph(self) -> None:
         contract = build_contract(load(EVIDENCE))
         sandbox = contract["official_api_evidence"]["templatesandbox"]
@@ -91,7 +126,7 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
 
     def test_required_roots_identity_and_discovery_proof_are_explicit(self) -> None:
         replay = build_contract(load(EVIDENCE))["replay_contract"]
-        self.assertEqual(replay["required_root_titles"], ["Шаблон:ё", "Шаблон:ЕЁ"])
+        self.assertEqual(replay["required_root_titles"], ["Шаблон:Ё", "Шаблон:ЕЁ"])
         self.assertEqual(
             replay["required_dependency_fields"],
             ["title", "revision_id", "revision_timestamp", "mediawiki_sha1"],
@@ -105,6 +140,7 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
             "scriptorium-template-dependency-discovery-evidence-v1",
         )
         self.assertIn("exact dependency identity", replay["dependency_discovery_evidence_sha256_scope"])
+        self.assertIn("canonical exact page title", replay["dependency_identity_scope"])
         self.assertTrue(replay["dependency_discovery_proof_required"])
         self.assertTrue(replay["dependency_graph_must_be_transitively_closed"])
         self.assertFalse(replay["live_or_unbound_dependency_allowed"])
@@ -117,14 +153,22 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "self-digest drift"):
             build_contract(evidence)
 
-    def test_complete_dependency_graph_requires_both_roots(self) -> None:
-        rows = [dependency("Шаблон:ё", 1, "0")]
+    def test_complete_dependency_graph_requires_both_canonical_roots(self) -> None:
+        rows = [dependency("Шаблон:Ё", 1, "0")]
+        with self.assertRaisesRegex(ValueError, "required root dependency missing"):
+            validate_dependency_closure(rows, [], require_complete=True)
+
+    def test_lowercase_invocation_alias_cannot_satisfy_canonical_root(self) -> None:
+        rows = [
+            dependency("Шаблон:ё", 1, "0", children=()),
+            dependency("Шаблон:ЕЁ", 2, "1", children=()),
+        ]
         with self.assertRaisesRegex(ValueError, "required root dependency missing"):
             validate_dependency_closure(rows, [], require_complete=True)
 
     def test_two_roots_without_discovery_proof_cannot_pass_complete(self) -> None:
         rows = [
-            dependency("Шаблон:ё", 1, "0"),
+            dependency("Шаблон:Ё", 1, "0"),
             dependency("Шаблон:ЕЁ", 2, "1"),
         ]
         with self.assertRaisesRegex(ValueError, "lacks dependency discovery proof"):
@@ -132,14 +176,14 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
 
     def test_explicit_discovered_leaf_roots_can_form_complete_closure(self) -> None:
         rows = [
-            dependency("Шаблон:ё", 1, "0", children=()),
+            dependency("Шаблон:Ё", 1, "0", children=()),
             dependency("Шаблон:ЕЁ", 2, "1", children=()),
         ]
         validate_dependency_closure(rows, [], require_complete=True)
 
     def test_arbitrary_discovery_digest_cannot_prove_leaf(self) -> None:
         rows = [
-            dependency("Шаблон:ё", 1, "0", children=()),
+            dependency("Шаблон:Ё", 1, "0", children=()),
             dependency("Шаблон:ЕЁ", 2, "1", children=()),
         ]
         rows[0]["discovery"]["evidence_sha256"] = "a" * 64
@@ -148,20 +192,20 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
 
     def test_stale_digest_after_direct_dependency_change_fails_closed(self) -> None:
         rows = [
-            dependency("Шаблон:ё", 1, "0", children=()),
+            dependency("Шаблон:Ё", 1, "0", children=()),
             dependency("Шаблон:ЕЁ", 2, "1", children=()),
         ]
         rows[0]["discovery"]["direct_dependencies"] = ["Шаблон:ЕЁ"]
         with self.assertRaisesRegex(ValueError, "discovery evidence digest drift"):
             validate_dependency_closure(
                 rows,
-                [{"from": "Шаблон:ё", "to": "Шаблон:ЕЁ"}],
+                [{"from": "Шаблон:Ё", "to": "Шаблон:ЕЁ"}],
                 require_complete=True,
             )
 
     def test_stale_digest_after_revision_change_fails_closed(self) -> None:
         rows = [
-            dependency("Шаблон:ё", 1, "0", children=()),
+            dependency("Шаблон:Ё", 1, "0", children=()),
             dependency("Шаблон:ЕЁ", 2, "1", children=()),
         ]
         rows[0]["revision_id"] = 999
@@ -170,20 +214,20 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
 
     def test_discovered_child_must_be_bound_and_edge_exact(self) -> None:
         rows = [
-            dependency("Шаблон:ё", 1, "0", children=("Шаблон:ЕЁ",)),
+            dependency("Шаблон:Ё", 1, "0", children=("Шаблон:ЕЁ",)),
             dependency("Шаблон:ЕЁ", 2, "1", children=()),
         ]
         with self.assertRaisesRegex(ValueError, "edges do not match discovery proof"):
             validate_dependency_closure(rows, [], require_complete=True)
         validate_dependency_closure(
             rows,
-            [{"from": "Шаблон:ё", "to": "Шаблон:ЕЁ"}],
+            [{"from": "Шаблон:Ё", "to": "Шаблон:ЕЁ"}],
             require_complete=True,
         )
 
     def test_discovered_unbound_child_fails_closed(self) -> None:
         rows = [
-            dependency("Шаблон:ё", 1, "0", children=("Модуль:missing",)),
+            dependency("Шаблон:Ё", 1, "0", children=("Модуль:missing",)),
             dependency("Шаблон:ЕЁ", 2, "1", children=()),
         ]
         with self.assertRaisesRegex(ValueError, "discovered dependency remains unbound"):
@@ -191,15 +235,15 @@ class DarwinTemplateYoReplayContractTests(unittest.TestCase):
 
     def test_dependency_edge_to_unbound_title_fails_closed(self) -> None:
         rows = [
-            dependency("Шаблон:ё", 1, "0"),
+            dependency("Шаблон:Ё", 1, "0"),
             dependency("Шаблон:ЕЁ", 2, "1"),
         ]
-        edges = [{"from": "Шаблон:ё", "to": "Шаблон:missing"}]
+        edges = [{"from": "Шаблон:Ё", "to": "Шаблон:missing"}]
         with self.assertRaisesRegex(ValueError, "unbound title"):
             validate_dependency_closure(rows, edges, require_complete=True)
 
     def test_source_body_fields_are_rejected_from_dependency_identities(self) -> None:
-        row = dependency("Шаблон:ё", 1, "0")
+        row = dependency("Шаблон:Ё", 1, "0")
         row["wikitext"] = "forbidden"
         with self.assertRaisesRegex(ValueError, "prose leaked"):
             validate_dependency_closure([row], [], require_complete=False)

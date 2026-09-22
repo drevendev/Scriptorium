@@ -19,6 +19,8 @@ Initial capture run `35723749909` at authored head `b02426746f41b09f3f06c847b39e
 
 The hosted observation is now frozen in `corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json`. The dedicated workflow was then tightened to regenerate that diagnostic from the exact carrier and require byte-for-byte equality with the committed JSON on every relevant PR head.
 
+After synchronizing the aggregate provenance trace and public page, exact-head DjVu-identity run `35724498267` exposed one stale wording assertion in `test_public_candidate_page_exposes_identities_without_source_payload`: it expected the old phrase `does **not** change` while the revised page states that the DjVu evidence `do **not** change the contract's canonical PDF extraction carrier`. All other 13 tests in that job passed. The assertion was repaired to test the current semantic boundary rather than obsolete grammar; no carrier, diagnostic or gate evidence changed. Final exact-head workflows must re-run before review handoff is considered settled.
+
 ## Diagnostic observations
 
 The exact frozen DjVu yields:

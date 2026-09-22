@@ -1,0 +1,131 @@
+{
+  "diagnostic_version": "scriptorium-running-waves-dialogue-policy-diagnostic-v1",
+  "candidate_id": "grin-running-on-waves-ru",
+  "source_text_committed": false,
+  "body_identity": {
+    "manifest_version": "scriptorium-running-waves-literary-body-v1",
+    "character_count_including_spaces": 363819,
+    "raw_sha256": "41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc"
+  },
+  "fantlab": {
+    "work_id": 27344,
+    "analysis_url": "https://fantlab.ru/work27344/lp",
+    "analysis_date": "2022-09-18",
+    "displayed_dialogue_share_percent": 38.23,
+    "displayed_author_text_inside_dialogue_percent": 12.49,
+    "source_edition_disclosed": false,
+    "source_bytes_disclosed": false
+  },
+  "probe": {
+    "schema_version": "scriptorium-dialogue-policy-diagnostic-v1",
+    "status": "diagnostic_only",
+    "warning": "Delimiter and denominator variants are Scriptorium sensitivity probes, not recovered FantLab semantics. They cannot promote parity while the FantLab analyzer-input source identity is unknown.",
+    "reference": {
+      "expected_dialogue_share_percent": 38.23,
+      "expected_author_text_inside_dialogue_percent": 12.49
+    },
+    "structure": {
+      "dialogue_paragraph_count": 736,
+      "internal_separator_count": 1215,
+      "current_v1_author_remark_span_count": 706,
+      "speech_boundary_author_remark_span_count": 571,
+      "separator_left_context_counts": {
+        "alnum": 151,
+        "comma": 541,
+        "exclamation": 93,
+        "other_punctuation": 25,
+        "period": 331,
+        "question": 62,
+        "three_dot_ellipsis": 11,
+        "unicode_ellipsis": 1
+      },
+      "speech_boundary_contexts": [
+        "comma",
+        "exclamation",
+        "exclamation_ellipsis",
+        "question",
+        "question_ellipsis",
+        "three_dot_ellipsis",
+        "unicode_ellipsis"
+      ]
+    },
+    "character_counts": {
+      "total_non_whitespace": 304345,
+      "dialogue_non_whitespace": 109229,
+      "current_v1_author_remark_non_whitespace": 37753,
+      "speech_boundary_author_remark_non_whitespace": 25590
+    },
+    "dialogue_share": {
+      "value": 35.88986183443132,
+      "numerator_non_whitespace_characters": 109229,
+      "denominator_non_whitespace_characters": 304345,
+      "delta_to_reference": -2.340138165568675
+    },
+    "author_text_inside_dialogue_variants": {
+      "current_v1_over_dialogue": {
+        "value": 34.563165459722235,
+        "numerator_non_whitespace_characters": 37753,
+        "denominator_non_whitespace_characters": 109229,
+        "delta_to_reference": 22.073165459722233
+      },
+      "speech_boundary_openers_over_dialogue": {
+        "value": 23.42784425381538,
+        "numerator_non_whitespace_characters": 25590,
+        "denominator_non_whitespace_characters": 109229,
+        "delta_to_reference": 10.93784425381538
+      },
+      "current_v1_over_total_text": {
+        "value": 12.4046723291002,
+        "numerator_non_whitespace_characters": 37753,
+        "denominator_non_whitespace_characters": 304345,
+        "delta_to_reference": -0.08532767089980098
+      },
+      "speech_boundary_openers_over_total_text": {
+        "value": 8.408220933480097,
+        "numerator_non_whitespace_characters": 25590,
+        "denominator_non_whitespace_characters": 304345,
+        "delta_to_reference": -4.081779066519903
+      }
+    }
+  },
+  "author_text_variant_distance_ranking": [
+    {
+      "variant_id": "current_v1_over_total_text",
+      "value_percent": 12.4046723291002,
+      "delta_to_fantlab_display_percentage_points": -0.08532767089980098,
+      "absolute_delta_percentage_points": 0.08532767089980098
+    },
+    {
+      "variant_id": "speech_boundary_openers_over_total_text",
+      "value_percent": 8.408220933480097,
+      "delta_to_fantlab_display_percentage_points": -4.081779066519903,
+      "absolute_delta_percentage_points": 4.081779066519903
+    },
+    {
+      "variant_id": "speech_boundary_openers_over_dialogue",
+      "value_percent": 23.42784425381538,
+      "delta_to_fantlab_display_percentage_points": 10.93784425381538,
+      "absolute_delta_percentage_points": 10.93784425381538
+    },
+    {
+      "variant_id": "current_v1_over_dialogue",
+      "value_percent": 34.563165459722235,
+      "delta_to_fantlab_display_percentage_points": 22.073165459722233,
+      "absolute_delta_percentage_points": 22.073165459722233
+    }
+  ],
+  "interpretation": {
+    "production_dialogue_profile_changed": false,
+    "closest_variant_is_not_a_semantics_selection": true,
+    "numeric_proximity_cannot_establish_fantlab_grammar": true,
+    "numeric_proximity_cannot_establish_source_identity": true
+  },
+  "gates": {
+    "general_calibration_profile_admissible": true,
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": true,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "m2_weight": 0
+  }
+}

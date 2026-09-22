@@ -3,7 +3,7 @@
 Date: 2026-09-22
 Mode: corpus / provenance
 Issue: #197
-Pull request: pending authoring handoff
+Pull request: #198 (Draft; authored in this wake)
 Base at selection: `98e903e6c28f80c26489c90ed137d3bfa606e9a2`
 
 ## Selection

@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
-  "research_date": "2026-09-21",
+  "research_date": "2026-09-22",
   "fantlab": {
     "work_id": 191634,
     "work_page_url": "https://fantlab.ru/work191634",
@@ -25,12 +25,12 @@
     "author": "Яков Исидорович Перельман",
     "author_lifespan": "1882–1942",
     "legal_basis": "public_domain",
-    "legal_evidence": "The retained Commons file-description revision carries the public-domain licensing surface. Scriptorium stores only source-free provenance and cryptographic identity metadata; the PDF bytes are retrieved transiently for verification and are not committed or uploaded as evidence.",
+    "legal_evidence": "The retained Commons file-description revision carries the public-domain licensing surface. Scriptorium stores only source-free provenance and cryptographic identity metadata; source-carrier bytes are retrieved transiently for verification and are not committed or uploaded as evidence.",
     "description_revision_scope": {
       "pins_file_description_revision": true,
       "pins_commons_structured_data": false,
       "pins_pdf_bytes": false,
-      "note": "The oldid is retained for bibliographic/legal description provenance. The PDF byte identity is established independently by transient streaming and is not claimed to be version-bound by the description oldid."
+      "note": "The oldid is retained for bibliographic/legal description provenance. Carrier byte identities are established independently by transient streaming and are not claimed to be version-bound by the description oldid."
     },
     "current_file_surface_observation": {
       "observed_on": "2026-09-21",
@@ -45,7 +45,7 @@
     },
     "provider_binary_metadata": {
       "sha1": "3c616f547ff283a2cafd1ac26b448a8e8013f648",
-      "sha1_scope": "Provider-reported current file SHA-1 observed on 2026-09-21 and independently reproduced by transiently streaming the exact current Commons original in hosted CI.",
+      "sha1_scope": "Provider-reported current PDF SHA-1 observed on 2026-09-21 and independently reproduced by transiently streaming the exact current Commons original in hosted CI.",
       "scriptorium_independently_streamed_binary": true,
       "scriptorium_byte_count": 28168847,
       "scriptorium_sha256": "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61",
@@ -53,6 +53,27 @@
       "direct_file_url_is_immutable_identity": false,
       "description_revision_pins_pdf_bytes": false
     },
+    "companion_carriers": [
+      {
+        "carrier_format": "DjVu",
+        "file_page_url": "https://commons.wikimedia.org/wiki/File:Перельман_Я.И._Занимательная_физика._Книга_1_(1913).djvu",
+        "observed_on": "2026-09-22",
+        "provider_observed_page_count": 218,
+        "current_file_revision_timestamp": "2021-08-24T09:31:00Z",
+        "provider_reported_byte_count": 2982171,
+        "provider_reported_sha1": "05c29d01c5dde91bfcfbb6b7ea7f0ea3dba43a12",
+        "scriptorium_independently_streamed_binary": true,
+        "scriptorium_sha256": "f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462",
+        "source_free_receipt": "perelman-entertaining-physics-book1-1913-ru.djvu-identity.json",
+        "relationship_to_pdf": "same_bibliographic_edition_provider_asserted_page_equivalence_unverified",
+        "provider_relation_evidence": "Commons links the DjVu as another version of the same 1913 Soikin edition; the PDF description says the DjVu lacks pages 193-194. Scriptorium treats those as provider assertions only.",
+        "page_equivalence_verified": false,
+        "embedded_text_or_ocr_inspected": false,
+        "canonical_ocr_extraction_carrier_changed": false,
+        "direct_file_url_is_immutable_identity": false,
+        "source_text_committed": false
+      }
+    ],
     "ocr_body_promotion_contract": {
       "contract_version": "scriptorium-perelman-1913-ocr-body-contract-v1",
       "source_free_contract": "perelman-entertaining-physics-book1-1913-ru.ocr-contract.json",
@@ -62,7 +83,8 @@
       "page_selection_bound": false,
       "rasterization_toolchain_bound": false,
       "ocr_toolchain_bound": false,
-      "body_outputs_frozen": false
+      "body_outputs_frozen": false,
+      "companion_djvu_changes_canonical_carrier": false
     },
     "immutable_identity": {
       "status": "scan_binary_frozen_ocr_contract_defined_body_unverified",
@@ -71,21 +93,27 @@
         "first-edition bibliographic description for the 1913 P. P. Soikin publication",
         "public-domain licensing surface carried by the retained file-description revision",
         "exact current 2021 Commons PDF byte stream: 28,168,847 bytes; SHA-1 3c616f547ff283a2cafd1ac26b448a8e8013f648; SHA-256 3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61",
+        "exact current 2021 Commons DjVu companion byte stream: 2,982,171 bytes; SHA-1 05c29d01c5dde91bfcfbb6b7ea7f0ea3dba43a12; SHA-256 f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462",
         "source-free OCR/body promotion contract v1: SHA-256 f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5"
       ],
       "observed_current_components": [
-        "223-page count on the Commons file surface observed 2026-09-21",
-        "2021-09-03 current file-history revision note that pages 193-194 were added"
+        "223-page count on the Commons PDF file surface observed 2026-09-21",
+        "2021-09-03 current PDF file-history revision note that pages 193-194 were added",
+        "218-page count on the Commons DjVu file surface observed 2026-09-22",
+        "2021-08-24 current DjVu file-history revision timestamp",
+        "provider assertion that the DjVu is another version of the same edition and lacks pages 193-194 relative to the PDF"
       ],
       "unfrozen_components": [
-        "exact literary-page selection over the frozen PDF",
+        "exact page-level equivalence or mapping between the frozen PDF and DjVu carriers",
+        "whether any embedded DjVu text layer is suitable or reproducible literary text",
+        "exact literary-page selection over a deliberately chosen frozen carrier",
         "reproducible rasterization and OCR toolchain identities/settings under a future bound contract version",
         "raw and normalized literary-body character counts and digests",
         "whether the exact frozen literary body clears 300,000 characters including spaces",
         "whether FantLab exposes a work-specific linguistic-analysis result for this work",
-        "the relationship between any FantLab analyzer input and this exact 1913 scan/source edition"
+        "the relationship between any FantLab analyzer input and this exact 1913 source edition"
       ],
-      "reason": "Hosted CI independently froze the scan byte identity in SCRIP-CORPUS-051. SCRIP-CORPUS-052 adds a source-free fail-closed promotion contract bound to that scan, but intentionally leaves page selection, renderer/OCR identity, body outputs, admission and FantLab identity unproved."
+      "reason": "Hosted CI independently froze the PDF identity in SCRIP-CORPUS-051 and the DjVu companion identity in SCRIP-CORPUS-053. SCRIP-CORPUS-052 defines a fail-closed promotion contract bound to the PDF scan; the companion carrier does not change that contract or prove page equivalence, OCR/body outputs, admission or FantLab identity."
     }
   },
   "diversity": {
@@ -104,14 +132,15 @@
     "status": "scan_binary_frozen_ocr_contract_defined_body_unverified",
     "reasons": [
       "The retained Commons description revision identifies a concrete first-edition 1913 bibliographic/legal surface and public-domain status.",
-      "Hosted CI independently streamed the exact current Commons original and reproduced 28,168,847 bytes plus SHA-1 3c616f547ff283a2cafd1ac26b448a8e8013f648, establishing Scriptorium SHA-256 3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61 in a source-free receipt.",
-      "A source-free fail-closed OCR/body promotion contract is now defined and bound to the frozen scan, but its page-selection, rasterization and OCR bindings deliberately remain unbound.",
+      "Hosted CI independently streamed the exact current Commons PDF and reproduced 28,168,847 bytes plus SHA-1 3c616f547ff283a2cafd1ac26b448a8e8013f648, establishing Scriptorium SHA-256 3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61 in a source-free receipt.",
+      "Hosted CI independently streamed the current Commons DjVu companion and reproduced 2,982,171 bytes plus SHA-1 05c29d01c5dde91bfcfbb6b7ea7f0ea3dba43a12, establishing Scriptorium SHA-256 f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462 in a source-free receipt without asserting PDF/DjVu page equivalence or inspecting embedded OCR/text.",
+      "A source-free fail-closed OCR/body promotion contract is defined and bound to the frozen PDF scan, but its page-selection, rasterization and OCR bindings deliberately remain unbound; the DjVu companion does not change the canonical carrier.",
       "No frozen literary-body count/digest exists, so the >=300,000-character corpus rule has not been proved for this exact edition.",
       "FantLab catalogue work 191634 was observed, but a work-specific linguistic-analysis surface was not independently established.",
-      "No evidence ties a FantLab analyzer input to this exact 1913 edition or byte stream."
+      "No evidence ties a FantLab analyzer input to this exact 1913 edition or either frozen carrier."
     ],
     "next_evidence": [
-      "Under a new independently evidenced contract version, bind exact literary-page selection plus reproducible rasterization/OCR toolchain identities and settings; then freeze source-free raw/normalized literary-body counts and digests and require the body itself to clear 300,000 characters before calibration admission.",
+      "Under a new independently evidenced contract version, deliberately choose and bind the extraction carrier, exact literary-page selection plus reproducible rasterization/OCR toolchain identities and settings; then freeze source-free raw/normalized literary-body counts and digests and require the body itself to clear 300,000 characters before calibration admission.",
       "Establish a real work-specific FantLab linguistic-analysis surface and exact analyzer-input/source-edition identity before any diagnostic or M2 promotion."
     ]
   }

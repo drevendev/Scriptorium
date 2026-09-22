@@ -1,0 +1,82 @@
+name: Perelman 1913 DjVu companion identity
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/perelman-djvu-identity.yml"
+      - "scriptorium/perelman_djvu_identity.py"
+      - "tests/test_perelman_djvu_identity.py"
+      - "tests/test_perelman_provenance_trace.py"
+      - "corpus/candidates/README.md"
+      - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.md"
+      - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.json"
+      - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-identity.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  djvu-identity:
+    name: Retrieve and verify exact Commons DjVu
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run DjVu identity and provenance tests
+        run: python -m unittest tests.test_perelman_djvu_identity tests.test_perelman_provenance_trace -v
+
+      - name: Independently retrieve and verify exact Commons DjVu
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.perelman_djvu_identity verify \
+            --receipt corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-identity.json \
+            | tee build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-identity.verify.json
+
+      - name: Verify gate and carrier boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.perelman_djvu_identity import validate_receipt
+
+          receipt = json.loads(Path("corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-identity.json").read_text(encoding="utf-8"))
+          validate_receipt(receipt)
+          assert receipt["identity"]["byte_count"] == 2982171
+          assert receipt["identity"]["sha1"] == "05c29d01c5dde91bfcfbb6b7ea7f0ea3dba43a12"
+          assert receipt["identity"]["sha256"] == "f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462"
+          assert receipt["provider_observed_page_count"] == 218
+          assert receipt["frozen_pdf_sha256"] == "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
+          assert receipt["page_equivalence_verified"] is False
+          assert receipt["embedded_text_or_ocr_inspected"] is False
+          assert receipt["canonical_ocr_extraction_carrier_changed"] is False
+          assert receipt["ocr_extraction_profile_frozen"] is False
+          assert receipt["literary_body_count_and_digests_frozen"] is False
+          assert receipt["minimum_300k_proved_from_frozen_body"] is False
+          assert receipt["admitted_for_calibration"] is False
+          assert receipt["fantlab_source_edition_match"] == "unknown"
+          assert receipt["diagnostic_ready"] is False
+          assert receipt["m2_parity_admissible"] is False
+          print("SCRIPTORIUM_PERELMAN_DJVU_SHA256=" + receipt["identity"]["sha256"])
+          PY
+
+      - name: Upload source-free DjVu identity evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: perelman-1913-djvu-identity
+          path: |
+            corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-identity.json
+            build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-identity.verify.json
+          if-no-files-found: error
+          retention-days: 7

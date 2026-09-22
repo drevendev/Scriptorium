@@ -6,7 +6,9 @@ on:
       - ".github/workflows/perelman-djvu-text-layer.yml"
       - "scriptorium/perelman_djvu_text_layer.py"
       - "tests/test_perelman_djvu_text_layer.py"
+      - "tests/test_perelman_provenance_trace.py"
       - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.md"
+      - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.json"
       - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json"
       - "project/STATE_AND_QUEUE.md"
       - "project/CHANGELOG.d/**"
@@ -41,8 +43,8 @@ jobs:
           test "$(dpkg-query -W -f='${Version}' djvulibre-bin)" = "3.5.28-2ubuntu0.24.04.2"
           command -v djvutxt
 
-      - name: Run focused hidden-text tests
-        run: python -m unittest tests.test_perelman_djvu_text_layer tests.test_perelman_djvu_identity -v
+      - name: Run focused hidden-text and provenance tests
+        run: python -m unittest tests.test_perelman_djvu_text_layer tests.test_perelman_djvu_identity tests.test_perelman_provenance_trace -v
 
       - name: Replay exact frozen DjVu hidden-text diagnostic
         run: |

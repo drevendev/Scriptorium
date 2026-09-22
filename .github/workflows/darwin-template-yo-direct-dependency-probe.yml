@@ -1,0 +1,46 @@
+name: Darwin/Rachinsky template yo direct-dependency probe
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-template-yo-direct-dependency-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    name: Probe exact-root parser dependency surfaces
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Query historical parse template surfaces
+        run: |
+          set -euo pipefail
+          for oldid in 5687302 3684646; do
+            curl --fail --silent --show-error --location --get \
+              --retry 4 --retry-all-errors --retry-delay 4 \
+              --max-time 30 \
+              --user-agent 'Scriptorium/0.1 (https://github.com/drevendev/Scriptorium; source-provenance verification)' \
+              'https://ru.wikisource.org/w/api.php' \
+              --data-urlencode 'action=parse' \
+              --data-urlencode 'format=json' \
+              --data-urlencode 'formatversion=2' \
+              --data-urlencode "oldid=${oldid}" \
+              --data-urlencode 'prop=templates|revid' \
+              --output "parse-${oldid}.json"
+          done
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          for oldid in (5687302, 3684646):
+              payload = json.loads(Path(f"parse-{oldid}.json").read_text(encoding="utf-8"))
+              parse = payload["parse"]
+              assert parse["revid"] == oldid, parse
+              rows = parse.get("templates", [])
+              titles = sorted({row["title"] for row in rows if row.get("ns") in (10, 828)})
+              print(f"SCRIPTORIUM_ROOT={oldid}")
+              print("SCRIPTORIUM_TEMPLATE_SURFACE=" + json.dumps(titles, ensure_ascii=False, separators=(",", ":")))
+          PY

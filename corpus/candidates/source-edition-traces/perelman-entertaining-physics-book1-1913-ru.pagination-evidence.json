@@ -1,0 +1,59 @@
+{
+  "admitted_for_calibration": false,
+  "bibliographic_surfaces": [
+    {
+      "authority_class": "primary_library_catalogue",
+      "bracketed_unnumbered_pages": 1,
+      "carrier_page_mapping_disclosed": false,
+      "collation_display": "VIII, 211, [1] с.",
+      "edition_identity": "Санкт-Петербург : П. П. Сойкин, 1913",
+      "normalized_single_page_count": null,
+      "numbered_pages": 211,
+      "observed_on": "2026-09-22",
+      "preliminary_roman_pages": 8,
+      "provider": "Russian State Library",
+      "url": "https://search.rsl.ru/ru/record/01004016163"
+    },
+    {
+      "authority_class": "independent_book_metadata_surface",
+      "carrier_page_mapping_disclosed": false,
+      "collation_display": null,
+      "displayed_page_count": 212,
+      "edition_identity": "Сойкин, 1913",
+      "observed_on": "2026-09-22",
+      "provider": "Google Books / Google Play Books",
+      "url": "https://play.google.com/store/books/details?id=8hBN2yBtlkIC"
+    }
+  ],
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "canonical_ocr_extraction_carrier_changed": false,
+  "carrier_context": {
+    "djvu": {
+      "page_count": 218,
+      "sha256": "f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462"
+    },
+    "pdf": {
+      "current_file_revision_note": "added pages 193-194 (without text layout)",
+      "current_file_revision_timestamp": "2021-09-03T09:12:00Z",
+      "page_count": 223,
+      "sha256": "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
+    }
+  },
+  "decision": {
+    "next_evidence": "Establish an exact page-level mapping on a deliberately chosen frozen carrier from facsimile/page-label evidence, then bind that mapping under a new contract version before freezing a literary body.",
+    "page_count_arithmetic_may_select_literary_pages": false,
+    "reason": "The RSL catalogue describes the same 1913 Book 1 as VIII preliminary pages, 211 numbered pages and 1 bracketed unnumbered page, while Google exposes a normalized 212-page display. These metadata surfaces use different pagination conventions and neither maps bibliographic pages to exact Commons carrier pages. Carrier-page selection therefore requires page-label/facsimile evidence rather than count subtraction.",
+    "rejected_inference": "218 DjVu carrier pages - 212 displayed book pages = 6 non-literary carrier pages",
+    "status": "pagination_evidence_frozen_mapping_unresolved"
+  },
+  "diagnostic_ready": false,
+  "evidence_version": "scriptorium-perelman-1913-pagination-evidence-v1",
+  "fantlab_source_edition_match": "unknown",
+  "literary_body_count_and_digests_frozen": false,
+  "literary_page_selection_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved_from_frozen_body": false,
+  "page_equivalence_to_pdf_verified": false,
+  "research_date": "2026-09-22",
+  "source_free": true
+}

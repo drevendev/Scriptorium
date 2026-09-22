@@ -1,23 +1,29 @@
 # Run receipt — SCRIP-CORPUS-057
 
 - **Unit:** SCRIP-CORPUS-057 — Running on Waves source-free full-work diagnostic
-- **Issue:** #201
-- **Pull request:** #202 (Draft; independent review required)
+- **Issue:** #201 (closed completed)
+- **Pull request:** #202 (independently reviewed; squash-merged as `1dc9913ec50609cb8c51fb4bdd66ee90b7a94a13`)
 - **Base:** `master@35669c62e24743d005163421283f4fb489ea2b68`
+- **Reviewed head:** `1ceddb56577c8a3147e374c0c2dd6fab85bbb891`
+- **Independent review:** `5275938745`
 - **State handoff parent:** `2ebd84f7653c21453c521436dc3ed494256bfce1`
 - **Scope:** `drevendev/Scriptorium` only
 
 ## Produced
 
-This run added `scriptorium.running_waves_diagnostic`, five focused regressions, a dedicated exact-body replay workflow, the committed source-free diagnostic artifact `corpus/candidates/diagnostics/grin-running-on-waves-ru.json`, and synchronized candidate/provenance/state/changelog surfaces.
+This unit added `scriptorium.running_waves_diagnostic`, five focused regressions, a dedicated exact-body replay workflow, the committed source-free diagnostic artifact `corpus/candidates/diagnostics/grin-running-on-waves-ru.json`, and synchronized candidate/provenance/state/changelog surfaces.
 
 The diagnostic is cryptographically bound to the previously frozen 36-page Running on Waves body: **363,819 characters**, **656,239 UTF-8 bytes**, SHA-256 **`41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`**. Literary source text is fetched only transiently from the exact pinned revisions and is not committed or uploaded as an artifact.
 
 ## Hosted evidence
 
-Authored-head workflow run `35702370659` checked out exact SHA `091e89e2e9d08c7353b31d792deecac5877bec0f`, passed all **5/5** focused tests, replayed the exact frozen public body, verified the body identity guard, emitted **27** source-free comparison rows, passed the no-source-text/parity-boundary guard, and uploaded only a **1,822-byte** source-free diagnostic artifact (artifact `10681979014`; ZIP SHA-256 `65951f3006f98ed69e4470079400c1b24f4b9078a4d8d7806db8e2993626b973`). The canonical JSON committed later on this branch was copied exactly from that successful hosted capture; final-head CI must independently prove deterministic regeneration by `cmp` before merge.
+Authored-head workflow run `35702370659` checked out exact SHA `091e89e2e9d08c7353b31d792deecac5877bec0f`, passed all **5/5** focused tests, replayed the exact frozen public body, verified the body identity guard, emitted **27** source-free comparison rows, passed the no-source-text/parity-boundary guard, and uploaded only a **1,822-byte** source-free diagnostic artifact (artifact `10681979014`; ZIP SHA-256 `65951f3006f98ed69e4470079400c1b24f4b9078a4d8d7806db8e2993626b973`). The canonical JSON committed later on this branch was copied exactly from that successful hosted capture.
 
 Two earlier authored heads failed the new focused workflow because of test-fixture defects, not product/source evidence: the first test referenced `literary_pages` instead of the source manifest's actual `pages` key; the next synthetic fixture contained no dialogue and therefore could not exercise non-null dialogue metrics. Both fixture defects were corrected before the successful exact-body capture.
+
+The final exact head `1ceddb56577c8a3147e374c0c2dd6fab85bbb891` settled green on all **16/16** pull-request-triggered workflows. Dedicated run `35703026466` checked out that exact SHA, passed all **5/5** focused regressions, replayed the canonical frozen body, regenerated the diagnostic byte-for-byte equal to the committed JSON, and passed the source-free/parity guards. The pinned-pylem and Pages workflows also completed successfully on the same exact head.
+
+Independent recovery review `5275938745` re-read all **9 changed files**, found no merge blocker or open review thread, and freshly reverified FantLab work `27344`'s public 18 September 2022 values used by the artifact. PR #202 was then marked Ready and squash-merged with expected-head protection as `1dc9913ec50609cb8c51fb4bdd66ee90b7a94a13`, automatically closing Issue #201 as completed.
 
 ## Diagnostic observations
 
@@ -45,4 +51,4 @@ Selected observed Scriptorium values/deltas from the exact frozen public body:
 - `m2_parity_admissible=false`
 - M2 remains **0/5**.
 
-This authored run does **not** mark PR #202 Ready and does not merge it. The next wake must independently re-read the PR's current exact head, inspect changed files and exact-head CI, verify that the committed diagnostic deterministically replays and remains source-free, and only then decide whether Ready/merge is warranted.
+SCRIP-CORPUS-057 is complete. Resume normal-flow selection from the queue; the retained display deltas are prioritization evidence only and must not be promoted to parity without exact FantLab analyzer-input identity and the relevant compatibility dependencies.

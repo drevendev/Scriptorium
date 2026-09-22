@@ -44,7 +44,7 @@ jobs:
       - name: Run focused hidden-text tests
         run: python -m unittest tests.test_perelman_djvu_text_layer tests.test_perelman_djvu_identity -v
 
-      - name: Probe exact frozen DjVu without retaining source text
+      - name: Replay exact frozen DjVu hidden-text diagnostic
         run: |
           set -euo pipefail
           mkdir -p build/repro
@@ -52,6 +52,9 @@ jobs:
             --package-version "$(dpkg-query -W -f='${Version}' djvulibre-bin)" \
             --output build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json \
             > build/repro/probe-summary.json
+          cmp \
+            corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json \
+            build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json
 
       - name: Verify source-free and closed-gate diagnostic
         run: |
@@ -60,9 +63,16 @@ jobs:
           from pathlib import Path
           from scriptorium.perelman_djvu_text_layer import validate_diagnostic
 
-          path = Path("build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json")
+          path = Path("corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json")
           diagnostic = json.loads(path.read_text(encoding="utf-8"))
           validate_diagnostic(diagnostic)
+          assert diagnostic["hidden_text"]["present"] is True
+          assert diagnostic["hidden_text"]["character_count"] == 326992
+          assert diagnostic["hidden_text"]["normalized_character_count"] == 326992
+          assert diagnostic["hidden_text"]["pages_with_nonempty_output"] == 218
+          assert diagnostic["hidden_text"]["pages_without_output"] == []
+          assert diagnostic["hidden_text"]["sha256"] == "4c9235a78b40ea4737ec4463c1e772727cb31198509d05a24472e8d9075319b8"
+          assert diagnostic["hidden_text"]["normalized_sha256"] == "4c9235a78b40ea4737ec4463c1e772727cb31198509d05a24472e8d9075319b8"
           assert diagnostic["source_text_included"] is False
           assert diagnostic["binary_bytes_committed"] is False
           assert diagnostic["literary_page_selection_frozen"] is False
@@ -89,10 +99,10 @@ jobs:
           }, sort_keys=True))
           PY
 
-      - name: Upload source-free hidden-text diagnostic
+      - name: Upload source-free hidden-text replay evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: perelman-1913-djvu-hidden-text-probe
+          name: perelman-1913-djvu-hidden-text-replay
           path: build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json
           if-no-files-found: error
           retention-days: 7

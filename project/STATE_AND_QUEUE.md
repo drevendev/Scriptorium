@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 223
+STATE_REVISION: 224
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-22T03:56:00Z
-LAST_RESULT: SCRIP-CORPUS-055 / Issue #197 authored in Draft PR #198. Fresh FantLab evidence rechecked work 20055 at 285,704 characters / 43,500 words, 14,296 characters below the mandatory 300,000-character floor. This makes FantLab work 20055 ineligible as an M2 parity-benchmark seed under the standing rule. Russian Wikisource separately provides public-domain and 2003 collected-works source-family evidence, but its current work-index oldid=5633449 only freezes navigation/provenance while the literary body is split across 40 separately addressable record pages. The distinct public source remains unfrozen/unmeasured and its separate corpus admissibility is unknown until those body revisions are frozen, composed deterministically and measured. M2 remains 0/5.
-LAST_VERIFIED_PROGRESS: Corpus qualification now fails fast on Zamyatin's early-20th-century modernist/dystopian lead without confusing FantLab-input size with a distinct public source. FantLab's analyzed input is below 300k and cannot satisfy the M2 work gate even if later source-matched. The public Wikisource route remains legally usable but has no frozen literary-body identity; a work-index revision is explicitly not treated as the identity of its 40 linked body pages. No literary source text, body bytes, diagnostics, parity or M2 progress were created.
+LAST_COMMITTED_RUN_AT: 2026-09-22T04:50:00Z
+LAST_RESULT: SCRIP-CORPUS-055 / Issue #197 completed. Independent exact-head review `5274234912` re-read PR #198 at `0b38eaa1d62358794e4142a3e11b9e8fd0676c6b` against unchanged base `98e903e6c28f80c26489c90ed137d3bfa606e9a2`, reviewed all 5 changed files, independently rechecked the FantLab/Wikisource evidence, confirmed the exact 14,296-character shortfall and found no merge blocker or open review thread. All 12 PR-triggered workflow runs for that exact head settled `success`; the pinned-pylem workflow's three jobs also completed `success`, including the Python 3.13 provider-contract job with the complete standard-library suite. PR #198 was marked Ready and squash-merged with expected-head protection as `f989ace74e4911bf9f7828637a4f21f0ee9d06b9`, closing Issue #197 completed.
+LAST_VERIFIED_PROGRESS: Zamyatin's *We* now has a canonical source-free pre-admission screening that narrowly rejects FantLab work 20055 as an M2 parity-benchmark seed because its published 17 September 2022 analyzer input is 285,704 characters, 14,296 below the mandatory 300,000-character floor. This does not establish the size or corpus admissibility of the distinct Russian Wikisource public source: its work-index `oldid=5633449` freezes navigation/provenance only, while the 40 linked literary body pages remain unfrozen and unmeasured. FantLab analyzer-input identity, diagnostics, parity and M2 remain closed; M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-055
-ISSUE:          #197
-STATUS:         REVIEW_PENDING
-PR:             #198 (Draft; authored in this wake)
-NEXT_ACTION:    Independently review the exact final PR head against its base after repository checks settle.
-                Verify the 14,296-character threshold arithmetic, the public-domain/source-family evidence, and the
-                work-index-vs-40-body-page revision boundary. Preserve the narrow conclusion: FantLab work 20055 is
-                below the M2 >=300k floor while the distinct public source remains unmeasured and unadmitted.
+ISSUE:          #197 (closed completed)
+STATUS:         COMPLETE
+PR:             #198 (independently reviewed; squash-merged as f989ace74e4911bf9f7828637a4f21f0ee9d06b9)
+NEXT_ACTION:    Resume normal-flow selection from the queue. Any future We source-freeze unit must bind the exact
+                body-page revision identities and deterministic composition before measuring or admitting the public
+                body, and must not convert FantLab work 20055 into M2 evidence under the current >=300k gate.
 ```
 
 ## Current milestone gate
@@ -31,7 +30,6 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-CORPUS-055 review/merge recovery | review / provenance | Independently review the Draft PR exact final head and settled checks; merge only if the screening narrowly rejects FantLab work 20055 as an M2 seed while leaving the distinct Wikisource body's corpus admissibility unknown until its 40 body revisions are frozen and measured | Authoring wake must not self-approve; M2 remains 0/5 |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough; Petersburg's frozen scan and Darwin/Rachinsky's frozen source/surface/scan/profile identities make separate candidate-specific OCR/renderer units executable when selected | Preserve translation/edition identity and explicit legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
 
 ## Retained corpus / provenance status
@@ -45,7 +43,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Petersburg** — SCRIP-CORPUS-038 complete. Exact 632-page 1916 first-book-edition Commons PDF: 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`; distinct from 1922. OCR/page selection/body/>=300k/FantLab identity remain open.
 - **Hyperboloid of Engineer Garin** — `oldid=5014458`; frozen body 499,066 characters / 930,560 bytes; SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`; print-edition/FantLab identity unresolved.
 - **Aelita** — SCRIP-CORPUS-054 is independently reviewed and complete on master. FantLab's 18 September 2022 input (276,556 characters) is 23,444 below the standing >=300k floor and therefore cannot be an M2 parity-benchmark seed. Russian Wikisource legal/source-family evidence belongs to a materially revised public source whose own body is not frozen or measured; its separate non-M2 corpus admissibility remains unknown. FantLab analyzer-input identity remains unresolved; M2 weight zero.
-- **We** — SCRIP-CORPUS-055 screening authored for review. FantLab's 17 September 2022 input (285,704 characters) is 14,296 below the standing >=300k floor and therefore cannot be an M2 parity-benchmark seed. Russian Wikisource identifies a public-domain 2003 collected-works source and current work-index `oldid=5633449`, but the literary body is split across 40 separately addressable record pages; the index revision is not a body freeze. Public-source corpus admissibility remains unknown until exact body revisions are frozen and measured; FantLab analyzer-input identity remains unresolved; M2 weight zero.
+- **We** — SCRIP-CORPUS-055 is independently reviewed and complete on master. FantLab's 17 September 2022 input (285,704 characters) is 14,296 below the standing >=300k floor and therefore cannot be an M2 parity-benchmark seed. Russian Wikisource identifies a public-domain 2003 collected-works source and current work-index `oldid=5633449`, but the literary body is split across 40 separately addressable record pages; the index revision is not a body freeze. Public-source corpus admissibility remains unknown until exact body revisions are frozen and measured; FantLab analyzer-input identity remains unresolved; M2 weight zero.
 - **Shining World** — 34 advertised chapter links but only 19 pages exist; complete body unavailable from this route and FantLab match unknown.
 - **Road to Nowhere** — primary Pravda-1965/lib.web route remains incomplete; distinct `az.lib.ru` route `oldid=5585836` is 442,656 characters / 825,899 bytes, SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`; neither is identified as FantLab input.
 - **Running on Waves** — SCRIP-CORPUS-028 complete. Detskaya literatura 1965 family: 36 literary pages, 363,819 characters / 656,239 bytes, SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`; clears >=300k. FantLab shows 360,987 characters but source match remains unknown. Separate 1980 route stays distinct.

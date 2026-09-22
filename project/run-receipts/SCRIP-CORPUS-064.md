@@ -1,9 +1,10 @@
 # Run receipt — SCRIP-CORPUS-064
 
 - **Unit:** SCRIP-CORPUS-064 — bind exact MediaWiki SHA-1 identities for Darwin `{{ё}}` replay roots
-- **Issue:** #215
-- **Pull request:** #216 (Draft; independent exact-head review pending)
+- **Issue:** #215 (closed completed)
+- **Pull request:** #216 (independently reviewed; squash-merged as `71571633819111790243a3a99591eea314be2f6f`)
 - **Base:** `master@f8a0732ac3732510406fff7e4fe3b082b31b74ac`
+- **Reviewed head:** `e7de3024fdda2c6afc9e12884112a5d849c56938`
 - **Branch:** `scrip-corpus-064-bind-yo-root-sha1`
 - **Scope:** `drevendev/Scriptorium` only
 
@@ -18,13 +19,15 @@ The frozen source-free identities are:
 
 The first hosted probe received HTTP 429. No bypass was attempted: the probe was retried with bounded curl retries, timeout, and an explicit project User-Agent; run `35789352220` then returned the exact metadata successfully. The temporary probe workflow was removed after the values were captured.
 
-A narrow successor `scriptorium-darwin-template-yo-replay-contract-v3` now validates the reviewed v2 predecessor SHA-256 `9b2e8914a5b4c3518ef331c27dc09a6a30d4d6433e90169c677348048f3dcd52`, binds only those two root identities, and preserves all downstream gates. Canonical v3 contract SHA-256 is `8caa144d9f4c0b9a8149c1822bd79d168d212dea14d72079c3259d55e5e03c8c`.
+A narrow successor `scriptorium-darwin-template-yo-replay-contract-v3` validates the reviewed v2 predecessor SHA-256 `9b2e8914a5b4c3518ef331c27dc09a6a30d4d6433e90169c677348048f3dcd52`, binds only those two root identities, and preserves all downstream gates. Canonical v3 contract SHA-256 is `8caa144d9f4c0b9a8149c1822bd79d168d212dea14d72079c3259d55e5e03c8c`.
 
-## Verification
+## Verification and independent judgement
 
-Dedicated read-only workflow run `35790144199` checked out authoring head `6f19a361934b7970b92ec2d2f71f18d849070cef` and completed `success`. It ran **26/26** v2+v3 replay-contract regressions, deterministically rebuilt the v3 artifact and byte-compared it with the committed JSON, then re-queried exact Russian Wikisource revision metadata and matched both title/timestamp/SHA-1 identities. Its uploaded artifact contained only the source-free v3 JSON.
+Authoring workflow run `35790144199` checked out authoring head `6f19a361934b7970b92ec2d2f71f18d849070cef` and completed `success`. It ran **26/26** v2+v3 replay-contract regressions, deterministically rebuilt the v3 artifact and byte-compared it with the committed JSON, then re-queried exact Russian Wikisource revision metadata and matched both title/timestamp/SHA-1 identities. Its uploaded artifact contained only the source-free v3 JSON.
 
-The permanent workflow uses bounded provider retries and an explicit User-Agent, requests no revision content, and fails closed on identity drift. Later documentation/state-only commits do not change the validated v3 implementation or canonical artifact; independent review must nevertheless judge the exact final PR head before merge.
+Independent review `5284802535` then re-read all **8 changed files** on exact final head `e7de3024fdda2c6afc9e12884112a5d849c56938` against unchanged `master@f8a0732ac3732510406fff7e4fe3b082b31b74ac`, found no merge blocker and found no open review thread. All **21/21** PR-triggered workflows on that exact head settled `success`. Dedicated exact-head run `35790329660` checked out the reviewed SHA, ran the v2+v3 replay-contract regressions, deterministically rebuilt and byte-compared the source-free v3 contract, and freshly re-queried both exact root revisions with metadata-only `ids|timestamp|sha1`, matching the committed identities.
+
+PR #216 was marked Ready and squash-merged with expected-head protection as `71571633819111790243a3a99591eea314be2f6f`, automatically closing Issue #215 as completed.
 
 ## Gates / handoff
 
@@ -39,4 +42,4 @@ The permanent workflow uses bounded provider retries and an explicit User-Agent,
 - `m2_parity_admissible=false`
 - M2 remains **0/5**
 
-PR #216 intentionally remains Draft. The next wake must independently review the exact final head, inspect all settled checks/threads, and merge only if that separate judgement finds no blocker.
+SCRIP-CORPUS-064 is complete. Normal-flow selection may resume from the queue; the next Darwin/Rachinsky evidence-bearing step is direct-dependency discovery and recursive closure, not renderer/body/FantLab promotion.

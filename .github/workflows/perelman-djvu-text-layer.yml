@@ -1,0 +1,98 @@
+name: Perelman 1913 DjVu hidden-text layer
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/perelman-djvu-text-layer.yml"
+      - "scriptorium/perelman_djvu_text_layer.py"
+      - "tests/test_perelman_djvu_text_layer.py"
+      - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.md"
+      - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/**"
+      - "project/run-receipts/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hidden-text:
+    name: Inspect exact Commons DjVu hidden text
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Install pinned DjVuLibre tools
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends djvulibre-bin=3.5.28-2ubuntu0.24.04.2
+          test "$(dpkg-query -W -f='${Version}' djvulibre-bin)" = "3.5.28-2ubuntu0.24.04.2"
+          command -v djvutxt
+
+      - name: Run focused hidden-text tests
+        run: python -m unittest tests.test_perelman_djvu_text_layer tests.test_perelman_djvu_identity -v
+
+      - name: Probe exact frozen DjVu without retaining source text
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.perelman_djvu_text_layer probe \
+            --package-version "$(dpkg-query -W -f='${Version}' djvulibre-bin)" \
+            --output build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json \
+            > build/repro/probe-summary.json
+
+      - name: Verify source-free and closed-gate diagnostic
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.perelman_djvu_text_layer import validate_diagnostic
+
+          path = Path("build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json")
+          diagnostic = json.loads(path.read_text(encoding="utf-8"))
+          validate_diagnostic(diagnostic)
+          assert diagnostic["source_text_included"] is False
+          assert diagnostic["binary_bytes_committed"] is False
+          assert diagnostic["literary_page_selection_frozen"] is False
+          assert diagnostic["canonical_ocr_extraction_carrier_changed"] is False
+          assert diagnostic["literary_body_count_and_digests_frozen"] is False
+          assert diagnostic["minimum_300k_proved_from_frozen_body"] is False
+          assert diagnostic["admitted_for_calibration"] is False
+          assert diagnostic["fantlab_source_edition_match"] == "unknown"
+          assert diagnostic["diagnostic_ready"] is False
+          assert diagnostic["m2_parity_admissible"] is False
+          forbidden = ("source_text", "ocr_text", "text_content", "literary_text")
+          serialized = json.dumps(diagnostic, ensure_ascii=False).lower()
+          for key in forbidden:
+              assert f'"{key}"' not in serialized
+          print(json.dumps({
+              "present": diagnostic["hidden_text"]["present"],
+              "utf8_byte_count": diagnostic["hidden_text"]["utf8_byte_count"],
+              "character_count": diagnostic["hidden_text"]["character_count"],
+              "normalized_character_count": diagnostic["hidden_text"]["normalized_character_count"],
+              "pages_with_nonempty_output": diagnostic["hidden_text"]["pages_with_nonempty_output"],
+              "pages_without_output": diagnostic["hidden_text"]["pages_without_output"],
+              "sha256": diagnostic["hidden_text"]["sha256"],
+              "normalized_sha256": diagnostic["hidden_text"]["normalized_sha256"],
+          }, sort_keys=True))
+          PY
+
+      - name: Upload source-free hidden-text diagnostic
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: perelman-1913-djvu-hidden-text-probe
+          path: build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json
+          if-no-files-found: error
+          retention-days: 7

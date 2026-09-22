@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 227
+STATE_REVISION: 228
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-22T08:00:00Z
-LAST_RESULT: SCRIP-CORPUS-057 / Issue #201 authored on Draft PR #202 from `master@35669c62e24743d005163421283f4fb489ea2b68`. The exact frozen 36-page Running on Waves body now has a source-free deterministic full-work diagnostic against FantLab work 27344's public 18 September 2022 display values. Hosted exact-body replay at authored head `091e89e2e9d08c7353b31d792deecac5877bec0f` passed all 5 focused regressions, verified the canonical 363,819-character body SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`, emitted 27 source-free comparison rows, and preserved all parity gates closed. The canonical diagnostic artifact, candidate page, provenance trace and changelog fragment were then committed; PR #202 remains Draft for independent exact-head review rather than self-approval.
-LAST_VERIFIED_PROGRESS: Running on Waves is now `diagnostic_ready=true` for the current deterministic metric profile while remaining source-unmatched to FantLab. Current source-free observations include 363,819 vs 360,987 characters, 55,778 vs 52,985 words, dialogue share 35.88986183443132% vs 38.23%, author text inside dialogue 34.563165459722235% vs 12.49%, and 14,406 vs 7,107 unique words. Four dictionary-dependent vocabulary rows remain explicitly not-run because no compatible dictionary is bound. `fantlab_source_edition_match=unknown`, `gate_ready=false`, `m2_parity_admissible=false`, and M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-22T08:52:00Z
+LAST_RESULT: SCRIP-CORPUS-057 / Issue #201 completed. Independent exact-head review `5275938745` re-read PR #202 at `1ceddb56577c8a3147e374c0c2dd6fab85bbb891` against unchanged `master@35669c62e24743d005163421283f4fb489ea2b68`, reviewed all 9 changed files, found no merge blocker or open review thread, freshly reverified the referenced FantLab 18 September 2022 display values, and confirmed all 16 PR-triggered workflow runs settled `success`. PR #202 was marked Ready and squash-merged with expected-head protection as `1dc9913ec50609cb8c51fb4bdd66ee90b7a94a13`, closing Issue #201 completed.
+LAST_VERIFIED_PROGRESS: Running on Waves is now canonically `diagnostic_ready=true` for the current deterministic metric profile while remaining source-unmatched to FantLab. The source-free 27-row exact-body diagnostic is bound to the frozen 363,819-character body SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`; exact-head CI regenerated it byte-for-byte from the pinned revisions and kept source/parity guards closed. Current observations include 55,778 Scriptorium words vs FantLab's displayed 52,985, dialogue share 35.88986183443132% vs 38.23%, author text inside dialogue 34.563165459722235% vs 12.49%, and 14,406 vs 7,107 unique words. Four dictionary-dependent vocabulary rows remain explicitly not-run. `fantlab_source_edition_match=unknown`, `gate_ready=false`, `m2_parity_admissible=false`, and M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-057
-ISSUE:          #201 (open)
-STATUS:         REVIEW_PENDING
-PR:             #202 (Draft; authored from master@35669c62e24743d005163421283f4fb489ea2b68)
-AUTHORED_HEAD:  631b8ab7e53f1483e297311e1381d0ae820a3da7 (parent of this state handoff)
-NEXT_ACTION:    Independently re-orient from PR #202, verify its current exact head against unchanged/updated master,
-                inspect all changed files plus settled exact-head checks, confirm the committed diagnostic exactly replays
-                the frozen body without source-text leakage or parity promotion, then mark Ready/merge only if evidence supports it.
+ISSUE:          #201 (closed completed)
+STATUS:         COMPLETE
+PR:             #202 (independently reviewed; squash-merged as 1dc9913ec50609cb8c51fb4bdd66ee90b7a94a13)
+NEXT_ACTION:    Resume normal-flow selection from the queue. Use the retained Running on Waves diagnostic as a
+                prioritization surface for bounded metric-policy investigations, but do not promote any display delta
+                to parity evidence unless FantLab analyzer-input identity and the relevant compatibility dependency are established.
 ```
 
 ## Current milestone gate
@@ -31,7 +30,6 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-CORPUS-057 review/merge recovery | review / recovery | Independently review Draft PR #202 on its current exact head; verify the exact-body diagnostic artifact, source-free boundary, candidate/provenance updates and settled checks; merge only if the reviewed head is safe | Do not self-approve the authored substantive change; preserve FantLab source match unknown and M2 at 0/5 |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough; Petersburg's frozen scan/defined promotion contract and Darwin/Rachinsky's frozen source/surface/scan/profile identities make separate candidate-specific extraction/renderer units executable when selected | Preserve translation/edition identity and explicit legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
 
 ## Retained corpus / provenance status
@@ -48,7 +46,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **We** — SCRIP-CORPUS-055 is independently reviewed and complete on master. FantLab's 17 September 2022 input (285,704 characters) is 14,296 below the standing >=300k floor and therefore cannot be an M2 parity-benchmark seed. Russian Wikisource identifies a public-domain 2003 collected-works source and current work-index `oldid=5633449`, but the literary body is split across 40 separately addressable record pages; the index revision is not a body freeze. Public-source corpus admissibility remains unknown until exact body revisions are frozen and measured; FantLab analyzer-input identity remains unresolved; M2 weight zero.
 - **Shining World** — 34 advertised chapter links but only 19 pages exist; complete body unavailable from this route and FantLab match unknown.
 - **Road to Nowhere** — primary Pravda-1965/lib.web route remains incomplete; distinct `az.lib.ru` route `oldid=5585836` is 442,656 characters / 825,899 bytes, SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`; neither is identified as FantLab input.
-- **Running on Waves** — SCRIP-CORPUS-028 froze the Detskaya literatura 1965 family at 36 literary pages, 363,819 characters / 656,239 bytes, SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`, clearing >=300k. SCRIP-CORPUS-057 now adds a source-free 27-row exact-body deterministic diagnostic against FantLab work 27344, including 55,778 Scriptorium words vs FantLab's displayed 52,985; dictionary-dependent vocabulary rows remain not-run. FantLab source match remains unknown, gate/M2 remain closed, and the separate 1980 route stays distinct.
+- **Running on Waves** — SCRIP-CORPUS-028 froze the Detskaya literatura 1965 family at 36 literary pages, 363,819 characters / 656,239 bytes, SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`, clearing >=300k. SCRIP-CORPUS-057 is independently reviewed and complete on master with a source-free 27-row exact-body deterministic diagnostic against FantLab work 27344, including 55,778 Scriptorium words vs FantLab's displayed 52,985; dictionary-dependent vocabulary rows remain not-run. FantLab source match remains unknown, gate/M2 remain closed, and the separate 1980 route stays distinct.
 - **The White Guard** — Wikisource mixes two bibliographic source families across chapters 1–11 and 12–20; body remains unfrozen.
 - **The Twelve Chairs** — SCRIP-CORPUS-044 complete. 410 exact Page identities and exact Commons PDF (77,978,350 bytes; SHA-1 `4ab6aa42c3517169e99c1177b6fb6412cfe9187d`; SHA-256 `5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4`) plus fail-closed surface/profile are frozen. 30 template shapes / 602 invocations and 410 `<references/>` remain unresolved; body/>=300k/FantLab identity remain open.
 - **The Life of Klim Samgin** — candidate-specific source graph, fail-closed extractor, per-part/composite body identities and provenance are frozen; exact historical MediaWiki-core/Poem deployment and FantLab input identity remain unresolved.

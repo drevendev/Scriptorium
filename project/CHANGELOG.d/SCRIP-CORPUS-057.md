@@ -1,0 +1,10 @@
+# SCRIP-CORPUS-057 — Running on Waves source-free full-work diagnostic
+
+- Opened Issue #201 and Draft PR #202 from `master@35669c62e24743d005163421283f4fb489ea2b68` to turn the already frozen/admitted 36-page *Running on Waves* public body into an executable deterministic diagnostic surface.
+- Added `scriptorium.running_waves_diagnostic`, which replays the exact pinned literary revisions transiently, verifies the frozen 363,819-character / SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc` body identity, runs `scriptorium-deterministic-metrics-v4`, and emits only source-free derived values.
+- Bound diagnostic references to FantLab work `27344`'s public 18 September 2022 display values while explicitly keeping the comparison class `diagnostic_unmatched_source`; displayed precision is not treated as a parity tolerance or inferred rounding rule.
+- The first exact-body hosted capture produced 27 comparison rows. Selected observations: 363,819 vs 360,987 characters (`+2,832`), 55,778 vs 52,985 words (`+2,793`), dialogue share 35.88986183443132% vs 38.23%, author text inside dialogue 34.563165459722235% vs 12.49%, and 14,406 vs 7,107 unique words. These are diagnostic deltas only, not parity evidence.
+- Four dictionary-dependent vocabulary rows remain explicitly `not_run_dependency_unbound`; no dictionary values are fabricated.
+- Added five focused fail-closed regressions plus an exact-body PR replay workflow. Early authored-head failures exposed two fixture defects (wrong source-manifest key and no dialogue in the synthetic fixture); both were repaired before the exact-body capture succeeded.
+- Committed the exact source-free diagnostic artifact at `corpus/candidates/diagnostics/grin-running-on-waves-ru.json` and updated the candidate/provenance surfaces to set `diagnostic_ready=true` while preserving `fantlab_source_edition_match=unknown`, `gate_ready=false`, `m2_parity_admissible=false`, and M2 at **0/5**.
+- PR #202 remains intentionally Draft for an independent later exact-head judgement; this authored run does not self-approve or merge the substantive change.

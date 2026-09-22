@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "grin-running-on-waves-ru",
-  "research_date": "2026-09-19",
+  "research_date": "2026-09-22",
   "fantlab": {
     "work_id": 27344,
     "analysis_url": "https://fantlab.ru/work27344/lp",
@@ -58,6 +58,20 @@
       "replayable": true,
       "source_text_committed": false
     },
+    "diagnostic_witness": {
+      "artifact": "../diagnostics/grin-running-on-waves-ru.json",
+      "diagnostic_version": "scriptorium-running-waves-fantlab-diagnostic-v1",
+      "body_raw_sha256": "41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc",
+      "scriptorium_schema_version": "scriptorium-deterministic-metrics-v4",
+      "metric_contract_id": "fantlab-2022-v1",
+      "metric_profile": "scriptorium-metrics-v4",
+      "fantlab_reference_work_id": 27344,
+      "fantlab_reference_analysis_date": "2022-09-18",
+      "comparison_class": "diagnostic_unmatched_source",
+      "dictionary_dependency_bound": false,
+      "source_text_committed": false,
+      "m2_parity_evidence": false
+    },
     "source_provenance_confidence": "strong_for_bibliographic_transcription_family_route_page_revision_and_public_literary_body_identity",
     "source_text_committed": false,
     "immutable_identity": {
@@ -69,16 +83,17 @@
         "exact page ID, revision ID, UTC timestamp and MediaWiki SHA-1 for all 36 retained literary pages in route order",
         "candidate-specific fail-closed literary-body extraction contract over those exact revisions",
         "exact /1 through /35 plus /Эпилог composition with two-newline separators",
-        "source-free per-page and composite raw plus scriptorium-text-v1 normalized counts/digests"
+        "source-free per-page and composite raw plus scriptorium-text-v1 normalized counts/digests",
+        "source-free deterministic full-work diagnostic bound to the exact frozen body identity"
       ],
       "unfrozen_components": [
         "the relationship between FantLab's uploaded analyzer input and the 1965-source Wikisource transcription"
       ],
-      "reason": "The retained route, all 36 exact literary revisions, extraction rules and composed public literary-body identity are replay-frozen without storing source prose. FantLab still does not disclose immutable analyzer-input identity, so the public body cannot be promoted to parity evidence."
+      "reason": "The retained route, all 36 exact literary revisions, extraction rules and composed public literary-body identity are replay-frozen without storing source prose. The exact body can now be replayed through the current deterministic Scriptorium metric profile for source-free diagnostics, but FantLab still does not disclose immutable analyzer-input identity, so the public body cannot be promoted to parity evidence."
     },
     "edition_identity_boundary": {
       "status": "source_cited_1965_route_page_revisions_and_public_body_frozen_fantlab_unmatched",
-      "note": "The candidate is specifically the Wikisource transcription family whose index cites the 1965 Detskaya literatura volume. Bibliographic agreement and a reproducibly frozen public literary body do not establish byte identity with the printed volume or FantLab's undisclosed analyzer input."
+      "note": "The candidate is specifically the Wikisource transcription family whose index cites the 1965 Detskaya literatura volume. Bibliographic agreement, a reproducibly frozen public literary body, and field-by-field diagnostic comparison do not establish byte identity with the printed volume or FantLab's undisclosed analyzer input."
     }
   },
   "excluded_distinct_public_route": {
@@ -117,21 +132,25 @@
     "source_identity_status": "literary_body_frozen_public_candidate",
     "general_calibration_profile_admissible": true,
     "fantlab_source_edition_match": "unknown",
-    "diagnostic_ready": false,
+    "diagnostic_ready": true,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "public_literary_body_frozen_general_corpus_admissible_fantlab_unmatched",
+    "status": "public_literary_body_frozen_diagnostic_ready_fantlab_unmatched",
     "reasons": [
       "The exact 36-page 1965-source route and all retained literary revisions are source-free and replay-frozen.",
       "Candidate-specific fail-closed extraction over those exact revisions composes a 363,819-character / 656,239-byte public literary body with raw and normalized SHA-256 41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc.",
       "The frozen public body exceeds the 300,000-character corpus threshold and is admissible for general calibration/profile use.",
+      "SCRIP-CORPUS-057 replays the exact frozen body through scriptorium-deterministic-metrics-v4 and retains a source-free field-by-field diagnostic against FantLab work 27344's public display values.",
+      "The diagnostic currently reports 55,778 Scriptorium words versus FantLab's displayed 52,985, dialogue share 35.88986183443132% versus 38.23%, and other metric deltas; all are diagnostic-only because source identity remains unknown.",
+      "Dictionary-dependent active-dictionary/non-dictionary and UASZ rows remain not-run because no independently bound compatible dictionary is supplied.",
       "FantLab reports 360,987 characters and 52,985 words for its 18 September 2022 analysis, a displayed character count 2,832 below the frozen public body.",
-      "The character-count delta is diagnostic evidence only because FantLab does not disclose its uploaded analyzer-input bytes or complete counting/extraction policy.",
+      "The character-count and metric deltas cannot establish or reject source identity because FantLab does not disclose its uploaded analyzer-input bytes or complete counting/extraction policy.",
       "FantLab bibliography independently corroborates the same 1965 Detskaya literatura volume but does not prove source identity.",
       "The separate Wikisource /Версия 2 route declares az.lib.ru and a 1980 Pravda edition context, so it remains excluded from the retained 1965 route."
     ],
     "next_evidence": [
-      "After independent exact-head review of the literary-body freeze, a later bounded diagnostic unit may compare Scriptorium deterministic metrics against FantLab's displayed values while preserving source-match unknown.",
+      "Use the committed full-work diagnostic to prioritize concrete metric-policy investigations without treating displayed-value proximity as parity evidence.",
+      "Bind an independently evidenced dictionary dependency before running FantLab dictionary-dependent vocabulary rows.",
       "Seek independent evidence capable of tying FantLab's uploaded analyzer input to a specific edition or immutable transcription; bibliography or count proximity alone cannot advance M2."
     ]
   }

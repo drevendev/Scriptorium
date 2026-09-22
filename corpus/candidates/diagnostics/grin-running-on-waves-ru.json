@@ -1,0 +1,234 @@
+{
+  "diagnostic_version": "scriptorium-running-waves-fantlab-diagnostic-v1",
+  "candidate_id": "grin-running-on-waves-ru",
+  "source_text_committed": false,
+  "body_identity": {
+    "manifest_version": "scriptorium-running-waves-literary-body-v1",
+    "character_count_including_spaces": 363819,
+    "raw_sha256": "41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc"
+  },
+  "scriptorium": {
+    "schema_version": "scriptorium-deterministic-metrics-v4",
+    "metric_contract_id": "fantlab-2022-v1",
+    "profiles": {
+      "normalization": "scriptorium-text-v1",
+      "metrics": "scriptorium-metrics-v4",
+      "dialogue": "scriptorium-dialogue-v1",
+      "vocabulary": "scriptorium-vocabulary-v1",
+      "punctuation": "scriptorium-punctuation-v2"
+    },
+    "vocabulary_dictionary_dependency": null
+  },
+  "fantlab": {
+    "work_id": 27344,
+    "analysis_url": "https://fantlab.ru/work27344/lp",
+    "analysis_date": "2022-09-18",
+    "source_edition_disclosed": false,
+    "source_bytes_disclosed": false
+  },
+  "comparison_policy": {
+    "class": "diagnostic_unmatched_source",
+    "displayed_reference_is_not_exact_parity_tolerance": true,
+    "decimal_display_precision_not_promoted_to_parity_rule": true,
+    "numeric_resemblance_cannot_establish_source_identity": true
+  },
+  "metrics": [
+    {
+      "metric_id": "fantlab.general.characters",
+      "fantlab_display_value": "360987",
+      "scriptorium_raw_value": 363819,
+      "delta_against_fantlab_display": 2832,
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.general.words",
+      "fantlab_display_value": "52985",
+      "scriptorium_raw_value": 55778,
+      "delta_against_fantlab_display": 2793,
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.general.mean_word_length_chars",
+      "fantlab_display_value": "5.16",
+      "scriptorium_raw_value": 5.159363906916705,
+      "delta_against_fantlab_display": "-0.000636093083295",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.general.mean_sentence_length_chars",
+      "fantlab_display_value": "73.46",
+      "scriptorium_raw_value": 72.55458603896103,
+      "delta_against_fantlab_display": "-0.90541396103897",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.dialogue.mean_narration_sentence_length_chars",
+      "fantlab_display_value": "97",
+      "scriptorium_raw_value": 93.4622641509434,
+      "delta_against_fantlab_display": "-3.5377358490566",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+      "fantlab_display_value": "52.67",
+      "scriptorium_raw_value": 49.243531202435314,
+      "delta_against_fantlab_display": "-3.426468797564686",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.dialogue.share_percent",
+      "fantlab_display_value": "38.23",
+      "scriptorium_raw_value": 35.88986183443132,
+      "delta_against_fantlab_display": "-2.34013816556868",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+      "fantlab_display_value": "12.49",
+      "scriptorium_raw_value": 34.563165459722235,
+      "delta_against_fantlab_display": "22.073165459722235",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.vocabulary.unique_words",
+      "fantlab_display_value": "7107",
+      "scriptorium_raw_value": 14406,
+      "delta_against_fantlab_display": 7299,
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.vocabulary.active_dictionary",
+      "fantlab_display_value": "6784",
+      "scriptorium_raw_value": null,
+      "delta_against_fantlab_display": null,
+      "status": "not_run_dependency_unbound"
+    },
+    {
+      "metric_id": "fantlab.vocabulary.active_nondictionary",
+      "fantlab_display_value": "323",
+      "scriptorium_raw_value": null,
+      "delta_against_fantlab_display": null,
+      "status": "not_run_dependency_unbound"
+    },
+    {
+      "metric_id": "fantlab.vocabulary.uasz_3000",
+      "fantlab_display_value": "1170.79",
+      "scriptorium_raw_value": null,
+      "delta_against_fantlab_display": null,
+      "status": "not_run_dependency_unbound"
+    },
+    {
+      "metric_id": "fantlab.vocabulary.uasz_10000",
+      "fantlab_display_value": "2636.17",
+      "scriptorium_raw_value": null,
+      "delta_against_fantlab_display": null,
+      "status": "not_run_dependency_unbound"
+    },
+    {
+      "metric_id": "fantlab.punctuation.comma.per_1000_words",
+      "fantlab_display_value": "154.03",
+      "scriptorium_raw_value": 143.67671841944852,
+      "delta_against_fantlab_display": "-10.35328158055148",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.period.per_1000_words",
+      "fantlab_display_value": "76.08",
+      "scriptorium_raw_value": 73.82839112194772,
+      "delta_against_fantlab_display": "-2.25160887805228",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.dash.per_1000_words",
+      "fantlab_display_value": "29.84",
+      "scriptorium_raw_value": 39.87235110617089,
+      "delta_against_fantlab_display": "10.03235110617089",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.exclamation.per_1000_words",
+      "fantlab_display_value": "6.55",
+      "scriptorium_raw_value": 6.328660045179103,
+      "delta_against_fantlab_display": "-0.221339954820897",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.question.per_1000_words",
+      "fantlab_display_value": "5.96",
+      "scriptorium_raw_value": 5.71910072071426,
+      "delta_against_fantlab_display": "-0.24089927928574",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.ellipsis.per_1000_words",
+      "fantlab_display_value": "1.93",
+      "scriptorium_raw_value": 2.241026928179569,
+      "delta_against_fantlab_display": "0.311026928179569",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+      "fantlab_display_value": "0.06",
+      "scriptorium_raw_value": 0.0358564308508731,
+      "delta_against_fantlab_display": "-0.0241435691491269",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.question_ellipsis.per_1000_words",
+      "fantlab_display_value": "0.04",
+      "scriptorium_raw_value": 0.0358564308508731,
+      "delta_against_fantlab_display": "-0.0041435691491269",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.triple_exclamation.per_1000_words",
+      "fantlab_display_value": "0.00",
+      "scriptorium_raw_value": 0.0,
+      "delta_against_fantlab_display": "0.00",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.question_exclamation.per_1000_words",
+      "fantlab_display_value": "0.55",
+      "scriptorium_raw_value": 0.5019900319122235,
+      "delta_against_fantlab_display": "-0.0480099680877765",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.quote.per_1000_words",
+      "fantlab_display_value": "10.72",
+      "scriptorium_raw_value": 10.09358528452078,
+      "delta_against_fantlab_display": "-0.62641471547922",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.parentheses.per_1000_words",
+      "fantlab_display_value": "0.21",
+      "scriptorium_raw_value": 0.21513858510523862,
+      "delta_against_fantlab_display": "0.00513858510523862",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.colon.per_1000_words",
+      "fantlab_display_value": "5.42",
+      "scriptorium_raw_value": 5.235038904227473,
+      "delta_against_fantlab_display": "-0.184961095772527",
+      "status": "diagnostic_only_source_unmatched"
+    },
+    {
+      "metric_id": "fantlab.punctuation.semicolon.per_1000_words",
+      "fantlab_display_value": "6.53",
+      "scriptorium_raw_value": 3.926279178170605,
+      "delta_against_fantlab_display": "-2.603720821829395",
+      "status": "diagnostic_only_source_unmatched"
+    }
+  ],
+  "gates": {
+    "general_calibration_profile_admissible": true,
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": true,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "m2_weight": 0
+  }
+}

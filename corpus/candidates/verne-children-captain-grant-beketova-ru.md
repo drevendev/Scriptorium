@@ -36,17 +36,40 @@ The source-free frozen literary-body identity is:
 
 No source prose is committed. The exact literary body exceeds the **300,000-character** corpus rule, so this translation is now admitted for general Scriptorium calibration/profile work. That admission is not a FantLab source match and does not count toward M2.
 
+## Current deterministic Scriptorium showcase
+
+The exact frozen body is now also replayed through `scriptorium-deterministic-metrics-v4`, producing a compact source-free real-work showcase. The canonical artifact stores only derived values plus the pinned revision/body identities; it does not store the book text.
+
+Representative current output:
+
+- words: **158,881**
+- sentences: **14,568**
+- mean word length: **5.5343307255 characters**
+- mean sentence length: **73.8428747941 characters**
+- dialogue share: **32.4738652575%**
+- author text inside dialogue under the current `scriptorium-dialogue-v1` policy: **26.4633434995%**
+- unique words: **29,084**
+- commas: **119.3157142767 per 1,000 words**
+- dashes: **45.5938721433 per 1,000 words**
+- question marks: **7.0367130116 per 1,000 words**
+
+These values are **Scriptorium output, not FantLab benchmark results**. `fantlab.*` metric IDs identify current compatibility candidates whose semantics remain `inferred`; no FantLab comparison was performed for this translation. Dictionary-dependent vocabulary metrics are not shown because no compatible dictionary provider is bound to this showcase. The artifact remains replayable from exact revision `5304880` and exact body SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`.
+
+Canonical derived output: [`diagnostics/verne-children-captain-grant-beketova-ru.json`](diagnostics/verne-children-captain-grant-beketova-ru.json).
+
 ## FantLab boundary
 
-No FantLab linguistic result or analyzer-input/source-edition identity has been established for this specific translation. Title, translator, or edition-catalog similarity must not be promoted into a source match. The frozen body is source-stable enough for future derived Scriptorium analyses and for a diagnostic comparison if an attributable reference is found, but `diagnostic_ready=false`, `gate_ready=false`, `fantlab_source_edition_match=unknown`, `m2_parity_admissible=false`, and M2 remains **0/5 source-matched works**.
+No FantLab linguistic result or analyzer-input/source-edition identity has been established for this specific translation. Title, translator, or edition-catalog similarity must not be promoted into a source match. The frozen body is source-stable enough for derived Scriptorium analyses and for a diagnostic comparison if an attributable reference is found, but `gate_ready=false`, `fantlab_source_edition_match=unknown`, `m2_parity_admissible=false`, and M2 remains **0/5 source-matched works**. The deterministic showcase does not change those gates.
 
 ## Canonical evidence
 
 - [`source-edition-traces/verne-children-captain-grant-beketova-ru.json`](source-edition-traces/verne-children-captain-grant-beketova-ru.json) — translation identity, bibliography, rights evidence, frozen source/body identity, corpus admission and FantLab boundary.
 - [`source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json`](source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json) — exact source-free MediaWiki revision-wikitext identity replayed from `oldid=5304880`.
 - [`source-edition-traces/verne-children-captain-grant-beketova-ru.body.json`](source-edition-traces/verne-children-captain-grant-beketova-ru.body.json) — source-free literary-body counts/digests and extraction-profile binding.
+- [`diagnostics/verne-children-captain-grant-beketova-ru.json`](diagnostics/verne-children-captain-grant-beketova-ru.json) — source-free exact-body deterministic showcase.
 - [`../../scriptorium/beketova_body.py`](../../scriptorium/beketova_body.py) — candidate-specific fail-closed exact-revision extraction/replay implementation.
+- [`../../scriptorium/beketova_showcase.py`](../../scriptorium/beketova_showcase.py) — current deterministic source-free showcase builder.
 
 ## Next evidence
 
-A later bounded unit should locate a FantLab linguistic result specifically attributable to the Beketova translation and then seek independent analyzer-input/source-edition identity evidence. Until that exists, the frozen body may support general Scriptorium analysis and public derived showcase work, but not M2 parity evidence.
+A later bounded unit should locate a FantLab linguistic result specifically attributable to the Beketova translation and then seek independent analyzer-input/source-edition identity evidence. Until that exists, the frozen body supports general Scriptorium analysis and public derived showcase work, but not M2 parity evidence.

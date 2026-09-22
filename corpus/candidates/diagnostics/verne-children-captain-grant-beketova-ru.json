@@ -1,0 +1,108 @@
+{
+  "showcase_version": "scriptorium-beketova-deterministic-showcase-v1",
+  "candidate_id": "verne-children-captain-grant-beketova-ru",
+  "translation_identity": "Alexandra A. Beketova Russian translation",
+  "source_text_committed": false,
+  "source_revision": {
+    "provider": "Russian Wikisource",
+    "revision_id": 5304880,
+    "mediawiki_sha1": "256d816de6743031ea86f266ed004ee72240c200"
+  },
+  "body_identity": {
+    "character_count_including_spaces": 1095467,
+    "raw_sha256": "4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161"
+  },
+  "scriptorium": {
+    "schema_version": "scriptorium-deterministic-metrics-v4",
+    "metric_contract_id": "fantlab-2022-v1",
+    "profiles": {
+      "normalization": "scriptorium-text-v1",
+      "metrics": "scriptorium-metrics-v4",
+      "dialogue": "scriptorium-dialogue-v1",
+      "vocabulary": "scriptorium-vocabulary-v1",
+      "punctuation": "scriptorium-punctuation-v2"
+    },
+    "vocabulary_dictionary_dependency": null
+  },
+  "metrics": [
+    {
+      "metric_id": "fantlab.general.characters",
+      "value": 1095467,
+      "unit": "characters",
+      "compatibility_status": "inferred"
+    },
+    {
+      "metric_id": "fantlab.general.words",
+      "value": 158881,
+      "unit": "words",
+      "compatibility_status": "inferred"
+    },
+    {
+      "metric_id": "scriptorium.general.sentences",
+      "value": 14568,
+      "unit": "sentences",
+      "compatibility_status": "extension"
+    },
+    {
+      "metric_id": "fantlab.general.mean_word_length_chars",
+      "value": 5.534330725511547,
+      "unit": "characters/word",
+      "compatibility_status": "inferred"
+    },
+    {
+      "metric_id": "fantlab.general.mean_sentence_length_chars",
+      "value": 73.84287479406919,
+      "unit": "characters/sentence",
+      "compatibility_status": "inferred"
+    },
+    {
+      "metric_id": "fantlab.dialogue.share_percent",
+      "value": 32.4738652575157,
+      "unit": "percent",
+      "compatibility_status": "inferred"
+    },
+    {
+      "metric_id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+      "value": 26.463343499491693,
+      "unit": "percent",
+      "compatibility_status": "inferred"
+    },
+    {
+      "metric_id": "fantlab.vocabulary.unique_words",
+      "value": 29084,
+      "unit": "words",
+      "compatibility_status": "inferred"
+    },
+    {
+      "metric_id": "fantlab.punctuation.comma.per_1000_words",
+      "value": 119.31571427672283,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred"
+    },
+    {
+      "metric_id": "fantlab.punctuation.dash.per_1000_words",
+      "value": 45.59387214330222,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred"
+    },
+    {
+      "metric_id": "fantlab.punctuation.question.per_1000_words",
+      "value": 7.036713011625053,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred"
+    }
+  ],
+  "interpretation": {
+    "class": "scriptorium_deterministic_showcase",
+    "fantlab_comparison_performed": false,
+    "fantlab_namespaced_metric_ids_are_compatibility_candidates_not_parity_claims": true
+  },
+  "gates": {
+    "general_calibration_profile_admissible": true,
+    "fantlab_source_edition_match": "unknown",
+    "showcase_ready": true,
+    "gate_ready": false,
+    "m2_parity_admissible": false,
+    "m2_weight": 0
+  }
+}

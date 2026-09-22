@@ -170,7 +170,7 @@ class PerelmanProvenanceTraceTests(unittest.TestCase):
         self.assertIn("**583,825 UTF-8 bytes / 326,992 Unicode characters**", page)
         self.assertIn(EXPECTED_DJVU_TEXT_SHA256, page)
         self.assertIn("No PDF/DjVu bytes", page)
-        self.assertIn("does **not** change", page)
+        self.assertIn("do **not** change the contract's canonical PDF extraction carrier", page)
         self.assertIn("m2_parity_admissible=false", page)
 
 

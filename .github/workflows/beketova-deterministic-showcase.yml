@@ -1,0 +1,83 @@
+name: Beketova deterministic showcase
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/beketova-deterministic-showcase.yml'
+      - 'scriptorium/beketova_showcase.py'
+      - 'scriptorium/beketova_body.py'
+      - 'scriptorium/single_page_body.py'
+      - 'scriptorium/metrics.py'
+      - 'scriptorium/dialogue.py'
+      - 'scriptorium/text.py'
+      - 'scriptorium/vocabulary.py'
+      - 'tests/test_beketova_showcase.py'
+      - 'corpus/candidates/verne-children-captain-grant-beketova-ru.md'
+      - 'corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json'
+      - 'corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.body.json'
+      - 'corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json'
+      - 'project/STATE_AND_QUEUE.md'
+      - 'project/CHANGELOG.d/SCRIP-CORPUS-062.md'
+      - 'project/run-receipts/SCRIP-CORPUS-062.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Run focused source-free showcase tests
+        run: python -m unittest tests.test_beketova_showcase -v
+      - name: Replay exact frozen body and capture deterministic showcase
+        run: |
+          python -m scriptorium.beketova_showcase \
+            --revision-manifest corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.revision.json \
+            --body-manifest corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.body.json \
+            --output /tmp/verne-children-captain-grant-beketova-ru.showcase.observed.json
+      - name: Compare committed showcase when present
+        run: |
+          if test -f corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json; then
+            cmp corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json /tmp/verne-children-captain-grant-beketova-ru.showcase.observed.json
+          else
+            echo 'Canonical showcase not committed yet; capture output is the bootstrap review input.'
+          fi
+      - name: Guard source-free and parity boundaries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('/tmp/verne-children-captain-grant-beketova-ru.showcase.observed.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          text = path.read_text(encoding='utf-8').lower()
+          for forbidden in ('"wikitext"', '"source_prose"', '"literary_text"'):
+              if forbidden in text:
+                  raise SystemExit(f'source-text-like key leaked into showcase: {forbidden}')
+          assert data['source_text_committed'] is False
+          assert data['body_identity']['raw_sha256'] == '4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161'
+          assert data['body_identity']['character_count_including_spaces'] == 1095467
+          assert data['interpretation']['fantlab_comparison_performed'] is False
+          assert data['gates']['fantlab_source_edition_match'] == 'unknown'
+          assert data['gates']['showcase_ready'] is True
+          assert data['gates']['gate_ready'] is False
+          assert data['gates']['m2_parity_admissible'] is False
+          assert data['gates']['m2_weight'] == 0
+          assert len(data['metrics']) == 11
+          print('showcase_metrics', len(data['metrics']))
+          PY
+      - name: Print source-free showcase for bootstrap capture
+        run: cat /tmp/verne-children-captain-grant-beketova-ru.showcase.observed.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: beketova-deterministic-showcase-source-free
+          path: /tmp/verne-children-captain-grant-beketova-ru.showcase.observed.json
+          if-no-files-found: error

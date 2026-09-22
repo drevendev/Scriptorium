@@ -1,0 +1,82 @@
+name: Running on Waves deterministic diagnostic
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/running-waves-diagnostic.yml'
+      - 'scriptorium/running_waves_diagnostic.py'
+      - 'scriptorium/running_waves_body.py'
+      - 'scriptorium/running_waves_revisions.py'
+      - 'scriptorium/metrics.py'
+      - 'scriptorium/dialogue.py'
+      - 'scriptorium/text.py'
+      - 'scriptorium/vocabulary.py'
+      - 'tests/test_running_waves_diagnostic.py'
+      - 'corpus/candidates/grin-running-on-waves-ru.md'
+      - 'corpus/candidates/source-edition-traces/grin-running-on-waves-ru.json'
+      - 'corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json'
+      - 'corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json'
+      - 'corpus/candidates/diagnostics/grin-running-on-waves-ru.json'
+      - 'project/STATE_AND_QUEUE.md'
+      - 'project/CHANGELOG.d/SCRIP-CORPUS-057.md'
+      - 'project/run-receipts/SCRIP-CORPUS-057.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Run source-free diagnostic tests
+        run: python -m unittest tests.test_running_waves_diagnostic -v
+      - name: Capture exact-body diagnostic
+        run: |
+          python -m scriptorium.running_waves_diagnostic \
+            --source-manifest corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json \
+            --body-manifest corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json \
+            --output /tmp/grin-running-on-waves-ru.diagnostic.observed.json
+      - name: Compare committed diagnostic when present
+        run: |
+          if test -f corpus/candidates/diagnostics/grin-running-on-waves-ru.json; then
+            cmp corpus/candidates/diagnostics/grin-running-on-waves-ru.json /tmp/grin-running-on-waves-ru.diagnostic.observed.json
+          else
+            echo 'Canonical diagnostic not committed yet; capture output is the bootstrap review input.'
+          fi
+      - name: Guard source-free and parity boundaries
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('/tmp/grin-running-on-waves-ru.diagnostic.observed.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          text = path.read_text(encoding='utf-8').lower()
+          for forbidden in ('"wikitext"', '"source_prose"', '"literary_text"'):
+              if forbidden in text:
+                  raise SystemExit(f'source-text-like key leaked into diagnostic: {forbidden}')
+          assert data['source_text_committed'] is False
+          assert data['body_identity']['raw_sha256'] == '41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc'
+          assert data['body_identity']['character_count_including_spaces'] == 363819
+          assert data['gates']['fantlab_source_edition_match'] == 'unknown'
+          assert data['gates']['diagnostic_ready'] is True
+          assert data['gates']['gate_ready'] is False
+          assert data['gates']['m2_parity_admissible'] is False
+          assert data['gates']['m2_weight'] == 0
+          print('diagnostic_rows', len(data['metrics']))
+          PY
+      - name: Print source-free diagnostic for bootstrap capture
+        run: cat /tmp/grin-running-on-waves-ru.diagnostic.observed.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: running-waves-deterministic-diagnostic-source-free
+          path: /tmp/grin-running-on-waves-ru.diagnostic.observed.json
+          if-no-files-found: error

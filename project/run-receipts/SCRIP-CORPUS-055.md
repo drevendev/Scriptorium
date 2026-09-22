@@ -2,9 +2,11 @@
 
 Date: 2026-09-22
 Mode: corpus / provenance
-Issue: #197
-Pull request: #198 (Draft; authored in this wake)
+Issue: #197 (closed completed)
+Pull request: #198 (independently reviewed; squash-merged as `f989ace74e4911bf9f7828637a4f21f0ee9d06b9`)
 Base at selection: `98e903e6c28f80c26489c90ed137d3bfa606e9a2`
+Reviewed head: `0b38eaa1d62358794e4142a3e11b9e8fd0676c6b`
+Review: `5274234912`
 
 ## Selection
 
@@ -33,8 +35,8 @@ Added or updated:
 
 - `corpus/candidates/screenings/zamyatin-we-ru.json` — source-free machine decision with exact FantLab threshold arithmetic, legal/source-family evidence, the work-index/body-page boundary, closed M2 gate, and explicit `unknown_until_source_body_is_frozen_and_measured` status for the distinct public source;
 - `corpus/candidates/screenings/README.md` — public screening navigation and the narrow *We* result;
-- `project/CHANGELOG.d/SCRIP-CORPUS-055.md` — durable semantic delta;
-- `project/STATE_AND_QUEUE.md` — authoring/review-pending state;
+- `project/CHANGELOG.d/SCRIP-CORPUS-055.md` — durable semantic delta including later independent merge judgement;
+- `project/STATE_AND_QUEUE.md` — authoring state followed by final independent completion reconciliation;
 - this run receipt.
 
 No literary source text, body revision bytes, extracted body, OCR, diagnostics, or copyrighted payload is stored.
@@ -45,7 +47,11 @@ Fresh public evidence was re-read before writing the decision. FantLab's 285,704
 
 The arithmetic is exact: `300000 - 285704 = 14296`.
 
-The substantive PR is left Draft for a later independent exact-head review. That later review must inspect the final diff, verify settled checks, preserve the index-vs-body revision boundary, and merge only if no blocker remains.
+Independent review later re-read all five changed files at exact head `0b38eaa1d62358794e4142a3e11b9e8fd0676c6b` against unchanged base `98e903e6c28f80c26489c90ed137d3bfa606e9a2`. FantLab and Wikisource were rechecked independently, the threshold arithmetic and index-vs-body revision boundary were confirmed, and no merge blocker or open review thread was found.
+
+Fresh exact-head CI settled green before merge: all **12/12 pull-request workflow runs** completed `success`. The pinned-pylem workflow also settled fully green with all three jobs completed `success`, including the Python 3.13 provider-contract job that ran the complete standard-library suite.
+
+Review `5274234912` recorded the independent judgement. PR #198 was marked Ready and squash-merged with expected-head protection as `f989ace74e4911bf9f7828637a4f21f0ee9d06b9`; Issue #197 closed automatically with state reason `completed`.
 
 ## Gate judgement
 
@@ -66,4 +72,4 @@ Not advanced:
 
 ## Handoff
 
-Review the exact final Draft PR head independently after repository checks settle. Confirm the source-free screening, threshold arithmetic, public-source boundary, and absence of literary source text. If clean, mark Ready and merge with expected-head protection; then reconcile Issue #197, this receipt, changelog fragment, and canonical state.
+SCRIP-CORPUS-055 is complete. Resume normal-flow selection from the queue. Any future *We* source-freeze unit must bind all selected body-page revision identities and deterministic composition before measuring or admitting the public body, and must not convert FantLab work 20055 into M2 evidence under the current >=300k gate.

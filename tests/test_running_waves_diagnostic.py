@@ -23,7 +23,13 @@ class RunningWavesDiagnosticTests(unittest.TestCase):
         cls.source = json.loads(SOURCE_MANIFEST.read_text(encoding="utf-8"))
         identities = cls.source["pages"]
         cls.payloads = {
-            row["title"]: '<div class="text">' + ("Слово " * 1600) + f"{row['ordinal']}.</div>"
+            row["title"]: (
+                '<div class="text">'
+                + ("Слово " * 800)
+                + f"{row['ordinal']}.\n\n— "
+                + ("Диалог " * 800)
+                + ".</div>"
+            )
             for row in identities
         }
 
@@ -76,6 +82,7 @@ class RunningWavesDiagnosticTests(unittest.TestCase):
         )
         serialized = json.dumps(diagnostic, ensure_ascii=False)
         self.assertNotIn("Слово", serialized)
+        self.assertNotIn("Диалог", serialized)
         self.assertNotIn("wikitext", serialized.lower())
         self.assertNotIn("literary_text", serialized.lower())
 

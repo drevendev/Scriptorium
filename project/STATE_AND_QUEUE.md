@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 221
+STATE_REVISION: 222
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-22T01:52:00Z
-LAST_RESULT: SCRIP-CORPUS-054 / Issue #195 authored in Draft PR #196. Fresh FantLab evidence rechecked work 44822 at 276,556 characters / 39,158 words, 23,444 characters below the mandatory 300,000-character floor. This makes FantLab work 44822 ineligible as an M2 parity-benchmark seed under the standing rule; it does not establish the size of every distinct Aelita edition. Russian Wikisource provides public-domain and 1939/1958 source-family evidence but also records substantial authorial revision, so the distinct public source remains unmeasured and its non-M2 corpus admissibility is unknown until a body is frozen and counted. M2 remains 0/5.
-LAST_VERIFIED_PROGRESS: Corpus qualification now fails fast on a high-interest early-Soviet SF FantLab lead without over-generalizing across editions. FantLab's analyzed input is below 300k and cannot satisfy the M2 work gate even if later source-matched. A materially revised public Aelita source may only receive a separate corpus-admission decision after its own body is frozen and measured. No source text, source revision bytes, extracted body, diagnostics, parity or M2 progress were created.
+LAST_COMMITTED_RUN_AT: 2026-09-22T02:55:00Z
+LAST_RESULT: SCRIP-CORPUS-054 / Issue #195 completed. Independent exact-head review `5273751749` re-read PR #196 at `e2ab2295efa1ceac9949a1470ca3e137b8988125` against unchanged base `059a79360065497bbbc9d90bce99d58b991e62b9`, reviewed all 5 changed files, rechecked the FantLab/Wikisource evidence, confirmed the exact 23,444-character shortfall and found no merge blocker or open review thread. All 12 PR-triggered workflow runs for that exact head settled `success` (14 check runs total, including the pinned-pylem jobs). PR #196 was marked Ready and squash-merged with expected-head protection as `a1b99332eb540d344d9621486e9eb1d99e1aaec8`, closing Issue #195 completed.
+LAST_VERIFIED_PROGRESS: Aelita now has a canonical source-free pre-admission screening that narrowly rejects FantLab work 44822 as an M2 parity-benchmark seed because its published 18 September 2022 analyzer input is 276,556 characters, 23,444 below the mandatory 300,000-character floor. This does not establish the size of every materially revised Aelita edition: the distinct Russian Wikisource public source remains unfrozen/unmeasured and its separate non-M2 corpus admissibility remains unknown until measured. FantLab analyzer-input identity, diagnostics, parity and M2 remain closed; M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-054
-ISSUE:          #195
-STATUS:         REVIEW_PENDING
-PR:             #196 (Draft; authored in this wake)
-NEXT_ACTION:    Independently review the exact current PR #196 head against its base after repository checks settle.
-                Verify the source-free screening record and threshold arithmetic. Preserve the narrow conclusion:
-                FantLab work 44822 is below the M2 >=300k floor, while a distinct public edition remains unmeasured
-                and cannot be admitted or rejected for non-M2 corpus use from the FantLab count alone.
+ISSUE:          #195 (closed completed)
+STATUS:         COMPLETE
+PR:             #196 (independently reviewed; squash-merged as a1b99332eb540d344d9621486e9eb1d99e1aaec8)
+NEXT_ACTION:    Resume normal-flow selection from the queue. Any future Aelita source-freeze unit must treat a distinct
+                public edition as its own body, freeze and measure it independently, and must not convert FantLab work
+                44822 into M2 evidence under the current >=300k gate.
 ```
 
 ## Current milestone gate
@@ -31,7 +30,6 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-CORPUS-054 review/merge recovery | review / provenance | Independently review Draft PR #196 exact final head and settled checks; merge only if the screening narrowly rejects FantLab work 44822 as an M2 seed while leaving a distinct public edition's corpus admissibility unknown until measured | Authoring wake must not self-approve; M2 remains 0/5 |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough; Petersburg's frozen scan and Darwin/Rachinsky's frozen source/surface/scan/profile identities make separate candidate-specific OCR/renderer units executable when selected | Preserve translation/edition identity and explicit legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
 
 ## Retained corpus / provenance status
@@ -44,7 +42,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Silver Dove** — single revision `oldid=5588003`; 563,125 characters; SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`; FantLab source match unknown.
 - **Petersburg** — SCRIP-CORPUS-038 complete. Exact 632-page 1916 first-book-edition Commons PDF: 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`; distinct from 1922. OCR/page selection/body/>=300k/FantLab identity remain open.
 - **Hyperboloid of Engineer Garin** — `oldid=5014458`; frozen body 499,066 characters / 930,560 bytes; SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`; print-edition/FantLab identity unresolved.
-- **Aelita** — SCRIP-CORPUS-054 screening in Draft PR #196 establishes only that FantLab's 18 September 2022 input (276,556 characters) is 23,444 below the standing >=300k floor and therefore cannot be an M2 parity-benchmark seed. Russian Wikisource legal/source-family evidence belongs to a materially revised public source whose own body is not frozen or measured; its separate non-M2 corpus admissibility remains unknown. FantLab analyzer-input identity remains unresolved; M2 weight zero.
+- **Aelita** — SCRIP-CORPUS-054 is independently reviewed and complete on master. FantLab's 18 September 2022 input (276,556 characters) is 23,444 below the standing >=300k floor and therefore cannot be an M2 parity-benchmark seed. Russian Wikisource legal/source-family evidence belongs to a materially revised public source whose own body is not frozen or measured; its separate non-M2 corpus admissibility remains unknown. FantLab analyzer-input identity remains unresolved; M2 weight zero.
 - **Shining World** — 34 advertised chapter links but only 19 pages exist; complete body unavailable from this route and FantLab match unknown.
 - **Road to Nowhere** — primary Pravda-1965/lib.web route remains incomplete; distinct `az.lib.ru` route `oldid=5585836` is 442,656 characters / 825,899 bytes, SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`; neither is identified as FantLab input.
 - **Running on Waves** — SCRIP-CORPUS-028 complete. Detskaya literatura 1965 family: 36 literary pages, 363,819 characters / 656,239 bytes, SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`; clears >=300k. FantLab shows 360,987 characters but source match remains unknown. Separate 1980 route stays distinct.

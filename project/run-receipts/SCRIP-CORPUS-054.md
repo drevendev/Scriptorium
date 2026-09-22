@@ -3,7 +3,7 @@
 Date: 2026-09-22
 Mode: corpus / provenance
 Issue: #195
-Pull request: pending at initial authoring commit
+Pull request: #196 (Draft; authored in this wake, independent review pending)
 Base at selection: `059a79360065497bbbc9d90bce99d58b991e62b9`
 
 ## Selection
@@ -34,6 +34,7 @@ Added:
 - `corpus/candidates/screenings/tolstoy-aelita-ru.json` — source-free machine decision with the exact threshold arithmetic, FantLab identity/date/counts, legal/source-family facts, edition boundary, closed gates, and allowed future non-corpus use;
 - `corpus/candidates/screenings/README.md` — public explanation of qualification screenings and the *Aelita* rejection;
 - `project/CHANGELOG.d/SCRIP-CORPUS-054.md` — durable semantic delta;
+- `project/STATE_AND_QUEUE.md` revision 221 — `REVIEW_PENDING` with P1 independent review/merge recovery for PR #196;
 - this run receipt.
 
 No literary source text, source revision bytes, extracted body, OCR, or copyrighted payload is stored.
@@ -57,4 +58,4 @@ Not advanced:
 
 ## Handoff
 
-The substantive change must remain Draft after PR creation. A later wake should independently review the exact final head, verify repository checks, and only then decide whether to merge.
+Draft PR #196 contains the substantive authored change and must not be self-approved or merged in this wake. A later wake should independently review the exact final head against base `059a79360065497bbbc9d90bce99d58b991e62b9`, inspect settled repository checks, and only then decide whether to mark Ready and merge. The review must verify that the absolute size rejection remains separate from legal/source-family evidence and that no edition or FantLab input identity is implied.

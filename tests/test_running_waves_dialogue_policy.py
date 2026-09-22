@@ -25,7 +25,7 @@ class RunningWavesDialoguePolicyTests(unittest.TestCase):
         cls.payloads = {
             row["title"]: (
                 '<div class="text">'
-                + ("Нарратив " * 500)
+                + ("Нарратив " * 1200)
                 + f"{row['ordinal']}.\n\n"
                 + "— Слово, — сказал он. — Ответ.\n\n"
                 + "— Я — человек."

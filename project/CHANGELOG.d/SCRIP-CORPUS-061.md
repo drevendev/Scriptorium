@@ -5,4 +5,6 @@
 - Made the resulting engineering decision explicit and machine-validated: page-count arithmetic cannot select literary carrier pages. In particular, `218 - 212 = 6` is not evidence that six DjVu pages are non-literary because neither bibliographic surface maps printed pagination to exact carrier pages.
 - Added fail-closed validation, focused regressions and a dedicated read-only PR workflow. Source text, page images and carrier bytes are not retained in the new artifact.
 - Kept PDF↔DjVu page equivalence, literary-page selection, canonical extraction carrier, literary-body identity, >=300k admission, FantLab source identity, diagnostics and M2 closed.
+- Independent exact-head review `5281085162` re-read all 8 changed files, found no open review thread or merge blocker, freshly reconfirmed both bibliography facts, and verified all 22 pull-request-triggered workflows on `d12130ff3d500f0ebb94edc6df87ec77ab2111d2` settled `success`.
+- PR #210 was marked Ready and squash-merged with expected-head protection as `529678fb90f426f11857c952b630bfbc5200098e`, closing Issue #209 completed.
 - The next candidate-specific evidence step is an exact facsimile/page-label mapping on a deliberately chosen frozen carrier; only then may a later contract version bind literary pages and freeze a body.

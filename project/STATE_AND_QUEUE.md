@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 231
+STATE_REVISION: 232
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-22T11:58:00Z
-LAST_RESULT: SCRIP-CORPUS-059 / Issue #205 authored in Draft PR #206 from unchanged `master@de7152af6cc8fab3cb34f46e432feb6b1d3b0ab1`. The exact frozen 1913 Perelman Commons DjVu was reverified and inspected with pinned Ubuntu 24.04 `djvulibre-bin` 3.5.28-2ubuntu0.24.04.2 / `djvutxt`. Hosted capture run `35723749909` passed focused tests, carrier verification, hidden-text extraction, source-free gate validation and artifact upload. The observation is frozen as a source-free diagnostic and the branch now replays it byte-for-byte; PR #206 remains Draft for independent later judgement.
-LAST_VERIFIED_PROGRESS: The exact 2,982,171-byte DjVu / SHA-256 `f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462` contains a `djvutxt` hidden-text layer on all 218 pages. The all-pages output is 583,825 UTF-8 bytes / 326,992 Unicode characters; `scriptorium-text-v1` normalization remains 326,992 characters and raw/normalized SHA-256 are both `4c9235a78b40ea4737ec4463c1e772727cb31198509d05a24472e8d9075319b8`. This is carrier-level evidence only: literary-page selection, OCR correctness, PDF↔DjVu equivalence, canonical extraction-carrier choice, literary-body identity, >=300k admission, FantLab source identity and M2 remain closed.
+LAST_COMMITTED_RUN_AT: 2026-09-22T12:51:00Z
+LAST_RESULT: SCRIP-CORPUS-059 / Issue #205 completed. Independent exact-head review `5278259461` re-read PR #206 at `e0a2e2ff5b6d223a994cb74ba7de453d95950c72` against unchanged `master@de7152af6cc8fab3cb34f46e432feb6b1d3b0ab1`, reviewed all 10 changed files, found no merge blocker or open review thread, freshly rechecked Commons/Ubuntu/djvutxt source assertions, and confirmed all 20 PR-triggered workflow runs settled `success`. PR #206 was marked Ready and squash-merged with expected-head protection as `58d917f4e1746544e35d835de7e298a070ade5db`, closing Issue #205 completed.
+LAST_VERIFIED_PROGRESS: The Perelman 1913 source-free DjVu hidden-text diagnostic is now canonical on master. The exact 2,982,171-byte DjVu / SHA-256 `f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462` reproducibly yields 583,825 UTF-8 bytes / 326,992 Unicode characters across all 218 pages under pinned `djvulibre-bin` 3.5.28-2ubuntu0.24.04.2 / `djvutxt`; raw/normalized SHA-256 are both `4c9235a78b40ea4737ec4463c1e772727cb31198509d05a24472e8d9075319b8`. This remains carrier-level evidence only: literary-page selection, OCR correctness, PDF↔DjVu equivalence, canonical extraction-carrier choice, literary-body identity, >=300k admission, FantLab source identity and M2 remain closed.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-059
-ISSUE:          #205 (open)
-STATUS:         REVIEW_PENDING
-PR:             #206 (Draft; authored from master@de7152af6cc8fab3cb34f46e432feb6b1d3b0ab1)
-NEXT_ACTION:    Independently re-read PR #206 at its exact current head, confirm master/base has not moved,
-                inspect every changed file and review thread, and require exact-head hosted workflows to settle.
-                If evidence remains sound, mark Ready and merge with expected-head protection; otherwise repair
-                without promoting the all-pages hidden-text count to a literary-body or parity claim.
+ISSUE:          #205 (closed completed)
+STATUS:         COMPLETE
+PR:             #206 (independently reviewed; squash-merged as 58d917f4e1746544e35d835de7e298a070ade5db)
+NEXT_ACTION:    Resume normal-flow selection from the queue. Perelman now has a reproducible text-bearing DjVu
+                carrier diagnostic, but any literary-body promotion requires a separate evidence-bearing unit that
+                binds the chosen carrier and exact literary pages under a new contract version.
 ```
 
 ## Current milestone gate
@@ -31,7 +30,6 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-CORPUS-059 review recovery | review / corpus | Independently judge Draft PR #206 exact head and settle/merge or repair the Perelman DjVu hidden-text diagnostic | Do not treat all-pages 326,992-character hidden text as a selected literary body; source/FantLab/M2 gates stay closed |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough; Petersburg, Perelman and Darwin/Rachinsky have candidate-specific extraction/renderer work available | Preserve translation/edition identity and explicit legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
 
 ## Retained corpus / provenance status
@@ -54,7 +52,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **The Life of Klim Samgin** — candidate-specific source graph, fail-closed extractor, per-part/composite body identities and provenance are frozen; exact historical MediaWiki-core/Poem deployment and FantLab input identity remain unresolved.
 - **Children of Captain Grant — Beketova translation** — 1,095,467 characters / 2,040,240 bytes; SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`; clears >=300k with explicit source/PD evidence. No FantLab result/input identity for this translation; M2 weight zero.
 - **On the Origin of Species — Rachinsky translation** — 418 exact Page identities, 388-literary/30-apparatus composition, exact-388 markup inventory, backing scan identity, render profile and semantic/replay contracts are retained. Exact recursive dependency closure is still empty/unfrozen; all 43 semantic shapes remain unresolved, `ё` remains priority 1 at 2,227 calls, and renderer/body/>=300k/FantLab/M2 remain closed.
-- **Entertaining Physics, Book 1 — Perelman 1913 first edition** — exact PDF frozen at 28,168,847 bytes / SHA-256 `3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61`; OCR/body promotion contract v1 SHA-256 `f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5` remains bound to the PDF. Exact DjVu companion frozen at 2,982,171 bytes / SHA-256 `f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462`. SCRIP-CORPUS-059 now has source-free evidence that pinned `djvutxt` returns hidden text on all 218 pages: 583,825 UTF-8 bytes / 326,992 characters, raw/normalized SHA-256 `4c9235a78b40ea4737ec4463c1e772727cb31198509d05a24472e8d9075319b8`. This all-page text layer is **not** a literary body: PDF↔DjVu equivalence, exact literary pages, OCR correctness, canonical carrier, selected body/>=300k, work-specific FantLab identity and M2 remain open.
+- **Entertaining Physics, Book 1 — Perelman 1913 first edition** — exact PDF frozen at 28,168,847 bytes / SHA-256 `3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61`; OCR/body promotion contract v1 SHA-256 `f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5` remains bound to the PDF. Exact DjVu companion frozen at 2,982,171 bytes / SHA-256 `f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462`. SCRIP-CORPUS-059 now has independently reviewed source-free evidence that pinned `djvutxt` returns hidden text on all 218 pages: 583,825 UTF-8 bytes / 326,992 characters, raw/normalized SHA-256 `4c9235a78b40ea4737ec4463c1e772727cb31198509d05a24472e8d9075319b8`. This all-page text layer is **not** a literary body: PDF↔DjVu equivalence, exact literary pages, OCR correctness, canonical carrier, selected body/>=300k, work-specific FantLab identity and M2 remain open.
 
 ## Deterministic / morphology findings
 
@@ -76,7 +74,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - The Twelve Chairs exposes exact-surface rendering decisions plus unresolved template/reference counts without claiming renderer/body equivalence.
 - Darwin/Rachinsky exposes source graph/render/replay contracts while recursive template closure and body admission remain explicitly open.
 - Klim Samgin exposes its source graph, extractor, body identities and structured provenance; FantLab source match remains unknown.
-- The Perelman 1913 candidate now exposes exact source-free PDF/DjVu carrier identities, its unchanged PDF-bound OCR/body promotion contract, and a source-free all-pages DjVu hidden-text diagnostic. Visitors can see that 326,992 characters are extractable from the carrier while the literary-body/>=300k/FantLab gates remain explicitly closed; no source-carrier bytes or extracted book text are published.
+- The Perelman 1913 candidate now canonically exposes exact source-free PDF/DjVu carrier identities, its unchanged PDF-bound OCR/body promotion contract, and a source-free all-pages DjVu hidden-text diagnostic. Visitors can see that 326,992 characters are extractable from the carrier while the literary-body/>=300k/FantLab gates remain explicitly closed; no source-carrier bytes or extracted book text are published.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
 
 ## Known risks / blockers
@@ -94,5 +92,5 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 11. The 1928 *Twelve Chairs* route still has unresolved template/reference semantics, inter-page composition, body identity and FantLab source identity.
 12. Darwin/Rachinsky `{{ё}}` has documented semantics and a corrected live-transclusion model, but exact replay-time recursive dependency identities are not yet bound; body/>=300k and FantLab identity remain open.
 13. Pages live activation remains a repository-admin effect and is off.
-14. Perelman 1913 now has exact PDF/DjVu identities plus a reproducible hidden-text carrier diagnostic, but the 326,992-character all-pages text is not a selected literary body. PDF↔DjVu page equivalence, OCR correctness, exact literary-page selection, canonical carrier, body/>=300k admission and work-specific FantLab identity remain open.
+14. Perelman 1913 now has exact PDF/DjVu identities plus an independently reviewed reproducible hidden-text carrier diagnostic, but the 326,992-character all-pages text is not a selected literary body. PDF↔DjVu page equivalence, OCR correctness, exact literary-page selection, canonical carrier, body/>=300k admission and work-specific FantLab identity remain open.
 15. Zamyatin *We* has a useful public-domain source-family lead, but the work-index revision does not freeze the 40 linked body pages and FantLab work 20055 is permanently below the current M2 size floor.

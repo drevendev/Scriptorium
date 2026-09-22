@@ -1,9 +1,10 @@
 # Run receipt — SCRIP-CORPUS-058
 
 - **Unit:** SCRIP-CORPUS-058 — Running on Waves exact-body dialogue-policy sensitivity
-- **Issue:** #203 (open; closes on merge)
-- **Pull request:** #204 (Draft; independent exact-head review required)
+- **Issue:** #203 (closed completed)
+- **Pull request:** #204 (independently reviewed; squash-merged as `90aa67295e7858a7df46a7cab8b6aac769934a9c`)
 - **Base:** `master@063c38fa97215153f43194158c774d6a825c41ad`
+- **Authored head:** `31e24f05beb736c7ae504ebdd3c1510c5f8cfda4`
 - **Scope:** `drevendev/Scriptorium` only
 
 ## Produced
@@ -18,7 +19,9 @@ Initial authored-head run `35713185045` at `c6ee6d7b2c2ce4687bfcb859177987c609d9
 
 Repaired hosted run `35713268626` at exact authored SHA `e09ce2b6a63f150aee400aec6241fb4f892c3c4a` passed the focused source-free tests, replayed all 36 exact revisions, verified the canonical body identity, emitted the dialogue-policy diagnostic, passed source-text/parity guards and uploaded source-free artifact `10687625943`. GitHub recorded the artifact ZIP at **1,591 bytes** with digest SHA-256 **`d8163280c9dfdd695f1883a1673488207d428967e7c88450308c4b3f52a007db`**. The archive contains only the generated diagnostic JSON. The canonical JSON committed later on the branch was copied exactly from this successful hosted capture.
 
-The final branch head intentionally requires a later independent review. Exact-final-head CI should regenerate the committed diagnostic byte-for-byte before PR #204 is considered Ready or mergeable by judgement; this authored run does not self-approve or self-merge the substantial change.
+Independent exact-head review `5277004834` re-read all 8 changed files at `31e24f05beb736c7ae504ebdd3c1510c5f8cfda4` against unchanged `master@063c38fa97215153f43194158c774d6a825c41ad`. The review found no merge blocker or open review thread, independently reproduced the recorded ratios from the committed counts, and freshly rechecked FantLab work 27344's 18 September 2022 display values. All **17/17** PR-triggered workflow runs on that exact head settled `success`. Dedicated run `35713729969` passed the focused tests, replayed the exact body, compared the regenerated diagnostic byte-for-byte with the committed JSON, passed source/parity guards and uploaded the source-free artifact.
+
+PR #204 was marked Ready and squash-merged with expected-head protection as `90aa67295e7858a7df46a7cab8b6aac769934a9c`. Issue #203 automatically closed as completed.
 
 ## Diagnostic observations
 
@@ -53,4 +56,4 @@ The near match of `current_v1_over_total_text` is a **denominator hypothesis wor
 - `m2_parity_admissible=false`
 - M2 remains **0/5**.
 
-PR #204 remains Draft. The next selection-preempting unit is an independent exact-head review: verify the committed artifact regenerates byte-for-byte from the 36 pinned revisions, inspect all relevant exact-head checks and the evidence boundary, then mark Ready/merge only if clean. Numeric proximity alone must not select production dialogue semantics.
+SCRIP-CORPUS-058 is complete. Resume normal-flow selection from the queue. The total-text denominator remains a high-value follow-up hypothesis, but any production-semantics change requires source-matched or multi-work evidence rather than numeric proximity on this source-unmatched work.

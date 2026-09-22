@@ -42,6 +42,19 @@ Selected current deltas illustrate why the artifact is useful without being pari
 
 Dictionary-dependent `active_dictionary`, `active_nondictionary`, `UASZ-3000`, and `UASZ-10000` remain `not_run_dependency_unbound` because no independently bound FantLab-compatible dictionary is supplied to this diagnostic. The artifact therefore exposes missing dependencies instead of manufacturing values.
 
+## Dialogue-policy sensitivity
+
+SCRIP-CORPUS-058 applies the existing diagnostic-only `scriptorium-dialogue-policy-diagnostic-v1` to the same exact frozen body without changing production `scriptorium-dialogue-v1`. The source-free artifact `diagnostics/grin-running-on-waves-dialogue-policy.json` records **736** detected dialogue paragraphs, **1,215** internal separators, **706** current-v1 author-remark spans and **571** stricter punctuation-shaped author-remark spans.
+
+The sensitivity result separates two questions that the production profile currently combines: which internal separators open author remarks, and which character population is used as the percentage denominator. Against FantLab's displayed **12.49%** author-text-inside-dialogue value, the four inspectable variants are:
+
+- current-v1 author remarks / dialogue characters: **34.563165459722235%** (`+22.073165459722233 pp`);
+- punctuation-shaped author remarks / dialogue characters: **23.42784425381538%** (`+10.93784425381538 pp`);
+- current-v1 author remarks / total non-whitespace text: **12.4046723291002%** (`-0.08532767089980098 pp`);
+- punctuation-shaped author remarks / total non-whitespace text: **8.408220933480097%** (`-4.081779066519903 pp`).
+
+The near-match of `current_v1_over_total_text` is a **high-value denominator hypothesis**, not recovered FantLab semantics. The FantLab input edition is still unknown, and one source-unmatched work cannot distinguish a true denominator rule from compensating source/parser differences. Production behavior therefore remains unchanged; the result prioritizes an independent source-matched or multi-work denominator investigation.
+
 ## Distinct route boundary
 
 Russian Wikisource also exposes `/Версия 2`, observed at permanent revision `oldid=5655654`. That page declares `az.lib.ru` and identifies **A. S. Grin, Collected Works, Pravda, Moscow, 1980**. Scriptorium treats it as a **distinct transcription/edition route** and does not splice it into the retained 1965-source family.
@@ -50,7 +63,7 @@ Russian Wikisource also exposes `/Версия 2`, observed at permanent revisio
 
 FantLab edition record `12637` independently corroborates the same 1965 Detskaya literatura volume and places *Running on Waves* on pp. 77–276. This is useful bibliographic-family evidence, not proof that Wikisource reproduces those print bytes exactly and not evidence that FantLab analyzed this public transcription.
 
-The frozen public composite is **2,832 characters larger** than FantLab's displayed count (363,819 vs 360,987). The full-work diagnostic adds field-by-field evidence but does not change that boundary: source identity remains undisclosed and no comparison row is M2 parity evidence.
+The frozen public composite is **2,832 characters larger** than FantLab's displayed count (363,819 vs 360,987). The full-work diagnostic and dialogue sensitivity probe add field-by-field evidence but do not change that boundary: source identity remains undisclosed and no comparison row is M2 parity evidence.
 
 Therefore:
 
@@ -69,9 +82,11 @@ Therefore:
 - `source-edition-traces/grin-running-on-waves-ru.source-revisions.json` — exact source-free identities for all 36 retained literary pages.
 - `source-edition-traces/grin-running-on-waves-ru.literary-body.json` — exact per-page and composite literary-body counts/digests.
 - `diagnostics/grin-running-on-waves-ru.json` — current source-free deterministic full-work diagnostic against FantLab's public display values.
+- `diagnostics/grin-running-on-waves-dialogue-policy.json` — current source-free exact-body dialogue-policy sensitivity and variant ranking.
 - `../../scriptorium/running_waves_inventory.py` — deterministic fail-closed route-manifest builder/validator.
 - `../../scriptorium/running_waves_revisions.py` — deterministic source-free revision capture/validation/replay.
 - `../../scriptorium/running_waves_body.py` — candidate-specific fail-closed literary-body extraction/composition/replay.
-- `../../scriptorium/running_waves_diagnostic.py` — exact-body diagnostic builder and closed-gate policy.
+- `../../scriptorium/running_waves_diagnostic.py` — exact-body deterministic diagnostic builder and closed-gate policy.
+- `../../scriptorium/running_waves_dialogue_policy.py` — exact-body dialogue-policy sensitivity builder and closed-gate policy.
 
 No literary source text is committed by this candidate surface.

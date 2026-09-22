@@ -1,22 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 220
+STATE_REVISION: 221
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-22T00:49:00Z
-LAST_RESULT: SCRIP-CORPUS-053 / Issue #193 completed. Independent exact-head review `5273219653` re-read PR #194 at `9fdf28b56c677960a5e4de3739fc70e3b914da17` against unchanged base `6027bda0bfcf5a596260fe9f49214a98773e882c`, reviewed all 10 changed files, found no merge blocker and confirmed no open review threads. All 17 PR-triggered workflows for that exact head settled `success`; dedicated DjVu replay run `35670137911` passed 14 focused identity/provenance tests and reproduced the frozen 2,982,171-byte carrier identity, while Pages run `35670138595` passed the full 436-test suite plus canonical and deterministic site builds. PR #194 was marked Ready and squash-merged with expected-head protection as `e160edc0fb8ad612df42eafe11939ca93f331183`, closing Issue #193 completed.
-LAST_VERIFIED_PROGRESS: Perelman now canonically retains independently reviewed exact binary identities for both the 223-page Commons PDF and its 218-page Commons DjVu companion. The DjVu is only a provider-asserted same-bibliographic-edition companion: PDF↔DjVu page equivalence is unverified, embedded DjVu text/OCR was not inspected, and OCR/body promotion contract v1 remains bound to the frozen PDF. No source-carrier bytes, page images, OCR or source prose are retained. Literary-page selection, renderer/OCR identity, literary-body digests/count, >=300k admission, work-specific FantLab linguistic-analysis/input identity, diagnostic readiness and M2 remain deliberately unverified. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-22T01:52:00Z
+LAST_RESULT: SCRIP-CORPUS-054 / Issue #195 authored in Draft PR #196. Fresh FantLab evidence rechecked work 44822 at 276,556 characters / 39,158 words, 23,444 characters below the mandatory 300,000-character calibration/benchmark/author-profile corpus floor. Russian Wikisource provides public-domain and 1939/1958 source-family evidence but also records substantial authorial revision, so legal/source evidence remains separate from the size rejection and does not establish FantLab analyzer-input identity. A source-free screening record now rejects Aelita from corpus/M2 use while preserving only a possible future non-corpus short-input showcase path. M2 remains 0/5.
+LAST_VERIFIED_PROGRESS: Corpus qualification now fails fast on a high-interest early-Soviet SF candidate before source-freezing work: Aelita is explicitly ineligible for the >=300k calibration/benchmark/author-profile corpus under the current gate because FantLab's analyzed input is 276,556 characters. The public-domain/source-family evidence is preserved separately and cannot override the threshold or collapse materially revised edition families. No source text, source revision bytes, extracted body, diagnostics, parity or M2 progress were created.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-053
-ISSUE:          #193 (closed completed)
-STATUS:         COMPLETE
-PR:             #194 (independently reviewed; squash-merged as e160edc0fb8ad612df42eafe11939ca93f331183)
-NEXT_ACTION:    Resume normal-flow selection from the queue. A later Perelman unit may deliberately choose a frozen
-                extraction carrier and bind exact literary-page selection plus reproducible renderer/OCR identities/settings
-                under a new independently evidenced contract version, then freeze source-free body counts/digests and
-                evaluate >=300k. Keep PDF↔DjVu equivalence, FantLab/diagnostic/M2 gates closed until separately proved.
+UNIT_ID:        SCRIP-CORPUS-054
+ISSUE:          #195
+STATUS:         REVIEW_PENDING
+PR:             #196 (Draft; authored in this wake)
+NEXT_ACTION:    Independently review the exact current PR #196 head against its base after repository checks settle.
+                Verify the source-free screening record and threshold arithmetic, keep edition/source-match uncertainty
+                separate from the absolute size rejection, and only then decide Ready/merge. Do not count Aelita toward
+                calibration, benchmark corpus, author profiles, or M2 under the standing >=300k rule.
 ```
 
 ## Current milestone gate
@@ -31,6 +31,7 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
+| P1 | SCRIP-CORPUS-054 review/merge recovery | review / provenance | Independently review Draft PR #196 exact final head and settled checks; merge only if the Aelita screening keeps the >=300k rejection, legal/source-family evidence, and edition uncertainty fail-closed | Authoring wake must not self-approve; M2 remains 0/5 |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough; Petersburg's frozen scan and Darwin/Rachinsky's frozen source/surface/scan/profile identities make separate candidate-specific OCR/renderer units executable when selected | Preserve translation/edition identity and explicit legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
 
 ## Retained corpus / provenance status
@@ -43,6 +44,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Silver Dove** — single revision `oldid=5588003`; 563,125 characters; SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`; FantLab source match unknown.
 - **Petersburg** — SCRIP-CORPUS-038 complete. Exact 632-page 1916 first-book-edition Commons PDF: 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`; distinct from 1922. OCR/page selection/body/>=300k/FantLab identity remain open.
 - **Hyperboloid of Engineer Garin** — `oldid=5014458`; frozen body 499,066 characters / 930,560 bytes; SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`; print-edition/FantLab identity unresolved.
+- **Aelita** — SCRIP-CORPUS-054 screening in Draft PR #196 rejects it from calibration/benchmark/author-profile corpus because FantLab's 18 September 2022 analysis reports 276,556 characters, 23,444 below the standing >=300k floor. Russian Wikisource legal/source-family evidence is retained only for a possible future non-corpus short-input showcase; substantial authorial revision and FantLab analyzer-input identity remain unresolved. M2 weight zero.
 - **Shining World** — 34 advertised chapter links but only 19 pages exist; complete body unavailable from this route and FantLab match unknown.
 - **Road to Nowhere** — primary Pravda-1965/lib.web route remains incomplete; distinct `az.lib.ru` route `oldid=5585836` is 442,656 characters / 825,899 bytes, SHA-256 `e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`; neither is identified as FantLab input.
 - **Running on Waves** — SCRIP-CORPUS-028 complete. Detskaya literatura 1965 family: 36 literary pages, 363,819 characters / 656,239 bytes, SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`; clears >=300k. FantLab shows 360,987 characters but source match remains unknown. Separate 1980 route stays distinct.
@@ -66,6 +68,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 
 - Static publication remains source-free and deterministic; publication tests reject forbidden source-prose keys.
 - Public corpus navigation exposes retained candidates with provenance boundaries rather than parity claims.
+- `corpus/candidates/screenings/` now exposes source-free pre-admission decisions; Aelita is visibly rejected from the >=300k corpus while its possible future short-input showcase use is kept explicitly non-corpus.
 - Beketova and Running on Waves expose >=300k frozen bodies while FantLab/M2 remain closed; Petersburg exposes exact 1916 PDF identity while OCR/body gates remain open.
 - The Twelve Chairs exposes exact-surface rendering decisions plus unresolved template/reference counts without claiming renderer/body equivalence.
 - The Darwin/Rachinsky semantic-backlog companion now separates documented conditional `{{ё}}` semantics, the oldid/live-transclusion model, and the fail-closed replay contract. It explicitly records that `expandtemplates.revid` is not accepted as a template-version pin, recursive dependency closure is still empty, and future per-node discovery digests are recomputed from exact revision identity plus direct-dependency set before edge agreement can satisfy closure.

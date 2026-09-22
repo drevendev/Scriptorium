@@ -9,4 +9,7 @@
 - Legal usability and source-family evidence neither override the FantLab-input size failure nor establish FantLab analyzer-input identity. `fantlab_source_edition_match` remains unknown and M2 remains **0/5**.
 - Added a source-free machine-readable screening record plus a small screening index. No literary source text, Wikisource revision bytes, or extracted body is retained.
 - A future *Aelita* unit may use a provenance-bound version as a non-corpus short-input showcase, or separately freeze and measure a distinct public edition if that work has independent value. No such future unit may count FantLab work 44822 toward M2 under the current >=300k gate.
-- The substantive PR is intentionally left Draft for a later independent exact-head review.
+- The substantive PR was intentionally left Draft for a later independent exact-head review.
+- Independent review `5273751749` re-read exact head `e2ab2295efa1ceac9949a1470ca3e137b8988125` against unchanged base `059a79360065497bbbc9d90bce99d58b991e62b9`, reviewed all 5 changed files, rechecked the FantLab/Wikisource evidence, confirmed the 23,444-character shortfall and found no merge blocker or open review thread.
+- Fresh exact-head CI settled green: all 12 pull-request workflow runs completed `success` (14 check runs total, including the pinned-pylem jobs).
+- PR #196 was marked Ready and squash-merged with expected-head protection as `a1b99332eb540d344d9621486e9eb1d99e1aaec8`; Issue #195 closed `completed`. M2 remains **0/5**.

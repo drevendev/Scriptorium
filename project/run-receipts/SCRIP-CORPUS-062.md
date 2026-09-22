@@ -1,9 +1,10 @@
 # Run receipt — SCRIP-CORPUS-062
 
 - **Unit:** SCRIP-CORPUS-062 — Beketova deterministic full-work showcase
-- **Issue:** #211 (open; closes on merge)
-- **Pull request:** #212 (Draft; independent judgement required)
+- **Issue:** #211 (closed completed on merge)
+- **Pull request:** #212 (independently reviewed; squash-merged as `0b9d838bfa5c9844dbf1b503b806c31eed25404c`)
 - **Base:** `master@c7c09a9e4bbeeb55f23e87903c6b64e71f361d88`
+- **Reviewed head:** `62f0b2921ffc4a662d7e0e2a0f4adf547233688d`
 - **Scope:** `drevendev/Scriptorium` only
 
 ## Produced
@@ -24,15 +25,19 @@ The canonical derived artifact stores 11 representative values from `scriptorium
 - 29,084 unique words;
 - comma / dash / question rates of 119.31571427672283 / 45.59387214330222 / 7.036713011625053 per 1,000 words.
 
-The public candidate page now links the canonical source-free artifact and labels the output as Scriptorium analysis rather than FantLab evidence. Dictionary-dependent vocabulary values are deliberately not included because no compatible dictionary provider is bound.
+The public candidate page links the canonical source-free artifact and labels the output as Scriptorium analysis rather than FantLab evidence. Dictionary-dependent vocabulary values are deliberately not included because no compatible dictionary provider is bound.
 
 ## Verification contract
 
-Dedicated bootstrap run `35763381641` checked out authored head `5fecffa2ed515001107a0b3325de1a964fa9f712`, passed **4/4** focused standard-library regressions, re-fetched the exact pinned revision, verified the exact frozen body, emitted the source-free artifact, and passed closed-gate guards. The bootstrap artifact was then committed as the canonical JSON so the final-head run can enforce byte-for-byte `cmp` rather than capture-only behavior.
+Dedicated bootstrap run `35763381641` checked out authored head `5fecffa2ed515001107a0b3325de1a964fa9f712`, passed **4/4** focused standard-library regressions, re-fetched the exact pinned revision, verified the exact frozen body, emitted the source-free artifact, and passed closed-gate guards. The bootstrap artifact was then committed as the canonical JSON so the final-head run could enforce byte-for-byte `cmp` rather than capture-only behavior.
 
-The workflow is read-only (`contents: read`, checkout credentials not persisted), checks source-text-like keys are absent, pins the frozen body count/hash, requires `fantlab_comparison_performed=false`, `fantlab_source_edition_match=unknown`, `gate_ready=false`, `m2_parity_admissible=false`, and `m2_weight=0`.
+Independent review `5282257475` re-read all 8 changed files at exact final head `62f0b2921ffc4a662d7e0e2a0f4adf547233688d` against unchanged `master@c7c09a9e4bbeeb55f23e87903c6b64e71f361d88`, confirmed the branch was 8 commits ahead / 0 behind with no open review threads, and found no merge blocker.
 
-## Gates / handoff
+All **20/20** pull-request-triggered workflows on the exact reviewed head completed with `success`. Dedicated run `35763976181` was anchored to that head and completed focused tests, exact pinned-revision/body replay, byte-for-byte canonical artifact comparison, source-free/parity guards, and artifact upload successfully. The full pinned-pylem provider workflow also completed successfully.
+
+PR #212 was marked Ready and squash-merged with expected-head protection as `0b9d838bfa5c9844dbf1b503b806c31eed25404c`, automatically closing Issue #211 as completed.
+
+## Gates / final state
 
 - `general_calibration_profile_admissible=true`
 - `source_text_committed=false`
@@ -43,4 +48,4 @@ The workflow is read-only (`contents: read`, checkout credentials not persisted)
 - `m2_parity_admissible=false`
 - M2 remains **0/5**.
 
-PR #212 is intentionally left **Draft** after authoring. The next wake must independently review the exact final PR head, inspect settled workflows including the dedicated byte-for-byte replay, and only then decide whether to mark Ready and merge. This run does not self-approve its substantial change.
+The bounded unit is complete. No benchmark/parity gate moved; the durable queue may resume normal-flow corpus/provenance selection.

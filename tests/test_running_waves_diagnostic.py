@@ -21,7 +21,7 @@ class RunningWavesDiagnosticTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.source = json.loads(SOURCE_MANIFEST.read_text(encoding="utf-8"))
-        identities = cls.source["literary_pages"]
+        identities = cls.source["pages"]
         cls.payloads = {
             row["title"]: '<div class="text">' + ("Слово " * 1600) + f"{row['ordinal']}.</div>"
             for row in identities

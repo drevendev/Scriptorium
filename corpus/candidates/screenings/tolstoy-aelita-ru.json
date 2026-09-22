@@ -1,0 +1,49 @@
+{
+  "schema": "scriptorium-corpus-screening-v1",
+  "candidate_id": "tolstoy-aelita-ru",
+  "work_title": "Aelita",
+  "author": "Alexei N. Tolstoy",
+  "screened_at": "2026-09-22",
+  "decision": "reject_from_calibration_benchmark_author_profile_corpus",
+  "decision_reason": "fantlab_analyzed_input_below_300000_character_floor",
+  "fantlab": {
+    "work_id": 44822,
+    "work_url": "https://fantlab.ru/work44822",
+    "linguistic_analysis_url": "https://fantlab.ru/work44822/lp",
+    "analysis_date": "2022-09-18",
+    "characters": 276556,
+    "words": 39158,
+    "source_edition_match": "unknown"
+  },
+  "threshold": {
+    "rule": "characters_including_spaces_gte_300000",
+    "minimum_characters": 300000,
+    "observed_characters": 276556,
+    "shortfall_characters": 23444,
+    "corpus_admissible": false,
+    "m2_parity_admissible": false,
+    "m2_weight": 0
+  },
+  "public_source_evidence": {
+    "wikisource_url": "https://ru.wikisource.org/wiki/Аэлита_(Толстой)",
+    "legal_surface": "Russian Wikisource marks the work public domain in Russia and life-plus-70-or-less jurisdictions.",
+    "source_family": "A. N. Tolstoy, Collected Works in ten volumes, vol. 3, Moscow: Goslitizdat, 1958; Wikisource additionally states that the text follows the 1939 Sovetskii pisatel collection.",
+    "edition_boundary": "Wikisource states that the original 1922-1923 Aelita text underwent substantial authorial revision. No title-level or source-family statement establishes identity with FantLab's analyzer input.",
+    "revision_frozen": false,
+    "literary_body_frozen": false
+  },
+  "allowed_future_use": [
+    "short_input_analyzer_showcase_non_corpus",
+    "edition_provenance_research_if_independently_justified"
+  ],
+  "forbidden_promotions_from_this_record": [
+    "calibration_corpus_admission",
+    "benchmark_corpus_admission",
+    "author_profile_corpus_admission",
+    "fantlab_source_match",
+    "diagnostic_parity_claim",
+    "m2_progress"
+  ],
+  "source_text_retained": false,
+  "notes": "The size rejection is independent of legal usability or edition-match uncertainty. Even a future exact source match would not make FantLab's 276,556-character analyzed input satisfy the standing >=300,000-character corpus rule."
+}

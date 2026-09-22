@@ -1,0 +1,54 @@
+name: Petersburg 1916 OCR promotion contract
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/petersburg-ocr-contract.yml"
+      - "scriptorium/petersburg_ocr_contract.py"
+      - "tests/test_petersburg_ocr_contract.py"
+      - "corpus/candidates/bely-petersburg-1916-ru.md"
+      - "corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.json"
+      - "corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.ocr-contract.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: Validate source-free promotion boundary
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run focused fail-closed tests
+        run: python -m unittest tests.test_petersburg_ocr_contract -v
+
+      - name: Validate committed source-free contract
+        run: |
+          set -euo pipefail
+          result="$(python -m scriptorium.petersburg_ocr_contract corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.ocr-contract.json)"
+          printf '%s\n' "$result"
+          python - "$result" <<'PY'
+          import json
+          import sys
+          result = json.loads(sys.argv[1])
+          assert result["contract_sha256"] == "d338d8dc4d800b0fe28a848e383265ba9a0e720e75962f7f9e5733ad727a20d2"
+          assert result["scan_sha256"] == "b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5"
+          assert result["page_selection_status"] == "unbound"
+          assert result["rasterization_status"] == "unbound"
+          assert result["ocr_status"] == "unbound"
+          assert result["literary_body_frozen"] is False
+          assert result["minimum_300k_proved_from_frozen_body"] is False
+          assert result["m2_parity_admissible"] is False
+          PY

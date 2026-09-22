@@ -1,0 +1,62 @@
+{
+  "contract_version": "scriptorium-petersburg-1916-ocr-body-contract-v1",
+  "candidate_id": "bely-petersburg-1916-ru",
+  "purpose": "Fail-closed promotion boundary from the frozen 1916 first-book-edition scan identity to a future deterministic OCR-derived literary body.",
+  "scan_identity": {
+    "byte_count": 3621459,
+    "sha1": "682476934dd6ed49c6bbcdb0720127c1812ff477",
+    "sha256": "b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5"
+  },
+  "source_pdf_page_count": 632,
+  "page_selection": {
+    "status": "unbound",
+    "included_pdf_pages": [],
+    "excluded_pdf_pages": [],
+    "evidence": null
+  },
+  "rasterization": {
+    "status": "unbound",
+    "engine": null,
+    "version": null,
+    "artifact_sha256": null,
+    "settings": null
+  },
+  "ocr": {
+    "status": "unbound",
+    "engine": null,
+    "version": null,
+    "engine_artifact_sha256": null,
+    "language_data": [],
+    "language_data_sha256": null,
+    "settings": null
+  },
+  "composition": {
+    "status": "defined",
+    "page_order": "ascending_pdf_page_number",
+    "per_page_trailing_newlines": "strip_all",
+    "page_joiner": "\n\n",
+    "raw_body_encoding": "utf-8",
+    "normalized_profile": "scriptorium-text-v1"
+  },
+  "outputs": {
+    "raw_character_count": null,
+    "raw_sha256": null,
+    "normalized_character_count": null,
+    "normalized_sha256": null
+  },
+  "gates": {
+    "extraction_profile_frozen": false,
+    "literary_body_frozen": false,
+    "minimum_300k_proved_from_frozen_body": false,
+    "admitted_for_calibration": false,
+    "fantlab_source_edition_match": "unknown",
+    "diagnostic_ready": false,
+    "m2_parity_admissible": false
+  },
+  "publication": {
+    "pdf_bytes_committed": false,
+    "page_images_committed": false,
+    "ocr_text_committed": false,
+    "literary_source_text_committed": false
+  }
+}

@@ -1,21 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 224
+STATE_REVISION: 225
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-22T04:50:00Z
-LAST_RESULT: SCRIP-CORPUS-055 / Issue #197 completed. Independent exact-head review `5274234912` re-read PR #198 at `0b38eaa1d62358794e4142a3e11b9e8fd0676c6b` against unchanged base `98e903e6c28f80c26489c90ed137d3bfa606e9a2`, reviewed all 5 changed files, independently rechecked the FantLab/Wikisource evidence, confirmed the exact 14,296-character shortfall and found no merge blocker or open review thread. All 12 PR-triggered workflow runs for that exact head settled `success`; the pinned-pylem workflow's three jobs also completed `success`, including the Python 3.13 provider-contract job with the complete standard-library suite. PR #198 was marked Ready and squash-merged with expected-head protection as `f989ace74e4911bf9f7828637a4f21f0ee9d06b9`, closing Issue #197 completed.
-LAST_VERIFIED_PROGRESS: Zamyatin's *We* now has a canonical source-free pre-admission screening that narrowly rejects FantLab work 20055 as an M2 parity-benchmark seed because its published 17 September 2022 analyzer input is 285,704 characters, 14,296 below the mandatory 300,000-character floor. This does not establish the size or corpus admissibility of the distinct Russian Wikisource public source: its work-index `oldid=5633449` freezes navigation/provenance only, while the 40 linked literary body pages remain unfrozen and unmeasured. FantLab analyzer-input identity, diagnostics, parity and M2 remain closed; M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-22T05:58:00Z
+LAST_RESULT: SCRIP-CORPUS-056 / Issue #199 authored as Draft PR #200 from `master@3429745d42ee57a3112d7a3c940ee1d2f3ff30f9`. Added a source-free fail-closed OCR/body promotion contract v1 for the exact frozen Petersburg 1916 PDF, validator, focused regressions, dedicated offline PR workflow, and synchronized public candidate/provenance surfaces. The substantive authored PR remains Draft for independent exact-head judgement after hosted checks settle.
+LAST_VERIFIED_PROGRESS: Petersburg's exact 632-page, 3,621,459-byte 1916 first-book-edition PDF now has source-free promotion contract `scriptorium-petersburg-1916-ocr-body-contract-v1`, canonical SHA-256 `d338d8dc4d800b0fe28a848e383265ba9a0e720e75962f7f9e5733ad727a20d2`, bound to the already frozen scan identity. Only future composition semantics are defined; exact literary-page selection, rasterizer/OCR identities/settings, raw/normalized body outputs, >=300k admission, FantLab analyzer-input identity, diagnostics, parity and M2 remain closed. M2 remains 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-055
-ISSUE:          #197 (closed completed)
-STATUS:         COMPLETE
-PR:             #198 (independently reviewed; squash-merged as f989ace74e4911bf9f7828637a4f21f0ee9d06b9)
-NEXT_ACTION:    Resume normal-flow selection from the queue. Any future We source-freeze unit must bind the exact
-                body-page revision identities and deterministic composition before measuring or admitting the public
-                body, and must not convert FantLab work 20055 into M2 evidence under the current >=300k gate.
+UNIT_ID:        SCRIP-CORPUS-056
+ISSUE:          #199 (open)
+STATUS:         REVIEW_PENDING
+PR:             #200 (Draft; authored change awaiting independent exact-head review)
+NEXT_ACTION:    Re-read the exact final PR #200 head against unchanged master after all hosted checks settle. Review the
+                source-free contract, provenance synchronization, focused regressions and workflow; if no blocker remains,
+                mark Ready and merge with expected-head protection, then reconcile state/changelog/receipt. Do not promote
+                page-selection/OCR/body/>=300k/FantLab/M2 gates without new independent evidence.
 ```
 
 ## Current milestone gate
@@ -30,7 +31,8 @@ Evaluate rows in priority order. Recovery/review-ready work and failing required
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough; Petersburg's frozen scan and Darwin/Rachinsky's frozen source/surface/scan/profile identities make separate candidate-specific OCR/renderer units executable when selected | Preserve translation/edition identity and explicit legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
+| P1 | SCRIP-CORPUS-056 review/merge recovery | review / recovery | Independently review Draft PR #200 at its exact settled head and merge only if checks/evidence support it | Do not self-approve the authored substantive change; preserve all closed OCR/body/>=300k/FantLab/M2 gates |
+| P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics when licensing/source identity is strong enough; Petersburg's frozen scan/defined promotion contract and Darwin/Rachinsky's frozen source/surface/scan/profile identities make separate candidate-specific extraction/renderer units executable when selected | Preserve translation/edition identity and explicit legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
 
 ## Retained corpus / provenance status
 
@@ -40,7 +42,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **Resurrection** — 129 pinned chapter revisions; 890,835 characters; SHA-256 `2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`; FantLab source match unknown.
 - **Brothers Karamazov** — 98 admitted revisions; 1,810,351 characters; SHA-256 `26b9991c95b30d262c24ae38fb2333a58df588a62a4310f9e5c4b507dbce6`; FantLab source match unknown.
 - **Silver Dove** — single revision `oldid=5588003`; 563,125 characters; SHA-256 `496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183`; FantLab source match unknown.
-- **Petersburg** — SCRIP-CORPUS-038 complete. Exact 632-page 1916 first-book-edition Commons PDF: 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`; distinct from 1922. OCR/page selection/body/>=300k/FantLab identity remain open.
+- **Petersburg** — SCRIP-CORPUS-038 froze the exact 632-page 1916 first-book-edition Commons PDF at 3,621,459 bytes, SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477`, SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`, distinct from 1922. SCRIP-CORPUS-056 Draft PR #200 defines source-free OCR/body promotion contract v1, SHA-256 `d338d8dc4d800b0fe28a848e383265ba9a0e720e75962f7f9e5733ad727a20d2`, bound to that scan while literary-page selection, renderer/OCR bindings, body outputs, >=300k admission and FantLab identity remain open.
 - **Hyperboloid of Engineer Garin** — `oldid=5014458`; frozen body 499,066 characters / 930,560 bytes; SHA-256 `a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513`; print-edition/FantLab identity unresolved.
 - **Aelita** — SCRIP-CORPUS-054 is independently reviewed and complete on master. FantLab's 18 September 2022 input (276,556 characters) is 23,444 below the standing >=300k floor and therefore cannot be an M2 parity-benchmark seed. Russian Wikisource legal/source-family evidence belongs to a materially revised public source whose own body is not frozen or measured; its separate non-M2 corpus admissibility remains unknown. FantLab analyzer-input identity remains unresolved; M2 weight zero.
 - **We** — SCRIP-CORPUS-055 is independently reviewed and complete on master. FantLab's 17 September 2022 input (285,704 characters) is 14,296 below the standing >=300k floor and therefore cannot be an M2 parity-benchmark seed. Russian Wikisource identifies a public-domain 2003 collected-works source and current work-index `oldid=5633449`, but the literary body is split across 40 separately addressable record pages; the index revision is not a body freeze. Public-source corpus admissibility remains unknown until exact body revisions are frozen and measured; FantLab analyzer-input identity remains unresolved; M2 weight zero.
@@ -68,7 +70,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - Static publication remains source-free and deterministic; publication tests reject forbidden source-prose keys.
 - Public corpus navigation exposes retained candidates with provenance boundaries rather than parity claims.
 - `corpus/candidates/screenings/` now exposes source-free pre-admission decisions for Aelita and Zamyatin's *We*. Each record narrowly rejects the corresponding sub-300k FantLab analyzer input as an M2 seed while keeping a distinct public source unmeasured rather than falsely rejected or admitted. The *We* record also makes explicit that a work-index oldid does not freeze its 40 linked body pages.
-- Beketova and Running on Waves expose >=300k frozen bodies while FantLab/M2 remain closed; Petersburg exposes exact 1916 PDF identity while OCR/body gates remain open.
+- Beketova and Running on Waves expose >=300k frozen bodies while FantLab/M2 remain closed; Petersburg exposes exact 1916 PDF identity plus a source-free fail-closed OCR/body promotion contract v1 whose page/toolchain/body bindings remain deliberately unbound.
 - The Twelve Chairs exposes exact-surface rendering decisions plus unresolved template/reference counts without claiming renderer/body equivalence.
 - The Darwin/Rachinsky semantic-backlog companion now separates documented conditional `{{ё}}` semantics, the oldid/live-transclusion model, and the fail-closed replay contract. It explicitly records that `expandtemplates.revid` is not accepted as a template-version pin, recursive dependency closure is still empty, and future per-node discovery digests are recomputed from exact revision identity plus direct-dependency set before edge agreement can satisfy closure.
 - Klim Samgin exposes its source graph, extractor, body identities and structured provenance; FantLab source match remains unknown.
@@ -82,7 +84,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 3. FantLab dictionary/version, homonym selection/prediction and service-word aggregation remain unknown.
 4. pylem runtime `N` loses noun/cardinal distinction; methodology-only categories remain diagnostic.
 5. Frozen public-source candidates remain unmatched to FantLab input and therefore cannot advance M2.
-6. Petersburg scan identity is exact but deterministic OCR/body/>=300k admission remains unfrozen.
+6. Petersburg scan identity and a fail-closed source-free promotion contract are exact, but literary-page selection, reproducible renderer/OCR bindings, frozen body and >=300k admission remain open.
 7. Shining World's primary route is incomplete; Road to Nowhere's primary route is not a complete route witness.
 8. Running on Waves clears >=300k but FantLab analyzer-input/source identity remains unknown.
 9. Klim Samgin still lacks exact historical MediaWiki-core/Poem deployment equivalence and FantLab input identity.

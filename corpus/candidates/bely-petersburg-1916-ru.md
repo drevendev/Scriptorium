@@ -18,20 +18,28 @@ Independent exact-head review of `11ca95744ce0b28c213d21b2221a6fc1f6d6b831` foun
 
 No PDF bytes, page images, OCR, or literary source text are committed. The durable receipt stores only the locator, edition identity, byte count, hashes, and closed-gate metadata.
 
+## OCR/body promotion boundary
+
+**SCRIP-CORPUS-056 / Issue #199** defines source-free contract `scriptorium-petersburg-1916-ocr-body-contract-v1`, cryptographically bound to the exact frozen PDF above. Its canonical SHA-256 is **`d338d8dc4d800b0fe28a848e383265ba9a0e720e75962f7f9e5733ad727a20d2`**.
+
+The contract freezes only future composition semantics: ascending PDF-page order, stripping trailing newlines per selected page, joining pages with two LF characters, UTF-8 raw-body encoding, and `scriptorium-text-v1` normalization. Literary-page selection, rasterizer identity/settings, OCR engine/language-data/settings, and raw/normalized body outputs deliberately remain **unbound**. A later extraction profile must use a new independently evidenced contract version rather than silently mutating v1.
+
 ## Rights and edition boundary
 
 The retained Commons file description identifies the facsimile as the first 1916 book publication and marks the work public domain. That source/legal evidence is retained in the structured trace. The candidate is not collapsed with a generic source-less transcription or the revised 1922 Berlin edition.
 
 ## What is still open
 
-Freezing the scan binary does **not** freeze the literary text. Scriptorium still needs a candidate-specific fail-closed literary-page/OCR extraction contract, a frozen extracted body with character count and raw/normalized digests, and proof that that frozen body itself clears the **300,000-character** corpus threshold.
+Defining the promotion contract does **not** freeze the literary text. Scriptorium still needs an independently evidenced bound contract version with exact literary-page selection and reproducible rasterizer/OCR identities/settings, then a frozen extracted body with character count and raw/normalized digests and proof that that frozen body itself clears the **300,000-character** corpus threshold.
 
 FantLab reports 944,182 characters for its 19 September 2022 analysis of work 293513, but it does not disclose the analyzed edition or immutable input bytes. Therefore `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `gate_ready=false`, and `m2_parity_admissible=false`. This candidate contributes **0** to the M2 source-matched-work gate.
 
 ## Canonical evidence
 
-- [`source-edition-traces/bely-petersburg-1916-ru.json`](source-edition-traces/bely-petersburg-1916-ru.json) — edition/legal provenance, frozen scan identity, and admission/FantLab boundaries.
+- [`source-edition-traces/bely-petersburg-1916-ru.json`](source-edition-traces/bely-petersburg-1916-ru.json) — edition/legal provenance, frozen scan identity, promotion boundary, and admission/FantLab boundaries.
 - [`source-edition-traces/bely-petersburg-1916-ru.scan-identity.json`](source-edition-traces/bely-petersburg-1916-ru.scan-identity.json) — source-free exact PDF byte identity.
+- [`source-edition-traces/bely-petersburg-1916-ru.ocr-contract.json`](source-edition-traces/bely-petersburg-1916-ru.ocr-contract.json) — source-free fail-closed OCR/body promotion contract v1.
 - [`../../scriptorium/petersburg_scan_identity.py`](../../scriptorium/petersburg_scan_identity.py) — streaming capture/replay implementation that never persists the PDF.
+- [`../../scriptorium/petersburg_ocr_contract.py`](../../scriptorium/petersburg_ocr_contract.py) — fail-closed contract validator.
 
-A later unit may define OCR/extraction only against this exact frozen scan identity; it must not promote corpus or FantLab parity gates until the literary body is independently verified.
+A later unit may bind OCR/extraction only in a new independently evidenced contract version; it must not promote corpus or FantLab parity gates until the literary body is independently verified.

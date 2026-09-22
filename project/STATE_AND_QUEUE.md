@@ -1,21 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 238
+STATE_REVISION: 239
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-22T18:50:00Z
-LAST_RESULT: SCRIP-CORPUS-062 / Issue #211 completed. Independent exact-head review `5282257475` re-read PR #212 at `62f0b2921ffc4a662d7e0e2a0f4adf547233688d` against unchanged `master@c7c09a9e4bbeeb55f23e87903c6b64e71f361d88`, reviewed all 8 changed files, found no merge blocker or open review thread, and confirmed all 20 PR-triggered workflow runs settled `success`. Dedicated run `35763976181` replayed exact Wikisource revision `5304880`, verified the frozen 1,095,467-character body / SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`, regenerated the canonical source-free artifact byte-for-byte, and passed source-free/parity guards. PR #212 was marked Ready and squash-merged with expected-head protection as `0b9d838bfa5c9844dbf1b503b806c31eed25404c`, closing Issue #211 completed.
-LAST_VERIFIED_PROGRESS: Beketova Captain Grant now canonically has an independently reviewed source-free Scriptorium analysis slice over an exact legally usable translated full-work body: 158,881 words, 14,568 sentences, 29,084 unique words, 32.4738652575157% dialogue share and representative punctuation/length metrics under `scriptorium-deterministic-metrics-v4`. These are Scriptorium outputs only; FantLab-namespaced IDs remain inferred compatibility candidates, no FantLab comparison was performed, no compatible dictionary provider is bound, FantLab source identity remains unknown and M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-22T19:58:00Z
+LAST_RESULT: SCRIP-CORPUS-063 / Issue #213 authored in Draft PR #214 from unchanged `master@e03bc63d9b7747fcae8f704f097357bb6ad12160`. The Darwin/Rachinsky `{{ё}}` replay contract was corrected from non-canonical exact root `Шаблон:ё` to canonical MediaWiki page title `Шаблон:Ё`, upgraded to `scriptorium-darwin-template-yo-replay-contract-v2`, and bound to source-free revision-pinned title-canonicalization observations. Focused local standard-library verification passes 19/19 tests; independent exact-head review and hosted-check judgement remain pending by author/judge separation.
+LAST_VERIFIED_PROGRESS: Darwin/Rachinsky now has a fail-closed replay contract whose exact roots are canonical `Шаблон:Ё` and `Шаблон:ЕЁ`. MediaWiki `Manual:Page naming/en@8270202` plus Russian Wikisource `Шаблон:Ё@5687302` / `Шаблон:ЕЁ@3684646` explain the title normalization. Contract SHA-256 is `9b2e8914a5b4c3518ef331c27dc09a6a30d4d6433e90169c677348048f3dcd52`; root observations explicitly leave MediaWiki content SHA-1 unbound, recursive closure empty, outputs unverified, renderer promotion closed and M2 at 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-062
-ISSUE:          #211 (closed completed)
-STATUS:         COMPLETE
-PR:             #212 (independently reviewed; squash-merged as 0b9d838bfa5c9844dbf1b503b806c31eed25404c)
-NEXT_ACTION:    Resume normal-flow selection from the queue. Beketova's deterministic showcase is public and
-                independently reviewed, but it must remain non-parity evidence until a FantLab result/input identity
-                is established for this exact translation; M2 remains 0/5.
+UNIT_ID:        SCRIP-CORPUS-063
+ISSUE:          #213 (open)
+STATUS:         REVIEW_PENDING
+PR:             #214 (Draft; independent exact-head review pending)
+NEXT_ACTION:    Independently review PR #214 at its exact final head against current master, inspect hosted checks,
+                verify canonical-root evidence and fail-closed dependency/output gates, then mark Ready/merge only
+                if no blocker is found. Do not treat title observations as complete dependency identities; M2 remains 0/5.
 ```
 
 ## Current milestone gate
@@ -51,7 +51,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - **The Twelve Chairs** — 410 exact Page identities and exact Commons PDF (77,978,350 bytes; SHA-256 `5a82f8101f9c17dfafcf8b45dc9ed5a7cdfa12a3e88d18bd0f0987e4fcd51eb4`) plus fail-closed surface/profile are frozen. 30 template shapes / 602 invocations and 410 `<references/>` remain unresolved; body/>=300k/FantLab identity remain open.
 - **The Life of Klim Samgin** — candidate-specific source graph, fail-closed extractor, per-part/composite body identities and provenance are frozen; exact historical MediaWiki-core/Poem deployment and FantLab input identity remain unresolved.
 - **Children of Captain Grant — Beketova translation** — exact body 1,095,467 characters / 2,040,240 bytes; SHA-256 `4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161`; clears >=300k with explicit source/PD evidence. SCRIP-CORPUS-062 adds an independently reviewed source-free `scriptorium-deterministic-metrics-v4` showcase with 158,881 words, 14,568 sentences, 29,084 unique words and representative dialogue/length/punctuation values. No FantLab result/input identity for this translation; no FantLab comparison; M2 weight zero.
-- **On the Origin of Species — Rachinsky translation** — 418 exact Page identities, 388-literary/30-apparatus composition, exact-388 markup inventory, backing scan identity, render profile and semantic/replay contracts are retained. Exact recursive dependency closure is still empty/unfrozen; all 43 semantic shapes remain unresolved, `ё` remains priority 1 at 2,227 calls, and renderer/body/>=300k/FantLab/M2 remain closed.
+- **On the Origin of Species — Rachinsky translation** — 418 exact Page identities, 388-literary/30-apparatus composition, exact-388 markup inventory, backing scan identity, render profile and semantic/replay contracts are retained. SCRIP-CORPUS-063 corrects the pending `{{ё}}` replay roots to canonical `Шаблон:Ё` / `Шаблон:ЕЁ` under contract v2 SHA-256 `9b2e8914a5b4c3518ef331c27dc09a6a30d4d6433e90169c677348048f3dcd52`, with revision-pinned title observations but no bound content SHA-1. Exact recursive dependency closure is still empty/unfrozen; all 43 semantic shapes remain unresolved, `ё` remains priority 1 at 2,227 calls, and renderer/body/>=300k/FantLab/M2 remain closed.
 - **Entertaining Physics, Book 1 — Perelman 1913 first edition** — exact PDF frozen at 28,168,847 bytes / SHA-256 `3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61`; OCR/body promotion contract v1 SHA-256 `f709f2fd298252c3edaf8eaf04fc53955186d48df1f2c2b24d1962d1729ee7e5` remains bound to the PDF. Exact DjVu companion frozen at 2,982,171 bytes / SHA-256 `f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462`. Its pinned `djvutxt` hidden-text layer is 583,825 UTF-8 bytes / 326,992 characters over 218/218 pages, raw/normalized SHA-256 `4c9235a78b40ea4737ec4463c1e772727cb31198509d05a24472e8d9075319b8`. The independently reviewed 218-record page map is bound by record-set SHA-256 `c7981219680bd549c58f69f12a66d393a23e457c526c3140e1da915f023c3246`. SCRIP-CORPUS-061 adds independently reviewed source-free pagination evidence: RSL records `VIII, 211, [1] с.` while Google displays 212 pages, and the canonical decision rejects page-count subtraction as a carrier-page selector. Literary pages are still unselected; exact facsimile/page-label mapping, PDF↔DjVu equivalence, OCR correctness, canonical carrier, selected body/>=300k, work-specific FantLab identity and M2 remain open.
 
 ## Deterministic / morphology findings
@@ -74,7 +74,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 - `corpus/candidates/screenings/` exposes source-free pre-admission decisions for Aelita and Zamyatin's *We* without collapsing distinct public-source identities.
 - Beketova and Running on Waves expose >=300k frozen bodies while FantLab/M2 remain closed; Petersburg exposes exact 1916 scan identity plus a fail-closed OCR/body promotion contract.
 - The Twelve Chairs exposes exact-surface rendering decisions plus unresolved template/reference counts without claiming renderer/body equivalence.
-- Darwin/Rachinsky exposes source graph/render/replay contracts while recursive template closure and body admission remain explicitly open.
+- Darwin/Rachinsky exposes source graph/render/replay contracts; the `{{ё}}` replay surface now distinguishes lowercase invocation spelling from canonical dependency root `Шаблон:Ё` while recursive template closure, output verification and body admission remain explicitly open.
 - Klim Samgin exposes its source graph, extractor, body identities and structured provenance; FantLab source match remains unknown.
 - The Perelman 1913 candidate canonically exposes exact source-free PDF/DjVu carrier identities, the unchanged PDF-bound OCR/body promotion contract, all-pages hidden-text evidence, an independently reviewed 218-record page map, and independently reviewed source-free RSL/Google pagination evidence. Visitors can see why book-page counts cannot safely be converted into carrier-page selection while literary-page/body/>=300k/FantLab gates remain explicitly closed.
 - Live Pages deployment remains disabled behind `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` plus repository Pages administration.
@@ -92,7 +92,7 @@ Detailed evidence lives in `corpus/candidates/`, `benchmarks/`, `project/run-rec
 9. Klim Samgin still lacks exact historical MediaWiki-core/Poem deployment equivalence and FantLab input identity.
 10. Beketova *Children of Captain Grant* clears >=300k and now has an independently reviewed public deterministic showcase, but it still lacks a matching FantLab linguistic-result/input identity; showcase values cannot advance M2.
 11. The 1928 *Twelve Chairs* route still has unresolved template/reference semantics, inter-page composition, body identity and FantLab source identity.
-12. Darwin/Rachinsky `{{ё}}` has documented semantics and a corrected live-transclusion model, but exact replay-time recursive dependency identities are not yet bound; body/>=300k and FantLab identity remain open.
+12. Darwin/Rachinsky `{{ё}}` now has canonical root-title evidence (`Шаблон:Ё` / `Шаблон:ЕЁ`) in replay contract v2, but exact MediaWiki content SHA-1 identities, replay-time recursive dependency closure and output verification remain unbound; body/>=300k and FantLab identity remain open.
 13. Pages live activation remains a repository-admin effect and is off.
 14. Perelman 1913 now has exact PDF/DjVu identities, reproducible hidden-text evidence, an independently reviewed 218-page count/digest map and independently reviewed source-free pagination evidence. RSL's `VIII, 211, [1]` collation versus Google's 212-page display makes page-count arithmetic explicitly inadmissible for carrier-page selection. Exact facsimile/page-label mapping is still required; the evidence does not prove PDF↔DjVu equivalence/OCR correctness, change the PDF-bound canonical carrier, freeze a literary body, prove selected-body >=300k, establish work-specific FantLab identity or advance M2.
 15. Zamyatin *We* has a useful public-domain source-family lead, but the work-index revision does not freeze the 40 linked body pages and FantLab work 20055 is permanently below the current M2 size floor.

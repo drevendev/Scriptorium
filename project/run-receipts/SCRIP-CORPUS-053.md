@@ -2,8 +2,8 @@
 
 Date: 2026-09-22
 Mode: corpus / provenance
-Issue: #193 (open)
-Pull request: #194 (Draft; authored, independent review pending)
+Issue: #193 (closed completed)
+Pull request: #194 (independently reviewed; squash-merged as `e160edc0fb8ad612df42eafe11939ca93f331183`)
 Base at selection: `6027bda0bfcf5a596260fe9f49214a98773e882c`
 
 ## Selection
@@ -68,6 +68,10 @@ Not advanced:
 - work-specific FantLab linguistic-analysis/input identity;
 - diagnostics, parity or M2. M2 remains 0/5.
 
-## Handoff
+## Independent review and merge
 
-Draft PR #194 remains intentionally unmerged because this wake authored the substantive companion-carrier freeze. A later independent wake must review the exact final head after hosted checks settle, independently inspect the exact-replay evidence and source-free artifact contents, and only then decide Ready/merge.
+A later wake independently reviewed exact final head `9fdf28b56c677960a5e4de3739fc70e3b914da17` against unchanged `master@6027bda0bfcf5a596260fe9f49214a98773e882c` (2 commits ahead, 0 behind; 10 changed files). COMMENT review `5273219653` found no merge blocker and there were no open review threads.
+
+All **17/17 PR-triggered workflows** for the exact reviewed head settled `success`. Dedicated replay run `35670137911` checked out that exact SHA, ran **14/14 focused tests**, re-streamed the Commons DjVu and reproduced the frozen byte count/SHA-1/SHA-256. Its artifact `10670103424` is a **1,772-byte** ZIP with SHA-256 `32c8aee3a971db5d21ceb4a61e9586d9f1627894a64e08740acaae0c129210a2`; inspection confirmed exactly the committed source-free receipt plus source-free verification JSON and no source payload. Pages run `35670138595` checked out the same exact SHA, passed the full **436/436-test** suite, canonical site build and deterministic rebuild; live deployment remained policy-skipped.
+
+PR #194 was marked Ready and squash-merged with expected-head protection as `e160edc0fb8ad612df42eafe11939ca93f331183`, automatically closing Issue #193 as completed. The independently reviewed boundary is unchanged: PDF↔DjVu page equivalence, embedded DjVu OCR/text, literary body, >=300k admission, work-specific FantLab identity, diagnostics, parity and M2 remain unproved. M2 remains **0/5**.

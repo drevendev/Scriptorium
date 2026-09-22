@@ -1,0 +1,59 @@
+name: Darwin/Rachinsky 1864 template yo root identity probe
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-template-yo-root-identity-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    name: Probe source-free MediaWiki revision metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Fetch exact source-free revision metadata
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --get \
+            'https://ru.wikisource.org/w/api.php' \
+            --data-urlencode 'action=query' \
+            --data-urlencode 'format=json' \
+            --data-urlencode 'formatversion=2' \
+            --data-urlencode 'prop=revisions' \
+            --data-urlencode 'revids=5687302|3684646' \
+            --data-urlencode 'rvprop=ids|timestamp|sha1|contentmodel' \
+            --output root-identities.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path('root-identities.json').read_text(encoding='utf-8'))
+          pages = payload['query']['pages']
+          rows = []
+          for page in pages:
+              revision = page['revisions'][0]
+              rows.append({
+                  'title': page['title'],
+                  'revision_id': revision['revid'],
+                  'parent_id': revision['parentid'],
+                  'revision_timestamp': revision['timestamp'],
+                  'mediawiki_sha1': revision['sha1'],
+                  'contentmodel': revision['contentmodel'],
+              })
+          rows.sort(key=lambda row: row['title'])
+          expected_ids = {3684646, 5687302}
+          assert {row['revision_id'] for row in rows} == expected_ids
+          assert all(len(row['mediawiki_sha1']) == 40 for row in rows)
+          assert all(set(row['mediawiki_sha1']) <= set('0123456789abcdef') for row in rows)
+          print('SCRIPTORIUM_DARWIN_YO_ROOT_IDENTITIES=' + json.dumps(rows, ensure_ascii=False, sort_keys=True, separators=(',', ':')))
+          PY

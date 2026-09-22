@@ -11,11 +11,11 @@ permissions:
 
 jobs:
   probe:
-    name: Probe exact-root parser dependency surfaces
+    name: Probe exact-root transclusion dependencies
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Query historical parse template surfaces
+      - name: Query exact historical source and emit source-free dependency evidence
         run: |
           set -euo pipefail
           for oldid in 5687302 3684646; do
@@ -24,23 +24,121 @@ jobs:
               --max-time 30 \
               --user-agent 'Scriptorium/0.1 (https://github.com/drevendev/Scriptorium; source-provenance verification)' \
               'https://ru.wikisource.org/w/api.php' \
-              --data-urlencode 'action=parse' \
+              --data-urlencode 'action=query' \
               --data-urlencode 'format=json' \
               --data-urlencode 'formatversion=2' \
-              --data-urlencode "oldid=${oldid}" \
-              --data-urlencode 'prop=templates|revid' \
-              --output "parse-${oldid}.json"
+              --data-urlencode 'prop=revisions' \
+              --data-urlencode "revids=${oldid}" \
+              --data-urlencode 'rvprop=ids|timestamp|sha1|content' \
+              --data-urlencode 'rvslots=main' \
+              --output "revision-${oldid}.json"
           done
           python - <<'PY'
+          import hashlib
           import json
+          import re
           from pathlib import Path
 
-          for oldid in (5687302, 3684646):
-              payload = json.loads(Path(f"parse-{oldid}.json").read_text(encoding="utf-8"))
-              parse = payload["parse"]
-              assert parse["revid"] == oldid, parse
-              rows = parse.get("templates", [])
-              titles = sorted({row["title"] for row in rows if row.get("ns") in (10, 828)})
-              print(f"SCRIPTORIUM_ROOT={oldid}")
-              print("SCRIPTORIUM_TEMPLATE_SURFACE=" + json.dumps(titles, ensure_ascii=False, separators=(",", ":")))
+          EXPECTED = {
+              5687302: ("Шаблон:Ё", "963c1796d693d5451cf0c0897c35bd7e5b327ae1"),
+              3684646: ("Шаблон:ЕЁ", "435bb2a412d8fb5962ccd5adc0ac2e03412fe109"),
+          }
+
+          def strip_transclusion_controls(text: str) -> str:
+              text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
+              for tag in ("nowiki", "pre", "syntaxhighlight", "source"):
+                  text = re.sub(rf"<{tag}\b[^>]*>.*?</{tag}\s*>", "", text, flags=re.I | re.S)
+                  text = re.sub(rf"<{tag}\b[^>]*/\s*>", "", text, flags=re.I | re.S)
+              only = re.findall(r"<onlyinclude\b[^>]*>(.*?)</onlyinclude\s*>", text, flags=re.I | re.S)
+              if only:
+                  text = "".join(only)
+              else:
+                  text = re.sub(r"<noinclude\b[^>]*>.*?</noinclude\s*>", "", text, flags=re.I | re.S)
+                  text = re.sub(r"<noinclude\b[^>]*/\s*>", "", text, flags=re.I | re.S)
+                  text = re.sub(r"</?includeonly\b[^>]*>", "", text, flags=re.I)
+                  text = re.sub(r"</?onlyinclude\b[^>]*>", "", text, flags=re.I)
+              return text
+
+          def invocations(text: str) -> list[str]:
+              names = []
+              i = 0
+              while i < len(text) - 1:
+                  if text.startswith("{{{", i):
+                      i += 3
+                      continue
+                  if not text.startswith("{{", i):
+                      i += 1
+                      continue
+                  start = i + 2
+                  depth = 1
+                  j = start
+                  while j < len(text):
+                      if text.startswith("{{{", j):
+                          # Parameter syntax is not a transclusion. Skip to its matching }}} conservatively.
+                          end = text.find("}}}", j + 3)
+                          if end < 0:
+                              raise AssertionError("unclosed parameter syntax")
+                          j = end + 3
+                          continue
+                      if text.startswith("{{", j):
+                          depth += 1
+                          j += 2
+                          continue
+                      if text.startswith("}}", j):
+                          depth -= 1
+                          if depth == 0:
+                              raw = text[start:j].strip()
+                              head = raw.split("|", 1)[0].strip()
+                              names.append(head)
+                              break
+                          j += 2
+                          continue
+                      j += 1
+                  if depth != 0:
+                      raise AssertionError("unclosed template syntax")
+                  i += 2
+              return names
+
+          def normalize_dependency(head: str) -> str | None:
+              if not head:
+                  return None
+              lowered = head.casefold()
+              if lowered.startswith("#invoke:"):
+                  module = head.split(":", 1)[1].strip()
+                  return "Модуль:" + module if module else None
+              if head.startswith("#") or lowered.startswith(("int:", "msg:", "msgnw:", "raw:")):
+                  return None
+              if head.startswith("{") or "{{" in head or "}}" in head:
+                  raise AssertionError(f"dynamic template name requires manual evidence: {head!r}")
+              if ":" in head:
+                  prefix, rest = head.split(":", 1)
+                  if prefix.casefold() in {"шаблон", "template"}:
+                      return "Шаблон:" + rest.strip()
+                  if prefix.casefold() in {"модуль", "module"}:
+                      return "Модуль:" + rest.strip()
+                  # Other colon forms are parser/magic syntax or an unsupported namespace; fail closed.
+                  raise AssertionError(f"unsupported colon invocation: {head!r}")
+              if head.isupper() and re.fullmatch(r"[A-ZА-ЯЁ0-9_]+", head):
+                  return None
+              return "Шаблон:" + head
+
+          for oldid, (expected_title, expected_sha1) in EXPECTED.items():
+              payload = json.loads(Path(f"revision-{oldid}.json").read_text(encoding="utf-8"))
+              pages = payload["query"]["pages"]
+              assert len(pages) == 1, pages
+              page = pages[0]
+              revision = page["revisions"][0]
+              assert page["title"] == expected_title, page["title"]
+              assert revision["revid"] == oldid, revision
+              assert revision["sha1"] == expected_sha1, revision["sha1"]
+              text = revision["slots"]["main"]["content"]
+              utf8 = text.encode("utf-8")
+              assert hashlib.sha1(utf8).hexdigest() == expected_sha1
+              transcluded = strip_transclusion_controls(text)
+              deps = sorted({dep for head in invocations(transcluded) if (dep := normalize_dependency(head))})
+              print(f"SCRIPTORIUM_ROOT={expected_title}@{oldid}")
+              print(f"SCRIPTORIUM_SOURCE_UTF8_BYTES={len(utf8)}")
+              print(f"SCRIPTORIUM_SOURCE_SHA1={expected_sha1}")
+              print("SCRIPTORIUM_TRANSCLUSION_SHA256=" + hashlib.sha256(transcluded.encode("utf-8")).hexdigest())
+              print("SCRIPTORIUM_DIRECT_DEPENDENCIES=" + json.dumps(deps, ensure_ascii=False, separators=(",", ":")))
           PY

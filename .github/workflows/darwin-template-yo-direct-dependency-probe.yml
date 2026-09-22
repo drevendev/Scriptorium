@@ -5,6 +5,8 @@ on:
     paths:
       - ".github/workflows/darwin-template-yo-direct-dependency-probe.yml"
       - "scriptorium/darwin_template_dependency_scan.py"
+      - "scriptorium/darwin_template_yo_replay_contract_v4.py"
+      - "tests/test_darwin_template_dependency_scan.py"
   workflow_dispatch:
 
 permissions:
@@ -26,6 +28,22 @@ jobs:
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.13"
+
+      - name: Run direct-dependency regressions
+        run: python -m unittest tests.test_darwin_template_dependency_scan tests.test_darwin_template_yo_replay_contract_v3 -v
+
+      - name: Build source-free v4 contract for bootstrap verification
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_template_yo_replay_contract_v4 \
+            --evidence corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json \
+            --v2-predecessor-contract corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract.json \
+            --predecessor-contract corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v3.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
+          echo SCRIPTORIUM_V4_CONTRACT_BEGIN
+          cat build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
+          echo SCRIPTORIUM_V4_CONTRACT_END
 
       - name: Query exact historical source and emit source-free dependency evidence
         run: |

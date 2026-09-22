@@ -3,7 +3,7 @@
 STATE_REVISION: 223
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-09-22T03:56:00Z
-LAST_RESULT: SCRIP-CORPUS-055 / Issue #197 authored in a Draft PR handoff. Fresh FantLab evidence rechecked work 20055 at 285,704 characters / 43,500 words, 14,296 characters below the mandatory 300,000-character floor. This makes FantLab work 20055 ineligible as an M2 parity-benchmark seed under the standing rule. Russian Wikisource separately provides public-domain and 2003 collected-works source-family evidence, but its current work-index oldid=5633449 only freezes navigation/provenance while the literary body is split across 40 separately addressable record pages. The distinct public source remains unfrozen/unmeasured and its separate corpus admissibility is unknown until those body revisions are frozen, composed deterministically and measured. M2 remains 0/5.
+LAST_RESULT: SCRIP-CORPUS-055 / Issue #197 authored in Draft PR #198. Fresh FantLab evidence rechecked work 20055 at 285,704 characters / 43,500 words, 14,296 characters below the mandatory 300,000-character floor. This makes FantLab work 20055 ineligible as an M2 parity-benchmark seed under the standing rule. Russian Wikisource separately provides public-domain and 2003 collected-works source-family evidence, but its current work-index oldid=5633449 only freezes navigation/provenance while the literary body is split across 40 separately addressable record pages. The distinct public source remains unfrozen/unmeasured and its separate corpus admissibility is unknown until those body revisions are frozen, composed deterministically and measured. M2 remains 0/5.
 LAST_VERIFIED_PROGRESS: Corpus qualification now fails fast on Zamyatin's early-20th-century modernist/dystopian lead without confusing FantLab-input size with a distinct public source. FantLab's analyzed input is below 300k and cannot satisfy the M2 work gate even if later source-matched. The public Wikisource route remains legally usable but has no frozen literary-body identity; a work-index revision is explicitly not treated as the identity of its 40 linked body pages. No literary source text, body bytes, diagnostics, parity or M2 progress were created.
 
 ## Current unit
@@ -12,7 +12,7 @@ LAST_VERIFIED_PROGRESS: Corpus qualification now fails fast on Zamyatin's early-
 UNIT_ID:        SCRIP-CORPUS-055
 ISSUE:          #197
 STATUS:         REVIEW_PENDING
-PR:             pending Draft PR creation on branch scrip-corpus-055-zamyatin-we-screening
+PR:             #198 (Draft; authored in this wake)
 NEXT_ACTION:    Independently review the exact final PR head against its base after repository checks settle.
                 Verify the 14,296-character threshold arithmetic, the public-domain/source-family evidence, and the
                 work-index-vs-40-body-page revision boundary. Preserve the narrow conclusion: FantLab work 20055 is

@@ -1,0 +1,101 @@
+name: Perelman 1913 DjVu source-free page map
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/perelman-djvu-page-map.yml"
+      - "scriptorium/perelman_djvu_page_map.py"
+      - "scriptorium/perelman_djvu_text_layer.py"
+      - "tests/test_perelman_djvu_page_map.py"
+      - "tests/test_perelman_djvu_text_layer.py"
+      - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.md"
+      - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-page-map.json"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/**"
+      - "project/run-receipts/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  page-map:
+    name: Replay exact Commons DjVu page fingerprints
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Install pinned DjVuLibre tools
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends djvulibre-bin=3.5.28-2ubuntu0.24.04.2
+          test "$(dpkg-query -W -f='${Version}' djvulibre-bin)" = "3.5.28-2ubuntu0.24.04.2"
+          command -v djvutxt
+
+      - name: Run focused page-map tests
+        run: python -m unittest tests.test_perelman_djvu_page_map tests.test_perelman_djvu_text_layer tests.test_perelman_djvu_identity -v
+
+      - name: Replay exact frozen DjVu page map
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.perelman_djvu_page_map probe \
+            --package-version "$(dpkg-query -W -f='${Version}' djvulibre-bin)" \
+            --output build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-page-map.json
+
+      - name: Verify source-free closed-gate page map
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.perelman_djvu_page_map import validate_page_map
+
+          path = Path("build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-page-map.json")
+          page_map = json.loads(path.read_text(encoding="utf-8"))
+          validate_page_map(page_map)
+          assert len(page_map["pages"]) == 218
+          assert [row["page"] for row in page_map["pages"]] == list(range(1, 219))
+          assert all(row["utf8_byte_count"] > 0 for row in page_map["pages"])
+          assert page_map["source_text_included"] is False
+          assert page_map["page_images_committed"] is False
+          assert page_map["literary_page_selection_frozen"] is False
+          assert page_map["minimum_300k_proved_from_frozen_body"] is False
+          assert page_map["admitted_for_calibration"] is False
+          assert page_map["fantlab_source_edition_match"] == "unknown"
+          assert page_map["diagnostic_ready"] is False
+          assert page_map["m2_parity_admissible"] is False
+          forbidden = ("source_text", "ocr_text", "text_content", "literary_text")
+          serialized = json.dumps(page_map, ensure_ascii=False).lower()
+          for key in forbidden:
+              assert f'"{key}"' not in serialized
+          print(json.dumps({
+              "page_count": len(page_map["pages"]),
+              "page_records_sha256": page_map["page_records_sha256"],
+          }, sort_keys=True))
+          PY
+
+      - name: Require byte-for-byte canonical page map
+        run: |
+          set -euo pipefail
+          cmp \
+            corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-page-map.json \
+            build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-page-map.json
+
+      - name: Upload source-free page-map replay evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: perelman-1913-djvu-page-map-replay
+          path: build/repro/perelman-entertaining-physics-book1-1913-ru.djvu-page-map.json
+          if-no-files-found: error
+          retention-days: 7

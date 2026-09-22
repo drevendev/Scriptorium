@@ -1,9 +1,9 @@
 """Define a fail-closed version-pinned replay contract for Darwin/Rachinsky ``{{ё}}``.
 
 The contract intentionally does not fetch or retain template source bodies. It records
-what must be frozen before a replay can be called deterministic and prevents the
-MediaWiki ``expandtemplates.revid`` context parameter from being mistaken for a
-historical template-version pin.
+what must be frozen before a replay can be called deterministic, prevents MediaWiki
+``expandtemplates.revid`` from being mistaken for a historical template-version pin,
+and records canonical template-title identity before dependency binding.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Mapping, Sequence
 
 
-CONTRACT_VERSION = "scriptorium-darwin-template-yo-replay-contract-v1"
+CONTRACT_VERSION = "scriptorium-darwin-template-yo-replay-contract-v2"
 DISCOVERY_EVIDENCE_VERSION = "scriptorium-template-dependency-discovery-evidence-v1"
 CANDIDATE_ID = "darwin-origin-species-rachinsky-1864-ru"
 UPSTREAM_EVIDENCE_VERSION = "scriptorium-darwin-template-yo-documentation-evidence-v2"
@@ -35,8 +35,29 @@ HELP_EXPAND_URL = (
     "https://www.mediawiki.org/w/index.php?title=Help:ExpandTemplates"
     f"&oldid={HELP_EXPAND_REVISION_ID}"
 )
-RESEARCH_DATE = "2026-09-21"
-REQUIRED_ROOT_TITLES = ("Шаблон:ё", "Шаблон:ЕЁ")
+PAGE_NAMING_TITLE = "Manual:Page naming/en"
+PAGE_NAMING_REVISION_ID = 8270202
+PAGE_NAMING_REVISION_DATE = "2026-03-07"
+PAGE_NAMING_URL = (
+    "https://www.mediawiki.org/w/index.php?title=Manual:Page_naming/en"
+    f"&oldid={PAGE_NAMING_REVISION_ID}"
+)
+WIKISOURCE_YO_TITLE = "Шаблон:Ё"
+WIKISOURCE_YO_REVISION_ID = 5687302
+WIKISOURCE_YO_REVISION_DATE = "2026-01-21"
+WIKISOURCE_YO_URL = (
+    "https://ru.wikisource.org/w/index.php?title=Шаблон:Ё"
+    f"&oldid={WIKISOURCE_YO_REVISION_ID}"
+)
+WIKISOURCE_EYO_TITLE = "Шаблон:ЕЁ"
+WIKISOURCE_EYO_REVISION_ID = 3684646
+WIKISOURCE_EYO_REVISION_DATE = "2019-06-04"
+WIKISOURCE_EYO_URL = (
+    "https://ru.wikisource.org/w/index.php?title=Шаблон:ЕЁ"
+    f"&oldid={WIKISOURCE_EYO_REVISION_ID}"
+)
+RESEARCH_DATE = "2026-09-22"
+REQUIRED_ROOT_TITLES = (WIKISOURCE_YO_TITLE, WIKISOURCE_EYO_TITLE)
 REQUIRED_DEPENDENCY_FIELDS = (
     "title",
     "revision_id",
@@ -256,13 +277,41 @@ def build_contract(evidence: Mapping[str, object]) -> dict[str, object]:
                 "permanent_url": HELP_EXPAND_URL,
                 "templates_parser_functions_and_variables_expand_recursively": True,
             },
+            "title_canonicalization": {
+                "title": PAGE_NAMING_TITLE,
+                "revision_id": PAGE_NAMING_REVISION_ID,
+                "revision_date": PAGE_NAMING_REVISION_DATE,
+                "permanent_url": PAGE_NAMING_URL,
+                "first_page_name_character_auto_capitalized_by_default": True,
+                "canonical_form_capitalizes_first_page_name_character": True,
+            },
         },
+        "root_title_observations": [
+            {
+                "provider": "Russian Wikisource",
+                "invocation_spelling": "Шаблон:ё",
+                "canonical_title": WIKISOURCE_YO_TITLE,
+                "revision_id": WIKISOURCE_YO_REVISION_ID,
+                "revision_date": WIKISOURCE_YO_REVISION_DATE,
+                "permanent_url": WIKISOURCE_YO_URL,
+                "mediawiki_sha1_bound": False,
+            },
+            {
+                "provider": "Russian Wikisource",
+                "invocation_spelling": WIKISOURCE_EYO_TITLE,
+                "canonical_title": WIKISOURCE_EYO_TITLE,
+                "revision_id": WIKISOURCE_EYO_REVISION_ID,
+                "revision_date": WIKISOURCE_EYO_REVISION_DATE,
+                "permanent_url": WIKISOURCE_EYO_URL,
+                "mediawiki_sha1_bound": False,
+            },
+        ],
         "replay_contract": {
             "required_root_titles": list(REQUIRED_ROOT_TITLES),
             "required_dependency_fields": list(REQUIRED_DEPENDENCY_FIELDS),
             "required_discovery_proof_fields": list(REQUIRED_DISCOVERY_FIELDS),
             "dependency_identity_scope": (
-                "exact page title plus revision id, revision timestamp and MediaWiki content SHA-1"
+                "canonical exact page title plus revision id, revision timestamp and MediaWiki content SHA-1"
             ),
             "dependency_discovery_proof_required": True,
             "dependency_discovery_evidence_schema_version": DISCOVERY_EVIDENCE_VERSION,
@@ -275,7 +324,7 @@ def build_contract(evidence: Mapping[str, object]) -> dict[str, object]:
             "native_expandtemplates_revid_is_version_pin": False,
             "single_templatesandbox_override_is_closed_graph": False,
             "strategy": (
-                "bind every template/module revision in the transitive replay graph explicitly; "
+                "bind every template/module revision in the transitive replay graph by canonical title; "
                 "for every bound node retain source-free complete direct-dependency discovery evidence "
                 "whose SHA-256 is recomputed from that exact node identity and dependency set, and "
                 "require graph edges to exactly match that evidence; evaluate only in a controlled "
@@ -300,17 +349,16 @@ def build_contract(evidence: Mapping[str, object]) -> dict[str, object]:
             "render_profile_rule_promoted": False,
             "backlog_item_removed": False,
             "reason": (
-                "MediaWiki expandtemplates revid supplies revision context rather than a "
-                "historical transclusion-version pin; recursive template dependencies remain "
-                "unbound and no complete per-node discovery proof exists, so deterministic replay "
-                "equivalence is not yet demonstrated"
+                "canonical root-title identity is now explicit, but MediaWiki expandtemplates revid "
+                "supplies revision context rather than a historical transclusion-version pin; recursive "
+                "template dependencies remain unbound and no complete per-node discovery proof exists, "
+                "so deterministic replay equivalence is not yet demonstrated"
             ),
             "next_evidence_required": (
-                "freeze exact source-free identities for Шаблон:ё, Шаблон:ЕЁ and every nested "
-                "template/module dependency in one replay environment; retain complete source-free "
-                "direct-dependency discovery evidence cryptographically bound to each exact node "
-                "revision and dependency set; then verify deterministic forced and non-forced "
-                "outputs before promotion"
+                "freeze exact source-free identities for canonical Шаблон:Ё, Шаблон:ЕЁ and every nested "
+                "template/module dependency in one replay environment, including MediaWiki content SHA-1 "
+                "and complete source-free direct-dependency discovery evidence for each exact revision; "
+                "then verify deterministic forced and non-forced outputs before promotion"
             ),
         },
         "renderer_semantics_complete": False,
@@ -334,6 +382,13 @@ def validate_contract(contract: Mapping[str, object], evidence: Mapping[str, obj
         raise ValueError("Darwin {{ё}} replay contract drift")
     if contract.get("source_text_included") is not False:
         raise ValueError("Darwin {{ё}} replay contract must remain source-free")
+    observations = contract.get("root_title_observations")
+    if not isinstance(observations, list) or len(observations) != 2:
+        raise ValueError("Darwin {{ё}} canonical root observations missing")
+    if observations[0].get("canonical_title") != WIKISOURCE_YO_TITLE:
+        raise ValueError("Darwin {{ё}} shorthand canonical title drift")
+    if any(row.get("mediawiki_sha1_bound") is not False for row in observations):
+        raise ValueError("Darwin {{ё}} root observations must not imply complete dependency identity")
     replay = contract.get("replay_contract")
     if not isinstance(replay, dict):
         raise ValueError("Darwin {{ё}} replay contract body missing")
@@ -342,6 +397,8 @@ def validate_contract(contract: Mapping[str, object], evidence: Mapping[str, obj
     if not isinstance(dependencies, list) or not isinstance(edges, list):
         raise ValueError("Darwin {{ё}} replay dependency graph missing")
     validate_dependency_closure(dependencies, edges, require_complete=False)
+    if replay.get("required_root_titles") != list(REQUIRED_ROOT_TITLES):
+        raise ValueError("Darwin {{ё}} canonical root-title contract drift")
     if replay.get("dependency_closure_complete") is not False:
         raise ValueError("Darwin {{ё}} dependency closure must remain open")
     if replay.get("dependency_discovery_proof_required") is not True:

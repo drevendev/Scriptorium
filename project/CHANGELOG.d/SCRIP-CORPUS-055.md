@@ -10,4 +10,7 @@
 - Legal usability and source-family evidence neither override the FantLab-input size failure nor establish FantLab analyzer-input identity. `fantlab_source_edition_match` remains unknown and M2 remains **0/5**.
 - Added a source-free machine-readable screening record and extended the public screening index. No literary source text, Wikisource body revision bytes, extracted body, diagnostics, or parity artifact is retained.
 - A future *We* source-freeze unit, if independently justified, must bind all selected body-page revision identities and deterministic composition before measuring or admitting the public body; it must not convert FantLab work 20055 into M2 evidence under the current >=300k gate.
-- The substantive PR is intentionally left Draft for a later independent exact-head review.
+- The substantive PR was intentionally left Draft for a later independent exact-head review.
+- Independent review `5274234912` re-read exact head `0b38eaa1d62358794e4142a3e11b9e8fd0676c6b` against unchanged base `98e903e6c28f80c26489c90ed137d3bfa606e9a2`, reviewed all 5 changed files, independently rechecked the FantLab/Wikisource evidence, confirmed the exact 14,296-character shortfall and found no merge blocker or open review thread.
+- Fresh exact-head CI settled green: all 12 pull-request workflow runs completed `success`; the pinned-pylem workflow's three jobs also completed `success`, including the Python 3.13 provider-contract job with the complete standard-library suite.
+- PR #198 was marked Ready and squash-merged with expected-head protection as `f989ace74e4911bf9f7828637a4f21f0ee9d06b9`; Issue #197 closed `completed`. M2 remains **0/5**.

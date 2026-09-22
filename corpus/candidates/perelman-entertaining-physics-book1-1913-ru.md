@@ -42,11 +42,19 @@ The page records sum to the already frozen all-pages observation: **583,825 UTF-
 
 The canonical map is [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-page-map.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-page-map.json). Dedicated hosted replay regenerates all 218 records from the exact carrier and requires byte-for-byte equality with the committed JSON.
 
+## Bibliographic pagination evidence
+
+SCRIP-CORPUS-061 freezes independent bibliographic pagination evidence before making any literary-page judgement. The Russian State Library catalogue describes this exact 1913 Soikin Book 1 as **`VIII, 211, [1] с.`**: eight Roman-numbered preliminary pages, 211 numbered pages, and one bracketed unnumbered page. An independent Google Books / Google Play Books surface for the same 1913 Soikin title displays **212 pages**. These are different bibliographic/display conventions, not carrier-page maps.
+
+That difference is operationally important. Scriptorium explicitly rejects the tempting inference **“218 DjVu carrier pages minus 212 displayed book pages equals six non-literary carrier pages.”** Neither bibliographic surface identifies exact Commons DjVu or PDF carrier page numbers, while the frozen carriers themselves differ at 218 DjVu pages versus 223 PDF pages and the PDF history records a later addition of pages 193–194. Literary pages therefore must be mapped from facsimile/page-label evidence rather than inferred by page-count subtraction.
+
+The source-free decision artifact is [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pagination-evidence.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pagination-evidence.json), version `scriptorium-perelman-1913-pagination-evidence-v1`. It is bound to the exact frozen PDF/DjVu identities and keeps literary-page selection, body identity, >=300k admission, FantLab source identity and M2 closed.
+
 ## Identity boundary
 
 The permanent Commons PDF `oldid` pins only the file-description revision and its bibliographic/legal assertions; it is not treated as a binary version pin. Conversely, the scan receipts freeze the exact PDF and DjVu bytes independently observed from their current original URLs. Those direct `upload.wikimedia.org` locators are retrieval locators, not immutable identity by themselves: byte counts and cryptographic digests are the durable carrier identities.
 
-Neither carrier freeze nor the hidden-text diagnostic or page map is a literary-body freeze. No PDF/DjVu bytes, page images, extracted hidden text, OCR output or literary source text are stored in this repository or uploaded as evidence. No literary-page selection, canonical extraction carrier, raw or normalized literary body, character count or body digest has been frozen. Therefore the exact edition has **not yet proved the >=300,000-character calibration rule from a Scriptorium literary body**.
+Neither carrier freeze, hidden-text diagnostic, page map nor bibliographic pagination evidence is a literary-body freeze. No PDF/DjVu bytes, page images, extracted hidden text, OCR output or literary source text are stored in this repository or uploaded as evidence. No literary-page selection, canonical extraction carrier, raw or normalized literary body, character count or body digest has been frozen. Therefore the exact edition has **not yet proved the >=300,000-character calibration rule from a Scriptorium literary body**.
 
 ## OCR/body promotion boundary
 
@@ -54,7 +62,7 @@ SCRIP-CORPUS-052 defines a source-free, versioned promotion contract bound to th
 
 The v1 contract deliberately remains **unbound** for literary-page selection, rasterizer identity/settings, OCR engine/language-data identity/settings, and all body outputs. It does freeze the future composition policy: selected PDF pages must be ordered by ascending PDF page number, trailing newlines are stripped per page, pages are joined with two LF characters, raw output is UTF-8, and normalization uses `scriptorium-text-v1`. The validator rejects scan-identity drift, shape drift, invented page/toolchain bindings, source-text payload keys, non-null body outputs, and premature >=300k/calibration/FantLab/M2 promotion. A real bound extraction profile must therefore arrive as a new independently evidenced contract version rather than mutating v1 in place.
 
-The DjVu companion, hidden-text diagnostic and per-page map are additional provenance/tooling evidence only. They do **not** change the contract's canonical PDF extraction carrier or authorize promotion of any hidden-text subset to a literary body without a separate evidence-backed contract decision.
+The DjVu companion, hidden-text diagnostic, per-page map and bibliographic pagination evidence are additional provenance/tooling evidence only. They do **not** change the contract's canonical PDF extraction carrier or authorize promotion of any hidden-text subset to a literary body without a separate evidence-backed contract decision.
 
 ## FantLab boundary
 
@@ -62,7 +70,7 @@ FantLab work `191634` confirms catalogue identity and the 1913 work date only. A
 
 ## What is still open
 
-The next candidate-specific evidence step is now narrower: inspect the facsimile/page-map evidence and establish an exact literary-page selection over a deliberately chosen frozen carrier, then bind that selection and reproducible extraction identity under a new contract version and freeze source-free raw/normalized literary-body counts and digests. The DjVu page map makes an exact page sequence reviewable but does not make that sequence canonical. Only the selected literary body can prove or reject the >=300,000-character rule. Any later FantLab comparison must independently establish a real work-specific linguistic-analysis surface and analyzer-input/source-edition identity.
+The next candidate-specific evidence step is now stricter: inspect the facsimile/page-label evidence and establish an exact mapping from bibliographic pages to a deliberately chosen frozen carrier. Page-count arithmetic is explicitly insufficient. Only after that mapping is independently justified should a new contract version bind the carrier, exact literary-page selection and reproducible extraction identity and freeze source-free raw/normalized literary-body counts and digests. Only the selected literary body can prove or reject the >=300,000-character rule. Any later FantLab comparison must independently establish a real work-specific linguistic-analysis surface and analyzer-input/source-edition identity.
 
 ## Canonical evidence
 
@@ -71,12 +79,16 @@ The next candidate-specific evidence step is now narrower: inspect the facsimile
 - [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-identity.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-identity.json) — exact current DjVu companion byte identity; no page-equivalence or literary-body claim.
 - [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json) — exact source-free hidden-text count/digest diagnostic over all 218 DjVu pages; not literary-body admission.
 - [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-page-map.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-page-map.json) — exact source-free ordered per-page count/digest map over all 218 DjVu pages; no literary-page selection claim.
+- [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pagination-evidence.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pagination-evidence.json) — RSL/Google pagination evidence plus the fail-closed decision that page counts cannot select carrier pages.
 - [`source-edition-traces/perelman-entertaining-physics-book1-1913-ru.ocr-contract.json`](source-edition-traces/perelman-entertaining-physics-book1-1913-ru.ocr-contract.json) — source-free fail-closed OCR/body promotion contract; page selection and OCR toolchain remain unbound.
 - [`../../scriptorium/perelman_scan_identity.py`](../../scriptorium/perelman_scan_identity.py) — transient PDF streaming capture/replay implementation.
 - [`../../scriptorium/perelman_djvu_identity.py`](../../scriptorium/perelman_djvu_identity.py) — transient DjVu streaming capture/replay implementation.
 - [`../../scriptorium/perelman_djvu_text_layer.py`](../../scriptorium/perelman_djvu_text_layer.py) — exact-carrier hidden-text inspection and source-free replay implementation.
 - [`../../scriptorium/perelman_djvu_page_map.py`](../../scriptorium/perelman_djvu_page_map.py) — exact-carrier source-free per-page count/digest replay implementation.
+- [`../../scriptorium/perelman_pagination_evidence.py`](../../scriptorium/perelman_pagination_evidence.py) — source-free bibliographic pagination model and fail-closed validator.
 - [`../../scriptorium/perelman_ocr_contract.py`](../../scriptorium/perelman_ocr_contract.py) — contract validator and canonical digest implementation.
 - Wikimedia Commons permanent PDF description revision: `https://commons.wikimedia.org/w/index.php?title=File:Перельман_Я.И._Занимательная_физика._Книга_1_(1913).pdf&oldid=1045983412`.
 - Wikimedia Commons DjVu file page: `https://commons.wikimedia.org/wiki/File:Перельман_Я.И._Занимательная_физика._Книга_1_(1913).djvu`.
+- Russian State Library catalogue record: `https://search.rsl.ru/ru/record/01004016163`.
+- Google Books / Google Play Books record: `https://play.google.com/store/books/details?id=8hBN2yBtlkIC`.
 - FantLab catalogue work: `https://fantlab.ru/work191634`.

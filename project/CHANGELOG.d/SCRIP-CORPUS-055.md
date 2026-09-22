@@ -1,0 +1,13 @@
+# SCRIP-CORPUS-055 — qualify Zamyatin's We against the >=300k corpus gate
+
+- Re-oriented from `master@98e903e6c28f80c26489c90ed137d3bfa606e9a2`; there were no open PRs or Issues and no recovery work, so the sole P2 `SCRIP-CORPUS continuation` row selected a bounded pre-admission screening for another early-20th-century work before any source-freezing effort.
+- Opened Issue #197 to evaluate Yevgeny Zamyatin's *We* (`Мы`) as a modernist/dystopian diversity candidate.
+- Fresh FantLab evidence on 2026-09-22 reconfirmed work `20055` and its 17 September 2022 linguistic analysis at **285,704 characters** and **43,500 words**.
+- The mandatory Scriptorium corpus floor is **300,000 characters including spaces**, so FantLab's analyzed input is **14,296 characters below** the gate. Therefore **FantLab work 20055 is not an eligible M2 parity-benchmark seed under the standing rule**, even if its exact analyzer input is later identified.
+- Fresh Russian Wikisource evidence is retained separately: the work page marks the work public domain in Russia / life+70-or-less jurisdictions and names a 2003 five-volume collected-works source, vol. 2, pp. 211–368, ISBN `5-268-00524-3`.
+- The current Wikisource work index exposes permanent revision `oldid=5633449`, but it links **40 separate record pages**. The index oldid is therefore navigation/source-family provenance only; it does not freeze the body-page revisions or establish a deterministic composite body.
+- The distinct public source remains `unknown_until_source_body_is_frozen_and_measured` for separate corpus admission. No title-level inference is made from FantLab's shorter analyzer input.
+- Legal usability and source-family evidence neither override the FantLab-input size failure nor establish FantLab analyzer-input identity. `fantlab_source_edition_match` remains unknown and M2 remains **0/5**.
+- Added a source-free machine-readable screening record and extended the public screening index. No literary source text, Wikisource body revision bytes, extracted body, diagnostics, or parity artifact is retained.
+- A future *We* source-freeze unit, if independently justified, must bind all selected body-page revision identities and deterministic composition before measuring or admitting the public body; it must not convert FantLab work 20055 into M2 evidence under the current >=300k gate.
+- The substantive PR is intentionally left Draft for a later independent exact-head review.

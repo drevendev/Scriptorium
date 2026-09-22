@@ -1,10 +1,11 @@
 # Run receipt — SCRIP-CORPUS-059
 
 - **Unit:** SCRIP-CORPUS-059 — Perelman 1913 DjVu hidden-text inspection
-- **Issue:** #205 (open)
-- **Pull request:** #206 (Draft; independent later review required)
+- **Issue:** #205 (closed completed)
+- **Pull request:** #206 (independently reviewed; squash-merged as `58d917f4e1746544e35d835de7e298a070ade5db`)
 - **Base:** `master@de7152af6cc8fab3cb34f46e432feb6b1d3b0ab1`
 - **Authored semantic handoff head before this receipt:** `9a50394106486141647fd1241cb1dbc8518c61e7`
+- **Independent review:** `5278259461` at exact head `e0a2e2ff5b6d223a994cb74ba7de453d95950c72`
 - **Scope:** `drevendev/Scriptorium` only
 
 ## Produced
@@ -19,7 +20,9 @@ Initial capture run `35723749909` at authored head `b02426746f41b09f3f06c847b39e
 
 The hosted observation is now frozen in `corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.djvu-text-layer.json`. The dedicated workflow was then tightened to regenerate that diagnostic from the exact carrier and require byte-for-byte equality with the committed JSON on every relevant PR head.
 
-After synchronizing the aggregate provenance trace and public page, exact-head DjVu-identity run `35724498267` exposed one stale wording assertion in `test_public_candidate_page_exposes_identities_without_source_payload`: it expected the old phrase `does **not** change` while the revised page states that the DjVu evidence `do **not** change the contract's canonical PDF extraction carrier`. All other 13 tests in that job passed. The assertion was repaired to test the current semantic boundary rather than obsolete grammar; no carrier, diagnostic or gate evidence changed. Final exact-head workflows must re-run before review handoff is considered settled.
+After synchronizing the aggregate provenance trace and public page, exact-head DjVu-identity run `35724498267` exposed one stale wording assertion in `test_public_candidate_page_exposes_identities_without_source_payload`: it expected the old phrase `does **not** change` while the revised page states that the DjVu evidence `do **not** change the contract's canonical PDF extraction carrier`. All other 13 tests in that job passed. The assertion was repaired to test the current semantic boundary rather than obsolete grammar; no carrier, diagnostic or gate evidence changed.
+
+Final exact-head review confirmed all **20/20 PR-triggered workflow runs** at `e0a2e2ff5b6d223a994cb74ba7de453d95950c72` settled `success`. Dedicated run `35724698788` checked out that exact SHA, installed the pinned package, passed focused tests, regenerated the exact-carrier diagnostic byte-for-byte, verified source-free/closed gates, and uploaded only the diagnostic JSON.
 
 ## Diagnostic observations
 
@@ -49,4 +52,6 @@ These values describe the entire carrier text layer, not a selected literary bod
 - `m2_parity_admissible=false`
 - M2 remains **0/5**.
 
-Draft PR #206 must be judged by a later independent wake at its exact final head. That review should inspect every changed file/thread, confirm the unchanged base, require all exact-head hosted workflows to settle successfully, and only then decide Ready/merge. The next candidate-specific promotion step after this PR is separate: deliberately select/bind a carrier and exact literary pages under a new independently evidenced contract version before any >=300k admission claim.
+Independent review `5278259461` re-read all 10 changed files at exact head `e0a2e2ff5b6d223a994cb74ba7de453d95950c72` against unchanged base, found no open review thread or merge blocker, freshly rechecked the Commons/Ubuntu/`djvutxt` evidence, and supported Ready/merge. PR #206 was marked Ready and squash-merged with expected-head protection as `58d917f4e1746544e35d835de7e298a070ade5db`, automatically closing Issue #205 as completed.
+
+The next candidate-specific promotion step is separate: deliberately select and bind a carrier plus exact literary pages under a new independently evidenced contract version before any >=300k admission claim.

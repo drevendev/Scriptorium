@@ -1,0 +1,50 @@
+{
+  "schema": "scriptorium-corpus-screening-v1",
+  "candidate_id": "tolstoy-aelita-ru",
+  "work_title": "Aelita",
+  "author": "Alexei N. Tolstoy",
+  "screened_at": "2026-09-22",
+  "decision": "reject_as_m2_fantlab_benchmark_seed",
+  "decision_reason": "fantlab_analyzed_input_below_300000_character_floor",
+  "fantlab": {
+    "work_id": 44822,
+    "work_url": "https://fantlab.ru/work44822",
+    "linguistic_analysis_url": "https://fantlab.ru/work44822/lp",
+    "analysis_date": "2022-09-18",
+    "characters": 276556,
+    "words": 39158,
+    "source_edition_match": "unknown"
+  },
+  "threshold": {
+    "rule": "characters_including_spaces_gte_300000",
+    "minimum_characters": 300000,
+    "fantlab_observed_characters": 276556,
+    "fantlab_shortfall_characters": 23444,
+    "fantlab_analyzed_input_meets_floor": false,
+    "public_source_body_characters": null,
+    "public_source_corpus_admissibility": "unknown_until_source_body_is_frozen_and_measured",
+    "m2_parity_admissible_for_work_44822": false,
+    "m2_weight": 0
+  },
+  "public_source_evidence": {
+    "wikisource_url": "https://ru.wikisource.org/wiki/Аэлита_(Толстой)",
+    "legal_surface": "Russian Wikisource marks the work public domain in Russia and life-plus-70-or-less jurisdictions.",
+    "source_family": "A. N. Tolstoy, Collected Works in ten volumes, vol. 3, Moscow: Goslitizdat, 1958; Wikisource additionally states that the text follows the 1939 Sovetskii pisatel collection.",
+    "edition_boundary": "Wikisource states that the original 1922-1923 Aelita text underwent substantial authorial revision. No title-level or source-family statement establishes identity with FantLab's analyzer input.",
+    "revision_frozen": false,
+    "literary_body_frozen": false
+  },
+  "allowed_future_use": [
+    "short_input_analyzer_showcase_non_corpus",
+    "freeze_and_measure_a_distinct_public_source_if_future_value_justifies_it",
+    "edition_provenance_research_if_independently_justified"
+  ],
+  "forbidden_promotions_from_this_record": [
+    "public_source_corpus_admission_without_measured_body",
+    "fantlab_source_match",
+    "diagnostic_parity_claim",
+    "m2_progress_from_fantlab_work_44822"
+  ],
+  "source_text_retained": false,
+  "notes": "The published FantLab input is below the standing >=300,000-character floor, so work 44822 cannot become an M2 parity benchmark under the current gate even if its exact analyzer input were later identified. This does not prove that every materially revised public Aelita edition is below 300,000 characters; a distinct public source would need its own frozen body and measured count before any non-M2 corpus admission decision."
+}

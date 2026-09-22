@@ -1,7 +1,7 @@
 {
   "trace_version": "scriptorium-source-edition-trace-v1",
   "candidate_id": "bely-petersburg-1916-ru",
-  "research_date": "2026-09-20",
+  "research_date": "2026-09-22",
   "fantlab": {
     "work_id": 293513,
     "analysis_url": "https://fantlab.ru/work293513/lp",
@@ -69,21 +69,35 @@
       "byte_snapshot_status": "frozen",
       "reason": "SCRIP-CORPUS-038 independently streamed the exact retained Commons original on 2026-09-20 and froze a source-free identity of 3,621,459 bytes, SHA-1 682476934dd6ed49c6bbcdb0720127c1812ff477 and SHA-256 b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5. No PDF bytes, page images or OCR are committed. The scan identity does not define literary-page selection, OCR/extraction semantics or FantLab analyzer-input identity."
     },
+    "ocr_body_promotion_contract": {
+      "contract_version": "scriptorium-petersburg-1916-ocr-body-contract-v1",
+      "source_free_contract": "bely-petersburg-1916-ru.ocr-contract.json",
+      "canonical_sha256": "d338d8dc4d800b0fe28a848e383265ba9a0e720e75962f7f9e5733ad727a20d2",
+      "status": "defined_unbound",
+      "scan_identity_bound": true,
+      "page_selection_bound": false,
+      "rasterization_toolchain_bound": false,
+      "ocr_toolchain_bound": false,
+      "body_outputs_frozen": false
+    },
     "immutable_identity": {
-      "status": "scan_binary_frozen_text_body_unfrozen",
+      "status": "scan_binary_frozen_ocr_contract_defined_body_unverified",
       "frozen_components": [
         "Wikimedia Commons file-description revision oldid 1046280975",
         "Commons file page ID 47639472 and observed file-history metadata",
         "explicit first-book-publication year 1916 and 632-page facsimile description",
         "public-domain status on the file description",
-        "exact Commons PDF snapshot: 3,621,459 bytes; SHA-1 682476934dd6ed49c6bbcdb0720127c1812ff477; SHA-256 b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5"
+        "exact Commons PDF snapshot: 3,621,459 bytes; SHA-1 682476934dd6ed49c6bbcdb0720127c1812ff477; SHA-256 b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5",
+        "source-free OCR/body promotion contract v1: SHA-256 d338d8dc4d800b0fe28a848e383265ba9a0e720e75962f7f9e5733ad727a20d2"
       ],
       "unfrozen_components": [
-        "literary-page/OCR selection and deterministic extraction profile",
+        "exact literary-page selection under a future independently evidenced bound contract version",
+        "reproducible rasterization and OCR toolchain identities/settings",
         "raw and normalized literary-text counts and digests",
+        "whether the frozen literary body clears 300,000 characters including spaces",
         "the relationship between FantLab's uploaded analyzer input and this 1916 edition"
       ],
-      "reason": "The public scan now has independently frozen byte identity plus strong source-edition/legal provenance. The binary freeze is intentionally separate from OCR, literary-body construction and FantLab source matching, which remain unproven."
+      "reason": "The public scan has independently frozen byte identity plus strong source-edition/legal provenance. SCRIP-CORPUS-056 defines a fail-closed source-free promotion contract bound to that scan; page selection, OCR/rasterization bindings, body construction, >=300k admission and FantLab source matching remain unproven."
     }
   },
   "wikisource_cross_check": {
@@ -105,18 +119,19 @@
     "diagnostic_ready": false,
     "gate_ready": false,
     "m2_parity_admissible": false,
-    "status": "scan_binary_frozen_ocr_body_unfrozen",
+    "status": "scan_binary_frozen_ocr_contract_defined_body_unverified",
     "reasons": [
       "FantLab reports 944,182 characters, above the 300,000-character calibration threshold, but this nominal count does not admit a different public byte stream to the corpus.",
       "Wikimedia Commons supplies an explicit 632-page facsimile identity for the 1916 first book edition and marks it public domain.",
       "The exact retained Commons PDF is independently frozen as 3,621,459 bytes, SHA-1 682476934dd6ed49c6bbcdb0720127c1812ff477 and SHA-256 b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5; no scan bytes are committed.",
-      "The prior Page Information hash happens to equal the independently observed PDF SHA-1 for this exact snapshot; that equality is now verified rather than assumed from metadata semantics.",
-      "No deterministic literary-page/OCR extraction contract or frozen literary-body count/digest exists yet, so >=300,000 characters have not been proved for Scriptorium's candidate body and general-corpus admission remains closed.",
+      "The prior Page Information hash happens to equal the independently observed PDF SHA-1 for this exact snapshot; that equality is verified rather than assumed from metadata semantics.",
+      "A source-free fail-closed OCR/body promotion contract v1 is defined and bound to the frozen PDF scan, but page selection, rasterization and OCR bindings deliberately remain unbound.",
+      "No frozen literary-body count/digest exists yet, so >=300,000 characters have not been proved for Scriptorium's candidate body and general-corpus admission remains closed.",
       "FantLab does not disclose the edition or immutable bytes of the text uploaded for its 2022 analysis.",
       "The 1916 first book edition must remain distinct from Bely's revised 1922 edition; no edition-family equivalence is inferred."
     ],
     "next_evidence": [
-      "Define and verify a deterministic, fail-closed literary-page/OCR extraction contract for this exact 3,621,459-byte 1916 PDF before enabling full-work diagnostics or corpus admission.",
+      "Under a new independently evidenced contract version, bind exact literary-page selection plus reproducible rasterization/OCR toolchain identities and settings before enabling full-work diagnostics or corpus admission.",
       "Freeze the extracted literary-body character count including spaces plus raw/normalized digests and require the frozen body itself to clear 300,000 characters before general-corpus admission.",
       "Investigate independent evidence capable of tying FantLab's uploaded analyzer input to the 1916 edition or another explicit Petersburg edition; never infer identity from title or count proximity."
     ]

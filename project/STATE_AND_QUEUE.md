@@ -1,21 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 239
+STATE_REVISION: 240
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-22T19:58:00Z
-LAST_RESULT: SCRIP-CORPUS-063 / Issue #213 authored in Draft PR #214 from unchanged `master@e03bc63d9b7747fcae8f704f097357bb6ad12160`. The Darwin/Rachinsky `{{ё}}` replay contract was corrected from non-canonical exact root `Шаблон:ё` to canonical MediaWiki page title `Шаблон:Ё`, upgraded to `scriptorium-darwin-template-yo-replay-contract-v2`, and bound to source-free revision-pinned title-canonicalization observations. Focused local standard-library verification passes 19/19 tests; independent exact-head review and hosted-check judgement remain pending by author/judge separation.
-LAST_VERIFIED_PROGRESS: Darwin/Rachinsky now has a fail-closed replay contract whose exact roots are canonical `Шаблон:Ё` and `Шаблон:ЕЁ`. MediaWiki `Manual:Page naming/en@8270202` plus Russian Wikisource `Шаблон:Ё@5687302` / `Шаблон:ЕЁ@3684646` explain the title normalization. Contract SHA-256 is `9b2e8914a5b4c3518ef331c27dc09a6a30d4d6433e90169c677348048f3dcd52`; root observations explicitly leave MediaWiki content SHA-1 unbound, recursive closure empty, outputs unverified, renderer promotion closed and M2 at 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-22T20:49:00Z
+LAST_RESULT: SCRIP-CORPUS-063 / Issue #213 completed. Independent exact-head review `5283588406` re-read PR #214 at `9063f8471bdb55a69436c8f8f0b5113afa449094` against unchanged `master@e03bc63d9b7747fcae8f704f097357bb6ad12160`, reviewed all 7 changed files, found no merge blocker or open review thread, and confirmed all 21 PR-triggered workflow runs settled `success`. Dedicated run `35777100385` checked out the exact reviewed head, ran the template-yo evidence/backlog regressions, deterministically rebuilt/compared the source-free contract evidence and completed `success`. PR #214 was marked Ready and squash-merged with expected-head protection as `004beda91f30c7765fef68beb15222a888004584`, closing Issue #213 completed.
+LAST_VERIFIED_PROGRESS: Darwin/Rachinsky now canonically has an independently reviewed fail-closed replay contract whose exact roots are canonical `Шаблон:Ё` and `Шаблон:ЕЁ`, while invocation spelling remains `{{ё}}`. MediaWiki title-canonicalization evidence and Russian Wikisource root observations support that identity boundary; contract SHA-256 is `9b2e8914a5b4c3518ef331c27dc09a6a30d4d6433e90169c677348048f3dcd52`. Root MediaWiki content SHA-1 identities remain unbound, recursive closure empty, outputs unverified, renderer promotion closed and M2 remains 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-063
-ISSUE:          #213 (open)
-STATUS:         REVIEW_PENDING
-PR:             #214 (Draft; independent exact-head review pending)
-NEXT_ACTION:    Independently review PR #214 at its exact final head against current master, inspect hosted checks,
-                verify canonical-root evidence and fail-closed dependency/output gates, then mark Ready/merge only
-                if no blocker is found. Do not treat title observations as complete dependency identities; M2 remains 0/5.
+ISSUE:          #213 (closed completed)
+STATUS:         COMPLETE
+PR:             #214 (independently reviewed; squash-merged as 004beda91f30c7765fef68beb15222a888004584)
+NEXT_ACTION:    Resume normal-flow selection from the queue. The Darwin/Rachinsky canonical-title correction is
+                reviewed and merged, but exact MediaWiki content SHA-1 identities, recursive discovery closure and
+                deterministic output verification remain required before renderer/body/FantLab promotion; M2 remains 0/5.
 ```
 
 ## Current milestone gate

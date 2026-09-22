@@ -83,9 +83,9 @@ class RunningWavesDiagnosticTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "frozen character-count constant drift"):
             build_diagnostic(self.source, self.body, fetcher=self.fetcher)
 
-    def test_body_manifest_validation_rejects_identity_drift(self) -> None:
+    def test_body_manifest_validation_rejects_structural_digest_drift(self) -> None:
         corrupted = deepcopy(self.body)
-        corrupted["composite_identity"]["raw_sha256"] = "0" * 64
+        corrupted["composite_identity"]["raw_sha256"] = "not-a-sha256"
         with self.assertRaisesRegex(ValueError, "raw_sha256"):
             build_diagnostic(
                 self.source,

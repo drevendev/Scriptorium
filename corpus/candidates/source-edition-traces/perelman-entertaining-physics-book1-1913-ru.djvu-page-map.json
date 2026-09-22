@@ -1,0 +1,1996 @@
+{
+  "admitted_for_calibration": false,
+  "binary_bytes_committed": false,
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "canonical_ocr_extraction_carrier_changed": false,
+  "carrier": {
+    "byte_count": 2982171,
+    "exact_original_url": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%D0%9F%D0%B5%D1%80%D0%B5%D0%BB%D1%8C%D0%BC%D0%B0%D0%BD_%D0%AF.%D0%98._%D0%97%D0%B0%D0%BD%D0%B8%D0%BC%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D1%84%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0._%D0%9A%D0%BD%D0%B8%D0%B3%D0%B0_1_%281913%29.djvu",
+    "format": "DjVu",
+    "identity_reverified_before_extraction": true,
+    "page_count": 218,
+    "sha1": "05c29d01c5dde91bfcfbb6b7ea7f0ea3dba43a12",
+    "sha256": "f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462"
+  },
+  "diagnostic_ready": false,
+  "extractor": {
+    "mode": "hidden_text_utf8_per_page",
+    "package": "djvulibre-bin",
+    "package_version": "3.5.28-2ubuntu0.24.04.2",
+    "tool": "djvutxt"
+  },
+  "fantlab_source_edition_match": "unknown",
+  "literary_body_count_and_digests_frozen": false,
+  "literary_page_selection_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved_from_frozen_body": false,
+  "page_equivalence_to_pdf_verified": false,
+  "page_images_committed": false,
+  "page_map_version": "scriptorium-perelman-1913-djvu-page-map-v1",
+  "page_records_sha256": "c7981219680bd549c58f69f12a66d393a23e457c526c3140e1da915f023c3246",
+  "pages": [
+    {
+      "character_count": 217,
+      "normalized_character_count": 217,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5cb73c7e60814d1a07fe4188c72cf00533447e8d79e9d34232f8f0f1c89d273a",
+      "page": 1,
+      "sha256": "5cb73c7e60814d1a07fe4188c72cf00533447e8d79e9d34232f8f0f1c89d273a",
+      "utf8_byte_count": 365
+    },
+    {
+      "character_count": 1193,
+      "normalized_character_count": 1193,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5246f57baafcefa2f03af4044440c92928b4d8ab0d8b71dd1f31310d371fce66",
+      "page": 2,
+      "sha256": "5246f57baafcefa2f03af4044440c92928b4d8ab0d8b71dd1f31310d371fce66",
+      "utf8_byte_count": 2148
+    },
+    {
+      "character_count": 1641,
+      "normalized_character_count": 1641,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "4ed9c53d9f53f5817a8063609ce0b5c2b7604aa0e49bd2077b726859a1d17b39",
+      "page": 3,
+      "sha256": "4ed9c53d9f53f5817a8063609ce0b5c2b7604aa0e49bd2077b726859a1d17b39",
+      "utf8_byte_count": 2779
+    },
+    {
+      "character_count": 2492,
+      "normalized_character_count": 2492,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "c0e0fd7218b4f838306c047a43cc3a274dcb7133ab9239a95d28d7a1b9619b17",
+      "page": 4,
+      "sha256": "c0e0fd7218b4f838306c047a43cc3a274dcb7133ab9239a95d28d7a1b9619b17",
+      "utf8_byte_count": 4136
+    },
+    {
+      "character_count": 1273,
+      "normalized_character_count": 1273,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "313d13f929073b8f1b5008d98fd2565de83df91333c4642d7d71e774ccca8891",
+      "page": 5,
+      "sha256": "313d13f929073b8f1b5008d98fd2565de83df91333c4642d7d71e774ccca8891",
+      "utf8_byte_count": 2094
+    },
+    {
+      "character_count": 73,
+      "normalized_character_count": 73,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "dfceac46538bfb4afdee8c9c56de63f76903cf9dc3181242211f401828af034b",
+      "page": 6,
+      "sha256": "dfceac46538bfb4afdee8c9c56de63f76903cf9dc3181242211f401828af034b",
+      "utf8_byte_count": 124
+    },
+    {
+      "character_count": 819,
+      "normalized_character_count": 819,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "c14295f338c8cac71fc9bb719b77962ce6738ae22013747ee355913b6f51fb79",
+      "page": 7,
+      "sha256": "c14295f338c8cac71fc9bb719b77962ce6738ae22013747ee355913b6f51fb79",
+      "utf8_byte_count": 1447
+    },
+    {
+      "character_count": 1938,
+      "normalized_character_count": 1938,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "778d127ce39c36b896d90c514b0cfc7444d15d83ea350df44543968f02dd48d1",
+      "page": 8,
+      "sha256": "778d127ce39c36b896d90c514b0cfc7444d15d83ea350df44543968f02dd48d1",
+      "utf8_byte_count": 3499
+    },
+    {
+      "character_count": 1560,
+      "normalized_character_count": 1560,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5794dfa05d5ef1b5b59f30746dff8a26d229e9b03870d358c0de65c4ceaed2ab",
+      "page": 9,
+      "sha256": "5794dfa05d5ef1b5b59f30746dff8a26d229e9b03870d358c0de65c4ceaed2ab",
+      "utf8_byte_count": 2810
+    },
+    {
+      "character_count": 1659,
+      "normalized_character_count": 1659,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "75a78acd859cb909b6df99c5ba55375fc8dfa8fcf4c1bb1cf999471238d7a356",
+      "page": 10,
+      "sha256": "75a78acd859cb909b6df99c5ba55375fc8dfa8fcf4c1bb1cf999471238d7a356",
+      "utf8_byte_count": 2974
+    },
+    {
+      "character_count": 1111,
+      "normalized_character_count": 1111,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b049c75f3614ffb45dc3eee6f1890e4222d57fd9be83dc2625ab57d1675e0c90",
+      "page": 11,
+      "sha256": "b049c75f3614ffb45dc3eee6f1890e4222d57fd9be83dc2625ab57d1675e0c90",
+      "utf8_byte_count": 1971
+    },
+    {
+      "character_count": 1154,
+      "normalized_character_count": 1154,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "41fb7d9e9d22068d78ef675a3f430645947416bdfa46399299c0921e9e551e0b",
+      "page": 12,
+      "sha256": "41fb7d9e9d22068d78ef675a3f430645947416bdfa46399299c0921e9e551e0b",
+      "utf8_byte_count": 2062
+    },
+    {
+      "character_count": 1319,
+      "normalized_character_count": 1319,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "33babc728276337601e3522bab818fb5dbf50daddf1a49a17cac79c0a13e9493",
+      "page": 13,
+      "sha256": "33babc728276337601e3522bab818fb5dbf50daddf1a49a17cac79c0a13e9493",
+      "utf8_byte_count": 2347
+    },
+    {
+      "character_count": 1271,
+      "normalized_character_count": 1271,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "1be9bd8bf997e20388fc581bdfcee2730da8f31c6e58c2f62575e757a00fe753",
+      "page": 14,
+      "sha256": "1be9bd8bf997e20388fc581bdfcee2730da8f31c6e58c2f62575e757a00fe753",
+      "utf8_byte_count": 2255
+    },
+    {
+      "character_count": 1398,
+      "normalized_character_count": 1398,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "ef2cd1179032601498a05c855853a38d338552a100e6a4d08b3cc9261db14bfe",
+      "page": 15,
+      "sha256": "ef2cd1179032601498a05c855853a38d338552a100e6a4d08b3cc9261db14bfe",
+      "utf8_byte_count": 2479
+    },
+    {
+      "character_count": 676,
+      "normalized_character_count": 676,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "2246437971b9465081003f13bad1b29cef7bb4250002e29e90c733d4c0378520",
+      "page": 16,
+      "sha256": "2246437971b9465081003f13bad1b29cef7bb4250002e29e90c733d4c0378520",
+      "utf8_byte_count": 1200
+    },
+    {
+      "character_count": 1168,
+      "normalized_character_count": 1168,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "99a2f0921e01fce064fd3ee4b72858e4b1d0c92ab117ce6eb9861d3729876362",
+      "page": 17,
+      "sha256": "99a2f0921e01fce064fd3ee4b72858e4b1d0c92ab117ce6eb9861d3729876362",
+      "utf8_byte_count": 2093
+    },
+    {
+      "character_count": 1774,
+      "normalized_character_count": 1774,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "ef78f41105f150c37c60a391de6b8ad358afeea7c8741756ac82922392391af1",
+      "page": 18,
+      "sha256": "ef78f41105f150c37c60a391de6b8ad358afeea7c8741756ac82922392391af1",
+      "utf8_byte_count": 3179
+    },
+    {
+      "character_count": 1831,
+      "normalized_character_count": 1831,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b58b698127a2167d9f96dbcdbff8d9402094d676a94afcd25cd322d17d2cdac8",
+      "page": 19,
+      "sha256": "b58b698127a2167d9f96dbcdbff8d9402094d676a94afcd25cd322d17d2cdac8",
+      "utf8_byte_count": 3282
+    },
+    {
+      "character_count": 1772,
+      "normalized_character_count": 1772,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "bf49e2d18ed06d0614f2e18d06dd8293daabd23d8c4e1f34ca2ce6ee523a4835",
+      "page": 20,
+      "sha256": "bf49e2d18ed06d0614f2e18d06dd8293daabd23d8c4e1f34ca2ce6ee523a4835",
+      "utf8_byte_count": 3170
+    },
+    {
+      "character_count": 1823,
+      "normalized_character_count": 1823,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "18267d22a899c0ab10e3589fdb589cf3a867b74e943ace29a324926f88e7efb8",
+      "page": 21,
+      "sha256": "18267d22a899c0ab10e3589fdb589cf3a867b74e943ace29a324926f88e7efb8",
+      "utf8_byte_count": 3242
+    },
+    {
+      "character_count": 416,
+      "normalized_character_count": 416,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "2f0e2f98cf5b51dc020b1eefbce73fd090e65bd0953c00eb9e990468c1fc8094",
+      "page": 22,
+      "sha256": "2f0e2f98cf5b51dc020b1eefbce73fd090e65bd0953c00eb9e990468c1fc8094",
+      "utf8_byte_count": 652
+    },
+    {
+      "character_count": 1942,
+      "normalized_character_count": 1942,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "91584d4384cdd302c3f5e2435ef7a8c18e8527aca3518c8dea39326d2cb2ffae",
+      "page": 23,
+      "sha256": "91584d4384cdd302c3f5e2435ef7a8c18e8527aca3518c8dea39326d2cb2ffae",
+      "utf8_byte_count": 3489
+    },
+    {
+      "character_count": 2191,
+      "normalized_character_count": 2191,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d345f5f476018eb8ffe34313eb0848671adde772a40e77f152cd1fb351f234eb",
+      "page": 24,
+      "sha256": "d345f5f476018eb8ffe34313eb0848671adde772a40e77f152cd1fb351f234eb",
+      "utf8_byte_count": 3947
+    },
+    {
+      "character_count": 2205,
+      "normalized_character_count": 2205,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "e6af0e62aeafa60ee177c9237baa1a0b7bcfe17261d712d9f14591b20d16e7fb",
+      "page": 25,
+      "sha256": "e6af0e62aeafa60ee177c9237baa1a0b7bcfe17261d712d9f14591b20d16e7fb",
+      "utf8_byte_count": 3927
+    },
+    {
+      "character_count": 1994,
+      "normalized_character_count": 1994,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "20a87a4fae36649f23963bd5913448bc7870b93c6930e65b9aa1ec21fc9f808d",
+      "page": 26,
+      "sha256": "20a87a4fae36649f23963bd5913448bc7870b93c6930e65b9aa1ec21fc9f808d",
+      "utf8_byte_count": 3602
+    },
+    {
+      "character_count": 1256,
+      "normalized_character_count": 1256,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "6ee7a6aa330be61f26648452df69727a307e18a1b502f8f926dcdde92e9cd86e",
+      "page": 27,
+      "sha256": "6ee7a6aa330be61f26648452df69727a307e18a1b502f8f926dcdde92e9cd86e",
+      "utf8_byte_count": 2273
+    },
+    {
+      "character_count": 1818,
+      "normalized_character_count": 1818,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "eb00e87fe8ed8affe449cf454a7d06e08d3f44928366fb8f996ca5bb7f0d0232",
+      "page": 28,
+      "sha256": "eb00e87fe8ed8affe449cf454a7d06e08d3f44928366fb8f996ca5bb7f0d0232",
+      "utf8_byte_count": 3268
+    },
+    {
+      "character_count": 801,
+      "normalized_character_count": 801,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "f6664658dbe4062a287fa9ee84e9a62bc628a965e047b08ecbb52943076039e7",
+      "page": 29,
+      "sha256": "f6664658dbe4062a287fa9ee84e9a62bc628a965e047b08ecbb52943076039e7",
+      "utf8_byte_count": 1423
+    },
+    {
+      "character_count": 1336,
+      "normalized_character_count": 1336,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d3d85e37d7aa3e8d904da1106668b619946e9763b879eceb68110465dd97ae8b",
+      "page": 30,
+      "sha256": "d3d85e37d7aa3e8d904da1106668b619946e9763b879eceb68110465dd97ae8b",
+      "utf8_byte_count": 2302
+    },
+    {
+      "character_count": 2052,
+      "normalized_character_count": 2052,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "9cc966b60a52e3abc2d806aaced9c76229a20088cb02a9b6df861294fdd2a07d",
+      "page": 31,
+      "sha256": "9cc966b60a52e3abc2d806aaced9c76229a20088cb02a9b6df861294fdd2a07d",
+      "utf8_byte_count": 3691
+    },
+    {
+      "character_count": 1812,
+      "normalized_character_count": 1812,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "6acc07714e7aa080d73de5398cced1848bc5df88bccfd185d879e702ed55cc7c",
+      "page": 32,
+      "sha256": "6acc07714e7aa080d73de5398cced1848bc5df88bccfd185d879e702ed55cc7c",
+      "utf8_byte_count": 3221
+    },
+    {
+      "character_count": 1742,
+      "normalized_character_count": 1742,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "1c29ccec17969a73f4f62e970ceb50622bb4506cdd503233052096d345bccd6d",
+      "page": 33,
+      "sha256": "1c29ccec17969a73f4f62e970ceb50622bb4506cdd503233052096d345bccd6d",
+      "utf8_byte_count": 3050
+    },
+    {
+      "character_count": 1787,
+      "normalized_character_count": 1787,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b8ddb575aeca9a7e1459f8409146b1a9ed1ddbab35a5d27c14b24541372bb9a0",
+      "page": 34,
+      "sha256": "b8ddb575aeca9a7e1459f8409146b1a9ed1ddbab35a5d27c14b24541372bb9a0",
+      "utf8_byte_count": 3240
+    },
+    {
+      "character_count": 1276,
+      "normalized_character_count": 1276,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "a572f957053bee868ef8b58533fb7102e5680cb780559a050a389b4229075230",
+      "page": 35,
+      "sha256": "a572f957053bee868ef8b58533fb7102e5680cb780559a050a389b4229075230",
+      "utf8_byte_count": 2303
+    },
+    {
+      "character_count": 1410,
+      "normalized_character_count": 1410,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b95128b2e18621fad50f9254955b3887042f053585548dd4fed204afaa30b813",
+      "page": 36,
+      "sha256": "b95128b2e18621fad50f9254955b3887042f053585548dd4fed204afaa30b813",
+      "utf8_byte_count": 2477
+    },
+    {
+      "character_count": 1247,
+      "normalized_character_count": 1247,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "08046cc38d80adcf6d6a2e66be57161a00a9a1599921775ceb6fe2f365874071",
+      "page": 37,
+      "sha256": "08046cc38d80adcf6d6a2e66be57161a00a9a1599921775ceb6fe2f365874071",
+      "utf8_byte_count": 2215
+    },
+    {
+      "character_count": 2006,
+      "normalized_character_count": 2006,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b9ee28fce69d2511799d2c2ab0358f939e02d43844d6b2181d3a783ca10468c2",
+      "page": 38,
+      "sha256": "b9ee28fce69d2511799d2c2ab0358f939e02d43844d6b2181d3a783ca10468c2",
+      "utf8_byte_count": 3637
+    },
+    {
+      "character_count": 1172,
+      "normalized_character_count": 1172,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "71b8fb0040360d0d2220c1f5206837d7158a268157970744df51329f548e09ae",
+      "page": 39,
+      "sha256": "71b8fb0040360d0d2220c1f5206837d7158a268157970744df51329f548e09ae",
+      "utf8_byte_count": 2097
+    },
+    {
+      "character_count": 1329,
+      "normalized_character_count": 1329,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "e6362e6c781b9c313b68e3bb9dc0b7451884eff1e30ec57f92714c9c8be408f8",
+      "page": 40,
+      "sha256": "e6362e6c781b9c313b68e3bb9dc0b7451884eff1e30ec57f92714c9c8be408f8",
+      "utf8_byte_count": 2356
+    },
+    {
+      "character_count": 1999,
+      "normalized_character_count": 1999,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "fb6d413ef6da309a75c20d2a7b32e0e0112e111d80a3f706698877e79ca874d8",
+      "page": 41,
+      "sha256": "fb6d413ef6da309a75c20d2a7b32e0e0112e111d80a3f706698877e79ca874d8",
+      "utf8_byte_count": 3627
+    },
+    {
+      "character_count": 2150,
+      "normalized_character_count": 2150,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "eea0bdc97b98f42c9750eb5bf0f3b32c9708bb3d200fa5e94662a652705601d4",
+      "page": 42,
+      "sha256": "eea0bdc97b98f42c9750eb5bf0f3b32c9708bb3d200fa5e94662a652705601d4",
+      "utf8_byte_count": 3863
+    },
+    {
+      "character_count": 2157,
+      "normalized_character_count": 2157,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "0e8dc8f9eaf30895adcf2c3ae51a3e8a1f5357fed1af549f426a9868e48b9583",
+      "page": 43,
+      "sha256": "0e8dc8f9eaf30895adcf2c3ae51a3e8a1f5357fed1af549f426a9868e48b9583",
+      "utf8_byte_count": 3899
+    },
+    {
+      "character_count": 2001,
+      "normalized_character_count": 2001,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "9987ae1bcffb4c9eed4adb75d175f66c43f9995aa36103ef23a775d130bd814f",
+      "page": 44,
+      "sha256": "9987ae1bcffb4c9eed4adb75d175f66c43f9995aa36103ef23a775d130bd814f",
+      "utf8_byte_count": 3627
+    },
+    {
+      "character_count": 2093,
+      "normalized_character_count": 2093,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "3d7f106b996df12766a5583677188b13ca9550239777f6a0c11f2d3d4c4327b1",
+      "page": 45,
+      "sha256": "3d7f106b996df12766a5583677188b13ca9550239777f6a0c11f2d3d4c4327b1",
+      "utf8_byte_count": 3769
+    },
+    {
+      "character_count": 1888,
+      "normalized_character_count": 1888,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b21a2519721bc6bdc46f81526bb9d11b74b5b52c456e1967ece0da41bd0716d3",
+      "page": 46,
+      "sha256": "b21a2519721bc6bdc46f81526bb9d11b74b5b52c456e1967ece0da41bd0716d3",
+      "utf8_byte_count": 3392
+    },
+    {
+      "character_count": 726,
+      "normalized_character_count": 726,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "755c0a61e79a7af6c5be4a9367944b9989136dc89304bfafe7495e6a883b9d98",
+      "page": 47,
+      "sha256": "755c0a61e79a7af6c5be4a9367944b9989136dc89304bfafe7495e6a883b9d98",
+      "utf8_byte_count": 1298
+    },
+    {
+      "character_count": 1404,
+      "normalized_character_count": 1404,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d9ad45dc60e899442737f1bec8faf07a7fc4f3def3f3252814587ef43846efad",
+      "page": 48,
+      "sha256": "d9ad45dc60e899442737f1bec8faf07a7fc4f3def3f3252814587ef43846efad",
+      "utf8_byte_count": 2516
+    },
+    {
+      "character_count": 2016,
+      "normalized_character_count": 2016,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "ae9f54afdceacfef17c678d062a1dd4d2f652a6f9900e4fc23c8dc069aaaeadd",
+      "page": 49,
+      "sha256": "ae9f54afdceacfef17c678d062a1dd4d2f652a6f9900e4fc23c8dc069aaaeadd",
+      "utf8_byte_count": 3633
+    },
+    {
+      "character_count": 2068,
+      "normalized_character_count": 2068,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "898eddfe9d6b103b511d044c32b12a8cb36148625de9462ed1e9e1206dfa3266",
+      "page": 50,
+      "sha256": "898eddfe9d6b103b511d044c32b12a8cb36148625de9462ed1e9e1206dfa3266",
+      "utf8_byte_count": 3717
+    },
+    {
+      "character_count": 1942,
+      "normalized_character_count": 1942,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "a1838baa7747444fcfe9110753b964c9daaa2809914ec88802df8e6d0028bbb2",
+      "page": 51,
+      "sha256": "a1838baa7747444fcfe9110753b964c9daaa2809914ec88802df8e6d0028bbb2",
+      "utf8_byte_count": 3488
+    },
+    {
+      "character_count": 1994,
+      "normalized_character_count": 1994,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "28672ac9419ea1e6b002f5ed0292bd4ba7e3d789d7f1acb7229f5c1c6cca63d0",
+      "page": 52,
+      "sha256": "28672ac9419ea1e6b002f5ed0292bd4ba7e3d789d7f1acb7229f5c1c6cca63d0",
+      "utf8_byte_count": 3560
+    },
+    {
+      "character_count": 763,
+      "normalized_character_count": 763,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5707d0e58f56e4dc67f7a489558ff6eb40270e7266455b1895f3868cc1143f2b",
+      "page": 53,
+      "sha256": "5707d0e58f56e4dc67f7a489558ff6eb40270e7266455b1895f3868cc1143f2b",
+      "utf8_byte_count": 1333
+    },
+    {
+      "character_count": 2009,
+      "normalized_character_count": 2009,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b528f80c9c128c0b251f6ced2b5ccaede501b89eb7d59c9b944aeabedc0f58c8",
+      "page": 54,
+      "sha256": "b528f80c9c128c0b251f6ced2b5ccaede501b89eb7d59c9b944aeabedc0f58c8",
+      "utf8_byte_count": 3605
+    },
+    {
+      "character_count": 1880,
+      "normalized_character_count": 1880,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "327c0996a99b38a42802723509c02231a5dfe06c27ad1a740e5ba952c811e1c7",
+      "page": 55,
+      "sha256": "327c0996a99b38a42802723509c02231a5dfe06c27ad1a740e5ba952c811e1c7",
+      "utf8_byte_count": 3384
+    },
+    {
+      "character_count": 1997,
+      "normalized_character_count": 1997,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "814a7a2c511683bf53c45aa3d81af25baad019f2db63572e69e48f824bacac65",
+      "page": 56,
+      "sha256": "814a7a2c511683bf53c45aa3d81af25baad019f2db63572e69e48f824bacac65",
+      "utf8_byte_count": 3597
+    },
+    {
+      "character_count": 574,
+      "normalized_character_count": 574,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "3d0e9eaea1e84a8557ca99d34e8de30f0aeb9e5c19360a29f4db769dc098a402",
+      "page": 57,
+      "sha256": "3d0e9eaea1e84a8557ca99d34e8de30f0aeb9e5c19360a29f4db769dc098a402",
+      "utf8_byte_count": 1024
+    },
+    {
+      "character_count": 1180,
+      "normalized_character_count": 1180,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "a5817d3632b846d4b12953f3f8ab47579841436782dcccf9b14d46e41a28a85f",
+      "page": 58,
+      "sha256": "a5817d3632b846d4b12953f3f8ab47579841436782dcccf9b14d46e41a28a85f",
+      "utf8_byte_count": 2097
+    },
+    {
+      "character_count": 902,
+      "normalized_character_count": 902,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "92988b751e3c4e39b2f6114d0c5ddc509e3ec3d9308d45ec1d6338fe930d6502",
+      "page": 59,
+      "sha256": "92988b751e3c4e39b2f6114d0c5ddc509e3ec3d9308d45ec1d6338fe930d6502",
+      "utf8_byte_count": 1572
+    },
+    {
+      "character_count": 1148,
+      "normalized_character_count": 1148,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "9e01bf7fa54a65d4f8a2b272f8e1408d8a53c57366ab61b045452177283cbb16",
+      "page": 60,
+      "sha256": "9e01bf7fa54a65d4f8a2b272f8e1408d8a53c57366ab61b045452177283cbb16",
+      "utf8_byte_count": 2014
+    },
+    {
+      "character_count": 2088,
+      "normalized_character_count": 2088,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b19082f0e57099b6e4dfd8cb4fcaffbecbe41238ebef0ed18d92a7d013b725a3",
+      "page": 61,
+      "sha256": "b19082f0e57099b6e4dfd8cb4fcaffbecbe41238ebef0ed18d92a7d013b725a3",
+      "utf8_byte_count": 3784
+    },
+    {
+      "character_count": 484,
+      "normalized_character_count": 484,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "33c09c116d960990b310f2bfc74861e97158479bbb43b45afda3266fc74360cd",
+      "page": 62,
+      "sha256": "33c09c116d960990b310f2bfc74861e97158479bbb43b45afda3266fc74360cd",
+      "utf8_byte_count": 826
+    },
+    {
+      "character_count": 1378,
+      "normalized_character_count": 1378,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "3f5dd0096b700dcf6966b0bea0bdc717a662e6f0307a0cf2227c429223d2926f",
+      "page": 63,
+      "sha256": "3f5dd0096b700dcf6966b0bea0bdc717a662e6f0307a0cf2227c429223d2926f",
+      "utf8_byte_count": 2476
+    },
+    {
+      "character_count": 1327,
+      "normalized_character_count": 1327,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "a62b720efa2f774ffd00e1229d54a849d9d89b9a42418ca3e48852ed89d23ead",
+      "page": 64,
+      "sha256": "a62b720efa2f774ffd00e1229d54a849d9d89b9a42418ca3e48852ed89d23ead",
+      "utf8_byte_count": 2346
+    },
+    {
+      "character_count": 1305,
+      "normalized_character_count": 1305,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "a52393f5ee8b4024e3b0349577e8f95fb2906cae1adf2272ba8efa18cdaf71c0",
+      "page": 65,
+      "sha256": "a52393f5ee8b4024e3b0349577e8f95fb2906cae1adf2272ba8efa18cdaf71c0",
+      "utf8_byte_count": 2313
+    },
+    {
+      "character_count": 924,
+      "normalized_character_count": 924,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "26044c8665007c370ce9dfe1eccef78ed2218d6f8feccc3730dd1fa8a9bd3adf",
+      "page": 66,
+      "sha256": "26044c8665007c370ce9dfe1eccef78ed2218d6f8feccc3730dd1fa8a9bd3adf",
+      "utf8_byte_count": 1675
+    },
+    {
+      "character_count": 774,
+      "normalized_character_count": 774,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "1c758bcd6c63567295d6139b11029ad36196829c9c3d8ee8c9238884815ab3d5",
+      "page": 67,
+      "sha256": "1c758bcd6c63567295d6139b11029ad36196829c9c3d8ee8c9238884815ab3d5",
+      "utf8_byte_count": 1367
+    },
+    {
+      "character_count": 1295,
+      "normalized_character_count": 1295,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "57271bfdd5fc877074e6f704244943bff14459f8c3d71d700e4475ffbb896abd",
+      "page": 68,
+      "sha256": "57271bfdd5fc877074e6f704244943bff14459f8c3d71d700e4475ffbb896abd",
+      "utf8_byte_count": 2296
+    },
+    {
+      "character_count": 1389,
+      "normalized_character_count": 1389,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "374c5e675c3c8330b78050606510e6e52c95e78c5c59737312fa4e1b7c415664",
+      "page": 69,
+      "sha256": "374c5e675c3c8330b78050606510e6e52c95e78c5c59737312fa4e1b7c415664",
+      "utf8_byte_count": 2434
+    },
+    {
+      "character_count": 1325,
+      "normalized_character_count": 1325,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "93f8bf8e365c9d68b30b8faf4c4919fe744e98e143fb821743cab7b1f7f6086a",
+      "page": 70,
+      "sha256": "93f8bf8e365c9d68b30b8faf4c4919fe744e98e143fb821743cab7b1f7f6086a",
+      "utf8_byte_count": 2306
+    },
+    {
+      "character_count": 1417,
+      "normalized_character_count": 1417,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "0a77f9f275dd7119eca65391350c3d181996ed8545e02d1daef2022f1b06384a",
+      "page": 71,
+      "sha256": "0a77f9f275dd7119eca65391350c3d181996ed8545e02d1daef2022f1b06384a",
+      "utf8_byte_count": 2489
+    },
+    {
+      "character_count": 1378,
+      "normalized_character_count": 1378,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "4835e333d2f7b1fc590192a55b6ae0b52d8a83181d3e2e2473a815d095759d82",
+      "page": 72,
+      "sha256": "4835e333d2f7b1fc590192a55b6ae0b52d8a83181d3e2e2473a815d095759d82",
+      "utf8_byte_count": 2465
+    },
+    {
+      "character_count": 1270,
+      "normalized_character_count": 1270,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "8b419b578a584ce01a7dcde918717a08d58f95086d081635b25583410fb2cf16",
+      "page": 73,
+      "sha256": "8b419b578a584ce01a7dcde918717a08d58f95086d081635b25583410fb2cf16",
+      "utf8_byte_count": 2262
+    },
+    {
+      "character_count": 1172,
+      "normalized_character_count": 1172,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "6f81d119209dfcb594a7239addb209b1d8bd316420c9a35839051a3194cec639",
+      "page": 74,
+      "sha256": "6f81d119209dfcb594a7239addb209b1d8bd316420c9a35839051a3194cec639",
+      "utf8_byte_count": 2078
+    },
+    {
+      "character_count": 1176,
+      "normalized_character_count": 1176,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "894e5f4550925fe0b91d13e575ce405b177fce284b8f76db4b78327c480c03ee",
+      "page": 75,
+      "sha256": "894e5f4550925fe0b91d13e575ce405b177fce284b8f76db4b78327c480c03ee",
+      "utf8_byte_count": 2085
+    },
+    {
+      "character_count": 1418,
+      "normalized_character_count": 1418,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "a13d00739ba342d54713368b933f374947b58016a0fcef5232a5d9bb859a9181",
+      "page": 76,
+      "sha256": "a13d00739ba342d54713368b933f374947b58016a0fcef5232a5d9bb859a9181",
+      "utf8_byte_count": 2528
+    },
+    {
+      "character_count": 1640,
+      "normalized_character_count": 1640,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "cc64a608f7b5da20eac2c3501e7d39844927b6a8c5862ea448987f8b6f4545de",
+      "page": 77,
+      "sha256": "cc64a608f7b5da20eac2c3501e7d39844927b6a8c5862ea448987f8b6f4545de",
+      "utf8_byte_count": 2944
+    },
+    {
+      "character_count": 2183,
+      "normalized_character_count": 2183,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d79605c072d019020d3aa3afd50c983262e93865eef0092ae69641dd35e023d1",
+      "page": 78,
+      "sha256": "d79605c072d019020d3aa3afd50c983262e93865eef0092ae69641dd35e023d1",
+      "utf8_byte_count": 3937
+    },
+    {
+      "character_count": 1401,
+      "normalized_character_count": 1401,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "260fc4be544d682e638eac9949df700f4b46f5280565d54be215af4e69abc34b",
+      "page": 79,
+      "sha256": "260fc4be544d682e638eac9949df700f4b46f5280565d54be215af4e69abc34b",
+      "utf8_byte_count": 2489
+    },
+    {
+      "character_count": 1808,
+      "normalized_character_count": 1808,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "0fa7009fdcb12eb3f524b195be45a104ffa7c166aaafd729cf6024ee54aa8f16",
+      "page": 80,
+      "sha256": "0fa7009fdcb12eb3f524b195be45a104ffa7c166aaafd729cf6024ee54aa8f16",
+      "utf8_byte_count": 3233
+    },
+    {
+      "character_count": 1260,
+      "normalized_character_count": 1260,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b4927bec131176a8b1ba7cd621288fcd18ad4678f32b4cf9ba7f3d8924a9096d",
+      "page": 81,
+      "sha256": "b4927bec131176a8b1ba7cd621288fcd18ad4678f32b4cf9ba7f3d8924a9096d",
+      "utf8_byte_count": 2202
+    },
+    {
+      "character_count": 1336,
+      "normalized_character_count": 1336,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d783a6c7117538a28645f8cdc56d7c3965b01fed7c744b1e5e0ebafa4d70c786",
+      "page": 82,
+      "sha256": "d783a6c7117538a28645f8cdc56d7c3965b01fed7c744b1e5e0ebafa4d70c786",
+      "utf8_byte_count": 2325
+    },
+    {
+      "character_count": 1335,
+      "normalized_character_count": 1335,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "ebbf19be77d2f102a7aef2fb2b3c8a88f1b48d03f1859950ed17dcf6cef86fc0",
+      "page": 83,
+      "sha256": "ebbf19be77d2f102a7aef2fb2b3c8a88f1b48d03f1859950ed17dcf6cef86fc0",
+      "utf8_byte_count": 2429
+    },
+    {
+      "character_count": 1341,
+      "normalized_character_count": 1341,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "fb86f536a2cde265cabf80dcc63b009d08e6dd7054d763ef112878cacb684405",
+      "page": 84,
+      "sha256": "fb86f536a2cde265cabf80dcc63b009d08e6dd7054d763ef112878cacb684405",
+      "utf8_byte_count": 2418
+    },
+    {
+      "character_count": 1324,
+      "normalized_character_count": 1324,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d3e4674edae06f4e04eccad6a8afbeba3cd76a1aa5c92edb2c9f997d4ecc906b",
+      "page": 85,
+      "sha256": "d3e4674edae06f4e04eccad6a8afbeba3cd76a1aa5c92edb2c9f997d4ecc906b",
+      "utf8_byte_count": 2362
+    },
+    {
+      "character_count": 1533,
+      "normalized_character_count": 1533,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "ead4816cfce2f701835910078aabe7ea83202863e1ab352c405324b4319e01de",
+      "page": 86,
+      "sha256": "ead4816cfce2f701835910078aabe7ea83202863e1ab352c405324b4319e01de",
+      "utf8_byte_count": 2745
+    },
+    {
+      "character_count": 1503,
+      "normalized_character_count": 1503,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "dc58664a04210a8b20d1596be634f6f7802d96f47ebbbe8425894b422e961d3f",
+      "page": 87,
+      "sha256": "dc58664a04210a8b20d1596be634f6f7802d96f47ebbbe8425894b422e961d3f",
+      "utf8_byte_count": 2665
+    },
+    {
+      "character_count": 1118,
+      "normalized_character_count": 1118,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "c34685d2ad7a22240f07a3dfa5b8f95fd3745f8404aff806740ac839cfb1a655",
+      "page": 88,
+      "sha256": "c34685d2ad7a22240f07a3dfa5b8f95fd3745f8404aff806740ac839cfb1a655",
+      "utf8_byte_count": 1985
+    },
+    {
+      "character_count": 837,
+      "normalized_character_count": 837,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "8fbf59fe7afd6d2cd28ba10ff6828bd11d8ad86c48950b1744fb9a9704256712",
+      "page": 89,
+      "sha256": "8fbf59fe7afd6d2cd28ba10ff6828bd11d8ad86c48950b1744fb9a9704256712",
+      "utf8_byte_count": 1499
+    },
+    {
+      "character_count": 1251,
+      "normalized_character_count": 1251,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "57309dab66b02b2c58cbf24aa494f9b27bfd32e3238a0cd83eed579409913b9b",
+      "page": 90,
+      "sha256": "57309dab66b02b2c58cbf24aa494f9b27bfd32e3238a0cd83eed579409913b9b",
+      "utf8_byte_count": 2231
+    },
+    {
+      "character_count": 1313,
+      "normalized_character_count": 1313,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "49681617b68a756b90f1c4adea080575b95109b223a07afe94cdfdde245fda88",
+      "page": 91,
+      "sha256": "49681617b68a756b90f1c4adea080575b95109b223a07afe94cdfdde245fda88",
+      "utf8_byte_count": 2332
+    },
+    {
+      "character_count": 1497,
+      "normalized_character_count": 1497,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "ed30010599ef0df9f15e1246a5f9b3009901b4cbc03bad5e4da9ebd2048369aa",
+      "page": 92,
+      "sha256": "ed30010599ef0df9f15e1246a5f9b3009901b4cbc03bad5e4da9ebd2048369aa",
+      "utf8_byte_count": 2663
+    },
+    {
+      "character_count": 1159,
+      "normalized_character_count": 1159,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "c4a55aa829e864538234141c83f707aaaeb2d1f94c73126c4e6b2e1e46d59f69",
+      "page": 93,
+      "sha256": "c4a55aa829e864538234141c83f707aaaeb2d1f94c73126c4e6b2e1e46d59f69",
+      "utf8_byte_count": 2078
+    },
+    {
+      "character_count": 1670,
+      "normalized_character_count": 1670,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b9793521f8592d83061dc49935af41c48b578a5df1d6880cc7e1fdbe35aa9c76",
+      "page": 94,
+      "sha256": "b9793521f8592d83061dc49935af41c48b578a5df1d6880cc7e1fdbe35aa9c76",
+      "utf8_byte_count": 2993
+    },
+    {
+      "character_count": 1522,
+      "normalized_character_count": 1522,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "382832e83d5bcbd5634d1dfacbdcade51816ad87424641c2909e365c465c9beb",
+      "page": 95,
+      "sha256": "382832e83d5bcbd5634d1dfacbdcade51816ad87424641c2909e365c465c9beb",
+      "utf8_byte_count": 2738
+    },
+    {
+      "character_count": 1344,
+      "normalized_character_count": 1344,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "a98322c4814e398b32db56e4afc6be9dc994a4e0b0d6ff20c9dcb24869fd8517",
+      "page": 96,
+      "sha256": "a98322c4814e398b32db56e4afc6be9dc994a4e0b0d6ff20c9dcb24869fd8517",
+      "utf8_byte_count": 2363
+    },
+    {
+      "character_count": 1820,
+      "normalized_character_count": 1820,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "4c02dece9bee5cf447991eb0fb9543a2e09e98fdd4d2e92e687e7efb2795af46",
+      "page": 97,
+      "sha256": "4c02dece9bee5cf447991eb0fb9543a2e09e98fdd4d2e92e687e7efb2795af46",
+      "utf8_byte_count": 3289
+    },
+    {
+      "character_count": 1698,
+      "normalized_character_count": 1698,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "dba0b2081f18f1a653eccc0ea0b9603ca892f9ad09f993e810535a11be085244",
+      "page": 98,
+      "sha256": "dba0b2081f18f1a653eccc0ea0b9603ca892f9ad09f993e810535a11be085244",
+      "utf8_byte_count": 3057
+    },
+    {
+      "character_count": 1208,
+      "normalized_character_count": 1208,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b13ec8464e5a576fb35dd1e8d9c2619268269c7d517916380f0ea9a641fae41c",
+      "page": 99,
+      "sha256": "b13ec8464e5a576fb35dd1e8d9c2619268269c7d517916380f0ea9a641fae41c",
+      "utf8_byte_count": 2110
+    },
+    {
+      "character_count": 1862,
+      "normalized_character_count": 1862,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "e4732a80b0e757f0ad9a3f346987b8d4f3e5d250ba072db1a41fdc393019217c",
+      "page": 100,
+      "sha256": "e4732a80b0e757f0ad9a3f346987b8d4f3e5d250ba072db1a41fdc393019217c",
+      "utf8_byte_count": 3371
+    },
+    {
+      "character_count": 1637,
+      "normalized_character_count": 1637,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "7c9cdf8612cf18cec0c131de9247c1a8a1227e89f4a52343537175ee15cefb98",
+      "page": 101,
+      "sha256": "7c9cdf8612cf18cec0c131de9247c1a8a1227e89f4a52343537175ee15cefb98",
+      "utf8_byte_count": 2940
+    },
+    {
+      "character_count": 832,
+      "normalized_character_count": 832,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "567b20389a2fb4adf994ff83fc5cd69d622b1ff2fa5909b24f22b3792429c2c8",
+      "page": 102,
+      "sha256": "567b20389a2fb4adf994ff83fc5cd69d622b1ff2fa5909b24f22b3792429c2c8",
+      "utf8_byte_count": 1506
+    },
+    {
+      "character_count": 1449,
+      "normalized_character_count": 1449,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "f7cefc42424dbdccaba948b26e65389828b359f8bcc1f0f874fd498ef09de1ec",
+      "page": 103,
+      "sha256": "f7cefc42424dbdccaba948b26e65389828b359f8bcc1f0f874fd498ef09de1ec",
+      "utf8_byte_count": 2589
+    },
+    {
+      "character_count": 1883,
+      "normalized_character_count": 1883,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "bc8316024432e8e882afe06e6a9713283fa33657175e566df415ac0590ea68ac",
+      "page": 104,
+      "sha256": "bc8316024432e8e882afe06e6a9713283fa33657175e566df415ac0590ea68ac",
+      "utf8_byte_count": 3414
+    },
+    {
+      "character_count": 2052,
+      "normalized_character_count": 2052,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "9e12df885e10ab647dc722adf747f983ddbec95ec4955eaa7e58d4bb43246f33",
+      "page": 105,
+      "sha256": "9e12df885e10ab647dc722adf747f983ddbec95ec4955eaa7e58d4bb43246f33",
+      "utf8_byte_count": 3602
+    },
+    {
+      "character_count": 1986,
+      "normalized_character_count": 1986,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "09f3e10f3899de177f97e6b1eca4417e73d0f2573b34c25a1b84619cfc094df8",
+      "page": 106,
+      "sha256": "09f3e10f3899de177f97e6b1eca4417e73d0f2573b34c25a1b84619cfc094df8",
+      "utf8_byte_count": 3420
+    },
+    {
+      "character_count": 1497,
+      "normalized_character_count": 1497,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "de55d0a2818ad9c93f39167fe13fb5207ce559cb9f52aa94ca755192bdc0e2f1",
+      "page": 107,
+      "sha256": "de55d0a2818ad9c93f39167fe13fb5207ce559cb9f52aa94ca755192bdc0e2f1",
+      "utf8_byte_count": 2665
+    },
+    {
+      "character_count": 1892,
+      "normalized_character_count": 1892,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "c1dc62e09df845caabb3137597765f9204fab3ef03f6ee91662314bc470eafc6",
+      "page": 108,
+      "sha256": "c1dc62e09df845caabb3137597765f9204fab3ef03f6ee91662314bc470eafc6",
+      "utf8_byte_count": 3383
+    },
+    {
+      "character_count": 2046,
+      "normalized_character_count": 2046,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "f49a511d421c98f765042804429d13d5b68bf57856c52d3f910cc6e2c53d2091",
+      "page": 109,
+      "sha256": "f49a511d421c98f765042804429d13d5b68bf57856c52d3f910cc6e2c53d2091",
+      "utf8_byte_count": 3662
+    },
+    {
+      "character_count": 901,
+      "normalized_character_count": 901,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b1f3bffa5c49e0cdeb7783def84dd55ff7e9e894952b812e5b0dffecf6e5fa96",
+      "page": 110,
+      "sha256": "b1f3bffa5c49e0cdeb7783def84dd55ff7e9e894952b812e5b0dffecf6e5fa96",
+      "utf8_byte_count": 1566
+    },
+    {
+      "character_count": 1439,
+      "normalized_character_count": 1439,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "6f9ec8a965ba463f4bb6431a89bce32b9abd7d639981bf037cad05d7ed1b1af0",
+      "page": 111,
+      "sha256": "6f9ec8a965ba463f4bb6431a89bce32b9abd7d639981bf037cad05d7ed1b1af0",
+      "utf8_byte_count": 2570
+    },
+    {
+      "character_count": 1538,
+      "normalized_character_count": 1538,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "a328e94cb00f7599a48757f47ac43c50087787552e40a804b3a156e31939470a",
+      "page": 112,
+      "sha256": "a328e94cb00f7599a48757f47ac43c50087787552e40a804b3a156e31939470a",
+      "utf8_byte_count": 2750
+    },
+    {
+      "character_count": 1987,
+      "normalized_character_count": 1987,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "4370ee7742e86975547d37adfe5553ddcaa877104d2b6a4ec97f17285652f407",
+      "page": 113,
+      "sha256": "4370ee7742e86975547d37adfe5553ddcaa877104d2b6a4ec97f17285652f407",
+      "utf8_byte_count": 3560
+    },
+    {
+      "character_count": 1483,
+      "normalized_character_count": 1483,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "7f8b700f150801096f78d010336564f97917151cd1610479d82196f4aa44cbbe",
+      "page": 114,
+      "sha256": "7f8b700f150801096f78d010336564f97917151cd1610479d82196f4aa44cbbe",
+      "utf8_byte_count": 2611
+    },
+    {
+      "character_count": 1609,
+      "normalized_character_count": 1609,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5cd2ac06c42b5111d87f35e49129e91bbf6152c6ef8c8793e0af4055c76a5a18",
+      "page": 115,
+      "sha256": "5cd2ac06c42b5111d87f35e49129e91bbf6152c6ef8c8793e0af4055c76a5a18",
+      "utf8_byte_count": 2892
+    },
+    {
+      "character_count": 1925,
+      "normalized_character_count": 1925,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d314a1a29c253086708d2a074163ab78107a7b1cc6c48f7f4e5512b6a3f44536",
+      "page": 116,
+      "sha256": "d314a1a29c253086708d2a074163ab78107a7b1cc6c48f7f4e5512b6a3f44536",
+      "utf8_byte_count": 3476
+    },
+    {
+      "character_count": 1957,
+      "normalized_character_count": 1957,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "7557540519947f9b9f8e6234eb5a84e3042f924def320e20700c8333c642d530",
+      "page": 117,
+      "sha256": "7557540519947f9b9f8e6234eb5a84e3042f924def320e20700c8333c642d530",
+      "utf8_byte_count": 3517
+    },
+    {
+      "character_count": 1583,
+      "normalized_character_count": 1583,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "ca314fd3a7c344604a97beb65cc440ed7b8acb4f68589ba092c374b9b1703e41",
+      "page": 118,
+      "sha256": "ca314fd3a7c344604a97beb65cc440ed7b8acb4f68589ba092c374b9b1703e41",
+      "utf8_byte_count": 2844
+    },
+    {
+      "character_count": 323,
+      "normalized_character_count": 323,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "4b4dac1d8d51cc2e10cbf23bd39e659c0ca1f936c4fcab1fd41b8f3b12da1e9d",
+      "page": 119,
+      "sha256": "4b4dac1d8d51cc2e10cbf23bd39e659c0ca1f936c4fcab1fd41b8f3b12da1e9d",
+      "utf8_byte_count": 545
+    },
+    {
+      "character_count": 702,
+      "normalized_character_count": 702,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "ed13b31c6ce363d8bbc5fa7fb301141407e0cd910c557d262813a701621e2148",
+      "page": 120,
+      "sha256": "ed13b31c6ce363d8bbc5fa7fb301141407e0cd910c557d262813a701621e2148",
+      "utf8_byte_count": 1247
+    },
+    {
+      "character_count": 782,
+      "normalized_character_count": 782,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "cd6f2faf15711b7e791c7f3bd2305c6bd1d7a9f3da5c8bb672bdcbad768187f0",
+      "page": 121,
+      "sha256": "cd6f2faf15711b7e791c7f3bd2305c6bd1d7a9f3da5c8bb672bdcbad768187f0",
+      "utf8_byte_count": 1395
+    },
+    {
+      "character_count": 1059,
+      "normalized_character_count": 1059,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b1c79f46548ba697a2e56dcb60492408f7986eaabccc4d92a4ffa5f725fe2851",
+      "page": 122,
+      "sha256": "b1c79f46548ba697a2e56dcb60492408f7986eaabccc4d92a4ffa5f725fe2851",
+      "utf8_byte_count": 1874
+    },
+    {
+      "character_count": 1272,
+      "normalized_character_count": 1272,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "da8a73985033fc09859c4b1c1c75d15952bc6d7ebb9d5ec5f0fa2911682a4807",
+      "page": 123,
+      "sha256": "da8a73985033fc09859c4b1c1c75d15952bc6d7ebb9d5ec5f0fa2911682a4807",
+      "utf8_byte_count": 2116
+    },
+    {
+      "character_count": 1898,
+      "normalized_character_count": 1898,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b961086f7f251e5acb2aa9289e5484c6f4f5bf6eae070cb99b0a986508231bee",
+      "page": 124,
+      "sha256": "b961086f7f251e5acb2aa9289e5484c6f4f5bf6eae070cb99b0a986508231bee",
+      "utf8_byte_count": 3413
+    },
+    {
+      "character_count": 1875,
+      "normalized_character_count": 1875,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "1e1be38a74c544e58e614edc54651c87d464bd787abe620d0474de4b0609ea7f",
+      "page": 125,
+      "sha256": "1e1be38a74c544e58e614edc54651c87d464bd787abe620d0474de4b0609ea7f",
+      "utf8_byte_count": 3363
+    },
+    {
+      "character_count": 2089,
+      "normalized_character_count": 2089,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "8a11b6829e3a8396299658fa998f14145b9b33c45afb988b4090b9f7640a1d80",
+      "page": 126,
+      "sha256": "8a11b6829e3a8396299658fa998f14145b9b33c45afb988b4090b9f7640a1d80",
+      "utf8_byte_count": 3723
+    },
+    {
+      "character_count": 2187,
+      "normalized_character_count": 2187,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5870981adadee6f2a8cdffceaf87d6afd81780cf0c4ac50d0f8037de5d854bd5",
+      "page": 127,
+      "sha256": "5870981adadee6f2a8cdffceaf87d6afd81780cf0c4ac50d0f8037de5d854bd5",
+      "utf8_byte_count": 3917
+    },
+    {
+      "character_count": 2007,
+      "normalized_character_count": 2007,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "8578805d47e2b9347a0d8edda59332d632f6a06d830e7156adbe15b03b8f1c30",
+      "page": 128,
+      "sha256": "8578805d47e2b9347a0d8edda59332d632f6a06d830e7156adbe15b03b8f1c30",
+      "utf8_byte_count": 3607
+    },
+    {
+      "character_count": 2036,
+      "normalized_character_count": 2036,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "9e43c266617fb8dbd6d38401662f90e4068d455ccd748b7bc3df7e01ac8af335",
+      "page": 129,
+      "sha256": "9e43c266617fb8dbd6d38401662f90e4068d455ccd748b7bc3df7e01ac8af335",
+      "utf8_byte_count": 3658
+    },
+    {
+      "character_count": 2129,
+      "normalized_character_count": 2129,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5014e5dcef004386f3a0e08e94595c16658992ee6f386a4b152182fab722535e",
+      "page": 130,
+      "sha256": "5014e5dcef004386f3a0e08e94595c16658992ee6f386a4b152182fab722535e",
+      "utf8_byte_count": 3810
+    },
+    {
+      "character_count": 2069,
+      "normalized_character_count": 2069,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "bcbb6c4d43ff7e6eb3d480c50227097f35b4208f6f645e2eaa806e5729743f9d",
+      "page": 131,
+      "sha256": "bcbb6c4d43ff7e6eb3d480c50227097f35b4208f6f645e2eaa806e5729743f9d",
+      "utf8_byte_count": 3707
+    },
+    {
+      "character_count": 2158,
+      "normalized_character_count": 2158,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "59e235ec67b41cf0ace6534787bdf61a5e2fb2730c294a097b8c646128f09be8",
+      "page": 132,
+      "sha256": "59e235ec67b41cf0ace6534787bdf61a5e2fb2730c294a097b8c646128f09be8",
+      "utf8_byte_count": 3898
+    },
+    {
+      "character_count": 2146,
+      "normalized_character_count": 2146,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "51453f72f32d29ec3a220c8199ee1ce3d96a9a21d94184df9e1a994ed7553263",
+      "page": 133,
+      "sha256": "51453f72f32d29ec3a220c8199ee1ce3d96a9a21d94184df9e1a994ed7553263",
+      "utf8_byte_count": 3870
+    },
+    {
+      "character_count": 1994,
+      "normalized_character_count": 1994,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5fd9e2138e4338ca2e5fd5486a2ece34763d9283bd87493b3dd2648cfc215e27",
+      "page": 134,
+      "sha256": "5fd9e2138e4338ca2e5fd5486a2ece34763d9283bd87493b3dd2648cfc215e27",
+      "utf8_byte_count": 3622
+    },
+    {
+      "character_count": 2038,
+      "normalized_character_count": 2038,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "17296d92c36a158cc2617c7e538cecba78ed2f8a7b83f3385feaa731a884d502",
+      "page": 135,
+      "sha256": "17296d92c36a158cc2617c7e538cecba78ed2f8a7b83f3385feaa731a884d502",
+      "utf8_byte_count": 3684
+    },
+    {
+      "character_count": 2191,
+      "normalized_character_count": 2191,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "21ff4cabc24c155a11dbfcf70d741bef7ccdf574a59414b6ddf227599e4d9aba",
+      "page": 136,
+      "sha256": "21ff4cabc24c155a11dbfcf70d741bef7ccdf574a59414b6ddf227599e4d9aba",
+      "utf8_byte_count": 3906
+    },
+    {
+      "character_count": 1885,
+      "normalized_character_count": 1885,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "0af3b756beb4069e876026e38fdfc18d475769336fc870fb451d84a8d40f591d",
+      "page": 137,
+      "sha256": "0af3b756beb4069e876026e38fdfc18d475769336fc870fb451d84a8d40f591d",
+      "utf8_byte_count": 3412
+    },
+    {
+      "character_count": 2055,
+      "normalized_character_count": 2055,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d677f629b6d4fe14c80c13651177bfb04194e15fec1223a638d16f89a4bc6523",
+      "page": 138,
+      "sha256": "d677f629b6d4fe14c80c13651177bfb04194e15fec1223a638d16f89a4bc6523",
+      "utf8_byte_count": 3691
+    },
+    {
+      "character_count": 2085,
+      "normalized_character_count": 2085,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "cca9cceda4a5c381882cce8c5b2d60d39409b2327140489832aaee372a357f73",
+      "page": 139,
+      "sha256": "cca9cceda4a5c381882cce8c5b2d60d39409b2327140489832aaee372a357f73",
+      "utf8_byte_count": 3750
+    },
+    {
+      "character_count": 1382,
+      "normalized_character_count": 1382,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "e7166019685f2b1b6162ea8d99ea5a0f63310883baea1dc6fceea16dea0d38a2",
+      "page": 140,
+      "sha256": "e7166019685f2b1b6162ea8d99ea5a0f63310883baea1dc6fceea16dea0d38a2",
+      "utf8_byte_count": 2456
+    },
+    {
+      "character_count": 1907,
+      "normalized_character_count": 1907,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "8edd7b6591c28be224d13bea5958fa1dbbba7a35f9d5c68b775111afee2f1b5c",
+      "page": 141,
+      "sha256": "8edd7b6591c28be224d13bea5958fa1dbbba7a35f9d5c68b775111afee2f1b5c",
+      "utf8_byte_count": 3423
+    },
+    {
+      "character_count": 606,
+      "normalized_character_count": 606,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "26d882899ec324f54fb00e558b335b1f48f56fa68a6305e2e0e46635f099dbf5",
+      "page": 142,
+      "sha256": "26d882899ec324f54fb00e558b335b1f48f56fa68a6305e2e0e46635f099dbf5",
+      "utf8_byte_count": 1087
+    },
+    {
+      "character_count": 1484,
+      "normalized_character_count": 1484,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5b79bb4eda6a356004be0c1709c75fa31b7560dd84f9334e77f453adf5ea2cb5",
+      "page": 143,
+      "sha256": "5b79bb4eda6a356004be0c1709c75fa31b7560dd84f9334e77f453adf5ea2cb5",
+      "utf8_byte_count": 2683
+    },
+    {
+      "character_count": 864,
+      "normalized_character_count": 864,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "2f132874e73100a2adca7df41d77fb459715dc29619e1a828ef4d7fa9866b646",
+      "page": 144,
+      "sha256": "2f132874e73100a2adca7df41d77fb459715dc29619e1a828ef4d7fa9866b646",
+      "utf8_byte_count": 1564
+    },
+    {
+      "character_count": 1031,
+      "normalized_character_count": 1031,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b43b1906277e3369dff0d067eb3f6bb5a494b7eb66f5799716b943613e1b2da1",
+      "page": 145,
+      "sha256": "b43b1906277e3369dff0d067eb3f6bb5a494b7eb66f5799716b943613e1b2da1",
+      "utf8_byte_count": 1817
+    },
+    {
+      "character_count": 985,
+      "normalized_character_count": 985,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "95db368c9b48cabcdeb04b0ba752b912da1ac1dad7d65956c2a5e975f3497111",
+      "page": 146,
+      "sha256": "95db368c9b48cabcdeb04b0ba752b912da1ac1dad7d65956c2a5e975f3497111",
+      "utf8_byte_count": 1758
+    },
+    {
+      "character_count": 1491,
+      "normalized_character_count": 1491,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "6cbddd1fb4d6dabd9ccbe6fc3b4f026baa601acbf87134670bec521889b32d63",
+      "page": 147,
+      "sha256": "6cbddd1fb4d6dabd9ccbe6fc3b4f026baa601acbf87134670bec521889b32d63",
+      "utf8_byte_count": 2649
+    },
+    {
+      "character_count": 2075,
+      "normalized_character_count": 2075,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "bae9330a4e5a056609f5c276eb2d7dfd49de228245d51392b008c98a6f76e593",
+      "page": 148,
+      "sha256": "bae9330a4e5a056609f5c276eb2d7dfd49de228245d51392b008c98a6f76e593",
+      "utf8_byte_count": 3728
+    },
+    {
+      "character_count": 1325,
+      "normalized_character_count": 1325,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "89d5c5eb45e8ac94e12b800b774f34391852a3721b3a371c3740dee465d5bbe9",
+      "page": 149,
+      "sha256": "89d5c5eb45e8ac94e12b800b774f34391852a3721b3a371c3740dee465d5bbe9",
+      "utf8_byte_count": 2401
+    },
+    {
+      "character_count": 1240,
+      "normalized_character_count": 1240,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "98b00ace5bc869aba5ed851a33022152fcf83400521c9ec87cd83da2af402e53",
+      "page": 150,
+      "sha256": "98b00ace5bc869aba5ed851a33022152fcf83400521c9ec87cd83da2af402e53",
+      "utf8_byte_count": 2068
+    },
+    {
+      "character_count": 1046,
+      "normalized_character_count": 1046,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "39d3445f1cf630d9dcd3621ce5f7f51688e506f71a669be52a42dd400b988bb4",
+      "page": 151,
+      "sha256": "39d3445f1cf630d9dcd3621ce5f7f51688e506f71a669be52a42dd400b988bb4",
+      "utf8_byte_count": 1829
+    },
+    {
+      "character_count": 1107,
+      "normalized_character_count": 1107,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "73b758287d1c557bb0f3fd11a1e868d64bfbc09753e13853dd09b84412c0c7f7",
+      "page": 152,
+      "sha256": "73b758287d1c557bb0f3fd11a1e868d64bfbc09753e13853dd09b84412c0c7f7",
+      "utf8_byte_count": 1977
+    },
+    {
+      "character_count": 1574,
+      "normalized_character_count": 1574,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "46fccddc83677fd1f47210e9adf3d44ec5a322dd2fdb9fe1017b3b38c4fb4cf2",
+      "page": 153,
+      "sha256": "46fccddc83677fd1f47210e9adf3d44ec5a322dd2fdb9fe1017b3b38c4fb4cf2",
+      "utf8_byte_count": 2814
+    },
+    {
+      "character_count": 1951,
+      "normalized_character_count": 1951,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "6d1096d6c46c82345493947b237c86c972cdbe6de7c1c3211ade24eeac77cfe7",
+      "page": 154,
+      "sha256": "6d1096d6c46c82345493947b237c86c972cdbe6de7c1c3211ade24eeac77cfe7",
+      "utf8_byte_count": 3517
+    },
+    {
+      "character_count": 1237,
+      "normalized_character_count": 1237,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "3e6c5b235ad4b86f542620a109d31216302a857c24c9678cc519ea4cfb567fbe",
+      "page": 155,
+      "sha256": "3e6c5b235ad4b86f542620a109d31216302a857c24c9678cc519ea4cfb567fbe",
+      "utf8_byte_count": 2214
+    },
+    {
+      "character_count": 1985,
+      "normalized_character_count": 1985,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "85ae07c49b2d390ac6dae02612fcdd872227e62420aa8ff250e8e05df56f3844",
+      "page": 156,
+      "sha256": "85ae07c49b2d390ac6dae02612fcdd872227e62420aa8ff250e8e05df56f3844",
+      "utf8_byte_count": 3598
+    },
+    {
+      "character_count": 623,
+      "normalized_character_count": 623,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "adf077e14ec20d14931f0c8e43ce208ac77e1eafb5533551f0bce5efff4dd384",
+      "page": 157,
+      "sha256": "adf077e14ec20d14931f0c8e43ce208ac77e1eafb5533551f0bce5efff4dd384",
+      "utf8_byte_count": 1095
+    },
+    {
+      "character_count": 1022,
+      "normalized_character_count": 1022,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "659c962dd5aacdc61bfd43c9bdb2b52b71553ac9dd9ea4878bf06d0f69bfa388",
+      "page": 158,
+      "sha256": "659c962dd5aacdc61bfd43c9bdb2b52b71553ac9dd9ea4878bf06d0f69bfa388",
+      "utf8_byte_count": 1823
+    },
+    {
+      "character_count": 662,
+      "normalized_character_count": 662,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "44e1f1a8c87c6231ea797d687a76e7c1e0b7d88879cd70ee698811c1e4e27a73",
+      "page": 159,
+      "sha256": "44e1f1a8c87c6231ea797d687a76e7c1e0b7d88879cd70ee698811c1e4e27a73",
+      "utf8_byte_count": 1166
+    },
+    {
+      "character_count": 2064,
+      "normalized_character_count": 2064,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "6d7b5720af4f0c1d0bfe6e6d7dabec764e54fd6341bf76ae8237e93a1fd63633",
+      "page": 160,
+      "sha256": "6d7b5720af4f0c1d0bfe6e6d7dabec764e54fd6341bf76ae8237e93a1fd63633",
+      "utf8_byte_count": 3702
+    },
+    {
+      "character_count": 1261,
+      "normalized_character_count": 1261,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "0dd50d1f4790e19c78f2ae69980dc8876668449ecf9d4be3d49c02596880b8f1",
+      "page": 161,
+      "sha256": "0dd50d1f4790e19c78f2ae69980dc8876668449ecf9d4be3d49c02596880b8f1",
+      "utf8_byte_count": 2236
+    },
+    {
+      "character_count": 2138,
+      "normalized_character_count": 2138,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "0102155bed24c89c42e151b8fb9108188e58a9bb4b43de946be08c302eac3dd7",
+      "page": 162,
+      "sha256": "0102155bed24c89c42e151b8fb9108188e58a9bb4b43de946be08c302eac3dd7",
+      "utf8_byte_count": 3841
+    },
+    {
+      "character_count": 1291,
+      "normalized_character_count": 1291,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "64ed6666991e6843277c5aa079b19acbd5c485b289fbcd67be211d0695c6b840",
+      "page": 163,
+      "sha256": "64ed6666991e6843277c5aa079b19acbd5c485b289fbcd67be211d0695c6b840",
+      "utf8_byte_count": 2271
+    },
+    {
+      "character_count": 1002,
+      "normalized_character_count": 1002,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "e2c80bee74b6914698469040157004eaf705a80a9629ee342a2ed4277eb051fa",
+      "page": 164,
+      "sha256": "e2c80bee74b6914698469040157004eaf705a80a9629ee342a2ed4277eb051fa",
+      "utf8_byte_count": 1753
+    },
+    {
+      "character_count": 1132,
+      "normalized_character_count": 1132,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b4e274c4008cb997412ce2f774cb7f078671405650adb2b04b032432889adc96",
+      "page": 165,
+      "sha256": "b4e274c4008cb997412ce2f774cb7f078671405650adb2b04b032432889adc96",
+      "utf8_byte_count": 1995
+    },
+    {
+      "character_count": 863,
+      "normalized_character_count": 863,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "6b5e08341e1ede68c872f67426a4bc56c4b1ee21baf220efce26b093566adc03",
+      "page": 166,
+      "sha256": "6b5e08341e1ede68c872f67426a4bc56c4b1ee21baf220efce26b093566adc03",
+      "utf8_byte_count": 1474
+    },
+    {
+      "character_count": 1631,
+      "normalized_character_count": 1631,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "464e4992516ae0f9c63ea71c369382a4bd3abda981c68d3b17b556898284989e",
+      "page": 167,
+      "sha256": "464e4992516ae0f9c63ea71c369382a4bd3abda981c68d3b17b556898284989e",
+      "utf8_byte_count": 2919
+    },
+    {
+      "character_count": 1648,
+      "normalized_character_count": 1648,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "1aaff6cde623cdd69a2067496c09121624cf539392e73735ef23fb6cb8bb3292",
+      "page": 168,
+      "sha256": "1aaff6cde623cdd69a2067496c09121624cf539392e73735ef23fb6cb8bb3292",
+      "utf8_byte_count": 2936
+    },
+    {
+      "character_count": 1806,
+      "normalized_character_count": 1806,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "8b77e320ae34ef605735d7917df9d906b9e7534d9c1e345e1d6ff7567a51b70f",
+      "page": 169,
+      "sha256": "8b77e320ae34ef605735d7917df9d906b9e7534d9c1e345e1d6ff7567a51b70f",
+      "utf8_byte_count": 3264
+    },
+    {
+      "character_count": 1198,
+      "normalized_character_count": 1198,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "f7e1e1c7d68c3790616685f3de493a5f2789d8309f8a6a08a638f55b7d9adef9",
+      "page": 170,
+      "sha256": "f7e1e1c7d68c3790616685f3de493a5f2789d8309f8a6a08a638f55b7d9adef9",
+      "utf8_byte_count": 2134
+    },
+    {
+      "character_count": 645,
+      "normalized_character_count": 645,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "324a95c2cb3113835b2c198ae399cfb38a532273b4311eb33b4c4a690348de7d",
+      "page": 171,
+      "sha256": "324a95c2cb3113835b2c198ae399cfb38a532273b4311eb33b4c4a690348de7d",
+      "utf8_byte_count": 1144
+    },
+    {
+      "character_count": 1481,
+      "normalized_character_count": 1481,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d11cb8d1496b4fa83767c7401de860fea58f95e62849194c1bb5a4c6d3df7371",
+      "page": 172,
+      "sha256": "d11cb8d1496b4fa83767c7401de860fea58f95e62849194c1bb5a4c6d3df7371",
+      "utf8_byte_count": 2645
+    },
+    {
+      "character_count": 1194,
+      "normalized_character_count": 1194,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "9d7c8ba15a1fbce1cefe5e82bc78b1648cc4b11aaa01f0d2785e48fd045b9d04",
+      "page": 173,
+      "sha256": "9d7c8ba15a1fbce1cefe5e82bc78b1648cc4b11aaa01f0d2785e48fd045b9d04",
+      "utf8_byte_count": 2144
+    },
+    {
+      "character_count": 2130,
+      "normalized_character_count": 2130,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "c2db18e643c6af2e98f1f35d0fcbc0b1c33f03ae234a31950d09a675dc27c144",
+      "page": 174,
+      "sha256": "c2db18e643c6af2e98f1f35d0fcbc0b1c33f03ae234a31950d09a675dc27c144",
+      "utf8_byte_count": 3782
+    },
+    {
+      "character_count": 1008,
+      "normalized_character_count": 1008,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "2195dc6753339f022d9df33d71f07f9c210ee06530b9af1f6388e250547eac7a",
+      "page": 175,
+      "sha256": "2195dc6753339f022d9df33d71f07f9c210ee06530b9af1f6388e250547eac7a",
+      "utf8_byte_count": 1831
+    },
+    {
+      "character_count": 1002,
+      "normalized_character_count": 1002,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "22491a71c3c017acc54a29b500e4c6dea649438bafdb8d06b5225ac3762aa461",
+      "page": 176,
+      "sha256": "22491a71c3c017acc54a29b500e4c6dea649438bafdb8d06b5225ac3762aa461",
+      "utf8_byte_count": 1780
+    },
+    {
+      "character_count": 1267,
+      "normalized_character_count": 1267,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "2845289fd2915e3da3fd157a8fbff5c794d972447180b1f19f1845b9f2ea4fbe",
+      "page": 177,
+      "sha256": "2845289fd2915e3da3fd157a8fbff5c794d972447180b1f19f1845b9f2ea4fbe",
+      "utf8_byte_count": 2261
+    },
+    {
+      "character_count": 1959,
+      "normalized_character_count": 1959,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "040c238ed493c5993e28938458c2eb1ca5a9ca9fce39c745742426734a96ac11",
+      "page": 178,
+      "sha256": "040c238ed493c5993e28938458c2eb1ca5a9ca9fce39c745742426734a96ac11",
+      "utf8_byte_count": 3540
+    },
+    {
+      "character_count": 1806,
+      "normalized_character_count": 1806,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "796fe2455a01d27276c295367b29f120a11bf84a09d2edd29fc617f74c2e7538",
+      "page": 179,
+      "sha256": "796fe2455a01d27276c295367b29f120a11bf84a09d2edd29fc617f74c2e7538",
+      "utf8_byte_count": 3220
+    },
+    {
+      "character_count": 1863,
+      "normalized_character_count": 1863,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "42d33619f7efd353631f2f555a604c2dabd56020dc930de34ce8e76d469d2d2a",
+      "page": 180,
+      "sha256": "42d33619f7efd353631f2f555a604c2dabd56020dc930de34ce8e76d469d2d2a",
+      "utf8_byte_count": 3365
+    },
+    {
+      "character_count": 2158,
+      "normalized_character_count": 2158,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "1aa05440370d0da589ca5fed2305f0295b05d06527a521510016b8b645efd061",
+      "page": 181,
+      "sha256": "1aa05440370d0da589ca5fed2305f0295b05d06527a521510016b8b645efd061",
+      "utf8_byte_count": 3917
+    },
+    {
+      "character_count": 1964,
+      "normalized_character_count": 1964,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "262f89617f16a0a5422b4d4af00dd0b52e977852480bd5ac6f88383d497e89cb",
+      "page": 182,
+      "sha256": "262f89617f16a0a5422b4d4af00dd0b52e977852480bd5ac6f88383d497e89cb",
+      "utf8_byte_count": 3559
+    },
+    {
+      "character_count": 1417,
+      "normalized_character_count": 1417,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "6002fea056bddc0e1f874ee387f654f79a14d996957a8353ce4b990f649190d8",
+      "page": 183,
+      "sha256": "6002fea056bddc0e1f874ee387f654f79a14d996957a8353ce4b990f649190d8",
+      "utf8_byte_count": 2560
+    },
+    {
+      "character_count": 1282,
+      "normalized_character_count": 1282,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "faf3bdcb4112974652f45e571b667fc2310cc998d1dd793c36a9d080c8bdaf6f",
+      "page": 184,
+      "sha256": "faf3bdcb4112974652f45e571b667fc2310cc998d1dd793c36a9d080c8bdaf6f",
+      "utf8_byte_count": 2301
+    },
+    {
+      "character_count": 1310,
+      "normalized_character_count": 1310,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "8bafa3e8c5bbe9b6fc30f7231e481f7e24e5d53c35bda5e69a316aad595aa64e",
+      "page": 185,
+      "sha256": "8bafa3e8c5bbe9b6fc30f7231e481f7e24e5d53c35bda5e69a316aad595aa64e",
+      "utf8_byte_count": 2346
+    },
+    {
+      "character_count": 1998,
+      "normalized_character_count": 1998,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "69a6086011d2681beabcc84da34dc983903e0e45725e62a34b6dac08ac9184db",
+      "page": 186,
+      "sha256": "69a6086011d2681beabcc84da34dc983903e0e45725e62a34b6dac08ac9184db",
+      "utf8_byte_count": 3604
+    },
+    {
+      "character_count": 1818,
+      "normalized_character_count": 1818,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "fba2750e46fd5274ca6546280f78cfd4e6920f8a964e8bca8da0785d7805dc2f",
+      "page": 187,
+      "sha256": "fba2750e46fd5274ca6546280f78cfd4e6920f8a964e8bca8da0785d7805dc2f",
+      "utf8_byte_count": 3253
+    },
+    {
+      "character_count": 1871,
+      "normalized_character_count": 1871,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d46a04ce60dc458d850b73ca1d4805bb0764bf58a4f291a5e8ad6f11f90163f7",
+      "page": 188,
+      "sha256": "d46a04ce60dc458d850b73ca1d4805bb0764bf58a4f291a5e8ad6f11f90163f7",
+      "utf8_byte_count": 3396
+    },
+    {
+      "character_count": 1659,
+      "normalized_character_count": 1659,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "e94aa7cc9ab337021ada286f304360cbbebc61761695d26183da15a612d579e7",
+      "page": 189,
+      "sha256": "e94aa7cc9ab337021ada286f304360cbbebc61761695d26183da15a612d579e7",
+      "utf8_byte_count": 2972
+    },
+    {
+      "character_count": 1096,
+      "normalized_character_count": 1096,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "16c530176c6c60a9d913208f49f7c69780bdb044c95de870e9d609a8bc3a38b7",
+      "page": 190,
+      "sha256": "16c530176c6c60a9d913208f49f7c69780bdb044c95de870e9d609a8bc3a38b7",
+      "utf8_byte_count": 1947
+    },
+    {
+      "character_count": 1102,
+      "normalized_character_count": 1102,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "414b930b58346518fe3f5a65b3dda6b97f8e5598d30acc18663b27604b5d02e5",
+      "page": 191,
+      "sha256": "414b930b58346518fe3f5a65b3dda6b97f8e5598d30acc18663b27604b5d02e5",
+      "utf8_byte_count": 1919
+    },
+    {
+      "character_count": 1671,
+      "normalized_character_count": 1671,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "d556a03096f241f07fcb8b87f3323e6499bddfcbc5e8479161082ca5bb01d29f",
+      "page": 192,
+      "sha256": "d556a03096f241f07fcb8b87f3323e6499bddfcbc5e8479161082ca5bb01d29f",
+      "utf8_byte_count": 2983
+    },
+    {
+      "character_count": 1227,
+      "normalized_character_count": 1227,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b6839053ee18936e2a6c34f9aae255f225fb6eaeb962da845a8e45a049850aae",
+      "page": 193,
+      "sha256": "b6839053ee18936e2a6c34f9aae255f225fb6eaeb962da845a8e45a049850aae",
+      "utf8_byte_count": 2162
+    },
+    {
+      "character_count": 1016,
+      "normalized_character_count": 1016,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5bcf09cb137ba0d713e1e02e56d799f2badeba86cbf70cd938f95906f73cfec5",
+      "page": 194,
+      "sha256": "5bcf09cb137ba0d713e1e02e56d799f2badeba86cbf70cd938f95906f73cfec5",
+      "utf8_byte_count": 1820
+    },
+    {
+      "character_count": 1783,
+      "normalized_character_count": 1783,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "0dc70786ee84da0a4c1328d2b75240fbce429ac11eafe93de5df4eeb4b143ce0",
+      "page": 195,
+      "sha256": "0dc70786ee84da0a4c1328d2b75240fbce429ac11eafe93de5df4eeb4b143ce0",
+      "utf8_byte_count": 3216
+    },
+    {
+      "character_count": 2116,
+      "normalized_character_count": 2116,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5b55f6759676e8002d8eb2d77ea21148bdea625433857f7a2b59c78710a4da60",
+      "page": 196,
+      "sha256": "5b55f6759676e8002d8eb2d77ea21148bdea625433857f7a2b59c78710a4da60",
+      "utf8_byte_count": 3820
+    },
+    {
+      "character_count": 2239,
+      "normalized_character_count": 2239,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "0cb8163b6898852a3d1ec924c518831419b7d46735fc096d6ca36a83dff823e9",
+      "page": 197,
+      "sha256": "0cb8163b6898852a3d1ec924c518831419b7d46735fc096d6ca36a83dff823e9",
+      "utf8_byte_count": 4052
+    },
+    {
+      "character_count": 2186,
+      "normalized_character_count": 2186,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "b64ee3cde43b7193509afa936d6c12a86db1fddc973b3cdf76d6feeab8314586",
+      "page": 198,
+      "sha256": "b64ee3cde43b7193509afa936d6c12a86db1fddc973b3cdf76d6feeab8314586",
+      "utf8_byte_count": 3952
+    },
+    {
+      "character_count": 1690,
+      "normalized_character_count": 1690,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "db94bfa663e2a54aa2a08507ef0addf124d562f7df6085d686d80af20562292b",
+      "page": 199,
+      "sha256": "db94bfa663e2a54aa2a08507ef0addf124d562f7df6085d686d80af20562292b",
+      "utf8_byte_count": 3007
+    },
+    {
+      "character_count": 1557,
+      "normalized_character_count": 1557,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "14335af939397e9fc309d5ed350fc240f24c91b90447132f627f3970f3b8a34e",
+      "page": 200,
+      "sha256": "14335af939397e9fc309d5ed350fc240f24c91b90447132f627f3970f3b8a34e",
+      "utf8_byte_count": 2757
+    },
+    {
+      "character_count": 1204,
+      "normalized_character_count": 1204,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "160299ddde5e80e9a944e6c633322a0261eb85f3108a26e7aef0d959cf7a993e",
+      "page": 201,
+      "sha256": "160299ddde5e80e9a944e6c633322a0261eb85f3108a26e7aef0d959cf7a993e",
+      "utf8_byte_count": 2124
+    },
+    {
+      "character_count": 1525,
+      "normalized_character_count": 1525,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "8bfee358df79ac21fdd28c2168eb61dafa248847519039f8d977521df0a6ca90",
+      "page": 202,
+      "sha256": "8bfee358df79ac21fdd28c2168eb61dafa248847519039f8d977521df0a6ca90",
+      "utf8_byte_count": 2745
+    },
+    {
+      "character_count": 1528,
+      "normalized_character_count": 1528,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "7cdd2b510774e022e4fe2a575fa565e7180fa827305734a0ed5fe381ae0b9f85",
+      "page": 203,
+      "sha256": "7cdd2b510774e022e4fe2a575fa565e7180fa827305734a0ed5fe381ae0b9f85",
+      "utf8_byte_count": 2731
+    },
+    {
+      "character_count": 1194,
+      "normalized_character_count": 1194,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5975d0d9e9d6fc470e7cbade9da17aa2ad1c695094ef4cbc54046e179a894bf4",
+      "page": 204,
+      "sha256": "5975d0d9e9d6fc470e7cbade9da17aa2ad1c695094ef4cbc54046e179a894bf4",
+      "utf8_byte_count": 2145
+    },
+    {
+      "character_count": 836,
+      "normalized_character_count": 836,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "1d3acd77bd0016c857aecab63ba1ff4726137f892ab96b69bca5674c1fe356bc",
+      "page": 205,
+      "sha256": "1d3acd77bd0016c857aecab63ba1ff4726137f892ab96b69bca5674c1fe356bc",
+      "utf8_byte_count": 1475
+    },
+    {
+      "character_count": 389,
+      "normalized_character_count": 389,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "4b9ddfa679076e5373af6f34a5b112f6ab4b00bb3844de88c134ac493becd55c",
+      "page": 206,
+      "sha256": "4b9ddfa679076e5373af6f34a5b112f6ab4b00bb3844de88c134ac493becd55c",
+      "utf8_byte_count": 648
+    },
+    {
+      "character_count": 592,
+      "normalized_character_count": 592,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "0851d31f4aafa805559bad2ccd6df08bbc4e38b589c5dc1bc77f09ad71243d35",
+      "page": 207,
+      "sha256": "0851d31f4aafa805559bad2ccd6df08bbc4e38b589c5dc1bc77f09ad71243d35",
+      "utf8_byte_count": 1015
+    },
+    {
+      "character_count": 1354,
+      "normalized_character_count": 1354,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "4d7334bf23a9005339cf4491180eeacd9f5cce3dca8e64a84eaf1c0c997769f0",
+      "page": 208,
+      "sha256": "4d7334bf23a9005339cf4491180eeacd9f5cce3dca8e64a84eaf1c0c997769f0",
+      "utf8_byte_count": 2428
+    },
+    {
+      "character_count": 1669,
+      "normalized_character_count": 1669,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "8d3fbceee06d3f91e1cf4c732576fd16205ddd41ac456a36d4775131e6cda58c",
+      "page": 209,
+      "sha256": "8d3fbceee06d3f91e1cf4c732576fd16205ddd41ac456a36d4775131e6cda58c",
+      "utf8_byte_count": 2957
+    },
+    {
+      "character_count": 1771,
+      "normalized_character_count": 1771,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "4bc5225df732596c88743a133f70ea1586b8dc66c239025894af78e4efa6cbc2",
+      "page": 210,
+      "sha256": "4bc5225df732596c88743a133f70ea1586b8dc66c239025894af78e4efa6cbc2",
+      "utf8_byte_count": 3193
+    },
+    {
+      "character_count": 1866,
+      "normalized_character_count": 1866,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "4ae57676ac006c566bc9ba03a73ce16aedbe805066e201678643499411662a96",
+      "page": 211,
+      "sha256": "4ae57676ac006c566bc9ba03a73ce16aedbe805066e201678643499411662a96",
+      "utf8_byte_count": 3386
+    },
+    {
+      "character_count": 2034,
+      "normalized_character_count": 2034,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "cab4ae9974f5f2d83893da76237a7f03cde8b464a36e0c7475b1fb888b45c3e9",
+      "page": 212,
+      "sha256": "cab4ae9974f5f2d83893da76237a7f03cde8b464a36e0c7475b1fb888b45c3e9",
+      "utf8_byte_count": 3652
+    },
+    {
+      "character_count": 1970,
+      "normalized_character_count": 1970,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "2c4e67a234af89cee0f28e71864924ec1b42889a81921d804a12f3267e2dc0a2",
+      "page": 213,
+      "sha256": "2c4e67a234af89cee0f28e71864924ec1b42889a81921d804a12f3267e2dc0a2",
+      "utf8_byte_count": 3508
+    },
+    {
+      "character_count": 428,
+      "normalized_character_count": 428,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "5f6abc35646bf7563857193bf1069e0fb1deaab60d1cee28747ecc5c31278c99",
+      "page": 214,
+      "sha256": "5f6abc35646bf7563857193bf1069e0fb1deaab60d1cee28747ecc5c31278c99",
+      "utf8_byte_count": 759
+    },
+    {
+      "character_count": 1620,
+      "normalized_character_count": 1620,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "978745a7b02d35e5699bafd22e83a67581900a6ded381f2047ce86d85ee892cd",
+      "page": 215,
+      "sha256": "978745a7b02d35e5699bafd22e83a67581900a6ded381f2047ce86d85ee892cd",
+      "utf8_byte_count": 2911
+    },
+    {
+      "character_count": 1936,
+      "normalized_character_count": 1936,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "a7a52431e3d4d04375c7d32963612e1435bb8b8a20d6109b29df7a28f5c02a5e",
+      "page": 216,
+      "sha256": "a7a52431e3d4d04375c7d32963612e1435bb8b8a20d6109b29df7a28f5c02a5e",
+      "utf8_byte_count": 3493
+    },
+    {
+      "character_count": 1974,
+      "normalized_character_count": 1974,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "69da6c87499452fbb52f83bed3a4d7fa053d4b3a2534f128c1a4a378a8c033c1",
+      "page": 217,
+      "sha256": "69da6c87499452fbb52f83bed3a4d7fa053d4b3a2534f128c1a4a378a8c033c1",
+      "utf8_byte_count": 3557
+    },
+    {
+      "character_count": 1352,
+      "normalized_character_count": 1352,
+      "normalized_profile": "scriptorium-text-v1",
+      "normalized_sha256": "7d1b2e67338884351bd10027f54bd6554b5bb81c49023ef49a883048b54fb066",
+      "page": 218,
+      "sha256": "7d1b2e67338884351bd10027f54bd6554b5bb81c49023ef49a883048b54fb066",
+      "utf8_byte_count": 2447
+    }
+  ],
+  "source_text_included": false
+}

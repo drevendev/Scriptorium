@@ -1,0 +1,37 @@
+{
+  "admitted_for_calibration": false,
+  "binary_bytes_committed": false,
+  "binary_bytes_retrieved_transiently": true,
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "canonical_ocr_extraction_carrier_changed": false,
+  "carrier_format": "DjVu",
+  "current_file_revision_timestamp": "2021-08-24T09:31:00Z",
+  "diagnostic_ready": false,
+  "edition_identity": "1913_first_edition_facsimile_current_2021_djvu_revision",
+  "embedded_text_or_ocr_inspected": false,
+  "exact_original_url": "https://upload.wikimedia.org/wikipedia/commons/d/dd/%D0%9F%D0%B5%D1%80%D0%B5%D0%BB%D1%8C%D0%BC%D0%B0%D0%BD_%D0%AF.%D0%98._%D0%97%D0%B0%D0%BD%D0%B8%D0%BC%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D1%84%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0._%D0%9A%D0%BD%D0%B8%D0%B3%D0%B0_1_%281913%29.djvu",
+  "fantlab_source_edition_match": "unknown",
+  "file_page_url": "https://commons.wikimedia.org/wiki/File:%D0%9F%D0%B5%D1%80%D0%B5%D0%BB%D1%8C%D0%BC%D0%B0%D0%BD_%D0%AF.%D0%98._%D0%97%D0%B0%D0%BD%D0%B8%D0%BC%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D1%84%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0._%D0%9A%D0%BD%D0%B8%D0%B3%D0%B0_1_%281913%29.djvu",
+  "frozen_pdf_sha256": "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61",
+  "identity": {
+    "byte_count": 2982171,
+    "sha1": "05c29d01c5dde91bfcfbb6b7ea7f0ea3dba43a12",
+    "sha256": "f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462"
+  },
+  "literary_body_count_and_digests_frozen": false,
+  "literary_source_text_included": false,
+  "m2_parity_admissible": false,
+  "media_type": "image/vnd.djvu",
+  "minimum_300k_proved_from_frozen_body": false,
+  "ocr_extraction_profile_frozen": false,
+  "page_equivalence_verified": false,
+  "provider": "Wikimedia Commons",
+  "provider_expected_identity": {
+    "byte_count": 2982171,
+    "sha1": "05c29d01c5dde91bfcfbb6b7ea7f0ea3dba43a12"
+  },
+  "provider_metadata_crosscheck_passed": true,
+  "provider_observed_page_count": 218,
+  "receipt_version": "scriptorium-perelman-1913-djvu-companion-identity-v1",
+  "relationship_to_frozen_pdf": "same_bibliographic_edition_provider_asserted_page_equivalence_unverified"
+}

@@ -1,0 +1,9 @@
+# SCRIP-CORPUS-064 — Darwin `{{ё}}` exact replay-root identities
+
+- Bound exact source-free MediaWiki revision identities for the two canonical Russian Wikisource replay roots already selected by the reviewed v2 contract: `Шаблон:Ё@5687302` at `2026-01-21T12:32:10Z`, SHA-1 `963c1796d693d5451cf0c0897c35bd7e5b327ae1`, and `Шаблон:ЕЁ@3684646` at `2019-06-04T20:49:40Z`, SHA-1 `435bb2a412d8fb5962ccd5adc0ac2e03412fe109`.
+- Captured the identities through the Russian Wikisource Action API with exact `revids` and `rvprop=ids|timestamp|sha1`; no template/source content was requested or committed. The initial hosted request received HTTP 429, then a bounded retry with an explicit project User-Agent succeeded without bypassing provider controls.
+- Added `scriptorium-darwin-template-yo-replay-contract-v3` as a narrow successor to independently reviewed v2 SHA-256 `9b2e8914a5b4c3518ef331c27dc09a6a30d4d6433e90169c677348048f3dcd52`. V3 promotes only `root_identities_bound=true`, preserves exact predecessor identity, and has contract SHA-256 `8caa144d9f4c0b9a8149c1822bd79d168d212dea14d72079c3259d55e5e03c8c`.
+- Added fail-closed regressions for exact rebuild, source-free root identities, API metadata-only scope, predecessor drift, root SHA-1 drift, and the requirement that two bound roots without direct-dependency discovery proof still cannot satisfy complete recursive closure.
+- Added a read-only workflow that deterministically rebuilds/byte-compares v3 and re-queries the exact root revision metadata with bounded retries, while keeping recursive closure and all downstream gates closed.
+- Added a public source-free companion explaining the exact root freeze and why it does not establish recursive replay equivalence.
+- No dependency-discovery closure, deterministic forced/non-forced output verification, renderer promotion, literary-body identity, >=300k admission, FantLab source match, or M2 gate changed. M2 remains 0/5.

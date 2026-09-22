@@ -1,0 +1,111 @@
+name: Darwin/Rachinsky 1864 template yo root identity
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-template-yo-root-identity.yml"
+      - "scriptorium/darwin_template_yo_replay_contract.py"
+      - "scriptorium/darwin_template_yo_replay_contract_v3.py"
+      - "tests/test_darwin_template_yo_replay_contract.py"
+      - "tests/test_darwin_template_yo_replay_contract_v3.py"
+      - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-template-yo-root-identities.md"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v3.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify exact source-free root identities
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run replay-contract regressions
+        run: |
+          python -m unittest tests.test_darwin_template_yo_replay_contract tests.test_darwin_template_yo_replay_contract_v3 -v
+
+      - name: Deterministically rebuild and compare v3 contract
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_template_yo_replay_contract_v3 \
+            --evidence corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json \
+            --predecessor-contract corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v3.json
+          cmp \
+            corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v3.json \
+            build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v3.json
+
+      - name: Re-query exact MediaWiki revision identities
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --get \
+            --retry 4 --retry-all-errors --retry-delay 4 \
+            --max-time 30 \
+            --user-agent 'Scriptorium/0.1 (https://github.com/drevendev/Scriptorium; source-provenance verification)' \
+            'https://ru.wikisource.org/w/api.php' \
+            --data-urlencode 'action=query' \
+            --data-urlencode 'format=json' \
+            --data-urlencode 'formatversion=2' \
+            --data-urlencode 'prop=revisions' \
+            --data-urlencode 'revids=5687302|3684646' \
+            --data-urlencode 'rvprop=ids|timestamp|sha1' \
+            --output build/repro/root-identities.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          contract = json.loads(Path(
+              'corpus/candidates/source-edition-traces/'
+              'darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v3.json'
+          ).read_text(encoding='utf-8'))
+          payload = json.loads(Path('build/repro/root-identities.json').read_text(encoding='utf-8'))
+          expected = {
+              row['revision_id']: {
+                  'title': row['title'],
+                  'revision_timestamp': row['revision_timestamp'],
+                  'mediawiki_sha1': row['mediawiki_sha1'],
+              }
+              for row in contract['replay_contract']['dependencies']
+          }
+          actual = {}
+          for page in payload['query']['pages']:
+              revision = page['revisions'][0]
+              forbidden = {'content', 'slots', '*'} & set(revision)
+              assert not forbidden, forbidden
+              actual[revision['revid']] = {
+                  'title': page['title'],
+                  'revision_timestamp': revision['timestamp'],
+                  'mediawiki_sha1': revision['sha1'],
+              }
+          assert actual == expected, (actual, expected)
+          assert all(len(row['mediawiki_sha1']) == 40 for row in actual.values())
+          assert all(set(row['mediawiki_sha1']) <= set('0123456789abcdef') for row in actual.values())
+          assert contract['replay_contract']['root_identities_bound'] is True
+          assert contract['replay_contract']['dependency_closure_complete'] is False
+          assert contract['mode_verification']['outputs_verified'] is False
+          assert contract['m2_parity_admissible'] is False
+          print('SCRIPTORIUM_DARWIN_YO_ROOT_CONTRACT_SHA256=' + contract['contract_sha256'])
+          PY
+
+      - name: Upload source-free root identity contract
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-1864-template-yo-root-identity
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v3.json
+          if-no-files-found: error
+          retention-days: 7

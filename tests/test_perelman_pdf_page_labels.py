@@ -10,11 +10,17 @@ from scriptorium.perelman_pdf_page_labels import (
     EXPECTED_PDF_SHA256,
     QPDF_PACKAGE,
     build_evidence,
+    canonical_json_bytes,
     compute_file_identity,
     parse_qpdf_pagelabels,
     validate_evidence,
 )
 
+
+ARTIFACT = Path(
+    "corpus/candidates/source-edition-traces/"
+    "perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json"
+)
 
 EXACT_IDENTITY = {
     "byte_count": 28_168_847,
@@ -70,6 +76,13 @@ class PerelmanPdfPageLabelTests(unittest.TestCase):
         )
         self.assertFalse(evidence["decision"]["internal_page_labels_may_select_literary_pages"])
         self.assertFalse(evidence["canonical_extraction_carrier_selected"])
+
+    def test_committed_zero_label_artifact_matches_builder_byte_for_byte(self) -> None:
+        expected = build_evidence(EXACT_IDENTITY, [])
+        validate_evidence(expected)
+        self.assertEqual(ARTIFACT.read_bytes(), canonical_json_bytes(expected))
+        self.assertFalse(expected["probe"]["has_explicit_internal_page_labels"])
+        self.assertEqual(expected["probe"]["page_label_entry_count"], 0)
 
     def test_validator_rejects_gate_or_source_payload_promotion(self) -> None:
         evidence = build_evidence(EXACT_IDENTITY, [])

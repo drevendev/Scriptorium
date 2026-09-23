@@ -1,0 +1,162 @@
+{
+  "admitted_for_calibration": false,
+  "binary_bytes_committed": false,
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "canonical_extraction_carrier_selected": false,
+  "carrier": {
+    "byte_count": 28168847,
+    "kind": "pdf",
+    "page_count": 223,
+    "sha1": "3c616f547ff283a2cafd1ac26b448a8e8013f648",
+    "sha256": "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
+  },
+  "decision": {
+    "bibliographic_to_carrier_mapping_complete": false,
+    "body_start_carrier_page": 10,
+    "body_start_carrier_page_proved": true,
+    "complete_numbered_body_range_proved": false,
+    "last_directly_observed_numbered_body_carrier_page": 220,
+    "last_directly_observed_printed_number": 211,
+    "literary_body_end_carrier_page_proved": false,
+    "mapping_may_be_extrapolated_between_observed_anchors": false,
+    "next_evidence": "Independently review the exact-head transient renders; if accepted, audit bounded internal anchors, especially around the 2021-added printed pages 193-194, before binding a complete carrier map or literary-page selection.",
+    "numbered_body_end_carrier_page": 220,
+    "numbered_body_end_carrier_page_proved": true,
+    "reason": "Exact-carrier renders directly show the numbered-body transition at carrier page 10 -> printed 1, consecutive early anchors through printed 4, terminal numbered anchors carrier 217-220 -> printed 208-211, an unnumbered concluding body-text surface at 221, and publisher advertisements at 222-223. These endpoints materially narrow the mapping but do not prove every unobserved intermediate carrier page.",
+    "status": "numbered_body_transition_and_tail_anchors_observed_mapping_still_incomplete",
+    "tail_boundary_directly_observed": true
+  },
+  "diagnostic_ready": false,
+  "evidence_version": "scriptorium-perelman-1913-pdf-facsimile-transition-tail-v1",
+  "fantlab_source_edition_match": "unknown",
+  "literary_body_frozen": false,
+  "literary_page_selection_bound": false,
+  "literary_source_text_included": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved_from_frozen_body": false,
+  "observation": {
+    "artifact_retention_days": 1,
+    "authoring_artifact_digest": "sha256:ae4ac27bca4d1e2ffc0d75df3b9dab155d7a946a86b70b9a84b60894b4767fed",
+    "authoring_artifact_id": 10771380564,
+    "authoring_workflow_head_sha": "1b4b929b3e2d5816edf49dfdf46b22e8bd6ae4fa",
+    "authoring_workflow_run_id": 35905965911,
+    "method": "manual_visual_inspection_of_transient_renders_from_exact_verified_pdf",
+    "observed_at_utc": "2026-09-23T18:58:00Z",
+    "pages": [
+      {
+        "carrier_page": 9,
+        "label_observation": "no_label_visible_in_render",
+        "rendered_image_sha256": "616f586b7ac6e85cc57a9b4e6627fa09cab87e9b7d865ce98ed7f7808ba92d1a",
+        "rendered_review_filename": "transition-009.jpg",
+        "surface_kind": "front_matter_illustration",
+        "visible_printed_page_label": null
+      },
+      {
+        "carrier_page": 10,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "27a255abfa4fed43173b0435b3ae0468cf9a2238f03877f57fd125adb6b97fc7",
+        "rendered_review_filename": "transition-010.jpg",
+        "surface_kind": "chapter_i_numbered_body_start",
+        "visible_printed_page_label": "1"
+      },
+      {
+        "carrier_page": 11,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "1061c270141a14cba585dcbc95f8b164fd0e28258144d15d496c3c9ac5d8271f",
+        "rendered_review_filename": "transition-011.jpg",
+        "surface_kind": "numbered_body_text",
+        "visible_printed_page_label": "2"
+      },
+      {
+        "carrier_page": 12,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "4d0f741e5c0dcbdf995d8819a08ad0a2ba2a77c64377195991295d3324756b41",
+        "rendered_review_filename": "transition-012.jpg",
+        "surface_kind": "numbered_body_text_with_diagrams",
+        "visible_printed_page_label": "3"
+      },
+      {
+        "carrier_page": 13,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "bd4c3d04fca527c4d37263871cba256eb0e29c7e9ef80204937c9ffbd3d68aea",
+        "rendered_review_filename": "transition-013.jpg",
+        "surface_kind": "numbered_body_text_with_diagram",
+        "visible_printed_page_label": "4"
+      },
+      {
+        "carrier_page": 217,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "930c3656c5c455c18a14b612f7db1ed988fb2d70dbe2c0e144da20201c94e4d0",
+        "rendered_review_filename": "tail-217.jpg",
+        "surface_kind": "numbered_body_text_with_figure",
+        "visible_printed_page_label": "208"
+      },
+      {
+        "carrier_page": 218,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "339a9a7ed17ca0b8a19187d713307d01fcd97dcbc234747440089aaf44daf157",
+        "rendered_review_filename": "tail-218.jpg",
+        "surface_kind": "numbered_body_text_with_figure",
+        "visible_printed_page_label": "209"
+      },
+      {
+        "carrier_page": 219,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "1502586fadeb55aeae415a601f17677ea6b8ed70e9358504f6cf7f05c01a7f1e",
+        "rendered_review_filename": "tail-219.jpg",
+        "surface_kind": "numbered_body_text",
+        "visible_printed_page_label": "210"
+      },
+      {
+        "carrier_page": 220,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "be009194f407f58584a2c7ae37635a5addcd2827988b6b69f8554912346839f2",
+        "rendered_review_filename": "tail-220.jpg",
+        "surface_kind": "numbered_body_text",
+        "visible_printed_page_label": "211"
+      },
+      {
+        "carrier_page": 221,
+        "label_observation": "no_label_visible_in_render",
+        "rendered_image_sha256": "2f2cc34e58d198f1a387096e9b6f8d7d12fa3f1ccb3a8a2046f540cad1006ba2",
+        "rendered_review_filename": "tail-221.jpg",
+        "surface_kind": "unnumbered_concluding_body_text_with_end_ornament",
+        "visible_printed_page_label": null
+      },
+      {
+        "carrier_page": 222,
+        "label_observation": "no_label_visible_in_render",
+        "rendered_image_sha256": "efe672f74f55d93bcab2edbd9d3383ae13fcca47a905b2f07e707a2f7c587a1f",
+        "rendered_review_filename": "tail-222.jpg",
+        "surface_kind": "publisher_advertisement",
+        "visible_printed_page_label": null
+      },
+      {
+        "carrier_page": 223,
+        "label_observation": "no_printed_page_label_visible_in_render",
+        "non_page_mark_note": "A handwritten or stamped '30356' is visible above the advertisement and is not treated as a printed page label.",
+        "rendered_image_sha256": "cc02e9379cf9612893aab5d05a956e9bf7829000efe6d973c61234efe33618c4",
+        "rendered_review_filename": "tail-223.jpg",
+        "surface_kind": "publisher_advertisement",
+        "visible_printed_page_label": null
+      }
+    ],
+    "pdf_bytes_deleted_before_artifact_upload": true,
+    "render_command": "pdftoppm -r 120 -jpeg",
+    "render_manifest_sha256": "dedd68c23385b457e9630404022757b1f5a6a4bc5cfb6e74c364e93c28470fec",
+    "rendered_page_bytes_committed": false,
+    "renderer": {
+      "name": "pdftoppm",
+      "package": "poppler-utils",
+      "package_version": "24.02.0-1ubuntu9.9",
+      "reported_version": "24.02.0",
+      "runner_os": "Ubuntu 24.04.5"
+    },
+    "transient_review_artifact_uploaded": true
+  },
+  "ocr_correctness_verified": false,
+  "ocr_included": false,
+  "page_images_committed": false,
+  "pdf_djvu_page_equivalence_verified": false,
+  "source_free": true
+}

@@ -1,0 +1,110 @@
+name: Perelman 1913 PDF page labels
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/perelman-pdf-page-labels.yml"
+      - "scriptorium/perelman_pdf_page_labels.py"
+      - "tests/test_perelman_pdf_page_labels.py"
+      - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.md"
+      - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.md"
+      - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-072.md"
+      - "project/run-receipts/SCRIP-CORPUS-072.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pdf-page-labels:
+    name: Probe exact PDF internal page labels
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Install pinned qpdf package
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends qpdf=11.9.0-1.1ubuntu0.1
+          test "$(dpkg-query -W -f='${Package}=${Version}' qpdf)" = "qpdf=11.9.0-1.1ubuntu0.1"
+          qpdf --version
+
+      - name: Run source-free page-label tests
+        run: python -m unittest tests.test_perelman_pdf_page_labels -v
+
+      - name: Retrieve exact frozen PDF transiently
+        run: |
+          set -euo pipefail
+          mkdir -p build/perelman
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+          from scriptorium.perelman_scan_identity import SCAN_URL, USER_AGENT
+
+          target = Path("build/perelman/exact.pdf")
+          request = Request(SCAN_URL, headers={"User-Agent": USER_AGENT, "Accept": "application/pdf,*/*"})
+          with urlopen(request, timeout=60) as response, target.open("wb") as out:
+              while chunk := response.read(1024 * 1024):
+                  out.write(chunk)
+          PY
+
+      - name: Capture source-free page-label evidence
+        run: |
+          set -euo pipefail
+          python -m scriptorium.perelman_pdf_page_labels \
+            --pdf build/perelman/exact.pdf \
+            --qpdf-package qpdf=11.9.0-1.1ubuntu0.1 \
+            --output build/perelman/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json
+          rm -f build/perelman/exact.pdf
+          test ! -e build/perelman/exact.pdf
+
+      - name: Compare committed evidence byte-for-byte
+        run: |
+          set -euo pipefail
+          canonical="corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json"
+          generated="build/perelman/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json"
+          test -f "$canonical"
+          cmp "$canonical" "$generated"
+
+      - name: Verify closed gates and source-free boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("build/perelman/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json")
+          evidence = json.loads(path.read_text(encoding="utf-8"))
+          assert evidence["source_free"] is True
+          assert evidence["carrier"]["page_count"] == 223
+          assert evidence["carrier"]["sha256"] == "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
+          assert evidence["binary_bytes_committed"] is False
+          assert evidence["page_images_committed"] is False
+          assert evidence["ocr_included"] is False
+          assert evidence["literary_source_text_included"] is False
+          assert evidence["literary_page_selection_bound"] is False
+          assert evidence["minimum_300k_proved_from_frozen_body"] is False
+          assert evidence["fantlab_source_edition_match"] == "unknown"
+          assert evidence["m2_parity_admissible"] is False
+          print("SCRIPTORIUM_PERELMAN_PAGE_LABEL_ENTRIES=" + str(evidence["probe"]["page_label_entry_count"]))
+          PY
+
+      - name: Upload source-free page-label evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: perelman-1913-pdf-page-labels
+          path: build/perelman/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json
+          if-no-files-found: error
+          retention-days: 7

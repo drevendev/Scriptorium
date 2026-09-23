@@ -7,14 +7,18 @@ on:
       - "scriptorium/darwin_module_string_dependency_probe.py"
       - "scriptorium/darwin_dependency_revision_observation.py"
       - "tests/test_darwin_module_string_dependency_probe.py"
+      - "tests/test_darwin_module_string_dependency_probe_freeze.py"
       - "tests/test_darwin_dependency_revision_observation.py"
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-observation-v1.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json"
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json"
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json"
       - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md"
       - "project/STATE_AND_QUEUE.md"
       - "project/CHANGELOG.d/SCRIP-CORPUS-068.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-069.md"
       - "project/run-receipts/SCRIP-CORPUS-068.md"
+      - "project/run-receipts/SCRIP-CORPUS-069.md"
   workflow_dispatch:
 
 permissions:
@@ -41,6 +45,7 @@ jobs:
         run: |
           python -m unittest \
             tests.test_darwin_module_string_dependency_probe \
+            tests.test_darwin_module_string_dependency_probe_freeze \
             tests.test_darwin_dependency_revision_observation -v
 
       - name: Fetch exact observed Module:String revision transiently
@@ -71,6 +76,16 @@ jobs:
             --policy corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json \
             --output build/repro/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json
           rm build/repro/module-string-exact-revision.json
+
+      - name: Compare live probe with durable canonical freeze
+        run: |
+          set -euo pipefail
+          cmp \
+            corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json \
+            build/repro/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json
+          sha256sum \
+            corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json \
+            build/repro/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json
 
       - name: Assert source-free gates stay closed
         run: |

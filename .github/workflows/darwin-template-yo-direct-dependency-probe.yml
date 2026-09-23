@@ -8,10 +8,13 @@ on:
       - "scriptorium/darwin_template_yo_replay_contract.py"
       - "scriptorium/darwin_template_yo_replay_contract_v3.py"
       - "scriptorium/darwin_template_yo_replay_contract_v4.py"
+      - "scriptorium/darwin_dependency_revision_policy.py"
       - "tests/test_darwin_template_dependency_scan.py"
       - "tests/test_darwin_template_yo_replay_contract_v3.py"
       - "tests/test_darwin_template_yo_replay_contract_v4.py"
+      - "tests/test_darwin_dependency_revision_policy.py"
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json"
       - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md"
   workflow_dispatch:
 
@@ -40,7 +43,8 @@ jobs:
           python -m unittest \
             tests.test_darwin_template_dependency_scan \
             tests.test_darwin_template_yo_replay_contract_v3 \
-            tests.test_darwin_template_yo_replay_contract_v4 -v
+            tests.test_darwin_template_yo_replay_contract_v4 \
+            tests.test_darwin_dependency_revision_policy -v
 
       - name: Deterministically rebuild and compare v4 contract
         run: |
@@ -54,6 +58,12 @@ jobs:
           cmp \
             corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json \
             build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
+
+      - name: Validate dependency revision-selection policy
+        run: |
+          python -m scriptorium.darwin_dependency_revision_policy \
+            --policy corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json \
+            --predecessor-contract corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
 
       - name: Re-query exact historical roots and verify source-free observations
         run: |

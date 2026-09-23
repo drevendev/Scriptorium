@@ -22,6 +22,7 @@
 - `scriptorium/darwin_template_yo_replay_contract_v5.py` — validates predecessor/probe self-digests, binds the reviewed exact Module:String identity, derives its source-free complete discovery proof and requires transitive graph closure.
 - `corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v5.json` — canonical source-free successor, contract SHA-256 `4ded05d3ea45e9cfa9aa657e6b4e1c26c48cf2f1be60643d0194993e995b4c0c`.
 - `tests/test_darwin_template_yo_replay_contract_v5.py` — deterministic-build, complete-closure, exact-leaf, stale-evidence and gate-boundary regressions.
+- `.github/workflows/darwin-template-yo-direct-dependency-probe.yml` — extends the existing exact-root CI surface to trigger on v5/probe inputs, run v5/probe-freeze focused tests, rebuild v5 from the reviewed predecessor/probe, byte-compare it to the canonical artifact and upload source-free v4/v5 contracts.
 - `corpus/candidates/darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md` — public companion updated with the selected three-node graph and provenance boundary.
 - `project/CHANGELOG.d/SCRIP-CORPUS-076.md`, this receipt and canonical state handoff.
 
@@ -40,6 +41,7 @@ This proves dependency identity/discovery closure **only for the deliberately se
 ## Verification / handoff
 
 - Draft PR #242 is the review surface. Exact authored-head PR-triggered CI must settle before judgement.
+- The dedicated direct-dependency workflow now provides a byte-for-byte v5 rebuild check in addition to the repository-wide standard-library test suite.
 - A later wake must independently re-read the full diff, require exact-head checks to succeed, verify the committed contract can be deterministically rebuilt from the reviewed v4/probe artifacts, and confirm no source prose or downstream gate promotion slipped in.
 - This authoring run must not self-approve or merge the substantial change.
 

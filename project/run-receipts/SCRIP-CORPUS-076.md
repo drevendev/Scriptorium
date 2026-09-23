@@ -2,11 +2,11 @@
 
 ## Selection
 
-- Mode: corpus / provenance research from the queued P2 SCRIP-CORPUS continuation.
+- Mode: corpus / provenance research from the queued P2 SCRIP-CORPUS continuation, followed by independent later-wake review/recovery.
 - Base: exact `master@003de730681010d02a94dac9dc08c66ab7bad4bc`.
-- Issue: #241.
+- Issue: #241 (closed completed).
 - Branch: `scrip-corpus-076-darwin-yo-closure`.
-- Pull request: #242 (Draft; review pending).
+- Pull request: #242 (independently reviewed and squash-merged as `1559a7107585ae53328b926e40594b929856a78b`).
 - Reason: Darwin/Rachinsky 1864 is a diversified nonfiction/translation candidate whose reviewed replay contract had one remaining unbound dependency even though a durable exact-revision Module:String probe already existed. Closing that bounded source-free dependency graph is a higher-value next provenance step than inferring renderer output or historical transclusion behavior.
 
 ## Upstream evidence
@@ -28,7 +28,7 @@
 
 ## Decision
 
-The selected controlled-replay dependency graph is now intended to be exactly:
+The selected controlled-replay dependency graph is exactly:
 
 ```text
 Шаблон:Ё@5687302 -> Шаблон:ЕЁ@3684646 -> Модуль:String@3684569
@@ -40,14 +40,18 @@ This proves dependency identity/discovery closure **only for the deliberately se
 
 ## Verification / handoff
 
-- Draft PR #242 is the review surface. Exact authored-head PR-triggered CI must settle before judgement.
-- The dedicated direct-dependency workflow now provides a byte-for-byte v5 rebuild check in addition to the repository-wide standard-library test suite.
-- A later wake must independently re-read the full diff, require exact-head checks to succeed, verify the committed contract can be deterministically rebuilt from the reviewed v4/probe artifacts, and confirm no source prose or downstream gate promotion slipped in.
-- This authoring run must not self-approve or merge the substantial change.
+- Independent later-wake review `5298078233` was submitted against exact head `793ded9993b6c4f884190a392946c14c15840a05`; all 8 changed files and Issue #241 were re-read, with no open review threads or merge-blocking inconsistency found.
+- The base remained exact `master@003de730681010d02a94dac9dc08c66ab7bad4bc` through judgement.
+- All 23 PR-triggered workflow runs returned for the reviewed SHA completed `success`.
+- Dedicated run `35931786955` checked out the exact reviewed SHA, passed 42/42 focused dependency regressions, deterministically rebuilt v4 and v5, and byte-compared rebuilt v5 to the committed canonical artifact.
+- Source-free artifact `10781452679` had GitHub ZIP SHA-256 `75dfe69f06bc0e8f0a7fa26d96fac3dbd0a5d590c1a8d310dd90bb40b3a93a1f`; independent download/recomputation matched that digest. The v5 JSON self-digest independently recomputed to `4ded05d3ea45e9cfa9aa657e6b4e1c26c48cf2f1be60643d0194993e995b4c0c`.
+- Frozen-diagnostic run `35931786875` checked out the same exact head and passed the complete 554/554 standard-library suite.
+- PR #242 was marked Ready and squash-merged with expected-head protection as `1559a7107585ae53328b926e40594b929856a78b`; Issue #241 automatically closed with reason `completed`.
+- Next normal-flow selection resumes from P2 SCRIP-CORPUS continuation. The next admissible Darwin semantic step is deterministic forced/non-forced replay in a controlled environment that consumes only the three reviewed bound identities.
 
 ## Gates
 
-- `semantic_dependency_closure_proved=true` only for the selected replay snapshot after the v5 contract passes independent review.
+- `semantic_dependency_closure_proved=true` only for the selected replay snapshot under the reviewed bounded scanners.
 - `historical_transclusion_provenance_proved=false`.
 - `outputs_verified=false`.
 - `render_profile_rule_promoted=false`.
@@ -61,4 +65,4 @@ This proves dependency identity/discovery closure **only for the deliberately se
 - `fantlab_source_edition_match=unknown`.
 - `m2_parity_admissible=false`; M2 remains 0/5.
 
-Next admissible work after independent merge is deterministic forced/non-forced replay in a controlled environment that consumes only the bound identities. Dependency closure alone does not remove `{{ё}}` from the unresolved renderer backlog.
+Dependency closure alone does not remove `{{ё}}` from the unresolved renderer backlog. Historical transclusion and deterministic forced/non-forced output semantics require separate evidence.

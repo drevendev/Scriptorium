@@ -9,15 +9,41 @@ and dependency titles.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from hashlib import sha1, sha256
 import re
 from typing import Iterable
 
 
+MAGIC_WORD_EVIDENCE_TITLE = "Help:Magic words"
+MAGIC_WORD_EVIDENCE_REVISION_ID = 8589537
+MAGIC_WORD_EVIDENCE_REVISION_DATE = "2026-09-03"
+MAGIC_WORD_EVIDENCE_URL = (
+    "https://www.mediawiki.org/w/index.php?title=Help:Magic_words"
+    f"&oldid={MAGIC_WORD_EVIDENCE_REVISION_ID}"
+)
+# This is intentionally a small, pinned evidence allowlist rather than an attempt to
+# reproduce MediaWiki's installation-dependent magic-word registry. Unknown uppercase
+# bare invocations fail closed below.
+DOCUMENTED_BARE_MAGIC_WORDS = (
+    "CURRENTYEAR",
+    "CURRENTDAYNAME",
+    "PAGENAME",
+    "FULLPAGENAME",
+    "BASEPAGENAME",
+    "ROOTPAGENAME",
+    "SUBPAGENAME",
+)
+# Exact root evidence proves that this uppercase bare name is a template dependency.
+EVIDENCE_BOUND_UPPERCASE_TEMPLATES = ("ЕЁ",)
+
 SCAN_METHOD = (
-    "scriptorium-darwin-transclusion-scan-v1: exact revision source; MediaWiki "
+    "scriptorium-darwin-transclusion-scan-v2: exact revision source; MediaWiki "
     "noinclude/includeonly/onlyinclude filtering; redirect target plus static "
-    "template/#invoke module names; fail closed on dynamic or unsupported names"
+    "template/#invoke module names; bare magic words classified only from pinned "
+    "MediaWiki Help:Magic words@8589537 evidence; exact-root uppercase template "
+    "ЕЁ explicitly bound; fail closed on dynamic, unsupported, parameterized "
+    "magic-word-like, or unclassified uppercase names"
 )
 
 _STRIP_TAGS = ("nowiki", "pre", "syntaxhighlight", "source")
@@ -25,6 +51,13 @@ _REDIRECT_RE = re.compile(
     r"^\s*#(?:redirect|перенаправление)\s*\[\[\s*([^\]|#]+)",
     flags=re.IGNORECASE,
 )
+_UPPERCASE_BARE_RE = re.compile(r"[A-ZА-ЯЁ0-9_]+")
+
+
+@dataclass(frozen=True)
+class _Invocation:
+    head: str
+    has_parameters: bool
 
 
 def _normalize_explicit_title(raw: str) -> str:
@@ -77,8 +110,8 @@ def transclusion_source(text: str) -> str:
     return value
 
 
-def _invocation_heads(text: str) -> list[str]:
-    heads: list[str] = []
+def _invocations(text: str) -> list[_Invocation]:
+    invocations: list[_Invocation] = []
     i = 0
     while i < len(text) - 1:
         if text.startswith("{{{{{", i):
@@ -108,7 +141,8 @@ def _invocation_heads(text: str) -> list[str]:
                 depth -= 1
                 if depth == 0:
                     raw = text[start:j].strip()
-                    heads.append(raw.split("|", 1)[0].strip())
+                    head, separator, _ = raw.partition("|")
+                    invocations.append(_Invocation(head=head.strip(), has_parameters=bool(separator)))
                     break
                 j += 2
                 continue
@@ -116,10 +150,11 @@ def _invocation_heads(text: str) -> list[str]:
         if depth != 0:
             raise ValueError("unclosed MediaWiki template syntax")
         i += 2
-    return heads
+    return invocations
 
 
-def _dependency_from_head(head: str) -> str | None:
+def _dependency_from_invocation(invocation: _Invocation) -> str | None:
+    head = invocation.head
     if not head:
         return None
     lowered = head.casefold()
@@ -134,8 +169,18 @@ def _dependency_from_head(head: str) -> str | None:
         raise ValueError(f"dynamic template name requires explicit evidence: {head!r}")
     if ":" in head:
         return _normalize_explicit_title(head)
-    if head.isupper() and re.fullmatch(r"[A-ZА-ЯЁ0-9_]+", head):
-        return None
+    if head.isupper() and _UPPERCASE_BARE_RE.fullmatch(head):
+        if head in EVIDENCE_BOUND_UPPERCASE_TEMPLATES:
+            return _normalize_explicit_title(head)
+        if head in DOCUMENTED_BARE_MAGIC_WORDS:
+            if invocation.has_parameters:
+                raise ValueError(
+                    f"parameterized magic-word-like invocation requires explicit evidence: {head!r}"
+                )
+            return None
+        raise ValueError(
+            f"unclassified uppercase invocation requires explicit magic-word/template evidence: {head!r}"
+        )
     return _normalize_explicit_title(head)
 
 
@@ -149,8 +194,8 @@ def discover_direct_dependencies(text: str) -> tuple[str, ...]:
 
     dependencies = {
         dependency
-        for head in _invocation_heads(visible)
-        if (dependency := _dependency_from_head(head)) is not None
+        for invocation in _invocations(visible)
+        if (dependency := _dependency_from_invocation(invocation)) is not None
     }
     return tuple(sorted(dependencies))
 

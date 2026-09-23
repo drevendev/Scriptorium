@@ -41,8 +41,18 @@ This is a reproducible point-in-time **observation**, not a claim about which mo
 - observation SHA-256: `e60fc5e4f59164e98114024a4464f377f0684673be979e0fe18ed7b1fb9070bc`
 - builder/validator: [`../../scriptorium/darwin_dependency_revision_observation.py`](../../scriptorium/darwin_dependency_revision_observation.py)
 
+## Exact module source-free dependency probe
+
+SCRIP-CORPUS-068 adds a separate **probe** before any successor contract is allowed to bind the observed module revision. PR CI fetches exact `Модуль:String@3684569` with `rvprop=ids|timestamp|sha1|content` and `rvslots=main`, verifies the returned title/revision/timestamp/SHA-1 against the reviewed metadata-only observation, then treats the Lua source as transient evidence and discards it. Only source byte/digest metadata and derived loader/dependency names are emitted.
+
+The bounded Lua scanner recognizes literal wiki-module references passed to `require(...)`, `mw.loadData(...)`, and `mw.loadJsonData(...)`; it ignores ordinary quoted/long strings and comments, records non-wiki `require` literals separately, and marks the scan incomplete when a loader argument is dynamic or otherwise unsupported. This probe is intentionally not a binding artifact: `module_string_identity_bound=false` and `dependency_closure_complete=false` remain required even when the live probe succeeds.
+
+- probe implementation: [`../../scriptorium/darwin_module_string_dependency_probe.py`](../../scriptorium/darwin_module_string_dependency_probe.py)
+- schema: `scriptorium-darwin-module-string-dependency-probe-v1`
+- source retention: none; the raw exact-revision response is deleted before the workflow uploads only the source-free derived JSON artifact
+
 ## Fail-closed boundary
 
-Direct-dependency discovery is complete only for the two exact roots. The bound replay graph contains `Шаблон:Ё -> Шаблон:ЕЁ`. `Шаблон:ЕЁ` in turn discovers `Модуль:String`; SCRIP-CORPUS-067 now has an explicit exact current-revision observation for that child, but v4 still does not bind it and its own direct dependencies have not been frozen. The v4 contract therefore remains unchanged with the root-to-root edge `target_identity_bound=true`, the module edge `target_identity_bound=false`, and `dependency_closure_complete=false`.
+Direct-dependency discovery is complete only for the two exact roots. The bound replay graph contains `Шаблон:Ё -> Шаблон:ЕЁ`. `Шаблон:ЕЁ` in turn discovers `Модуль:String`; SCRIP-CORPUS-067 has an explicit exact current-revision observation for that child, and SCRIP-CORPUS-068 adds a source-free exact-revision dependency probe, but v4 still does not bind the module. The v4 contract therefore remains unchanged with the root-to-root edge `target_identity_bound=true`, the module edge `target_identity_bound=false`, and `dependency_closure_complete=false`.
 
 No forced/non-forced output has been verified in a recursively bound environment. `outputs_verified=false`, `render_profile_rule_promoted=false`, renderer/body/`>=300k` admission gates remain closed, `fantlab_source_edition_match=unknown`, and `m2_parity_admissible=false`. M2 remains **0/5**.

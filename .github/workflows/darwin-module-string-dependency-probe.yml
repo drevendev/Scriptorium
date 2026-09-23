@@ -1,0 +1,120 @@
+name: Darwin/Rachinsky Module:String dependency probe
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-module-string-dependency-probe.yml"
+      - "scriptorium/darwin_module_string_dependency_probe.py"
+      - "scriptorium/darwin_dependency_revision_observation.py"
+      - "tests/test_darwin_module_string_dependency_probe.py"
+      - "tests/test_darwin_dependency_revision_observation.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-observation-v1.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json"
+      - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-068.md"
+      - "project/run-receipts/SCRIP-CORPUS-068.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    name: Probe exact Module:String revision source-free
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run source-free probe regressions
+        run: |
+          python -m unittest \
+            tests.test_darwin_module_string_dependency_probe \
+            tests.test_darwin_dependency_revision_observation -v
+
+      - name: Fetch exact observed Module:String revision transiently
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          curl --fail --silent --show-error --location --get \
+            --retry 4 --retry-all-errors --retry-delay 4 \
+            --max-time 30 \
+            --user-agent 'Scriptorium/0.1 (https://github.com/drevendev/Scriptorium; source-provenance verification)' \
+            'https://ru.wikisource.org/w/api.php' \
+            --data-urlencode 'action=query' \
+            --data-urlencode 'format=json' \
+            --data-urlencode 'formatversion=2' \
+            --data-urlencode 'prop=revisions' \
+            --data-urlencode 'revids=3684569' \
+            --data-urlencode 'rvprop=ids|timestamp|sha1|content' \
+            --data-urlencode 'rvslots=main' \
+            --output build/repro/module-string-exact-revision.json
+
+      - name: Build source-free dependency probe
+        run: |
+          set -euo pipefail
+          python -m scriptorium.darwin_module_string_dependency_probe \
+            --api-response build/repro/module-string-exact-revision.json \
+            --observation corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-observation-v1.json \
+            --predecessor-contract corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json \
+            --policy corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json
+          rm build/repro/module-string-exact-revision.json
+
+      - name: Assert source-free gates stay closed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('build/repro/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json')
+          probe = json.loads(path.read_text(encoding='utf-8'))
+          assert probe['source_text_included'] is False
+          assert probe['gates']['module_string_dependency_surface_probed'] is True
+          assert probe['gates']['module_string_identity_bound'] is False
+          assert probe['gates']['dependency_closure_complete'] is False
+          assert probe['gates']['outputs_verified'] is False
+          assert probe['gates']['render_profile_rule_promoted'] is False
+          assert probe['gates']['literary_body_count_and_digests_frozen'] is False
+          assert probe['gates']['minimum_300k_proved'] is False
+          assert probe['gates']['fantlab_source_edition_match'] == 'unknown'
+          assert probe['gates']['m2_parity_admissible'] is False
+          forbidden = {'content', 'text', 'wikitext', 'body', 'source_text'}
+          def walk(value):
+              if isinstance(value, dict):
+                  assert not (forbidden & value.keys())
+                  for child in value.values():
+                      walk(child)
+              elif isinstance(value, list):
+                  for child in value:
+                      walk(child)
+          walk(probe)
+          surface = probe['dependency_surface']
+          assert surface['semantic_dependency_closure_proved'] is False
+          print('scan_scope=', surface['scan_scope'])
+          print('scan_complete=', surface['scan_complete'])
+          print('semantic_dependency_closure_proved=', surface['semantic_dependency_closure_proved'])
+          print('static_wiki_module_dependencies=', surface['static_wiki_module_dependencies'])
+          print('non_wiki_require_literals=', surface['non_wiki_require_literals'])
+          print('dynamic_or_unsupported_loader_calls=', surface['dynamic_or_unsupported_loader_calls'])
+          print('probe_sha256=', probe['probe_sha256'])
+          PY
+
+      - name: Upload source-free dependency probe only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-1864-module-string-dependency-probe
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json
+          if-no-files-found: error
+          retention-days: 7

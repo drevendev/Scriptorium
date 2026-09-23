@@ -81,6 +81,8 @@ def _invocation_heads(text: str) -> list[str]:
     heads: list[str] = []
     i = 0
     while i < len(text) - 1:
+        if text.startswith("{{{{{", i):
+            raise ValueError("dynamic template name requires explicit evidence")
         if text.startswith("{{{", i):
             i += 3
             continue

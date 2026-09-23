@@ -1,22 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 257
+STATE_REVISION: 258
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-23T15:57:00Z
-LAST_RESULT: SCRIP-CORPUS-072 / Issue #233 authored in Draft PR #234. The exact frozen Perelman 1913 PDF (28,168,847 bytes; SHA-256 `3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61`) was re-verified before a pinned qpdf 11.9.0 `pagelabels` probe. qpdf reports zero internal page-label entries. Source-free canonical evidence is frozen at `corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json`, physical SHA-256 `16b4ba074221d7fa20cb044584886038989f43657988c6bd6b062774077915bd`. No bibliographic-to-carrier mapping or downstream body/FantLab/M2 gate moved. Independent exact-head review remains required.
-LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman now has exact PDF/DjVu identities, reviewed pagination and current Wikisource/FantLab surface boundaries, plus authored exact-PDF evidence that the PDF has no internal `/PageLabels` shortcut. Darwin/Rachinsky retains reviewed v4 dependency/provenance evidence through `Модуль:String@3684569`, but semantic dependency closure and historical binding remain unproved. M2 stays 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-23T16:18:00Z
+LAST_RESULT: SCRIP-CORPUS-072 / Issue #233 completed. Independent exact-head review `5293616208` re-read all 8 changed files in PR #234 at `150eae46800f826de93dff00fb89494ee254394b` against unchanged `master@4b50ea3c39181ff8f1fd4a1fadc9d04a09237e67`, found no open review thread or merge blocker, independently recomputed the canonical source-free artifact SHA-256 `16b4ba074221d7fa20cb044584886038989f43657988c6bd6b062774077915bd`, and confirmed all 22 exact-head PR-triggered workflows settled `success`. Dedicated run `35886810449` checked out the reviewed SHA, installed pinned qpdf 11.9.0, passed 7/7 focused regressions, re-fetched and byte-verified the exact frozen PDF, reported zero internal page-label entries, deleted transient PDF bytes, and byte-for-byte matched regenerated JSON to the committed artifact. PR #234 was marked Ready and squash-merged with expected-head protection as `2590d3dd234fde3d26d2659f448bf58f7c040965`, closing Issue #233 completed.
+LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman now has exact PDF/DjVu identities, reviewed pagination and current Wikisource/FantLab surface boundaries, and independently reviewed exact-PDF evidence that the 223-page PDF has zero internal page-label entries. That result only rules out the `/PageLabels` mapping shortcut; exact facsimile mapping and every downstream body/FantLab/M2 gate remain open. Darwin/Rachinsky retains reviewed v4 dependency/provenance evidence through `Модуль:String@3684569`, while semantic dependency closure and historical binding remain unproved. M2 stays 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-072
-ISSUE:          #233 (open)
-STATUS:         REVIEW_PENDING
-PR:             #234 (Draft; indepent exact-head review required)
-NEXT_ACTION:    Independently review the exact final PR #234 head after all workflows settle. Verify the committed source-free
-                page-label artifact regenerates byte-for-byte from the exact frozen PDF, confirm qpdf reports zero page-label
-                entries, and merge only if all fail-closed mapping/body/FantLab/M2 boundaries remain intact. Otherwise recover
-                the precise blocker in Issue #233 / PR #234 before normal P2 selection.
+ISSUE:          #233 (closed completed)
+STATUS:         COMPLETE
+PR:             #234 (independently reviewed; squash-merged as 2590d3dd234fde3d26d2659f448bf58f7c040965)
+NEXT_ACTION:    Resume normal-flow selection from the P2 SCRIP-CORPUS continuation. For Perelman page mapping, use exact-carrier
+                facsimile evidence from visible printed page numbers/front matter/end matter, optionally cross-checking the
+                retained DjVu page map. Do not infer literary-page mapping from page counts, missing Wikisource Index surfaces,
+                or the absence of PDF internal page labels.
 ```
 
 ## Current milestone gate
@@ -31,7 +31,6 @@ Recovery/review-ready work and failing required checks preempt normal selection.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-CORPUS-072 review | review / verification | Independently review Draft PR #234 at its exact final head; verify exact-PDF qpdf replay and canonical source-free artifact before merge or recovery | Do not self-approve authored work; mapping/body/FantLab/M2 gates stay fail-closed |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics; Petersburg, Perelman and Darwin/Rachinsky have candidate-specific extraction/renderer work available | Preserve translation/edition identity and legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
 
 ## Retained corpus / provenance orientation
@@ -54,7 +53,7 @@ Detailed evidence is canonical in `corpus/candidates/`, `benchmarks/`, `project/
 - **The Life of Klim Samgin** — source graph/extractor/body identities retained; historical renderer equivalence and FantLab input remain unresolved.
 - **Children of Captain Grant — Beketova translation** — exact 1,095,467-character body with reviewed source-free deterministic showcase; no FantLab result/input identity for this translation.
 - **On the Origin of Species — Rachinsky translation** — exact Page set/scan/render contracts retained; reviewed `Шаблон:Ё -> Шаблон:ЕЁ -> Модуль:String` provenance remains only partially bound; renderer/body/>=300k/FantLab gates stay closed.
-- **Entertaining Physics, Book 1 — Perelman 1913** — exact PDF and DjVu carriers retained; DjVu hidden-text/page-map evidence retained; reviewed pagination, FantLab-surface and current Wikisource-index boundaries retained. SCRIP-CORPUS-072 now adds exact-PDF qpdf evidence that the 223-page PDF has zero internal page labels. This rules out `/PageLabels` as a mapping shortcut only. Exact facsimile mapping, PDF↔DjVu equivalence, OCR correctness, canonical carrier, literary body/>=300k, FantLab input identity and M2 remain open.
+- **Entertaining Physics, Book 1 — Perelman 1913** — exact PDF and DjVu carriers retained; DjVu hidden-text/page-map evidence retained; reviewed pagination, FantLab-surface and current Wikisource-index boundaries retained. Independently reviewed SCRIP-CORPUS-072 adds exact-PDF qpdf evidence that the 223-page PDF has zero internal page labels, with repository-durable source-free JSON and live byte-for-byte CI regeneration. This rules out `/PageLabels` as a mapping shortcut only. Exact facsimile mapping, PDF↔DjVu equivalence, OCR correctness, canonical carrier, literary body/>=300k, FantLab input identity and M2 remain open.
 
 ## Deterministic / morphology orientation
 
@@ -67,7 +66,7 @@ Detailed evidence is canonical in `corpus/candidates/`, `benchmarks/`, `project/
 
 ## Public repository representation
 
-Public surfaces must remain source-free and synchronized with actual capability. Publish metadata, provenance, hashes and derived analysis only; never publish unlicensed source text. Current visible slices include retained candidate navigation, deterministic showcase outputs, and explicit fail-closed provenance boundaries. Perelman’s current public surface should state that the exact PDF has zero internal page labels and that facsimile evidence—not page-count arithmetic—is the next admissible mapping route.
+Public surfaces must remain source-free and synchronized with actual capability. Publish metadata, provenance, hashes and derived analysis only; never publish unlicensed source text. Current visible slices include retained candidate navigation, deterministic showcase outputs, and explicit fail-closed provenance boundaries. Perelman’s public surface now states that the exact PDF has zero internal page labels and that facsimile evidence—not page-count arithmetic—is the next admissible mapping route.
 
 ## Known blockers / invariants
 

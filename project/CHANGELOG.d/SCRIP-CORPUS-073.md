@@ -8,4 +8,5 @@
 - Added a public companion explaining the two directly retained printed-label anchors (`6 -> V`, `8 -> VII`) and why they do not authorize a complete offset rule.
 - No PDF bytes, preview images, OCR, hidden text or literary prose are committed by this unit.
 - Full bibliographic-to-carrier mapping, body-start/end selection, PDF↔DjVu equivalence, canonical extraction carrier, OCR correctness, literary-body freeze, selected-body >=300k proof, FantLab analyzer-input identity, diagnostic readiness and M2 remain closed; M2 stays 0/5.
-- Issue #235 and Draft PR #236 carry the authored unit. Independent later review of the final exact PR head is required before merge.
+- Independent later-wake review `5294741525` re-read all 6 changed files on exact head `199f6889683cf275d94bd7904995931b33cdeebd`, independently recomputed artifact SHA-256 `12bf560c02b66275a30331cf0274a410041ac916ef21c4ff840d0e55524b7ff8`, re-verified all five retained Commons preview observations, found no open review thread/blocker, and confirmed all 22 exact-head PR-triggered workflows completed `success`.
+- PR #236 was marked Ready and squash-merged with expected-head protection as `1f8a1646295f4ba8ece2fa8f634c52adeb9b354e`, automatically closing Issue #235 completed. SCRIP-CORPUS-073 is complete and normal-flow P2 corpus/provenance selection resumes.

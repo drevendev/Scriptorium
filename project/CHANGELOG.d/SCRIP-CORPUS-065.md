@@ -1,0 +1,10 @@
+# SCRIP-CORPUS-065 — Darwin `{{ё}}` root direct-dependency discovery
+
+- Added a fail-closed, candidate-bounded transclusion dependency scanner for the two exact Russian Wikisource replay roots already bound by v3. It uses exact-revision content only transiently and retains only byte/digest metadata plus dependency titles.
+- An initial `action=parse&oldid&prop=templates` probe was rejected as unsuitable evidence because it surfaced documentation/noinclude transclusions. The accepted path instead verifies exact source SHA-1 first, applies transclusion controls, and scans only static template/`#invoke` dependencies; dynamic or unsupported names fail closed.
+- Frozen exact observations: `Шаблон:Ё@5687302` is 271 UTF-8 bytes with transclusion SHA-256 `bd7465151d984f06c75eae0c1246c26a0643826a26a170a3e9a9d43c9e5a03b7` and no direct template/module dependency; `Шаблон:ЕЁ@3684646` is 688 bytes with transclusion SHA-256 `3975fa227e23e8cc1487a49a3eab86b28e0ddb6a753c347c3191ee800ae56026` and directly invokes `Модуль:String`.
+- Added `scriptorium-darwin-template-yo-replay-contract-v4`, a narrow successor to reviewed v3 SHA-256 `8caa144d9f4c0b9a8149c1822bd79d168d212dea14d72079c3259d55e5e03c8c`. V4 freezes complete discovery evidence for both roots and has contract SHA-256 `2e314e81fb3dbbedf05b3b83399d33e233abf0cd858ff70f5728de5c2e613c57`.
+- The discovered `Шаблон:ЕЁ -> Модуль:String` edge is retained explicitly as `target_identity_bound=false`; the executable bound graph remains empty and `dependency_closure_complete=false` because the module identity and its recursive dependencies are not yet frozen.
+- Added synthetic fail-closed regressions, deterministic v4 rebuild/byte-compare verification, and a read-only exact-root replay workflow that freshly re-fetches the two historical roots and compares source-free observations to the canonical artifact.
+- Added a public source-free direct-dependency companion and linked it from the exact-root identity surface.
+- No recursive closure, forced/non-forced output verification, renderer promotion, literary-body identity, >=300k admission, FantLab source match, or M2 gate changed. M2 remains 0/5.

@@ -1,0 +1,211 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "contract_sha256": "2e314e81fb3dbbedf05b3b83399d33e233abf0cd858ff70f5728de5c2e613c57",
+  "diagnostic_ready": false,
+  "direct_dependency_discovery": {
+    "discovered_edges": [
+      {
+        "from": "Шаблон:ЕЁ",
+        "target_identity_bound": false,
+        "to": "Модуль:String"
+      }
+    ],
+    "root_observations": [
+      {
+        "direct_dependencies": [],
+        "redirect_target": null,
+        "revision_id": 5687302,
+        "source_sha1": "963c1796d693d5451cf0c0897c35bd7e5b327ae1",
+        "source_utf8_bytes": 271,
+        "title": "Шаблон:Ё",
+        "transclusion_sha256": "bd7465151d984f06c75eae0c1246c26a0643826a26a170a3e9a9d43c9e5a03b7"
+      },
+      {
+        "direct_dependencies": [
+          "Модуль:String"
+        ],
+        "redirect_target": null,
+        "revision_id": 3684646,
+        "source_sha1": "435bb2a412d8fb5962ccd5adc0ac2e03412fe109",
+        "source_utf8_bytes": 688,
+        "title": "Шаблон:ЕЁ",
+        "transclusion_sha256": "3975fa227e23e8cc1487a49a3eab86b28e0ddb6a753c347c3191ee800ae56026"
+      }
+    ],
+    "scan_method": "scriptorium-darwin-transclusion-scan-v1: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; fail closed on dynamic or unsupported names",
+    "source_text_retained": false
+  },
+  "fantlab_source_edition_match": "unknown",
+  "inter_page_composition_frozen": false,
+  "literary_body_count_and_digests_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "mode_verification": {
+    "forced_yoification": {
+      "documented_expected_output": "ё",
+      "verified_output_sha256": null
+    },
+    "non_forced_yoification": {
+      "documented_expected_output": "е",
+      "verified_output_sha256": null
+    },
+    "outputs_verified": false
+  },
+  "official_api_evidence": {
+    "direct_dependency_scan": {
+      "endpoint": "https://ru.wikisource.org/w/api.php",
+      "provider": "Russian Wikisource Action API",
+      "query_mode": "revids",
+      "researched_on": "2026-09-22",
+      "rvprop": "ids|timestamp|sha1|content",
+      "rvslots": "main",
+      "scan_method": "scriptorium-darwin-transclusion-scan-v1: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; fail closed on dynamic or unsupported names",
+      "source_content_retained": false,
+      "source_content_used_transiently": true
+    },
+    "expandtemplates_revid": {
+      "documented_scope": "revision_context_for_REVISIONID_and_similar_variables",
+      "pins_transcluded_template_revisions": false
+    },
+    "permanent_url": "https://www.mediawiki.org/w/index.php?title=API:Expandtemplates/ru&oldid=6729113",
+    "provider": "MediaWiki.org",
+    "recursive_expansion": {
+      "permanent_url": "https://www.mediawiki.org/w/index.php?title=Help:ExpandTemplates&oldid=8168760",
+      "revision_date": "2026-01-23",
+      "revision_id": 8168760,
+      "templates_parser_functions_and_variables_expand_recursively": true,
+      "title": "Help:ExpandTemplates"
+    },
+    "researched_on": "2026-09-22",
+    "revision_date": "2024-08-29",
+    "revision_id": 6729113,
+    "revision_identity_query": {
+      "endpoint": "https://ru.wikisource.org/w/api.php",
+      "provider": "Russian Wikisource Action API",
+      "query_mode": "revids",
+      "researched_on": "2026-09-22",
+      "rvprop": "ids|timestamp|sha1",
+      "sha1_encoding": "base16",
+      "source_content_requested": false
+    },
+    "templatesandbox": {
+      "direct_title_text_override_supported": true,
+      "single_override_proves_recursive_dependency_closure": false
+    },
+    "title": "API:Expandtemplates/ru",
+    "title_canonicalization": {
+      "canonical_form_capitalizes_first_page_name_character": true,
+      "first_page_name_character_auto_capitalized_by_default": true,
+      "permanent_url": "https://www.mediawiki.org/w/index.php?title=Manual:Page_naming/en&oldid=8270202",
+      "revision_date": "2026-03-07",
+      "revision_id": 8270202,
+      "title": "Manual:Page naming/en"
+    }
+  },
+  "predecessor_contract": {
+    "contract_sha256": "8caa144d9f4c0b9a8149c1822bd79d168d212dea14d72079c3259d55e5e03c8c",
+    "schema_version": "scriptorium-darwin-template-yo-replay-contract-v3"
+  },
+  "promotion_decision": {
+    "backlog_item_removed": false,
+    "next_evidence_required": "bind an exact replay revision identity for Модуль:String, freeze complete direct-dependency discovery for that exact module revision and every further descendant, close the bound graph, then verify deterministic forced and non-forced outputs before promotion",
+    "reason": "complete source-free direct-dependency discovery is now frozen for both exact roots, but Шаблон:ЕЁ discovers Модуль:String whose exact revision identity and own direct dependencies are not yet bound, so recursive replay closure remains open",
+    "render_profile_rule_promoted": false
+  },
+  "renderer_implementation_ready": false,
+  "renderer_semantics_complete": false,
+  "replay_contract": {
+    "dependencies": [
+      {
+        "discovery": {
+          "direct_dependencies": [],
+          "evidence_sha256": "4c618e7124bc7aa28eefa155447d13edd3f916e249944bc0d014e5e68b85aa5d",
+          "method": "scriptorium-darwin-transclusion-scan-v1: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; fail closed on dynamic or unsupported names",
+          "status": "complete"
+        },
+        "mediawiki_sha1": "963c1796d693d5451cf0c0897c35bd7e5b327ae1",
+        "revision_id": 5687302,
+        "revision_timestamp": "2026-01-21T12:32:10Z",
+        "title": "Шаблон:Ё"
+      },
+      {
+        "discovery": {
+          "direct_dependencies": [
+            "Модуль:String"
+          ],
+          "evidence_sha256": "b7bd7d4530597ad9e6b98a67b1a350aad2c4fa548f4a0841372017399c5c92ee",
+          "method": "scriptorium-darwin-transclusion-scan-v1: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; fail closed on dynamic or unsupported names",
+          "status": "complete"
+        },
+        "mediawiki_sha1": "435bb2a412d8fb5962ccd5adc0ac2e03412fe109",
+        "revision_id": 3684646,
+        "revision_timestamp": "2019-06-04T20:49:40Z",
+        "title": "Шаблон:ЕЁ"
+      }
+    ],
+    "dependency_closure_complete": false,
+    "dependency_discovery_evidence_schema_version": "scriptorium-template-dependency-discovery-evidence-v1",
+    "dependency_discovery_evidence_sha256_scope": "canonical source-free JSON over candidate id, exact dependency identity, discovery status/method and exact direct-dependency title list",
+    "dependency_discovery_proof_required": true,
+    "dependency_graph_must_be_transitively_closed": true,
+    "dependency_identity_scope": "canonical exact page title plus revision id, revision timestamp and MediaWiki content SHA-1",
+    "discovered_unbound_dependencies": [
+      "Модуль:String"
+    ],
+    "edges": [],
+    "live_or_unbound_dependency_allowed": false,
+    "native_expandtemplates_revid_is_version_pin": false,
+    "required_dependency_fields": [
+      "title",
+      "revision_id",
+      "revision_timestamp",
+      "mediawiki_sha1"
+    ],
+    "required_discovery_proof_fields": [
+      "status",
+      "method",
+      "direct_dependencies",
+      "evidence_sha256"
+    ],
+    "required_root_titles": [
+      "Шаблон:Ё",
+      "Шаблон:ЕЁ"
+    ],
+    "root_direct_dependency_discovery_complete": true,
+    "root_identities_bound": true,
+    "single_templatesandbox_override_is_closed_graph": false,
+    "strategy": "bind every template/module revision in the transitive replay graph by canonical title; for every bound node retain source-free complete direct-dependency discovery evidence whose SHA-256 is recomputed from that exact node identity and dependency set, and require graph edges to exactly match that evidence; evaluate only in a controlled environment that consumes those bound identities"
+  },
+  "root_title_observations": [
+    {
+      "canonical_title": "Шаблон:Ё",
+      "invocation_spelling": "Шаблон:ё",
+      "mediawiki_sha1": "963c1796d693d5451cf0c0897c35bd7e5b327ae1",
+      "mediawiki_sha1_bound": true,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?title=Шаблон:Ё&oldid=5687302",
+      "provider": "Russian Wikisource",
+      "revision_date": "2026-01-21",
+      "revision_id": 5687302,
+      "revision_timestamp": "2026-01-21T12:32:10Z"
+    },
+    {
+      "canonical_title": "Шаблон:ЕЁ",
+      "invocation_spelling": "Шаблон:ЕЁ",
+      "mediawiki_sha1": "435bb2a412d8fb5962ccd5adc0ac2e03412fe109",
+      "mediawiki_sha1_bound": true,
+      "permanent_url": "https://ru.wikisource.org/w/index.php?title=Шаблон:ЕЁ&oldid=3684646",
+      "provider": "Russian Wikisource",
+      "revision_date": "2019-06-04",
+      "revision_id": 3684646,
+      "revision_timestamp": "2019-06-04T20:49:40Z"
+    }
+  ],
+  "schema_version": "scriptorium-darwin-template-yo-replay-contract-v4",
+  "source_evidence": {
+    "backlog_sha256": "4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2",
+    "evidence_sha256": "d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc",
+    "schema_version": "scriptorium-darwin-template-yo-documentation-evidence-v2"
+  },
+  "source_text_included": false
+}

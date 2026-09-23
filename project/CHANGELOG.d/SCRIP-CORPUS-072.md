@@ -8,4 +8,5 @@
 - Updated the public Perelman candidate surface: the current exact PDF has no `/PageLabels` shortcut capable of mapping bibliographic pagination to carrier pages, so the next admissible mapping route is exact-carrier facsimile evidence.
 - No PDF bytes, page images, OCR, hidden text or literary source text are committed by this unit.
 - PDF↔DjVu equivalence, literary-page selection, canonical extraction carrier, OCR correctness, literary-body freeze, selected-body >=300k proof, FantLab analyzer-input identity, diagnostic readiness and M2 remain closed; M2 stays 0/5.
-- Draft PR #234 remains intentionally unmerged. Independent exact-head review and fully settled final-head workflows are required before merge.
+- Independent exact-head review `5293616208` re-read all 8 changed files at `150eae46800f826de93dff00fb89494ee254394b`, independently recomputed the canonical artifact SHA-256, confirmed 22/22 exact-head PR workflows succeeded, and found no merge blocker or open review thread.
+- PR #234 was marked Ready and squash-merged with expected-head protection as `2590d3dd234fde3d26d2659f448bf58f7c040965`, closing Issue #233 completed. SCRIP-CORPUS-072 is complete and normal P2 corpus/provenance selection may resume.

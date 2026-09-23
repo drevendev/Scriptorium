@@ -1,0 +1,57 @@
+{
+  "bound_replay_contract": {
+    "contract_sha256": "f5a021fe544bb74f8f7a493bf20c7005f5a79c9c7b78eb10c86ff93a86b26e64",
+    "schema_version": "scriptorium-darwin-template-yo-replay-contract-v4"
+  },
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "current_unbound_dependency": "Модуль:String",
+  "decision": {
+    "caller_revision_timestamp_selects_dependency_revision": false,
+    "expandtemplates_revid_pins_transcluded_dependency_revisions": false,
+    "historical_dependency_revision_inference_allowed": false,
+    "reason": "The bound caller/root revisions freeze their own source content, not the revision identity of dynamically transcluded descendants. Treating a caller timestamp as a child-version selector would manufacture historical provenance.",
+    "required_binding_fields": [
+      "canonical_title",
+      "revision_id",
+      "revision_timestamp",
+      "mediawiki_sha1",
+      "observation_context"
+    ],
+    "required_binding_method": "Bind the dependency only from an explicit exact revision identity observed or deliberately selected in a controlled replay snapshot; record the observation context and never backdate the child identity from either caller/root timestamp."
+  },
+  "evidence": [
+    {
+      "observation": "Normal template calls are dynamic transclusions: the template content is substituted when the caller is loaded, and later template edits affect pages that transclude it.",
+      "provider": "MediaWiki.org",
+      "title": "Help:Templates",
+      "url": "https://www.mediawiki.org/wiki/Help:Templates"
+    },
+    {
+      "observation": "The revid parameter supplies revision context for REVISIONID and similar variables; it is not documented as a recursive template/module revision pin.",
+      "provider": "MediaWiki.org",
+      "title": "API:Expandtemplates",
+      "url": "https://www.mediawiki.org/wiki/API:Expandtemplates/en"
+    },
+    {
+      "observation": "MediaWiki does not provide normal versioned transclusion syntax for selecting an arbitrary specific template revision; T70399 was closed as a duplicate on 2026-08-14.",
+      "provider": "Wikimedia Phabricator",
+      "title": "T31051 — No support for versioned transclusions (specific page/template revisions)",
+      "url": "https://phabricator.wikimedia.org/T31051"
+    }
+  ],
+  "gates": {
+    "dependency_closure_complete": false,
+    "fantlab_source_edition_match": "unknown",
+    "literary_body_count_and_digests_frozen": false,
+    "m2_parity_admissible": false,
+    "minimum_300k_proved": false,
+    "module_string_identity_bound": false,
+    "outputs_verified": false,
+    "render_profile_rule_promoted": false
+  },
+  "next_evidence_required": "Capture or deliberately select an exact Модуль:String revision in a controlled replay observation, record title/revision/timestamp/MediaWiki SHA-1 plus observation context, then freeze its direct dependencies and continue recursively before any output or renderer promotion.",
+  "policy_sha256": "4a58b70d5935f4455e58a929c6c1b6cc6a527d7b9d63121e0023501055889855",
+  "researched_on": "2026-09-23",
+  "schema_version": "scriptorium-darwin-dependency-revision-selection-policy-v1",
+  "source_text_included": false
+}

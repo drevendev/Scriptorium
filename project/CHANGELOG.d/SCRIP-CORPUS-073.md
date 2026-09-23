@@ -1,0 +1,11 @@
+# SCRIP-CORPUS-073 — Perelman exact-PDF front-matter facsimile anchors
+
+- Selected the retained 1913 Perelman popular-science candidate from the P2 corpus/provenance continuation because SCRIP-CORPUS-072 exhausted PDF `/PageLabels` as a mapping shortcut and the canonical next route is exact-carrier facsimile evidence.
+- Re-checked the current Wikimedia Commons PDF surface on 2026-09-23: it still reports 223 pages, 28,168,847 bytes and SHA-1 `3c616f547ff283a2cafd1ac26b448a8e8013f648`, matching the provider identity of Scriptorium's previously frozen PDF carrier; the repository retains the independently established SHA-256 `3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61`.
+- Directly inspected only a bounded set of Commons 500-pixel PDF previews and retained source-free observations: carrier page 4 is a preface surface with no printed label visibly observed; page 5 appears blank with no label visibly observed; page 6 is a contents surface with printed `V`; page 8 is a contents surface with printed `VII`; page 9 is a front-matter illustration with no printed label visibly observed.
+- Deliberately did **not** infer carrier page 7 -> `VI`, carrier page 9 -> `VIII`, or carrier page 10 -> numbered-body page 1. Unobserved pages stay unknown.
+- Added canonical source-free machine evidence `perelman-entertaining-physics-book1-1913-ru.pdf-facsimile-frontmatter.json`, physical SHA-256 `12bf560c02b66275a30331cf0274a410041ac916ef21c4ff840d0e55524b7ff8`, plus focused regressions that freeze carrier identity, the retained anchor set, source-free boundaries and closed downstream gates.
+- Added a public companion explaining the two directly retained printed-label anchors (`6 -> V`, `8 -> VII`) and why they do not authorize a complete offset rule.
+- No PDF bytes, preview images, OCR, hidden text or literary prose are committed by this unit.
+- Full bibliographic-to-carrier mapping, body-start/end selection, PDF↔DjVu equivalence, canonical extraction carrier, OCR correctness, literary-body freeze, selected-body >=300k proof, FantLab analyzer-input identity, diagnostic readiness and M2 remain closed; M2 stays 0/5.
+- Issue #235 and Draft PR #236 carry the authored unit. Independent later review of the final exact PR head is required before merge.

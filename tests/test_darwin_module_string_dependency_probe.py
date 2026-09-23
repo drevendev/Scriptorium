@@ -24,7 +24,13 @@ class DarwinModuleStringDependencyProbeTests(unittest.TestCase):
         )
         self.assertEqual(scan["dynamic_or_unsupported_loader_calls"], [])
         self.assertTrue(scan["scan_complete"])
+        self.assertFalse(scan["semantic_dependency_closure_proved"])
         self.assertEqual(scan["source_sha1"], sha1(source.encode("utf-8")).hexdigest())
+
+    def test_bare_quoted_lua_call_is_discovered(self) -> None:
+        scan = scan_lua_dependency_surface("local x = require 'Module:Bare'")
+        self.assertEqual(scan["static_wiki_module_dependencies"], ["Модуль:Bare"])
+        self.assertTrue(scan["scan_complete"])
 
     def test_comments_do_not_create_dependencies(self) -> None:
         source = """
@@ -49,6 +55,17 @@ return {}"""
         scan = scan_lua_dependency_surface("local x = require(module_name)")
         self.assertEqual(scan["dynamic_or_unsupported_loader_calls"], ["require"])
         self.assertFalse(scan["scan_complete"])
+
+    def test_bare_long_string_loader_call_is_fail_closed(self) -> None:
+        scan = scan_lua_dependency_surface("local x = require [[Module:Long]]")
+        self.assertEqual(scan["static_wiki_module_dependencies"], [])
+        self.assertEqual(scan["dynamic_or_unsupported_loader_calls"], ["require"])
+        self.assertFalse(scan["scan_complete"])
+
+    def test_comment_between_loader_and_argument_is_supported(self) -> None:
+        scan = scan_lua_dependency_surface("local x = require -- keep\n ('Module:AfterComment')")
+        self.assertEqual(scan["static_wiki_module_dependencies"], ["Модуль:AfterComment"])
+        self.assertTrue(scan["scan_complete"])
 
     def test_non_wiki_literal_is_separated(self) -> None:
         scan = scan_lua_dependency_surface("local util = require('libraryUtil')")

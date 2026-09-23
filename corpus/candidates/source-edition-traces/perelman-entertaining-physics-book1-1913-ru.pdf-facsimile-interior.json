@@ -1,0 +1,129 @@
+{
+  "admitted_for_calibration": false,
+  "binary_bytes_committed": false,
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "canonical_extraction_carrier_selected": false,
+  "carrier": {
+    "byte_count": 28168847,
+    "kind": "pdf",
+    "page_count": 223,
+    "sha1": "3c616f547ff283a2cafd1ac26b448a8e8013f648",
+    "sha256": "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
+  },
+  "decision": {
+    "bibliographic_to_carrier_mapping_complete": false,
+    "complete_numbered_body_range_proved": false,
+    "global_carrier_minus_printed_offset_asserted": false,
+    "literary_page_selection_bound": false,
+    "local_carrier_minus_printed_offset_observed": 9,
+    "local_offset_scope_carrier_pages": [
+      199,
+      206
+    ],
+    "local_window_continuity_directly_observed": true,
+    "mapping_may_be_extrapolated_between_observed_anchors": false,
+    "next_evidence": "Independently review the exact-head transient renders and retained source-free evidence; if accepted, keep the +9 relation scoped to directly audited windows until enough interior evidence exists to justify any complete carrier map.",
+    "reason": "Exact-carrier renders directly show carrier pages 199-206 as printed pages 190-197, including restored printed pages 193-194 at carrier pages 202-203. This closes the targeted restoration-seam question locally but does not prove every unobserved page or authorize a global offset rule.",
+    "restored_printed_pages_carrier_pages": {
+      "193": 202,
+      "194": 203
+    },
+    "restored_printed_pages_directly_observed": true,
+    "status": "restored_page_seam_locally_continuous_global_mapping_still_incomplete"
+  },
+  "diagnostic_ready": false,
+  "evidence_version": "scriptorium-perelman-1913-pdf-facsimile-interior-v1",
+  "fantlab_source_edition_match": "unknown",
+  "literary_body_frozen": false,
+  "literary_page_selection_bound": false,
+  "literary_source_text_included": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved_from_frozen_body": false,
+  "observation": {
+    "artifact_retention_days": 1,
+    "authoring_artifact_digest": "sha256:d543e7cc0374a8d89d7a820df6fd525438121da38270e62a084d1f8882bbfebd",
+    "authoring_artifact_id": 10775613969,
+    "authoring_workflow_head_sha": "744ef6937b71c76014a87e0fcb5dbaa21dbd045a",
+    "authoring_workflow_run_id": 35918820460,
+    "method": "manual_visual_inspection_of_transient_renders_from_exact_verified_pdf",
+    "observed_at_utc": "2026-09-23T20:53:00Z",
+    "pages": [
+      {
+        "carrier_page": 199,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "23e55ac4525eae5512099465eaad02685c4d1295cbaa67b1c4a973b760c522d9",
+        "rendered_review_filename": "interior-199.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "190"
+      },
+      {
+        "carrier_page": 200,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "7d8f87dc9c3c4351bbe1a2d915ac801872319a2bda5902396f6cd05b7c64b4d4",
+        "rendered_review_filename": "interior-200.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "191"
+      },
+      {
+        "carrier_page": 201,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "653f85f61b2579532720231620b5ca1d498e8a800126ebc8eed343121e5da9db",
+        "rendered_review_filename": "interior-201.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "192"
+      },
+      {
+        "carrier_page": 202,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "79390f88ec549eaf55870c882440018d18a04ff3869ff7a7fcf13607d4aa8085",
+        "rendered_review_filename": "interior-202.jpg",
+        "restored_page_region": true,
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "193"
+      },
+      {
+        "carrier_page": 203,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "b0ceb61bf6272c7eaa54d073bd3e85133dc4130fc43705dfa7f4f7c589c786bc",
+        "rendered_review_filename": "interior-203.jpg",
+        "restored_page_region": true,
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "194"
+      },
+      {
+        "carrier_page": 204,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "19e5cc06b4cafc6aa3fb0cb81cd42dc74826c699f1a3e1e24c4e8f8ed9395fb4",
+        "rendered_review_filename": "interior-204.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "195"
+      },
+      {
+        "carrier_page": 205,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "eb6f73b22d5ec476d19e75fea4a8eac20109d7a16300fff62957569b6d263d4e",
+        "rendered_review_filename": "interior-205.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "196"
+      },
+      {
+        "carrier_page": 206,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "fd914d50e51983beea35b6c7b78abf5b61a6f8604f9f418c41fb6c1f931a75f9",
+        "rendered_review_filename": "interior-206.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "197"
+      }
+    ],
+    "pdf_bytes_deleted_before_artifact_upload": true,
+    "render_command": "pdftoppm -f 199 -l 206 -r 120 -jpeg",
+    "render_manifest_sha256": "ad09df0a7583092dc2ddf71af25c0f0d014cf5dfe680d806a2962a9243cef667",
+    "rendered_page_bytes_committed": false,
+    "transient_review_artifact_uploaded": true
+  },
+  "ocr_correctness_verified": false,
+  "ocr_included": false,
+  "page_images_committed": false,
+  "pdf_djvu_page_equivalence_verified": false,
+  "source_free": true
+}

@@ -7,6 +7,9 @@ on:
       - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.pdf-facsimile-transition-tail.md"
       - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pdf-facsimile-transition-tail.json"
       - "tests/test_perelman_pdf_facsimile_transition_tail.py"
+      - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.pdf-facsimile-interior.md"
+      - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pdf-facsimile-interior.json"
+      - "tests/test_perelman_pdf_facsimile_interior.py"
   workflow_dispatch:
 
 permissions:
@@ -44,28 +47,34 @@ jobs:
           echo '3c616f547ff283a2cafd1ac26b448a8e8013f648  build/facsimile/perelman-1913.pdf' | sha1sum --check --strict
           echo '3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61  build/facsimile/perelman-1913.pdf' | sha256sum --check --strict
 
-      - name: Render bounded transition and tail pages
+      - name: Render bounded transition, interior, and tail pages
         run: |
           set -euo pipefail
           pdftoppm -f 9 -l 13 -r 120 -jpeg build/facsimile/perelman-1913.pdf build/facsimile/transition
+          pdftoppm -f 199 -l 206 -r 120 -jpeg build/facsimile/perelman-1913.pdf build/facsimile/interior
           pdftoppm -f 217 -l 223 -r 120 -jpeg build/facsimile/perelman-1913.pdf build/facsimile/tail
           rm build/facsimile/perelman-1913.pdf
-          (cd build/facsimile && sha256sum transition-*.jpg tail-*.jpg | sort) > build/facsimile/rendered-pages.sha256
+          (cd build/facsimile && sha256sum transition-*.jpg interior-*.jpg tail-*.jpg | sort) > build/facsimile/rendered-pages.sha256
           printf 'Rendered files:\n'
           cat build/facsimile/rendered-pages.sha256
 
-      - name: Run retained source-free regression when present
+      - name: Run retained source-free regressions when present
         run: |
+          set -euo pipefail
           if test -f tests/test_perelman_pdf_facsimile_transition_tail.py; then
             python -m unittest tests.test_perelman_pdf_facsimile_transition_tail -v
+          fi
+          if test -f tests/test_perelman_pdf_facsimile_interior.py; then
+            python -m unittest tests.test_perelman_pdf_facsimile_interior -v
           fi
 
       - name: Upload transient facsimile review artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: perelman-1913-facsimile-transition-tail-review
+          name: perelman-1913-facsimile-review
           path: |
             build/facsimile/transition-*.jpg
+            build/facsimile/interior-*.jpg
             build/facsimile/tail-*.jpg
             build/facsimile/rendered-pages.sha256
           if-no-files-found: error

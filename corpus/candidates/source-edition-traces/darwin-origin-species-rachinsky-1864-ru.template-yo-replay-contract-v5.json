@@ -1,0 +1,117 @@
+{
+  "binding_evidence": {
+    "module_string_probe": {
+      "probe_sha256": "e27a2af9f01c760f995c633e296e1d5825642d4c4bcbeb5fba8ae0a697c234cb",
+      "schema_version": "scriptorium-darwin-module-string-dependency-probe-v1"
+    },
+    "selected_dependency": {
+      "canonical_title": "Модуль:String",
+      "historical_transclusion_provenance_proved": false,
+      "mediawiki_sha1": "a34727a1e4ec3c4b4c7ec556c94991f75442d99c",
+      "revision_id": 3684569,
+      "revision_timestamp": "2019-06-04T20:18:11Z",
+      "selection": "deliberately selected exact revision from the reviewed point-in-time observation and exact-revision dependency probe",
+      "source_sha256": "258cec6ab8b4c1e3eb0e812d72d39f4302f321a4d1fdd7aa3883187db0eecb03",
+      "source_utf8_bytes": 18468
+    },
+    "source_content_retained": false
+  },
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "contract_sha256": "4ded05d3ea45e9cfa9aa657e6b4e1c26c48cf2f1be60643d0194993e995b4c0c",
+  "gates": {
+    "admitted_for_calibration": false,
+    "diagnostic_ready": false,
+    "fantlab_source_edition_match": "unknown",
+    "inter_page_composition_frozen": false,
+    "literary_body_count_and_digests_frozen": false,
+    "m2_parity_admissible": false,
+    "minimum_300k_proved": false,
+    "outputs_verified": false,
+    "render_profile_rule_promoted": false,
+    "renderer_implementation_ready": false,
+    "renderer_semantics_complete": false,
+    "semantic_dependency_closure_proved": true
+  },
+  "mode_verification": {
+    "forced_yoification": {
+      "documented_expected_output": "ё",
+      "verified_output_sha256": null
+    },
+    "non_forced_yoification": {
+      "documented_expected_output": "е",
+      "verified_output_sha256": null
+    },
+    "outputs_verified": false
+  },
+  "predecessor_contract": {
+    "contract_sha256": "f5a021fe544bb74f8f7a493bf20c7005f5a79c9c7b78eb10c86ff93a86b26e64",
+    "schema_version": "scriptorium-darwin-template-yo-replay-contract-v4"
+  },
+  "promotion_decision": {
+    "backlog_item_removed": false,
+    "next_evidence_required": "replay the bound three-node graph in a controlled version-pinned environment and verify deterministic forced/non-forced outputs before promoting the {{ё}} renderer rule",
+    "reason": "the replay dependency graph is now source-free, exact-revision-bound and transitively closed, but forced and non-forced outputs have not yet been deterministically verified in an environment that consumes only those bound identities",
+    "render_profile_rule_promoted": false
+  },
+  "replay_contract": {
+    "dependencies": [
+      {
+        "discovery": {
+          "direct_dependencies": [
+            "Шаблон:ЕЁ"
+          ],
+          "evidence_sha256": "e908eb77c25a7548c4f2c1700f7f4b70db09fee2814cf230fe89677478e1cf71",
+          "method": "scriptorium-darwin-transclusion-scan-v2: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; bare magic words classified only from pinned MediaWiki Help:Magic words@8589537 evidence; exact-root uppercase template ЕЁ explicitly bound; fail closed on dynamic, unsupported, parameterized magic-word-like, or unclassified uppercase names",
+          "status": "complete"
+        },
+        "mediawiki_sha1": "963c1796d693d5451cf0c0897c35bd7e5b327ae1",
+        "revision_id": 5687302,
+        "revision_timestamp": "2026-01-21T12:32:10Z",
+        "title": "Шаблон:Ё"
+      },
+      {
+        "discovery": {
+          "direct_dependencies": [
+            "Модуль:String"
+          ],
+          "evidence_sha256": "2582b4cc5330d06897ffc03958b6bba4a626250130e7b64cdd625fa86054c6c6",
+          "method": "scriptorium-darwin-transclusion-scan-v2: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; bare magic words classified only from pinned MediaWiki Help:Magic words@8589537 evidence; exact-root uppercase template ЕЁ explicitly bound; fail closed on dynamic, unsupported, parameterized magic-word-like, or unclassified uppercase names",
+          "status": "complete"
+        },
+        "mediawiki_sha1": "435bb2a412d8fb5962ccd5adc0ac2e03412fe109",
+        "revision_id": 3684646,
+        "revision_timestamp": "2019-06-04T20:49:40Z",
+        "title": "Шаблон:ЕЁ"
+      },
+      {
+        "discovery": {
+          "direct_dependencies": [],
+          "evidence_sha256": "cb1045fbeb2dbb4309e0355fabd2cce8ee5e8bc3051803c9caec4d9bfd7edf0d",
+          "method": "scriptorium-darwin-lua-loader-scan-v1",
+          "status": "complete"
+        },
+        "mediawiki_sha1": "a34727a1e4ec3c4b4c7ec556c94991f75442d99c",
+        "revision_id": 3684569,
+        "revision_timestamp": "2019-06-04T20:18:11Z",
+        "title": "Модуль:String"
+      }
+    ],
+    "dependency_closure_complete": true,
+    "dependency_discovery_evidence_schema_version": "scriptorium-template-dependency-discovery-evidence-v1",
+    "dependency_graph_must_be_transitively_closed": true,
+    "discovered_unbound_dependencies": [],
+    "edges": [
+      {
+        "from": "Шаблон:Ё",
+        "to": "Шаблон:ЕЁ"
+      },
+      {
+        "from": "Шаблон:ЕЁ",
+        "to": "Модуль:String"
+      }
+    ],
+    "live_or_unbound_dependency_allowed": false
+  },
+  "schema_version": "scriptorium-darwin-template-yo-replay-contract-v5",
+  "source_text_included": false
+}

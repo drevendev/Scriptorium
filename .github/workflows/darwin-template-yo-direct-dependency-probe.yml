@@ -8,16 +8,22 @@ on:
       - "scriptorium/darwin_template_yo_replay_contract.py"
       - "scriptorium/darwin_template_yo_replay_contract_v3.py"
       - "scriptorium/darwin_template_yo_replay_contract_v4.py"
+      - "scriptorium/darwin_template_yo_replay_contract_v5.py"
       - "scriptorium/darwin_dependency_revision_policy.py"
       - "scriptorium/darwin_dependency_revision_observation.py"
+      - "scriptorium/darwin_module_string_dependency_probe.py"
       - "tests/test_darwin_template_dependency_scan.py"
       - "tests/test_darwin_template_yo_replay_contract_v3.py"
       - "tests/test_darwin_template_yo_replay_contract_v4.py"
+      - "tests/test_darwin_template_yo_replay_contract_v5.py"
       - "tests/test_darwin_dependency_revision_policy.py"
       - "tests/test_darwin_dependency_revision_observation.py"
+      - "tests/test_darwin_module_string_dependency_probe_freeze.py"
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v5.json"
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json"
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-observation-v1.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json"
       - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md"
   workflow_dispatch:
 
@@ -47,8 +53,10 @@ jobs:
             tests.test_darwin_template_dependency_scan \
             tests.test_darwin_template_yo_replay_contract_v3 \
             tests.test_darwin_template_yo_replay_contract_v4 \
+            tests.test_darwin_template_yo_replay_contract_v5 \
             tests.test_darwin_dependency_revision_policy \
-            tests.test_darwin_dependency_revision_observation -v
+            tests.test_darwin_dependency_revision_observation \
+            tests.test_darwin_module_string_dependency_probe_freeze -v
 
       - name: Deterministically rebuild and compare v4 contract
         run: |
@@ -62,6 +70,17 @@ jobs:
           cmp \
             corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json \
             build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
+
+      - name: Deterministically rebuild and compare v5 closure contract
+        run: |
+          set -euo pipefail
+          python -m scriptorium.darwin_template_yo_replay_contract_v5 \
+            --predecessor-contract corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json \
+            --module-probe corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-dependency-probe-v1.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v5.json
+          cmp \
+            corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v5.json \
+            build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v5.json
 
       - name: Validate dependency revision-selection policy
         run: |
@@ -152,10 +171,12 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-      - name: Upload source-free direct-dependency contract
+      - name: Upload source-free direct-dependency contracts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: darwin-rachinsky-1864-template-yo-direct-dependencies
-          path: build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
+          path: |
+            build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
+            build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v5.json
           if-no-files-found: error
           retention-days: 7

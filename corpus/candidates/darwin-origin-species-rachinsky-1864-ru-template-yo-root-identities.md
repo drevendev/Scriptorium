@@ -29,7 +29,7 @@ The dedicated read-only workflow re-queries those exact revision IDs, compares t
 
 ## Next evidence layer
 
-SCRIP-CORPUS-065 freezes complete direct-dependency discovery for these exact roots in the source-free [`darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md`](darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md) companion. That later layer finds no direct template/module dependency for `Шаблон:Ё` and finds `Модуль:String` under `Шаблон:ЕЁ`; the module remains unbound, so recursive closure is still intentionally open.
+SCRIP-CORPUS-065 freezes complete direct-dependency discovery for these exact roots in the source-free [`darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md`](darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md) companion. That later layer records the bound `Шаблон:Ё -> Шаблон:ЕЁ` edge and discovers `Шаблон:ЕЁ -> Модуль:String`; the module remains identity-unbound, so recursive closure is still intentionally open.
 
 ## Fail-closed boundary
 

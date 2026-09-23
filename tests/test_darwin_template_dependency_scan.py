@@ -28,8 +28,8 @@ class DarwinTemplateDependencyScanTests(unittest.TestCase):
     def test_exact_uppercase_template_is_not_misclassified_as_magic_word(self) -> None:
         self.assertEqual(discover_direct_dependencies("{{ЕЁ|ё|е}}"), ("Шаблон:ЕЁ",))
 
-    def test_documented_bare_magic_word_is_not_a_template_dependency(self) -> None:
-        self.assertEqual(discover_direct_dependencies("{{PAGENAME}}"), ())
+    def test_documented_bare_magic_words_are_not_template_dependencies(self) -> None:
+        self.assertEqual(discover_direct_dependencies("{{PAGENAME}}{{NAMESPACE}}"), ())
 
     def test_parameterized_magic_word_like_invocation_fails_closed(self) -> None:
         with self.assertRaisesRegex(ValueError, "parameterized magic-word-like invocation"):

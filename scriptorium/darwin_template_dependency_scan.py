@@ -33,6 +33,7 @@ DOCUMENTED_BARE_MAGIC_WORDS = (
     "BASEPAGENAME",
     "ROOTPAGENAME",
     "SUBPAGENAME",
+    "NAMESPACE",
 )
 # Exact root evidence proves that this uppercase bare name is a template dependency.
 EVIDENCE_BOUND_UPPERCASE_TEMPLATES = ("ЕЁ",)

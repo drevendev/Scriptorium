@@ -1,0 +1,46 @@
+{
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "canonical_payload_sha256": "46803a34fb018f204588f798aca9b928393c37b54518f8adba36b790d6c33d77",
+  "carriers": [
+    {
+      "carrier_kind": "pdf",
+      "commons_url": "https://commons.wikimedia.org/wiki/File:Перельман_Я.И._Занимательная_физика._Книга_1_(1913).pdf",
+      "current_russian_wikisource_index_surface_established": false,
+      "observed_commons_category": "PDF files in Russian without index page in Russian Wikisource",
+      "page_count": 223,
+      "sha256": "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
+    },
+    {
+      "carrier_kind": "djvu",
+      "commons_url": "https://commons.wikimedia.org/wiki/File:Перельман_Я.И._Занимательная_физика._Книга_1_(1913).djvu",
+      "current_russian_wikisource_index_surface_established": false,
+      "observed_commons_category": "DjVu files in Russian without index page in Russian Wikisource",
+      "page_count": 218,
+      "sha256": "f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462"
+    }
+  ],
+  "decision": {
+    "historical_absence_proved": false,
+    "next_evidence": "Establish the page-level mapping from exact-carrier facsimile or internal page-label evidence, or from a directly identified first-party Russian Wikisource Index surface if one later exists; bibliographic page-count arithmetic remains insufficient.",
+    "proofreadpage_index_may_be_used_as_current_page_label_authority": false,
+    "reason": "The current first-party Wikimedia Commons file surfaces classify both frozen Perelman 1913 carriers as being without an index page in Russian Wikisource. Therefore Scriptorium must not assume a current ProofreadPage Index/page-label mapping exists for either carrier.",
+    "status": "current_wikisource_index_surface_not_established"
+  },
+  "gate_state": {
+    "canonical_extraction_carrier_selected": false,
+    "diagnostic_ready": false,
+    "fantlab_input_identity_established": false,
+    "fantlab_source_edition_match": "unknown",
+    "literary_body_frozen": false,
+    "literary_page_selection_bound": false,
+    "m2_parity_admissible": false,
+    "m2_progress_after_observation": "0/5",
+    "minimum_300k_proved_from_frozen_body": false,
+    "ocr_correctness_verified": false,
+    "pdf_djvu_page_equivalence_verified": false
+  },
+  "observation_version": "scriptorium-perelman-wikisource-index-surface-observation-v1",
+  "observed_on": "2026-09-23",
+  "source_free": true,
+  "source_text_committed": false
+}

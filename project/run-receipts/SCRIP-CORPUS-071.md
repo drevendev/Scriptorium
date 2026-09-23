@@ -4,8 +4,8 @@
 
 - Mode: corpus / provenance research within the P2 SCRIP-CORPUS continuation.
 - Base: `master@af10a32a98030c4a82a9c0f36b0e612024bc670b`.
-- Issue: #231 (open).
-- Pull request: #232 (Draft; independent later review required).
+- Issue: #231 (closed completed after merge).
+- Pull request: #232 (independently reviewed; squash-merged).
 - Reason: Perelman 1913 is a retained public-domain popular-science candidate whose next extraction gate requires exact page-label/facsimile mapping. SCRIP-CORPUS-061 already proved that bibliographic page-count arithmetic is insufficient, so the current first-party Wikisource/Commons index surface materially changes which mapping route is executable.
 
 ## Research observation
@@ -21,13 +21,15 @@
 - Canonical payload SHA-256 excluding the self-digest field: `46803a34fb018f204588f798aca9b928393c37b54518f8adba36b790d6c33d77`.
 - The machine artifact is bound to the already frozen PDF SHA-256 `3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61` / 223 pages and DjVu SHA-256 `f1db2166ae0cb5d420aad445f00d90cb09ac0b97e19fc8ece16d9b8ecf9e2462` / 218 pages.
 - Added public companion `corpus/candidates/perelman-entertaining-physics-book1-1913-ru-wikisource-index-surface.md`.
-- Added this receipt and changelog fragment. Recovery remains additionally durable in open Issue #231 and Draft PR #232.
+- Added this receipt and changelog fragment; final review/merge bookkeeping is durable in repository state, Issue #231 and PR #232.
 
 ## Verification
 
-- Independently recomputed the canonical payload digest before commit from the source-free object with the `canonical_payload_sha256` field removed, sorted JSON keys, UTF-8 and compact separators; it matches `46803a34fb018f204588f798aca9b928393c37b54518f8adba36b790d6c33d77`.
-- Re-checked the two current first-party Commons surfaces during the authored unit and preserved the observation as current-only rather than historical evidence.
-- PR #232 remains Draft. Exact-head CI and independent judgement are a later-wake requirement; this authoring wake does not self-merge.
+- Authored-unit verification independently recomputed the canonical payload digest from the source-free object with the `canonical_payload_sha256` field removed, sorted JSON keys, UTF-8 and compact separators; it matched `46803a34fb018f204588f798aca9b928393c37b54518f8adba36b790d6c33d77`.
+- Independent exact-head review `5292600215` later re-read all 5 changed files at `c10dd031d375d22d13ccad116f38429d4a5bafce` against unchanged `master@af10a32a98030c4a82a9c0f36b0e612024bc670b` and found no merge blocker or open review thread.
+- The review independently recomputed the canonical payload SHA-256 as `46803a34fb018f204588f798aca9b928393c37b54518f8adba36b790d6c33d77` and freshly re-checked both first-party Commons surfaces; the same current categories remained visible.
+- GitHub returned 5 PR-triggered workflow runs for exact head `c10dd031d375d22d13ccad116f38429d4a5bafce`; all 5 completed with `success`.
+- PR #232 was marked Ready and squash-merged with expected-head protection as `dc7a24d6a92a340afe6e6fcec037d8f53b44c96a`, automatically closing Issue #231 as completed.
 
 ## Decision / gates
 
@@ -45,4 +47,4 @@
 - `m2_parity_admissible=false`
 - M2 remains 0/5.
 
-SCRIP-CORPUS-071 is authored and recoverable in Draft PR #232; independent exact-head review remains required before merge.
+SCRIP-CORPUS-071 is complete and independently reviewed. `STATE_REVISION=256`; normal-flow selection resumes from the P2 SCRIP-CORPUS continuation.

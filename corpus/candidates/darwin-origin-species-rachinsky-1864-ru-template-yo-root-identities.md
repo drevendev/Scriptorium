@@ -27,10 +27,14 @@ Canonical source-free v3 artifact:
 
 The dedicated read-only workflow re-queries those exact revision IDs, compares title/timestamp/SHA-1 against the committed source-free dependency rows, deterministically rebuilds the v3 artifact and byte-compares it with the committed JSON.
 
+## Next evidence layer
+
+SCRIP-CORPUS-065 freezes complete direct-dependency discovery for these exact roots in the source-free [`darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md`](darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md) companion. That later layer records the bound `Шаблон:Ё -> Шаблон:ЕЁ` edge and discovers `Шаблон:ЕЁ -> Модуль:String`; the module remains identity-unbound, so recursive closure is still intentionally open.
+
 ## Fail-closed boundary
 
-Root identity is only the first layer of deterministic replay. No direct-dependency discovery proof has yet been frozen for either root, no recursive template/module graph is closed, and no graph edges are claimed. Therefore `dependency_closure_complete=false` remains mandatory even though `root_identities_bound=true`.
+Root identity is only the first layer of deterministic replay. The later v4 direct-dependency layer does not yet bind `Модуль:String` or close the recursive template/module graph. Therefore `dependency_closure_complete=false` remains mandatory even though root identity and root-level direct-dependency discovery are now separately frozen.
 
 The documented forced/non-forced outputs are still unverified in a fully bound replay environment. Accordingly `outputs_verified=false`, `render_profile_rule_promoted=false`, and the `ё` backlog item remains unresolved. Literary-body rendering/count/digests, the >=300k admission gate, `fantlab_source_edition_match`, `diagnostic_ready` and `m2_parity_admissible` also remain closed/unknown. M2 remains **0/5**.
 
-No template body, Page prose, rendered literary text, OCR, scan bytes, or template argument payload is stored by this artifact.
+No template body, Page prose, rendered literary text, OCR, scan bytes, or template argument payload is stored by these artifacts.

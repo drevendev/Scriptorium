@@ -1,7 +1,7 @@
 {
   "admitted_for_calibration": false,
   "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
-  "contract_sha256": "27bbea3edcf583edb4066611062bcba8b9eb08a3cbbaaf70718800b99bb1e9f6",
+  "contract_sha256": "f5a021fe544bb74f8f7a493bf20c7005f5a79c9c7b78eb10c86ff93a86b26e64",
   "diagnostic_ready": false,
   "direct_dependency_discovery": {
     "discovered_edges": [
@@ -83,7 +83,8 @@
         "FULLPAGENAME",
         "BASEPAGENAME",
         "ROOTPAGENAME",
-        "SUBPAGENAME"
+        "SUBPAGENAME",
+        "NAMESPACE"
       ],
       "parameters_can_force_template_transclusion": true,
       "permanent_url": "https://www.mediawiki.org/w/index.php?title=Help:Magic_words&oldid=8589537",

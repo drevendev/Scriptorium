@@ -1,0 +1,57 @@
+{
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "canonical_payload_sha256": "f903653e799f0797d661208cbb5d06658fea275cab95d2c1c8ca586042165b9f",
+  "decision": {
+    "candidate_role": "public-domain nonfiction corpus/provenance/showcase lead; not a current M2 parity seed",
+    "diagnostic_ready": false,
+    "fantlab_source_edition_match": "unknown",
+    "m2_parity_admissible": false,
+    "m2_weight": 0,
+    "next_trigger": "Re-check only if FantLab work 191634 gains a linguistic-analysis block/link or another first-party work-specific analysis surface is identified.",
+    "work_specific_fantlab_linguistic_result_established": false
+  },
+  "gate_state": {
+    "fantlab_input_identity_established": false,
+    "literary_body_frozen": false,
+    "literary_page_selection_bound": false,
+    "m2_progress_after_observation": "0/5",
+    "minimum_300k_proved_from_frozen_body": false
+  },
+  "observation_method": {
+    "negative_evidence_note": "Absence on the observed work page does not prove that FantLab never analyzed the work or that no non-linked/private result exists.",
+    "negative_evidence_scope": "dated_public_surface_only",
+    "required_markers": [
+      "Лингвистический анализ текста",
+      "подробные результаты анализа"
+    ],
+    "surface": "current public work page",
+    "target_analysis_url_discovered_from_work_page": null,
+    "target_detailed_analysis_link_present": false,
+    "target_linguistic_analysis_heading_present": false
+  },
+  "observation_version": "scriptorium-perelman-fantlab-analysis-surface-observation-v1",
+  "observed_at": "2026-09-23T11:55:33Z",
+  "positive_control": {
+    "analysis_character_count": 877398,
+    "analysis_date": "2022-09-18",
+    "analysis_url": "https://fantlab.ru/work13729/lp",
+    "detailed_analysis_link_present": true,
+    "linguistic_analysis_heading_present": true,
+    "provider": "FantLab",
+    "purpose": "Demonstrates that the same public work-page observation exposes the expected analysis markers when FantLab publishes them.",
+    "work_id": 13729,
+    "work_page_url": "https://fantlab.ru/work13729",
+    "work_title": "Час Быка"
+  },
+  "source_free": true,
+  "source_text_committed": false,
+  "target": {
+    "language": "Russian",
+    "provider": "FantLab",
+    "work_id": 191634,
+    "work_kind": "monograph",
+    "work_page_url": "https://fantlab.ru/work191634",
+    "work_title": "Занимательная физика. Книга 1",
+    "work_year": 1913
+  }
+}

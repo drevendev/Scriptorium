@@ -7,6 +7,7 @@ on:
       - "scriptorium/perelman_pdf_page_labels.py"
       - "tests/test_perelman_pdf_page_labels.py"
       - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.md"
+      - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.md"
       - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json"
       - "project/STATE_AND_QUEUE.md"
       - "project/CHANGELOG.d/SCRIP-CORPUS-072.md"
@@ -70,7 +71,7 @@ jobs:
           rm -f build/perelman/exact.pdf
           test ! -e build/perelman/exact.pdf
 
-      - name: Compare committed evidence when present
+      - name: Compare committed evidence byte-for-byte
         run: |
           set -euo pipefail
           canonical="corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json"

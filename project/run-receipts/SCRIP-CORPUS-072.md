@@ -4,8 +4,8 @@
 
 - Mode: corpus / provenance research within the P2 SCRIP-CORPUS continuation.
 - Base: `master@4b50ea3c39181ff8f1fd4a1fadc9d04a09237e67`.
-- Issue: #233 (open).
-- Pull request: #234 (Draft; independent later review required).
+- Issue: #233 (closed completed after merge).
+- Pull request: #234 (independently reviewed; squash-merged).
 - Reason: the retained Perelman 1913 public-domain popular-science candidate had no admissible page mapping from bibliographic counts or current Russian Wikisource Index evidence. The next explicit repository-state route was exact-carrier facsimile/internal page-label evidence.
 
 ## Current research / tooling evidence
@@ -23,12 +23,15 @@
 - `corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json` — canonical source-free zero-label evidence; physical SHA-256 `16b4ba074221d7fa20cb044584886038989f43657988c6bd6b062774077915bd`.
 - Updated public candidate documentation, durable state, this receipt and changelog fragment.
 
-## Authored verification
+## Verification
 
 - Hosted capture run `35884908615` checkout `ae9b809e999e8bdd35b281b98e5393276c396d6a`, installed the pinned qpdf package, passed 6/6 focused regressions, verified the exact PDF identity, reported `SCRIPTORIUM_PERELMAN_PAGE_LABEL_ENTRIES=0`, deleted transient PDF bytes and uploaded only the source-free JSON.
 - Authoring-context replay `35885190135` repeated the dedicated job successfully on follow-up head `2d33ac5c28f5e99a6237e9df280ce43efc0a7da9`.
-- Downloaded source-free capture bytes independently hash to `16b4ba074221d7fa20cb044584886038989f43657988c6bd6b062774077915bd`.
-- Final exact-head CI settlement and independent judgement are deliberately left for the next review wake; this authored unit does not self-merge.
+- Independent exact-head review `5293616208` re-read all 8 changed files at `150eae46800f826de93dff00fb89494ee254394b` against unchanged `master@4b50ea3c39181ff8f1fd4a1fadc9d04a09237e67` and found no merge blocker or open review thread.
+- The review independently recomputed the committed source-free artifact's physical SHA-256 as `16b4ba074221d7fa20cb044584886038989f43657988c6bd6b062774077915bd`.
+- Dedicated exact-head run `35886810449` checked out the reviewed SHA, installed pinned qpdf 11.9.0, passed 7/7 focused regressions, re-fetched and byte-verified the exact PDF, reported zero page-label entries, deleted transient PDF bytes, and byte-for-byte matched regenerated source-free JSON against the committed artifact.
+- GitHub returned 22 PR-triggered workflow runs for exact head `150eae46800f826de93dff00fb89494ee254394b`; all 22 completed with `success`.
+- PR #234 was marked Ready and squash-merged with expected-head protection as `2590d3dd234fde3d26d2659f448bf58f7c040965`, automatically closing Issue #233 as completed.
 
 ## Decision / gates
 
@@ -45,4 +48,4 @@
 - `m2_parity_admissible=false`
 - M2 remains 0/5.
 
-The current exact PDF `/PageLabels` route is exhausted as a mapping authority. The next candidate-specific evidence is exact-carrier facsimile mapping (visible printed page numbers/front matter/end matter), optionally cross-checked against the frozen DjVu page map. SCRIP-CORPUS-072 is authored and recoverable in Draft PR #234; independent exact-head review remains required before merge.
+The exact PDF `/PageLabels` route is exhausted as a mapping authority. The next candidate-specific evidence is exact-carrier facsimile mapping (visible printed page numbers/front matter/end matter), optionally cross-checked against the frozen DjVu page map. SCRIP-CORPUS-072 is complete and independently reviewed. `STATE_REVISION=258`; normal-flow selection resumes from the P2 SCRIP-CORPUS continuation.

@@ -54,6 +54,18 @@ def _skip_lua_comment(source: str, start: int) -> int | None:
     return len(source) if end < 0 else end + 1
 
 
+def _skip_trivia(source: str, start: int) -> int:
+    pos = start
+    while pos < len(source):
+        while pos < len(source) and source[pos].isspace():
+            pos += 1
+        comment_end = _skip_lua_comment(source, pos)
+        if comment_end is None:
+            break
+        pos = comment_end
+    return pos
+
+
 def _parse_quoted_literal(source: str, start: int) -> tuple[str, int] | None:
     if start >= len(source) or source[start] not in {"'", '"'}:
         return None
@@ -81,7 +93,14 @@ def _skip_quoted_literal(source: str, start: int) -> int | None:
 
 
 def _iter_loader_calls(source: str) -> list[tuple[str, str | None]]:
-    """Lex Lua code enough to find loader calls while ignoring comments/strings."""
+    """Lex direct Lua loader calls while ignoring comments and string bodies.
+
+    Literal single/double-quoted arguments are captured both in parenthesized
+    calls and Lua's bare-string call form. Long-string/table/dynamic arguments
+    are recorded as unsupported so the derived scan fails closed rather than
+    silently claiming completeness.
+    """
+
     calls: list[tuple[str, str | None]] = []
     i = 0
     while i < len(source):
@@ -105,23 +124,35 @@ def _iter_loader_calls(source: str) -> list[tuple[str, str | None]]:
             name = source[start:i]
             if name not in LOADER_NAMES:
                 continue
-            pos = i
-            while pos < len(source) and source[pos].isspace():
-                pos += 1
-            if pos >= len(source) or source[pos] != "(":
+            pos = _skip_trivia(source, i)
+            if pos >= len(source):
                 continue
-            pos += 1
-            while pos < len(source) and source[pos].isspace():
-                pos += 1
+
+            if source[pos] in {"'", '"'}:
+                parsed = _parse_quoted_literal(source, pos)
+                calls.append((name, None if parsed is None else parsed[0]))
+                i = len(source) if parsed is None else parsed[1]
+                continue
+
+            if source[pos] in {"[", "{"}:
+                calls.append((name, None))
+                i = pos + 1
+                continue
+
+            if source[pos] != "(":
+                continue
+
+            pos = _skip_trivia(source, pos + 1)
+            if pos >= len(source):
+                calls.append((name, None))
+                break
             parsed = _parse_quoted_literal(source, pos)
             if parsed is None:
                 calls.append((name, None))
-                i = pos
+                i = pos + 1
                 continue
             literal, end = parsed
-            pos = end
-            while pos < len(source) and source[pos].isspace():
-                pos += 1
+            pos = _skip_trivia(source, end)
             calls.append((name, literal if pos < len(source) and source[pos] == ")" else None))
             i = pos + 1 if pos < len(source) else pos
             continue
@@ -141,7 +172,7 @@ def _normalize_wiki_module_literal(value: str) -> str | None:
 
 
 def scan_lua_dependency_surface(source: str) -> dict[str, object]:
-    """Return only source-free loader metadata from transient Lua source."""
+    """Return only source-free direct-loader metadata from transient Lua source."""
     wiki_dependencies: set[str] = set()
     non_wiki_literals: set[str] = set()
     dynamic_or_unsupported: list[str] = []
@@ -159,6 +190,7 @@ def scan_lua_dependency_surface(source: str) -> dict[str, object]:
     raw = source.encode("utf-8")
     return {
         "scan_method": "scriptorium-darwin-lua-loader-scan-v1",
+        "scan_scope": "direct require/mw.loadData/mw.loadJsonData calls; alias/computed semantic analysis not attempted",
         "source_utf8_bytes": len(raw),
         "source_sha1": sha1(raw).hexdigest(),
         "source_sha256": sha256(raw).hexdigest(),
@@ -166,6 +198,7 @@ def scan_lua_dependency_surface(source: str) -> dict[str, object]:
         "non_wiki_require_literals": sorted(non_wiki_literals),
         "dynamic_or_unsupported_loader_calls": sorted(dynamic_or_unsupported),
         "scan_complete": not dynamic_or_unsupported,
+        "semantic_dependency_closure_proved": False,
     }
 
 

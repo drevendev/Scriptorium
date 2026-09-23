@@ -1,0 +1,49 @@
+{
+  "bound_replay_contract": {
+    "contract_sha256": "f5a021fe544bb74f8f7a493bf20c7005f5a79c9c7b78eb10c86ff93a86b26e64",
+    "schema_version": "scriptorium-darwin-template-yo-replay-contract-v4"
+  },
+  "bound_revision_selection_policy": {
+    "policy_sha256": "4a58b70d5935f4455e58a929c6c1b6cc6a527d7b9d63121e0023501055889855",
+    "schema_version": "scriptorium-darwin-dependency-revision-selection-policy-v1"
+  },
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "dependency_title": "Модуль:String",
+  "gates": {
+    "dependency_closure_complete": false,
+    "fantlab_source_edition_match": "unknown",
+    "literary_body_count_and_digests_frozen": false,
+    "m2_parity_admissible": false,
+    "minimum_300k_proved": false,
+    "module_string_identity_bound": false,
+    "module_string_identity_observed": true,
+    "outputs_verified": false,
+    "render_profile_rule_promoted": false
+  },
+  "identity": {
+    "canonical_title": "Модуль:String",
+    "mediawiki_sha1": "a34727a1e4ec3c4b4c7ec556c94991f75442d99c",
+    "revision_id": 3684569,
+    "revision_timestamp": "2019-06-04T20:18:11Z"
+  },
+  "observation_context": {
+    "endpoint": "https://ru.wikisource.org/w/api.php",
+    "observed_at": "2026-09-23T06:03:11Z",
+    "provider": "Russian Wikisource Action API",
+    "query": {
+      "action": "query",
+      "curtimestamp": true,
+      "format": "json",
+      "formatversion": 2,
+      "prop": "revisions",
+      "rvlimit": 1,
+      "rvprop": "ids|timestamp|sha1",
+      "source_content_requested": false,
+      "titles": "Модуль:String"
+    },
+    "selection": "current_revision_at_observation_time"
+  },
+  "observation_sha256": "e60fc5e4f59164e98114024a4464f377f0684673be979e0fe18ed7b1fb9070bc",
+  "schema_version": "scriptorium-darwin-dependency-revision-observation-v1",
+  "source_text_included": false
+}

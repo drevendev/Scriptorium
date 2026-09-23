@@ -1,21 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 262
+STATE_REVISION: 263
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-23T19:50:43Z
-LAST_RESULT: SCRIP-CORPUS-074 / Issue #237 completed. Independent later-wake review `5296009104` re-read all 7 changed files in PR #238 at exact head `2f17bfc3a0d99f772a6f2add30919c565a48c30c` against unchanged `master@2fe76aac43e65d4d8d089901fc8842e0713970f4`, found no open review thread or blocker, and confirmed all 23 PR-triggered workflows returned for the exact reviewed head completed `success`. Dedicated facsimile run `35907031639` explicitly checked out that SHA, reverified the exact frozen PDF identity, passed 6/6 focused regressions, regenerated the retained 12 page-image digests, and produced review artifact `10771108913` with ZIP digest `sha256:10229b42095764706a1788ec41c225bab00a41f5284a2a72d80941c68b2eb8d5`. Independent download recomputed the ZIP digest and every rendered-image SHA-256 and visual inspection confirmed only the retained direct observations. PR #238 was marked Ready and squash-merged with expected-head protection as `5f6d78f7cc8fac4f24dcc7e3e9ecc23cadbce292`, automatically closing Issue #237 completed.
-LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman now retains independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, and exact-PDF transition/tail anchors: `10 -> 1`, `11 -> 2`, `12 -> 3`, `13 -> 4`, `217 -> 208`, `218 -> 209`, `219 -> 210`, `220 -> 211`, with page 221 directly observed as unnumbered concluding body text and 222–223 as publisher advertisements. The matching endpoint arithmetic is deliberately not promoted into a complete interior map. Darwin/Rachinsky retains reviewed v4 dependency/provenance evidence through `Модуль:String@3684569`, while semantic dependency closure and historical binding remain unproved. M2 stays 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-23T20:58:00Z
+LAST_RESULT: SCRIP-CORPUS-075 / Issue #239 authored in Draft PR #240 from exact `master@a075cec66a18ab5e9cd97a5a117a7bbab4395ae0`. The existing Perelman facsimile workflow was extended to reverify the frozen 223-page PDF and render carrier pages 199–206 around the 2021-restored printed pages 193–194. Authoring run `35918820460` completed `success`; transient artifact `10775613969` was independently downloaded, ZIP SHA-256 `d543e7cc0374a8d89d7a820df6fd525438121da38270e62a084d1f8882bbfebd`, and direct visual inspection retained only `199–206 -> 190–197`, specifically `202 -> 193` and `203 -> 194`. The local window therefore directly observes `carrier - printed = 9`, but no global offset or complete mapping is asserted. Source-free machine/public evidence and focused regressions are authored; PR #240 remains Draft for a later independent exact-head review.
+LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman retains independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, and exact-PDF transition/tail anchors. SCRIP-CORPUS-075 now adds review-pending direct exact-PDF interior observations `199 -> 190` through `206 -> 197`, crossing restored printed pages 193–194 at carrier pages 202–203; this local continuity is explicitly not promoted into a complete carrier map. Darwin/Rachinsky retains reviewed v4 dependency/provenance evidence through `Модуль:String@3684569`, while semantic dependency closure and historical binding remain unproved. M2 stays 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-074
-ISSUE:          #237 (closed completed)
-STATUS:         COMPLETE
-PR:             #238 (independently reviewed; squash-merged as 5f6d78f7cc8fac4f24dcc7e3e9ecc23cadbce292)
-NEXT_ACTION:    Resume normal-flow selection from the P2 SCRIP-CORPUS continuation. For a later Perelman mapping unit, audit a
-                bounded interior anchor set, especially around the 2021-added printed pages 193–194, before binding any complete
-                carrier range or literary-page selection. Do not infer the unobserved interior from endpoint alignment.
+UNIT_ID:        SCRIP-CORPUS-075
+ISSUE:          #239 (open)
+STATUS:         REVIEW_PENDING
+PR:             #240 (Draft; authored exact-PDF restored-page interior audit)
+NEXT_ACTION:    Independently re-read every changed file at the exact final PR head against base master, inspect the exact-head
+                transient facsimile artifact / rendered-page manifest, and verify all required checks. If clean, mark Ready and
+                merge with expected-head protection. Do not self-promote the locally observed +9 relation into a global mapping.
 ```
 
 ## Current milestone gate
@@ -52,7 +52,7 @@ Detailed evidence is canonical in `corpus/candidates/`, `benchmarks/`, `project/
 - **The Life of Klim Samgin** — source graph/extractor/body identities retained; historical renderer equivalence and FantLab input remain unresolved.
 - **Children of Captain Grant — Beketova translation** — exact 1,095,467-character body with reviewed source-free deterministic showcase; no FantLab result/input identity for this translation.
 - **On the Origin of Species — Rachinsky translation** — exact Page set/scan/render contracts retained; reviewed `Шаблон:Ё -> Шаблон:ЕЁ -> Модуль:String` provenance remains only partially bound; renderer/body/>=300k/FantLab gates stay closed.
-- **Entertaining Physics, Book 1 — Perelman 1913** — exact PDF and DjVu carriers retained; DjVu hidden-text/page-map evidence retained; reviewed pagination, FantLab-surface, current Wikisource-index and zero-PDF-PageLabels boundaries retained. SCRIP-CORPUS-073 provides front-matter anchors `6 -> V` and `8 -> VII`. Independently reviewed SCRIP-CORPUS-074 provides exact-PDF transition/tail observations `10 -> 1`, `11 -> 2`, `12 -> 3`, `13 -> 4`, `217 -> 208`, `218 -> 209`, `219 -> 210`, `220 -> 211`, unnumbered concluding body text on 221, and advertisements on 222–223. Complete interior mapping, PDF↔DjVu equivalence, OCR correctness, canonical carrier, literary body/>=300k, FantLab input identity and M2 remain open.
+- **Entertaining Physics, Book 1 — Perelman 1913** — exact PDF and DjVu carriers retained; DjVu hidden-text/page-map evidence retained; reviewed pagination, FantLab-surface, current Wikisource-index and zero-PDF-PageLabels boundaries retained. SCRIP-CORPUS-073 provides front-matter anchors `6 -> V` and `8 -> VII`; independently reviewed SCRIP-CORPUS-074 provides exact-PDF transition/tail observations `10 -> 1`, `11 -> 2`, `12 -> 3`, `13 -> 4`, `217 -> 208`, `218 -> 209`, `219 -> 210`, `220 -> 211`, unnumbered concluding body text on 221, and advertisements on 222–223. Review-pending SCRIP-CORPUS-075 directly observes carrier `199–206 -> printed 190–197`, including the restored `202 -> 193` and `203 -> 194` seam. Complete interior mapping, global offset, PDF↔DjVu equivalence, OCR correctness, canonical carrier, literary body/>=300k, FantLab input identity and M2 remain open.
 
 ## Deterministic / morphology orientation
 
@@ -65,13 +65,13 @@ Detailed evidence is canonical in `corpus/candidates/`, `benchmarks/`, `project/
 
 ## Public repository representation
 
-Public surfaces must remain source-free and synchronized with actual capability. Publish metadata, provenance, hashes and derived analysis only; never publish unlicensed source text. Current visible slices include retained candidate navigation, deterministic showcase outputs and explicit fail-closed provenance boundaries. Perelman's transition/tail companion is now independently reviewed and exposes only directly observed exact-carrier anchors rather than an inferred full offset rule.
+Public surfaces must remain source-free and synchronized with actual capability. Publish metadata, provenance, hashes and derived analysis only; never publish unlicensed source text. Current visible slices include retained candidate navigation, deterministic showcase outputs and explicit fail-closed provenance boundaries. Perelman's independently reviewed transition/tail companion exposes only directly observed exact-carrier anchors; Draft PR #240 adds a source-free restored-page interior companion showing local continuity across printed pages 193–194 while explicitly refusing a global offset claim.
 
 ## Known blockers / invariants
 
 1. FantLab analyzer-input identity remains undisclosed/unestablished for retained benchmark works; M2 remains 0/5.
 2. FantLab corrective coefficients and several parser/tokenization/dialogue semantics remain partly unpublished.
 3. No corpus or showcase evidence may be promoted to parity without source-edition/input matching and explicit benchmark tolerances.
-4. Perelman complete exact-carrier mapping is still required. SCRIP-CORPUS-074 directly proves numbered-body start/end anchors but does not prove every unobserved interior page, literary-page selection, PDF↔DjVu equivalence, OCR correctness, body identity or >=300k admission.
+4. Perelman complete exact-carrier mapping is still required. Independently reviewed SCRIP-CORPUS-074 directly proves numbered-body endpoint anchors; review-pending SCRIP-CORPUS-075 directly checks one interior restoration seam only. Neither proves every unobserved interior page, a global offset, literary-page selection, PDF↔DjVu equivalence, OCR correctness, body identity or >=300k admission.
 5. Darwin/Rachinsky semantic dependency closure remains unproved; point-in-time observations are not historical-transclusion provenance.
 6. Live Pages deployment remains subject to repository policy/administration and must not be implied by static build success.

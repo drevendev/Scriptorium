@@ -2,11 +2,11 @@
 
 ## Selection
 
-- Mode: corpus / provenance research within the P2 SCRIP-CORPUS continuation.
+- Mode: corpus / provenance research within the P2 SCRIP-CORPUS continuation, followed by the required later-wake review/recovery unit.
 - Base: `master@7865ab5cfaf3da570eef5f879f42f98ac187f664`.
-- Issue: #235.
-- Pull request: #236 (Draft; authored this run, independent later review required).
-- Reason: SCRIP-CORPUS-072 established that the exact frozen Perelman PDF has no internal `/PageLabels`; canonical state names exact-carrier facsimile evidence as the next admissible mapping route.
+- Issue: #235 (closed completed after merge).
+- Pull request: #236 (independently reviewed at exact head `199f6889683cf275d94bd7904995931b33cdeebd`; squash-merged as `1f8a1646295f4ba8ece2fa8f634c52adeb9b354e`).
+- Reason: SCRIP-CORPUS-072 established that the exact frozen Perelman PDF has no internal `/PageLabels`; canonical state named exact-carrier facsimile evidence as the next admissible mapping route.
 
 ## Research evidence
 
@@ -31,8 +31,12 @@
 ## Verification
 
 - Repository-facing evidence was kept source-free: no PDF bytes, preview images, OCR, hidden text or literary prose were committed.
-- The authored static artifact digest was computed from canonical UTF-8 JSON bytes as `12bf560c02b66275a30331cf0274a410041ac916ef21c4ff840d0e55524b7ff8` and is asserted by the focused regression.
-- Draft PR #236 must be judged only after GitHub checks settle on its final exact head. This authoring run does not self-approve or merge it.
+- The committed artifact digest independently recomputed from exact-head UTF-8 bytes as `12bf560c02b66275a30331cf0274a410041ac916ef21c4ff840d0e55524b7ff8`.
+- Independent review `5294741525` re-read all 6 changed files on exact head `199f6889683cf275d94bd7904995931b33cdeebd` against unchanged `master@7865ab5cfaf3da570eef5f879f42f98ac187f664`.
+- The review independently re-checked the current Commons carrier surface and directly inspected the retained 500-pixel previews, confirming page 4 preface/no visible label, page 5 blank/no visible label, page 6 contents/`V`, page 8 contents/`VII`, and page 9 illustration/no visible label. Missing pages remained uninferred.
+- No review threads or contradictory review submissions were open.
+- All 22 PR-triggered workflow runs returned for the exact reviewed head completed `success`. The frozen-diagnostic jobs explicitly checked out that SHA and passed their standard-library test-suite and replay steps.
+- PR #236 was marked Ready and squash-merged with expected-head protection at 2026-09-23T17:53:02Z as `1f8a1646295f4ba8ece2fa8f634c52adeb9b354e`, automatically closing Issue #235 as completed.
 
 ## Decision / gates
 
@@ -50,4 +54,4 @@
 - `m2_parity_admissible=false`
 - M2 remains 0/5.
 
-The next independent review should re-read every changed file, recompute the committed artifact SHA-256, confirm the exact retained anchors against the linked Commons previews and verify all final-head checks. If that review passes, merge with expected-head protection. After merge, a later normal-flow unit may inspect the numbered-body transition and tail/end-matter anchors; it must not infer missing pages from the current partial set.
+SCRIP-CORPUS-073 is complete. Normal-flow P2 corpus/provenance selection may resume. A later Perelman unit may inspect the numbered-body transition and tail/end-matter anchors; it must not infer missing pages from this partial set.

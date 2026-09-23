@@ -6,7 +6,7 @@
 - Base: exact `master@003de730681010d02a94dac9dc08c66ab7bad4bc`.
 - Issue: #241.
 - Branch: `scrip-corpus-076-darwin-yo-closure`.
-- Pull request: pending creation after the authored state is durable.
+- Pull request: #242 (Draft; review pending).
 - Reason: Darwin/Rachinsky 1864 is a diversified nonfiction/translation candidate whose reviewed replay contract had one remaining unbound dependency even though a durable exact-revision Module:String probe already existed. Closing that bounded source-free dependency graph is a higher-value next provenance step than inferring renderer output or historical transclusion behavior.
 
 ## Upstream evidence
@@ -39,7 +39,7 @@ This proves dependency identity/discovery closure **only for the deliberately se
 
 ## Verification / handoff
 
-- Authoring verification is pending exact-head PR-triggered CI after Draft PR creation.
+- Draft PR #242 is the review surface. Exact authored-head PR-triggered CI must settle before judgement.
 - A later wake must independently re-read the full diff, require exact-head checks to succeed, verify the committed contract can be deterministically rebuilt from the reviewed v4/probe artifacts, and confirm no source prose or downstream gate promotion slipped in.
 - This authoring run must not self-approve or merge the substantial change.
 

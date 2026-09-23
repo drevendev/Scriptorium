@@ -1,0 +1,48 @@
+{
+  "bound_observation": {
+    "observation_sha256": "e60fc5e4f59164e98114024a4464f377f0684673be979e0fe18ed7b1fb9070bc",
+    "schema_version": "scriptorium-darwin-dependency-revision-observation-v1"
+  },
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "dependency_surface": {
+    "dynamic_or_unsupported_loader_calls": [],
+    "non_wiki_require_literals": [],
+    "scan_complete": true,
+    "scan_method": "scriptorium-darwin-lua-loader-scan-v1",
+    "scan_scope": "direct require/mw.loadData/mw.loadJsonData calls; alias/computed semantic analysis not attempted",
+    "semantic_dependency_closure_proved": false,
+    "source_sha1": "a34727a1e4ec3c4b4c7ec556c94991f75442d99c",
+    "source_sha256": "258cec6ab8b4c1e3eb0e812d72d39f4302f321a4d1fdd7aa3883187db0eecb03",
+    "source_utf8_bytes": 18468,
+    "static_wiki_module_dependencies": []
+  },
+  "dependency_title": "Модуль:String",
+  "exact_revision_query": {
+    "endpoint": "https://ru.wikisource.org/w/api.php",
+    "provider": "Russian Wikisource Action API",
+    "rvprop": "ids|timestamp|sha1|content",
+    "rvslots": "main",
+    "selection": "exact_revision_id_from_reviewed_observation",
+    "source_content_requested_transiently": true
+  },
+  "gates": {
+    "dependency_closure_complete": false,
+    "fantlab_source_edition_match": "unknown",
+    "literary_body_count_and_digests_frozen": false,
+    "m2_parity_admissible": false,
+    "minimum_300k_proved": false,
+    "module_string_dependency_surface_probed": true,
+    "module_string_identity_bound": false,
+    "outputs_verified": false,
+    "render_profile_rule_promoted": false
+  },
+  "identity": {
+    "canonical_title": "Модуль:String",
+    "mediawiki_sha1": "a34727a1e4ec3c4b4c7ec556c94991f75442d99c",
+    "revision_id": 3684569,
+    "revision_timestamp": "2019-06-04T20:18:11Z"
+  },
+  "probe_sha256": "e27a2af9f01c760f995c633e296e1d5825642d4c4bcbeb5fba8ae0a697c234cb",
+  "schema_version": "scriptorium-darwin-module-string-dependency-probe-v1",
+  "source_text_included": false
+}

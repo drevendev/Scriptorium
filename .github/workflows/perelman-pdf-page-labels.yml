@@ -103,10 +103,13 @@ jobs:
           print("SCRIPTORIUM_PERELMAN_PAGE_LABEL_ENTRIES=" + str(evidence["probe"]["page_label_entry_count"]))
           PY
 
-      - name: Upload source-free page-label evidence
+      - name: Upload source-free page-label evidence and authoring context
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: perelman-1913-pdf-page-labels
-          path: build/perelman/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json
+          path: |
+            build/perelman/perelman-entertaining-physics-book1-1913-ru.pdf-page-labels.json
+            project/STATE_AND_QUEUE.md
+            corpus/candidates/perelman-entertaining-physics-book1-1913-ru.md
           if-no-files-found: error
           retention-days: 7

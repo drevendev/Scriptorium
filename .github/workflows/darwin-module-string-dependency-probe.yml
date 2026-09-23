@@ -12,6 +12,9 @@ on:
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json"
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json"
       - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md"
+      - "project/STATE_AND_QUEUE.md"
+      - "project/CHANGELOG.d/SCRIP-CORPUS-068.md"
+      - "project/run-receipts/SCRIP-CORPUS-068.md"
   workflow_dispatch:
 
 permissions:
@@ -98,7 +101,10 @@ jobs:
                       walk(child)
           walk(probe)
           surface = probe['dependency_surface']
+          assert surface['semantic_dependency_closure_proved'] is False
+          print('scan_scope=', surface['scan_scope'])
           print('scan_complete=', surface['scan_complete'])
+          print('semantic_dependency_closure_proved=', surface['semantic_dependency_closure_proved'])
           print('static_wiki_module_dependencies=', surface['static_wiki_module_dependencies'])
           print('non_wiki_require_literals=', surface['non_wiki_require_literals'])
           print('dynamic_or_unsupported_loader_calls=', surface['dynamic_or_unsupported_loader_calls'])

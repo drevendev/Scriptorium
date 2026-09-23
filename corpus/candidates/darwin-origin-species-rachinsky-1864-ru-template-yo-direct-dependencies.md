@@ -9,13 +9,13 @@ This source-free companion records the next deterministic-replay prerequisite af
 | `Шаблон:Ё@5687302` | 271 | `bd7465151d984f06c75eae0c1246c26a0643826a26a170a3e9a9d43c9e5a03b7` | `Шаблон:ЕЁ` |
 | `Шаблон:ЕЁ@3684646` | 688 | `3975fa227e23e8cc1487a49a3eab86b28e0ddb6a753c347c3191ee800ae56026` | `Модуль:String` |
 
-The scanner handles the bounded syntax needed by these exact roots: comments, `noinclude` / `includeonly` / `onlyinclude`, common non-transcluding literal tags, redirects, static template names, and `#invoke` module names. Bare magic-word handling is deliberately evidence-bounded to the pinned MediaWiki `Help:Magic words@8589537` surface. The exact uppercase `ЕЁ` invocation is bound as a template from root evidence; unknown uppercase names and parameterized magic-word-like invocations fail closed instead of being silently discarded. Synthetic regressions cover those boundaries, including `{{ЕЁ|ё|е}} -> Шаблон:ЕЁ`. No template body or rendered prose is committed.
+The scanner handles the bounded syntax needed by these exact roots: comments, `noinclude` / `includeonly` / `onlyinclude`, common non-transcluding literal tags, redirects, static template names, and `#invoke` module names. Bare magic-word handling is deliberately evidence-bounded to the pinned MediaWiki `Help:Magic words@8589537` surface. The exact uppercase `ЕЁ` invocation is bound as a template from root evidence; the exact roots also exercise documented bare `NAMESPACE`, which is explicitly classified as a variable. Unknown uppercase names and parameterized magic-word-like invocations fail closed instead of being silently discarded. Synthetic regressions cover those boundaries, including `{{ЕЁ|ё|е}} -> Шаблон:ЕЁ`. No template body or rendered prose is committed.
 
 Canonical source-free artifact:
 
 - [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json)
 - schema: `scriptorium-darwin-template-yo-replay-contract-v4`
-- contract SHA-256: `27bbea3edcf583edb4066611062bcba8b9eb08a3cbbaaf70718800b99bb1e9f6`
+- contract SHA-256: `f5a021fe544bb74f8f7a493bf20c7005f5a79c9c7b78eb10c86ff93a86b26e64`
 - scanner: [`../../scriptorium/darwin_template_dependency_scan.py`](../../scriptorium/darwin_template_dependency_scan.py)
 - builder/validator: [`../../scriptorium/darwin_template_yo_replay_contract_v4.py`](../../scriptorium/darwin_template_yo_replay_contract_v4.py)
 

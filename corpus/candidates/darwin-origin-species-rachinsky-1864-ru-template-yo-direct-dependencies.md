@@ -1,6 +1,6 @@
 # Darwin/Rachinsky 1864 — `{{ё}}` root direct dependencies
 
-This source-free companion records the next deterministic-replay prerequisite after the reviewed v3 root-identity freeze. Exact Russian Wikisource root revision content is fetched only transiently, verified against the already-bound MediaWiki SHA-1, reduced under MediaWiki transclusion controls, and discarded. The repository retains only byte/digest metadata and dependency titles.
+This source-free companion records the deterministic-replay prerequisites after the reviewed v3 root-identity freeze. Exact Russian Wikisource root revision content is fetched only transiently, verified against the already-bound MediaWiki SHA-1, reduced under MediaWiki transclusion controls, and discarded. The repository retains only byte/digest metadata and dependency titles.
 
 ## Frozen exact-root observations
 
@@ -30,8 +30,19 @@ Scriptorium therefore freezes a fail-closed source-free policy: the next child i
 - policy SHA-256: `4a58b70d5935f4455e58a929c6c1b6cc6a527d7b9d63121e0023501055889855`
 - validator: [`../../scriptorium/darwin_dependency_revision_policy.py`](../../scriptorium/darwin_dependency_revision_policy.py)
 
+## Controlled `Модуль:String` observation
+
+SCRIP-CORPUS-067 adds the first controlled, metadata-only observation permitted by that policy. On **2026-09-23T06:03:11Z**, the PR workflow queried Russian Wikisource with `curtimestamp=1`, canonical title `Модуль:String`, and `rvprop=ids|timestamp|sha1` while explicitly requesting no source content. The API returned current revision **`3684569`**, timestamp **`2019-06-04T20:18:11Z`**, and MediaWiki SHA-1 **`a34727a1e4ec3c4b4c7ec556c94991f75442d99c`**. The source-free observation SHA-256 is **`e60fc5e4f59164e98114024a4464f377f0684673be979e0fe18ed7b1fb9070bc`**.
+
+This is a reproducible point-in-time **observation**, not a claim about which module revision was historically transcluded when either root revision was authored. The observation is retained so a later bounded unit can independently judge whether to select and bind that exact revision into a successor replay contract. Until such a contract is reviewed, `module_string_identity_observed=true` but `module_string_identity_bound=false`.
+
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-observation-v1.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-observation-v1.json)
+- schema: `scriptorium-darwin-dependency-revision-observation-v1`
+- observation SHA-256: `e60fc5e4f59164e98114024a4464f377f0684673be979e0fe18ed7b1fb9070bc`
+- builder/validator: [`../../scriptorium/darwin_dependency_revision_observation.py`](../../scriptorium/darwin_dependency_revision_observation.py)
+
 ## Fail-closed boundary
 
-Direct-dependency discovery is complete only for the two exact roots. The bound replay graph now contains `Шаблон:Ё -> Шаблон:ЕЁ`. `Шаблон:ЕЁ` in turn discovers `Модуль:String`, but that child has not yet been assigned an exact replay revision identity and its own direct dependencies have not been frozen. The v4 contract therefore records the root-to-root edge as `target_identity_bound=true`, the module edge as `target_identity_bound=false`, and requires `dependency_closure_complete=false`.
+Direct-dependency discovery is complete only for the two exact roots. The bound replay graph contains `Шаблон:Ё -> Шаблон:ЕЁ`. `Шаблон:ЕЁ` in turn discovers `Модуль:String`; SCRIP-CORPUS-067 now has an explicit exact current-revision observation for that child, but v4 still does not bind it and its own direct dependencies have not been frozen. The v4 contract therefore remains unchanged with the root-to-root edge `target_identity_bound=true`, the module edge `target_identity_bound=false`, and `dependency_closure_complete=false`.
 
 No forced/non-forced output has been verified in a recursively bound environment. `outputs_verified=false`, `render_profile_rule_promoted=false`, renderer/body/`>=300k` admission gates remain closed, `fantlab_source_edition_match=unknown`, and `m2_parity_admissible=false`. M2 remains **0/5**.

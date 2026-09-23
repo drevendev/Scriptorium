@@ -15,6 +15,7 @@ from scriptorium.darwin_dependency_revision_observation import (
 ROOT = Path(__file__).resolve().parents[1]
 V4 = ROOT / "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json"
 POLICY = ROOT / "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json"
+OBSERVATION = ROOT / "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-observation-v1.json"
 
 
 def load(path: Path) -> dict[str, object]:
@@ -47,6 +48,17 @@ def api_payload() -> dict[str, object]:
 
 
 class DarwinDependencyRevisionObservationTests(unittest.TestCase):
+    def test_committed_observation_validates_and_digest_is_stable(self) -> None:
+        observation = load(OBSERVATION)
+        validate_observation(observation, load(V4), load(POLICY))
+        self.assertEqual(
+            observation["observation_sha256"],
+            "e60fc5e4f59164e98114024a4464f377f0684673be979e0fe18ed7b1fb9070bc",
+        )
+        self.assertEqual(observation_sha256(observation), observation["observation_sha256"])
+        self.assertEqual(observation["identity"]["revision_id"], 3684569)
+        self.assertFalse(observation["gates"]["module_string_identity_bound"])
+
     def test_source_free_observation_validates_and_digest_is_stable(self) -> None:
         observation = build_observation(api_payload())
         validate_observation(observation, load(V4), load(POLICY))

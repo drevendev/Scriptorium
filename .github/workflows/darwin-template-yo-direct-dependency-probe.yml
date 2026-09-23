@@ -17,6 +17,7 @@ on:
       - "tests/test_darwin_dependency_revision_observation.py"
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json"
       - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.module-string-observation-v1.json"
       - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md"
   workflow_dispatch:
 

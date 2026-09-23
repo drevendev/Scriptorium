@@ -7,4 +7,5 @@
 - The result is deliberately a dated negative public-surface observation, not a claim that FantLab never analyzed the work or that a non-linked/private result cannot exist.
 - Operational decision: Perelman 1913 remains a public-domain nonfiction corpus/provenance/showcase lead, but not a current M2 parity seed. `fantlab_source_edition_match=unknown`, `diagnostic_ready=false`, `m2_parity_admissible=false`, and M2 remains 0/5.
 - Literary-page selection, PDF↔DjVu equivalence, OCR correctness, literary-body freeze, selected-body >=300k proof and FantLab analyzer-input identity remain unchanged and closed.
-- Issue #229 / Draft PR for SCRIP-CORPUS-070 carries the authored unit for independent exact-head judgement; merge is deliberately deferred to a later wake.
+- Independent review `5291183850` re-read exact head `a4b42a1a31314c48b38d1145a2aad81a9d1aee1e`, recomputed the canonical payload digest, re-verified the current first-party FantLab target/control distinction, found no open review thread or merge blocker, and confirmed all 20 PR-triggered workflows settled `success`.
+- PR #230 was marked Ready and squash-merged with expected-head protection as `4d1061d37b84a60e47e2724ac8ad2c4487e25088`; Issue #229 closed `completed`.

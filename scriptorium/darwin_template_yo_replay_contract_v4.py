@@ -15,7 +15,14 @@ import json
 from pathlib import Path
 from typing import Mapping, Sequence
 
-from .darwin_template_dependency_scan import SCAN_METHOD
+from .darwin_template_dependency_scan import (
+    DOCUMENTED_BARE_MAGIC_WORDS,
+    MAGIC_WORD_EVIDENCE_REVISION_DATE,
+    MAGIC_WORD_EVIDENCE_REVISION_ID,
+    MAGIC_WORD_EVIDENCE_TITLE,
+    MAGIC_WORD_EVIDENCE_URL,
+    SCAN_METHOD,
+)
 from .darwin_template_yo_replay_contract import (
     dependency_discovery_evidence_sha256,
     validate_dependency_closure,
@@ -27,7 +34,7 @@ CONTRACT_VERSION = "scriptorium-darwin-template-yo-replay-contract-v4"
 PREDECESSOR_VERSION = "scriptorium-darwin-template-yo-replay-contract-v3"
 PREDECESSOR_SHA256 = "8caa144d9f4c0b9a8149c1822bd79d168d212dea14d72079c3259d55e5e03c8c"
 CANDIDATE_ID = "darwin-origin-species-rachinsky-1864-ru"
-RESEARCH_DATE = "2026-09-22"
+RESEARCH_DATE = "2026-09-23"
 ROOT_SCAN_OBSERVATIONS: tuple[dict[str, object], ...] = (
     {
         "title": "Шаблон:Ё",
@@ -37,7 +44,7 @@ ROOT_SCAN_OBSERVATIONS: tuple[dict[str, object], ...] = (
         "source_utf8_bytes": 271,
         "transclusion_sha256": "bd7465151d984f06c75eae0c1246c26a0643826a26a170a3e9a9d43c9e5a03b7",
         "redirect_target": None,
-        "direct_dependencies": [],
+        "direct_dependencies": ["Шаблон:ЕЁ"],
     },
     {
         "title": "Шаблон:ЕЁ",
@@ -50,6 +57,7 @@ ROOT_SCAN_OBSERVATIONS: tuple[dict[str, object], ...] = (
         "direct_dependencies": ["Модуль:String"],
     },
 )
+BOUND_ROOT_EDGE = {"from": "Шаблон:Ё", "to": "Шаблон:ЕЁ"}
 
 
 def _canonical_json(value: object) -> str:
@@ -132,14 +140,30 @@ def build_contract(
         "scan_method": SCAN_METHOD,
         "researched_on": RESEARCH_DATE,
     }
+    api["magic_word_classification"] = {
+        "provider": "MediaWiki.org",
+        "title": MAGIC_WORD_EVIDENCE_TITLE,
+        "revision_id": MAGIC_WORD_EVIDENCE_REVISION_ID,
+        "revision_date": MAGIC_WORD_EVIDENCE_REVISION_DATE,
+        "permanent_url": MAGIC_WORD_EVIDENCE_URL,
+        "researched_on": RESEARCH_DATE,
+        "documented_bare_variables": list(DOCUMENTED_BARE_MAGIC_WORDS),
+        "template_name_conflict_variable_wins_by_default": True,
+        "parameters_can_force_template_transclusion": True,
+        "scanner_policy": (
+            "ignore only listed bare variables without parameters; fail closed on parameterized "
+            "or unclassified uppercase invocations"
+        ),
+    }
 
     dependencies = [_discovery_row(row) for row in ROOT_SCAN_OBSERVATIONS]
-    validate_dependency_closure(dependencies, [], require_complete=False)
+    bound_edges = [dict(BOUND_ROOT_EDGE)]
+    validate_dependency_closure(dependencies, bound_edges, require_complete=False)
     current_replay = contract.get("replay_contract")
     if not isinstance(current_replay, dict):
         raise ValueError("Darwin {{ё}} replay v4 body missing")
     current_replay["dependencies"] = dependencies
-    current_replay["edges"] = []
+    current_replay["edges"] = bound_edges
     current_replay["root_direct_dependency_discovery_complete"] = True
     current_replay["discovered_unbound_dependencies"] = ["Модуль:String"]
     current_replay["dependency_closure_complete"] = False
@@ -161,10 +185,15 @@ def build_contract(
         ],
         "discovered_edges": [
             {
+                "from": "Шаблон:Ё",
+                "to": "Шаблон:ЕЁ",
+                "target_identity_bound": True,
+            },
+            {
                 "from": "Шаблон:ЕЁ",
                 "to": "Модуль:String",
                 "target_identity_bound": False,
-            }
+            },
         ],
     }
 
@@ -172,9 +201,10 @@ def build_contract(
         "render_profile_rule_promoted": False,
         "backlog_item_removed": False,
         "reason": (
-            "complete source-free direct-dependency discovery is now frozen for both exact roots, "
-            "but Шаблон:ЕЁ discovers Модуль:String whose exact revision identity and own direct "
-            "dependencies are not yet bound, so recursive replay closure remains open"
+            "complete source-free direct-dependency discovery is frozen for both exact roots and "
+            "the bound Шаблон:Ё -> Шаблон:ЕЁ edge is explicit, but Шаблон:ЕЁ discovers "
+            "Модуль:String whose exact revision identity and own direct dependencies are not yet "
+            "bound, so recursive replay closure remains open"
         ),
         "next_evidence_required": (
             "bind an exact replay revision identity for Модуль:String, freeze complete direct-dependency "
@@ -215,12 +245,19 @@ def validate_contract(
         if {"content", "text", "wikitext", "body", "source_text"}.intersection(actual):
             raise ValueError("source/template prose leaked into Darwin {{ё}} root scan evidence")
 
+    expected_discovered_edges = [
+        {"from": "Шаблон:Ё", "to": "Шаблон:ЕЁ", "target_identity_bound": True},
+        {"from": "Шаблон:ЕЁ", "to": "Модуль:String", "target_identity_bound": False},
+    ]
+    if discovery.get("discovered_edges") != expected_discovered_edges:
+        raise ValueError("Darwin {{ё}} direct-dependency edge evidence drift")
+
     replay = contract.get("replay_contract")
     if not isinstance(replay, dict):
         raise ValueError("Darwin {{ё}} replay v4 body missing")
     dependencies = replay.get("dependencies")
     edges = replay.get("edges")
-    if not isinstance(dependencies, list) or edges != []:
+    if not isinstance(dependencies, list) or edges != [BOUND_ROOT_EDGE]:
         raise ValueError("Darwin {{ё}} partial replay graph drift")
     validate_dependency_closure(dependencies, edges, require_complete=False)
     if replay.get("root_direct_dependency_discovery_complete") is not True:

@@ -19,6 +19,17 @@ Canonical source-free artifact:
 - scanner: [`../../scriptorium/darwin_template_dependency_scan.py`](../../scriptorium/darwin_template_dependency_scan.py)
 - builder/validator: [`../../scriptorium/darwin_template_yo_replay_contract_v4.py`](../../scriptorium/darwin_template_yo_replay_contract_v4.py)
 
+## Dependency revision-selection policy
+
+The unbound `Модуль:String` child must **not** be backdated from either exact root's revision timestamp. MediaWiki's public template documentation describes ordinary template calls as dynamic transclusion: changing a template affects pages that transclude it when they are loaded. The `action=expandtemplates` API documents `revid` as revision context for `{{REVISIONID}}` and similar variables, not as a recursive version pin. Wikimedia's T31051 also records the absence of normal versioned-transclusion support for selecting a specific template revision; T70399 was closed as a duplicate on 2026-08-14.
+
+Scriptorium therefore freezes a fail-closed source-free policy: the next child identity may be bound only from an explicit exact revision observed or deliberately selected in a controlled replay snapshot, with canonical title, revision ID, timestamp, MediaWiki SHA-1 and observation context recorded together. Caller timestamps are not dependency selectors.
+
+- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.dependency-revision-selection-policy-v1.json)
+- schema: `scriptorium-darwin-dependency-revision-selection-policy-v1`
+- policy SHA-256: `4a58b70d5935f4455e58a929c6c1b6cc6a527d7b9d63121e0023501055889855`
+- validator: [`../../scriptorium/darwin_dependency_revision_policy.py`](../../scriptorium/darwin_dependency_revision_policy.py)
+
 ## Fail-closed boundary
 
 Direct-dependency discovery is complete only for the two exact roots. The bound replay graph now contains `Шаблон:Ё -> Шаблон:ЕЁ`. `Шаблон:ЕЁ` in turn discovers `Модуль:String`, but that child has not yet been assigned an exact replay revision identity and its own direct dependencies have not been frozen. The v4 contract therefore records the root-to-root edge as `target_identity_bound=true`, the module edge as `target_identity_bound=false`, and requires `dependency_closure_complete=false`.

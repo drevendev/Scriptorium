@@ -7,6 +7,7 @@ import unittest
 
 from scriptorium.darwin_template_yo_replay_contract import validate_dependency_closure
 from scriptorium.darwin_template_yo_replay_contract_v4 import (
+    BOUND_ROOT_EDGE,
     CONTRACT_VERSION,
     PREDECESSOR_SHA256,
     ROOT_SCAN_OBSERVATIONS,
@@ -46,13 +47,13 @@ class DarwinTemplateYoReplayContractV4Tests(unittest.TestCase):
         self.assertTrue(replay["root_direct_dependency_discovery_complete"])
         self.assertFalse(replay["dependency_closure_complete"])
         self.assertEqual(replay["discovered_unbound_dependencies"], ["Модуль:String"])
-        self.assertEqual(replay["edges"], [])
+        self.assertEqual(replay["edges"], [BOUND_ROOT_EDGE])
         dependencies = replay["dependencies"]
-        self.assertEqual(dependencies[0]["discovery"]["direct_dependencies"], [])
+        self.assertEqual(dependencies[0]["discovery"]["direct_dependencies"], ["Шаблон:ЕЁ"])
         self.assertEqual(dependencies[1]["discovery"]["direct_dependencies"], ["Модуль:String"])
-        validate_dependency_closure(dependencies, [], require_complete=False)
+        validate_dependency_closure(dependencies, replay["edges"], require_complete=False)
         with self.assertRaisesRegex(ValueError, "discovered dependency remains unbound"):
-            validate_dependency_closure(dependencies, [], require_complete=True)
+            validate_dependency_closure(dependencies, replay["edges"], require_complete=True)
 
     def test_source_free_observations_match_frozen_scan_evidence(self) -> None:
         contract = self.build()
@@ -68,16 +69,26 @@ class DarwinTemplateYoReplayContractV4Tests(unittest.TestCase):
             self.assertFalse({"content", "text", "wikitext", "body", "source_text"}.intersection(actual))
         self.assertFalse(contract["direct_dependency_discovery"]["source_text_retained"])
 
-    def test_discovered_child_edge_is_explicitly_unbound(self) -> None:
+    def test_discovered_edges_separate_bound_and_unbound_targets(self) -> None:
         contract = self.build()
         self.assertEqual(
             contract["direct_dependency_discovery"]["discovered_edges"],
-            [{"from": "Шаблон:ЕЁ", "to": "Модуль:String", "target_identity_bound": False}],
+            [
+                {"from": "Шаблон:Ё", "to": "Шаблон:ЕЁ", "target_identity_bound": True},
+                {"from": "Шаблон:ЕЁ", "to": "Модуль:String", "target_identity_bound": False},
+            ],
         )
+
+    def test_magic_word_evidence_is_pinned(self) -> None:
+        contract = self.build()
+        evidence = contract["official_api_evidence"]["magic_word_classification"]
+        self.assertEqual(evidence["revision_id"], 8589537)
+        self.assertTrue(evidence["template_name_conflict_variable_wins_by_default"])
+        self.assertTrue(evidence["parameters_can_force_template_transclusion"])
 
     def test_dependency_mutation_fails_closed(self) -> None:
         contract = deepcopy(self.build())
-        contract["replay_contract"]["dependencies"][1]["discovery"]["direct_dependencies"] = []
+        contract["replay_contract"]["dependencies"][0]["discovery"]["direct_dependencies"] = []
         with self.assertRaisesRegex(ValueError, "v4 contract drift"):
             validate_contract(contract, load(EVIDENCE), load(V2), load(V3))
 

@@ -2,10 +2,10 @@
 
 ## Selection
 
-- Mode: corpus / provenance research within the queued P2 SCRIP-CORPUS continuation.
+- Mode: corpus / provenance research within the queued P2 SCRIP-CORPUS continuation, followed by the required later-wake review/recovery unit.
 - Base: `master@2fe76aac43e65d4d8d089901fc8842e0713970f4`.
-- Issue: #237.
-- Draft pull request: #238.
+- Issue: #237 (closed completed after merge).
+- Pull request: #238 (independently reviewed at exact head `2f17bfc3a0d99f772a6f2add30919c565a48c30c`; squash-merged as `5f6d78f7cc8fac4f24dcc7e3e9ecc23cadbce292`).
 - Reason: canonical state explicitly named the Perelman numbered-body transition and tail/end-matter exact-carrier facsimile anchors as the next admissible mapping unit after SCRIP-CORPUS-073.
 
 ## Exact-carrier render evidence
@@ -41,6 +41,14 @@ Only directly visible labels/surfaces were retained:
 - `corpus/candidates/perelman-entertaining-physics-book1-1913-ru.pdf-facsimile-transition-tail.md` — public companion.
 - `project/CHANGELOG.d/SCRIP-CORPUS-074.md`, this receipt, and canonical state handoff.
 
+## Independent review / verification
+
+- Review `5296009104` re-read all 7 changed files and Issue #237 on exact PR head `2f17bfc3a0d99f772a6f2add30919c565a48c30c` against unchanged `master@2fe76aac43e65d4d8d089901fc8842e0713970f4`; no open review thread or blocker was found.
+- All **23/23** PR-triggered workflow runs returned for the exact reviewed head completed `success`.
+- Dedicated exact-head run `35907031639` explicitly checked out `2f17bfc3a0d99f772a6f2add30919c565a48c30c`, reverified the frozen PDF byte count/SHA-1/SHA-256, regenerated the same 12 page-image digests, passed **6/6** focused regressions, deleted the PDF before upload, and produced one-day artifact `10771108913` with ZIP digest `sha256:10229b42095764706a1788ec41c225bab00a41f5284a2a72d80941c68b2eb8d5`.
+- The review independently downloaded the exact-head artifact, recomputed that ZIP digest and every rendered JPEG SHA-256 against `rendered-pages.sha256`, and visually inspected all 12 images. The images support the retained direct labels/surfaces and no broader interior offset inference.
+- PR #238 was marked Ready and squash-merged with expected-head protection at 2026-09-23T19:50:43Z as `5f6d78f7cc8fac4f24dcc7e3e9ecc23cadbce292`, automatically closing Issue #237 completed.
+
 ## Decision / gates
 
 - `body_start_carrier_page_proved=true`, page 10.
@@ -59,6 +67,6 @@ Only directly visible labels/surfaces were retained:
 - `diagnostic_ready=false`.
 - `m2_parity_admissible=false`; M2 remains 0/5.
 
-The direct endpoints happen to be compatible with a simple offset across the numbered body, but this run deliberately does not infer the unobserved interior. A later independently reviewed unit should audit internal anchors, especially around the PDF history's later-added printed pages 193–194, before binding a complete carrier map or extraction contract.
+The direct endpoints happen to be compatible with a simple offset across the numbered body, but the reviewed evidence deliberately does not infer the unobserved interior. A later bounded unit may audit internal anchors, especially around the PDF history's later-added printed pages 193–194, before binding a complete carrier map or extraction contract.
 
-Draft PR #238 remains REVIEW_PENDING. The exact final authored handoff head and exact-head workflow settlement are recorded in the PR conversation after durable-state writes complete.
+SCRIP-CORPUS-074 is complete. Normal-flow P2 corpus/provenance selection may resume.

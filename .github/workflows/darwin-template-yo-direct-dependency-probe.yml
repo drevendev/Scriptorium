@@ -1,20 +1,26 @@
-name: Darwin/Rachinsky template yo direct-dependency probe
+name: Darwin/Rachinsky template yo direct dependencies
 
 on:
   pull_request:
     paths:
       - ".github/workflows/darwin-template-yo-direct-dependency-probe.yml"
       - "scriptorium/darwin_template_dependency_scan.py"
+      - "scriptorium/darwin_template_yo_replay_contract.py"
+      - "scriptorium/darwin_template_yo_replay_contract_v3.py"
       - "scriptorium/darwin_template_yo_replay_contract_v4.py"
       - "tests/test_darwin_template_dependency_scan.py"
+      - "tests/test_darwin_template_yo_replay_contract_v3.py"
+      - "tests/test_darwin_template_yo_replay_contract_v4.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json"
+      - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  probe:
-    name: Probe exact-root transclusion dependencies
+  verify:
+    name: Verify exact-root direct dependencies
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -30,9 +36,13 @@ jobs:
           python-version: "3.13"
 
       - name: Run direct-dependency regressions
-        run: python -m unittest tests.test_darwin_template_dependency_scan tests.test_darwin_template_yo_replay_contract_v3 -v
+        run: |
+          python -m unittest \
+            tests.test_darwin_template_dependency_scan \
+            tests.test_darwin_template_yo_replay_contract_v3 \
+            tests.test_darwin_template_yo_replay_contract_v4 -v
 
-      - name: Build source-free v4 contract for bootstrap verification
+      - name: Deterministically rebuild and compare v4 contract
         run: |
           set -euo pipefail
           mkdir -p build/repro
@@ -41,11 +51,11 @@ jobs:
             --v2-predecessor-contract corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract.json \
             --predecessor-contract corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v3.json \
             --output build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
-          echo SCRIPTORIUM_V4_CONTRACT_BEGIN
-          cat build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
-          echo SCRIPTORIUM_V4_CONTRACT_END
+          cmp \
+            corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json \
+            build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
 
-      - name: Query exact historical source and emit source-free dependency evidence
+      - name: Re-query exact historical roots and verify source-free observations
         run: |
           set -euo pipefail
           for oldid in 5687302 3684646; do
@@ -61,28 +71,45 @@ jobs:
               --data-urlencode "revids=${oldid}" \
               --data-urlencode 'rvprop=ids|timestamp|sha1|content' \
               --data-urlencode 'rvslots=main' \
-              --output "revision-${oldid}.json"
+              --output "build/repro/revision-${oldid}.json"
           done
           python - <<'PY'
           import json
           from pathlib import Path
           from scriptorium.darwin_template_dependency_scan import source_free_scan_observation
 
-          expected = {
-              5687302: ("Шаблон:Ё", "963c1796d693d5451cf0c0897c35bd7e5b327ae1"),
-              3684646: ("Шаблон:ЕЁ", "435bb2a412d8fb5962ccd5adc0ac2e03412fe109"),
-          }
-          for oldid, (expected_title, expected_sha1) in expected.items():
-              payload = json.loads(Path(f"revision-{oldid}.json").read_text(encoding="utf-8"))
-              pages = payload["query"]["pages"]
-              assert len(pages) == 1, pages
-              page = pages[0]
-              revision = page["revisions"][0]
-              assert page["title"] == expected_title, page["title"]
-              assert revision["revid"] == oldid, revision
-              assert revision["sha1"] == expected_sha1, revision["sha1"]
-              observation = source_free_scan_observation(revision["slots"]["main"]["content"])
-              assert observation["source_sha1"] == expected_sha1, observation
-              print(f"SCRIPTORIUM_ROOT={expected_title}@{oldid}")
-              print("SCRIPTORIUM_SOURCE_FREE_OBSERVATION=" + json.dumps(observation, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+          contract = json.loads(Path(
+              'corpus/candidates/source-edition-traces/'
+              'darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json'
+          ).read_text(encoding='utf-8'))
+          expected = {row['revision_id']: row for row in contract['direct_dependency_discovery']['root_observations']}
+          dependencies = {row['revision_id']: row for row in contract['replay_contract']['dependencies']}
+          for oldid, frozen in expected.items():
+              payload = json.loads(Path(f'build/repro/revision-{oldid}.json').read_text(encoding='utf-8'))
+              page = payload['query']['pages'][0]
+              revision = page['revisions'][0]
+              assert page['title'] == frozen['title']
+              assert revision['revid'] == oldid
+              assert revision['sha1'] == frozen['source_sha1']
+              observation = source_free_scan_observation(revision['slots']['main']['content'])
+              assert observation['source_utf8_bytes'] == frozen['source_utf8_bytes']
+              assert observation['source_sha1'] == frozen['source_sha1']
+              assert observation['transclusion_sha256'] == frozen['transclusion_sha256']
+              assert observation['redirect_target'] == frozen['redirect_target']
+              assert observation['direct_dependencies'] == frozen['direct_dependencies']
+              assert dependencies[oldid]['discovery']['direct_dependencies'] == frozen['direct_dependencies']
+          assert contract['replay_contract']['root_direct_dependency_discovery_complete'] is True
+          assert contract['replay_contract']['discovered_unbound_dependencies'] == ['Модуль:String']
+          assert contract['replay_contract']['dependency_closure_complete'] is False
+          assert contract['mode_verification']['outputs_verified'] is False
+          assert contract['m2_parity_admissible'] is False
+          print('SCRIPTORIUM_DARWIN_YO_DIRECT_DEPENDENCY_CONTRACT_SHA256=' + contract['contract_sha256'])
           PY
+
+      - name: Upload source-free direct-dependency contract
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-1864-template-yo-direct-dependencies
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v4.json
+          if-no-files-found: error
+          retention-days: 7

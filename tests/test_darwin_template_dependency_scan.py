@@ -25,6 +25,20 @@ class DarwinTemplateDependencyScanTests(unittest.TestCase):
         text = "{{Outside}}<onlyinclude>{{Inside}}</onlyinclude>{{AlsoOutside}}"
         self.assertEqual(discover_direct_dependencies(text), ("Шаблон:Inside",))
 
+    def test_exact_uppercase_template_is_not_misclassified_as_magic_word(self) -> None:
+        self.assertEqual(discover_direct_dependencies("{{ЕЁ|ё|е}}"), ("Шаблон:ЕЁ",))
+
+    def test_documented_bare_magic_word_is_not_a_template_dependency(self) -> None:
+        self.assertEqual(discover_direct_dependencies("{{PAGENAME}}"), ())
+
+    def test_parameterized_magic_word_like_invocation_fails_closed(self) -> None:
+        with self.assertRaisesRegex(ValueError, "parameterized magic-word-like invocation"):
+            discover_direct_dependencies("{{CURRENTDAYNAME|x}}")
+
+    def test_unclassified_uppercase_invocation_fails_closed(self) -> None:
+        with self.assertRaisesRegex(ValueError, "unclassified uppercase invocation"):
+            discover_direct_dependencies("{{UNCLASSIFIED}}")
+
     def test_dynamic_template_name_fails_closed(self) -> None:
         with self.assertRaisesRegex(ValueError, "dynamic template name"):
             discover_direct_dependencies("{{{{{template_name}}}|x}}")

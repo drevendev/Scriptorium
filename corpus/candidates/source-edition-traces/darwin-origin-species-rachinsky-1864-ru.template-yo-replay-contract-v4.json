@@ -1,10 +1,15 @@
 {
   "admitted_for_calibration": false,
   "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
-  "contract_sha256": "2e314e81fb3dbbedf05b3b83399d33e233abf0cd858ff70f5728de5c2e613c57",
+  "contract_sha256": "27bbea3edcf583edb4066611062bcba8b9eb08a3cbbaaf70718800b99bb1e9f6",
   "diagnostic_ready": false,
   "direct_dependency_discovery": {
     "discovered_edges": [
+      {
+        "from": "Шаблон:Ё",
+        "target_identity_bound": true,
+        "to": "Шаблон:ЕЁ"
+      },
       {
         "from": "Шаблон:ЕЁ",
         "target_identity_bound": false,
@@ -13,7 +18,9 @@
     ],
     "root_observations": [
       {
-        "direct_dependencies": [],
+        "direct_dependencies": [
+          "Шаблон:ЕЁ"
+        ],
         "redirect_target": null,
         "revision_id": 5687302,
         "source_sha1": "963c1796d693d5451cf0c0897c35bd7e5b327ae1",
@@ -33,7 +40,7 @@
         "transclusion_sha256": "3975fa227e23e8cc1487a49a3eab86b28e0ddb6a753c347c3191ee800ae56026"
       }
     ],
-    "scan_method": "scriptorium-darwin-transclusion-scan-v1: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; fail closed on dynamic or unsupported names",
+    "scan_method": "scriptorium-darwin-transclusion-scan-v2: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; bare magic words classified only from pinned MediaWiki Help:Magic words@8589537 evidence; exact-root uppercase template ЕЁ explicitly bound; fail closed on dynamic, unsupported, parameterized magic-word-like, or unclassified uppercase names",
     "source_text_retained": false
   },
   "fantlab_source_edition_match": "unknown",
@@ -57,16 +64,36 @@
       "endpoint": "https://ru.wikisource.org/w/api.php",
       "provider": "Russian Wikisource Action API",
       "query_mode": "revids",
-      "researched_on": "2026-09-22",
+      "researched_on": "2026-09-23",
       "rvprop": "ids|timestamp|sha1|content",
       "rvslots": "main",
-      "scan_method": "scriptorium-darwin-transclusion-scan-v1: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; fail closed on dynamic or unsupported names",
+      "scan_method": "scriptorium-darwin-transclusion-scan-v2: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; bare magic words classified only from pinned MediaWiki Help:Magic words@8589537 evidence; exact-root uppercase template ЕЁ explicitly bound; fail closed on dynamic, unsupported, parameterized magic-word-like, or unclassified uppercase names",
       "source_content_retained": false,
       "source_content_used_transiently": true
     },
     "expandtemplates_revid": {
       "documented_scope": "revision_context_for_REVISIONID_and_similar_variables",
       "pins_transcluded_template_revisions": false
+    },
+    "magic_word_classification": {
+      "documented_bare_variables": [
+        "CURRENTYEAR",
+        "CURRENTDAYNAME",
+        "PAGENAME",
+        "FULLPAGENAME",
+        "BASEPAGENAME",
+        "ROOTPAGENAME",
+        "SUBPAGENAME"
+      ],
+      "parameters_can_force_template_transclusion": true,
+      "permanent_url": "https://www.mediawiki.org/w/index.php?title=Help:Magic_words&oldid=8589537",
+      "provider": "MediaWiki.org",
+      "researched_on": "2026-09-23",
+      "revision_date": "2026-09-03",
+      "revision_id": 8589537,
+      "scanner_policy": "ignore only listed bare variables without parameters; fail closed on parameterized or unclassified uppercase invocations",
+      "template_name_conflict_variable_wins_by_default": true,
+      "title": "Help:Magic words"
     },
     "permanent_url": "https://www.mediawiki.org/w/index.php?title=API:Expandtemplates/ru&oldid=6729113",
     "provider": "MediaWiki.org",
@@ -110,7 +137,7 @@
   "promotion_decision": {
     "backlog_item_removed": false,
     "next_evidence_required": "bind an exact replay revision identity for Модуль:String, freeze complete direct-dependency discovery for that exact module revision and every further descendant, close the bound graph, then verify deterministic forced and non-forced outputs before promotion",
-    "reason": "complete source-free direct-dependency discovery is now frozen for both exact roots, but Шаблон:ЕЁ discovers Модуль:String whose exact revision identity and own direct dependencies are not yet bound, so recursive replay closure remains open",
+    "reason": "complete source-free direct-dependency discovery is frozen for both exact roots and the bound Шаблон:Ё -> Шаблон:ЕЁ edge is explicit, but Шаблон:ЕЁ discovers Модуль:String whose exact revision identity and own direct dependencies are not yet bound, so recursive replay closure remains open",
     "render_profile_rule_promoted": false
   },
   "renderer_implementation_ready": false,
@@ -119,9 +146,11 @@
     "dependencies": [
       {
         "discovery": {
-          "direct_dependencies": [],
-          "evidence_sha256": "4c618e7124bc7aa28eefa155447d13edd3f916e249944bc0d014e5e68b85aa5d",
-          "method": "scriptorium-darwin-transclusion-scan-v1: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; fail closed on dynamic or unsupported names",
+          "direct_dependencies": [
+            "Шаблон:ЕЁ"
+          ],
+          "evidence_sha256": "e908eb77c25a7548c4f2c1700f7f4b70db09fee2814cf230fe89677478e1cf71",
+          "method": "scriptorium-darwin-transclusion-scan-v2: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; bare magic words classified only from pinned MediaWiki Help:Magic words@8589537 evidence; exact-root uppercase template ЕЁ explicitly bound; fail closed on dynamic, unsupported, parameterized magic-word-like, or unclassified uppercase names",
           "status": "complete"
         },
         "mediawiki_sha1": "963c1796d693d5451cf0c0897c35bd7e5b327ae1",
@@ -134,8 +163,8 @@
           "direct_dependencies": [
             "Модуль:String"
           ],
-          "evidence_sha256": "b7bd7d4530597ad9e6b98a67b1a350aad2c4fa548f4a0841372017399c5c92ee",
-          "method": "scriptorium-darwin-transclusion-scan-v1: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; fail closed on dynamic or unsupported names",
+          "evidence_sha256": "2582b4cc5330d06897ffc03958b6bba4a626250130e7b64cdd625fa86054c6c6",
+          "method": "scriptorium-darwin-transclusion-scan-v2: exact revision source; MediaWiki noinclude/includeonly/onlyinclude filtering; redirect target plus static template/#invoke module names; bare magic words classified only from pinned MediaWiki Help:Magic words@8589537 evidence; exact-root uppercase template ЕЁ explicitly bound; fail closed on dynamic, unsupported, parameterized magic-word-like, or unclassified uppercase names",
           "status": "complete"
         },
         "mediawiki_sha1": "435bb2a412d8fb5962ccd5adc0ac2e03412fe109",
@@ -153,7 +182,12 @@
     "discovered_unbound_dependencies": [
       "Модуль:String"
     ],
-    "edges": [],
+    "edges": [
+      {
+        "from": "Шаблон:Ё",
+        "to": "Шаблон:ЕЁ"
+      }
+    ],
     "live_or_unbound_dependency_allowed": false,
     "native_expandtemplates_revid_is_version_pin": false,
     "required_dependency_fields": [

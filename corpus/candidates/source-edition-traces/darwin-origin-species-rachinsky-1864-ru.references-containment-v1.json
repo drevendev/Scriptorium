@@ -1,0 +1,53 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "containment_evidence": {
+    "all_observed_references_inside_noinclude": true,
+    "existing_defined_handling": "strip_nontranscluded_region",
+    "references_inside_noinclude": 388,
+    "references_outside_noinclude": 0,
+    "references_total": 388
+  },
+  "diagnostic_ready": false,
+  "effective_state": {
+    "profile_promotion_schema": "scriptorium-darwin-render-profile-yo-promotion-v1",
+    "profile_promotion_sha256": "153f6ceb89025da90971ddc265df680359ff498103bb47ecd68f86bb3205ed28",
+    "semantic_backlog_schema": "scriptorium-darwin-render-semantic-backlog-v2",
+    "semantic_backlog_sha256": "6d4ba2bb9ec78731d97d91c87d0628207ec880901e9d388fa7aa7c70fb20e3be"
+  },
+  "fantlab_source_edition_match": "unknown",
+  "historical_transclusion_provenance_proved": false,
+  "inter_page_composition_frozen": false,
+  "literary_body_count_and_digests_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "offline_version_pinned_mediawiki_environment_claimed": false,
+  "probe_sha256": "3dde2e1ea259ccc4f855ad20dc8df588f9546a9ec181f84155175a86c3b139e3",
+  "promotion_decision": {
+    "candidate_local_drop_supported_by_containment": true,
+    "next_action": "independent_review_then_separate_profile_backlog_promotion_judgement",
+    "profile_rule_promoted": false,
+    "provider_cite_semantics_replayed": false
+  },
+  "renderer_implementation_ready": false,
+  "renderer_semantics_complete": false,
+  "schema_version": "scriptorium-darwin-references-containment-probe-v1",
+  "source_render_surface": {
+    "freeze_manifest_sha256": "e5ae625fef6afb2e890de990e1ef3b9e108a409a2e0ea2136947c2c3e1cea44d",
+    "observed_shape": {
+      "count": 388,
+      "kind": "self_closing",
+      "name": "references",
+      "predecessor_handling": "provider_reference_semantics_required",
+      "predecessor_semantic_status": "unresolved",
+      "source_kind": "tag"
+    },
+    "schema_version": "scriptorium-darwin-render-surface-freeze-v1"
+  },
+  "source_revision_index": {
+    "identity_replay_match": true,
+    "literary_dependency_count": 388,
+    "sha256": "a1b1011095dc84ab0a5cd3ef45b2a46ce99588a0ef9cf507c1f711c925ba86dd"
+  },
+  "source_text_included": false
+}

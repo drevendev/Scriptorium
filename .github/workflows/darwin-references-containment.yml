@@ -1,0 +1,97 @@
+name: Darwin Rachinsky references containment
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-references-containment.yml"
+      - "scriptorium/darwin_references_containment.py"
+      - "scriptorium/darwin_render_surface.py"
+      - "scriptorium/darwin_body_contract.py"
+      - "scriptorium/darwin_page_freeze.py"
+      - "scriptorium/darwin_page_shards.py"
+      - "tests/test_darwin_references_containment.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.*.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile-yo-promotion-v1.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog-v2.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.references-containment-v1.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Prove 388 references tags are non-transcluded
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run focused source-free regressions
+        run: python -m unittest tests.test_darwin_references_containment -v
+
+      - name: Replay exact revisions and rebuild containment contract
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_references_containment \
+            --index corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.page-revisions.index.json \
+            --surface corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-surface.json \
+            --promotion corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile-yo-promotion-v1.json \
+            --backlog corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog-v2.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.references-containment-v1.json
+
+      - name: Compare exact source-free contract
+        run: |
+          set -euo pipefail
+          cmp \
+            build/repro/darwin-origin-species-rachinsky-1864-ru.references-containment-v1.json \
+            corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.references-containment-v1.json
+
+      - name: Verify containment and fail-closed gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("build/repro/darwin-origin-species-rachinsky-1864-ru.references-containment-v1.json")
+          probe = json.loads(path.read_text(encoding="utf-8"))
+          evidence = probe["containment_evidence"]
+          assert evidence["references_total"] == 388
+          assert evidence["references_inside_noinclude"] == 388
+          assert evidence["references_outside_noinclude"] == 0
+          assert evidence["all_observed_references_inside_noinclude"] is True
+          assert probe["source_text_included"] is False
+          assert probe["promotion_decision"]["candidate_local_drop_supported_by_containment"] is True
+          assert probe["promotion_decision"]["provider_cite_semantics_replayed"] is False
+          assert probe["promotion_decision"]["profile_rule_promoted"] is False
+          assert probe["renderer_semantics_complete"] is False
+          assert probe["renderer_implementation_ready"] is False
+          assert probe["literary_body_count_and_digests_frozen"] is False
+          assert probe["minimum_300k_proved"] is False
+          assert probe["admitted_for_calibration"] is False
+          assert probe["fantlab_source_edition_match"] == "unknown"
+          assert probe["m2_parity_admissible"] is False
+          print("SCRIPTORIUM_DARWIN_REFERENCES_CONTAINMENT=388/388")
+          print("SCRIPTORIUM_DARWIN_REFERENCES_PROBE_SHA256=" + probe["probe_sha256"])
+          PY
+
+      - name: Print source-free evidence
+        run: cat build/repro/darwin-origin-species-rachinsky-1864-ru.references-containment-v1.json
+
+      - name: Upload source-free replay evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-references-containment
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.references-containment-v1.json
+          if-no-files-found: error
+          retention-days: 7

@@ -32,6 +32,15 @@ The effective unresolved totals are therefore **5 tag shapes / 518 tag tokens** 
 
 The deterministic next research slice is now self-closing `<references/>`, observed **388** times. Template `ВАР` is also observed 388 times, but the predecessor backlog's stable ordering puts `<references/>` first; the successor keeps that ordering rather than introducing a new judgement.
 
+
+## Candidate-local `<references/>` containment evidence
+
+SCRIP-CORPUS-079 replays all **388 exact frozen literary Page revisions** and checks the raw self-closing `<references/>` spans against the same `<noinclude>...</noinclude>` regions used by the frozen render pipeline. The source-free probe finds **388 / 388 `<references/>` tokens inside `<noinclude>` and 0 outside**. Its contract SHA-256 is `3dde2e1ea259ccc4f855ad20dc8df588f9546a9ec181f84155175a86c3b139e3`.
+
+That result changes the research decision, not the profile yet: for this frozen candidate, the observed `<references/>` shape is removed by the already-defined `strip_nontranscluded_region` step before provider reference semantics would be needed. The probe therefore records `candidate_local_drop_supported_by_containment=true`, but deliberately keeps `profile_rule_promoted=false` until an independent review and a separate promotion judgement.
+
+Current MediaWiki documentation describes `<references />` as the placeholder that inserts the reference list produced by preceding `<ref>` tags (`https://www.mediawiki.org/wiki/Help:Cite`). Scriptorium does **not** rely on or reproduce that Cite behavior in this probe; the candidate-local conclusion comes only from exact frozen-source containment under the already-defined noinclude rule. No claim is made about `<references/>` outside stripped regions, historical Wikisource transclusion, or a general MediaWiki renderer.
+
 ## Source-free artifacts
 
 - immutable render profile v1: [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile.json), SHA-256 `2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`
@@ -39,7 +48,8 @@ The deterministic next research slice is now self-closing `<references/>`, obser
 - independently reviewed replay v6: [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v6.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v6.json), SHA-256 `c317eb5247701f0ad860811e9349f4e6f42274e72e8856eecb8a9aff610f988f`
 - render-profile promotion layer: [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile-yo-promotion-v1.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile-yo-promotion-v1.json), SHA-256 `153f6ceb89025da90971ddc265df680359ff498103bb47ecd68f86bb3205ed28`
 - effective semantic backlog v2: [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog-v2.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog-v2.json), SHA-256 `6d4ba2bb9ec78731d97d91c87d0628207ec880901e9d388fa7aa7c70fb20e3be`
-- deterministic builder/validator: [`../../scriptorium/darwin_yo_render_profile_promotion.py`](../../scriptorium/darwin_yo_render_profile_promotion.py)
+- `<references/>` containment probe: [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.references-containment-v1.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.references-containment-v1.json), SHA-256 `3dde2e1ea259ccc4f855ad20dc8df588f9546a9ec181f84155175a86c3b139e3`
+- deterministic builders/validators: [`../../scriptorium/darwin_yo_render_profile_promotion.py`](../../scriptorium/darwin_yo_render_profile_promotion.py), [`../../scriptorium/darwin_references_containment.py`](../../scriptorium/darwin_references_containment.py)
 
 ## Gates unchanged
 

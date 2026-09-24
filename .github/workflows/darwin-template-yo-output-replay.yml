@@ -1,0 +1,185 @@
+name: Darwin/Rachinsky template yo output replay
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-template-yo-output-replay.yml"
+      - "scriptorium/darwin_template_yo_replay_contract_v6.py"
+      - "tests/test_darwin_template_yo_replay_contract_v6.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v5.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v6.json"
+      - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-template-yo-direct-dependencies.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify identity-stable forced/non-forced replay
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run v6 contract regressions
+        run: python -m unittest tests.test_darwin_template_yo_replay_contract_v6 -v
+
+      - name: Deterministically rebuild and compare v6 contract
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_template_yo_replay_contract_v6 \
+            --predecessor-contract corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v5.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v6.json
+          cmp \
+            corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v6.json \
+            build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v6.json
+
+      - name: Query bound dependency identities before replay
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --get \
+            --retry 4 --retry-all-errors --retry-delay 4 \
+            --max-time 30 \
+            --user-agent 'Scriptorium/0.1 (https://github.com/drevendev/Scriptorium; source-provenance verification)' \
+            'https://ru.wikisource.org/w/api.php' \
+            --data-urlencode 'action=query' \
+            --data-urlencode 'format=json' \
+            --data-urlencode 'formatversion=2' \
+            --data-urlencode 'prop=revisions' \
+            --data-urlencode 'titles=Шаблон:Ё|Шаблон:ЕЁ|Модуль:String' \
+            --data-urlencode 'rvprop=ids|timestamp|sha1' \
+            --output build/repro/identity-before.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.darwin_template_yo_replay_contract_v6 import verify_identity_window
+
+          payload = json.loads(Path('build/repro/identity-before.json').read_text(encoding='utf-8'))
+          verify_identity_window(payload, payload)
+          print('SCRIPTORIUM_DARWIN_YO_PRE_REPLAY_IDENTITIES=verified')
+          PY
+
+      - name: Replay both documented modes twice
+        run: |
+          set -euo pipefail
+          forced='О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)'
+          nonforced='О происхождении видов (Дарвин; Рачинский)/1864'
+          for mode in forced nonforced; do
+            if [ "$mode" = forced ]; then title="$forced"; else title="$nonforced"; fi
+            for attempt in 1 2; do
+              curl --fail --silent --show-error --location --get \
+                --retry 4 --retry-all-errors --retry-delay 4 \
+                --max-time 30 \
+                --user-agent 'Scriptorium/0.1 (https://github.com/drevendev/Scriptorium; source-provenance verification)' \
+                'https://ru.wikisource.org/w/api.php' \
+                --data-urlencode 'action=expandtemplates' \
+                --data-urlencode 'format=json' \
+                --data-urlencode 'formatversion=2' \
+                --data-urlencode 'prop=wikitext' \
+                --data-urlencode "title=${title}" \
+                --data-urlencode 'text={{ё}}' \
+                --output "build/repro/${mode}-${attempt}.json"
+            done
+          done
+
+      - name: Query bound dependency identities after replay
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --get \
+            --retry 4 --retry-all-errors --retry-delay 4 \
+            --max-time 30 \
+            --user-agent 'Scriptorium/0.1 (https://github.com/drevendev/Scriptorium; source-provenance verification)' \
+            'https://ru.wikisource.org/w/api.php' \
+            --data-urlencode 'action=query' \
+            --data-urlencode 'format=json' \
+            --data-urlencode 'formatversion=2' \
+            --data-urlencode 'prop=revisions' \
+            --data-urlencode 'titles=Шаблон:Ё|Шаблон:ЕЁ|Модуль:String' \
+            --data-urlencode 'rvprop=ids|timestamp|sha1' \
+            --output build/repro/identity-after.json
+
+      - name: Verify identity-stable replay and write source-free receipt
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          from scriptorium.darwin_template_yo_replay_contract_v6 import (
+              verify_identity_window,
+              verify_mode_replays,
+          )
+
+          root = Path('build/repro')
+          contract = json.loads(Path(
+              'corpus/candidates/source-edition-traces/'
+              'darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v6.json'
+          ).read_text(encoding='utf-8'))
+          before = json.loads((root / 'identity-before.json').read_text(encoding='utf-8'))
+          after = json.loads((root / 'identity-after.json').read_text(encoding='utf-8'))
+          verify_identity_window(before, after)
+          payloads = {
+              'forced_yoification': [
+                  json.loads((root / 'forced-1.json').read_text(encoding='utf-8')),
+                  json.loads((root / 'forced-2.json').read_text(encoding='utf-8')),
+              ],
+              'non_forced_yoification': [
+                  json.loads((root / 'nonforced-1.json').read_text(encoding='utf-8')),
+                  json.loads((root / 'nonforced-2.json').read_text(encoding='utf-8')),
+              ],
+          }
+          digests = verify_mode_replays(contract, payloads)
+          receipt = {
+              'schema_version': 'scriptorium-darwin-template-yo-output-replay-receipt-v1',
+              'candidate_id': contract['candidate_id'],
+              'contract_sha256': contract['contract_sha256'],
+              'source_text_included': False,
+              'identity_stable_window_verified': True,
+              'historical_transclusion_provenance_proved': False,
+              'revid_used_as_recursive_dependency_selector': False,
+              'repetitions_per_mode': contract['replay_environment']['repetitions_per_mode'],
+              'verified_semantic_output_sha256': digests,
+          }
+          canonical = json.dumps(receipt, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
+          receipt['receipt_sha256'] = hashlib.sha256(canonical.encode('utf-8')).hexdigest()
+          (root / 'darwin-origin-species-rachinsky-1864-ru.template-yo-output-replay-receipt.json').write_text(
+              json.dumps(receipt, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          print('SCRIPTORIUM_DARWIN_YO_REPLAY_CONTRACT_SHA256=' + contract['contract_sha256'])
+          print('SCRIPTORIUM_DARWIN_YO_FORCED_SHA256=' + digests['forced_yoification'])
+          print('SCRIPTORIUM_DARWIN_YO_NON_FORCED_SHA256=' + digests['non_forced_yoification'])
+          print('SCRIPTORIUM_DARWIN_YO_RECEIPT_SHA256=' + receipt['receipt_sha256'])
+          PY
+
+      - name: Remove transient provider responses
+        if: always()
+        run: |
+          rm -f \
+            build/repro/identity-before.json \
+            build/repro/identity-after.json \
+            build/repro/forced-1.json \
+            build/repro/forced-2.json \
+            build/repro/nonforced-1.json \
+            build/repro/nonforced-2.json
+
+      - name: Upload source-free replay evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-1864-template-yo-output-replay
+          path: |
+            build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v6.json
+            build/repro/darwin-origin-species-rachinsky-1864-ru.template-yo-output-replay-receipt.json
+          if-no-files-found: error
+          retention-days: 7

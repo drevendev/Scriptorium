@@ -28,6 +28,16 @@ The contract freezes only future composition semantics: ascending PDF-page order
 
 The retained Commons file description identifies the facsimile as the first 1916 book publication and marks the work public domain. That source/legal evidence is retained in the structured trace. The candidate is not collapsed with a generic source-less transcription or the revised 1922 Berlin edition.
 
+## Extraction-strategy preflight
+
+**SCRIP-CORPUS-086** adds a source-free preflight before choosing direct PDF text extraction versus raster OCR. On 24 September 2026 the official Commons surface still exposed the frozen candidate as a 632-page PDF facsimile of the first 1916 book edition, with the current file history rooted at the 20 March 2016 upload, explicit public-domain notice, PDF format 1.6, and a current-file no-overwrite notice.
+
+Two provider PDF screenshots were inspected directly: the title-page surface at carrier page 1 and a prose surface at carrier page 21, where printed folio 19 is visible. Those previews visibly look like facsimile page imagery, but that fact **does not prove that the PDF lacks a hidden text layer**. Conversely, the provider metadata does not prove that a usable embedded text layer exists.
+
+Therefore the embedded text layer remains **unverified**. Scriptorium does not yet choose either direct PDF text extraction or raster OCR. The next bounded evidence is an exact-carrier, version-recorded text-layer probe that retains only aggregate counts, an output digest and page-segment coverage; any extracted text remains transient. Even a non-empty text layer will still require separate correctness and literary-page-selection evidence before body promotion.
+
+Canonical source-free evidence: [`source-edition-traces/bely-petersburg-1916-ru.extraction-preflight.json`](source-edition-traces/bely-petersburg-1916-ru.extraction-preflight.json), physical SHA-256 **`093f251cb8d03846a5158a1ac29d4b66e1796a7cc2bc65a77ade3d9e3cebcff1`**.
+
 ## What is still open
 
 Defining the promotion contract does **not** freeze the literary text. Scriptorium still needs an independently evidenced bound contract version with exact literary-page selection and reproducible rasterizer/OCR identities/settings, then a frozen extracted body with character count and raw/normalized digests and proof that that frozen body itself clears the **300,000-character** corpus threshold.

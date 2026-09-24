@@ -1,0 +1,58 @@
+{
+  "candidate_id": "bely-petersburg-1916-ru",
+  "carrier": {
+    "byte_count": 3621459,
+    "current_file_history_upload_timestamp": "2016-03-20T18:31:00Z",
+    "encrypted": false,
+    "page_count": 632,
+    "pdf_format_version": "1.6",
+    "provider": "Wikimedia Commons",
+    "sha1": "682476934dd6ed49c6bbcdb0720127c1812ff477",
+    "sha256": "b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5"
+  },
+  "decision": {
+    "direct_pdf_text_extraction_admissible": false,
+    "embedded_text_layer_status": "unverified",
+    "next_required_evidence": "Run a source-free exact-carrier text-layer probe with a version-recorded extractor; retain only aggregate counts, output digest and page-segment coverage. If a text layer exists, correctness still requires separate evidence before body promotion.",
+    "provider_metadata_proves_embedded_text_layer": false,
+    "raster_ocr_required": false,
+    "visual_facsimile_preview_proves_absence_of_text_layer": false
+  },
+  "evidence_version": "scriptorium-petersburg-1916-extraction-preflight-v1",
+  "existing_promotion_contract": {
+    "body_outputs_frozen": false,
+    "canonical_sha256": "d338d8dc4d800b0fe28a848e383265ba9a0e720e75962f7f9e5733ad727a20d2",
+    "contract_version": "scriptorium-petersburg-1916-ocr-body-contract-v1",
+    "ocr_toolchain_bound": false,
+    "page_selection_bound": false,
+    "rasterization_toolchain_bound": false
+  },
+  "gates": {
+    "admitted_for_calibration": false,
+    "diagnostic_ready": false,
+    "extraction_profile_frozen": false,
+    "fantlab_source_edition_match": "unknown",
+    "literary_body_frozen": false,
+    "literary_page_selection_bound": false,
+    "m2_parity_admissible": false,
+    "minimum_300k_proved_from_frozen_body": false
+  },
+  "observed_on": "2026-09-24",
+  "provider_surface": {
+    "current_file_cannot_be_overwritten": true,
+    "first_book_edition_facsimile": true,
+    "metadata_short_title": "Андрей Белый. Петербург. 1916. EBook 2008",
+    "public_domain_notice": true,
+    "visual_samples": [
+      {"carrier_page": 1, "observation": "facsimile title-page image visible in the provider PDF preview"},
+      {"carrier_page": 21, "observation": "facsimile prose page visible in the provider PDF preview; printed folio 19 is visible"}
+    ]
+  },
+  "publication": {
+    "extracted_text_committed": false,
+    "literary_source_text_committed": false,
+    "page_images_committed": false,
+    "pdf_bytes_committed": false,
+    "source_free": true
+  }
+}

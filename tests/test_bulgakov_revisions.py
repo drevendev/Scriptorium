@@ -2,12 +2,19 @@ from __future__ import annotations
 
 import unittest
 
-from scriptorium.white_guard_revisions import expected_pages
+from scriptorium.white_guard_revisions import (
+    SOURCE_FAMILY_1927,
+    SOURCE_FAMILY_1989,
+    expected_pages,
+)
 
 
 class BulgakovRevisionTests(unittest.TestCase):
-    def test_expected_page_count(self):
-        self.assertEqual(20, len(expected_pages()))
+    def test_expected_page_count_and_partition(self):
+        pages = expected_pages()
+        self.assertEqual(20, len(pages))
+        self.assertTrue(all(row["source_family_id"] == SOURCE_FAMILY_1927 for row in pages[:11]))
+        self.assertTrue(all(row["source_family_id"] == SOURCE_FAMILY_1989 for row in pages[11:]))
 
 
 if __name__ == "__main__":

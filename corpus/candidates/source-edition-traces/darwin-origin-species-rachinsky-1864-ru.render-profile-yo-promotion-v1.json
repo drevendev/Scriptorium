@@ -1,0 +1,55 @@
+{
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "effective_profile": {
+    "admitted_for_calibration": false,
+    "diagnostic_ready": false,
+    "fantlab_source_edition_match": "unknown",
+    "inter_page_composition_frozen": false,
+    "literary_body_count_and_digests_frozen": false,
+    "m2_parity_admissible": false,
+    "minimum_300k_proved": false,
+    "profile_version": "scriptorium-darwin-page-render-profile-v2",
+    "renderer_implementation_ready": false,
+    "renderer_semantics_complete": false,
+    "rendering_equivalence_claimed": false,
+    "unresolved_tag_shape_count": 5,
+    "unresolved_tag_token_count": 518,
+    "unresolved_template_invocation_count": 2356,
+    "unresolved_template_shape_count": 37
+  },
+  "predecessor_profile": {
+    "profile_sha256": "2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d",
+    "profile_version": "scriptorium-darwin-page-render-profile-v1"
+  },
+  "promoted_rule": {
+    "count": 2227,
+    "handling": "emit_zero_argument_yo_by_yoification_mode",
+    "name": "ё",
+    "named": 0,
+    "outputs": {
+      "forced_yoification": {
+        "sha256": "30fbc377ae9122edc2cdbed70b9261817d196eca8db96ac8bfa4cfaf412667ac",
+        "value": "ё"
+      },
+      "non_forced_yoification": {
+        "sha256": "259f56cb715ba3a3f1ca41a4ff1972cca698cb49eef1ae018dff325507da8b26",
+        "value": "е"
+      }
+    },
+    "positional": 0,
+    "predecessor_handling": "provider_template_semantics_required",
+    "predecessor_semantic_status": "unresolved",
+    "semantic_status": "defined",
+    "source_kind": "template"
+  },
+  "promotion_sha256": "153f6ceb89025da90971ddc265df680359ff498103bb47ecd68f86bb3205ed28",
+  "schema_version": "scriptorium-darwin-render-profile-yo-promotion-v1",
+  "scope": "promotes only the observed zero-argument {{ё}} shape for the reviewed v6 identity-stable live snapshot; no historical transclusion or general MediaWiki runtime claim",
+  "semantic_evidence": {
+    "contract_sha256": "c317eb5247701f0ad860811e9349f4e6f42274e72e8856eecb8a9aff610f988f",
+    "historical_transclusion_provenance_proved": false,
+    "offline_version_pinned_mediawiki_environment_claimed": false,
+    "schema_version": "scriptorium-darwin-template-yo-replay-contract-v6"
+  },
+  "source_text_included": false
+}

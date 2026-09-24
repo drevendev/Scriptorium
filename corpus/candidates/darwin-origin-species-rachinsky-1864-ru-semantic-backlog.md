@@ -1,89 +1,46 @@
-# Darwin/Rachinsky 1864 — unresolved rendering semantics
+# Darwin/Rachinsky 1864 — rendering semantics backlog
 
-This public source-free companion to `darwin-origin-species-rachinsky-1864-ru` exposes the remaining rendering-semantic work after the reviewed exact-388 Page surface and fail-closed render profile were frozen.
+This public source-free companion to `darwin-origin-species-rachinsky-1864-ru` exposes the reviewed rendering-semantic boundary without storing literary source text, Page wikitext, template argument values, rendered prose, OCR or scan bytes.
 
-No literary source text, Page wikitext, template argument values, rendered prose, OCR or scan bytes are stored here. Counts come only from the already frozen render profile SHA-256 `2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`.
+The original frozen render profile and semantic backlog remain immutable predecessor evidence. SCRIP-CORPUS-077 independently reviewed the zero-argument `{{ё}}` replay evidence, and SCRIP-CORPUS-078 records the separate promotion judgement as a compact successor layer rather than rewriting that history.
 
-## Remaining surface
+## Reviewed `{{ё}}` promotion
 
-The profile still has **43 unresolved shapes**:
+The reviewed v6 replay contract binds the selected live-snapshot dependency graph `Шаблон:Ё@5687302 → Шаблон:ЕЁ@3684646 → Модуль:String@3684569` inside an identity-stable provider window. For the observed zero-argument `{{ё}}` shape it verifies:
+
+| Mode | Defined output | SHA-256 |
+| --- | --- | --- |
+| forced yoification | `ё` | `30fbc377ae9122edc2cdbed70b9261817d196eca8db96ac8bfa4cfaf412667ac` |
+| non-forced yoification | `е` | `259f56cb715ba3a3f1ca41a4ff1972cca698cb49eef1ae018dff325507da8b26` |
+
+The promotion contract applies that evidence to exactly one frozen render-profile shape: template `ё`, **0 positional / 0 named arguments**, observed **2,227 times**. Its source-free promotion SHA-256 is `153f6ceb89025da90971ddc265df680359ff498103bb47ecd68f86bb3205ed28`.
+
+This is deliberately **not** historical transclusion provenance and is not a claim that Scriptorium has an offline/version-pinned MediaWiki runtime. The replay contract still records `historical_transclusion_provenance_proved=false` and `offline_version_pinned_mediawiki_environment_claimed=false`.
+
+## Effective unresolved surface
+
+Removing only the reviewed zero-argument `{{ё}}` shape leaves **42 unresolved shapes**:
 
 | Research track | Shapes | Observed occurrences |
 | --- | ---: | ---: |
-| provider-template semantics | 37 | 4,579 |
+| provider-template semantics | 36 | 2,352 |
 | provider-reference semantics | 3 | 466 |
 | provider-math semantics | 2 | 52 |
 | inter-page semantics | 1 | 4 |
 
-Those totals exactly preserve the reviewed boundary: **5 unresolved tag shapes / 518 tag tokens** and **38 unresolved template shapes / 4,583 invocations**.
+The effective unresolved totals are therefore **5 tag shapes / 518 tag tokens** and **37 template shapes / 2,356 invocations**. No other semantic behavior is inferred by this reduction.
 
-## Mechanical next target
+The deterministic next research slice is now self-closing `<references/>`, observed **388** times. Template `ВАР` is also observed 388 times, but the predecessor backlog's stable ordering puts `<references/>` first; the successor keeps that ordering rather than introducing a new judgement.
 
-The deterministic backlog ranks unresolved items by descending observed occurrence count with stable tie-breaking. The first research target is template **`ё`**, arity **0 positional / 0 named**, observed **2,227 times** (2,227 / 4,583 unresolved template invocations).
+## Source-free artifacts
 
-This ranking is **not a semantics claim**. `ё` remains `semantic_status=unresolved`; a separate bounded unit must establish its provider behavior with independent evidence before the renderer profile may change.
-
-The next two rows are self-closing `<references/>` (**388**) and template `ВАР` with arity 2/0 (**388**). Reference/math behavior and the inter-page-sensitive `nop` track remain independently reviewable rather than being folded into one guessed renderer policy.
-
-## `{{ё}}` documentation and replay-dependency evidence
-
-SCRIP-CORPUS-047 established the documented semantic class. Official Russian Wikisource documentation at permanent revision `oldid=5090323` identifies zero-argument `{{ё}}` as the lowercase shorthand of the conditional `ЕЁ` yoification family: the documented output is **`ё` in forced-yoification mode and `е` otherwise**. Proofread help is independently pinned at permanent revision `oldid=5731079` (2026-07-19), where `{{ё}}` / `{{ё!}}` are described as the mechanism used to support yoified and non-yoified finished-text variants.
-
-SCRIP-CORPUS-048 corrected the dependency model used to interpret old Page revisions. Official MediaWiki `Help:History` at permanent revision `oldid=8524540` states that wikitext history and rendered-page history are different and that an old page revision still uses the **current versions of templates and images** unless old versions have been renamed. MediaWiki `Transclusion/en` at permanent revision `oldid=8551508` describes transclusion as a live link whose targets update when the template changes and references the lack of versioned transclusion support (`T31051`).
-
-Therefore the retained Darwin Page `oldid`s freeze Page wikitext identity, **not** the canonical `Шаблон:Ё` / `Шаблон:ЕЁ` revisions that will be used by a later replay. Looking up those template revisions at the 2018/2022 Page-save timestamps would not bind deterministic rendering.
-
-A retained 2018 Page witness remains useful as Page-wikitext provenance context (Page sequence 11, revision `3358032`, timestamp `2018-08-13T19:18:33Z`), but its save timestamp is explicitly **not** a template-revision binding.
-
-Source-free documentation evidence:
-
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-evidence.json)
-- schema: `scriptorium-darwin-template-yo-documentation-evidence-v2`
-- evidence SHA-256: `d92bdfcad71aaa8a50f9f35b5b1ada462ed41619400c40576d0603cf154877dc`
-- Wikisource template-documentation permalink: `https://ru.wikisource.org/w/index.php?title=Шаблон:ЕЁ/Документация&oldid=5090323`
-- Wikisource proofread-help permalink: `https://ru.wikisource.org/w/index.php?title=Справка:Вычитка&oldid=5731079`
-- MediaWiki history-model permalink: `https://www.mediawiki.org/w/index.php?title=Help:History&oldid=8524540`
-- MediaWiki transclusion-model permalink: `https://www.mediawiki.org/w/index.php?title=Transclusion/en&oldid=8551508`
-- builder/validator: [`../../scriptorium/darwin_template_yo_evidence.py`](../../scriptorium/darwin_template_yo_evidence.py)
-
-The evidence builder recomputes the full canonical semantic-backlog self-digest before deriving this record. A stale `backlog_sha256` with any non-target backlog mutation therefore fails closed.
-
-## `{{ё}}` version-pinned replay contract
-
-SCRIP-CORPUS-049 closes another tempting shortcut without claiming renderer equivalence. MediaWiki `API:Expandtemplates/ru` permanent revision `oldid=6729113` documents `revid` as revision context for `{{REVISIONID}}` and similar variables; it does **not** document `revid` as a historical transcluded-template version selector. The same API exposes TemplateSandbox title/text substitution, while MediaWiki `Help:ExpandTemplates` permanent revision `oldid=8168760` (2026-01-23) documents recursive expansion of templates, parser functions and variables.
-
-SCRIP-CORPUS-063 corrects the exact root-title boundary before dependency binding. MediaWiki `Manual:Page naming/en` at permanent revision `oldid=8270202` records the default first-character capitalization rule and canonical form, while Russian Wikisource permanent revisions `Шаблон:Ё@5687302` and `Шаблон:ЕЁ@3684646` expose the canonical root page titles. The lowercase spelling in invocation syntax remains `{{ё}}`, but the exact dependency-identity root is **`Шаблон:Ё`**, not `Шаблон:ё`. These revision observations deliberately do not claim a bound MediaWiki content SHA-1.
-
-Accordingly, neither `action=expandtemplates&revid=...` nor one direct TemplateSandbox override is accepted as a closed historical dependency graph. Before promotion, replay must bind source-free identities for **both** canonical `Шаблон:Ё` and `Шаблон:ЕЁ` and every recursively discovered template/module dependency: exact canonical title, revision ID, revision timestamp and MediaWiki content SHA-1. Complete closure additionally requires source-free discovery proof for every bound node: `status=complete`, a discovery method, the exact direct-dependency title list, and an evidence SHA-256. That SHA-256 is not a free-form assertion: the validator recomputes it from canonical source-free JSON containing the candidate identity, the exact node title/revision/timestamp/MediaWiki SHA-1, discovery status/method and the exact direct-dependency list. Changing a node revision or dependency list while keeping a stale digest therefore fails closed. The graph edges must exactly equal those cryptographically bound child relationships. This distinguishes an evidenced leaf from a node whose children were never enumerated; two root identities with no valid discovery proof cannot pass as a complete closure. Any live or unbound dependency keeps the closure open.
-
-The committed contract intentionally contains **zero bound dependencies** in this unit. It therefore remains `dependency_closure_complete=false`; it is a fail-closed specification for the next evidence slice, not a renderer implementation. Later replay must also independently verify deterministic output identities for both documented modes (`ё` when forced, `е` otherwise) before `ё` may leave the unresolved backlog.
-
-Source-free replay contract:
-
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract.json)
-- schema: `scriptorium-darwin-template-yo-replay-contract-v2`
-- dependency-discovery evidence schema: `scriptorium-template-dependency-discovery-evidence-v1`
-- contract SHA-256: `9b2e8914a5b4c3518ef331c27dc09a6a30d4d6433e90169c677348048f3dcd52`
-- MediaWiki API permalink: `https://www.mediawiki.org/w/index.php?title=API:Expandtemplates/ru&oldid=6729113`
-- MediaWiki recursive-expansion permalink: `https://www.mediawiki.org/w/index.php?title=Help:ExpandTemplates&oldid=8168760`
-- MediaWiki title-canonicalization permalink: `https://www.mediawiki.org/w/index.php?title=Manual:Page_naming/en&oldid=8270202`
-- Russian Wikisource canonical shorthand root: `https://ru.wikisource.org/w/index.php?title=Шаблон:Ё&oldid=5687302`
-- Russian Wikisource canonical conditional root: `https://ru.wikisource.org/w/index.php?title=Шаблон:ЕЁ&oldid=3684646`
-- builder/validator: [`../../scriptorium/darwin_template_yo_replay_contract.py`](../../scriptorium/darwin_template_yo_replay_contract.py)
-
-Consequently `ё` deliberately remains in the unresolved backlog and the render profile is unchanged.
-
-## Frozen backlog artifact
-
-Canonical source-free backlog artifact:
-
-- [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json)
-- schema: `scriptorium-darwin-render-semantic-backlog-v1`
-- backlog SHA-256: `4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`
-- builder/validator: [`../../scriptorium/darwin_semantic_backlog.py`](../../scriptorium/darwin_semantic_backlog.py)
-
-The backlog artifact is derived only after the existing render profile validates against its frozen source surface. Any profile/surface drift fails before backlog derivation.
+- immutable render profile v1: [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile.json), SHA-256 `2ebcfea51282505c28824f54f6a1795bd7e87e2f958ac59f5c843e68c2066f3d`
+- immutable semantic backlog v1: [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog.json), SHA-256 `4ec4f84566f5f3f8dccd1945906d1a782f4532547a13cadc8570cb5b682bdcb2`
+- independently reviewed replay v6: [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v6.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.template-yo-replay-contract-v6.json), SHA-256 `c317eb5247701f0ad860811e9349f4e6f42274e72e8856eecb8a9aff610f988f`
+- render-profile promotion layer: [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile-yo-promotion-v1.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.render-profile-yo-promotion-v1.json), SHA-256 `153f6ceb89025da90971ddc265df680359ff498103bb47ecd68f86bb3205ed28`
+- effective semantic backlog v2: [`source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog-v2.json`](source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog-v2.json), SHA-256 `6d4ba2bb9ec78731d97d91c87d0628207ec880901e9d388fa7aa7c70fb20e3be`
+- deterministic builder/validator: [`../../scriptorium/darwin_yo_render_profile_promotion.py`](../../scriptorium/darwin_yo_render_profile_promotion.py)
 
 ## Gates unchanged
 
-This slice does not implement rendering and does not advance corpus or FantLab parity gates. The following remain false/unknown: `renderer_semantics_complete`, `renderer_implementation_ready`, `inter_page_composition_frozen`, `literary_body_count_and_digests_frozen`, `minimum_300k_proved`, `admitted_for_calibration`, `diagnostic_ready`, `m2_parity_admissible`; `fantlab_source_edition_match=unknown`. M2 remains **0/5**.
+This promotion resolves one high-volume template shape, but it does not implement a complete renderer. `renderer_semantics_complete`, `renderer_implementation_ready`, `inter_page_composition_frozen`, `literary_body_count_and_digests_frozen`, `minimum_300k_proved`, `admitted_for_calibration`, `diagnostic_ready` and `m2_parity_admissible` remain false; `fantlab_source_edition_match=unknown`. M2 remains **0/5**.

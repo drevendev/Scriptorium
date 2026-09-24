@@ -1,0 +1,84 @@
+{
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "contract_sha256": "c317eb5247701f0ad860811e9349f4e6f42274e72e8856eecb8a9aff610f988f",
+  "gates": {
+    "admitted_for_calibration": false,
+    "diagnostic_ready": false,
+    "fantlab_source_edition_match": "unknown",
+    "inter_page_composition_frozen": false,
+    "literary_body_count_and_digests_frozen": false,
+    "m2_parity_admissible": false,
+    "minimum_300k_proved": false,
+    "outputs_verified": true,
+    "render_profile_rule_promoted": false,
+    "renderer_implementation_ready": false,
+    "renderer_semantics_complete": false,
+    "semantic_dependency_closure_proved": true,
+    "zero_argument_template_yo_outputs_verified": true
+  },
+  "mode_verification": {
+    "forced_yoification": {
+      "context_title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)",
+      "context_title_sha256": "b4601e331471672ae7d2ad305e8f4759790e4103b9a2d6297d637a6540b64e34",
+      "documented_expected_output": "ё",
+      "repetitions_required": 2,
+      "verified_semantic_output": "ё",
+      "verified_semantic_output_sha256": "30fbc377ae9122edc2cdbed70b9261817d196eca8db96ac8bfa4cfaf412667ac"
+    },
+    "non_forced_yoification": {
+      "context_title": "О происхождении видов (Дарвин; Рачинский)/1864",
+      "context_title_sha256": "baed706e17f5abb73e92eb6ad25b9bdcc0b863b6b7f960b809fad4b875fadfc5",
+      "documented_expected_output": "е",
+      "repetitions_required": 2,
+      "verified_semantic_output": "е",
+      "verified_semantic_output_sha256": "259f56cb715ba3a3f1ca41a4ff1972cca698cb49eef1ae018dff325507da8b26"
+    },
+    "outputs_verified": true
+  },
+  "predecessor_contract": {
+    "contract_sha256": "4ded05d3ea45e9cfa9aa657e6b4e1c26c48cf2f1be60643d0194993e995b4c0c",
+    "schema_version": "scriptorium-darwin-template-yo-replay-contract-v5"
+  },
+  "promotion_decision": {
+    "backlog_item_removed": false,
+    "next_evidence_required": "independently review this output evidence, then update the frozen render profile/backlog in a separate unit before implementing the complete literary renderer",
+    "reason": "zero-argument {{ё}} forced/non-forced semantic outputs are verified for the selected identity-stable replay snapshot, but render-profile promotion is a separate bounded judgement",
+    "render_profile_rule_promoted": false
+  },
+  "replay_environment": {
+    "api_action": "expandtemplates",
+    "api_property": "wikitext",
+    "current_revision_identities_required_before_and_after": [
+      {
+        "mediawiki_sha1": "963c1796d693d5451cf0c0897c35bd7e5b327ae1",
+        "revision_id": 5687302,
+        "revision_timestamp": "2026-01-21T12:32:10Z",
+        "title": "Шаблон:Ё"
+      },
+      {
+        "mediawiki_sha1": "435bb2a412d8fb5962ccd5adc0ac2e03412fe109",
+        "revision_id": 3684646,
+        "revision_timestamp": "2019-06-04T20:49:40Z",
+        "title": "Шаблон:ЕЁ"
+      },
+      {
+        "mediawiki_sha1": "a34727a1e4ec3c4b4c7ec556c94991f75442d99c",
+        "revision_id": 3684569,
+        "revision_timestamp": "2019-06-04T20:18:11Z",
+        "title": "Модуль:String"
+      }
+    ],
+    "historical_transclusion_provenance_proved": false,
+    "identity_stable_window_required": true,
+    "invocation": "{{ё}}",
+    "invocation_sha256": "4f522dac15c0236cd8f136b17fce1c849e2ecb011149bdca050e597857093b0b",
+    "offline_version_pinned_mediawiki_environment_claimed": false,
+    "provider_api": "https://ru.wikisource.org/w/api.php",
+    "repetitions_per_mode": 2,
+    "revid_used_as_recursive_dependency_selector": false,
+    "scope": "provider replay is admissible only while all recursively discovered current dependency identities exactly equal the reviewed v5 snapshot before and after both mode replays",
+    "semantic_output_normalization": "unicode-nfc-then-python-str-strip"
+  },
+  "schema_version": "scriptorium-darwin-template-yo-replay-contract-v6",
+  "source_text_included": false
+}

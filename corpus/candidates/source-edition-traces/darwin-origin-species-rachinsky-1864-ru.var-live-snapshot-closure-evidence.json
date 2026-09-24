@@ -1,0 +1,121 @@
+{
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "evidence_sha256": "245f77bf3d99d6610ca5fbbe4fcdcdb4ef68bebca612c5bb81db6c2d77f26509",
+  "execution_boundary": {
+    "candidate_title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)",
+    "expected_classification_isPRS": false,
+    "latent_not_reached": [
+      "Module:Header/Data via mw.loadData inside Header.data()",
+      "Module:BEED/scans via mw.loadData inside BEED scan helpers",
+      "Module:BEED/lists via mw.loadData inside BEED list helpers",
+      "Модуль:Math via require inside BEED.duplicate()",
+      "Модуль:Отексте/ЭСБЕ via mw.loadData inside BEED.duplicate()"
+    ],
+    "load_time_closure_complete_by_source_inspection": true,
+    "path": "Шаблон:ВАР -> Модуль:Дореформенная орфография.variative -> Module:Header.parse_title(..., \"isPRS\")",
+    "selected_argument_if_replayed": "second_parameter_modern"
+  },
+  "fantlab_source_edition_match": "unknown",
+  "identity_gate": {
+    "mediawiki_sha1_complete": false,
+    "missing_mediawiki_sha1_titles": [
+      "Шаблон:ВАР",
+      "Модуль:Дореформенная орфография",
+      "Module:Header",
+      "Module:BEED",
+      "Module:Util",
+      "Module:RomanNumber"
+    ],
+    "provider_api_attempted": true,
+    "provider_api_result": "unavailable_from_execution_environment",
+    "reason": "revision IDs and observed load-time topology are bound, but MediaWiki SHA-1 identities were not retrievable; exact replay remains fail-closed",
+    "replay_ready": false,
+    "revision_ids_complete": true
+  },
+  "literary_body_count_and_digests_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "offline_version_pinned_runtime_proven": false,
+  "prior_evidence": {
+    "evidence_sha256": "6126adbc966c7120ca487fb940bd0e01aafa0d7350d332e6422edbf8b3846cb8",
+    "schema_version": "scriptorium-darwin-var-provider-drift-evidence-v1"
+  },
+  "promotion_decision": {
+    "backlog_item_removed": false,
+    "effective_backlog_changed": false,
+    "full_var_candidate_branch_replayed": false,
+    "next_evidence_required": "obtain MediaWiki SHA-1 for the exact six-revision snapshot, then perform a separately bounded full candidate invocation replay",
+    "render_profile_rule_promoted": false,
+    "var_invocations_unresolved": 388
+  },
+  "renderer_implementation_ready": false,
+  "renderer_semantics_complete": false,
+  "researched_on": "2026-09-24",
+  "schema_version": "scriptorium-darwin-var-live-snapshot-closure-v1",
+  "snapshot": {
+    "historical_transclusion_proven": false,
+    "kind": "observed_live_snapshot",
+    "observed_on": "2026-09-24",
+    "provider": "Russian Wikisource",
+    "resources": [
+      {
+        "loads": [
+          "Модуль:Дореформенная орфография"
+        ],
+        "mediawiki_sha1": null,
+        "revision_date": "2019-06-04",
+        "revision_id": 3684602,
+        "role": "template_root",
+        "title": "Шаблон:ВАР"
+      },
+      {
+        "loads": [
+          "Module:Header"
+        ],
+        "mediawiki_sha1": null,
+        "revision_date": "2026-06-08",
+        "revision_id": 5721277,
+        "role": "implementation_module",
+        "title": "Модуль:Дореформенная орфография"
+      },
+      {
+        "loads": [
+          "Module:BEED",
+          "Module:Util"
+        ],
+        "mediawiki_sha1": null,
+        "revision_date": "2026-09-10",
+        "revision_id": 5746249,
+        "role": "title_classifier",
+        "title": "Module:Header"
+      },
+      {
+        "loads": [
+          "Module:RomanNumber"
+        ],
+        "mediawiki_sha1": null,
+        "revision_date": "2026-09-10",
+        "revision_id": 5746253,
+        "role": "header_load_dependency",
+        "title": "Module:BEED"
+      },
+      {
+        "loads": [],
+        "mediawiki_sha1": null,
+        "revision_date": "2026-09-18",
+        "revision_id": 5750249,
+        "role": "header_load_dependency",
+        "title": "Module:Util"
+      },
+      {
+        "loads": [],
+        "mediawiki_sha1": null,
+        "revision_date": "2019-06-04",
+        "revision_id": 3684553,
+        "role": "beed_load_dependency",
+        "title": "Module:RomanNumber"
+      }
+    ]
+  },
+  "source_text_included": false
+}

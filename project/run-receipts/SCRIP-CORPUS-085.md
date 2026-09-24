@@ -1,14 +1,15 @@
 # Run receipt — SCRIP-CORPUS-085
 
-Status: REVIEW_PENDING
+Status: COMPLETE
 
 ## Orientation
 
 - Authoring identity: `andy-zen-dev`.
 - Repository: `drevendev/Scriptorium`; push/triage permission available.
 - Exact authoring base: `82e88eb2d9045b199d595fa96d9cab9260cf6328`.
-- Issue: #259.
-- Draft PR: #260.
+- Issue: #259 (closed completed).
+- PR: #260 (squash-merged as `f60957eb2512d8e9ec9ed27e803878dfb1835dec`).
+- Exact reviewed head: `7a2a58370bcceb1572fa6064241fa24cd1d9976f`.
 - Semantic evidence head: `272c00c7c47f7a1506a826591b7941e1d49ad05e`.
 
 ## Produced
@@ -46,12 +47,15 @@ The exact per-image SHA-256 values and source-free observation rows are frozen i
 
 ## Verification
 
-- Exact carrier retrieval/hash verification: success in hosted capture run `36016017921`.
-- Transient render artifact upload: success.
-- Artifact ZIP digest independently recomputed: match.
-- All nine new page images manually inspected.
-- Focused retained regression: **5/5 pass** locally before commit.
-- PR remains Draft for a later independent exact-head judgement.
+- A later exact-head review read all seven changed files at `7a2a58370bcceb1572fa6064241fa24cd1d9976f` against unchanged authoring base `82e88eb2d9045b199d595fa96d9cab9260cf6328`.
+- All 23 PR-triggered workflows on that exact head completed successfully.
+- Dedicated facsimile run `36017146550` checked out the exact reviewed head, reverified the frozen PDF, rendered all bounded windows, ran retained regressions and uploaded exact-head artifact `10814683683`.
+- Exact-head artifact `10814683683` was independently downloaded; ZIP SHA-256 recomputed to `243e83888345fd2b9c7f791de14ebd431fcc623b8ea1825200a5402c4abd14eb`, matching GitHub metadata.
+- Its `rendered-pages.sha256` file independently recomputed to `33457b4afaeed309fa6c604bfb0214f4be85979289033ed272f53f978ce30518`; all nine `midbody-*` image SHA-256 values matched the committed JSON rows.
+- Direct re-inspection independently confirmed 59→50, 61→52, 109→100, 110→101, 111→102, 159→150, 160→151 and 161→152, while carrier 60 has no visible printed folio.
+- Frozen diagnostic run `36017146861` also checked out the exact reviewed head and completed both jobs successfully, including the standard-library suite and frozen replays.
+- Review `5306813956` records the clean judgement; no review threads were open.
+- PR #260 was marked Ready and squash-merged with expected-head protection as `f60957eb2512d8e9ec9ed27e803878dfb1835dec`; Issue #259 closed `completed`.
 
 ## Evidence boundary
 
@@ -72,4 +76,4 @@ M2 remains 0/5. No benchmark movement occurred.
 
 ## Handoff
 
-A later independent run must re-read all PR #260 changed files against authoring base `82e88eb2d9045b199d595fa96d9cab9260cf6328`, verify the source-free evidence and exact-head checks, and only then mark Ready / merge with expected-head protection if clean. Keep page 60 uninterpolated and keep the global-offset/body/FantLab/M2 gates closed.
+Resume normal-flow corpus/provenance selection. A later separate Perelman unit may strengthen complete carrier mapping, carrier equivalence or body selection, but it must keep carrier page 60 uninterpolated and may not promote a global +9 rule, PDF↔DjVu equivalence, OCR/body identity, `>=300k`, FantLab-input identity or M2/parity without separate evidence.

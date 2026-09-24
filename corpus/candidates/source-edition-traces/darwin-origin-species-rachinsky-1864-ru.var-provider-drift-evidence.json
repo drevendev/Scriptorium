@@ -1,0 +1,67 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "dependency_boundary": {
+    "full_var_candidate_branch_replayed": false,
+    "historical_transclusion_proven": false,
+    "implementation_module_revision_frozen_for_this_chain": true,
+    "module_header_mediawiki_sha1_frozen": false,
+    "module_header_revision_observed": true,
+    "nested_dependency_closure_frozen": false,
+    "offline_version_pinned_runtime_proven": false,
+    "reason": "the Header revision and title-classification rule are observed, but the live template root, Header SHA-1 and complete replay-time closure are not yet bound into one executable snapshot",
+    "template_root_revision_frozen": false
+  },
+  "diagnostic_ready": false,
+  "evidence_sha256": "6126adbc966c7120ca487fb940bd0e01aafa0d7350d332e6422edbf8b3846cb8",
+  "fantlab_source_edition_match": "unknown",
+  "inter_page_composition_frozen": false,
+  "literary_body_count_and_digests_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "observed_header_rule_replay": {
+    "candidate_namespace": "mainspace",
+    "candidate_title": "О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)",
+    "edition_segment": "1864 (ВТ:Ё)",
+    "function": "parse_title(..., \"isPRS\")",
+    "header_revision_id": 5746249,
+    "isPRS": false,
+    "scope": "deterministic_replay_of_the_observed_Header_title_classification_rule_only",
+    "selected_variant_if_module_branch_is_reached": "second_parameter_modern"
+  },
+  "prior_evidence": {
+    "documentation_revision_id": 5711068,
+    "evidence_sha256": "321ced32bb7ffc75829b6fbb5255bce3243641a80c21ad4e2b7bb7a25138502d",
+    "implementation_module_revision_id": 5721277,
+    "schema_version": "scriptorium-darwin-var-documentation-evidence-v1"
+  },
+  "promotion_decision": {
+    "backlog_item_removed": false,
+    "effective_backlog_changed": false,
+    "next_evidence_required": "choose one explicit coherent replay snapshot, freeze exact Шаблон:ВАР plus Модуль:Дореформенная орфография plus Module:Header identities including MediaWiki SHA-1 and the execution-relevant nested closure, then replay the candidate mainspace invocation without substituting later live descendants",
+    "reason": "provider drift evidence narrows snapshot selection but does not prove a complete deterministic VAR invocation replay",
+    "render_profile_rule_promoted": false
+  },
+  "provider_drift_observation": {
+    "community_warning": {
+      "claim_scope": "provider_drift_risk_not_a_proven_runtime_failure",
+      "discussion_date": "2026-09-08",
+      "forum_url": "https://ru.wikisource.org/wiki/Викитека:Форум",
+      "observation": "Wikisource editors explicitly raised whether template VAR had broken after Header-related changes and noted that the small pre-reform module delegates page-title parsing to Header."
+    },
+    "decision_effect": "do_not_silently_bind_a_future_live_Header_as_replay_equivalence; select_and_record_an_explicit_coherent_snapshot_before_full_VAR_replay",
+    "observed_header": {
+      "permanent_url": "https://ru.wikisource.org/w/index.php?title=Модуль:Header&oldid=5746249",
+      "relationship_to_pinned_var_module": "later_revision",
+      "revision_date": "2026-09-10",
+      "revision_id": 5746249,
+      "title": "Модуль:Header"
+    },
+    "provider": "Russian Wikisource"
+  },
+  "renderer_implementation_ready": false,
+  "renderer_semantics_complete": false,
+  "researched_on": "2026-09-24",
+  "schema_version": "scriptorium-darwin-var-provider-drift-evidence-v1",
+  "source_text_included": false
+}

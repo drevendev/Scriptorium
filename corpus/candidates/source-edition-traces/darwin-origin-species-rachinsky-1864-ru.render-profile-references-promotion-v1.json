@@ -1,0 +1,55 @@
+{
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "effective_profile": {
+    "admitted_for_calibration": false,
+    "diagnostic_ready": false,
+    "fantlab_source_edition_match": "unknown",
+    "inter_page_composition_frozen": false,
+    "literary_body_count_and_digests_frozen": false,
+    "m2_parity_admissible": false,
+    "minimum_300k_proved": false,
+    "profile_version": "scriptorium-darwin-page-render-profile-v3",
+    "renderer_implementation_ready": false,
+    "renderer_semantics_complete": false,
+    "rendering_equivalence_claimed": false,
+    "unresolved_tag_shape_count": 4,
+    "unresolved_tag_token_count": 130,
+    "unresolved_template_invocation_count": 2356,
+    "unresolved_template_shape_count": 37
+  },
+  "predecessor_backlog": {
+    "backlog_sha256": "6d4ba2bb9ec78731d97d91c87d0628207ec880901e9d388fa7aa7c70fb20e3be",
+    "schema_version": "scriptorium-darwin-render-semantic-backlog-v2"
+  },
+  "predecessor_effective_profile": {
+    "profile_version": "scriptorium-darwin-page-render-profile-v2",
+    "promotion_schema": "scriptorium-darwin-render-profile-yo-promotion-v1",
+    "promotion_sha256": "153f6ceb89025da90971ddc265df680359ff498103bb47ecd68f86bb3205ed28"
+  },
+  "promoted_rule": {
+    "count": 388,
+    "handling": "drop_via_existing_strip_nontranscluded_region",
+    "kind": "self_closing",
+    "name": "references",
+    "predecessor_handling": "provider_reference_semantics_required",
+    "predecessor_semantic_status": "unresolved",
+    "semantic_status": "defined_candidate_local",
+    "source_kind": "tag"
+  },
+  "promotion_sha256": "4052973abc6c413503f26c27419770a2214bf3253ecb31ec9d4cf3c1276dec39",
+  "schema_version": "scriptorium-darwin-render-profile-references-promotion-v1",
+  "scope": "candidate-local promotion only: all 388 observed self-closing <references/> tokens are removed by the already-defined noinclude strip; no Cite semantics, historical transclusion, or general MediaWiki runtime claim",
+  "semantic_evidence": {
+    "all_observed_references_inside_noinclude": true,
+    "existing_defined_handling": "strip_nontranscluded_region",
+    "historical_transclusion_provenance_proved": false,
+    "offline_version_pinned_mediawiki_environment_claimed": false,
+    "probe_sha256": "3dde2e1ea259ccc4f855ad20dc8df588f9546a9ec181f84155175a86c3b139e3",
+    "provider_cite_semantics_replayed": false,
+    "references_inside_noinclude": 388,
+    "references_outside_noinclude": 0,
+    "references_total": 388,
+    "schema_version": "scriptorium-darwin-references-containment-probe-v1"
+  },
+  "source_text_included": false
+}

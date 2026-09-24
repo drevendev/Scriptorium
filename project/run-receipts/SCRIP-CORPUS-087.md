@@ -10,3 +10,5 @@ Status: STAGED_RECONCILIATION_REQUIRED
 - Source-free preflight SHA-256: `093f251cb8d03846a5158a1ac29d4b66e1796a7cc2bc65a77ade3d9e3cebcff1`.
 - Embedded text-layer status remains unverified; neither direct text extraction nor raster OCR is selected.
 - Literary-page selection, extraction profile, body identity, >=300k admission, FantLab input identity, diagnostics, M2 and parity remain closed. M2 remains 0/5.
+- Recovery branch mutation succeeded, but Issue and Draft-PR creation requests were blocked before GitHub accepted them; no issue or PR number exists.
+- Reconciliation trigger: when repository Issue/PR mutation is available, re-check `master` and the exact recovery head, open a Draft PR, inspect exact-head checks, and leave merge judgement to a later wake.

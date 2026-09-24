@@ -1,14 +1,15 @@
 # Run receipt — SCRIP-CORPUS-084
 
-Status: REVIEW_PENDING
+Status: COMPLETE
 
 ## Orientation
 
-- Connected GitHub identity: `andy-zen-dev`.
+- Authoring identity: `andy-zen-dev`.
 - Repository: `drevendev/Scriptorium`; write permission available.
 - Exact authoring base: `e7bf53b7ae2485b106158d09b728c72b86f9e5f6`.
-- Issue: #257.
-- Draft PR: #258.
+- Exact reviewed head: `85af2a2073dbb1926aaa406bbcc091082a286d8c`.
+- Issue: #257 (closed completed).
+- PR: #258 (squash-merged).
 
 ## Produced
 
@@ -20,9 +21,11 @@ Evidence SHA-256: `98dc8aed94fd8b4e18f0ad3325673603cba1575c1e745e1175ab4cd3a8aa2
 
 ## Provider capture
 
-The first exact-head capture run `36002505015` passed the full 598-test standard-library suite, then failed closed on a real namespace canonicalization mismatch: the dependency graph used `Module:Header`, while Russian Wikisource returned the canonical provider title `Модуль:Header`. The workflow was repaired to preserve both identities instead of weakening title checks.
+The first capture run failed closed on a real namespace canonicalization mismatch: the dependency graph used `Module:Header`, while Russian Wikisource returned the canonical provider title `Модуль:Header`. The workflow was repaired to preserve both identities instead of weakening title checks.
 
-Corrected run `36002651033` completed successfully and produced artifact `10808782333`. The downloaded ZIP independently recomputed to GitHub's digest `sha256:725332a6cf98804f68dce5dd16322a8a2ba09d1921660f216afb55c8e3c896a4` and contained exactly one source-free JSON artifact.
+Final exact-head run `36003962326` completed successfully on `85af2a2073dbb1926aaa406bbcc091082a286d8c`. Its checkout, standard-library test suite, provider capture, committed-contract comparison and source-free artifact upload all completed successfully. Authoring handoff recorded 604/604 standard-library tests including all six `DarwinVarRevisionIdentityTests`.
+
+Exact-head artifact `10809920402` was independently downloaded during review. Its ZIP SHA-256 recomputed to `04ece4b07683d9d3fc5f7acbd700d5aee9b1a2d4bc0fe2f1f685ec0439fd92f9`, matching GitHub metadata. The ZIP contained exactly one source-free JSON file with six identity rows matching the committed evidence. The evidence self-digest independently recomputed to `98dc8aed94fd8b4e18f0ad3325673603cba1575c1e745e1175ab4cd3a8aa2a48`.
 
 Provider-bound SHA-1 values:
 
@@ -33,10 +36,16 @@ Provider-bound SHA-1 values:
 - `Module:Util@5750249` / provider `Модуль:Util` — `945f8e6bf173bb5712385995255a8b6eccef38ed`
 - `Module:RomanNumber@3684553` / provider `Модуль:RomanNumber` — `51a3956469ee3fbd4ed56ce3a1f72f76f231e1d3`
 
+## Independent review and merge
+
+The later review pass independently read all 8 changed files against unchanged authoring base `e7bf53b7ae2485b106158d09b728c72b86f9e5f6`, found no merge blockers and found no open review threads. GitHub rejected a formal `APPROVE` event because it treated the connected reviewer as the pull-request author; review `5305445089` therefore records the exact-head judgement as `COMMENT` instead of misrepresenting approval state.
+
+PR #258 was marked Ready and squash-merged with expected-head protection as `70a20089488fffc169bc807318ca82e9eb33f18b`. Issue #257 closed automatically as completed.
+
 ## Evidence boundary
 
 `revision_ids_complete=true` and `mediawiki_sha1_complete=true`, but `replay_ready=false`. No full candidate `{{ВАР}}` invocation has been replayed; historical transclusion and an explicit version-pinned Scribunto/runtime boundary remain unproven. No render-profile rule or backlog item is promoted. `ВАР` remains unresolved at 388 invocations; effective unresolved counts remain 4 tag shapes / 130 tag tokens and 37 template shapes / 2,356 template invocations. Literary-body identity, >=300k admission, FantLab analyzer-input identity and parity remain closed; M2 stays 0/5.
 
 ## Handoff
 
-Draft PR #258 is intentionally left for a later independent exact-head review. The final authored head must re-run the dedicated provider capture, compare the fresh source-free identities to the committed contract, and pass the standard-library suite before review. This authoring run does not approve or merge its own substantive work.
+Resume the normal corpus/provenance queue. A separately bounded Darwin unit may attempt full candidate `{{ВАР}}` invocation replay against exactly these six identities under an explicit version-pinned Scribunto/MediaWiki runtime boundary. Keep historical-transclusion, promotion, complete-renderer, literary-body, >=300k, FantLab-input and M2 gates closed until separately evidenced.

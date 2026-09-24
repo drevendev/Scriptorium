@@ -87,6 +87,14 @@ class BulgakovRevisionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "invalid/duplicate page id"):
             validate_manifest(manifest)
 
+    def test_validate_manifest_rejects_composition_contract_drift(self):
+        manifest = build_manifest(fetcher=_fake_identity_fetcher)
+        manifest["composition_contract"] = copy.deepcopy(manifest["composition_contract"])
+        manifest["composition_contract"]["single_edition_identity"] = True
+
+        with self.assertRaisesRegex(ValueError, "composition contract drift"):
+            validate_manifest(manifest)
+
     def test_validate_manifest_rejects_promotion_scope_drift(self):
         manifest = build_manifest(fetcher=_fake_identity_fetcher)
         manifest["capture_scope"] = copy.deepcopy(manifest["capture_scope"])

@@ -32,6 +32,8 @@ def load(path: Path) -> dict[str, object]:
 
 
 class DarwinVarDocumentationEvidenceTests(unittest.TestCase):
+    maxDiff = None
+
     def test_committed_evidence_rebuilds_exactly(self) -> None:
         committed = load(EVIDENCE)
         expected = build_evidence_from_path(BACKLOG)

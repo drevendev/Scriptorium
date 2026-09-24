@@ -1,0 +1,78 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "dependency_boundary": {
+    "implementation_module_revision_documented": true,
+    "module_header_revision_frozen": false,
+    "nested_dependency_closure_frozen": false,
+    "offline_version_pinned_runtime_proven": false,
+    "reason": "the pinned module source directly requires Module:Header, while this unit does not bind the live Шаблон:ВАР root or Module:Header/nested runtime identities",
+    "template_root_revision_frozen": false
+  },
+  "diagnostic_ready": false,
+  "documented_semantics": {
+    "arity": {
+      "named": 0,
+      "positional": 2
+    },
+    "candidate_mainspace_branch_replayed": false,
+    "first_parameter_role": "pre_reform_text",
+    "historical_equivalence_proven": false,
+    "invocation_family": "{{ВАР|pre_reform|modern}}",
+    "isPRS_false_output": "second_parameter_modern",
+    "isPRS_true_output": "first_parameter_pre_reform",
+    "non_page_namespace_behavior": "delegate_title_classification_to_Module_Header_parse_title_isPRS_then_select_one_variant",
+    "page_namespace_behavior": "emit_both_variants_with_generated_references_and_divider",
+    "second_parameter_role": "modern_text"
+  },
+  "evidence_sha256": "321ced32bb7ffc75829b6fbb5255bce3243641a80c21ad4e2b7bb7a25138502d",
+  "fantlab_source_edition_match": "unknown",
+  "implementation_module": {
+    "direct_dependency_titles": [
+      "Module:Header"
+    ],
+    "evidence_scope": "documented_current_module_branch_behavior_not_historical_template_binding",
+    "permanent_url": "https://ru.wikisource.org/w/index.php?title=Модуль:Дореформенная_орфография&oldid=5721277",
+    "provider": "Russian Wikisource",
+    "researched_on": "2026-09-24",
+    "revision_date": "2026-06-08",
+    "revision_id": 5721277,
+    "title": "Модуль:Дореформенная орфография"
+  },
+  "inter_page_composition_frozen": false,
+  "literary_body_count_and_digests_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "official_documentation": {
+    "evidence_scope": "documented_parameter_roles_and_template_to_module_relationship",
+    "permanent_url": "https://ru.wikisource.org/w/index.php?title=Шаблон:ВАР/Документация&oldid=5711068",
+    "provider": "Russian Wikisource",
+    "researched_on": "2026-09-24",
+    "revision_date": "2026-05-11",
+    "revision_id": 5711068,
+    "title": "Шаблон:ВАР/Документация"
+  },
+  "promotion_decision": {
+    "backlog_item_removed": false,
+    "next_evidence_required": "freeze exact Шаблон:ВАР, Модуль:Дореформенная орфография, Module:Header and nested dependency identities for one chosen replay snapshot, then replay the candidate mainspace title/context before any profile promotion",
+    "reason": "documentation and one module revision explain branch semantics but do not replay the selected candidate context or freeze the complete replay-time dependency graph",
+    "render_profile_rule_promoted": false
+  },
+  "renderer_implementation_ready": false,
+  "renderer_semantics_complete": false,
+  "schema_version": "scriptorium-darwin-var-documentation-evidence-v1",
+  "source_backlog": {
+    "backlog_sha256": "4b68de749eec78731d97d91c87d0628207ec880901e9d388fa7aa7c70fb20e3be",
+    "schema_version": "scriptorium-darwin-render-semantic-backlog-v3"
+  },
+  "source_text_included": false,
+  "target": {
+    "backlog_priority_rank": 1,
+    "count": 388,
+    "name": "ВАР",
+    "named": 0,
+    "positional": 2,
+    "semantic_status": "unresolved",
+    "source_kind": "template"
+  }
+}

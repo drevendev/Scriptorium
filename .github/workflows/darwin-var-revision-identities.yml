@@ -5,9 +5,9 @@ on:
     paths:
       - ".github/workflows/darwin-var-revision-identities.yml"
       - "scriptorium/single_page_revision.py"
-      - "scriptorium/darwin_var_live_snapshot_closure.py"
-      - "tests/test_darwin_var_live_snapshot_closure.py"
-      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.var-live-snapshot-closure-evidence.json"
+      - "scriptorium/darwin_var_revision_identities.py"
+      - "tests/test_darwin_var_revision_identities.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.var-revision-identities-evidence.json"
   workflow_dispatch:
 
 permissions:
@@ -72,6 +72,38 @@ jobs:
           path = Path("build/repro/darwin-var-provider-revision-identities.json")
           path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
           print("SCRIPTORIUM_DARWIN_VAR_IDENTITIES=" + json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+          PY
+
+      - name: Compare capture to committed identity contract
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.darwin_var_revision_identities import validate_evidence
+
+          observed = json.loads(Path("build/repro/darwin-var-provider-revision-identities.json").read_text(encoding="utf-8"))
+          evidence = json.loads(Path("corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.var-revision-identities-evidence.json").read_text(encoding="utf-8"))
+          validate_evidence(evidence)
+          expected = evidence["resources"]
+          assert observed["source_text_included"] is False
+          assert len(observed["resources"]) == len(expected) == 6
+          for got, want in zip(observed["resources"], expected, strict=True):
+              for key in (
+                  "closure_title",
+                  "title",
+                  "page_id",
+                  "revision_id",
+                  "revision_timestamp",
+                  "mediawiki_sha1",
+                  "wikitext_character_count",
+                  "wikitext_utf8_byte_count",
+                  "wikitext_sha256",
+              ):
+                  assert got[key] == want[key], (key, got[key], want[key])
+          assert evidence["identity_gate"]["mediawiki_sha1_complete"] is True
+          assert evidence["identity_gate"]["replay_ready"] is False
+          print("SCRIPTORIUM_DARWIN_VAR_EVIDENCE_SHA256=" + evidence["evidence_sha256"])
           PY
 
       - name: Upload source-free identity capture

@@ -1,0 +1,115 @@
+name: Darwin VAR frozen revision identities
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-var-revision-identities.yml"
+      - "scriptorium/single_page_revision.py"
+      - "scriptorium/darwin_var_revision_identities.py"
+      - "tests/test_darwin_var_revision_identities.py"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.var-revision-identities-evidence.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    name: Capture six exact Wikisource revision identities
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run standard-library test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Capture provider-returned source-free identities
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.single_page_revision import fetch_pinned_revision
+
+          # The dependency evidence uses MediaWiki's English namespace alias in Lua
+          # require() strings. The Russian Wikisource API canonicalizes those page
+          # titles to the local `Модуль:` namespace, so preserve both identities.
+          resources = [
+              ("Шаблон:ВАР", "Шаблон:ВАР", 3684602),
+              ("Модуль:Дореформенная орфография", "Модуль:Дореформенная орфография", 5721277),
+              ("Module:Header", "Модуль:Header", 5746249),
+              ("Module:BEED", "Модуль:BEED", 5746253),
+              ("Module:Util", "Модуль:Util", 5750249),
+              ("Module:RomanNumber", "Модуль:RomanNumber", 3684553),
+          ]
+          observed = []
+          for closure_title, provider_title, revision_id in resources:
+              item = fetch_pinned_revision(title=provider_title, revision_id=revision_id)
+              item["closure_title"] = closure_title
+              observed.append(item)
+          assert [
+              (item["closure_title"], item["title"], item["revision_id"])
+              for item in observed
+          ] == resources
+          assert all(len(item["mediawiki_sha1"]) == 40 for item in observed)
+          payload = {
+              "schema_version": "scriptorium-darwin-var-provider-revision-identities-v1",
+              "provider": "Russian Wikisource",
+              "source_text_included": False,
+              "resources": observed,
+          }
+          path = Path("build/repro/darwin-var-provider-revision-identities.json")
+          path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+          print("SCRIPTORIUM_DARWIN_VAR_IDENTITIES=" + json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+          PY
+
+      - name: Compare capture to committed identity contract
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.darwin_var_revision_identities import validate_evidence
+
+          observed = json.loads(Path("build/repro/darwin-var-provider-revision-identities.json").read_text(encoding="utf-8"))
+          evidence = json.loads(Path("corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.var-revision-identities-evidence.json").read_text(encoding="utf-8"))
+          validate_evidence(evidence)
+          expected = evidence["resources"]
+          assert observed["source_text_included"] is False
+          assert len(observed["resources"]) == len(expected) == 6
+          for got, want in zip(observed["resources"], expected, strict=True):
+              for key in (
+                  "closure_title",
+                  "title",
+                  "page_id",
+                  "revision_id",
+                  "revision_timestamp",
+                  "mediawiki_sha1",
+                  "wikitext_character_count",
+                  "wikitext_utf8_byte_count",
+                  "wikitext_sha256",
+              ):
+                  assert got[key] == want[key], (key, got[key], want[key])
+          assert evidence["identity_gate"]["mediawiki_sha1_complete"] is True
+          assert evidence["identity_gate"]["replay_ready"] is False
+          print("SCRIPTORIUM_DARWIN_VAR_EVIDENCE_SHA256=" + evidence["evidence_sha256"])
+          PY
+
+      - name: Upload source-free identity capture
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-var-provider-revision-identities
+          path: build/repro/darwin-var-provider-revision-identities.json
+          if-no-files-found: error
+          retention-days: 7

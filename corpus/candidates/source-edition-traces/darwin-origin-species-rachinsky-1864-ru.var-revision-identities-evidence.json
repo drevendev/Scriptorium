@@ -1,0 +1,108 @@
+{
+  "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+  "capture_provenance": {
+    "api_surface": "MediaWiki revisions API: rvprop=ids|timestamp|sha1|content, rvslots=main",
+    "provider": "Russian Wikisource",
+    "source_text_persisted": false
+  },
+  "evidence_sha256": "98dc8aed94fd8b4e18f0ad3325673603cba1575c1e745e1175ab4cd3a8aa2a48",
+  "fantlab_source_edition_match": "unknown",
+  "historical_transclusion_proven": false,
+  "identity_gate": {
+    "mediawiki_sha1_complete": true,
+    "missing_mediawiki_sha1_titles": [],
+    "provider_title_aliases_explicit": true,
+    "reason": "all six exact observed-live revisions are bound to provider-returned identities, but a full candidate invocation replay and an explicit version-pinned Scribunto/runtime boundary are still missing",
+    "replay_ready": false,
+    "revision_ids_complete": true
+  },
+  "literary_body_count_and_digests_frozen": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved": false,
+  "offline_version_pinned_runtime_proven": false,
+  "prior_closure": {
+    "evidence_sha256": "245f77bf3d99d6610ca5fbbe4fcdcdb4ef68bebca612c5bb81db6c2d77f26509",
+    "schema_version": "scriptorium-darwin-var-live-snapshot-closure-v1"
+  },
+  "promotion_decision": {
+    "backlog_item_removed": false,
+    "effective_backlog_changed": false,
+    "full_var_candidate_branch_replayed": false,
+    "next_evidence_required": "perform a separately bounded full candidate invocation replay against these six exact identities with an explicit version-pinned Scribunto/runtime boundary",
+    "render_profile_rule_promoted": false,
+    "var_invocations_unresolved": 388
+  },
+  "renderer_implementation_ready": false,
+  "renderer_semantics_complete": false,
+  "researched_on": "2026-09-24",
+  "resources": [
+    {
+      "closure_title": "Шаблон:ВАР",
+      "mediawiki_sha1": "fdb6fa7c0d4b08157bc30d44f5f77c5b9313167c",
+      "page_id": 122258,
+      "revision_id": 3684602,
+      "revision_timestamp": "2019-06-04T20:36:46Z",
+      "title": "Шаблон:ВАР",
+      "wikitext_character_count": 206,
+      "wikitext_sha256": "583f46a8f7fa2444456abede564817e134d313fb20d5cabfa2f2c48591c54707",
+      "wikitext_utf8_byte_count": 269
+    },
+    {
+      "closure_title": "Модуль:Дореформенная орфография",
+      "mediawiki_sha1": "64d28378f4f620c67e1823a0d4292445d9ab293d",
+      "page_id": 378940,
+      "revision_id": 5721277,
+      "revision_timestamp": "2026-06-08T13:06:13Z",
+      "title": "Модуль:Дореформенная орфография",
+      "wikitext_character_count": 1553,
+      "wikitext_sha256": "d0199f6df8f5f789e6a5aec0e450dae6d35c3448adca411481244e40aec3004d",
+      "wikitext_utf8_byte_count": 1588
+    },
+    {
+      "closure_title": "Module:Header",
+      "mediawiki_sha1": "2ab2bfdd7e49c73c4ec9ef24e4625c1d228cfba0",
+      "page_id": 361783,
+      "revision_id": 5746249,
+      "revision_timestamp": "2026-09-10T02:29:30Z",
+      "title": "Модуль:Header",
+      "wikitext_character_count": 54598,
+      "wikitext_sha256": "b3950aa5a04e8a8f3bec71c6c82843643dfdc1a1a82f3788f48830f21e434ecb",
+      "wikitext_utf8_byte_count": 67792
+    },
+    {
+      "closure_title": "Module:BEED",
+      "mediawiki_sha1": "9e9531e9178e0333bd3a939ace91e6a71e114cc5",
+      "page_id": 362284,
+      "revision_id": 5746253,
+      "revision_timestamp": "2026-09-10T03:41:25Z",
+      "title": "Модуль:BEED",
+      "wikitext_character_count": 10647,
+      "wikitext_sha256": "108fee006a43f146302aafda316f05f15198932c3389487ed7c760c83a7c4875",
+      "wikitext_utf8_byte_count": 11979
+    },
+    {
+      "closure_title": "Module:Util",
+      "mediawiki_sha1": "945f8e6bf173bb5712385995255a8b6eccef38ed",
+      "page_id": 980298,
+      "revision_id": 5750249,
+      "revision_timestamp": "2026-09-18T07:31:28Z",
+      "title": "Модуль:Util",
+      "wikitext_character_count": 1328,
+      "wikitext_sha256": "a69fdcf9cf4dbbfe34d3e41585f2bcd418eee4efbe6e5c42d82e450cc4045a90",
+      "wikitext_utf8_byte_count": 1585
+    },
+    {
+      "closure_title": "Module:RomanNumber",
+      "mediawiki_sha1": "51a3956469ee3fbd4ed56ce3a1f72f76f231e1d3",
+      "page_id": 378544,
+      "revision_id": 3684553,
+      "revision_timestamp": "2019-06-04T20:13:27Z",
+      "title": "Модуль:RomanNumber",
+      "wikitext_character_count": 1152,
+      "wikitext_sha256": "90edb9a1d3bf5d283112fd58e28ee60f2569ae0fe7850e936a17f4e23869cf45",
+      "wikitext_utf8_byte_count": 1212
+    }
+  ],
+  "schema_version": "scriptorium-darwin-var-provider-revision-identities-v1",
+  "source_text_included": false
+}

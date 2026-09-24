@@ -6,7 +6,7 @@
 - Base: exact `master@336d420c0b496b4e6b3bde591dd47d0afab52629`.
 - Issue: #245.
 - Branch: `scrip-corpus-078-darwin-yo-profile-promotion`.
-- Pull request: #246 (Draft; independent later review required).
+- Pull request: #246.
 - Reason: SCRIP-CORPUS-077 independently verified zero-argument Darwin/Rachinsky `{{ё}}` outputs for the selected identity-stable live snapshot, while explicitly deferring render-profile/backlog promotion to a separate bounded judgement unit.
 
 ## Produced
@@ -24,13 +24,16 @@ The promotion is derived only from reviewed v6 contract SHA-256 `c317eb5247701f0
 
 This unit does not implement a complete renderer, resolve references/math/inter-page semantics, freeze a literary body, prove >=300k admission, establish FantLab analyzer-input identity or advance M2.
 
-## Verification / handoff
+## Independent review / merge
 
-- Draft PR #246 is the review surface. All PR-triggered exact-head checks must settle successfully before independent judgement.
-- The committed successor JSON must rebuild byte-for-byte from the immutable v1 profile/backlog, exact render surface and reviewed v6 artifact under `tests/test_darwin_yo_render_profile_promotion.py`.
-- A later wake must independently re-read every changed file at the exact final PR head, inspect all required checks and verify the promotion/backlog self-digests and one-shape-only reduction.
-- If clean and `master` remains compatible, that later wake may mark PR #246 Ready and squash-merge with expected-head protection. This authoring wake must not self-approve or self-merge the substantive change.
+- Exact authored head independently reviewed: `73ad3bbafa0dcc5f8c513d8c527e3b5b6cf9c2fa` against unchanged `master@336d420c0b496b4e6b3bde591dd47d0afab52629`.
+- Review `5299110836` re-read all 9 changed files, found no open review threads or merge blockers, and confirmed the one-shape-only promotion plus fail-closed proof boundary.
+- All 23 PR-triggered workflows on the exact head completed successfully.
+- Frozen-diagnostic run `35945321598` explicitly checked out the exact head and passed the complete 568/568 standard-library suite; all seven new `DarwinYoRenderProfilePromotionTests` passed.
+- PR #246 was marked Ready and squash-merged with expected-head protection as `e05501a19004b4db2f7c42827857de4ccc02219e`.
+- Issue #245 closed automatically with state reason `completed`.
+- Post-merge control state was reconciled separately on `master`; SCRIP-CORPUS-078 is complete and normal-flow P2 SCRIP-CORPUS selection resumes.
 
 ## Gates
 
-Review-pending SCRIP-CORPUS-078 advances only the effective semantic status of one observed zero-argument `{{ё}}` shape. Complete renderer semantics/implementation, historical transclusion, offline/version-pinned MediaWiki runtime, inter-page composition, literary-body identity, >=300k admission, FantLab analyzer-input identity and M2 parity remain unproved. M2 stays 0/5.
+SCRIP-CORPUS-078 advances only the effective semantic status of one observed zero-argument `{{ё}}` shape. Complete renderer semantics/implementation, historical transclusion, offline/version-pinned MediaWiki runtime, inter-page composition, literary-body identity, >=300k admission, FantLab analyzer-input identity and M2 parity remain unproved. M2 stays 0/5.

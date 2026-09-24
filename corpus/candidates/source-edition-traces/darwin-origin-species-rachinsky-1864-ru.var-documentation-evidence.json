@@ -62,7 +62,7 @@
   "renderer_semantics_complete": false,
   "schema_version": "scriptorium-darwin-var-documentation-evidence-v1",
   "source_backlog": {
-    "backlog_sha256": "4b68de749eec78731d97d91c87d0628207ec880901e9d388fa7aa7c70fb20e3be",
+    "backlog_sha256": "4b68de749eec8bbacf0e07cb9f87e2c5c2db0c81d438a191fadd15f4dffbda18",
     "schema_version": "scriptorium-darwin-render-semantic-backlog-v3"
   },
   "source_text_included": false,

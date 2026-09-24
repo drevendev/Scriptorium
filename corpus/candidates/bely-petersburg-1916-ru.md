@@ -30,7 +30,7 @@ The retained Commons file description identifies the facsimile as the first 1916
 
 ## Extraction-strategy preflight
 
-**SCRIP-CORPUS-086** adds a source-free preflight before choosing direct PDF text extraction versus raster OCR. On 24 September 2026 the official Commons surface still exposed the frozen candidate as a 632-page PDF facsimile of the first 1916 book edition, with the current file history rooted at the 20 March 2016 upload, explicit public-domain notice, PDF format 1.6, and a current-file no-overwrite notice.
+**SCRIP-CORPUS-087** adds a source-free preflight before choosing direct PDF text extraction versus raster OCR. On 24 September 2026 the official Commons surface still exposed the frozen candidate as a 632-page PDF facsimile of the first 1916 book edition, with the current file history rooted at the 20 March 2016 upload, explicit public-domain notice, PDF format 1.6, and a current-file no-overwrite notice.
 
 Two provider PDF screenshots were inspected directly: the title-page surface at carrier page 1 and a prose surface at carrier page 21, where printed folio 19 is visible. Those previews visibly look like facsimile page imagery, but that fact **does not prove that the PDF lacks a hidden text layer**. Conversely, the provider metadata does not prove that a usable embedded text layer exists.
 

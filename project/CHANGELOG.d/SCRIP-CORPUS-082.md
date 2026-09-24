@@ -8,4 +8,4 @@
 - Added focused regressions and a public source-free provider-drift companion. Renderer/body/>=300k/FantLab-input gates stay closed; M2 remains 0/5.
 - Next evidence must deliberately select one coherent replay snapshot and freeze exact template/module/Header identities plus execution-relevant closure before a full candidate invocation replay. A later live descendant must not be substituted as historical provenance.
 
-Issue: #253. Draft PR: pending at authoring time.
+Issue: #253. Draft PR: #254 (REVIEW_PENDING).

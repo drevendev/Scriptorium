@@ -162,6 +162,11 @@ def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object]
         {"source_family_id": SOURCE_FAMILY_1927, "chapter_range": "1-11", "bibliographic_source": SOURCE_1927},
         {"source_family_id": SOURCE_FAMILY_1989, "chapter_range": "12-20", "bibliographic_source": SOURCE_1989},
     ]
+    expected_composition = {
+        "literary_page_count": 20,
+        "order": "chapter-number order 1 through 20",
+        "single_edition_identity": False,
+    }
     expected_scope = {
         "literary_page_revisions_frozen": True,
         "source_partition_frozen": True,
@@ -179,6 +184,8 @@ def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object]
         raise ValueError("work-index revision drift")
     if manifest.get("source_partition") != expected_partition:
         raise ValueError("source partition drift")
+    if manifest.get("composition_contract") != expected_composition:
+        raise ValueError("composition contract drift")
     if manifest.get("capture_scope") != expected_scope:
         raise ValueError("capture scope drift")
     rows = manifest.get("pages")

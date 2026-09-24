@@ -1,21 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 271
+STATE_REVISION: 272
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-24T03:55:29Z
-LAST_RESULT: SCRIP-CORPUS-079 / Issue #247 / Draft PR #248 authored from exact `master@a3f65c888f59d92c9174cb043167f63c5614840e`. A fail-closed source-free probe now replays all 388 exact frozen Darwin/Rachinsky literary Page revisions and proves that all 388 observed self-closing `<references/>` tokens are contained inside already-defined `<noinclude>` regions, with 0 outside. Dedicated exact-head run `35953427832` passed focused regressions, exact-revision replay, byte comparison and gate checks on authored code head `d0d8b1c0d6f28734da0e3e4d0915c90754fb12f4`; artifact `10789436712` has GitHub ZIP digest `sha256:18f58c55ae3739a0931888db5079418805c6d38b2d3697263c4338ecab0b49f8`. The source-free probe self-digest is `3dde2e1ea259ccc4f855ad20dc8df588f9546a9ec181f84155175a86c3b139e3`. This unit intentionally leaves `profile_rule_promoted=false`; provider Cite semantics were not replayed. Independent review and a separate later promotion judgement are required; complete renderer/body, historical transclusion, offline runtime, >=300k, FantLab input identity and M2 remain closed.
-LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman retains independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, transition/tail anchors and bounded restored-page interior observations. Darwin/Rachinsky has independently reviewed v5 dependency closure, v6 zero-argument `{{ё}}` output evidence, canonical SCRIP-CORPUS-078 one-shape promotion, and a REVIEW_PENDING SCRIP-CORPUS-079 exact-source containment probe showing 388/388 `<references/>` tokens inside noinclude regions. The effective backlog is still unchanged until separate promotion review. M2 stays 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-24T04:55:14Z
+LAST_RESULT: SCRIP-CORPUS-079 / Issue #247 / PR #248 independently reviewed and merged. Exact final PR head `e043db16fad3eafc84d20cc30b10df1816ce6143` was re-read across all 8 changed files against unchanged `master@a3f65c888f59d92c9174cb043167f63c5614840e`; review `5299974300` found no open threads or merge blockers. All 24 exact-head PR-triggered workflows completed successfully. Dedicated run `35953693207` explicitly checked out the exact head, passed all 6 focused regressions, replayed the 388 pinned literary Page revisions, byte-compared the rebuilt source-free contract and passed fail-closed gate assertions. Exact-head artifact `10789288426` has GitHub ZIP digest `sha256:dc8c4b783bc097431631b4e0ee1920b7dba9e23078c40d284400aed834643e73`, independently recomputed from the downloaded ZIP; its probe self-digest independently recomputes to `3dde2e1ea259ccc4f855ad20dc8df588f9546a9ec181f84155175a86c3b139e3`. Frozen-diagnostic exact-head run `35953693281` passed the full 574/574 standard-library suite. PR #248 was marked Ready and squash-merged with expected-head protection as `098d6f0e8be243ef93a7dec687604a77ba05216a`; Issue #247 closed completed. The reviewed evidence is now canonical, but `profile_rule_promoted=false` remains unchanged and any `<references/>` profile/backlog promotion is a separate bounded judgement. Historical transclusion, offline runtime, complete renderer/body, >=300k, FantLab input identity and M2 remain closed.
+LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman retains independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, transition/tail anchors and bounded restored-page interior observations. Darwin/Rachinsky has independently reviewed v5 dependency closure, v6 zero-argument `{{ё}}` output evidence, canonical SCRIP-CORPUS-078 one-shape promotion, and canonical independently reviewed SCRIP-CORPUS-079 exact-source containment evidence showing 388/388 `<references/>` tokens inside noinclude regions. The effective backlog is still unchanged until a separate promotion judgement. M2 stays 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-079
-ISSUE:          #247 (open)
-STATUS:         REVIEW_PENDING
-PR:             #248 (Draft)
-ACTIVE_BRANCH:  scrip-corpus-079-darwin-references-containment
-NEXT_ACTION:    Independently review all SCRIP-CORPUS-079 changed files and exact-head checks/artifact. If clean, mark PR #248 Ready and merge with expected-head protection.
-                After merge, keep <references/> unresolved until a separate bounded profile/backlog promotion judgement consumes the reviewed containment evidence.
+ISSUE:          #247 (closed completed)
+STATUS:         COMPLETE
+PR:             #248 (squash-merged as 098d6f0e8be243ef93a7dec687604a77ba05216a)
+NEXT_ACTION:    Resume normal-flow P2 SCRIP-CORPUS selection. For Darwin/Rachinsky, a separate bounded profile/backlog promotion judgement may consume the independently reviewed 388/388 <references/> containment evidence.
+                Keep Cite semantics, historical transclusion, offline runtime, complete renderer/inter-page/body, >=300k, FantLab input identity and M2 gates closed until separately evidenced.
 ```
 
 ## Current milestone gate
@@ -51,7 +50,7 @@ Detailed evidence is canonical in `corpus/candidates/`, `benchmarks/`, `project/
 - **The Twelve Chairs** — exact Page/PDF surfaces retained; template/reference semantics and body identity remain unresolved.
 - **The Life of Klim Samgin** — source graph/extractor/body identities retained; historical renderer equivalence and FantLab input remain unresolved.
 - **Children of Captain Grant — Beketova translation** — exact 1,095,467-character body with reviewed source-free deterministic showcase; no FantLab result/input identity for this translation.
-- **On the Origin of Species — Rachinsky translation** — exact Page set/scan/render contracts retained. Independently reviewed v5/v6 and SCRIP-CORPUS-078 canonically resolve only zero-argument `{{ё}}` for the selected live-snapshot evidence. REVIEW_PENDING SCRIP-CORPUS-079 replays all 388 frozen literary Page revisions and finds all 388 self-closing `<references/>` tokens inside `<noinclude>` with 0 outside; the probe does not replay Cite semantics and does not yet promote the profile/backlog rule. Historical transclusion, complete renderer, literary body/>=300k and FantLab gates remain open.
+- **On the Origin of Species — Rachinsky translation** — exact Page set/scan/render contracts retained. Independently reviewed v5/v6 and SCRIP-CORPUS-078 canonically resolve only zero-argument `{{ё}}` for the selected live-snapshot evidence. Independently reviewed SCRIP-CORPUS-079 replays all 388 frozen literary Page revisions and finds all 388 self-closing `<references/>` tokens inside `<noinclude>` with 0 outside; the probe does not replay Cite semantics and does not yet promote the profile/backlog rule. Historical transclusion, complete renderer, literary body/>=300k and FantLab gates remain open.
 - **Entertaining Physics, Book 1 — Perelman 1913** — exact PDF/DjVu carriers and reviewed pagination/facsimile boundaries retained. Complete interior mapping, global offset, PDF↔DjVu equivalence, OCR correctness, canonical carrier, literary body/>=300k, FantLab input identity and M2 remain open.
 
 ## Deterministic / morphology orientation
@@ -65,7 +64,7 @@ Detailed evidence is canonical in `corpus/candidates/`, `benchmarks/`, `project/
 
 ## Public repository representation
 
-Public surfaces must remain source-free and synchronized with actual capability. Publish metadata, provenance, hashes and derived analysis only; never publish unlicensed source text. Perelman's transition/tail and restored-page interior companions are independently reviewed. Darwin's dependency and output-replay companions expose the selected `{{ё}}` live-snapshot evidence; the independently reviewed SCRIP-CORPUS-078 public semantics companion canonically exposes the one-shape promotion. REVIEW_PENDING SCRIP-CORPUS-079 adds a source-free `<references/>` containment companion showing 388/388 inside noinclude regions while explicitly retaining `profile_rule_promoted=false`.
+Public surfaces must remain source-free and synchronized with actual capability. Publish metadata, provenance, hashes and derived analysis only; never publish unlicensed source text. Perelman's transition/tail and restored-page interior companions are independently reviewed. Darwin's dependency and output-replay companions expose the selected `{{ё}}` live-snapshot evidence; the independently reviewed SCRIP-CORPUS-078 public semantics companion canonically exposes the one-shape promotion. Independently reviewed SCRIP-CORPUS-079 adds a canonical source-free `<references/>` containment companion showing 388/388 inside noinclude regions while explicitly retaining `profile_rule_promoted=false`.
 
 ## Known blockers / invariants
 
@@ -73,5 +72,5 @@ Public surfaces must remain source-free and synchronized with actual capability.
 2. FantLab corrective coefficients and several parser/tokenization/dialogue semantics remain partly unpublished.
 3. No corpus or showcase evidence may be promoted to parity without source-edition/input matching and explicit benchmark tolerances.
 4. Perelman complete exact-carrier mapping is still required; current facsimile anchors do not prove every interior page, global offset, PDF↔DjVu equivalence, OCR correctness, body identity or >=300k admission.
-5. Darwin/Rachinsky v5/v6 and SCRIP-CORPUS-078 prove/promote only the selected zero-argument `{{ё}}` rule. SCRIP-CORPUS-079 is review-pending evidence that the frozen candidate's 388 `<references/>` tokens are inside stripped noinclude regions; it does not yet change the effective backlog, does not replay Cite semantics, and does not prove historical transclusion or an offline/version-pinned MediaWiki runtime. Complete renderer/body/FantLab gates remain open.
+5. Darwin/Rachinsky v5/v6 and SCRIP-CORPUS-078 prove/promote only the selected zero-argument `{{ё}}` rule. Independently reviewed SCRIP-CORPUS-079 proves the frozen candidate's 388 `<references/>` tokens are inside stripped noinclude regions; it does not change the effective backlog, does not replay Cite semantics, and does not prove historical transclusion or an offline/version-pinned MediaWiki runtime. Complete renderer/body/FantLab gates remain open.
 6. Live Pages deployment remains subject to repository policy/administration and must not be implied by static build success.

@@ -1,0 +1,145 @@
+{
+  "admitted_for_calibration": false,
+  "binary_bytes_committed": false,
+  "candidate_id": "perelman-entertaining-physics-book1-1913-ru",
+  "canonical_extraction_carrier_selected": false,
+  "carrier": {
+    "byte_count": 28168847,
+    "kind": "pdf",
+    "page_count": 223,
+    "sha1": "3c616f547ff283a2cafd1ac26b448a8e8013f648",
+    "sha256": "3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61"
+  },
+  "decision": {
+    "all_directly_visible_labels_match_carrier_minus_printed_offset": 9,
+    "bibliographic_to_carrier_mapping_complete": false,
+    "complete_numbered_body_range_proved": false,
+    "global_carrier_minus_printed_offset_asserted": false,
+    "interior_windows_directly_observed": [
+      [
+        59,
+        61
+      ],
+      [
+        109,
+        111
+      ],
+      [
+        159,
+        161
+      ]
+    ],
+    "mapping_may_be_extrapolated_between_observed_anchors": false,
+    "next_evidence": "Independently review exact-head evidence. A later mapping unit must explicitly model unlabelled folios and verify enough remaining carrier pages to justify any complete carrier map; do not fill carrier page 60 or other gaps by arithmetic alone.",
+    "page_without_visible_folio_carrier_page": 60,
+    "page_without_visible_folio_directly_observed": true,
+    "printed_label_for_unlabelled_page_inferred": false,
+    "reason": "Three widely separated exact-carrier windows directly show eight visible printed folios. Every visible label is compatible with carrier page minus printed page = 9, while carrier page 60 has no visible folio. The observations strengthen the mapping hypothesis but do not make visible labels total and do not prove unobserved pages or a global offset.",
+    "status": "broad_interior_anchors_compatible_with_plus9_but_global_mapping_incomplete"
+  },
+  "diagnostic_ready": false,
+  "evidence_version": "scriptorium-perelman-1913-pdf-facsimile-midbody-v1",
+  "fantlab_source_edition_match": "unknown",
+  "literary_body_frozen": false,
+  "literary_page_selection_bound": false,
+  "literary_source_text_included": false,
+  "m2_parity_admissible": false,
+  "minimum_300k_proved_from_frozen_body": false,
+  "observation": {
+    "artifact_retention_days": 1,
+    "authoring_artifact_digest": "sha256:2eb64d55fd61f4cb26a425070759bc4ffe7f2e2c8be6d36631550ecbf7c21d71",
+    "authoring_artifact_id": 10814104285,
+    "authoring_workflow_head_sha": "56f2e0bec65bc65f9b1d5c16f855da8e8f430ce4",
+    "authoring_workflow_run_id": 36016017921,
+    "method": "manual_visual_inspection_of_transient_renders_from_exact_verified_pdf",
+    "observed_at_utc": "2026-09-24T14:54:00Z",
+    "pages": [
+      {
+        "carrier_page": 59,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "f707d612d9b9dc864d4436ee4d48e09d9c15f0c9d2588e8af36f835501f1af86",
+        "rendered_review_filename": "midbody-a-059.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "50"
+      },
+      {
+        "carrier_page": 60,
+        "label_observation": "not_visible",
+        "rendered_image_sha256": "cbbb8fdd29d66db5338fc0ce704114f05d52d52ef844450718a65f80f1b9610b",
+        "rendered_review_filename": "midbody-a-060.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": null
+      },
+      {
+        "carrier_page": 61,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "ca527025615d4c1549112fbb9fbab4603c5589f3385c6d439befa19717cdc599",
+        "rendered_review_filename": "midbody-a-061.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "52"
+      },
+      {
+        "carrier_page": 109,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "a9a5334648e69304fa522bfc88345a979b7566b52c9be4f9c8e318e0b65dbb55",
+        "rendered_review_filename": "midbody-b-109.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "100"
+      },
+      {
+        "carrier_page": 110,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "5928c72fd85f1c5ac2c00949c54d9096b103dc164bc0f7f802054761f36c0891",
+        "rendered_review_filename": "midbody-b-110.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "101"
+      },
+      {
+        "carrier_page": 111,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "8cd80aad72d1739193563d3c5fa8d1dc5af1219b26e8b1dc461a18e51d633c0e",
+        "rendered_review_filename": "midbody-b-111.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "102"
+      },
+      {
+        "carrier_page": 159,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "b970d5e0aa4fcbc2b99f8176485f9a320d3bcfc4e4cb53d5831d1b1562143d8a",
+        "rendered_review_filename": "midbody-c-159.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "150"
+      },
+      {
+        "carrier_page": 160,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "aa609387b556626706c33187e24025040deba5c49e512c1a5fee39c6ebded4e2",
+        "rendered_review_filename": "midbody-c-160.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "151"
+      },
+      {
+        "carrier_page": 161,
+        "label_observation": "directly_visible",
+        "rendered_image_sha256": "0c26242896309e5d0e9a476570014e251ed40223f3289cdcd2a8fe31f43daf61",
+        "rendered_review_filename": "midbody-c-161.jpg",
+        "surface_kind": "numbered_body_surface",
+        "visible_printed_page_label": "152"
+      }
+    ],
+    "pdf_bytes_deleted_before_artifact_upload": true,
+    "render_commands": [
+      "pdftoppm -f 59 -l 61 -r 120 -jpeg",
+      "pdftoppm -f 109 -l 111 -r 120 -jpeg",
+      "pdftoppm -f 159 -l 161 -r 120 -jpeg"
+    ],
+    "render_manifest_sha256": "33457b4afaeed309fa6c604bfb0214f4be85979289033ed272f53f978ce30518",
+    "rendered_page_bytes_committed": false,
+    "transient_review_artifact_uploaded": true
+  },
+  "ocr_correctness_verified": false,
+  "ocr_included": false,
+  "page_images_committed": false,
+  "pdf_djvu_page_equivalence_verified": false,
+  "source_free": true
+}

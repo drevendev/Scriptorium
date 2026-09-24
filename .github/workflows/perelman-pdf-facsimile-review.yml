@@ -10,6 +10,9 @@ on:
       - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.pdf-facsimile-interior.md"
       - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pdf-facsimile-interior.json"
       - "tests/test_perelman_pdf_facsimile_interior.py"
+      - "corpus/candidates/perelman-entertaining-physics-book1-1913-ru.pdf-facsimile-midbody.md"
+      - "corpus/candidates/source-edition-traces/perelman-entertaining-physics-book1-1913-ru.pdf-facsimile-midbody.json"
+      - "tests/test_perelman_pdf_facsimile_midbody.py"
   workflow_dispatch:
 
 permissions:
@@ -47,14 +50,17 @@ jobs:
           echo '3c616f547ff283a2cafd1ac26b448a8e8013f648  build/facsimile/perelman-1913.pdf' | sha1sum --check --strict
           echo '3d87d22a42ad949654265e066f81211d7831e32c8b62b96c967cd4cd33e7ed61  build/facsimile/perelman-1913.pdf' | sha256sum --check --strict
 
-      - name: Render bounded transition, interior, and tail pages
+      - name: Render bounded transition, mid-body, interior, and tail pages
         run: |
           set -euo pipefail
           pdftoppm -f 9 -l 13 -r 120 -jpeg build/facsimile/perelman-1913.pdf build/facsimile/transition
+          pdftoppm -f 59 -l 61 -r 120 -jpeg build/facsimile/perelman-1913.pdf build/facsimile/midbody-a
+          pdftoppm -f 109 -l 111 -r 120 -jpeg build/facsimile/perelman-1913.pdf build/facsimile/midbody-b
+          pdftoppm -f 159 -l 161 -r 120 -jpeg build/facsimile/perelman-1913.pdf build/facsimile/midbody-c
           pdftoppm -f 199 -l 206 -r 120 -jpeg build/facsimile/perelman-1913.pdf build/facsimile/interior
           pdftoppm -f 217 -l 223 -r 120 -jpeg build/facsimile/perelman-1913.pdf build/facsimile/tail
           rm build/facsimile/perelman-1913.pdf
-          (cd build/facsimile && sha256sum transition-*.jpg interior-*.jpg tail-*.jpg | sort) > build/facsimile/rendered-pages.sha256
+          (cd build/facsimile && sha256sum transition-*.jpg midbody-*.jpg interior-*.jpg tail-*.jpg | sort) > build/facsimile/rendered-pages.sha256
           printf 'Rendered files:\n'
           cat build/facsimile/rendered-pages.sha256
 
@@ -67,6 +73,9 @@ jobs:
           if test -f tests/test_perelman_pdf_facsimile_interior.py; then
             python -m unittest tests.test_perelman_pdf_facsimile_interior -v
           fi
+          if test -f tests/test_perelman_pdf_facsimile_midbody.py; then
+            python -m unittest tests.test_perelman_pdf_facsimile_midbody -v
+          fi
 
       - name: Upload transient facsimile review artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -74,6 +83,7 @@ jobs:
           name: perelman-1913-facsimile-review
           path: |
             build/facsimile/transition-*.jpg
+            build/facsimile/midbody-*.jpg
             build/facsimile/interior-*.jpg
             build/facsimile/tail-*.jpg
             build/facsimile/rendered-pages.sha256

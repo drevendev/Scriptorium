@@ -6,6 +6,7 @@
 - Replayed only the observed Header title-classification rule for the retained Darwin mainspace title `О происхождении видов (Дарвин; Рачинский)/1864 (ВТ:Ё)`: edition segment `1864 (ВТ:Ё)` yields `isPRS=false`, therefore the pinned VAR module would select the second/modern argument if that non-Page branch is reached.
 - Kept `Шаблон:ВАР` root identity, Header MediaWiki SHA-1, nested replay closure, full VAR invocation replay, historical transclusion and offline/version-pinned runtime explicitly unfrozen. No render-profile/backlog promotion occurs; `ВАР` stays unresolved at 388 occurrences and effective backlog counts do not change.
 - Added focused regressions and a public source-free provider-drift companion. Renderer/body/>=300k/FantLab-input gates stay closed; M2 remains 0/5.
-- Next evidence must deliberately select one coherent replay snapshot and freeze exact template/module/Header identities plus execution-relevant closure before a full candidate invocation replay. A later live descendant must not be substituted as historical provenance.
-
-Issue: #253. Draft PR: #254 (REVIEW_PENDING).
+- Independent exact-head review `5302746201` re-read all 7 changed files against unchanged base `bd291227733155672f8dd6d9d3a634348615cdbe`, independently corroborated the current Wikisource drift boundary, recomputed the evidence self-digest, and found no merge blocker or open review thread.
+- All 22 PR-triggered workflow runs for exact head `5d396d3647d69779a0e321727bb6a0561a93d60b` completed `success`; frozen-diagnostic run `35979105385` checked out that exact SHA and both jobs completed their standard-library and replay steps successfully.
+- Issue #253 closed completed; PR #254 was marked Ready and squash-merged with expected-head protection as `1e55d987b44b7159aaf0f6c308e4dee98f954e15`.
+- No promotion, effective-backlog movement or benchmark movement occurred. Historical transclusion, offline/version-pinned runtime, complete renderer/inter-page/body, >=300k, FantLab analyzer-input identity and M2 remain closed; M2 stays 0/5.

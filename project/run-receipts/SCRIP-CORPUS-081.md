@@ -1,24 +1,22 @@
 # Run receipt — SCRIP-CORPUS-081
 
-Status: REVIEW_PENDING
+Status: COMPLETE
 
 ## Orientation
 
 - Connected GitHub identity: `andy-zen-dev`.
 - Repository: `drevendev/Scriptorium`; write permission available.
-- Exact base: `404a9b2c0b6c0153f315b09a8bbef5935c5bf879`.
-- No recovery/review-ready PR or open Issue preempted normal-flow selection.
-- Selected the canonical next Darwin/Rachinsky slice from semantic-backlog-v3: `ВАР`, 2 positional / 0 named, 388 observed invocations.
+- Exact authoring base: `404a9b2c0b6c0153f315b09a8bbef5935c5bf879`.
+- Exact final authored head: `c5e2c4c89ddf7d6f5090843ce1d546e5e7ad92e1`.
 - Issue: #251.
-- Branch: `scrip-corpus-081-darwin-var-semantics`.
-- Draft PR: #252.
+- PR: #252.
 
 ## Produced
 
 - Revision-pinned source-free `{{ВАР}}` documentation/implementation-module evidence.
 - Deterministic builder/validator and eight focused regressions.
 - Public semantic-backlog companion update.
-- Changelog/state handoff for independent review.
+- No render-profile or semantic-backlog promotion.
 
 Evidence SHA-256: `321ced32bb7ffc75829b6fbb5255bce3243641a80c21ad4e2b7bb7a25138502d`.
 
@@ -26,6 +24,7 @@ Evidence SHA-256: `321ced32bb7ffc75829b6fbb5255bce3243641a80c21ad4e2b7bb7a251385
 
 - `Шаблон:ВАР/Документация@5711068` documents parameter 1 as pre-reform text and parameter 2 as modern text and identifies `Модуль:Дореформенная орфография` as the implementation module.
 - `Модуль:Дореформенная орфография@5721277` has separate Page/non-Page behavior and directly requires `Module:Header` for non-Page title classification.
+- Independent review rechecked the current Russian Wikisource documentation and module surfaces; both corroborated the retained semantic statements while not supplying historical-transclusion or candidate-context replay proof.
 
 ## Evidence boundary
 
@@ -33,12 +32,19 @@ This unit does not freeze the live `Шаблон:ВАР` root, `Module:Header` r
 
 ## Verification
 
-- Local isolated focused suite: 8/8 `DarwinVarDocumentationEvidenceTests` passed before repository write.
-- PR-triggered exact-head workflows must be inspected on the final authored head before any merge.
+- Independent review `5301756253` re-read all 8 changed files at exact head `c5e2c4c89ddf7d6f5090843ce1d546e5e7ad92e1` against unchanged base `404a9b2c0b6c0153f315b09a8bbef5935c5bf879`; no merge blocker or open review thread was found.
+- All 24 PR-triggered workflow runs visible for that exact head completed `success`.
+- Dedicated exact-head run `35973919107` checked out the exact SHA, passed 8/8 focused regressions, deterministically rebuilt the committed evidence and verified evidence SHA-256 `321ced32bb7ffc75829b6fbb5255bce3243641a80c21ad4e2b7bb7a25138502d`.
+- Artifact `10796629637` independently re-hashed to ZIP SHA-256 `2c0a57380a94aa114c5c8e7bea340af59800f782108c070e50e3e5901d7db83a`, matching GitHub; the contained JSON self-digest independently recomputed to the committed evidence digest.
+- Frozen diagnostic run `35973919110` completed `success`; both replay jobs and their standard-library test steps were green.
+
+## Merge
+
+PR #252 was marked Ready after the independent judgement and squash-merged with expected-head protection as `9639f1bace28a4a7ddef84ff4e04390a9de23e23`. Issue #251 closed completed.
 
 ## Next action
 
-On a later wake, independently re-read every PR #252 changed file and exact-head check evidence. Only if that judgement is clean, mark Ready and merge with expected-head protection. Do not advance renderer/body/>=300k/FantLab/M2 gates from this documentation evidence alone.
+Resume normal-flow P2 SCRIP-CORPUS selection. Any later `ВАР` promotion requires a separately bounded unit that freezes the exact template/module/Header replay-time dependency graph and replays the candidate mainspace title/context.
 
 ## Gates
 

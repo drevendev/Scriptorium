@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 267
+STATE_REVISION: 268
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-24T01:01:45Z
-LAST_RESULT: SCRIP-CORPUS-077 / Issue #243 authored as Draft PR #244 from exact `master@a55b5e9ad1d29a5665cfe8915a2c7cb7e3d8f291`. The bounded Darwin/Rachinsky slice adds source-free replay contract v6 on top of independently reviewed v5 and a dedicated exact-head provider probe. The probe requires current `Шаблон:Ё@5687302`, `Шаблон:ЕЁ@3684646`, and `Модуль:String@3684569` identities both before and after replay, expands zero-argument `{{ё}}` twice in forced and non-forced Darwin title contexts, and verifies deterministic NFC/trimmed semantic outputs against lowercase `ё` / `е` digests. PR #244 is intentionally Draft; exact-head CI plus independent later-wake judgement are required before merge or any render-profile promotion.
-LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman retains independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, transition/tail anchors, and the bounded restored-page interior observations `199 -> 190` through `206 -> 197`, including restored printed pages 193–194 at carrier pages 202–203; the local +9 relation remains scoped to directly audited windows. Darwin/Rachinsky has independently reviewed v5 dependency closure for the selected replay snapshot and now review-pending v6 output evidence for the documented zero-argument forced/non-forced modes under an identity-stable provider window. Historical transclusion provenance, render-profile promotion and all downstream body/FantLab gates remain unproved. M2 stays 0/5.
+LAST_COMMITTED_RUN_AT: 2026-09-24T01:15:47Z
+LAST_RESULT: SCRIP-CORPUS-077 / Issue #243 / PR #244 independently reviewed and merged. Exact final PR head `822e72635b62aee5cc4cba60fa150a6a9dadd22f` was re-read against unchanged `master@a55b5e9ad1d29a5665cfe8915a2c7cb7e3d8f291`; review `5298593294` found no open threads or merge blockers. All 23 exact-head PR-triggered workflows completed successfully. Dedicated output-replay run `35941337473` passed 7/7 focused regressions, rebuilt v6 byte-for-byte, verified the identity-stable before/after window for `Шаблон:Ё@5687302`, `Шаблон:ЕЁ@3684646`, and `Модуль:String@3684569`, and reproduced the frozen forced `ё` and non-forced `е` semantic digests. Artifact `10784458609` independently matched ZIP SHA-256 `28ead6d946e6664a7b34f61f692ff2b5b95731fd6e1988b678cbc08629f32326`; frozen-diagnostic run `35941337352` passed the full 561/561 standard-library suite. PR #244 was marked Ready and squash-merged with expected-head protection as `93de18df4905b8475fd53aa96fafb47b759567c0`; Issue #243 closed completed. V6 is canonical only for the selected identity-stable live snapshot; historical transclusion, render-profile promotion, complete renderer/body, >=300k, FantLab input identity and M2 remain closed.
+LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman retains independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, transition/tail anchors, and the bounded restored-page interior observations `199 -> 190` through `206 -> 197`, including restored printed pages 193–194 at carrier pages 202–203; the local +9 relation remains scoped to directly audited windows. Darwin/Rachinsky has independently reviewed v5 dependency closure for the selected replay snapshot and independently reviewed v6 output evidence for the documented zero-argument forced/non-forced modes under an identity-stable provider window. Historical transclusion provenance, render-profile promotion and all downstream body/FantLab gates remain unproved. M2 stays 0/5.
 
 ## Current unit
 
 ```text
 UNIT_ID:        SCRIP-CORPUS-077
-ISSUE:          #243 (open)
-STATUS:         REVIEW_PENDING
-PR:             #244 (Draft; authored from master@a55b5e9ad1d29a5665cfe8915a2c7cb7e3d8f291)
-NEXT_ACTION:    On a later wake, independently re-read all changed files at the exact final PR head, inspect the dedicated identity-stable
-                output-replay job/artifact and every exact-head required check, and verify both semantic output digests plus fail-closed
-                provenance/downstream boundaries. If clean and master is still compatible, mark Ready and squash-merge with expected-head
-                protection. Do not treat this as historical transclusion or update the frozen render profile in the review unit.
+ISSUE:          #243 (closed completed)
+STATUS:         COMPLETE
+PR:             #244 (squash-merged as 93de18df4905b8475fd53aa96fafb47b759567c0)
+NEXT_ACTION:    Resume normal-flow P2 SCRIP-CORPUS selection. For Darwin/Rachinsky, a later separate bounded judgement unit may reconcile the now-reviewed
+                zero-argument {{ё}} rule into the frozen render profile/backlog only after re-reading the current profile and preserving the
+                non-historical proof boundary. Historical transclusion, complete renderer/body, >=300k, FantLab input identity and M2 remain closed.
 ```
 
 ## Current milestone gate
@@ -31,7 +30,6 @@ Recovery/review-ready work and failing required checks preempt normal selection.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-CORPUS-077 review | review / recovery | Independently judge Draft PR #244 exact final head, identity-stable replay evidence, checks, source-free boundary and v6 gate claims; merge only if clean | Authoring and judgement must be separate wakes; expected-head merge protection required; render-profile mutation remains a separate unit |
 | P2 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics; Petersburg, Perelman and Darwin/Rachinsky have candidate-specific extraction/renderer work available | Preserve translation/edition identity and legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
 
 ## Retained corpus / provenance orientation
@@ -53,7 +51,7 @@ Detailed evidence is canonical in `corpus/candidates/`, `benchmarks/`, `project/
 - **The Twelve Chairs** — exact Page/PDF surfaces retained; template/reference semantics and body identity remain unresolved.
 - **The Life of Klim Samgin** — source graph/extractor/body identities retained; historical renderer equivalence and FantLab input remain unresolved.
 - **Children of Captain Grant — Beketova translation** — exact 1,095,467-character body with reviewed source-free deterministic showcase; no FantLab result/input identity for this translation.
-- **On the Origin of Species — Rachinsky translation** — exact Page set/scan/render contracts retained. Independently reviewed v5 closes the selected source-free replay graph `Шаблон:Ё@5687302 -> Шаблон:ЕЁ@3684646 -> Модуль:String@3684569` under bounded dependency scanners. Review-pending v6 adds an identity-stable provider replay contract for the documented zero-argument `{{ё}}` outputs (`ё` forced, `е` non-forced); it does not establish historical transclusion and does not yet mutate the frozen render profile/backlog. Literary body/>=300k and FantLab gates remain open.
+- **On the Origin of Species — Rachinsky translation** — exact Page set/scan/render contracts retained. Independently reviewed v5 closes the selected source-free replay graph `Шаблон:Ё@5687302 -> Шаблон:ЕЁ@3684646 -> Модуль:String@3684569` under bounded dependency scanners. Independently reviewed v6 verifies the documented zero-argument `{{ё}}` outputs (`ё` forced, `е` non-forced) for that selected graph during an identity-stable live provider window. It does not establish historical transclusion and has not yet mutated the frozen render profile/backlog. Literary body/>=300k and FantLab gates remain open.
 - **Entertaining Physics, Book 1 — Perelman 1913** — exact PDF and DjVu carriers retained; DjVu hidden-text/page-map evidence retained; reviewed pagination, FantLab-surface, current Wikisource-index and zero-PDF-PageLabels boundaries retained. SCRIP-CORPUS-073 provides front-matter anchors `6 -> V` and `8 -> VII`; independently reviewed SCRIP-CORPUS-074 provides exact-PDF transition/tail observations `10 -> 1`, `11 -> 2`, `12 -> 3`, `13 -> 4`, `217 -> 208`, `218 -> 209`, `219 -> 210`, `220 -> 211`, unnumbered concluding body text on 221, and advertisements on 222–223. Independently reviewed SCRIP-CORPUS-075 directly observes carrier `199–206 -> printed 190–197`, including the restored `202 -> 193` and `203 -> 194` seam. Complete interior mapping, global offset, PDF↔DjVu equivalence, OCR correctness, canonical carrier, literary body/>=300k, FantLab input identity and M2 remain open.
 
 ## Deterministic / morphology orientation
@@ -67,7 +65,7 @@ Detailed evidence is canonical in `corpus/candidates/`, `benchmarks/`, `project/
 
 ## Public repository representation
 
-Public surfaces must remain source-free and synchronized with actual capability. Publish metadata, provenance, hashes and derived analysis only; never publish unlicensed source text. Current visible slices include retained candidate navigation, deterministic showcase outputs and explicit fail-closed provenance boundaries. Perelman's transition/tail and restored-page interior companions are independently reviewed. Darwin's reviewed dependency companion exposes the exact selected `{{ё}}` replay graph, while Draft PR #244 adds a dedicated source-free output-replay companion that makes the identity-stable replay method, expected output digests and non-promotion boundary inspectable before merge.
+Public surfaces must remain source-free and synchronized with actual capability. Publish metadata, provenance, hashes and derived analysis only; never publish unlicensed source text. Current visible slices include retained candidate navigation, deterministic showcase outputs and explicit fail-closed provenance boundaries. Perelman's transition/tail and restored-page interior companions are independently reviewed. Darwin's dependency companion exposes the exact selected `{{ё}}` replay graph, and its independently reviewed output-replay companion now canonically exposes the identity-stable replay method, verified semantic output digests and explicit non-historical/non-promotion boundary.
 
 ## Known blockers / invariants
 
@@ -75,5 +73,5 @@ Public surfaces must remain source-free and synchronized with actual capability.
 2. FantLab corrective coefficients and several parser/tokenization/dialogue semantics remain partly unpublished.
 3. No corpus or showcase evidence may be promoted to parity without source-edition/input matching and explicit benchmark tolerances.
 4. Perelman complete exact-carrier mapping is still required. SCRIP-CORPUS-074 proves numbered-body endpoint anchors and SCRIP-CORPUS-075 independently verifies one interior restoration seam; neither proves every unobserved interior page, a global offset, literary-page selection, PDF↔DjVu equivalence, OCR correctness, body identity or >=300k admission.
-5. Darwin/Rachinsky v5 closes only the deliberately selected exact-revision dependency identity/discovery graph. V6 output verification is review-pending and, even if accepted, proves only zero-argument `{{ё}}` forced/non-forced semantics for the selected identity-stable replay snapshot; it does not prove historical transclusion, mutate the frozen render profile, complete the renderer or admit the literary body.
+5. Darwin/Rachinsky v5 closes the deliberately selected exact-revision dependency identity/discovery graph and independently reviewed v6 verifies only zero-argument `{{ё}}` forced/non-forced semantics for that selected identity-stable live snapshot. Neither proves historical transclusion. The frozen render profile/backlog is still unchanged, complete renderer semantics/implementation and literary-body admission remain open, and FantLab analyzer-input identity/M2 remain unproved.
 6. Live Pages deployment remains subject to repository policy/administration and must not be implied by static build success.

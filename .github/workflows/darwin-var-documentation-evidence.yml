@@ -1,0 +1,86 @@
+name: Darwin/Rachinsky 1864 VAR documentation evidence
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/darwin-var-documentation-evidence.yml"
+      - "scriptorium/darwin_var_documentation_evidence.py"
+      - "tests/test_darwin_var_documentation_evidence.py"
+      - "corpus/candidates/darwin-origin-species-rachinsky-1864-ru-semantic-backlog.md"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog-v3.json"
+      - "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.var-documentation-evidence.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify source-free VAR documentation evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run focused VAR documentation regressions
+        run: |
+          python -m unittest tests.test_darwin_var_documentation_evidence -v
+
+      - name: Deterministically rebuild and compare evidence
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.darwin_var_documentation_evidence \
+            --backlog corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.semantic-backlog-v3.json \
+            --output build/repro/darwin-origin-species-rachinsky-1864-ru.var-documentation-evidence.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          committed = Path("corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.var-documentation-evidence.json")
+          rebuilt = Path("build/repro/darwin-origin-species-rachinsky-1864-ru.var-documentation-evidence.json")
+          expected = json.loads(committed.read_text(encoding="utf-8"))
+          actual = json.loads(rebuilt.read_text(encoding="utf-8"))
+          assert actual == expected
+          assert actual["schema_version"] == "scriptorium-darwin-var-documentation-evidence-v1"
+          assert actual["evidence_sha256"] == "321ced32bb7ffc75829b6fbb5255bce3243641a80c21ad4e2b7bb7a25138502d"
+          assert actual["target"] == {
+              "backlog_priority_rank": 1,
+              "count": 388,
+              "name": "ВАР",
+              "named": 0,
+              "positional": 2,
+              "semantic_status": "unresolved",
+              "source_kind": "template",
+          }
+          assert actual["official_documentation"]["revision_id"] == 5711068
+          assert actual["implementation_module"]["revision_id"] == 5721277
+          assert actual["implementation_module"]["direct_dependency_titles"] == ["Module:Header"]
+          assert actual["documented_semantics"]["candidate_mainspace_branch_replayed"] is False
+          assert actual["documented_semantics"]["historical_equivalence_proven"] is False
+          assert actual["dependency_boundary"]["template_root_revision_frozen"] is False
+          assert actual["dependency_boundary"]["module_header_revision_frozen"] is False
+          assert actual["promotion_decision"]["render_profile_rule_promoted"] is False
+          assert actual["promotion_decision"]["backlog_item_removed"] is False
+          assert actual["renderer_semantics_complete"] is False
+          assert actual["minimum_300k_proved"] is False
+          assert actual["fantlab_source_edition_match"] == "unknown"
+          assert actual["m2_parity_admissible"] is False
+          print("SCRIPTORIUM_DARWIN_VAR_DOCUMENTATION_EVIDENCE_SHA256=" + actual["evidence_sha256"])
+          PY
+
+      - name: Upload source-free VAR documentation evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: darwin-rachinsky-1864-var-documentation-evidence
+          path: build/repro/darwin-origin-species-rachinsky-1864-ru.var-documentation-evidence.json
+          if-no-files-found: error
+          retention-days: 7

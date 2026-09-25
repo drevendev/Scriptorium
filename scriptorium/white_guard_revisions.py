@@ -53,6 +53,10 @@ def _validate_timestamp(value: object) -> str:
     return value
 
 
+def _is_positive_integer(value: object) -> bool:
+    return type(value) is int and value > 0
+
+
 def fetch_page_revisions(
     pages: Iterable[dict[str, object]],
     *,
@@ -85,7 +89,7 @@ def fetch_page_revisions(
             raise ValueError(f"expected literary page became a redirect: {title}")
         page_id = page.get("pageid")
         revisions = page.get("revisions")
-        if not isinstance(page_id, int) or page_id <= 0:
+        if not _is_positive_integer(page_id):
             raise ValueError(f"invalid page id for {title!r}")
         if not isinstance(revisions, list) or len(revisions) != 1 or not isinstance(revisions[0], dict):
             raise ValueError(f"expected one current revision for {title!r}")
@@ -93,7 +97,7 @@ def fetch_page_revisions(
         revision_id = revision.get("revid")
         timestamp = _validate_timestamp(revision.get("timestamp"))
         mediawiki_sha1 = revision.get("sha1")
-        if not isinstance(revision_id, int) or revision_id <= 0:
+        if not _is_positive_integer(revision_id):
             raise ValueError(f"invalid revision id for {title!r}")
         if not isinstance(mediawiki_sha1, str) or not _HEX40_RE.fullmatch(mediawiki_sha1.lower()):
             raise ValueError(f"invalid MediaWiki SHA-1 for {title!r}")
@@ -119,8 +123,12 @@ def build_manifest(
     page_ids: set[int] = set()
     for page in pages:
         identity = observed[str(page["title"])]
-        revision_id = int(identity["revision_id"])
-        page_id = int(identity["page_id"])
+        revision_id = identity["revision_id"]
+        page_id = identity["page_id"]
+        if not _is_positive_integer(revision_id):
+            raise ValueError("invalid revision id")
+        if not _is_positive_integer(page_id):
+            raise ValueError("invalid page id")
         if revision_id in revision_ids:
             raise ValueError(f"duplicate revision id {revision_id}")
         if page_id in page_ids:
@@ -203,9 +211,9 @@ def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object]
                 raise ValueError(f"literary page/source-partition drift at chapter {expected_page['chapter']}")
         page_id = row.get("page_id")
         revision_id = row.get("revision_id")
-        if not isinstance(page_id, int) or page_id <= 0 or page_id in page_ids:
+        if not _is_positive_integer(page_id) or page_id in page_ids:
             raise ValueError("invalid/duplicate page id")
-        if not isinstance(revision_id, int) or revision_id <= 0 or revision_id in revision_ids:
+        if not _is_positive_integer(revision_id) or revision_id in revision_ids:
             raise ValueError("invalid/duplicate revision id")
         page_ids.add(page_id)
         revision_ids.add(revision_id)

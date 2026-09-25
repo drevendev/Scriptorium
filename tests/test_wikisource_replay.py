@@ -27,12 +27,14 @@ class WikisourceReplayTests(unittest.TestCase):
         identities = (
             {
                 "title": "A",
+                "page_id": 101,
                 "revision_id": 11,
                 "revision_timestamp": "2024-01-01T00:00:00Z",
                 "mediawiki_sha1": "a" * 40,
             },
             {
                 "title": "B",
+                "page_id": 102,
                 "revision_id": 12,
                 "revision_timestamp": "2024-01-01T00:00:01Z",
                 "mediawiki_sha1": "b" * 40,
@@ -46,6 +48,7 @@ class WikisourceReplayTests(unittest.TestCase):
                 "query": {
                     "pages": [
                         {
+                            "pageid": 102,
                             "title": "B",
                             "revisions": [
                                 {
@@ -57,6 +60,7 @@ class WikisourceReplayTests(unittest.TestCase):
                             ],
                         },
                         {
+                            "pageid": 101,
                             "title": "A",
                             "revisions": [
                                 {
@@ -83,6 +87,14 @@ class WikisourceReplayTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "SHA-1 drift"):
             fetch_pinned_chapter_revisions(identities, query=bad_query)
+
+        def bad_page_query(params):
+            payload = query(params)
+            payload["query"]["pages"][0]["pageid"] = 999
+            return payload
+
+        with self.assertRaisesRegex(ValueError, "page ID drift"):
+            fetch_pinned_chapter_revisions(identities, query=bad_page_query)
 
     def test_replay_preserves_manifest_order_and_verifies_composite_identity(self):
         manifest = json.loads(REVISION_MANIFEST.read_text(encoding="utf-8"))

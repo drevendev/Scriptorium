@@ -106,11 +106,17 @@ class BulgakovRevisionTests(unittest.TestCase):
     def test_replay_manifest_keeps_body_and_parity_gates_closed(self):
         manifest = build_manifest(fetcher=_fake_identity_fetcher)
 
+        replay_identities = []
+
         def replay_fetcher(identities):
-            return {str(identity["title"]): "transient provider payload" for identity in identities}
+            rows = tuple(identities)
+            replay_identities.extend(rows)
+            return {str(identity["title"]): "transient provider payload" for identity in rows}
 
         receipt = replay_manifest(manifest, fetcher=replay_fetcher)
 
+        self.assertEqual(1001, replay_identities[0]["page_id"])
+        self.assertEqual(1020, replay_identities[-1]["page_id"])
         self.assertEqual(
             {
                 "verified": True,

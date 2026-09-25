@@ -216,6 +216,7 @@ def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object]
         identities.append({
             "ordinal": row["ordinal"],
             "title": row["title"],
+            "page_id": page_id,
             "revision_id": revision_id,
             "revision_timestamp": timestamp,
             "mediawiki_sha1": mediawiki_sha1,

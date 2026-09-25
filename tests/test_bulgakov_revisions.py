@@ -81,11 +81,13 @@ class BulgakovRevisionTests(unittest.TestCase):
             validate_manifest(manifest)
 
     def test_validate_manifest_rejects_boolean_provider_identity(self):
-        manifest = build_manifest(fetcher=_fake_identity_fetcher)
-        manifest["pages"][0]["page_id"] = True
+        for field in ("page_id", "revision_id"):
+            with self.subTest(field=field):
+                manifest = build_manifest(fetcher=_fake_identity_fetcher)
+                manifest["pages"][0][field] = True
 
-        with self.assertRaises(ValueError):
-            validate_manifest(manifest)
+                with self.assertRaises(ValueError):
+                    validate_manifest(manifest)
 
     def test_validate_manifest_rejects_duplicate_provider_identity(self):
         manifest = build_manifest(fetcher=_fake_identity_fetcher)

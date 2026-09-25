@@ -80,6 +80,13 @@ class BulgakovRevisionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "source-partition drift"):
             validate_manifest(manifest)
 
+    def test_validate_manifest_rejects_boolean_provider_identity(self):
+        manifest = build_manifest(fetcher=_fake_identity_fetcher)
+        manifest["pages"][0]["page_id"] = True
+
+        with self.assertRaises(ValueError):
+            validate_manifest(manifest)
+
     def test_validate_manifest_rejects_duplicate_provider_identity(self):
         manifest = build_manifest(fetcher=_fake_identity_fetcher)
         manifest["pages"][1]["page_id"] = manifest["pages"][0]["page_id"]

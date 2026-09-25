@@ -67,6 +67,12 @@ def fetch_pinned_chapter_revisions(
 
             identity = by_revision_id[revision_id]
             expected_title = str(identity["title"])
+            if "page_id" in identity:
+                expected_page_id = identity["page_id"]
+                if not isinstance(expected_page_id, int) or expected_page_id <= 0:
+                    raise ValueError(f"invalid expected page id for revision {revision_id}")
+                if page.get("pageid") != expected_page_id:
+                    raise ValueError(f"revision {revision_id} page ID drift")
             if title != expected_title:
                 raise ValueError(
                     f"revision {revision_id} title drift: {title!r}, expected {expected_title!r}"

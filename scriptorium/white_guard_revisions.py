@@ -15,7 +15,6 @@ import re
 from typing import Callable, Iterable, Mapping, Sequence
 
 from .wikisource_freeze import _api_query
-from .wikisource_replay import fetch_pinned_chapter_revisions
 
 CANDIDATE_ID = "bulgakov-white-guard-ru"
 WORK_TITLE = "\u0411\u0435\u043b\u0430\u044f \u0433\u0432\u0430\u0440\u0434\u0438\u044f (\u0411\u0443\u043b\u0433\u0430\u043a\u043e\u0432)"
@@ -109,6 +108,102 @@ def fetch_page_revisions(
         }
     if set(records) != set(titles):
         raise ValueError("literary page inventory mismatch")
+    return records
+
+
+def fetch_pinned_revision_identities(
+    identities: Iterable[Mapping[str, object]],
+    *,
+    query: Callable[[dict[str, str]], dict[str, object]] = _api_query,
+) -> dict[str, dict[str, object]]:
+    """Replay frozen revision identities without requesting literary source content."""
+
+    expected = tuple(identities)
+    by_revision_id: dict[int, Mapping[str, object]] = {}
+    for row in expected:
+        revision_id = row.get("revision_id")
+        page_id = row.get("page_id")
+        if not _is_positive_integer(revision_id):
+            raise ValueError("invalid expected revision id")
+        if not _is_positive_integer(page_id):
+            raise ValueError(f"invalid expected page id for revision {revision_id}")
+        if revision_id in by_revision_id:
+            raise ValueError("revision manifest contains duplicate revision ids")
+        by_revision_id[revision_id] = row
+
+    records: dict[str, dict[str, object]] = {}
+    for offset in range(0, len(expected), 40):
+        batch = expected[offset : offset + 40]
+        requested_ids = [row["revision_id"] for row in batch]
+        payload = query(
+            {
+                "action": "query",
+                "prop": "revisions",
+                "revids": "|".join(str(value) for value in requested_ids),
+                "rvprop": "ids|timestamp|sha1",
+                "redirects": "0",
+            }
+        )
+        query_obj = payload.get("query")
+        pages_obj = query_obj.get("pages") if isinstance(query_obj, dict) else None
+        if not isinstance(pages_obj, list):
+            raise ValueError("MediaWiki response missing pages")
+
+        seen_batch: set[int] = set()
+        for page in pages_obj:
+            if not isinstance(page, dict):
+                raise ValueError("unexpected page object")
+            title = page.get("title")
+            page_id = page.get("pageid")
+            revisions = page.get("revisions")
+            if not isinstance(title, str):
+                raise ValueError("MediaWiki revision response missing page title")
+            if not _is_positive_integer(page_id):
+                raise ValueError(f"invalid page id from MediaWiki for {title!r}")
+            if not isinstance(revisions, list) or len(revisions) != 1 or not isinstance(revisions[0], dict):
+                raise ValueError(f"expected one pinned revision for {title!r}")
+            revision = revisions[0]
+            revision_id = revision.get("revid")
+            if not _is_positive_integer(revision_id) or revision_id not in by_revision_id:
+                raise ValueError(f"unexpected revision id from MediaWiki: {revision_id!r}")
+            if revision_id not in requested_ids:
+                raise ValueError(f"revision {revision_id} returned outside requested batch")
+            if revision_id in seen_batch:
+                raise ValueError(f"duplicate revision response: {revision_id}")
+            seen_batch.add(revision_id)
+
+            identity = by_revision_id[revision_id]
+            expected_title = str(identity["title"])
+            if page_id != identity["page_id"]:
+                raise ValueError(f"revision {revision_id} page ID drift")
+            if title != expected_title:
+                raise ValueError(
+                    f"revision {revision_id} title drift: {title!r}, expected {expected_title!r}"
+                )
+            if revision.get("timestamp") != identity["revision_timestamp"]:
+                raise ValueError(f"revision {revision_id} timestamp drift")
+            if revision.get("sha1") != identity["mediawiki_sha1"]:
+                raise ValueError(f"revision {revision_id} MediaWiki SHA-1 drift")
+            if expected_title in records:
+                raise ValueError(f"duplicate literary page response: {expected_title}")
+            records[expected_title] = {
+                "page_id": page_id,
+                "revision_id": revision_id,
+                "revision_timestamp": revision["timestamp"],
+                "mediawiki_sha1": revision["sha1"],
+            }
+
+        if seen_batch != set(requested_ids):
+            missing = sorted(set(requested_ids) - seen_batch)
+            raise ValueError(f"MediaWiki omitted pinned revisions: {missing!r}")
+
+    expected_titles = {str(row["title"]) for row in expected}
+    if set(records) != expected_titles:
+        missing = sorted(expected_titles - set(records))
+        extra = sorted(set(records) - expected_titles)
+        raise ValueError(
+            f"pinned literary page identity inventory mismatch; missing={missing!r} extra={extra!r}"
+        )
     return records
 
 
@@ -235,7 +330,7 @@ def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object]
 def replay_manifest(
     manifest: Mapping[str, object],
     *,
-    fetcher: Callable[[Iterable[Mapping[str, object]]], dict[str, str]] = fetch_pinned_chapter_revisions,
+    fetcher: Callable[[Iterable[Mapping[str, object]]], Mapping[str, object]] = fetch_pinned_revision_identities,
 ) -> dict[str, object]:
     identities = validate_manifest(manifest)
     fetched = fetcher(identities)

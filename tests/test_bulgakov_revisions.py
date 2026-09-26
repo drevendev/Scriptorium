@@ -8,6 +8,7 @@ from scriptorium.white_guard_revisions import (
     SOURCE_FAMILY_1989,
     build_manifest,
     expected_pages,
+    fetch_pinned_revision_identities,
     replay_manifest,
     validate_manifest,
 )
@@ -111,6 +112,47 @@ class BulgakovRevisionTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "capture scope drift"):
             validate_manifest(manifest)
+
+    def test_identity_replay_does_not_request_source_content(self):
+        identities = validate_manifest(build_manifest(fetcher=_fake_identity_fetcher))
+        calls = []
+
+        def query(params):
+            calls.append(params)
+            requested = {int(value) for value in params["revids"].split("|")}
+            pages = []
+            for identity in identities:
+                if identity["revision_id"] not in requested:
+                    continue
+                pages.append(
+                    {
+                        "pageid": identity["page_id"],
+                        "title": identity["title"],
+                        "revisions": [
+                            {
+                                "revid": identity["revision_id"],
+                                "timestamp": identity["revision_timestamp"],
+                                "sha1": identity["mediawiki_sha1"],
+                            }
+                        ],
+                    }
+                )
+            return {"query": {"pages": pages}}
+
+        replayed = fetch_pinned_revision_identities(identities, query=query)
+
+        self.assertEqual({identity["title"] for identity in identities}, set(replayed))
+        self.assertEqual("ids|timestamp|sha1", calls[0]["rvprop"])
+        self.assertNotIn("rvslots", calls[0])
+        self.assertNotIn("content", calls[0]["rvprop"])
+
+        def bad_query(params):
+            payload = query(params)
+            payload["query"]["pages"][0]["pageid"] += 1
+            return payload
+
+        with self.assertRaisesRegex(ValueError, "page ID drift"):
+            fetch_pinned_revision_identities(identities, query=bad_query)
 
     def test_replay_manifest_keeps_body_and_parity_gates_closed(self):
         manifest = build_manifest(fetcher=_fake_identity_fetcher)

@@ -26,6 +26,32 @@ SOURCE_FAMILY_1989 = "moscow-pravda-1989"
 SOURCE_1927 = "\u041c. \u0411\u0443\u043b\u0433\u0430\u043a\u043e\u0432. \u0414\u043d\u0438 \u0422\u0443\u0440\u0431\u0438\u043d\u044b\u0445 (\u0411\u0435\u043b\u0430\u044f \u0433\u0432\u0430\u0440\u0434\u0438\u044f). \u2014 \u041f\u0430\u0440\u0438\u0436: Concorde, 1927."
 SOURCE_1989 = "\u0411\u0443\u043b\u0433\u0430\u043a\u043e\u0432 \u041c. \u0410. \u0411\u0435\u043b\u0430\u044f \u0433\u0432\u0430\u0440\u0434\u0438\u044f. \u0416\u0438\u0437\u043d\u044c \u0433\u043e\u0441\u043f\u043e\u0434\u0438\u043d\u0430 \u0434\u0435 \u041c\u043e\u043b\u044c\u0435\u0440\u0430. \u0420\u0430\u0441\u0441\u043a\u0430\u0437\u044b. \u2014 \u041c.: \u041f\u0440\u0430\u0432\u0434\u0430, 1989."
 _HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
+_PROVIDER = "Russian Wikisource"
+_LEGAL_BASIS = "public_domain_original_russian_work_with_wikisource_reuse_terms"
+_PROVIDER_IDENTITY_KEYS = frozenset({"page_id", "revision_id", "revision_timestamp", "mediawiki_sha1"})
+_PAGE_ROW_KEYS = frozenset({
+    "ordinal",
+    "chapter",
+    "title",
+    "source_family_id",
+    "bibliographic_source",
+    "page_id",
+    "revision_id",
+    "revision_timestamp",
+    "mediawiki_sha1",
+})
+_MANIFEST_KEYS = frozenset({
+    "manifest_version",
+    "candidate_id",
+    "provider",
+    "source_work_url",
+    "source_work_index_revision_id",
+    "legal_basis",
+    "source_partition",
+    "composition_contract",
+    "capture_scope",
+    "pages",
+})
 
 
 def expected_pages() -> tuple[dict[str, object], ...]:
@@ -207,37 +233,79 @@ def fetch_pinned_revision_identities(
     return records
 
 
+def _validated_provider_identity(identity: object, *, title: str) -> dict[str, object]:
+    if not isinstance(identity, Mapping):
+        raise ValueError(f"provider identity for {title!r} must be an object")
+    if set(identity) != _PROVIDER_IDENTITY_KEYS:
+        missing = sorted(_PROVIDER_IDENTITY_KEYS - set(identity))
+        extra = sorted(set(identity) - _PROVIDER_IDENTITY_KEYS)
+        raise ValueError(
+            f"provider identity schema drift for {title!r}; missing={missing!r} extra={extra!r}"
+        )
+    page_id = identity["page_id"]
+    revision_id = identity["revision_id"]
+    if not _is_positive_integer(page_id):
+        raise ValueError("invalid page id")
+    if not _is_positive_integer(revision_id):
+        raise ValueError("invalid revision id")
+    timestamp = _validate_timestamp(identity["revision_timestamp"])
+    mediawiki_sha1 = identity["mediawiki_sha1"]
+    if not isinstance(mediawiki_sha1, str) or not _HEX40_RE.fullmatch(mediawiki_sha1.lower()):
+        raise ValueError("invalid MediaWiki SHA-1")
+    return {
+        "page_id": page_id,
+        "revision_id": revision_id,
+        "revision_timestamp": timestamp,
+        "mediawiki_sha1": mediawiki_sha1.lower(),
+    }
+
+
 def build_manifest(
     *,
     fetcher: Callable[[Iterable[dict[str, object]]], dict[str, dict[str, object]]] = fetch_page_revisions,
 ) -> dict[str, object]:
     pages = expected_pages()
     observed = fetcher(pages)
+    expected_titles = {str(page["title"]) for page in pages}
+    if set(observed) != expected_titles:
+        missing = sorted(expected_titles - set(observed))
+        extra = sorted(set(observed) - expected_titles)
+        raise ValueError(f"provider literary page inventory mismatch; missing={missing!r} extra={extra!r}")
+
     rows = []
     revision_ids: set[int] = set()
     page_ids: set[int] = set()
     for page in pages:
-        identity = observed[str(page["title"])]
+        title = str(page["title"])
+        identity = _validated_provider_identity(observed[title], title=title)
         revision_id = identity["revision_id"]
         page_id = identity["page_id"]
-        if not _is_positive_integer(revision_id):
-            raise ValueError("invalid revision id")
-        if not _is_positive_integer(page_id):
-            raise ValueError("invalid page id")
         if revision_id in revision_ids:
             raise ValueError(f"duplicate revision id {revision_id}")
         if page_id in page_ids:
             raise ValueError(f"duplicate page id {page_id}")
         revision_ids.add(revision_id)
         page_ids.add(page_id)
-        rows.append({**page, **identity})
+        rows.append(
+            {
+                "ordinal": page["ordinal"],
+                "chapter": page["chapter"],
+                "title": page["title"],
+                "source_family_id": page["source_family_id"],
+                "bibliographic_source": page["bibliographic_source"],
+                "page_id": identity["page_id"],
+                "revision_id": identity["revision_id"],
+                "revision_timestamp": identity["revision_timestamp"],
+                "mediawiki_sha1": identity["mediawiki_sha1"],
+            }
+        )
     return {
         "manifest_version": MANIFEST_VERSION,
         "candidate_id": CANDIDATE_ID,
-        "provider": "Russian Wikisource",
+        "provider": _PROVIDER,
         "source_work_url": WORK_URL,
         "source_work_index_revision_id": WORK_INDEX_REVISION_ID,
-        "legal_basis": "public_domain_original_russian_work_with_wikisource_reuse_terms",
+        "legal_basis": _LEGAL_BASIS,
         "source_partition": [
             {"source_family_id": SOURCE_FAMILY_1927, "chapter_range": "1-11", "bibliographic_source": SOURCE_1927},
             {"source_family_id": SOURCE_FAMILY_1989, "chapter_range": "12-20", "bibliographic_source": SOURCE_1989},
@@ -279,12 +347,22 @@ def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object]
         "source_text_committed": False,
         "fantlab_source_edition_match": "unknown",
     }
+    if set(manifest) != _MANIFEST_KEYS:
+        missing = sorted(_MANIFEST_KEYS - set(manifest))
+        extra = sorted(set(manifest) - _MANIFEST_KEYS)
+        raise ValueError(f"manifest schema drift; missing={missing!r} extra={extra!r}")
     if manifest.get("manifest_version") != MANIFEST_VERSION:
         raise ValueError("unsupported Bulgakov revision-manifest version")
     if manifest.get("candidate_id") != CANDIDATE_ID:
         raise ValueError("unexpected candidate id")
+    if manifest.get("provider") != _PROVIDER:
+        raise ValueError("provider drift")
+    if manifest.get("source_work_url") != WORK_URL:
+        raise ValueError("source work URL drift")
     if manifest.get("source_work_index_revision_id") != WORK_INDEX_REVISION_ID:
         raise ValueError("work-index revision drift")
+    if manifest.get("legal_basis") != _LEGAL_BASIS:
+        raise ValueError("legal basis drift")
     if manifest.get("source_partition") != expected_partition:
         raise ValueError("source partition drift")
     if manifest.get("composition_contract") != expected_composition:
@@ -301,6 +379,13 @@ def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object]
     for expected_page, row in zip(expected, rows, strict=True):
         if not isinstance(row, dict):
             raise ValueError("revision manifest rows must be objects")
+        if set(row) != _PAGE_ROW_KEYS:
+            missing = sorted(_PAGE_ROW_KEYS - set(row))
+            extra = sorted(set(row) - _PAGE_ROW_KEYS)
+            raise ValueError(
+                f"revision manifest row schema drift at chapter {expected_page['chapter']}; "
+                f"missing={missing!r} extra={extra!r}"
+            )
         for key in ("ordinal", "chapter", "title", "source_family_id", "bibliographic_source"):
             if row.get(key) != expected_page[key]:
                 raise ValueError(f"literary page/source-partition drift at chapter {expected_page['chapter']}")

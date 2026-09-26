@@ -1,36 +1,41 @@
 # Run receipt — SCRIP-CORPUS-086
 
-Status: RECOVERY_REQUIRED
+Status: REVIEW_PENDING
 
 ## Exact recovery state
 
 - Base: `cde1a4e577a2611a0ea2bf7b3930ca4382f5feef`.
-- Recovery branch: `scriptorium-corpus-086-source-identities`.
-- Current tested head: `7e491f025cf687b7010c9b28d23114890d6dd210`.
+- Canonical branch: `scriptorium-corpus-086-source-identities`.
 - Issue: #261.
+- Draft PR: #262.
 - Authoring identity: `andy-zen-dev`.
+- Authored semantic/test head for this bounded unit: `e8cce2f124fa602655f2eefe59198562bbac0957`.
 - Unit: source-free exact revision identity freeze for the 20 retained Bulgakov chapter pages while preserving the 1–11 / 12–20 mixed-source partition.
 
 ## Produced
 
-The branch contains a source-free capture/replay implementation in `scriptorium/white_guard_revisions.py` plus seven deterministic offline regressions in `tests/test_bulgakov_revisions.py`. The tests cover the 20-page chapter order, the 11/9 source-family partition, fail-closed capture scope, duplicate provider identities, source-partition drift, identity ordering and replay receipts that keep literary-body/FantLab gates closed.
+The branch now contains:
 
-Capture requests page ID, revision ID, UTC timestamp and MediaWiki SHA-1 only; literary prose is not serialized. Missing/redirected pages and malformed or duplicate identities fail closed.
+- source-free current-revision identity capture requesting page ID, revision ID, UTC timestamp and MediaWiki SHA-1 only;
+- strict positive-integer identity validation that rejects booleans;
+- identity-only pinned replay with no literary content request and fail-closed page ID / revision ID / timestamp / SHA-1 checks;
+- exact 20-title provider inventory validation;
+- closed four-field provider identity mappings;
+- explicit nine-field persisted page rows;
+- a closed top-level manifest envelope with provider/source URL/legal-basis validation;
+- exact composition and capture-scope checks;
+- deterministic offline regressions covering the source partition, identity drift, source-free replay, open-schema rejection and SHA-1 canonicalization.
 
-## Verification
+## Verification boundary
 
-- The updated test module compiles successfully under Python syntax validation.
-- No hosted PR checks exist for `7e491f0...` because Draft PR creation was blocked before GitHub accepted the mutation.
-- No live 20-row provider manifest has been captured or claimed.
+The authoring run re-read the post-write implementation and test blobs from GitHub and confirmed all intended schema/replay guards are present. Draft PR #262 was opened successfully.
 
-## Remaining blocker
-
-Issue creation recovered and #261 now owns the unit. Git-object/file writes also work. Draft PR creation is still blocked by the available mutation path, and a follow-up attempt to add explicit composition-contract validation in the implementation was blocked before GitHub accepted it.
+Hosted exact-head checks are required before later judgement. No live 20-row provider capture is claimed in this receipt, and no literary prose is committed.
 
 ## Evidence boundary
 
-No literary-body extraction/composition, composite identity, single-edition equivalence, FantLab analyzer-input identity, diagnostics, benchmark movement, M2 admission or parity is claimed. M2 remains 0/5.
+Literary-body extraction, composite identity, single-edition equivalence, FantLab analyzer-input identity, diagnostics, benchmark movement, M2 admission and parity remain closed. M2 remains 0/5.
 
 ## Exact reconciliation
 
-Recovery still preempts new normal-flow work. Resume this exact branch, re-read #261 and the current head, add explicit fail-closed validation of `composition_contract`, obtain authoritative source-free provider identities for all 20 chapters through an explicit capture path, commit the manifest only after exact-revision replay succeeds, then create the Draft PR when that mutation path recovers. Leave the substantive change REVIEW_PENDING for a later independent judgement.
+Recovery remains REVIEW_PENDING. A later independent wake must re-read PR #262 on its exact head and inspect required checks before any Ready/merge decision. Authoritative 20-page identity-only provider capture/replay is a separate bounded production unit and must not be conflated with this authoring/review handoff.

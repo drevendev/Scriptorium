@@ -65,6 +65,64 @@ class BulgakovRevisionTests(unittest.TestCase):
         )
         self.assertFalse(any("text" in key or "prose" in key for row in manifest["pages"] for key in row))
 
+    def test_build_manifest_rejects_provider_inventory_and_identity_schema_drift(self):
+        def extra_title_fetcher(pages):
+            records = _fake_identity_fetcher(pages)
+            records["unexpected provider title"] = {
+                "page_id": 9999,
+                "revision_id": 9999,
+                "revision_timestamp": "2026-09-24T00:00:00Z",
+                "mediawiki_sha1": "f" * 40,
+            }
+            return records
+
+        with self.assertRaisesRegex(ValueError, "provider literary page inventory mismatch"):
+            build_manifest(fetcher=extra_title_fetcher)
+
+        def extra_field_fetcher(pages):
+            records = _fake_identity_fetcher(pages)
+            first = next(iter(records.values()))
+            first["source_text"] = "must never persist"
+            return records
+
+        with self.assertRaisesRegex(ValueError, "provider identity schema drift"):
+            build_manifest(fetcher=extra_field_fetcher)
+
+    def test_validate_manifest_rejects_open_schema_and_provenance_drift(self):
+        baseline = build_manifest(fetcher=_fake_identity_fetcher)
+
+        manifest = copy.deepcopy(baseline)
+        manifest["source_text"] = "must never persist"
+        with self.assertRaisesRegex(ValueError, "manifest schema drift"):
+            validate_manifest(manifest)
+
+        manifest = copy.deepcopy(baseline)
+        manifest["pages"][0]["source_text"] = "must never persist"
+        with self.assertRaisesRegex(ValueError, "row schema drift"):
+            validate_manifest(manifest)
+
+        for field, value, message in (
+            ("provider", "Other provider", "provider drift"),
+            ("source_work_url", "https://example.invalid/work", "source work URL drift"),
+            ("legal_basis", "unknown", "legal basis drift"),
+        ):
+            with self.subTest(field=field):
+                manifest = copy.deepcopy(baseline)
+                manifest[field] = value
+                with self.assertRaisesRegex(ValueError, message):
+                    validate_manifest(manifest)
+
+    def test_build_manifest_canonicalizes_provider_sha1(self):
+        def uppercase_sha1_fetcher(pages):
+            records = _fake_identity_fetcher(pages)
+            for identity in records.values():
+                identity["mediawiki_sha1"] = "A" * 40
+            return records
+
+        manifest = build_manifest(fetcher=uppercase_sha1_fetcher)
+
+        self.assertTrue(all(row["mediawiki_sha1"] == "a" * 40 for row in manifest["pages"]))
+
     def test_validate_manifest_preserves_order_and_identity(self):
         manifest = build_manifest(fetcher=_fake_identity_fetcher)
         identities = validate_manifest(manifest)

@@ -1,22 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 284
+STATE_REVISION: 285
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-24T15:54:00Z
-LAST_RESULT: SCRIP-CORPUS-085 / Issue #259 / PR #260 completed. A later exact-head judgement independently read all 7 changed files at `7a2a58370bcceb1572fa6064241fa24cd1d9976f` against unchanged authoring base `82e88eb2d9045b199d595fa96d9cab9260cf6328`, found no merge blockers or review threads, and directly re-inspected the exact-head transient facsimile artifact. Artifact `10814683683` ZIP SHA-256 independently recomputed to GitHub metadata `243e83888345fd2b9c7f791de14ebd431fcc623b8ea1825200a5402c4abd14eb`; `rendered-pages.sha256` recomputed to `33457b4afaeed309fa6c604bfb0214f4be85979289033ed272f53f978ce30518`, and all nine mid-body image digests matched the committed source-free JSON. Direct visual judgement confirmed 59→50, 61→52, 109→100, 110→101, 111→102, 159→150, 160→151 and 161→152, while carrier 60 has no visible folio and remains uninterpolated. All 23 PR-triggered workflows at the exact head completed successfully; review `5306813956` records the clean judgement. PR #260 was marked Ready and squash-merged with expected-head protection as `f60957eb2512d8e9ec9ed27e803878dfb1835dec`; Issue #259 closed completed. No global +9 mapping, complete carrier map, body admission or benchmark/parity movement is claimed.
+LAST_COMMITTED_RUN_AT: 2026-09-26T13:24:00Z
+LAST_RESULT: SCRIP-CORPUS-086 / Issue #261 / Draft PR #262 authored and handed off for independent review. Source-free White Guard revision-identity capture/replay now rejects boolean IDs, provider inventory drift, open provider identity schemas, open persisted row schemas, open manifest envelopes and provenance drift; replay remains identity-only and does not request literary content. No live 20-row provider manifest, literary-body identity, FantLab analyzer-input identity, benchmark or M2 movement is claimed.
 LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman now has independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, transition/tail anchors, restored-page interior observations, and canonical broad mid-body exact-PDF anchors that expose an unlabelled carrier page while keeping global mapping closed. Darwin/Rachinsky retains canonical reviewed dependency/replay/provider evidence through SCRIP-CORPUS-084. M2 stays 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-085
-ISSUE:          #259 (closed completed)
-STATUS:         COMPLETE
-PR:             #260 (squash-merged as f60957eb2512d8e9ec9ed27e803878dfb1835dec)
-NEXT_ACTION:    Resume normal-flow corpus/provenance selection.
-                A separate bounded Perelman unit may strengthen complete carrier mapping, carrier equivalence or body selection.
-                Keep carrier page 60 uninterpolated and do not promote a global +9 rule, PDF↔DjVu equivalence, OCR/body identity,
-                selected-body >=300k, FantLab-input identity or M2/parity until separately evidenced.
+UNIT_ID:        SCRIP-CORPUS-086
+ISSUE:          #261 (open)
+STATUS:         REVIEW_PENDING
+PR:             #262 (Draft)
+AUTHORED_HEAD:  e8cce2f124fa602655f2eefe59198562bbac0957
+NEXT_ACTION:    Independently review PR #262 on its exact current head and required checks.
+                Do not self-approve or merge from the authoring wake.
+                Only after a clean later judgement may a separate bounded unit perform
+                authoritative 20-page identity-only capture/replay of page ID,
+                revision ID, UTC timestamp and MediaWiki SHA-1.
 ```
 
 ## Current milestone gate

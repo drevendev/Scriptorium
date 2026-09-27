@@ -106,6 +106,25 @@ class WikisourceReplayTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "invalid expected page id"):
             fetch_pinned_chapter_revisions(boolean_page_identities, query=query)
 
+        provider_boolean_identities = (
+            {
+                **identities[0],
+                "page_id": 1,
+            },
+            identities[1],
+        )
+
+        def boolean_provider_query(params):
+            payload = query(params)
+            payload["query"]["pages"][1]["pageid"] = True
+            return payload
+
+        with self.assertRaisesRegex(ValueError, "invalid observed page id"):
+            fetch_pinned_chapter_revisions(
+                provider_boolean_identities,
+                query=boolean_provider_query,
+            )
+
     def test_replay_preserves_manifest_order_and_verifies_composite_identity(self):
         manifest = json.loads(REVISION_MANIFEST.read_text(encoding="utf-8"))
         identities = decode_chapter_identities(manifest)

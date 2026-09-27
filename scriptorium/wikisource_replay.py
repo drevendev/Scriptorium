@@ -71,7 +71,10 @@ def fetch_pinned_chapter_revisions(
                 expected_page_id = identity["page_id"]
                 if type(expected_page_id) is not int or expected_page_id <= 0:
                     raise ValueError(f"invalid expected page id for revision {revision_id}")
-                if page.get("pageid") != expected_page_id:
+                observed_page_id = page.get("pageid")
+                if type(observed_page_id) is not int or observed_page_id <= 0:
+                    raise ValueError(f"invalid observed page id for revision {revision_id}")
+                if observed_page_id != expected_page_id:
                     raise ValueError(f"revision {revision_id} page ID drift")
             if title != expected_title:
                 raise ValueError(

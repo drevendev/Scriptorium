@@ -96,6 +96,16 @@ class WikisourceReplayTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "page ID drift"):
             fetch_pinned_chapter_revisions(identities, query=bad_page_query)
 
+        boolean_page_identities = (
+            {
+                **identities[0],
+                "page_id": True,
+            },
+            identities[1],
+        )
+        with self.assertRaisesRegex(ValueError, "invalid expected page id"):
+            fetch_pinned_chapter_revisions(boolean_page_identities, query=query)
+
     def test_replay_preserves_manifest_order_and_verifies_composite_identity(self):
         manifest = json.loads(REVISION_MANIFEST.read_text(encoding="utf-8"))
         identities = decode_chapter_identities(manifest)

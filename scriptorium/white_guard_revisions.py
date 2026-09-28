@@ -167,7 +167,6 @@ def fetch_pinned_revision_identities(
                 "prop": "revisions",
                 "revids": "|".join(str(value) for value in requested_ids),
                 "rvprop": "ids|timestamp|sha1",
-                "redirects": "0",
             }
         )
         query_obj = payload.get("query")

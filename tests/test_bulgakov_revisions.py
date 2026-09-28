@@ -201,6 +201,7 @@ class BulgakovRevisionTests(unittest.TestCase):
 
         self.assertEqual({identity["title"] for identity in identities}, set(replayed))
         self.assertEqual("ids|timestamp|sha1", calls[0]["rvprop"])
+        self.assertNotIn("redirects", calls[0])
         self.assertNotIn("rvslots", calls[0])
         self.assertNotIn("content", calls[0]["rvprop"])
 

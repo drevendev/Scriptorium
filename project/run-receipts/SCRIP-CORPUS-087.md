@@ -1,14 +1,29 @@
 # Run receipt — SCRIP-CORPUS-087
 
-Status: STAGED_RECONCILIATION_REQUIRED
+Status: REVIEW_PENDING
 
-- Canonical master base: `cde1a4e577a2611a0ea2bf7b3930ca4382f5feef`.
-- Exact prior Petersburg handoff: `3599065d93e4e24af90328a00b96b0d8e687b5e3`.
-- Original semantic commit: `9d502a3b8e1a4b4d41833ad11c0d063e73c846a9`.
-- Recovery branch: `scrip-corpus-087-petersburg-preflight-recovery`.
-- Collision decision: earlier White Guard work keeps SCRIP-CORPUS-086; Petersburg is renumbered to SCRIP-CORPUS-087.
-- Source-free preflight SHA-256: `093f251cb8d03846a5158a1ac29d4b66e1796a7cc2bc65a77ade3d9e3cebcff1`.
-- Embedded text-layer status remains unverified; neither direct text extraction nor raster OCR is selected.
-- Literary-page selection, extraction profile, body identity, >=300k admission, FantLab input identity, diagnostics, M2 and parity remain closed. M2 remains 0/5.
-- Recovery branch mutation succeeded, but Issue and Draft-PR creation requests were blocked before GitHub accepted them; no issue or PR number exists.
-- Reconciliation trigger: when repository Issue/PR mutation is available, re-check `master` and the exact recovery head, open a Draft PR, inspect exact-head checks, and leave merge judgement to a later wake.
+## Recovery state
+
+- Canonical recovery base: `master@27f54858d20000244bb8e80342038d80ea510b45`.
+- Issue: #263.
+- Draft PR: #264.
+- Fresh recovery branch: `scrip-corpus-087-petersburg-preflight-current`.
+- Exact stale Petersburg handoff used only as a five-file source: `a24bbaeff4054762640694b8025500815853d4a5`.
+- Recovery semantic head before bookkeeping: `e6e93a4639f5986a85f87b5341f684ba6808dda7`.
+- The stale branch itself was not merged and its old `STATE_AND_QUEUE.md` was not copied.
+
+## Recovered evidence
+
+- Source-free preflight physical SHA-256: `093f251cb8d03846a5158a1ac29d4b66e1796a7cc2bc65a77ade3d9e3cebcff1`.
+- Exact frozen carrier: 632 pages / 3,621,459 bytes / SHA-1 `682476934dd6ed49c6bbcdb0720127c1812ff477` / SHA-256 `b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5`.
+- Existing OCR/body promotion contract SHA-256 remains `d338d8dc4d800b0fe28a848e383265ba9a0e720e75962f7f9e5733ad727a20d2`.
+- Embedded text-layer status remains `unverified`; neither direct PDF text extraction nor raster OCR is selected.
+- No PDF bytes, page images, extracted text or literary source text are committed.
+
+## Gate boundary
+
+Literary-page selection, extraction profile, body identity, >=300k admission, FantLab analyzer-input identity, diagnostics, M2 admission and parity remain closed. M2 remains 0/5.
+
+## Handoff
+
+PR #264 remains intentionally Draft. A later independent wake must re-read the final exact head, inspect fresh hosted checks/reviews/threads and only then decide Ready/merge.

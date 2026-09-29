@@ -1,9 +1,9 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 285
+STATE_REVISION: 286
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-26T13:24:00Z
-LAST_RESULT: SCRIP-CORPUS-086 / Issue #261 / Draft PR #262 authored and handed off for independent review. Source-free White Guard revision-identity capture/replay now rejects boolean IDs, provider inventory drift, open provider identity schemas, open persisted row schemas, open manifest envelopes and provenance drift; replay remains identity-only and does not request literary content. No live 20-row provider manifest, literary-body identity, FantLab analyzer-input identity, benchmark or M2 movement is claimed.
+LAST_COMMITTED_RUN_AT: 2026-09-29T01:49:18Z
+LAST_RESULT: SCRIP-CORPUS-086 / Issue #261 / Draft PR #262 recovery bookkeeping reconciled to verified semantic/test head `ca4b2654318f74d7fdd5042e6713fab86cc123ba`, whose 26/26 pull-request-triggered workflows completed successfully with no submitted reviews or review threads. The reconciliation is documentation-only and remains REVIEW_PENDING until a later independent exact-head judgement of the resulting PR head. No live 20-row provider manifest, literary-body identity, FantLab analyzer-input identity, benchmark or M2 movement is claimed.
 LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman now has independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, transition/tail anchors, restored-page interior observations, and canonical broad mid-body exact-PDF anchors that expose an unlabelled carrier page while keeping global mapping closed. Darwin/Rachinsky retains canonical reviewed dependency/replay/provider evidence through SCRIP-CORPUS-084. M2 stays 0/5.
 
 ## Current unit
@@ -13,12 +13,11 @@ UNIT_ID:        SCRIP-CORPUS-086
 ISSUE:          #261 (open)
 STATUS:         REVIEW_PENDING
 PR:             #262 (Draft)
-AUTHORED_HEAD:  e8cce2f124fa602655f2eefe59198562bbac0957
-NEXT_ACTION:    Independently review PR #262 on its exact current head and required checks.
-                Do not self-approve or merge from the authoring wake.
-                Only after a clean later judgement may a separate bounded unit perform
-                authoritative 20-page identity-only capture/replay of page ID,
-                revision ID, UTC timestamp and MediaWiki SHA-1.
+AUTHORED_HEAD:  ca4b2654318f74d7fdd5042e6713fab86cc123ba
+NEXT_ACTION:    Independently review PR #262 on the exact documentation-only head produced by this reconciliation.
+                Require fresh exact-head checks, no blocking reviews and no unresolved review threads before Ready/merge.
+                Only after a clean later judgement may a separate bounded unit perform authoritative
+                20-page identity-only capture/replay of page ID, revision ID, UTC timestamp and MediaWiki SHA-1.
 ```
 
 ## Current milestone gate

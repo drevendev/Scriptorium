@@ -1,23 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 287
+STATE_REVISION: 288
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-09-29T13:08:28Z
-LAST_RESULT: SCRIP-CORPUS-086 / Issue #261 / PR #262 completed. Independent exact-head review `5353031421` re-read all 7 changed files at `64d405809c400a7f7294b1308b5d394fa61ee2aa`, found no merge blockers, and confirmed 26/26 pull-request-triggered workflows completed successfully with no unresolved review threads. PR #262 was marked Ready and squash-merged with expected-head protection as `fa9ead6e5a2489c9eea604ddbdbe73b0093c9eb1`; Issue #261 closed completed. No live 20-row provider manifest, literary-body identity, FantLab analyzer-input identity, benchmark or M2 movement is claimed.
+LAST_COMMITTED_RUN_AT: 2026-09-29T22:39:45Z
+LAST_RESULT: SCRIP-CORPUS-087 / Issue #263 / Draft PR #264 recovered the Petersburg 1916 extraction-strategy preflight from exact stale handoff `a24bbaeff4054762640694b8025500815853d4a5` onto current master without merging stale state. The five Petersburg-specific files were transferred onto fresh branch `scrip-corpus-087-petersburg-preflight-current`; source-free preflight SHA-256 remains `093f251cb8d03846a5158a1ac29d4b66e1796a7cc2bc65a77ade3d9e3cebcff1`. Embedded text-layer status remains unverified; literary body, >=300k admission, FantLab-input identity, diagnostics, M2 and parity remain closed. PR #264 is intentionally Draft for later independent exact-head judgement.
 LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman now has independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, transition/tail anchors, restored-page interior observations, and canonical broad mid-body exact-PDF anchors that expose an unlabelled carrier page while keeping global mapping closed. Darwin/Rachinsky retains canonical reviewed dependency/replay/provider evidence through SCRIP-CORPUS-084. M2 stays 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-086
-ISSUE:          #261 (closed completed)
-STATUS:         COMPLETE
-PR:             #262 (squash-merged as fa9ead6e5a2489c9eea604ddbdbe73b0093c9eb1)
-NEXT_ACTION:    Resume normal-flow corpus/provenance selection.
-                A separate bounded White Guard unit may perform authoritative 20-page identity-only capture/replay
-                of page ID, revision ID, UTC timestamp and MediaWiki SHA-1.
-                Keep literary-body, composite/single-edition identity, FantLab-input, benchmark, M2 and parity gates closed
-                until separately evidenced.
+UNIT_ID:        SCRIP-CORPUS-087
+ISSUE:          #263 (open)
+STATUS:         REVIEW_PENDING
+PR:             #264 (Draft)
+AUTHORED_HEAD:  e6e93a4639f5986a85f87b5341f684ba6808dda7
+NEXT_ACTION:    Independently review PR #264 on its final exact head after this bookkeeping reconciliation.
+                Require fresh exact-head checks, no blocking reviews and no unresolved review threads before Ready/merge.
+                Keep embedded text-layer status unverified and do not select direct PDF extraction or raster OCR.
+                Literary-page selection, body identity, >=300k admission, FantLab-input identity, diagnostics, M2 and parity remain closed.
 ```
 
 ## Current milestone gate

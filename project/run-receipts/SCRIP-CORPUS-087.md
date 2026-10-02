@@ -1,12 +1,12 @@
 # Run receipt — SCRIP-CORPUS-087
 
-Status: REVIEW_PENDING
+Status: COMPLETE
 
 ## Recovery state
 
 - Canonical recovery base: `master@27f54858d20000244bb8e80342038d80ea510b45`.
 - Issue: #263.
-- Draft PR: #264.
+- PR: #264, squash-merged as `a9df79ec04664011f6dddf3593031424b15c1073`.
 - Fresh recovery branch: `scrip-corpus-087-petersburg-preflight-current`.
 - Exact stale Petersburg handoff used only as a five-file source: `a24bbaeff4054762640694b8025500815853d4a5`.
 - Recovery semantic head before bookkeeping: `e6e93a4639f5986a85f87b5341f684ba6808dda7`.
@@ -24,6 +24,10 @@ Status: REVIEW_PENDING
 
 Literary-page selection, extraction profile, body identity, >=300k admission, FantLab analyzer-input identity, diagnostics, M2 admission and parity remain closed. M2 remains 0/5.
 
-## Handoff
+## Completion
 
-PR #264 remains intentionally Draft. A later independent wake must re-read the final exact head, inspect fresh hosted checks/reviews/threads and only then decide Ready/merge.
+- Independently reviewed exact final head: `950404bb86c191b7eacdf21eb34c231f1d906fc4`.
+- Hosted evidence at review time: 24/24 pull-request-triggered workflow runs completed successfully; no submitted reviews; no unresolved review threads.
+- PR #264 was squash-merged with expected-head protection as `a9df79ec04664011f6dddf3593031424b15c1073`.
+- Issue #263 closed completed.
+- Recovery evidence boundaries remain unchanged: `embedded_text_layer_status=unverified`; direct PDF extraction, raster OCR, literary-body, >=300k admission, FantLab-input identity, diagnostics, M2 and parity remain closed.

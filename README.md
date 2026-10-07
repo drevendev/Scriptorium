@@ -12,6 +12,21 @@ legally usable and at least 300,000 characters including spaces; copyrighted tex
 not committed merely because it is accessible online. Shorter texts and excerpts are
 still valid analyzer inputs, but their results carry representativeness warnings.
 
+## Analyze your own text
+
+From a checkout, using Python 3.13 and no third-party dependencies:
+
+```bash
+python -m scriptorium.analyze manuscript.txt --output analysis.json
+python -m scriptorium.analyze manuscript.txt --format html --output report.html
+```
+
+Get 29 deterministic metric rows with explicit units, profile versions and source hashes.
+The manuscript stays local; reports contain no source prose. Short texts are supported,
+missing values remain explicit, and results are inferred/extension rather than FantLab
+parity. Existing output files are never overwritten. See
+[local analysis and optional dictionaries](docs/LOCAL_ANALYSIS.md).
+
 ## What works today
 
 Scriptorium now has a standard-library-only deterministic analysis core:

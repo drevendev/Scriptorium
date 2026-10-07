@@ -343,6 +343,14 @@ def _unit(metric_id: str) -> str:
         return "events / 1,000 words"
     if metric_id.endswith("_percent"):
         return "% (delta: percentage points)"
+    if metric_id == "fantlab.general.mean_word_length_chars":
+        return "characters / word"
+    if metric_id in {
+        "fantlab.general.mean_sentence_length_chars",
+        "fantlab.dialogue.mean_narration_sentence_length_chars",
+        "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+    }:
+        return "characters / sentence"
     if metric_id.endswith("_chars") or metric_id.endswith(".characters"):
         return "characters"
     if ".uasz_" in metric_id:

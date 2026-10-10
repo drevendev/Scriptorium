@@ -1,22 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 289
+STATE_REVISION: 292
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-02T09:12:28Z
-LAST_RESULT: SCRIP-CORPUS-087 / Issue #263 / PR #264 completed. Independent exact-head review re-read the six-file recovery patch at `950404bb86c191b7eacdf21eb34c231f1d906fc4`, confirmed 24/24 pull-request-triggered workflow runs completed successfully with no submitted reviews or unresolved review threads, and found no semantic merge blocker. PR #264 was squash-merged with expected-head protection as `a9df79ec04664011f6dddf3593031424b15c1073`; Issue #263 closed completed. Embedded text-layer status remains unverified; literary body, >=300k admission, FantLab-input identity, diagnostics, M2 and parity remain closed.
+LAST_COMMITTED_RUN_AT: 2026-10-10T11:16:27Z
+LAST_RESULT: Owner-requested all-open-PR review and integrated product delivery for #273. Exact-head COMMENT reviews were posted on #268, #270 and #272. The new Reader preview integrates their code into one PR against master, plus CSV, reader labels, bounded/path-private CLI and packaging. These are branch/PR effects, not merge or live publication. Full integrated CI and later fresh acceptance remain required; native GitHub records own their outcomes.
 LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman now has independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, transition/tail anchors, restored-page interior observations, and canonical broad mid-body exact-PDF anchors that expose an unlabelled carrier page while keeping global mapping closed. Darwin/Rachinsky retains canonical reviewed dependency/replay/provider evidence through SCRIP-CORPUS-084. M2 stays 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-087
-ISSUE:          #263 (closed completed)
-STATUS:         COMPLETE
-PR:             #264 (squash-merged as a9df79ec04664011f6dddf3593031424b15c1073)
-REVIEWED_HEAD:  950404bb86c191b7eacdf21eb34c231f1d906fc4
-NEXT_ACTION:    Resume normal-flow P1 SCRIP-CORPUS continuation.
-                Prefer an executable Petersburg/Perelman/Darwin-Rachinsky extraction or provenance unit that strengthens a >=300k candidate while keeping unsupported parity gates closed.
+UNIT_ID:        SCRIP-SITE-010
+ISSUE:          #273
+STATUS:         REVIEW_PENDING
+PR:             Resolve the new integrated Reader PR linked from #273; GitHub owns head/check/merge facts.
+BASE:           abe7bb889ef98437ba9faef5a79b023499556991 (master at authoring)
+NEXT_ACTION:    Inspect the new exact head and fix applicable integration failures in the same PR.
+                Later fresh acceptance may merge only after actual repository gates pass.
+                Preserve old #268/#270/#272 until the integrated result is accepted.
 ```
+
+The 2026-10-10 owner explicitly requested a major update in a NEW PR after reviewing all
+open PRs. This integration replaces the stalled separate delivery ordering, not the
+scientific mission. It includes #268 at `50fbb9b9c0da59a5eb78c6826381b8acd3dd8aae`,
+#270 at `752f3c491af2f1c563a0c5ae31e9452f93a1c0a3`, and #272 at
+`610dc8044c0f03a70c646eb48db51e6bd8ce19c7`. Do not merge #272 into its parent feature
+branch or duplicate these changes from old ZIPs. #266 is already merged and is not a
+recovery blocker. Interactive review/issue/blob/tree writes succeeded today; this does
+not prove scheduled-context capability. Recheck capabilities without bypassing denial.
 
 ## Current milestone gate
 
@@ -26,11 +36,27 @@ M2 remains open at **0/5 source-matched works**. Public-source freezing, bibliog
 
 ## Queue
 
-Recovery/review-ready work and failing required checks preempt normal selection.
+The 2026-10-02 owner correction authorizes solo product/backlog ownership and independent
+analyzer, CLI and public-experience delivery. Recovery and failing checks preempt only
+when executable; unchanged corpus, write or bookkeeping blockers are scoped dependencies,
+not a global ordering rule. Preserve scientific/security and later-run acceptance gates.
+
+Next user-visible milestone: install the canonical Reader, analyze a local text as
+JSON/HTML/CSV, and open a real full-work diagnostic through the five-route static site.
+This incremental milestone does not declare M1/M2 complete.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics; Petersburg, Perelman and Darwin/Rachinsky have candidate-specific extraction/renderer work available | Preserve translation/edition identity and legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
+| P1 | SCRIP-SITE-010 / #273 | integration | Complete the single master-targeting Reader PR | New exact-head full suite, installed wheel smoke, unchanged artifacts; fix actual failures in the same branch |
+| P2 | SCRIP-SITE-010 acceptance | delivery | Accept the earlier integration, reconcile old PRs and verify Pages postconditions | Later fresh acceptance; real checks/protection; Pages activation remains separate |
+| P3 | Reader visual acceptance | public experience | Inspect actual desktop/mobile report and homepage; repair evidenced accessibility issues | Build real pages; permitted browser only; unavailable visual execution blocks this scope alone |
+| P4 | SCRIP-COMPARE-002 pending handoff | analyzer / comparison | Adopt one tested two-diagnostic comparison CLI | Deduplicate integrated code, preserve profile/null boundaries, use canonical Anna/Grin bytes |
+| P5 | SCRIP-CORPUS continuation | corpus / provenance | Advance one independent legally usable >=300k diversity candidate | New executable evidence only; preserve translation/edition and FantLab-input gates |
+
+The unintegrated EPUB/batch Workbench prototypes remain pending auxiliary material,
+not released repository capabilities. Selectively adopt one ready slice only after
+fresh compatibility/tests; never overwrite the canonical public API with a subset stub.
+Prior browser navigation was blocked; no previous structural tests are visual PASS.
 
 ## Retained corpus / provenance orientation
 

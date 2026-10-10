@@ -1,233 +1,87 @@
-# Scriptorium
+# Scriptorium · Reader preview
 
-Scriptorium is an open-source toolkit for quantitative analysis of literary text.
+**Understand the language of a text without uploading the manuscript.**
+Scriptorium measures vocabulary, sentence length, dialogue and punctuation, then produces
+readable offline reports and reproducible data. This integrated **0.2.0a1 preview** brings
+the reader site and the local analyzer into the canonical repository.
 
-The first milestone is a reproducible implementation of the public parts of the
-FantLab linguistic analyzer, benchmarked field-by-field against published FantLab
-results. Later milestones add author-voice profiles, profile comparison, richer
-literary metrics, book/tag profiles, corpus exploration, and a GitHub Pages browser.
+## Try your own text
 
-The project treats source provenance as part of the result. Calibration texts must be
-legally usable and at least 300,000 characters including spaces; copyrighted text is
-not committed merely because it is accessible online. Shorter texts and excerpts are
-still valid analyzer inputs, but their results carry representativeness warnings.
-
-## What works today
-
-Scriptorium now has a standard-library-only deterministic analysis core:
-
-- versioned CRLF/CR → LF and Unicode NFC normalization;
-- deterministic word candidates and sentence spans with normalized-text offsets;
-- explicit dash-led dialogue paragraphs and candidate author-remark spans;
-- first-wave character, word, mean word/sentence length, dialogue and punctuation metrics;
-- a versioned punctuation-v2 policy that does not double-count ASCII hyphens retained
-  inside current word tokens as dash punctuation, while keeping the rule explicitly
-  inferred rather than claiming FantLab parity;
-- dictionary-free unique-vocabulary counting plus explicit external-dictionary active
-  vocabulary and UASZ-3000/10000/100000 candidates;
-- immutable dictionary dependency identity using profile + normalized lexeme-set SHA-256;
-- a provider-neutral `scriptorium-pos-v1` aggregation layer for defined/undefined POS,
-  the 17 displayed FantLab buckets, a complete 17×17 POS-bigram matrix, and positions
-  1..20 while preserving unresolved pylem categories and homonyms;
-- an exact hash-pinned `pylem==0.0.18` compatibility sidecar verified on an isolated
-  Ubuntu 22.04 / Python 3.9 lane, with source-free transport into the modern Scriptorium
-  runtime and full-work frozen-candidate diagnostics;
-- reviewed source-free morphology diagnostics that decompose undefined POS boundaries and
-  measure the pinned AOT literature homonym-weight signal without changing production
-  POS selection;
-- versioned JSON artifacts/schemas with explicit `inferred` vs `extension` status;
-- a local-text FantLab benchmark CLI that emits expected/actual/delta plus source hashes
-  and refuses to turn incomplete source provenance, an unproven dictionary, or unknown
-  decimal precision into parity;
-- source-free exact-revision replay for the frozen 239-chapter Russian Wikisource
-  *Anna Karenina* candidate, with title/timestamp/MediaWiki-SHA-1 and composite-digest
-  verification before a full-work diagnostic can run;
-- source-free exact-revision replay for the frozen 129-chapter Russian Wikisource
-  *Resurrection* candidate, with a versioned source-specific extraction contract for its
-  heterogeneous Wikisource page shapes and the same fail-closed source-match boundary;
-- a versioned static-publication allow-list plus a deterministic, fail-closed static
-  renderer for derived/public work-showcase and provenance-only pages;
-- golden tests for text boundaries, dialogue spans, metric formulas, vocabulary windows,
-  punctuation overlap, POS aggregation rules, source replay, publication safety and
-  benchmark gate behavior.
-
-The FantLab-shaped values are **inferred candidates**, not claimed reproduction.
-See [`docs/TEXT_MODEL.md`](docs/TEXT_MODEL.md),
-[`docs/DIALOGUE_MODEL.md`](docs/DIALOGUE_MODEL.md),
-[`docs/VOCABULARY_MODEL.md`](docs/VOCABULARY_MODEL.md),
-[`docs/POS_MODEL.md`](docs/POS_MODEL.md),
-[`docs/METRIC_PROFILE.md`](docs/METRIC_PROFILE.md),
-[`docs/BENCHMARKING.md`](docs/BENCHMARKING.md),
-[`docs/SITE_CONTRACT.md`](docs/SITE_CONTRACT.md), and
-[`docs/SITE_RENDERER.md`](docs/SITE_RENDERER.md).
-
-The POS aggregation artifact remains provider-neutral, while exact pinned pylem execution
-is now verified through an isolated legacy sidecar. Runtime `N` remains unresolved because
-pinned pylem collapses noun and cardinal to the same public POS string; cross-bucket
-homonyms and extra AOT categories are not guessed into a bucket. Full-work diagnostics
-preserve those boundaries rather than promoting provider signals into FantLab rules. See
-[`docs/AOT_PYLEM_COMPATIBILITY.md`](docs/AOT_PYLEM_COMPATIBILITY.md) and
-[`docs/POS_MODEL.md`](docs/POS_MODEL.md).
-
-### Benchmark a local text
+With Python 3.13 or later, from this checkout:
 
 ```bash
-python -m scriptorium.benchmark \
-  --reference benchmarks/fantlab/work488.json \
-  --text /path/to/local-text.txt \
-  --scriptorium-revision <git-sha> \
-  --edition-match unknown \
-  --output comparison.json
+python -m pip install .
+scriptorium analyze manuscript.txt --format html --output report.html
+scriptorium analyze manuscript.txt --output analysis.json
+scriptorium analyze manuscript.txt --format csv --output metrics.csv
 ```
 
-An optional external dictionary can enable the dictionary-dependent vocabulary actuals:
+Open `report.html` locally. All **29 metric rows** retain their units and algorithm
+profiles; unavailable measurements stay unknown. The report has readable metric names,
+a four-value overview, exact numeric values and keyboard-accessible tables. JSON and
+CSV include source digests, not manuscript content. Choose a new output filename for
+each run: existing files are never overwritten.
+
+No runtime dependencies, account, server or telemetry are required. Installation may
+fetch build tools; see [offline wheel installation](docs/READER_PREVIEW.md).
+`python -m scriptorium` exposes the same commands from a checkout.
+
+## Open a real literary result
+
+The repository already contains a source-free, historical full-work diagnostic for
+**Anna Karenina**. It has **28 expected/actual/delta rows: 23 numeric results and five
+unavailable values**. No novel download is needed:
 
 ```bash
-  --dictionary /path/to/dictionary.txt \
-  --dictionary-profile my-dictionary-v1
+scriptorium diagnostic benchmarks/fantlab/work270306-wikisource-diagnostic.json \
+  --title "Anna Karenina — full-work diagnostic" --output anna-report.html
+scriptorium site --repo-root . --output build/site
 ```
 
-Supplying a dictionary makes that analysis reproducible, not FantLab-compatible. Until
-FantLab's production dictionary identity/version is established, dictionary-dependent
-benchmark rows remain diagnostic `unresolved` results even when their numbers happen to
-match.
+Open `anna-report.html` or `build/site/index.html`. The canonical site retains its four
+earlier evidence pages and adds the full-work report with a working homepage action.
+**A successful local build is not a live GitHub Pages deployment.** The existing Pages
+activation interlock is unchanged; this preview does not enable publishing by itself.
 
-The harness never fetches or commits the local text. `Шутиха` currently has no
-source-matched legally usable full text in the project, so this reference remains a
-diagnostic target rather than parity evidence. The harness currently maps 28 implemented
-FantLab fields: four general, four dialogue, six vocabulary and fourteen punctuation
-fields. POS aggregation has its own versioned artifact and hosted frozen-work pylem
-transport, but the local benchmark CLI still does not silently instantiate the legacy
-provider or claim FantLab morphology parity. Decimal fields remain unresolved until
-FantLab display precision is independently established. See
-[`docs/BENCHMARKING.md`](docs/BENCHMARKING.md).
+## What the results mean
 
-The repository also contains a full-work **diagnostic-only** comparison for *Anna
-Karenina*. [`benchmarks/fantlab/work270306.json`](benchmarks/fantlab/work270306.json)
-records FantLab's public 19 September 2022 values, while
-[`benchmarks/fantlab/work270306-wikisource-diagnostic.json`](benchmarks/fantlab/work270306-wikisource-diagnostic.json)
-records expected/actual/delta evidence from a replay of the 239 frozen public-domain
-Wikisource revisions. The replayed source is bound to SHA-256
-`1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205`; novel prose is
-not committed or uploaded. FantLab does not disclose the analyzer-input edition or
-bytes, so every result remains source-unmatched diagnostic evidence and M2 parity stays
-0/5.
+FantLab-shaped metrics are **inferred compatibility candidates**, not demonstrated
+parity. Scriptorium-only features are **extensions**. The historical Anna diagnostic
+has no established identity match to FantLab's input text. **M2 remains 0/5**; none of
+M1–M5 is declared complete by this release. The AOT-lineage morphology target and
+field-by-field parity criteria remain unchanged.
 
-A second frozen public-domain candidate is now available for *Resurrection*.
-[`corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json`](corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json)
-records its provenance and fail-closed admissibility boundary, while the compact
-[`tolstoy-resurrection-ru.revisions.json`](corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json)
-pins all **129** chapter revision IDs, timestamps and MediaWiki SHA-1 identities without
-storing source prose. Exact replay reconstructs a **890,835-character** composite bound
-to raw and `scriptorium-text-v1` normalized SHA-256
-`2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`.
-FantLab displays 881,244 characters for its 2022 analysis, but does not disclose the
-analyzer-input bytes or edition; this candidate is therefore eligible only for
-**diagnostic-only** comparison and does not move the 0/5 source-matched reproduction gate.
+Texts shorter than 300,000 characters including spaces are valid inputs with explicit
+representativeness limits. That length is a corpus-admission floor, not a guarantee of
+quality; legal provenance and source identity require separate evidence. Source books,
+private manuscripts and dictionary contents are not included in reports or uploaded.
+Hashes can identify known works; share derived reports deliberately.
 
-A source-free [word/dash policy sensitivity artifact](benchmarks/fantlab/work270306-policy-sensitivity.json)
-records the investigation that led to the punctuation boundary without turning the
-unmatched work into a tuning target. It showed that excluding numeric-only tokens removes
-only 17 of the +16,083 word difference, and that 1,611 ASCII hyphens occur inside current
-word tokens. Historical punctuation-v1 counted those glyphs as dash events too. The
-current `scriptorium-punctuation-v2` candidate removes that double role: ASCII hyphens
-retained inside `scriptorium-text-v1` word tokens are lexical connectors for punctuation
-purposes and are not also dash events. The historical artifact remains v1 evidence rather
-than being silently rewritten.
+## Safety and reproducibility
 
-This still does **not** establish FantLab's hyphen rule. The public methodology only says
-punctuation frequencies are measured and the work surface labels its `-` row as `тире`;
-FantLab does not publish the classifier. Even the historical sensitivity result after
-excluding all token-internal ASCII hyphens remained about +14.913 dash events per 1000
-words above the source-unmatched FantLab result. Punctuation-v2 is therefore an internal
-consistency improvement under a new profile, not a parity promotion.
-
-### Public showcase
-
-The repository includes source-free public slices for real public-domain literary
-sources:
-
-- [`showcase/anna-karenina-part1-ch1-opening.json`](showcase/anna-karenina-part1-ch1-opening.json)
-  shows the first general/punctuation metrics on the opening four prose paragraphs of
-  *Anna Karenina*, Part I, Chapter I.
-- [`showcase/anna-karenina-part1-ch2-dialogue.json`](showcase/anna-karenina-part1-ch2-dialogue.json)
-  shows the inferred dialogue profile on two dash-led dialogue paragraphs from Chapter II.
-- [`public-artifacts/tolstoy-anna-karenina-ru-morphology-diagnostic.json`](public-artifacts/tolstoy-anna-karenina-ru-morphology-diagnostic.json)
-  publishes the reviewed full-work morphology diagnostic for the frozen *Anna Karenina*
-  candidate: 269,358 current Scriptorium word tokens, 117,554 conservatively defined POS,
-  151,804 undefined POS, 59,254 direct cross-bucket ambiguities, and only 5,972 ambiguity
-  rows with a unique maximum under the pinned AOT literature homonym-weight signal. The
-  artifact is source-free, production POS resolution is unchanged, FantLab source identity
-  remains unknown, and the page is diagnostic-only rather than parity evidence.
-- [`public-artifacts/tolstoy-resurrection-ru-provenance.json`](public-artifacts/tolstoy-resurrection-ru-provenance.json)
-  exposes the full frozen *Resurrection* source identity: 129 pinned revisions,
-  extraction/composition profiles, immutable counts and SHA-256 identities, legal/source
-  provenance, and the explicit `unknown` FantLab source-edition boundary. It contains no
-  novel prose and makes no parity claim.
-
-The Anna Karenina excerpt artifacts are bound to exact Russian Wikisource revisions and
-store provenance, hashes and derived metrics only. They are intentionally marked
-**illustrative excerpts**, not corpus entries and not FantLab parity evidence. Existing
-artifacts preserve the metric profile under which they were generated. The full-work
-morphology page deliberately uses the existing provenance-first publication contract: it
-makes the frozen source identity and source-match boundary visible while surfacing only a
-reviewed aggregate morphology summary in the evidence note. No token rows, runtime
-candidate rows, source prose or recovered FantLab rule are published. The *Resurrection*
-Pages slice is likewise provenance-first and keeps source-match and M2 parity fail-closed.
-
-The publication boundary is explicit rather than directory-based.
-[`site/publication-manifest.json`](site/publication-manifest.json) allow-lists public
-artifacts and freezes stable slugs plus source-text/admissibility safety metadata under
-[`scriptorium-publication-manifest-v1`](schemas/scriptorium-publication-manifest-v1.schema.json).
-The static renderer consumes only that manifest and re-validates canonical evidence
-before writing pages:
+The reader CLI bounds manuscripts to 32 MiB and dictionaries to 8 MiB, rejects special
+files and symlinks, and uses a create-only atomic writer. Operational errors do not echo
+private paths or source text. CSV neutralizes formula-like **text** while preserving
+numeric cells; spreadsheet import/save behavior is not universally guaranteed.
 
 ```bash
-python -m scriptorium.site_renderer --output build/site
+python -m unittest discover -s tests -v
+python -m pip wheel --no-deps . --wheel-dir dist
 ```
 
-Generated pages include a root index, stable `/works/<slug>/` views, derived metric or
-frozen-provenance evidence labels and selected provenance metadata. Artifact-controlled
-text is HTML-escaped, provenance links must be HTTP(S), and source selection prose is not
-copied into the output. The renderer validates the whole build before replacing the
-disposable output tree and emits `build.json` with exact input digests for reproducibility.
-See [`docs/SITE_RENDERER.md`](docs/SITE_RENDERER.md).
+The Reader package workflow tests the installed wheel outside the checkout; the existing
+Pages workflow runs the complete canonical suite and a byte-identical site rebuild.
+The full Python public API, morphology modules, benchmark data and corpus records remain
+in place. No external package-registry release is performed by CI.
 
-The reviewed GitHub Actions Pages pipeline now runs tests, builds the canonical static
-site twice, requires a byte-identical rebuild and uploads only the disposable generated
-site tree on relevant pull requests and `master` changes. Publication-source provenance
-changes also trigger the build, preventing a source trace from drifting away from a
-published derived artifact without CI noticing. **Live GitHub Pages deployment is still
-disabled**: deployment requires the explicit repository variable
-`SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true`, and repository Pages activation/settings remain
-a separate owner/admin effect. See [`docs/SITE_CONTRACT.md`](docs/SITE_CONTRACT.md).
+## Documentation
 
-## Project state
+[Reader installation and commands](docs/READER_PREVIEW.md) ·
+[Local analysis and dictionaries](docs/LOCAL_ANALYSIS.md) ·
+[Frozen diagnostic methodology](docs/FROZEN_DIAGNOSTIC_REPORT.md) ·
+[Canonical site and publication boundary](docs/FULL_WORK_SITE_REPORT.md)
 
-This is an hourly autonomous project operated with an EndlessZen-derived work cycle.
-The durable project contract lives in:
-
-- [`project/PROJECT_MANIFEST.md`](project/PROJECT_MANIFEST.md)
-- [`project/STATE_AND_QUEUE.md`](project/STATE_AND_QUEUE.md)
-- [`project/CHANGELOG.md`](project/CHANGELOG.md)
-- [`AGENTS.md`](AGENTS.md)
-
-The first public numeric reference is FantLab's analysis of Henry Lion Oldie's
-`Шутиха`; its published values are recorded in
-[`benchmarks/fantlab/work488.json`](benchmarks/fantlab/work488.json). No novel text is
-stored with that reference. The frozen *Anna Karenina* diagnostic adds the first
-full-work expected/actual comparison without promoting a source-unmatched candidate to
-parity; frozen *Resurrection* adds a second reproducible full-work source identity ready
-for the same diagnostic-only discipline.
-
-## Methodology status
-
-FantLab publicly describes sentence/dialogue metrics, vocabulary windows, POS
-statistics and bigrams, punctuation/character features, and the weighted construction
-of author profiles. It also says some corrective coefficients and implementation
-know-how are unpublished. Scriptorium therefore distinguishes benchmarked
-**reproduced** behavior from evidence-based **inferred** behavior and Scriptorium-only
-**extensions**.
-
-See [`docs/RESEARCH_EVIDENCE.md`](docs/RESEARCH_EVIDENCE.md) and
-[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+The previous detailed README is preserved as [Research and evidence index](RESEARCH_INDEX.md).
+It retains the project history, corpus investigations and original reference links.
+The remaining unpublished EPUB/batch Workbench prototypes are **not** advertised as
+features of this integrated preview; they need focused adoption and repository tests.

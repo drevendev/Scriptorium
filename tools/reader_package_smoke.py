@@ -35,9 +35,15 @@ def main():
         run("diagnostic", repo / "benchmarks/fantlab/work270306-wikisource-diagnostic.json",
             "--output", root / "historical.html")
         assert (root / "historical.html").read_text(encoding="utf-8").count('scope="row"') == 28
-        run("site", "--repo-root", repo, "--output", root / "site")
-        assert (root / "site/works/anna-karenina-full-work-diagnostic/index.html").is_file()
-        assert "anna-karenina-full-work-diagnostic" in (root / "site/index.html").read_text(encoding="utf-8")
+    # The canonical renderer intentionally confines output to repo/build.
+    # Preserve that boundary without changing cwd or the installed import source.
+    build_root = repo / "build"
+    build_root.mkdir(exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="reader-smoke-", dir=build_root) as site_tmp:
+        site = Path(site_tmp) / "site"
+        run("site", "--repo-root", repo, "--output", site)
+        assert (site / "works/anna-karenina-full-work-diagnostic/index.html").is_file()
+        assert "anna-karenina-full-work-diagnostic" in (site / "index.html").read_text(encoding="utf-8")
     print("Installed Reader smoke PASS: public API, 29 metrics, JSON/HTML/CSV, historical report and canonical site")
 
 

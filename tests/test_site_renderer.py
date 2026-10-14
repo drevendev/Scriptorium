@@ -260,5 +260,22 @@ class StaticSiteRendererTests(unittest.TestCase):
         self.assertFalse(stale.exists())
 
 
+    def test_mid_write_failure_preserves_previous_build(self):
+        from unittest.mock import patch
+        build_site(self.root, self.output)
+        before = self._snapshot()
+        original_write = Path.write_text
+
+        def fail_receipt(path, *args, **kwargs):
+            if path.name == "build.json":
+                raise OSError("injected receipt write failure")
+            return original_write(path, *args, **kwargs)
+
+        with patch.object(Path, "write_text", fail_receipt):
+            with self.assertRaisesRegex(PublicationBuildError, "atomic site publication failed"):
+                build_site(self.root, self.output)
+        self.assertEqual(before, self._snapshot())
+
+
 if __name__ == "__main__":
     unittest.main()

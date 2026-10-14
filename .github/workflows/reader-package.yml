@@ -1,0 +1,51 @@
+name: Scriptorium Reader package
+
+on:
+  pull_request:
+    paths:
+      - "pyproject.toml"
+      - "scriptorium/**"
+      - "tests/**"
+      - "tools/reader_package_smoke.py"
+      - ".github/workflows/reader-package.yml"
+  push:
+    branches: [master]
+    paths:
+      - "pyproject.toml"
+      - "scriptorium/**"
+      - "tests/**"
+      - "tools/reader_package_smoke.py"
+      - ".github/workflows/reader-package.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  installed-reader:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.13"
+      - name: Run complete canonical suite
+        run: python -m unittest discover -s tests -v
+      - name: Build and install reader wheel
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip wheel --no-deps . --wheel-dir dist
+          python -m venv "$RUNNER_TEMP/reader-venv"
+          "$RUNNER_TEMP/reader-venv/bin/python" -m pip install --no-index --no-deps dist/*.whl
+      - name: Exercise installed package outside checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/reader-venv/bin/python" -I "$GITHUB_WORKSPACE/tools/reader_package_smoke.py" "$GITHUB_WORKSPACE"
+          "$RUNNER_TEMP/reader-venv/bin/scriptorium" --help

@@ -1,28 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 290
+STATE_REVISION: 291
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-02T09:12:28Z
-LAST_RESULT: SCRIP-CORPUS-087 / Issue #263 / PR #264 completed. Independent exact-head review re-read the six-file recovery patch at `950404bb86c191b7eacdf21eb34c231f1d906fc4`, confirmed 24/24 pull-request-triggered workflow runs completed successfully with no submitted reviews or unresolved review threads, and found no semantic merge blocker. PR #264 was squash-merged with expected-head protection as `a9df79ec04664011f6dddf3593031424b15c1073`; Issue #263 closed completed. Embedded text-layer status remains unverified; literary body, >=300k admission, FantLab-input identity, diagnostics, M2 and parity remain closed.
+LAST_COMMITTED_RUN_AT: 2026-10-07T12:21:02Z
+LAST_RESULT: Owner-requested delivery batch: repaired four mean-length unit labels in PR #268 at `50fbb9b9c0da59a5eb78c6826381b8acd3dd8aae` (654 hosted tests and canonical Pages double-build passed); implemented local analysis for #269 in PR #270 at `752f3c491af2f1c563a0c5ae31e9452f93a1c0a3` (22 focused real-engine tests, applicable hosted workflows passed); implemented the SCRIP-SITE-008 route for #271 in this stacked feature. These are branch/PR effects, not merges or live publication. Later fresh acceptance remains required.
 LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable inferred candidates. Public corpus/showcase evidence includes exact frozen/admitted works and source-free derived outputs, while no retained work has an independently established FantLab analyzer-input identity. Perelman now has independently reviewed exact PDF/DjVu identities, pagination, current Wikisource/FantLab surface boundaries, zero-PDF-PageLabels evidence, front-matter anchors, transition/tail anchors, restored-page interior observations, and canonical broad mid-body exact-PDF anchors that expose an unlabelled carrier page while keeping global mapping closed. Darwin/Rachinsky retains canonical reviewed dependency/replay/provider evidence through SCRIP-CORPUS-084. M2 stays 0/5.
 
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-SITE-007
-ISSUE:          #267
+UNIT_ID:        SCRIP-SITE-008
+ISSUE:          #271
 STATUS:         REVIEW_PENDING
-PR:             Resolve the linked product PR from Issue #267; GitHub owns current head/check/merge facts.
-BASE:           abe7bb889ef98437ba9faef5a79b023499556991
-NEXT_ACTION:    Later exact-head acceptance of the readable frozen diagnostic report.
-                Inspect code/tests and applicable full-suite/Pages CI; do not merge in the authoring run.
-                Keep the existing historical diagnostic and all source-match/parity gates unchanged.
+PR:             Resolve the linked route-integration PR from #271; GitHub owns current head/check/merge facts.
+BASE:           50fbb9b9c0da59a5eb78c6826381b8acd3dd8aae (PR #268)
+NEXT_ACTION:    Review/accept #268 separately, then accept this stacked route on a fresh exact head.
+                PR #270 is independent and can receive its own later acceptance without waiting for this stack.
+                Re-read applicable full-suite/Pages CI, source-free bytes and publication interlocks.
 ```
 
-PR #266 is merged as `abe7bb889ef98437ba9faef5a79b023499556991`; it is not a pending
-recovery blocker. The older LAST_RESULT above describes the completed corpus unit.
-The report PR adopts useful local work with 23 focused tests; hosted acceptance and
-actual merge/publication are separate native GitHub effects, not implied here.
+PR #266 is already merged as `abe7bb889ef98437ba9faef5a79b023499556991` and is not a
+recovery blocker. GitHub writes succeeded in the 2026-10-07 interactive delivery pass;
+this does not establish scheduled-context capability. Do not repeat old denied mutations
+without a material capability change. This feature includes the real homepage report
+action and shared keyboard/mobile structure; do not reimplement them from old preview ZIPs.
 
 ## Current milestone gate
 
@@ -44,11 +45,17 @@ milestone does not declare M1/M2 complete.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-SITE-007 / #267 | acceptance / delivery | Accept the offline frozen diagnostic HTML/CLI on its fresh PR head | Full applicable tests/checks; later-run acceptance; no source-match promotion |
-| P2 | SCRIP-SITE-008 | public experience | Integrate the reviewed report into the existing Pages allow-list and work route | Reuse report primitives; correct the old local patcher's indentation error; test actual renderer, full build and byte-identical rebuild; deployment rights block live publication only |
-| P3 | SCRIP-METRIC-003 | analyzer / CLI | Local UTF-8 text to readable report and JSON using current deterministic metrics | Adopt/revalidate pending local work against actual core modules; private text stays local; dictionary-dependent unknowns stay explicit |
-| P4 | SCRIP-SITE-009 | public experience | Reader-first homepage and README with real actions and evidence labels | Revalidate pending local work against accepted Pages items; no invented analyses or capabilities |
-| P5 | SCRIP-CORPUS continuation | corpus / provenance | Strengthen a legally usable >=300k diversity candidate with a new executable extraction/provenance result | Preserve translation/edition identity; candidate-specific body/FantLab gates; unchanged scans do not block P1-P4 |
+| P1 | SCRIP-SITE-007 / #267 / PR #268 | acceptance | Fresh acceptance of the fixed offline report | Exact head, applicable checks and later-run gate; unit-label fix is already on the PR branch |
+| P2 | SCRIP-METRIC-003 / #269 / PR #270 | acceptance | Ship local UTF-8 text to private JSON/offline HTML | Independent of #268; review actual core integration, create-only writer and exact-head CI |
+| P3 | SCRIP-SITE-008 / #271 | public experience | Ship five canonical routes including the 28-metric full-work report | Stack depends on #268; digest/source flags, full suite and deterministic build; deployment rights block live publication only |
+| P4 | SCRIP-COMPARE-002 pending handoff | analyzer / comparison | Adopt one tested two-diagnostic comparison CLI into the repository | Deduplicate current code/PRs, preserve missing values and schema/profile boundaries; test real canonical Anna/Grin bytes |
+| P5 | SCRIP-CORPUS continuation | corpus / provenance | Advance one independent legally usable >=300k diversity candidate | New executable evidence only; preserve translation/edition and FantLab-input gates |
+
+SCRIP-SITE-009's homepage action and keyboard structure are partly covered by #271;
+README local-analysis instructions are in #270. Remaining visual acceptance is scoped:
+the interactive Chromium attempt to the actual local build returned
+`net::ERR_BLOCKED_BY_ADMINISTRATOR`. Structural/link tests and canonical double builds
+passed, but screenshots remain VISUAL_NOT_VERIFIED. No browser restriction was bypassed.
 
 ## Retained corpus / provenance orientation
 

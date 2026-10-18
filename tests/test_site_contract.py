@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from scriptorium.publication import derive_compatibility_claim, validate_compatibility_claim
+from scriptorium import site_frozen_diagnostic
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,11 +52,20 @@ class PublicationManifestContractTests(unittest.TestCase):
             self.assertFalse(entry["source_text_included"])
 
     def test_seed_manifest_matches_canonical_showcase_safety_labels(self):
-        self.assertEqual(len(self.manifest["entries"]), 4)
+        self.assertEqual(len(self.manifest["entries"]), 5)
         for entry in self.manifest["entries"]:
             artifact = json.loads(
                 (ROOT / entry["artifact_path"]).read_text(encoding="utf-8")
             )
+            if entry["artifact_schema"] == site_frozen_diagnostic.FROZEN_PROFILE:
+                raw = (ROOT / entry["artifact_path"]).read_bytes()
+                item = site_frozen_diagnostic.prepare(entry, artifact, raw)
+                self.assertEqual(item["metric_count"], 28)
+                self.assertEqual(entry["compatibility_claim"], "inferred")
+                self.assertEqual(entry["corpus_admissibility"], "not_admissible")
+                self.assertIs(artifact["epistemic_status"]["m2_parity_admissible"], False)
+                self.assertEqual(artifact["epistemic_status"]["fantlab_source_edition_match"], "unknown")
+                continue
             self.assertEqual(entry["entry_id"], artifact["showcase_id"])
             self.assertEqual(entry["publication_status"], artifact["status"])
             self.assertEqual(

@@ -12,6 +12,24 @@ legally usable and at least 300,000 characters including spaces; copyrighted tex
 not committed merely because it is accessible online. Shorter texts and excerpts are
 still valid analyzer inputs, but their results carry representativeness warnings.
 
+## Open a real diagnostic report
+
+From a checkout with Python 3.13, generate a readable offline report from the existing
+full-work Anna Karenina comparison — no novel download is needed:
+
+```bash
+python -m scriptorium.frozen_diagnostic_report \
+  benchmarks/fantlab/work270306-wikisource-diagnostic.json \
+  --title "Anna Karenina — full-work diagnostic" \
+  --output anna-diagnostic.html
+```
+
+Open `anna-diagnostic.html` in a browser. It shows 28 historical expected/actual/delta
+rows, explicit units and missing values, source hashes and diagnostic-only evidence
+labels. This is a presentation of existing results, not a new analyzer run or FantLab
+parity. Output is create-only; use a new filename on repeat runs. See
+[`docs/FROZEN_DIAGNOSTIC_REPORT.md`](docs/FROZEN_DIAGNOSTIC_REPORT.md).
+
 ## What works today
 
 Scriptorium now has a standard-library-only deterministic analysis core:

@@ -1,6 +1,6 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 289
+STATE_REVISION: 290
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-02T09:12:28Z
 LAST_RESULT: SCRIP-CORPUS-087 / Issue #263 / PR #264 completed. Independent exact-head review re-read the six-file recovery patch at `950404bb86c191b7eacdf21eb34c231f1d906fc4`, confirmed 24/24 pull-request-triggered workflow runs completed successfully with no submitted reviews or unresolved review threads, and found no semantic merge blocker. PR #264 was squash-merged with expected-head protection as `a9df79ec04664011f6dddf3593031424b15c1073`; Issue #263 closed completed. Embedded text-layer status remains unverified; literary body, >=300k admission, FantLab-input identity, diagnostics, M2 and parity remain closed.
@@ -9,14 +9,20 @@ LAST_VERIFIED_PROGRESS: M1 deterministic metric families remain executable infer
 ## Current unit
 
 ```text
-UNIT_ID:        SCRIP-CORPUS-087
-ISSUE:          #263 (closed completed)
-STATUS:         COMPLETE
-PR:             #264 (squash-merged as a9df79ec04664011f6dddf3593031424b15c1073)
-REVIEWED_HEAD:  950404bb86c191b7eacdf21eb34c231f1d906fc4
-NEXT_ACTION:    Resume normal-flow P1 SCRIP-CORPUS continuation.
-                Prefer an executable Petersburg/Perelman/Darwin-Rachinsky extraction or provenance unit that strengthens a >=300k candidate while keeping unsupported parity gates closed.
+UNIT_ID:        SCRIP-SITE-007
+ISSUE:          #267
+STATUS:         REVIEW_PENDING
+PR:             Resolve the linked product PR from Issue #267; GitHub owns current head/check/merge facts.
+BASE:           abe7bb889ef98437ba9faef5a79b023499556991
+NEXT_ACTION:    Later exact-head acceptance of the readable frozen diagnostic report.
+                Inspect code/tests and applicable full-suite/Pages CI; do not merge in the authoring run.
+                Keep the existing historical diagnostic and all source-match/parity gates unchanged.
 ```
+
+PR #266 is merged as `abe7bb889ef98437ba9faef5a79b023499556991`; it is not a pending
+recovery blocker. The older LAST_RESULT above describes the completed corpus unit.
+The report PR adopts useful local work with 23 focused tests; hosted acceptance and
+actual merge/publication are separate native GitHub effects, not implied here.
 
 ## Current milestone gate
 
@@ -26,11 +32,23 @@ M2 remains open at **0/5 source-matched works**. Public-source freezing, bibliog
 
 ## Queue
 
-Recovery/review-ready work and failing required checks preempt normal selection.
+The 2026-10-02 owner correction authorizes solo product/backlog ownership and independent
+analyzer, CLI and public-experience delivery. Recovery and failing checks preempt only
+when executable; unchanged corpus, write or bookkeeping blockers are scoped dependencies,
+not a global ordering rule. Preserve scientific/security and later-run acceptance gates.
+
+Next user-visible milestone: a reader can open a real full-work diagnostic with units,
+missing values and provenance, then reach it through the static site; a local-text CLI
+must remain usable independently of source-matched corpus admission. This incremental
+milestone does not declare M1/M2 complete.
 
 | Priority | Unit | Mode | Deliverable | Gate / dependency |
 | --- | --- | --- | --- | --- |
-| P1 | SCRIP-CORPUS continuation | corpus / provenance | Add or strengthen legally usable >=300k candidates, prioritizing diversity beyond 19th-century Russian classics; Petersburg, Perelman and Darwin/Rachinsky have candidate-specific extraction/renderer work available | Preserve translation/edition identity and legal provenance; renderer/OCR work must keep body/admission/FantLab/M2 gates closed until separately verified |
+| P1 | SCRIP-SITE-007 / #267 | acceptance / delivery | Accept the offline frozen diagnostic HTML/CLI on its fresh PR head | Full applicable tests/checks; later-run acceptance; no source-match promotion |
+| P2 | SCRIP-SITE-008 | public experience | Integrate the reviewed report into the existing Pages allow-list and work route | Reuse report primitives; correct the old local patcher's indentation error; test actual renderer, full build and byte-identical rebuild; deployment rights block live publication only |
+| P3 | SCRIP-METRIC-003 | analyzer / CLI | Local UTF-8 text to readable report and JSON using current deterministic metrics | Adopt/revalidate pending local work against actual core modules; private text stays local; dictionary-dependent unknowns stay explicit |
+| P4 | SCRIP-SITE-009 | public experience | Reader-first homepage and README with real actions and evidence labels | Revalidate pending local work against accepted Pages items; no invented analyses or capabilities |
+| P5 | SCRIP-CORPUS continuation | corpus / provenance | Strengthen a legally usable >=300k diversity candidate with a new executable extraction/provenance result | Preserve translation/edition identity; candidate-specific body/FantLab gates; unchanged scans do not block P1-P4 |
 
 ## Retained corpus / provenance orientation
 

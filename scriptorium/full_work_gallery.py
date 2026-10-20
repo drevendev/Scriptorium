@@ -107,19 +107,29 @@ def _load(root: Path, index: int):
         value = values.get(key)
         if value is None or value < 0 or (unit == "%" and value > 100):
             raise GalleryError("missing or invalid shared measurement")
+    # Cardinal observations are countable events; JSON 10.0 is not an integer.
+    for metric_id in ("fantlab.general.characters", "fantlab.general.words",
+                      "fantlab.vocabulary.unique_words"):
+        if type(values[metric_id]) is not int:
+            raise GalleryError("cardinal measurement must be an integer")
     if (values["fantlab.general.characters"] != size or
+            values["fantlab.general.words"] > size or
             values["fantlab.vocabulary.unique_words"] > values["fantlab.general.words"]):
         raise GalleryError("inconsistent body statistics")
     profiles = doc.get("scriptorium", {}).get("profiles", {})
     return {"id": candidate, "title": title, "author": author, "evidence": evidence,
             "body": size, "body_hash": body["raw_sha256"], "json_hash": hashlib.sha256(data).hexdigest(),
-            "profiles": tuple(profiles.get(k) for k in ("metrics", "normalization", "punctuation")),
+            # Each of these algorithms can change at least one displayed metric.
+            "profiles": tuple(profiles.get(k) for k in (
+                "metrics", "normalization", "dialogue", "vocabulary", "punctuation"
+            )),
             "values": values}
 
 
 def load_gallery(root: Path):
     records = tuple(_load(root, index) for index in range(2))
-    if not all(records[0]["profiles"]) or records[0]["profiles"] != records[1]["profiles"]:
+    if (any(type(p) is not str or not p for p in records[0]["profiles"]) or
+            records[0]["profiles"] != records[1]["profiles"]):
         raise GalleryError("incompatible measurement profiles")
     return records
 

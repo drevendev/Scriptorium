@@ -57,9 +57,11 @@ python -m scriptorium.full_work_gallery --repo-root . --format csv > build/full-
 ```
 
 Open `build/full-work-gallery.html` for ten exact measurements and seven row-wise charts.
-These are Scriptorium-side results, not FantLab parity or author-style scores. This
-comparison is an offline preview, not yet a canonical Pages route. Shell redirection
-replaces its destination; use new filenames to keep older exports. [Method and limits](docs/FULL_WORK_GALLERY.md).
+These are Scriptorium-side results, not FantLab parity or author-style scores. The comparison now also has a pinned canonical site route:
+`build/site/works/two-full-work-differences/index.html`, with downloadable
+`measurements.json` and `measurements.csv`. The offline command remains available.
+Building this route does not prove GitHub Pages is deployed.
+Shell redirection replaces its destination; use new filenames to keep older exports. [Method and limits](docs/FULL_WORK_GALLERY.md).
 
 ## What the results mean
 

@@ -52,21 +52,32 @@ runs.
 
 ## Mode selection
 
-The authorized hourly task prompt supplies the current deterministic selection policy:
+The 2026-10-02 owner correction delegates solo product/backlog ownership, reconciled in
+this manifest by the 2026-10-18 owner-requested delivery cleanup. Success means working
+analyzer capabilities, verified fixes, qualifying merges, reproducible results and a
+useful public experience, not repeated paperwork or recurring failed writes.
 
-1. recover interrupted or review-ready work;
-2. fix a failing required check or benchmark regression;
-3. satisfy the current milestone gate;
-4. execute the highest-priority unblocked queue unit;
-5. perform a consumer/corpus/provenance review when its trigger is due;
-6. report no executable work.
+Select the strongest executable unit, closing-first:
 
-This deployment does **not** yet have an independent external EndlessZen mode controller
-that persists a selection receipt before each run. Until one is bound and verified, the
-worker applies the user-authorized deterministic ladder above and records this as a
-known conformance gap rather than claiming mechanical mode selection. The worker may
-propose a policy change, but it may not silently change this ladder; goal or gate changes
-require a manifest amendment with a reason.
+1. reconcile ambiguous partial effects and actual product/evidence regressions;
+2. fix new findings, failing applicable checks or conflicts on existing work;
+3. accept/merge eligible earlier work, or recover useful unfinished code into its PR path;
+4. implement the strongest ready analyzer, benchmark, CLI or public-experience slice;
+5. remove concrete reliability, reproducibility, accessibility, installation or release friction;
+6. research a genuinely blocking question with a new decision/test/experiment/ready task.
+
+Known unchanged blockers affect dependent work only and are excluded from repeatedly
+winning selection. A corpus-only inherited queue, a scan candidate or a bookkeeping PR
+is not a prerequisite for authorized independent product work. Maintain one compact
+ordered backlog in STATE_AND_QUEUE; ROADMAP describes acceptance rather than another
+mutable control plane. Ordinary wakes finish one bounded semantic outcome. Explicit
+interactive owner batches may request several repository outcomes.
+
+Scientific completion and incremental availability are separate: ship clearly labeled
+partial/inferred reports and independently validated extension previews while preserving
+all M1-M5 criteria below. The absence of an independently verified external mode controller
+remains a conformance limitation, not a global prerequisite or authority to stop useful
+work. Do not silently change the mission, scientific gates or equality/tolerance rules.
 
 ## Liveness
 
@@ -75,6 +86,10 @@ CADENCE:           hourly
 OBSERVER:          user / ChatGPT task UI
 TOLERATED_SILENCE: 3 hours
 ```
+
+The same existing hourly task is perpetual until the owner explicitly changes its
+lifecycle. Ordinary wakes must not mutate/disable/pause/replace/retire it for blockers,
+provider outages, failed tests, empty queues or apparent completion.
 
 A stopped worker cannot self-report liveness. Repository state records only committed
 runs, never claims that the scheduler itself is healthy.
@@ -224,3 +239,4 @@ curation programme until the user stops or changes scope.
 | --- | --- | --- |
 | 2026-09-11 | Initial manifest | User commissioned the project and hourly autonomous development. |
 | 2026-09-11 | Record mode-controller conformance gap | Bootstrap review found that the deployment has an authorized deterministic ladder but no independently verified external selection receipt mechanism. |
+| 2026-10-18 | Reconcile the 2026-10-02 owner delivery correction and perpetual-task boundary | Executable closing-first selection, scoped blockers and incremental product availability replace corpus/process-only ordering. Scientific M0-M5 gates and equality/tolerance rules are unchanged. |

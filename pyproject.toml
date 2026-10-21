@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scriptorium-reader"
+version = "0.2.0a1"
+description = "Private literary-text analysis and evidence-labelled reader reports"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+scriptorium = "scriptorium.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["scriptorium*"]
+
+[tool.setuptools]
+include-package-data = false

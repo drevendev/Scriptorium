@@ -12,12 +12,12 @@ import hashlib
 import html
 import json
 import re
-import shutil
 from collections.abc import Mapping, Sequence
 from pathlib import Path, PurePosixPath
 from typing import Any
 from urllib.parse import urlsplit
 
+from .site_publish import staged_site
 from .publication import validate_compatibility_claim
 from . import site_frozen_diagnostic
 
@@ -670,16 +670,17 @@ def _prepare_output(repo_root: Path, output_dir: Path) -> Path:
     root = repo_root.resolve()
     if output_dir.is_symlink():
         raise PublicationBuildError("output directory must not be a symlink")
-    output = output_dir.resolve()
+    if output_dir.absolute() != output_dir.resolve(strict=False):
+        raise PublicationBuildError("output directory must stay inside the repository build/ tree")
+    output = output_dir.resolve(strict=False)
     try:
         relative = output.relative_to(root)
     except ValueError as exc:
         raise PublicationBuildError("output directory must stay inside the repository build/ tree") from exc
-    if not relative.parts or relative.parts[0] != "build":
+    if not relative.parts or relative.parts[0] != "build" or len(relative.parts) < 2:
         raise PublicationBuildError("output directory must stay inside the repository build/ tree")
-    if output.exists():
-        shutil.rmtree(output)
-    output.mkdir(parents=True)
+    if output.exists() and not output.is_dir():
+        raise PublicationBuildError("output directory must be a directory")
     return output
 
 
@@ -736,19 +737,23 @@ def build_site(
     output_path = Path(output_dir)
     if not output_path.is_absolute():
         output_path = root / output_path
-    output = _prepare_output(root, output_path)
-    (output / "assets").mkdir()
-    (output / "assets" / "site.css").write_text(_SITE_CSS, encoding="utf-8", newline="\n")
-    (output / "index.html").write_text(index_html, encoding="utf-8", newline="\n")
-    for slug, page_html in work_pages.items():
-        work_dir = output / "works" / slug
-        work_dir.mkdir(parents=True)
-        (work_dir / "index.html").write_text(page_html, encoding="utf-8", newline="\n")
-    (output / "build.json").write_text(
-        json.dumps(build_record, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    destination = _prepare_output(root, output_path)
+    try:
+        with staged_site(root, destination) as output:
+            (output / "assets").mkdir()
+            (output / "assets" / "site.css").write_text(_SITE_CSS, encoding="utf-8", newline="\n")
+            (output / "index.html").write_text(index_html, encoding="utf-8", newline="\n")
+            for slug, page_html in work_pages.items():
+                work_dir = output / "works" / slug
+                work_dir.mkdir(parents=True)
+                (work_dir / "index.html").write_text(page_html, encoding="utf-8", newline="\n")
+            (output / "build.json").write_text(
+                json.dumps(build_record, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+    except OSError as exc:
+        raise PublicationBuildError("atomic site publication failed") from exc
     return build_record
 
 

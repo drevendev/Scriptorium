@@ -31,6 +31,20 @@ METRICS = (
     ("fantlab.punctuation.question.per_1000_words", "Question marks", "per 1,000 words", True),
 )
 
+# Source JSON uses stable scientific units, whereas the human Reader uses labels.
+# This is a unit conversion (not a second registry of metric IDs); METRICS remains
+# the single declaration of the ten displayed measurements.
+_SOURCE_UNIT_BY_DISPLAY_UNIT = {
+    "characters": "characters",
+    "words": "words",
+    "characters/word": "characters/word",
+    "characters/sentence": "characters/sentence",
+    "%": "percent",
+    "types": "words",
+    "per 1,000 words": "occurrences/1000_words",
+}
+
+
 class GalleryError(ValueError):
     """Unverified or unsafe source-free evidence."""
 
@@ -87,6 +101,8 @@ def _load(root: Path, index: int):
     if not isinstance(metric_rows, list) or len(metric_rows) > 500:
         raise GalleryError("invalid metric collection")
     values = {}
+    # Grin diagnostics have no source-unit field. Do not invent one for them.
+    source_units = {} if index == 1 else None
     for row in metric_rows:
         if not isinstance(row, dict) or not isinstance(row.get("metric_id"), str):
             raise GalleryError("invalid metric row")
@@ -103,10 +119,16 @@ def _load(root: Path, index: int):
         if status == "not_run_dependency_unbound" and number is not None:
             raise GalleryError("not-run cannot have a value")
         values[mid] = number
+        if source_units is not None:
+            source_units[mid] = row.get("unit")
     for key, _, unit, normalized in METRICS:
         value = values.get(key)
         if value is None or value < 0 or (unit == "%" and value > 100):
             raise GalleryError("missing or invalid shared measurement")
+        # A newly approved, correctly repinned derived JSON may still be invalid
+        # for presentation (e.g. ratio silently displayed as a percent).
+        if source_units is not None and source_units.get(key) != _SOURCE_UNIT_BY_DISPLAY_UNIT[unit]:
+            raise GalleryError("incompatible source unit for displayed metric")
     # Cardinal observations are countable events; JSON 10.0 is not an integer.
     for metric_id in ("fantlab.general.characters", "fantlab.general.words",
                       "fantlab.vocabulary.unique_words"):
@@ -169,7 +191,7 @@ def render_html(records):
                             cssclass + "' style='width:" + width + "%'></div></div><strong>" +
                             format(value, ".2f") + "</strong></div>")
             charts.append("<li><h3>" + esc(label) + " <small>" + esc(unit) + "</small></h3>" + "".join(bars) + "</li>")
-    css = """*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f6f1e5;color:#20312b;font:16px/1.55 system-ui,sans-serif}.wrap{max-width:1120px;margin:auto;padding:clamp(1rem,4vw,3rem)}h1,h2,h3{font-family:Georgia,serif;font-weight:400;line-height:1.15}h1{font-size:clamp(2.8rem,6vw,5.5rem)}.lede{font-size:1.15rem;max-width:65ch}.eyebrow{font-size:.8rem;color:#20665f;text-transform:uppercase;letter-spacing:.09em;font-weight:700}.skip{position:absolute;top:-5rem;left:1rem;background:white;padding:1rem}.skip:focus{top:1rem}a{color:#14615a}a:focus-visible,summary:focus-visible,.scroll:focus-visible{outline:3px solid #a24f07;outline-offset:4px}.notice{padding:1rem 1.4rem;background:#e1ece6;border-left:5px solid #266b64}.cards,.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.card,.charts li{min-width:0;background:#fffdf8;border:1px solid #d7cebd;border-radius:.7rem;padding:1.4rem}.big{display:block;font:3rem Georgia,serif;margin:1rem 0}.card code{overflow-wrap:anywhere}.charts{padding:0;list-style:none}.charts h3{font-size:1.2rem}.charts small,th small{font:.8rem system-ui,sans-serif;color:#52635b}.bar{display:grid;grid-template-columns:3rem minmax(0,1fr) 4rem;gap:.6rem;align-items:center;font-size:.85rem;margin:.7rem 0}.bar strong{text-align:right}.track{background:#e2e0d5;height:.9rem;border-radius:3px;overflow:hidden}.fill{height:100%;border-radius:3px}.teal{background:#277069}.ochre{background:#ae7134}section{padding-top:2.5rem}.scroll{overflow:auto;background:#fffdf8;border:1px solid #d7cebd;border-radius:.5rem}table{border-collapse:collapse;width:100%;min-width:570px}caption{text-align:left;padding:1rem}th,td{text-align:left;padding:.8rem 1rem;border-bottom:1px solid #ded4c5;font-variant-numeric:tabular-nums}summary{cursor:pointer;min-height:44px;padding:.8rem 0;font-weight:700}footer{margin-top:3rem;border-top:1px solid #d7cebd;padding:1.5rem 0}@media(max-width:700px){.cards,.charts{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}"""
+    css = """*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f6f1e5;color:#20312b;font:16px/1.55 system-ui,sans-serif}.wrap{max-width:1120px;margin:auto;padding:clamp(1rem,4vw,3rem)}h1,h2,h3{font-family:Georgia,serif;font-weight:400;line-height:1.15}h1{font-size:clamp(2.8rem,6vw,5.5rem)}.lede{font-size:1.15rem;max-width:65ch}.eyebrow{font-size:.8rem;color:#20665f;text-transform:uppercase;letter-spacing:.09em;font-weight:700}.skip{position:absolute;top:-5rem;left:1rem;background:white;padding:1rem}.skip:focus{top:1rem}a{color:#14615a}a:focus-visible,summary:focus-visible,.scroll:focus-visible{outline:3px solid #a24f07;outline-offset:4px}.notice{padding:1rem 1.4rem;background:#e1ece6;border-left:5px solid #266b64}.cards,.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.card,.charts li{min-width:0;background:#fffdf8;border:1px solid #d7cebd;border-radius:.7rem;padding:1.4rem}.big{display:block;font:3rem Georgia,serif;margin:1rem 0}.card code{overflow-wrap:anywhere}.charts{padding:0;list-style:none}.charts h3{font-size:1.2rem}.charts small,th small{font:.8rem system-ui,sans-serif;color:#52635b}.bar{display:grid;grid-template-columns:3rem minmax(0,1fr) 4rem;gap:.6rem;align-items:center;font-size:.85rem;margin:.7rem 0}.bar strong{text-align:right}.track{background:#e2e0d5;height:.9rem;border-radius:3px;overflow:hidden}.fill{height:100%;border-radius:3px}.teal{background:#277069}.ochre{background:#ae7134}section{padding-top:2.5rem}.scroll{overflow:auto;background:#fffdf8;border:1px solid #d7cebd;border-radius:.5rem}table{border-collapse:collapse;width:100%;min-width:570px}caption{text-align:left;padding:1rem}th,td{text-align:left;padding:.8rem 1rem;border-bottom:1px solid #ded4c5;font-variant-numeric:tabular-nums}summary{cursor:pointer;min-height:44px;padding:.8rem 0;font-weight:700}footer{margin-top:3rem;border-top:1px solid #d7cebd;padding:1.5rem 0}nav a,.actions a{display:inline-flex;align-items:center;min-height:44px;padding:.65rem .85rem}nav{display:flex;flex-wrap:wrap;gap:.5rem}.actions{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem}.actions a{border:1px solid #266b64;border-radius:.35rem;background:#e1ece6}#main:focus-visible,#comparison:focus-visible{outline:3px solid #a24f07;outline-offset:4px}@media(max-width:700px){.cards,.charts{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}"""
     return ("<!doctype html>\n<html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>" +
             "<title>Scriptorium — Two analyzed works</title><style>" + css + "</style></head><body>" +
             "<a class='skip' href='#main'>Skip to content</a><main id='main' class='wrap'><header><p class='eyebrow'>Scriptorium / Literary measurement</p>" +

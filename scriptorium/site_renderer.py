@@ -20,6 +20,7 @@ from urllib.parse import urlsplit
 from .site_publish import staged_site
 from .publication import validate_compatibility_claim
 from . import site_frozen_diagnostic
+from . import site_work_comparison
 
 GENERATOR_PROFILE = "scriptorium-static-site-v2"
 MANIFEST_PROFILE = "scriptorium-publication-manifest-v1"
@@ -522,6 +523,13 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
             f'Explore the {_escape(featured["metric_count"])}-metric full-work report →</a> '
             '<a href="#works">Browse all evidence pages</a></p>'
         )
+    comparison = next((item for item in entries if item.get("render_mode") == "comparison"), None)
+    if comparison is not None:
+        action += (
+            '<p class="actions"><a class="primary-action" href="works/'
+            + _escape(comparison["slug"])
+            + '/">Compare Grin and Verne — two full-length works →</a></p>'
+        )
     body = (
         '<main id="main-content" tabindex="-1"><p class="eyebrow">Scriptorium · literary analysis</p>'
         '<h1>Explore the language behind a story.</h1>'
@@ -628,6 +636,8 @@ def _render_provenance_work(item: Mapping[str, Any]) -> str:
 
 
 def _render_work(item: Mapping[str, Any]) -> str:
+    if item.get("render_mode") == "comparison":
+        return item["report_html"]
     if item.get("render_mode") == "frozen_diagnostic":
         return item["report_html"]
     if item.get("render_mode") == "provenance":
@@ -710,6 +720,29 @@ def build_site(
         seen_ids.add(entry_id)
         seen_slugs.add(slug)
 
+        if entry.get("kind") == "work_comparison":
+            try:
+                site_work_comparison.validate_entry(dict(entry))
+                published = site_work_comparison.build(root)
+            except site_work_comparison.ComparisonBuildError as exc:
+                raise PublicationBuildError(str(exc)) from exc
+            item = {
+                **site_work_comparison.EXPECTED_ENTRY,
+                "render_mode": "comparison",
+                "author": "Alexander Grin / Jules Verne",
+                "work_title": "Running on Waves / The Children of Captain Grant — Beketova translation",
+                "report_html": published["html"],
+                "json_data": published["json"],
+                "csv_data": published["csv"],
+            }
+            render_items.append(item)
+            input_rows.append({
+                "entry_id": entry_id,
+                "artifact_paths": published["input_artifacts"],
+                "route": f"works/{slug}/",
+            })
+            continue
+
         artifact_path = _safe_artifact_path(root, entry.get("artifact_path"))
         artifact, artifact_raw = _read_json(artifact_path)
         item = _validate_showcase(entry, artifact, artifact_raw)
@@ -747,6 +780,14 @@ def build_site(
                 work_dir = output / "works" / slug
                 work_dir.mkdir(parents=True)
                 (work_dir / "index.html").write_text(page_html, encoding="utf-8", newline="\n")
+                registered = next(item for item in render_items if item["slug"] == slug)
+                if registered.get("render_mode") == "comparison":
+                    (work_dir / "measurements.json").write_text(
+                        registered["json_data"], encoding="utf-8", newline="\n"
+                    )
+                    (work_dir / "measurements.csv").write_text(
+                        registered["csv_data"], encoding="utf-8", newline="\n"
+                    )
             (output / "build.json").write_text(
                 json.dumps(build_record, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
                 encoding="utf-8",

@@ -73,6 +73,22 @@
       "corpus_admissibility": "not_admissible",
       "compatibility_claim": "inferred",
       "source_text_included": false
+    },
+    {
+      "entry_id": "grin-verne-frozen-work-comparison-v1",
+      "kind": "work_comparison",
+      "slug": "two-full-work-differences",
+      "title": "Running on Waves × The Children of Captain Grant — measured differences",
+      "artifact_paths": [
+        "corpus/candidates/diagnostics/grin-running-on-waves-ru.json",
+        "corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json"
+      ],
+      "artifact_schema": "scriptorium-full-work-gallery-v1",
+      "publication_status": "diagnostic",
+      "benchmark_admissibility": "diagnostic_only",
+      "corpus_admissibility": "not_admissible",
+      "compatibility_claim": "inferred",
+      "source_text_included": false
     }
   ]
 }

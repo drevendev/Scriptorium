@@ -17,7 +17,10 @@
     "generated_from": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["repository", "branch"],
+      "required": [
+        "repository",
+        "branch"
+      ],
       "properties": {
         "repository": {
           "const": "drevendev/Scriptorium"
@@ -30,7 +33,10 @@
     "deployment": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["publication_source", "generated_output_committed"],
+      "required": [
+        "publication_source",
+        "generated_output_committed"
+      ],
       "properties": {
         "publication_source": {
           "const": "github_actions"
@@ -51,7 +57,6 @@
           "kind",
           "slug",
           "title",
-          "artifact_path",
           "artifact_schema",
           "publication_status",
           "benchmark_admissibility",
@@ -69,7 +74,8 @@
               "work_showcase",
               "benchmark",
               "author_profile",
-              "tag_profile"
+              "tag_profile",
+              "work_comparison"
             ]
           },
           "slug": {
@@ -118,8 +124,79 @@
           },
           "source_text_included": {
             "const": false
+          },
+          "artifact_paths": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "prefixItems": [
+              {
+                "const": "corpus/candidates/diagnostics/grin-running-on-waves-ru.json"
+              },
+              {
+                "const": "corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json"
+              }
+            ],
+            "items": false
           }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "work_comparison"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "artifact_paths"
+              ],
+              "not": {
+                "required": [
+                  "artifact_path"
+                ]
+              },
+              "properties": {
+                "entry_id": {
+                  "const": "grin-verne-frozen-work-comparison-v1"
+                },
+                "slug": {
+                  "const": "two-full-work-differences"
+                },
+                "artifact_schema": {
+                  "const": "scriptorium-full-work-gallery-v1"
+                },
+                "publication_status": {
+                  "const": "diagnostic"
+                },
+                "benchmark_admissibility": {
+                  "const": "diagnostic_only"
+                },
+                "corpus_admissibility": {
+                  "const": "not_admissible"
+                },
+                "compatibility_claim": {
+                  "const": "inferred"
+                }
+              }
+            },
+            "else": {
+              "required": [
+                "artifact_path"
+              ],
+              "not": {
+                "required": [
+                  "artifact_paths"
+                ]
+              }
+            }
+          }
+        ]
       }
     }
   }

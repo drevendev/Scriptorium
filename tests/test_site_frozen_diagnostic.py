@@ -39,9 +39,12 @@ class FrozenSiteIntegrationTests(unittest.TestCase):
         self.manifest = json.loads((ROOT / "site/publication-manifest.json").read_text())
         (self.root / "site").mkdir(parents=True)
         for entry in self.manifest["entries"]:
-            destination = self.root / entry["artifact_path"]
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(ROOT / entry["artifact_path"], destination)
+            paths = (entry["artifact_paths"] if entry.get("kind") == "work_comparison"
+                     else [entry["artifact_path"]])
+            for rel in paths:
+                destination = self.root / rel
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / rel, destination)
         self.entry = next(row for row in self.manifest["entries"] if row["entry_id"] == frozen.ENTRY_ID)
         self.raw = (self.root / frozen.ARTIFACT_PATH).read_bytes()
         self.artifact = json.loads(self.raw)
@@ -64,6 +67,7 @@ class FrozenSiteIntegrationTests(unittest.TestCase):
             "works/tolstoy-anna-karenina-morphology-diagnostic/",
             "works/tolstoy-resurrection-provenance/",
             f"works/{frozen.SLUG}/",
+            "works/two-full-work-differences/",
         })
         self.assertEqual(record["generator_profile"], "scriptorium-static-site-v2")
         row = next(row for row in record["entries"] if row["entry_id"] == frozen.ENTRY_ID)
@@ -72,7 +76,7 @@ class FrozenSiteIntegrationTests(unittest.TestCase):
         self.assertIn("Explore the 28-metric full-work report", index)
         self.assertIn("full-work metrics", index)
         self.assertIn("provenance-only", index)
-        self.assertEqual(index.count('class="card"'), 5)
+        self.assertEqual(index.count('class="card"'), 6)
         rendered = (self.output / "works" / frozen.SLUG / "index.html").read_text()
         self.assertEqual(rendered.count('scope="row"'), 28)
         self.assertEqual(rendered.count("characters / word"), 1)
@@ -112,7 +116,11 @@ class FrozenSiteIntegrationTests(unittest.TestCase):
         site.build_site(self.root, self.output)
         for path in self.output.rglob("*.html"):
             rendered = path.read_text()
-            self.assertIn('id="main-content" tabindex="-1"', rendered)
+            if path.parent.name == "two-full-work-differences":
+                self.assertIn("id='main' class='wrap'", rendered)
+                self.assertIn("href='#main'", rendered)
+            else:
+                self.assertIn('id="main-content" tabindex="-1"', rendered)
             self.assertNotIn("<script", rendered)
             self.assertNotIn("Все счастливые семьи похожи друг на друга", rendered)
         css = (self.output / "assets/site.css").read_text()
@@ -124,7 +132,9 @@ class FrozenSiteIntegrationTests(unittest.TestCase):
         self.write_manifest()
         site.build_site(self.root, self.output)
         self.assertFalse((self.output / "works" / frozen.SLUG).exists())
-        self.assertNotIn("primary-action", (self.output / "index.html").read_text())
+        index = (self.output / "index.html").read_text()
+        self.assertNotIn("Explore the 28-metric full-work report", index)
+        self.assertIn("Compare Grin and Verne", index)
 
     def test_every_fixed_declaration_field_fails_closed(self):
         site.build_site(self.root, self.output)

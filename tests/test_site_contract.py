@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 from scriptorium.publication import derive_compatibility_claim, validate_compatibility_claim
-from scriptorium import site_frozen_diagnostic
+from scriptorium import site_frozen_diagnostic, site_work_comparison
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,15 +45,27 @@ class PublicationManifestContractTests(unittest.TestCase):
         self.assertEqual(len(slugs), len(set(slugs)))
 
         for entry in self.manifest["entries"]:
-            artifact = Path(entry["artifact_path"])
-            self.assertFalse(artifact.is_absolute())
-            self.assertNotIn("..", artifact.parts)
-            self.assertTrue((ROOT / artifact).is_file())
+            paths = (entry["artifact_paths"] if entry.get("kind") == "work_comparison"
+                     else [entry["artifact_path"]])
+            self.assertEqual(len(paths), 2 if entry.get("kind") == "work_comparison" else 1)
+            for path in paths:
+                artifact = Path(path)
+                self.assertFalse(artifact.is_absolute())
+                self.assertNotIn("..", artifact.parts)
+                self.assertTrue((ROOT / artifact).is_file())
             self.assertFalse(entry["source_text_included"])
 
     def test_seed_manifest_matches_canonical_showcase_safety_labels(self):
-        self.assertEqual(len(self.manifest["entries"]), 5)
-        for entry in self.manifest["entries"]:
+        self.assertEqual(len(self.manifest["entries"]), 6)
+        comparisons = [row for row in self.manifest["entries"] if row["kind"] == "work_comparison"]
+        self.assertEqual(len(comparisons), 1)
+        site_work_comparison.validate_entry(comparisons[0])
+        comparison = json.loads(site_work_comparison.build(ROOT)["json"])
+        self.assertEqual(len(comparison["measurements"]), 10)
+        self.assertIs(comparison["scientific_boundary"]["m2_parity_admissible"], False)
+        showcases = [row for row in self.manifest["entries"] if row["kind"] == "work_showcase"]
+        self.assertEqual(len(showcases), 5)
+        for entry in showcases:
             artifact = json.loads(
                 (ROOT / entry["artifact_path"]).read_text(encoding="utf-8")
             )

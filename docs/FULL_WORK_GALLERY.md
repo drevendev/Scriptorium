@@ -17,4 +17,12 @@ Both results are deterministic. They use already-frozen derived metrics and do n
 
 The module verifies exact source JSON Git blob identities, metrics profile compatibility, translation identity, explicit unknown gates and source-free evidence. Changes to the frozen source require a deliberate review and pin update. The package workflow also runs the installed module outside the checkout and compares two HTML and CSV builds byte for byte.
 
-This is an **offline preview**, not a new canonical Pages route. It does not modify the publication manifest or deployment permissions. Later site integration must use an explicit digest-pinned allow-list, review gates and the staged publisher. See the [roadmap](../project/ROADMAP.md).
+The canonical site now also registers this comparison explicitly at
+`build/site/works/two-full-work-differences/index.html`. The publication manifest
+allows exactly two pinned source-free diagnostic records, and the existing gallery
+validates their Git blob hashes, status and measurement profiles before site staging.
+The route provides exact `measurements.json` (with decimal differences) and
+`measurements.csv` (two independently labelled works). Invalid inputs fail closed
+without replacing a previous successful site. A build is not proof of live Pages
+deployment, and no administrative Pages setting changes here.
+See the [roadmap](../project/ROADMAP.md).

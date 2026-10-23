@@ -100,6 +100,22 @@ legacy Grin diagnostics are not assigned invented source-unit fields.
 Building this route does not prove GitHub Pages is deployed. Shell redirection replaces
 its destination; use new filenames to keep older exports. [Method and limits](docs/FULL_WORK_GALLERY.md).
 
+## Inspect FantLab reproduction readiness
+
+Inspect **five frozen public literary sources** and the distance between their
+character counts and the *displayed* FantLab counts, without downloading books:
+
+~~~bash
+python -m scriptorium.benchmark_readiness --root . --format markdown
+python -m scriptorium.benchmark_readiness --root . --format json --output readiness.json
+~~~
+
+Each source-free report includes source rights/edition evidence, immutable body
+hashes, dated FantLab references and explicit source-matching status. Differences
+are **diagnostic only**: FantLab's analyzer-input identities remain unknown, other
+metric comparisons are NOT_RUN and **M2 stays 0/5**.
+[Readiness methodology, CSV and limitations](docs/BENCHMARK_READINESS.md).
+
 ## What the results mean
 
 FantLab-shaped metrics are **inferred compatibility candidates**, not demonstrated
@@ -143,10 +159,11 @@ from an interrupted older preview fail closed and are not automatically deleted.
 [Local analysis and dictionaries](docs/LOCAL_ANALYSIS.md) ·
 [Private comparison](docs/PRIVATE_COMPARISON.md) ·
 [Frozen diagnostic methodology](docs/FROZEN_DIAGNOSTIC_REPORT.md) ·
+[Five-work benchmark readiness](docs/BENCHMARK_READINESS.md) ·
 [Canonical site and publication boundary](docs/FULL_WORK_SITE_REPORT.md) ·
 [Roadmap and repository assessment](project/ROADMAP.md)
 
 The detailed [Research and evidence index](RESEARCH_INDEX.md) retains project history,
 corpus investigations and original reference links. EPUB/batch Workbench prototypes remain **unpublished** and require focused adoption.
-The browser comparison beta is a local-build capability pending review and public
-deployment. Code/data licensing and Pages activation retain separate gates (#284/#285).
+The browser comparison is merged into master as a local-build capability;
+public deployment remains unverified and separately gated. Code/data licensing and Pages activation retain separate gates (#284/#285).

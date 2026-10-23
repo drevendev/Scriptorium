@@ -255,8 +255,10 @@ def main(argv: list[str] | None = None) -> int:
         else:
             with args.output.open("x", encoding="utf-8", newline="") as stream:
                 stream.write(output)
-    except (OSError, UnicodeError, ValueError, TypeError, KeyError) as exc:
-        parser.error(f"readiness evidence invalid or output unavailable: {exc}")
+    except FileExistsError:
+        parser.error("output already exists; choose a new filename")
+    except (OSError, UnicodeError, ValueError, TypeError, KeyError):
+        parser.error("readiness evidence invalid or output unavailable; check source-free metadata and destination")
     return 0
 
 

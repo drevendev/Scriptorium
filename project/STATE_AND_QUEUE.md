@@ -1,47 +1,46 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 301
+STATE_REVISION: 302
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-23
-LAST_RESULT: #297 merged to master dbe97ca656f282a6b029c7c753ae57ae3dd6780c; #283 keyboard result focus and scroll guidance authored in PR candidate.
-LAST_VERIFIED_PROGRESS: #297 native MERGED; keyboard focus/async-race source changes and test authored; new branch CI and canonical browser/mobile acceptance NOT_RUN.
+LAST_RESULT: #298 merged to master 52c25504c5a4f03f36e7258cb22d0d99e9f1f413; authored metric-name/ID/unit filtering of the private browser comparison under #283.
+LAST_VERIFIED_PROGRESS: #298 native MERGED; on-screen metric filtering with live result count, reset and negative regressions authored; PR CI and live desktop/mobile acceptance NOT_RUN.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-SITE-012-KEYBOARD-COMPARE
+UNIT_ID:        SCRIP-SITE-012-METRIC-SEARCH
 ISSUE:          #283 (partial; published-route visual/mobile gate remains open)
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-site-012-keyboard-compare
-BASE:           dbe97ca656f282a6b029c7c753ae57ae3dd6780c
-ACCEPTANCE:     Successful private browser comparison moves focus to the
-                labelled result heading before the 29-row semantic table;
-                invalid or superseded asynchronous reads cannot steal focus.
-                Narrow-screen table includes a visible, associated keyboard
-                scroll instruction; print layout remains unclipped.
-                Regression tests + exact-head CI and later independent review.
+BRANCH:         scrip-site-012-metric-search
+BASE:           52c25504c5a4f03f36e7258cb22d0d99e9f1f413
+ACCEPTANCE:     Local browser comparison exposes a labelled, keyboard-searchable
+                metric name/ID/unit filter, announces visible/empty result counts,
+                and resets on invalidated input without stale result leakage.
+                Print and JSON/CSV remain complete (29 metrics) under a filter.
+                Regression tests, exact-head CI, later independent review required.
 ```
 
-#297 print work has native MERGED status, not a live PR. This is a distinct
-keyboard/navigation slice under #283; it does not close real desktop/mobile/
-assistive-technology browser acceptance. GitHub Pages activation and published
-route are not verified; **VISUAL_NOT_VERIFIED** remains for the live route.
+#298 has native MERGED status. New on-screen filtering is separate from its
+keyboard-result focus change, and it does not close #283 or constitute real
+desktop/mobile/assistive-technology acceptance. Pages activation and canonical
+published-route testing remain **VISUAL_NOT_VERIFIED**.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: a private Reader comparison that is keyboard-discoverable and
-complete on narrow screens, without losing print clarity or scientific caveats.
+Milestone: searchable, keyboard-discoverable private comparisons with complete
+exports/print, followed by real visual/mobile acceptance when access permits.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 keyboard | Independent exact-head CI/diff/test review and qualifying merge of result-focus, scroll-help and regression tests | Current PR CI; no same-run author/merge |
-| P2 | #283 full | Actual canonical desktop/mobile, focus, scroll and print acceptance | Browser/Pages capability; structural checks independently executable |
+| P1 | #283 metric filter | Later exact-head CI/diff/test review and qualifying merge of searchable metrics | Current PR CI; no same-run author/merge |
+| P2 | #283 visual | Actual canonical desktop/mobile, focus, scroll and print acceptance | Browser/Pages capability; structural checks independently executable |
 | P3 | #281 | Source-bound FantLab readiness and strict metric deltas | Exact published source-input identity unresolved |
 | P4 | #282 | Measured AOT runtime noun/cardinal N regression | Compatible provider execution evidence needed |
 
-Keep #284 code/data licensing and #285 Pages activation as scoped publication
-interlocks, not blockers for independent Reader/analyzer work. BUILT does
-not imply DEPLOYED or LIVE_VERIFIED; corpus and M2 scientific gates unchanged.
+#284 code/data licensing and #285 Pages activation remain scoped publication
+interlocks, not blockers for independent Reader/analyzer work. BUILT does not
+imply DEPLOYED or LIVE_VERIFIED; corpus and M2 scientific gates unchanged.
 
 ## Retained evidence and scientific gates
 

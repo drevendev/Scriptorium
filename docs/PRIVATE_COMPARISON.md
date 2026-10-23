@@ -113,6 +113,14 @@ labelled, focusable scroll region and use arrow keys to read columns horizontall
 A visible instruction names this interaction; paper output omits the scroll hint
 and retains the independently tested labelled metric cards.
 
+The Comparison Desk also provides a keyboard-accessible **Find a metric** search
+field after two reports validate. Filtering matches metric labels, IDs and units
+(case-insensitively); the live count announces matches and explains an empty result.
+Clearing the field restores all 29 rows. Filtering only changes which rows are
+visible on screen: **exports and print always include the complete 29-metric
+comparison**, even when a filter is active. No text, filenames or queries are sent
+outside the browser.
+
 Automated Node DOM interaction tests cover success, invalid files and stale async
 reads. They are **not** real desktop/mobile assistive-technology acceptance and do
 not establish that GitHub Pages is deployed or live-verified. Issue #283 remains

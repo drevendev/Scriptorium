@@ -1,5 +1,6 @@
 """Fail-closed, source-free cross-work benchmark readiness regressions."""
 import copy
+from contextlib import redirect_stderr
 import csv
 from io import StringIO
 import json
@@ -95,8 +96,11 @@ class ReadinessTests(unittest.TestCase):
         destination = self.root / "readiness.csv"
         self.assertEqual(main(["--root", str(self.root), "--format", "csv", "--output", str(destination)]), 0)
         before = destination.read_bytes()
-        with self.assertRaises(SystemExit):
+        error_output = StringIO()
+        with redirect_stderr(error_output), self.assertRaises(SystemExit):
             main(["--root", str(self.root), "--format", "csv", "--output", str(destination)])
+        self.assertNotIn(str(destination), error_output.getvalue())
+        self.assertIn("already exists", error_output.getvalue())
         self.assertEqual(destination.read_bytes(), before)
 
     def test_rejects_forged_source_match(self):

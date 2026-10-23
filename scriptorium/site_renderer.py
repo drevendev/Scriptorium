@@ -667,7 +667,7 @@ _SITE_CSS = """\
   --muted: #465954;
   --accent: #13554e;
   --accent-soft: #e6efeb;
-  --line: #9fada3;
+  --line: #69786f;
   --focus: #a54b18;
   font-family: "Iowan Old Style", Georgia, "Times New Roman", serif;
   font-size: 100%;

@@ -1,4 +1,5 @@
 """Reader site appearance must preserve working, accessible HTML and honest evidence."""
+import re
 import unittest
 
 from scriptorium.site_renderer import _SITE_CSS, _page, _render_index
@@ -60,6 +61,28 @@ class LiteraryReaderThemeTests(unittest.TestCase):
                 self.assertIn(required, _SITE_CSS)
         self.assertNotIn('@import', _SITE_CSS)
         self.assertNotIn('url(', _SITE_CSS)
+
+
+    def test_light_control_borders_have_non_text_contrast(self):
+        # WCAG 1.4.11: visible input/select/button boundaries need >=3:1.
+        # Both the input interior and the panel behind its border matter.
+        def color(name):
+            match = re.search(rf"^  --{name}: (#[0-9a-f]{{6}});$", _SITE_CSS, re.MULTILINE)
+            self.assertIsNotNone(match, name)
+            return match.group(1)
+
+        def luminance(value):
+            channels = [int(value[pos:pos + 2], 16) / 255 for pos in (1, 3, 5)]
+            linear = [n / 12.92 if n <= 0.04045 else ((n + 0.055) / 1.055) ** 2.4
+                      for n in channels]
+            return sum(weight * n for weight, n in zip((0.2126, 0.7152, 0.0722), linear))
+
+        line = luminance(color("line"))
+        for background in ("surface", "accent-soft"):
+            with self.subTest(background=background):
+                other = luminance(color(background))
+                ratio = (max(line, other) + 0.05) / (min(line, other) + 0.05)
+                self.assertGreaterEqual(ratio, 3.0, f"light control boundary vs {background}: {ratio:.2f}:1")
 
 
 if __name__ == "__main__":

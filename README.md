@@ -26,6 +26,26 @@ No runtime dependencies, account, server or telemetry are required. Installation
 fetch build tools; see [offline wheel installation](docs/READER_PREVIEW.md).
 `python -m scriptorium` exposes the same commands from a checkout.
 
+## Analyze an unencrypted EPUB locally
+
+Import an EPUB 2/3 with a standard XHTML reading-order spine without uploading
+the book or writing its extracted chapters to disk:
+
+```bash
+scriptorium epub book.epub --output analysis.json --provenance-output epub-identity.json
+scriptorium epub book.epub --format html --output analysis.html
+scriptorium epub book.epub --format csv --output metrics.csv
+```
+
+The regular Reader **29-metric** reports work with `scriptorium compare`.
+The separate source-free receipt records the **archive**, **extracted UTF-8
+body** and **engine-normalized text** SHA-256 identities plus the versioned
+extraction profile. EPUB reading order follows OPF spine order; unsupported
+encrypted, malformed, unsafe or image-only books fail closed. No DRM bypass,
+external network resources or embedded scripts are processed. This local
+EPUB text projection is **not** FantLab edition/input parity or corpus admission.
+[EPUB formats, safety limits and reproducibility](docs/PRIVATE_EPUB.md).
+
 ## Analyze a private batch (POSIX preview)
 
 Select up to 16 UTF-8 manuscripts explicitly in a JSON manifest, then generate

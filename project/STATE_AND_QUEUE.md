@@ -32,9 +32,9 @@ The POS benchmark is merged, while live Pages remains gated.
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
 | P1 | #290 | Later-run validate installed-wheel batch, inputs/retries/links, exact-head CI, qualifying merge | Security/path checks, no same-run merge |
-| P3 | #281 | Extend five-work readiness beyond character deltas when genuine source-bound reference evidence exists | Exact FantLab input/source identity not established |
-| P4 | #282 | Measured AOT runtime N/cardinal regression | New compatible-provider evidence |
-| P5 | #283 / #289 | Accessible Reader verification and scoped private EPUB import | Browser-capability and source-safety gates |
+| P2 | #281 | Extend five-work readiness beyond character deltas when genuine source-bound reference evidence exists | Exact FantLab input/source identity not established |
+| P3 | #282 | Measured AOT runtime N/cardinal regression | New compatible-provider evidence |
+| P4 | #283 / #289 | Accessible Reader verification and scoped private EPUB import | Browser-capability and source-safety gates |
 
 Keep #284 code/data licensing and #285 Pages activation as scoped publication
 interlocks, not blockers for independent analyzer/Reader work. BUILT is not

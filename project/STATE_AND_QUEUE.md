@@ -1,42 +1,44 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 295
+STATE_REVISION: 296
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-23
-LAST_RESULT: Reader 0.4 PR #288 and literary design PR #291 are merged. Browser comparison #280 is authored on the existing scrip-compare-004-browser branch, pending later-run acceptance. No Pages deployment or scientific gate change.
-LAST_VERIFIED_PROGRESS: Prior #291 CI passed, merged into master at 97a62a35fa20ce29360956e56e3708699fde0262. Browser #280 requires fresh exact-head CI and installed wheel/browser evidence; no live Pages route verified.
+LAST_RESULT: Reader PRs #288, #291 and browser comparison #292 are merged. One independent #281 source-free cross-work readiness slice is authored on the existing scrip-repro-010-readiness-matrix branch; no Pages deployment or scientific gate change.
+LAST_VERIFIED_PROGRESS: PR #292 merged at b59f2c92663193d66545511063f26a902b14b324; #281 local fixture regressions passed. Exact-head hosted integration and real-source evidence verification remain pending and must not be called PASS prematurely.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-COMPARE-004-BROWSER
-ISSUE:          #280
+UNIT_ID:        SCRIP-REPRO-010-READINESS
+ISSUE:          #281
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-compare-004-browser (existing claim)
-BASE:           97a62a35fa20ce29360956e56e3708699fde0262
-ACCEPTANCE:     Browser 29-metric comparison, Python contract parity on 234
-                differential cases, exact JSON/CSV, keyboard-mobile support,
-                real installed-wheel/site build and applicable exact-head CI.
-                Independent later-run merge/publication are separate.
+BRANCH:         scrip-repro-010-readiness-matrix (reused existing branch)
+BASE:           b59f2c92663193d66545511063f26a902b14b324
+ACCEPTANCE:     Source-free five-work source/rights/hash/reference validation,
+                reproducible Markdown/JSON/CSV character diagnostics, fail-closed
+                tamper tests; complete #281 only with source-bound field-by-field
+                evidence and strict rounding/identity gate. No M2 credit.
 ```
 
-The branch preserves Reader 0.4 history; its pre-existing authored file blobs
-match current master. No extra branch, scheduler, admin, settings or secret changes.
-Native PR/checks/merge facts override old statuses here.
+The existing #281 branch was fast-forwarded from an ancestor of master with no
+unique commits; this work introduces a new focused source-free report. No extra
+branch, scheduler, admin, settings or secret changes. Native PR/checks/merge
+facts override stale queue prose.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: compare two local Reader JSON reports with validated decimal differences
-in an accessible source-free browser; later publish approved Reader capabilities
-when deployment authorization permits. Scientific M2 remains open.
+Milestone: inspect five retained real-work FantLab source/rights/readiness gates
+and reproducible character-count diagnostics without converting similar values
+into false parity; then extend exact per-metric reports only on valid evidence.
+The local-only Reader comparison is merged, while live Pages remains gated.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #280 | Fix exact-head CI findings; later independently accept/merge private browser Comparison Desk | Real installed-wheel/JS/Pages checks and later acceptance; VISUAL_NOT_VERIFIED |
-| P2 | #281 | Cross-work FantLab readiness/delta evidence report | Unknown source identities are diagnostic, not parity |
-| P3 | #287 | Source-free POS distribution benchmark join with strict profile/count validation | Independent of unresolved AOT semantics |
-| P4 | #290 | Recover manifest batch CLI with installed analyzer and atomic index | Validate handoff against current head; no uploads |
-| P5 | #282 / #283 | AOT N/cardinal measured regression, remaining real mobile/keyboard visual acceptance | Browser availability and new measurement evidence |
+| P1 | #281 | Independently verify/review and qualify the five-work source-free readiness report; extend missing metrics/rounding when evidence supports them | Exact-head CI and unchanged source-identity/parity requirements |
+| P2 | #287 | Source-free POS distribution benchmark join with strict profile/count validation | Independent of unresolved AOT semantics |
+| P3 | #290 | Recover manifest batch CLI with installed analyzer and atomic index | Validate handoff against current head; no uploads |
+| P4 | #282 | Measured AOT N/cardinal regression | Requires new independent compatible-provider evidence |
+| P5 | #283 / #289 | Keyboard/mobile Reader verification; scoped EPUB private import | Browser availability; no private file uploads |
 
 Keep #284 code/data licensing and #285 Pages activation as scoped publication
 interlocks, not blockers for independent analyzer/Reader work. BUILT is not

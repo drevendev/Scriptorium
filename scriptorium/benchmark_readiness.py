@@ -155,6 +155,13 @@ def build_readiness(root: Path) -> dict[str, object]:
             raise ValueError("frozen candidate below 300,000 characters")
         raw_hash = _sha(_get(witness, "raw_sha256"))
         normalized_hash = _sha(_get(witness, "normalized_sha256"))
+        if not field:
+            # This newer body witness must agree with an independent trace
+            # record, not only its own internally consistent hash fields.
+            _same(_get(trace, "primary_public_transcription", "literary_body_witness", "raw_sha256"), raw_hash, "running body trace raw digest")
+            _same(_get(trace, "primary_public_transcription", "literary_body_witness", "normalized_sha256"), normalized_hash, "running body trace normalized digest")
+            _same(_get(trace, "primary_public_transcription", "literary_body_witness", "character_count_including_spaces"), count, "running body trace length")
+            _same(_get(trace, "admissibility", "frozen_public_minus_fantlab_character_delta"), count - expected, "running body trace count delta")
         _positive_int(_get(witness, "utf8_byte_count"), "frozen bytes")
         _same(_get(witness, "normalization_profile"), "scriptorium-text-v1", "normalization profile")
         if "frozen_candidate_characters" in c:

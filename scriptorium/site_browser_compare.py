@@ -112,6 +112,33 @@ CSS = """
 .private-desk th:first-child { min-width: 17rem; }
 @media(max-width:720px) { .desk-inputs { grid-template-columns: 1fr; } }
 @media(prefers-color-scheme:dark) { .private-desk button { color: #14201d; } }
-@media print { .desk-panel, .private-desk .actions { display: none !important; }
-  .private-desk table { min-width: 0; } }
+@media print {
+  .desk-panel, .private-desk .actions { display: none !important; }
+  .private-desk .table-wrap { overflow: visible; border: 0; }
+  .private-desk table, .private-desk tbody { display: block; width: 100%; min-width: 0; }
+  .private-desk thead { display: none; }
+  .private-desk tbody tr {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 .75rem; padding: .3rem .65rem; margin: .65rem 0;
+    border: 1px solid #666; break-inside: avoid; page-break-inside: avoid;
+  }
+  .private-desk tbody th, .private-desk tbody th:first-child {
+    grid-column: 1 / -1; min-width: 0; overflow-wrap: anywhere;
+    border-bottom: 1px solid #666; font-size: .93rem;
+  }
+  .private-desk tbody td {
+    display: block; min-width: 0; width: 100%; padding: .3rem 0;
+    font-size: .85rem; overflow-wrap: anywhere;
+  }
+  .private-desk tbody td::before {
+    display: block; font: 700 .72rem/1.3 system-ui, sans-serif;
+  }
+  .private-desk tbody td:nth-of-type(1)::before { content: "Left"; }
+  .private-desk tbody td:nth-of-type(2)::before { content: "Right"; }
+  .private-desk tbody td:nth-of-type(3)::before { content: "Unit"; }
+  .private-desk tbody td:nth-of-type(4)::before { content: "Difference"; }
+  .private-desk tbody td:nth-of-type(5)::before { content: "Difference unit"; }
+  .private-desk tbody td:nth-of-type(6)::before { content: "Status"; }
+  .private-desk tbody td:nth-of-type(7)::before { content: "Reason"; }
+}
 """

@@ -201,6 +201,8 @@ def extract_epub(archive_bytes: bytes) -> tuple[bytes, dict[str, object]]:
     try:
         with ZipFile(BytesIO(archive_bytes)) as archive:
             members = _archive_members(archive)
+            if "META-INF/encryption.xml" in members:
+                raise EpubError("encrypted EPUB resources are unsupported")
             if _read_member(archive, members, "mimetype", 128) != b"application/epub+zip":
                 raise EpubError("invalid EPUB mimetype")
             paths = _spine_paths(archive, members)

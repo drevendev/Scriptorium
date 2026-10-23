@@ -69,6 +69,10 @@ percentage points, never relative percentages. Re-analyze originals to verify.</
 <pre class="desk-sources" id="source-summary" aria-label="Declared source hashes and lengths"></pre>
 <p class="actions"><button type="button" id="save-comparison-json" disabled>Export JSON ↓</button>
 <button type="button" id="save-comparison-csv" disabled>Export CSV ↓</button></p>
+<div class="metric-filter-controls"><label for="metric-filter">Find a metric by name, ID or unit</label>
+<input id="metric-filter" type="search" autocomplete="off" aria-describedby="metric-filter-hint" disabled>
+<p id="metric-filter-hint">Filter the on-screen table; exports and print always include all 29 metrics.</p>
+<p id="metric-filter-status" role="status" aria-live="polite" aria-atomic="true"></p></div>
 <p class="scroll-help" id="comparison-scroll-help">On narrow screens, scroll the table horizontally. Keyboard users can tab to the labelled table region and use arrow keys to reach every column.</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="29 report measurements" aria-describedby="comparison-scroll-help">
 <table><caption>29 metrics · original values, units and comparison status</caption>
@@ -109,6 +113,13 @@ CSS = """
 .private-desk .table-wrap { border: 1px solid var(--line); border-radius: .35rem; }
 .private-desk #comparison-title:focus { outline: 3px solid var(--focus); outline-offset: .25rem; }
 .private-desk .scroll-help { max-width: 72ch; }
+.metric-filter-controls { display: grid; gap: .35rem; max-width: 38rem; margin: 1.4rem 0; }
+.metric-filter-controls label { font: 700 1rem/1.5 system-ui, sans-serif; }
+.metric-filter-controls input { width: 100%; min-height: 44px; padding: .6rem .8rem;
+  border: 1px solid var(--line); border-radius: .3rem; background: var(--surface);
+  color: var(--ink); font: 1rem/1.5 system-ui, sans-serif; }
+.metric-filter-controls p { margin: .2rem 0; font: .9rem/1.5 system-ui, sans-serif; }
+.private-desk tbody tr[hidden] { display: none !important; }
 .private-desk table { min-width: 64rem; }
 .private-desk td { font-variant-numeric: tabular-nums; }
 .private-desk th { min-width: 10rem; }
@@ -116,6 +127,8 @@ CSS = """
 @media(max-width:720px) { .desk-inputs { grid-template-columns: 1fr; } }
 @media(prefers-color-scheme:dark) { .private-desk button { color: #14201d; } }
 @media print {
+  .private-desk .metric-filter-controls { display: none !important; }
+  .private-desk tbody tr[hidden] { display: grid !important; }
   .desk-panel, .private-desk .actions, .private-desk .scroll-help { display: none !important; }
   .private-desk .table-wrap { overflow: visible; border: 0; }
   .private-desk table, .private-desk tbody { display: block; width: 100%; min-width: 0; }

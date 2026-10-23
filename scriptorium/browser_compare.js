@@ -429,12 +429,31 @@
     const sourceInfo = document.getElementById('source-summary');
     const saveJSON = document.getElementById('save-comparison-json');
     const saveCSV = document.getElementById('save-comparison-csv');
-    if (![left, right, compareButton, status, result, resultHeading, tbody, sourceInfo, saveJSON, saveCSV].every(Boolean)) return;
+    const metricFilter = document.getElementById('metric-filter');
+    const metricFilterStatus = document.getElementById('metric-filter-status');
+    if (![left, right, compareButton, status, result, resultHeading, tbody, sourceInfo, saveJSON, saveCSV, metricFilter, metricFilterStatus].every(Boolean)) return;
     let generation = 0;
     let current = null;
+    let searchRows = [];
+    function filterRows() {
+      const query = metricFilter.value.trim().toLowerCase();
+      let shown = 0;
+      for (const entry of searchRows) {
+        entry.row.hidden = !entry.haystack.includes(query);
+        if (!entry.row.hidden) shown++;
+      }
+      metricFilterStatus.textContent = shown === 0
+        ? 'No matching metrics. Clear the filter to see all 29.'
+        : shown + ' of 29 metrics shown. Print and exports still include all 29.';
+    }
+    metricFilter.addEventListener('input', filterRows);
     function invalidate() {
       generation++;
       current = null;
+      searchRows = [];
+      metricFilter.value = '';
+      metricFilter.disabled = true;
+      metricFilterStatus.textContent = '';
       result.hidden = true;
       saveJSON.disabled = true;
       saveCSV.disabled = true;
@@ -453,6 +472,10 @@
     compareButton.addEventListener('click', async () => {
       const token = ++generation;
       current = null;
+      searchRows = [];
+      metricFilter.value = '';
+      metricFilter.disabled = true;
+      metricFilterStatus.textContent = '';
       result.hidden = true;
       saveJSON.disabled = true;
       saveCSV.disabled = true;
@@ -463,6 +486,7 @@
         if (token !== generation) return;
         const value = compareReports(a, b);
         const fragment = document.createDocumentFragment();
+        const rendered = [];
         for (const row of value.metrics) {
           const tr = document.createElement('tr');
           const heading = document.createElement('th');
@@ -478,13 +502,17 @@
           why.textContent = row.reason;
           tr.appendChild(why);
           fragment.appendChild(tr);
+          rendered.push({row: tr, haystack: [row.label, row.metric_id, row.unit].join(' ').toLowerCase()});
         }
         tbody.replaceChildren(fragment);
+        searchRows = rendered;
         sourceInfo.textContent = 'Left normalized characters: ' + value.left_source.normalized_characters +
           ' · SHA-256: ' + value.left_source.raw_sha256 + '\nRight normalized characters: ' +
           value.right_source.normalized_characters + ' · SHA-256: ' + value.right_source.raw_sha256;
         current = value;
         result.hidden = false;
+        metricFilter.disabled = false;
+        filterRows();
         saveJSON.disabled = false;
         saveCSV.disabled = false;
         status.textContent = '29 measurements validated. Difference: right minus left; percent changes in percentage points.';

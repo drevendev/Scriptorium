@@ -23,6 +23,12 @@ class BrowserCompareKeyboardTests(unittest.TestCase):
         self.assertIn('id="comparison-scroll-help"', body)
         self.assertIn('aria-describedby="comparison-scroll-help"', body)
         self.assertIn('role="status" aria-live="polite"', body)
+        self.assertIn('id="metric-filter" type="search"', body)
+        self.assertIn('id="metric-filter-status" role="status"', body)
+        self.assertIn('.private-desk tbody tr[hidden] { display: none !important; }',
+                      site_browser_compare.CSS)
+        self.assertIn('.private-desk tbody tr[hidden] { display: grid !important; }',
+                      site_browser_compare.CSS)
         self.assertIn('#comparison-title:focus { outline: 3px solid var(--focus)',
                       site_browser_compare.CSS)
         print_rules = site_browser_compare.CSS.split('@media print {', 1)[1]
@@ -51,6 +57,7 @@ class Element {
     this.hidden = false;
     this.disabled = false;
     this.textContent = '';
+    this.value = '';
     this.focuses = 0;
   }
   addEventListener(name, callback) { this.handlers[name] = callback; }
@@ -62,7 +69,8 @@ class Element {
 const ids = [
   'report-left', 'report-right', 'run-comparison', 'comparison-message',
   'comparison-result', 'comparison-title', 'comparison-rows',
-  'source-summary', 'save-comparison-json', 'save-comparison-csv'
+  'source-summary', 'save-comparison-json', 'save-comparison-csv',
+  'metric-filter', 'metric-filter-status'
 ];
 const elements = Object.fromEntries(ids.map(id => [id, new Element(id)]));
 global.document = {
@@ -80,6 +88,8 @@ const heading = elements['comparison-title'];
 const result = elements['comparison-result'];
 const rows = elements['comparison-rows'];
 const message = elements['comparison-message'];
+const metricFilter = elements['metric-filter'];
+const metricFilterStatus = elements['metric-filter-status'];
 function file(source) {
   const bytes = new TextEncoder().encode(source);
   return {size: bytes.byteLength, arrayBuffer: async () =>
@@ -100,11 +110,29 @@ function chosen() {
   assert.equal(heading.focuses, 1);
   assert.equal(rows.children.length, 29);
   assert.match(message.textContent, /29 measurements validated/);
+  assert.equal(metricFilter.disabled, false);
+  assert.match(metricFilterStatus.textContent, /29 of 29 metrics shown/);
+  const first = rows.children[0].children[0].textContent;
+  const firstId = first.slice(first.lastIndexOf('(') + 1, -1);
+  metricFilter.value = firstId.toUpperCase();
+  metricFilter.handlers.input();
+  const matching = rows.children.filter(row => !row.hidden);
+  assert.ok(matching.length > 0 && matching.length < 29);
+  assert.match(metricFilterStatus.textContent, new RegExp(matching.length + ' of 29'));
+  metricFilter.value = 'unlikely-filter-[]-no-results';
+  metricFilter.handlers.input();
+  assert.equal(rows.children.filter(row => !row.hidden).length, 0);
+  assert.match(metricFilterStatus.textContent, /No matching metrics/);
+  metricFilter.value = '';
+  metricFilter.handlers.input();
+  assert.equal(rows.children.filter(row => !row.hidden).length, 29);
+  assert.equal(rows.children.length, 29); // Full export/print data remains untouched.
 
   // Invalid input retains focus on the comparison action; only the polite
   // live status announces the rejection. No stale results remain visible.
   right.files = [file('{"invalid":true}')];
   right.handlers.change();
+  assert.equal(metricFilter.disabled, true);
   await button.handlers.click();
   assert.equal(result.hidden, true);
   assert.equal(heading.focuses, 1);

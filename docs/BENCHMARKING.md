@@ -71,8 +71,52 @@ active non-dictionary and UASZ actuals are `null` unless an explicit dictionary 
 is supplied. `work488.json` contains five of the six vocabulary fields; it has no captured
 UASZ-100000 value.
 
-Unimplemented page/POS and later fields remain absent from comparisons rather than being
-fabricated as zero.
+Unimplemented page and later fields remain absent rather than being fabricated as zero.
+POS work-page distribution rows are now an **optional, explicitly inferred** join; see below.
+
+
+## Optional source-free POS distribution join (#287)
+
+Use the canonical benchmark with a separately produced `scriptorium-pos-metrics-v1`
+artifact from **the same normalized input text**:
+
+```bash
+python -m scriptorium.benchmark \
+  --reference benchmarks/fantlab/work488.json \
+  --text /path/to/your-legal-local-input.txt \
+  --scriptorium-revision <git-sha> \
+  --pos-metrics /path/to/source-free-pos-metrics.json \
+  --edition-match unknown --output benchmark-with-pos.json
+```
+
+The optional `--pos-metrics` flag adds **40** rows: defined/undefined POS
+counts and shares (4), service-word count/share (2, **actual null/unresolved**),
+and 17 visible work-page category counts/shares (34). No additional external
+dependency is installed. Without the flag, previous benchmark output is
+unchanged.
+
+The POS JSON must originate from the versioned `analyze_pos_metrics` API
+and genuine token-aligned morphology input, not manual category assignments
+or guessed FantLab homonyms. It is checked against the benchmark's normalized
+SHA-256, word and sentence counts, metric/text/POS/mapping profiles, full
+17×17 bigram and 20×17 position matrix shape, denominators and internal
+accounting. Duplicate JSON keys, NaN/Infinity and inconsistent values fail
+closed. The module does **not** download source texts or accept morphology
+results for a different text.
+
+**Important methodology:** the published FantLab work488 category counts
+sum to 46,879 although its defined-word count is 40,522. Their bucket
+counts are *not* a one-bucket-per-word partition. The Scriptorium
+`scriptorium-pos-v1` profile is conservative and does produce a defined
+token partition. Both sets are preserved without silently reinterpreting
+FantLab's unknown homonym/categorization methodology. Percentages retain
+their reference decimal lexemes, but displayed rounding/tie rules are
+unproven. All 40 comparison rows remain diagnostic/unresolved even for
+an asserted exact source edition; numerical coincidence is never a parity
+PASS. Service-word semantics, AOT `N` ambiguity and the five methodology-only
+categories remain unresolved. M2 is still 0/5. This contribution does not
+claim that the user-supplied POS artifact or its declared SHA is independently
+authenticated.
 
 ## Reference display evidence
 

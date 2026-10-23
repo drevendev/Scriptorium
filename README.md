@@ -116,6 +116,17 @@ are **diagnostic only**: FantLab's analyzer-input identities remain unknown, oth
 metric comparisons are NOT_RUN and **M2 stays 0/5**.
 [Readiness methodology, CSV and limitations](docs/BENCHMARK_READINESS.md).
 
+
+To join a separately generated **source-free POS artifact from the same normalized
+text** into a FantLab benchmark, add `--pos-metrics pos.json` to the
+`python -m scriptorium.benchmark --reference ... --text ... --scriptorium-revision ...`
+command. This adds **40 explicitly unresolved/diagnostic POS rows**, including
+17 visible category counts and percentages, but never claims POS parity.
+Unmatched text digests, profiles or inconsistent 17×17/20×17 structures are
+rejected. The work488 FantLab category counts are not a simple partition of
+defined words, and service-word actuals remain unknown.
+[POS benchmark usage and evidence boundaries](docs/BENCHMARKING.md).
+
 ## What the results mean
 
 FantLab-shaped metrics are **inferred compatibility candidates**, not demonstrated

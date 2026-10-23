@@ -1,44 +1,42 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 296
+STATE_REVISION: 297
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-23
-LAST_RESULT: Reader PRs #288, #291 and browser comparison #292 are merged. One independent #281 source-free cross-work readiness slice is authored on the existing scrip-repro-010-readiness-matrix branch; no Pages deployment or scientific gate change.
-LAST_VERIFIED_PROGRESS: PR #292 merged at b59f2c92663193d66545511063f26a902b14b324; #281 local fixture regressions passed. Exact-head hosted integration and real-source evidence verification remain pending and must not be called PASS prematurely.
+LAST_RESULT: PR #293 merged; #287 source-free POS benchmark join authored on scrip-repro-011-pos-benchmark for later acceptance. No Pages deployment or scientific gate change.
+LAST_VERIFIED_PROGRESS: PR #293 merged at e0e69d6a33fe91219d369c468a3be020a967ae88; #287 isolated validation smoke passed. Full repository tests and exact-head PR CI are NOT_RUN until provider verification.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-REPRO-010-READINESS
-ISSUE:          #281
+UNIT_ID:        SCRIP-REPRO-011-POS
+ISSUE:          #287
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-repro-010-readiness-matrix (reused existing branch)
-BASE:           b59f2c92663193d66545511063f26a902b14b324
-ACCEPTANCE:     Source-free five-work source/rights/hash/reference validation,
-                reproducible Markdown/JSON/CSV character diagnostics, fail-closed
-                tamper tests; complete #281 only with source-bound field-by-field
-                evidence and strict rounding/identity gate. No M2 credit.
+BRANCH:         scrip-repro-011-pos-benchmark
+BASE:           e0e69d6a33fe91219d369c468a3be020a967ae88
+ACCEPTANCE:     Optional normalized-source-bound POS benchmark join with 40 diagnostic
+                rows, exact 17x17 / 20x17 artifact validation, negative regressions,
+                no service-word invention and no M2 credit.
 ```
 
-The existing #281 branch was fast-forwarded from an ancestor of master with no
-unique commits; this work introduces a new focused source-free report. No extra
-branch, scheduler, admin, settings or secret changes. Native PR/checks/merge
-facts override stale queue prose.
+PR #293 is merged. The new #287 branch is a distinct ready feature unit; no
+scheduler/admin/settings/secret changes. Native PR/check/merge facts override
+stale queue prose. Do not accept this authoring change in the same run.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: inspect five retained real-work FantLab source/rights/readiness gates
-and reproducible character-count diagnostics without converting similar values
-into false parity; then extend exact per-metric reports only on valid evidence.
+Milestone: add inspectable source-free POS diagnostic deltas to the working
+FantLab benchmark, preserving the public 17-category display and the full
+17x17/20x17 artifact shape without inventing parity.
 The local-only Reader comparison is merged, while live Pages remains gated.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 | Independently verify/review and qualify the five-work source-free readiness report; extend missing metrics/rounding when evidence supports them | Exact-head CI and unchanged source-identity/parity requirements |
-| P2 | #287 | Source-free POS distribution benchmark join with strict profile/count validation | Independent of unresolved AOT semantics |
-| P3 | #290 | Recover manifest batch CLI with installed analyzer and atomic index | Validate handoff against current head; no uploads |
-| P4 | #282 | Measured AOT N/cardinal regression | Requires new independent compatible-provider evidence |
-| P5 | #283 / #289 | Keyboard/mobile Reader verification; scoped EPUB private import | Browser availability; no private file uploads |
+| P1 | #287 | Later-run validate POS benchmark CLI, real sample, strict shapes/lexemes, exact-head checks, qualifying merge | Hosted CI/branch rules; no M2 parity claim |
+| P2 | #290 | Adopt manifest batch analyzer CLI with atomic index and private outputs | Check existing unpublished handoff against current code |
+| P3 | #281 | Extend five-work readiness beyond character deltas when genuine source-bound reference evidence exists | Exact FantLab input/source identity not established |
+| P4 | #282 | Measured AOT runtime N/cardinal regression | New compatible-provider evidence |
+| P5 | #283 / #289 | Accessible Reader verification and scoped private EPUB import | Browser-capability and source-safety gates |
 
 Keep #284 code/data licensing and #285 Pages activation as scoped publication
 interlocks, not blockers for independent analyzer/Reader work. BUILT is not

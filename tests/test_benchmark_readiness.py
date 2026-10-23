@@ -49,6 +49,8 @@ def _fixture(root: Path) -> None:
             witness.update({"status": "frozen_public_candidate", "source_text_committed": False})
             trace[namespace] = {field: witness}
         else:
+            trace["primary_public_transcription"] = {"literary_body_witness": {"raw_sha256": digest, "normalized_sha256": digest, "character_count_including_spaces": count}}
+            trace["admissibility"]["frozen_public_minus_fantlab_character_delta"] = count - expected
             body = {"candidate_id": identifier, "composite_identity": witness, "composition": {"source_text_committed": False}, "corpus_admission": {"fantlab_source_edition_match": "unknown"}}
             _write(root, f"corpus/candidates/source-edition-traces/{identifier}.literary-body.json", body)
         _write(root, trace_path, trace)
@@ -116,6 +118,15 @@ class ReadinessTests(unittest.TestCase):
         bad["public_transcription"]["frozen_candidate"]["raw_sha256"] = "f" * 64
         _write(self.root, str(p.relative_to(self.root)), bad)
         with self.assertRaisesRegex(ValueError, "digest"):
+            build_readiness(self.root)
+
+    def test_rejects_forged_running_waves_body_digest(self):
+        identifier = _SPECS[-1][0]
+        p = self.root / f"corpus/candidates/source-edition-traces/{identifier}.literary-body.json"
+        body = json.loads(p.read_text(encoding="utf-8"))
+        body["composite_identity"]["raw_sha256"] = "f" * 64
+        _write(self.root, str(p.relative_to(self.root)), body)
+        with self.assertRaisesRegex(ValueError, "running body trace raw digest"):
             build_readiness(self.root)
 
     def test_rejects_falsified_fantlab_url_and_duplicate_json_fields(self):

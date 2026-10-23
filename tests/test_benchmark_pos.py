@@ -118,13 +118,13 @@ class FantLabPosJoinTests(unittest.TestCase):
         altered = json.loads(REF)
         altered["expected"]["defined_pos_words"] += 1
         with self.assertRaisesRegex(ValueError, "partition"):
-            build_pos_comparisons(altered, strict_json(REF), self.pos,
+            build_pos_comparisons(altered, json.loads(REF, parse_int=str, parse_float=str), self.pos,
                                   normalized_sha256=self.pos["normalized_sha256"],
                                   word_count=4, sentence_count=2)
         altered = json.loads(REF)
         altered["expected"]["pos"].pop("noun")
         with self.assertRaisesRegex(ValueError, "FantLab POS buckets"):
-            build_pos_comparisons(altered, strict_json(REF), self.pos,
+            build_pos_comparisons(altered, json.loads(REF, parse_int=str, parse_float=str), self.pos,
                                   normalized_sha256=self.pos["normalized_sha256"],
                                   word_count=4, sentence_count=2)
 

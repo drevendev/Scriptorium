@@ -51,10 +51,14 @@ def _safe_name(name: str) -> str:
 
 
 def _load_xml(raw: bytes, label: str) -> ET.Element:
-    if b"<!DOCTYPE" in raw.upper() or b"<!ENTITY" in raw.upper():
-        raise EpubError(f"{label} declares unsupported XML entities")
     try:
-        return ET.fromstring(raw)
+        decoded = raw.decode("utf-8-sig")
+    except UnicodeError as exc:
+        raise EpubError(f"invalid {label} UTF-8 XML") from exc
+    if "\x00" in decoded or re.search(r"<!\s*(?:DOCTYPE|ENTITY)\b", decoded, re.I):
+        raise EpubError(f"{label} declares unsupported XML entities or encoding")
+    try:
+        return ET.fromstring(decoded)
     except (ET.ParseError, UnicodeError, ValueError) as exc:
         raise EpubError(f"invalid {label} XML") from exc
 
@@ -66,11 +70,14 @@ def _archive_members(archive: ZipFile) -> dict[str, object]:
     if infos[0].filename != "mimetype" or infos[0].compress_type != ZIP_STORED:
         raise EpubError("EPUB mimetype must be the first, uncompressed member")
     seen = {}
+    canonical_names = set()
     expanded = 0
     for info in infos:
         name = _safe_name(info.filename)
-        if name in seen:
-            raise EpubError("duplicate EPUB archive member")
+        canonical = name.removesuffix("/")
+        if canonical in canonical_names:
+            raise EpubError("duplicate or ambiguous EPUB archive member")
+        canonical_names.add(canonical)
         seen[name] = info
         mode = stat.S_IFMT(info.external_attr >> 16)
         if mode not in (0, stat.S_IFREG, stat.S_IFDIR):

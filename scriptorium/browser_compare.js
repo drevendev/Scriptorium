@@ -424,11 +424,12 @@
     const compareButton = document.getElementById('run-comparison');
     const status = document.getElementById('comparison-message');
     const result = document.getElementById('comparison-result');
+    const resultHeading = document.getElementById('comparison-title');
     const tbody = document.getElementById('comparison-rows');
     const sourceInfo = document.getElementById('source-summary');
     const saveJSON = document.getElementById('save-comparison-json');
     const saveCSV = document.getElementById('save-comparison-csv');
-    if (![left, right, compareButton, status, result, tbody, sourceInfo, saveJSON, saveCSV].every(Boolean)) return;
+    if (![left, right, compareButton, status, result, resultHeading, tbody, sourceInfo, saveJSON, saveCSV].every(Boolean)) return;
     let generation = 0;
     let current = null;
     function invalidate() {
@@ -487,6 +488,9 @@
         saveJSON.disabled = false;
         saveCSV.disabled = false;
         status.textContent = '29 measurements validated. Difference: right minus left; percent changes in percentage points.';
+        // A keyboard or assistive-technology user lands on the result heading, not
+        // back at the two file inputs. A stale async parse must never steal focus.
+        resultHeading.focus();
       } catch (_error) {
         if (token !== generation) return;
         status.textContent = 'Comparison rejected: invalid, inconsistent or unsupported analysis JSON. ' +

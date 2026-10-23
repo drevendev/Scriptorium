@@ -1,39 +1,37 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 297
+STATE_REVISION: 298
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-23
-LAST_RESULT: PR #293 merged; #287 source-free POS benchmark join authored on scrip-repro-011-pos-benchmark for later acceptance. No Pages deployment or scientific gate change.
-LAST_VERIFIED_PROGRESS: PR #293 merged at e0e69d6a33fe91219d369c468a3be020a967ae88; #287 isolated validation smoke passed. Full repository tests and exact-head PR CI are NOT_RUN until provider verification.
+LAST_RESULT: PR #294 merged. #290 private batch CLI authored for later acceptance; no scientific gate or Pages change.
+LAST_VERIFIED_PROGRESS: #294 native MERGED at d2df3f420a0359dbf71381f38cf1b057381428e4; new #290 branch acceptance is pending exact-head CI and later review.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-REPRO-011-POS
-ISSUE:          #287
+UNIT_ID:        SCRIP-METRIC-005-BATCH
+ISSUE:          #290
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-repro-011-pos-benchmark
-BASE:           e0e69d6a33fe91219d369c468a3be020a967ae88
-ACCEPTANCE:     Optional normalized-source-bound POS benchmark join with 40 diagnostic
-                rows, exact 17x17 / 20x17 artifact validation, negative regressions,
-                no service-word invention and no M2 credit.
+BRANCH:         scrip-metric-005-private-batch
+BASE:           d2df3f420a0359dbf71381f38cf1b057381428e4
+ACCEPTANCE:     Explicit local UTF-8 manifest, deterministic source-free reports/index,
+                fail-closed dirfd paths, partial failures, retry and real wheel smoke.
 ```
 
-PR #293 is merged. The new #287 branch is a distinct ready feature unit; no
-scheduler/admin/settings/secret changes. Native PR/check/merge facts override
-stale queue prose. Do not accept this authoring change in the same run.
+PR #294 is merged. This #290 branch is a new, independent product unit.
+Native PR/check/merge facts override stale queue prose. Do not merge its
+semantic changes during the authoring run.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: add inspectable source-free POS diagnostic deltas to the working
-FantLab benchmark, preserving the public 17-category display and the full
-17x17/20x17 artifact shape without inventing parity.
-The local-only Reader comparison is merged, while live Pages remains gated.
+Milestone: make a reproducible, failure-safe private multi-manuscript Reader
+workflow available from an installed wheel, while retaining source-free
+indexes, exact manifest identity and existing scientific gates.
+The POS benchmark is merged, while live Pages remains gated.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #287 | Later-run validate POS benchmark CLI, real sample, strict shapes/lexemes, exact-head checks, qualifying merge | Hosted CI/branch rules; no M2 parity claim |
-| P2 | #290 | Adopt manifest batch analyzer CLI with atomic index and private outputs | Check existing unpublished handoff against current code |
+| P1 | #290 | Later-run validate installed-wheel batch, inputs/retries/links, exact-head CI, qualifying merge | Security/path checks, no same-run merge |
 | P3 | #281 | Extend five-work readiness beyond character deltas when genuine source-bound reference evidence exists | Exact FantLab input/source identity not established |
 | P4 | #282 | Measured AOT runtime N/cardinal regression | New compatible-provider evidence |
 | P5 | #283 / #289 | Accessible Reader verification and scoped private EPUB import | Browser-capability and source-safety gates |

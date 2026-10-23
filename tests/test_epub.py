@@ -61,6 +61,7 @@ class EpubIngestionTests(unittest.TestCase):
                         book(missing={"META-INF/container.xml"}),
                         book(chapter1=b"<invalid"),
                         book(chapter1=b"<!DOCTYPE html><html />"),
+                        book(chapter1='<!DOCTYPE html><html />'.encode("utf-16")),
                         book(chapter1=CH1.replace(b"<body>", b"<nothing>")),
                         b"not a zip"):
             with self.subTest(archive=sha256(archive).hexdigest()[:12]):
@@ -71,6 +72,7 @@ class EpubIngestionTests(unittest.TestCase):
         for archive in (
             book(extras=[("../outside.xhtml", b"BAD", ZIP_STORED)]),
             book(extras=[("OPS/chapter-1.xhtml", b"DUPLICATE", ZIP_STORED)]),
+            book(extras=[("OPS/chapter-1.xhtml/", b"ALIAS", ZIP_STORED)]),
             book(extras=[("OPS/evil\\name", b"BAD", ZIP_STORED)]),
             book(extras=[("OPS/really-compressible.xhtml", b"a" * 100_000, ZIP_DEFLATED)]),
             book(opf=OPF.replace(b"chapter-1.xhtml", b"../chapter-1.xhtml")),

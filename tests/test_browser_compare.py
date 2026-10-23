@@ -72,6 +72,10 @@ class BrowserCompareTests(unittest.TestCase):
         canonical = list(left['metrics'])
         for idx, metric in enumerate(canonical):
             for tamper in range(6):
+                # Keep broad metric tampering while reserving cases for all
+                # lexical-number and parser probes instead of truncating them.
+                if tamper == 5 and idx < 11:
+                    continue
                 mutated = copy.deepcopy(left)
                 row = mutated['metrics'][metric]
                 if tamper == 0:
@@ -87,6 +91,16 @@ class BrowserCompareTests(unittest.TestCase):
                 else:
                     row['stray'] = True
                 samples.append((json.dumps(mutated, ensure_ascii=False), json.dumps(right, ensure_ascii=False)))
+        # Signed decimal zero is legal in imported reports and must retain the
+        # exact Python Decimal spelling in exported values.
+        zero_id = next(mid for mid, row in left['metrics'].items()
+                       if mid.startswith('fantlab.punctuation.') and
+                       row['raw_count'] == 0 and row['value'] == 0.0)
+        zero_json = json.dumps(left, ensure_ascii=False)
+        marker = json.dumps(zero_id) + ': {"value": 0.0'
+        self.assertIn(marker, zero_json)
+        samples.append((zero_json.replace(marker, marker.replace(': 0.0', ': -0.0'), 1),
+                        json.dumps(right, ensure_ascii=False)))
         # Root/source/analyzer tampering, JSON parser attacks, float-integer spoofs.
         tamperers = (
             ('schema_version', 'newly invented'),
@@ -138,8 +152,8 @@ class BrowserCompareTests(unittest.TestCase):
             ('{"n":1e999}', json.dumps(right, ensure_ascii=False)),
             ('{"f\\u006fo":1,"foo":2}', json.dumps(right, ensure_ascii=False)),
         ])
-        # Count 234 cases *precisely*, without low-value repeated identical probes.
-        samples = samples[:234]
+        # Exactly 234 cases: include the tail parser probes, not just the
+        # first 234 (which accidentally omitted all duplicate-key attacks).
         self.assertEqual(len(samples), 234)
         self.assertEqual(len(set(samples)), 234)
         return samples

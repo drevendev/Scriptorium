@@ -1,62 +1,56 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 293
+STATE_REVISION: 294
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-18
-LAST_RESULT: Owner-requested cleanup accepted #268 as 6338bedbeaf94b00374a95423bba5dd82368e593 and #272 as 9412ee54ab1a56c7c81f6ff4d290e39d83f49630; #267/#271 closed completed. #275 owns the new successor Reader repair PR, reusing the existing gallery branch and preserving #274's integration. Syntax and crash-safe publication fixes are authored here, not merged. Native GitHub owns current check/merge/deployment facts.
-LAST_VERIFIED_PROGRESS: Complete current renderer blob revalidated and syntax corrected. Publisher baseline reproduced two crash failures; revised publisher plus existing and new bounded subprocess/filesystem regressions passed 11/11 locally. Full successor CI and installed-wheel/site checks require actual exact-head provider evidence. All frozen source/benchmark/publication data remain unchanged; M2 stays 0/5.
+LAST_COMMITTED_RUN_AT: 2026-10-22
+LAST_RESULT: Owner-requested interactive delivery accepted and merged Reader 0.3 #278 as 5c03ee428df6cc36ebdeff2443d35ac9f7e72dca; native GitHub closed #277. Reader 0.4 implementation is in #288 on the reused scrip-compare-003-local-cli branch. It is authored work, not accepted or merged. Native records own current heads, checks and deployment facts.
+LAST_VERIFIED_PROGRESS: #288 head dab93b3143ee8f494b2f2761bb21d25bf8153ad7 passed all six applicable workflows after fixing the stale hardcoded smoke-test version. Its preceding full suite passed 809 tests. This successor adds nine gallery unit/touch-structure regressions, which passed locally with the actual pinned source-free records; exact-head full CI must pass again. No frozen source/benchmark data or scientific gate changed.
 
-## Current unit
+## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-QA-READER-REPAIR
-ISSUE:          #275 (covers the remaining executable #269 and #273)
+UNIT_ID:        SCRIP-READER-0.4-DELIVERY
+ISSUES:         #279 private CLI comparison; #286 source-unit guard; partial #283 touch targets
 STATUS:         IMPLEMENTED_PENDING_ACCEPTANCE
-PR:             Resolve the successor PR linked from #275; native head/check facts are authoritative.
-BRANCH:         scrip-site-two-full-work-gallery
-BASE:           9412ee54ab1a56c7c81f6ff4d290e39d83f49630
-INPUT_HEADS:    Reader #274 at 62e6c078cb70ec77775007a1668fa0c3ede4f5fa;
-                unfinished gallery at c411e29030e7e778f99cd9689441d348f75a7715.
-NEXT_ACTION:    Fix actual successor CI findings in this same branch, then later fresh acceptance.
-                Inspect the exact diff, full suite, installed-wheel smoke and canonical rebuild.
-                Never merge this authored repair in the same run.
+PR:             #288
+BRANCH:         scrip-compare-003-local-cli
+BASE:           5c03ee428df6cc36ebdeff2443d35ac9f7e72dca
+ACCEPTANCE:     Fresh exact-head diff, full canonical suite, installed complete wheel,
+                deterministic gallery/site, private create-only negative cases.
+                Later acceptance only; no same-session merge of authored changes.
 ```
 
-The 2026-10-18 owner explicitly requested a new PR for ready issues and qualifying merges.
-#268/#272 are now merged, not pending dependencies; do not merge or reimplement them again.
-#270 has unresolved FIFO/path-private-error findings in its old head; #274 has the known
-syntax regression. Their useful code is retained in the successor, and the #273 claim is
-prospectively redirected through #275. Preserve #270/#274 as provenance until successor
-acceptance; do not keep developing competing integrations or blindly adopt old ZIPs.
-#266 is already merged. Interactive writes succeeded in this pass, not proof of hourly
-scheduled-context capability. No scheduler/admin/deployment activation change was made.
+Interactive GitHub writes and expected-head merge succeeded. Historical scheduled
+write denials are not current provider facts and must not be retried merely by age.
+No second worker, new branch, scheduler change or administrative/deployment activation
+was created. Existing earlier cleanup evidence remains in CHANGELOG and native PRs;
+#266/#278 are merged, not pending work. Revalidate superseded PRs before acting.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: install the canonical Reader, analyze a local text to JSON/HTML/CSV, open the
-real full-work report through the five-route static site, and inspect a source-free
-Grin/Beketova offline comparison. Required acceptance: exact-head full CI, installed package
-outside checkout, deterministic builds, safe errors/writes and honest scientific labels.
-This incremental availability does not close M1-M5.
+Milestone: install one canonical Reader; analyze and compare private UTF-8 texts to
+readable HTML and exact JSON/CSV; inspect retained full-work results and exports through
+the six-route static site. Actual CLI reports, not a parallel synthetic analyzer, are
+the comparison contract. Incremental availability does not close M1-M5.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #275 / #269 / #273 | Finish exact-head Reader CI, accept in a later run, merge and reconcile superseded PRs | Real checks/protection; no same-run acceptance |
-| P2 | SITE — full-work gallery route | Integrate the two pinned derived works into an explicit public allow-list; real links/downloads; desktop/mobile/keyboard checks and preserved last build | Reader publisher; admin interlock blocks DEPLOYED only |
-| P3 | METRIC — comparison contract | Adopt one pending comparison slice using one shared versioned metric/method/unit/dictionary registry; actual CLI JSON -> viewer -> export tests | Revalidate pending code against canonical Reader; no parallel stub implementation |
-| P4 | MORPH — AOT ambiguity diagnostic | Add a reproducible pinned-provider noun/cardinal ambiguity experiment and inspectable POS deltas | AOT provenance stays pinned; no inferred mapping promoted to parity |
-| P5 | REPRO/CORPUS — evidence readiness | One machine-readable cross-work readiness/delta report from retained evidence; explicit identity/rounding/NOT_RUN gates, with a bounded new source-identity consequence | Unknown FantLab input blocks parity only; no repeated scan metadata loop |
+| P1 | #288 / #279 / #286 | Finish any real exact-head CI findings, then later independent acceptance and merge; source-unit guards must retain current frozen outputs | Actual checks and branch rules; not a separate human unless genuinely required |
+| P2 | #280 / #283 | Adopt browser Comparison Desk against actual Reader-generated reports; preserve private files, invalidation and exact exports; verify desktop/mobile/keyboard/touch flows | Python comparison contract and permitted browser execution; no in-memory preview presented as live |
+| P3 | #281 | Adopt readiness/delta tool against the real retained catalog and reconcile proven frozen metadata; separate rights/body/size/input-identity/rounding gates | Source-unmatched comparisons remain diagnostic; one difficult source does not block other work |
+| P4 | #287 | Recover POS distribution joins from the private outbox into the canonical benchmark with source/profile accounting and real CLI tests | Existing POS artifact contract; unresolved service/runtime-N/homonyms remain unknown, not zero |
+| P5 | #282 | One reproducible AOT noun/cardinal ambiguity experiment with inspectable POS deltas | Pinned AOT lineage and honest inferred/extension labels |
 
-Execution order lives only here. [ROADMAP.md](ROADMAP.md) records the acceptance details
-and repository assessment. Reserve engineering attention for install/CI friction and
-explicit code/data licensing before any broad release. #265 is scoped administrative
-follow-through; do not let unavailable deletion/settings block P1-P5.
+Execution order lives here. ROADMAP records broader acceptance and repository assessment.
+Retain release attention for code/data licensing #284 and publication #285 without making
+those blockers prevent independent product implementation. Existing #279-#286 already own
+the corresponding outbox debts; do not duplicate them. Distinct POS-join debt is #287.
 
 ## Retained evidence and scientific gates
 
-Detailed immutable evidence remains in `corpus/candidates/`, `benchmarks/`, `showcase/`,
-`project/run-receipts/`, `project/CHANGELOG.md` and `CHANGELOG.d/`; reread candidate-specific
-records before acting. This cleanup does not recalculate, admit or relabel any work.
+Immutable detail remains in `corpus/candidates/`, `benchmarks/`, `showcase/`,
+`project/run-receipts/`, `project/CHANGELOG.md` and `CHANGELOG.d/`. Reread the relevant
+candidate records before acting; this delivery does not recalculate, admit or relabel works.
 
 - Anna Karenina: 239 pinned revisions, 1,705,605 characters; source identity unknown.
 - Resurrection: 129 revisions, 890,835 characters; source identity unknown.
@@ -87,7 +81,8 @@ own manifest gates. Short excerpts/fixtures do not count as corpus admission.
 
 ## Scoped operational blockers
 
-- #265: active master ruleset prevents deletion/non-fast-forward and requires PRs, with zero required approvals. The observed ruleset does not require named CI checks or resolved threads. Current connector has no branch-deletion/admin-setting mutation; login has push/triage but not admin. Reopen those operations only when supported authority/capability is present; no endpoint/ref bypass.
-- Pages: repository reports has_pages=false. Existing deployment variable/configuration interlock remains untouched. BUILT is not DEPLOYED or LIVE_VERIFIED.
-- Local full checkout: Git clone failed DNS in this run. Exact files and focused publisher tests were verified locally; hosted full-repository checks remain the integrated execution authority.
-- Browser route execution must be tested in a permitted environment. Prior blocked navigation or in-memory previews are not visual/live acceptance for this candidate.
+- #265: default-branch rules prevent deletion/non-fast-forward and require PRs, with zero required approvals in the read ruleset. Connector identity has push/triage, not admin. No unsupported deletion/settings mutation or ref bypass.
+- #285 Pages: repository reports has_pages=false. Deployment configuration interlock remains untouched. BUILT is not DEPLOYED or LIVE_VERIFIED; missing administration blocks activation only.
+- #284 licensing: do not infer a code/data license or publish externally before the rights gate is resolved.
+- Local checkout: Git DNS failed; exact source blobs were recovered and verified for actual local tests. Hosted full-repository CI supplies complete integrated execution evidence, not the limited local closure.
+- Browser HTTP navigation returned ERR_BLOCKED_BY_ADMINISTRATOR. Current visual changes are VISUAL_NOT_VERIFIED; structural tests are not live browser acceptance. Continue other executable work without bypassing the restriction.

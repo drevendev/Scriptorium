@@ -82,3 +82,19 @@ differential tests exercise 234 accepted/rejected report pairs and check exact
 JSON/CSV exports. This does not authenticate imported hashes or establish copyright,
 source edition, FantLab equivalence or corpus admission. M2 remains 0/5.
 GitHub Pages activation remains separately gated.
+
+## Printing the browser comparison
+
+After loading two reports and choosing **Compare reports**, the browser's Print
+command renders each of the 29 metric rows as a self-contained, two-column card.
+The on-screen table still scrolls horizontally on narrow displays; on paper the
+metric name, left/right values, units, exact difference, status and reason all
+remain visible and labelled. The input controls and export buttons are omitted
+from paper, not the results. A printout is **derived evidence**, not proof of
+FantLab parity or authenticated source hashes. No manuscript bytes are uploaded
+to print.
+
+The print layout has source-level and isolated Chromium print/PDF checks.
+Those are not a verified canonical Pages URL, nor complete desktop/mobile
+accessibility acceptance for #283; actual published-route visual checks remain
+separately gated.

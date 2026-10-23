@@ -41,7 +41,8 @@
       this.negative = match[1] === '-';
       this.digits = (match[2] + fractional).replace(/^0+(?=.)/, '');
       this.coefficient = BigInt(this.digits) * (this.negative ? -1n : 1n);
-      if (this.coefficient === 0n) this.negative = false;
+      // Preserve the sign of a JSON decimal negative zero: Python Decimal('-0.0')
+      // serializes that observed value as '-0.0', even though it compares equal to zero.
       this.adjusted = this.exponent + this.digits.length - 1;
     }
   }

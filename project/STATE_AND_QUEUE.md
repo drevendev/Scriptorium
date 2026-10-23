@@ -1,44 +1,45 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 298
+STATE_REVISION: 299
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-23
-LAST_RESULT: PR #294 merged. #290 private batch CLI authored for later acceptance; no scientific gate or Pages change.
-LAST_VERIFIED_PROGRESS: #294 native MERGED at d2df3f420a0359dbf71381f38cf1b057381428e4; new #290 branch acceptance is pending exact-head CI and later review.
+LAST_RESULT: #295 merged into master at 4c5fea59bd4a9721782f9434b24518c164b61fd1; #289 EPUB Reader candidate authored for later independent acceptance.
+LAST_VERIFIED_PROGRESS: #295 native MERGED and #290 closed; #289 local parser safety regressions 4/4 PASS; full wheel/CI exact-head acceptance PENDING.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-METRIC-005-BATCH
-ISSUE:          #290
+UNIT_ID:        SCRIP-INGEST-EPUB-001
+ISSUE:          #289
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-metric-005-private-batch
-BASE:           d2df3f420a0359dbf71381f38cf1b057381428e4
-ACCEPTANCE:     Explicit local UTF-8 manifest, deterministic source-free reports/index,
-                fail-closed dirfd paths, partial failures, retry and real wheel smoke.
+BRANCH:         scrip-ingest-epub-local-v1
+BASE:           4c5fea59bd4a9721782f9434b24518c164b61fd1
+ACCEPTANCE:     Standard local EPUB 2/3 XHTML spine, bounded ZIP/XML, raw/body/
+                normalized digests, installed Reader 29-metric reports, no uploads,
+                synthetic attack/reading-order regressions and fresh exact-head CI.
 ```
 
-PR #294 is merged. This #290 branch is a new, independent product unit.
-Native PR/check/merge facts override stale queue prose. Do not merge its
-semantic changes during the authoring run.
+#290 is merged and no longer requires acceptance. #289 adds one independent
+ingestion slice without changing the canonical 29-metric output schema.
+This semantic change must not be merged by its authoring wake.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make a reproducible, failure-safe private multi-manuscript Reader
-workflow available from an installed wheel, while retaining source-free
-indexes, exact manifest identity and existing scientific gates.
-The POS benchmark is merged, while live Pages remains gated.
+Milestone: readers can safely analyze an explicitly supplied local EPUB with
+existing Reader reports/compare and inspect exact container/body/normalized
+identities; publish only after later-run acceptance. Site deployment remains
+independently gated.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #290 | Later-run validate installed-wheel batch, inputs/retries/links, exact-head CI, qualifying merge | Security/path checks, no same-run merge |
-| P2 | #281 | Extend five-work readiness beyond character deltas when genuine source-bound reference evidence exists | Exact FantLab input/source identity not established |
-| P3 | #282 | Measured AOT runtime N/cardinal regression | New compatible-provider evidence |
-| P4 | #283 / #289 | Accessible Reader verification and scoped private EPUB import | Browser-capability and source-safety gates |
+| P1 | #289 | Fresh independent diff/security review; installed-wheel EPUB -> HTML/JSON/CSV and comparison smoke; checks; qualifying merge | Exact-head CI and corpus/source-text exclusion |
+| P2 | #283 | Real desktop/mobile keyboard and visual Reader verification | Browser-capability gate; structural checks remain executable |
+| P3 | #281 | Source-bound FantLab readiness and metric deltas | FantLab exact input/source identity remains unestablished |
+| P4 | #282 | Measured AOT runtime N/cardinal regression | New compatible-provider execution evidence |
 
 Keep #284 code/data licensing and #285 Pages activation as scoped publication
 interlocks, not blockers for independent analyzer/Reader work. BUILT is not
-DEPLOYED or LIVE_VERIFIED; previous corpus thresholds/equality gates unchanged.
+DEPLOYED or LIVE_VERIFIED; corpus floors and scientific equality rules unchanged.
 
 ## Retained evidence and scientific gates
 

@@ -121,10 +121,22 @@ class FrozenSiteIntegrationTests(unittest.TestCase):
                 self.assertIn("href='#main'", rendered)
             else:
                 self.assertIn('id="main-content" tabindex="-1"', rendered)
-            self.assertNotIn("<script", rendered)
+            if path == self.output / "index.html":
+                # The index alone may load one exact, local, deferred filter script.
+                # Keep the original no-script protection on all work/diagnostic pages.
+                tag = '<script src="assets/evidence-filter.js" defer></script>'
+                self.assertEqual(rendered.count("<script"), 1)
+                self.assertIn(tag, rendered)
+                self.assertTrue((self.output / "assets/evidence-filter.js").is_file())
+            else:
+                self.assertNotIn("<script", rendered)
             self.assertNotIn("Все счастливые семьи похожи друг на друга", rendered)
         css = (self.output / "assets/site.css").read_text()
-        for contract in ("*:focus-visible", "min-height: 44px", "prefers-reduced-motion", "min(18rem, 100%)"):
+        # Both anchors and interactive controls must have a visible focus ring;
+        # the literary theme uses scoped selectors instead of a universal selector.
+        for contract in ("a:focus-visible", ":where(button, input, select, textarea, [tabindex]):focus-visible",
+                         "outline: 3px solid var(--focus)", "min-height: 44px",
+                         "prefers-reduced-motion", "min(18rem, 100%)"):
             self.assertIn(contract, css)
 
     def test_unlisted_snapshot_is_not_discovered_or_featured(self):

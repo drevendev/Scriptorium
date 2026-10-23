@@ -19,6 +19,7 @@ from urllib.parse import urlsplit
 
 from .site_publish import staged_site
 from .publication import validate_compatibility_claim
+from .site_gallery_filter import evidence_kind, FILTER_CONTROLS, FILTER_JS, FILTER_CSS
 from . import site_frozen_diagnostic
 from . import site_work_comparison
 
@@ -504,8 +505,9 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
             "provenance": " · provenance-only",
             "frozen_diagnostic": " · full-work metrics",
         }.get(item.get("render_mode"), "")
+        kind = evidence_kind(item)
         cards.append(
-            '<article class="card">'
+            f'<article class="card" data-evidence-kind="{kind}">'
             f'<p class="eyebrow">{_escape(item["publication_status"])}{_escape(mode_note)}</p>'
             f'<h2><a href="works/{_escape(item["slug"])}/">{_escape(item["title"])}</a></h2>'
             f'<p>{_escape(item["author"])} · {_escape(item["work_title"])}</p>'
@@ -530,15 +532,26 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
             + _escape(comparison["slug"])
             + '/">Compare Grin and Verne — two full-length works →</a></p>'
         )
+    cards_html = "".join(cards) if cards else '<p class="empty-state">No public analyses are available in this build.</p>'
     body = (
-        '<main id="main-content" tabindex="-1"><p class="eyebrow">Scriptorium · literary analysis</p>'
+        '<main id="main-content" tabindex="-1"><header class="hero"><p class="eyebrow">Scriptorium · literary analysis</p>'
         '<h1>Explore the language behind a story.</h1>'
         '<p class="lede">Inspect vocabulary, sentence rhythm, dialogue and punctuation in real literary texts. '
         'Each result shows its measurements, source identity and limits.</p>'
         + action
+        + '</header><section class="reading-guide" aria-labelledby="reading-guide-title">'
+        '<h2 id="reading-guide-title">Read the evidence, not a mystery score</h2>'
+        '<ol><li><strong>Choose a work.</strong> Open a measured report and inspect exact units.</li>'
+        '<li><strong>Check its limits.</strong> An inferred measurement is not verified FantLab parity.</li>'
+        '<li><strong>Compare carefully.</strong> Different source editions and translations remain distinct.</li></ol>'
+        '<p>Have your own manuscript? <a href="https://github.com/drevendev/Scriptorium/blob/master/docs/READER_PREVIEW.md">Analyze a text privately with the Reader CLI →</a> No upload is required.</p>'
+        '</section>'
         + '<p class="notice">Full-work metrics, illustrative excerpts and provenance-only pages are labelled separately. '
         'FantLab source identity remains unknown for the frozen full-work report: diagnostic evidence is not parity.</p>'
-        + f'<section id="works" aria-label="Published evidence pages" class="grid">{"".join(cards)}</section></main>'
+        + '<h2 class="section-title">Published work and evidence</h2>'
+        + FILTER_CONTROLS
+        + f'<section id="works" aria-label="Published evidence pages" class="grid">{cards_html}</section>'
+        + '<script src="assets/evidence-filter.js" defer></script></main>'
     )
     return _page("Scriptorium", "assets/site.css", body)
 
@@ -565,7 +578,7 @@ def _render_metric_work(item: Mapping[str, Any]) -> str:
         )
     revision_url = _escape(item["revision_url"])
     body = (
-        '<main id="main-content" tabindex="-1"><nav><a href="../../">← All published analyses</a></nav>'
+        '<main id="main-content" tabindex="-1"><nav aria-label="Breadcrumb"><a href="../../">← All published analyses</a></nav>'
         f'<p class="eyebrow">{_escape(item["publication_status"])}</p>'
         f'<h1>{_escape(item["title"])}</h1>'
         f'<p class="lede">{_escape(item["author"])} · {_escape(item["work_title"])}</p>'
@@ -594,7 +607,7 @@ def _render_provenance_work(item: Mapping[str, Any]) -> str:
     revision_url = _escape(item["revision_url"])
     fantlab_url = _escape(item["fantlab_url"])
     body = (
-        '<main id="main-content" tabindex="-1"><nav><a href="../../">← All published analyses</a></nav>'
+        '<main id="main-content" tabindex="-1"><nav aria-label="Breadcrumb"><a href="../../">← All published analyses</a></nav>'
         f'<p class="eyebrow">{_escape(item["publication_status"])} · provenance-only</p>'
         f'<h1>{_escape(item["title"])}</h1>'
         f'<p class="lede">{_escape(item["author"])} · {_escape(item["work_title"])}</p>'
@@ -646,33 +659,201 @@ def _render_work(item: Mapping[str, Any]) -> str:
 
 
 _SITE_CSS = """\
-:root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.5; }
+:root {
+  color-scheme: light;
+  --paper: #fbf8f0;
+  --surface: #fffdf8;
+  --ink: #202d2a;
+  --muted: #465954;
+  --accent: #13554e;
+  --accent-soft: #e6efeb;
+  --line: #69786f;
+  --focus: #a54b18;
+  font-family: "Iowan Old Style", Georgia, "Times New Roman", serif;
+  font-size: 100%;
+  line-height: 1.65;
+}
 * { box-sizing: border-box; }
-body { margin: 0; background: Canvas; color: CanvasText; }
-main, footer { max-width: 72rem; margin: auto; padding: clamp(1rem, 4vw, 2rem); }
-a { color: inherit; }
-.skip-link:not(:focus) { position: absolute; clip-path: inset(50%); width: 1px; height: 1px; overflow: hidden; }
-.skip-link:focus { position: absolute; z-index: 10; margin: .5rem; padding: .75rem; background: Canvas; }
-*:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
-nav a, .card a, .actions a { display: inline-block; min-height: 44px; padding-block: .6rem; }
-h1, .card h2 { font-family: Georgia, 'Times New Roman', serif; }
-.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-block: 1.5rem; }
-.primary-action { border: 2px solid currentColor; border-radius: .5rem; padding-inline: 1rem; font-weight: 700; }
-.notice { margin-block: 1.5rem; }
-h1 { font-size: clamp(2rem, 5vw, 4rem); line-height: 1.05; }
-.eyebrow { font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-.lede { font-size: 1.15rem; max-width: 52rem; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); gap: 1rem; }
-.card, .notice { border: 1px solid currentColor; border-radius: .75rem; padding: 1rem; }
-.table-wrap { overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; }
-th, td { border-bottom: 1px solid currentColor; padding: .65rem; text-align: left; vertical-align: top; }
-dt { font-weight: 700; margin-top: 1rem; }
+html { scroll-behavior: smooth; }
+body {
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  background: radial-gradient(circle at 90% 0%, #efe8d9 0, transparent 32rem), var(--paper);
+}
+main, footer { max-width: 78rem; margin-inline: auto; padding: clamp(1rem, 4vw, 3rem); }
+main { min-height: 70vh; }
+footer { border-top: 1px solid var(--line); color: var(--muted); font: .9rem/1.6 system-ui, sans-serif; }
+a {
+  color: var(--accent);
+  text-underline-offset: .2em;
+  text-decoration-thickness: .075em;
+}
+a:hover { text-decoration-thickness: .15em; }
+a:focus-visible, :where(button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+.skip-link {
+  position: fixed;
+  top: .5rem;
+  left: .5rem;
+  z-index: 100;
+  padding: .75rem 1.1rem;
+  min-height: 44px;
+  background: var(--surface);
+  border: 2px solid var(--focus);
+  border-radius: .25rem;
+  font: 600 .95rem/1.4 system-ui, sans-serif;
+}
+.skip-link:not(:focus) {
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+}
+.hero {
+  padding-block: clamp(2rem, 6vw, 6rem);
+  border-bottom: 2px solid var(--ink);
+}
+.hero h1 { max-width: 17ch; }
+h1, h2, h3 { font-weight: 650; text-wrap: balance; }
+h1 { font-size: clamp(2.2rem, 6.5vw, 5.4rem); letter-spacing: -.035em; line-height: 1.08; margin-block: .65rem 1.25rem; }
+h2 { font-size: clamp(1.5rem, 2.8vw, 2.1rem); line-height: 1.2; }
+h3 { font-size: 1.18rem; line-height: 1.3; }
+.eyebrow {
+  color: var(--muted);
+  font: 750 .78rem/1.5 system-ui, sans-serif;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.lede { max-width: 61ch; font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: 1.7; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem 1rem; margin-block: 1.7rem; }
+.actions a, nav a, .card h2 a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .55rem .2rem;
+}
+.primary-action {
+  padding: .65rem 1.2rem !important;
+  border: 2px solid var(--accent);
+  border-radius: .3rem;
+  background: var(--accent);
+  color: #ffffff;
+  font: 700 1rem/1.45 system-ui, sans-serif;
+  text-decoration: none;
+}
+.primary-action:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+.reading-guide { padding-block: clamp(1rem, 3vw, 2rem); }
+.reading-guide ol {
+  padding: 0;
+  margin-block: 1.1rem;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  counter-reset: read-step;
+}
+.reading-guide li {
+  counter-increment: read-step;
+  min-width: 0;
+  padding: 1.2rem;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+}
+.reading-guide li::before {
+  content: "0" counter(read-step);
+  display: block;
+  color: var(--muted);
+  font: 750 .85rem/1.5 system-ui, sans-serif;
+  letter-spacing: .05em;
+  margin-bottom: .6rem;
+}
+.reading-guide p, .notice { max-width: 80ch; }
+.notice {
+  padding: clamp(1rem, 2.2vw, 1.5rem);
+  margin-block: 2rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: .2rem;
+  background: var(--accent-soft);
+}
+.section-title { margin-top: 2.5rem; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  gap: 1rem;
+  margin-block: 1.5rem 3rem;
+}
+.card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: .35rem;
+  background: var(--surface);
+  padding: clamp(1rem, 2vw, 1.6rem);
+  box-shadow: 0 5px 0 #aebeb180;
+}
+.card h2 { font-size: clamp(1.3rem, 2vw, 1.65rem); }
+.card p { overflow-wrap: anywhere; }
+.empty-state { padding: 2rem; border: 1px dashed var(--line); }
+.table-wrap { max-width: 100%; overflow-x: auto; padding-bottom: .3rem; }
+.table-wrap:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+table { border-collapse: collapse; width: 100%; font: .94rem/1.5 system-ui, sans-serif; }
+caption { text-align: left; font-weight: 700; padding-block: .7rem; }
+th, td { border-bottom: 1px solid var(--line); padding: .75rem .65rem; vertical-align: top; text-align: left; }
+thead { background: var(--accent-soft); }
+tbody tr:nth-child(even) { background: var(--surface); }
+dt { margin-top: 1rem; font-weight: 700; }
 dd { margin-left: 0; overflow-wrap: anywhere; }
-.status { font-weight: 700; }
+.status { font-weight: 750; }
 code { overflow-wrap: anywhere; }
-footer { opacity: .7; font-size: .9rem; }
-@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+@media (max-width: 720px) {
+  .reading-guide ol { grid-template-columns: 1fr; gap: .6rem; }
+  .hero { padding-block: 1.5rem 2rem; }
+  .actions { align-items: stretch; }
+  .actions a { justify-content: center; }
+  th, td { padding: .6rem .45rem; }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --paper: #14201d;
+    --surface: #1e2b27;
+    --ink: #f2ebdc;
+    --muted: #d1d8cf;
+    --accent: #a0e2d2;
+    --accent-soft: #20372f;
+    --line: #73887e;
+    --focus: #f2b273;
+  }
+  body { background: var(--paper); }
+  .primary-action { color: #14201d; }
+  .primary-action:hover { background: #f2ebdc; border-color: #f2ebdc; color: #14201d; }
+  .card { box-shadow: 0 5px 0 #00000035; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media (forced-colors: active) {
+  .card, .notice, .primary-action, .reading-guide li { border: 1px solid CanvasText; }
+  .primary-action { color: ButtonText; background: ButtonFace; }
+}
+@media print {
+  :root { color-scheme: light; --paper: #fff; --surface: #fff; --ink: #000; --muted: #222; --accent: #000; --accent-soft: #fff; --line: #666; }
+  body { background: #fff !important; color: #000 !important; }
+  main, footer { max-width: none; min-height: 0; padding: .3cm; }
+  .hero { padding: .4cm 0; }
+  .skip-link, .actions, nav { display: none !important; }
+  .grid, .reading-guide ol { display: block; }
+  .card, .reading-guide li, .notice { box-shadow: none; break-inside: avoid; margin-bottom: .4cm; background: #fff; }
+  .table-wrap { overflow: visible; }
+  a { color: #000; text-decoration: underline; }
+  @page { margin: 1.5cm; }
+}
 """
 
 
@@ -774,7 +955,8 @@ def build_site(
     try:
         with staged_site(root, destination) as output:
             (output / "assets").mkdir()
-            (output / "assets" / "site.css").write_text(_SITE_CSS, encoding="utf-8", newline="\n")
+            (output / "assets" / "site.css").write_text(_SITE_CSS + FILTER_CSS, encoding="utf-8", newline="\n")
+            (output / "assets" / "evidence-filter.js").write_text(FILTER_JS, encoding="utf-8", newline="\n")
             (output / "index.html").write_text(index_html, encoding="utf-8", newline="\n")
             for slug, page_html in work_pages.items():
                 work_dir = output / "works" / slug

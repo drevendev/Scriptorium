@@ -74,6 +74,7 @@ class EpubIngestionTests(unittest.TestCase):
             book(extras=[("OPS/chapter-1.xhtml", b"DUPLICATE", ZIP_STORED)]),
             book(extras=[("OPS/chapter-1.xhtml/", b"ALIAS", ZIP_STORED)]),
             book(extras=[("OPS/evil\\name", b"BAD", ZIP_STORED)]),
+            book(extras=[("META-INF/encryption.xml", b"<encryption/>", ZIP_STORED)]),
             book(extras=[("OPS/really-compressible.xhtml", b"a" * 100_000, ZIP_DEFLATED)]),
             book(opf=OPF.replace(b"chapter-1.xhtml", b"../chapter-1.xhtml")),
             book(opf=OPF.replace(b"chapter-1.xhtml", b"https://bad.site/chapter.xhtml")),

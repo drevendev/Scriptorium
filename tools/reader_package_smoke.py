@@ -3,10 +3,12 @@ import csv
 import hashlib
 import io
 import json
+from importlib.metadata import version
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import tomllib
 
 
 def main():
@@ -17,9 +19,11 @@ def main():
     for name in ("analyze_deterministic_metrics", "analyze_pos_metrics", "normalize_text", "word_tokens"):
         assert callable(getattr(scriptorium, name)), f"public API missing: {name}"
     def run(*args):
-        return subprocess.run([sys.executable, "-m", "scriptorium", *map(str, args)],
+        return subprocess.run([sys.executable, "-I", "-m", "scriptorium", *map(str, args)],
                               check=True, capture_output=True, text=True, timeout=60)
-    assert "0.2.0a1" in run("--version").stdout
+    declared_version = tomllib.loads((repo / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+    assert version("scriptorium-reader") == declared_version, "installed wheel disagrees with project version"
+    assert run("--version").stdout == f"Scriptorium Reader {declared_version}; inferred/extension preview, not FantLab parity\n"
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         source = root / "private.txt"

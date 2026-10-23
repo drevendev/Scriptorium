@@ -1,40 +1,42 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 299
+STATE_REVISION: 300
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-23
-LAST_RESULT: #295 merged into master at 4c5fea59bd4a9721782f9434b24518c164b61fd1; #289 EPUB Reader candidate authored for later independent acceptance.
-LAST_VERIFIED_PROGRESS: #295 native MERGED and #290 closed; #289 local parser safety regressions 4/4 PASS; full wheel/CI exact-head acceptance PENDING.
+LAST_RESULT: #296 merged to master e60738b74ec25d9bda2a95eaeb7648750ca3a695; #283 comparison print-layout fix authored in PR candidate.
+LAST_VERIFIED_PROGRESS: #296 native MERGED and #289 closed; isolated Chromium print fixture/PDF labels and width PASS; canonical Pages/browser acceptance and exact-head CI PENDING.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-INGEST-EPUB-001
-ISSUE:          #289
+UNIT_ID:        SCRIP-SITE-012-PRINT-COMPARISON
+ISSUE:          #283 (partial; the full visual/mobile gate remains open)
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-ingest-epub-local-v1
-BASE:           4c5fea59bd4a9721782f9434b24518c164b61fd1
-ACCEPTANCE:     Standard local EPUB 2/3 XHTML spine, bounded ZIP/XML, raw/body/
-                normalized digests, installed Reader 29-metric reports, no uploads,
-                synthetic attack/reading-order regressions and fresh exact-head CI.
+BRANCH:         scrip-site-012-print-comparison
+BASE:           e60738b74ec25d9bda2a95eaeb7648750ca3a695
+ACCEPTANCE:     Canonical private comparison page keeps all eight table fields
+                visible on printed paper via individually labelled two-column
+                metric cards, with no clipping from desktop minimum widths.
+                Existing screen/table/keyboard, data/evidence and privacy
+                behavior stays unchanged; CI and exact-head later review pass.
 ```
 
-#290 is merged and no longer requires acceptance. #289 adds one independent
-ingestion slice without changing the canonical 29-metric output schema.
-This semantic change must not be merged by its authoring wake.
+#296 EPUB ingestion has native MERGED status; #289 is closed. Do not repeat its
+acceptance. The print slice is related to #283 but does not close its broader
+published-route desktop/mobile and keyboard verification requirements.
+Local isolated Chromium print/PDF evidence is not the canonical built Pages
+route; **VISUAL_NOT_VERIFIED** still applies to the live/public route.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: readers can safely analyze an explicitly supplied local EPUB with
-existing Reader reports/compare and inspect exact container/body/normalized
-identities; publish only after later-run acceptance. Site deployment remains
-independently gated.
+Milestone: private JSON comparisons remain readable and complete when printed,
+while the screen retains its horizontal-scroll table and privacy protections.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #289 | Fresh independent diff/security review; installed-wheel EPUB -> HTML/JSON/CSV and comparison smoke; checks; qualifying merge | Exact-head CI and corpus/source-text exclusion |
-| P2 | #283 | Real desktop/mobile keyboard and visual Reader verification | Browser-capability gate; structural checks remain executable |
-| P3 | #281 | Source-bound FantLab readiness and metric deltas | FantLab exact input/source identity remains unestablished |
+| P1 | #283 print | Independent exact-head diff/test review, Pages build; qualifying merge of print-specific CSS/tests/docs | Current branch CI; cannot self-merge authoring change |
+| P2 | #283 full | Real canonical desktop/mobile, keyboard, focus and print browser acceptance | Browser navigation/Pages deployment gates; structural checks independently executable |
+| P3 | #281 | Further source-bound FantLab readiness and metric deltas | FantLab exact input/source identity still unestablished |
 | P4 | #282 | Measured AOT runtime N/cardinal regression | New compatible-provider execution evidence |
 
 Keep #284 code/data licensing and #285 Pages activation as scoped publication

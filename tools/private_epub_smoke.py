@@ -81,7 +81,7 @@ def main() -> None:
         # The EPUB-produced JSON must be consumed unchanged by Reader compare.
         comparison = folder / "comparison.json"
         proc = subprocess.run([str(cli), "compare", str(report), str(report),
-                               "--output", str(comparison)], cwd=folder,
+                               "--format", "json", "--output", str(comparison)], cwd=folder,
                               capture_output=True, text=True, timeout=30)
         assert proc.returncode == 0, proc.stderr
         assert len(json.loads(comparison.read_text(encoding="utf-8"))["metrics"]) == 29

@@ -1,47 +1,47 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 300
+STATE_REVISION: 301
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-23
-LAST_RESULT: #296 merged to master e60738b74ec25d9bda2a95eaeb7648750ca3a695; #283 comparison print-layout fix authored in PR candidate.
-LAST_VERIFIED_PROGRESS: #296 native MERGED and #289 closed; isolated Chromium print fixture/PDF labels and width PASS; canonical Pages/browser acceptance and exact-head CI PENDING.
+LAST_RESULT: #297 merged to master dbe97ca656f282a6b029c7c753ae57ae3dd6780c; #283 keyboard result focus and scroll guidance authored in PR candidate.
+LAST_VERIFIED_PROGRESS: #297 native MERGED; keyboard focus/async-race source changes and test authored; new branch CI and canonical browser/mobile acceptance NOT_RUN.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-SITE-012-PRINT-COMPARISON
-ISSUE:          #283 (partial; the full visual/mobile gate remains open)
+UNIT_ID:        SCRIP-SITE-012-KEYBOARD-COMPARE
+ISSUE:          #283 (partial; published-route visual/mobile gate remains open)
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-site-012-print-comparison
-BASE:           e60738b74ec25d9bda2a95eaeb7648750ca3a695
-ACCEPTANCE:     Canonical private comparison page keeps all eight table fields
-                visible on printed paper via individually labelled two-column
-                metric cards, with no clipping from desktop minimum widths.
-                Existing screen/table/keyboard, data/evidence and privacy
-                behavior stays unchanged; CI and exact-head later review pass.
+BRANCH:         scrip-site-012-keyboard-compare
+BASE:           dbe97ca656f282a6b029c7c753ae57ae3dd6780c
+ACCEPTANCE:     Successful private browser comparison moves focus to the
+                labelled result heading before the 29-row semantic table;
+                invalid or superseded asynchronous reads cannot steal focus.
+                Narrow-screen table includes a visible, associated keyboard
+                scroll instruction; print layout remains unclipped.
+                Regression tests + exact-head CI and later independent review.
 ```
 
-#296 EPUB ingestion has native MERGED status; #289 is closed. Do not repeat its
-acceptance. The print slice is related to #283 but does not close its broader
-published-route desktop/mobile and keyboard verification requirements.
-Local isolated Chromium print/PDF evidence is not the canonical built Pages
-route; **VISUAL_NOT_VERIFIED** still applies to the live/public route.
+#297 print work has native MERGED status, not a live PR. This is a distinct
+keyboard/navigation slice under #283; it does not close real desktop/mobile/
+assistive-technology browser acceptance. GitHub Pages activation and published
+route are not verified; **VISUAL_NOT_VERIFIED** remains for the live route.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: private JSON comparisons remain readable and complete when printed,
-while the screen retains its horizontal-scroll table and privacy protections.
+Milestone: a private Reader comparison that is keyboard-discoverable and
+complete on narrow screens, without losing print clarity or scientific caveats.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 print | Independent exact-head diff/test review, Pages build; qualifying merge of print-specific CSS/tests/docs | Current branch CI; cannot self-merge authoring change |
-| P2 | #283 full | Real canonical desktop/mobile, keyboard, focus and print browser acceptance | Browser navigation/Pages deployment gates; structural checks independently executable |
-| P3 | #281 | Further source-bound FantLab readiness and metric deltas | FantLab exact input/source identity still unestablished |
-| P4 | #282 | Measured AOT runtime N/cardinal regression | New compatible-provider execution evidence |
+| P1 | #283 keyboard | Independent exact-head CI/diff/test review and qualifying merge of result-focus, scroll-help and regression tests | Current PR CI; no same-run author/merge |
+| P2 | #283 full | Actual canonical desktop/mobile, focus, scroll and print acceptance | Browser/Pages capability; structural checks independently executable |
+| P3 | #281 | Source-bound FantLab readiness and strict metric deltas | Exact published source-input identity unresolved |
+| P4 | #282 | Measured AOT runtime noun/cardinal N regression | Compatible provider execution evidence needed |
 
 Keep #284 code/data licensing and #285 Pages activation as scoped publication
-interlocks, not blockers for independent analyzer/Reader work. BUILT is not
-DEPLOYED or LIVE_VERIFIED; corpus floors and scientific equality rules unchanged.
+interlocks, not blockers for independent Reader/analyzer work. BUILT does
+not imply DEPLOYED or LIVE_VERIFIED; corpus and M2 scientific gates unchanged.
 
 ## Retained evidence and scientific gates
 

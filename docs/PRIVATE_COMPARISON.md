@@ -98,3 +98,22 @@ The print layout has source-level and isolated Chromium print/PDF checks.
 Those are not a verified canonical Pages URL, nor complete desktop/mobile
 accessibility acceptance for #283; actual published-route visual checks remain
 separately gated.
+
+## Keyboard and narrow-screen results
+
+After choosing two valid local JSON reports and activating **Compare reports**, the
+browser moves keyboard focus to the **Source-free comparison** heading, just before
+the source hashes, export actions and complete 29-row table. A polite live status
+also announces validation. Invalid or unsupported JSON leaves focus on the action
+and explains the rejection without revealing manuscript text or file paths. Changing
+a file during asynchronous validation discards the old result without stealing focus.
+
+On narrow displays, the table remains a semantic eight-column table. Tab into its
+labelled, focusable scroll region and use arrow keys to read columns horizontally.
+A visible instruction names this interaction; paper output omits the scroll hint
+and retains the independently tested labelled metric cards.
+
+Automated Node DOM interaction tests cover success, invalid files and stale async
+reads. They are **not** real desktop/mobile assistive-technology acceptance and do
+not establish that GitHub Pages is deployed or live-verified. Issue #283 remains
+open pending the genuine browser/keyboard/mobile checks.

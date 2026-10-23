@@ -43,6 +43,23 @@ precision. Contradictory counts, means, punctuation rates and same-text results 
 Imported JSON and hashes are declarations, not authenticated proof: rerun the analyzer
 on the original bytes to verify them. [Comparison contract and examples](docs/PRIVATE_COMPARISON.md).
 
+## Compare in your browser (private beta)
+
+Build the canonical site with `scriptorium site --repo-root . --output build/site`
+and open `build/site/compare/index.html`, or use the **Compare private reports**
+action in the generated homepage. Select two local `scriptorium analyze` JSON
+reports; no manuscripts or report bytes are uploaded. Inspect all 29 measurements,
+incomparable/missing reasons, exact decimal right-minus-left differences, and
+download source-free JSON/CSV. The browser validates the same versioned report
+contract as the installed Python Reader and rejects duplicate keys, integer
+lexeme spoofs, impossible counts, nonfinite values and changed units. Browser
+support requires JavaScript; the offline `scriptorium compare` CLI always works.
+[Browser validation and limitations](docs/PRIVATE_COMPARISON.md).
+
+This is a **local build capability**, not a live GitHub Pages deployment. No private
+manuscripts are included; imported report hashes are unauthenticated declarations.
+Scientific/FantLab parity remains unverified (M2 0/5).
+
 ## Open a real literary result
 
 The repository contains a source-free, historical full-work diagnostic for
@@ -130,7 +147,6 @@ from an interrupted older preview fail closed and are not automatically deleted.
 [Roadmap and repository assessment](project/ROADMAP.md)
 
 The detailed [Research and evidence index](RESEARCH_INDEX.md) retains project history,
-corpus investigations and original reference links. Unpublished EPUB/batch Workbench
-and browser Comparison Desk prototypes are **not** advertised as released features;
-they require focused adoption and real repository tests. Code/data licensing and Pages
-activation retain their separately tracked gates (#284/#285).
+corpus investigations and original reference links. EPUB/batch Workbench prototypes remain **unpublished** and require focused adoption.
+The browser comparison beta is a local-build capability pending review and public
+deployment. Code/data licensing and Pages activation retain separate gates (#284/#285).

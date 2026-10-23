@@ -62,14 +62,15 @@ missing values are labelled—not silently converted to zero. Each file is limit
 with the <a href="https://github.com/drevendev/Scriptorium/blob/master/docs/PRIVATE_COMPARISON.md">offline Python Reader CLI</a>.</p></noscript>
 </section>
 <section id="comparison-result" hidden aria-labelledby="comparison-title">
-<h2 id="comparison-title">Source-free comparison</h2>
+<h2 id="comparison-title" tabindex="-1">Source-free comparison</h2>
 <p class="notice">Inferred/extension measurements only: not verified FantLab parity (M2 0/5).
 Imported hashes are declarations, not authenticated evidence. Percent differences use
 percentage points, never relative percentages. Re-analyze originals to verify.</p>
 <pre class="desk-sources" id="source-summary" aria-label="Declared source hashes and lengths"></pre>
 <p class="actions"><button type="button" id="save-comparison-json" disabled>Export JSON ↓</button>
 <button type="button" id="save-comparison-csv" disabled>Export CSV ↓</button></p>
-<div class="table-wrap" tabindex="0" role="region" aria-label="29 report measurements">
+<p class="scroll-help" id="comparison-scroll-help">On narrow screens, scroll the table horizontally. Keyboard users can tab to the labelled table region and use arrow keys to reach every column.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="29 report measurements" aria-describedby="comparison-scroll-help">
 <table><caption>29 metrics · original values, units and comparison status</caption>
 <thead><tr><th scope="col">Metric</th><th scope="col">Left</th><th scope="col">Right</th>
 <th scope="col">Unit</th><th scope="col">Difference</th><th scope="col">Difference unit</th>
@@ -106,6 +107,8 @@ CSS = """
   border: 1px solid var(--line); background: var(--surface);
   font: .84rem/1.6 ui-monospace,Consolas,monospace; }
 .private-desk .table-wrap { border: 1px solid var(--line); border-radius: .35rem; }
+.private-desk #comparison-title:focus { outline: 3px solid var(--focus); outline-offset: .25rem; }
+.private-desk .scroll-help { max-width: 72ch; }
 .private-desk table { min-width: 64rem; }
 .private-desk td { font-variant-numeric: tabular-nums; }
 .private-desk th { min-width: 10rem; }
@@ -113,7 +116,7 @@ CSS = """
 @media(max-width:720px) { .desk-inputs { grid-template-columns: 1fr; } }
 @media(prefers-color-scheme:dark) { .private-desk button { color: #14201d; } }
 @media print {
-  .desk-panel, .private-desk .actions { display: none !important; }
+  .desk-panel, .private-desk .actions, .private-desk .scroll-help { display: none !important; }
   .private-desk .table-wrap { overflow: visible; border: 0; }
   .private-desk table, .private-desk tbody { display: block; width: 100%; min-width: 0; }
   .private-desk thead { display: none; }

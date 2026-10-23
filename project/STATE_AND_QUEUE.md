@@ -1,50 +1,46 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 294
+STATE_REVISION: 295
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-22
-LAST_RESULT: Owner-requested interactive delivery accepted and merged Reader 0.3 #278 as 5c03ee428df6cc36ebdeff2443d35ac9f7e72dca; native GitHub closed #277. Reader 0.4 implementation is in #288 on the reused scrip-compare-003-local-cli branch. It is authored work, not accepted or merged. Native records own current heads, checks and deployment facts.
-LAST_VERIFIED_PROGRESS: #288 head dab93b3143ee8f494b2f2761bb21d25bf8153ad7 passed all six applicable workflows after fixing the stale hardcoded smoke-test version. Its preceding full suite passed 809 tests. This successor adds nine gallery unit/touch-structure regressions, which passed locally with the actual pinned source-free records; exact-head full CI must pass again. No frozen source/benchmark data or scientific gate changed.
+LAST_COMMITTED_RUN_AT: 2026-10-23
+LAST_RESULT: Reader 0.4 PR #288 and literary design PR #291 are merged. Browser comparison #280 is authored on the existing scrip-compare-004-browser branch, pending later-run acceptance. No Pages deployment or scientific gate change.
+LAST_VERIFIED_PROGRESS: Prior #291 CI passed, merged into master at 97a62a35fa20ce29360956e56e3708699fde0262. Browser #280 requires fresh exact-head CI and installed wheel/browser evidence; no live Pages route verified.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-READER-0.4-DELIVERY
-ISSUES:         #279 private CLI comparison; #286 source-unit guard; partial #283 touch targets
-STATUS:         IMPLEMENTED_PENDING_ACCEPTANCE
-PR:             #288
-BRANCH:         scrip-compare-003-local-cli
-BASE:           5c03ee428df6cc36ebdeff2443d35ac9f7e72dca
-ACCEPTANCE:     Fresh exact-head diff, full canonical suite, installed complete wheel,
-                deterministic gallery/site, private create-only negative cases.
-                Later acceptance only; no same-session merge of authored changes.
+UNIT_ID:        SCRIP-COMPARE-004-BROWSER
+ISSUE:          #280
+STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
+BRANCH:         scrip-compare-004-browser (existing claim)
+BASE:           97a62a35fa20ce29360956e56e3708699fde0262
+ACCEPTANCE:     Browser 29-metric comparison, Python contract parity on 234
+                differential cases, exact JSON/CSV, keyboard-mobile support,
+                real installed-wheel/site build and applicable exact-head CI.
+                Independent later-run merge/publication are separate.
 ```
 
-Interactive GitHub writes and expected-head merge succeeded. Historical scheduled
-write denials are not current provider facts and must not be retried merely by age.
-No second worker, new branch, scheduler change or administrative/deployment activation
-was created. Existing earlier cleanup evidence remains in CHANGELOG and native PRs;
-#266/#278 are merged, not pending work. Revalidate superseded PRs before acting.
+The branch preserves Reader 0.4 history; its pre-existing authored file blobs
+match current master. No extra branch, scheduler, admin, settings or secret changes.
+Native PR/checks/merge facts override old statuses here.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: install one canonical Reader; analyze and compare private UTF-8 texts to
-readable HTML and exact JSON/CSV; inspect retained full-work results and exports through
-the six-route static site. Actual CLI reports, not a parallel synthetic analyzer, are
-the comparison contract. Incremental availability does not close M1-M5.
+Milestone: compare two local Reader JSON reports with validated decimal differences
+in an accessible source-free browser; later publish approved Reader capabilities
+when deployment authorization permits. Scientific M2 remains open.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #288 / #279 / #286 | Finish any real exact-head CI findings, then later independent acceptance and merge; source-unit guards must retain current frozen outputs | Actual checks and branch rules; not a separate human unless genuinely required |
-| P2 | #280 / #283 | Adopt browser Comparison Desk against actual Reader-generated reports; preserve private files, invalidation and exact exports; verify desktop/mobile/keyboard/touch flows | Python comparison contract and permitted browser execution; no in-memory preview presented as live |
-| P3 | #281 | Adopt readiness/delta tool against the real retained catalog and reconcile proven frozen metadata; separate rights/body/size/input-identity/rounding gates | Source-unmatched comparisons remain diagnostic; one difficult source does not block other work |
-| P4 | #287 | Recover POS distribution joins from the private outbox into the canonical benchmark with source/profile accounting and real CLI tests | Existing POS artifact contract; unresolved service/runtime-N/homonyms remain unknown, not zero |
-| P5 | #282 | One reproducible AOT noun/cardinal ambiguity experiment with inspectable POS deltas | Pinned AOT lineage and honest inferred/extension labels |
+| P1 | #280 | Fix exact-head CI findings; later independently accept/merge private browser Comparison Desk | Real installed-wheel/JS/Pages checks and later acceptance; VISUAL_NOT_VERIFIED |
+| P2 | #281 | Cross-work FantLab readiness/delta evidence report | Unknown source identities are diagnostic, not parity |
+| P3 | #287 | Source-free POS distribution benchmark join with strict profile/count validation | Independent of unresolved AOT semantics |
+| P4 | #290 | Recover manifest batch CLI with installed analyzer and atomic index | Validate handoff against current head; no uploads |
+| P5 | #282 / #283 | AOT N/cardinal measured regression, remaining real mobile/keyboard visual acceptance | Browser availability and new measurement evidence |
 
-Execution order lives here. ROADMAP records broader acceptance and repository assessment.
-Retain release attention for code/data licensing #284 and publication #285 without making
-those blockers prevent independent product implementation. Existing #279-#286 already own
-the corresponding outbox debts; do not duplicate them. Distinct POS-join debt is #287.
+Keep #284 code/data licensing and #285 Pages activation as scoped publication
+interlocks, not blockers for independent analyzer/Reader work. BUILT is not
+DEPLOYED or LIVE_VERIFIED; previous corpus thresholds/equality gates unchanged.
 
 ## Retained evidence and scientific gates
 

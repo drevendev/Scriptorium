@@ -128,6 +128,11 @@ class FrozenSiteIntegrationTests(unittest.TestCase):
                 self.assertEqual(rendered.count("<script"), 1)
                 self.assertIn(tag, rendered)
                 self.assertTrue((self.output / "assets/evidence-filter.js").is_file())
+            elif path == self.output / "compare" / "index.html":
+                tag = '<script src="../assets/private-compare.js" defer></script>'
+                self.assertEqual(rendered.count("<script"), 1)
+                self.assertIn(tag, rendered)
+                self.assertTrue((self.output / "assets/private-compare.js").is_file())
             else:
                 self.assertNotIn("<script", rendered)
             self.assertNotIn("Все счастливые семьи похожи друг на друга", rendered)

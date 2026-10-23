@@ -22,6 +22,7 @@ from .publication import validate_compatibility_claim
 from .site_gallery_filter import evidence_kind, FILTER_CONTROLS, FILTER_JS, FILTER_CSS
 from . import site_frozen_diagnostic
 from . import site_work_comparison
+from . import site_browser_compare
 
 GENERATOR_PROFILE = "scriptorium-static-site-v2"
 MANIFEST_PROFILE = "scriptorium-publication-manifest-v1"
@@ -532,6 +533,10 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
             + _escape(comparison["slug"])
             + '/">Compare Grin and Verne — two full-length works →</a></p>'
         )
+    action += (
+        '<p class="actions"><a class="primary-action" href="compare/">'
+        'Compare two private Reader JSON reports →</a></p>'
+    )
     cards_html = "".join(cards) if cards else '<p class="empty-state">No public analyses are available in this build.</p>'
     body = (
         '<main id="main-content" tabindex="-1"><header class="hero"><p class="eyebrow">Scriptorium · literary analysis</p>'
@@ -955,8 +960,16 @@ def build_site(
     try:
         with staged_site(root, destination) as output:
             (output / "assets").mkdir()
-            (output / "assets" / "site.css").write_text(_SITE_CSS + FILTER_CSS, encoding="utf-8", newline="\n")
+            (output / "assets" / "site.css").write_text(_SITE_CSS + FILTER_CSS + site_browser_compare.CSS, encoding="utf-8", newline="\n")
             (output / "assets" / "evidence-filter.js").write_text(FILTER_JS, encoding="utf-8", newline="\n")
+            (output / "assets" / "private-compare.js").write_text(
+                site_browser_compare.render_script(), encoding="utf-8", newline="\n"
+            )
+            (output / "compare").mkdir()
+            (output / "compare" / "index.html").write_text(
+                _page("Private comparison", "../assets/site.css", site_browser_compare.BODY),
+                encoding="utf-8", newline="\n"
+            )
             (output / "index.html").write_text(index_html, encoding="utf-8", newline="\n")
             for slug, page_html in work_pages.items():
                 work_dir = output / "works" / slug

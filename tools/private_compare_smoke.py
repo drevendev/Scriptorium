@@ -24,6 +24,11 @@ def run(*args: str, ok: bool = True) -> subprocess.CompletedProcess[str]:
 def main() -> None:
     import scriptorium
     from scriptorium.compare import build_comparison, load_report
+    from scriptorium.site_browser_compare import render_script
+    javascript = render_script()
+    assert 'scriptorium-private-comparison-v1' in javascript
+    assert 'fantlab-2022-v1' in javascript
+    assert '/*SCRIPTORIUM_METRIC_CONTRACT*/ null' not in javascript
 
     checkout = Path(sys.argv[1]).resolve() if len(sys.argv) == 2 else None
     location = Path(scriptorium.__file__).resolve()

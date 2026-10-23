@@ -58,5 +58,27 @@ also builds the full repository wheel, installs it outside the checkout and runs
 `tools/private_compare_smoke.py`: real texts, 29 rows, HTML/JSON/CSV, exact deltas,
 deterministic output, create-only behavior and negative input rejection.
 
-The separate browser Comparison Desk prototype is tracked in #280 and is not advertised
-as an integrated feature of this CLI. GitHub Pages activation remains separately gated.
+## Local browser Comparison Desk (issue #280)
+
+The canonical site build includes `compare/index.html`. Analyze two UTF-8 texts
+locally into JSON with the Reader, build the site, open the Comparison Desk and
+choose the two report files. Only the current browser tab reads their bytes: no
+network, telemetry, server storage, upload, cookies or persistent browser state.
+
+The browser's 29 metric IDs, names, units and compatibility/evidence statuses are
+generated at build time from the actual Python deterministic analyzer registry.
+A bounded, duplicate-key-aware JSON parser preserves exact decimal *lexemes* and
+distinguishes the JSON integer token `3` from `3.0` or `3e0`.
+Counts, punctuation rates, method/dictionary identities, contradictory source
+hashes, missing metrics and representativeness are checked before comparison.
+Exports are source-free JSON and formula-neutralized CSV; values stay right-minus-left
+with explicit units and reasons. Files must each be valid UTF-8 Reader reports no
+larger than 8 MiB. For canonical repeatability or disabled JavaScript, use
+`scriptorium compare` in the installed CLI.
+
+The Python and browser comparison implementations use matching versioned contracts;
+the Python implementation remains the canonical acceptance reference. Runtime
+differential tests exercise 234 accepted/rejected report pairs and check exact
+JSON/CSV exports. This does not authenticate imported hashes or establish copyright,
+source edition, FantLab equivalence or corpus admission. M2 remains 0/5.
+GitHub Pages activation remains separately gated.

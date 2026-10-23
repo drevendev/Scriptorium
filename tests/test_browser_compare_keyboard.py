@@ -35,8 +35,8 @@ class BrowserCompareKeyboardTests(unittest.TestCase):
             js_file = Path(temp) / 'private-compare.js'
             js_file.write_text(site_browser_compare.render_script(), encoding='utf-8')
             cases = {
-                'left': build_local_analysis('Кот спит. Собака бежит!'.encode('utf-8')),
-                'right': build_local_analysis('Лес шумит. Ветер поёт!'.encode('utf-8')),
+                'left': json.dumps(build_local_analysis('Кот спит. Собака бежит!'.encode('utf-8')), ensure_ascii=False),
+                'right': json.dumps(build_local_analysis('Лес шумит. Ветер поёт!'.encode('utf-8')), ensure_ascii=False),
             }
             harness = r'''
 const assert = require('node:assert/strict');
@@ -91,8 +91,8 @@ function chosen() {
 }
 (async () => {
   assert.equal(button.disabled, true);
-  left.files = [file(JSON.stringify(cases.left))];
-  right.files = [file(JSON.stringify(cases.right))];
+  left.files = [file(cases.left)];
+  right.files = [file(cases.right)];
   chosen();
   assert.equal(button.disabled, false);
   await button.handlers.click();
@@ -112,11 +112,11 @@ function chosen() {
 
   // A new file selection during an async read invalidates the previous
   // generation; the old result may not appear or steal keyboard focus.
-  const accepted = file(JSON.stringify(cases.left));
+  const accepted = file(cases.left);
   let release;
   left.files = [{size: accepted.size, arrayBuffer: () =>
     new Promise(resolve => { release = () => accepted.arrayBuffer().then(resolve); })}];
-  right.files = [file(JSON.stringify(cases.right))];
+  right.files = [file(cases.right)];
   chosen();
   const inFlight = button.handlers.click();
   assert.equal(typeof release, 'function');

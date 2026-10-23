@@ -132,7 +132,11 @@ class FrozenSiteIntegrationTests(unittest.TestCase):
                 self.assertNotIn("<script", rendered)
             self.assertNotIn("Все счастливые семьи похожи друг на друга", rendered)
         css = (self.output / "assets/site.css").read_text()
-        for contract in ("*:focus-visible", "min-height: 44px", "prefers-reduced-motion", "min(18rem, 100%)"):
+        # Both anchors and interactive controls must have a visible focus ring;
+        # the literary theme uses scoped selectors instead of a universal selector.
+        for contract in ("a:focus-visible", ":where(button, input, select, textarea, [tabindex]):focus-visible",
+                         "outline: 3px solid var(--focus)", "min-height: 44px",
+                         "prefers-reduced-motion", "min(18rem, 100%)"):
             self.assertIn(contract, css)
 
     def test_unlisted_snapshot_is_not_discovered_or_featured(self):

@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import sys
 
-COMMANDS = {"analyze": "scriptorium.analyze", "compare": "scriptorium.compare", "site": "scriptorium.site_renderer"}
+COMMANDS = {"batch": "scriptorium.batch", "analyze": "scriptorium.analyze", "compare": "scriptorium.compare", "site": "scriptorium.site_renderer"}
 MAX_DIAGNOSTIC_BYTES = 8 * 1024 * 1024
 
 
@@ -49,8 +49,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if not args or args[0] in {"-h", "--help"}:
         print("Scriptorium Reader — private text analysis and evidence-labelled literary reports")
-        print("Usage: scriptorium <analyze|compare|diagnostic|site> [options]")
+        print("Usage: scriptorium <analyze|batch|compare|diagnostic|site> [options]")
         print("  analyze     UTF-8 manuscript -> JSON, HTML or CSV (29 metrics)")
+        print("  batch       Explicit UTF-8 manifest -> private JSON/HTML reports and index")
         print("  compare     Two private analysis JSON files -> HTML, JSON or CSV; no uploads")
         print("  diagnostic  Curated historical diagnostic -> offline HTML")
         print("  site        Build the canonical allow-listed site from a repository checkout")

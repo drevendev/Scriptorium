@@ -8,6 +8,7 @@ on:
       - "tests/**"
       - "tools/reader_package_smoke.py"
       - "tools/private_compare_smoke.py"
+      - "tools/private_batch_smoke.py"
       - ".github/workflows/reader-package.yml"
   push:
     branches: [master]
@@ -17,6 +18,7 @@ on:
       - "tests/**"
       - "tools/reader_package_smoke.py"
       - "tools/private_compare_smoke.py"
+      - "tools/private_batch_smoke.py"
       - ".github/workflows/reader-package.yml"
   workflow_dispatch:
 
@@ -59,6 +61,12 @@ jobs:
           set -euo pipefail
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/reader-venv/bin/python" -I "$GITHUB_WORKSPACE/tools/private_compare_smoke.py" "$GITHUB_WORKSPACE"
+      - name: Exercise installed private batch, retry and partial failure
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/reader-venv/bin/python" -I "$GITHUB_WORKSPACE/tools/private_batch_smoke.py" "$GITHUB_WORKSPACE"
       - name: Verify installed source-free gallery and deterministic output
         shell: bash
         run: |

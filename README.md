@@ -26,6 +26,24 @@ No runtime dependencies, account, server or telemetry are required. Installation
 fetch build tools; see [offline wheel installation](docs/READER_PREVIEW.md).
 `python -m scriptorium` exposes the same commands from a checkout.
 
+## Analyze a private batch (POSIX preview)
+
+Select up to 16 UTF-8 manuscripts explicitly in a JSON manifest, then generate
+source-free per-work reports and an HTML/JSON/CSV index locally:
+
+```bash
+printf '%s\n' '{"schema_version":"scriptorium-private-batch-manifest-v1","files":["first.txt","second.txt"]}' > manifest.json
+scriptorium batch manifest.json --output-dir private-results
+```
+
+The manifest paths are relative to its directory. No implicit crawling, uploads,
+overwrites or source-text publication. Failed items are marked unavailable,
+never assigned zero metrics. Re-running an unchanged batch reuses identical
+outputs; conflicting files fail closed. Use a private POSIX filesystem:
+directory-relative no-follow operations are required. This workflow does not
+admit works to the corpus or establish FantLab parity.
+[Batch use, limits and exit codes](docs/PRIVATE_BATCH.md).
+
 ## Compare your own analyses
 
 ```bash
@@ -169,6 +187,7 @@ from an interrupted older preview fail closed and are not automatically deleted.
 [Reader installation and commands](docs/READER_PREVIEW.md) ·
 [Local analysis and dictionaries](docs/LOCAL_ANALYSIS.md) ·
 [Private comparison](docs/PRIVATE_COMPARISON.md) ·
+[Private batch](docs/PRIVATE_BATCH.md) ·
 [Frozen diagnostic methodology](docs/FROZEN_DIAGNOSTIC_REPORT.md) ·
 [Five-work benchmark readiness](docs/BENCHMARK_READINESS.md) ·
 [Canonical site and publication boundary](docs/FULL_WORK_SITE_REPORT.md) ·

@@ -8,7 +8,7 @@ LAST_VERIFIED_PROGRESS: PR #293 merged at e0e69d6a33fe91219d369c468a3be020a967ae
 
 ## Current delivery and acceptance
 
-\`\`\`text
+```text
 UNIT_ID:        SCRIP-REPRO-011-POS
 ISSUE:          #287
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
@@ -17,7 +17,7 @@ BASE:           e0e69d6a33fe91219d369c468a3be020a967ae88
 ACCEPTANCE:     Optional normalized-source-bound POS benchmark join with 40 diagnostic
                 rows, exact 17x17 / 20x17 artifact validation, negative regressions,
                 no service-word invention and no M2 credit.
-\`\`\`
+```
 
 PR #293 is merged. The new #287 branch is a distinct ready feature unit; no
 scheduler/admin/settings/secret changes. Native PR/check/merge facts override

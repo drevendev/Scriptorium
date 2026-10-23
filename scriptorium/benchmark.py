@@ -161,6 +161,7 @@ def build_comparison(
     legal_basis: str | None = None,
     dictionary_words: Iterable[str] | None = None,
     dictionary_profile: str | None = None,
+    pos_artifact: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Build one deterministic FantLab comparison artifact.
 
@@ -235,6 +236,18 @@ def build_comparison(
             admission_issues=tuple(admission_issues),
         )
 
+    pos_metadata = None
+    if pos_artifact is not None:
+        from .benchmark_pos import build_pos_comparisons, strict_json
+        strict_json(reference_json)  # Reject duplicate reference keys in POS comparisons.
+        pos_rows, pos_metadata = build_pos_comparisons(
+            reference, lexical_reference, pos_artifact,
+            normalized_sha256=analysis["normalized_sha256"],
+            word_count=analysis["metrics"]["fantlab.general.words"]["value"],
+            sentence_count=analysis["metrics"]["scriptorium.general.sentences"]["value"],
+        )
+        metrics.update(pos_rows)
+
     if not metrics:
         raise ValueError("reference contains no currently implemented comparable metrics")
 
@@ -249,6 +262,13 @@ def build_comparison(
             "compatibility_profile": COMPATIBILITY_PROFILE,
             "normalization_profile": NORMALIZATION_PROFILE,
             "dictionary_version": _dictionary_version_string(dictionary_dependency),
+            **({
+                "morphology_provider": pos_metadata["runtime_profile"],
+                "morphology_version": (
+                    f'{pos_metadata["mapping_contract"]}@sha256:'
+                    f'{pos_metadata["runtime_analysis_sha256"]}'
+                ),
+            } if pos_metadata is not None else {}),
         },
         "metrics": metrics,
     }
@@ -396,6 +416,10 @@ def _build_parser() -> argparse.ArgumentParser:
         "--dictionary-profile",
         help="Required stable identity/version when --dictionary is supplied.",
     )
+    parser.add_argument(
+        "--pos-metrics", type=Path,
+        help="Optional source-free scriptorium-pos-metrics-v1 JSON from the same normalized text.",
+    )
     parser.add_argument("--output", type=Path)
     return parser
 
@@ -410,6 +434,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.dictionary is not None:
         dictionary_words = args.dictionary.read_text(encoding="utf-8").splitlines()
 
+    pos_artifact = None
+    if args.pos_metrics is not None:
+        from .benchmark_pos import strict_json
+        pos_artifact = strict_json(args.pos_metrics.read_text(encoding="utf-8"))
+
     artifact = build_comparison(
         args.reference.read_text(encoding="utf-8"),
         args.text.read_bytes(),
@@ -420,6 +449,7 @@ def main(argv: list[str] | None = None) -> int:
         legal_basis=args.legal_basis,
         dictionary_words=dictionary_words,
         dictionary_profile=args.dictionary_profile,
+        pos_artifact=pos_artifact,
     )
     rendered = json.dumps(artifact, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     if args.output is None:

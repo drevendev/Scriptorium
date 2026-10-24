@@ -109,6 +109,7 @@ def build(root: Path) -> dict[str, str]:
 
     works = []
     for item in entries:
+        reference_tag = _reference(item["reference_url"])
         witness = sources_by_id[item["candidate_id"]]
         source = witness["source"]
         diagnostic = witness["character_count_diagnostic"]
@@ -150,7 +151,7 @@ def build(root: Path) -> dict[str, str]:
             '<br><strong>Δ:</strong> ' + _esc(f"{delta:+,}") +
             '</td><td>' + _esc(status) + '</td><td>' + measured +
             '</td><td>UNKNOWN</td><td>' +
-            _reference(item["reference_url"]) + '<br><small>' +
+            reference_tag + '<br><small>' +
             _esc(item["reference_date"]) + '</small></td></tr>'
         )
 

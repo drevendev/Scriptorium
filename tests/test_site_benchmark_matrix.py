@@ -24,6 +24,18 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertEqual(content.count('class="metric-row"'), 28)
         self.assertEqual(content.count('scope="row"'), 33)
         self.assertEqual(content.count('<span lang="ru">'), 28)
+        self.assertIn('<nav aria-label="Metric families">', content)
+        for family, count in (("dialogue", 4), ("general", 4),
+                              ("punctuation", 14), ("vocabulary", 6)):
+            self.assertIn(
+                f'<a href="#metric-family-{family}">{family.title()} ({count})</a>',
+                content,
+            )
+            self.assertIn(
+                f'<tr class="metric-row" id="metric-family-{family}" tabindex="-1">',
+                content,
+            )
+        self.assertEqual(content.count('id="metric-family-'), 4)
         self.assertIn('<span lang="ru">Длина текста, знаков</span>', content)
         self.assertIn('<code>fantlab.general.characters</code>', content)
         self.assertIn("Input identity unverified", content)

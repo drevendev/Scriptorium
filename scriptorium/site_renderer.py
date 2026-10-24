@@ -22,6 +22,7 @@ from .publication import validate_compatibility_claim
 from .site_gallery_filter import evidence_kind, FILTER_CONTROLS, FILTER_JS, FILTER_CSS
 from . import site_frozen_diagnostic
 from . import site_work_comparison
+from .site_home_showcase import render_demo, HOME_CSS
 from . import site_browser_compare
 from . import site_benchmark_matrix
 
@@ -547,12 +548,17 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
         )
     cards_html = "".join(cards) if cards else '<p class="empty-state">No public analyses are available in this build.</p>'
     body = (
-        '<main id="main-content" tabindex="-1"><header class="hero"><p class="eyebrow">Scriptorium · literary analysis</p>'
+        '<main id="main-content" tabindex="-1">'
+        '<div class="site-masthead"><a class="site-wordmark" href="./">'
+        '<span class="site-monogram" aria-hidden="true">S</span> SCRIPTORIUM</a>'
+        '<span class="site-tagline">Literature, measured with care</span></div>'
+        '<div class="hero-stage"><header class="hero"><p class="eyebrow">Scriptorium · literary analysis</p>'
         '<h1>Explore the language behind a story.</h1>'
         '<p class="lede">Inspect vocabulary, sentence rhythm, dialogue and punctuation in real literary texts. '
         'Each result shows its measurements, source identity and limits.</p>'
         + action
-        + '</header><section class="reading-guide" aria-labelledby="reading-guide-title">'
+        + '</header>' + render_demo(entries)
+        + '</div><section class="reading-guide" aria-labelledby="reading-guide-title">'
         '<h2 id="reading-guide-title">Read the evidence, not a mystery score</h2>'
         '<ol><li><strong>Choose a work.</strong> Open a measured report and inspect exact units.</li>'
         '<li><strong>Check its limits.</strong> An inferred measurement is not verified FantLab parity.</li>'
@@ -992,7 +998,7 @@ def build_site(
     try:
         with staged_site(root, destination) as output:
             (output / "assets").mkdir()
-            (output / "assets" / "site.css").write_text(_SITE_CSS + FILTER_CSS + site_browser_compare.CSS, encoding="utf-8", newline="\n")
+            (output / "assets" / "site.css").write_text(_SITE_CSS + FILTER_CSS + HOME_CSS + site_browser_compare.CSS, encoding="utf-8", newline="\n")
             (output / "assets" / "evidence-filter.js").write_text(FILTER_JS, encoding="utf-8", newline="\n")
             (output / "assets" / "private-compare.js").write_text(
                 site_browser_compare.render_script(), encoding="utf-8", newline="\n"

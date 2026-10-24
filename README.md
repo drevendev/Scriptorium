@@ -1,4 +1,26 @@
-# Scriptorium · Reader preview
+# Scriptorium · Literary language reader
+
+**[🌐 Open the interactive Scriptorium Reader (GitHub Pages) →](https://drevendev.github.io/Scriptorium/)**
+
+See **real measured differences** between two books, examine a 28-metric full-work
+diagnostic, browse the source-free FantLab evidence matrix, or compare two of
+your own Reader JSON reports privately in the browser. Charts display retained,
+validated derived measurements and link to exact values, units, methodology and
+scientific limitations. No manuscript is hosted or uploaded.
+
+**Publication status (October 2026):** this is the *intended Pages URL*, not a
+claim that the public site is already live. Canonical GitHub Actions builds and
+tests the site, but deployment requires the repository administrator to enable
+GitHub Pages with **GitHub Actions** as its source and set the existing Actions
+variable `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` (#285). The connected worker has
+write permission, **not repository administration permission**, and cannot
+change that configuration. Until activation, build and browse the identical
+site locally:
+
+```bash
+python -m scriptorium.site_renderer --repo-root . --output build/site
+# Then open build/site/index.html
+```
 
 **Understand the language of a text without uploading the manuscript.**
 Scriptorium measures vocabulary, sentence length, dialogue and punctuation, then produces
@@ -225,6 +247,7 @@ from an interrupted older preview fail closed and are not automatically deleted.
 [Roadmap and repository assessment](project/ROADMAP.md)
 
 The detailed [Research and evidence index](RESEARCH_INDEX.md) retains project history,
-corpus investigations and original reference links. EPUB/batch Workbench prototypes remain **unpublished** and require focused adoption.
+corpus investigations and original reference links. Private EPUB and batch Reader
+capabilities have been integrated into the repository; their inputs remain local.
 The browser comparison is merged into master as a local-build capability;
 public deployment remains unverified and separately gated. Code/data licensing and Pages activation retain separate gates (#284/#285).

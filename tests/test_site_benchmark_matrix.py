@@ -23,6 +23,12 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertEqual(content.count('class="source-row"'), 5)
         self.assertEqual(content.count('class="metric-row"'), 28)
         self.assertEqual(content.count('scope="row"'), 33)
+        self.assertEqual(content.count('<span lang="ru">'), 28)
+        self.assertIn('<span lang="ru">Длина текста, знаков</span>', content)
+        self.assertIn('<code>fantlab.general.characters</code>', content)
+        self.assertIn("Input identity unverified", content)
+        self.assertIn("Actual value unavailable", content)
+        self.assertIn("UNRESOLVED_SOURCE", content)
         self.assertIn("M2: 0/5", content)
         self.assertIn("NOT_RUN", content)
         self.assertIn("UNKNOWN", content)
@@ -55,6 +61,19 @@ class FantLabEvidencePageTests(unittest.TestCase):
         absent["metric_rows"] = [{"metric_id": "invented"}]
         with patch.object(page.matrix, "build_metric_matrix", return_value=changed):
             with self.assertRaisesRegex(ValueError, "fabricated rows"):
+                page.build(ROOT)
+
+    def test_no_unrecognized_metric_or_scientific_status_in_public_html(self):
+        real = page.matrix.build_metric_matrix(ROOT)
+        changed = copy.deepcopy(real)
+        changed["entries"][0]["metric_rows"][0]["result"] = "PASS"
+        with patch.object(page.matrix, "build_metric_matrix", return_value=changed):
+            with self.assertRaisesRegex(ValueError, "scientific status"):
+                page.build(ROOT)
+        changed = copy.deepcopy(real)
+        changed["entries"][0]["metric_rows"][0]["metric_id"] = "unrecognized.id"
+        with patch.object(page.matrix, "build_metric_matrix", return_value=changed):
+            with self.assertRaisesRegex(ValueError, "unrecognized FantLab metric"):
                 page.build(ROOT)
 
     def test_escaping_and_reference_url_validation(self):

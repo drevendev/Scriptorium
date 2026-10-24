@@ -67,3 +67,12 @@ and unrecognized registration. It carries no source prose, cannot enable deploym
 and does not prove FantLab input identity or rounding. **M2 stays 0/5.**
 The built artifact is not a live Pages publication; desktop/mobile screenshots
 remain `VISUAL_NOT_VERIFIED` until browser access is permitted.
+
+## Evidence page label contract
+
+The built HTML gives each of the 28 retained metric rows its human-readable Russian
+label from the existing versioned benchmark comparison registry, its family and
+unchanged technical ID. Evidence statuses have explanatory English descriptions
+and retain their underlying machine values. JSON/CSV remain byte-identical to the
+validated source-free matrix; this is a reader-facing display improvement, not
+new metric execution, source matching, decimal rounding proof or FantLab parity.

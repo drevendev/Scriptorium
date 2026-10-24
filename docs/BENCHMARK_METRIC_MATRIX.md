@@ -76,3 +76,13 @@ unchanged technical ID. Evidence statuses have explanatory English descriptions
 and retain their underlying machine values. JSON/CSV remain byte-identical to the
 validated source-free matrix; this is a reader-facing display improvement, not
 new metric execution, source matching, decimal rounding proof or FantLab parity.
+
+## Quick navigation by metric family
+
+The static five-work evidence page has keyboard-accessible links to its
+Dialogue (4), General (4), Punctuation (14) and Vocabulary (6) rows. Each link
+jumps to the first row of its family in the unchanged 28-row semantic table.
+The links need no JavaScript; the full table is visible in print and offline,
+and source-free JSON/CSV downloads are unaffected. This is presentation
+only, not a new analysis run or parity evidence. Browser visuals remain
+`VISUAL_NOT_VERIFIED` until an allowed desktop/mobile test succeeds.

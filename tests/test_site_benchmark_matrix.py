@@ -42,6 +42,10 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("Actual value unavailable", content)
         self.assertIn("UNRESOLVED_SOURCE", content)
         self.assertIn("M2: 0/5", content)
+        self.assertIn("Frozen:</strong> 1,705,605", content)
+        self.assertIn("FantLab displayed:</strong> 1,692,647", content)
+        self.assertIn("Δ:</strong> +12,958", content)
+        self.assertEqual(content.count("Public-domain source ↗"), 5)
         self.assertIn("NOT_RUN", content)
         self.assertIn("UNKNOWN", content)
         self.assertIn('aria-describedby="metrics-scroll"', content)
@@ -50,6 +54,29 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertEqual(json.loads(published["json"])["m2_source_matched_pass_count"], 0)
         self.assertIn("12958", published["csv"])
         self.assertEqual(page.build(ROOT), published)
+
+    def test_source_readiness_mismatch_and_unsafe_links_fail_closed(self):
+        metric_report = page.matrix.build_metric_matrix(ROOT)
+        readiness = page.benchmark_readiness.build_readiness(ROOT)
+
+        def attempt(mutate):
+            altered = copy.deepcopy(readiness)
+            mutate(altered)
+            with patch.object(page.matrix, "build_metric_matrix", return_value=metric_report):
+                with patch.object(page.benchmark_readiness, "build_readiness", return_value=altered):
+                    return page.build(ROOT)
+
+        with self.assertRaisesRegex(ValueError, "source readiness and metric matrix disagree"):
+            attempt(lambda r: r["entries"][0]["source"].__setitem__("raw_sha256", "f" * 64))
+        with self.assertRaisesRegex(ValueError, "invalid source readiness diagnostic"):
+            attempt(lambda r: r["entries"][0]["character_count_diagnostic"].__setitem__("actual_minus_expected", 0))
+        with self.assertRaisesRegex(ValueError, "source readiness and metric matrix disagree"):
+            attempt(lambda r: r["entries"][0]["fantlab"].__setitem__("reference_url", "https://fantlab.ru/work1/lp"))
+        with self.assertRaisesRegex(ValueError, "unsafe public source URL"):
+            attempt(lambda r: r["entries"][0]["source"].__setitem__("url", "javascript:alert(1)"))
+        escaped = attempt(lambda r: r["entries"][0]["source"].__setitem__("edition", "<script>x</script>"))
+        self.assertIn("&lt;script&gt;x&lt;/script&gt;", escaped["body"])
+        self.assertNotIn("<script>x</script>", escaped["body"])
 
     def test_undeclared_status_upgrade_fails_closed(self):
         entry = dict(page.EXPECTED_ENTRY)

@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 312
+STATE_REVISION: 313
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #307 merged at 428ef867c745ca9f2b1a912ba434e4bef614859d. Authored a scoped #282 correction: exact per-cell N-only bigram maxima.
-LAST_VERIFIED_PROGRESS: The existing v1 N-only bigram envelope independently sums overlapping edge possibilities, overstating attainable maxima for sequences such as N N N. The new v2 code uses per-sentence DP; exact-head CI and later acceptance remain pending.
+LAST_RESULT: #308 merged at 74c202f121db44bb504cd2a9d6cabcd7e3c4cc06. Authored a scoped #281 Reader source-provenance and count view.
+LAST_VERIFIED_PROGRESS: Existing five-work readiness already preserves source hashes, edition/rights records and diagnostic count deltas, but the canonical Reader evidence page only showed metric run states. Proposed source-bound Reader annotations expose those diagnostics without modifying metrics; exact-head CI and later acceptance pending.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-009-EXACT-N-BIGRAM-BOUND
-ISSUES: #282 (open; partial)
+UNIT_ID: SCRIP-REPRO-010-SOURCE-COUNT-READER
+ISSUES: #281 (open; partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-morph-009-exact-pair-bounds
-BASE: 428ef867c745ca9f2b1a912ba434e4bef614859d
-ACCEPTANCE: Compute individually attainable N-only bigram maxima with consistent per-token assignments, preserve historical independent-edge upper bounds explicitly, test overlapping transitions exhaustively, and replay the pinned native frozen diagnostic in CI. No actual POS disambiguation or FantLab parity claim; later-run exact-head acceptance before merge.
+BRANCH: scrip-repro-010-source-count-reader
+BASE: 74c202f121db44bb504cd2a9d6cabcd7e3c4cc06
+ACCEPTANCE: Display five independently validated source/edition/rights witnesses and frozen-vs-FantLab displayed character deltas in the canonical Reader, alongside existing metric evidence. Fail closed on inconsistent digest, dates, count arithmetic or unsafe source URLs. Keep scientific input match UNKNOWN, old machine exports unchanged and M2 0/5; require exact-head CI and later-run independent acceptance before merge.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: source-free, mathematically bounded AOT/pylem noun/cardinal impact with explicitly unknown true labels, while Reader remains usable from built artifacts.
+Milestone: Reader users can inspect five-work source provenance and quantitative diagnostics next to the 28 retained FantLab metric rows without mistaking counts for parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 N-only bigram correctness | Verify v2 exact individual-cell maxima on pinned native Anna replay and merge after later acceptance | Exact-head provider CI; no FantLab source match assumed |
-| P2 | #281 FantLab benchmark | Expand strict source-matched evidence; keep absent runs NOT_RUN | Proven edition/input identity |
-| P3 | #283 Reader visual acceptance | Real desktop/mobile/print browser checks when supported | Browser navigation; structural checks can continue separately |
+| P1 | #281 Five-work provenance Reader | Verify real canonical site build/links, later accept the Reader source/count slice | Exact-head hosted CI; no FantLab input match assumed |
+| P2 | #281 Strict source-bound benchmark | Additional legally usable source-and-reference-bound field-level runs; absent metrics remain NOT_RUN | Established actual input editions and rounding evidence |
+| P3 | #283 Reader visual acceptance | Real desktop/mobile/print browser checks when supported | Browser access; structural checks otherwise |
 | P4 | #285 Pages publication | Authorized Pages activation and live verification | Repository admin and #284 rights |
-| P5 | #284 license | Explicit source-code license and data attribution approval | Owner/rights-holder decision |
+| P5 | #284 licensing | Explicit source-code license and attribution approval | Owner/rights-holder decision |
 
 M2 remains 0/5. Corpus, privacy, scientific and provenance gates unchanged.
 

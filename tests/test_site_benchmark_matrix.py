@@ -45,6 +45,9 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("Frozen:</strong> 1,705,605", content)
         self.assertIn("FantLab displayed:</strong> 1,692,647", content)
         self.assertIn("Δ:</strong> +12,958", content)
+        self.assertIn("Relative drift:</strong> +0.77%", content)
+        self.assertEqual(content.count("Relative drift:</strong>"), 5)
+        self.assertIn("rounded to two decimal places", content)
         self.assertEqual(content.count("Public-domain source ↗"), 5)
         self.assertIn("NOT_RUN", content)
         self.assertIn("UNKNOWN", content)
@@ -54,6 +57,17 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertEqual(json.loads(published["json"])["m2_source_matched_pass_count"], 0)
         self.assertIn("12958", published["csv"])
         self.assertEqual(page.build(ROOT), published)
+
+    def test_signed_relative_drift_rounding_and_invalid_denominator(self):
+        self.assertEqual(page._relative_character_delta(12_958, 1_692_647), "+0.77%")
+        self.assertEqual(page._relative_character_delta(-100, 1_000), "-10.00%")
+        self.assertEqual(page._relative_character_delta(100, 1_000), "+10.00%")
+        self.assertEqual(page._relative_character_delta(0, 1_000), "0.00%")
+        self.assertEqual(page._relative_character_delta(-1, 1_000_000), "-0.00%")
+        for delta, denominator in ((1, 0), (True, 100), (1, True)):
+            with self.subTest(delta=delta, denominator=denominator):
+                with self.assertRaisesRegex(ValueError, "relative character-count"):
+                    page._relative_character_delta(delta, denominator)
 
     def test_source_readiness_mismatch_and_unsafe_links_fail_closed(self):
         metric_report = page.matrix.build_metric_matrix(ROOT)

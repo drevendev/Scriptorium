@@ -184,8 +184,11 @@ Build the site with `scriptorium site --repo-root . --output build/site` and ope
 `build/site/evidence/fantlab/index.html` to browse the same verified five-work evidence
 and download its source-free JSON/CSV. The same page now also shows each
 frozen work's character count, signed diagnostic difference from FantLab's
-displayed count and source/edition/rights link. These counts do not establish
-FantLab analyzer-input identity; complete SHA-256 witnesses remain in the
+displayed count and source/edition/rights link. It also shows **signed
+relative drift** as (frozen minus FantLab displayed) divided by FantLab
+displayed, expressed in percent and rounded to two decimal places.
+This display-only diagnostic is not a parity score and does not alter JSON/CSV.
+These counts do not establish FantLab analyzer-input identity; complete SHA-256 witnesses remain in the
 separate source-free readiness CLI exports. The homepage links to this route.
 This is a
 **locally built** page, not a confirmed live GitHub Pages deployment.

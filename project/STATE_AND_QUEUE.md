@@ -1,27 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 313
+STATE_REVISION: 314
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #308 merged at 74c202f121db44bb504cd2a9d6cabcd7e3c4cc06. Authored a scoped #281 Reader source-provenance and count view.
-LAST_VERIFIED_PROGRESS: Existing five-work readiness already preserves source hashes, edition/rights records and diagnostic count deltas, but the canonical Reader evidence page only showed metric run states. Proposed source-bound Reader annotations expose those diagnostics without modifying metrics; exact-head CI and later acceptance pending.
+LAST_RESULT: #309 merged at 5e9706c4dcc1f6c4da35ce324c6253ea35d0e286. Authored a scoped #281 Reader relative source-count drift display.
+LAST_VERIFIED_PROGRESS: The Reader now exposes five frozen source witnesses and absolute character differences. Relative drift adds signed, explicitly denominated percentages for cross-work interpretation, without changing machine exports or source/parity gates; exact-head CI and later acceptance pending.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-SOURCE-COUNT-READER
+UNIT_ID: SCRIP-REPRO-010-RELATIVE-CHAR-DRIFT
 ISSUES: #281 (open; partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-source-count-reader
-BASE: 74c202f121db44bb504cd2a9d6cabcd7e3c4cc06
-ACCEPTANCE: Display five independently validated source/edition/rights witnesses and frozen-vs-FantLab displayed character deltas in the canonical Reader, alongside existing metric evidence. Fail closed on inconsistent digest, dates, count arithmetic or unsafe source URLs. Keep scientific input match UNKNOWN, old machine exports unchanged and M2 0/5; require exact-head CI and later-run independent acceptance before merge.
+BRANCH: scrip-repro-010-relative-char-drift
+BASE: 5e9706c4dcc1f6c4da35ce324c6253ea35d0e286
+ACCEPTANCE: Display signed relative character-count drift for all five frozen sources, defined against FantLab displayed characters and rounded to 0.01 percentage points. Preserve exact absolute counts, existing source validation, unchanged machine exports, UNKNOWN input match, M2 0/5 and negative/zero input regression checks; require exact-head CI and later-run acceptance.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Reader users can inspect five-work source provenance and quantitative diagnostics next to the 28 retained FantLab metric rows without mistaking counts for parity.
+Milestone: Readers can interpret both absolute and relative five-work source-character discrepancies beside the 28 FantLab metric rows, without mistaking closeness for source-matched parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Five-work provenance Reader | Verify real canonical site build/links, later accept the Reader source/count slice | Exact-head hosted CI; no FantLab input match assumed |
+| P1 | #281 Relative drift display | Verify exact-head build/links and independently accept the signed percentage diagnostic | Exact-head hosted CI; no FantLab input match assumed |
 | P2 | #281 Strict source-bound benchmark | Additional legally usable source-and-reference-bound field-level runs; absent metrics remain NOT_RUN | Established actual input editions and rounding evidence |
 | P3 | #283 Reader visual acceptance | Real desktop/mobile/print browser checks when supported | Browser access; structural checks otherwise |
 | P4 | #285 Pages publication | Authorized Pages activation and live verification | Repository admin and #284 rights |

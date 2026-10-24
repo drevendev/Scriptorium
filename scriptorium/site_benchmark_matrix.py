@@ -6,6 +6,7 @@ assertion of source-matched parity. The underlying matrix validates its inputs.
 from __future__ import annotations
 
 import html
+from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -53,6 +54,16 @@ def _esc(value: object) -> str:
 
 def _number(value: object) -> str:
     return "NOT_RUN" if value is None else _esc(value)
+
+
+def _relative_character_delta(delta: int, displayed: int) -> str:
+    """Signed drift against a displayed count, not a FantLab parity metric."""
+    if type(delta) is not int or type(displayed) is not int or displayed <= 0:
+        raise ValueError("invalid relative character-count diagnostic")
+    percent = (Decimal(delta) * 100 / Decimal(displayed)).quantize(
+        Decimal("0.01"), rounding=ROUND_HALF_UP
+    )
+    return f"{percent:+.2f}%" if delta != 0 else "0.00%"
 
 
 def _reference(url: object) -> str:
@@ -149,6 +160,8 @@ def build(root: Path) -> dict[str, str]:
             '<strong>Frozen:</strong> ' + _esc(f"{frozen:,}") +
             '<br><strong>FantLab displayed:</strong> ' + _esc(f"{displayed:,}") +
             '<br><strong>Δ:</strong> ' + _esc(f"{delta:+,}") +
+            '<br><strong>Relative drift:</strong> ' +
+            _esc(_relative_character_delta(delta, displayed)) +
             '</td><td>' + _esc(status) + '</td><td>' + measured +
             '</td><td>UNKNOWN</td><td>' +
             reference_tag + '<br><small>' +
@@ -211,8 +224,10 @@ def build(root: Path) -> dict[str, str]:
         '<p>Only one work has retained metric observations. The four others '
         'have NOT_RUN metric status. Each source row shows public-domain '
         'edition evidence, frozen text characters (including spaces), FantLab '
-        'displayed characters and a signed diagnostic difference. '
-        'Numerical proximity does not establish source identity.</p>'
+        'displayed characters, a signed count difference and relative drift '
+        '(frozen − FantLab displayed) / FantLab displayed × 100, rounded to '
+        'two decimal places. These are display-only diagnostics, not parity '
+        'evidence. Numerical proximity does not establish source identity.</p>'
         '<p id="works-scroll">On narrow screens, scroll the table horizontally. '
         'Tab to the table to use keyboard scrolling.</p>'
         '<div class="table-wrap" role="region" aria-label="Five-work evidence status" '

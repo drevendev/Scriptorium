@@ -1,8 +1,9 @@
 """Original, synthetic EPUB fixtures: reading order and fail-closed archive semantics."""
 from __future__ import annotations
 
+from contextlib import redirect_stderr
 from hashlib import sha256
-from io import BytesIO
+from io import BytesIO, StringIO
 import json
 from pathlib import Path
 import tempfile
@@ -89,6 +90,42 @@ class EpubIngestionTests(unittest.TestCase):
                 epub.extract_epub(book())
         finally:
             epub.MAX_ARCHIVE_BYTES = old
+
+    def test_dual_output_preflight_blocks_partial_results_from_known_collisions(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "book.epub"
+            source.write_bytes(book())
+            report = root / "report.json"
+            provenance = root / "identity.json"
+            provenance.write_text("existing receipt", encoding="utf-8")
+            args = ["--output", str(report), "--provenance-output", str(provenance)]
+            with redirect_stderr(StringIO()) as err:
+                with self.assertRaises(SystemExit):
+                    epub.main([str(source), *args])
+            self.assertIn("already exists", err.getvalue())
+            self.assertNotIn(str(provenance), err.getvalue())
+            self.assertFalse(report.exists())
+            self.assertEqual(provenance.read_text(encoding="utf-8"), "existing receipt")
+
+            provenance.unlink()
+            (root / "subdir").mkdir()
+            alias = root / "subdir" / ".." / "report.json"
+            with redirect_stderr(StringIO()) as err:
+                with self.assertRaises(SystemExit):
+                    epub.main([str(source), "--output", str(report),
+                               "--provenance-output", str(alias)])
+            self.assertIn("must differ", err.getvalue())
+            self.assertFalse(report.exists())
+
+            # A dangling symlink is occupied, despite Path.exists() == False.
+            provenance.symlink_to(root / "missing-target.json")
+            with redirect_stderr(StringIO()) as err:
+                with self.assertRaises(SystemExit):
+                    epub.main([str(source), *args])
+            self.assertIn("already exists", err.getvalue())
+            self.assertFalse(report.exists())
+            self.assertTrue(provenance.is_symlink())
 
     def test_real_reader_cli_private_json_html_provenance_and_no_clobber(self):
         from scriptorium import cli

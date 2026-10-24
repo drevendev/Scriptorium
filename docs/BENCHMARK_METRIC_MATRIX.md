@@ -51,3 +51,19 @@ The remaining scientific work for #281 requires four more properly bound
 field-level runs, independent reference-rounding evidence, and—before any M2
 progress—actual confirmed FantLab analyzer-input identity for five qualifying
 works. No artifact in this preview meets that gate.
+
+## Source-free local evidence page
+
+Build the canonical site with `scriptorium site --repo-root . --output build/site`,
+then open `build/site/evidence/fantlab/index.html` (or follow **FantLab evidence**
+from the built homepage). The route renders the existing validated five-work report:
+one retained Anna Karenina diagnostic with 28 rows (23 numeric actuals and five
+unavailable); the other four works remain `NOT_RUN`. It also provides the same
+validated machine-readable `metrics.json` and `metrics.csv` exports.
+
+The route is explicitly registered in the publication allow-list and refuses
+contradictory source/reference hashes, invented metric values, forged parity status,
+and unrecognized registration. It carries no source prose, cannot enable deployment,
+and does not prove FantLab input identity or rounding. **M2 stays 0/5.**
+The built artifact is not a live Pages publication; desktop/mobile screenshots
+remain `VISUAL_NOT_VERIFIED` until browser access is permitted.

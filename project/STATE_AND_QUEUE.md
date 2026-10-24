@@ -1,48 +1,46 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 303
+STATE_REVISION: 304
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #299 native MERGED at dc841a51550fbc3e901aafaf5c0d0c11286729d0; authored the retained 28-row field-level benchmark matrix under #281, pending later acceptance.
-LAST_VERIFIED_PROGRESS: #299 native MERGED; #281 retained metric inventory code/tests/docs authored; exact-head hosted CI and later independent PR acceptance NOT_RUN at authoring.
+LAST_RESULT: #300 native MERGED at c1e6520b1e095a60922c514fd2101b71106618f2; authored a public-facing, locally built FantLab five-work evidence page under #281/#283.
+LAST_VERIFIED_PROGRESS: #300 native MERGED; five-work metric viewer code/tests/docs authored for later CI and independent PR acceptance. Pages deployment and visual browser acceptance NOT_RUN.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-REPRO-010-RETAINED-METRICS
-ISSUE:          #281 (partial; five-way source-bound parity remains open)
+UNIT_ID:        SCRIP-SITE-013-FANTLAB-EVIDENCE
+ISSUES:         #281 (source-free diagnostic visibility), #283 (partial public experience)
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-repro-010-retained-metric-matrix
-BASE:           dc841a51550fbc3e901aafaf5c0d0c11286729d0
-ACCEPTANCE:     Deterministic source-free JSON/CSV/Markdown inventory of five
-                independently frozen works, with validated Anna Karenina
-                28-metric retained expected/actual/delta rows (23 measured,
-                five unavailable) and explicit NOT_RUN for four other works.
-                Reject dishonest source-matching, forged expected/delta,
-                swapped hashes, invalid metrics and overwrites. Preserve M2 0/5.
-                Later diff/CI/review and qualifying merge required.
+BRANCH:         scrip-site-013-fantlab-evidence-matrix
+BASE:           c1e6520b1e095a60922c514fd2101b71106618f2
+ACCEPTANCE:     Canonical local Pages build creates /evidence/fantlab/ with five
+                verified source-frozen works, retained 28-row Anna deltas,
+                four honest NOT_RUN states, immutable-reference links, and
+                matching JSON/CSV downloads. Invalid registration or evidence
+                fails before staged publication. No parity promotion.
+                Later fresh exact-head CI/diff review and qualifying merge.
 ```
 
-#299 is confirmed MERGED. The new field-level inventory is a *retained*
-diagnostic replay/consistency check, **not a new scientific benchmark execution**
-or independent evidence of FantLab source identity. It does not close #281.
-Pages activation/desktop/mobile site tests remain VISUAL_NOT_VERIFIED.
+#300 is native MERGED. This new page is a *visualization of retained diagnostics*,
+not a scientific benchmark rerun or independently deployed public service.
+Pages activation/desktop/mobile live tests remain VISUAL_NOT_VERIFIED.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: inspectable validated FantLab metric deltas alongside an accessible,
-searchable private Reader; preserve explicit evidence boundaries until parity.
+Milestone: inspectable five-work evidence and private Reader comparisons in
+canonical Pages builds, without source-match or parity overclaims.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 retained metric inventory | Later exact-head CI/diff/test review and qualifying merge | Authored PR; no same-run author/merge |
-| P2 | #283 browser/visual | Canonical desktop/mobile, focus, scroll and print acceptance | Browser/Pages access; structural checks independent |
-| P3 | #281 four missing metric runs | Produce source-bound diagnostics for other four frozen works; verify reference rounding separately | Legal local source/input bytes and actual run evidence; not a prereq for P1 |
-| P4 | #282 AOT ambiguity | Measured noun/cardinal N regression without policy guess | Compatible provider execution evidence |
+| P1 | #281/#283 evidence page | Later exact-head CI/diff review and qualifying merge of locally built matrix view | Current authored PR; no same-run merge |
+| P2 | #283 full browser acceptance | Real canonical desktop/mobile focus, scroll, print and visual checks | Browser/Pages access; structural tests remain independent |
+| P3 | #281 four missing metric runs | Source-bound retained metrics for four other frozen candidates and reference rounding evidence | Exact usable source bytes and provider run; does not block UI |
+| P4 | #282 AOT ambiguity | Measured noun/cardinal N regression without compatibility policy guess | Compatible provider execution evidence |
 
-#284 code/data licensing and #285 Pages activation remain scoped publication
-interlocks, not blockers for independent analyzer work. BUILT is not DEPLOYED
-or LIVE_VERIFIED; scientific M2/M3/M4/M5 gates are unchanged.
+#284 licensing and #285 Pages activation remain scoped publication interlocks,
+not blockers for local analyzer/site implementation. BUILT is not DEPLOYED or
+LIVE_VERIFIED; M2/M3/M4/M5 gates remain unchanged.
 
 ## Retained evidence and scientific gates
 

@@ -121,7 +121,10 @@ def render_demo(entries: Sequence[Mapping[str, Any]]) -> str:
         '<ul class="demo-metrics">' + "".join(spark_rows) + '</ul>'
         '<section class="demo-exact" aria-labelledby="demo-exact-title">'
         '<h3 id="demo-exact-title">Exact numbers and units</h3>'
-        '<div class="demo-scroll" tabindex="0" role="region" aria-label="Exact comparison values">'
+        '<p id="demo-scroll-hint" class="demo-scroll-hint">On narrow screens, swipe to view '
+        'all columns. Keyboard: focus the table region and use arrow keys.</p>'
+        '<div class="demo-scroll" tabindex="0" role="region" '
+        'aria-label="Exact comparison values" aria-describedby="demo-scroll-hint">'
         '<table><caption>Frozen derived measurements; chart labels are rounded to 1 decimal</caption>'
         '<thead><tr><th scope="col">Metric</th><th scope="col">Grin</th>'
         '<th scope="col">Verne</th><th scope="col">Unit</th></tr></thead>'
@@ -182,6 +185,8 @@ HOME_CSS = """
 .demo-fill-gold { background:#f1be73; }
 .demo-exact { margin-top:.8rem; padding-top:.6rem; border-top:1px solid #4b786b; }
 .demo-exact h3 { margin:0 0 .6rem; font:700 .85rem/1.45 system-ui,sans-serif; color:#f6deaf; }
+.demo-scroll-hint { color:#e6e9da; font:400 .75rem/1.5 system-ui,sans-serif;
+  margin:.25rem 0 .55rem; }
 .demo-scroll { overflow:auto; max-width:100%; }
 .demo-panel table { min-width:30rem; font:400 .76rem/1.5 system-ui,sans-serif; }
 .demo-panel th, .demo-panel td { border-bottom:1px solid #547369; color:#fff6e5; padding:.5rem .35rem; }
@@ -207,6 +212,9 @@ HOME_CSS = """
   .demo-metric h3, .demo-unit, .demo-panel th, .demo-panel td { color:#000; }
   .demo-track { border:1px solid #444; }
   .demo-exact h3 { color:#000; }
+  .demo-eyebrow, .demo-panel table caption, .demo-open { color:#000; }
+  .demo-open { text-decoration:underline; }
+  .demo-scroll-hint { display:none; }
   .demo-scroll { overflow:visible; }
   .demo-panel table { min-width:0; width:100%; }
 }

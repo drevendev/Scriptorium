@@ -76,6 +76,31 @@ class HomeShowcaseTests(unittest.TestCase):
         self.assertNotIn("<script", result)
         self.assertNotIn("fetch(", result)
 
+
+    def test_mobile_scroll_hint_and_print_text_legibility(self):
+        result = render_demo([comparison_entry()])
+        parsed = RecordedHTML(result)
+        regions = [attrs for tag, attrs in parsed.start_tags
+                   if tag == "div" and attrs.get("class") == "demo-scroll"]
+        hints = [attrs for tag, attrs in parsed.start_tags
+                 if tag == "p" and attrs.get("id") == "demo-scroll-hint"]
+        self.assertEqual(len(regions), 1)
+        self.assertEqual(len(hints), 1)
+        self.assertEqual(regions[0]["tabindex"], "0")
+        self.assertEqual(regions[0]["aria-describedby"], hints[0]["id"])
+        self.assertIn("swipe to view all columns", result)
+        self.assertIn("focus the table region and use arrow keys", result)
+        self.assertIn(".demo-scroll-hint { color:#e6e9da;", HOME_CSS)
+
+        print_css = HOME_CSS.split("@media print {", 1)[1]
+        self.assertIn(
+            ".demo-eyebrow, .demo-panel table caption, .demo-open { color:#000; }",
+            print_css,
+        )
+        self.assertIn(".demo-open { text-decoration:underline; }", print_css)
+        self.assertIn(".demo-scroll-hint { display:none; }", print_css)
+        self.assertNotIn(".demo-scroll-hint { color:#e6e9da;", print_css)
+
     def test_absent_registered_comparison_shows_no_synthetic_chart(self):
         self.assertEqual(render_demo([]), "")
         home = _render_index([])

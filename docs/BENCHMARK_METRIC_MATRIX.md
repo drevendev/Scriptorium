@@ -86,3 +86,23 @@ The links need no JavaScript; the full table is visible in print and offline,
 and source-free JSON/CSV downloads are unaffected. This is presentation
 only, not a new analysis run or parity evidence. Browser visuals remain
 `VISUAL_NOT_VERIFIED` until an allowed desktop/mobile test succeeds.
+
+## Frozen-source character evidence in the Reader (#281)
+
+The existing five-work evidence page now exposes the **separately validated**
+readiness records next to metric coverage: public-domain source and edition links,
+frozen public-body characters (spaces included), FantLab displayed character
+counts and **actual minus displayed** diagnostic deltas. A visitor can check
+both the metric run state and the source evidence without downloading a book.
+
+The renderer independently binds each readiness row to its metric-matrix
+candidate ID, frozen raw digest, dated FantLab reference and explicit UNKNOWN
+input identity. Contradictory lengths, delta arithmetic, rights evidence or
+unsafe source URLs reject the built page before atomic publication.
+
+This changes only the human-readable built HTML. The verified metrics.json
+and metrics.csv exports remain byte-identical, and the separate
+`python -m scriptorium.benchmark_readiness --format json|csv` CLI remains
+the source-free way to inspect all normalized/raw hashes and rights evidence.
+No new FantLab benchmark was run; M2 remains 0/5. A successful local Pages
+build is not live deployment or visual acceptance.

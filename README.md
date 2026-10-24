@@ -154,6 +154,13 @@ are **diagnostic only**: FantLab's analyzer-input identities remain unknown, oth
 metric comparisons are NOT_RUN and **M2 stays 0/5**.
 [Readiness methodology, CSV and limitations](docs/BENCHMARK_READINESS.md).
 
+To inspect **actual retained per-metric differences** rather than character counts alone,
+run `python -m scriptorium.benchmark_metric_matrix --root . --format markdown`.
+The separate source-free matrix validates 28 existing Anna Karenina diagnostic rows
+(23 numeric actuals, five unavailable) and marks the other four works **NOT_RUN**.
+None is source-matched or proven to meet FantLab rounding; M2 remains 0/5.
+[Field-level matrix and evidence checks](docs/BENCHMARK_METRIC_MATRIX.md).
+
 
 To join a separately generated **source-free POS artifact from the same normalized
 text** into a FantLab benchmark, add `--pos-metrics pos.json` to the

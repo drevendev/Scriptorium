@@ -79,9 +79,10 @@ def _verify_metrics(reference: dict[str, object], diagnostic: dict[str, object])
             if type(expected) is int and type(numeric_actual) is int:
                 if type(numeric_delta) is not int or numeric_delta != numeric_actual - expected:
                     raise ValueError(f"incorrect integer metric delta: {metric_id}")
-            elif not math.isclose(numeric_delta, numeric_actual - expected,
-                                  rel_tol=1e-12, abs_tol=1e-10):
-                raise ValueError(f"incorrect metric delta: {metric_id}")
+            elif numeric_delta != numeric_actual - expected:
+                # The retained artifact records Python's original float subtraction.
+                # Approximate equality would accept altered diagnostic evidence.
+                raise ValueError(f"incorrect floating metric delta: {metric_id}")
             state = "UNRESOLVED_SOURCE"
         rows.append({
             "metric_id": metric_id,

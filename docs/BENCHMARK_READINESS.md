@@ -33,6 +33,13 @@ is inferred for unverified decimal metrics. Reuse the existing
 [benchmark contract](BENCHMARKING.md) for actual field-by-field comparisons; do
 not convert these character deltas into a parity claim.
 
+For the separately retained 28-row metric comparison, the reader validates
+the exact saved `actual - expected` arithmetic (including Python floating-point
+subtraction), not an approximately equal delta. This catches mutated numbers
+within a previously permitted 1e-10 margin. It is a **stored-artifact integrity
+check**, not FantLab display rounding evidence, source-identity proof, or a
+new parity tolerance.
+
 This incremental slice partially addresses issue #281. Closing the issue still
 requires source-bound metrics across five independently matched works,
 independent reference rounding/display evidence, and complete verified

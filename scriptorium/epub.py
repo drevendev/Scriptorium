@@ -10,6 +10,7 @@ import argparse
 from hashlib import sha256
 from io import BytesIO
 import json
+import os
 from pathlib import Path
 import posixpath
 import re
@@ -244,9 +245,16 @@ def main(argv: list[str] | None = None) -> int:
                         help="separate create-only JSON containing archive/body/normalized identities")
     parser.add_argument("--title", help="title for the local HTML report")
     args = parser.parse_args(argv)
-    if args.output is not None and args.provenance_output is not None and args.output == args.provenance_output:
-        parser.error("report and provenance destinations must differ")
     try:
+        if args.output is not None and args.provenance_output is not None:
+            # An existing sidecar used to fail after the report had been created.
+            # Catch known collisions before either create-only write. This is a
+            # preflight, not a cross-file transaction: concurrent changes and
+            # late I/O failures can still leave the first completed output.
+            if args.output.resolve() == args.provenance_output.resolve():
+                parser.error("report and provenance destinations must differ")
+            if os.path.lexists(args.output) or os.path.lexists(args.provenance_output):
+                parser.error("report or provenance already exists; no files were overwritten")
         raw = _read_bounded_regular_file(args.epub, MAX_ARCHIVE_BYTES, "EPUB")
         body, provenance = extract_epub(raw)
         analysis = build_local_analysis(body)

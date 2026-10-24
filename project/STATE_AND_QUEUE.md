@@ -1,27 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 314
+STATE_REVISION: 315
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #309 merged at 5e9706c4dcc1f6c4da35ce324c6253ea35d0e286. Authored a scoped #281 Reader relative source-count drift display.
-LAST_VERIFIED_PROGRESS: The Reader now exposes five frozen source witnesses and absolute character differences. Relative drift adds signed, explicitly denominated percentages for cross-work interpretation, without changing machine exports or source/parity gates; exact-head CI and later acceptance pending.
+LAST_COMMITTED_RUN_AT: 2026-10-25
+LAST_RESULT: #310 merged at 83d38f66aaca7318971546f770aff113fcf86794. Authored scoped #281 retained diagnostic delta-integrity hardening.
+LAST_VERIFIED_PROGRESS: #310 placed signed relative five-work character drift in master. This proposed change rejects even near-equal forged floating metric deltas in the existing 28-row retained diagnostic, without changing values, output schemas or parity criteria; hosted CI and later acceptance pending.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-RELATIVE-CHAR-DRIFT
+UNIT_ID: SCRIP-REPRO-010-EXACT-RETAINED-DELTAS
 ISSUES: #281 (open; partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-relative-char-drift
-BASE: 5e9706c4dcc1f6c4da35ce324c6253ea35d0e286
-ACCEPTANCE: Display signed relative character-count drift for all five frozen sources, defined against FantLab displayed characters and rounded to 0.01 percentage points. Preserve exact absolute counts, existing source validation, unchanged machine exports, UNKNOWN input match, M2 0/5 and negative/zero input regression checks; require exact-head CI and later-run acceptance.
+BRANCH: scrip-repro-010-exact-retained-deltas
+BASE: 83d38f66aaca7318971546f770aff113fcf86794
+ACCEPTANCE: All 23 retained actual metric rows still validate exactly; altered floating actual or delta within the old isclose tolerance must fail closed. Keep 28 rows, five-work NOT_RUN states, machine schemas, UNKNOWN source identity, M2 0/5 and original benchmark rounding rules. Require exact-head full CI and later-run acceptance.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Readers can interpret both absolute and relative five-work source-character discrepancies beside the 28 FantLab metric rows, without mistaking closeness for source-matched parity.
+Milestone: Researchers can trust the exact internal arithmetic of retained 28-metric diagnostics alongside five-work source counts, while all source-unmatched comparisons remain expressly diagnostic.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Relative drift display | Verify exact-head build/links and independently accept the signed percentage diagnostic | Exact-head hosted CI; no FantLab input match assumed |
+| P1 | #281 Exact retained metric deltas | Verify hostile near-equal float mutations fail and 23 recorded actuals survive; later accept | Exact-head hosted CI; no source-match inference |
 | P2 | #281 Strict source-bound benchmark | Additional legally usable source-and-reference-bound field-level runs; absent metrics remain NOT_RUN | Established actual input editions and rounding evidence |
 | P3 | #283 Reader visual acceptance | Real desktop/mobile/print browser checks when supported | Browser access; structural checks otherwise |
 | P4 | #285 Pages publication | Authorized Pages activation and live verification | Repository admin and #284 rights |

@@ -182,7 +182,12 @@ The separate source-free matrix validates 28 existing Anna Karenina diagnostic r
 None is source-matched or proven to meet FantLab rounding; M2 remains 0/5.
 Build the site with `scriptorium site --repo-root . --output build/site` and open
 `build/site/evidence/fantlab/index.html` to browse the same verified five-work evidence
-and download its source-free JSON/CSV. The homepage links to this route. This is a
+and download its source-free JSON/CSV. The same page now also shows each
+frozen work's character count, signed diagnostic difference from FantLab's
+displayed count and source/edition/rights link. These counts do not establish
+FantLab analyzer-input identity; complete SHA-256 witnesses remain in the
+separate source-free readiness CLI exports. The homepage links to this route.
+This is a
 **locally built** page, not a confirmed live GitHub Pages deployment.
 [Field-level matrix and evidence checks](docs/BENCHMARK_METRIC_MATRIX.md).
 

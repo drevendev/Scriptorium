@@ -159,6 +159,10 @@ run `python -m scriptorium.benchmark_metric_matrix --root . --format markdown`.
 The separate source-free matrix validates 28 existing Anna Karenina diagnostic rows
 (23 numeric actuals, five unavailable) and marks the other four works **NOT_RUN**.
 None is source-matched or proven to meet FantLab rounding; M2 remains 0/5.
+Build the site with `scriptorium site --repo-root . --output build/site` and open
+`build/site/evidence/fantlab/index.html` to browse the same verified five-work evidence
+and download its source-free JSON/CSV. The homepage links to this route. This is a
+**locally built** page, not a confirmed live GitHub Pages deployment.
 [Field-level matrix and evidence checks](docs/BENCHMARK_METRIC_MATRIX.md).
 
 

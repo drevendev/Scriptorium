@@ -75,7 +75,8 @@
               "benchmark",
               "author_profile",
               "tag_profile",
-              "work_comparison"
+              "work_comparison",
+              "benchmark_matrix"
             ]
           },
           "slug": {
@@ -186,13 +187,70 @@
               }
             },
             "else": {
-              "required": [
-                "artifact_path"
-              ],
-              "not": {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "benchmark_matrix"
+                  }
+                },
                 "required": [
-                  "artifact_paths"
+                  "kind"
                 ]
+              },
+              "then": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "artifact_path"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "artifact_paths"
+                      ]
+                    }
+                  ]
+                },
+                "properties": {
+                  "entry_id": {
+                    "const": "fantlab-five-work-retained-evidence-v1"
+                  },
+                  "slug": {
+                    "const": "fantlab-evidence"
+                  },
+                  "title": {
+                    "const": "FantLab evidence — five frozen works"
+                  },
+                  "artifact_schema": {
+                    "const": "scriptorium-fantlab-retained-metrics-v1"
+                  },
+                  "publication_status": {
+                    "const": "diagnostic"
+                  },
+                  "benchmark_admissibility": {
+                    "const": "diagnostic_only"
+                  },
+                  "corpus_admissibility": {
+                    "const": "not_admissible"
+                  },
+                  "compatibility_claim": {
+                    "const": "inferred"
+                  },
+                  "source_text_included": {
+                    "const": false
+                  }
+                }
+              },
+              "else": {
+                "required": [
+                  "artifact_path"
+                ],
+                "not": {
+                  "required": [
+                    "artifact_paths"
+                  ]
+                }
               }
             }
           }

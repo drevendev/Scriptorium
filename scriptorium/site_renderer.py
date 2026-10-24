@@ -23,6 +23,7 @@ from .site_gallery_filter import evidence_kind, FILTER_CONTROLS, FILTER_JS, FILT
 from . import site_frozen_diagnostic
 from . import site_work_comparison
 from . import site_browser_compare
+from . import site_benchmark_matrix
 
 GENERATOR_PROFILE = "scriptorium-static-site-v2"
 MANIFEST_PROFILE = "scriptorium-publication-manifest-v1"
@@ -502,6 +503,8 @@ def _page(title: str, stylesheet_href: str, body: str) -> str:
 def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
     cards = []
     for item in entries:
+        if item.get("render_mode") == "benchmark_matrix":
+            continue
         mode_note = {
             "provenance": " · provenance-only",
             "frozen_diagnostic": " · full-work metrics",
@@ -537,6 +540,11 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
         '<p class="actions"><a class="primary-action" href="compare/">'
         'Compare two private Reader JSON reports →</a></p>'
     )
+    if any(item.get("render_mode") == "benchmark_matrix" for item in entries):
+        action += (
+            '<p class="actions"><a class="primary-action" href="evidence/fantlab/">'
+            'Explore five-work FantLab evidence →</a></p>'
+        )
     cards_html = "".join(cards) if cards else '<p class="empty-state">No public analyses are available in this build.</p>'
     body = (
         '<main id="main-content" tabindex="-1"><header class="hero"><p class="eyebrow">Scriptorium · literary analysis</p>'
@@ -906,6 +914,27 @@ def build_site(
         seen_ids.add(entry_id)
         seen_slugs.add(slug)
 
+        if entry.get("kind") == "benchmark_matrix":
+            try:
+                site_benchmark_matrix.validate_entry(dict(entry))
+                published = site_benchmark_matrix.build(root)
+            except (ValueError, OSError, KeyError, TypeError) as exc:
+                raise PublicationBuildError("FantLab evidence registration or retained data invalid") from exc
+            item = {
+                **site_benchmark_matrix.EXPECTED_ENTRY,
+                "render_mode": "benchmark_matrix",
+                "report_body": published["body"],
+                "json_data": published["json"],
+                "csv_data": published["csv"],
+            }
+            render_items.append(item)
+            input_rows.append({
+                "entry_id": entry_id,
+                "route": "evidence/fantlab/",
+                "derived_report_sha256": hashlib.sha256(published["json"].encode("utf-8")).hexdigest(),
+            })
+            continue
+
         if entry.get("kind") == "work_comparison":
             try:
                 site_work_comparison.validate_entry(dict(entry))
@@ -946,7 +975,10 @@ def build_site(
     input_rows.sort(key=lambda item: item["entry_id"])
 
     index_html = _render_index(render_items)
-    work_pages = {item["slug"]: _render_work(item) for item in render_items}
+    work_pages = {item["slug"]: _render_work(item) for item in render_items
+                  if item.get("render_mode") != "benchmark_matrix"}
+    benchmark_page = next((item for item in render_items
+                           if item.get("render_mode") == "benchmark_matrix"), None)
     build_record = {
         "generator_profile": GENERATOR_PROFILE,
         "manifest_profile": MANIFEST_PROFILE,
@@ -971,6 +1003,20 @@ def build_site(
                 encoding="utf-8", newline="\n"
             )
             (output / "index.html").write_text(index_html, encoding="utf-8", newline="\n")
+            if benchmark_page is not None:
+                evidence = output / "evidence" / "fantlab"
+                evidence.mkdir(parents=True)
+                (evidence / "index.html").write_text(
+                    _page("FantLab evidence — Scriptorium", "../../assets/site.css",
+                          benchmark_page["report_body"]),
+                    encoding="utf-8", newline="\n",
+                )
+                (evidence / "metrics.json").write_text(
+                    benchmark_page["json_data"], encoding="utf-8", newline="\n"
+                )
+                (evidence / "metrics.csv").write_text(
+                    benchmark_page["csv_data"], encoding="utf-8", newline="\n"
+                )
             for slug, page_html in work_pages.items():
                 work_dir = output / "works" / slug
                 work_dir.mkdir(parents=True)

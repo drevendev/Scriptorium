@@ -89,6 +89,18 @@
       "corpus_admissibility": "not_admissible",
       "compatibility_claim": "inferred",
       "source_text_included": false
+    },
+    {
+      "entry_id": "fantlab-five-work-retained-evidence-v1",
+      "kind": "benchmark_matrix",
+      "slug": "fantlab-evidence",
+      "title": "FantLab evidence — five frozen works",
+      "artifact_schema": "scriptorium-fantlab-retained-metrics-v1",
+      "publication_status": "diagnostic",
+      "benchmark_admissibility": "diagnostic_only",
+      "corpus_admissibility": "not_admissible",
+      "compatibility_claim": "inferred",
+      "source_text_included": false
     }
   ]
 }

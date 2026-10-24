@@ -70,6 +70,8 @@ class HomeShowcaseTests(unittest.TestCase):
         self.assertNotIn("<details", result)
         self.assertNotIn("<summary", result)
         self.assertIn(".demo-exact h3 { color:#000; }", HOME_CSS)
+        self.assertIn(".demo-scroll { overflow:visible; }", HOME_CSS)
+        self.assertIn(".demo-panel table { min-width:0; width:100%; }", HOME_CSS)
         self.assertEqual(sum(tag == "h2" for tag, _ in parsed.start_tags), 1)
         self.assertNotIn("<script", result)
         self.assertNotIn("fetch(", result)

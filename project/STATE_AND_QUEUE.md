@@ -1,28 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 305
+STATE_REVISION: 306
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #301 native MERGED at e785a70587beda7ae2a446fcbd877ed192419a2b; authored readable metric labels/status explanations under #283.
-LAST_VERIFIED_PROGRESS: #301 native MERGED; evidence comprehension improvement authored for later CI and independent PR acceptance. Pages deployment and visual browser acceptance NOT_RUN.
+LAST_RESULT: #302 native MERGED at 86efa80dd3ef529ed81803bbe036c53301674698; authored keyboard-accessible metric-family jumps under #283.
+LAST_VERIFIED_PROGRESS: #302 native MERGED; 28-row diagnostic viewer navigation authored for later CI and independent PR acceptance. Pages deployment and visual browser acceptance NOT_RUN.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-SITE-014-READABLE-EVIDENCE
-ISSUES:         #283 (evidence readability; partial)
+UNIT_ID:        SCRIP-SITE-015-METRIC-FAMILY-JUMPS
+ISSUES:         #283 (metric-family navigation; partial)
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-site-014-evidence-readable-labels
-BASE:           e785a70587beda7ae2a446fcbd877ed192419a2b
-ACCEPTANCE:     The existing five-work evidence page displays versioned
-                Russian field labels, families, stable metric IDs and plain
-                evidence-status explanations. All 28 rows remain present.
-                JSON/CSV unchanged; forged scientific statuses or unknown
-                metric IDs fail closed. Later exact-head CI/review required.
-                No parity or deployment promotion.
+BRANCH:         scrip-site-015-metric-family-jumps
+BASE:           86efa80dd3ef529ed81803bbe036c53301674698
+ACCEPTANCE:     Source-free FantLab evidence page has native, keyboard-
+                accessible anchors for four metric families (4+4+14+6)
+                within one complete 28-row table. No JS dependency; print
+                and JSON/CSV retain all data. Later exact-head CI and
+                independent PR acceptance. No parity/deployment promotion.
 ```
 
-#301 is native MERGED. Its page is a *visualization of retained diagnostics*,
+#302 is native MERGED. Its page is a *visualization of retained diagnostics*,
 not a scientific benchmark rerun or independently deployed public service.
 Pages activation/desktop/mobile live tests remain VISUAL_NOT_VERIFIED.
 
@@ -33,7 +32,7 @@ canonical Pages builds, without source-match or parity overclaims.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 evidence readability | Later exact-head CI/diff review and qualifying merge of readable metric labels | Current authored PR; no same-run merge |
+| P1 | #283 evidence navigation | Later exact-head CI/diff review and qualifying merge of native family jumps | Current authored PR; no same-run merge |
 | P2 | #283 full browser acceptance | Real canonical desktop/mobile focus, scroll, print and visual checks | Browser/Pages access; structural tests remain independent |
 | P3 | #281 four missing metric runs | Source-bound retained metrics for four other frozen candidates and reference rounding evidence | Exact usable source bytes and provider run; does not block UI |
 | P4 | #282 AOT ambiguity | Measured noun/cardinal N regression without compatibility policy guess | Compatible provider execution evidence |

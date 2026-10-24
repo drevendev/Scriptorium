@@ -1,45 +1,43 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 306
+STATE_REVISION: 307
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #302 native MERGED at 86efa80dd3ef529ed81803bbe036c53301674698; authored keyboard-accessible metric-family jumps under #283.
-LAST_VERIFIED_PROGRESS: #302 native MERGED; 28-row diagnostic viewer navigation authored for later CI and independent PR acceptance. Pages deployment and visual browser acceptance NOT_RUN.
+LAST_RESULT: #303 expanded in existing branch to a product-first Pages homepage with a verified frozen-book comparison; intended Pages URL linked prominently in README.
+LAST_VERIFIED_PROGRESS: Reader package and Pages CI successful for this branch revision; full exact-head acceptance still required. Deployment / public browser availability NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-SITE-015-METRIC-FAMILY-JUMPS
-ISSUES:         #283 (metric-family navigation; partial)
+UNIT_ID:        SCRIP-SITE-015-PUBLIC-READER-SHOWCASE
+ISSUES:         #283 (reader presentation) and #285 (deployment, scoped)
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
 BRANCH:         scrip-site-015-metric-family-jumps
 BASE:           86efa80dd3ef529ed81803bbe036c53301674698
-ACCEPTANCE:     Source-free FantLab evidence page has native, keyboard-
-                accessible anchors for four metric families (4+4+14+6)
-                within one complete 28-row table. No JS dependency; print
-                and JSON/CSV retain all data. Later exact-head CI and
-                independent PR acceptance. No parity/deployment promotion.
+ACCEPTANCE:     Main screen uses the actually frozen Grin/Verne derived
+                comparison for three labelled quantitative charts and an exact
+                accessible table. Clickable real-work, private comparison and
+                FantLab evidence routes, 28-row family navigation and mobile /
+                keyboard / print checks all retained. README links intended URL
+                and states that Pages is NOT LIVE_VERIFIED. Same-run merge not
+                authorized; read exact-head CI before later acceptance.
 ```
-
-#302 is native MERGED. Its page is a *visualization of retained diagnostics*,
-not a scientific benchmark rerun or independently deployed public service.
-Pages activation/desktop/mobile live tests remain VISUAL_NOT_VERIFIED.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: inspectable five-work evidence and private Reader comparisons in
-canonical Pages builds, without source-match or parity overclaims.
+Milestone: a coherent real-work Reader homepage on an actually public GitHub Pages
+URL, without claiming FantLab source identity or scientific parity.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 evidence navigation | Later exact-head CI/diff review and qualifying merge of native family jumps | Current authored PR; no same-run merge |
-| P2 | #283 full browser acceptance | Real canonical desktop/mobile focus, scroll, print and visual checks | Browser/Pages access; structural tests remain independent |
-| P3 | #281 four missing metric runs | Source-bound retained metrics for four other frozen candidates and reference rounding evidence | Exact usable source bytes and provider run; does not block UI |
-| P4 | #282 AOT ambiguity | Measured noun/cardinal N regression without compatibility policy guess | Compatible provider execution evidence |
+| P1 | #283 real-work Pages UX | Exact-head CI, canonical artifact link/desktop/mobile acceptance and later qualifying #303 merge | Authored PR, later-run merge |
+| P2 | #285 publish Pages | Admin enables Pages GitHub Actions source and existing deployment variable; deploy reviewed master via existing workflow and verify public URL | Repository admin permission, not a code blocker |
+| P3 | #281 scientific evidence | Four currently NOT_RUN measured works with unchanged source/rights/rounding gates | Source identity and legally usable witness |
+| P4 | #282 AOT ambiguity | Measured noun/cardinal N regression; no guessed semantic mapping | Pinned provider evidence |
 
-#284 licensing and #285 Pages activation remain scoped publication interlocks,
-not blockers for local analyzer/site implementation. BUILT is not DEPLOYED or
-LIVE_VERIFIED; M2/M3/M4/M5 gates remain unchanged.
+#284 source-code/data licensing remains an independent legal gate. The user requested
+a working public Pages experience; a working GitHub Actions build is NOT deployment.
+M2 0/5, M3/M4/M5 and the corpus/legal/privacy constraints are unchanged.
 
 ## Retained evidence and scientific gates
 

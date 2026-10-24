@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 from scriptorium.publication import derive_compatibility_claim, validate_compatibility_claim
-from scriptorium import site_frozen_diagnostic, site_work_comparison
+from scriptorium import site_frozen_diagnostic, site_work_comparison, site_benchmark_matrix
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,6 +45,9 @@ class PublicationManifestContractTests(unittest.TestCase):
         self.assertEqual(len(slugs), len(set(slugs)))
 
         for entry in self.manifest["entries"]:
+            if entry.get("kind") == "benchmark_matrix":
+                site_benchmark_matrix.validate_entry(entry)
+                continue  # generated only from a validated, fixed source-free inventory
             paths = (entry["artifact_paths"] if entry.get("kind") == "work_comparison"
                      else [entry["artifact_path"]])
             self.assertEqual(len(paths), 2 if entry.get("kind") == "work_comparison" else 1)
@@ -56,7 +59,13 @@ class PublicationManifestContractTests(unittest.TestCase):
             self.assertFalse(entry["source_text_included"])
 
     def test_seed_manifest_matches_canonical_showcase_safety_labels(self):
-        self.assertEqual(len(self.manifest["entries"]), 6)
+        self.assertEqual(len(self.manifest["entries"]), 7)
+        benchmarks = [row for row in self.manifest["entries"] if row["kind"] == "benchmark_matrix"]
+        self.assertEqual(len(benchmarks), 1)
+        site_benchmark_matrix.validate_entry(benchmarks[0])
+        benchmark = site_benchmark_matrix.build(ROOT)
+        self.assertEqual(len(json.loads(benchmark["json"])["entries"]), 5)
+        self.assertIn("M2: 0/5", benchmark["body"])
         comparisons = [row for row in self.manifest["entries"] if row["kind"] == "work_comparison"]
         self.assertEqual(len(comparisons), 1)
         site_work_comparison.validate_entry(comparisons[0])

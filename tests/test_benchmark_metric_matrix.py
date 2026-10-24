@@ -98,6 +98,22 @@ class RetainedMetricMatrixTests(unittest.TestCase):
             self._mutate(matrix.DIAGNOSTIC,
                          lambda d: d["metrics"]["fantlab.vocabulary.active_dictionary"].__setitem__("raw_delta", 0))
 
+    def test_rejects_nearby_float_delta_and_actual_forgery(self):
+        metric = "fantlab.general.mean_word_length_chars"
+
+        def corrupt_delta(doc):
+            doc["metrics"][metric]["raw_delta"] += 1e-11
+
+        def corrupt_actual(doc):
+            doc["metrics"][metric]["actual"] += 1e-11
+
+        # Both perturbations were previously swallowed by the 1e-10 isclose
+        # tolerance, even though the retained artifact encodes exact deltas.
+        for change in (corrupt_delta, corrupt_actual):
+            with self.subTest(change=change.__name__):
+                with self.assertRaisesRegex(ValueError, "floating metric delta"):
+                    self._mutate(matrix.DIAGNOSTIC, change)
+
     def test_nonfinite_metric_values_fail_closed(self):
         with self.assertRaisesRegex(ValueError, "numeric metric"):
             self._mutate(matrix.DIAGNOSTIC,

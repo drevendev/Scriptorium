@@ -56,6 +56,45 @@ class NOnlyImpactTests(unittest.TestCase):
         self.assertFalse(data["boundary"]["cell_bounds_jointly_attainable"])
         self.assertFalse(data["boundary"]["m2_parity_admissible"])
 
+    def test_overlapping_n_edges_get_exact_cellwise_maximum(self):
+        # Both adjacent edges share the middle token: the independent-edge
+        # upper bound for noun->cardinal (2) cannot actually occur.
+        data = measure_n_only_impact("Раз два три.", (("N",),) * 3)
+        pairs = {(r["first"], r["second"]): r for r in data["bigram_conditional_envelopes"]}
+        row = pairs[("noun", "cardinal")]
+        self.assertEqual(row["independent_edge_upper_bound_raw_count"], 2)
+        self.assertEqual(row["conditional_max_raw_count"], 1)
+        self.assertEqual(row["conditional_max_per_1000_words"], 1000 / 3)
+        self.assertEqual(pairs[("noun", "noun")]["conditional_max_raw_count"], 2)
+        self.assertEqual(data["boundary"]["bigram_max_method"],
+                         "exact_per_cell_n_only_dynamic_programming")
+        # Adjacent sentences cannot create cross-sentence bigrams.
+        split = measure_n_only_impact("Раз два. Три.", (("N",),) * 3)
+        split_pairs = {(r["first"], r["second"]): r
+                       for r in split["bigram_conditional_envelopes"]}
+        self.assertEqual(split_pairs[("noun", "cardinal")]["conditional_max_raw_count"], 1)
+
+    def test_exact_pairwise_bounds_match_exhaustive_short_assignments(self):
+        from itertools import product
+        from scriptorium.n_collision_diagnostic import MARKER, _max_ambiguous_pair_gain
+        values = (MARKER, "noun", "cardinal", "verb", None)
+        for length in range(2, 6):
+            for slots in product(values, repeat=length):
+                assignments = [("noun", "cardinal") if value == MARKER else (value,)
+                               for value in slots]
+                for first, second in product(("noun", "cardinal", "verb"), repeat=2):
+                    baseline = sum(left == first and right == second
+                                   for left, right in zip(slots, slots[1:]))
+                    exact = max(
+                        sum(left == first and right == second
+                            for left, right in zip(variant, variant[1:]))
+                        for variant in product(*assignments)
+                    )
+                    self.assertEqual(
+                        baseline + _max_ambiguous_pair_gain(slots, first, second),
+                        exact, (slots, first, second),
+                    )
+
     def test_null_empty_and_unaffected_negative(self):
         empty = measure_n_only_impact("", ())
         self.assertIsNone(empty["n_only_percent_of_words"])

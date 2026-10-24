@@ -17,7 +17,7 @@ from .pylem_provider import PYLEM_VERSION, PYLEM_RUNTIME_PROFILE
 from .pylem_transport import _bind_frozen_manifest_identity, _validated_candidate_rows, consume_sidecar_response
 from .text import normalize_text, sentence_spans, word_tokens
 
-SCHEMA = "scriptorium-pylem-n-only-impact-v1"
+SCHEMA = "scriptorium-pylem-n-only-impact-v2"
 MARKER = "<N-only>"
 BUCKETS = ("noun", "cardinal")
 SDIST_SHA256 = "66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515"
@@ -25,6 +25,34 @@ SDIST_SHA256 = "66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515
 
 def rate(numerator: int, denominator: int, multiplier: int) -> float | None:
     return numerator * multiplier / denominator if denominator else None
+
+
+def _max_ambiguous_pair_gain(
+    sentence: Sequence[str | None], first: str, second: str,
+) -> int:
+    """Exact per-cell gain from N-only choices, respecting shared neighbors.
+
+    An edge contributes only if it touches an N-only token. Fixed-fixed edges
+    are already accounted for in the baseline. Dynamic programming enforces
+    one noun/cardinal assignment per token across both adjacent edges.
+    """
+    if len(sentence) < 2 or MARKER not in sentence:
+        return 0
+
+    def choices(slot: str | None) -> tuple[str | None, ...]:
+        return BUCKETS if slot == MARKER else (slot,)
+
+    scores = {option: 0 for option in choices(sentence[0])}
+    for index, current in enumerate(sentence[1:], start=1):
+        variable_edge = sentence[index - 1] == MARKER or current == MARKER
+        scores = {
+            option: max(
+                count + int(variable_edge and previous == first and option == second)
+                for previous, count in scores.items()
+            )
+            for option in choices(current)
+        }
+    return max(scores.values())
 
 
 def measure_n_only_impact(
@@ -82,16 +110,28 @@ def measure_n_only_impact(
             for left in possibilities(first):
                 for right in possibilities(second):
                     pairs_possible[(left, right)] += 1
+    # The v1 independent-edge sum can overestimate even one cell's maximum:
+    # N N N permits at most one noun->cardinal edge, not two. Compute exact
+    # per-cell maxima by selecting consistent N-only assignments per sentence.
+    ambiguous_sentences = tuple(sentence for sentence in sentence_rows if MARKER in sentence)
+    exact_pair_max = {
+        (first, second): pairs_base[(first, second)] + sum(
+            _max_ambiguous_pair_gain(sentence, first, second)
+            for sentence in ambiguous_sentences
+        )
+        for first in FANTLAB_POS_BUCKETS for second in FANTLAB_POS_BUCKETS
+        if pairs_possible[(first, second)] > pairs_base[(first, second)]
+    }
     bigram_rows = [
         {
             "first": first, "second": second,
             "conditional_min_raw_count": pairs_base[(first, second)],
-            "conditional_max_raw_count": pairs_possible[(first, second)],
+            "conditional_max_raw_count": exact_max,
+            "independent_edge_upper_bound_raw_count": pairs_possible[(first, second)],
             "conditional_min_per_1000_words": rate(pairs_base[(first, second)], len(words), 1000),
-            "conditional_max_per_1000_words": rate(pairs_possible[(first, second)], len(words), 1000),
+            "conditional_max_per_1000_words": rate(exact_max, len(words), 1000),
         }
-        for first in FANTLAB_POS_BUCKETS for second in FANTLAB_POS_BUCKETS
-        if pairs_possible[(first, second)] > pairs_base[(first, second)]
+        for (first, second), exact_max in exact_pair_max.items()
     ]
     position_rows = [
         {
@@ -118,6 +158,8 @@ def measure_n_only_impact(
         "boundary": {
             "assumption": "Only N-only rows may become noun or cardinal; other undefined rows stay unknown.",
             "cell_bounds_jointly_attainable": False,
+            "bigram_max_method": "exact_per_cell_n_only_dynamic_programming",
+            "independent_edge_upper_bound_retained": True,
             "n_mixed_recovered": False,
             "production_pos_mapping_changed": False,
             "fantlab_dictionary_equivalence": "unknown",

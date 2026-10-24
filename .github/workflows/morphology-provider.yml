@@ -314,7 +314,7 @@ jobs:
           import json
           from pathlib import Path
           doc = json.loads(Path("build/morph/work270306-pylem-n-only-impact.json").read_text(encoding="utf-8"))
-          assert doc["schema_version"] == "scriptorium-pylem-n-only-impact-v1"
+          assert doc["schema_version"] == "scriptorium-pylem-n-only-impact-v2"
           assert doc["source_text_included"] is False
           assert doc["provider"]["version"] == "0.0.18"
           assert doc["normalized_sha256"] == "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205"

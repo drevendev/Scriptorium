@@ -1,27 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 310
+STATE_REVISION: 311
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #305 merged at 54351dac95dcec4aaa467105d442f9f1ae91b637. Authored #283 visible exact-value showcase improvement PR.
-LAST_VERIFIED_PROGRESS: #305 merged. #283 Reader homepage patch requires exact-head hosted tests and later-run acceptance; live Pages not verified.
+LAST_RESULT: #306 merged at 0fae723b687ca5099b6f755a6e5fe111e5fd04bb. Authored #283 print-contrast and mobile table-hint regression PR.
+LAST_VERIFIED_PROGRESS: #306 merged. Found low-contrast printable eyebrow/caption/action text and undiscoverable horizontal table overflow on narrow screens; fixes require exact-head CI and later-run acceptance.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-VISIBLE-EXACT-COMPARISON
+UNIT_ID: SCRIP-SITE-012-PRINT-MOBILE-LEGIBILITY
 ISSUES: #283 (open; partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-012-visible-exact-comparison
-BASE: 54351dac95dcec4aaa467105d442f9f1ae91b637
-ACCEPTANCE: Homepage exact-value comparison is visible without expanding a disclosure, keyboard-readable and print-visible. Preserve all validated source-free numbers, units, links and M2 0/5 boundary. Require exact-head site build/tests; independent later-run merge and, when permitted, desktop/mobile visual acceptance.
+BRANCH: scrip-site-012-mobile-print-contrast
+BASE: 0fae723b687ca5099b6f755a6e5fe111e5fd04bb
+ACCEPTANCE: Narrow-screen exact-value table advertises horizontal swipe and keyboard navigation through a labelled scroll region; print rendition uses dark, underlined links and readable eyebrow/caption colors on white. Regression tests and exact-head hosted build must pass. Keep all source-free measurements, scientific labels and M2 0/5 intact; independent later-run merge and browser visual verification if permitted.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: readable, keyboard/print-accessible real-book comparison with immediate exact numerical evidence; Pages activation is independently gated.
+Milestone: readable real-book comparison on narrow screens and high-contrast printed reports, with exact source-free numerical evidence; Pages activation is independently gated.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Reader exact-value visibility | Verify this patch in built route; later-run review/merge, browser visual acceptance if permitted | Exact-head CI; browser restrictions affect screenshots only |
+| P1 | #283 Reader mobile/print legibility | Test and merge accessible scroll hint and high-contrast printed text; browser screenshots when permitted | Exact-head CI; browser restrictions affect visual acceptance only |
 | P2 | #281 FantLab benchmark | Find exact source-matched witness; retain other NOT_RUN values | Proven edition/input identity |
 | P3 | #282 noun/cardinal ambiguity | Build on merged #305 native N-only impact; keep mixed N unresolved | Independent discriminator and matched source evidence |
 | P4 | #285 Pages publication | Authorized Pages activation and live verification | Repository admin and #284 rights |

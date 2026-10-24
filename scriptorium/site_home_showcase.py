@@ -207,5 +207,7 @@ HOME_CSS = """
   .demo-metric h3, .demo-unit, .demo-panel th, .demo-panel td { color:#000; }
   .demo-track { border:1px solid #444; }
   .demo-exact h3 { color:#000; }
+  .demo-scroll { overflow:visible; }
+  .demo-panel table { min-width:0; width:100%; }
 }
 """

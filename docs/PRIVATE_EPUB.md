@@ -71,9 +71,12 @@ identify a translation, edition or FantLab's analysis input by itself.
   actual decompressed lengths.
 - Files are read with the existing bounded Reader regular-file/no-final-
   symlink guard, and output uses create-only writes. No destination is
-  overwritten. If multiple outputs are requested and a late output fails,
-  an earlier created report may remain; use distinct unused output names
-  and inspect/create the provenance receipt separately as needed.
+  overwritten. When both outputs are requested, the CLI checks for path
+  aliases, existing destinations and dangling symlinks **before either write**,
+  so a known occupied receipt cannot leave a new report behind. This preflight
+  is not an atomic cross-file transaction: concurrent changes or later I/O
+  failures can still leave the first created report. Inspect outputs before
+  retrying with distinct unused filenames.
 - Generated report titles are user-supplied display text and may contain
   private information; choose an appropriate title or omit it.
 - Extraction ignores stylesheet-driven presentation, CSS hiding and

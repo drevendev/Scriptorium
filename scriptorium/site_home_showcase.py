@@ -119,12 +119,13 @@ def render_demo(entries: Sequence[Mapping[str, Any]]) -> str:
         '<div class="demo-legend"><span class="demo-legend-ink">Alexander Grin</span>'
         '<span class="demo-legend-gold">Jules Verne · Beketova translation</span></div>'
         '<ul class="demo-metrics">' + "".join(spark_rows) + '</ul>'
-        '<details class="demo-exact"><summary>Exact numbers and units</summary>'
+        '<section class="demo-exact" aria-labelledby="demo-exact-title">'
+        '<h3 id="demo-exact-title">Exact numbers and units</h3>'
         '<div class="demo-scroll" tabindex="0" role="region" aria-label="Exact comparison values">'
         '<table><caption>Frozen derived measurements; chart labels are rounded to 1 decimal</caption>'
         '<thead><tr><th scope="col">Metric</th><th scope="col">Grin</th>'
         '<th scope="col">Verne</th><th scope="col">Unit</th></tr></thead>'
-        '<tbody>' + "".join(exact_rows) + '</tbody></table></div></details>'
+        '<tbody>' + "".join(exact_rows) + '</tbody></table></div></section>'
         '<a class="demo-open" href="works/two-full-work-differences/">'
         'Inspect all 10 metrics, sources and caveats <span aria-hidden="true">↗</span></a>'
         '<p class="demo-footnote">No book text stored on this page. '
@@ -179,8 +180,8 @@ HOME_CSS = """
 .demo-fill { display:block; height:100%; border-radius:.4rem; }
 .demo-fill-ink { background:#7cd0b7; }
 .demo-fill-gold { background:#f1be73; }
-.demo-exact summary { cursor:pointer; padding:.8rem 0; min-height:44px;
-  font:700 .8rem/1.4 system-ui,sans-serif; color:#f6deaf; }
+.demo-exact { margin-top:.8rem; padding-top:.6rem; border-top:1px solid #4b786b; }
+.demo-exact h3 { margin:0 0 .6rem; font:700 .85rem/1.45 system-ui,sans-serif; color:#f6deaf; }
 .demo-scroll { overflow:auto; max-width:100%; }
 .demo-panel table { min-width:30rem; font:400 .76rem/1.5 system-ui,sans-serif; }
 .demo-panel th, .demo-panel td { border-bottom:1px solid #547369; color:#fff6e5; padding:.5rem .35rem; }
@@ -205,6 +206,6 @@ HOME_CSS = """
   .demo-panel h2, .demo-intro, .demo-footnote, .demo-series-label, .demo-reading,
   .demo-metric h3, .demo-unit, .demo-panel th, .demo-panel td { color:#000; }
   .demo-track { border:1px solid #444; }
-  .demo-exact { display:block; }
+  .demo-exact h3 { color:#000; }
 }
 """

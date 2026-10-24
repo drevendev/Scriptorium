@@ -22,7 +22,7 @@ SCHEMA_VERSION = "scriptorium-fantlab-retained-metrics-v1"
 REFERENCE = "benchmarks/fantlab/work270306.json"
 DIAGNOSTIC = "benchmarks/fantlab/work270306-wikisource-diagnostic.json"
 _ANNA_ID = "tolstoy-anna-karenina-ru"
-_SHA = re.compile(r"[0-9a-f]{64}\\Z")
+_SHA = re.compile(r"[0-9a-f]{64}\Z")
 
 
 def _same(actual: object, expected: object, field: str) -> None:
@@ -175,11 +175,11 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
 
 def render_metric_matrix(report: dict[str, object], kind: str) -> str:
     if kind == "json":
-        return json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\\n"
+        return json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n"
     entries = report["entries"]
     if kind == "csv":
         stream = StringIO(newline="")
-        writer = csv.writer(stream, lineterminator="\\n")
+        writer = csv.writer(stream, lineterminator="\n")
         writer.writerow(("candidate_id", "title", "reference_url", "witness_sha256", "metric_id",
                          "expected", "actual", "delta", "status", "source_match", "rounding_evidence"))
         for entry in entries:
@@ -203,7 +203,7 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
         "| --- | ---: | ---: | ---: | --- |",
     ]
     for entry in entries:
-        title = str(entry["title"]).replace("|", "\\|").replace("\\n", " ")
+        title = str(entry["title"]).replace("|", "\|").replace("\n", " ")
         lines.append(
             f"| {title} | {len(entry['metric_rows']) if entry['metric_rows'] else 'NOT_RUN'} | "
             f"{entry['metric_rows_with_actual'] if entry['metric_rows'] else 'NOT_RUN'} | "
@@ -223,7 +223,7 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
             f"{fmt(row['actual_minus_expected'])} | {row['result']} |"
         )
     lines.extend(["", "Other four works have no retained metric observations and remain NOT_RUN.", ""])
-    return "\\n".join(lines)
+    return "\n".join(lines)
 
 
 def main(argv: list[str] | None = None) -> int:

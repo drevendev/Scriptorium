@@ -1,43 +1,44 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 307
+STATE_REVISION: 308
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #303 expanded in existing branch to a product-first Pages homepage with a verified frozen-book comparison; intended Pages URL linked prominently in README.
-LAST_VERIFIED_PROGRESS: Reader package and Pages CI successful for this branch revision; full exact-head acceptance still required. Deployment / public browser availability NOT_VERIFIED.
+LAST_RESULT: #303 merged at d934473e417627a2e6b1e6fb36e033112f9764cc. EPUB follow-up to merged #296 now preflights known collisions across the report and separate provenance receipt before either create-only write; related tests and docs are on a focused PR branch.
+LAST_VERIFIED_PROGRESS: Branch file writes/readback verified; exact-head CI and later-run acceptance pending for this EPUB change. Master Reader and site builds passed after #303; Pages deployment/live URL not verified.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-SITE-015-PUBLIC-READER-SHOWCASE
-ISSUES:         #283 (reader presentation) and #285 (deployment, scoped)
+UNIT_ID:        SCRIP-INGEST-EPUB-DUAL-OUTPUT-PREFLIGHT
+ISSUES:         #289 (closed; narrowly scoped post-merge regression)
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-site-015-metric-family-jumps
-BASE:           86efa80dd3ef529ed81803bbe036c53301674698
-ACCEPTANCE:     Main screen uses the actually frozen Grin/Verne derived
-                comparison for three labelled quantitative charts and an exact
-                accessible table. Clickable real-work, private comparison and
-                FantLab evidence routes, 28-row family navigation and mobile /
-                keyboard / print checks all retained. README links intended URL
-                and states that Pages is NOT LIVE_VERIFIED. Same-run merge not
-                authorized; read exact-head CI before later acceptance.
+BRANCH:         scrip-epub-dual-output-preflight
+BASE:           d934473e417627a2e6b1e6fb36e033112f9764cc
+ACCEPTANCE:     One EPUB invocation requesting report and provenance rejects
+                identical/aliased paths, existing receipt and dangling symlink
+                before either write. Fresh report + sidecar still work, and
+                no existing output is overwritten. These two independent
+                writes remain nontransactional under late I/O failures/races.
+                Require exact-head CI and later-run review before merge.
 ```
 
 ## Next user-visible milestone and compact queue
 
-Milestone: a coherent real-work Reader homepage on an actually public GitHub Pages
-URL, without claiming FantLab source identity or scientific parity.
+Milestone: dependable private EPUB -> 29-metric Reader report + source-free
+provenance, alongside the existing source-free real-book showcase; public Pages
+activation is independent and currently requires repository administration.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 real-work Pages UX | Exact-head CI, canonical artifact link/desktop/mobile acceptance and later qualifying #303 merge | Authored PR, later-run merge |
-| P2 | #285 publish Pages | Admin enables Pages GitHub Actions source and existing deployment variable; deploy reviewed master via existing workflow and verify public URL | Repository admin permission, not a code blocker |
-| P3 | #281 scientific evidence | Four currently NOT_RUN measured works with unchanged source/rights/rounding gates | Source identity and legally usable witness |
-| P4 | #282 AOT ambiguity | Measured noun/cardinal N regression; no guessed semantic mapping | Pinned provider evidence |
+| P1 | #289 follow-up: EPUB dual-output safety | Accept current PR after exact-head tests/checks; existing sidecar or path aliases must not create partial new report | Later-run acceptance for current branch |
+| P2 | #283 Reader visual usability | Real built-route desktop/mobile/keyboard and print verification and any measured fixes; preserve already merged #303 showcase | Browser navigation limitation; independent checks allowed |
+| P3 | #285 publish Pages | Admin enables Pages GitHub Actions source and deployment variable; deploy reviewed master, verify public URL | Repository admin permission; not an analyzer blocker |
+| P4 | #281 FantLab evidence | Obtain an independently lawful, exact-identity witness and one fresh metric run; keep four NOT_RUN works explicit until then | Source/input identity and executable witness |
+| P5 | #282 AOT ambiguity | Measured noun/cardinal runtime N collision experiment with pinned provider; do not guess bucket assignment | Reproducible pinned provider evidence |
 
-#284 source-code/data licensing remains an independent legal gate. The user requested
-a working public Pages experience; a working GitHub Actions build is NOT deployment.
-M2 0/5, M3/M4/M5 and the corpus/legal/privacy constraints are unchanged.
+#284 code/data licensing remains an independent legal release gate. M2 stays
+0/5; M3/M4/M5 and corpus/rights/privacy gates are unchanged. The #303 merge
+does not prove a live Pages route; branch #303 is not a renewed open PR.
 
 ## Retained evidence and scientific gates
 

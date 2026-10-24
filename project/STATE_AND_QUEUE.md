@@ -1,44 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 308
+STATE_REVISION: 309
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #303 merged at d934473e417627a2e6b1e6fb36e033112f9764cc. EPUB follow-up to merged #296 now preflights known collisions across the report and separate provenance receipt before either create-only write; related tests and docs are on a focused PR branch.
-LAST_VERIFIED_PROGRESS: Branch file writes/readback verified; exact-head CI and later-run acceptance pending for this EPUB change. Master Reader and site builds passed after #303; Pages deployment/live URL not verified.
+LAST_RESULT: #304 merged at 366de1b2d4a82f8826cae54c3dae8cfe16469b7b. Authored #282 N-only pinned pylem impact PR.
+LAST_VERIFIED_PROGRESS: #304 merged; current #282 branch needs exact-head hosted CI and later-run acceptance. Master Reader builds passed; live Pages not verified.
 
 ## Current delivery and acceptance
 
-```text
-UNIT_ID:        SCRIP-INGEST-EPUB-DUAL-OUTPUT-PREFLIGHT
-ISSUES:         #289 (closed; narrowly scoped post-merge regression)
-STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-epub-dual-output-preflight
-BASE:           d934473e417627a2e6b1e6fb36e033112f9764cc
-ACCEPTANCE:     One EPUB invocation requesting report and provenance rejects
-                identical/aliased paths, existing receipt and dangling symlink
-                before either write. Fresh report + sidecar still work, and
-                no existing output is overwritten. These two independent
-                writes remain nontransactional under late I/O failures/races.
-                Require exact-head CI and later-run review before merge.
-```
+UNIT_ID: SCRIP-MORPH-009-N-ONLY-IMPACT
+ISSUES: #282 (open; partially addressed)
+STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
+BRANCH: scrip-morph-009-n-only-impact
+BASE: 366de1b2d4a82f8826cae54c3dae8cfe16469b7b
+ACCEPTANCE: Execute actual pinned native Anna replay; verify source-free digest-bound conditional noun/cardinal bucket, bigram and position impact. Keep mixed N unresolved, M2 0/5, licenses and production mapping. Require exact-head CI and later-run merge.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: dependable private EPUB -> 29-metric Reader report + source-free
-provenance, alongside the existing source-free real-book showcase; public Pages
-activation is independent and currently requires repository administration.
+Milestone: reproducible real frozen-work N-only uncertainty alongside functional private EPUB Reader and source-free literary comparison; Pages activation remains independent.
 
-| Priority | Unit | Deliverable and acceptance | Scoped dependency |
+| Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #289 follow-up: EPUB dual-output safety | Accept current PR after exact-head tests/checks; existing sidecar or path aliases must not create partial new report | Later-run acceptance for current branch |
-| P2 | #283 Reader visual usability | Real built-route desktop/mobile/keyboard and print verification and any measured fixes; preserve already merged #303 showcase | Browser navigation limitation; independent checks allowed |
-| P3 | #285 publish Pages | Admin enables Pages GitHub Actions source and deployment variable; deploy reviewed master, verify public URL | Repository admin permission; not an analyzer blocker |
-| P4 | #281 FantLab evidence | Obtain an independently lawful, exact-identity witness and one fresh metric run; keep four NOT_RUN works explicit until then | Source/input identity and executable witness |
-| P5 | #282 AOT ambiguity | Measured noun/cardinal runtime N collision experiment with pinned provider; do not guess bucket assignment | Reproducible pinned provider evidence |
+| P1 | #282 noun/cardinal collision | Test/accept and merge this N-only diagnostic; measure actual native counts | Exact-head CI, later-run review |
+| P2 | #283 Reader visual acceptance | Built-route mobile/keyboard/print verification; measured fixes | Browser permission |
+| P3 | #281 FantLab benchmark | Exact source-matched witness; preserve other NOT_RUN values | Source edition identity |
+| P4 | #285 Pages publication | Admin authorizes Pages+deploy variable and live verification | Administration and #284 rights |
+| P5 | #284 license | Obtain explicit code/data license and attribution approval | Owner/rights-holder decision |
 
-#284 code/data licensing remains an independent legal release gate. M2 stays
-0/5; M3/M4/M5 and corpus/rights/privacy gates are unchanged. The #303 merge
-does not prove a live Pages route; branch #303 is not a renewed open PR.
+M2 remains 0/5. Corpus, privacy, scientific and provenance gates unchanged.
 
 ## Retained evidence and scientific gates
 

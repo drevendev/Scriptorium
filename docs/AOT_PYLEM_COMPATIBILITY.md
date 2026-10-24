@@ -192,6 +192,21 @@ lane, not alteration of immutable upstream source. This verifies provider execut
 it does **not** establish FantLab dictionary identity, token-level parity, homonym
 selection parity, noun/cardinal recovery, or M2 benchmark admissibility.
 
+## Conditional noun/cardinal N-only impact
+
+The pinned native pylem 0.0.18 Anna replay also emits a source-free
+N-only sensitivity artifact. Only token rows whose complete runtime POS
+candidate set is N are conditionally considered noun or cardinal. Mixed-N
+and all other unknown rows stay unresolved. It quantifies POS bucket
+counts/rates, affected bigrams per 1,000 words and sentence-position
+percentages as independent per-cell conservative envelopes. Different
+maxima cannot necessarily coexist in one assignment.
+
+These are NOT true POS labels, recovered AOT enums, FantLab homonym
+decisions, or M2 parity. Provider sdist, runtime candidate SHA, frozen
+normalized source hash and commit are recorded; text and token rows are
+never uploaded. The production POS mapping and M2 0/5 are unchanged.
+
 ## Primary sources
 
 - https://pypi.org/project/pylem/

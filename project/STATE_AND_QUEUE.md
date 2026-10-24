@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 304
+STATE_REVISION: 305
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #300 native MERGED at c1e6520b1e095a60922c514fd2101b71106618f2; authored a public-facing, locally built FantLab five-work evidence page under #281/#283.
-LAST_VERIFIED_PROGRESS: #300 native MERGED; five-work metric viewer code/tests/docs authored for later CI and independent PR acceptance. Pages deployment and visual browser acceptance NOT_RUN.
+LAST_RESULT: #301 native MERGED at e785a70587beda7ae2a446fcbd877ed192419a2b; authored readable metric labels/status explanations under #283.
+LAST_VERIFIED_PROGRESS: #301 native MERGED; evidence comprehension improvement authored for later CI and independent PR acceptance. Pages deployment and visual browser acceptance NOT_RUN.
 
 ## Current delivery and acceptance
 
 ```text
-UNIT_ID:        SCRIP-SITE-013-FANTLAB-EVIDENCE
-ISSUES:         #281 (source-free diagnostic visibility), #283 (partial public experience)
+UNIT_ID:        SCRIP-SITE-014-READABLE-EVIDENCE
+ISSUES:         #283 (evidence readability; partial)
 STATUS:         AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH:         scrip-site-013-fantlab-evidence-matrix
-BASE:           c1e6520b1e095a60922c514fd2101b71106618f2
-ACCEPTANCE:     Canonical local Pages build creates /evidence/fantlab/ with five
-                verified source-frozen works, retained 28-row Anna deltas,
-                four honest NOT_RUN states, immutable-reference links, and
-                matching JSON/CSV downloads. Invalid registration or evidence
-                fails before staged publication. No parity promotion.
-                Later fresh exact-head CI/diff review and qualifying merge.
+BRANCH:         scrip-site-014-evidence-readable-labels
+BASE:           e785a70587beda7ae2a446fcbd877ed192419a2b
+ACCEPTANCE:     The existing five-work evidence page displays versioned
+                Russian field labels, families, stable metric IDs and plain
+                evidence-status explanations. All 28 rows remain present.
+                JSON/CSV unchanged; forged scientific statuses or unknown
+                metric IDs fail closed. Later exact-head CI/review required.
+                No parity or deployment promotion.
 ```
 
-#300 is native MERGED. This new page is a *visualization of retained diagnostics*,
+#301 is native MERGED. Its page is a *visualization of retained diagnostics*,
 not a scientific benchmark rerun or independently deployed public service.
 Pages activation/desktop/mobile live tests remain VISUAL_NOT_VERIFIED.
 
@@ -33,7 +33,7 @@ canonical Pages builds, without source-match or parity overclaims.
 
 | Priority | Unit | Deliverable and acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281/#283 evidence page | Later exact-head CI/diff review and qualifying merge of locally built matrix view | Current authored PR; no same-run merge |
+| P1 | #283 evidence readability | Later exact-head CI/diff review and qualifying merge of readable metric labels | Current authored PR; no same-run merge |
 | P2 | #283 full browser acceptance | Real canonical desktop/mobile focus, scroll, print and visual checks | Browser/Pages access; structural tests remain independent |
 | P3 | #281 four missing metric runs | Source-bound retained metrics for four other frozen candidates and reference rounding evidence | Exact usable source bytes and provider run; does not block UI |
 | P4 | #282 AOT ambiguity | Measured noun/cardinal N regression without compatibility policy guess | Compatible provider execution evidence |

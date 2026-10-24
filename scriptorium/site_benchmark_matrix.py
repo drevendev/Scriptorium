@@ -10,6 +10,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from . import benchmark_metric_matrix as matrix
+from .benchmark import _reference_specs
 
 
 EXPECTED_ENTRY = {
@@ -25,6 +26,19 @@ EXPECTED_ENTRY = {
     "source_text_included": False,
 }
 
+
+
+# Display labels come from the versioned benchmark comparison registry.
+# They do not establish FantLab definition equivalence or parity.
+_METRIC_PRESENTATION = {
+    metric_id: (label, metric_id.split(".")[1].title())
+    for metric_id, _path, label, _rule in _reference_specs()
+}
+_DISPLAY_STATUS = {
+    "UNRESOLVED_SOURCE": "Input identity unverified",
+    "UNRESOLVED_NO_ACTUAL": "Actual value unavailable",
+    "NOT_RUN": "Not run",
+}
 
 def validate_entry(entry: object) -> None:
     """The public report must be explicitly and exactly registered."""
@@ -89,16 +103,26 @@ def build(root: Path) -> dict[str, str]:
             _esc(item["reference_date"]) + '</small></td></tr>'
         )
 
+    if {row["metric_id"] for row in anna["metric_rows"]} != set(_METRIC_PRESENTATION):
+        raise ValueError("unrecognized FantLab metric ID in evidence page")
     metrics = []
     for row in anna["metric_rows"]:
         if row["comparison_kind"] != "DIAGNOSTIC_ONLY" or row["display_rounding_evidence"] != "UNKNOWN":
             raise ValueError("metric evidence was promoted without source/rounding proof")
+        status = row["result"]
+        if (status not in _DISPLAY_STATUS or
+                (row["actual"] is None) != (status != "UNRESOLVED_SOURCE")):
+            raise ValueError("invalid diagnostic scientific status")
+        label, group = _METRIC_PRESENTATION[row["metric_id"]]
         metrics.append(
-            '<tr class="metric-row"><th scope="row"><code>' + _esc(row["metric_id"]) +
+            '<tr class="metric-row"><th scope="row"><span class="eyebrow">' +
+            _esc(group) + '</span><br><span lang="ru">' + _esc(label) +
+            '</span><br><code>' + _esc(row["metric_id"]) +
             '</code></th><td>' + _number(row["expected"]) + '</td><td>' +
             _number(row["actual"]) + '</td><td>' +
             _number(row["actual_minus_expected"]) + '</td><td>' +
-            _esc(row["result"]) + '</td></tr>'
+            _esc(_DISPLAY_STATUS[status]) + '<br><code>' + _esc(status) +
+            '</code></td></tr>'
         )
 
     body = (
@@ -134,7 +158,9 @@ def build(root: Path) -> dict[str, str]:
         'Anna Karenina: 28 retained diagnostic rows</h2>'
         '<p>23 numeric observations; five missing actual values. '
         'Δ is Scriptorium actual minus FantLab expected; all observed rows '
-        'remain unresolved because source identity is unknown.</p>'
+        'remain unresolved because source identity is unknown. '
+        'Names come from the existing benchmark field registry; each row retains '
+        'its machine ID. Friendly statuses do not change the exported data.</p>'
         '<p id="metrics-scroll">On narrow screens, scroll the metric table horizontally. '
         'Tab to it for keyboard scrolling.</p>'
         '<div class="table-wrap" role="region" aria-label="Anna Karenina metric differences" '

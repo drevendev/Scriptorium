@@ -4,9 +4,8 @@
 
 See **real measured differences** between two books, examine a 28-metric full-work
 diagnostic, browse the source-free FantLab evidence matrix, or compare two of
-your own Reader JSON reports privately in the browser. Charts display retained,
-validated derived measurements and link to exact values, units, methodology and
-scientific limitations. No manuscript is hosted or uploaded.
+your own Reader JSON reports privately in the browser. Charts and a visible exact-value table show retained, validated derived
+measurements, units and links to methodology and scientific limitations. No manuscript is hosted or uploaded.
 
 **Publication status (October 2026):** this is the *intended Pages URL*, not a
 claim that the public site is already live. Canonical GitHub Actions builds and

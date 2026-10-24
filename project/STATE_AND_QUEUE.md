@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 309
+STATE_REVISION: 310
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-24
-LAST_RESULT: #304 merged at 366de1b2d4a82f8826cae54c3dae8cfe16469b7b. Authored #282 N-only pinned pylem impact PR.
-LAST_VERIFIED_PROGRESS: #304 merged; current #282 branch needs exact-head hosted CI and later-run acceptance. Master Reader builds passed; live Pages not verified.
+LAST_RESULT: #305 merged at 54351dac95dcec4aaa467105d442f9f1ae91b637. Authored #283 visible exact-value showcase improvement PR.
+LAST_VERIFIED_PROGRESS: #305 merged. #283 Reader homepage patch requires exact-head hosted tests and later-run acceptance; live Pages not verified.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-009-N-ONLY-IMPACT
-ISSUES: #282 (open; partially addressed)
+UNIT_ID: SCRIP-SITE-012-VISIBLE-EXACT-COMPARISON
+ISSUES: #283 (open; partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-morph-009-n-only-impact
-BASE: 366de1b2d4a82f8826cae54c3dae8cfe16469b7b
-ACCEPTANCE: Execute actual pinned native Anna replay; verify source-free digest-bound conditional noun/cardinal bucket, bigram and position impact. Keep mixed N unresolved, M2 0/5, licenses and production mapping. Require exact-head CI and later-run merge.
+BRANCH: scrip-site-012-visible-exact-comparison
+BASE: 54351dac95dcec4aaa467105d442f9f1ae91b637
+ACCEPTANCE: Homepage exact-value comparison is visible without expanding a disclosure, keyboard-readable and print-visible. Preserve all validated source-free numbers, units, links and M2 0/5 boundary. Require exact-head site build/tests; independent later-run merge and, when permitted, desktop/mobile visual acceptance.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: reproducible real frozen-work N-only uncertainty alongside functional private EPUB Reader and source-free literary comparison; Pages activation remains independent.
+Milestone: readable, keyboard/print-accessible real-book comparison with immediate exact numerical evidence; Pages activation is independently gated.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 noun/cardinal collision | Test/accept and merge this N-only diagnostic; measure actual native counts | Exact-head CI, later-run review |
-| P2 | #283 Reader visual acceptance | Built-route mobile/keyboard/print verification; measured fixes | Browser permission |
-| P3 | #281 FantLab benchmark | Exact source-matched witness; preserve other NOT_RUN values | Source edition identity |
-| P4 | #285 Pages publication | Admin authorizes Pages+deploy variable and live verification | Administration and #284 rights |
-| P5 | #284 license | Obtain explicit code/data license and attribution approval | Owner/rights-holder decision |
+| P1 | #283 Reader exact-value visibility | Verify this patch in built route; later-run review/merge, browser visual acceptance if permitted | Exact-head CI; browser restrictions affect screenshots only |
+| P2 | #281 FantLab benchmark | Find exact source-matched witness; retain other NOT_RUN values | Proven edition/input identity |
+| P3 | #282 noun/cardinal ambiguity | Build on merged #305 native N-only impact; keep mixed N unresolved | Independent discriminator and matched source evidence |
+| P4 | #285 Pages publication | Authorized Pages activation and live verification | Repository admin and #284 rights |
+| P5 | #284 license | Explicit source-code license and data attribution approval | Owner/rights-holder decision |
 
 M2 remains 0/5. Corpus, privacy, scientific and provenance gates unchanged.
 

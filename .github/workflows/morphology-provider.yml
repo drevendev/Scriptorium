@@ -7,6 +7,7 @@ on:
       - "requirements/pylem-0.0.18.txt"
       - "scriptorium/morphology.py"
       - "scriptorium/morphology_diagnostic.py"
+      - "scriptorium/n_collision_diagnostic.py"
       - "scriptorium/homonym_weight_diagnostic.py"
       - "scriptorium/methodology_pos_diagnostic.py"
       - "scriptorium/pylem_provider.py"
@@ -15,6 +16,7 @@ on:
       - "scriptorium/wikisource_replay.py"
       - "tests/test_morphology.py"
       - "tests/test_morphology_diagnostic.py"
+      - "tests/test_n_collision_diagnostic.py"
       - "tests/test_homonym_weight_diagnostic.py"
       - "tests/test_methodology_pos_diagnostic.py"
       - "tests/test_pylem_provider.py"
@@ -297,6 +299,32 @@ jobs:
           }, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
           PY
 
+      - name: Measure source-free N-only noun/cardinal impact
+        env:
+          SCRIPTORIUM_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.n_collision_diagnostic \
+            --manifest corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json \
+            --request build/morph/anna-pylem-request.json \
+            --response build/morph/anna-pylem-response.json \
+            --scriptorium-revision "$SCRIPTORIUM_REVISION" \
+            --output build/morph/work270306-pylem-n-only-impact.json
+          "${{ steps.py313.outputs.python-path }}" - <<'PY'
+          import json
+          from pathlib import Path
+          doc = json.loads(Path("build/morph/work270306-pylem-n-only-impact.json").read_text(encoding="utf-8"))
+          assert doc["schema_version"] == "scriptorium-pylem-n-only-impact-v1"
+          assert doc["source_text_included"] is False
+          assert doc["provider"]["version"] == "0.0.18"
+          assert doc["normalized_sha256"] == "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205"
+          assert doc["impact"]["status"] == "diagnostic_only"
+          assert doc["impact"]["n_only_token_count"] > 0
+          assert doc["impact"]["conditional_defined_token_count"] == doc["impact"]["baseline_defined_token_count"] + doc["impact"]["n_only_token_count"]
+          assert doc["impact"]["boundary"]["m2_parity_admissible"] is False
+          assert "normalized_text" not in json.dumps(doc)
+          print(json.dumps({"n_only": doc["impact"]["n_only_token_count"], "n_mixed": doc["impact"]["n_mixed_token_count_excluded"], "source_text_included": False}, sort_keys=True))
+          PY
       - name: Remove ephemeral source-bearing transport files
         if: always()
         run: rm -f build/morph/anna-pylem-request.json build/morph/anna-pylem-response.json
@@ -322,5 +350,13 @@ jobs:
         with:
           name: scriptorium-anna-pylem-methodology-pos-diagnostic
           path: build/morph/work270306-pylem-methodology-pos-diagnostic.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload source-free N-only collision impact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-anna-pylem-n-only-impact
+          path: build/morph/work270306-pylem-n-only-impact.json
           if-no-files-found: error
           retention-days: 7

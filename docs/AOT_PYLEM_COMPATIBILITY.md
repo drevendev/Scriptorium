@@ -200,7 +200,15 @@ candidate set is N are conditionally considered noun or cardinal. Mixed-N
 and all other unknown rows stay unresolved. It quantifies POS bucket
 counts/rates, affected bigrams per 1,000 words and sentence-position
 percentages as independent per-cell conservative envelopes. Different
-maxima cannot necessarily coexist in one assignment.
+maxima cannot necessarily coexist in one assignment. The v2 artifact tightens
+bigram maxima using per-sentence dynamic programming: each N-only token must
+have one consistent noun/cardinal assignment across its adjacent bigrams.
+For example, three consecutive N-only tokens can contribute at most one
+noun→cardinal transition, not the two suggested by independent edge sums.
+The former loose bound is retained as
+`independent_edge_upper_bound_raw_count`; `conditional_max_raw_count` is
+now the **exact individual-cell** maximum under these hypothetical choices.
+No joint attainability across different cells is asserted.
 
 These are NOT true POS labels, recovered AOT enums, FantLab homonym
 decisions, or M2 parity. Provider sdist, runtime candidate SHA, frozen

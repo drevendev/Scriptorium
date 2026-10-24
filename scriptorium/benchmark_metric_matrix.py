@@ -203,7 +203,7 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
         "| --- | ---: | ---: | ---: | --- |",
     ]
     for entry in entries:
-        title = str(entry["title"]).replace("|", "\|").replace("\n", " ")
+        title = str(entry["title"]).replace("|", "\\|").replace("\n", " ")
         lines.append(
             f"| {title} | {len(entry['metric_rows']) if entry['metric_rows'] else 'NOT_RUN'} | "
             f"{entry['metric_rows_with_actual'] if entry['metric_rows'] else 'NOT_RUN'} | "

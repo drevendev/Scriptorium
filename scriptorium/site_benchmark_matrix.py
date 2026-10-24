@@ -10,6 +10,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from . import benchmark_metric_matrix as matrix
+from . import benchmark_readiness
 from .benchmark import _reference_specs
 
 
@@ -64,10 +65,31 @@ def _reference(url: object) -> str:
     return '<a href="' + _esc(url) + '" rel="noopener noreferrer">FantLab reference ↗</a>'
 
 
+def _source_link(url: object) -> str:
+    """Only show already-validated Wikisource source/rights links."""
+    if not isinstance(url, str):
+        raise ValueError("missing public source URL")
+    parsed = urlsplit(url)
+    if (parsed.scheme != "https" or parsed.netloc != "ru.wikisource.org"
+            or parsed.username or parsed.password or not parsed.path.startswith("/wiki/")):
+        raise ValueError("unsafe public source URL")
+    return '<a href="' + _esc(url) + '" rel="noopener noreferrer">Public-domain source ↗</a>'
+
+
 def build(root: Path) -> dict[str, str]:
     """Render verified source-free data into a readable offline HTML and downloads."""
     report = matrix.build_metric_matrix(root)
+    readiness = benchmark_readiness.build_readiness(root)
     entries = report["entries"]
+    sources = readiness["entries"]
+    if (readiness["works_reported"] != 5
+            or readiness["m2_source_matched_pass_count"] != 0
+            or len(sources) != 5
+            or len({row["candidate_id"] for row in sources}) != 5
+            or {row["candidate_id"] for row in sources} !=
+               {row["candidate_id"] for row in entries}):
+        raise ValueError("five-work source readiness gate changed")
+    sources_by_id = {row["candidate_id"]: row for row in sources}
     if (report["schema_version"] != matrix.SCHEMA_VERSION
             or report["m2_source_matched_pass_count"] != 0
             or report["works_reported"] != 5
@@ -87,6 +109,28 @@ def build(root: Path) -> dict[str, str]:
 
     works = []
     for item in entries:
+        witness = sources_by_id[item["candidate_id"]]
+        source = witness["source"]
+        diagnostic = witness["character_count_diagnostic"]
+        if (witness["exact_fantlab_input_identity"] != "UNKNOWN"
+                or witness["parity_eligible"] is not False
+                or witness["other_metric_comparisons"] != "NOT_RUN"
+                or witness["fantlab"]["reference_url"] != item["reference_url"]
+                or witness["fantlab"]["analysis_date"] != item["reference_date"]
+                or source["raw_sha256"] != item["source_witness_sha256"]):
+            raise ValueError("source readiness and metric matrix disagree")
+        frozen = diagnostic["actual_frozen_body"]
+        displayed = diagnostic["expected_displayed"]
+        delta = diagnostic["actual_minus_expected"]
+        if (type(frozen) is not int or type(displayed) is not int
+                or type(delta) is not int or frozen < 300_000
+                or displayed <= 0 or delta != frozen - displayed
+                or diagnostic["result"] != "UNRESOLVED_SOURCE"
+                or diagnostic["rule"] != "displayed-character-count-diagnostic-only"
+                or source["legal_basis"] != "public_domain"
+                or not isinstance(source["legal_evidence"], str)
+                or not source["legal_evidence"].strip()):
+            raise ValueError("invalid source readiness diagnostic")
         status = item["metric_evidence"]
         if item["exact_fantlab_input_identity"] != "UNKNOWN" or status not in (
             "RETAINED_DIAGNOSTIC", "NOT_RUN"
@@ -95,10 +139,17 @@ def build(root: Path) -> dict[str, str]:
         if status == "NOT_RUN" and item["metric_rows"]:
             raise ValueError("unreported metric run has fabricated rows")
         measured = str(item["metric_rows_with_actual"]) if item["metric_rows"] else "NOT_RUN"
+        edition = source["edition"] or "Edition not established"
         works.append(
             '<tr class="source-row"><th scope="row">' + _esc(item["title"]) +
-            '<span class="eyebrow">' + _esc(item["author"]) + '</span></th><td>' +
-            _esc(status) + '</td><td>' + measured + '</td><td>UNKNOWN</td><td>' +
+            '<span class="eyebrow">' + _esc(item["author"]) + '</span><br><small>' +
+            'Edition: ' + _esc(edition) + ' · public domain<br>' +
+            _source_link(source["url"]) + '</small></th><td>' +
+            '<strong>Frozen:</strong> ' + _esc(f"{frozen:,}") +
+            '<br><strong>FantLab displayed:</strong> ' + _esc(f"{displayed:,}") +
+            '<br><strong>Δ:</strong> ' + _esc(f"{delta:+,}") +
+            '</td><td>' + _esc(status) + '</td><td>' + measured +
+            '</td><td>UNKNOWN</td><td>' +
             _reference(item["reference_url"]) + '<br><small>' +
             _esc(item["reference_date"]) + '</small></td></tr>'
         )
@@ -157,14 +208,17 @@ def build(root: Path) -> dict[str, str]:
         '</header>'
         '<section aria-labelledby="works-title"><h2 id="works-title">Five frozen public candidates</h2>'
         '<p>Only one work has retained metric observations. The four others '
-        'have NOT_RUN metric status. These sources have legal provenance, '
-        'but none has verified FantLab analyzer-input identity.</p>'
+        'have NOT_RUN metric status. Each source row shows public-domain '
+        'edition evidence, frozen text characters (including spaces), FantLab '
+        'displayed characters and a signed diagnostic difference. '
+        'Numerical proximity does not establish source identity.</p>'
         '<p id="works-scroll">On narrow screens, scroll the table horizontally. '
         'Tab to the table to use keyboard scrolling.</p>'
         '<div class="table-wrap" role="region" aria-label="Five-work evidence status" '
         'tabindex="0" aria-describedby="works-scroll"><table>'
-        '<caption>Source-frozen diagnostics, not parity benchmarks</caption>'
-        '<thead><tr><th scope="col">Work</th><th scope="col">Metric evidence</th>'
+        '<caption>Source-frozen character counts and provenance, not parity benchmarks</caption>'
+        '<thead><tr><th scope="col">Work, edition and rights</th>'
+        '<th scope="col">Character-count diagnostic</th><th scope="col">Metric evidence</th>'
         '<th scope="col">Observed values</th><th scope="col">FantLab input match</th>'
         '<th scope="col">Dated reference</th></tr></thead><tbody>' +
         ''.join(works) + '</tbody></table></div></section>'

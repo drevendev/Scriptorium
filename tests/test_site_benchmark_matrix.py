@@ -22,7 +22,8 @@ class FantLabEvidencePageTests(unittest.TestCase):
         content = published["body"]
         self.assertEqual(content.count('class="source-row"'), 5)
         self.assertEqual(content.count('class="metric-row"'), 28)
-        self.assertEqual(content.count('scope="row"'), 33)
+        # Five sources, 28 metrics, and four family-summary rows.
+        self.assertEqual(content.count('scope="row"'), 37)
         self.assertEqual(content.count('<span lang="ru">'), 28)
         self.assertIn('<nav aria-label="Metric families">', content)
         for family, count in (("dialogue", 4), ("general", 4),

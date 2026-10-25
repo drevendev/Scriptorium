@@ -1,32 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 324
+STATE_REVISION: 325
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: PR #319 merged at c8aec71ca1538568354eac29d19ad901c3b110fc; 55 diagnostic rows now on master. Independent Waves metric filtering authored for later acceptance.
-LAST_VERIFIED_PROGRESS: Merged #319 restored 27 retained Waves fields (23 measured, four not run) alongside 28 Anna fields; both remain source-unmatched. Proposed independent Waves searching is presentation-only, not a new benchmark run or parity claim.
+LAST_RESULT: PR #320 merged at df6091fba4a558750e51bfd52e8012b720f937f4. Public evidence copy and regression guard authored to reconcile README/methodology with merged two-book filters and 55 retained rows.
+LAST_VERIFIED_PROGRESS: Master has 28 Anna and 27 Waves diagnostic fields, independently searchable; 46 numeric and nine missing actuals. Three works still lack retained metric runs; M2 remains 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-INDEPENDENT-WAVES-FILTER
-ISSUES: #283 (partial)
+UNIT_ID: SCRIP-REPRO-010-PUBLIC-COVERAGE-SYNC
+ISSUES: #281 (partial), #283 (partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-012-waves-metric-filter
-BASE: c8aec71ca1538568354eac29d19ad901c3b110fc
-ACCEPTANCE: The existing 27 Waves diagnostic rows can be independently searched/filtered by metric ID/name, family and availability without altering the 28-row Anna explorer. Missing JavaScript/invalid evidence preserves all rows. Print restores all rows. Accessible counts/empty/reset/keyboard behavior and source-free exports remain intact. Exact-head integrated CI and later independent review required before merge. M2 remains 0/5.
+BRANCH: scrip-repro-010-public-coverage-sync
+BASE: df6091fba4a558750e51bfd52e8012b720f937f4
+ACCEPTANCE: Public README and evidence/readiness methodology must correctly distinguish five frozen source witnesses, two measured-but-source-unmatched diagnostic works (55 rows, 46 actuals) and three NOT_RUN works; both Reader explorers must be described accurately. A test checks the canonical coverage claims against current matrix output. Exact-head CI and later independent acceptance required. No source prose or metric changes, no new parity evidence.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Research-ready Reader with measured and clearly qualified native POS evidence, human-readable cross-work diagnostics and accessible presentation.
+Milestone: Research-ready Reader with verified five-work source evidence, expanding measured per-work metrics, and accessible locally built comparisons without overstating FantLab parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Waves metric explorer | Accept/merge independent accessible Waves filters; retain Anna behavior and print/JS fallback | Exact-head CI and later independent acceptance |
-| P2 | #281 Remaining work metrics | Run/reconcile field-level evidence for Brothers Karamazov, Silver Dove and Hyperboloid, preserving NOT_RUN until executed | Legally frozen bytes and dated reference |
-| P2b | #282 Native N contrast | Use merged native controls to quantify actual frozen-work POS sensitivity without changing production mapping | Exact pinned native evidence |
-| P3 | #283 Reader visual acceptance | Desktop/mobile/print behavior verification and any independent accessibility fixes | Browser may be restricted; not a block on nonvisual tests |
-| P4 | #285 Pages publication | Publish and live-verify source-free Reader | Admin/deployment interlock |
-| P5 | #284 License and attribution | Explicit code/data rights and dependency attribution | Rights-holder decision |
+| P1 | #281 Evidence copy integrity | Accept this source-free public coverage correction after exact-head CI; keep README/Reader science truthful | Later-run acceptance |
+| P2 | #281 Remaining work metrics | Obtain field-level retained diagnostics for Brothers Karamazov, Silver Dove and Hyperboloid | Licensed frozen bytes, pinned analyzer and dated FantLab reference |
+| P3 | #282 Native N contrast | Quantify actual frozen-work noun/cardinal POS effects under pinned pylem | Exact pinned native evidence |
+| P4 | #283 Reader visual acceptance | Exercise desktop/mobile/print flows and fix actual accessibility findings | Browser restricted; structural tests still executable |
+| P5 | #285 Pages publication | Publish and live-verify source-free Reader | Admin/deployment and #284 rights interlocks |
 
 M2: 0/5 unchanged. Scientific, legal, privacy and source identity gates remain in force.
 

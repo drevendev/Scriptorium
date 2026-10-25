@@ -192,8 +192,14 @@ actuals are two NOT_RUN and three unresolved.
 The Reader labels metric units and percentage-point differences, and offers
 **independent search/filter controls for both books** by metric name/ID,
 family and availability. Tables and source-free JSON/CSV remain available
-without JavaScript and in print. Neither retained work is source-matched to
-FantLab's analyzer input, displayed rounding is unproven, and **M2 stays 0/5**.
+without JavaScript and in print. A separate **20-row side-by-side comparison**
+shows only shared measured word/sentence lengths, punctuation rates and dialogue
+percentages (Running on Waves minus Anna Karenina, percentage differences in
+percentage points). Unlike total characters or vocabulary counts, these carry
+explicit per-unit denominators, but remain **descriptive, source-unmatched
+Scriptorium candidates**, not author-style or FantLab-parity evidence.
+Neither retained work is source-matched to FantLab's analyzer input, displayed
+rounding is unproven, and **M2 stays 0/5**.
 Build the site with `scriptorium site --repo-root . --output build/site` and open
 `build/site/evidence/fantlab/index.html` to browse the same verified five-work evidence
 and download its source-free JSON/CSV. The same page now also shows each

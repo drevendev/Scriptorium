@@ -1,19 +1,19 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 322
+STATE_REVISION: 323
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: PR #317 merged at cb78ef7266389b759ee140f5a788a03a14ff7f60; source-free native noun/cardinal contrast controls authored on a focused PR branch for later acceptance.
-LAST_VERIFIED_PROGRESS: The pinned native probe now records hashed lexical noun/cardinal/other-POS controls, N-only and N-present counts, and an explicitly diagnostic-only cross-role observation. Native CI and integrated tests remain to be verified on the exact PR head; no recovered FantLab labels are claimed.
+LAST_RESULT: PR #318 merged at 1edb5b85fb36f8e3971b7ca4e77d89ccef3ac1ab; retained Running on Waves field deltas recovered into a focused #281 delivery branch for later acceptance.
+LAST_VERIFIED_PROGRESS: The existing source-frozen Running on Waves diagnostic has 27 evidence rows (23 measured, four missing); cross-work reporting previously called it NOT_RUN. The new matrix and Reader join it without replaying text, changing the original artifact, or promoting FantLab parity. Exact-head CI awaits PR checks.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-009-NATIVE-N-CONTROLS
-ISSUES: #282 (partial)
+UNIT_ID: SCRIP-REPRO-010-RETAINED-WAVES-MATRIX
+ISSUES: #281 (partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-morph-009-native-controls
-BASE: cb78ef7266389b759ee140f5a788a03a14ff7f60
-ACCEPTANCE: Run pinned pylem 0.0.18 on curated noun/cardinal/negative lexical controls in the existing native CI lane, persist a source-free tag/hash/count receipt, pass positive/negative deterministic tests, preserve the original three-token smoke and unchanged mapping/parity gates. Verify exact-head checks in a later run before merging. No corpus text or deployment changes.
+BRANCH: scrip-repro-010-running-waves-retained
+BASE: 1edb5b85fb36f8e3971b7ca4e77d89ccef3ac1ab
+ACCEPTANCE: Preserve and validate the existing 27-field Running on Waves diagnostic with exact frozen blob, source identity, dated FantLab references, profiles and exact integer/decimal deltas; expose 23 measured and four unavailable values next to Anna's 28/23/five, leaving three works NOT_RUN. Publish the accessible second Reader table through the existing Pages build only; exact-head CI plus later independent acceptance required before merge. Source input and FantLab parity remain UNKNOWN; M2 0/5.
 
 ## Next user-visible milestone and compact queue
 
@@ -21,8 +21,9 @@ Milestone: Research-ready Reader with measured and clearly qualified native POS 
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 Native N contrast | Verify pinned native control receipt and later-run merge; then extend quantified frozen-work sensitivity only with new evidence | Exact-head native CI and later acceptance |
-| P2 | #281 Cross-work benchmarks | Reproducible source-bound field-level deltas for remaining frozen works, marked diagnostic until source-matched | Legal frozen bytes and historical reference |
+| P1 | #281 Retained Waves diagnostics | Accept/merge the already-present 27-field source-free Grin comparison into the five-work matrix and Reader | Exact-head CI and later independent acceptance |
+| P2 | #281 Remaining work metrics | Run/reconcile field-level evidence for Brothers Karamazov, Silver Dove and Hyperboloid, preserving NOT_RUN until executed | Legally frozen bytes and dated reference |
+| P2b | #282 Native N contrast | Use merged native controls to quantify actual frozen-work POS sensitivity without changing production mapping | Exact pinned native evidence |
 | P3 | #283 Reader visual acceptance | Desktop/mobile/print behavior verification and any independent accessibility fixes | Browser may be restricted; not a block on nonvisual tests |
 | P4 | #285 Pages publication | Publish and live-verify source-free Reader | Admin/deployment interlock |
 | P5 | #284 License and attribution | Explicit code/data rights and dependency attribution | Rights-holder decision |

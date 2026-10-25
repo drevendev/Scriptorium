@@ -22,10 +22,14 @@ no source prose. CSV emits one row per retained metric, plus a clearly labelled
 - **Anna Karenina** has an older, source-unmatched diagnostic with **28** metric
   rows: **23** raw expected/actual/delta observations and **five** without a
   numeric actual (dictionary-dependent vocabulary fields).
-- **The Brothers Karamazov, The Silver Dove, The Hyperboloid of Engineer Garin,
-  and Running on Waves** have no corresponding retained field-by-field
-  benchmark artifacts in this report: their metric status is **NOT_RUN**,
-  not a zero difference or a parity failure.
+- **Running on Waves** already has a source-frozen, Git-blob-pinned report with
+  **27 retained metrics**, **23 measured** and **four dictionary-dependent NOT_RUN**
+  rows. Its full source has 363,819 characters, vs 360,987 displayed by FantLab
+  (+2,832); the source edition is NOT proven to be FantLab's input. This is
+  recovered prior work, not a new analysis or evidence of exact parity.
+- **The Brothers Karamazov, The Silver Dove and The Hyperboloid of Engineer
+  Garin** have no retained field-by-field metric artifacts in this report:
+  their metric status remains **NOT_RUN**, not zero or a parity failure.
 - All five FantLab analyzer-input identities are **UNKNOWN**. M2 remains **0/5**.
   Even a numerically equal row is **UNRESOLVED_SOURCE**, not a PASS.
 
@@ -47,18 +51,43 @@ contract or replace `scriptorium.benchmark`. To create *new* field-by-field
 comparison evidence, run that existing harness on legally usable local bytes
 with the correct provenance fields.
 
-The remaining scientific work for #281 requires four more properly bound
+The remaining scientific work for #281 requires three more properly bound
 field-level runs, independent reference-rounding evidence, and—before any M2
 progress—actual confirmed FantLab analyzer-input identity for five qualifying
 works. No artifact in this preview meets that gate.
+
+
+## Reusing the frozen Running on Waves evidence (#281)
+
+The 27-field, source-free artifact
+`corpus/candidates/diagnostics/grin-running-on-waves-ru.json` was already present
+but excluded from the consolidated matrix. The report now binds its original
+Git-blob SHA-1 to the reviewed full-work gallery record, checks exact source-body
+SHA-256 and character count against the separate five-work readiness witness,
+and validates the dated FantLab reference, metric profile and all 27 displayed
+reference lexemes against the original versioned diagnostic definitions.
+
+The 23 measured raw deltas must reproduce the source artifact's exact
+integer/Decimal arithmetic; four unbound dictionary actuals stay NOT_RUN.
+No original diagnostic is rewritten and no FantLab floating rounding tolerance
+is inferred. The consolidated JSON/CSV now report 55 recorded fields, 46 numeric
+observations and nine missing actuals across Anna and Running on Waves; three
+other works remain without retained runs. The readiness files continue to
+document **character-count/source readiness** separately.
+
+The Reader keeps its accessible, progressive **28-row Anna explorer** intact
+and adds a plain 27-row Running on Waves evidence table with source status,
+units, keyboard-scroll and a text/table alternative. Filters affect Anna only.
+Site build is not Pages deployment or visual verification. M2 remains 0/5.
 
 ## Source-free local evidence page
 
 Build the canonical site with `scriptorium site --repo-root . --output build/site`,
 then open `build/site/evidence/fantlab/index.html` (or follow **FantLab evidence**
 from the built homepage). The route renders the existing validated five-work report:
-one retained Anna Karenina diagnostic with 28 rows (23 numeric actuals and five
-unavailable); the other four works remain `NOT_RUN`. It also provides the same
+the Anna Karenina diagnostic with 28 rows (23 numeric actuals and five
+unavailable) and a static Running on Waves table with 27 rows (23 numeric
+actuals and four NOT_RUN). The remaining three works remain `NOT_RUN`. It also provides the same
 validated machine-readable `metrics.json` and `metrics.csv` exports.
 
 The route is explicitly registered in the publication allow-list and refuses

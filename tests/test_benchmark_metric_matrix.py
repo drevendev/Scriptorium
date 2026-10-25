@@ -18,11 +18,11 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         report = matrix.build_metric_matrix(ROOT)
         self.assertEqual(report["schema_version"], matrix.SCHEMA_VERSION)
         self.assertEqual(report["works_reported"], 5)
-        self.assertEqual(report["works_with_retained_metric_diagnostics"], 1)
-        self.assertEqual(report["retained_metric_rows"], 28)
+        self.assertEqual(report["works_with_retained_metric_diagnostics"], 2)
+        self.assertEqual(report["retained_metric_rows"], 55)
         self.assertEqual(report["m2_source_matched_pass_count"], 0)
         self.assertEqual([e["metric_evidence"] for e in report["entries"]],
-                         ["RETAINED_DIAGNOSTIC"] + ["NOT_RUN"] * 4)
+                         ["RETAINED_DIAGNOSTIC"] + ["NOT_RUN"] * 3 + ["RETAINED_DIAGNOSTIC"])
         self.assertEqual(report["entries"][0]["metric_rows_with_actual"], 23)
         self.assertEqual(report["entries"][0]["metric_rows_without_actual"], 5)
         anna = report["entries"][0]
@@ -32,7 +32,7 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         self.assertEqual(chars["result"], "UNRESOLVED_SOURCE")
         self.assertTrue(all(e["exact_fantlab_input_identity"] == "UNKNOWN"
                             for e in report["entries"]))
-        self.assertEqual([e["metric_rows"] for e in report["entries"][1:]], [[], [], [], []])
+        self.assertEqual([e["metric_rows"] for e in report["entries"][1:4]], [[], [], []])
 
     def test_formats_are_stable_and_do_not_turn_not_run_into_zero(self):
         report = matrix.build_metric_matrix(ROOT)
@@ -42,11 +42,11 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         self.assertEqual(json.loads(matrix.render_metric_matrix(report, "json")),
                          report)
         rows = list(csv.DictReader(StringIO(matrix.render_metric_matrix(report, "csv"))))
-        self.assertEqual(len(rows), 32)
-        self.assertEqual(sum(r["status"] == "NOT_RUN" for r in rows), 6)
-        # Two dictionary counts are not_run, four works have no metric artifacts.
+        self.assertEqual(len(rows), 58)
+        self.assertEqual(sum(r["status"] == "NOT_RUN" for r in rows), 9)
+        # Two Anna and four Running on Waves dictionary rows are NOT_RUN; three other works have no metric artifacts.
         absent = [r for r in rows if not r["metric_id"]]
-        self.assertEqual(len(absent), 4)
+        self.assertEqual(len(absent), 3)
         self.assertTrue(all(r["expected"] == r["actual"] == r["delta"] == "" for r in absent))
         self.assertIn("M2: 0/5", matrix.render_metric_matrix(report, "markdown"))
         self.assertIn("12958", matrix.render_metric_matrix(report, "csv"))
@@ -113,6 +113,52 @@ class RetainedMetricMatrixTests(unittest.TestCase):
             with self.subTest(change=change.__name__):
                 with self.assertRaisesRegex(ValueError, "floating metric delta"):
                     self._mutate(matrix.DIAGNOSTIC, change)
+
+
+    def test_running_on_waves_reuses_frozen_measurements_without_parity(self):
+        report = matrix.build_metric_matrix(ROOT)
+        wave = report["entries"][-1]
+        self.assertEqual(wave["candidate_id"], "grin-running-on-waves-ru")
+        self.assertEqual(wave["metric_evidence"], "RETAINED_DIAGNOSTIC")
+        self.assertEqual((len(wave["metric_rows"]), wave["metric_rows_with_actual"],
+                          wave["metric_rows_without_actual"]), (27, 23, 4))
+        chars = next(r for r in wave["metric_rows"]
+                     if r["metric_id"] == "fantlab.general.characters")
+        words = next(r for r in wave["metric_rows"]
+                     if r["metric_id"] == "fantlab.general.words")
+        self.assertEqual((chars["expected"], chars["actual"], chars["actual_minus_expected"]),
+                         (360987, 363819, 2832))
+        self.assertEqual((words["expected"], words["actual"], words["actual_minus_expected"]),
+                         (52985, 55778, 2793))
+        self.assertEqual(wave["exact_fantlab_input_identity"], "UNKNOWN")
+        self.assertEqual(report["m2_source_matched_pass_count"], 0)
+        self.assertTrue(all(r["comparison_kind"] == "DIAGNOSTIC_ONLY"
+                            and r["display_rounding_evidence"] == "UNKNOWN"
+                            and r["result"] in ("NOT_RUN", "UNRESOLVED_SOURCE")
+                            for r in wave["metric_rows"]))
+
+    def test_running_on_waves_rejects_forged_source_or_metric_evidence(self):
+        def corrupt_reference(doc):
+            doc["metrics"][0]["fantlab_display_value"] = "360986"
+
+        def corrupt_decimal_delta(doc):
+            doc["metrics"][2]["delta_against_fantlab_display"] = "0"
+
+        def corrupt_source(doc):
+            doc["body_identity"]["raw_sha256"] = "f" * 64
+
+        def corrupt_parity(doc):
+            doc["gates"]["m2_parity_admissible"] = True
+
+        for change, message in (
+            (corrupt_reference, "displayed reference"),
+            (corrupt_decimal_delta, "decimal metric delta"),
+            (corrupt_source, "raw witness"),
+            (corrupt_parity, "M2 and source gates"),
+        ):
+            with self.subTest(change=change.__name__):
+                with self.assertRaisesRegex(ValueError, message):
+                    self._mutate(matrix._RUNNING_DIAGNOSTIC, change)
 
     def test_nonfinite_metric_values_fail_closed(self):
         with self.assertRaisesRegex(ValueError, "numeric metric"):

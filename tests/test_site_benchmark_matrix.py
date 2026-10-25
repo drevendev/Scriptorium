@@ -24,9 +24,14 @@ class FantLabEvidencePageTests(unittest.TestCase):
         content = published["body"]
         self.assertEqual(content.count('class="source-row"'), 5)
         self.assertEqual(content.count('class="metric-row" data-metric-family='), 28)
+        self.assertEqual(content.count('class="wave-metric-row"'), 27)
+        self.assertIn("Running on Waves: 27 retained diagnostic rows", content)
+        self.assertIn('aria-label="Running on Waves metric differences"', content)
+        self.assertIn("four dictionary-dependent metrics not run", content)
+        self.assertIn("360987</td><td>363819</td><td>2832", content)
         # Five sources, 28 metrics, and four family-summary rows.
-        self.assertEqual(content.count('scope="row"'), 37)
-        self.assertEqual(content.count('<span lang="ru">'), 28)
+        self.assertEqual(content.count('scope="row"'), 64)
+        self.assertEqual(content.count('<span lang="ru">'), 55)
         self.assertIn('<nav id="metric-families" aria-label="Metric families">', content)
         for family, count in (("dialogue", 4), ("general", 4),
                               ("punctuation", 14), ("vocabulary", 6)):
@@ -52,7 +57,7 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn('<span lang="ru">Длина текста, знаков</span>', content)
         self.assertIn('<code>fantlab.general.characters</code>', content)
         self.assertIn('<th scope="col">Metric ID</th><th scope="col">Unit</th>', content)
-        self.assertEqual(content.count('occurrences / 1,000 word tokens</td>'), 14)
+        self.assertEqual(content.count('occurrences / 1,000 word tokens</td>'), 28)
         self.assertIn('mean unique forms / 3,000-token window</td>', content)
         self.assertIn('mean unique forms / 10,000-token window</td>', content)
         self.assertIn('mean unique forms / 100,000-token window</td>', content)
@@ -62,6 +67,7 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("Actual value unavailable", content)
         self.assertIn("UNRESOLVED_SOURCE", content)
         self.assertIn("M2: 0/5", content)
+        self.assertIn("Two works have retained metric observations", content)
         self.assertIn("Frozen:</strong> 1,705,605", content)
         self.assertIn("FantLab displayed:</strong> 1,692,647", content)
         self.assertIn("Δ:</strong> +12,958", content)

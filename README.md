@@ -177,6 +177,11 @@ metric comparisons are NOT_RUN and **M2 stays 0/5**.
 
 To inspect **actual retained per-metric differences** rather than character counts alone,
 run `python -m scriptorium.benchmark_metric_matrix --root . --format markdown`.
+The Reader evidence page groups the 28 retained fields by family and exposes
+numeric availability separately from parity: the historical Anna witness has
+4/4 general, 4/4 dialogue, 14/14 punctuation and 1/6 vocabulary values.
+The other five vocabulary states are two NOT_RUN and three unavailable actuals,
+not zeros or matched results.
 The separate source-free matrix validates 28 existing Anna Karenina diagnostic rows
 (23 numeric actuals, five unavailable) and marks the other four works **NOT_RUN**.
 None is source-matched or proven to meet FantLab rounding; M2 remains 0/5.

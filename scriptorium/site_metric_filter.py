@@ -32,10 +32,38 @@ FILTER_CONTROLS = """<section id="metric-filters" class="metric-filters"
 <p id="metric-no-results" hidden>No diagnostic rows match. Clear the filters to see all 28.</p>
 </section>"""
 
+WAVE_FILTER_CONTROLS = """<section id="wave-metric-filters" class="metric-filters"
+  aria-label="Explore Running on Waves diagnostic metric rows" hidden>
+<div class="metric-filter-grid">
+<label for="wave-metric-query">Search labels and metric IDs
+<input id="wave-metric-query" type="search" autocomplete="off"
+  placeholder="e.g. диалоги, punctuation, word length"
+  aria-controls="wave-metric-rows"></label>
+<label for="wave-metric-family">Metric family
+<select id="wave-metric-family" aria-controls="wave-metric-rows">
+<option value="all">All families</option>
+<option value="dialogue">Dialogue</option>
+<option value="general">General</option>
+<option value="punctuation">Punctuation</option>
+<option value="vocabulary">Vocabulary</option>
+</select></label>
+<label for="wave-metric-state">Measurement availability
+<select id="wave-metric-state" aria-controls="wave-metric-rows">
+<option value="all">All states</option>
+<option value="measured">Measured (not parity)</option>
+<option value="not_run">Not run</option>
+</select></label>
+<button id="wave-metric-clear" type="button">Clear Waves filters</button>
+</div>
+<p id="wave-metric-result-count" role="status" aria-live="polite" aria-atomic="true"></p>
+<p id="wave-metric-no-results" hidden>No Waves rows match. Clear the filters to see all 27.</p>
+</section>"""
+
 FILTER_CSS = """
 .metric-filters { margin: 1.1rem 0; padding: 1rem; border: 1px solid var(--line);
   border-radius: .5rem; background: var(--accent-soft); }
-.metric-filters[hidden], #metric-no-results[hidden], #retained-metric-rows tr[hidden] {
+.metric-filters[hidden], #metric-no-results[hidden], #wave-metric-no-results[hidden],
+#retained-metric-rows tr[hidden], #wave-metric-rows tr[hidden] {
   display: none !important; }
 .metric-filter-grid { display:flex; flex-wrap:wrap; align-items:end; gap:.8rem; }
 .metric-filter-grid label { display:grid; gap:.3rem; flex:1 1 12rem; min-width:min(100%,12rem);
@@ -53,7 +81,7 @@ FILTER_CSS = """
 @media(max-width:650px) { .metric-filter-grid button { width:100%; } }
 @media print {
   .metric-filters { display:none !important; }
-  #retained-metric-rows tr[hidden] { display:table-row !important; }
+  #retained-metric-rows tr[hidden], #wave-metric-rows tr[hidden] { display:table-row !important; }
 }
 """
 
@@ -124,8 +152,62 @@ FILTER_JS = r"""/* Local-only table filtering: no network calls, manuscripts, tr
     panel.hidden = false;
     refresh();
   }
+  function readyWave() {
+    const panel = document.getElementById('wave-metric-filters');
+    const query = document.getElementById('wave-metric-query');
+    const family = document.getElementById('wave-metric-family');
+    const state = document.getElementById('wave-metric-state');
+    const reset = document.getElementById('wave-metric-clear');
+    const feedback = document.getElementById('wave-metric-result-count');
+    const empty = document.getElementById('wave-metric-no-results');
+    const table = document.getElementById('wave-metric-rows');
+    // With missing or altered evidence, leave the complete static table visible.
+    if (!panel || !query || !family || !state || !reset || !feedback || !empty || !table) return;
+    const rows = Array.from(table.querySelectorAll('tr.wave-metric-row'));
+    const families = new Set(['dialogue', 'general', 'punctuation', 'vocabulary']);
+    const states = new Set(['measured', 'not_run']);
+    if (rows.length !== 27 || rows.some(row =>
+        !families.has(row.dataset.metricFamily) || !states.has(row.dataset.metricState))) return;
+    function key(value) {
+      return String(value || '').normalize('NFC').toLocaleLowerCase('ru-RU').replace(/ё/g, 'е');
+    }
+    const inventory = rows.map(row => {
+      const label = row.querySelector('th[scope="row"]');
+      return {row, label: key(label ? label.textContent : ''),
+              family: row.dataset.metricFamily, state: row.dataset.metricState};
+    });
+    function refresh() {
+      const needle = key(query.value.trim());
+      const chosenFamily = family.value;
+      const chosenState = state.value;
+      let shown = 0;
+      inventory.forEach(item => {
+        const visible = (!needle || item.label.includes(needle)) &&
+          (chosenFamily === 'all' || chosenFamily === item.family) &&
+          (chosenState === 'all' || chosenState === item.state);
+        item.row.hidden = !visible;
+        if (visible) shown++;
+      });
+      feedback.textContent = `${shown} of ${rows.length} Running on Waves rows shown (not parity)`;
+      empty.hidden = shown !== 0;
+      reset.disabled = !needle && chosenFamily === 'all' && chosenState === 'all';
+    }
+    query.addEventListener('input', refresh);
+    family.addEventListener('change', refresh);
+    state.addEventListener('change', refresh);
+    reset.addEventListener('click', () => {
+      query.value = '';
+      family.value = 'all';
+      state.value = 'all';
+      refresh();
+      query.focus();
+    });
+    panel.hidden = false;
+    refresh();
+  }
+  function start() { ready(); readyWave(); }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', ready, {once: true});
-  } else { ready(); }
+    document.addEventListener('DOMContentLoaded', start, {once: true});
+  } else { start(); }
 })();
 """

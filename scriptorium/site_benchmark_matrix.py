@@ -12,7 +12,7 @@ from urllib.parse import urlsplit
 
 from . import benchmark_metric_matrix as matrix
 from . import benchmark_readiness
-from .site_metric_filter import FILTER_CONTROLS
+from .site_metric_filter import FILTER_CONTROLS, WAVE_FILTER_CONTROLS
 from .benchmark import _reference_specs
 
 
@@ -269,9 +269,8 @@ def build(root: Path) -> dict[str, str]:
         for slug, tally in coverage.items()
     )
 
-    # Running on Waves was already analyzed and source-frozen. Unlike the
-    # 28-row Anna explorer, its 27 preserved observations form a plain, accessible
-    # static table; no new filters, fetched books, or parity promotion is needed.
+    # Running on Waves is independently filterable in the browser. Both complete
+    # tables and source-free exports remain available without JavaScript.
     wave_metrics = []
     for row in wave["metric_rows"]:
         if (row["comparison_kind"] != "DIAGNOSTIC_ONLY"
@@ -284,7 +283,10 @@ def build(root: Path) -> dict[str, str]:
             raise ValueError("Running on Waves metric scientific status drift")
         label, family = _METRIC_PRESENTATION[row["metric_id"]]
         wave_metrics.append(
-            '<tr class="wave-metric-row"><th scope="row"><span class="eyebrow">' +
+            '<tr class="wave-metric-row" data-metric-family="' + _esc(family.lower()) +
+            '" data-metric-state="' +
+            ("measured" if status == "UNRESOLVED_SOURCE" else "not_run") +
+            '"><th scope="row"><span class="eyebrow">' +
             _esc(family) + '</span><br><span lang="ru">' + _esc(label) +
             '</span><br><code>' + _esc(row["metric_id"]) +
             '</code></th><td>' + _esc(_VALUE_UNITS[row["metric_id"]]) +
@@ -372,8 +374,9 @@ def build(root: Path) -> dict[str, str]:
         '<p>23 numeric observations and four dictionary-dependent metrics not run. '
         'These are existing source-frozen measurements of a different public '
         'transcription; its FantLab input identity and display-rounding rules '
-        'remain UNKNOWN. The Anna Karenina filter does not hide these rows. '
-        'No value is a parity pass.</p>'
+        'remain UNKNOWN. Each book has independent filters; neither one changes '
+        'the other book, downloads or print output. No value is a parity pass.</p>'
+        + WAVE_FILTER_CONTROLS +
         '<p id="waves-scroll">On narrow screens, scroll this table horizontally; '
         'Tab to its region for keyboard scrolling.</p>'
         '<div class="table-wrap" role="region" aria-label="Running on Waves metric differences" '
@@ -383,7 +386,7 @@ def build(root: Path) -> dict[str, str]:
         '<thead><tr><th scope="col">Metric ID</th><th scope="col">Unit</th>'
         '<th scope="col">FantLab expected</th><th scope="col">Scriptorium actual</th>'
         '<th scope="col">Actual − expected</th><th scope="col">Scientific status</th>'
-        '</tr></thead><tbody>' + ''.join(wave_metrics) + '</tbody></table></div></section>'
+        '</tr></thead><tbody id="wave-metric-rows">' + ''.join(wave_metrics) + '</tbody></table></div></section>'
         '<p class="notice">No parity passes have been established. Reproduction '
         'requires five legally usable ≥300,000-character works with the actual '
         'FantLab analyzer-input identity and published rounding evidence.</p>'

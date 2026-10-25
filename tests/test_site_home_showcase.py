@@ -108,7 +108,7 @@ class HomeShowcaseTests(unittest.TestCase):
         # the ordinary link, so a missing state-specific override would be unreadable.
         import re
 
-        print_css = HOME_CSS.split("@media print {", 1)[1]
+        print_css = re.sub(r"/\*.*?\*/", "", HOME_CSS.split("@media print {", 1)[1], flags=re.S)
         self.assertRegex(print_css, r"\.demo-panel\s*\{[^{}]*background:\s*#fff\b")
 
         def declared_color(selector):

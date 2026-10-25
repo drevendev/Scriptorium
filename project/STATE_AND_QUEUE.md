@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 320
+STATE_REVISION: 321
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: PR #315 merged at 0b8cc564ebc97734d6051f2f75de895f1f8730b0. Authored #282 exact N-only bigram minima for later acceptance.
-LAST_VERIFIED_PROGRESS: Found fixed-only bigram minima can be unattainably low under consistent N-only choices; added exact per-cell minimum DP and exhaustive short-pattern regression. Native exact-head CI pending.
+LAST_RESULT: PR #316 merged at 00cfd3888dc88ea1b95d9f44ecf2857608267eca; #283 homepage print hover/focus contrast correction authored for later acceptance.
+LAST_VERIFIED_PROGRESS: Found the higher-specificity .demo-open:hover screen color (#fff6e5, about 1.07:1 on printed white) can override the ordinary dark print link. Added explicit print-state selectors and contrast regression; exact-head hosted CI pending.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-009-EXACT-PAIR-MINIMA
-ISSUES: #282 (partial)
+UNIT_ID: SCRIP-SITE-012-PRINT-HOVER-CONTRAST
+ISSUES: #283 (partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-morph-009-exact-pair-minima
-BASE: 0b8cc564ebc97734d6051f2f75de895f1f8730b0
-ACCEPTANCE: Exact individual-cell minimum and maximum noun/cardinal bigram envelopes; old conservative bounds explicitly retained; exhaustive patterns and pinned-native exact-head CI, with later-run acceptance. No POS recovery, text release or FantLab parity.
+BRANCH: scrip-site-012-print-hover-cascade
+BASE: 00cfd3888dc88ea1b95d9f44ecf2857608267eca
+ACCEPTANCE: Printed Reader homepage evidence link remains at least 4.5:1 against white in default, hovered and keyboard-focus states, with an underline; eyebrow and exact-table caption retain readable print contrast. Verify computed CSS declarations and exact-head Pages CI, with later-run acceptance. VISUAL_NOT_VERIFIED without a permitted browser. No science, source-text, publication or license changes.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Research-ready Reader evidence that explains what each exact diagnostic number measures without suggesting FantLab parity.
+Milestone: Research-ready Reader evidence that explains measured diagnostics clearly, remains legible in print and does not suggest FantLab parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 N-only exact lower bounds | Verify native artifact, exhaustive regressions, then later-run acceptance | Exact-head native CI |
-| P2 | #281 Source-bound benchmark runs | Measure field-level deltas for other four frozen works with real bytes and reference proofs | Legal original bytes; exact reference identity |
-| P3 | #283 Reader visual QA | Browser-verify mobile, desktop and print flows | Browser restriction |
-| P4 | #285 Pages publication | Publish current Reader and verify actual public routes | Admin and licensing gates |
-| P5 | #284 License and attribution | Record explicit code/data rights and dependency attributions | Rights-holder decision |
+| P1 | #283 Print hover/focus contrast | Exact-head site-build and computed-contrast regression, then later-run merge | Hosted CI and fresh acceptance |
+| P2 | #282 Native N ambiguity | Extend measured noun/cardinal collision quantification beyond synthetic exact bigram bounds | Pinned native provider and legal frozen input |
+| P3 | #281 Cross-work benchmarks | Obtain reproducible field-level metrics for other frozen works, source-bound diagnostics only | Legal source bytes and matching historical references |
+| P4 | #285 Pages publication | Publish Reader and verify public desktop/mobile routes | Admin/deployment interlock |
+| P5 | #284 License and attribution | Explicit code/data rights and dependency attribution | Rights-holder decision |
 
 M2: 0/5 unchanged. Scientific, legal, privacy and source identity gates remain in force.
 

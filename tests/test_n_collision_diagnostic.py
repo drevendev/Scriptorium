@@ -64,6 +64,8 @@ class NOnlyImpactTests(unittest.TestCase):
         row = pairs[("noun", "cardinal")]
         self.assertEqual(row["independent_edge_upper_bound_raw_count"], 2)
         self.assertEqual(row["conditional_max_raw_count"], 1)
+        self.assertEqual(row["conditional_min_raw_count"], 0)
+        self.assertEqual(row["fixed_edge_lower_bound_raw_count"], 0)
         self.assertEqual(row["conditional_max_per_1000_words"], 1000 / 3)
         self.assertEqual(pairs[("noun", "noun")]["conditional_max_raw_count"], 2)
         self.assertEqual(data["boundary"]["bigram_max_method"],
@@ -76,7 +78,7 @@ class NOnlyImpactTests(unittest.TestCase):
 
     def test_exact_pairwise_bounds_match_exhaustive_short_assignments(self):
         from itertools import product
-        from scriptorium.n_collision_diagnostic import MARKER, _max_ambiguous_pair_gain
+        from scriptorium.n_collision_diagnostic import MARKER, _max_ambiguous_pair_gain, _min_ambiguous_pair_gain
         values = (MARKER, "noun", "cardinal", "verb", None)
         for length in range(2, 6):
             for slots in product(values, repeat=length):
@@ -85,15 +87,32 @@ class NOnlyImpactTests(unittest.TestCase):
                 for first, second in product(("noun", "cardinal", "verb"), repeat=2):
                     baseline = sum(left == first and right == second
                                    for left, right in zip(slots, slots[1:]))
-                    exact = max(
+                    actual = [
                         sum(left == first and right == second
                             for left, right in zip(variant, variant[1:]))
                         for variant in product(*assignments)
-                    )
+                    ]
                     self.assertEqual(
                         baseline + _max_ambiguous_pair_gain(slots, first, second),
-                        exact, (slots, first, second),
+                        max(actual), (slots, first, second),
                     )
+                    self.assertEqual(
+                        baseline + _min_ambiguous_pair_gain(slots, first, second),
+                        min(actual), (slots, first, second),
+                    )
+
+    def test_exact_minimum_for_unavoidable_conditional_transition(self):
+        from scriptorium.n_collision_diagnostic import MARKER, _min_ambiguous_pair_gain
+        # Synthetic POS slots test mathematics only; no native N discriminator.
+        self.assertEqual(
+            _min_ambiguous_pair_gain(("noun", MARKER, "cardinal"), "noun", "cardinal"), 1
+        )
+        self.assertEqual(
+            _min_ambiguous_pair_gain((MARKER, MARKER, MARKER), "noun", "cardinal"), 0
+        )
+        self.assertEqual(
+            _min_ambiguous_pair_gain(("noun", MARKER, "cardinal"), "cardinal", "noun"), 0
+        )
 
     def test_null_empty_and_unaffected_negative(self):
         empty = measure_n_only_impact("", ())

@@ -314,11 +314,14 @@ jobs:
           import json
           from pathlib import Path
           doc = json.loads(Path("build/morph/work270306-pylem-n-only-impact.json").read_text(encoding="utf-8"))
-          assert doc["schema_version"] == "scriptorium-pylem-n-only-impact-v2"
+          assert doc["schema_version"] == "scriptorium-pylem-n-only-impact-v3"
           assert doc["source_text_included"] is False
           assert doc["provider"]["version"] == "0.0.18"
           assert doc["normalized_sha256"] == "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205"
           assert doc["impact"]["status"] == "diagnostic_only"
+          assert doc["impact"]["boundary"]["bigram_min_method"] == "exact_per_cell_n_only_dynamic_programming"
+          for row in doc["impact"]["bigram_conditional_envelopes"]:
+              assert row["fixed_edge_lower_bound_raw_count"] <= row["conditional_min_raw_count"] <= row["conditional_max_raw_count"] <= row["independent_edge_upper_bound_raw_count"]
           assert doc["impact"]["n_only_token_count"] > 0
           assert doc["impact"]["conditional_defined_token_count"] == doc["impact"]["baseline_defined_token_count"] + doc["impact"]["n_only_token_count"]
           assert doc["impact"]["boundary"]["m2_parity_admissible"] is False

@@ -101,6 +101,59 @@ class HomeShowcaseTests(unittest.TestCase):
         self.assertIn(".demo-scroll-hint { display:none; }", print_css)
         self.assertNotIn(".demo-scroll-hint { color:#e6e9da;", print_css)
 
+
+    def test_print_preview_hover_and_focus_keep_link_readable(self):
+        # Extract final @media print declarations rather than merely asserting that
+        # a dark color appears somewhere in CSS. Hover has greater specificity than
+        # the ordinary link, so a missing state-specific override would be unreadable.
+        import re
+
+        print_css = HOME_CSS.split("@media print {", 1)[1]
+        self.assertRegex(print_css, r"\\.demo-panel\\s*\\{[^{}]*background:\\s*#fff\\b")
+
+        def declared_color(selector):
+            result = None
+            for heading, declarations in re.findall(r"([^{}]+)\\{([^{}]*)\\}", print_css):
+                if selector in {item.strip() for item in heading.split(",")}:
+                    color = re.search(
+                        r"(?:^|;)\\s*color\\s*:\\s*(#[0-9a-fA-F]{3,6})\\s*;",
+                        declarations,
+                    )
+                    if color:
+                        result = color.group(1)
+            return result
+
+        def luminance(hex_color):
+            digits = hex_color[1:]
+            if len(digits) == 3:
+                digits = "".join(character * 2 for character in digits)
+            channels = [int(digits[index:index + 2], 16) / 255 for index in (0, 2, 4)]
+            linear = [value / 12.92 if value <= 0.04045
+                      else ((value + 0.055) / 1.055) ** 2.4 for value in channels]
+            return sum(channel * weight for channel, weight
+                       in zip(linear, (0.2126, 0.7152, 0.0722)))
+
+        def contrast_against_white(hex_color):
+            return 1.05 / (luminance(hex_color) + 0.05)
+
+        # This was the former :hover color: approximately 1.07:1 on printed white.
+        self.assertLess(contrast_against_white("#fff6e5"), 4.5)
+        for selector in (
+            ".demo-eyebrow",
+            ".demo-panel table caption",
+            ".demo-open",
+            ".demo-open:hover",
+            ".demo-open:focus-visible",
+        ):
+            with self.subTest(selector=selector):
+                color = declared_color(selector)
+                self.assertIsNotNone(color, f"missing print color for {selector}")
+                self.assertGreaterEqual(contrast_against_white(color), 4.5)
+
+        # Color alone must not be the only way to identify the printed link.
+        self.assertRegex(print_css, r"\\.demo-open:hover,\\s*\\.demo-open:focus-visible\\s*"
+                                        r"\\{[^{}]*text-decoration:\\s*underline;")
+
     def test_absent_registered_comparison_shows_no_synthetic_chart(self):
         self.assertEqual(render_demo([]), "")
         home = _render_index([])

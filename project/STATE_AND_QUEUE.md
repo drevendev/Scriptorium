@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 317
+STATE_REVISION: 318
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: #312 independently accepted and merged at af3ef4581c9f704c4ebb7a332bb9151532586864. Authored a scoped #281 source-provenance download slice.
-LAST_VERIFIED_PROGRESS: Reader's four-family diagnostic coverage is on master. Proposed direct downloads of the same validated five-work raw/normalized SHA-256 and source/rights/reference evidence; no change to existing metric exports, corpus, M2 or deployment.
+LAST_RESULT: PR #313 merged on master at 9574721c8475d8d616019d7792cb495d7e6edd5a. New #283 metric-table filter slice authored for later acceptance.
+LAST_VERIFIED_PROGRESS: Verified five-work source provenance downloads merged; proposed local-only searchable 28-row Anna diagnostic table. All exported scientific records unchanged.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-SOURCE-WITNESS-DOWNLOADS
-ISSUES: #281 (partial); #283 (reader evidence discoverability)
+UNIT_ID: SCRIP-SITE-016-FANTLAB-METRIC-FILTER
+ISSUES: #283 (partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-source-witness-downloads
-BASE: af3ef4581c9f704c4ebb7a332bb9151532586864
-ACCEPTANCE: From Reader evidence/fantlab, download source-free readiness.json/csv derived from the same validated five-work witnesses as the displayed rows. Packaged bytes equal the canonical readiness CLI; build receipt binds both SHA-256; existing metrics.json/csv unchanged. Tampered source/metric join fails closed, atomic last-valid build is preserved. Exact-head CI plus later-run acceptance required. No original manuscripts, new metric measurements or parity/source-match upgrades.
+BRANCH: scrip-site-016-fantlab-metric-filter
+BASE: 9574721c8475d8d616019d7792cb495d7e6edd5a
+ACCEPTANCE: On the canonical FantLab evidence page, search 28 retained Anna metrics by label/ID; filter by metric family and measured/not-run/unavailable state; reset and family-anchor navigation preserve keyboard accessibility. No JavaScript shows the full table, printing shows all rows even after filtering. Search is local-only, exports stay byte-identical; exact-head CI, built-site smoke and later-run acceptance required. No parity claims or data changes.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Reader researchers can download the provenance/rights/body-hash witnesses alongside the five-work metric matrix, independently checking missing-run and UNKNOWN-input gates.
+Milestone: Research-ready Reader evidence that is easy to explore offline, without hiding scientific unknowns or changing raw downloads.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Source-witness downloads | Verify canonical Reader downloadable readiness JSON/CSV, receipt hashes and unchanged metric outputs; later accept | Exact-head CI; no source-match inference |
-| P2 | #281 Strict source-bound benchmark | Additional legally usable source-and-reference-bound field-level runs; absent metrics remain NOT_RUN | Established actual input editions and rounding evidence |
-| P3 | #283 Reader visual acceptance | Real desktop/mobile/print browser checks when supported | Browser access; structural checks otherwise |
-| P4 | #282 AOT noun/cardinal ambiguity | New native pinned pylem experiment and inspectable POS delta evidence | Native dictionary/profile evidence |
-| P5 | #285 Pages publication / #284 rights | Activate only after approved license and admin/deployment gates | Owner/admin rights, explicit licensing decision |
+| P1 | #283 Accessible metric explorer | Filter retained rows without affecting full export/print; verify true browser and CI | Exact-head CI; browser visuals when available |
+| P2 | #281 Source-bound benchmark runs | Measure field-level deltas for other four frozen works with real bytes and reference proofs | Legal original bytes; exact reference identity |
+| P3 | #282 Native N collision | Quantify ambiguous noun/cardinal impact using pinned pylem | Pinned native environment |
+| P4 | #283 Reader desktop/mobile/print QA | Real browser screenshots and keyboard flow | Browser support |
+| P5 | #285 Pages / #284 licensing | Publish only after current deployment and licensing approvals | Separate admin/rights gates |
 
-M2 remains 0/5. Corpus, privacy, scientific and provenance gates unchanged.
+M2: 0/5 unchanged. Scientific, legal, privacy and source identity gates remain in force.
 
 ## Retained evidence and scientific gates
 

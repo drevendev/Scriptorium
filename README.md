@@ -267,3 +267,5 @@ corpus investigations and original reference links. Private EPUB and batch Reade
 capabilities have been integrated into the repository; their inputs remain local.
 The browser comparison is merged into master as a local-build capability;
 public deployment remains unverified and separately gated. Code/data licensing and Pages activation retain separate gates (#284/#285).
+
+Reader FantLab evidence now includes an offline-only metric explorer (label/ID, family and measurement availability) with a complete no-JavaScript/print table. Scientific source-match and parity status remain unchanged; see [benchmark evidence](docs/BENCHMARK_METRIC_MATRIX.md).

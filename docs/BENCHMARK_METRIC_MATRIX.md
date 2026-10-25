@@ -229,3 +229,26 @@ current candidate definitions, **not proof** that FantLab uses identical
 segmentation, denominator or rounding rules. Metric JSON/CSV and source readiness
 exports are unchanged, M2 remains 0/5, and browser visuals remain unverified until
 real desktop/mobile checks can run.
+
+
+## Download the observed two-work rate differences
+
+The FantLab evidence route now offers \`shared-rates.json\` and
+\`shared-rates.csv\`, a portable export of the same **20 measured rates**
+shown in the existing side-by-side table. Each row includes stable metric
+identity, candidate unit, both unrounded retained observations and the exact
+signed *Running on Waves minus Anna Karenina* decimal difference. Percent
+differences use **percentage points**, not relative percentages.
+
+The exports bind both works to frozen raw SHA-256 source witnesses and dated
+FantLab references. They explicitly mark their scientific status
+\`diagnostic_source_unmatched\` / input identity \`UNKNOWN\`, with M2
+weight zero. Raw size/vocabulary totals, missing observations and any parity
+promotion are excluded. Original 55-row \`metrics.json/csv\` and source
+\`readiness.json/csv\` retain their previous content.
+
+The canonical site builder computes these files from validated retained
+records, writes them atomically with the site, and records their SHA-256
+digests in \`build.json\`. Build and packaging tests assert deterministic
+output and correct scientific boundaries. This is no new full-text run
+and is not a deployed or visually verified Pages release.

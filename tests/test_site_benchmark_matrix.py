@@ -40,7 +40,8 @@ class FantLabEvidencePageTests(unittest.TestCase):
                 f'id="metric-family-{family}" tabindex="-1">',
                 content,
             )
-        self.assertEqual(content.count('id="metric-family-'), 4)
+        # Four family jump targets plus the family-filter control ID.
+        self.assertEqual(content.count('id="metric-family-'), 5)
         self.assertEqual(content.count('class="coverage-row"'), 4)
         self.assertIn('Measurement availability by family', content)
         self.assertIn('Vocabulary</a></th><td>1</td><td>2</td><td>3</td><td>6</td>', content)

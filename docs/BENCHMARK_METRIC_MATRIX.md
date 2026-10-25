@@ -75,9 +75,11 @@ observations and nine missing actuals across Anna and Running on Waves; three
 other works remain without retained runs. The readiness files continue to
 document **character-count/source readiness** separately.
 
-The Reader keeps its accessible, progressive **28-row Anna explorer** intact
-and adds a plain 27-row Running on Waves evidence table with source status,
-units, keyboard-scroll and a text/table alternative. Filters affect Anna only.
+The Reader keeps its accessible, progressive **28-row Anna explorer** and
+adds an **independent 27-row Running on Waves explorer**. Both tables support
+local-only search by label/ID, metric family and measurement availability,
+with keyboard controls, counts, reset and a no-JavaScript/print fallback.
+Their unit labels, scientific statuses and JSON/CSV exports are unchanged.
 Site build is not Pages deployment or visual verification. M2 remains 0/5.
 
 ## Source-free local evidence page
@@ -86,7 +88,7 @@ Build the canonical site with `scriptorium site --repo-root . --output build/sit
 then open `build/site/evidence/fantlab/index.html` (or follow **FantLab evidence**
 from the built homepage). The route renders the existing validated five-work report:
 the Anna Karenina diagnostic with 28 rows (23 numeric actuals and five
-unavailable) and a static Running on Waves table with 27 rows (23 numeric
+unavailable) and a searchable Running on Waves table with 27 rows (23 numeric
 actuals and four NOT_RUN). The remaining three works remain `NOT_RUN`. It also provides the same
 validated machine-readable `metrics.json` and `metrics.csv` exports.
 
@@ -151,7 +153,7 @@ separates **measured actual** from **NOT_RUN** and **UNRESOLVED_NO_ACTUAL**:
 
 Each family links to its full per-metric table. Coverage is an availability
 inventory, not a parity score; all 23 measured values remain **UNRESOLVED_SOURCE**,
-all four other works remain **NOT_RUN**, and M2 remains 0/5. The export schemas,
+the three works without retained diagnostics remain **NOT_RUN**, and M2 remains 0/5. The export schemas,
 retained measurements, reference editions and parity gates are unchanged.
 Malformed coverage totals fail closed rather than silently displaying a false
 measurement count. Browser visual acceptance remains unverified.
@@ -174,16 +176,15 @@ valid site is replaced. M2 remains 0/5; built is not deployed or visually verifi
 
 ## Progressive local metric explorer (#283)
 
-The existing FantLab evidence page adds a local-only, keyboard-labelled filter over the
-28 retained Anna Karenina diagnostic rows: search human labels or stable field IDs,
-choose Dialogue/General/Punctuation/Vocabulary, and select measured/NOT_RUN/actual
-unavailable. A live count and reset action make the current view explicit.
-Choosing a metric-family jump first reveals the family target. With JavaScript
-disabled the full 28-row table remains visible; printing restores all rows
-even after an interactive filter was applied. No search text is sent off-device,
-stored or submitted.
+The FantLab evidence page now has **two independent** local-only, keyboard-labelled
+filters: Anna Karenina (28 rows) and Running on Waves (27 rows). Each searches
+human labels or stable field IDs, filters by Dialogue/General/Punctuation/Vocabulary
+and measured/NOT_RUN/actual-unavailable state, and has its own live count and
+reset action. Metric-family jumps reveal hidden targets. Without JavaScript both
+full tables remain visible; printing restores all 55 rows after filtering.
+No search text is sent off-device, stored or submitted.
 
-Filtering changes **only on-screen visibility**. The 28 scientific rows, five-work
+Filtering changes **only on-screen visibility**. The 55 scientific rows, five-work
 source witness inventory and all metrics/readiness JSON and CSV files are unchanged.
 A measured row is NOT a parity pass: FantLab input identity and decimal rounding
 remain unknown. M2 is 0/5. Browser screenshots require later visual verification.

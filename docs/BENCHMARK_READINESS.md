@@ -27,13 +27,17 @@ actual_minus_expected compares the frozen public transcription's characters
 including spaces with FantLab's displayed character count. It is not proof of
 matched texts or matched counting policy, even when numerically equal. Exact
 FantLab analyzer-input identity remains **UNKNOWN**, M2 stays **0/5**, and
-all other metric comparisons are **NOT_RUN** in this view. No rounding rule
+all other metric comparisons are **NOT_RUN** in this view. This is
+**not a global evidence verdict**: the separate
+[field-level metric matrix](BENCHMARK_METRIC_MATRIX.md) already validates 55
+diagnostic rows across two frozen works (46 numeric, nine without actuals).
+None establishes FantLab input identity or parity. No rounding rule
 is inferred for unverified decimal metrics. Reuse the existing
 [benchmark runner](../scriptorium/benchmark.py) and
 [benchmark contract](BENCHMARKING.md) for actual field-by-field comparisons; do
 not convert these character deltas into a parity claim.
 
-For the separately retained 28-row metric comparison, the reader validates
+For the separately retained Anna Karenina 28-row metric comparison, the reader validates
 the exact saved `actual - expected` arithmetic (including Python floating-point
 subtraction), not an approximately equal delta. This catches mutated numbers
 within a previously permitted 1e-10 margin. It is a **stored-artifact integrity

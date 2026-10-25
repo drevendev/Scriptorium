@@ -165,6 +165,25 @@ class RetainedMetricMatrixTests(unittest.TestCase):
             self._mutate(matrix.DIAGNOSTIC,
                          lambda d: d["metrics"]["fantlab.general.words"].__setitem__("actual", float("nan")))
 
+    def test_public_guides_do_not_hide_retained_waves_measurements(self):
+        """Public evidence counts must agree with the canonical retained matrix."""
+        report = matrix.build_metric_matrix(ROOT)
+        self.assertEqual(report["works_with_retained_metric_diagnostics"], 2)
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        method = (ROOT / "docs/BENCHMARK_METRIC_MATRIX.md").read_text(encoding="utf-8")
+        readiness = (ROOT / "docs/BENCHMARK_READINESS.md").read_text(encoding="utf-8")
+        self.assertIn(f"**{report['retained_metric_rows']} field-level diagnostic rows**", readme)
+        self.assertIn("**two works with retained measurements**", readme)
+        self.assertIn("the remaining **three** frozen works", readme)
+        self.assertIn("**independent search/filter controls for both books**", readme)
+        self.assertIn("**two independent**", method)
+        self.assertIn("the three works without retained diagnostics", method)
+        self.assertIn("all 55 rows after filtering", method)
+        self.assertIn("**not a global evidence verdict**", readiness)
+        self.assertNotIn("Filters affect Anna only", method)
+        self.assertNotIn("all four other works remain", method)
+        self.assertNotIn("marks the other four works", readme)
+
     def test_cli_creates_report_but_cannot_overwrite(self):
         with tempfile.TemporaryDirectory() as temp:
             destination = Path(temp) / "metrics.csv"

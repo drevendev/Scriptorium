@@ -109,14 +109,14 @@ class HomeShowcaseTests(unittest.TestCase):
         import re
 
         print_css = HOME_CSS.split("@media print {", 1)[1]
-        self.assertRegex(print_css, r"\\.demo-panel\\s*\\{[^{}]*background:\\s*#fff\\b")
+        self.assertRegex(print_css, r"\.demo-panel\s*\{[^{}]*background:\s*#fff\b")
 
         def declared_color(selector):
             result = None
-            for heading, declarations in re.findall(r"([^{}]+)\\{([^{}]*)\\}", print_css):
+            for heading, declarations in re.findall(r"([^{}]+)\{([^{}]*)\}", print_css):
                 if selector in {item.strip() for item in heading.split(",")}:
                     color = re.search(
-                        r"(?:^|;)\\s*color\\s*:\\s*(#[0-9a-fA-F]{3,6})\\s*;",
+                        r"(?:^|;)\s*color\s*:\s*(#[0-9a-fA-F]{3,6})\s*;",
                         declarations,
                     )
                     if color:
@@ -151,8 +151,8 @@ class HomeShowcaseTests(unittest.TestCase):
                 self.assertGreaterEqual(contrast_against_white(color), 4.5)
 
         # Color alone must not be the only way to identify the printed link.
-        self.assertRegex(print_css, r"\\.demo-open:hover,\\s*\\.demo-open:focus-visible\\s*"
-                                        r"\\{[^{}]*text-decoration:\\s*underline;")
+        self.assertRegex(print_css, r"\.demo-open:hover,\s*\.demo-open:focus-visible\s*"
+                                        r"\{[^{}]*text-decoration:\s*underline;")
 
     def test_absent_registered_comparison_shows_no_synthetic_chart(self):
         self.assertEqual(render_demo([]), "")

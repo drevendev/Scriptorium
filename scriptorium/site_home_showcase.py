@@ -214,6 +214,9 @@ HOME_CSS = """
   .demo-exact h3 { color:#000; }
   .demo-eyebrow, .demo-panel table caption, .demo-open { color:#000; }
   .demo-open { text-decoration:underline; }
+  /* Hover/focus can survive print preview; their higher-specificity screen color
+     must not turn the evidence link nearly white on a white printed page. */
+  .demo-open:hover, .demo-open:focus-visible { color:#000; text-decoration:underline; }
   .demo-scroll-hint { display:none; }
   .demo-scroll { overflow:visible; }
   .demo-panel table { min-width:0; width:100%; }

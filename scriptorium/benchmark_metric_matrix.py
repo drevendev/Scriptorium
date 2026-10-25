@@ -1,14 +1,16 @@
 """Verified source-free inventory of retained cross-work FantLab metric diagnostics.
 
-Readiness (five source witnesses) is validated first. One retained Anna Karenina
-diagnostic has 28 numeric-reference rows; four other candidates have no matching
-metric artifact and remain NOT_RUN. Unknown input identity never becomes parity.
+Readiness (five source witnesses) is validated first. Anna Karenina has 28 rows,
+Running on Waves has 27; the other three candidates lack matching
+metric artifacts and remain NOT_RUN. Unknown input identity never becomes parity.
 """
 from __future__ import annotations
 
 import argparse
 import csv
 from io import StringIO
+from decimal import Decimal
+from hashlib import sha1
 import json
 import math
 from pathlib import Path
@@ -16,12 +18,15 @@ import re
 
 from .benchmark import _MISSING, _lookup, _reference_specs
 from .benchmark_readiness import build_readiness, _load
+from . import full_work_gallery, running_waves_diagnostic
 from .csv_safety import safe_csv_text
 
 SCHEMA_VERSION = "scriptorium-fantlab-retained-metrics-v1"
 REFERENCE = "benchmarks/fantlab/work270306.json"
 DIAGNOSTIC = "benchmarks/fantlab/work270306-wikisource-diagnostic.json"
 _ANNA_ID = "tolstoy-anna-karenina-ru"
+_RUNNING_ID = "grin-running-on-waves-ru"
+_RUNNING_DIAGNOSTIC = "corpus/candidates/diagnostics/grin-running-on-waves-ru.json"
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
 
 
@@ -96,6 +101,130 @@ def _verify_metrics(reference: dict[str, object], diagnostic: dict[str, object])
     return rows
 
 
+
+def _verify_running_metrics(root: Path, witness: dict[str, object]) -> list[dict[str, object]]:
+    """Use only already-frozen Grin diagnostics, never fresh or unpublished prose.
+
+    The source-free record is blob-pinned by the existing full-work gallery.
+    Count resemblance, matching labels and displayed decimals are not parity.
+    """
+    path = root / _RUNNING_DIAGNOSTIC
+    if path.is_symlink():
+        raise ValueError("unsafe Running on Waves evidence symlink")
+    raw = path.read_bytes()
+    expected_blob = full_work_gallery.SOURCES[0]
+    _same(expected_blob[0], _RUNNING_ID, "Running on Waves gallery candidate")
+    digest = sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
+    if not 0 < len(raw) < 2_000_000 or digest != expected_blob[1]:
+        raise ValueError("Running on Waves retained evidence blob drift")
+    data = _load(root, _RUNNING_DIAGNOSTIC)
+    if set(data) != {"diagnostic_version", "candidate_id", "source_text_committed",
+                     "body_identity", "scriptorium", "fantlab", "comparison_policy",
+                     "metrics", "gates"}:
+        raise ValueError("Running on Waves diagnostic object keys drift")
+    _same(data["diagnostic_version"], running_waves_diagnostic.DIAGNOSTIC_VERSION,
+          "Running on Waves diagnostic version")
+    _same(data["candidate_id"], _RUNNING_ID, "Running on Waves candidate")
+    _same(data["source_text_committed"], False, "Running on Waves source privacy")
+    body = data["body_identity"]
+    if not isinstance(body, dict):
+        raise ValueError("Running on Waves body identity missing")
+    _same(body.get("raw_sha256"), witness["source"]["raw_sha256"], "Running on Waves raw witness")
+    _same(body.get("character_count_including_spaces"),
+          witness["source"]["characters_including_spaces"], "Running on Waves characters")
+    _same(body.get("manifest_version"), "scriptorium-running-waves-literary-body-v1",
+          "Running on Waves body profile")
+    provider = data["scriptorium"]
+    if not isinstance(provider, dict):
+        raise ValueError("Running on Waves measurement provenance missing")
+    _same(provider.get("schema_version"), "scriptorium-deterministic-metrics-v4",
+          "Running on Waves metric schema")
+    _same(provider.get("metric_contract_id"), "fantlab-2022-v1",
+          "Running on Waves metric contract")
+    _same(provider.get("vocabulary_dictionary_dependency"), None,
+          "Running on Waves dictionary dependency")
+    _same(provider.get("profiles"), {
+        "normalization": "scriptorium-text-v1",
+        "metrics": "scriptorium-metrics-v4",
+        "dialogue": "scriptorium-dialogue-v1",
+        "vocabulary": "scriptorium-vocabulary-v1",
+        "punctuation": "scriptorium-punctuation-v2",
+    }, "Running on Waves metric profiles")
+    reference = data["fantlab"]
+    if not isinstance(reference, dict):
+        raise ValueError("Running on Waves dated reference missing")
+    _same(reference, {
+        "work_id": witness["fantlab"]["work_id"],
+        "analysis_url": witness["fantlab"]["reference_url"],
+        "analysis_date": witness["fantlab"]["analysis_date"],
+        "source_edition_disclosed": False,
+        "source_bytes_disclosed": False,
+    }, "Running on Waves unmatched FantLab reference")
+    _same(data["comparison_policy"], {
+        "class": "diagnostic_unmatched_source",
+        "displayed_reference_is_not_exact_parity_tolerance": True,
+        "decimal_display_precision_not_promoted_to_parity_rule": True,
+        "numeric_resemblance_cannot_establish_source_identity": True,
+    }, "Running on Waves scientific comparison policy")
+    _same(data["gates"], {
+        "general_calibration_profile_admissible": True,
+        "fantlab_source_edition_match": "unknown",
+        "diagnostic_ready": True,
+        "gate_ready": False,
+        "m2_parity_admissible": False,
+        "m2_weight": 0,
+    }, "Running on Waves M2 and source gates")
+
+    records = data["metrics"]
+    expected = running_waves_diagnostic.FANTLAB_REFERENCES
+    if not isinstance(records, list) or len(records) != len(expected):
+        raise ValueError("Running on Waves retained metric inventory drift")
+    rows: list[dict[str, object]] = []
+    for record, (metric_id, lexeme, dictionary_dependent) in zip(records, expected):
+        if not isinstance(record, dict) or set(record) != {
+            "metric_id", "fantlab_display_value", "scriptorium_raw_value",
+            "delta_against_fantlab_display", "status",
+        }:
+            raise ValueError("Running on Waves retained metric row shape drift")
+        _same(record["metric_id"], metric_id, "Running on Waves metric ID")
+        _same(record["fantlab_display_value"], lexeme,
+              "Running on Waves dated displayed reference")
+        actual = record["scriptorium_raw_value"]
+        raw_delta = record["delta_against_fantlab_display"]
+        numeric_expected = int(lexeme) if "." not in lexeme else float(lexeme)
+        if dictionary_dependent:
+            if (actual is not None or raw_delta is not None
+                    or record["status"] != "not_run_dependency_unbound"):
+                raise ValueError("Running on Waves unknown dictionary actual was promoted")
+            result, delta = "NOT_RUN", None
+        else:
+            if record["status"] != "diagnostic_only_source_unmatched":
+                raise ValueError("Running on Waves diagnostic status was promoted")
+            _number(actual, f"{metric_id} actual")
+            if type(actual) is int and "." not in lexeme:
+                if type(raw_delta) is not int or raw_delta != actual - numeric_expected:
+                    raise ValueError("Running on Waves integer metric delta drift")
+                delta = raw_delta
+            else:
+                if (not isinstance(raw_delta, str)
+                        or Decimal(raw_delta) != Decimal(str(actual)) - Decimal(lexeme)):
+                    raise ValueError("Running on Waves decimal metric delta drift")
+                delta = float(raw_delta)
+            result = "UNRESOLVED_SOURCE"
+        rows.append({
+            "metric_id": metric_id,
+            "expected": numeric_expected,
+            "actual": actual,
+            "actual_minus_expected": delta,
+            "result": result,
+            "comparison_kind": "DIAGNOSTIC_ONLY",
+            "display_rounding_evidence": "UNKNOWN",
+        })
+    if len(rows) != 27 or sum(row["actual"] is not None for row in rows) != 23:
+        raise ValueError("Running on Waves verified measurement coverage drift")
+    return rows
+
+
 def build_metric_matrix(root: Path) -> dict[str, object]:
     """Join independently frozen corpus witnesses and retained metric observations.
 
@@ -144,10 +273,13 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
         raise ValueError("invalid frozen digest")
 
     observed = _verify_metrics(reference, diagnostic)
+    wave_witness = next(e for e in entries if e["candidate_id"] == _RUNNING_ID)
+    wave_observed = _verify_running_metrics(root, wave_witness)
     output_entries: list[dict[str, object]] = []
     for source in entries:
         is_anna = source["candidate_id"] == _ANNA_ID
-        rows = observed if is_anna else []
+        is_wave = source["candidate_id"] == _RUNNING_ID
+        rows = observed if is_anna else wave_observed if is_wave else []
         output_entries.append({
             "candidate_id": source["candidate_id"],
             "title": source["title"],
@@ -156,7 +288,7 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
             "reference_url": source["fantlab"]["reference_url"],
             "reference_date": source["fantlab"]["analysis_date"],
             "exact_fantlab_input_identity": "UNKNOWN",
-            "metric_evidence": "RETAINED_DIAGNOSTIC" if is_anna else "NOT_RUN",
+            "metric_evidence": "RETAINED_DIAGNOSTIC" if rows else "NOT_RUN",
             "metric_rows": rows,
             "metric_rows_with_actual": sum(r["actual"] is not None for r in rows),
             "metric_rows_without_actual": sum(r["actual"] is None for r in rows),
@@ -166,10 +298,10 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
         "schema_version": SCHEMA_VERSION,
         "source_readiness_schema": readiness["schema_version"],
         "works_reported": 5,
-        "works_with_retained_metric_diagnostics": 1,
-        "retained_metric_rows": len(observed),
+        "works_with_retained_metric_diagnostics": 2,
+        "retained_metric_rows": len(observed) + len(wave_observed),
         "m2_source_matched_pass_count": 0,
-        "note": "All retained observations are diagnostic, NOT parity. Four works lack retained metric runs; decimal display rounding and exact FantLab input identity remain UNKNOWN.",
+        "note": "All retained observations are diagnostic, NOT parity. Three works lack retained metric runs; decimal display rounding and exact FantLab input identity remain UNKNOWN.",
         "entries": output_entries,
     }
 
@@ -211,19 +343,24 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
             f"{entry['metric_rows_without_actual'] if entry['metric_rows'] else 'NOT_RUN'} | UNKNOWN |"
         )
     lines.extend([
-        "", "## Retained Anna Karenina diagnostic rows", "",
+        "", "## Retained source-unmatched diagnostic rows", "",
         "All numeric differences are **actual minus expected** on an unmatched public transcription.",
         "Unknown actual is not zero; displayed-rounding policy remains UNKNOWN.", "",
         "| Metric ID | FantLab expected | Scriptorium actual | Raw Δ | Status |",
         "| --- | ---: | ---: | ---: | --- |",
     ])
-    for row in entries[0]["metric_rows"]:
-        fmt = lambda n: "NOT_RUN" if n is None else str(n)
-        lines.append(
-            f"| {row['metric_id']} | {fmt(row['expected'])} | {fmt(row['actual'])} | "
-            f"{fmt(row['actual_minus_expected'])} | {row['result']} |"
-        )
-    lines.extend(["", "Other four works have no retained metric observations and remain NOT_RUN.", ""])
+    for entry in entries:
+        if not entry["metric_rows"]:
+            continue
+        title = str(entry["title"]).replace("|", "\\|").replace("\n", " ")
+        lines.extend(["", "### " + title, ""])
+        for row in entry["metric_rows"]:
+            fmt = lambda n: "NOT_RUN" if n is None else str(n)
+            lines.append(
+                f"| {row['metric_id']} | {fmt(row['expected'])} | {fmt(row['actual'])} | "
+                f"{fmt(row['actual_minus_expected'])} | {row['result']} |"
+            )
+    lines.extend(["", "The remaining three works have no retained metric observations and remain NOT_RUN.", ""])
     return "\n".join(lines)
 
 

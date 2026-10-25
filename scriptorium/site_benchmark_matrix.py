@@ -132,8 +132,8 @@ def build(root: Path) -> dict[str, str]:
     if (report["schema_version"] != matrix.SCHEMA_VERSION
             or report["m2_source_matched_pass_count"] != 0
             or report["works_reported"] != 5
-            or report["works_with_retained_metric_diagnostics"] != 1
-            or report["retained_metric_rows"] != 28
+            or report["works_with_retained_metric_diagnostics"] != 2
+            or report["retained_metric_rows"] != 55
             or len(entries) != 5):
         raise ValueError("FantLab evidence publication gate has changed")
 
@@ -145,6 +145,17 @@ def build(root: Path) -> dict[str, str]:
             or anna["metric_rows_with_actual"] != 23
             or anna["metric_rows_without_actual"] != 5):
         raise ValueError("retained Anna diagnostic coverage changed")
+
+    wave = next(
+        (entry for entry in entries if entry["candidate_id"] == "grin-running-on-waves-ru"),
+        None,
+    )
+    if (wave is None or len(wave["metric_rows"]) != 27
+            or wave["metric_rows_with_actual"] != 23
+            or wave["metric_rows_without_actual"] != 4
+            or {r["metric_id"] for r in wave["metric_rows"]} !=
+               set(_METRIC_PRESENTATION) - {"fantlab.vocabulary.uasz_100000"}):
+        raise ValueError("retained Running on Waves diagnostic coverage changed")
 
     works = []
     for item in entries:
@@ -258,6 +269,32 @@ def build(root: Path) -> dict[str, str]:
         for slug, tally in coverage.items()
     )
 
+    # Running on Waves was already analyzed and source-frozen. Unlike the
+    # 28-row Anna explorer, its 27 preserved observations form a plain, accessible
+    # static table; no new filters, fetched books, or parity promotion is needed.
+    wave_metrics = []
+    for row in wave["metric_rows"]:
+        if (row["comparison_kind"] != "DIAGNOSTIC_ONLY"
+                or row["display_rounding_evidence"] != "UNKNOWN"):
+            raise ValueError("Running on Waves metric was promoted without evidence")
+        status = row["result"]
+        if status not in {"UNRESOLVED_SOURCE", "NOT_RUN"} or (
+            (row["actual"] is None) != (status == "NOT_RUN")
+        ):
+            raise ValueError("Running on Waves metric scientific status drift")
+        label, family = _METRIC_PRESENTATION[row["metric_id"]]
+        wave_metrics.append(
+            '<tr class="wave-metric-row"><th scope="row"><span class="eyebrow">' +
+            _esc(family) + '</span><br><span lang="ru">' + _esc(label) +
+            '</span><br><code>' + _esc(row["metric_id"]) +
+            '</code></th><td>' + _esc(_VALUE_UNITS[row["metric_id"]]) +
+            '</td><td>' + _number(row["expected"]) + '</td><td>' +
+            _number(row["actual"]) + '</td><td>' +
+            _number(row["actual_minus_expected"]) + '</td><td>' +
+            _esc(_DISPLAY_STATUS[status]) + '<br><code>' + _esc(status) +
+            '</code></td></tr>'
+        )
+
     body = (
         '<main id="main-content" tabindex="-1">'
         '<nav aria-label="Evidence navigation"><a href="../../">← All analyses</a></nav>'
@@ -277,7 +314,7 @@ def build(root: Path) -> dict[str, str]:
         'docs/BENCHMARK_METRIC_MATRIX.md">Read the methodology ↗</a></p>'
         '</header>'
         '<section aria-labelledby="works-title"><h2 id="works-title">Five frozen public candidates</h2>'
-        '<p>Only one work has retained metric observations. The four others '
+        '<p>Two works have retained metric observations. The remaining three '
         'have NOT_RUN metric status. Each source row shows public-domain '
         'edition evidence, frozen text characters (including spaces), FantLab '
         'displayed characters, a signed count difference and relative drift '
@@ -330,6 +367,23 @@ def build(root: Path) -> dict[str, str]:
         '<th scope="col">Scriptorium actual</th><th scope="col">Actual − expected</th>'
         '<th scope="col">Scientific status</th></tr></thead><tbody id="retained-metric-rows">' +
         ''.join(metrics) + '</tbody></table></div></section>'
+        '<section aria-labelledby="waves-metrics-title"><h2 id="waves-metrics-title">'
+        'Running on Waves: 27 retained diagnostic rows</h2>'
+        '<p>23 numeric observations and four dictionary-dependent metrics not run. '
+        'These are existing source-frozen measurements of a different public '
+        'transcription; its FantLab input identity and display-rounding rules '
+        'remain UNKNOWN. The Anna Karenina filter does not hide these rows. '
+        'No value is a parity pass.</p>'
+        '<p id="waves-scroll">On narrow screens, scroll this table horizontally; '
+        'Tab to its region for keyboard scrolling.</p>'
+        '<div class="table-wrap" role="region" aria-label="Running on Waves metric differences" '
+        'tabindex="0" aria-describedby="waves-scroll"><table>'
+        '<caption>Frozen Running on Waves values compared with a source-unmatched '
+        'FantLab reference — diagnostic only</caption>'
+        '<thead><tr><th scope="col">Metric ID</th><th scope="col">Unit</th>'
+        '<th scope="col">FantLab expected</th><th scope="col">Scriptorium actual</th>'
+        '<th scope="col">Actual − expected</th><th scope="col">Scientific status</th>'
+        '</tr></thead><tbody>' + ''.join(wave_metrics) + '</tbody></table></div></section>'
         '<p class="notice">No parity passes have been established. Reproduction '
         'requires five legally usable ≥300,000-character works with the actual '
         'FantLab analyzer-input identity and published rounding evidence.</p>'

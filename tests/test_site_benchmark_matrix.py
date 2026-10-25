@@ -31,11 +31,18 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn('aria-controls="wave-metric-rows"', content)
         self.assertIn("Running on Waves: 27 retained diagnostic rows", content)
         self.assertIn('aria-label="Running on Waves metric differences"', content)
+        self.assertEqual(content.count('class="cross-metric-row"'), 20)
+        self.assertIn('aria-label="Two-work normalized diagnostic comparison"', content)
+        self.assertIn('id="shared-scroll"', content)
+        self.assertIn("Compare measured rates across two works", content)
+        self.assertIn("Running on Waves minus Anna Karenina", content)
+        self.assertIn("denominator compatibility and rounding remain unverified", content)
+        self.assertIn("Missing measurements are omitted here, not replaced with zero", content)
         self.assertIn("four dictionary-dependent metrics not run", content)
         self.assertIn("360987</td><td>363819</td><td>2832", content)
-        # Five sources, 28 Anna metrics, 27 Wave metrics, four family-summary rows.
-        self.assertEqual(content.count('scope="row"'), 64)
-        self.assertEqual(content.count('<span lang="ru">'), 55)
+        # Five sources, 55 individual metrics, 20 cross-work rows, four summaries.
+        self.assertEqual(content.count('scope="row"'), 84)
+        self.assertEqual(content.count('<span lang="ru">'), 75)
         self.assertIn('<nav id="metric-families" aria-label="Metric families">', content)
         for family, count in (("dialogue", 4), ("general", 4),
                               ("punctuation", 14), ("vocabulary", 6)):
@@ -61,7 +68,7 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn('<span lang="ru">Длина текста, знаков</span>', content)
         self.assertIn('<code>fantlab.general.characters</code>', content)
         self.assertIn('<th scope="col">Metric ID</th><th scope="col">Unit</th>', content)
-        self.assertEqual(content.count('occurrences / 1,000 word tokens</td>'), 28)
+        self.assertEqual(content.count('occurrences / 1,000 word tokens</td>'), 42)
         self.assertIn('mean unique forms / 3,000-token window</td>', content)
         self.assertIn('mean unique forms / 10,000-token window</td>', content)
         self.assertIn('mean unique forms / 100,000-token window</td>', content)
@@ -240,6 +247,57 @@ class FantLabEvidencePageTests(unittest.TestCase):
         with patch.object(page.matrix, "build_metric_matrix", return_value=changed):
             with self.assertRaisesRegex(ValueError, "unsafe FantLab reference"):
                 page.build(ROOT)
+
+
+    def test_cross_work_rates_have_precise_signed_deltas_not_parity(self):
+        from decimal import Decimal
+
+        report = page.matrix.build_metric_matrix(ROOT)
+        anna = next(e for e in report["entries"] if e["candidate_id"] == "tolstoy-anna-karenina-ru")
+        waves = next(e for e in report["entries"] if e["candidate_id"] == "grin-running-on-waves-ru")
+        rows = page._shared_normalized_rows(anna["metric_rows"], waves["metric_rows"])
+        self.assertEqual(len(rows), 20)
+        ids = {row["metric_id"] for row in rows}
+        self.assertEqual(len(ids), len(rows))
+        self.assertNotIn("fantlab.general.characters", ids)
+        self.assertNotIn("fantlab.general.words", ids)
+        self.assertNotIn("fantlab.vocabulary.unique_words", ids)
+        self.assertNotIn("fantlab.vocabulary.uasz_3000", ids)
+        self.assertIn("fantlab.dialogue.share_percent", ids)
+        self.assertIn("fantlab.punctuation.dash.per_1000_words", ids)
+        self.assertEqual(len([r for r in rows if r["family"] == "Punctuation"]), 14)
+        for row in rows:
+            self.assertEqual(
+                Decimal(row["right_minus_left"]),
+                Decimal(str(row["right"])) - Decimal(str(row["left"])),
+            )
+            self.assertEqual(
+                row["difference_unit"],
+                "percentage points" if row["unit"] == "%" else row["unit"],
+            )
+        self.assertEqual(
+            page.build(ROOT)["json"],
+            page.matrix.render_metric_matrix(report, "json"),
+        )
+
+    def test_cross_work_comparison_refuses_fabricated_numeric_states(self):
+        metric_id = "fantlab.dialogue.share_percent"
+        a = {"metric_id": metric_id, "actual": 12.5, "result": "UNRESOLVED_SOURCE"}
+        b = {"metric_id": metric_id, "actual": 13.0, "result": "UNRESOLVED_SOURCE"}
+        rows = page._shared_normalized_rows([a], [b])
+        self.assertEqual(rows[0]["right_minus_left"], "+0.5")
+        self.assertEqual(rows[0]["difference_unit"], "percentage points")
+        self.assertEqual(page._shared_normalized_rows([a], [
+            {**b, "actual": None, "result": "NOT_RUN"},
+        ]), [])
+        with self.assertRaisesRegex(ValueError, "duplicate cross-work"):
+            page._shared_normalized_rows([a, a], [b])
+        with self.assertRaisesRegex(ValueError, "promoted to parity"):
+            page._shared_normalized_rows([a], [{**b, "result": "PASS"}])
+        with self.assertRaisesRegex(ValueError, "invalid cross-work numeric"):
+            page._shared_normalized_rows([a], [{**b, "actual": True}])
+        with self.assertRaisesRegex(ValueError, "non-finite cross-work"):
+            page._shared_normalized_rows([a], [{**b, "actual": float("nan")}])
 
 
 if __name__ == "__main__":

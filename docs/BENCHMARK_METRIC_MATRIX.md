@@ -158,3 +158,20 @@ Filtering changes **only on-screen visibility**. The 28 scientific rows, five-wo
 source witness inventory and all metrics/readiness JSON and CSV files are unchanged.
 A measured row is NOT a parity pass: FantLab input identity and decimal rounding
 remain unknown. M2 is 0/5. Browser screenshots require later visual verification.
+
+## Inspect units in the evidence table (#283)
+
+The Reader's 28-row Anna Karenina diagnostic table explicitly labels the Scriptorium
+candidate unit for **every** retained metric. Character, token, sentence, vocabulary
+window and occurrences-per-1,000-token quantities must not appear as anonymous
+numbers. The displayed **actual − expected** difference uses the same unit as the
+value, except for percentage-valued metrics, where the difference is in **percentage
+points** (not a relative percent change). Vocabulary UASZ values are means of
+unique word forms in complete sliding windows of the stated token length.
+
+The mapping covers exactly the retained benchmark field registry; new metric IDs
+require an explicit, reviewed unit decision. These units describe Scriptorium's
+current candidate definitions, **not proof** that FantLab uses identical
+segmentation, denominator or rounding rules. Metric JSON/CSV and source readiness
+exports are unchanged, M2 remains 0/5, and browser visuals remain unverified until
+real desktop/mobile checks can run.

@@ -51,6 +51,13 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertEqual(content.count('aria-label="Metric-family measurement coverage"'), 1)
         self.assertIn('<span lang="ru">Длина текста, знаков</span>', content)
         self.assertIn('<code>fantlab.general.characters</code>', content)
+        self.assertIn('<th scope="col">Metric ID</th><th scope="col">Unit</th>', content)
+        self.assertEqual(content.count('occurrences / 1,000 word tokens</td>'), 14)
+        self.assertIn('mean unique forms / 3,000-token window</td>', content)
+        self.assertIn('mean unique forms / 10,000-token window</td>', content)
+        self.assertIn('mean unique forms / 100,000-token window</td>', content)
+        self.assertIn('Percentage-value differences are in percentage points', content)
+        self.assertIn('characters including spaces</td>', content)
         self.assertIn("Input identity unverified", content)
         self.assertIn("Actual value unavailable", content)
         self.assertIn("UNRESOLVED_SOURCE", content)
@@ -94,6 +101,16 @@ class FantLabEvidencePageTests(unittest.TestCase):
             page.benchmark_readiness.render_report(page.benchmark_readiness.build_readiness(ROOT), "csv"),
         )
         self.assertEqual(page.build(ROOT), published)
+
+    def test_metric_units_match_all_versioned_retained_fields(self):
+        self.assertEqual(set(page._VALUE_UNITS), set(page._METRIC_PRESENTATION))
+        self.assertEqual(len(page._VALUE_UNITS), 28)
+        self.assertEqual(page._VALUE_UNITS["fantlab.dialogue.share_percent"], "%")
+        self.assertEqual(page._VALUE_UNITS["fantlab.vocabulary.unique_words"],
+                         "unique word forms")
+        self.assertNotIn("fantlab.future.unverified", page._VALUE_UNITS)
+        self.assertTrue(all(unit and isinstance(unit, str)
+                            for unit in page._VALUE_UNITS.values()))
 
     def test_canonical_site_packages_source_provenance_with_receipt_hashes(self):
         from scriptorium.site_renderer import build_site

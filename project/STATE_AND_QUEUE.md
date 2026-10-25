@@ -1,27 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 315
+STATE_REVISION: 316
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: #310 merged at 83d38f66aaca7318971546f770aff113fcf86794. Authored scoped #281 retained diagnostic delta-integrity hardening.
-LAST_VERIFIED_PROGRESS: #310 placed signed relative five-work character drift in master. This proposed change rejects even near-equal forged floating metric deltas in the existing 28-row retained diagnostic, without changing values, output schemas or parity criteria; hosted CI and later acceptance pending.
+LAST_RESULT: #311 merged at abbe6f03a34988b582b6c80bc13ed8e21eb1a330. Authored a scoped #281 Reader per-family availability view.
+LAST_VERIFIED_PROGRESS: #311 hardened exact retained-delta arithmetic in master. The proposed Reader summary distinguishes measured, NOT_RUN and unavailable metrics by family, exposing vocabulary's 1/6 recorded actuals without treating coverage as parity; full exact-head CI and later acceptance pending.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-EXACT-RETAINED-DELTAS
+UNIT_ID: SCRIP-REPRO-010-FAMILY-COVERAGE
 ISSUES: #281 (open; partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-exact-retained-deltas
-BASE: 83d38f66aaca7318971546f770aff113fcf86794
-ACCEPTANCE: All 23 retained actual metric rows still validate exactly; altered floating actual or delta within the old isclose tolerance must fail closed. Keep 28 rows, five-work NOT_RUN states, machine schemas, UNKNOWN source identity, M2 0/5 and original benchmark rounding rules. Require exact-head full CI and later-run acceptance.
+BRANCH: scrip-repro-010-family-coverage
+BASE: abbe6f03a34988b582b6c80bc13ed8e21eb1a330
+ACCEPTANCE: Reader derives four families and measured/not-run/unavailable counts from verified 28-row Anna evidence (4/4 general, 4/4 dialogue, 14/14 punctuation, 1/6 vocabulary). Exact counts and full rows visible and keyboard accessible; corrupted totals rejected. Four other works remain NOT_RUN; exports, source identity UNKNOWN, M2 0/5 and rounding/parity gates unchanged. Require exact-head CI and later acceptance.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Researchers can trust the exact internal arithmetic of retained 28-metric diagnostics alongside five-work source counts, while all source-unmatched comparisons remain expressly diagnostic.
+Milestone: Reader users can see precisely which retained metric families have actual observations and where vocabulary diagnostics are still missing, without mistaking availability for scientific parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Exact retained metric deltas | Verify hostile near-equal float mutations fail and 23 recorded actuals survive; later accept | Exact-head hosted CI; no source-match inference |
+| P1 | #281 Reader metric-family availability | Verify 4-family measured/NOT_RUN/unavailable counts and negative tests; later accept | Exact-head CI; no source-match inference |
 | P2 | #281 Strict source-bound benchmark | Additional legally usable source-and-reference-bound field-level runs; absent metrics remain NOT_RUN | Established actual input editions and rounding evidence |
 | P3 | #283 Reader visual acceptance | Real desktop/mobile/print browser checks when supported | Browser access; structural checks otherwise |
 | P4 | #285 Pages publication | Authorized Pages activation and live verification | Repository admin and #284 rights |

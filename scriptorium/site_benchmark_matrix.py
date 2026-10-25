@@ -172,6 +172,7 @@ def build(root: Path) -> dict[str, str]:
         raise ValueError("unrecognized FantLab metric ID in evidence page")
     metrics = []
     families = {}
+    coverage = {}
     for row in anna["metric_rows"]:
         if row["comparison_kind"] != "DIAGNOSTIC_ONLY" or row["display_rounding_evidence"] != "UNKNOWN":
             raise ValueError("metric evidence was promoted without source/rounding proof")
@@ -183,6 +184,13 @@ def build(root: Path) -> dict[str, str]:
         family_slug = group.lower()
         first_in_family = family_slug not in families
         families[family_slug] = families.get(family_slug, 0) + 1
+        tally = coverage.setdefault(family_slug, {"measured": 0, "not_run": 0, "unavailable": 0})
+        if status == "UNRESOLVED_SOURCE":
+            tally["measured"] += 1
+        elif status == "NOT_RUN":
+            tally["not_run"] += 1
+        else:
+            tally["unavailable"] += 1
         anchor = (
             ' id="metric-family-' + _esc(family_slug) + '" tabindex="-1"'
             if first_in_family else ""
@@ -202,6 +210,19 @@ def build(root: Path) -> dict[str, str]:
         '<a href="#metric-family-' + _esc(slug) + '">' +
         _esc(slug.title()) + ' (' + str(count) + ')</a>'
         for slug, count in families.items()
+    )
+    # Coverage counts are about measurements, never FantLab parity passes.
+    if (sum(c["measured"] for c in coverage.values()) != 23
+            or sum(c["not_run"] + c["unavailable"] for c in coverage.values()) != 5
+            or sum(families.values()) != 28):
+        raise ValueError("metric-family coverage disagrees with retained evidence")
+    coverage_rows = "".join(
+        '<tr class="coverage-row"><th scope="row"><a href="#metric-family-' +
+        _esc(slug) + '">' + _esc(slug.title()) + '</a></th><td>' +
+        str(tally["measured"]) + '</td><td>' + str(tally["not_run"]) +
+        '</td><td>' + str(tally["unavailable"]) + '</td><td>' +
+        str(families[slug]) + '</td></tr>'
+        for slug, tally in coverage.items()
     )
 
     body = (
@@ -245,6 +266,18 @@ def build(root: Path) -> dict[str, str]:
         'remain unresolved because source identity is unknown. '
         'Names come from the existing benchmark field registry; each row retains '
         'its machine ID. Friendly statuses do not change the exported data.</p>'
+        '<section aria-labelledby="coverage-title"><h3 id="coverage-title">'
+        'Measurement availability by family</h3>'
+        '<p>Measured means a retained Scriptorium numeric observation, '
+        '<strong>not</strong> FantLab parity. Not run and unavailable actuals '
+        'are separate unknown states, never zero or passed checks.</p>'
+        '<div class="table-wrap" role="region" tabindex="0" '
+        'aria-label="Metric-family measurement coverage"><table>'
+        '<caption>Anna Karenina: measured and missing values by metric family</caption>'
+        '<thead><tr><th scope="col">Family</th><th scope="col">Measured</th>'
+        '<th scope="col">Not run</th><th scope="col">Actual unavailable</th>'
+        '<th scope="col">Total fields</th></tr></thead><tbody>' +
+        coverage_rows + '</tbody></table></div></section>'
         '<nav aria-label="Metric families"><p>Jump to a metric family. '
         'The full table and exports still include all 28 rows.</p>'
         '<div class="actions">' + family_links + '</div></nav>'

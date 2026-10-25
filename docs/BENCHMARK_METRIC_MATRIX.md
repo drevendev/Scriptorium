@@ -106,3 +106,23 @@ and metrics.csv exports remain byte-identical, and the separate
 the source-free way to inspect all normalized/raw hashes and rights evidence.
 No new FantLab benchmark was run; M2 remains 0/5. A successful local Pages
 build is not live deployment or visual acceptance.
+
+## Measurement availability by family
+
+The canonical Reader evidence route derives a source-free coverage table from the
+same validated 28-row Anna Karenina metric matrix as the detailed rows. It
+separates **measured actual** from **NOT_RUN** and **UNRESOLVED_NO_ACTUAL**:
+
+| Metric family | Measured | NOT_RUN | Unavailable actual | Total |
+| --- | ---: | ---: | ---: | ---: |
+| General | 4 | 0 | 0 | 4 |
+| Dialogue | 4 | 0 | 0 | 4 |
+| Punctuation | 14 | 0 | 0 | 14 |
+| Vocabulary | 1 | 2 | 3 | 6 |
+
+Each family links to its full per-metric table. Coverage is an availability
+inventory, not a parity score; all 23 measured values remain **UNRESOLVED_SOURCE**,
+all four other works remain **NOT_RUN**, and M2 remains 0/5. The export schemas,
+retained measurements, reference editions and parity gates are unchanged.
+Malformed coverage totals fail closed rather than silently displaying a false
+measurement count. Browser visual acceptance remains unverified.

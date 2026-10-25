@@ -22,7 +22,8 @@ class FantLabEvidencePageTests(unittest.TestCase):
         content = published["body"]
         self.assertEqual(content.count('class="source-row"'), 5)
         self.assertEqual(content.count('class="metric-row"'), 28)
-        self.assertEqual(content.count('scope="row"'), 33)
+        # Five sources, 28 metrics, and four family-summary rows.
+        self.assertEqual(content.count('scope="row"'), 37)
         self.assertEqual(content.count('<span lang="ru">'), 28)
         self.assertIn('<nav aria-label="Metric families">', content)
         for family, count in (("dialogue", 4), ("general", 4),
@@ -36,6 +37,13 @@ class FantLabEvidencePageTests(unittest.TestCase):
                 content,
             )
         self.assertEqual(content.count('id="metric-family-'), 4)
+        self.assertEqual(content.count('class="coverage-row"'), 4)
+        self.assertIn('Measurement availability by family', content)
+        self.assertIn('Vocabulary</a></th><td>1</td><td>2</td><td>3</td><td>6</td>', content)
+        self.assertIn('Dialogue</a></th><td>4</td><td>0</td><td>0</td><td>4</td>', content)
+        self.assertIn('General</a></th><td>4</td><td>0</td><td>0</td><td>4</td>', content)
+        self.assertIn('Punctuation</a></th><td>14</td><td>0</td><td>0</td><td>14</td>', content)
+        self.assertEqual(content.count('aria-label="Metric-family measurement coverage"'), 1)
         self.assertIn('<span lang="ru">Длина текста, знаков</span>', content)
         self.assertIn('<code>fantlab.general.characters</code>', content)
         self.assertIn("Input identity unverified", content)
@@ -91,6 +99,17 @@ class FantLabEvidencePageTests(unittest.TestCase):
         escaped = attempt(lambda r: r["entries"][0]["source"].__setitem__("edition", "<script>x</script>"))
         self.assertIn("&lt;script&gt;x&lt;/script&gt;", escaped["body"])
         self.assertNotIn("<script>x</script>", escaped["body"])
+
+    def test_coverage_rejects_inconsistent_retained_measurement_count(self):
+        real = page.matrix.build_metric_matrix(ROOT)
+        changed = copy.deepcopy(real)
+        row = next(r for r in changed["entries"][0]["metric_rows"] if r["actual"] is not None)
+        row["actual"] = None
+        row["actual_minus_expected"] = None
+        row["result"] = "NOT_RUN"
+        with patch.object(page.matrix, "build_metric_matrix", return_value=changed):
+            with self.assertRaisesRegex(ValueError, "metric-family coverage disagrees"):
+                page.build(ROOT)
 
     def test_undeclared_status_upgrade_fails_closed(self):
         entry = dict(page.EXPECTED_ENTRY)

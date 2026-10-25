@@ -172,21 +172,28 @@ python -m scriptorium.benchmark_readiness --root . --format json --output readin
 
 Each source-free report includes source rights/edition evidence, immutable body
 hashes, dated FantLab references and explicit source-matching status. Differences
-are **diagnostic only**: FantLab's analyzer-input identities remain unknown, other
-metric comparisons are NOT_RUN and **M2 stays 0/5**.
+are **diagnostic only**: FantLab's analyzer-input identities remain unknown
+and **M2 stays 0/5**. This character-count readiness command labels other
+metrics NOT_RUN **in this view only**; it does not erase existing, independently
+validated field-level observations in the metric matrix below.
 [Readiness methodology, CSV and limitations](docs/BENCHMARK_READINESS.md).
 
 To inspect **actual retained per-metric differences** rather than character counts alone,
 run `python -m scriptorium.benchmark_metric_matrix --root . --format markdown`.
-The Reader evidence page labels every field with its Scriptorium candidate unit,
-distinguishes percentage-point differences from percentage values, groups the 28
-retained fields by family and exposes numeric availability separately from parity: the historical Anna witness has
-4/4 general, 4/4 dialogue, 14/14 punctuation and 1/6 vocabulary values.
-The other five vocabulary states are two NOT_RUN and three unavailable actuals,
-not zeros or matched results.
-The separate source-free matrix validates 28 existing Anna Karenina diagnostic rows
-(23 numeric actuals, five unavailable) and marks the other four works **NOT_RUN**.
-None is source-matched or proven to meet FantLab rounding; M2 remains 0/5.
+The source-free matrix validates **55 field-level diagnostic rows** across
+**two works with retained measurements**: *Anna Karenina* has 28 rows
+(23 numeric, five without actuals) and *Running on Waves* has 27
+(23 numeric, four NOT_RUN). That is 46 measured and nine unavailable actuals;
+the remaining **three** frozen works have no retained field-level run and remain
+NOT_RUN, not zero. Anna's historical rows include 4/4 general, 4/4 dialogue,
+14/14 punctuation and 1/6 vocabulary measurements; its other five vocabulary
+actuals are two NOT_RUN and three unresolved.
+
+The Reader labels metric units and percentage-point differences, and offers
+**independent search/filter controls for both books** by metric name/ID,
+family and availability. Tables and source-free JSON/CSV remain available
+without JavaScript and in print. Neither retained work is source-matched to
+FantLab's analyzer input, displayed rounding is unproven, and **M2 stays 0/5**.
 Build the site with `scriptorium site --repo-root . --output build/site` and open
 `build/site/evidence/fantlab/index.html` to browse the same verified five-work evidence
 and download its source-free JSON/CSV. The same page now also shows each

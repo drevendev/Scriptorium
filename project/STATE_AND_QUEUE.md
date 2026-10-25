@@ -1,19 +1,19 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 323
+STATE_REVISION: 324
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: PR #318 merged at 1edb5b85fb36f8e3971b7ca4e77d89ccef3ac1ab; retained Running on Waves field deltas recovered into a focused #281 delivery branch for later acceptance.
-LAST_VERIFIED_PROGRESS: The existing source-frozen Running on Waves diagnostic has 27 evidence rows (23 measured, four missing); cross-work reporting previously called it NOT_RUN. The new matrix and Reader join it without replaying text, changing the original artifact, or promoting FantLab parity. Exact-head CI awaits PR checks.
+LAST_RESULT: PR #319 merged at c8aec71ca1538568354eac29d19ad901c3b110fc; 55 diagnostic rows now on master. Independent Waves metric filtering authored for later acceptance.
+LAST_VERIFIED_PROGRESS: Merged #319 restored 27 retained Waves fields (23 measured, four not run) alongside 28 Anna fields; both remain source-unmatched. Proposed independent Waves searching is presentation-only, not a new benchmark run or parity claim.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-RETAINED-WAVES-MATRIX
-ISSUES: #281 (partial)
+UNIT_ID: SCRIP-SITE-012-INDEPENDENT-WAVES-FILTER
+ISSUES: #283 (partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-running-waves-retained
-BASE: 1edb5b85fb36f8e3971b7ca4e77d89ccef3ac1ab
-ACCEPTANCE: Preserve and validate the existing 27-field Running on Waves diagnostic with exact frozen blob, source identity, dated FantLab references, profiles and exact integer/decimal deltas; expose 23 measured and four unavailable values next to Anna's 28/23/five, leaving three works NOT_RUN. Publish the accessible second Reader table through the existing Pages build only; exact-head CI plus later independent acceptance required before merge. Source input and FantLab parity remain UNKNOWN; M2 0/5.
+BRANCH: scrip-site-012-waves-metric-filter
+BASE: c8aec71ca1538568354eac29d19ad901c3b110fc
+ACCEPTANCE: The existing 27 Waves diagnostic rows can be independently searched/filtered by metric ID/name, family and availability without altering the 28-row Anna explorer. Missing JavaScript/invalid evidence preserves all rows. Print restores all rows. Accessible counts/empty/reset/keyboard behavior and source-free exports remain intact. Exact-head integrated CI and later independent review required before merge. M2 remains 0/5.
 
 ## Next user-visible milestone and compact queue
 
@@ -21,7 +21,7 @@ Milestone: Research-ready Reader with measured and clearly qualified native POS 
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Retained Waves diagnostics | Accept/merge the already-present 27-field source-free Grin comparison into the five-work matrix and Reader | Exact-head CI and later independent acceptance |
+| P1 | #283 Waves metric explorer | Accept/merge independent accessible Waves filters; retain Anna behavior and print/JS fallback | Exact-head CI and later independent acceptance |
 | P2 | #281 Remaining work metrics | Run/reconcile field-level evidence for Brothers Karamazov, Silver Dove and Hyperboloid, preserving NOT_RUN until executed | Legally frozen bytes and dated reference |
 | P2b | #282 Native N contrast | Use merged native controls to quantify actual frozen-work POS sensitivity without changing production mapping | Exact pinned native evidence |
 | P3 | #283 Reader visual acceptance | Desktop/mobile/print behavior verification and any independent accessibility fixes | Browser may be restricted; not a block on nonvisual tests |

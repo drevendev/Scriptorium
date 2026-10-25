@@ -37,6 +37,33 @@ _METRIC_PRESENTATION = {
     metric_id: (label, metric_id.split(".")[1].title())
     for metric_id, _path, label, _rule in _reference_specs()
 }
+# Scriptorium candidate units for the retained comparison registry. These are
+# *not* evidence that FantLab uses identical segmentation or denominators.
+# New non-punctuation metric families require an explicit reviewed unit decision.
+_VALUE_UNITS = {
+    "fantlab.general.characters": "characters including spaces",
+    "fantlab.general.words": "word tokens",
+    "fantlab.general.mean_word_length_chars": "characters / word",
+    "fantlab.general.mean_sentence_length_chars": "characters / sentence",
+    "fantlab.dialogue.mean_narration_sentence_length_chars": "characters / narration sentence",
+    "fantlab.dialogue.mean_dialogue_sentence_length_chars": "characters / dialogue sentence",
+    "fantlab.dialogue.share_percent": "%",
+    "fantlab.dialogue.author_text_inside_dialogue_percent": "%",
+    "fantlab.vocabulary.unique_words": "unique word forms",
+    "fantlab.vocabulary.active_dictionary": "dictionary word forms",
+    "fantlab.vocabulary.active_nondictionary": "non-dictionary word forms",
+    "fantlab.vocabulary.uasz_3000": "mean unique forms / 3,000-token window",
+    "fantlab.vocabulary.uasz_10000": "mean unique forms / 10,000-token window",
+    "fantlab.vocabulary.uasz_100000": "mean unique forms / 100,000-token window",
+    **{
+        metric_id: "occurrences / 1,000 word tokens"
+        for metric_id in _METRIC_PRESENTATION
+        if metric_id.startswith("fantlab.punctuation.")
+    },
+}
+if set(_VALUE_UNITS) != set(_METRIC_PRESENTATION):
+    raise ValueError("retained benchmark unit registry changed without review")
+
 _DISPLAY_STATUS = {
     "UNRESOLVED_SOURCE": "Input identity unverified",
     "UNRESOLVED_NO_ACTUAL": "Actual value unavailable",
@@ -204,7 +231,8 @@ def build(root: Path) -> dict[str, str]:
             '><th scope="row"><span class="eyebrow">' +
             _esc(group) + '</span><br><span lang="ru">' + _esc(label) +
             '</span><br><code>' + _esc(row["metric_id"]) +
-            '</code></th><td>' + _number(row["expected"]) + '</td><td>' +
+            '</code></th><td>' + _esc(_VALUE_UNITS[row["metric_id"]]) +
+            '</td><td>' + _number(row["expected"]) + '</td><td>' +
             _number(row["actual"]) + '</td><td>' +
             _number(row["actual_minus_expected"]) + '</td><td>' +
             _esc(_DISPLAY_STATUS[status]) + '<br><code>' + _esc(status) +
@@ -272,7 +300,10 @@ def build(root: Path) -> dict[str, str]:
         'Δ is Scriptorium actual minus FantLab expected; all observed rows '
         'remain unresolved because source identity is unknown. '
         'Names come from the existing benchmark field registry; each row retains '
-        'its machine ID. Friendly statuses do not change the exported data.</p>'
+        'its machine ID. Units describe Scriptorium candidate measurement semantics, '
+        'not proven FantLab denominator equivalence. Percentage-value differences '
+        'are in percentage points; all other differences use the row unit. '
+        'Friendly statuses do not change the exported data.</p>'
         '<section aria-labelledby="coverage-title"><h3 id="coverage-title">'
         'Measurement availability by family</h3>'
         '<p>Measured means a retained Scriptorium numeric observation, '
@@ -294,7 +325,8 @@ def build(root: Path) -> dict[str, str]:
         '<div class="table-wrap" role="region" aria-label="Anna Karenina metric differences" '
         'tabindex="0" aria-describedby="metrics-scroll"><table>'
         '<caption>FantLab reference vs Scriptorium retained values, diagnostic only</caption>'
-        '<thead><tr><th scope="col">Metric ID</th><th scope="col">FantLab expected</th>'
+        '<thead><tr><th scope="col">Metric ID</th><th scope="col">Unit</th>'
+        '<th scope="col">FantLab expected</th>'
         '<th scope="col">Scriptorium actual</th><th scope="col">Actual − expected</th>'
         '<th scope="col">Scientific status</th></tr></thead><tbody id="retained-metric-rows">' +
         ''.join(metrics) + '</tbody></table></div></section>'

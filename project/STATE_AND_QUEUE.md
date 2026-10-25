@@ -1,27 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 318
+STATE_REVISION: 319
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: PR #313 merged on master at 9574721c8475d8d616019d7792cb495d7e6edd5a. New #283 metric-table filter slice authored for later acceptance.
-LAST_VERIFIED_PROGRESS: Verified five-work source provenance downloads merged; proposed local-only searchable 28-row Anna diagnostic table. All exported scientific records unchanged.
+LAST_RESULT: PR #314 merged on master at 395ca1028c7b9f0bb5ef3d54d1f2ec30006c42cf. New #283 evidence-table unit-label slice authored for later acceptance.
+LAST_VERIFIED_PROGRESS: Verified the local-only searchable 28-row Anna diagnostic merged; proposed candidate measurement units for readable exact differences. Scientific exports unchanged.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-016-FANTLAB-METRIC-FILTER
+UNIT_ID: SCRIP-SITE-017-FANTLAB-UNITS
 ISSUES: #283 (partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-016-fantlab-metric-filter
-BASE: 9574721c8475d8d616019d7792cb495d7e6edd5a
-ACCEPTANCE: On the canonical FantLab evidence page, search 28 retained Anna metrics by label/ID; filter by metric family and measured/not-run/unavailable state; reset and family-anchor navigation preserve keyboard accessibility. No JavaScript shows the full table, printing shows all rows even after filtering. Search is local-only, exports stay byte-identical; exact-head CI, built-site smoke and later-run acceptance required. No parity claims or data changes.
+BRANCH: scrip-site-017-fantlab-measurement-units
+BASE: 395ca1028c7b9f0bb5ef3d54d1f2ec30006c42cf
+ACCEPTANCE: Every one of 28 retained Anna diagnostic rows exposes its versioned Scriptorium candidate unit in the built Reader; percentage-value deltas are explicitly described as percentage points. Unknown measurement states and 5-work source identity remain unchanged, metrics/readiness exports stay byte-identical; exact-head CI, built-site smoke and later-run acceptance required. No FantLab parity claim.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Research-ready Reader evidence that is easy to explore offline, without hiding scientific unknowns or changing raw downloads.
+Milestone: Research-ready Reader evidence that explains what each exact diagnostic number measures without suggesting FantLab parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Accessible metric explorer | Filter retained rows without affecting full export/print; verify true browser and CI | Exact-head CI; browser visuals when available |
+| P1 | #283 Metric measurement units | Label all 28 retained values with candidate units and explain percentage-point deltas | Exact-head CI; browser visuals when available |
 | P2 | #281 Source-bound benchmark runs | Measure field-level deltas for other four frozen works with real bytes and reference proofs | Legal original bytes; exact reference identity |
 | P3 | #282 Native N collision | Quantify ambiguous noun/cardinal impact using pinned pylem | Pinned native environment |
 | P4 | #283 Reader desktop/mobile/print QA | Real browser screenshots and keyboard flow | Browser support |

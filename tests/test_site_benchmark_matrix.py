@@ -142,12 +142,16 @@ class FantLabEvidencePageTests(unittest.TestCase):
             from scriptorium.site_metric_filter import FILTER_JS
             self.assertEqual((destination / "assets" / "metric-filter.js").read_text(encoding="utf-8"), FILTER_JS)
             for name, key in (("readiness.json", "readiness_json"),
-                              ("readiness.csv", "readiness_csv")):
+                              ("readiness.csv", "readiness_csv"),
+                              ("shared-rates.json", "shared_json"),
+                              ("shared-rates.csv", "shared_csv")):
                 self.assertEqual((evidence / name).read_text(encoding="utf-8"), published[key])
             row = next(item for item in receipt["entries"]
                        if item["entry_id"] == page.EXPECTED_ENTRY["entry_id"])
             for label, key in (("readiness_json_sha256", "readiness_json"),
-                               ("readiness_csv_sha256", "readiness_csv")):
+                               ("readiness_csv_sha256", "readiness_csv"),
+                               ("shared_json_sha256", "shared_json"),
+                               ("shared_csv_sha256", "shared_csv")):
                 self.assertEqual(row[label], hashlib.sha256(published[key].encode("utf-8")).hexdigest())
             self.assertEqual((evidence / "metrics.json").read_text(encoding="utf-8"), published["json"])
             self.assertEqual((evidence / "metrics.csv").read_text(encoding="utf-8"), published["csv"])
@@ -298,6 +302,58 @@ class FantLabEvidencePageTests(unittest.TestCase):
             page._shared_normalized_rows([a], [{**b, "actual": True}])
         with self.assertRaisesRegex(ValueError, "non-finite cross-work"):
             page._shared_normalized_rows([a], [{**b, "actual": float("nan")}])
+
+
+    def test_shared_rate_exports_are_deterministic_and_scientifically_limited(self):
+        import csv
+        from decimal import Decimal
+        from io import StringIO
+
+        rendered = page.build(ROOT)
+        doc = json.loads(rendered["shared_json"])
+        self.assertEqual(doc["schema_version"], "scriptorium-shared-rate-comparison-v1")
+        self.assertEqual(doc["evidence_class"], "diagnostic_source_unmatched")
+        self.assertEqual(doc["comparison_direction"], "running_on_waves_minus_anna_karenina")
+        self.assertFalse(doc["m2_parity_admissible"])
+        self.assertEqual(doc["m2_weight"], 0)
+        self.assertEqual([work["fantlab_input_identity"] for work in doc["works"]],
+                         ["UNKNOWN", "UNKNOWN"])
+        self.assertEqual([work["candidate_id"] for work in doc["works"]],
+                         ["tolstoy-anna-karenina-ru", "grin-running-on-waves-ru"])
+        self.assertTrue(all(len(work["frozen_raw_sha256"]) == 64 for work in doc["works"]))
+        self.assertEqual(len(doc["measurements"]), 20)
+        self.assertEqual(len({row["metric_id"] for row in doc["measurements"]}), 20)
+        for row in doc["measurements"]:
+            self.assertEqual(Decimal(row["right_minus_left"]),
+                             Decimal(str(row["right"])) - Decimal(str(row["left"])))
+            self.assertEqual(row["difference_unit"],
+                             "percentage points" if row["unit"] == "%" else row["unit"])
+        self.assertTrue(all(row["metric_id"] not in {
+            "fantlab.general.characters", "fantlab.general.words",
+            "fantlab.vocabulary.unique_words",
+        } for row in doc["measurements"]))
+        csv_rows = list(csv.DictReader(StringIO(rendered["shared_csv"])))
+        self.assertEqual(len(csv_rows), 20)
+        self.assertEqual([row["metric_id"] for row in csv_rows],
+                         [row["metric_id"] for row in doc["measurements"]])
+        self.assertTrue(all(row["fantlab_input_identity"] == "UNKNOWN"
+                            and row["evidence_class"] == "diagnostic_source_unmatched"
+                            for row in csv_rows))
+        self.assertEqual(rendered["shared_json"], page.build(ROOT)["shared_json"])
+        self.assertIn('href="shared-rates.json" download', rendered["body"])
+        self.assertIn('href="shared-rates.csv" download', rendered["body"])
+        self.assertNotIn("SECRET SOURCE PROSE", rendered["shared_json"])
+
+    def test_shared_rate_export_refuses_duplicate_or_upgraded_identity(self):
+        report = page.matrix.build_metric_matrix(ROOT)
+        anna = next(e for e in report["entries"] if e["candidate_id"] == "tolstoy-anna-karenina-ru")
+        wave = next(e for e in report["entries"] if e["candidate_id"] == "grin-running-on-waves-ru")
+        rows = page._shared_normalized_rows(anna["metric_rows"], wave["metric_rows"])
+        with self.assertRaisesRegex(ValueError, "twenty distinct"):
+            page._shared_rate_exports(rows + [rows[0]], anna, wave)
+        altered = dict(anna, exact_fantlab_input_identity="EXACT")
+        with self.assertRaisesRegex(ValueError, "proven FantLab input identity"):
+            page._shared_rate_exports(rows, altered, wave)
 
 
 if __name__ == "__main__":

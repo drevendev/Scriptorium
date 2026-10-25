@@ -386,7 +386,7 @@ def build(root: Path) -> dict[str, str]:
         '<thead><tr><th scope="col">Metric ID</th><th scope="col">Unit</th>'
         '<th scope="col">FantLab expected</th><th scope="col">Scriptorium actual</th>'
         '<th scope="col">Actual − expected</th><th scope="col">Scientific status</th>'
-        '</tr></thead><tbody id="wave-metric-rows">' + ''.join(wave_metrics) + '</tbody></table></div></section>
+        '</tr></thead><tbody id="wave-metric-rows">' + ''.join(wave_metrics) + '</tbody></table></div></section>'
         '<p class="notice">No parity passes have been established. Reproduction '
         'requires five legally usable ≥300,000-character works with the actual '
         'FantLab analyzer-input identity and published rounding evidence.</p>'

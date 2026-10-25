@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RetainedMetricMatrixTests(unittest.TestCase):
-    def test_real_five_work_report_has_only_one_retained_diagnostic(self):
+    def test_real_five_work_report_has_two_retained_diagnostics(self):
         report = matrix.build_metric_matrix(ROOT)
         self.assertEqual(report["schema_version"], matrix.SCHEMA_VERSION)
         self.assertEqual(report["works_reported"], 5)

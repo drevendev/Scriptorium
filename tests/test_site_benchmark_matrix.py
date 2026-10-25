@@ -29,7 +29,7 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn('aria-label="Running on Waves metric differences"', content)
         self.assertIn("four dictionary-dependent metrics not run", content)
         self.assertIn("360987</td><td>363819</td><td>2832", content)
-        # Five sources, 28 metrics, and four family-summary rows.
+        # Five sources, 28 Anna metrics, 27 Wave metrics, four family-summary rows.
         self.assertEqual(content.count('scope="row"'), 64)
         self.assertEqual(content.count('<span lang="ru">'), 55)
         self.assertIn('<nav id="metric-families" aria-label="Metric families">', content)

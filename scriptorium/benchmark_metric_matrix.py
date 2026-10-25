@@ -1,8 +1,8 @@
 """Verified source-free inventory of retained cross-work FantLab metric diagnostics.
 
-Readiness (five source witnesses) is validated first. One retained Anna Karenina
-diagnostic has 28 numeric-reference rows; four other candidates have no matching
-metric artifact and remain NOT_RUN. Unknown input identity never becomes parity.
+Readiness (five source witnesses) is validated first. Anna Karenina has 28 rows,
+Running on Waves has 27; the other three candidates lack matching
+metric artifacts and remain NOT_RUN. Unknown input identity never becomes parity.
 """
 from __future__ import annotations
 
@@ -352,7 +352,7 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
     for entry in entries:
         if not entry["metric_rows"]:
             continue
-        title = str(entry["title"]).replace("|", "\|").replace("\n", " ")
+        title = str(entry["title"]).replace("|", "\\|").replace("\n", " ")
         lines.extend(["", "### " + title, ""])
         for row in entry["metric_rows"]:
             fmt = lambda n: "NOT_RUN" if n is None else str(n)

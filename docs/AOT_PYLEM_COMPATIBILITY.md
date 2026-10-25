@@ -210,6 +210,15 @@ The former loose bound is retained as
 now the **exact individual-cell** maximum under these hypothetical choices.
 No joint attainability across different cells is asserted.
 
+The v3 artifact also tightens **per-cell minima** using the same
+consistent-token DP: a conditional fixed noun → N-only → fixed cardinal
+sequence forces one noun→cardinal edge, whereas counting fixed edges
+alone incorrectly suggests zero. `conditional_min_raw_count` now means
+an attainable minimum within the stated N-only hypothesis;
+`fixed_edge_lower_bound_raw_count` preserves the historical looser bound.
+This synthetic fixed-category example does not establish that native pylem
+reveals noun versus cardinal, nor does it prove a FantLab label.
+
 These are NOT true POS labels, recovered AOT enums, FantLab homonym
 decisions, or M2 parity. Provider sdist, runtime candidate SHA, frozen
 normalized source hash and commit are recorded; text and token rows are

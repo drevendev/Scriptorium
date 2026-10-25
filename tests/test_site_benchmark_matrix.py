@@ -1,6 +1,8 @@
 """Regression tests for the source-free public FantLab evidence page."""
 import copy
+import hashlib
 import json
+import tempfile
 from pathlib import Path
 import unittest
 from unittest.mock import patch
@@ -64,7 +66,46 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertNotIn("source prose", content)
         self.assertEqual(json.loads(published["json"])["m2_source_matched_pass_count"], 0)
         self.assertIn("12958", published["csv"])
+        self.assertIn('href="readiness.json" download', content)
+        self.assertIn('href="readiness.csv" download', content)
+        source_report = json.loads(published["readiness_json"])
+        self.assertEqual(source_report["works_reported"], 5)
+        self.assertEqual(source_report["m2_source_matched_pass_count"], 0)
+        self.assertEqual(len(source_report["entries"]), 5)
+        for entry in source_report["entries"]:
+            self.assertEqual(len(entry["source"]["raw_sha256"]), 64)
+            self.assertEqual(len(entry["source"]["normalized_sha256"]), 64)
+            self.assertEqual(entry["exact_fantlab_input_identity"], "UNKNOWN")
+        self.assertEqual(
+            published["readiness_json"],
+            page.benchmark_readiness.render_report(page.benchmark_readiness.build_readiness(ROOT), "json"),
+        )
+        self.assertEqual(
+            published["readiness_csv"],
+            page.benchmark_readiness.render_report(page.benchmark_readiness.build_readiness(ROOT), "csv"),
+        )
         self.assertEqual(page.build(ROOT), published)
+
+    def test_canonical_site_packages_source_provenance_with_receipt_hashes(self):
+        from scriptorium.site_renderer import build_site
+
+        build_dir = ROOT / "build"
+        build_dir.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix="test-source-evidence-", dir=build_dir) as temporary:
+            destination = Path(temporary) / "site"
+            receipt = build_site(ROOT, destination)
+            published = page.build(ROOT)
+            evidence = destination / "evidence" / "fantlab"
+            for name, key in (("readiness.json", "readiness_json"),
+                              ("readiness.csv", "readiness_csv")):
+                self.assertEqual((evidence / name).read_text(encoding="utf-8"), published[key])
+            row = next(item for item in receipt["entries"]
+                       if item["entry_id"] == page.EXPECTED_ENTRY["entry_id"])
+            for label, key in (("readiness_json_sha256", "readiness_json"),
+                               ("readiness_csv_sha256", "readiness_csv")):
+                self.assertEqual(row[label], hashlib.sha256(published[key].encode("utf-8")).hexdigest())
+            self.assertEqual((evidence / "metrics.json").read_text(encoding="utf-8"), published["json"])
+            self.assertEqual((evidence / "metrics.csv").read_text(encoding="utf-8"), published["csv"])
 
     def test_signed_relative_drift_rounding_and_invalid_denominator(self):
         self.assertEqual(page._relative_character_delta(12_958, 1_692_647), "+0.77%")

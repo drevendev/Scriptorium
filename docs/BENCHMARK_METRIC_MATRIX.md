@@ -126,3 +126,19 @@ all four other works remain **NOT_RUN**, and M2 remains 0/5. The export schemas,
 retained measurements, reference editions and parity gates are unchanged.
 Malformed coverage totals fail closed rather than silently displaying a false
 measurement count. Browser visual acceptance remains unverified.
+
+## Downloadable source provenance from the Reader
+
+The canonical `evidence/fantlab/` route now packages `readiness.json` and
+`readiness.csv` alongside the unchanged `metrics.json` / `metrics.csv`.
+Both new files come from the same validated five-work readiness object already
+joined to the metric matrix. JSON retains the raw and normalized SHA-256
+witnesses, public-domain evidence, source/edition metadata and dated FantLab
+references; CSV exposes its established flat source summary. No full text,
+new benchmark execution, inferred source match or public-upload feature is added.
+
+The page has direct download links. The deterministic site `build.json` records
+SHA-256 identities for both added exports, and the repository tests verify that
+the packaged files equal the existing source-free readiness CLI renderers.
+Corrupt or contradictory canonical evidence stops the build before the last
+valid site is replaced. M2 remains 0/5; built is not deployed or visually verified.

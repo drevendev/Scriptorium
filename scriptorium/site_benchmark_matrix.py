@@ -238,7 +238,9 @@ def build(root: Path) -> dict[str, str]:
         'identity. Missing measurements are NOT_RUN, never zero.</p>'
         '<p class="actions"><a class="primary-action" href="metrics.json" download>'
         'Download verified JSON</a> <a href="metrics.csv" download>'
-        'Download metric CSV</a> <a href="https://github.com/drevendev/Scriptorium/blob/master/'
+        'Download metric CSV</a> <a href="readiness.json" download>'
+        'Download source provenance JSON</a> <a href="readiness.csv" download>'
+        'Download source provenance CSV</a> <a href="https://github.com/drevendev/Scriptorium/blob/master/'
         'docs/BENCHMARK_METRIC_MATRIX.md">Read the methodology ↗</a></p>'
         '</header>'
         '<section aria-labelledby="works-title"><h2 id="works-title">Five frozen public candidates</h2>'
@@ -298,4 +300,6 @@ def build(root: Path) -> dict[str, str]:
         "body": body,
         "json": matrix.render_metric_matrix(report, "json"),
         "csv": matrix.render_metric_matrix(report, "csv"),
+        "readiness_json": benchmark_readiness.render_report(readiness, "json"),
+        "readiness_csv": benchmark_readiness.render_report(readiness, "csv"),
     }

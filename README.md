@@ -193,8 +193,12 @@ displayed count and source/edition/rights link. It also shows **signed
 relative drift** as (frozen minus FantLab displayed) divided by FantLab
 displayed, expressed in percent and rounded to two decimal places.
 This display-only diagnostic is not a parity score and does not alter JSON/CSV.
-These counts do not establish FantLab analyzer-input identity; complete SHA-256 witnesses remain in the
-separate source-free readiness CLI exports. The homepage links to this route.
+These counts do not establish FantLab analyzer-input identity. The evidence page
+also offers **source provenance JSON/CSV** downloads generated from the same
+five validated readiness witnesses as the visible work table. The JSON contains
+raw and normalized SHA-256 digests, reference dates and legal/source metadata;
+the CSV retains raw digests and reference dates. No manuscript text is included.
+The homepage links to this route.
 This is a
 **locally built** page, not a confirmed live GitHub Pages deployment.
 [Field-level matrix and evidence checks](docs/BENCHMARK_METRIC_MATRIX.md).

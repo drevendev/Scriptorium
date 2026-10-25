@@ -932,12 +932,16 @@ def build_site(
                 "report_body": published["body"],
                 "json_data": published["json"],
                 "csv_data": published["csv"],
+                "readiness_json_data": published["readiness_json"],
+                "readiness_csv_data": published["readiness_csv"],
             }
             render_items.append(item)
             input_rows.append({
                 "entry_id": entry_id,
                 "route": "evidence/fantlab/",
                 "derived_report_sha256": hashlib.sha256(published["json"].encode("utf-8")).hexdigest(),
+                "readiness_json_sha256": hashlib.sha256(published["readiness_json"].encode("utf-8")).hexdigest(),
+                "readiness_csv_sha256": hashlib.sha256(published["readiness_csv"].encode("utf-8")).hexdigest(),
             })
             continue
 
@@ -1022,6 +1026,12 @@ def build_site(
                 )
                 (evidence / "metrics.csv").write_text(
                     benchmark_page["csv_data"], encoding="utf-8", newline="\n"
+                )
+                (evidence / "readiness.json").write_text(
+                    benchmark_page["readiness_json_data"], encoding="utf-8", newline="\n"
+                )
+                (evidence / "readiness.csv").write_text(
+                    benchmark_page["readiness_csv_data"], encoding="utf-8", newline="\n"
                 )
             for slug, page_html in work_pages.items():
                 work_dir = output / "works" / slug

@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 316
+STATE_REVISION: 317
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: #311 merged at abbe6f03a34988b582b6c80bc13ed8e21eb1a330. Authored a scoped #281 Reader per-family availability view.
-LAST_VERIFIED_PROGRESS: #311 hardened exact retained-delta arithmetic in master. The proposed Reader summary distinguishes measured, NOT_RUN and unavailable metrics by family, exposing vocabulary's 1/6 recorded actuals without treating coverage as parity; full exact-head CI and later acceptance pending.
+LAST_RESULT: #312 independently accepted and merged at af3ef4581c9f704c4ebb7a332bb9151532586864. Authored a scoped #281 source-provenance download slice.
+LAST_VERIFIED_PROGRESS: Reader's four-family diagnostic coverage is on master. Proposed direct downloads of the same validated five-work raw/normalized SHA-256 and source/rights/reference evidence; no change to existing metric exports, corpus, M2 or deployment.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-FAMILY-COVERAGE
-ISSUES: #281 (open; partial)
+UNIT_ID: SCRIP-REPRO-010-SOURCE-WITNESS-DOWNLOADS
+ISSUES: #281 (partial); #283 (reader evidence discoverability)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-family-coverage
-BASE: abbe6f03a34988b582b6c80bc13ed8e21eb1a330
-ACCEPTANCE: Reader derives four families and measured/not-run/unavailable counts from verified 28-row Anna evidence (4/4 general, 4/4 dialogue, 14/14 punctuation, 1/6 vocabulary). Exact counts and full rows visible and keyboard accessible; corrupted totals rejected. Four other works remain NOT_RUN; exports, source identity UNKNOWN, M2 0/5 and rounding/parity gates unchanged. Require exact-head CI and later acceptance.
+BRANCH: scrip-repro-010-source-witness-downloads
+BASE: af3ef4581c9f704c4ebb7a332bb9151532586864
+ACCEPTANCE: From Reader evidence/fantlab, download source-free readiness.json/csv derived from the same validated five-work witnesses as the displayed rows. Packaged bytes equal the canonical readiness CLI; build receipt binds both SHA-256; existing metrics.json/csv unchanged. Tampered source/metric join fails closed, atomic last-valid build is preserved. Exact-head CI plus later-run acceptance required. No original manuscripts, new metric measurements or parity/source-match upgrades.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Reader users can see precisely which retained metric families have actual observations and where vocabulary diagnostics are still missing, without mistaking availability for scientific parity.
+Milestone: Reader researchers can download the provenance/rights/body-hash witnesses alongside the five-work metric matrix, independently checking missing-run and UNKNOWN-input gates.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Reader metric-family availability | Verify 4-family measured/NOT_RUN/unavailable counts and negative tests; later accept | Exact-head CI; no source-match inference |
+| P1 | #281 Source-witness downloads | Verify canonical Reader downloadable readiness JSON/CSV, receipt hashes and unchanged metric outputs; later accept | Exact-head CI; no source-match inference |
 | P2 | #281 Strict source-bound benchmark | Additional legally usable source-and-reference-bound field-level runs; absent metrics remain NOT_RUN | Established actual input editions and rounding evidence |
 | P3 | #283 Reader visual acceptance | Real desktop/mobile/print browser checks when supported | Browser access; structural checks otherwise |
-| P4 | #285 Pages publication | Authorized Pages activation and live verification | Repository admin and #284 rights |
-| P5 | #284 licensing | Explicit source-code license and attribution approval | Owner/rights-holder decision |
+| P4 | #282 AOT noun/cardinal ambiguity | New native pinned pylem experiment and inspectable POS delta evidence | Native dictionary/profile evidence |
+| P5 | #285 Pages publication / #284 rights | Activate only after approved license and admin/deployment gates | Owner/admin rights, explicit licensing decision |
 
 M2 remains 0/5. Corpus, privacy, scientific and provenance gates unchanged.
 

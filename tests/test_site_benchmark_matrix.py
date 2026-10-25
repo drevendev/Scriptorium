@@ -30,12 +30,13 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn('<nav id="metric-families" aria-label="Metric families">', content)
         for family, count in (("dialogue", 4), ("general", 4),
                               ("punctuation", 14), ("vocabulary", 6)):
+            anchor_state = "not_run" if family == "vocabulary" else "measured"
             self.assertIn(
                 f'<a href="#metric-family-{family}">{family.title()} ({count})</a>',
                 content,
             )
             self.assertIn(
-                f'data-metric-family="{family}" data-metric-state="measured" '
+                f'data-metric-family="{family}" data-metric-state="{anchor_state}" '
                 f'id="metric-family-{family}" tabindex="-1">',
                 content,
             )

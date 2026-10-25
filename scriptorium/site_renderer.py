@@ -1016,7 +1016,7 @@ def build_site(
             (output / "index.html").write_text(index_html, encoding="utf-8", newline="\n")
             if benchmark_page is not None:
                 (output / "assets" / "metric-filter.js").write_text(
-                    site_metric_filter.FILTER_JS, encoding="utf-8", newline="\\n"
+                    site_metric_filter.FILTER_JS, encoding="utf-8", newline="\n"
                 )
                 evidence = output / "evidence" / "fantlab"
                 evidence.mkdir(parents=True)

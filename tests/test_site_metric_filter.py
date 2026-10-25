@@ -19,7 +19,7 @@ class MetricExplorerTests(unittest.TestCase):
         self.assertIn('min-height:44px', FILTER_CSS)
         self.assertIn('focus-visible', FILTER_CSS)
         self.assertIn('@media print', FILTER_CSS)
-        self.assertIn('#retained-metric-rows tr[hidden] { display:table-row !important; }', FILTER_CSS)
+        self.assertIn('#retained-metric-rows tr[hidden], #wave-metric-rows tr[hidden] { display:table-row !important; }', FILTER_CSS)
 
     def test_waves_no_js_and_print_fallback(self):
         self.assertIn('id="wave-metric-filters"', WAVE_FILTER_CONTROLS)

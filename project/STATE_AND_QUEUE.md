@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 325
+STATE_REVISION: 326
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: PR #320 merged at df6091fba4a558750e51bfd52e8012b720f937f4. Public evidence copy and regression guard authored to reconcile README/methodology with merged two-book filters and 55 retained rows.
-LAST_VERIFIED_PROGRESS: Master has 28 Anna and 27 Waves diagnostic fields, independently searchable; 46 numeric and nine missing actuals. Three works still lack retained metric runs; M2 remains 0/5.
+LAST_RESULT: PR #321 merged to master at 297e2ff7131f0e24206c9d4b8b3d4882834d2647. A new bounded Reader comparison unit has been authored against that exact base; no new full-text metrics or parity observations.
+LAST_VERIFIED_PROGRESS: Master retains 28 Anna and 27 Waves diagnostic rows (46 measured, nine missing). Three other candidates still lack metric runs. M2 remains 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-PUBLIC-COVERAGE-SYNC
-ISSUES: #281 (partial), #283 (partial)
+UNIT_ID: SCRIP-SITE-012-SHARED-NORMALIZED-RATES
+ISSUES: #283 (partial), #281 (partial, reader evidence presentation)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-public-coverage-sync
-BASE: df6091fba4a558750e51bfd52e8012b720f937f4
-ACCEPTANCE: Public README and evidence/readiness methodology must correctly distinguish five frozen source witnesses, two measured-but-source-unmatched diagnostic works (55 rows, 46 actuals) and three NOT_RUN works; both Reader explorers must be described accurately. A test checks the canonical coverage claims against current matrix output. Exact-head CI and later independent acceptance required. No source prose or metric changes, no new parity evidence.
+BRANCH: scrip-site-shared-normalized-metrics
+BASE: 297e2ff7131f0e24206c9d4b8b3d4882834d2647
+ACCEPTANCE: Reader's canonical FantLab evidence route shows 20 shared actually measured, nominally length-normalized Anna/Waves metrics side-by-side, with exact signed Waves-minus-Anna decimal differences, percentage points for percentage-valued observations, accessible source-free table and no fabricated missing values. Character/word/vocabulary totals excluded. Original 55 diagnostic rows and JSON/CSV must be unchanged. Document cross-book/source-match/normalization limits and test tampered status, duplicate IDs, non-finite and missing observations. Exact-head CI and later-run acceptance are required before merge; browser screenshots remain VISUAL_NOT_VERIFIED unless actual browser execution succeeds.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Research-ready Reader with verified five-work source evidence, expanding measured per-work metrics, and accessible locally built comparisons without overstating FantLab parity.
+Milestone: Research-ready Reader with inspectable two-book diagnostic comparisons, verified five-work source evidence, and progressively larger real-work measurement coverage without FantLab parity overclaims.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Evidence copy integrity | Accept this source-free public coverage correction after exact-head CI; keep README/Reader science truthful | Later-run acceptance |
-| P2 | #281 Remaining work metrics | Obtain field-level retained diagnostics for Brothers Karamazov, Silver Dove and Hyperboloid | Licensed frozen bytes, pinned analyzer and dated FantLab reference |
+| P1 | #283 Shared normalized-rate view | Accept this new comparison after exact-head CI and verify packaged site | Later independent acceptance, no actual parity upgrade |
+| P2 | #281 Remaining work metrics | Obtain real retained field runs for Brothers Karamazov, Silver Dove and Hyperboloid | Licensed frozen bytes, pinned analyzer, dated reference |
 | P3 | #282 Native N contrast | Quantify actual frozen-work noun/cardinal POS effects under pinned pylem | Exact pinned native evidence |
-| P4 | #283 Reader visual acceptance | Exercise desktop/mobile/print flows and fix actual accessibility findings | Browser restricted; structural tests still executable |
+| P4 | #283 Reader visual acceptance | Exercise desktop/mobile/print flows and fix real accessibility findings | Browser restricted; structural tests still executable |
 | P5 | #285 Pages publication | Publish and live-verify source-free Reader | Admin/deployment and #284 rights interlocks |
 
-M2: 0/5 unchanged. Scientific, legal, privacy and source identity gates remain in force.
+M2: 0/5 unchanged. Scientific, legal, privacy and source-identity gates remain in force.
 
 ## Retained evidence and scientific gates
 

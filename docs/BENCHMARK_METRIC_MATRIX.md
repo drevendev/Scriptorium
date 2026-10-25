@@ -82,6 +82,30 @@ with keyboard controls, counts, reset and a no-JavaScript/print fallback.
 Their unit labels, scientific statuses and JSON/CSV exports are unchanged.
 Site build is not Pages deployment or visual verification. M2 remains 0/5.
 
+
+## Two-work normalized-rate view (Reader)
+
+The built FantLab evidence page includes a **20-row side-by-side** table drawn
+exclusively from the same frozen 28-row Anna and 27-row Running on Waves reports.
+Rows must have an actual value in **both** reports, the same registry metric ID
+and a candidate unit of characters per word/sentence, occurrences per 1,000
+word tokens, or percent. Raw character, word and unique-vocabulary totals are
+excluded because corpus lengths differ; dictionary-dependent missing values
+stay absent rather than becoming zero. No additional text is downloaded or
+reanalyzed.
+
+The signed difference is **Running on Waves minus Anna Karenina**. Differences
+in percentage-valued fields use **percentage points**, not percent change.
+Numeric arithmetic uses decimal representations of retained raw observations,
+without rounding them to FantLab's display precision. The individual metric
+rows and JSON/CSV downloads remain unchanged and preserve every missing state.
+
+The view is **descriptive only**: both source editions are unverified against
+FantLab's analyzer inputs, and nominally matching units do not prove that
+FantLab used the same tokenization, dialogue denominators or normalization.
+Two different works do not establish a causal author/genre effect or an author
+profile. The new table does not count toward M2, which remains **0/5**.
+
 ## Source-free local evidence page
 
 Build the canonical site with `scriptorium site --repo-root . --output build/site`,

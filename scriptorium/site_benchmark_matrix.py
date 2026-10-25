@@ -94,6 +94,52 @@ def _relative_character_delta(delta: int, displayed: int) -> str:
     return f"{percent:+.2f}%" if delta != 0 else "0.00%"
 
 
+def _shared_normalized_rows(left_rows: list[dict], right_rows: list[dict]) -> list[dict]:
+    """Compare only observed, nominally length-normalized Scriptorium metrics.
+
+    This describes two different public transcriptions, not FantLab parity,
+    author voice or comparable source identity. Raw totals and vocabulary
+    cardinalities are deliberately excluded because work lengths differ.
+    """
+    left = {row["metric_id"]: row for row in left_rows}
+    right = {row["metric_id"]: row for row in right_rows}
+    if len(left) != len(left_rows) or len(right) != len(right_rows):
+        raise ValueError("duplicate cross-work metric identity")
+    pairs = []
+    for metric_id, (label, family) in _METRIC_PRESENTATION.items():
+        unit = _VALUE_UNITS[metric_id]
+        if not (unit == "%" or unit.startswith((
+            "characters / ", "occurrences / 1,000 word tokens",
+            "mean unique forms / ",
+        ))):
+            continue
+        lrow, rrow = left.get(metric_id), right.get(metric_id)
+        if lrow is None or rrow is None:
+            continue
+        if lrow["actual"] is None or rrow["actual"] is None:
+            continue
+        if lrow["result"] != "UNRESOLVED_SOURCE" or rrow["result"] != "UNRESOLVED_SOURCE":
+            raise ValueError("cross-work values cannot be promoted to parity")
+        observed = (lrow["actual"], rrow["actual"])
+        if any(type(value) not in (int, float) for value in observed):
+            raise ValueError("invalid cross-work numeric observation")
+        numbers = tuple(Decimal(str(value)) for value in observed)
+        if not all(number.is_finite() for number in numbers):
+            raise ValueError("non-finite cross-work numeric observation")
+        delta = numbers[1] - numbers[0]
+        pairs.append({
+            "metric_id": metric_id,
+            "label": label,
+            "family": family,
+            "unit": unit,
+            "left": observed[0],
+            "right": observed[1],
+            "right_minus_left": ("+" if delta > 0 else "") + format(delta, "f") if delta else "0",
+            "difference_unit": "percentage points" if unit == "%" else unit,
+        })
+    return pairs
+
+
 def _reference(url: object) -> str:
     if not isinstance(url, str):
         raise ValueError("missing FantLab reference URL")
@@ -297,6 +343,49 @@ def build(root: Path) -> dict[str, str]:
             '</code></td></tr>'
         )
 
+    shared = _shared_normalized_rows(anna["metric_rows"], wave["metric_rows"])
+    # Today there are twenty shared measured per-unit observations. Any
+    # changed field availability/semantics requires a reviewed new contract.
+    if len(shared) != 20:
+        raise ValueError("shared normalized diagnostic coverage changed")
+    shared_rows = [
+        '<tr class="cross-metric-row"><th scope="row"><span class="eyebrow">' +
+        _esc(row["family"]) + '</span><br><span lang="ru">' +
+        _esc(row["label"]) + '</span><br><code>' + _esc(row["metric_id"]) +
+        '</code></th><td>' + _esc(row["unit"]) + '</td><td>' +
+        _esc(row["left"]) + '</td><td>' + _esc(row["right"]) +
+        '</td><td>' + _esc(row["right_minus_left"]) +
+        '<br><small>' + _esc(row["difference_unit"]) +
+        '</small></td></tr>'
+        for row in shared
+    ]
+    shared_section = (
+        '<section aria-labelledby="shared-title"><h2 id="shared-title">'
+        'Compare measured rates across two works</h2>'
+        '<p>Twenty shared observed length/rate/percentage metrics, shown '
+        'side by side using the same named <em>Scriptorium candidate</em> units. '
+        'Anna Karenina and Running on Waves are different-length transcriptions; '
+        'raw character, token and vocabulary totals are excluded. '
+        'The signed difference is <strong>Running on Waves minus Anna Karenina</strong>; '
+        'for percentages it is in percentage points, not relative percent. '
+        'Missing measurements are omitted here, not replaced with zero. '
+        'These are descriptive source-unmatched measurements: FantLab input '
+        'identity, denominator compatibility and rounding remain unverified; '
+        'no row proves FantLab parity, causal author style or a genre effect. '
+        'Use the two full tables or JSON/CSV above for all fields and unknowns.</p>'
+        '<p id="shared-scroll">On narrow screens scroll this table horizontally; '
+        'Tab to the table region for keyboard scrolling.</p>'
+        '<div class="table-wrap" role="region" tabindex="0" '
+        'aria-label="Two-work normalized diagnostic comparison" '
+        'aria-describedby="shared-scroll"><table>'
+        '<caption>Twenty source-unmatched observed rates and lengths; '
+        'Running on Waves minus Anna Karenina, not FantLab parity</caption>'
+        '<thead><tr><th scope="col">Metric</th><th scope="col">Unit</th>'
+        '<th scope="col">Anna Karenina</th><th scope="col">Running on Waves</th>'
+        '<th scope="col">Waves − Anna</th></tr></thead><tbody>' +
+        ''.join(shared_rows) + '</tbody></table></div></section>'
+    )
+
     body = (
         '<main id="main-content" tabindex="-1">'
         '<nav aria-label="Evidence navigation"><a href="../../">← All analyses</a></nav>'
@@ -387,6 +476,7 @@ def build(root: Path) -> dict[str, str]:
         '<th scope="col">FantLab expected</th><th scope="col">Scriptorium actual</th>'
         '<th scope="col">Actual − expected</th><th scope="col">Scientific status</th>'
         '</tr></thead><tbody id="wave-metric-rows">' + ''.join(wave_metrics) + '</tbody></table></div></section>'
+        + shared_section +
         '<p class="notice">No parity passes have been established. Reproduction '
         'requires five legally usable ≥300,000-character works with the actual '
         'FantLab analyzer-input identity and published rounding evidence.</p>'

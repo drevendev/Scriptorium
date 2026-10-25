@@ -1,30 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 321
+STATE_REVISION: 322
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: PR #316 merged at 00cfd3888dc88ea1b95d9f44ecf2857608267eca; #283 homepage print hover/focus contrast correction authored for later acceptance.
-LAST_VERIFIED_PROGRESS: Found the higher-specificity .demo-open:hover screen color (#fff6e5, about 1.07:1 on printed white) can override the ordinary dark print link. Added explicit print-state selectors and contrast regression; exact-head hosted CI pending.
+LAST_RESULT: PR #317 merged at cb78ef7266389b759ee140f5a788a03a14ff7f60; source-free native noun/cardinal contrast controls authored on a focused PR branch for later acceptance.
+LAST_VERIFIED_PROGRESS: The pinned native probe now records hashed lexical noun/cardinal/other-POS controls, N-only and N-present counts, and an explicitly diagnostic-only cross-role observation. Native CI and integrated tests remain to be verified on the exact PR head; no recovered FantLab labels are claimed.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-PRINT-HOVER-CONTRAST
-ISSUES: #283 (partial)
+UNIT_ID: SCRIP-MORPH-009-NATIVE-N-CONTROLS
+ISSUES: #282 (partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-012-print-hover-cascade
-BASE: 00cfd3888dc88ea1b95d9f44ecf2857608267eca
-ACCEPTANCE: Printed Reader homepage evidence link remains at least 4.5:1 against white in default, hovered and keyboard-focus states, with an underline; eyebrow and exact-table caption retain readable print contrast. Verify computed CSS declarations and exact-head Pages CI, with later-run acceptance. VISUAL_NOT_VERIFIED without a permitted browser. No science, source-text, publication or license changes.
+BRANCH: scrip-morph-009-native-controls
+BASE: cb78ef7266389b759ee140f5a788a03a14ff7f60
+ACCEPTANCE: Run pinned pylem 0.0.18 on curated noun/cardinal/negative lexical controls in the existing native CI lane, persist a source-free tag/hash/count receipt, pass positive/negative deterministic tests, preserve the original three-token smoke and unchanged mapping/parity gates. Verify exact-head checks in a later run before merging. No corpus text or deployment changes.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Research-ready Reader evidence that explains measured diagnostics clearly, remains legible in print and does not suggest FantLab parity.
+Milestone: Research-ready Reader with measured and clearly qualified native POS evidence, human-readable cross-work diagnostics and accessible presentation.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Print hover/focus contrast | Exact-head site-build and computed-contrast regression, then later-run merge | Hosted CI and fresh acceptance |
-| P2 | #282 Native N ambiguity | Extend measured noun/cardinal collision quantification beyond synthetic exact bigram bounds | Pinned native provider and legal frozen input |
-| P3 | #281 Cross-work benchmarks | Obtain reproducible field-level metrics for other frozen works, source-bound diagnostics only | Legal source bytes and matching historical references |
-| P4 | #285 Pages publication | Publish Reader and verify public desktop/mobile routes | Admin/deployment interlock |
+| P1 | #282 Native N contrast | Verify pinned native control receipt and later-run merge; then extend quantified frozen-work sensitivity only with new evidence | Exact-head native CI and later acceptance |
+| P2 | #281 Cross-work benchmarks | Reproducible source-bound field-level deltas for remaining frozen works, marked diagnostic until source-matched | Legal frozen bytes and historical reference |
+| P3 | #283 Reader visual acceptance | Desktop/mobile/print behavior verification and any independent accessibility fixes | Browser may be restricted; not a block on nonvisual tests |
+| P4 | #285 Pages publication | Publish and live-verify source-free Reader | Admin/deployment interlock |
 | P5 | #284 License and attribution | Explicit code/data rights and dependency attribution | Rights-holder decision |
 
 M2: 0/5 unchanged. Scientific, legal, privacy and source identity gates remain in force.

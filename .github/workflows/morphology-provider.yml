@@ -20,6 +20,7 @@ on:
       - "tests/test_homonym_weight_diagnostic.py"
       - "tests/test_methodology_pos_diagnostic.py"
       - "tests/test_pylem_provider.py"
+      - "tests/test_pylem_n_contrast.py"
       - "tests/test_pylem_transport.py"
       - "tools/pylem_runtime_probe.py"
       - "tools/pylem_sidecar.py"
@@ -120,6 +121,31 @@ jobs:
           assert receipt["provider"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
           assert receipt["fixture"]["source_text_included"] is False
           assert receipt["fixture"]["token_count"] == 3
+          contrast = receipt["n_contrast"]
+          assert contrast["schema_version"] == "scriptorium-aot-n-contrast-v1"
+          assert contrast["source_text_included"] is False
+          assert contrast["fantlab_dictionary_equivalence"] == "unknown"
+          assert contrast["fantlab_homonym_selection"] == "unresolved"
+          assert contrast["production_pos_mapping_changed"] is False
+          assert contrast["m2_parity_admissible"] is False
+          assert set(contrast["groups"]) == {"noun_examples", "cardinal_examples", "other_pos_controls"}
+          for group in contrast["groups"].values():
+              assert group["token_count"] == 3
+              assert 0 <= group["n_only_count"] <= group["n_present_count"] <= 3
+              assert len(group["tokens"]) == 3
+              for row in group["tokens"]:
+                  assert len(row["token_sha256"]) == 64
+                  assert row["candidate_count"] == len(row["runtime_pos"])
+                  assert row["n_only"] == (bool(row["runtime_pos"]) and set(row["runtime_pos"]) == {"N"})
+          assert isinstance(contrast["observed_n_only_across_noun_and_cardinal_examples"], bool)
+          print(json.dumps({
+              "n_contrast_profile": contrast["schema_version"],
+              "n_only_by_fixture_role": {name: group["n_only_count"]
+                  for name, group in contrast["groups"].items()},
+              "observed_cross_role_n_only": contrast["observed_n_only_across_noun_and_cardinal_examples"],
+              "m2_parity_admissible": False,
+          }, sort_keys=True))
+
           assert receipt["epistemic_boundary"]["fantlab_dictionary_equivalence"] == "unknown"
           assert receipt["epistemic_boundary"]["m2_parity_admissible"] is False
           print(json.dumps(receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")))

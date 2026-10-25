@@ -224,6 +224,26 @@ decisions, or M2 parity. Provider sdist, runtime candidate SHA, frozen
 normalized source hash and commit are recorded; text and token rows are
 never uploaded. The production POS mapping and M2 0/5 are unchanged.
 
+## Native lexical contrast controls (SCRIP-MORPH-009)
+
+The pinned Ubuntu 22.04 / Python 3.9 `pylem==0.0.18` smoke now
+also measures a **small curated, source-free control fixture** with three
+noun lexemes, three cardinal lexemes and three unrelated POS controls.
+Each per-token row records only the SHA-256 of the fixture token, all
+observed native runtime tags, the candidate count, and whether `N`
+is present or is the *only* reported tag. Native CI records per-role
+counts and whether N-only labels occur in both curated noun/cardinal
+groups. The original three-token smoke contract is unchanged.
+
+This is a **measured capability/ambiguity diagnostic**, not a recovered
+AOT enum or a word-level homonym choice. The lexical role labels are
+curated *test expectations*, not native ground truth; native analyses
+may return multiple homonyms or none. Even cross-role N-only output
+does not identify FantLab's dictionary or selection policy. The
+source-free receipt is an ephemeral CI artifact, not a literary corpus
+entry or an M2 parity benchmark. Frozen full-work N-only bounds
+remain a separate independently versioned diagnostic.
+
 ## Primary sources
 
 - https://pypi.org/project/pylem/

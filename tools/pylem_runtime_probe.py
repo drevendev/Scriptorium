@@ -16,6 +16,65 @@ def _sha256_text(value):
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
+# Deliberately small, source-free semantic controls. These lexical roles are
+# fixture annotations, NOT a native AOT homonym decision.
+N_CONTRAST_GROUPS = (
+    ("noun_examples", ("дом", "книга", "город")),
+    ("cardinal_examples", ("два", "три", "пять")),
+    ("other_pos_controls", ("красный", "быстро", "бежит")),
+)
+
+
+def _runtime_candidates(holder, token):
+    candidates = []
+    for analysis in holder.lemmatize(token):
+        value = getattr(analysis, "part_of_speech", None)
+        if not isinstance(value, str) or not value.strip():
+            raise RuntimeError("pylem returned blank/non-string part_of_speech")
+        candidates.append(value.strip())
+    return candidates
+
+
+def build_n_contrast(holder):
+    """Record observed native labels by lexical fixture role, never infer true POS."""
+    groups = {}
+    manifest = []
+    for role, tokens in N_CONTRAST_GROUPS:
+        rows = []
+        for token in tokens:
+            labels = _runtime_candidates(holder, token)
+            token_hash = _sha256_text(token)
+            rows.append({
+                "token_sha256": token_hash,
+                "candidate_count": len(labels),
+                "runtime_pos": labels,
+                "n_only": bool(labels) and set(labels) == {"N"},
+                "n_present": "N" in labels,
+            })
+            manifest.append(role + ":" + token_hash)
+        groups[role] = {
+            "token_count": len(rows),
+            "n_only_count": sum(row["n_only"] for row in rows),
+            "n_present_count": sum(row["n_present"] for row in rows),
+            "tokens": rows,
+        }
+    return {
+        "schema_version": "scriptorium-aot-n-contrast-v1",
+        "source_text_included": False,
+        "token_manifest_sha256": _sha256_text("\n".join(manifest)),
+        "groups": groups,
+        "observed_n_only_across_noun_and_cardinal_examples": (
+            groups["noun_examples"]["n_only_count"] > 0
+            and groups["cardinal_examples"]["n_only_count"] > 0
+        ),
+        "interpretation": "Fixture lexical roles are annotations, not recovered AOT POS enums.",
+        "fantlab_dictionary_equivalence": "unknown",
+        "fantlab_homonym_selection": "unresolved",
+        "production_pos_mapping_changed": False,
+        "m2_parity_admissible": False,
+    }
+
+
 def build_receipt():
     try:
         installed = version("pylem")
@@ -30,15 +89,8 @@ def build_receipt():
     rows = []
     observed = set()
     for ordinal, token in enumerate(TOKENS):
-        analyses = tuple(holder.lemmatize(token))
-        runtime_pos = []
-        for analysis in analyses:
-            value = getattr(analysis, "part_of_speech", None)
-            if not isinstance(value, str) or not value.strip():
-                raise RuntimeError("pylem returned blank/non-string part_of_speech")
-            value = value.strip()
-            runtime_pos.append(value)
-            observed.add(value)
+        runtime_pos = _runtime_candidates(holder, token)
+        observed.update(runtime_pos)
         rows.append(
             {
                 "ordinal": ordinal,
@@ -70,6 +122,7 @@ def build_receipt():
             "observed_runtime_pos": sorted(observed),
             "source_text_included": False,
         },
+        "n_contrast": build_n_contrast(holder),
         "epistemic_boundary": {
             "fantlab_dictionary_equivalence": "unknown",
             "homonym_selection_policy": "unresolved",

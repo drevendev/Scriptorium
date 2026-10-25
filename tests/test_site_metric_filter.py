@@ -5,7 +5,7 @@ import subprocess
 import tempfile
 import unittest
 
-from scriptorium.site_metric_filter import FILTER_CONTROLS, FILTER_CSS, FILTER_JS
+from scriptorium.site_metric_filter import FILTER_CONTROLS, WAVE_FILTER_CONTROLS, FILTER_CSS, FILTER_JS
 
 
 class MetricExplorerTests(unittest.TestCase):
@@ -21,6 +21,15 @@ class MetricExplorerTests(unittest.TestCase):
         self.assertIn('@media print', FILTER_CSS)
         self.assertIn('#retained-metric-rows tr[hidden] { display:table-row !important; }', FILTER_CSS)
 
+    def test_waves_no_js_and_print_fallback(self):
+        self.assertIn('id="wave-metric-filters"', WAVE_FILTER_CONTROLS)
+        self.assertIn('aria-label="Explore Running on Waves', WAVE_FILTER_CONTROLS)
+        self.assertIn('aria-controls="wave-metric-rows"', WAVE_FILTER_CONTROLS)
+        self.assertIn('aria-live="polite"', WAVE_FILTER_CONTROLS)
+        self.assertIn('hidden>', WAVE_FILTER_CONTROLS)
+        self.assertIn('#wave-metric-rows tr[hidden]', FILTER_CSS)
+        self.assertIn('#wave-metric-rows tr[hidden] { display:table-row !important; }', FILTER_CSS)
+
     def test_search_is_private_and_scoped_to_metric_identity(self):
         for forbidden in ('fetch(', 'XMLHttpRequest', 'sendBeacon',
                           'localStorage', 'sessionStorage', 'document.cookie',
@@ -31,6 +40,8 @@ class MetricExplorerTests(unittest.TestCase):
         self.assertIn("normalize('NFC')", FILTER_JS)
         self.assertIn("replace(/ё/g, 'е')", FILTER_JS)
         self.assertIn("rows.length !== 28", FILTER_JS)
+        self.assertIn("rows.length !== 27", FILTER_JS)
+        self.assertIn("wave-metric-rows", FILTER_JS)
 
     @unittest.skipUnless(shutil.which('node'), 'Node required for actual JS filtering regression')
     def test_filters_reset_navigation_empty_and_print_rows(self):
@@ -115,6 +126,87 @@ assert.equal(rows.length, 28); // JS never removes scientific rows.
                                   text=True, capture_output=True, timeout=30)
             self.assertEqual(proc.returncode, 0, proc.stderr)
 
+
+    @unittest.skipUnless(shutil.which('node'), 'Node required for Waves filtering regression')
+    def test_waves_filter_is_independent_and_fails_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            script = Path(directory) / 'metric-filter.js'
+            script.write_text(FILTER_JS, encoding='utf-8')
+            harness = r"""
+const assert = require('node:assert/strict');
+class Element {
+  constructor(id) {
+    this.id = id;
+    this.handlers = {};
+    this.value = 'all';
+    this.textContent = '';
+    this.hidden = true;
+    this.disabled = false;
+    this.focusCount = 0;
+  }
+  addEventListener(name, handler) { this.handlers[name] = handler; }
+  focus() { this.focusCount++; }
+}
+const names = ['wave-metric-filters','wave-metric-query','wave-metric-family',
+  'wave-metric-state','wave-metric-clear','wave-metric-result-count',
+  'wave-metric-no-results','wave-metric-rows'];
+const elements = Object.fromEntries(names.map(name => [name, new Element(name)]));
+elements['wave-metric-query'].value = '';
+let rows = Array.from({length: 27}, (_, i) => ({
+  dataset: {metricFamily: i < 5 ? 'general' : i < 8 ? 'dialogue' :
+    i < 14 ? 'vocabulary' : 'punctuation',
+    metricState: i < 4 ? 'not_run' : 'measured'},
+  hidden: false,
+  querySelector: selector => {
+    assert.equal(selector, 'th[scope="row"]');
+    return {textContent: i === 5 ? 'Ёмкость / fantlab.dialogue.share_percent' :
+      'Metric ' + i};
+  }
+}));
+elements['wave-metric-rows'].querySelectorAll = selector => {
+  assert.equal(selector, 'tr.wave-metric-row');
+  return rows;
+};
+global.document = {
+  readyState: 'complete',
+  getElementById: id => elements[id],
+};
+require(process.argv[1]);
+const query = elements['wave-metric-query'];
+const family = elements['wave-metric-family'];
+const state = elements['wave-metric-state'];
+const clear = elements['wave-metric-clear'];
+const count = () => rows.filter(row => !row.hidden).length;
+assert.equal(elements['wave-metric-filters'].hidden, false);
+assert.equal(count(), 27);
+assert.match(elements['wave-metric-result-count'].textContent, /27 of 27/);
+query.value = 'емкость';
+query.handlers.input();
+assert.equal(count(), 1);
+query.value = '';
+query.handlers.input();
+state.value = 'not_run';
+state.handlers.change();
+assert.equal(count(), 4);
+family.value = 'punctuation';
+family.handlers.change();
+assert.equal(count(), 0);
+assert.equal(elements['wave-metric-no-results'].hidden, false);
+clear.handlers.click();
+assert.equal(count(), 27);
+assert.equal(query.focusCount, 1);
+assert.equal(clear.disabled, true);
+// Corrupt coverage: do not activate controls or modify source rows.
+elements['wave-metric-filters'].hidden = true;
+rows[0].dataset.metricState = 'passed';
+delete require.cache[require.resolve(process.argv[1])];
+require(process.argv[1]);
+assert.equal(elements['wave-metric-filters'].hidden, true);
+assert.equal(count(), 27);
+"""
+            proc = subprocess.run(['node', '-e', harness, str(script)],
+                                  text=True, capture_output=True, timeout=30)
+            self.assertEqual(proc.returncode, 0, proc.stderr)
 
 if __name__ == '__main__':
     unittest.main()

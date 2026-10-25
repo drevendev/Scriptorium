@@ -142,3 +142,19 @@ SHA-256 identities for both added exports, and the repository tests verify that
 the packaged files equal the existing source-free readiness CLI renderers.
 Corrupt or contradictory canonical evidence stops the build before the last
 valid site is replaced. M2 remains 0/5; built is not deployed or visually verified.
+
+## Progressive local metric explorer (#283)
+
+The existing FantLab evidence page adds a local-only, keyboard-labelled filter over the
+28 retained Anna Karenina diagnostic rows: search human labels or stable field IDs,
+choose Dialogue/General/Punctuation/Vocabulary, and select measured/NOT_RUN/actual
+unavailable. A live count and reset action make the current view explicit.
+Choosing a metric-family jump first reveals the family target. With JavaScript
+disabled the full 28-row table remains visible; printing restores all rows
+even after an interactive filter was applied. No search text is sent off-device,
+stored or submitted.
+
+Filtering changes **only on-screen visibility**. The 28 scientific rows, five-work
+source witness inventory and all metrics/readiness JSON and CSV files are unchanged.
+A measured row is NOT a parity pass: FantLab input identity and decimal rounding
+remain unknown. M2 is 0/5. Browser screenshots require later visual verification.

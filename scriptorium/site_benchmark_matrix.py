@@ -12,6 +12,7 @@ from urllib.parse import urlsplit
 
 from . import benchmark_metric_matrix as matrix
 from . import benchmark_readiness
+from .site_metric_filter import FILTER_CONTROLS
 from .benchmark import _reference_specs
 
 
@@ -195,8 +196,12 @@ def build(root: Path) -> dict[str, str]:
             ' id="metric-family-' + _esc(family_slug) + '" tabindex="-1"'
             if first_in_family else ""
         )
+        availability = ("measured" if status == "UNRESOLVED_SOURCE" else
+                        "not_run" if status == "NOT_RUN" else "unavailable")
         metrics.append(
-            '<tr class="metric-row"' + anchor + '><th scope="row"><span class="eyebrow">' +
+            '<tr class="metric-row" data-metric-family="' + _esc(family_slug) +
+            '" data-metric-state="' + availability + '"' + anchor +
+            '><th scope="row"><span class="eyebrow">' +
             _esc(group) + '</span><br><span lang="ru">' + _esc(label) +
             '</span><br><code>' + _esc(row["metric_id"]) +
             '</code></th><td>' + _number(row["expected"]) + '</td><td>' +
@@ -280,9 +285,10 @@ def build(root: Path) -> dict[str, str]:
         '<th scope="col">Not run</th><th scope="col">Actual unavailable</th>'
         '<th scope="col">Total fields</th></tr></thead><tbody>' +
         coverage_rows + '</tbody></table></div></section>'
-        '<nav aria-label="Metric families"><p>Jump to a metric family. '
+        '<nav id="metric-families" aria-label="Metric families"><p>Jump to a metric family. '
         'The full table and exports still include all 28 rows.</p>'
         '<div class="actions">' + family_links + '</div></nav>'
+        + FILTER_CONTROLS +
         '<p id="metrics-scroll">On narrow screens, scroll the metric table horizontally. '
         'Tab to it for keyboard scrolling.</p>'
         '<div class="table-wrap" role="region" aria-label="Anna Karenina metric differences" '
@@ -290,11 +296,12 @@ def build(root: Path) -> dict[str, str]:
         '<caption>FantLab reference vs Scriptorium retained values, diagnostic only</caption>'
         '<thead><tr><th scope="col">Metric ID</th><th scope="col">FantLab expected</th>'
         '<th scope="col">Scriptorium actual</th><th scope="col">Actual − expected</th>'
-        '<th scope="col">Scientific status</th></tr></thead><tbody>' +
+        '<th scope="col">Scientific status</th></tr></thead><tbody id="retained-metric-rows">' +
         ''.join(metrics) + '</tbody></table></div></section>'
         '<p class="notice">No parity passes have been established. Reproduction '
         'requires five legally usable ≥300,000-character works with the actual '
-        'FantLab analyzer-input identity and published rounding evidence.</p></main>'
+        'FantLab analyzer-input identity and published rounding evidence.</p>'
+        '<script src="../../assets/metric-filter.js" defer></script></main>'
     )
     return {
         "body": body,

@@ -23,22 +23,25 @@ class FantLabEvidencePageTests(unittest.TestCase):
         published = page.build(ROOT)
         content = published["body"]
         self.assertEqual(content.count('class="source-row"'), 5)
-        self.assertEqual(content.count('class="metric-row"'), 28)
+        self.assertEqual(content.count('class="metric-row" data-metric-family='), 28)
         # Five sources, 28 metrics, and four family-summary rows.
         self.assertEqual(content.count('scope="row"'), 37)
         self.assertEqual(content.count('<span lang="ru">'), 28)
-        self.assertIn('<nav aria-label="Metric families">', content)
+        self.assertIn('<nav id="metric-families" aria-label="Metric families">', content)
         for family, count in (("dialogue", 4), ("general", 4),
                               ("punctuation", 14), ("vocabulary", 6)):
+            anchor_state = "not_run" if family == "vocabulary" else "measured"
             self.assertIn(
                 f'<a href="#metric-family-{family}">{family.title()} ({count})</a>',
                 content,
             )
             self.assertIn(
-                f'<tr class="metric-row" id="metric-family-{family}" tabindex="-1">',
+                f'data-metric-family="{family}" data-metric-state="{anchor_state}" '
+                f'id="metric-family-{family}" tabindex="-1">',
                 content,
             )
-        self.assertEqual(content.count('id="metric-family-'), 4)
+        # Four family jump targets plus the family-filter control ID.
+        self.assertEqual(content.count('id="metric-family-'), 5)
         self.assertEqual(content.count('class="coverage-row"'), 4)
         self.assertIn('Measurement availability by family', content)
         self.assertIn('Vocabulary</a></th><td>1</td><td>2</td><td>3</td><td>6</td>', content)
@@ -62,7 +65,13 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("NOT_RUN", content)
         self.assertIn("UNKNOWN", content)
         self.assertIn('aria-describedby="metrics-scroll"', content)
-        self.assertNotIn("<script", content)
+        self.assertIn('<script src="../../assets/metric-filter.js" defer></script>', content)
+        self.assertEqual(content.count("<script"), 1)
+        self.assertEqual(content.count('data-metric-state="measured"'), 23)
+        self.assertEqual(content.count('data-metric-state="not_run"'), 2)
+        self.assertEqual(content.count('data-metric-state="unavailable"'), 3)
+        self.assertIn('id="metric-filters"', content)
+        self.assertIn('id="retained-metric-rows"', content)
         self.assertNotIn("source prose", content)
         self.assertEqual(json.loads(published["json"])["m2_source_matched_pass_count"], 0)
         self.assertIn("12958", published["csv"])
@@ -96,6 +105,8 @@ class FantLabEvidencePageTests(unittest.TestCase):
             receipt = build_site(ROOT, destination)
             published = page.build(ROOT)
             evidence = destination / "evidence" / "fantlab"
+            from scriptorium.site_metric_filter import FILTER_JS
+            self.assertEqual((destination / "assets" / "metric-filter.js").read_text(encoding="utf-8"), FILTER_JS)
             for name, key in (("readiness.json", "readiness_json"),
                               ("readiness.csv", "readiness_csv")):
                 self.assertEqual((evidence / name).read_text(encoding="utf-8"), published[key])

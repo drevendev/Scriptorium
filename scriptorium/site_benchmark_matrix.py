@@ -72,6 +72,7 @@ _DISPLAY_STATUS = {
     "UNRESOLVED_SOURCE": "Input identity unverified",
     "UNRESOLVED_NO_ACTUAL": "Actual value unavailable",
     "NOT_RUN": "Not run",
+    "MEASURED_NO_REFERENCE": "FantLab reference unavailable",
 }
 
 def validate_entry(entry: object) -> None:
@@ -235,8 +236,8 @@ def build(root: Path) -> dict[str, str]:
     if (report["schema_version"] != matrix.SCHEMA_VERSION
             or report["m2_source_matched_pass_count"] != 0
             or report["works_reported"] != 5
-            or report["works_with_retained_metric_diagnostics"] != 2
-            or report["retained_metric_rows"] != 55
+            or report["works_with_retained_metric_diagnostics"] != 3
+            or report["retained_metric_rows"] != 84
             or len(entries) != 5):
         raise ValueError("FantLab evidence publication gate has changed")
 
@@ -259,6 +260,16 @@ def build(root: Path) -> dict[str, str]:
             or {r["metric_id"] for r in wave["metric_rows"]} !=
                set(_METRIC_PRESENTATION) - {"fantlab.vocabulary.uasz_100000"}):
         raise ValueError("retained Running on Waves diagnostic coverage changed")
+
+    silver = next(
+        (entry for entry in entries if entry["candidate_id"] == "bely-silver-dove-ru"), None
+    )
+    if (silver is None or len(silver["metric_rows"]) != 29
+            or silver["metric_rows_with_actual"] != 24
+            or silver["metric_rows_without_actual"] != 5
+            or {r["metric_id"] for r in silver["metric_rows"]}
+               != set(_METRIC_PRESENTATION) | {"scriptorium.general.sentences"}):
+        raise ValueError("retained Silver Dove diagnostic coverage changed")
 
     works = []
     for item in entries:
@@ -400,6 +411,66 @@ def build(root: Path) -> dict[str, str]:
             '</code></td></tr>'
         )
 
+
+    # Pinned CI measurements: two displayed reference counts, not 29 invented
+    # FantLab expectations. Unknown values remain UNKNOWN (not zero).
+    silver_metrics = []
+    for row in silver["metric_rows"]:
+        metric_id, status = row["metric_id"], row["result"]
+        if row["display_rounding_evidence"] != "UNKNOWN" or status not in {
+            "UNRESOLVED_SOURCE", "MEASURED_NO_REFERENCE", "NOT_RUN"
+        }:
+            raise ValueError("Silver Dove reference or rounding upgrade refused")
+        extension = metric_id == "scriptorium.general.sentences"
+        if row["comparison_kind"] != ("EXTENSION_ONLY" if extension else "DIAGNOSTIC_ONLY"):
+            raise ValueError("Silver Dove extension classification drift")
+        if extension:
+            label, family, unit = "Sentence count (Scriptorium extension)", "Extension", "sentences"
+        else:
+            label, family = _METRIC_PRESENTATION[metric_id]
+            unit = _VALUE_UNITS[metric_id]
+        if (row["actual"] is None) != (status == "NOT_RUN"):
+            raise ValueError("Silver Dove missing metric was promoted")
+        if status == "UNRESOLVED_SOURCE":
+            if type(row["expected"]) is not int or type(row["actual_minus_expected"]) is not int:
+                raise ValueError("Silver Dove integer FantLab reference missing")
+        elif row["expected"] is not None or row["actual_minus_expected"] is not None:
+            raise ValueError("Silver Dove unknown FantLab reference was fabricated")
+        expected = "UNKNOWN" if row["expected"] is None else str(row["expected"])
+        delta = "UNKNOWN" if row["actual_minus_expected"] is None else str(row["actual_minus_expected"])
+        silver_metrics.append(
+            '<tr class="silver-metric-row" data-metric-family="' + _esc(family.lower()) +
+            '" data-metric-state="' + ("not_run" if status == "NOT_RUN" else "measured") +
+            '"><th scope="row"><span class="eyebrow">' + _esc(family) +
+            '</span><br><span lang="ru">' + _esc(label) +
+            '</span><br><code>' + _esc(metric_id) +
+            '</code></th><td>' + _esc(unit) + '</td><td>' + _esc(expected) +
+            '</td><td>' + _number(row["actual"]) + '</td><td>' + _esc(delta) +
+            '</td><td>' + _esc(_DISPLAY_STATUS[status]) +
+            '<br><code>' + _esc(status) + '</code></td></tr>'
+        )
+    silver_section = (
+        '<section aria-labelledby="silver-title"><h2 id="silver-title">'
+        'Silver Dove: 29 retained Scriptorium fields</h2>'
+        '<p>Andrei Bely · a verified 563,125-character pinned public source; '
+        '24 observed values and five dictionary-dependent NOT_RUN. '
+        '<strong>Only two FantLab displayed references are retained</strong> '
+        '(characters and words); the other 27 reference values are UNKNOWN, never zero. '
+        'Sentence count is a Scriptorium extension. The +14,075 character-count '
+        'difference is an unmatched-source diagnostic, not normalization evidence. '
+        'Source input identity, FantLab rounding and M2 parity remain unverified.</p>'
+        '<p id="silver-scroll">Scroll the table horizontally on mobile; '
+        'Tab to its region for keyboard scrolling.</p>'
+        '<div class="table-wrap" role="region" tabindex="0" '
+        'aria-label="Silver Dove diagnostic fields" aria-describedby="silver-scroll"><table>'
+        '<caption>29 source-frozen field observations; only two FantLab reference counts; M2 0/5</caption>'
+        '<thead><tr><th scope="col">Metric</th><th scope="col">Candidate unit</th>'
+        '<th scope="col">FantLab displayed</th><th scope="col">Scriptorium actual</th>'
+        '<th scope="col">Actual − displayed</th><th scope="col">Scientific status</th>'
+        '</tr></thead><tbody id="silver-metric-rows">' + ''.join(silver_metrics) +
+        '</tbody></table></div></section>'
+    )
+
     shared = _shared_normalized_rows(anna["metric_rows"], wave["metric_rows"])
     # Today there are twenty shared measured per-unit observations. Any
     # changed field availability/semantics requires a reviewed new contract.
@@ -468,7 +539,7 @@ def build(root: Path) -> dict[str, str]:
         'docs/BENCHMARK_METRIC_MATRIX.md">Read the methodology ↗</a></p>'
         '</header>'
         '<section aria-labelledby="works-title"><h2 id="works-title">Five frozen public candidates</h2>'
-        '<p>Two works have retained metric observations. The remaining three '
+        '<p>Three works have retained metric observations. The remaining two '
         'have NOT_RUN metric status. Each source row shows public-domain '
         'edition evidence, frozen text characters (including spaces), FantLab '
         'displayed characters, a signed count difference and relative drift '
@@ -539,6 +610,7 @@ def build(root: Path) -> dict[str, str]:
         '<th scope="col">FantLab expected</th><th scope="col">Scriptorium actual</th>'
         '<th scope="col">Actual − expected</th><th scope="col">Scientific status</th>'
         '</tr></thead><tbody id="wave-metric-rows">' + ''.join(wave_metrics) + '</tbody></table></div></section>'
+        + silver_section +
         + shared_section +
         '<p class="notice">No parity passes have been established. Reproduction '
         'requires five legally usable ≥300,000-character works with the actual '

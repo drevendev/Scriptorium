@@ -5,7 +5,10 @@ assertion of source-matched parity. The underlying matrix validates its inputs.
 """
 from __future__ import annotations
 
+import csv
 import html
+import io
+import json
 from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -138,6 +141,59 @@ def _shared_normalized_rows(left_rows: list[dict], right_rows: list[dict]) -> li
             "difference_unit": "percentage points" if unit == "%" else unit,
         })
     return pairs
+
+
+
+def _shared_rate_exports(rows: list[dict], anna: dict, wave: dict) -> tuple[str, str]:
+    """Portable, source-free 20-rate comparison; source identity remains unknown."""
+    if len(rows) != 20 or len({r["metric_id"] for r in rows}) != 20:
+        raise ValueError("shared rate export requires twenty distinct measured rows")
+    if (anna["candidate_id"], wave["candidate_id"]) != (
+        "tolstoy-anna-karenina-ru", "grin-running-on-waves-ru"
+    ):
+        raise ValueError("shared rate export source order changed")
+    works = []
+    for item in (anna, wave):
+        if item["exact_fantlab_input_identity"] != "UNKNOWN":
+            raise ValueError("shared rate export cannot claim proven FantLab input identity")
+        works.append({
+            "candidate_id": item["candidate_id"],
+            "frozen_raw_sha256": item["source_witness_sha256"],
+            "fantlab_reference_url": item["reference_url"],
+            "fantlab_reference_date": item["reference_date"],
+            "fantlab_input_identity": "UNKNOWN",
+        })
+    document = {
+        "schema_version": "scriptorium-shared-rate-comparison-v1",
+        "comparison_direction": "running_on_waves_minus_anna_karenina",
+        "evidence_class": "diagnostic_source_unmatched",
+        "m2_parity_admissible": False,
+        "m2_weight": 0,
+        "units_note": "Percent-valued differences are percentage points; other differences use the listed candidate unit.",
+        "works": works,
+        "measurements": rows,
+    }
+    json_text = json.dumps(document, ensure_ascii=False, indent=2,
+                           sort_keys=True, allow_nan=False) + "\n"
+    output = io.StringIO(newline="")
+    writer = csv.writer(output, lineterminator="\n")
+    writer.writerow(("left_candidate_id", "right_candidate_id", "left_source_sha256",
+                     "right_source_sha256", "metric_id", "label", "family", "unit",
+                     "anna_actual", "waves_actual", "waves_minus_anna_exact_decimal",
+                     "difference_unit", "evidence_class", "fantlab_input_identity",
+                     "left_fantlab_reference_url", "right_fantlab_reference_url",
+                     "left_fantlab_reference_date", "right_fantlab_reference_date",
+                     "schema_version", "m2_parity_admissible", "m2_weight"))
+    for row in rows:
+        writer.writerow((works[0]["candidate_id"], works[1]["candidate_id"],
+                         works[0]["frozen_raw_sha256"], works[1]["frozen_raw_sha256"],
+                         row["metric_id"], row["label"], row["family"], row["unit"],
+                         str(row["left"]), str(row["right"]), row["right_minus_left"],
+                         row["difference_unit"], "diagnostic_source_unmatched", "UNKNOWN",
+                         works[0]["fantlab_reference_url"], works[1]["fantlab_reference_url"],
+                         works[0]["fantlab_reference_date"], works[1]["fantlab_reference_date"],
+                         "scriptorium-shared-rate-comparison-v1", "false", "0"))
+    return json_text, output.getvalue()
 
 
 def _reference(url: object) -> str:
@@ -348,6 +404,7 @@ def build(root: Path) -> dict[str, str]:
     # changed field availability/semantics requires a reviewed new contract.
     if len(shared) != 20:
         raise ValueError("shared normalized diagnostic coverage changed")
+    shared_json, shared_csv = _shared_rate_exports(shared, anna, wave)
     shared_rows = [
         '<tr class="cross-metric-row"><th scope="row"><span class="eyebrow">' +
         _esc(row["family"]) + '</span><br><span lang="ru">' +
@@ -373,6 +430,9 @@ def build(root: Path) -> dict[str, str]:
         'identity, denominator compatibility and rounding remain unverified; '
         'no row proves FantLab parity, causal author style or a genre effect. '
         'Use the two full tables or JSON/CSV above for all fields and unknowns.</p>'
+        '<p class="actions"><a href="shared-rates.json" download>'
+        'Download the 20-rate comparison (JSON)</a> '
+        '<a href="shared-rates.csv" download>Download comparison CSV</a></p>'
         '<p id="shared-scroll">On narrow screens scroll this table horizontally; '
         'Tab to the table region for keyboard scrolling.</p>'
         '<div class="table-wrap" role="region" tabindex="0" '
@@ -488,4 +548,6 @@ def build(root: Path) -> dict[str, str]:
         "csv": matrix.render_metric_matrix(report, "csv"),
         "readiness_json": benchmark_readiness.render_report(readiness, "json"),
         "readiness_csv": benchmark_readiness.render_report(readiness, "csv"),
+        "shared_json": shared_json,
+        "shared_csv": shared_csv,
     }

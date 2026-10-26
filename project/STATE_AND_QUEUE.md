@@ -1,19 +1,19 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 326
+STATE_REVISION: 327
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-25
-LAST_RESULT: PR #321 merged to master at 297e2ff7131f0e24206c9d4b8b3d4882834d2647. A new bounded Reader comparison unit has been authored against that exact base; no new full-text metrics or parity observations.
+LAST_COMMITTED_RUN_AT: 2026-10-26
+LAST_RESULT: PR #322 merged to master at 15311b55036436a47f50388c62d702786a721312. Authored a source-free JSON/CSV export for its twenty measured cross-work rates, with source digests and explicit diagnostic-only status; no new full-text metrics or parity observations.
 LAST_VERIFIED_PROGRESS: Master retains 28 Anna and 27 Waves diagnostic rows (46 measured, nine missing). Three other candidates still lack metric runs. M2 remains 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-SHARED-NORMALIZED-RATES
-ISSUES: #283 (partial), #281 (partial, reader evidence presentation)
+UNIT_ID: SCRIP-REPRO-010-SHARED-RATE-EXPORTS
+ISSUES: #281 (partial, portable comparison), #283 (partial, reader downloads)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-shared-normalized-metrics
-BASE: 297e2ff7131f0e24206c9d4b8b3d4882834d2647
-ACCEPTANCE: Reader's canonical FantLab evidence route shows 20 shared actually measured, nominally length-normalized Anna/Waves metrics side-by-side, with exact signed Waves-minus-Anna decimal differences, percentage points for percentage-valued observations, accessible source-free table and no fabricated missing values. Character/word/vocabulary totals excluded. Original 55 diagnostic rows and JSON/CSV must be unchanged. Document cross-book/source-match/normalization limits and test tampered status, duplicate IDs, non-finite and missing observations. Exact-head CI and later-run acceptance are required before merge; browser screenshots remain VISUAL_NOT_VERIFIED unless actual browser execution succeeds.
+BRANCH: scrip-repro-010-shared-rate-downloads
+BASE: 15311b55036436a47f50388c62d702786a721312
+ACCEPTANCE: The existing 20 cross-book diagnostic comparisons are independently downloadable as versioned source-free JSON and CSV, with exact signed decimal deltas, units, source SHA-256 witnesses, dated reference metadata and explicitly UNKNOWN FantLab input identity. Atomic Pages build and receipt SHA-256 include both new exports; the previous 55-row scientific exports remain byte-identical. New test coverage checks the exact arithmetic, missing/duplicate/identity-upgrade rejection and packaging. Later fresh exact-head CI and independent acceptance precede merge; no parity upgrade.
 
 ## Next user-visible milestone and compact queue
 
@@ -21,7 +21,7 @@ Milestone: Research-ready Reader with inspectable two-book diagnostic comparison
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Shared normalized-rate view | Accept this new comparison after exact-head CI and verify packaged site | Later independent acceptance, no actual parity upgrade |
+| P1 | #281 Portable two-work rate exports | Accept tested JSON/CSV downloads and packaged receipt at exact PR head | Later independent acceptance, no parity upgrade |
 | P2 | #281 Remaining work metrics | Obtain real retained field runs for Brothers Karamazov, Silver Dove and Hyperboloid | Licensed frozen bytes, pinned analyzer, dated reference |
 | P3 | #282 Native N contrast | Quantify actual frozen-work noun/cardinal POS effects under pinned pylem | Exact pinned native evidence |
 | P4 | #283 Reader visual acceptance | Exercise desktop/mobile/print flows and fix real accessibility findings | Browser restricted; structural tests still executable |

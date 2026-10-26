@@ -180,13 +180,19 @@ def _shared_rate_exports(rows: list[dict], anna: dict, wave: dict) -> tuple[str,
     writer.writerow(("left_candidate_id", "right_candidate_id", "left_source_sha256",
                      "right_source_sha256", "metric_id", "label", "family", "unit",
                      "anna_actual", "waves_actual", "waves_minus_anna_exact_decimal",
-                     "difference_unit", "evidence_class", "fantlab_input_identity"))
+                     "difference_unit", "evidence_class", "fantlab_input_identity",
+                     "left_fantlab_reference_url", "right_fantlab_reference_url",
+                     "left_fantlab_reference_date", "right_fantlab_reference_date",
+                     "schema_version", "m2_parity_admissible", "m2_weight"))
     for row in rows:
         writer.writerow((works[0]["candidate_id"], works[1]["candidate_id"],
                          works[0]["frozen_raw_sha256"], works[1]["frozen_raw_sha256"],
                          row["metric_id"], row["label"], row["family"], row["unit"],
                          str(row["left"]), str(row["right"]), row["right_minus_left"],
-                         row["difference_unit"], "diagnostic_source_unmatched", "UNKNOWN"))
+                         row["difference_unit"], "diagnostic_source_unmatched", "UNKNOWN",
+                         works[0]["fantlab_reference_url"], works[1]["fantlab_reference_url"],
+                         works[0]["fantlab_reference_date"], works[1]["fantlab_reference_date"],
+                         "scriptorium-shared-rate-comparison-v1", "false", "0"))
     return json_text, output.getvalue()
 
 

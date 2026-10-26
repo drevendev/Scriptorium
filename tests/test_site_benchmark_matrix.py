@@ -25,7 +25,12 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertEqual(content.count('class="source-row"'), 5)
         self.assertEqual(content.count('class="metric-row" data-metric-family='), 28)
         self.assertEqual(content.count('class="wave-metric-row"'), 27)
-        self.assertEqual(content.count('data-metric-family="punctuation"'), 42)
+        self.assertEqual(content.count('class="silver-metric-row"'), 29)
+        self.assertIn('aria-label="Silver Dove diagnostic fields"', content)
+        self.assertIn('id="silver-metric-rows"', content)
+        self.assertIn('only two FantLab reference counts', content)
+        self.assertIn('Silver Dove: 29 retained Scriptorium fields', content)
+        self.assertEqual(content.count('data-metric-family="punctuation"'), 56)
         self.assertEqual(content.count('id="wave-metric-rows"'), 1)
         self.assertIn('id="wave-metric-filters"', content)
         self.assertIn('aria-controls="wave-metric-rows"', content)
@@ -41,8 +46,8 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("four dictionary-dependent metrics not run", content)
         self.assertIn("360987</td><td>363819</td><td>2832", content)
         # Five sources, 55 individual metrics, 20 cross-work rows, four summaries.
-        self.assertEqual(content.count('scope="row"'), 84)
-        self.assertEqual(content.count('<span lang="ru">'), 75)
+        self.assertEqual(content.count('scope="row"'), 113)
+        self.assertEqual(content.count('<span lang="ru">'), 104)
         self.assertIn('<nav id="metric-families" aria-label="Metric families">', content)
         for family, count in (("dialogue", 4), ("general", 4),
                               ("punctuation", 14), ("vocabulary", 6)):
@@ -68,7 +73,7 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn('<span lang="ru">Длина текста, знаков</span>', content)
         self.assertIn('<code>fantlab.general.characters</code>', content)
         self.assertIn('<th scope="col">Metric ID</th><th scope="col">Unit</th>', content)
-        self.assertEqual(content.count('occurrences / 1,000 word tokens</td>'), 42)
+        self.assertEqual(content.count('occurrences / 1,000 word tokens</td>'), 56)
         self.assertIn('mean unique forms / 3,000-token window</td>', content)
         self.assertIn('mean unique forms / 10,000-token window</td>', content)
         self.assertIn('mean unique forms / 100,000-token window</td>', content)
@@ -78,7 +83,7 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("Actual value unavailable", content)
         self.assertIn("UNRESOLVED_SOURCE", content)
         self.assertIn("M2: 0/5", content)
-        self.assertIn("Two works have retained metric observations", content)
+        self.assertIn("Three works have retained metric observations", content)
         self.assertIn("Frozen:</strong> 1,705,605", content)
         self.assertIn("FantLab displayed:</strong> 1,692,647", content)
         self.assertIn("Δ:</strong> +12,958", content)
@@ -92,14 +97,16 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn('<script src="../../assets/metric-filter.js" defer></script>', content)
         self.assertIn('<script src="../../assets/shared-metric-filter.js" defer></script>', content)
         self.assertEqual(content.count("<script"), 2)
-        self.assertEqual(content.count('data-metric-state="measured"'), 46)
-        self.assertEqual(content.count('data-metric-state="not_run"'), 6)
+        self.assertEqual(content.count('data-metric-state="measured"'), 70)
+        self.assertEqual(content.count('data-metric-state="not_run"'), 11)
         self.assertEqual(content.count('data-metric-state="unavailable"'), 3)
         self.assertIn('id="metric-filters"', content)
         self.assertIn('id="retained-metric-rows"', content)
         self.assertNotIn("source prose", content)
         self.assertEqual(json.loads(published["json"])["m2_source_matched_pass_count"], 0)
         self.assertIn("12958", published["csv"])
+        self.assertIn("14075", published["csv"])
+        self.assertIn("MEASURED_NO_REFERENCE", published["json"])
         self.assertIn('href="readiness.json" download', content)
         self.assertIn('href="readiness.csv" download', content)
         source_report = json.loads(published["readiness_json"])
@@ -119,6 +126,24 @@ class FantLabEvidencePageTests(unittest.TestCase):
             page.benchmark_readiness.render_report(page.benchmark_readiness.build_readiness(ROOT), "csv"),
         )
         self.assertEqual(page.build(ROOT), published)
+
+
+    def test_silver_dove_unknowns_are_not_parity_and_invalid_rows_fail_closed(self):
+        real = page.matrix.build_metric_matrix(ROOT)
+        for row in real["entries"][2]["metric_rows"]:
+            if row["expected"] is None:
+                self.assertIsNone(row["actual_minus_expected"])
+        changed = copy.deepcopy(real)
+        target = changed["entries"][2]["metric_rows"][0]
+        target["expected"] = 0
+        with patch.object(page.matrix, "build_metric_matrix", return_value=changed):
+            with self.assertRaisesRegex(ValueError, "fabricated"):
+                page.build(ROOT)
+        changed = copy.deepcopy(real)
+        changed["entries"][2]["metric_rows"][28]["comparison_kind"] = "DIAGNOSTIC_ONLY"
+        with patch.object(page.matrix, "build_metric_matrix", return_value=changed):
+            with self.assertRaisesRegex(ValueError, "extension classification"):
+                page.build(ROOT)
 
     def test_metric_units_match_all_versioned_retained_fields(self):
         self.assertEqual(set(page._VALUE_UNITS), set(page._METRIC_PRESENTATION))

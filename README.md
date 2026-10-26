@@ -181,16 +181,21 @@ validated field-level observations in the metric matrix below.
 
 To inspect **actual retained per-metric differences** rather than character counts alone,
 run `python -m scriptorium.benchmark_metric_matrix --root . --format markdown`.
-The source-free matrix validates **55 field-level diagnostic rows** across
-**two works with retained measurements**: *Anna Karenina* has 28 rows
-(23 numeric, five without actuals) and *Running on Waves* has 27
-(23 numeric, four NOT_RUN). That is 46 measured and nine unavailable actuals;
-the remaining **three** frozen works have no retained field-level run and remain
-NOT_RUN, not zero. Anna's historical rows include 4/4 general, 4/4 dialogue,
+The source-free matrix validates **84 field-level diagnostic/extension rows** across
+**three works with retained measurements**: *Anna Karenina* has 28 rows
+(23 numeric, five without actuals), *Running on Waves* has 27
+(23 numeric, four NOT_RUN), and *The Silver Dove* has 29 (24 numeric, five
+dictionary-dependent NOT_RUN). That is 70 measured and 14 unavailable actuals;
+the remaining **two** frozen works have no retained field-level run and remain
+NOT_RUN, not zero. Silver Dove's source-free CI result is pinned to the actual
+artifact bytes, but only two FantLab displayed counts are available for it;
+other reference values are UNKNOWN, and none of the works establishes parity. Anna's historical rows include 4/4 general, 4/4 dialogue,
 14/14 punctuation and 1/6 vocabulary measurements; its other five vocabulary
 actuals are two NOT_RUN and three unresolved.
 
-The Reader labels metric units and percentage-point differences, and offers
+The Reader displays all 29 Silver Dove fields in an accessible static table,
+including separate unknown FantLab references and an explicit extension marker.
+It also labels metric units and percentage-point differences, and offers
 **independent search/filter controls for both books** by metric name/ID,
 family and availability. Tables and source-free JSON/CSV remain available
 without JavaScript and in print. A separate **20-row side-by-side comparison**

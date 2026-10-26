@@ -436,8 +436,14 @@ def build(root: Path) -> dict[str, str]:
                 raise ValueError("Silver Dove integer FantLab reference missing")
         elif row["expected"] is not None or row["actual_minus_expected"] is not None:
             raise ValueError("Silver Dove unknown FantLab reference was fabricated")
-        expected = "UNKNOWN" if row["expected"] is None else str(row["expected"])
-        delta = "UNKNOWN" if row["actual_minus_expected"] is None else str(row["actual_minus_expected"])
+        # A Scriptorium-only metric has no FantLab counterpart, rather than
+        # a missing FantLab reference that might be obtained in future.
+        expected = ("N/A (extension)" if extension else
+                    "UNKNOWN" if row["expected"] is None else str(row["expected"]))
+        delta = ("N/A (extension)" if extension else
+                 "UNKNOWN" if row["actual_minus_expected"] is None else str(row["actual_minus_expected"]))
+        display_status = ("Scriptorium extension; no FantLab counterpart" if extension else
+                          _DISPLAY_STATUS[status])
         silver_metrics.append(
             '<tr class="silver-metric-row" data-metric-family="' + _esc(family.lower()) +
             '" data-metric-state="' + ("not_run" if status == "NOT_RUN" else "measured") +
@@ -446,7 +452,7 @@ def build(root: Path) -> dict[str, str]:
             '</span><br><code>' + _esc(metric_id) +
             '</code></th><td>' + _esc(unit) + '</td><td>' + _esc(expected) +
             '</td><td>' + _number(row["actual"]) + '</td><td>' + _esc(delta) +
-            '</td><td>' + _esc(_DISPLAY_STATUS[status]) +
+            '</td><td>' + _esc(display_status) +
             '<br><code>' + _esc(status) + '</code></td></tr>'
         )
     silver_section = (
@@ -455,8 +461,9 @@ def build(root: Path) -> dict[str, str]:
         '<p>Andrei Bely · a verified 563,125-character pinned public source; '
         '24 observed values and five dictionary-dependent NOT_RUN. '
         '<strong>Only two FantLab displayed references are retained</strong> '
-        '(characters and words); the other 27 reference values are UNKNOWN, never zero. '
-        'Sentence count is a Scriptorium extension. The +14,075 character-count '
+        '(characters and words); 26 further FantLab-shaped references are UNKNOWN, never zero. '
+        'Sentence count is a separate Scriptorium extension without a FantLab counterpart. '
+        'The +14,075 character-count '
         'difference is an unmatched-source diagnostic, not normalization evidence. '
         'Source input identity, FantLab rounding and M2 parity remain unverified.</p>'
         '<p id="silver-scroll">Scroll the table horizontally on mobile; '

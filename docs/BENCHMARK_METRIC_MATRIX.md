@@ -30,8 +30,10 @@ no source prose. CSV emits one row per retained metric, plus a clearly labelled
 - **The Silver Dove** now has a permanently retained byte-for-byte copy of
   the exact 2026-10-26 successful CI receipt: **29 Scriptorium fields**,
   **24 numeric**, **five NOT_RUN**; its only retained FantLab displayed
-  reference counts are characters and words. The other **27 expected values
-  are UNKNOWN**, not zero. The sentence count is a Scriptorium extension.
+  reference counts are characters and words. Of the 28 FantLab-shaped
+  metrics, the remaining **26 reference values are UNKNOWN**, not zero;
+  the 29th sentence-count field is a Scriptorium extension without a
+  FantLab counterpart.
 - **The Brothers Karamazov and The Hyperboloid of Engineer Garin** still have
   no retained field-by-field artifact: their metric status remains **NOT_RUN**.
 - All five FantLab analyzer-input identities are **UNKNOWN**. M2 remains **0/5**.
@@ -279,8 +281,9 @@ The exports bind both works to frozen raw SHA-256 source witnesses and dated
 FantLab references. They explicitly mark their scientific status
 \`diagnostic_source_unmatched\` / input identity \`UNKNOWN\`, with M2
 weight zero. Raw size/vocabulary totals, missing observations and any parity
-promotion are excluded. Original 55-row \`metrics.json/csv\` and source
-\`readiness.json/csv\` retain their previous content.
+promotion are excluded. The shared-rate exports still contain only Anna and
+Waves. The subsequently retained Silver Dove fields expanded `metrics.json/csv`
+from 55 to 84 rows; `readiness.json/csv` and `shared-rates.json/csv` are unchanged.
 
 The canonical site builder computes these files from validated retained
 records, writes them atomically with the site, and records their SHA-256

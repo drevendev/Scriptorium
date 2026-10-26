@@ -134,6 +134,13 @@ class FantLabEvidencePageTests(unittest.TestCase):
         for row in real["entries"][2]["metric_rows"]:
             if row["expected"] is None:
                 self.assertIsNone(row["actual_minus_expected"])
+        content = page.build(ROOT)["body"]
+        self.assertIn("26 further FantLab-shaped references are UNKNOWN", content)
+        self.assertIn(
+            "N/A (extension)</td><td>6219</td><td>N/A (extension)</td>"
+            "<td>Scriptorium extension; no FantLab counterpart", content
+        )
+        self.assertNotIn("other 27 reference values", content)
         changed = copy.deepcopy(real)
         target = changed["entries"][2]["metric_rows"][0]
         target["expected"] = 0

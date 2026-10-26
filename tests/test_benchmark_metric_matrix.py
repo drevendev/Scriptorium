@@ -225,6 +225,8 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         self.assertIn("the two works without retained diagnostics", method)
         self.assertIn("all 84 rows in exports", method)
         self.assertIn("**not a global evidence verdict**", readiness)
+        self.assertIn(f"already validates {report['retained_metric_rows']}\n", readiness)
+        self.assertIn("**26 reference values are UNKNOWN**", method)
         self.assertNotIn("Filters affect Anna only", method)
         self.assertNotIn("all four other works remain", method)
         self.assertNotIn("marks the other four works", readme)

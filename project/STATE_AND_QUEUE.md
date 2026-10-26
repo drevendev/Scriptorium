@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 328
+STATE_REVISION: 329
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-26
-LAST_RESULT: PR #323 merged into master at b59e7fd0e1e7fef720007e9702979d6e3a09307e. A separate local-only cross-work rate filter is authored for later acceptance; there are no new measurements or parity claims.
-LAST_VERIFIED_PROGRESS: Master retains 28 Anna and 27 Waves diagnostic rows (46 measured, nine missing). Three other candidates still lack metric runs. M2 remains 0/5.
+LAST_RESULT: #324 independently accepted and merged into master c7762f67fb7ad554d163c8fdf51c73ab95927364. One new Silver Dove pinned field-measurement PR is authored for later independent acceptance; hosted CI has not yet been established at authoring.
+LAST_VERIFIED_PROGRESS: Anna (28) and Waves (27) retain 55 source-unmatched diagnostic rows (46 measured, nine missing). Silver Dove has an authored standalone deterministic replay path only, not yet an accepted retained measurement. M2 remains 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-SHARED-COMPARISON-FILTERS
-ISSUES: #283 (partial)
-STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-012-shared-comparison-filters
-BASE: b59e7fd0e1e7fef720007e9702979d6e3a09307e
-ACCEPTANCE: Independently search the existing twenty source-unmatched rates by label/metric ID and family, with accessible reset/status, no-JS/print full-row fallback and fail-closed invalid coverage. Original Anna/Waves filters, values, exports, source witnesses and M2=0/5 unchanged. Node DOM/site build checks and later independent exact-head acceptance required.
+UNIT_ID: SCRIP-REPRO-010-SILVER-DOVE-FIELDS
+ISSUES: #281 (partial)
+STATUS: AUTHORED_PENDING_CI_AND_LATER_ACCEPTANCE
+BRANCH: scrip-repro-010-silver-dove-diagnostic
+BASE: c7762f67fb7ad554d163c8fdf51c73ab95927364
+ACCEPTANCE: Replay frozen Silver Dove exact Wikisource revision and source/body hashes; generate 29 versioned inferred metrics, with 24 actually computed, five unavailable dictionary fields, two *already documented* FantLab integer display references and source-free output. Check drift/overclaim regression tests and exact-head native hosted CI before later acceptance. No literary prose stored, no M2 parity promotion.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Research-ready Reader with inspectable two-book diagnostic comparisons, verified five-work source evidence, and progressively larger real-work measurement coverage without FantLab parity overclaims.
+Milestone: Expand genuinely measured, source-free full-work diagnostics beyond Anna and Waves, with explicit source/date/profile evidence and an understandable Reader, without invented FantLab parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Independently filter shared rates | Accept 20-row search/family controls without affecting exports | Later fresh PR acceptance, no scientific upgrade |
-| P2 | #281 Remaining work metrics | Obtain real retained field runs for Brothers Karamazov, Silver Dove and Hyperboloid | Licensed frozen bytes, pinned analyzer, dated reference |
-| P3 | #282 Native N contrast | Quantify actual frozen-work noun/cardinal POS effects under pinned pylem | Exact pinned native evidence |
-| P4 | #283 Reader visual acceptance | Exercise desktop/mobile/print flows and fix real accessibility findings | Browser restricted; structural tests still executable |
-| P5 | #285 Pages publication | Publish and live-verify source-free Reader | Admin/deployment and #284 rights interlocks |
+| P1 | #281 Silver Dove field diagnostics | Later accept pinned 29-field source-free CI replay; retain verified artifact separately | Exact-head hosted replay and later acceptance |
+| P2 | #281 Remaining works | Reproducible field runs for Brothers Karamazov and Hyperboloid | Frozen bytes, pinned analyzer, dated references |
+| P3 | #282 Native N contrast | Quantify frozen-work noun/cardinal POS effects under pinned pylem | Exact pinned native evidence |
+| P4 | #283 Reader visual acceptance | Exercise desktop/mobile/print and fix actual accessibility findings | Browser restricted; structural tests possible |
+| P5 | #285 Pages publication | Publish, load and verify source-free Reader | Admin/deployment and #284 rights gates |
 
 M2: 0/5 unchanged. Scientific, legal, privacy and source-identity gates remain in force.
 

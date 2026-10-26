@@ -32,7 +32,10 @@ candidate values remain **inferred**; dictionary-free and POS-morphology
 limitations remain explicit. No published result or M2 parity pass is claimed:
 `fantlab_source_edition_match=unknown`, `m2_weight=0`, M2 **0/5**.
 
-The first hosted successful capture is still a CI measurement receipt, **not**
-a retained benchmark entry or published Pages output. Retaining values in the
-Reader requires independent replay/artifact review and a separate integrated
-acceptance change, without weakening the five-work M2 gate.
+The successful pinned CI capture from 2026-10-26 is now retained exactly as
+`corpus/candidates/diagnostics/bely-silver-dove-ru.json`, with the original
+Git blob SHA-1 `88bfe95435be1b72703de65d314c6926b5f83a60`.
+The matrix and Reader verify source witness, dated FantLab counts, profile, scientific
+status and exact receipt bytes before displaying its 29 rows (24 numeric, five NOT_RUN).
+All but two FantLab field reference values remain UNKNOWN; no M2 parity is claimed.
+The artifact and built Reader are **not** deployed or LIVE_VERIFIED.

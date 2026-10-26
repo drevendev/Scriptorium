@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 329
+STATE_REVISION: 330
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-26
-LAST_RESULT: #324 independently accepted and merged into master c7762f67fb7ad554d163c8fdf51c73ab95927364. One new Silver Dove pinned field-measurement PR is authored for later independent acceptance; hosted CI has not yet been established at authoring.
-LAST_VERIFIED_PROGRESS: Anna (28) and Waves (27) retain 55 source-unmatched diagnostic rows (46 measured, nine missing). Silver Dove has an authored standalone deterministic replay path only, not yet an accepted retained measurement. M2 remains 0/5.
+LAST_RESULT: #325 independently merged into master at 1da0f47da1107ba38cb845d5ed865170488564cd after all 24 PR workflows succeeded. Its source-free CI artifact was independently downloaded and its original Git blob bytes matched. The retained third-work Reader/matrix integration is authored as a separate PR for later acceptance, not yet accepted or deployed.
+LAST_VERIFIED_PROGRESS: Anna 28, Running on Waves 27 and Silver Dove 29 rows (84 recorded fields, 70 numeric, 14 unknown actuals) pending new integrated CI acceptance. Only two Silver Dove FantLab display counts exist; 27 other reference values are unknown, not zero. M2 is still 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-SILVER-DOVE-FIELDS
-ISSUES: #281 (partial)
+UNIT_ID: SCRIP-REPRO-010-RETAIN-SILVER-DOVE
+ISSUES: #281 (partial), #283 (readable presentation)
 STATUS: AUTHORED_PENDING_CI_AND_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-silver-dove-diagnostic
-BASE: c7762f67fb7ad554d163c8fdf51c73ab95927364
-ACCEPTANCE: Replay frozen Silver Dove exact Wikisource revision and source/body hashes; generate 29 versioned inferred metric slots, up to 24 computed depending on observed segments, five unavailable dictionary fields, two *already documented* FantLab integer display references and source-free output. Check drift/overclaim regression tests and exact-head native hosted CI before later acceptance. No literary prose stored, no M2 parity promotion.
+BRANCH: scrip-repro-010-retain-silver-dove-reader
+BASE: 1da0f47da1107ba38cb845d5ed865170488564cd
+ACCEPTANCE: Pin byte-identical successful PR #325 run 40266373995 derived JSON; validate its source identity, 29 rows, metric and dependency profiles, two dated actual FantLab count references, 24 measurements and five NOT_RUN; add a truthful readable Silver Dove table and 84-row downloadable source-free matrix. Preserve two independent existing Anna/Waves filters, 20-rate comparison, five source witnesses and M2=0/5. Require exact-head test/build CI, later independent review and no same-wake merge. Browser visual verification and Pages deploy separate.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Expand genuinely measured, source-free full-work diagnostics beyond Anna and Waves, with explicit source/date/profile evidence and an understandable Reader, without invented FantLab parity.
+Milestone: Three genuinely measured full-work diagnostics visible in Reader, followed by remaining frozen candidates, with explicit source/date/profile witnesses and no invented FantLab parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Silver Dove field diagnostics | Later accept pinned 29-field source-free CI replay; retain verified artifact separately | Exact-head hosted replay and later acceptance |
-| P2 | #281 Remaining works | Reproducible field runs for Brothers Karamazov and Hyperboloid | Frozen bytes, pinned analyzer, dated references |
-| P3 | #282 Native N contrast | Quantify frozen-work noun/cardinal POS effects under pinned pylem | Exact pinned native evidence |
-| P4 | #283 Reader visual acceptance | Exercise desktop/mobile/print and fix actual accessibility findings | Browser restricted; structural tests possible |
-| P5 | #285 Pages publication | Publish, load and verify source-free Reader | Admin/deployment and #284 rights gates |
+| P1 | #281 + #283 retained Silver Dove | Later accept pinned 29-field source-free integration and deliver three-work Reader | Exact-head CI, fresh PR acceptance |
+| P2 | #281 remaining works | Reproducible field runs for Brothers Karamazov and Hyperboloid | Frozen bytes, pinned analyzer, dated references |
+| P3 | #282 native N contrast | Quantify frozen-work noun/cardinal POS effects under pinned pylem | Native fixture and exact pinned evidence |
+| P4 | #283 Reader visual acceptance | Desktop/mobile/print keyboard QA and remedy verified findings | Browser restricted; structural CI available |
+| P5 | #285 Pages publication | Activate and live-verify reviewed source-free Reader | Admin/deployment and #284 rights gates |
 
 M2: 0/5 unchanged. Scientific, legal, privacy and source-identity gates remain in force.
 

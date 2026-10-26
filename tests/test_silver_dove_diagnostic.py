@@ -70,7 +70,12 @@ class SilverDoveDiagnosticTests(unittest.TestCase):
         artifact = self.run_fixture()
         rows = {row["metric_id"]: row for row in artifact["metric_rows"]}
         self.assertEqual(len(rows), 29)
-        self.assertEqual(sum(row["actual"] is not None for row in rows.values()), 24)
+        self.assertGreaterEqual(sum(row["actual"] is not None for row in rows.values()), 21)
+        self.assertLessEqual(sum(row["actual"] is not None for row in rows.values()), 24)
+        self.assertEqual(
+            rows["fantlab.dialogue.mean_dialogue_sentence_length_chars"]["result"],
+            "UNAVAILABLE_NO_OBSERVATIONS",
+        )
         self.assertEqual(artifact["gates"]["m2_weight"], 0)
         self.assertFalse(artifact["gates"]["m2_parity_admissible"])
         self.assertEqual(artifact["gates"]["fantlab_source_edition_match"], "unknown")

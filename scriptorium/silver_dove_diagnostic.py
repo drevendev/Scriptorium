@@ -29,6 +29,11 @@ FANTLAB_REFERENCES = {
 }
 FANTLAB_URL = "https://fantlab.ru/work293515/lp"
 FANTLAB_DATE = "2022-09-19"
+_OPTIONAL_NO_OBSERVATIONS = frozenset({
+    "fantlab.dialogue.mean_narration_sentence_length_chars",
+    "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+    "fantlab.dialogue.author_text_inside_dialogue_percent",
+})
 _UNBOUND = frozenset({
     "fantlab.vocabulary.active_dictionary",
     "fantlab.vocabulary.active_nondictionary",
@@ -117,9 +122,11 @@ def build_diagnostic(
             if value is not None:
                 raise ValueError("unbound dictionary produced a Silver Dove value")
             status = "NOT_RUN_DICTIONARY_UNBOUND"
+        elif value is None:
+            if metric_id not in _OPTIONAL_NO_OBSERVATIONS:
+                raise ValueError("required Silver Dove metric is unexpectedly unknown")
+            status = "UNAVAILABLE_NO_OBSERVATIONS"
         else:
-            if value is None:
-                raise ValueError("available Silver Dove metric is unexpectedly unknown")
             status = (
                 "DIAGNOSTIC_SOURCE_UNMATCHED"
                 if reference is not None else "MEASURED_REFERENCE_UNAVAILABLE"

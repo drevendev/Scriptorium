@@ -13,7 +13,7 @@ ISSUES: #281 (partial)
 STATUS: AUTHORED_PENDING_CI_AND_LATER_ACCEPTANCE
 BRANCH: scrip-repro-010-silver-dove-diagnostic
 BASE: c7762f67fb7ad554d163c8fdf51c73ab95927364
-ACCEPTANCE: Replay frozen Silver Dove exact Wikisource revision and source/body hashes; generate 29 versioned inferred metrics, with 24 actually computed, five unavailable dictionary fields, two *already documented* FantLab integer display references and source-free output. Check drift/overclaim regression tests and exact-head native hosted CI before later acceptance. No literary prose stored, no M2 parity promotion.
+ACCEPTANCE: Replay frozen Silver Dove exact Wikisource revision and source/body hashes; generate 29 versioned inferred metric slots, up to 24 computed depending on observed segments, five unavailable dictionary fields, two *already documented* FantLab integer display references and source-free output. Check drift/overclaim regression tests and exact-head native hosted CI before later acceptance. No literary prose stored, no M2 parity promotion.
 
 ## Next user-visible milestone and compact queue
 

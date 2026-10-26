@@ -15,8 +15,9 @@ python -m scriptorium.silver_dove_diagnostic \
 
 The `Silver Dove measured field diagnostic` GitHub Action performs the same
 replay and uploads a **source-free, derived-results-only** short-lived artifact.
-It records all 29 Scriptorium metric fields (24 measurable without a vocabulary
-dictionary; five explicitly not run). It binds only the two already documented
+It records all 29 Scriptorium metric fields (up to 24 measurable without a vocabulary
+dictionary; five explicitly not run). Metrics requiring an observed dialogue
+segment can remain unavailable when the replay has no such segment. It binds only the two already documented
 FantLab 2022-09-19 display counts—549,050 characters and 83,369 words. Other
 FantLab field references are **not retained**, not zero; even an apparently
 matching value would not establish publication-rounding rules or source identity.

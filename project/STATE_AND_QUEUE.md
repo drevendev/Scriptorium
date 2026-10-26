@@ -1,19 +1,19 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 327
+STATE_REVISION: 328
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-26
-LAST_RESULT: PR #322 merged to master at 15311b55036436a47f50388c62d702786a721312. Authored a source-free JSON/CSV export for its twenty measured cross-work rates, with source digests and explicit diagnostic-only status; no new full-text metrics or parity observations.
+LAST_RESULT: PR #323 merged into master at b59e7fd0e1e7fef720007e9702979d6e3a09307e. A separate local-only cross-work rate filter is authored for later acceptance; there are no new measurements or parity claims.
 LAST_VERIFIED_PROGRESS: Master retains 28 Anna and 27 Waves diagnostic rows (46 measured, nine missing). Three other candidates still lack metric runs. M2 remains 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-SHARED-RATE-EXPORTS
-ISSUES: #281 (partial, portable comparison), #283 (partial, reader downloads)
+UNIT_ID: SCRIP-SITE-012-SHARED-COMPARISON-FILTERS
+ISSUES: #283 (partial)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-shared-rate-downloads
-BASE: 15311b55036436a47f50388c62d702786a721312
-ACCEPTANCE: The existing 20 cross-book diagnostic comparisons are independently downloadable as versioned source-free JSON and CSV, with exact signed decimal deltas, units, source SHA-256 witnesses, dated reference metadata and explicitly UNKNOWN FantLab input identity. Atomic Pages build and receipt SHA-256 include both new exports; the previous 55-row scientific exports remain byte-identical. New test coverage checks the exact arithmetic, missing/duplicate/identity-upgrade rejection and packaging. Later fresh exact-head CI and independent acceptance precede merge; no parity upgrade.
+BRANCH: scrip-site-012-shared-comparison-filters
+BASE: b59e7fd0e1e7fef720007e9702979d6e3a09307e
+ACCEPTANCE: Independently search the existing twenty source-unmatched rates by label/metric ID and family, with accessible reset/status, no-JS/print full-row fallback and fail-closed invalid coverage. Original Anna/Waves filters, values, exports, source witnesses and M2=0/5 unchanged. Node DOM/site build checks and later independent exact-head acceptance required.
 
 ## Next user-visible milestone and compact queue
 
@@ -21,7 +21,7 @@ Milestone: Research-ready Reader with inspectable two-book diagnostic comparison
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Portable two-work rate exports | Accept tested JSON/CSV downloads and packaged receipt at exact PR head | Later independent acceptance, no parity upgrade |
+| P1 | #283 Independently filter shared rates | Accept 20-row search/family controls without affecting exports | Later fresh PR acceptance, no scientific upgrade |
 | P2 | #281 Remaining work metrics | Obtain real retained field runs for Brothers Karamazov, Silver Dove and Hyperboloid | Licensed frozen bytes, pinned analyzer, dated reference |
 | P3 | #282 Native N contrast | Quantify actual frozen-work noun/cardinal POS effects under pinned pylem | Exact pinned native evidence |
 | P4 | #283 Reader visual acceptance | Exercise desktop/mobile/print flows and fix real accessibility findings | Browser restricted; structural tests still executable |

@@ -3,7 +3,8 @@
 **[🌐 Open the interactive Scriptorium Reader (GitHub Pages) →](https://drevendev.github.io/Scriptorium/)**
 
 See **real measured differences** between two books, independently search and filter
-Anna Karenina's 28-row and Running on Waves' 27-row diagnostics, examine a full-work
+Anna Karenina's 28-row and Running on Waves' 27-row diagnostics, filter their twenty
+shared measured rates independently by metric name or family, examine a full-work
 diagnostic, browse the source-free FantLab evidence matrix, or compare two of
 your own Reader JSON reports privately in the browser. Charts and a visible exact-value table show retained, validated derived
 measurements, units and links to methodology and scientific limitations. No manuscript is hosted or uploaded.

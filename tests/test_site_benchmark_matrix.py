@@ -28,6 +28,7 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertEqual(content.count('class="silver-metric-row"'), 29)
         self.assertIn('aria-label="Silver Dove diagnostic fields"', content)
         self.assertIn('id="silver-metric-rows"', content)
+        self.assertIn('href="#silver-title">Explore Silver Dove', content)
         self.assertIn('only two FantLab reference counts', content)
         self.assertIn('Silver Dove: 29 retained Scriptorium fields', content)
         self.assertEqual(content.count('data-metric-family="punctuation"'), 56)

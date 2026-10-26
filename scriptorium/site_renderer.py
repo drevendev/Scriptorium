@@ -26,6 +26,7 @@ from .site_home_showcase import render_demo, HOME_CSS
 from . import site_browser_compare
 from . import site_benchmark_matrix
 from . import site_metric_filter
+from . import site_shared_metric_filter
 
 GENERATOR_PROFILE = "scriptorium-static-site-v2"
 MANIFEST_PROFILE = "scriptorium-publication-manifest-v1"
@@ -1007,7 +1008,7 @@ def build_site(
     try:
         with staged_site(root, destination) as output:
             (output / "assets").mkdir()
-            (output / "assets" / "site.css").write_text(_SITE_CSS + FILTER_CSS + HOME_CSS + site_browser_compare.CSS + site_metric_filter.FILTER_CSS, encoding="utf-8", newline="\n")
+            (output / "assets" / "site.css").write_text(_SITE_CSS + FILTER_CSS + HOME_CSS + site_browser_compare.CSS + site_metric_filter.FILTER_CSS + site_shared_metric_filter.CSS, encoding="utf-8", newline="\n")
             (output / "assets" / "evidence-filter.js").write_text(FILTER_JS, encoding="utf-8", newline="\n")
             (output / "assets" / "private-compare.js").write_text(
                 site_browser_compare.render_script(), encoding="utf-8", newline="\n"
@@ -1021,6 +1022,9 @@ def build_site(
             if benchmark_page is not None:
                 (output / "assets" / "metric-filter.js").write_text(
                     site_metric_filter.FILTER_JS, encoding="utf-8", newline="\n"
+                )
+                (output / "assets" / "shared-metric-filter.js").write_text(
+                    site_shared_metric_filter.JS, encoding="utf-8", newline="\n"
                 )
                 evidence = output / "evidence" / "fantlab"
                 evidence.mkdir(parents=True)

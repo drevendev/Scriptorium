@@ -16,6 +16,7 @@ from urllib.parse import urlsplit
 from . import benchmark_metric_matrix as matrix
 from . import benchmark_readiness
 from .site_metric_filter import FILTER_CONTROLS, WAVE_FILTER_CONTROLS
+from .site_shared_metric_filter import CONTROLS as SHARED_CONTROLS
 from .benchmark import _reference_specs
 
 
@@ -406,7 +407,8 @@ def build(root: Path) -> dict[str, str]:
         raise ValueError("shared normalized diagnostic coverage changed")
     shared_json, shared_csv = _shared_rate_exports(shared, anna, wave)
     shared_rows = [
-        '<tr class="cross-metric-row"><th scope="row"><span class="eyebrow">' +
+        '<tr class="cross-metric-row" data-metric-family="' +
+        _esc(row["family"].lower()) + '"><th scope="row"><span class="eyebrow">' +
         _esc(row["family"]) + '</span><br><span lang="ru">' +
         _esc(row["label"]) + '</span><br><code>' + _esc(row["metric_id"]) +
         '</code></th><td>' + _esc(row["unit"]) + '</td><td>' +
@@ -433,6 +435,7 @@ def build(root: Path) -> dict[str, str]:
         '<p class="actions"><a href="shared-rates.json" download>'
         'Download the 20-rate comparison (JSON)</a> '
         '<a href="shared-rates.csv" download>Download comparison CSV</a></p>'
+        + SHARED_CONTROLS +
         '<p id="shared-scroll">On narrow screens scroll this table horizontally; '
         'Tab to the table region for keyboard scrolling.</p>'
         '<div class="table-wrap" role="region" tabindex="0" '
@@ -442,7 +445,7 @@ def build(root: Path) -> dict[str, str]:
         'Running on Waves minus Anna Karenina, not FantLab parity</caption>'
         '<thead><tr><th scope="col">Metric</th><th scope="col">Unit</th>'
         '<th scope="col">Anna Karenina</th><th scope="col">Running on Waves</th>'
-        '<th scope="col">Waves − Anna</th></tr></thead><tbody>' +
+        '<th scope="col">Waves − Anna</th></tr></thead><tbody id="shared-metric-rows">' +
         ''.join(shared_rows) + '</tbody></table></div></section>'
     )
 
@@ -540,7 +543,8 @@ def build(root: Path) -> dict[str, str]:
         '<p class="notice">No parity passes have been established. Reproduction '
         'requires five legally usable ≥300,000-character works with the actual '
         'FantLab analyzer-input identity and published rounding evidence.</p>'
-        '<script src="../../assets/metric-filter.js" defer></script></main>'
+        '<script src="../../assets/metric-filter.js" defer></script>'
+        '<script src="../../assets/shared-metric-filter.js" defer></script></main>'
     )
     return {
         "body": body,

@@ -25,13 +25,13 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertEqual(content.count('class="source-row"'), 5)
         self.assertEqual(content.count('class="metric-row" data-metric-family='), 28)
         self.assertEqual(content.count('class="wave-metric-row"'), 27)
-        self.assertEqual(content.count('data-metric-family="punctuation"'), 28)
+        self.assertEqual(content.count('data-metric-family="punctuation"'), 42)
         self.assertEqual(content.count('id="wave-metric-rows"'), 1)
         self.assertIn('id="wave-metric-filters"', content)
         self.assertIn('aria-controls="wave-metric-rows"', content)
         self.assertIn("Running on Waves: 27 retained diagnostic rows", content)
         self.assertIn('aria-label="Running on Waves metric differences"', content)
-        self.assertEqual(content.count('class="cross-metric-row"'), 20)
+        self.assertEqual(content.count('class="cross-metric-row" data-metric-family='), 20)
         self.assertIn('aria-label="Two-work normalized diagnostic comparison"', content)
         self.assertIn('id="shared-scroll"', content)
         self.assertIn("Compare measured rates across two works", content)
@@ -90,7 +90,8 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("UNKNOWN", content)
         self.assertIn('aria-describedby="metrics-scroll"', content)
         self.assertIn('<script src="../../assets/metric-filter.js" defer></script>', content)
-        self.assertEqual(content.count("<script"), 1)
+        self.assertIn('<script src="../../assets/shared-metric-filter.js" defer></script>', content)
+        self.assertEqual(content.count("<script"), 2)
         self.assertEqual(content.count('data-metric-state="measured"'), 46)
         self.assertEqual(content.count('data-metric-state="not_run"'), 6)
         self.assertEqual(content.count('data-metric-state="unavailable"'), 3)
@@ -141,6 +142,8 @@ class FantLabEvidencePageTests(unittest.TestCase):
             evidence = destination / "evidence" / "fantlab"
             from scriptorium.site_metric_filter import FILTER_JS
             self.assertEqual((destination / "assets" / "metric-filter.js").read_text(encoding="utf-8"), FILTER_JS)
+            from scriptorium.site_shared_metric_filter import JS as SHARED_FILTER_JS
+            self.assertEqual((destination / "assets" / "shared-metric-filter.js").read_text(encoding="utf-8"), SHARED_FILTER_JS)
             for name, key in (("readiness.json", "readiness_json"),
                               ("readiness.csv", "readiness_csv"),
                               ("shared-rates.json", "shared_json"),

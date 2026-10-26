@@ -339,6 +339,15 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertTrue(all(row["fantlab_input_identity"] == "UNKNOWN"
                             and row["evidence_class"] == "diagnostic_source_unmatched"
                             for row in csv_rows))
+        for csv_row in csv_rows:
+            for side, work in (("left", doc["works"][0]), ("right", doc["works"][1])):
+                self.assertEqual(csv_row[f"{side}_fantlab_reference_url"],
+                                 work["fantlab_reference_url"])
+                self.assertEqual(csv_row[f"{side}_fantlab_reference_date"],
+                                 work["fantlab_reference_date"])
+            self.assertEqual(csv_row["schema_version"], doc["schema_version"])
+            self.assertEqual(csv_row["m2_parity_admissible"], "false")
+            self.assertEqual(csv_row["m2_weight"], "0")
         self.assertEqual(rendered["shared_json"], page.build(ROOT)["shared_json"])
         self.assertIn('href="shared-rates.json" download', rendered["body"])
         self.assertIn('href="shared-rates.csv" download', rendered["body"])

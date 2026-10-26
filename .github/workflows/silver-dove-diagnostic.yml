@@ -1,0 +1,72 @@
+name: Silver Dove measured field diagnostic
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/silver-dove-diagnostic.yml"
+      - "scriptorium/silver_dove_diagnostic.py"
+      - "scriptorium/silver_dove_freeze.py"
+      - "scriptorium/metrics.py"
+      - "scriptorium/text.py"
+      - "scriptorium/dialogue.py"
+      - "scriptorium/vocabulary.py"
+      - "scriptorium/wikisource_replay.py"
+      - "tests/test_silver_dove_diagnostic.py"
+      - "corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    name: Replay pinned 563125-character body without publishing prose
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Test source-free diagnostics and pinned evidence gates
+        run: python -m unittest discover -s tests -p test_silver_dove_diagnostic.py -v
+      - name: Measure exact pinned Wikisource body transiently
+        run: |
+          python -m scriptorium.silver_dove_diagnostic \
+            --manifest corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json \
+            --output /tmp/silver-dove-fields.json
+      - name: Verify measured fields, missing references and source safety
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("/tmp/silver-dove-fields.json").read_text(encoding="utf-8"))
+          rows = {r["metric_id"]: r for r in data["metric_rows"]}
+          assert len(rows) == 29 and len(data["metric_rows"]) == 29
+          assert 21 <= sum(r["actual"] is not None for r in rows.values()) <= 24
+          assert rows["fantlab.general.characters"]["actual"] == 563125
+          assert rows["fantlab.general.characters"]["actual_minus_fantlab_display"] == 14075
+          assert rows["fantlab.general.words"]["fantlab_display"] == "83369"
+          assert data["body_identity"]["raw_sha256"] == "496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183"
+          assert data["gates"]["m2_weight"] == 0
+          assert data["gates"]["m2_parity_admissible"] is False
+          assert data["gates"]["fantlab_source_edition_match"] == "unknown"
+          assert data["source_text_committed"] is False
+          assert all(r["fantlab_display"] is None for k,r in rows.items() if k not in {
+              "fantlab.general.characters", "fantlab.general.words"})
+          assert all(rows[k]["actual"] is None for k in (
+              "fantlab.vocabulary.active_dictionary", "fantlab.vocabulary.active_nondictionary",
+              "fantlab.vocabulary.uasz_3000", "fantlab.vocabulary.uasz_10000",
+              "fantlab.vocabulary.uasz_100000"))
+          print("SCRIPTORIUM_SILVER_DOVE_SOURCE_FREE_PASS=29 fields, non-invented nulls, two display references; no parity")
+          PY
+      - name: Upload only derived measurements, no source text
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: silver-dove-derived-fields
+          path: /tmp/silver-dove-fields.json
+          if-no-files-found: error
+          retention-days: 7

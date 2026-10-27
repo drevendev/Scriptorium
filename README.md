@@ -2,6 +2,12 @@
 
 **[🌐 Open the interactive Scriptorium Reader (GitHub Pages) →](https://drevendev.github.io/Scriptorium/)**
 
+The Reader homepage now summarizes the **current measured stage** directly from the
+validated source-free FantLab evidence matrix: works with observations, numeric fields,
+unavailable actual values, and the separate **0/5 source-matched parity gate**. Open the
+full evidence table from that summary to inspect every metric and its provenance.
+This coverage snapshot is not a claim of FantLab parity or a live deployment.
+
 See **real measured differences** between two books, independently search and filter
 Anna Karenina's 28-row and Running on Waves' 27-row diagnostics, inspect Silver Dove and Brothers Karamazov's 29 fields each, filter their twenty
 shared measured rates independently by metric name or family, examine a full-work

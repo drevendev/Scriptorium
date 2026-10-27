@@ -2,7 +2,7 @@
 
 **[🌐 Open the interactive Scriptorium Reader (GitHub Pages) →](https://drevendev.github.io/Scriptorium/)**
 
-**Reader deployment scope:** GitHub-managed Pages already publishes the `master / (root)` branch. The root homepage is now a source-free four-book interactive preview of 113 retained fields, 94 numeric observations and 19 unavailable values. It includes live search, comparison bars, provenance links and JSON downloads. The **complete multi-route Python-generated Reader** is still available separately as a local or CI build in `build/site`; not all of those routes are currently served by branch Pages.
+**Russian-first Reader (next release PR):** GitHub Pages uses `master / (root)`. The new home page groups **10 Russian-language works**: six with actual source-pinned observations and four clearly marked as work in progress. The 6 measured books provide **153 fields, 129 numeric observations and 24 explicitly unavailable values**. Search, book-to-book rate comparisons, chart bars, JSON exports and source metadata are reader-facing; cross-language original/translation analysis is not yet present. The complete multi-route Python Reader remains a separate local/CI build in `build/site` and currently has narrower retained coverage than the branch homepage. The public site changes only after this PR is independently accepted and merged.
 
 The separately built full Reader can show **real measured differences** between two books, independently search and filter
 Anna Karenina's 28-row and Running on Waves' 27-row diagnostics, inspect Silver Dove and Brothers Karamazov's 29 fields each, filter their twenty
@@ -20,12 +20,18 @@ python -m scriptorium.site_renderer --repo-root . --output build/site
 
 The separate, historical *Actions artifact deployment* job remains guarded by `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true`, but is **not required** for GitHub's already configured branch Pages publication. Do not change the deployment gate or repository settings to make the root homepage work. See [#285](https://github.com/drevendev/Scriptorium/issues/285) for the distinction and [#284](https://github.com/drevendev/Scriptorium/issues/284) for unresolved software/data reuse licensing.
 
-**What the demo really shows:** four frozen books with retained diagnostics: 113 metric rows, 94 numeric measurements and 19 unavailable values. The reading-room bars are measurement availability, not FantLab parity (M2: 0/5). The fifth novel is source-frozen but its metrics are not yet retained in Reader. The comparison hero uses real derived observations with a complete exact-value table. The new branch root entrypoint is built from source-free evidence; LIVE_VERIFIED still requires an external HTTP/browser readback. Source-code/data reuse licensing #284 remains unresolved.
+**What the Russian-first demo shows:** six source-frozen, measured Russian-language texts (including a separately identified translation by Alexandra A. Beketova), with 153 recorded fields / 129 numeric / 24 unavailable. Four further Russian-text candidates are listed as preparation only: Resurrection, Road to Nowhere, Petersburg and Darwin's *Origin of Species* in Sergey Rachinsky's 1864 Russian translation. Ten **catalogue entries do not mean ten analyzed books**. Translated texts keep named translators, original language, family, exact edition and source identity; a French original must not be silently treated as an English text. The English analyzer is a separate future module with zero measured original-language works today. The root Reading Room offers descriptive comparisons of normalized candidate metrics on the same pinned Russian algorithm profile; original-vs-translation and translation-vs-translation comparisons require independently verified per-version data. M2 FantLab parity remains **0/5**. Browser LIVE_VERIFIED requires independent HTTP/screenshot evidence; publication must not be inferred from CI builds alone. Root Pages deployment and the Python-built multi-route Reader are distinct.
 
 **Understand the language of a text without uploading the manuscript.**
 Scriptorium measures vocabulary, sentence length, dialogue and punctuation, then produces
 readable offline reports and reproducible data. This **0.4.0a1 preview** adds private
 comparison of two analyses to the canonical Reader and its real-work gallery.
+
+## Language modules and translations
+
+The Russian module (`ru`) is the initial product priority. Every analyzed literary body has an **analysis language** and an independent **edition identity**. A translated work additionally records the author's original language, a named translator and a specific edition/source family; another translator or translation revision becomes a separate identity, not another spelling of the title. The measured Russian translation of **Дети капитана Гранта** by **А. А. Бекетова** has 11 real derived fields, but no measured French original. The researched translation of **О происхождении видов** by **С. А. Рачинский** has no retained numeric fields, and its English source is not analyzed here. Never place invented English/French numbers into Russian graphs. See [versioned language/translation contract](docs/TRANSLATIONS_AND_LANGUAGE_MODULES.md).
+
+**Coverage target:** 10 analyzed works, each individually rights-cleared, byte/source-frozen and measured. Current branch-proposed state: 6 measured / 10 catalogued; the remaining four are labelled honestly and require separate reproducible measurements. This is unrelated to the stricter FantLab M2 source-matched parity requirement (0/5).
 
 ## Try your own text
 

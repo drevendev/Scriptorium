@@ -137,6 +137,97 @@ def render_demo(entries: Sequence[Mapping[str, Any]]) -> str:
     )
 
 
+
+_ATLAS_BOOKS = (
+    ("tolstoy-anna-karenina-ru", "metrics-title", 28, 23),
+    ("grin-running-on-waves-ru", "waves-metrics-title", 27, 23),
+    ("bely-silver-dove-ru", "silver-title", 29, 24),
+    ("dostoevsky-brothers-karamazov-ru", "karamazov-title", 29, 24),
+    ("tolstoy-hyperboloid-garin-wikisource-ru", "works-title", 0, 0),
+)
+
+
+def render_research_atlas(entries: Sequence[Mapping[str, Any]]) -> str:
+    """Evidence-first publication: availability is not FantLab reproduction."""
+    found = [item for item in entries if item.get("render_mode") == "benchmark_matrix"]
+    if not found:
+        return ""
+    if len(found) != 1 or type(found[0].get("json_data")) is not str:
+        raise ValueError("invalid evidence atlas registration")
+    raw = found[0]["json_data"]
+    if len(raw) > 1_000_000:
+        raise ValueError("oversized evidence atlas data")
+    data = json.loads(raw)
+    if (type(data) is not dict
+            or data.get("schema_version") != "scriptorium-fantlab-retained-metrics-v1"
+            or type(data.get("m2_source_matched_pass_count")) is not int
+            or data["m2_source_matched_pass_count"] != 0
+            or data.get("works_reported") != 5
+            or data.get("works_with_retained_metric_diagnostics") != 4
+            or data.get("retained_metric_rows") != 113):
+        raise ValueError("changed evidence atlas scientific boundary")
+    source_rows = data.get("entries")
+    if type(source_rows) is not list or len(source_rows) != 5:
+        raise ValueError("incomplete evidence atlas inventory")
+    rows_by_id = {item.get("candidate_id"): item for item in source_rows if type(item) is dict}
+    if len(rows_by_id) != 5 or set(rows_by_id) != {book[0] for book in _ATLAS_BOOKS}:
+        raise ValueError("duplicate or unexpected atlas book")
+    cards = []
+    total_measured = 0
+    total_missing = 0
+    for position, (identity, anchor, expected, observed) in enumerate(_ATLAS_BOOKS, 1):
+        item = rows_by_id[identity]
+        title, author = item.get("title"), item.get("author")
+        source_metrics = item.get("metric_rows")
+        missing = expected - observed
+        if (type(title) is not str or not title or len(title) > 160
+                or type(author) is not str or not author or len(author) > 160
+                or type(source_metrics) is not list or len(source_metrics) != expected
+                or item.get("metric_rows_with_actual") != observed
+                or item.get("metric_rows_without_actual") != missing
+                or item.get("exact_fantlab_input_identity") != "UNKNOWN"
+                or item.get("metric_evidence") != ("RETAINED_DIAGNOSTIC" if expected else "NOT_RUN")
+                or sum(r.get("actual") is not None for r in source_metrics) != observed):
+            raise ValueError("evidence atlas changed source or measurement identity")
+        total_measured += observed
+        total_missing += missing
+        progress = f'<span class="atlas-bar" aria-hidden="true"><span style="width:{observed / expected * 100:.2f}%"></span></span>' if expected else ""
+        count = (f"{observed} of {expected} measurements available" if expected
+                 else "Not yet retained in Reader")
+        cards.append(
+            '<li class="atlas-book' + (' atlas-pending' if not expected else '') + '">'
+            f'<p class="atlas-number">VOLUME {position:02d} / 05</p>'
+            f'<h3>{escape(title)}</h3><p class="atlas-author">{escape(author)}</p>'
+            f'<p class="atlas-count">{count}</p>' + progress +
+            f'<a href="evidence/fantlab/#{anchor}">'
+            + ("View source status" if not expected else "Explore measurements")
+            + ' <span aria-hidden="true">↗</span></a></li>'
+        )
+    if (total_measured, total_missing) != (94, 19):
+        raise ValueError("evidence atlas summary no longer matches verified rows")
+    return (
+        '<section class="atlas" id="research-atlas" aria-labelledby="atlas-title">'
+        '<div class="atlas-heading"><div>'
+        '<p class="atlas-kicker">THE READING ROOM · VERIFIED DIAGNOSTIC DATA</p>'
+        '<h2 id="atlas-title">Four books under the lens.</h2>'
+        '<p>Explore measured vocabulary, sentence rhythm, dialogue and punctuation '
+        'without downloading a manuscript. All values come from the retained evidence matrix.</p>'
+        '</div><div class="atlas-boundary"><strong>M2 · 0 / 5</strong>'
+        '<span>Source-matched FantLab reproduction is not yet established.</span></div></div>'
+        '<div class="atlas-numbers" aria-label="Retained measurement coverage">'
+        '<p><strong>4 / 5</strong><span>works with observations</span></p>'
+        '<p><strong>113</strong><span>recorded metric fields</span></p>'
+        '<p><strong>94</strong><span>numeric measurements</span></p>'
+        '<p><strong>19</strong><span>unavailable, never zero-filled</span></p></div>'
+        '<ol class="atlas-books">' + ''.join(cards) + '</ol>'
+        '<div class="atlas-foot"><p><strong>Proved:</strong> reproducible, source-frozen '
+        'Scriptorium diagnostics. <strong>Not proved:</strong> the same text, dictionary '
+        'or coefficients as FantLab. This is an honest preview, not a parity score.</p>'
+        '<a href="evidence/fantlab/">See all sources and exact values →</a></div>'
+        '</section>'
+    )
+
+
 HOME_CSS = """
 .site-masthead { display:flex; align-items:center; justify-content:space-between;
   flex-wrap:wrap; gap:1rem; border-bottom:1px solid var(--line); padding:1rem 0; }
@@ -221,4 +312,81 @@ HOME_CSS = """
   .demo-scroll { overflow:visible; }
   .demo-panel table { min-width:0; width:100%; }
 }
+/* Accessible research atlas. Bars are decorative: exact values appear as text. */
+.atlas { background:var(--surface); border:1px solid var(--line);
+  border-radius:1rem; padding:clamp(1.2rem,3vw,2.7rem); margin:0 0 3rem;
+  box-shadow:0 1rem 2rem rgba(16,43,35,.08); }
+.atlas-heading { display:grid; grid-template-columns:minmax(0,1fr) 14rem; gap:2rem; align-items:end; }
+.atlas-kicker { color:var(--accent); font:750 .7rem/1.5 system-ui,sans-serif;
+  letter-spacing:.14em; margin:0 0 .5rem; }
+.atlas h2 { color:var(--ink); font:600 clamp(2rem,4vw,3.5rem)/1.08 Georgia,serif;
+  margin:0 0 .6rem; letter-spacing:-.035em; }
+.atlas-heading p:not(.atlas-kicker) { color:var(--muted); max-width:64ch;
+  font:400 .95rem/1.65 system-ui,sans-serif; }
+.atlas-boundary { display:flex; flex-direction:column; gap:.45rem; padding:1rem;
+  background:var(--accent-soft); border-left:4px solid var(--accent); }
+.atlas-boundary strong { font:750 1.16rem/1.3 system-ui,sans-serif; color:var(--ink); }
+.atlas-boundary span { font:400 .8rem/1.45 system-ui,sans-serif; color:var(--ink); }
+.atlas-numbers { display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  margin:1.6rem 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.atlas-numbers p { display:flex; flex-direction:column; gap:.25rem; margin:.8rem 0;
+  padding:.4rem .9rem; border-right:1px solid var(--line); }
+.atlas-numbers p:first-child { padding-left:0; }
+.atlas-numbers p:last-child { border:0; }
+.atlas-numbers strong { font:600 clamp(1.6rem,3vw,2.4rem)/1.15 Georgia,serif;
+  color:var(--ink); font-variant-numeric:tabular-nums; }
+.atlas-numbers span { font:500 .76rem/1.4 system-ui,sans-serif; color:var(--muted); }
+.atlas-books { display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:.75rem; padding:0; margin:0; list-style:none; }
+.atlas-book { display:flex; flex-direction:column; min-width:0; padding:1rem;
+  background:var(--paper); border:1px solid var(--line); border-radius:.65rem; }
+.atlas-number { font:750 .68rem/1.4 system-ui,sans-serif; letter-spacing:.12em;
+  color:var(--muted); margin:0 0 1.05rem; }
+.atlas-book h3 { font:600 1.23rem/1.23 Georgia,serif; margin:0 0 .4rem;
+  color:var(--ink); overflow-wrap:anywhere; }
+.atlas-author { color:var(--muted); font:500 .76rem/1.4 system-ui,sans-serif;
+  margin:0 0 1.2rem; }
+.atlas-count { margin:auto 0 .45rem; font:700 .76rem/1.45 system-ui,sans-serif;
+  color:var(--ink); font-variant-numeric:tabular-nums; }
+.atlas-bar { display:block; height:.4rem; background:var(--accent-soft);
+  border-radius:1rem; overflow:hidden; }
+.atlas-bar span { display:block; height:100%; background:var(--accent); }
+.atlas-book a { color:var(--accent); min-height:44px; display:inline-flex; align-items:center;
+  margin-top:.65rem; font:700 .8rem/1.4 system-ui,sans-serif; text-underline-offset:.2em; }
+.atlas-pending { grid-column:1/-1; display:grid;
+  grid-template-columns:7rem minmax(0,1fr) minmax(9rem,.8fr) auto;
+  align-items:center; gap:1rem; }
+.atlas-pending .atlas-number,.atlas-pending h3,.atlas-pending .atlas-count,
+.atlas-pending a { margin:0; }
+.atlas-pending .atlas-author { display:none; }
+.atlas-foot { display:flex; flex-wrap:wrap; align-items:baseline; gap:1rem;
+  border-top:1px solid var(--line); margin-top:1.5rem; padding-top:1.1rem;
+  font:400 .82rem/1.6 system-ui,sans-serif; }
+.atlas-foot p { flex:1 1 20rem; margin:0; color:var(--muted); }
+.atlas-foot strong { color:var(--ink); }
+.atlas-foot a { color:var(--accent); font-weight:750; min-height:44px;
+  display:inline-flex; align-items:center; text-underline-offset:.2em; }
+@media(max-width:1080px) {
+  .atlas-books { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .atlas-pending { grid-template-columns:6rem minmax(0,1fr) auto; }
+}
+@media(max-width:720px) {
+  .atlas-heading { grid-template-columns:1fr; gap:.6rem; }
+  .atlas-numbers { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .atlas-numbers p:nth-child(2) { border-right:0; }
+  .atlas-pending { display:flex; align-items:stretch; }
+  .atlas-pending .atlas-count { margin:.5rem 0; }
+}
+@media(max-width:490px) { .atlas-books { grid-template-columns:1fr; } }
+@media print {
+  .atlas { box-shadow:none; background:#fff; }
+  .atlas-book,.atlas-boundary { background:#fff; border-color:#555; }
+  .atlas-book { break-inside:avoid; }
+  .atlas h2,.atlas-kicker,.atlas-book h3,.atlas-number,.atlas-count,
+  .atlas-author,.atlas-numbers strong,.atlas-numbers span,.atlas-heading p,
+  .atlas-boundary strong,.atlas-boundary span,.atlas-foot p,.atlas-foot strong,
+  .atlas-foot a,.atlas-book a { color:#000 !important; }
+  .atlas-book a,.atlas-foot a { text-decoration:underline; }
+}
+
 """

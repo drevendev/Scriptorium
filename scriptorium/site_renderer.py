@@ -22,7 +22,7 @@ from .publication import validate_compatibility_claim
 from .site_gallery_filter import evidence_kind, FILTER_CONTROLS, FILTER_JS, FILTER_CSS
 from . import site_frozen_diagnostic
 from . import site_work_comparison
-from .site_home_showcase import render_demo, HOME_CSS
+from .site_home_showcase import render_demo, render_research_atlas, HOME_CSS
 from .site_stage import render_stage, STAGE_CSS
 from . import site_browser_compare
 from . import site_benchmark_matrix
@@ -561,7 +561,7 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
         'Each result shows its measurements, source identity and limits.</p>'
         + action
         + '</header>' + render_demo(entries)
-        + '</div>' + render_stage(entries) + '<section class="reading-guide" aria-labelledby="reading-guide-title">'
+        + '</div>' + render_research_atlas(entries) + render_stage(entries) + '<section class="reading-guide" aria-labelledby="reading-guide-title">'
         '<h2 id="reading-guide-title">Read the evidence, not a mystery score</h2>'
         '<ol><li><strong>Choose a work.</strong> Open a measured report and inspect exact units.</li>'
         '<li><strong>Check its limits.</strong> An inferred measurement is not verified FantLab parity.</li>'

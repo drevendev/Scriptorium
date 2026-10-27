@@ -2,32 +2,27 @@
 
 **[🌐 Open the interactive Scriptorium Reader (GitHub Pages) →](https://drevendev.github.io/Scriptorium/)**
 
-The Reader homepage now summarizes the **current measured stage** directly from the
-validated source-free FantLab evidence matrix: works with observations, numeric fields,
-unavailable actual values, and the separate **0/5 source-matched parity gate**. Open the
-full evidence table from that summary to inspect every metric and its provenance.
-This coverage snapshot is not a claim of FantLab parity or a live deployment.
+**Reader deployment scope:** GitHub-managed Pages already publishes the `master / (root)` branch. The root homepage is now a source-free four-book interactive preview of 113 retained fields, 94 numeric observations and 19 unavailable values. It includes live search, comparison bars, provenance links and JSON downloads. The **complete multi-route Python-generated Reader** is still available separately as a local or CI build in `build/site`; not all of those routes are currently served by branch Pages.
 
-See **real measured differences** between two books, independently search and filter
+**Generated Reader stage — local/CI only:** The separately built `build/site/index.html` contains a measured-stage panel derived at build time from the retained FantLab evidence matrix: four works with numeric observations, 94 measured values, 19 unavailable actuals, and **M2 0/5** source-matched works. It links to the generated `build/site/evidence/fantlab/` table. **This specific stage panel and multi-route evidence view are not published by the branch-root Pages URL.** The public homepage has its own four-book interactive charts and field explorer.
+
+The separately built full Reader can show **real measured differences** between two books, independently search and filter
 Anna Karenina's 28-row and Running on Waves' 27-row diagnostics, inspect Silver Dove and Brothers Karamazov's 29 fields each, filter their twenty
 shared measured rates independently by metric name or family, examine a full-work
 diagnostic, browse the source-free FantLab evidence matrix, or compare two of
 your own Reader JSON reports privately in the browser. Charts and a visible exact-value table show retained, validated derived
 measurements, units and links to methodology and scientific limitations. No manuscript is hosted or uploaded.
 
-**Publication status (October 2026):** this is the *intended Pages URL*, not a
-claim that the public site is already live. Canonical GitHub Actions builds and
-tests the site, but deployment requires the repository administrator to enable
-GitHub Pages with **GitHub Actions** as its source and set the existing Actions
-variable `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true` (#285). The connected worker has
-write permission, **not repository administration permission**, and cannot
-change that configuration. Until activation, build and browse the identical
-site locally:
+**GitHub Pages branch deployment (verified 2026-10-27):** GitHub reports `has_pages=true`. The GitHub-managed `pages build and deployment` workflow completed successfully on `master`, with the Jekyll checkout configured as `source: .`. The previous blocker was not lack of Pages administration: it was a missing root `index.html` and public assets. Merged PR #332 supplies them. A successful deployment is not a claim that the public site is already live **with the expected Reader** until an independent HTTP/browser check confirms it. The richer Python-built Reader remains available offline:
 
 ```bash
 python -m scriptorium.site_renderer --repo-root . --output build/site
-# Then open build/site/index.html
+# Open build/site/index.html
 ```
+
+The separate, historical *Actions artifact deployment* job remains guarded by `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true`, but is **not required** for GitHub's already configured branch Pages publication. Do not change the deployment gate or repository settings to make the root homepage work. See [#285](https://github.com/drevendev/Scriptorium/issues/285) for the distinction and [#284](https://github.com/drevendev/Scriptorium/issues/284) for unresolved software/data reuse licensing.
+
+**What the demo really shows:** four frozen books with retained diagnostics: 113 metric rows, 94 numeric measurements and 19 unavailable values. The reading-room bars are measurement availability, not FantLab parity (M2: 0/5). The fifth novel is source-frozen but its metrics are not yet retained in Reader. The comparison hero uses real derived observations with a complete exact-value table. The new branch root entrypoint is built from source-free evidence; LIVE_VERIFIED still requires an external HTTP/browser readback. Source-code/data reuse licensing #284 remains unresolved.
 
 **Understand the language of a text without uploading the manuscript.**
 Scriptorium measures vocabulary, sentence length, dialogue and punctuation, then produces

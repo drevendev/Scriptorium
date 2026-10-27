@@ -313,11 +313,15 @@
       text_included:false,comparison_direction:"right_minus_left",
       measurement_profiles:Object.fromEntries(profiles.map(p=>[p,a.profiles[p]])),
       left:identity(a),right:identity(b),
-      metrics:rows.map(row=>({
-        id:row.id,unit:unit(row.id),
-        left_actual:row.left,right_actual:row.right,
-        delta_right_minus_left:row.right-row.left
-      }))
+      metrics:rows.map(row=>{
+        const measurementUnit=unit(row.id);
+        return {
+          id:row.id,unit:measurementUnit,
+          delta_unit:measurementUnit==="%"?"percentage_points":measurementUnit,
+          left_actual:row.left,right_actual:row.right,
+          delta_right_minus_left:row.right-row.left
+        };
+      })
     };
   }
   function exportPair() {

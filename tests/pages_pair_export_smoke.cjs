@@ -21,7 +21,16 @@ const pairedIds=[
 const getBook=key=>catalog.books.find(b=>b.key===key&&b.text_status==="measured");
 const lookup=(book,id)=>book.metrics.find(row=>row.id===id);
 const isNumeric=n=>typeof n==="number"&&Number.isFinite(n);
-const unit=id=>id.endsWith("_percent")?"%":"per 1000 words";
+const units={
+  "fantlab.dialogue.share_percent":"%",
+  "fantlab.dialogue.author_text_inside_dialogue_percent":"%",
+  "fantlab.general.mean_sentence_length_chars":"символов / предложение",
+  "fantlab.general.mean_word_length_chars":"символов / слово",
+  "fantlab.punctuation.comma.per_1000_words":"на 1000 слов",
+  "fantlab.punctuation.dash.per_1000_words":"на 1000 слов",
+  "fantlab.punctuation.question.per_1000_words":"на 1000 слов"
+};
+const unit=id=>{assert.ok(Object.hasOwn(units,id));return units[id];};
 const leftSelect={value:"anna"},rightSelect={value:"beketova"};
 const pairExportButton={disabled:false};
 let clicked=0,filename="",downloadBlob;
@@ -63,9 +72,14 @@ assert.ok(data.metrics.length>=3);
 for(const metric of data.metrics){
   assert.equal(metric.delta_right_minus_left,metric.right_actual-metric.left_actual);
   assert.ok(pairedIds.includes(metric.id));
+  assert.equal(metric.unit,units[metric.id]);
+  assert.equal(metric.delta_unit,metric.unit==="%"?"percentage_points":metric.unit);
   assert.ok(Number.isFinite(metric.left_actual));
   assert.ok(Number.isFinite(metric.right_actual));
 }
+assert.ok(data.metrics.some(m=>m.delta_unit==="percentage_points"));
+assert.ok(data.metrics.some(m=>m.delta_unit==="на 1000 слов"));
+assert.ok(data.metrics.some(m=>m.delta_unit==="символов / предложение"));
 assert.deepEqual(actions.buildPairExport("anna","beketova"),data);
 for(const [left,right] of [
   ["anna","anna"],["resurrection","anna"],

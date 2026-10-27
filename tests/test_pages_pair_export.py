@@ -42,6 +42,7 @@ class PairExportTests(unittest.TestCase):
             'fantlab_input_identity:"UNKNOWN",m2_source_matched:0',
             "text_included:false",
             'comparison_direction:"right_minus_left"',
+            'delta_unit:measurementUnit==="%"?"percentage_points":measurementUnit',
             "left_actual:row.left,right_actual:row.right",
             "delta_right_minus_left:row.right-row.left",
             'const result=buildPairExport(leftSelect.value,rightSelect.value)',

@@ -36,7 +36,6 @@ class StageAtGlanceTests(unittest.TestCase):
         entry = _real_matrix_entry()
         doc = json.loads(entry["json_data"])
         section = render_stage([entry])
-        self.assertIn("Four", section.replace("4", "Four")) if False else None
         self.assertIn(">4</strong><span>works with measured fields", section)
         self.assertIn(">94</strong><span>recorded numeric values", section)
         self.assertIn(">19</strong><span>unavailable actual values", section)

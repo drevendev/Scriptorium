@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 336
+STATE_REVISION: 337
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-27
-LAST_RESULT: PR #334 confirmed merged at 26c427ae2b90b9f33fb9ab20544d3f7ab32a91e7. Proposed independent pinned Beketova measurement page in full Python-generated Reader.
-LAST_VERIFIED_PROGRESS: Root Pages retains ten Russian-language titles with six measured works (129 numeric / 24 unavailable values). Generated Reader contains the separate merged 29-row Hyperboloid report (24 measured / 5 NOT_RUN), and proposes an 11-row report for Beketova's separately identified Russian translation. Five-source FantLab matrix retains four measured works and one pending source. M2 remains 0/5.
+LAST_RESULT: PR #335 confirmed merged at 851269fe03e9ce6d39207713629f629f695d7c04. Proposed shareable per-edition links for the six measured root Pages books, preserving source fallbacks and navigation history.
+LAST_VERIFIED_PROGRESS: Root Pages source has ten Russian-language titles with six measured works (129 numeric / 24 unavailable values). Generated Reader has merged Hyperboloid 29-row and Beketova 11-row routes. Root Pages now proposes direct edition-specific metric URLs with history/focus and safe invalid-ID fallback; live HTTP remains unverified. Five-source FantLab matrix retains four measured works and one pending source. M2 remains 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-GENERATED-BEKETOVA-011
-ISSUES: #281 (source-free retained metrics), #283 (Reader navigation/UX), #285 (publication distinction)
+UNIT_ID: SCRIP-SITE-ROOT-WORK-PERMALINK-012
+ISSUES: #283 (reader navigation/accessibility), #285 (publication verification)
 STATUS: AUTHORED_PENDING_EXACT_HEAD_CI_AND_LATER_ACCEPTANCE
-BRANCH: scrip-site-023-beketova-measured-reader
-BASE: 26c427ae2b90b9f33fb9ab20544d3f7ab32a91e7
-ACCEPTANCE: Pin the original reviewed Beketova source-free JSON (Git blob 140823b70e9ac28a5fc24b402e75f3e83bf5bb8f), frozen 1,095,467-character Russian literary body and original source revision 5304880. Publish a discoverable full-Reader route with exactly eleven recorded candidate/extension values, authoritative source-unit labels and deterministic JSON/CSV. Retain Jules Verne as author, Alexandra A. Beketova as translator, and French only as the original language—not an analyzed language. Reject drifted artifact, changed translator/source, altered metric families, fabricated parity references and false scientific status. Preserve separate ten-title root Pages, the five-source/4-measured FantLab matrix, original full-work comparison and all tests. Require exact-head CI, independent later acceptance and no unauthorized deployment. Visual inspection when possible; no source text, new admission or M2 parity claim.
+BRANCH: scrip-site-024-book-deep-links
+BASE: 851269fe03e9ce6d39207713629f629f695d7c04
+ACCEPTANCE: Shareable same-origin `?book=<measured-key>#measurements` root Pages URLs resolve exactly one pinned measured edition; selection survives reload and browser history. Six book cards retain direct original source-JSON fallback for no-JS/modified clicks. Invalid/pending keys never request remote paths, create fabricated records or modify M2. Heading receives programmatic focus from in-page book navigation; permalink is keyboard accessible. Verify node-backed positive/negative routing tests, exact-head CI and independent later acceptance. No change to measured JSON, manifest M2, publishing interlocks or protected master.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make the six-book Russian root Reading Room and locally generated Reader scientifically consistent and navigable, without conflating descriptive diagnostics with FantLab input-matched parity.
+Milestone: make the six-book Russian root Reading Room genuinely navigable and publicly verifiable, without conflating descriptive diagnostics with FantLab input-matched parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281/#283 Beketova generated Reader proposal | Exact-head suite/build, resolve findings and later qualifying merge of pinned eleven-row translation report | Newly authored semantic change; independent later acceptance |
-| P2 | #283/#285 live Pages verification | Confirm merged six-book public root Pages route, responsive/keyboard behavior if browser permits | Browser/HTTP restriction does not block local work |
-| P3 | Resurrection pinned-body replay | Remeasure 129 frozen revisions under versioned profile, retain source-free derived values | Legal and immutable source SHA checks; no parity |
+| P1 | #283 root per-book permalinks | Exact-head CI, review findings and later qualifying merge of shareable edition routes | Authored semantic change requires later acceptance |
+| P2 | #285 live Pages verification | Confirm branch-root Pages URL and assets, keyboard/responsive behavior when allowed | Browser/HTTP restrictions do not block independent code |
+| P3 | Resurrection pinned-body replay | Remeasure 129 frozen revisions with versioned profile, retain source-free derived values | Legal and immutable source SHA checks; no parity |
 | P4 | Road to Nowhere alternate candidate | Verify alternate complete body and retain separate measurements | Do not conflate with incomplete primary edition |
-| P5 | #281 strict benchmark coverage/deltas | Expand inspectable source-matched eligibility report, WITHOUT lowering M2 | Exact source-edition identity required for parity |
+| P5 | #281 strict benchmark coverage/deltas | Expand inspectable source-matched eligibility report WITHOUT lowering M2 | Exact source-edition identity required for parity |
 
-M2 remains **0/5**. Neither the separately measured translation nor the merged Hyperboloid report is a source-matched FantLab parity work. The existing hourly job is unchanged.
+M2 remains **0/5**. New navigation does not establish an analyzer-input match or corpus admission. The existing hourly task is unchanged.
 
 ## Retained evidence and scientific gates
 

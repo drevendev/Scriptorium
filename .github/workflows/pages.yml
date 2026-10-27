@@ -71,6 +71,27 @@ jobs:
           rm -rf build/site-check
           test -z "$(find build/site -type l -print -quit)"
 
+      - name: Stage exact branch-root Reader preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/branch-root-preview/assets
+          cp index.html build/branch-root-preview/index.html
+          cp assets/pages-reader.css build/branch-root-preview/assets/pages-reader.css
+          cp assets/pages-reader.js build/branch-root-preview/assets/pages-reader.js
+          cp assets/evidence-snapshot.json build/branch-root-preview/assets/evidence-snapshot.json
+          test -s build/branch-root-preview/index.html
+          test -s build/branch-root-preview/assets/evidence-snapshot.json
+          test -z "$(find build/branch-root-preview -type l -print -quit)"
+
+      - name: Upload exact branch-root Reader preview
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-branch-root-preview
+          path: build/branch-root-preview
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

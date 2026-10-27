@@ -26,6 +26,7 @@ from .site_home_showcase import render_demo, render_research_atlas, HOME_CSS
 from .site_stage import render_stage, STAGE_CSS
 from . import site_browser_compare
 from . import site_benchmark_matrix
+from . import site_hyperboloid
 from . import site_metric_filter
 from . import site_shared_metric_filter
 
@@ -512,6 +513,7 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
         mode_note = {
             "provenance": " · provenance-only",
             "frozen_diagnostic": " · full-work metrics",
+            "hyperboloid_diagnostic": " · 29 pinned measurements",
         }.get(item.get("render_mode"), "")
         kind = evidence_kind(item)
         cards.append(
@@ -673,7 +675,7 @@ def _render_provenance_work(item: Mapping[str, Any]) -> str:
 def _render_work(item: Mapping[str, Any]) -> str:
     if item.get("render_mode") == "comparison":
         return item["report_html"]
-    if item.get("render_mode") == "frozen_diagnostic":
+    if item.get("render_mode") in {"frozen_diagnostic", "hyperboloid_diagnostic"}:
         return item["report_html"]
     if item.get("render_mode") == "provenance":
         return _render_provenance_work(item)
@@ -952,6 +954,32 @@ def build_site(
             })
             continue
 
+        if entry.get("kind") == "measured_diagnostic":
+            try:
+                site_hyperboloid.validate_entry(dict(entry))
+                published = site_hyperboloid.build(root)
+            except (site_hyperboloid.HyperboloidBuildError, OSError, KeyError, TypeError) as exc:
+                raise PublicationBuildError("pinned Hyperboloid measurement invalid") from exc
+            item = {
+                **site_hyperboloid.EXPECTED_ENTRY,
+                "render_mode": "hyperboloid_diagnostic",
+                "author": "Alexey Tolstoy",
+                "work_title": "The Hyperboloid of Engineer Garin (Russian Wikisource revision)",
+                "report_html": _page(site_hyperboloid.TITLE,
+                                     "../../assets/site.css", published["body"]),
+                "json_data": published["json"],
+                "csv_data": published["csv"],
+            }
+            render_items.append(item)
+            input_rows.append({
+                "entry_id": entry_id,
+                "artifact_path": site_hyperboloid.ARTIFACT_PATH,
+                "artifact_sha256": published["artifact_sha256"],
+                "retained_git_blob_sha1": site_hyperboloid.ARTIFACT_GIT_BLOB_SHA1,
+                "route": f"works/{slug}/",
+            })
+            continue
+
         if entry.get("kind") == "work_comparison":
             try:
                 site_work_comparison.validate_entry(dict(entry))
@@ -1057,7 +1085,7 @@ def build_site(
                 work_dir.mkdir(parents=True)
                 (work_dir / "index.html").write_text(page_html, encoding="utf-8", newline="\n")
                 registered = next(item for item in render_items if item["slug"] == slug)
-                if registered.get("render_mode") == "comparison":
+                if registered.get("render_mode") in {"comparison", "hyperboloid_diagnostic"}:
                     (work_dir / "measurements.json").write_text(
                         registered["json_data"], encoding="utf-8", newline="\n"
                     )

@@ -33,7 +33,7 @@ comparison of two analyses to the canonical Reader and its real-work gallery.
 
 The Russian module (`ru`) is the initial product priority. Every analyzed literary body has an **analysis language** and an independent **edition identity**. A translated work additionally records the author's original language, a named translator and a specific edition/source family; another translator or translation revision becomes a separate identity, not another spelling of the title. The measured Russian translation of **Дети капитана Гранта** by **А. А. Бекетова** has 11 real derived fields, but no measured French original. The researched translation of **О происхождении видов** by **С. А. Рачинский** has no retained numeric fields, and its English source is not analyzed here. Never place invented English/French numbers into Russian graphs. See [versioned language/translation contract](docs/TRANSLATIONS_AND_LANGUAGE_MODULES.md).
 
-**Coverage target:** 10 analyzed works, each individually rights-cleared, byte/source-frozen and measured. Current branch-proposed state: 6 measured / 10 catalogued; the remaining four are labelled honestly and require separate reproducible measurements. This is unrelated to the stricter FantLab M2 source-matched parity requirement (0/5).
+**Coverage target:** 10 analyzed works, each individually rights-cleared, byte/source-frozen and measured. Current committed root-Reader data (merged PR #333): 6 measured / 10 catalogued; the remaining four are labelled honestly and require separate reproducible measurements. This is unrelated to the stricter FantLab M2 source-matched parity requirement (0/5).
 
 ## Try your own text
 

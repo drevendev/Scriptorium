@@ -23,6 +23,8 @@ python -m scriptorium.site_renderer --repo-root . --output build/site
 # Then open build/site/index.html
 ```
 
+**What the demo really shows:** four frozen books with retained diagnostics: 113 metric rows, 94 numeric measurements and 19 unavailable values. The reading-room bars are measurement availability, not FantLab parity (M2: 0/5). The fifth novel is source-frozen but its metrics are not yet retained in Reader. The comparison hero uses real derived observations with a complete exact-value table. The intended URL above is not live until Pages administration and release-rights gates (#285, #284) are cleared.
+
 **Understand the language of a text without uploading the manuscript.**
 Scriptorium measures vocabulary, sentence length, dialogue and punctuation, then produces
 readable offline reports and reproducible data. This **0.4.0a1 preview** adds private

@@ -23,6 +23,7 @@ from .site_gallery_filter import evidence_kind, FILTER_CONTROLS, FILTER_JS, FILT
 from . import site_frozen_diagnostic
 from . import site_work_comparison
 from .site_home_showcase import render_demo, render_research_atlas, HOME_CSS
+from .site_stage import render_stage, STAGE_CSS
 from . import site_browser_compare
 from . import site_benchmark_matrix
 from . import site_metric_filter
@@ -560,7 +561,7 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
         'Each result shows its measurements, source identity and limits.</p>'
         + action
         + '</header>' + render_demo(entries)
-        + '</div>' + render_research_atlas(entries) + '<section class="reading-guide" aria-labelledby="reading-guide-title">'
+        + '</div>' + render_research_atlas(entries) + render_stage(entries) + '<section class="reading-guide" aria-labelledby="reading-guide-title">'
         '<h2 id="reading-guide-title">Read the evidence, not a mystery score</h2>'
         '<ol><li><strong>Choose a work.</strong> Open a measured report and inspect exact units.</li>'
         '<li><strong>Check its limits.</strong> An inferred measurement is not verified FantLab parity.</li>'
@@ -1008,7 +1009,7 @@ def build_site(
     try:
         with staged_site(root, destination) as output:
             (output / "assets").mkdir()
-            (output / "assets" / "site.css").write_text(_SITE_CSS + FILTER_CSS + HOME_CSS + site_browser_compare.CSS + site_metric_filter.FILTER_CSS + site_shared_metric_filter.CSS, encoding="utf-8", newline="\n")
+            (output / "assets" / "site.css").write_text(_SITE_CSS + FILTER_CSS + HOME_CSS + STAGE_CSS + site_browser_compare.CSS + site_metric_filter.FILTER_CSS + site_shared_metric_filter.CSS, encoding="utf-8", newline="\n")
             (output / "assets" / "evidence-filter.js").write_text(FILTER_JS, encoding="utf-8", newline="\n")
             (output / "assets" / "private-compare.js").write_text(
                 site_browser_compare.render_script(), encoding="utf-8", newline="\n"

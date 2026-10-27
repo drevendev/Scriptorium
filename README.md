@@ -4,6 +4,8 @@
 
 **Reader deployment scope:** GitHub-managed Pages already publishes the `master / (root)` branch. The root homepage is now a source-free four-book interactive preview of 113 retained fields, 94 numeric observations and 19 unavailable values. It includes live search, comparison bars, provenance links and JSON downloads. The **complete multi-route Python-generated Reader** is still available separately as a local or CI build in `build/site`; not all of those routes are currently served by branch Pages.
 
+**Generated Reader stage — local/CI only:** The separately built `build/site/index.html` contains a measured-stage panel derived at build time from the retained FantLab evidence matrix: four works with numeric observations, 94 measured values, 19 unavailable actuals, and **M2 0/5** source-matched works. It links to the generated `build/site/evidence/fantlab/` table. **This specific stage panel and multi-route evidence view are not published by the branch-root Pages URL.** The public homepage has its own four-book interactive charts and field explorer.
+
 The separately built full Reader can show **real measured differences** between two books, independently search and filter
 Anna Karenina's 28-row and Running on Waves' 27-row diagnostics, inspect Silver Dove and Brothers Karamazov's 29 fields each, filter their twenty
 shared measured rates independently by metric name or family, examine a full-work
@@ -11,7 +13,7 @@ diagnostic, browse the source-free FantLab evidence matrix, or compare two of
 your own Reader JSON reports privately in the browser. Charts and a visible exact-value table show retained, validated derived
 measurements, units and links to methodology and scientific limitations. No manuscript is hosted or uploaded.
 
-**GitHub Pages branch deployment (verified 2026-10-27):** GitHub reports `has_pages=true`. The GitHub-managed `pages build and deployment` workflow completed successfully on `master`, with the Jekyll checkout configured as `source: .`. The previous blocker was not lack of Pages administration: it was a missing root `index.html` and public assets. This PR supplies them. A successful deployment is not a claim that the public site is already live **with the expected Reader** until an independent HTTP/browser check confirms it. The richer Python-built Reader remains available offline:
+**GitHub Pages branch deployment (verified 2026-10-27):** GitHub reports `has_pages=true`. The GitHub-managed `pages build and deployment` workflow completed successfully on `master`, with the Jekyll checkout configured as `source: .`. The previous blocker was not lack of Pages administration: it was a missing root `index.html` and public assets. Merged PR #332 supplies them. A successful deployment is not a claim that the public site is already live **with the expected Reader** until an independent HTTP/browser check confirms it. The richer Python-built Reader remains available offline:
 
 ```bash
 python -m scriptorium.site_renderer --repo-root . --output build/site

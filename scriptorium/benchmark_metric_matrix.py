@@ -1,7 +1,7 @@
 """Verified source-free inventory of retained cross-work FantLab metric diagnostics.
 
 Readiness (five source witnesses) is validated first. Anna Karenina has 28 rows, Running on Waves 27, Silver Dove 29 and Brothers Karamazov 29.
-The remaining two candidates lack metric artifacts and remain NOT_RUN. Unknown input identity never becomes parity.
+The remaining candidate lacks a metric artifact and remains NOT_RUN. Unknown input identity never becomes parity.
 """
 from __future__ import annotations
 

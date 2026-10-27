@@ -1,6 +1,6 @@
 """Verify the original source-free Brothers Karamazov CI artifact before retention or display.
 
-The Git blob is byte-identical to the completed PR #325 measured-workflow artifact
+The Git blob is byte-identical to the completed PR #327 measured-workflow artifact
 (run 40441065263, commit ade9afa). Source/rights readiness is verified by the
 existing five-work matrix before this module consumes its bound witness.
 """

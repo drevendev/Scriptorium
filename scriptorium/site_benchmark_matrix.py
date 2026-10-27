@@ -626,7 +626,7 @@ def build(root: Path) -> dict[str, str]:
         '</header>'
         '<section aria-labelledby="works-title"><h2 id="works-title">Five frozen public candidates</h2>'
         '<p>Four works have retained metric observations. The remaining one '
-        'have NOT_RUN metric status. Each source row shows public-domain '
+        'has NOT_RUN metric status. Each source row shows public-domain '
         'edition evidence, frozen text characters (including spaces), FantLab '
         'displayed characters, a signed count difference and relative drift '
         '(frozen − FantLab displayed) / FantLab displayed × 100, rounded to '

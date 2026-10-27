@@ -89,6 +89,7 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("UNRESOLVED_SOURCE", content)
         self.assertIn("M2: 0/5", content)
         self.assertIn("Four works have retained metric observations", content)
+        self.assertIn("The remaining one has NOT_RUN metric status", content)
         self.assertIn("Frozen:</strong> 1,705,605", content)
         self.assertIn("FantLab displayed:</strong> 1,692,647", content)
         self.assertIn("Δ:</strong> +12,958", content)

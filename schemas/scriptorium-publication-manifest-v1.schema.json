@@ -76,7 +76,8 @@
               "author_profile",
               "tag_profile",
               "work_comparison",
-              "benchmark_matrix"
+              "benchmark_matrix",
+              "measured_diagnostic"
             ]
           },
           "slug": {
@@ -127,18 +128,33 @@
             "const": false
           },
           "artifact_paths": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 2,
-            "prefixItems": [
+            "anyOf": [
               {
-                "const": "corpus/candidates/diagnostics/grin-running-on-waves-ru.json"
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "prefixItems": [
+                  {
+                    "const": "corpus/candidates/diagnostics/grin-running-on-waves-ru.json"
+                  },
+                  {
+                    "const": "corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json"
+                  }
+                ],
+                "items": false
               },
               {
-                "const": "corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json"
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 1,
+                "prefixItems": [
+                  {
+                    "const": "corpus/candidates/diagnostics/tolstoy-hyperboloid-garin-wikisource-ru.retained.json"
+                  }
+                ],
+                "items": false
               }
-            ],
-            "items": false
+            ]
           }
         },
         "allOf": [
@@ -243,13 +259,64 @@
                 }
               },
               "else": {
-                "required": [
-                  "artifact_path"
-                ],
-                "not": {
+                "if": {
+                  "properties": {
+                    "kind": {
+                      "const": "measured_diagnostic"
+                    }
+                  },
+                  "required": [
+                    "kind"
+                  ]
+                },
+                "then": {
                   "required": [
                     "artifact_paths"
-                  ]
+                  ],
+                  "not": {
+                    "required": [
+                      "artifact_path"
+                    ]
+                  },
+                  "properties": {
+                    "entry_id": {
+                      "const": "tolstoy-hyperboloid-retained-reader-v1"
+                    },
+                    "slug": {
+                      "const": "hyperboloid-garin-measured"
+                    },
+                    "title": {
+                      "const": "Гиперболоид инженера Гарина — 29 измерений"
+                    },
+                    "artifact_schema": {
+                      "const": "scriptorium-hyperboloid-retained-ci-v1"
+                    },
+                    "publication_status": {
+                      "const": "diagnostic"
+                    },
+                    "benchmark_admissibility": {
+                      "const": "diagnostic_only"
+                    },
+                    "corpus_admissibility": {
+                      "const": "not_admissible"
+                    },
+                    "compatibility_claim": {
+                      "const": "inferred"
+                    },
+                    "source_text_included": {
+                      "const": false
+                    }
+                  }
+                },
+                "else": {
+                  "required": [
+                    "artifact_path"
+                  ],
+                  "not": {
+                    "required": [
+                      "artifact_paths"
+                    ]
+                  }
                 }
               }
             }

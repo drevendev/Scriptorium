@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 334
+STATE_REVISION: 335
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-27
-LAST_RESULT: PR #332 merged at 6098ce582ed7d06b9dbaec82a75957ac779a601e; branch Pages deploy succeeded. This PR proposes Russian-first ten-title catalogue, six measured works, translator/edition identities and two-work comparison. Proposed UI/data are not yet merged.
-LAST_VERIFIED_PROGRESS: Root Pages currently shows four measured works (113 rows); new branch proposal expands to six measured Russian-language works (153 fields, 129 actuals, 24 unavailable) plus four explicitly pending catalogue records. Full Python-generated Reader remains narrower. FantLab source identity unknown; M2 0/5.
+LAST_RESULT: PR #333 merged at 0e51564310a73d91434b4a43d65c68b5cfa34578. This change proposes a separately pinned Hyperboloid 29-field route in the full Python-generated Reader (not in root Pages).
+LAST_VERIFIED_PROGRESS: Root Pages code contains a ten-entry Russian-first catalogue with six measured books (129 numeric values and 24 unavailable); public browser/HTTP verification is still pending. Existing generated FantLab evidence matrix has four measured works; an additional 24 measured / 5 NOT_RUN Hyperboloid route is now proposed. M2 remains 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-RU-010-TRANSLATION-READER
-ISSUES: #281, #283, #285 (partial)
-STATUS: AUTHORED_PENDING_CI_AND_LATER_ACCEPTANCE
-BRANCH: scrip-site-021-ru-first-translators-ten-books
-BASE: 6098ce582ed7d06b9dbaec82a75957ac779a601e
-ACCEPTANCE: Every one of the ten catalogue entries is a unique Russian-language edition/source identity; six have unchanged measured metrics and pinned witnesses, four remain preparation/NOT_RUN rather than being called analyzed. Preserve all 29 Hyperboloid CI rows with original artifact checksum, the verified 11 Beketova translation observations and explicit translator/original-language/edition relations. An active side-by-side normalized comparison works only for two measured works sharing a pinned profile. No fake English/French originals, no unsupported translation effects, no manuscript text, no M2 claim. Build root Pages, exact-head tests, desktop/mobile browser verification where available, and independent later-run acceptance before merge.
+UNIT_ID: SCRIP-SITE-GENERATED-HYPERBOLOID-029
+ISSUES: #281 (retained metrics), #283 (Reader presentation), #285 (publication scope)
+STATUS: AUTHORED_PENDING_EXACT_HEAD_CI_AND_LATER_ACCEPTANCE
+BRANCH: scrip-site-022-hyperboloid-generated-reader
+BASE: 0e51564310a73d91434b4a43d65c68b5cfa34578
+ACCEPTANCE: The Python-generated `build/site` exposes one discoverable Hyperboloid report with all 29 original retained metric IDs, 24 numeric values, five explicit NOT_RUN values, correct units, two historical FantLab integer counts and exact diagnostic differences (+3,527 characters, +2,795 words). Reject mutated source-free JSON, altered receipts, new parity claims and fabricated missing values; expose accessible HTML plus exact JSON/CSV and source/CI receipts. Preserve the five-source four-measured FantLab matrix unchanged, retain separate public root Pages six-book data and existing tests. Require exact-head full-suite/Pages-build CI, later independent acceptance, and browser visual verification when permitted. No source text, new corpus admission, changed CI deployment interlock or M2 completion claim.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Russian-first Reader with genuinely measured originals/translations, provenance-aware comparisons, and ten separate edition entries without pretending unfinished works are analyzed.
+Milestone: make the six-book root Reading Room and locally generated Reader scientifically consistent and navigable, without conflating descriptive diagnostics with FantLab input-matched parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Current Russian Reader PR | Later accept source-verified six-book interactive Pages release, ten-title catalogue, translator identity and charts | Exact-head CI and review; branch Pages deploy after merge |
-| P2 | #281 Hyperboloid retention in generated Reader | Reuse reviewed source-free 29 fields in the Python multi-route matrix/exports | Artifact is available; update existing manifest with separate semantic PR |
-| P3 | Resurrection measured diagnostic | Replay the independently frozen 129-revision Tolstoy body for versioned candidate metrics | Source-provenance/rights gate; exact replay, no FantLab parity claim |
-| P4 | Road to Nowhere alternate text | Validate alternate complete body and create measured source-free profile without collapsing with incomplete primary edition | Source integrity and rights; raw/normalized hashes |
-| P5 | Translation/original module | Analyze a rights-clear French original of Verne and an English Darwin original in **separate language profiles**, then compare version-pairs only on meaningfully commensurable features | Original identity, legal provenance, separate tokenization/morphology and test corpus |
+| P1 | Current Hyperboloid generated Reader PR | Exact-head CI, later independent acceptance and qualifying merge of pinned 29-row route | Check diff, source digest, review findings and build |
+| P2 | #281 Beketova measured-field retention in full generated Reader | Reuse eleven verified Russian-translation fields in separately identified source-free report | Distinct translator/edition identity and original CI receipt |
+| P3 | #283 / #285 live Pages verification | Confirm actual six-book public root Pages route, desktop/mobile/keyboard behavior where browser is permitted | Network/browser restriction does not block local UI work |
+| P4 | Resurrection pinned-body replay | Independently remeasure 129 frozen source revisions with versioned profile and source-free outputs | Legal/raw/normalized SHA gates; no parity claim |
+| P5 | Road to Nowhere alternate candidate | Validate complete frozen alternative and publish separate measurement record | No conflation with truncated primary edition; source provenance |
 
-M2: 0/5 unchanged. A six-work measured Russian showcase is *not* FantLab parity completion or M5. Four pending titles remain catalogued but not analyzed. The existing hourly job remains unchanged.
+M2: 0/5 unchanged. Six measured works in root Pages and another separately measured generated Reader route are NOT six source-matched FantLab parity works. The hourly job remains unchanged.
 
 ## Retained evidence and scientific gates
 

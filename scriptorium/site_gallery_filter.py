@@ -11,7 +11,7 @@ from typing import Any
 def evidence_kind(item: Mapping[str, Any]) -> str:
     """Classify presentation modes, not scientific evidence status."""
     mode = item.get("render_mode")
-    if mode in {"frozen_diagnostic", "comparison"}:
+    if mode in {"frozen_diagnostic", "hyperboloid_diagnostic", "comparison"}:
         return "full_work"
     if mode == "provenance":
         return "provenance"

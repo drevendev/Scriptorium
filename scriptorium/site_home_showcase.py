@@ -172,6 +172,11 @@ def render_research_atlas(entries: Sequence[Mapping[str, Any]]) -> str:
     rows_by_id = {item.get("candidate_id"): item for item in source_rows if type(item) is dict}
     if len(rows_by_id) != 5 or set(rows_by_id) != {book[0] for book in _ATLAS_BOOKS}:
         raise ValueError("duplicate or unexpected atlas book")
+    separate = [item for item in entries
+                if item.get("render_mode") == "hyperboloid_diagnostic"]
+    if len(separate) > 1 or (separate and separate[0].get("slug")
+                             != "hyperboloid-garin-measured"):
+        raise ValueError("unrecognized separate Hyperboloid report")
     cards = []
     total_measured = 0
     total_missing = 0
@@ -192,15 +197,21 @@ def render_research_atlas(entries: Sequence[Mapping[str, Any]]) -> str:
         total_measured += observed
         total_missing += missing
         progress = f'<span class="atlas-bar" aria-hidden="true"><span style="width:{observed / expected * 100:.2f}%"></span></span>' if expected else ""
-        count = (f"{observed} of {expected} measurements available" if expected
-                 else "Not yet retained in Reader")
+        separate_report = bool(separate) and identity == "tolstoy-hyperboloid-garin-wikisource-ru"
+        count = (f"{observed} of {expected} matrix measurements available" if expected
+                 else "24 measurements in separate Reader report; not in matrix"
+                 if separate_report else "Not yet retained in Reader")
+        target_href = ("works/hyperboloid-garin-measured/" if separate_report
+                       else f"evidence/fantlab/#{anchor}")
+        link_label = ("Open 29-row report" if separate_report else
+                      "View source status" if not expected else "Explore measurements")
         cards.append(
             '<li class="atlas-book' + (' atlas-pending' if not expected else '') + '">'
             f'<p class="atlas-number">VOLUME {position:02d} / 05</p>'
             f'<h3>{escape(title)}</h3><p class="atlas-author">{escape(author)}</p>'
             f'<p class="atlas-count">{count}</p>' + progress +
-            f'<a href="evidence/fantlab/#{anchor}">'
-            + ("View source status" if not expected else "Explore measurements")
+            f'<a href="{target_href}">'
+            + link_label
             + ' <span aria-hidden="true">↗</span></a></li>'
         )
     if (total_measured, total_missing) != (94, 19):

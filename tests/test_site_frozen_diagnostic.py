@@ -37,11 +37,12 @@ class FrozenSiteIntegrationTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name) / "repo"
         self.manifest = json.loads((ROOT / "site/publication-manifest.json").read_text())
-        # This fixture exercises the six historical work routes only. The
-        # independently validated no-artifact benchmark route is tested in
-        # test_site_benchmark_matrix, not by copying source into this fixture.
+        # Exercise the six historical routes in isolation. The no-artifact
+        # FantLab matrix and the separately pinned Hyperboloid diagnostic have
+        # their own integration tests and must not change historical fixtures.
         self.manifest["entries"] = [e for e in self.manifest["entries"]
-                                    if e.get("kind") != "benchmark_matrix"]
+                                    if e.get("kind") not in
+                                    {"benchmark_matrix", "measured_diagnostic"}]
         (self.root / "site").mkdir(parents=True)
         for entry in self.manifest["entries"]:
             paths = (entry["artifact_paths"] if entry.get("kind") == "work_comparison"

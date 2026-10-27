@@ -55,7 +55,7 @@ class PagesWorkflowContractTests(unittest.TestCase):
             for line in self.workflow.splitlines()
             if line.strip().startswith("uses:")
         ]
-        self.assertEqual(len(uses_lines), 5)
+        self.assertEqual(len(uses_lines), 6)
         for line in uses_lines:
             self.assertRegex(
                 line,
@@ -66,6 +66,7 @@ class PagesWorkflowContractTests(unittest.TestCase):
             "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1",
             "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0",
             "actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0",
+            "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2",
             "actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0",
             "actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1",
         }
@@ -126,6 +127,23 @@ class PagesWorkflowContractTests(unittest.TestCase):
         self.assertNotIn("secrets.", self.workflow)
         self.assertNotIn("pull_request_target", self.workflow)
         self.assertNotIn("persist-credentials: true", self.workflow)
+
+    def test_branch_root_preview_artifact_is_allowlisted_and_pinned(self) -> None:
+        """The second artifact is a disposable QA copy, not the Pages deploy artifact."""
+        self.assertIn("name: scriptorium-branch-root-preview", self.workflow)
+        self.assertIn("path: build/branch-root-preview", self.workflow)
+        self.assertIn("if-no-files-found: error", self.workflow)
+        self.assertIn("actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2", self.workflow)
+        for filename in (
+            "index.html",
+            "assets/pages-reader.css",
+            "assets/pages-reader.js",
+            "assets/evidence-snapshot.json",
+        ):
+            destination = "build/branch-root-preview/" + filename
+            self.assertIn("cp " + filename + " " + destination, self.workflow)
+        self.assertIn("test -z", self.workflow)
+        self.assertNotIn("cp -r . build/branch-root-preview", self.workflow)
 
     def test_only_disposable_site_tree_is_uploaded(self) -> None:
         upload_step = re.search(

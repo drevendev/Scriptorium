@@ -33,6 +33,7 @@
   const leftSelect = el("pair-left");
   const rightSelect = el("pair-right");
   const pairMetric = el("pair-metric");
+  const pairExportButton = el("pair-export");
   let data;
   let currentBook = "anna";
   let currentChart = "fantlab.dialogue.share_percent";
@@ -280,7 +281,62 @@
     "fantlab.punctuation.dash.per_1000_words",
     "fantlab.punctuation.question.per_1000_words"
   ];
+  function sharedPairRows(a,b) {
+    return pairedIds.flatMap(id=>{
+      const av=lookup(a,id),bv=lookup(b,id);
+      return (av&&bv&&isNumeric(av.actual)&&isNumeric(bv.actual))?
+        [{id,left:av.actual,right:bv.actual}]:[];
+    });
+  }
+  // Source-free, edition-bound and deterministic. The export contains only
+  // allow-listed measured fields already displayed in the comparison table.
+  function buildPairExport(leftKey,rightKey) {
+    const a=getBook(leftKey),b=getBook(rightKey);
+    if (!a||!b||a.key===b.key) return null;
+    const profiles=["metrics","normalization","dialogue","vocabulary","punctuation"];
+    if (!profiles.every(profile=>
+      typeof a.profiles?.[profile]==="string" &&
+      a.profiles[profile]===b.profiles?.[profile])) return null;
+    const rows=sharedPairRows(a,b);
+    if (!rows.length) return null;
+    const identity=book=>({
+      key:book.key,candidate_id:book.candidate_id,
+      title:book.display_title,author:book.display_author,
+      analysis_language:book.language,original_language:book.original_language,
+      translator:book.translator||null,edition_id:book.edition_id,
+      source_sha256:book.source_sha256,evidence_url:book.evidence_url
+    });
+    return {
+      schema:"scriptorium-ru-pair-comparison-v1",
+      scientific_claim:"DIAGNOSTIC_ONLY",
+      fantlab_input_identity:"UNKNOWN",m2_source_matched:0,
+      text_included:false,comparison_direction:"right_minus_left",
+      measurement_profiles:Object.fromEntries(profiles.map(p=>[p,a.profiles[p]])),
+      left:identity(a),right:identity(b),
+      metrics:rows.map(row=>({
+        id:row.id,unit:unit(row.id),
+        left_actual:row.left,right_actual:row.right,
+        delta_right_minus_left:row.right-row.left
+      }))
+    };
+  }
+  function exportPair() {
+    const result=buildPairExport(leftSelect.value,rightSelect.value);
+    if (!result) {
+      pairExportButton.disabled=true;
+      return;
+    }
+    const blob=new Blob([JSON.stringify(result,null,2)+"\n"],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");
+    link.href=url;
+    link.download="scriptorium-pair-"+result.left.key+"-"+result.right.key+".json";
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
   function updatePair() {
+    pairExportButton.disabled=true;
     const a=getBook(leftSelect.value),b=getBook(rightSelect.value);
     if (!a||!b) throw Error("Книга отсутствует в измеренном корпусе");
     const matchingProfiles=["metrics","normalization","dialogue","vocabulary","punctuation"];
@@ -298,11 +354,7 @@
       el("paired-graphic").replaceChildren();
       return;
     }
-    const rows=pairedIds.flatMap(id=>{
-      const av=lookup(a,id),bv=lookup(b,id);
-      return (av&&bv&&isNumeric(av.actual)&&isNumeric(bv.actual))?
-        [{id,left:av.actual,right:bv.actual}]:[];
-    });
+    const rows=sharedPairRows(a,b);
     const fragment=document.createDocumentFragment();
     for (const m of rows) {
       const tr=document.createElement("tr");
@@ -315,6 +367,7 @@
       fragment.appendChild(tr);
     }
     el("pair-rows").replaceChildren(fragment);
+    pairExportButton.disabled=rows.length===0;
     el("pair-caption").textContent=a.display_title+" → "+b.display_title+" · правая минус левая";
     el("pair-status").textContent=rows.length+" совместно измеренных нормированных метрик. "+
       (a.translator||b.translator?"Одна из версий — русский перевод. ":"")+
@@ -405,7 +458,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[one,search,out,leftSelect,rightSelect,pairMetric,...chartButtons];
+      const inputs=[one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>{currentChart=btn.dataset.chart;updateChart();});
@@ -428,6 +481,7 @@
       });
       search.addEventListener("input",updateSingle);
       out.addEventListener("click",exportSelected);
+      pairExportButton.addEventListener("click",exportPair);
       leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",updatePair);

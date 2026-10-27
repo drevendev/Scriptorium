@@ -42,7 +42,7 @@ routes.selectBook(routes.bookFromUrl());
 assert.equal(routes.current(), "beketova");
 assert.equal(one.value, "beketova");
 assert.equal(search.value, "");
-assert.match(direct.href, /^\\?book=beketova#measurements$/);
+assert.equal(direct.href, "?book=beketova#measurements");
 assert.match(direct.textContent, /Бекетова|Гранта/);
 assert.equal(window.history.pushes.length, 0);
 assert.equal(renders, 1);

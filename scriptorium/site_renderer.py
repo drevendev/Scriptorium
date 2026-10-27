@@ -27,6 +27,7 @@ from .site_stage import render_stage, STAGE_CSS
 from . import site_browser_compare
 from . import site_benchmark_matrix
 from . import site_hyperboloid
+from . import site_beketova
 from . import site_metric_filter
 from . import site_shared_metric_filter
 
@@ -514,6 +515,7 @@ def _render_index(entries: Sequence[Mapping[str, Any]]) -> str:
             "provenance": " · provenance-only",
             "frozen_diagnostic": " · full-work metrics",
             "hyperboloid_diagnostic": " · 29 pinned measurements",
+            "beketova_diagnostic": " · 11 Russian translation measurements",
         }.get(item.get("render_mode"), "")
         kind = evidence_kind(item)
         cards.append(
@@ -675,7 +677,7 @@ def _render_provenance_work(item: Mapping[str, Any]) -> str:
 def _render_work(item: Mapping[str, Any]) -> str:
     if item.get("render_mode") == "comparison":
         return item["report_html"]
-    if item.get("render_mode") in {"frozen_diagnostic", "hyperboloid_diagnostic"}:
+    if item.get("render_mode") in {"frozen_diagnostic", "hyperboloid_diagnostic", "beketova_diagnostic"}:
         return item["report_html"]
     if item.get("render_mode") == "provenance":
         return _render_provenance_work(item)
@@ -954,6 +956,32 @@ def build_site(
             })
             continue
 
+        if entry_id == site_beketova.EXPECTED_ENTRY["entry_id"]:
+            try:
+                site_beketova.validate_entry(dict(entry))
+                published = site_beketova.build(root)
+            except (site_beketova.BeketovaBuildError, OSError, KeyError, TypeError) as exc:
+                raise PublicationBuildError("pinned Beketova translation measurements invalid") from exc
+            item = {
+                **site_beketova.EXPECTED_ENTRY,
+                "render_mode": "beketova_diagnostic",
+                "author": "Jules Verne · Alexandra A. Beketova (translator)",
+                "work_title": "The Children of Captain Grant (Russian translation, pinned edition)",
+                "report_html": _page(site_beketova.TITLE,
+                                     "../../assets/site.css", published["body"]),
+                "json_data": published["json"],
+                "csv_data": published["csv"],
+            }
+            render_items.append(item)
+            input_rows.append({
+                "entry_id": entry_id,
+                "artifact_path": site_beketova.ARTIFACT_PATH,
+                "artifact_sha256": published["artifact_sha256"],
+                "retained_git_blob_sha1": site_beketova.ARTIFACT_GIT_BLOB_SHA1,
+                "route": f"works/{slug}/",
+            })
+            continue
+
         if entry.get("kind") == "measured_diagnostic":
             try:
                 site_hyperboloid.validate_entry(dict(entry))
@@ -1085,7 +1113,7 @@ def build_site(
                 work_dir.mkdir(parents=True)
                 (work_dir / "index.html").write_text(page_html, encoding="utf-8", newline="\n")
                 registered = next(item for item in render_items if item["slug"] == slug)
-                if registered.get("render_mode") in {"comparison", "hyperboloid_diagnostic"}:
+                if registered.get("render_mode") in {"comparison", "hyperboloid_diagnostic", "beketova_diagnostic"}:
                     (work_dir / "measurements.json").write_text(
                         registered["json_data"], encoding="utf-8", newline="\n"
                     )

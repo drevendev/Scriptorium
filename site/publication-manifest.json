@@ -116,6 +116,21 @@
       "corpus_admissibility": "not_admissible",
       "compatibility_claim": "inferred",
       "source_text_included": false
+    },
+    {
+      "entry_id": "verne-beketova-retained-reader-v1",
+      "kind": "measured_diagnostic",
+      "slug": "captain-grant-beketova-measured",
+      "title": "Дети капитана Гранта — перевод А. А. Бекетовой",
+      "artifact_paths": [
+        "corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json"
+      ],
+      "artifact_schema": "scriptorium-beketova-measured-reader-v1",
+      "publication_status": "diagnostic",
+      "benchmark_admissibility": "diagnostic_only",
+      "corpus_admissibility": "not_admissible",
+      "compatibility_claim": "inferred",
+      "source_text_included": false
     }
   ]
 }

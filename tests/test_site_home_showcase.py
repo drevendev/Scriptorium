@@ -234,6 +234,21 @@ class HomeShowcaseTests(unittest.TestCase):
         self.assertIn('id="research-atlas"', home)
         self.assertEqual(home.count('<h1>'), 1)
 
+    def test_atlas_links_separate_hyperboloid_without_fabricating_matrix_rows(self):
+        entry = benchmark_entry()
+        distinct = {"render_mode": "hyperboloid_diagnostic",
+                    "slug": "hyperboloid-garin-measured"}
+        output = render_research_atlas([entry, distinct])
+        self.assertIn("24 measurements in separate Reader report; not in matrix", output)
+        self.assertIn('href="works/hyperboloid-garin-measured/"', output)
+        self.assertNotIn("Not yet retained in Reader", output)
+        self.assertIn('M2 · 0 / 5', output)
+        self.assertIn('113', output)
+        with self.assertRaisesRegex(ValueError, "separate Hyperboloid"):
+            render_research_atlas([entry, distinct, distinct])
+        with self.assertRaisesRegex(ValueError, "separate Hyperboloid"):
+            render_research_atlas([entry, dict(distinct, slug="different-report")])
+
     def test_atlas_rejects_parity_and_metric_drift(self):
         original = benchmark_entry()
         self.assertEqual(render_research_atlas([]), '')

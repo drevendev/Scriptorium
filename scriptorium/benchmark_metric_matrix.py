@@ -1,7 +1,7 @@
 """Verified source-free inventory of retained cross-work FantLab metric diagnostics.
 
-Readiness (five source witnesses) is validated first. Anna Karenina has 28 rows, Running on Waves 27, and Silver Dove 29.
-The remaining two candidates lack metric artifacts and remain NOT_RUN. Unknown input identity never becomes parity.
+Readiness (five source witnesses) is validated first. Anna Karenina has 28 rows, Running on Waves 27, Silver Dove 29 and Brothers Karamazov 29.
+The remaining candidate lacks a metric artifact and remains NOT_RUN. Unknown input identity never becomes parity.
 """
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ import re
 
 from .benchmark import _MISSING, _lookup, _reference_specs
 from .benchmark_readiness import build_readiness, _load
-from . import full_work_gallery, running_waves_diagnostic, silver_dove_retained
+from . import full_work_gallery, running_waves_diagnostic, silver_dove_retained, karamazov_retained
 from .csv_safety import safe_csv_text
 
 SCHEMA_VERSION = "scriptorium-fantlab-retained-metrics-v1"
@@ -276,12 +276,16 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
     wave_observed = _verify_running_metrics(root, wave_witness)
     silver_witness = next(e for e in entries if e["candidate_id"] == silver_dove_retained.CANDIDATE_ID)
     silver_observed = silver_dove_retained.verify(root, silver_witness)
+    karamazov_witness = next(e for e in entries if e['candidate_id'] == karamazov_retained.CANDIDATE_ID)
+    karamazov_observed = karamazov_retained.verify(root, karamazov_witness)
     output_entries: list[dict[str, object]] = []
     for source in entries:
         is_anna = source["candidate_id"] == _ANNA_ID
         is_wave = source["candidate_id"] == _RUNNING_ID
         is_silver = source["candidate_id"] == silver_dove_retained.CANDIDATE_ID
-        rows = observed if is_anna else wave_observed if is_wave else silver_observed if is_silver else []
+        is_karamazov = source["candidate_id"] == karamazov_retained.CANDIDATE_ID
+        rows = (observed if is_anna else wave_observed if is_wave else
+                silver_observed if is_silver else karamazov_observed if is_karamazov else [])
         output_entries.append({
             "candidate_id": source["candidate_id"],
             "title": source["title"],
@@ -294,16 +298,18 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
             "metric_rows": rows,
             "metric_rows_with_actual": sum(r["actual"] is not None for r in rows),
             "metric_rows_without_actual": sum(r["actual"] is None for r in rows),
-            "retained_analyzer_revision": revision if is_anna else silver_dove_retained.REPLAY_HEAD_SHA if is_silver else None,
+            "retained_analyzer_revision": (revision if is_anna else
+                                           silver_dove_retained.REPLAY_HEAD_SHA if is_silver else
+                                           karamazov_retained.REPLAY_HEAD_SHA if is_karamazov else None),
         })
     return {
         "schema_version": SCHEMA_VERSION,
         "source_readiness_schema": readiness["schema_version"],
         "works_reported": 5,
-        "works_with_retained_metric_diagnostics": 3,
-        "retained_metric_rows": len(observed) + len(wave_observed) + len(silver_observed),
+        "works_with_retained_metric_diagnostics": 4,
+        "retained_metric_rows": len(observed) + len(wave_observed) + len(silver_observed) + len(karamazov_observed),
         "m2_source_matched_pass_count": 0,
-        "note": "Retained observations are diagnostic or extension, NOT parity. Two works have no field runs; Silver Dove has only two retained FantLab reference counts. Exact FantLab input identity and decimal rounding remain UNKNOWN.",
+        "note": "Retained observations are diagnostic or extension, NOT parity. One work has no field run; Silver Dove and Brothers Karamazov each have only two retained FantLab reference counts. Exact FantLab input identity and decimal rounding remain UNKNOWN.",
         "entries": output_entries,
     }
 
@@ -362,7 +368,7 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
                 f"| {row['metric_id']} | {fmt(row['expected'])} | {fmt(row['actual'])} | "
                 f"{fmt(row['actual_minus_expected'])} | {row['result']} |"
             )
-    lines.extend(["", "Two works still lack field observations. Silver Dove has two displayed FantLab references; missing reference values are unknown, not zero.", ""])
+    lines.extend(["", "One work still lacks field observations. Silver Dove and Brothers Karamazov each have two displayed FantLab references; missing reference values are unknown, not zero.", ""])
     return "\n".join(lines)
 
 

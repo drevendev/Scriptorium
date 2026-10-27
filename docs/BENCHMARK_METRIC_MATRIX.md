@@ -34,8 +34,12 @@ no source prose. CSV emits one row per retained metric, plus a clearly labelled
   metrics, the remaining **26 reference values are UNKNOWN**, not zero;
   the 29th sentence-count field is a Scriptorium extension without a
   FantLab counterpart.
-- **The Brothers Karamazov and The Hyperboloid of Engineer Garin** still have
-  no retained field-by-field artifact: their metric status remains **NOT_RUN**.
+- **The Brothers Karamazov** has an exact, source-free, 29-field CI receipt
+  (24 numeric, five dictionary-dependent NOT_RUN) for 98 pinned revisions:
+  1,810,351 characters / 292,095 words. FantLab displays 1,807,107 / 281,507;
+  +3,244 / +10,588 differences are unmatched-source diagnostics, not parity.
+- **The Hyperboloid of Engineer Garin** alone remains without a retained
+  field-by-field run (NOT_RUN).
 - All five FantLab analyzer-input identities are **UNKNOWN**. M2 remains **0/5**.
   Even a numerically equal row is **UNRESOLVED_SOURCE**, not a PASS.
 
@@ -57,8 +61,8 @@ contract or replace `scriptorium.benchmark`. To create *new* field-by-field
 comparison evidence, run that existing harness on legally usable local bytes
 with the correct provenance fields.
 
-The remaining scientific work for #281 requires two more properly bound
-field-level runs, independent reference-rounding evidence, and—before any M2
+The remaining scientific work for #281 requires one more properly bound
+field-level run, independent reference-rounding evidence, and—before any M2
 progress—actual confirmed FantLab analyzer-input identity for five qualifying
 works. No artifact in this preview meets that gate.
 
@@ -79,8 +83,8 @@ No original diagnostic is rewritten and no FantLab floating rounding tolerance
 is inferred. Anna and Running on Waves still contribute exactly 55 recorded
 fields, 46 numeric observations and nine missing actuals; the new Silver Dove
 receipt adds 29 rows (24 numeric and five missing). The consolidated matrix
-now has **84 rows** across three works; the two works without retained diagnostics
-remain **NOT_RUN**. The readiness files continue to
+now has **113 rows** across four works; the one work without retained diagnostics
+remains **NOT_RUN**. The readiness files continue to
 document **character-count/source readiness** separately.
 
 The Reader keeps its accessible, progressive **28-row Anna explorer** and
@@ -114,6 +118,20 @@ The sentence count is separately labelled an **extension**; no new parity,
 author-voice or FantLab definition claims are made. M2 remains **0/5**.
 Build is distinct from deployment and real browser visual verification.
 
+## Original Brothers Karamazov artifact retention (#281)
+
+The checked-in `corpus/candidates/diagnostics/dostoevsky-brothers-karamazov-ru.json`
+is byte-for-byte identical to the 2026-10-27 successful pinned CI artifact,
+PR #327 head `ade9afa718967866530e58ec6cb9d731bf5b81a0`,
+run `40441065263`. Original Git blob SHA-1:
+`21cacd2d77575377b0d5e64d998cfd2687abc453`;
+JSON SHA-256:
+`9658c7dc5995ada6866f2b76903bf77ab3764342be133ddff8ae60444448048d`.
+A SHA-bound validator checks the 98-revision source witness, 29 metric IDs,
+profiles/units, two displayed integer-reference deltas, missing dictionary
+actuals, source-unmatched identity and zero M2 contribution. No novel text is stored.
+This is Reader/CLI integration, not a new field execution or Pages activation.
+
 ## Two-work normalized-rate view (Reader)
 
 The built FantLab evidence page includes a **20-row side-by-side** table drawn
@@ -145,9 +163,10 @@ from the built homepage). The route renders the existing validated five-work rep
 the Anna Karenina diagnostic with 28 rows (23 numeric actuals and five
 unavailable) and a searchable Running on Waves table with 27 rows (23 numeric
 actuals and four NOT_RUN), plus a static accessible Silver Dove table of 29
-fields (24 numeric and five NOT_RUN). The remaining two works remain `NOT_RUN`.
-The same validated machine-readable `metrics.json` and `metrics.csv` exports
-include all 84 rows, explicitly retaining unknown FantLab references.
+fields (24 numeric and five NOT_RUN), plus a static accessible Brothers
+Karamazov table of 29 fields (24 numeric and five NOT_RUN). Only Hyperboloid
+remains `NOT_RUN`. The same validated machine-readable `metrics.json` and
+`metrics.csv` exports include all 113 rows, retaining unknown FantLab references.
 
 The route is explicitly registered in the publication allow-list and refuses
 contradictory source/reference hashes, invented metric values, forged parity status,
@@ -210,7 +229,7 @@ separates **measured actual** from **NOT_RUN** and **UNRESOLVED_NO_ACTUAL**:
 
 Each family links to its full per-metric table. Coverage is an availability
 inventory, not a parity score; all 23 measured values remain **UNRESOLVED_SOURCE**,
-the two works without retained diagnostics remain **NOT_RUN**, and M2 remains 0/5.
+the one work without retained diagnostics remains **NOT_RUN**, and M2 remains 0/5.
 The export field names, reference editions and parity gates are unchanged;
 the new Silver Dove measurements are versioned, not source-matched.
 Malformed coverage totals fail closed rather than silently displaying a false
@@ -240,12 +259,12 @@ human labels or stable field IDs, filters by Dialogue/General/Punctuation/Vocabu
 and measured/NOT_RUN/actual-unavailable state, and has its own live count and
 reset action. Metric-family jumps reveal hidden targets. Without JavaScript both
 full filtered tables remain visible; printing restores their 55 rows after
-filtering, while the new Silver Dove table always shows all 29 fields.
+filtering, while the Silver Dove and Brothers Karamazov tables show all 29 fields each.
 No search text is sent off-device, stored or submitted.
 
-Filtering changes **only on-screen visibility**. There are **all 84 rows in exports**:
-55 in the two independently filtered work tables and 29 in the static Silver
-Dove table. The five-work source witness inventory and readiness files are
+Filtering changes **only on-screen visibility**. There are **all 113 rows in exports**:
+55 in the two independently filtered work tables and 58 in the static Silver
+Dove and Brothers Karamazov tables. The five-work source witness inventory and readiness files are
 unchanged; the metrics JSON/CSV gain the reviewed new measurements.
 A measured row is NOT a parity pass: FantLab input identity and decimal rounding
 remain unknown. M2 is 0/5. Browser screenshots require later visual verification.
@@ -283,7 +302,8 @@ FantLab references. They explicitly mark their scientific status
 weight zero. Raw size/vocabulary totals, missing observations and any parity
 promotion are excluded. The shared-rate exports still contain only Anna and
 Waves. The subsequently retained Silver Dove fields expanded `metrics.json/csv`
-from 55 to 84 rows; `readiness.json/csv` and `shared-rates.json/csv` are unchanged.
+from 55 to 84 rows, then Karamazov increases them to 113;
+`readiness.json/csv` and `shared-rates.json/csv` are unchanged.
 
 The canonical site builder computes these files from validated retained
 records, writes them atomically with the site, and records their SHA-256

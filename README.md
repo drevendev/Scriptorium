@@ -3,7 +3,7 @@
 **[🌐 Open the interactive Scriptorium Reader (GitHub Pages) →](https://drevendev.github.io/Scriptorium/)**
 
 See **real measured differences** between two books, independently search and filter
-Anna Karenina's 28-row and Running on Waves' 27-row diagnostics, filter their twenty
+Anna Karenina's 28-row and Running on Waves' 27-row diagnostics, inspect Silver Dove and Brothers Karamazov's 29 fields each, filter their twenty
 shared measured rates independently by metric name or family, examine a full-work
 diagnostic, browse the source-free FantLab evidence matrix, or compare two of
 your own Reader JSON reports privately in the browser. Charts and a visible exact-value table show retained, validated derived
@@ -181,19 +181,20 @@ validated field-level observations in the metric matrix below.
 
 To inspect **actual retained per-metric differences** rather than character counts alone,
 run `python -m scriptorium.benchmark_metric_matrix --root . --format markdown`.
-The source-free matrix validates **84 field-level diagnostic/extension rows** across
-**three works with retained measurements**: *Anna Karenina* has 28 rows
-(23 numeric, five without actuals), *Running on Waves* has 27
-(23 numeric, four NOT_RUN), and *The Silver Dove* has 29 (24 numeric, five
-dictionary-dependent NOT_RUN). That is 70 measured and 14 unavailable actuals;
-the remaining **two** frozen works have no retained field-level run and remain
-NOT_RUN, not zero. Silver Dove's source-free CI result is pinned to the actual
-artifact bytes, but only two FantLab displayed counts are available for it;
-other reference values are UNKNOWN, and none of the works establishes parity. Anna's historical rows include 4/4 general, 4/4 dialogue,
+The source-free matrix validates **113 field-level diagnostic/extension rows** across
+**four works with retained measurements**: *Anna Karenina* has 28 (23 numeric,
+five without actuals), *Running on Waves* has 27 (23 numeric, four NOT_RUN),
+and *The Silver Dove* and *The Brothers Karamazov* have 29 each (24 numeric,
+five dictionary-dependent NOT_RUN each). There are 94 measured and 19 unavailable
+actuals. The remaining **one** frozen work, *The Hyperboloid of Engineer Garin*,
+has no retained field-level run (NOT_RUN). Both Silver Dove and Karamazov have
+original SHA-pinned source-free CI receipts; only two FantLab displayed counts
+are retained for each. Other reference values and exact input identity remain
+UNKNOWN; none establishes FantLab parity. Anna's historical rows include 4/4 general, 4/4 dialogue,
 14/14 punctuation and 1/6 vocabulary measurements; its other five vocabulary
 actuals are two NOT_RUN and three unresolved.
 
-The Reader displays all 29 Silver Dove fields in an accessible static table,
+The Reader displays all 29 Silver Dove and 29 Brothers Karamazov fields in accessible static tables,
 including separate unknown FantLab references and an explicit extension marker.
 It also labels metric units and percentage-point differences, and offers
 **independent search/filter controls for both books** by metric name/ID,

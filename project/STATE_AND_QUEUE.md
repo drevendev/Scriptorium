@@ -1,27 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 331
+STATE_REVISION: 332
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-27
-LAST_RESULT: PR #326 merged independently into master at 1f0d03d39fab1d3ec784df5eed8530a4402b8a23 on 2026-10-26; Reader now retains measured Anna, Running on Waves and Silver Dove. The next bounded diagnostic unit is authored on a distinct branch for later CI execution and independent acceptance; not merged or deployed.
-LAST_VERIFIED_PROGRESS: Three full-work Reader/matrix diagnostics contain 28+27+29=84 rows (70 numeric, 14 explicitly unavailable). Two Silver Dove FantLab counts are observed, other reference values unknown. M2 still 0/5. The fourth-work Karamazov fields are NOT_RUN until exact pinned CI succeeds.
+LAST_RESULT: PR #327 merged into master at e86457f18bf6d2df53ad6ed64b4274b9bcea7f01; source-free Karamazov CI receipt is independently verified. Fourth-work Reader integration is authored for exact-head CI and later acceptance, not merged/deployed.
+LAST_VERIFIED_PROGRESS: Master Reader retains three diagnostic works (84 rows). Proposed fourth-work retention adds 29 Karamazov fields for 113 rows (94 numeric, 19 unavailable). Only two FantLab counts per Silver Dove and Karamazov; no source-matched parity. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-KARAMAZOV-FIELDS
-ISSUES: #281 (partial)
+UNIT_ID: SCRIP-REPRO-010-RETAIN-KARAMAZOV-READER
+ISSUES: #281, #283 (partial)
 STATUS: AUTHORED_PENDING_CI_AND_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-karamazov-fields
-BASE: 1f0d03d39fab1d3ec784df5eed8530a4402b8a23
-ACCEPTANCE: Replay all 98 frozen Karamazov Wikisource revisions, verify the exact 1,810,351-character composite and SHA-256 before analysis, and upload only 29 derived fields. Keep only retained FantLab display counts 1,807,107 characters and 281,507 words; all other expected values must remain null, not zero. Preserve dictionary NOT_RUN, source-identity UNKNOWN, M2=0/5, create-only receipt and tampering regressions. Require exact-head green CI, source-free artifact inspection and later independent review before merge. Reader integration/Pages is a subsequent semantic unit.
+BRANCH: scrip-repro-010-retain-karamazov-reader
+BASE: e86457f18bf6d2df53ad6ed64b4274b9bcea7f01
+ACCEPTANCE: Retain byte-identical, SHA-pinned source-free CI JSON from run 40441065263 (98 frozen revisions); validate 29 rows, 24 numeric/five NOT_RUN, two dated FantLab integer counts, and input identity UNKNOWN. Render fourth accessible Reader metric table and 113-row matrix/exports with tests and documentation. Preserve 20-rate Anna/Waves comparison, M2=0/5, Pages interlock. Exact-head CI and independent later acceptance precede merge.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Four independently measured frozen full-work diagnostics in Reader, then the fifth, with dated source/profile witnesses and no invented FantLab parity.
+Milestone: Four source-verified full-work diagnostics in Reader after later acceptance, then the fifth, with dated source/profile witnesses and no invented FantLab parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Karamazov pinned metrics | Later accept 98-revision exact CI run; retain source-free JSON and integrate fourth observed work | Exact-head CI and original artifact verification |
+| P1 | #281 Karamazov Reader retention | Later accept source-verified 113-row matrix and fourth-work Reader PR | Exact-head CI and independent later review |
 | P2 | #281 Hyperboloid | Produce another frozen-work metric run and fifth-work Reader diagnostics | Frozen 499,066-character body, source-checked replay |
 | P3 | #282 noun/cardinal N | Validate pinned pylem N effects with native controls | Exact pinned AOT evidence, no silent backend switch |
 | P4 | #283 Reader accessibility and truth | Correct current stale two-work README, verify mobile/print/keyboard with real available checks | Browser restricted; structural CI available |

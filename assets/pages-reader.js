@@ -216,6 +216,34 @@
       fantlab.hidden=true;fantlab.removeAttribute("href");
     }
   }
+  // The URL identifies an allow-listed measured edition, never a data source.
+  // Unknown, pending and foreign keys resolve to the honest static Anna fallback.
+  function bookFromUrl() {
+    const requested = new URLSearchParams(window.location.search).get("book");
+    return getBook(requested) ? requested : "anna";
+  }
+  function selectBook(key, addHistory=false, focusHeading=false) {
+    const book = getBook(key);
+    if (!book) return;
+    currentBook = key;
+    one.value = key;
+    search.value = "";
+    updateSingle();
+    const direct = el("share-work");
+    direct.href = "?book=" + encodeURIComponent(key) + "#measurements";
+    direct.textContent = "Прямая ссылка на «" + book.display_title + "» ↗";
+    if (addHistory) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("book", key);
+      url.hash = "measurements";
+      window.history.pushState(null, "", url);
+    }
+    if (focusHeading) {
+      el("measurements").scrollIntoView({block:"start",behavior:"auto"});
+      el("measurements-title").focus({preventScroll:true});
+    }
+  }
+
   function updateChart() {
     const conf=metrics[currentChart];
     if (!conf) throw Error("Показатель диаграммы не разрешён");
@@ -351,22 +379,22 @@
       }
       for(const anchor of bookLinks) {
         anchor.addEventListener("click",event=>{
-          if (!getBook(anchor.dataset.book)) return;
+          // Modified click still opens the source JSON, even without site JS.
+          if (event.defaultPrevented || event.button !== 0 ||
+              event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
+              !getBook(anchor.dataset.book)) return;
           event.preventDefault();
-          currentBook=anchor.dataset.book;
-          one.value=currentBook;
-          search.value="";
-          updateSingle();
-          el("measurements").scrollIntoView({block:"start",behavior:"auto"});
+          selectBook(anchor.dataset.book,true,true);
         });
       }
-      one.addEventListener("change",()=>{currentBook=one.value;search.value="";updateSingle();});
+      one.addEventListener("change",()=>selectBook(one.value,true));
+      window.addEventListener("popstate",()=>selectBook(bookFromUrl()));
       search.addEventListener("input",updateSingle);
       out.addEventListener("click",exportSelected);
       leftSelect.addEventListener("change",updatePair);
       rightSelect.addEventListener("change",updatePair);
       pairMetric.addEventListener("change",updatePair);
-      updateChart(); updatePair(); updateSingle();
+      updateChart(); updatePair(); selectBook(bookFromUrl());
     } catch (_) {
       status.textContent="Интерактивные данные недоступны. Откройте источник через ссылку на карточке книги; никаких выдуманных значений не подставлено.";
       el("pair-status").textContent="Сравнение недоступно без проверенного JSON. Статическая таблица остаётся для чтения.";

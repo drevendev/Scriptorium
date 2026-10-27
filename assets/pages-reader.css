@@ -243,3 +243,8 @@ footer a { color:#ffdaa3; }
  .translation-card .eyebrow,.translation-links a,.language-boundary p { color:#000 !important; }
  .book { transition:none; transform:none !important; }
 }
+
+/* Shareable edition view and keyboard-visible focus after opening a book. */
+.permalink-help { max-width:70ch; font-size:.85rem; line-height:1.6; }
+.permalink-help a { display:inline-flex; min-height:44px; align-items:center; font-weight:750; text-underline-offset:.2em; }
+#measurements-title:focus-visible { outline:3px solid var(--green); outline-offset:5px; border-radius:3px; }

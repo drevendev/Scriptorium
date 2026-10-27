@@ -1,27 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 337
+STATE_REVISION: 338
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-27
-LAST_RESULT: PR #335 confirmed merged at 851269fe03e9ce6d39207713629f629f695d7c04. Proposed shareable per-edition links for the six measured root Pages books, preserving source fallbacks and navigation history.
-LAST_VERIFIED_PROGRESS: Root Pages source has ten Russian-language titles with six measured works (129 numeric / 24 unavailable values). Generated Reader has merged Hyperboloid 29-row and Beketova 11-row routes. Root Pages now proposes direct edition-specific metric URLs with history/focus and safe invalid-ID fallback; live HTTP remains unverified. Five-source FantLab matrix retains four measured works and one pending source. M2 remains 0/5.
+LAST_RESULT: PR #336 verified merged at 6ba4b1bcdac31af6d04d11d19ef5adf3e4f8504c. Proposed history-aware, shareable two-edition comparison URLs for root Pages.
+LAST_VERIFIED_PROGRESS: Root Pages source has 10 Russian-language titles, six measured works (129 numeric / 24 unavailable values). Per-book links #336 are merged, master Pages build #40572592825 succeeded. This work proposes safe two-book pair URLs; public HTTP remains unverified. Generated Reader retains Hyperboloid and Beketova reports. M2 remains 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-ROOT-WORK-PERMALINK-012
-ISSUES: #283 (reader navigation/accessibility), #285 (publication verification)
+UNIT_ID: SCRIP-SITE-ROOT-PAIR-PERMALINK-013
+ISSUES: #283 (navigation/accessibility), #285 (publication verification)
 STATUS: AUTHORED_PENDING_EXACT_HEAD_CI_AND_LATER_ACCEPTANCE
-BRANCH: scrip-site-024-book-deep-links
-BASE: 851269fe03e9ce6d39207713629f629f695d7c04
-ACCEPTANCE: Shareable same-origin `?book=<measured-key>#measurements` root Pages URLs resolve exactly one pinned measured edition; selection survives reload and browser history. Six book cards retain direct original source-JSON fallback for no-JS/modified clicks. Invalid/pending keys never request remote paths, create fabricated records or modify M2. Heading receives programmatic focus from in-page book navigation; permalink is keyboard accessible. Verify node-backed positive/negative routing tests, exact-head CI and independent later acceptance. No change to measured JSON, manifest M2, publishing interlocks or protected master.
+BRANCH: scrip-site-025-pair-permalinks
+BASE: 6ba4b1bcdac31af6d04d11d19ef5adf3e4f8504c
+ACCEPTANCE: Valid `?left=<measured-key>&right=<distinct-measured-key>#pairs` URLs select exactly two pinned Russian measured editions, preserve selector history/reload/back-forward and display an accessible share link. Invalid/pending/partial/duplicate URL pairs safely fall back to two distinct measured defaults. Duplicate UI selectors display an error and hide a stale link; no untrusted URL becomes a fetch path. Static no-JS table and methodology remain. Verify Node positive/negative execution, Python structural tests and later exact-head CI before merge. No measurement, M2, publishing rule or master changes.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make the six-book Russian root Reading Room genuinely navigable and publicly verifiable, without conflating descriptive diagnostics with FantLab input-matched parity.
+Milestone: make six-book Russian branch Pages comparisons shareable and genuinely navigable, then independently verify public HTTP without implying FantLab parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 root per-book permalinks | Exact-head CI, review findings and later qualifying merge of shareable edition routes | Authored semantic change requires later acceptance |
+| P1 | #283 shareable two-book comparison | Later CI/review/merge of pair URLs with history and robust fallback | Authored change requires later acceptance |
 | P2 | #285 live Pages verification | Confirm branch-root Pages URL and assets, keyboard/responsive behavior when allowed | Browser/HTTP restrictions do not block independent code |
 | P3 | Resurrection pinned-body replay | Remeasure 129 frozen revisions with versioned profile, retain source-free derived values | Legal and immutable source SHA checks; no parity |
 | P4 | Road to Nowhere alternate candidate | Verify alternate complete body and retain separate measurements | Do not conflate with incomplete primary edition |
@@ -65,7 +65,7 @@ own manifest gates. Short excerpts/fixtures do not count as corpus admission.
 ## Scoped operational blockers
 
 - #265: default-branch rules prevent deletion/non-fast-forward and require PRs, with zero required approvals in the read ruleset. Connector identity has push/triage, not admin. No unsupported deletion/settings mutation or ref bypass.
-- #285 Pages: GitHub has_pages=true; branch master/root deployment succeeded at 6098ce58. The separate artifact-deploy workflow interlock remains unchanged. A newly authored root UI is PR_CREATED, not LIVE_VERIFIED until merged and publicly checked.
+- #285 Pages: branch master/root deploy succeeded on 6ba4b1bc (pages build and deployment #40572592825); proposed comparison URLs are not deployed/LIVE_VERIFIED without later merge, deployment and HTTP readback.
 - #284 licensing: do not infer a code/data license or publish externally before the rights gate is resolved.
 - Local checkout: Git DNS failed; exact source blobs were recovered and verified for actual local tests. Hosted full-repository CI supplies complete integrated execution evidence, not the limited local closure.
 - Browser HTTP navigation returned ERR_BLOCKED_BY_ADMINISTRATOR. Current visual changes are VISUAL_NOT_VERIFIED; structural tests are not live browser acceptance. Continue other executable work without bypassing the restriction.

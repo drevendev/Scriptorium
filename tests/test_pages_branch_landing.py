@@ -237,7 +237,7 @@ class RussianBranchReaderTests(unittest.TestCase):
     def test_mobile_print_keyboard_and_readable_charts(self):
         css=self.css
         for needed in ('.skip-link:focus',':focus-visible','min-height:44px',
-                       '@media(max-width:490px)','@media (max-width:780px)',
+                       '@media (max-width:490px)','@media (max-width:780px)',
                        '@media (prefers-reduced-motion: reduce)',
                        '@media (forced-colors: active)','@media print',
                        '.paired-graphic','.translation-card','.pair-track','.chart-row'):

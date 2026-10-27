@@ -59,6 +59,9 @@ jobs:
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
 
+      - name: Check root Reader JavaScript syntax
+        run: node --check assets/pages-reader.js
+
       - name: Build canonical Pages artifact
         run: python -m scriptorium.site_renderer --repo-root . --output build/site
 

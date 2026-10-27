@@ -33,7 +33,8 @@ def render_stage(entries: Sequence[Mapping[str, Any]]) -> str:
     if (type(works) is not list or not works or not all(type(w) is dict for w in works)
             or not _is_count(data.get("works_reported"))
             or data["works_reported"] != len(works)
-            or data.get("m2_source_matched_pass_count") != 0):
+            or type(data.get("m2_source_matched_pass_count")) is not int
+            or data["m2_source_matched_pass_count"] != 0):
         raise ValueError("evidence scope or parity claim changed")
 
     measured_works = 0

@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 332
+STATE_REVISION: 333
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-27
-LAST_RESULT: PR #327 merged into master at e86457f18bf6d2df53ad6ed64b4274b9bcea7f01; source-free Karamazov CI receipt is independently verified. Fourth-work Reader integration is authored for exact-head CI and later acceptance, not merged/deployed.
-LAST_VERIFIED_PROGRESS: Master Reader retains three diagnostic works (84 rows). Proposed fourth-work retention adds 29 Karamazov fields for 113 rows (94 numeric, 19 unavailable). Only two FantLab counts per Silver Dove and Karamazov; no source-matched parity. M2 0/5.
+LAST_RESULT: PR #328 merged into master at f981e2484f7a9822bef475350eeb697e022aaaf6; Hyperboloid fifth-work pinned-body diagnostic authored for hosted measurement, not yet accepted.
+LAST_VERIFIED_PROGRESS: Master Reader retains four diagnostics (113 metric rows, 94 measured, 19 unavailable). Hyperboloid is source-frozen at 499,066 characters but metric fields await successful hosted CI. FantLab source identity unknown; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-RETAIN-KARAMAZOV-READER
-ISSUES: #281, #283 (partial)
+UNIT_ID: SCRIP-REPRO-010-MEASURE-HYPERBOLOID
+ISSUES: #281 (partial)
 STATUS: AUTHORED_PENDING_CI_AND_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-retain-karamazov-reader
-BASE: e86457f18bf6d2df53ad6ed64b4274b9bcea7f01
-ACCEPTANCE: Retain byte-identical, SHA-pinned source-free CI JSON from run 40441065263 (98 frozen revisions); validate 29 rows, 24 numeric/five NOT_RUN, two dated FantLab integer counts, and input identity UNKNOWN. Render fourth accessible Reader metric table and 113-row matrix/exports with tests and documentation. Preserve 20-rate Anna/Waves comparison, M2=0/5, Pages interlock. Exact-head CI and independent later acceptance precede merge.
+BRANCH: scrip-repro-010-hyperboloid-fields
+BASE: f981e2484f7a9822bef475350eeb697e022aaaf6
+ACCEPTANCE: Replay exact Wikisource revision 5014458 and frozen 499,066-character body. Fail closed on source or body hash drift, measure 29 source-free numeric/null fields with two retained FantLab counts only. Unknown FantLab input identity and M2 0/5 remain. Require exact-head hosted measurement and separate later acceptance before Reader retention or merge.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Four source-verified full-work diagnostics in Reader after later acceptance, then the fifth, with dated source/profile witnesses and no invented FantLab parity.
+Milestone: Four measured works in Reader; measure and later retain the fifth (Hyperboloid) with pinned source and no false FantLab parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Karamazov Reader retention | Later accept source-verified 113-row matrix and fourth-work Reader PR | Exact-head CI and independent later review |
-| P2 | #281 Hyperboloid | Produce another frozen-work metric run and fifth-work Reader diagnostics | Frozen 499,066-character body, source-checked replay |
+| P1 | #281 Hyperboloid fields | Execute and later accept source-free pinned 29-field diagnostic | Exact-head hosted source replay and later independent review |
+| P2 | #281 Hyperboloid Reader | Retain measured fifth-work result in accessible matrix and exports | Successful CI artifact and separate PR |
 | P3 | #282 noun/cardinal N | Validate pinned pylem N effects with native controls | Exact pinned AOT evidence, no silent backend switch |
 | P4 | #283 Reader accessibility and truth | Correct current stale two-work README, verify mobile/print/keyboard with real available checks | Browser restricted; structural CI available |
 | P5 | #285 public Pages | Activate and live-verify licensed, reviewed Reader | Admin/deployment and #284 licensing gates |

@@ -82,7 +82,7 @@ class HyperboloidReaderTests(unittest.TestCase):
 
     def test_manifest_integration_downloads_and_receipt(self):
         manifest = json.loads((ROOT / "site" / "publication-manifest.json").read_text("utf-8"))
-        entries = [e for e in manifest["entries"] if e["kind"] == "measured_diagnostic"]
+        entries = [e for e in manifest["entries"] if e["entry_id"] == page.EXPECTED_ENTRY["entry_id"]]
         self.assertEqual(len(entries), 1)
         page.validate_entry(entries[0])
         with self.assertRaisesRegex(page.HyperboloidBuildError, "registration"):

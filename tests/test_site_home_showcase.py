@@ -224,7 +224,7 @@ class HomeShowcaseTests(unittest.TestCase):
         self.assertIn('19', rendered)
         self.assertIn('M2 · 0 / 5', rendered)
         self.assertIn('Not yet retained in Reader', rendered)
-        self.assertEqual(rendered.count('class="atlas-book'), 5)
+        self.assertEqual(rendered.count('<li class="atlas-book'), 5)
         parsed = RecordedHTML(rendered)
         for anchor in ('metrics-title', 'waves-metrics-title', 'silver-title',
                        'karamazov-title', 'works-title'):

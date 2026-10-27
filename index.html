@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Scriptorium: explore real, reproducible literary language measurements without uploading a manuscript.">
+<title>Scriptorium — A literary language reader</title>
+<link rel="stylesheet" href="./assets/pages-reader.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-top">
+<a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a>
+<nav aria-label="Main"><a href="#books">The library</a><a href="#measurements">Explore metrics</a><a href="#method">Methodology</a><a href="https://github.com/drevendev/Scriptorium">Source code <span aria-hidden="true">↗</span></a></nav>
+</header>
+<main id="main">
+<section class="hero" aria-labelledby="hero-title">
+<div class="hero-copy">
+<p class="eyebrow"><span class="spark" aria-hidden="true"></span> THE WORKING LITERARY LAB / PREVIEW</p>
+<h1 id="hero-title">A story, <em>between the lines.</em></h1>
+<p class="hero-lede">What makes one writer’s language different from another’s? Measure vocabulary, sentence rhythm, dialogue and punctuation in real literary texts. See the evidence and its limits, not a mysterious score.</p>
+<div class="hero-actions"><a class="button primary" href="#books">Explore the library <span aria-hidden="true">↗</span></a><a class="button secondary" href="#measurements">Inspect exact values</a></div>
+<p class="quiet">No uploaded manuscripts · No tracking · No invented FantLab parity</p>
+</div>
+<div class="hero-visual" aria-labelledby="chart-title">
+<div class="visual-heading"><span class="eyebrow">LIVE DATA / SOURCE-FROZEN TEXTS</span><h2 id="chart-title">Language in contrast.</h2>
+<p>Four independently measured transcriptions. Bars are scaled to the largest observation in the chosen metric, not to a scientific pass rate.</p></div>
+<div class="chart-switch" role="group" aria-label="Choose comparison metric">
+<button type="button" data-chart="fantlab.dialogue.share_percent" aria-pressed="true" disabled>Dialogue</button>
+<button type="button" data-chart="fantlab.general.mean_sentence_length_chars" aria-pressed="false" disabled>Sentence length</button>
+<button type="button" data-chart="fantlab.punctuation.comma.per_1000_words" aria-pressed="false" disabled>Commas</button>
+</div>
+<p class="chart-unit" id="chart-unit">Dialogue share · %</p>
+<div class="chart-series" id="chart-series">
+<div class="chart-row"><span>Anna Karenina</span><div class="bar-track" aria-hidden="true"><span style="width:71.70%"></span></div><strong>34.97%</strong></div>
+<div class="chart-row"><span>Running on Waves</span><div class="bar-track" aria-hidden="true"><span style="width:73.57%"></span></div><strong>35.89%</strong></div>
+<div class="chart-row"><span>Silver Dove</span><div class="bar-track" aria-hidden="true"><span style="width:41.96%"></span></div><strong>20.47%</strong></div>
+<div class="chart-row"><span>Brothers Karamazov</span><div class="bar-track" aria-hidden="true"><span style="width:100%"></span></div><strong>48.78%</strong></div>
+</div>
+<p class="chart-foot">All four are <strong>Scriptorium measurements</strong>, not exact replications of FantLab.</p>
+</div>
+</section>
+<section class="facts" aria-label="Measured coverage">
+<div><strong>04 <small>/ 05</small></strong><span>frozen books with retained measurements</span></div>
+<div><strong>113</strong><span>recorded metric fields</span></div>
+<div><strong>94</strong><span>measured numerical values</span></div>
+<div><strong>19</strong><span>missing values, never zero-filled</span></div>
+</section>
+<section id="books" class="library">
+<div class="section-head"><p class="eyebrow">01 / THE LIBRARY</p><h2>Real books. Real observations.</h2><p>Every card opens its source-free diagnostic. With JavaScript enabled, inspect those observations here without leaving the page.</p></div>
+<div class="book-grid">
+<article class="book"><p class="book-id">VOLUME 01 / 05</p><h3>Anna Karenina</h3><p class="byline">Leo Tolstoy</p><p class="availability">23 of 28 numeric measurements</p><div class="book-bar" aria-hidden="true"><span style="width:82.14%"></span></div><a href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json" data-book="anna">Inspect fields <span aria-hidden="true">↗</span></a></article>
+<article class="book"><p class="book-id">VOLUME 02 / 05</p><h3>Running on Waves</h3><p class="byline">Alexander Grin</p><p class="availability">23 of 27 numeric measurements</p><div class="book-bar" aria-hidden="true"><span style="width:85.19%"></span></div><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json" data-book="waves">Inspect fields <span aria-hidden="true">↗</span></a></article>
+<article class="book"><p class="book-id">VOLUME 03 / 05</p><h3>Silver Dove</h3><p class="byline">Andrei Bely</p><p class="availability">24 of 29 numeric measurements</p><div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/bely-silver-dove-ru.json" data-book="silver">Inspect fields <span aria-hidden="true">↗</span></a></article>
+<article class="book"><p class="book-id">VOLUME 04 / 05</p><h3>Brothers Karamazov</h3><p class="byline">Fyodor Dostoevsky</p><p class="availability">24 of 29 numeric measurements</p><div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/dostoevsky-brothers-karamazov-ru.json" data-book="karamazov">Inspect fields <span aria-hidden="true">↗</span></a></article>
+<article class="book book-next"><p class="book-id">VOLUME 05 / 05 · IN PROGRESS</p><h3>Hyperboloid of Engineer Garin</h3><p class="byline">Alexei Tolstoy</p><p>499,066 characters are source-frozen and measured in CI; its 29 fields are not yet retained in this four-book Reader matrix.</p><a href="https://github.com/drevendev/Scriptorium/pull/329">Review the diagnostic <span aria-hidden="true">↗</span></a></article>
+</div></section>
+<section id="measurements" class="workbench">
+<div class="section-head"><p class="eyebrow">02 / THE FIELD EXPLORER</p><h2>Under the microscope.</h2><p>Search exact values from the verified source-free snapshot. A FantLab reference column is shown only where a published reference was retained; unknowns are <strong>not</strong> equal to zero.</p></div>
+<div class="controls">
+<div class="control"><label for="choose-book">Choose a book</label><select id="choose-book" disabled><option value="anna">Anna Karenina</option><option value="waves">Running on Waves</option><option value="silver">Silver Dove</option><option value="karamazov">Brothers Karamazov</option></select></div>
+<div class="control"><label for="search-metric">Find a field</label><input id="search-metric" type="search" placeholder="Try dialogue, words, commas…" disabled></div>
+<div class="control-note" id="table-status" aria-live="polite">Script-enabled field exploration requires the local derived JSON to load.</div>
+</div>
+<div class="table-region" tabindex="0" role="region" aria-label="Literary field measurements">
+<table><caption id="table-caption">Anna Karenina · illustrative measurements (full matrix loads with JavaScript)</caption><thead><tr><th scope="col">Measurement</th><th scope="col">Scriptorium actual</th><th scope="col">FantLab displayed</th><th scope="col">Candidate unit</th><th scope="col">Scientific status</th></tr></thead>
+<tbody id="measurement-rows">
+<tr><th scope="row">Characters including spaces</th><td>1,705,605</td><td>1,692,647</td><td>characters</td><td>Diagnostic — source unmatched</td></tr>
+<tr><th scope="row">Word tokens</th><td>269,358</td><td>253,275</td><td>tokens</td><td>Diagnostic — source unmatched</td></tr>
+<tr><th scope="row">Dialogue share</th><td>34.97462555501088</td><td>35.12</td><td>%</td><td>Diagnostic — source unmatched</td></tr>
+</tbody></table></div>
+<p class="evidence-warning">All measurements are candidate/inferred metrics unless labelled as extensions. Input identity, FantLab rounding, dictionary and unpublished coefficients are unverified. <strong>M2: 0 / 5.</strong></p>
+<div class="evidence-actions"><a id="evidence-source" href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json">Open frozen evidence JSON <span aria-hidden="true">↗</span></a>
+<a id="fantlab-reference" href="https://fantlab.ru/work270306/lp">FantLab public reference <span aria-hidden="true">↗</span></a>
+<button type="button" id="export-button" disabled>Download selected derived JSON</button></div>
+<noscript><p class="notice">JavaScript is disabled. The basic table above and the original data links on all four book cards remain available.</p></noscript>
+</section>
+<section id="method" class="method">
+<div class="section-head"><p class="eyebrow">03 / HOW IT WORKS</p><h2>No black box. No uploaded novel.</h2><p>Scriptorium is an offline Python library and CLI. The full Reader generates a report for a local file, preserving its source identity without publishing its text. This Pages experience demonstrates the current verified measurements — it does not analyze arbitrary files in the browser.</p></div>
+<div class="method-grid"><article><span>01</span><h3>Freeze the source.</h3><p>Record edition, revision and SHA-256 before measuring. Different translations stay distinct.</p></article><article><span>02</span><h3>Measure with units.</h3><p>Calculate vocabulary, dialogue, sentence length and punctuation. Surface missing values explicitly.</p></article><article><span>03</span><h3>Document the unknown.</h3><p>Without FantLab’s analyzer input, exact rounding and backend, similarities remain diagnostics.</p></article></div>
+</section>
+<section class="terminal" aria-labelledby="terminal-title"><div><p class="eyebrow">ANALYZE PRIVATE WRITING</p><h2 id="terminal-title">Your manuscript stays yours.</h2><p>Install from the repository and generate a readable offline HTML report. No registration, upload or tracking.</p></div>
+<pre><code>python -m pip install .
+scriptorium analyze manuscript.txt --format html --output report.html</code></pre>
+<a class="button primary" href="https://github.com/drevendev/Scriptorium/blob/master/docs/READER_PREVIEW.md">Reader instructions <span aria-hidden="true">↗</span></a></section>
+</main>
+<footer><p class="footer-heading">SCRIPTORIUM <span aria-hidden="true">✦</span> LITERARY EVIDENCE</p><p>Real derived measurements. No literary text hosted here. FantLab source-matched parity remains unverified (M2: 0/5).</p><a href="https://github.com/drevendev/Scriptorium">Browse the open repository</a></footer>
+<script src="./assets/pages-reader.js" defer></script>
+</body>
+</html>

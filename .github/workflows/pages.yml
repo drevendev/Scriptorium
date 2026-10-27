@@ -3,6 +3,8 @@ name: Scriptorium Pages
 on:
   pull_request:
     paths:
+      - "index.html"
+      - "assets/**"
       - ".github/workflows/pages.yml"
       - "scriptorium/**"
       - "site/**"
@@ -16,6 +18,8 @@ on:
     branches:
       - master
     paths:
+      - "index.html"
+      - "assets/**"
       - ".github/workflows/pages.yml"
       - "scriptorium/**"
       - "site/**"

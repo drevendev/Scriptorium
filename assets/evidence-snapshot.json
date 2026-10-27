@@ -1,0 +1,864 @@
+{
+  "schema": "scriptorium-branch-pages-derived-v1",
+  "produced_from": "master:f8479c7fbe540e279b6fd66e44fba78df5d2dfd0",
+  "scientific_claim": "DIAGNOSTIC_ONLY",
+  "fantlab_input_identity": "UNKNOWN",
+  "counts": {
+    "work_count": 4,
+    "measured_works": 4,
+    "expected_corpus_works": 5,
+    "metrics_total": 113,
+    "numeric_total": 94,
+    "unavailable_total": 19,
+    "m2_source_matched": 0
+  },
+  "books": [
+    {
+      "key": "anna",
+      "candidate_id": "tolstoy-anna-karenina-ru",
+      "title": "Anna Karenina",
+      "author": "Leo Tolstoy",
+      "metrics": [
+        {
+          "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+          "actual": 38.39203965651457,
+          "reference": 17.02,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+          "actual": 51.53638271820885,
+          "reference": 52.54,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_narration_sentence_length_chars",
+          "actual": 109.54996977634495,
+          "reference": 108.87,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.share_percent",
+          "actual": 34.97462555501088,
+          "reference": 35.12,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.characters",
+          "actual": 1705605,
+          "reference": 1692647,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_sentence_length_chars",
+          "actual": 78.99585453175052,
+          "reference": 79.17,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_word_length_chars",
+          "actual": 4.9825511029930425,
+          "reference": 4.95,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.words",
+          "actual": 269358,
+          "reference": 253275,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.colon.per_1000_words",
+          "actual": 2.6581723951024285,
+          "reference": 2.8,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.comma.per_1000_words",
+          "actual": 146.31457020025394,
+          "reference": 155.86,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.dash.per_1000_words",
+          "actual": 46.57370488346364,
+          "reference": 25.68,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.ellipsis.per_1000_words",
+          "actual": 3.1890643678672994,
+          "reference": 3.13,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+          "actual": 0.15963884495726877,
+          "reference": 0.17,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation.per_1000_words",
+          "actual": 5.598497167338635,
+          "reference": 5.92,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.parentheses.per_1000_words",
+          "actual": 0.5605922229894786,
+          "reference": 0.6,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.period.per_1000_words",
+          "actual": 61.48323049621693,
+          "reference": 65.57,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_ellipsis.per_1000_words",
+          "actual": 0.18933909518187692,
+          "reference": 0.21,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_exclamation.per_1000_words",
+          "actual": 0.0074250625561520355,
+          "reference": 0.01,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question.per_1000_words",
+          "actual": 8.471996376569473,
+          "reference": 9.01,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.quote.per_1000_words",
+          "actual": 5.776698668686284,
+          "reference": 6.27,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.semicolon.per_1000_words",
+          "actual": 4.094921999717847,
+          "reference": 4.34,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.triple_exclamation.per_1000_words",
+          "actual": 0,
+          "reference": 0,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_dictionary",
+          "actual": null,
+          "reference": 11428,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_nondictionary",
+          "actual": null,
+          "reference": 1342,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_10000",
+          "actual": null,
+          "reference": 2126.08,
+          "status": "unavailable",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_100000",
+          "actual": null,
+          "reference": 8061.16,
+          "status": "unavailable",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_3000",
+          "actual": null,
+          "reference": 944.54,
+          "status": "unavailable",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.unique_words",
+          "actual": 33373,
+          "reference": 12770,
+          "status": "measured",
+          "kind": "candidate"
+        }
+      ],
+      "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json",
+      "fantlab_url": "https://fantlab.ru/work270306/lp",
+      "blob_sha1": "0d5e420abb45e2b9e178df75a479ab7cdd5a4150",
+      "source_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+      "measured": 23,
+      "unavailable": 5
+    },
+    {
+      "key": "waves",
+      "candidate_id": "grin-running-on-waves-ru",
+      "title": "Running on Waves",
+      "author": "Alexander Grin",
+      "metrics": [
+        {
+          "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+          "actual": 34.563165459722235,
+          "reference": 12.49,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+          "actual": 49.243531202435314,
+          "reference": 52.67,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_narration_sentence_length_chars",
+          "actual": 93.4622641509434,
+          "reference": 97,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.share_percent",
+          "actual": 35.88986183443132,
+          "reference": 38.23,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.characters",
+          "actual": 363819,
+          "reference": 360987,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_sentence_length_chars",
+          "actual": 72.55458603896103,
+          "reference": 73.46,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_word_length_chars",
+          "actual": 5.159363906916705,
+          "reference": 5.16,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.words",
+          "actual": 55778,
+          "reference": 52985,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.colon.per_1000_words",
+          "actual": 5.235038904227473,
+          "reference": 5.42,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.comma.per_1000_words",
+          "actual": 143.67671841944852,
+          "reference": 154.03,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.dash.per_1000_words",
+          "actual": 39.87235110617089,
+          "reference": 29.84,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.ellipsis.per_1000_words",
+          "actual": 2.241026928179569,
+          "reference": 1.93,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+          "actual": 0.0358564308508731,
+          "reference": 0.06,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation.per_1000_words",
+          "actual": 6.328660045179103,
+          "reference": 6.55,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.parentheses.per_1000_words",
+          "actual": 0.21513858510523862,
+          "reference": 0.21,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.period.per_1000_words",
+          "actual": 73.82839112194772,
+          "reference": 76.08,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_ellipsis.per_1000_words",
+          "actual": 0.0358564308508731,
+          "reference": 0.04,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_exclamation.per_1000_words",
+          "actual": 0.5019900319122235,
+          "reference": 0.55,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question.per_1000_words",
+          "actual": 5.71910072071426,
+          "reference": 5.96,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.quote.per_1000_words",
+          "actual": 10.09358528452078,
+          "reference": 10.72,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.semicolon.per_1000_words",
+          "actual": 3.926279178170605,
+          "reference": 6.53,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.triple_exclamation.per_1000_words",
+          "actual": 0,
+          "reference": 0,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_dictionary",
+          "actual": null,
+          "reference": 6784,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_nondictionary",
+          "actual": null,
+          "reference": 323,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_10000",
+          "actual": null,
+          "reference": 2636.17,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_3000",
+          "actual": null,
+          "reference": 1170.79,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.unique_words",
+          "actual": 14406,
+          "reference": 7107,
+          "status": "measured",
+          "kind": "candidate"
+        }
+      ],
+      "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json",
+      "fantlab_url": "https://fantlab.ru/work27344/lp",
+      "blob_sha1": "811d408e576c2f59809f5ba13ae638fed7950428",
+      "source_sha256": "41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc",
+      "measured": 23,
+      "unavailable": 4
+    },
+    {
+      "key": "silver",
+      "candidate_id": "bely-silver-dove-ru",
+      "title": "Silver Dove",
+      "author": "Andrei Bely",
+      "metrics": [
+        {
+          "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+          "actual": 35.74622723512101,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+          "actual": 54.636538461538464,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_narration_sentence_length_chars",
+          "actual": 98.53624161073826,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.share_percent",
+          "actual": 20.46837152472616,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.characters",
+          "actual": 563125,
+          "reference": 549050,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_sentence_length_chars",
+          "actual": 89.20453449107573,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_word_length_chars",
+          "actual": 4.966646266829866,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.words",
+          "actual": 88236,
+          "reference": 83369,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.colon.per_1000_words",
+          "actual": 26.31578947368421,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.comma.per_1000_words",
+          "actual": 128.08830862686432,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.dash.per_1000_words",
+          "actual": 37.864363751756656,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.ellipsis.per_1000_words",
+          "actual": 9.599256539281019,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+          "actual": 1.2466566934131194,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation.per_1000_words",
+          "actual": 6.006618613717757,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.parentheses.per_1000_words",
+          "actual": 1.6773199147740152,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.period.per_1000_words",
+          "actual": 47.38428759236593,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_ellipsis.per_1000_words",
+          "actual": 0.8839929280565756,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_exclamation.per_1000_words",
+          "actual": 0.03399972800217598,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question.per_1000_words",
+          "actual": 5.836619973706877,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.quote.per_1000_words",
+          "actual": 11.163244027381115,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.semicolon.per_1000_words",
+          "actual": 37.98902942109797,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.triple_exclamation.per_1000_words",
+          "actual": 0,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_dictionary",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_nondictionary",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_10000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_100000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_3000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.unique_words",
+          "actual": 22707,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "scriptorium.general.sentences",
+          "actual": 6219,
+          "reference": null,
+          "status": "measured",
+          "kind": "extension"
+        }
+      ],
+      "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/bely-silver-dove-ru.json",
+      "fantlab_url": "https://fantlab.ru/work293515/lp",
+      "blob_sha1": "88bfe95435be1b72703de65d314c6926b5f83a60",
+      "source_sha256": "496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183",
+      "measured": 24,
+      "unavailable": 5
+    },
+    {
+      "key": "karamazov",
+      "candidate_id": "dostoevsky-brothers-karamazov-ru",
+      "title": "Brothers Karamazov",
+      "author": "Fyodor Dostoevsky",
+      "metrics": [
+        {
+          "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+          "actual": 30.62487903412669,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+          "actual": 62.341827266238404,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_narration_sentence_length_chars",
+          "actual": 115.89735099337749,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.share_percent",
+          "actual": 48.78165217645698,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.characters",
+          "actual": 1810351,
+          "reference": 1807107,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_sentence_length_chars",
+          "actual": 82.3485827716739,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_word_length_chars",
+          "actual": 4.866872079289272,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.words",
+          "actual": 292095,
+          "reference": 281507,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.colon.per_1000_words",
+          "actual": 6.665639603553639,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.comma.per_1000_words",
+          "actual": 150.55375819510775,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.dash.per_1000_words",
+          "actual": 31.60615553159075,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.ellipsis.per_1000_words",
+          "actual": 6.18291994043034,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+          "actual": 0.35604854584980916,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation.per_1000_words",
+          "actual": 10.20216025608107,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.parentheses.per_1000_words",
+          "actual": 1.0236395693182012,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.period.per_1000_words",
+          "actual": 48.145295195056406,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_ellipsis.per_1000_words",
+          "actual": 0.08216504904226364,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_exclamation.per_1000_words",
+          "actual": 0.0034235437100943187,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question.per_1000_words",
+          "actual": 9.678358068436639,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.quote.per_1000_words",
+          "actual": 13.21487872096407,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.semicolon.per_1000_words",
+          "actual": 1.9479963710436674,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.triple_exclamation.per_1000_words",
+          "actual": 0,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_dictionary",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_nondictionary",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_10000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_100000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_3000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.unique_words",
+          "actual": 37153,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "scriptorium.general.sentences",
+          "actual": 21662,
+          "reference": null,
+          "status": "measured",
+          "kind": "extension"
+        }
+      ],
+      "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/dostoevsky-brothers-karamazov-ru.json",
+      "fantlab_url": "https://fantlab.ru/work168951/lp",
+      "blob_sha1": "21cacd2d77575377b0d5e64d998cfd2687abc453",
+      "source_sha256": "26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6",
+      "measured": 24,
+      "unavailable": 5
+    }
+  ]
+}

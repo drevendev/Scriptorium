@@ -8,7 +8,7 @@ from pathlib import Path
 import unittest
 
 from scriptorium import site_work_comparison
-from scriptorium.site_home_showcase import HOME_CSS, render_demo
+from scriptorium.site_home_showcase import HOME_CSS, render_demo, render_research_atlas
 from scriptorium.site_renderer import _render_index
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +23,14 @@ def comparison_entry() -> dict:
         "work_title": "Running on Waves / The Children of Captain Grant",
         "json_data": published["json"],
     }
+
+
+
+def benchmark_entry() -> dict:
+    from scriptorium import site_benchmark_matrix
+    published = site_benchmark_matrix.build(ROOT)
+    return {**site_benchmark_matrix.EXPECTED_ENTRY,
+            "render_mode": "benchmark_matrix", "json_data": published["json"]}
 
 
 class RecordedHTML(HTMLParser):
@@ -205,6 +213,48 @@ class HomeShowcaseTests(unittest.TestCase):
         self.assertRegex(readme, r"not a\s+claim that the public site is already live")
         self.assertIn("SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true", readme)
         self.assertIn("build/site/index.html", readme)
+
+
+    def test_atlas_uses_four_retained_book_diagnostics_not_fake_parity(self):
+        entry = benchmark_entry()
+        rendered = render_research_atlas([entry])
+        self.assertIn('id="research-atlas"', rendered)
+        self.assertIn('113', rendered)
+        self.assertIn('94', rendered)
+        self.assertIn('19', rendered)
+        self.assertIn('M2 · 0 / 5', rendered)
+        self.assertIn('Not yet retained in Reader', rendered)
+        self.assertEqual(rendered.count('<li class="atlas-book'), 5)
+        parsed = RecordedHTML(rendered)
+        for anchor in ('metrics-title', 'waves-metrics-title', 'silver-title',
+                       'karamazov-title', 'works-title'):
+            self.assertIn('evidence/fantlab/#' + anchor, parsed.links)
+        self.assertNotIn('<script', rendered)
+        home = _render_index([comparison_entry(), entry])
+        self.assertIn('id="research-atlas"', home)
+        self.assertEqual(home.count('<h1>'), 1)
+
+    def test_atlas_rejects_parity_and_metric_drift(self):
+        original = benchmark_entry()
+        self.assertEqual(render_research_atlas([]), '')
+        data = json.loads(original["json_data"])
+        for mutate in (
+            lambda d: d.update(m2_source_matched_pass_count=1),
+            lambda d: d["entries"][0].update(exact_fantlab_input_identity="MATCHED"),
+            lambda d: d["entries"][0].update(metric_rows_with_actual=0),
+            lambda d: d["entries"].append(copy.deepcopy(d["entries"][0])),
+        ):
+            with self.subTest(mutate=mutate):
+                altered = copy.deepcopy(data)
+                mutate(altered)
+                with self.assertRaises(ValueError):
+                    render_research_atlas([dict(original, json_data=json.dumps(altered))])
+        altered = copy.deepcopy(data)
+        altered["entries"][0]["title"] = "<script>malicious()</script>"
+        output = render_research_atlas([dict(original, json_data=json.dumps(altered))])
+        self.assertIn("&lt;script&gt;malicious()&lt;/script&gt;", output)
+        self.assertNotIn("<script>malicious()", output)
+        self.assertIn("@media print", HOME_CSS)
 
 
 if __name__ == "__main__":

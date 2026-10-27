@@ -107,7 +107,7 @@ def render_stage(entries: Sequence[Mapping[str, Any]]) -> str:
         + '</div>'
         '<p class="stage-disclaimer"><strong>Coverage is not parity.</strong> '
         'A measured value is only a Scriptorium observation. '
-        'FantLab input editions and rounding are unverified; missing values are never zero. '
+        'FantLab input editions and displayed rounding remain UNKNOWN; missing values are never zero. '
         'One source may be frozen without having field measurements.</p>'
         '<div class="stage-table-scroll" tabindex="0" role="region" '
         'aria-label="Per-work measurement availability" aria-describedby="stage-table-hint">'

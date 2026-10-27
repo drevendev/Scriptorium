@@ -1,90 +1,184 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Scriptorium: explore real, reproducible literary language measurements without uploading a manuscript.">
-<title>Scriptorium — A literary language reader</title>
-<link rel="stylesheet" href="./assets/pages-reader.css">
-</head>
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Scriptorium: шесть измеренных русских книг, четыре произведения в работе, красивые диаграммы, сравнения и атрибуция переводчиков. Все числа из проверенных исходных данных.">
+<title>Scriptorium — литературный Reader на русском языке</title>
+<link rel="stylesheet" href="./assets/pages-reader.css"></head><body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
 <header class="site-top">
 <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a>
-<nav aria-label="Main"><a href="#books">The library</a><a href="#measurements">Explore metrics</a><a href="#method">Methodology</a><a href="https://github.com/drevendev/Scriptorium">Source code <span aria-hidden="true">↗</span></a></nav>
+<nav aria-label="Основная навигация"><a href="#books">Книги</a><a href="#pairs">Сравнить</a><a href="#measurements">Метрики</a><a href="#translations">Переводы</a><a href="#method">Метод</a></nav>
 </header>
 <main id="main">
 <section class="hero" aria-labelledby="hero-title">
-<div class="hero-copy">
-<p class="eyebrow"><span class="spark" aria-hidden="true"></span> THE WORKING LITERARY LAB / PREVIEW</p>
-<h1 id="hero-title">A story, <em>between the lines.</em></h1>
-<p class="hero-lede">What makes one writer’s language different from another’s? Measure vocabulary, sentence rhythm, dialogue and punctuation in real literary texts. See the evidence and its limits, not a mysterious score.</p>
-<div class="hero-actions"><a class="button primary" href="#books">Explore the library <span aria-hidden="true">↗</span></a><a class="button secondary" href="#measurements">Inspect exact values</a></div>
-<p class="quiet">No uploaded manuscripts · No tracking · No invented FantLab parity</p>
+<div class="hero-copy"><p class="eyebrow"><span class="spark" aria-hidden="true"></span> ЛИТЕРАТУРНАЯ ЛАБОРАТОРИЯ / РУССКИЙ КОРПУС</p>
+<h1 id="hero-title">У каждой книги — <em>свой ритм.</em></h1>
+<p class="hero-lede">Как отличается язык Толстого, Белого, Грина и Достоевского? Исследуйте долю диалогов, длину предложений и пунктуацию в измеренных русскоязычных текстах. Переводы учитываем отдельно — по переводчику и редакции.</p>
+<div class="hero-actions"><a class="button primary" href="#books">Открыть библиотеку <span aria-hidden="true">↗</span></a><a class="button secondary" href="#pairs">Сравнить две книги</a></div>
+<p class="quiet">Данные, а не выдуманные оценки · Без загрузки рукописей · Совпадение с FantLab не доказано</p></div>
+<div class="hero-visual" aria-labelledby="chart-title"><div class="visual-heading"><p class="eyebrow">ШЕСТЬ ИЗМЕРЕННЫХ КНИГ · ПРОВЕРЕННЫЕ ПОЛЯ</p>
+<h2 id="chart-title">Почерк в цифрах.</h2>
+<p>График строится только по измеренным значениям Scriptorium. Полосы нормированы по максимальному значению выбранной метрики — это не оценка качества книги и не процент совместимости с FantLab.</p></div>
+<div class="chart-switch" role="group" aria-label="Выбрать показатель диаграммы">
+<button type="button" data-chart="fantlab.dialogue.share_percent" aria-pressed="true" disabled>Диалоги</button>
+<button type="button" data-chart="fantlab.general.mean_sentence_length_chars" aria-pressed="false" disabled>Длина фразы</button>
+<button type="button" data-chart="fantlab.punctuation.comma.per_1000_words" aria-pressed="false" disabled>Запятые</button>
 </div>
-<div class="hero-visual" aria-labelledby="chart-title">
-<div class="visual-heading"><span class="eyebrow">LIVE DATA / SOURCE-FROZEN TEXTS</span><h2 id="chart-title">Language in contrast.</h2>
-<p>Four independently measured transcriptions. Bars are scaled to the largest observation in the chosen metric, not to a scientific pass rate.</p></div>
-<div class="chart-switch" role="group" aria-label="Choose comparison metric">
-<button type="button" data-chart="fantlab.dialogue.share_percent" aria-pressed="true" disabled>Dialogue</button>
-<button type="button" data-chart="fantlab.general.mean_sentence_length_chars" aria-pressed="false" disabled>Sentence length</button>
-<button type="button" data-chart="fantlab.punctuation.comma.per_1000_words" aria-pressed="false" disabled>Commas</button>
-</div>
-<p class="chart-unit" id="chart-unit">Dialogue share · %</p>
-<div class="chart-series" id="chart-series">
-<div class="chart-row"><span>Anna Karenina</span><div class="bar-track" aria-hidden="true"><span style="width:71.70%"></span></div><strong>34.97%</strong></div>
-<div class="chart-row"><span>Running on Waves</span><div class="bar-track" aria-hidden="true"><span style="width:73.57%"></span></div><strong>35.89%</strong></div>
-<div class="chart-row"><span>Silver Dove</span><div class="bar-track" aria-hidden="true"><span style="width:41.96%"></span></div><strong>20.47%</strong></div>
-<div class="chart-row"><span>Brothers Karamazov</span><div class="bar-track" aria-hidden="true"><span style="width:100%"></span></div><strong>48.78%</strong></div>
-</div>
-<p class="chart-foot">All four are <strong>Scriptorium measurements</strong>, not exact replications of FantLab.</p>
-</div>
-</section>
-<section class="facts" aria-label="Measured coverage">
-<div><strong>04 <small>/ 05</small></strong><span>frozen books with retained measurements</span></div>
-<div><strong>113</strong><span>recorded metric fields</span></div>
-<div><strong>94</strong><span>measured numerical values</span></div>
-<div><strong>19</strong><span>missing values, never zero-filled</span></div>
-</section>
-<section id="books" class="library">
-<div class="section-head"><p class="eyebrow">01 / THE LIBRARY</p><h2>Real books. Real observations.</h2><p>Every card opens its source-free diagnostic. With JavaScript enabled, inspect those observations here without leaving the page.</p></div>
-<div class="book-grid">
-<article class="book"><p class="book-id">VOLUME 01 / 05</p><h3>Anna Karenina</h3><p class="byline">Leo Tolstoy</p><p class="availability">23 of 28 numeric measurements</p><div class="book-bar" aria-hidden="true"><span style="width:82.14%"></span></div><a href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json" data-book="anna">Inspect fields <span aria-hidden="true">↗</span></a></article>
-<article class="book"><p class="book-id">VOLUME 02 / 05</p><h3>Running on Waves</h3><p class="byline">Alexander Grin</p><p class="availability">23 of 27 numeric measurements</p><div class="book-bar" aria-hidden="true"><span style="width:85.19%"></span></div><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json" data-book="waves">Inspect fields <span aria-hidden="true">↗</span></a></article>
-<article class="book"><p class="book-id">VOLUME 03 / 05</p><h3>Silver Dove</h3><p class="byline">Andrei Bely</p><p class="availability">24 of 29 numeric measurements</p><div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/bely-silver-dove-ru.json" data-book="silver">Inspect fields <span aria-hidden="true">↗</span></a></article>
-<article class="book"><p class="book-id">VOLUME 04 / 05</p><h3>Brothers Karamazov</h3><p class="byline">Fyodor Dostoevsky</p><p class="availability">24 of 29 numeric measurements</p><div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/dostoevsky-brothers-karamazov-ru.json" data-book="karamazov">Inspect fields <span aria-hidden="true">↗</span></a></article>
-<article class="book book-next"><p class="book-id">VOLUME 05 / 05 · IN PROGRESS</p><h3>Hyperboloid of Engineer Garin</h3><p class="byline">Alexei Tolstoy</p><p>499,066 characters are source-frozen and measured in CI; its 29 fields are not yet retained in this four-book Reader matrix.</p><a href="https://github.com/drevendev/Scriptorium/pull/329">Review the diagnostic <span aria-hidden="true">↗</span></a></article>
+<p id="chart-unit" class="chart-unit">Доля диалогов · %</p>
+<div id="chart-series" class="chart-series"><div class="chart-row"><span title="Анна Каренина">Анна Каренина</span><div class="bar-track" aria-hidden="true"><span style="width:71.70%"></span></div><strong>34,97%</strong></div>
+<div class="chart-row"><span title="Бегущая по волнам">Бегущая по волнам</span><div class="bar-track" aria-hidden="true"><span style="width:73.57%"></span></div><strong>35,89%</strong></div>
+<div class="chart-row"><span title="Серебряный голубь">Серебряный голубь</span><div class="bar-track" aria-hidden="true"><span style="width:41.96%"></span></div><strong>20,47%</strong></div>
+<div class="chart-row"><span title="Братья Карамазовы">Братья Карамазовы</span><div class="bar-track" aria-hidden="true"><span style="width:100.00%"></span></div><strong>48,78%</strong></div>
+<div class="chart-row"><span title="Гиперболоид инженера Гарина">Гиперболоид инженера Гарина</span><div class="bar-track" aria-hidden="true"><span style="width:68.30%"></span></div><strong>33,32%</strong></div>
+<div class="chart-row"><span title="Дети капитана Гранта">Дети капитана Гранта</span><div class="bar-track" aria-hidden="true"><span style="width:66.57%"></span></div><strong>32,47%</strong></div></div>
+<p class="chart-foot">Русские оригиналы и русские переводы показаны как разные редакции; сопоставление здесь исключительно описательное.</p>
 </div></section>
-<section id="measurements" class="workbench">
-<div class="section-head"><p class="eyebrow">02 / THE FIELD EXPLORER</p><h2>Under the microscope.</h2><p>Search exact values from the verified source-free snapshot. A FantLab reference column is shown only where a published reference was retained; unknowns are <strong>not</strong> equal to zero.</p></div>
+<section class="facts" aria-label="Фактический прогресс"><div><strong>06 <small>/ 10</small></strong><span>книг измерены; ещё 4 в подготовке</span></div>
+<div><strong>153</strong><span>зафиксированные поля метрик</span></div>
+<div><strong>129</strong><span>числовых наблюдений</span></div>
+<div><strong>24</strong><span>недоступных значения — не нули</span></div></section>
+<section id="books" class="library" aria-labelledby="books-title">
+<div class="section-head"><p class="eyebrow">01 / БИБЛИОТЕКА · РУССКИЕ ТЕКСТЫ</p><h2 id="books-title">Десять книг. Шесть измеренных.</h2>
+<p>Произведения на русском языке — первый модуль Scriptorium. Для переводов обязательно фиксируются язык оригинала, переводчик и редакция. Четыре карточки пока обозначают подготовку источников, <strong>не готовые результаты анализа</strong>.</p></div>
+<div class="book-grid"><article class="book" data-status="measured">
+  <p class="book-id">КНИГА 01 / 10 · ИЗМЕРЕНА</p>
+  <h3>Анна Каренина</h3><p class="byline">Лев Толстой</p>
+  
+  <p class="availability">23 из 28 метрик измерены</p>
+  <div class="book-bar" aria-hidden="true"><span style="width:82.14%"></span></div>
+  <a data-book="anna" href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
+</article>
+<article class="book" data-status="measured">
+  <p class="book-id">КНИГА 02 / 10 · ИЗМЕРЕНА</p>
+  <h3>Бегущая по волнам</h3><p class="byline">Александр Грин</p>
+  
+  <p class="availability">23 из 27 метрик измерены</p>
+  <div class="book-bar" aria-hidden="true"><span style="width:85.19%"></span></div>
+  <a data-book="waves" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
+</article>
+<article class="book" data-status="measured">
+  <p class="book-id">КНИГА 03 / 10 · ИЗМЕРЕНА</p>
+  <h3>Серебряный голубь</h3><p class="byline">Андрей Белый</p>
+  
+  <p class="availability">24 из 29 метрик измерены</p>
+  <div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div>
+  <a data-book="silver" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/bely-silver-dove-ru.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
+</article>
+<article class="book" data-status="measured">
+  <p class="book-id">КНИГА 04 / 10 · ИЗМЕРЕНА</p>
+  <h3>Братья Карамазовы</h3><p class="byline">Фёдор Достоевский</p>
+  
+  <p class="availability">24 из 29 метрик измерены</p>
+  <div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div>
+  <a data-book="karamazov" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/dostoevsky-brothers-karamazov-ru.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
+</article>
+<article class="book" data-status="measured">
+  <p class="book-id">КНИГА 05 / 10 · ИЗМЕРЕНА</p>
+  <h3>Гиперболоид инженера Гарина</h3><p class="byline">Алексей Толстой</p>
+  
+  <p class="availability">24 из 29 метрик измерены</p>
+  <div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div>
+  <a data-book="hyperboloid" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/tolstoy-hyperboloid-garin-wikisource-ru.retained.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
+</article>
+<article class="book" data-status="measured">
+  <p class="book-id">КНИГА 06 / 10 · ИЗМЕРЕНА</p>
+  <h3>Дети капитана Гранта</h3><p class="byline">Жюль Верн</p>
+  <p class="original-language">Русский перевод · оригинал на французском</p><p class="translator">Перевод: <strong>Александра Андреевна Бекетова</strong></p>
+  <p class="availability">11 из 11 метрик измерены</p>
+  <div class="book-bar" aria-hidden="true"><span style="width:100.00%"></span></div>
+  <a data-book="beketova" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
+</article>
+<article class="book book-research" data-status="pending">
+  <p class="book-id">КНИГА 07 / 10 · ПОДГОТОВКА</p>
+  <h3>Воскресение</h3><p class="byline">Лев Толстой</p>
+  
+  <p class="availability">129 ревизий и литературный корпус закреплены, метрики для публичного каталога ещё не сохранены</p>
+  
+  <a  href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json">Проверить источник <span aria-hidden="true">↗</span></a>
+</article>
+<article class="book book-research" data-status="pending">
+  <p class="book-id">КНИГА 08 / 10 · ПОДГОТОВКА</p>
+  <h3>Дорога в никуда</h3><p class="byline">Александр Грин</p>
+  
+  <p class="availability">Альтернативная редакция зафиксирована отдельно; первичный индекс неполон, метрическое сравнение пока не готово</p>
+  
+  <a  href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/source-edition-traces/grin-road-nowhere-ru.json">Проверить источник <span aria-hidden="true">↗</span></a>
+</article>
+<article class="book book-research" data-status="pending">
+  <p class="book-id">КНИГА 09 / 10 · ПОДГОТОВКА</p>
+  <h3>Петербург</h3><p class="byline">Андрей Белый</p>
+  
+  <p class="availability">Факсимиле издания 1916 года определено, литературный OCR-корпус ещё не подтверждён</p>
+  
+  <a  href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.json">Проверить источник <span aria-hidden="true">↗</span></a>
+</article>
+<article class="book book-research" data-status="pending">
+  <p class="book-id">КНИГА 10 / 10 · ПОДГОТОВКА</p>
+  <h3>О происхождении видов</h3><p class="byline">Чарльз Дарвин</p>
+  <p class="original-language">Русский перевод · оригинал на английском</p><p class="translator">Перевод: <strong>Сергей Александрович Рачинский</strong></p>
+  <p class="availability">Перевод Рачинского 1864 года: ревизии известны, полный литературный текст ещё не собран</p>
+  
+  <a  href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json">Проверить источник <span aria-hidden="true">↗</span></a>
+</article></div></section>
+<section id="pairs" class="workbench comparison-panel" aria-labelledby="pairs-title">
+<div class="section-head"><p class="eyebrow">02 / СРАВНЕНИЕ РИТМА</p><h2 id="pairs-title">Две книги — рядом.</h2>
+<p>Сравнивайте одинаковые нормированные метрики только при совпадении профиля измерений. Таблица содержит точные наблюдения и разницу «правая − левая». Сопоставление описательное: оно не доказывает, что стиль вызван именно автором или переводчиком.</p></div>
 <div class="controls">
-<div class="control"><label for="choose-book">Choose a book</label><select id="choose-book" disabled><option value="anna">Anna Karenina</option><option value="waves">Running on Waves</option><option value="silver">Silver Dove</option><option value="karamazov">Brothers Karamazov</option></select></div>
-<div class="control"><label for="search-metric">Find a field</label><input id="search-metric" type="search" placeholder="Try dialogue, words, commas…" disabled></div>
-<div class="control-note" id="table-status" aria-live="polite">Script-enabled field exploration requires the local derived JSON to load.</div>
-</div>
-<div class="table-region" tabindex="0" role="region" aria-label="Literary field measurements">
-<table><caption id="table-caption">Anna Karenina · illustrative measurements (full matrix loads with JavaScript)</caption><thead><tr><th scope="col">Measurement</th><th scope="col">Scriptorium actual</th><th scope="col">FantLab displayed</th><th scope="col">Candidate unit</th><th scope="col">Scientific status</th></tr></thead>
-<tbody id="measurement-rows">
-<tr><th scope="row">Characters including spaces</th><td>1,705,605</td><td>1,692,647</td><td>characters</td><td>Diagnostic — source unmatched</td></tr>
-<tr><th scope="row">Word tokens</th><td>269,358</td><td>253,275</td><td>tokens</td><td>Diagnostic — source unmatched</td></tr>
-<tr><th scope="row">Dialogue share</th><td>34.97462555501088</td><td>35.12</td><td>%</td><td>Diagnostic — source unmatched</td></tr>
-</tbody></table></div>
-<p class="evidence-warning">All measurements are candidate/inferred metrics unless labelled as extensions. Input identity, FantLab rounding, dictionary and unpublished coefficients are unverified. <strong>M2: 0 / 5.</strong></p>
-<div class="evidence-actions"><a id="evidence-source" href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json">Open frozen evidence JSON <span aria-hidden="true">↗</span></a>
-<a id="fantlab-reference" href="https://fantlab.ru/work270306/lp">FantLab public reference <span aria-hidden="true">↗</span></a>
-<button type="button" id="export-button" disabled>Download selected derived JSON</button></div>
-<noscript><p class="notice">JavaScript is disabled. The basic table above and the original data links on all four book cards remain available.</p></noscript>
+<div class="control"><label for="pair-left">Левый текст</label><select id="pair-left" disabled><option value="anna" selected>Анна Каренина</option><option value="waves">Бегущая по волнам</option><option value="silver">Серебряный голубь</option><option value="karamazov">Братья Карамазовы</option><option value="hyperboloid">Гиперболоид инженера Гарина</option><option value="beketova">Дети капитана Гранта</option></select></div>
+<div class="control"><label for="pair-right">Правый текст</label><select id="pair-right" disabled><option value="anna">Анна Каренина</option><option value="waves">Бегущая по волнам</option><option value="silver">Серебряный голубь</option><option value="karamazov" selected>Братья Карамазовы</option><option value="hyperboloid">Гиперболоид инженера Гарина</option><option value="beketova">Дети капитана Гранта</option></select></div>
+<div class="control"><label for="pair-metric">Показатель для диаграммы</label><select id="pair-metric" disabled>
+<option value="fantlab.dialogue.share_percent">Доля диалогов</option><option value="fantlab.general.mean_sentence_length_chars">Длина предложения</option><option value="fantlab.punctuation.comma.per_1000_words">Запятые на 1000 слов</option><option value="fantlab.punctuation.dash.per_1000_words">Тире на 1000 слов</option><option value="fantlab.general.mean_word_length_chars">Длина слова</option></select></div>
+<p id="pair-status" class="control-note" aria-live="polite">Данные для интерактивного сравнения загружаются локально из проверенного JSON.</p></div>
+<div class="paired-graphic" id="paired-graphic" aria-live="polite"><p class="pair-static">Для графического сравнения требуется JavaScript. Полностью читаемая таблица доступна ниже.</p></div>
+<div class="table-region" tabindex="0" role="region" aria-label="Таблица сравнения измерений">
+<table><caption id="pair-caption">Анна Каренина и Братья Карамазовы · справа минус слева · диагностика</caption>
+<thead><tr><th scope="col">Метрика</th><th scope="col">Левая книга</th><th scope="col">Правая книга</th><th scope="col">Δ (правая − левая)</th><th scope="col">Единица</th></tr></thead>
+<tbody id="pair-rows"><tr><th scope="row">Доля диалогов</th><td>34,97</td><td>48,78</td><td>+13,81</td><td>%</td></tr><tr><th scope="row">Средняя длина предложения</th><td>79</td><td>82,35</td><td>+3,35</td><td>символов/предложение</td></tr><tr><th scope="row">Запятые</th><td>146,31</td><td>150,55</td><td>+4,24</td><td>на 1000 слов</td></tr></tbody></table></div>
+<p class="evidence-warning">Сравнение оригинала и перевода станет доступным, когда обе конкретные редакции будут независимо измерены в собственных языковых профилях. Совпадение названия или автора не означает совпадения текста.</p>
 </section>
-<section id="method" class="method">
-<div class="section-head"><p class="eyebrow">03 / HOW IT WORKS</p><h2>No black box. No uploaded novel.</h2><p>Scriptorium is an offline Python library and CLI. The full Reader generates a report for a local file, preserving its source identity without publishing its text. This Pages experience demonstrates the current verified measurements — it does not analyze arbitrary files in the browser.</p></div>
-<div class="method-grid"><article><span>01</span><h3>Freeze the source.</h3><p>Record edition, revision and SHA-256 before measuring. Different translations stay distinct.</p></article><article><span>02</span><h3>Measure with units.</h3><p>Calculate vocabulary, dialogue, sentence length and punctuation. Surface missing values explicitly.</p></article><article><span>03</span><h3>Document the unknown.</h3><p>Without FantLab’s analyzer input, exact rounding and backend, similarities remain diagnostics.</p></article></div>
-</section>
-<section class="terminal" aria-labelledby="terminal-title"><div><p class="eyebrow">ANALYZE PRIVATE WRITING</p><h2 id="terminal-title">Your manuscript stays yours.</h2><p>Install from the repository and generate a readable offline HTML report. No registration, upload or tracking.</p></div>
+<section id="measurements" class="workbench" aria-labelledby="measurements-title">
+<div class="section-head"><p class="eyebrow">03 / РЕЕСТР ИЗМЕРЕНИЙ</p><h2 id="measurements-title">Откройте любое поле.</h2>
+<p>Отдельное измерение Scriptorium и значение FantLab, если оно есть. Совпадение методик и исходного текста FantLab не установлено — M2: 0/5.</p></div>
+<div class="controls"><div class="control"><label for="choose-book">Книга</label>
+<select id="choose-book" disabled><option value="anna" selected>Анна Каренина</option><option value="waves">Бегущая по волнам</option><option value="silver">Серебряный голубь</option><option value="karamazov">Братья Карамазовы</option><option value="hyperboloid">Гиперболоид инженера Гарина</option><option value="beketova">Дети капитана Гранта</option></select></div>
+<div class="control"><label for="search-metric">Найти метрику</label><input id="search-metric" type="search" disabled placeholder="Диалоги, слова, запятые…"></div>
+<p id="table-status" class="control-note" aria-live="polite">Статическая таблица показывает четыре измерения; интерактивная загружает полный набор.</p></div>
+<div class="table-region" tabindex="0" role="region" aria-label="Измерения и научные статусы">
+<table><caption id="table-caption">Анна Каренина · фрагмент таблицы (все 28 полей доступны с JavaScript)</caption>
+<thead><tr><th scope="col">Метрика</th><th scope="col">Scriptorium</th><th scope="col">FantLab</th><th scope="col">Единицы</th><th scope="col">Статус</th></tr></thead>
+<tbody id="measurement-rows"><tr><th scope="row">Символы с пробелами<code>fantlab.general.characters</code></th><td>1 705 605</td><td>1 692 647</td><td>знаки</td><td>Диагностика · источник FantLab не совпоставлен</td></tr>
+<tr><th scope="row">Слова<code>fantlab.general.words</code></th><td>269 358</td><td>253 275</td><td>словоформы</td><td>Диагностика · источник FantLab не совпоставлен</td></tr>
+<tr><th scope="row">Доля диалогов<code>fantlab.dialogue.share_percent</code></th><td>34,97</td><td>35,12</td><td>%</td><td>Диагностика · источник FantLab не совпоставлен</td></tr>
+<tr><th scope="row">Средняя длина предложения<code>fantlab.general.mean_sentence_length_chars</code></th><td>79</td><td>79,17</td><td>символов на предложение</td><td>Диагностика · источник FantLab не совпоставлен</td></tr></tbody></table></div>
+<p class="evidence-warning">UNKNOWN — нет сопоставимой опубликованной ссылки. NOT_RUN — измерение не выполнено. N/A — только расширение Scriptorium. Отсутствие данных не превращается в ноль.</p>
+<div class="evidence-actions"><a id="evidence-source" href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json">Исходный JSON анализа <span aria-hidden="true">↗</span></a>
+<a id="fantlab-reference" href="https://fantlab.ru/work270306/lp">Референс FantLab <span aria-hidden="true">↗</span></a>
+<button type="button" id="export-button" disabled>Скачать измерения (JSON)</button></div>
+<noscript><p class="notice">Без JavaScript доступны карточки со ссылками на полные производные артефакты и эти таблицы-примеры.</p></noscript></section>
+<section id="translations" class="translations" aria-labelledby="translations-title">
+<div class="section-head"><p class="eyebrow">04 / ОРИГИНАЛ И ПЕРЕВОД</p><h2 id="translations-title">Переводчик — часть текста.</h2>
+<p>Перевод — самостоятельная редакция с собственными байтами, переводчиком, годом, правами и профилем анализа. Не будем усреднять разные переводы одного романа и не будем выдавать французский оригинал за английский.</p></div>
+<div class="translation-grid">
+<article class="translation-card"><p class="eyebrow">РУССКАЯ ВЕРСИЯ · ИЗМЕРЕНА</p><h3>Дети капитана Гранта</h3>
+<p><strong>Жюль Верн</strong> · перевод Александры Андреевны Бекетовой</p>
+<p>Русский текст: 1 095 467 символов с пробелами, 11 доступных производных метрик. Издание/семейство: Детгиз, 1955; редакция Wikisource зафиксирована.</p>
+<div class="translation-links"><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.json">Перевод и редакция ↗</a>
+<span>Оригинал: французский · Les Enfants du capitaine Grant — метрик ещё нет</span></div></article>
+<article class="translation-card"><p class="eyebrow">РУССКАЯ ВЕРСИЯ · ПОДГОТОВКА</p><h3>О происхождении видов</h3>
+<p><strong>Чарльз Дарвин</strong> · перевод Сергея Александровича Рачинского</p>
+<p>Издание 1864 года исследуется; проверенный литературный корпус ещё не сформирован.</p>
+<div class="translation-links"><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json">Перевод и состояние источника ↗</a>
+<span>Оригинал: английский · On the Origin of Species — отдельный EN-модуль, метрик ещё нет</span></div></article>
+</div><div class="language-boundary"><h3>Английский модуль · позже</h3><p>Английский оригинал будет анализироваться отдельным языковым профилем: границы слов, морфология и словарь не должны незаметно подменять русские алгоритмы. Для межъязыкового сопоставления сначала нужны атрибутированные редакции и сопоставимые, явно определённые характеристики.</p></div></section>
+<section id="method" class="method" aria-labelledby="method-title"><div class="section-head"><p class="eyebrow">05 / МЕТОДОЛОГИЯ</p>
+<h2 id="method-title">Точность важнее красивой легенды.</h2><p>Работающий Python-анализатор производит версии метрик, привязывает текст к SHA-256 и не публикует содержание рукописи. Pages показывает проверенные производные результаты — не форму загрузки книги.</p></div>
+<div class="method-grid"><article><span>01</span><h3>Фиксируем редакцию</h3><p>Оригинал, перевод, переводчик, редакция, профиль извлечения и хэш — разные уровни идентичности.</p></article>
+<article><span>02</span><h3>Измеряем</h3><p>Диалоги, длину предложений, лексику, знаки препинания и статусы отсутствующих данных.</p></article>
+<article><span>03</span><h3>Не подменяем доказательства</h3><p>Без точного текста FantLab его показатели остаются только диагностическим сравнением. M2: 0/5.</p></article></div></section>
+<section class="terminal" aria-labelledby="terminal-title"><div><p class="eyebrow">ДЛЯ СВОЕГО ТЕКСТА</p><h2 id="terminal-title">Рукопись остаётся у вас.</h2><p>Локальный CLI строит отчёт без регистрации и загрузки текста в интернет.</p></div>
 <pre><code>python -m pip install .
 scriptorium analyze manuscript.txt --format html --output report.html</code></pre>
-<a class="button primary" href="https://github.com/drevendev/Scriptorium/blob/master/docs/READER_PREVIEW.md">Reader instructions <span aria-hidden="true">↗</span></a></section>
-</main>
-<footer><p class="footer-heading">SCRIPTORIUM <span aria-hidden="true">✦</span> LITERARY EVIDENCE</p><p>Real derived measurements. No literary text hosted here. FantLab source-matched parity remains unverified (M2: 0/5).</p><a href="https://github.com/drevendev/Scriptorium">Browse the open repository</a></footer>
-<script src="./assets/pages-reader.js" defer></script>
-</body>
-</html>
+<a class="button primary" href="https://github.com/drevendev/Scriptorium/blob/master/docs/READER_PREVIEW.md">Инструкция к анализатору <span aria-hidden="true">↗</span></a></section>
+</main><footer><p class="footer-heading">SCRIPTORIUM <span aria-hidden="true">✦</span> ИССЛЕДОВАНИЕ ЯЗЫКА</p>
+<p>6 измеренных из 10 русскоязычных произведений каталога. 153 поля, из них 129 числовых. Сопоставимость с FantLab не доказана (M2: 0/5). Полные тексты здесь не размещаются.</p>
+<a href="https://github.com/drevendev/Scriptorium">Исходный код и исследования</a></footer>
+<script src="./assets/pages-reader.js" defer></script></body></html>

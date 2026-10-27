@@ -1,243 +1,376 @@
 "use strict";
-/* Interactive, source-free Reader for branch-based GitHub Pages.
- * This does NOT upload manuscripts or claim FantLab analyzer-input parity.
- * Data is a local, build-pinned JSON snapshot retained in the public repository.
+/* Russian-first, source-free Scriptorium Reader. Unknown is never zero.
+ * English and French are different future analyzers, not silent RU aliases.
  */
 (() => {
-  const snapshotUrl = "./assets/evidence-snapshot.json";
-  const chartChoices = {
-    "fantlab.dialogue.share_percent": {label:"Dialogue share",unit:"%",digits:2},
-    "fantlab.general.mean_sentence_length_chars": {label:"Mean sentence length",unit:"characters / sentence",digits:2},
-    "fantlab.punctuation.comma.per_1000_words": {label:"Commas",unit:"occurrences / 1,000 words",digits:2}
+  const file = "./assets/evidence-snapshot.json";
+  const metrics = {
+    "fantlab.dialogue.share_percent": ["Доля диалогов","%",2],
+    "fantlab.general.mean_sentence_length_chars": ["Длина предложения","символов / предложение",2],
+    "fantlab.punctuation.comma.per_1000_words": ["Запятые","на 1000 слов",2],
+    "fantlab.punctuation.dash.per_1000_words": ["Тире","на 1000 слов",2],
+    "fantlab.general.mean_word_length_chars": ["Длина слова","символов / слово",2],
+    "fantlab.dialogue.author_text_inside_dialogue_percent": ["Авторские ремарки внутри диалогов","%",2],
+    "fantlab.dialogue.mean_dialogue_sentence_length_chars": ["Длина реплики","символов / предложение",2],
+    "fantlab.dialogue.mean_narration_sentence_length_chars": ["Длина авторского предложения","символов / предложение",2]
   };
-  const labelNames = {
-    "fantlab.general.characters":"Characters including spaces",
-    "fantlab.general.words":"Word tokens",
-    "fantlab.general.mean_word_length_chars":"Mean word length",
-    "fantlab.general.mean_sentence_length_chars":"Mean sentence length",
-    "fantlab.dialogue.share_percent":"Dialogue share",
-    "fantlab.dialogue.mean_dialogue_sentence_length_chars":"Dialogue sentence length",
-    "fantlab.dialogue.mean_narration_sentence_length_chars":"Narration sentence length",
-    "fantlab.dialogue.author_text_inside_dialogue_percent":"Author text within dialogue",
-    "fantlab.vocabulary.unique_words":"Unique word forms",
-    "fantlab.vocabulary.active_dictionary":"Dictionary word forms",
-    "fantlab.vocabulary.active_nondictionary":"Non-dictionary word forms",
-    "scriptorium.general.sentences":"Sentence count (Scriptorium extension)"
+  const names = {
+    "fantlab.general.characters":"Символы с пробелами",
+    "fantlab.general.words":"Слова",
+    "fantlab.vocabulary.unique_words":"Уникальные словоформы",
+    "fantlab.vocabulary.active_dictionary":"Словарные формы",
+    "fantlab.vocabulary.active_nondictionary":"Внесловарные формы",
+    "scriptorium.general.sentences":"Количество предложений (расширение)"
   };
   const el = id => document.getElementById(id);
-  const allCharts = [...document.querySelectorAll("[data-chart]")];
+  const chartButtons = [...document.querySelectorAll("[data-chart]")];
   const bookLinks = [...document.querySelectorAll("[data-book]")];
-  const select = el("choose-book");
+  const one = el("choose-book");
   const search = el("search-metric");
-  const feedback = el("table-status");
-  const tableBody = el("measurement-rows");
-  const exportButton = el("export-button");
-  const caption = el("table-caption");
-  let doc;
+  const status = el("table-status");
+  const body = el("measurement-rows");
+  const out = el("export-button");
+  const leftSelect = el("pair-left");
+  const rightSelect = el("pair-right");
+  const pairMetric = el("pair-metric");
+  let data;
   let currentBook = "anna";
   let currentChart = "fantlab.dialogue.share_percent";
 
-  function numeric(value) {
-    return typeof value === "number" && Number.isFinite(value);
+  function isNumeric(x) {
+    return typeof x === "number" && Number.isFinite(x);
   }
-  function verify(data) {
-    if (!data || data.schema !== "scriptorium-branch-pages-derived-v1" ||
-        data.scientific_claim !== "DIAGNOSTIC_ONLY" ||
-        data.fantlab_input_identity !== "UNKNOWN" ||
-        data.counts?.m2_source_matched !== 0 ||
-        data.counts?.metrics_total !== 113 ||
-        data.counts?.numeric_total !== 94 ||
-        data.counts?.unavailable_total !== 19 ||
-        !Array.isArray(data.books) || data.books.length !== 4) {
-      throw Error("Scientific or coverage contract mismatch");
+  function verify(doc) {
+    if (!doc || doc.schema !== "scriptorium-ru-reader-v2" ||
+        doc.language_module !== "ru" ||
+        doc.scientific_claim !== "DIAGNOSTIC_ONLY" ||
+        doc.fantlab_input_identity !== "UNKNOWN" ||
+        doc.comparability?.m2_parity_admissible !== false ||
+        doc.counts?.m2_source_matched !== 0 ||
+        doc.counts?.work_count !== 10 ||
+        doc.counts?.measured_works !== 6 ||
+        doc.counts?.awaiting_measurement !== 4 ||
+        doc.counts?.metrics_total !== 153 ||
+        doc.counts?.numeric_total !== 129 ||
+        doc.counts?.unavailable_total !== 24 ||
+        doc.language_modules?.en?.state !== "planned_not_measured" ||
+        doc.language_modules?.en?.measured_work_count !== 0 ||
+        !Array.isArray(doc.books) || doc.books.length !== 10) {
+      throw Error("Русский каталог или научный статус изменён");
     }
-    const expected = {anna:[28,23],waves:[27,23],silver:[29,24],karamazov:[29,24]};
-    const ids = new Set();
-    for (const book of data.books) {
-      const target = expected[book.key];
-      if (!target || ids.has(book.key) || !Array.isArray(book.metrics) ||
-          book.metrics.length !== target[0] || book.measured !== target[1] ||
-          book.unavailable !== target[0]-target[1] ||
-          typeof book.title !== "string" ||
-          !/^https:\/\/github\.com\/drevendev\/Scriptorium\/blob\/master\//.test(book.evidence_url) ||
-          !/^https:\/\/fantlab\.ru\/work\d+\/lp$/.test(book.fantlab_url) ||
-          !/^[0-9a-f]{64}$/.test(book.source_sha256)) {
-        throw Error("Book identity or measurement coverage mismatch");
+    const census = {anna:[28,23],waves:[27,23],silver:[29,24],
+                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11]};
+    const seen = new Set();
+    const editionKeys = new Set();
+    let observed = 0, missing = 0;
+    for (const book of doc.books) {
+      if (typeof book.key !== "string" || seen.has(book.key) ||
+          typeof book.candidate_id !== "string" || !book.candidate_id ||
+          book.language !== "ru" ||
+          !["ru","fr","en"].includes(book.original_language) ||
+          typeof book.display_title !== "string" || !book.display_title ||
+          typeof book.display_author !== "string" || !book.display_author ||
+          typeof book.edition_id !== "string" || !book.edition_id ||
+          typeof book.family_id !== "string" || !book.family_id ||
+          typeof book.text_status !== "string" ||
+          !Array.isArray(book.metrics)) throw Error("Некорректная идентичность книги");
+      seen.add(book.key);
+      const editionKey = book.family_id + ":" + book.edition_id + ":" + book.language;
+      if (editionKeys.has(editionKey)) throw Error("Смешаны разные редакции");
+      editionKeys.add(editionKey);
+      if (book.original_language !== book.language &&
+          (!book.translator || typeof book.translator.name !== "string" ||
+           !book.translator.name.trim() || typeof book.translator.id !== "string")) {
+        throw Error("Перевод без переводчика");
       }
-      ids.add(book.key);
-      const fields = new Set();
-      let measured = 0;
-      for (const row of book.metrics) {
-        if (typeof row.id !== "string" || fields.has(row.id) ||
-            !/^(fantlab|scriptorium)\.[a-z0-9_.]+$/.test(row.id) ||
-            !(row.actual === null || numeric(row.actual)) ||
-            !(row.reference === null || numeric(row.reference)) ||
-            !["measured","not_run","unavailable"].includes(row.status) ||
-            (row.actual !== null) !== (row.status === "measured") ||
-            !["candidate","extension"].includes(row.kind) ||
-            (row.kind === "extension" && row.reference !== null)) {
-          throw Error("Field observation or unknown-state mismatch");
+      const expected = census[book.key];
+      if (expected) {
+        if (book.text_status !== "measured" ||
+            book.measured !== expected[1] ||
+            book.unavailable !== expected[0]-expected[1] ||
+            book.metrics.length !== expected[0] ||
+            typeof book.source_sha256 !== "string" ||
+            !/^[a-f0-9]{64}$/.test(book.source_sha256) ||
+            !/^https:\/\/github.com\/drevendev\/Scriptorium\/blob\/master\//.test(book.evidence_url)) {
+          throw Error("Подмена измеренного источника или охвата");
         }
-        fields.add(row.id);
-        if (row.actual !== null) measured++;
+        const fields = new Set();
+        let available = 0;
+        for (const m of book.metrics) {
+          if (!m || typeof m.id !== "string" || fields.has(m.id) ||
+              !/^(fantlab|scriptorium)\.[a-z0-9_.]+$/.test(m.id) ||
+              !(m.actual === null || isNumeric(m.actual)) ||
+              !(m.reference === null || isNumeric(m.reference)) ||
+              !["not_run","unavailable","measured"].includes(m.status) ||
+              (m.actual !== null) !== (m.status === "measured") ||
+              !["candidate","extension"].includes(m.kind) ||
+              (m.kind === "extension" && m.reference !== null)) {
+            throw Error("Ненадёжное измерение или значение UNKNOWN");
+          }
+          fields.add(m.id);
+          if (m.actual !== null) available++;
+        }
+        if (available !== expected[1]) throw Error("Изменено количество чисел");
+        observed += available;
+        missing += book.metrics.length-available;
+      } else {
+        if (book.text_status === "measured" ||
+            book.metrics.length !== 0 ||
+            book.measured !== 0 ||
+            book.unavailable !== 0 ||
+            typeof book.trace !== "string") throw Error("Нельзя считать заявку измеренной книгой");
       }
-      if (measured !== target[1]) throw Error("Measured field count mismatch");
     }
-    if (ids.size !== 4) throw Error("Duplicate or missing book");
+    if (seen.size !== 10 || Object.keys(census).some(x=>!seen.has(x)) ||
+        observed !== 129 || missing !== 24 ||
+        doc.books.filter(b=>b.text_status === "measured").length !== 6 ||
+        doc.books.filter(b=>b.translator).length !== 2) throw Error("Подмена итогов каталога");
+    const measured = doc.books.filter(b=>b.text_status === "measured");
+    for (const book of measured) {
+      const needed = Object.keys(metrics);
+      if (book.key === "beketova") {
+        // The distinct translated version has ten shared observed metrics but
+        // not every diagnostic field in the original FantLab registry.
+        if (!["fantlab.dialogue.share_percent",
+               "fantlab.general.mean_sentence_length_chars",
+               "fantlab.punctuation.comma.per_1000_words"].every(id=>
+                 book.metrics.some(row=>row.id===id&&isNumeric(row.actual)))) {
+          throw Error("Недоступна сопоставимая метрика перевода");
+        }
+      } else if (!needed.slice(0,3).every(id=>
+                   book.metrics.some(row=>row.id===id&&isNumeric(row.actual)))) {
+        throw Error("Отсутствуют проверенные значения для диаграммы");
+      }
+    }
   }
-  function findBook() {
-    return doc.books.find(book => book.key === currentBook);
+
+  function getBook(key) {
+    return data.books.find(b=>b.key===key && b.text_status==="measured");
+  }
+  function lookup(book,id) {
+    return book.metrics.find(row=>row.id===id);
+  }
+  function pretty(x,places=2) {
+    return x === null ? "—" :
+      new Intl.NumberFormat("ru-RU",{maximumFractionDigits:places}).format(x);
+  }
+  function exact(x) {
+    return x === null ? "UNKNOWN" : String(x);
   }
   function label(id) {
-    if (labelNames[id]) return labelNames[id];
-    return id.replace(/^fantlab\./,"").replaceAll("."," · ").replaceAll("_"," ");
+    return metrics[id]?.[0] || names[id] || id.replace(/^fantlab\./,"").replaceAll("_"," ").replaceAll("."," · ");
   }
   function unit(id) {
-    if (id === "scriptorium.general.sentences") return "sentences";
-    if (id === "fantlab.general.characters") return "characters incl. spaces";
-    if (id === "fantlab.general.words") return "word tokens";
-    if (id === "fantlab.general.mean_word_length_chars") return "characters / word";
-    if (id.includes("sentence_length")) return "characters / sentence";
+    if (metrics[id]) return metrics[id][1];
+    if (id === "scriptorium.general.sentences") return "предложения";
+    if (id === "fantlab.general.characters") return "символы с пробелами";
+    if (id === "fantlab.general.words") return "слова";
+    if (id.startsWith("fantlab.vocabulary.")) return "словоформы / окно, по профилю";
+    if (id.includes(".punctuation.")) return "на 1000 слов";
     if (id.endsWith("_percent")) return "%";
-    if (id.includes(".punctuation.")) return "occurrences / 1,000 words";
-    if (id.includes("uasz_")) return "mean unique forms / token window";
-    if (id.includes(".vocabulary.")) return "word forms";
-    return "candidate metric units";
+    return "кандидатные единицы";
   }
-  function exact(value) {
-    if (value === null) return "UNKNOWN";
-    return String(value);
+  function insertText(parent,tag,value,cls) {
+    const node = document.createElement(tag);
+    node.textContent = value;
+    if (cls) node.className = cls;
+    parent.appendChild(node);
+    return node;
   }
-  function appendCell(row, tag, content) {
-    const cell = document.createElement(tag);
-    cell.textContent = content;
-    if (tag === "th") cell.scope = "row";
-    row.appendChild(cell);
-    return cell;
+  function makeTableRow(m) {
+    const tr=document.createElement("tr");
+    const th=insertText(tr,"th",label(m.id));
+    th.scope="row";
+    insertText(th,"code",m.id);
+    insertText(tr,"td",m.actual===null?m.status.toUpperCase():exact(m.actual));
+    insertText(tr,"td",m.kind==="extension"?"N/A":exact(m.reference));
+    insertText(tr,"td",unit(m.id));
+    insertText(tr,"td",m.kind==="extension"?"Расширение Scriptorium":
+               m.actual===null?m.status.toUpperCase():"Диагностика · несовпавший источник");
+    return tr;
   }
-  function refreshTable() {
-    const book = findBook();
-    const query = search.value.toLocaleLowerCase("en").trim();
-    const fragment = document.createDocumentFragment();
-    const matches = book.metrics.filter(item => {
-      return !query || (item.id+" "+label(item.id)+" "+unit(item.id)).toLowerCase().includes(query);
+  function updateSingle() {
+    const book=getBook(currentBook);
+    if (!book) return;
+    const q=search.value.trim().toLocaleLowerCase("ru");
+    const selected=book.metrics.filter(m=>!q||(
+      m.id+" "+label(m.id)+" "+unit(m.id)).toLocaleLowerCase("ru").includes(q));
+    const nodes=document.createDocumentFragment();
+    for (const m of selected) nodes.appendChild(makeTableRow(m));
+    if (!selected.length) {
+      const row=document.createElement("tr");
+      const td=insertText(row,"td","Ничего не найдено. Очистите поиск, чтобы увидеть все метрики.");
+      td.colSpan=5; nodes.appendChild(row);
+    }
+    body.replaceChildren(nodes);
+    el("table-caption").textContent=book.display_title+" · "+book.metrics.length+
+      " метрик, нет подтверждённого совпадения с FantLab";
+    status.textContent=selected.length+" из "+book.metrics.length+" полей; "+
+      book.measured+" измерены, "+book.unavailable+" недоступны; M2 0/5";
+    el("evidence-source").href=book.evidence_url;
+    const fantlab=el("fantlab-reference");
+    if (book.fantlab_url) {
+      fantlab.hidden=false; fantlab.href=book.fantlab_url;
+      fantlab.textContent="Референс FantLab ↗";
+    } else {
+      fantlab.hidden=true;fantlab.removeAttribute("href");
+    }
+  }
+  function updateChart() {
+    const conf=metrics[currentChart];
+    if (!conf) throw Error("Показатель диаграммы не разрешён");
+    const rows=data.books.filter(b=>b.text_status==="measured").map(b=>{
+      const item=lookup(b,currentChart);
+      if (!item||!isNumeric(item.actual)) throw Error("Нет числа для диаграммы");
+      return {title:b.display_title,value:item.actual};
     });
-    for (const item of matches) {
-      const tr = document.createElement("tr");
-      const th = appendCell(tr,"th",label(item.id));
-      const code = document.createElement("code");
-      code.textContent = item.id;
-      th.appendChild(code);
-      appendCell(tr,"td",item.actual === null ? item.status.toUpperCase() : exact(item.actual));
-      appendCell(tr,"td",item.kind === "extension" ? "N/A (extension)" : exact(item.reference));
-      appendCell(tr,"td",unit(item.id));
-      appendCell(tr,"td",item.kind === "extension" ?
-        "Scriptorium extension" : item.status === "measured" ?
-        "Measured / source unmatched" : item.status.toUpperCase());
+    const high=Math.max(...rows.map(x=>x.value));
+    const nodes=document.createDocumentFragment();
+    for (const row of rows) {
+      const container=document.createElement("div");container.className="chart-row";
+      insertText(container,"span",row.title);
+      const track=insertText(container,"div","");
+      track.className="bar-track";track.setAttribute("aria-hidden","true");
+      const inner=insertText(track,"span","");
+      inner.style.width=(high>0?100*row.value/high:0).toFixed(2)+"%";
+      insertText(container,"strong",pretty(row.value,conf[2])+(conf[1]==="%"?"%":""));
+      nodes.appendChild(container);
+    }
+    el("chart-series").replaceChildren(nodes);
+    el("chart-unit").textContent=conf[0]+" · "+conf[1]+" · подписи округлены до 2 знаков";
+    for (const b of chartButtons) {
+      b.setAttribute("aria-pressed",String(b.dataset.chart===currentChart));
+    }
+  }
+
+  const pairedIds = [
+    "fantlab.dialogue.share_percent",
+    "fantlab.dialogue.author_text_inside_dialogue_percent",
+    "fantlab.general.mean_sentence_length_chars",
+    "fantlab.general.mean_word_length_chars",
+    "fantlab.punctuation.comma.per_1000_words",
+    "fantlab.punctuation.dash.per_1000_words",
+    "fantlab.punctuation.question.per_1000_words"
+  ];
+  function updatePair() {
+    const a=getBook(leftSelect.value),b=getBook(rightSelect.value);
+    if (!a||!b) throw Error("Книга отсутствует в измеренном корпусе");
+    const matchingProfiles=["metrics","normalization","dialogue","vocabulary","punctuation"];
+    if (!matchingProfiles.every(profile=>
+      typeof a.profiles?.[profile]==="string" &&
+      a.profiles[profile]===b.profiles?.[profile])) {
+      el("pair-status").textContent="Профили алгоритмов несовместимы — сравнение отключено.";
+      el("pair-rows").replaceChildren();
+      el("paired-graphic").replaceChildren();
+      return;
+    }
+    if (a.key===b.key) {
+      el("pair-status").textContent="Выберите две разные книги.";
+      el("pair-rows").replaceChildren();
+      el("paired-graphic").replaceChildren();
+      return;
+    }
+    const rows=pairedIds.flatMap(id=>{
+      const av=lookup(a,id),bv=lookup(b,id);
+      return (av&&bv&&isNumeric(av.actual)&&isNumeric(bv.actual))?
+        [{id,left:av.actual,right:bv.actual}]:[];
+    });
+    const fragment=document.createDocumentFragment();
+    for (const m of rows) {
+      const tr=document.createElement("tr");
+      insertText(tr,"th",label(m.id)).scope="row";
+      insertText(tr,"td",exact(m.left));
+      insertText(tr,"td",exact(m.right));
+      const d=m.right-m.left;
+      insertText(tr,"td",(d>0?"+":"")+pretty(d,3));
+      insertText(tr,"td",unit(m.id)+(unit(m.id)==="%"?" · Δ в п.п.":""));
       fragment.appendChild(tr);
     }
-    if (!matches.length) {
-      const tr = document.createElement("tr");
-      const td = document.createElement("td");
-      td.colSpan = 5;
-      td.textContent = "No metric matches your search. Clear the filter to show all fields.";
-      tr.appendChild(td);
-      fragment.appendChild(tr);
+    el("pair-rows").replaceChildren(fragment);
+    el("pair-caption").textContent=a.display_title+" → "+b.display_title+" · правая минус левая";
+    el("pair-status").textContent=rows.length+" совместно измеренных нормированных метрик. "+
+      (a.translator||b.translator?"Одна из версий — русский перевод. ":"")+
+      "Описательная диагностика, не FantLab parity.";
+    const id=pairMetric.value;
+    const curr=rows.find(m=>m.id===id);
+    const graph=document.createDocumentFragment();
+    if (!curr) {
+      insertText(graph,"p","Эта метрика недоступна хотя бы для одного текста. Подмена нулём запрещена.");
+    } else {
+      insertText(graph,"h3",label(curr.id)+" · "+unit(curr.id));
+      const max=Math.max(curr.left,curr.right);
+      const items=[
+        {label:a.display_title,value:curr.left,tone:"a"},
+        {label:b.display_title,value:curr.right,tone:"b"}
+      ];
+      for (const item of items) {
+        const group=insertText(graph,"div","","pair-row");
+        insertText(group,"span",item.label);
+        const track=insertText(group,"div","","pair-track");
+        track.setAttribute("aria-hidden","true");
+        const fill=insertText(track,"span","","pair-fill-"+item.tone);
+        fill.style.width=(max>0?100*item.value/max:0).toFixed(2)+"%";
+        insertText(group,"strong",pretty(item.value,2)+(unit(curr.id)==="%"?"%":""));
+      }
+      insertText(graph,"p","Точные значения и разницы доступны в таблице ниже.","graph-caption");
     }
-    tableBody.replaceChildren(fragment);
-    caption.textContent = book.title+" · "+book.metrics.length+
-      " source-frozen diagnostic fields; no verified FantLab parity";
-    feedback.textContent = matches.length+" of "+book.metrics.length+" fields shown · "+
-      book.measured+" numeric, "+book.unavailable+" unavailable; M2 0/5";
-    el("evidence-source").href = book.evidence_url;
-    el("fantlab-reference").href = book.fantlab_url;
+    el("paired-graphic").replaceChildren(graph);
   }
-  function refreshChart() {
-    const choice = chartChoices[currentChart];
-    const series = doc.books.map(book => {
-      const row = book.metrics.find(item => item.id === currentChart);
-      if (!row || !numeric(row.actual)) throw Error("Missing normalized chart measurement");
-      return {title:book.title,actual:row.actual};
-    });
-    const maximum = Math.max(...series.map(item=>item.actual));
-    const fragment = document.createDocumentFragment();
-    for (const item of series) {
-      const row = document.createElement("div");
-      row.className = "chart-row";
-      appendCell(row,"span",item.title);
-      const track = document.createElement("div");
-      track.className = "bar-track";
-      track.setAttribute("aria-hidden","true");
-      const fill = document.createElement("span");
-      fill.style.width = (maximum > 0 ? 100*item.actual/maximum : 0).toFixed(2)+"%";
-      track.appendChild(fill);
-      row.appendChild(track);
-      appendCell(row,"strong",item.actual.toFixed(choice.digits)+(choice.unit === "%" ? "%" : ""));
-      fragment.appendChild(row);
-    }
-    el("chart-series").replaceChildren(fragment);
-    el("chart-unit").textContent = choice.label+" · "+choice.unit+" · labels rounded to 2 decimals";
-    for (const button of allCharts) button.setAttribute("aria-pressed",String(button.dataset.chart===currentChart));
-  }
-  function downloadSelected() {
-    const book = findBook();
-    const result = {
-      schema:"scriptorium-branch-pages-selection-v1",
+  function exportSelected() {
+    const book=getBook(currentBook);
+    if (!book) return;
+    const result={
+      schema:"scriptorium-ru-derived-export-v1",
       scientific_claim:"DIAGNOSTIC_ONLY",
-      fantlab_input_identity:"UNKNOWN",
-      m2_source_matched:0,
+      fantlab_input_identity:"UNKNOWN",m2_source_matched:0,
       candidate_id:book.candidate_id,
+      original_language:book.original_language,analysis_language:book.language,
+      edition_id:book.edition_id,translator:book.translator,
       source_sha256:book.source_sha256,
       source_evidence_url:book.evidence_url,
+      measurement_profiles:book.profiles,
       metrics:book.metrics
     };
-    const blob = new Blob([JSON.stringify(result,null,2)+"\n"],{type:"application/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "scriptorium-"+book.key+"-diagnostic.json";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    const blob=new Blob([JSON.stringify(result,null,2)+"\n"],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");
+    link.href=url;link.download="scriptorium-"+book.key+"-derived.json";
+    document.body.appendChild(link);link.click();link.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
   async function initialize() {
     try {
-      const response = await fetch(snapshotUrl,{cache:"no-store",credentials:"omit"});
-      if (!response.ok) throw Error("HTTP "+response.status);
-      const data = await response.json();
-      verify(data);
-      doc = data;
-      select.disabled = false;
-      search.disabled = false;
-      exportButton.disabled = false;
-      for (const chartButton of allCharts) {
-        chartButton.disabled = false;
-        chartButton.addEventListener("click",()=>{
-          currentChart = chartButton.dataset.chart;
-          refreshChart();
-        });
+      const res=await fetch(file,{cache:"no-store",credentials:"omit"});
+      if (!res.ok) throw Error("HTTP "+res.status);
+      const incoming=await res.json();
+      verify(incoming); data=incoming;
+      const inputs=[one,search,out,leftSelect,rightSelect,pairMetric,...chartButtons];
+      for(const input of inputs)input.disabled=false;
+      for(const btn of chartButtons) {
+        btn.addEventListener("click",()=>{currentChart=btn.dataset.chart;updateChart();});
       }
-      for (const anchor of bookLinks) {
+      for(const anchor of bookLinks) {
         anchor.addEventListener("click",event=>{
-          if (!doc.books.some(book=>book.key===anchor.dataset.book)) return;
+          if (!getBook(anchor.dataset.book)) return;
           event.preventDefault();
-          currentBook = anchor.dataset.book;
-          select.value = currentBook;
-          search.value = "";
-          refreshTable();
+          currentBook=anchor.dataset.book;
+          one.value=currentBook;
+          search.value="";
+          updateSingle();
           el("measurements").scrollIntoView({block:"start",behavior:"auto"});
         });
       }
-      select.addEventListener("change",()=>{currentBook=select.value;search.value="";refreshTable();});
-      search.addEventListener("input",refreshTable);
-      exportButton.addEventListener("click",downloadSelected);
-      refreshChart();
-      refreshTable();
+      one.addEventListener("change",()=>{currentBook=one.value;search.value="";updateSingle();});
+      search.addEventListener("input",updateSingle);
+      out.addEventListener("click",exportSelected);
+      leftSelect.addEventListener("change",updatePair);
+      rightSelect.addEventListener("change",updatePair);
+      pairMetric.addEventListener("change",updatePair);
+      updateChart(); updatePair(); updateSingle();
     } catch (_) {
-      feedback.textContent =
-        "Interactive metric data is unavailable. Use the four original JSON links in the library; no fabricated values were substituted.";
-      /* The server-rendered first three observations remain a usable fallback. */
+      status.textContent="Интерактивные данные недоступны. Откройте источник через ссылку на карточке книги; никаких выдуманных значений не подставлено.";
+      el("pair-status").textContent="Сравнение недоступно без проверенного JSON. Статическая таблица остаётся для чтения.";
+      // Static fallback charts and tables remain visible.
     }
   }
   initialize();

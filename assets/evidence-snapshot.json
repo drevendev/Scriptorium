@@ -1,15 +1,16 @@
 {
-  "schema": "scriptorium-branch-pages-derived-v1",
-  "produced_from": "master:f8479c7fbe540e279b6fd66e44fba78df5d2dfd0",
+  "schema": "scriptorium-ru-reader-v2",
+  "produced_from": "measured-four-at-master-f8479c7; hyperboloid-ci-40469834658; beketova-source-free-blobs",
+  "language_module": "ru",
   "scientific_claim": "DIAGNOSTIC_ONLY",
   "fantlab_input_identity": "UNKNOWN",
   "counts": {
-    "work_count": 4,
-    "measured_works": 4,
-    "expected_corpus_works": 5,
-    "metrics_total": 113,
-    "numeric_total": 94,
-    "unavailable_total": 19,
+    "work_count": 10,
+    "measured_works": 6,
+    "awaiting_measurement": 4,
+    "metrics_total": 153,
+    "numeric_total": 129,
+    "unavailable_total": 24,
     "m2_source_matched": 0
   },
   "books": [
@@ -221,7 +222,22 @@
       "blob_sha1": "0d5e420abb45e2b9e178df75a479ab7cdd5a4150",
       "source_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
       "measured": 23,
-      "unavailable": 5
+      "unavailable": 5,
+      "display_title": "Анна Каренина",
+      "display_author": "Лев Толстой",
+      "family_id": "tolstoy-anna-karenina",
+      "edition_id": "ru-wikisource-239-chapters",
+      "original_language": "ru",
+      "language": "ru",
+      "text_status": "measured",
+      "translator": null,
+      "profiles": {
+        "metrics": "scriptorium-metrics-v4",
+        "normalization": "scriptorium-text-v1",
+        "dialogue": "scriptorium-dialogue-v1",
+        "vocabulary": "scriptorium-vocabulary-v1",
+        "punctuation": "scriptorium-punctuation-v2"
+      }
     },
     {
       "key": "waves",
@@ -424,7 +440,22 @@
       "blob_sha1": "811d408e576c2f59809f5ba13ae638fed7950428",
       "source_sha256": "41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc",
       "measured": 23,
-      "unavailable": 4
+      "unavailable": 4,
+      "display_title": "Бегущая по волнам",
+      "display_author": "Александр Грин",
+      "family_id": "grin-running-on-waves",
+      "edition_id": "ru-frozen-363819",
+      "original_language": "ru",
+      "language": "ru",
+      "text_status": "measured",
+      "translator": null,
+      "profiles": {
+        "metrics": "scriptorium-metrics-v4",
+        "normalization": "scriptorium-text-v1",
+        "dialogue": "scriptorium-dialogue-v1",
+        "vocabulary": "scriptorium-vocabulary-v1",
+        "punctuation": "scriptorium-punctuation-v2"
+      }
     },
     {
       "key": "silver",
@@ -641,7 +672,22 @@
       "blob_sha1": "88bfe95435be1b72703de65d314c6926b5f83a60",
       "source_sha256": "496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183",
       "measured": 24,
-      "unavailable": 5
+      "unavailable": 5,
+      "display_title": "Серебряный голубь",
+      "display_author": "Андрей Белый",
+      "family_id": "bely-silver-dove",
+      "edition_id": "ru-wikisource-frozen",
+      "original_language": "ru",
+      "language": "ru",
+      "text_status": "measured",
+      "translator": null,
+      "profiles": {
+        "metrics": "scriptorium-metrics-v4",
+        "normalization": "scriptorium-text-v1",
+        "dialogue": "scriptorium-dialogue-v1",
+        "vocabulary": "scriptorium-vocabulary-v1",
+        "punctuation": "scriptorium-punctuation-v2"
+      }
     },
     {
       "key": "karamazov",
@@ -858,7 +904,463 @@
       "blob_sha1": "21cacd2d77575377b0d5e64d998cfd2687abc453",
       "source_sha256": "26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6",
       "measured": 24,
-      "unavailable": 5
+      "unavailable": 5,
+      "display_title": "Братья Карамазовы",
+      "display_author": "Фёдор Достоевский",
+      "family_id": "dostoevsky-brothers-karamazov",
+      "edition_id": "ru-wikisource-98",
+      "original_language": "ru",
+      "language": "ru",
+      "text_status": "measured",
+      "translator": null,
+      "profiles": {
+        "metrics": "scriptorium-metrics-v4",
+        "normalization": "scriptorium-text-v1",
+        "dialogue": "scriptorium-dialogue-v1",
+        "vocabulary": "scriptorium-vocabulary-v1",
+        "punctuation": "scriptorium-punctuation-v2"
+      }
+    },
+    {
+      "key": "hyperboloid",
+      "candidate_id": "tolstoy-hyperboloid-garin-wikisource-ru",
+      "title": "Hyperboloid of Engineer Garin",
+      "author": "Alexei Tolstoy",
+      "metrics": [
+        {
+          "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+          "actual": 30.93734857338312,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+          "actual": 46.569479965899404,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_narration_sentence_length_chars",
+          "actual": 70.13649145576466,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.share_percent",
+          "actual": 33.31718898385565,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.characters",
+          "actual": 499066,
+          "reference": 495539,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_sentence_length_chars",
+          "actual": 63.294886731391585,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_word_length_chars",
+          "actual": 5.55129934233395,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.words",
+          "actual": 71921,
+          "reference": 69126,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.colon.per_1000_words",
+          "actual": 7.800225247146174,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.comma.per_1000_words",
+          "actual": 125.16511171980368,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.dash.per_1000_words",
+          "actual": 43.964905938460255,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.ellipsis.per_1000_words",
+          "actual": 14.488118908246548,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation.per_1000_words",
+          "actual": 2.739116530637783,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+          "actual": 0.7508238205809151,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.parentheses.per_1000_words",
+          "actual": 2.0578134341847303,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.period.per_1000_words",
+          "actual": 81.65904256058731,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question.per_1000_words",
+          "actual": 7.786321102320602,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_ellipsis.per_1000_words",
+          "actual": 0.6395906619763352,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_exclamation.per_1000_words",
+          "actual": 0,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.quote.per_1000_words",
+          "actual": 12.541538632666398,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.semicolon.per_1000_words",
+          "actual": 0.3476036206393126,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.triple_exclamation.per_1000_words",
+          "actual": 0,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_dictionary",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_nondictionary",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_10000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_100000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_3000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.unique_words",
+          "actual": 20858,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "scriptorium.general.sentences",
+          "actual": 7725,
+          "reference": null,
+          "status": "measured",
+          "kind": "extension"
+        }
+      ],
+      "measured": 24,
+      "unavailable": 5,
+      "source_sha256": "a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513",
+      "blob_sha1": "c1278e87b08b6668073ef732f4841bf96d06cfe0",
+      "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/tolstoy-hyperboloid-garin-wikisource-ru.retained.json",
+      "fantlab_url": "https://fantlab.ru/work44824/lp",
+      "display_title": "Гиперболоид инженера Гарина",
+      "display_author": "Алексей Толстой",
+      "family_id": "tolstoy-hyperboloid-garin",
+      "edition_id": "ru-wikisource-oldid-5014458",
+      "original_language": "ru",
+      "language": "ru",
+      "text_status": "measured",
+      "translator": null,
+      "profiles": {
+        "metrics": "scriptorium-metrics-v4",
+        "normalization": "scriptorium-text-v1",
+        "dialogue": "scriptorium-dialogue-v1",
+        "vocabulary": "scriptorium-vocabulary-v1",
+        "punctuation": "scriptorium-punctuation-v2"
+      }
+    },
+    {
+      "key": "beketova",
+      "candidate_id": "verne-children-captain-grant-beketova-ru",
+      "title": "The Children of Captain Grant (Beketova)",
+      "author": "Jules Verne · Alexandra Beketova",
+      "metrics": [
+        {
+          "id": "fantlab.general.characters",
+          "actual": 1095467,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.words",
+          "actual": 158881,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "scriptorium.general.sentences",
+          "actual": 14568,
+          "reference": null,
+          "status": "measured",
+          "kind": "extension"
+        },
+        {
+          "id": "fantlab.general.mean_word_length_chars",
+          "actual": 5.534330725511547,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_sentence_length_chars",
+          "actual": 73.84287479406919,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.share_percent",
+          "actual": 32.4738652575157,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+          "actual": 26.463343499491693,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.unique_words",
+          "actual": 29084,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.comma.per_1000_words",
+          "actual": 119.31571427672283,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.dash.per_1000_words",
+          "actual": 45.59387214330222,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question.per_1000_words",
+          "actual": 7.036713011625053,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        }
+      ],
+      "measured": 11,
+      "unavailable": 0,
+      "source_sha256": "4931eba535a4ef3989ac905d895258f00db57029e488d98511db50a7ce4d1161",
+      "blob_sha1": "140823b70e9ac28a5fc24b402e75f3e83bf5bb8f",
+      "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json",
+      "fantlab_url": null,
+      "display_title": "Дети капитана Гранта",
+      "display_author": "Жюль Верн",
+      "family_id": "verne-children-captain-grant",
+      "edition_id": "ru-beketova-wikisource-oldid-5304880",
+      "original_language": "fr",
+      "language": "ru",
+      "text_status": "measured",
+      "translator": {
+        "id": "alexandra-a-beketova",
+        "name": "Александра Андреевна Бекетова",
+        "authority_trace": "corpus/candidates/source-edition-traces/verne-children-captain-grant-beketova-ru.json"
+      },
+      "profiles": {
+        "metrics": "scriptorium-metrics-v4",
+        "normalization": "scriptorium-text-v1",
+        "dialogue": "scriptorium-dialogue-v1",
+        "vocabulary": "scriptorium-vocabulary-v1",
+        "punctuation": "scriptorium-punctuation-v2"
+      }
+    },
+    {
+      "language": "ru",
+      "original_title": null,
+      "translator": null,
+      "metrics": [],
+      "measured": 0,
+      "unavailable": 0,
+      "key": "resurrection",
+      "candidate_id": "tolstoy-resurrection-ru",
+      "display_title": "Воскресение",
+      "display_author": "Лев Толстой",
+      "family_id": "tolstoy-resurrection",
+      "edition_id": "ru-wikisource-129-chapters",
+      "original_language": "ru",
+      "text_status": "source_frozen",
+      "reason": "129 ревизий и литературный корпус закреплены, метрики для публичного каталога ещё не сохранены",
+      "trace": "corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json"
+    },
+    {
+      "language": "ru",
+      "original_title": null,
+      "translator": null,
+      "metrics": [],
+      "measured": 0,
+      "unavailable": 0,
+      "key": "road",
+      "candidate_id": "grin-road-nowhere-ru",
+      "display_title": "Дорога в никуда",
+      "display_author": "Александр Грин",
+      "family_id": "grin-road-nowhere",
+      "edition_id": "ru-alternate-transcription",
+      "original_language": "ru",
+      "text_status": "alternate_source_frozen",
+      "reason": "Альтернативная редакция зафиксирована отдельно; первичный индекс неполон, метрическое сравнение пока не готово",
+      "trace": "corpus/candidates/source-edition-traces/grin-road-nowhere-ru.json"
+    },
+    {
+      "language": "ru",
+      "original_title": null,
+      "translator": null,
+      "metrics": [],
+      "measured": 0,
+      "unavailable": 0,
+      "key": "petersburg",
+      "candidate_id": "bely-petersburg-1916-ru",
+      "display_title": "Петербург",
+      "display_author": "Андрей Белый",
+      "family_id": "bely-petersburg",
+      "edition_id": "ru-1916-first-book-scan",
+      "original_language": "ru",
+      "text_status": "scan_identified",
+      "reason": "Факсимиле издания 1916 года определено, литературный OCR-корпус ещё не подтверждён",
+      "trace": "corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.json"
+    },
+    {
+      "language": "ru",
+      "original_title": "On the Origin of Species",
+      "translator": {
+        "id": "sergey-rachinsky",
+        "name": "Сергей Александрович Рачинский",
+        "authority_trace": "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json"
+      },
+      "metrics": [],
+      "measured": 0,
+      "unavailable": 0,
+      "key": "darwin",
+      "candidate_id": "darwin-origin-species-rachinsky-1864-ru",
+      "display_title": "О происхождении видов",
+      "display_author": "Чарльз Дарвин",
+      "family_id": "darwin-origin-of-species",
+      "edition_id": "ru-rachinsky-glazunov-1864",
+      "original_language": "en",
+      "text_status": "extraction_in_progress",
+      "reason": "Перевод Рачинского 1864 года: ревизии известны, полный литературный текст ещё не собран",
+      "trace": "corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json"
     }
-  ]
+  ],
+  "language_modules": {
+    "ru": {
+      "state": "active",
+      "analyzer_profile": "scriptorium-metrics-v4",
+      "measured_work_count": 6
+    },
+    "en": {
+      "state": "planned_not_measured",
+      "measured_work_count": 0,
+      "originals_excluded_from_ru_metrics": true
+    },
+    "fr": {
+      "state": "planned_not_measured",
+      "measured_work_count": 0,
+      "originals_excluded_from_ru_metrics": true
+    }
+  },
+  "comparability": {
+    "ru_same_profile": "diagnostic_descriptive_only",
+    "ru_translation_to_original": "requires separately measured source-language profile",
+    "translator_versions": "distinct edition identities",
+    "m2_parity_admissible": false
+  }
 }

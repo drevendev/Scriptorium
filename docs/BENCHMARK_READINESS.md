@@ -29,8 +29,8 @@ matched texts or matched counting policy, even when numerically equal. Exact
 FantLab analyzer-input identity remains **UNKNOWN**, M2 stays **0/5**, and
 all other metric comparisons are **NOT_RUN** in this view. This is
 **not a global evidence verdict**: the separate
-[field-level metric matrix](BENCHMARK_METRIC_MATRIX.md) already validates 84
-diagnostic/extension rows across three frozen works (70 numeric, 14 without actuals).
+[field-level metric matrix](BENCHMARK_METRIC_MATRIX.md) already validates 113
+diagnostic/extension rows across four frozen works (94 numeric, 19 without actuals).
 None establishes FantLab input identity or parity. No rounding rule
 is inferred for unverified decimal metrics. Reuse the existing
 [benchmark runner](../scriptorium/benchmark.py) and

@@ -101,6 +101,21 @@
       "corpus_admissibility": "not_admissible",
       "compatibility_claim": "inferred",
       "source_text_included": false
+    },
+    {
+      "entry_id": "tolstoy-hyperboloid-retained-reader-v1",
+      "kind": "measured_diagnostic",
+      "slug": "hyperboloid-garin-measured",
+      "title": "Гиперболоид инженера Гарина — 29 измерений",
+      "artifact_paths": [
+        "corpus/candidates/diagnostics/tolstoy-hyperboloid-garin-wikisource-ru.retained.json"
+      ],
+      "artifact_schema": "scriptorium-hyperboloid-retained-ci-v1",
+      "publication_status": "diagnostic",
+      "benchmark_admissibility": "diagnostic_only",
+      "corpus_admissibility": "not_admissible",
+      "compatibility_claim": "inferred",
+      "source_text_included": false
     }
   ]
 }

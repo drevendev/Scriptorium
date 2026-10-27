@@ -1,0 +1,77 @@
+name: Brothers Karamazov measured field diagnostic
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/karamazov-diagnostic.yml"
+      - "scriptorium/karamazov_diagnostic.py"
+      - "scriptorium/karamazov_freeze.py"
+      - "scriptorium/metrics.py"
+      - "scriptorium/text.py"
+      - "scriptorium/dialogue.py"
+      - "scriptorium/vocabulary.py"
+      - "scriptorium/wikisource_replay.py"
+      - "tests/test_karamazov_diagnostic.py"
+      - "corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.revisions.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    name: Replay pinned 1810351-character body without publishing prose
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Test pinned diagnostics and source-free gates
+        run: python -m unittest discover -s tests -p test_karamazov_diagnostic.py -v
+      - name: Measure frozen composite transiently
+        run: |
+          python -m scriptorium.karamazov_diagnostic \
+            --manifest corpus/candidates/source-edition-traces/dostoevsky-brothers-karamazov-ru.revisions.json \
+            --output /tmp/karamazov-derived-fields.json
+      - name: Reject unknown-as-zero, invented reference and any parity upgrade
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("/tmp/karamazov-derived-fields.json").read_text(encoding="utf-8"))
+          rows = {r["metric_id"]: r for r in data["metric_rows"]}
+          assert len(data["metric_rows"]) == len(rows) == 29
+          assert 21 <= sum(row["actual"] is not None for row in rows.values()) <= 24
+          assert rows["fantlab.general.characters"]["actual"] == 1810351
+          assert rows["fantlab.general.characters"]["fantlab_display"] == "1807107"
+          assert rows["fantlab.general.characters"]["actual_minus_fantlab_display"] == 3244
+          assert rows["fantlab.general.words"]["fantlab_display"] == "281507"
+          assert data["body_identity"]["source_segment_count"] == 98
+          assert data["body_identity"]["raw_sha256"] == "26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6"
+          assert data["source_text_committed"] is False
+          assert data["gates"] == {
+              "calibration_size_met": True,
+              "fantlab_source_edition_match": "unknown",
+              "m2_parity_admissible": False,
+              "m2_weight": 0,
+          }
+          assert all(row["fantlab_display"] is None for name, row in rows.items()
+                     if name not in ("fantlab.general.characters", "fantlab.general.words"))
+          assert all(rows[name]["actual"] is None for name in (
+              "fantlab.vocabulary.active_dictionary", "fantlab.vocabulary.active_nondictionary",
+              "fantlab.vocabulary.uasz_3000", "fantlab.vocabulary.uasz_10000",
+              "fantlab.vocabulary.uasz_100000"))
+          print("KARAMAZOV_FIELDS_SOURCE_FREE_PASS=29, two count references, no parity")
+          PY
+      - name: Upload derived JSON only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: karamazov-derived-fields
+          path: /tmp/karamazov-derived-fields.json
+          if-no-files-found: error
+          retention-days: 7

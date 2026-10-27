@@ -153,6 +153,17 @@
                   }
                 ],
                 "items": false
+              },
+              {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 1,
+                "prefixItems": [
+                  {
+                    "const": "corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json"
+                  }
+                ],
+                "items": false
               }
             ]
           }
@@ -279,18 +290,6 @@
                     ]
                   },
                   "properties": {
-                    "entry_id": {
-                      "const": "tolstoy-hyperboloid-retained-reader-v1"
-                    },
-                    "slug": {
-                      "const": "hyperboloid-garin-measured"
-                    },
-                    "title": {
-                      "const": "Гиперболоид инженера Гарина — 29 измерений"
-                    },
-                    "artifact_schema": {
-                      "const": "scriptorium-hyperboloid-retained-ci-v1"
-                    },
                     "publication_status": {
                       "const": "diagnostic"
                     },
@@ -306,7 +305,51 @@
                     "source_text_included": {
                       "const": false
                     }
-                  }
+                  },
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "entry_id": {
+                          "const": "tolstoy-hyperboloid-retained-reader-v1"
+                        },
+                        "slug": {
+                          "const": "hyperboloid-garin-measured"
+                        },
+                        "title": {
+                          "const": "Гиперболоид инженера Гарина — 29 измерений"
+                        },
+                        "artifact_schema": {
+                          "const": "scriptorium-hyperboloid-retained-ci-v1"
+                        },
+                        "artifact_paths": {
+                          "const": [
+                            "corpus/candidates/diagnostics/tolstoy-hyperboloid-garin-wikisource-ru.retained.json"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "entry_id": {
+                          "const": "verne-beketova-retained-reader-v1"
+                        },
+                        "slug": {
+                          "const": "captain-grant-beketova-measured"
+                        },
+                        "title": {
+                          "const": "Дети капитана Гранта — перевод А. А. Бекетовой"
+                        },
+                        "artifact_schema": {
+                          "const": "scriptorium-beketova-measured-reader-v1"
+                        },
+                        "artifact_paths": {
+                          "const": [
+                            "corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json"
+                          ]
+                        }
+                      }
+                    }
+                  ]
                 },
                 "else": {
                   "required": [

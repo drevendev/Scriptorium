@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 from scriptorium.publication import derive_compatibility_claim, validate_compatibility_claim
-from scriptorium import site_frozen_diagnostic, site_work_comparison, site_benchmark_matrix, site_hyperboloid
+from scriptorium import site_frozen_diagnostic, site_work_comparison, site_benchmark_matrix, site_hyperboloid, site_beketova
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -59,7 +59,7 @@ class PublicationManifestContractTests(unittest.TestCase):
             self.assertFalse(entry["source_text_included"])
 
     def test_seed_manifest_matches_canonical_showcase_safety_labels(self):
-        self.assertEqual(len(self.manifest["entries"]), 8)
+        self.assertEqual(len(self.manifest["entries"]), 9)
         benchmarks = [row for row in self.manifest["entries"] if row["kind"] == "benchmark_matrix"]
         self.assertEqual(len(benchmarks), 1)
         site_benchmark_matrix.validate_entry(benchmarks[0])
@@ -73,7 +73,7 @@ class PublicationManifestContractTests(unittest.TestCase):
         self.assertEqual(len(comparison["measurements"]), 10)
         self.assertIs(comparison["scientific_boundary"]["m2_parity_admissible"], False)
         hyperboloid = [row for row in self.manifest["entries"]
-                       if row["kind"] == "measured_diagnostic"]
+                       if row["entry_id"] == site_hyperboloid.EXPECTED_ENTRY["entry_id"]]
         self.assertEqual(len(hyperboloid), 1)
         site_hyperboloid.validate_entry(hyperboloid[0])
         retained = site_hyperboloid.build(ROOT)
@@ -82,6 +82,15 @@ class PublicationManifestContractTests(unittest.TestCase):
         self.assertEqual(len(measured["metric_rows"]), 29)
         self.assertEqual(sum(r["actual"] is not None for r in measured["metric_rows"]), 24)
         self.assertEqual(sum(r["actual"] is None for r in measured["metric_rows"]), 5)
+        beketova = [row for row in self.manifest["entries"]
+                    if row["entry_id"] == site_beketova.EXPECTED_ENTRY["entry_id"]]
+        self.assertEqual(beketova, [site_beketova.EXPECTED_ENTRY])
+        site_beketova.validate_entry(beketova[0])
+        translated = json.loads(site_beketova.build(ROOT)["json"])
+        self.assertEqual(len(translated["metrics"]), 11)
+        self.assertEqual(translated["analysis_language"], "ru")
+        self.assertEqual(translated["original_language"], "fr")
+        self.assertIs(translated["m2_parity_admissible"], False)
         showcases = [row for row in self.manifest["entries"] if row["kind"] == "work_showcase"]
         self.assertEqual(len(showcases), 5)
         for entry in showcases:

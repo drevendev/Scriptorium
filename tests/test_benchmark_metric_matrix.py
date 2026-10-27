@@ -254,7 +254,7 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         readiness = (ROOT / "docs/BENCHMARK_READINESS.md").read_text(encoding="utf-8")
         self.assertIn(f"**{report['retained_metric_rows']} field-level diagnostic/extension rows**", readme)
         self.assertIn("**four works with retained measurements**", readme)
-        self.assertIn("the remaining **one** frozen work", readme)
+        self.assertIn("The remaining **one** frozen work", readme)
         self.assertIn("**independent search/filter controls for both books**", readme)
         self.assertIn("**two independent**", method)
         self.assertIn("the one work without retained diagnostics", method)

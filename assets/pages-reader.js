@@ -344,6 +344,39 @@
     }
     el("paired-graphic").replaceChildren(graph);
   }
+  // An allow-listed measured edition is a UI key, never a network path.
+  // Invalid, missing, pending and duplicate URL pairs resolve to honest defaults.
+  function pairFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const left = params.get("left"), right = params.get("right");
+    return getBook(left) && getBook(right) && left !== right ?
+      [left, right] : ["anna", "karamazov"];
+  }
+  function selectPair(left, right, addHistory=false) {
+    if (!getBook(left) || !getBook(right)) return;
+    leftSelect.value = left;
+    rightSelect.value = right;
+    updatePair();
+    const share = el("share-pair");
+    if (left === right) {
+      share.hidden = true;
+      share.removeAttribute("href");
+      return;
+    }
+    share.hidden = false;
+    share.href = "?left=" + encodeURIComponent(left) +
+                 "&right=" + encodeURIComponent(right) + "#pairs";
+    share.textContent = "Прямая ссылка: «" + getBook(left).display_title +
+                        "» и «" + getBook(right).display_title + "» ↗";
+    if (addHistory) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("left", left);
+      url.searchParams.set("right", right);
+      url.hash = "pairs";
+      window.history.pushState(null, "", url);
+    }
+  }
+
   function exportSelected() {
     const book=getBook(currentBook);
     if (!book) return;
@@ -388,13 +421,20 @@
         });
       }
       one.addEventListener("change",()=>selectBook(one.value,true));
-      window.addEventListener("popstate",()=>selectBook(bookFromUrl()));
+      window.addEventListener("popstate",()=>{
+        selectBook(bookFromUrl());
+        const [left,right] = pairFromUrl();
+        selectPair(left,right);
+      });
       search.addEventListener("input",updateSingle);
       out.addEventListener("click",exportSelected);
-      leftSelect.addEventListener("change",updatePair);
-      rightSelect.addEventListener("change",updatePair);
+      leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
+      rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",updatePair);
-      updateChart(); updatePair(); selectBook(bookFromUrl());
+      updateChart();
+      const [left,right] = pairFromUrl();
+      selectPair(left,right);
+      selectBook(bookFromUrl());
     } catch (_) {
       status.textContent="Интерактивные данные недоступны. Откройте источник через ссылку на карточке книги; никаких выдуманных значений не подставлено.";
       el("pair-status").textContent="Сравнение недоступно без проверенного JSON. Статическая таблица остаётся для чтения.";

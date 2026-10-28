@@ -164,8 +164,23 @@ def render_research_atlas(entries: Sequence[Mapping[str, Any]]) -> str:
             or data["m2_source_matched_pass_count"] != 0
             or data.get("works_reported") != 5
             or data.get("works_with_retained_metric_diagnostics") != 4
-            or data.get("retained_metric_rows") != 113):
+            or data.get("retained_metric_rows") != 142
+            or data.get("supplemental_retained_metric_rows") != 29):
         raise ValueError("changed evidence atlas scientific boundary")
+    supplemental = data.get("supplemental_diagnostics")
+    if (type(supplemental) is not list or len(supplemental) != 1
+            or type(supplemental[0]) is not dict
+            or supplemental[0].get("candidate_id") != "tolstoy-resurrection-ru"
+            or supplemental[0].get("m2_candidate_scope") != "SUPPLEMENTAL_NOT_SOURCE_MATCHED"
+            or supplemental[0].get("exact_fantlab_input_identity") != "UNKNOWN"
+            or supplemental[0].get("metric_evidence") != "RETAINED_DIAGNOSTIC"
+            or supplemental[0].get("metric_rows_with_actual") != 24
+            or supplemental[0].get("metric_rows_without_actual") != 5
+            or type(supplemental[0].get("metric_rows")) is not list
+            or len(supplemental[0]["metric_rows"]) != 29):
+        raise ValueError("changed evidence atlas supplemental scope")
+    if sum(row.get("actual") is not None for row in supplemental[0]["metric_rows"]) != 24:
+        raise ValueError("changed evidence atlas supplemental coverage")
     source_rows = data.get("entries")
     if type(source_rows) is not list or len(source_rows) != 5:
         raise ValueError("incomplete evidence atlas inventory")

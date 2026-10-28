@@ -237,7 +237,8 @@ def build(root: Path) -> dict[str, str]:
             or report["m2_source_matched_pass_count"] != 0
             or report["works_reported"] != 5
             or report["works_with_retained_metric_diagnostics"] != 4
-            or report["retained_metric_rows"] != 113
+            or report["retained_metric_rows"] != 142
+            or report["supplemental_retained_metric_rows"] != 29
             or len(entries) != 5):
         raise ValueError("FantLab evidence publication gate has changed")
 
@@ -281,6 +282,20 @@ def build(root: Path) -> dict[str, str]:
             or {r["metric_id"] for r in karamazov["metric_rows"]}
                != set(_METRIC_PRESENTATION) | {"scriptorium.general.sentences"}):
         raise ValueError("retained Brothers Karamazov diagnostic coverage changed")
+
+    supplemental = report["supplemental_diagnostics"]
+    if (not isinstance(supplemental, list) or len(supplemental) != 1
+            or supplemental[0]["candidate_id"] != "tolstoy-resurrection-ru"
+            or supplemental[0]["source_witness_sha256"] !=
+               "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0"
+            or supplemental[0]["reference_url"] != "https://fantlab.ru/work296603/lp"
+            or supplemental[0]["exact_fantlab_input_identity"] != "UNKNOWN"
+            or supplemental[0]["m2_candidate_scope"] != "SUPPLEMENTAL_NOT_SOURCE_MATCHED"
+            or len(supplemental[0]["metric_rows"]) != 29
+            or supplemental[0]["metric_rows_with_actual"] != 24
+            or supplemental[0]["metric_rows_without_actual"] != 5):
+        raise ValueError("supplemental Resurrection evidence gate changed")
+    resurrection = supplemental[0]
 
     works = []
     for item in entries:
@@ -556,6 +571,71 @@ def build(root: Path) -> dict[str, str]:
         '</tbody></table></div></section>'
     )
 
+    resurrection_rows = []
+    for row in resurrection["metric_rows"]:
+        metric_id, status = row["metric_id"], row["result"]
+        extension = metric_id == "scriptorium.general.sentences"
+        if (row["display_rounding_evidence"] != "UNKNOWN"
+                or row["comparison_kind"] !=
+                   ("EXTENSION_ONLY" if extension else "DIAGNOSTIC_ONLY")
+                or status not in {"UNRESOLVED_SOURCE", "MEASURED_NO_REFERENCE", "NOT_RUN"}
+                or (row["actual"] is None) != (status == "NOT_RUN")):
+            raise ValueError("Resurrection scientific status drift")
+        if extension:
+            label, family, unit = "Sentence count (Scriptorium extension)", "Extension", "sentences"
+        else:
+            label, family = _METRIC_PRESENTATION[metric_id]
+            unit = _VALUE_UNITS[metric_id]
+        if status == "UNRESOLVED_SOURCE":
+            if type(row["expected"]) is not int or type(row["actual_minus_expected"]) is not int:
+                raise ValueError("Resurrection expected integer reference missing")
+        elif row["expected"] is not None or row["actual_minus_expected"] is not None:
+            raise ValueError("Resurrection unknown reference was fabricated")
+        expected = ("N/A (extension)" if extension else
+                    "UNKNOWN" if row["expected"] is None else str(row["expected"]))
+        delta = ("N/A (extension)" if extension else
+                 "UNKNOWN" if row["actual_minus_expected"] is None else
+                 str(row["actual_minus_expected"]))
+        status_label = ("Scriptorium extension; no FantLab counterpart" if extension else
+                        _DISPLAY_STATUS[status])
+        resurrection_rows.append(
+            '<tr class="resurrection-metric-row"><th scope="row"><span class="eyebrow">' +
+            _esc(family) + '</span><br><span lang="ru">' + _esc(label) +
+            '</span><br><code>' + _esc(metric_id) + '</code></th><td>' + _esc(unit) +
+            '</td><td>' + _esc(expected) + '</td><td>' + _number(row["actual"]) +
+            '</td><td>' + _esc(delta) + '</td><td>' +
+            _esc(status_label) + '<br><code>' + _esc(status) + '</code></td></tr>'
+        )
+    resurrection_section = (
+        '<section aria-labelledby="resurrection-title"><h2 id="resurrection-title">'
+        'Resurrection: 29 source-frozen diagnostic fields</h2>'
+        '<p>Leo Tolstoy · <strong>supplemental sixth diagnostic outside the five-work '
+        'M2 readiness set</strong>. 129 pinned Russian-language chapters, '
+        '890,835 characters including spaces; 24 measured and five NOT_RUN. '
+        'Only two dated FantLab reference counts were retained: '
+        'characters (881,244) and words (126,457). '
+        'Scriptorium differs by <strong>+9,591 characters</strong> and '
+        '<strong>+9,672 words</strong> on a source-unmatched transcription. '
+        'The remaining 26 FantLab-shaped reference values are UNKNOWN. '
+        'Sentence count is a Scriptorium-only extension. '
+        'These differences are not evidence of a text-normalization error, '
+        'author style or FantLab parity; input identity and rounding are UNKNOWN. '
+        '<a href="' + _esc(resurrection["reference_url"]) +
+        '" rel="noopener noreferrer">Dated FantLab reference ↗</a>.</p>'
+        '<p id="resurrection-scroll">Scroll on mobile or Tab to the table region '
+        'for keyboard scrolling. The JSON/CSV downloads include all 29 rows.</p>'
+        '<div class="table-wrap" role="region" tabindex="0" '
+        'aria-label="Resurrection source-unmatched diagnostic fields" '
+        'aria-describedby="resurrection-scroll"><table>'
+        '<caption>Resurrection: 29 pinned observations; two displayed reference '
+        'counts; no FantLab source match; M2 0/5</caption>'
+        '<thead><tr><th scope="col">Metric</th><th scope="col">Candidate unit</th>'
+        '<th scope="col">FantLab displayed</th><th scope="col">Scriptorium actual</th>'
+        '<th scope="col">Actual − displayed</th><th scope="col">Scientific status</th>'
+        '</tr></thead><tbody id="resurrection-metric-rows">' +
+        ''.join(resurrection_rows) + '</tbody></table></div></section>'
+    )
+
     shared = _shared_normalized_rows(anna["metric_rows"], wave["metric_rows"])
     # Today there are twenty shared measured per-unit observations. Any
     # changed field availability/semantics requires a reviewed new contract.
@@ -616,7 +696,7 @@ def build(root: Path) -> dict[str, str]:
         'Exact FantLab analyzer-input text identity is UNKNOWN for every work; '
         'decimal display rounding is UNKNOWN. Count resemblance does not prove source '
         'identity. Missing measurements are NOT_RUN, never zero.</p>'
-        '<p class="actions"><a href="#silver-title">Explore Silver Dove’s 29 measured and unknown fields ↓</a> <a href="#karamazov-title">Explore Brothers Karamazov’s 29 fields ↓</a> '
+        '<p class="actions"><a href="#silver-title">Explore Silver Dove’s 29 measured and unknown fields ↓</a> <a href="#karamazov-title">Explore Brothers Karamazov’s 29 fields ↓</a> <a href="#resurrection-title">Explore Resurrection’s 29 fields ↓</a> '
         '<a class="primary-action" href="metrics.json" download>'
         'Download verified JSON</a> <a href="metrics.csv" download>'
         'Download metric CSV</a> <a href="readiness.json" download>'
@@ -698,6 +778,7 @@ def build(root: Path) -> dict[str, str]:
         '</tr></thead><tbody id="wave-metric-rows">' + ''.join(wave_metrics) + '</tbody></table></div></section>'
         + silver_section
         + karamazov_section
+        + resurrection_section
         + shared_section +
         '<p class="notice">No parity passes have been established. Reproduction '
         'requires five legally usable ≥300,000-character works with the actual '

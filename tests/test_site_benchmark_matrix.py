@@ -57,7 +57,7 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("Missing measurements are omitted here, not replaced with zero", content)
         self.assertIn("four dictionary-dependent metrics not run", content)
         self.assertIn("360987</td><td>363819</td><td>2832", content)
-        # Five source-readiness rows plus 142 observed/unknown metrics including the supplemental sixth work.
+        # The page links Hyperboloid’s existing detail table; exported fields include it.
         self.assertEqual(content.count('scope="row"'), 171)
         self.assertEqual(content.count('<span lang="ru">'), 162)
         self.assertIn('<nav id="metric-families" aria-label="Metric families">', content)
@@ -95,8 +95,8 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("Actual value unavailable", content)
         self.assertIn("UNRESOLVED_SOURCE", content)
         self.assertIn("M2: 0/5", content)
-        self.assertIn("Four works have retained metric observations", content)
-        self.assertIn("The remaining one has NOT_RUN metric status", content)
+        self.assertIn("All five works have retained source-unmatched metric observations", content)
+        self.assertIn("Explore Hyperboloid’s 29 fields", content)
         self.assertIn("Frozen:</strong> 1,705,605", content)
         self.assertIn("FantLab displayed:</strong> 1,692,647", content)
         self.assertIn("Δ:</strong> +12,958", content)
@@ -123,6 +123,8 @@ class FantLabEvidencePageTests(unittest.TestCase):
         self.assertIn("10588", published["csv"])
         self.assertIn("9591", published["csv"])
         self.assertIn("9672", published["csv"])
+        self.assertEqual(json.loads(published["json"])["retained_metric_rows"], 171)
+        self.assertIn("tolstoy-hyperboloid-garin-wikisource-ru", published["csv"])
         self.assertEqual(json.loads(published["json"])["supplemental_retained_metric_rows"], 29)
         self.assertIn("MEASURED_NO_REFERENCE", published["json"])
         self.assertIn('href="readiness.json" download', content)

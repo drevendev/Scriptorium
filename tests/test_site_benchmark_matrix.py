@@ -274,10 +274,13 @@ class FantLabEvidencePageTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "publication gate"):
                 page.build(ROOT)
         changed = copy.deepcopy(real)
-        absent = next(e for e in changed["entries"] if e["metric_evidence"] == "NOT_RUN")
-        absent["metric_rows"] = [{"metric_id": "invented"}]
+        hyper = next(e for e in changed["entries"] if e["candidate_id"] == "tolstoy-hyperboloid-garin-wikisource-ru")
+        hyper["metric_evidence"] = "NOT_RUN"
+        hyper["metric_rows"] = []
+        hyper["metric_rows_with_actual"] = 0
+        hyper["metric_rows_without_actual"] = 0
         with patch.object(page.matrix, "build_metric_matrix", return_value=changed):
-            with self.assertRaisesRegex(ValueError, "fabricated rows"):
+            with self.assertRaisesRegex(ValueError, "retained Hyperboloid diagnostic coverage"):
                 page.build(ROOT)
 
     def test_no_unrecognized_metric_or_scientific_status_in_public_html(self):

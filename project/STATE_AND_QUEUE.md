@@ -1,34 +1,37 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 344
+STATE_REVISION: 345
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-28
-LAST_RESULT: PR #342 merged (9060bfc27531e646b3d7c02a170170cf242aca67); PR #343 merged (37ea3e5a5448c6faf910bd57d0edcc6a00bda75f); PR #344 proposes the source-bound supplementary Resurrection benchmark matrix.
-LAST_VERIFIED_PROGRESS: Seven measured Russian editions in master (7/10; 182 fields, 153 numeric and 29 unavailable). Retained FantLab matrix has 113 rows over four of the five source-readiness candidates; #344 proposes 29 independently source-bound Resurrection rows as a supplemental sixth diagnostic, 142 total. Public HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
+LAST_RESULT: PR #344 merged (caf2379d9c0eb2b8b892200536aa5a205c255707); #283 expanded root Reader chart pending later independent acceptance.
+LAST_VERIFIED_PROGRESS: Seven measured Russian editions in master (7/10; 182 fields, 153 numeric and 29 unavailable). Retained FantLab matrix has 113 rows over four of the five source-readiness candidates; #344 merged 29 independently source-bound Resurrection rows as a supplemental sixth diagnostic, 142 total. Public HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-RESURRECTION-RETAINED-MATRIX-019
-ISSUES: #281 (scientific benchmark), #285 (generated Reader evidence)
+UNIT_ID: SCRIP-SITE-012-CHART-COVERAGE-020
+ISSUES: #283 (reader accessibility), #285 (Pages publication)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-PR: #344
-BRANCH: scrip-repro-010-resurrection-matrix
-BASE: 37ea3e5a5448c6faf910bd57d0edcc6a00bda75f
-ACCEPTANCE: Validate checked-in 129-revision Resurrection JSON, source digest, original CI receipt and 29 versioned rows (24 numeric, five NOT_RUN); publish a separate explicitly source-unmatched supplement in JSON/CSV/Markdown and generated Reader evidence. Original five-work readiness/M2 denominator and source identity remain unchanged; M2 0/5. Later exact-head CI and independent acceptance required before merge.
+BRANCH: scrip-site-012-expanded-metric-charts
+BASE: caf2379d9c0eb2b8b892200536aa5a205c255707
+ACCEPTANCE: Eight real source-frozen chart dimensions retain all seven measured books.
+Unmeasured Beketova dialogue/narration lengths are explicitly missing, never zero;
+profile mismatch is rejected before rendering. No change to source snapshots, corpus,
+FantLab parity gates, downloads or scientifically valid comparison scope.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Seven measured Russian works in the live root Reader, supplemented by transparent source-frozen scientific comparisons in the generated Reader; independent browser/HTTP acceptance is still missing.
+Milestone: eight verified Russian chart views; root Pages actual public HTTP/mobile
+acceptance remains VISUAL_NOT_VERIFIED and LIVE_NOT_VERIFIED.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 / PR #344 | Later-run exact-head CI/review acceptance of supplemental Resurrection diagnostic matrix; qualifying merge | Same-wake authoring forbids immediate merge |
-| P2 | #285 public Reader verification | Live branch Pages assets/JSON/CSV, keyboard and mobile proof | Prior HTTP/browser navigation blocked; do not substitute mock screenshots |
-| P3 | #281 strict benchmark references | Source-matched inputs, rounding evidence or new field-level diagnostics; do not count count proximity as parity | FantLab exact input edition UNKNOWN |
-| P4 | Road to Nowhere alternate | Analyze complete frozen Russian edition as independent measurable slice | Primary transcription incomplete; alternate source gate needed |
-| P5 | #282 AOT/pylem N collision | Measured noun-vs-cardinal bounds with pinned pylem and explicit unbound status | Runtime POS distinction not proven |
+| P1 | #283 expanded-chart PR | Later exact-head CI, independent review and qualifying merge | Authorship wake excludes merge |
+| P2 | #285 live verification | Check public branch Pages assets, JSON/CSV, keyboard/mobile | Prior HTTP/browser blocked; do not invent screenshots |
+| P3 | #281 strict FantLab matrix | New field-level diagnostics or source/rounding evidence | Exact FantLab edition UNKNOWN |
+| P4 | Road to Nowhere alternate | Analyze complete frozen Russian edition as an independent slice | Primary transcription incomplete |
+| P5 | #282 pinned AOT/pylem | Quantify noun-vs-cardinal bounds | Native POS ambiguity not established |
 
-M2 stays **0/5**. No source prose is published. Hourly task remains unchanged.
+M2 stays **0/5**. No source prose is published. Existing hourly schedule unchanged.
 
 ## Retained evidence and scientific gates
 

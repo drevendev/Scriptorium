@@ -245,7 +245,7 @@ separates **measured actual** from **NOT_RUN** and **UNRESOLVED_NO_ACTUAL**:
 
 Each family links to its full per-metric table. Coverage is an availability
 inventory, not a parity score; all 23 measured Anna values remain **UNRESOLVED_SOURCE**,
-all five source-readiness works have retained diagnostics, and M2 remains 0/5.
+all five source-readiness works with retained diagnostics are still source-unmatched, and M2 remains 0/5.
 The export field names, reference editions and parity gates are unchanged;
 the new Silver Dove measurements are versioned, not source-matched.
 Malformed coverage totals fail closed rather than silently displaying a false

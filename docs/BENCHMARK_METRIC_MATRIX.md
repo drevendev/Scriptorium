@@ -38,8 +38,13 @@ no source prose. CSV emits one row per retained metric, plus a clearly labelled
   (24 numeric, five dictionary-dependent NOT_RUN) for 98 pinned revisions:
   1,810,351 characters / 292,095 words. FantLab displays 1,807,107 / 281,507;
   +3,244 / +10,588 differences are unmatched-source diagnostics, not parity.
-- **The Hyperboloid of Engineer Garin** alone remains without a retained
-  field-by-field run within the five-work readiness matrix (NOT_RUN).
+- **The Hyperboloid of Engineer Garin** joins the five-work diagnostic
+  matrix with its already reviewed 29-row source-free CI receipt (24 measured,
+  five dictionary-dependent NOT_RUN). The dated FantLab references retained
+  for the 499,066-character pinned public body are **only** the displayed
+  495,539 characters and 69,126 words, giving unmatched-source differences
+  +3,527 characters and +2,795 words. All other references are UNKNOWN.
+  The generated Reader already exposes a separate exact-value full-work route.
 - **Resurrection** is a sixth, **supplemental** source-unmatched diagnostic,
   *not* another member of the five-work M2 readiness set. The 129-revision
   Russian text has 890,835 characters (including spaces) and 29 retained
@@ -93,9 +98,9 @@ integer/Decimal arithmetic; four unbound dictionary actuals stay NOT_RUN.
 No original diagnostic is rewritten and no FantLab floating rounding tolerance
 is inferred. Anna and Running on Waves still contribute exactly 55 recorded
 fields, 46 numeric observations and nine missing actuals; the new Silver Dove
-receipt adds 29 rows (24 numeric and five missing). The five-work core matrix
-has **113 rows** across four works; the one work without retained diagnostics
-remains **NOT_RUN**. The readiness files continue to
+receipt adds 29 rows (24 numeric and five missing). The five-work core matrix now has **142 rows** across five works. The
+originally retained 113 rows were not recalculated; the Hyperboloid adds
+29 separately pinned measurements without promoting source identity or parity. The readiness files continue to
 document **character-count/source readiness** separately.
 
 The Reader keeps its accessible, progressive **28-row Anna explorer** and
@@ -175,9 +180,9 @@ the Anna Karenina diagnostic with 28 rows (23 numeric actuals and five
 unavailable) and a searchable Running on Waves table with 27 rows (23 numeric
 actuals and four NOT_RUN), plus a static accessible Silver Dove table of 29
 fields (24 numeric and five NOT_RUN), plus a static accessible Brothers
-Karamazov table of 29 fields (24 numeric and five NOT_RUN). Only Hyperboloid
-remains `NOT_RUN`. The same validated machine-readable `metrics.json` and
-`metrics.csv` exports include all 142 rows (113 core + 29 supplemental Resurrection), retaining unknown FantLab references.
+Karamazov table of 29 fields (24 numeric and five NOT_RUN). Hyperboloid’s 29 rows are available through the existing linked full-work
+route. The validated machine-readable `metrics.json` and `metrics.csv`
+exports now include all 171 rows (142 core + 29 supplemental Resurrection), retaining unknown FantLab references.
 
 The route is explicitly registered in the publication allow-list and refuses
 contradictory source/reference hashes, invented metric values, forged parity status,
@@ -239,8 +244,8 @@ separates **measured actual** from **NOT_RUN** and **UNRESOLVED_NO_ACTUAL**:
 | Vocabulary | 1 | 2 | 3 | 6 |
 
 Each family links to its full per-metric table. Coverage is an availability
-inventory, not a parity score; all 23 measured values remain **UNRESOLVED_SOURCE**,
-the one work without retained diagnostics remains **NOT_RUN**, and M2 remains 0/5.
+inventory, not a parity score; all 23 measured Anna values remain **UNRESOLVED_SOURCE**,
+all five source-readiness works with retained diagnostics are still source-unmatched, and M2 remains 0/5.
 The export field names, reference editions and parity gates are unchanged;
 the new Silver Dove measurements are versioned, not source-matched.
 Malformed coverage totals fail closed rather than silently displaying a false
@@ -273,7 +278,7 @@ full filtered tables remain visible; printing restores their 55 rows after
 filtering, while the Silver Dove and Brothers Karamazov tables show all 29 fields each.
 No search text is sent off-device, stored or submitted.
 
-Filtering changes **only on-screen visibility**. There are **all 142 rows in exports**:
+Filtering changes **only on-screen visibility**. There are **all 171 rows in exports**:
 55 in the two independently filtered work tables and 58 in the static Silver
 Dove and Brothers Karamazov tables. The five-work source witness inventory and readiness files are
 unchanged; the metrics JSON/CSV gain the reviewed new measurements.
@@ -321,3 +326,21 @@ records, writes them atomically with the site, and records their SHA-256
 digests in \`build.json\`. Build and packaging tests assert deterministic
 output and correct scientific boundaries. This is no new full-text run
 and is not a deployed or visually verified Pages release.
+
+## Pinned Hyperboloid matrix integration (2026-10-28)
+
+The source-free Hyperboloid receipt already powers the dedicated generated
+Reader route. The five-work matrix now validates that identical
+Git-blob-pinned record, its successful CI run `40469834658` at head
+`1b6f3867e407806102d4acd8758c5b2df4c89229`, original derived
+JSON/ZIP SHA-256 receipts, source revision `5014458`, frozen
+499,066-character literary-body SHA-256 and independent readiness witness.
+Exactly 29 sorted metric IDs, 24 measured values, five dictionary-unbound
+`NOT_RUN`, two displayed integer reference counts, candidate-versus-extension
+classification and zero M2 contribution are verified before JSON/CSV/Markdown
+or the evidence page is generated. The evidence page links to its existing
+29-row full-work table instead of duplicating a competing display.
+
+These observations are **existing measured results, not a new text analysis**.
+FantLab's input edition remains UNKNOWN, reference rounding is unproven
+and M2 remains **0/5**. No source prose is stored or published.

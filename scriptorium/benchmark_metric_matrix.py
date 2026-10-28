@@ -18,7 +18,7 @@ import re
 
 from .benchmark import _MISSING, _lookup, _reference_specs
 from .benchmark_readiness import build_readiness, _load
-from . import full_work_gallery, running_waves_diagnostic, silver_dove_retained, karamazov_retained, resurrection_retained
+from . import full_work_gallery, running_waves_diagnostic, silver_dove_retained, karamazov_retained, resurrection_retained, hyperboloid_diagnostic
 from .csv_safety import safe_csv_text
 
 SCHEMA_VERSION = "scriptorium-fantlab-retained-metrics-v1"
@@ -27,6 +27,12 @@ DIAGNOSTIC = "benchmarks/fantlab/work270306-wikisource-diagnostic.json"
 _ANNA_ID = "tolstoy-anna-karenina-ru"
 _RUNNING_ID = "grin-running-on-waves-ru"
 _RUNNING_DIAGNOSTIC = "corpus/candidates/diagnostics/grin-running-on-waves-ru.json"
+_HYPER_ID = "tolstoy-hyperboloid-garin-wikisource-ru"
+_HYPER_ARTIFACT = "corpus/candidates/diagnostics/tolstoy-hyperboloid-garin-wikisource-ru.retained.json"
+_HYPER_GIT_BLOB_SHA1 = "c1278e87b08b6668073ef732f4841bf96d06cfe0"
+_HYPER_CI_HEAD = "1b6f3867e407806102d4acd8758c5b2df4c89229"
+_HYPER_CI_JSON_SHA256 = "95245fd09caea8b9150a6e7c1215c6f3c52fbaa54aa83d898a81a247192cf56d"
+_HYPER_CI_ZIP_SHA256 = "4b5eca834a343cbe2c8bfa167942972ad652a1b64c25a97430a17dcf07ec698c"
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
 
 
@@ -225,6 +231,115 @@ def _verify_running_metrics(root: Path, witness: dict[str, object]) -> list[dict
     return rows
 
 
+
+def _verify_hyperboloid_metrics(root: Path, witness: dict[str, object]) -> list[dict[str, object]]:
+    """Reuse pinned Hyperboloid CI results as diagnostics, not parity evidence."""
+    path = root
+    for part in Path(_HYPER_ARTIFACT).parts:
+        path = path / part
+        if path.is_symlink():
+            raise ValueError("unsafe Hyperboloid retained evidence symlink")
+    raw = path.read_bytes()
+    digest = sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
+    if not 0 < len(raw) < 100_000 or digest != _HYPER_GIT_BLOB_SHA1:
+        raise ValueError("Hyperboloid retained CI evidence blob drift")
+    record = _load(root, _HYPER_ARTIFACT)
+    header = {
+        "schema_version": "scriptorium-hyperboloid-retained-ci-v1",
+        "candidate_id": _HYPER_ID,
+        "source_text_committed": False,
+        "ci_run_id": 40469834658,
+        "ci_head": _HYPER_CI_HEAD,
+        "original_ci_artifact_json_sha256": _HYPER_CI_JSON_SHA256,
+        "original_ci_archive_sha256": _HYPER_CI_ZIP_SHA256,
+        "source_revision_id": 5014458,
+        "source_body_characters": hyperboloid_diagnostic.FROZEN_BODY_CHARACTERS,
+        "source_body_sha256": hyperboloid_diagnostic.FROZEN_BODY_SHA256,
+        "source_input_identity_with_fantlab": "unknown",
+        "m2_parity_admissible": False,
+        "schema_profile": "scriptorium-deterministic-metrics-v4",
+    }
+    if set(record) != set(header) | {"metric_rows"}:
+        raise ValueError("Hyperboloid retained CI evidence shape drift")
+    for key, expected in header.items():
+        _same(record[key], expected, "Hyperboloid " + key)
+
+    traces = "corpus/candidates/source-edition-traces/" + _HYPER_ID
+    hyperboloid_diagnostic._validate_pins(
+        _load(root, traces + ".revision.json"),
+        _load(root, traces + ".body.json"),
+    )
+    _same(witness["candidate_id"], _HYPER_ID, "Hyperboloid readiness identity")
+    _same(witness["source"]["characters_including_spaces"],
+          record["source_body_characters"], "Hyperboloid frozen count")
+    _same(witness["source"]["raw_sha256"],
+          record["source_body_sha256"], "Hyperboloid raw source SHA")
+    _same(witness["source"]["normalized_sha256"],
+          record["source_body_sha256"], "Hyperboloid normalized source SHA")
+    _same(witness["fantlab"]["reference_url"],
+          hyperboloid_diagnostic.FANTLAB_URL, "Hyperboloid FantLab URL")
+    _same(witness["fantlab"]["analysis_date"],
+          hyperboloid_diagnostic.FANTLAB_DATE, "Hyperboloid FantLab date")
+    _same(witness["exact_fantlab_input_identity"], "UNKNOWN",
+          "Hyperboloid input identity")
+    _same(witness["parity_eligible"], False, "Hyperboloid M2 gate")
+
+    records = record["metric_rows"]
+    expected_ids = {metric_id for metric_id, *_ in _reference_specs()} | {
+        "scriptorium.general.sentences"
+    }
+    if (type(records) is not list or len(records) != 29
+            or any(type(row) is not dict for row in records)
+            or [row.get("id") for row in records] != sorted(expected_ids)):
+        raise ValueError("Hyperboloid retained metric ID inventory drift")
+    rows = []
+    for item in records:
+        if set(item) != {"id", "actual", "reference", "status", "kind"}:
+            raise ValueError("Hyperboloid retained metric row shape drift")
+        metric_id = item["id"]
+        extension = metric_id == "scriptorium.general.sentences"
+        _same(item["kind"], "extension" if extension else "candidate",
+              "Hyperboloid metric classification")
+        reference = hyperboloid_diagnostic.FANTLAB_REFERENCES.get(metric_id)
+        _same(item["reference"], int(reference) if reference is not None else None,
+              "Hyperboloid displayed reference")
+        actual = item["actual"]
+        if metric_id in hyperboloid_diagnostic._UNBOUND:
+            _same((actual, item["status"]), (None, "not_run"),
+                  "Hyperboloid dictionary dependency")
+            state = "NOT_RUN"
+        else:
+            if item["status"] != "measured" or type(actual) not in (int, float):
+                raise ValueError("Hyperboloid missing or fabricated measurement")
+            _number(actual, "Hyperboloid " + metric_id)
+            if actual < 0:
+                raise ValueError("Hyperboloid negative metric actual")
+            if metric_id in {"fantlab.general.characters",
+                             "fantlab.general.words",
+                             "scriptorium.general.sentences"} and type(actual) is not int:
+                raise ValueError("Hyperboloid integer metric changed")
+            state = "UNRESOLVED_SOURCE" if reference is not None else "MEASURED_NO_REFERENCE"
+        expected = int(reference) if reference is not None else None
+        delta = actual - expected if expected is not None else None
+        rows.append({
+            "metric_id": metric_id,
+            "expected": expected,
+            "actual": actual,
+            "actual_minus_expected": delta,
+            "result": state,
+            "comparison_kind": "EXTENSION_ONLY" if extension else "DIAGNOSTIC_ONLY",
+            "display_rounding_evidence": "UNKNOWN",
+        })
+    if (sum(row["actual"] is not None for row in rows) != 24
+            or sum(row["actual"] is None for row in rows) != 5
+            or sum(row["expected"] is not None for row in rows) != 2):
+        raise ValueError("Hyperboloid retained measurement coverage drift")
+    values = {row["metric_id"]: row["actual"] for row in rows}
+    _same(values["fantlab.general.characters"], 499066, "Hyperboloid character count")
+    _same(values["fantlab.general.words"], 71921, "Hyperboloid word count")
+    return rows
+
+
 def build_metric_matrix(root: Path) -> dict[str, object]:
     """Join independently frozen corpus witnesses and retained metric observations.
 
@@ -279,6 +394,8 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
     silver_observed = silver_dove_retained.verify(root, silver_witness)
     karamazov_witness = next(e for e in entries if e['candidate_id'] == karamazov_retained.CANDIDATE_ID)
     karamazov_observed = karamazov_retained.verify(root, karamazov_witness)
+    hyperboloid_witness = next(e for e in entries if e["candidate_id"] == _HYPER_ID)
+    hyperboloid_observed = _verify_hyperboloid_metrics(root, hyperboloid_witness)
     resurrection_observed = resurrection_retained.verify(root)
     output_entries: list[dict[str, object]] = []
     for source in entries:
@@ -286,8 +403,10 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
         is_wave = source["candidate_id"] == _RUNNING_ID
         is_silver = source["candidate_id"] == silver_dove_retained.CANDIDATE_ID
         is_karamazov = source["candidate_id"] == karamazov_retained.CANDIDATE_ID
+        is_hyperboloid = source["candidate_id"] == _HYPER_ID
         rows = (observed if is_anna else wave_observed if is_wave else
-                silver_observed if is_silver else karamazov_observed if is_karamazov else [])
+                silver_observed if is_silver else karamazov_observed if is_karamazov else
+                hyperboloid_observed if is_hyperboloid else [])
         output_entries.append({
             "candidate_id": source["candidate_id"],
             "title": source["title"],
@@ -302,7 +421,8 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
             "metric_rows_without_actual": sum(r["actual"] is None for r in rows),
             "retained_analyzer_revision": (revision if is_anna else
                                            silver_dove_retained.REPLAY_HEAD_SHA if is_silver else
-                                           karamazov_retained.REPLAY_HEAD_SHA if is_karamazov else None),
+                                           karamazov_retained.REPLAY_HEAD_SHA if is_karamazov else
+                                           _HYPER_CI_HEAD if is_hyperboloid else None),
         })
     # The five independently validated readiness candidates and their M2
     # denominator remain unchanged. Resurrection is a sixth, supplemental
@@ -328,11 +448,11 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
         "schema_version": SCHEMA_VERSION,
         "source_readiness_schema": readiness["schema_version"],
         "works_reported": 5,
-        "works_with_retained_metric_diagnostics": 4,
-        "retained_metric_rows": len(observed) + len(wave_observed) + len(silver_observed) + len(karamazov_observed) + len(resurrection_observed),
+        "works_with_retained_metric_diagnostics": 5,
+        "retained_metric_rows": len(observed) + len(wave_observed) + len(silver_observed) + len(karamazov_observed) + len(hyperboloid_observed) + len(resurrection_observed),
         "supplemental_retained_metric_rows": len(resurrection_observed),
         "m2_source_matched_pass_count": 0,
-        "note": "Five core works retain the unchanged source-readiness/M2 denominator; Resurrection is supplemental source-unmatched evidence. One core work has no field run. Silver Dove, Brothers Karamazov and Resurrection each have only two retained FantLab reference counts. None establishes input identity or decimal rounding.",
+        "note": "Five core works retain the unchanged source-readiness/M2 denominator; Resurrection is supplemental source-unmatched evidence. All five core works have retained diagnostic field runs. Hyperboloid, Silver Dove, Brothers Karamazov and supplemental Resurrection each have only two retained FantLab reference counts. None establishes input identity or decimal rounding.",
         "entries": output_entries,
         "supplemental_diagnostics": supplemental,
     }
@@ -393,7 +513,7 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
                 f"| {row['metric_id']} | {fmt(row['expected'])} | {fmt(row['actual'])} | "
                 f"{fmt(row['actual_minus_expected'])} | {row['result']} |"
             )
-    lines.extend(["", "Among the five readiness works, one lacks field observations. Silver Dove, Brothers Karamazov and supplemental Resurrection each have only two displayed FantLab references; missing reference values are unknown, not zero. M2 remains 0/5.", ""])
+    lines.extend(["", "All five readiness works now have retained, source-unmatched field observations. Hyperboloid, Silver Dove, Brothers Karamazov and supplemental Resurrection each have only two displayed FantLab references; missing reference values are unknown, not zero. M2 remains 0/5.", ""])
     return "\n".join(lines)
 
 

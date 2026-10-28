@@ -143,7 +143,7 @@ _ATLAS_BOOKS = (
     ("grin-running-on-waves-ru", "waves-metrics-title", 27, 23),
     ("bely-silver-dove-ru", "silver-title", 29, 24),
     ("dostoevsky-brothers-karamazov-ru", "karamazov-title", 29, 24),
-    ("tolstoy-hyperboloid-garin-wikisource-ru", "works-title", 0, 0),
+    ("tolstoy-hyperboloid-garin-wikisource-ru", "works-title", 29, 24),
 )
 
 
@@ -163,8 +163,8 @@ def render_research_atlas(entries: Sequence[Mapping[str, Any]]) -> str:
             or type(data.get("m2_source_matched_pass_count")) is not int
             or data["m2_source_matched_pass_count"] != 0
             or data.get("works_reported") != 5
-            or data.get("works_with_retained_metric_diagnostics") != 4
-            or data.get("retained_metric_rows") != 142
+            or data.get("works_with_retained_metric_diagnostics") != 5
+            or data.get("retained_metric_rows") != 171
             or data.get("supplemental_retained_metric_rows") != 29):
         raise ValueError("changed evidence atlas scientific boundary")
     supplemental = data.get("supplemental_diagnostics")
@@ -213,9 +213,7 @@ def render_research_atlas(entries: Sequence[Mapping[str, Any]]) -> str:
         total_missing += missing
         progress = f'<span class="atlas-bar" aria-hidden="true"><span style="width:{observed / expected * 100:.2f}%"></span></span>' if expected else ""
         separate_report = bool(separate) and identity == "tolstoy-hyperboloid-garin-wikisource-ru"
-        count = (f"{observed} of {expected} matrix measurements available" if expected
-                 else "24 measurements in separate Reader report; not in matrix"
-                 if separate_report else "Not yet retained in Reader")
+        count = f"{observed} of {expected} matrix measurements available"
         target_href = ("works/hyperboloid-garin-measured/" if separate_report
                        else f"evidence/fantlab/#{anchor}")
         link_label = ("Open 29-row report" if separate_report else
@@ -229,22 +227,22 @@ def render_research_atlas(entries: Sequence[Mapping[str, Any]]) -> str:
             + link_label
             + ' <span aria-hidden="true">↗</span></a></li>'
         )
-    if (total_measured, total_missing) != (94, 19):
+    if (total_measured, total_missing) != (118, 24):
         raise ValueError("evidence atlas summary no longer matches verified rows")
     return (
         '<section class="atlas" id="research-atlas" aria-labelledby="atlas-title">'
         '<div class="atlas-heading"><div>'
         '<p class="atlas-kicker">THE READING ROOM · VERIFIED DIAGNOSTIC DATA</p>'
-        '<h2 id="atlas-title">Four books under the lens.</h2>'
+        '<h2 id="atlas-title">Five books under the lens.</h2>'
         '<p>Explore measured vocabulary, sentence rhythm, dialogue and punctuation '
         'without downloading a manuscript. All values come from the retained evidence matrix.</p>'
         '</div><div class="atlas-boundary"><strong>M2 · 0 / 5</strong>'
         '<span>Source-matched FantLab reproduction is not yet established.</span></div></div>'
         '<div class="atlas-numbers" aria-label="Retained measurement coverage">'
-        '<p><strong>4 / 5</strong><span>works with observations</span></p>'
-        '<p><strong>113</strong><span>recorded metric fields</span></p>'
-        '<p><strong>94</strong><span>numeric measurements</span></p>'
-        '<p><strong>19</strong><span>unavailable, never zero-filled</span></p></div>'
+        '<p><strong>5 / 5</strong><span>works with observations</span></p>'
+        '<p><strong>142</strong><span>recorded metric fields</span></p>'
+        '<p><strong>118</strong><span>numeric measurements</span></p>'
+        '<p><strong>24</strong><span>unavailable, never zero-filled</span></p></div>'
         '<ol class="atlas-books">' + ''.join(cards) + '</ol>'
         '<div class="atlas-foot"><p><strong>Proved:</strong> reproducible, source-frozen '
         'Scriptorium diagnostics. <strong>Not proved:</strong> the same text, dictionary '

@@ -215,15 +215,15 @@ class HomeShowcaseTests(unittest.TestCase):
         self.assertIn("build/site/index.html", readme)
 
 
-    def test_atlas_uses_four_retained_book_diagnostics_not_fake_parity(self):
+    def test_atlas_uses_five_retained_book_diagnostics_not_fake_parity(self):
         entry = benchmark_entry()
         rendered = render_research_atlas([entry])
         self.assertIn('id="research-atlas"', rendered)
-        self.assertIn('113', rendered)
-        self.assertIn('94', rendered)
-        self.assertIn('19', rendered)
+        self.assertIn('142', rendered)
+        self.assertIn('118', rendered)
+        self.assertIn('24', rendered)
         self.assertIn('M2 · 0 / 5', rendered)
-        self.assertIn('Not yet retained in Reader', rendered)
+        self.assertNotIn('Not yet retained in Reader', rendered)
         self.assertEqual(rendered.count('<li class="atlas-book'), 5)
         parsed = RecordedHTML(rendered)
         for anchor in ('metrics-title', 'waves-metrics-title', 'silver-title',
@@ -239,11 +239,11 @@ class HomeShowcaseTests(unittest.TestCase):
         distinct = {"render_mode": "hyperboloid_diagnostic",
                     "slug": "hyperboloid-garin-measured"}
         output = render_research_atlas([entry, distinct])
-        self.assertIn("24 measurements in separate Reader report; not in matrix", output)
+        self.assertIn("24 of 29 matrix measurements available", output)
         self.assertIn('href="works/hyperboloid-garin-measured/"', output)
         self.assertNotIn("Not yet retained in Reader", output)
         self.assertIn('M2 · 0 / 5', output)
-        self.assertIn('113', output)
+        self.assertIn('142', output)
         with self.assertRaisesRegex(ValueError, "separate Hyperboloid"):
             render_research_atlas([entry, distinct, distinct])
         with self.assertRaisesRegex(ValueError, "separate Hyperboloid"):

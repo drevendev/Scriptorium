@@ -33,9 +33,9 @@ matched texts or matched counting policy, even when numerically equal. Exact
 FantLab analyzer-input identity remains **UNKNOWN**, M2 stays **0/5**, and
 all other metric comparisons are **NOT_RUN** in this view. This is
 **not a global evidence verdict**: the separate
-[field-level metric matrix](BENCHMARK_METRIC_MATRIX.md) already validates 142
-diagnostic/extension rows: 113 from four of the original five frozen readiness
-works (94 numeric, 19 without actuals), plus 29 independently retained
+[field-level metric matrix](BENCHMARK_METRIC_MATRIX.md) already validates 171
+diagnostic/extension rows: 142 from all five frozen readiness
+works (118 numeric, 24 without actuals), plus 29 independently retained
 Resurrection observations (24 numeric, five NOT_RUN), recorded separately
 as a sixth **supplementary source-unmatched diagnostic**. The M2 readiness
 denominator stays five works, with 0/5 source-matched passes.

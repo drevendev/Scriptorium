@@ -122,7 +122,7 @@ def render_stage(entries: Sequence[Mapping[str, Any]]) -> str:
         '<p class="stage-disclaimer"><strong>Coverage is not parity.</strong> '
         'A measured value is only a Scriptorium observation. '
         'FantLab input editions and displayed rounding remain UNKNOWN; missing values are never zero. '
-        'One core source may be frozen without field measurements; the separately pinned Resurrection evidence adds 29 more rows (24 numeric, five NOT_RUN) in the full report, outside this five-work core overview.</p>'
+        'All five core works have retained measurements, although no FantLab source input is matched; the separately pinned Resurrection evidence adds 29 more rows (24 numeric, five NOT_RUN) in the full report, outside this five-work core overview.</p>'
         '<div class="stage-table-scroll" tabindex="0" role="region" '
         'aria-label="Per-work measurement availability" aria-describedby="stage-table-hint">'
         '<table><caption>Recorded fields in frozen works — source identity unverified</caption>'

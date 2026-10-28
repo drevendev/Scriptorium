@@ -19,8 +19,8 @@ const elements={"chart-series":node("div"),"chart-unit":node("p"),"chart-table-r
 const document={createElement:node,createDocumentFragment:()=>node("fragment")};
 const insertText=(parent,tag,v,cls)=>{const n=node(tag);n.textContent=v;if(cls)n.className=cls;parent.appendChild(n);return n;};
 const buttons=ids.map(id=>({dataset:{chart:id},attrs:{},setAttribute(k,v){this.attrs[k]=v;}}));
-const action=new Function("data","metrics","currentChart","lookup","isNumeric","document","el","insertText","pretty","chartButtons",source.slice(start,end)+"return updateChart();");
-const render=(id,data=catalog)=>action(data,metrics,id,(book,key)=>book.metrics.find(row=>row.id===key),n=>typeof n==="number"&&Number.isFinite(n),document,key=>elements[key],insertText,(n,p)=>new Intl.NumberFormat("ru-RU",{maximumFractionDigits:p}).format(n),buttons);
+const action=new Function("data","metrics","currentChart","lookup","isNumeric","document","el","insertText","pretty","chartButtons","exact",source.slice(start,end)+"return updateChart();");
+const render=(id,data=catalog)=>action(data,metrics,id,(book,key)=>book.metrics.find(row=>row.id===key),n=>typeof n==="number"&&Number.isFinite(n),document,key=>elements[key],insertText,(n,p)=>new Intl.NumberFormat("ru-RU",{maximumFractionDigits:p}).format(n),buttons,n=>n===null?"UNKNOWN":String(n));
 for(const id of ids){
   render(id);
   const rows=elements["chart-series"].children;

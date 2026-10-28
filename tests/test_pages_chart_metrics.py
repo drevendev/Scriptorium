@@ -42,7 +42,8 @@ class ExpandedChartTests(unittest.TestCase):
         self.assertIn('id="chart-table-rows"', html)
         self.assertIn('id="chart-table-caption"', html)
         self.assertIn('aria-label="Таблица чисел выбранной диаграммы"', html)
-        self.assertEqual(html.count('<tr><th scope="row">'), 7)
+        chart_rows = html.split('<tbody id="chart-table-rows">', 1)[1].split('</tbody>', 1)[0]
+        self.assertEqual(chart_rows.count('<tr><th scope="row">'), 7)
         self.assertIn("«Нет данных»", html)
 
     def test_measured_coverage_and_profile_identity(self):

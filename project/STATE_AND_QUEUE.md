@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 342
+STATE_REVISION: 343
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-28
-LAST_RESULT: PR #340 merged at a35f8e3d636d8f4f503b232d7a0938462adc9b57. Authored the exact-revision Resurrection field diagnostic and source-free CI output; later CI acceptance/merge pending.
-LAST_VERIFIED_PROGRESS: Six measured Russian editions, 129 numeric and 24 unavailable observations. Book/pair links and JSON/CSV pair exports merged; external Pages HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
+LAST_RESULT: PR #341 merged at 3fd36fce873310192d2c233b682e789dc3372f76; authored seventh measured Reader entry pending later acceptance.
+LAST_VERIFIED_PROGRESS: Six measured Russian works in master; proposed seventh adds 24 numeric/five NOT_RUN fields, total 7/10, 153 numeric and 29 unavailable. Public HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-RESURRECTION-FIELDS-017
-ISSUES: #281 (strict diagnostic/readiness matrix and retained metric evidence)
+UNIT_ID: SCRIP-SITE-013-RESURRECTION-ROOT-READER-018
+ISSUES: #285 (Reader), #281 (source-free measured diagnostics)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-resurrection-measured-fields
-BASE: a35f8e3d636d8f4f503b232d7a0938462adc9b57
-ACCEPTANCE: Verify 129 pinned Resurrection revisions and exact immutable source identity before deriving 29 versioned metric rows, including two FantLab public count deltas and explicit NOT_RUN dictionary fields. Persist source-free create-only receipt and separate diagnostic through CI. Source identity remains UNKNOWN, M2 0/5. New PR requires later fresh exact-head CI acceptance and qualifying merge.
+BRANCH: scrip-site-013-resurrection-measured-reader
+BASE: 3fd36fce873310192d2c233b682e789dc3372f76
+ACCEPTANCE: Retain CI-measured 129-revision Resurrection report, SHA, 29 versioned rows (24 numeric / 5 NOT_RUN). Show seven measured Russian works (182 rows, 153 numeric, 29 unavailable), chart, permalink, comparisons and source-free JSON/CSV. Three works remain pending. FantLab source identity UNKNOWN; M2 0/5.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: source-verifiable Russian work comparisons and a publicly verified Reader.
+Milestone: seven measured Russian works with independent HTTP/keyboard/mobile Reader acceptance.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Resurrection measured diagnostic | Later exact-head CI acceptance/merge; retain verified 29-row source-free receipt | This run authored the PR; external Wikisource replay may return 503 |
-| P2 | #285 public root verification | HTTP assets/export and keyboard/mobile browser acceptance | Previous HTTP/DNS denied; independent code continues |
-| P3 | #281 strict benchmark matrix | Incorporate verified Resurrection fields without assuming FantLab source match | Requires successful pinned 129-revision replay |
-| P4 | Road to Nowhere alternate | Analyze a complete separately frozen edition | Not the incomplete original |
-| P5 | #281 broader field diagnostics | Extend source-bound measured deltas and honest units | FantLab analyzer-input identity unknown |
+| P1 | #285 Resurrection root Reader | Later exact-head CI acceptance and qualifying merge | Current run authored work, no same-wake merge |
+| P2 | #285 Pages live verification | HTTP assets/JSON/CSV and keyboard/mobile browser proof | Prior HTTP/DNS unavailable |
+| P3 | #281 strict benchmark matrix | Resurrection diagnostic as explicitly source-unmatched | FantLab exact input edition UNKNOWN |
+| P4 | Road to Nowhere alternate | Analyze complete frozen Russian edition | Primary transcription incomplete |
+| P5 | #281 field diagnostics | Expand evidence-bound numeric diagnostics | Unpublished FantLab coefficients/inputs unknown |
 
-M2 remains **0/5**. Exports are diagnostic, not new corpus admissions, parity, licensing or proof of live publication. The same hourly job remains unchanged.
+M2 stays **0/5**. No source prose is published. Hourly task remains unchanged.
 
 ## Retained evidence and scientific gates
 

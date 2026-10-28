@@ -24,13 +24,13 @@ class AnchorReader(HTMLParser):
 
 
 class PagesEditionPermalinkTests(unittest.TestCase):
-    def test_six_work_cards_have_source_fallback_and_one_share_link(self):
+    def test_seven_work_cards_have_source_fallback_and_one_share_link(self):
         catalog = json.loads((ROOT / "assets/evidence-snapshot.json").read_text(encoding="utf-8"))
         measured = {b["key"] for b in catalog["books"] if b["text_status"] == "measured"}
         html = (ROOT / "index.html").read_text(encoding="utf-8")
         links = AnchorReader(html).links
         cards = [a for a in links if "data-book" in a]
-        self.assertEqual(len(cards), 6)
+        self.assertEqual(len(cards), 7)
         self.assertEqual({a["data-book"] for a in cards}, measured)
         for a in cards:
             self.assertTrue(a["href"].startswith(

@@ -50,18 +50,18 @@
         doc.comparability?.m2_parity_admissible !== false ||
         doc.counts?.m2_source_matched !== 0 ||
         doc.counts?.work_count !== 10 ||
-        doc.counts?.measured_works !== 6 ||
-        doc.counts?.awaiting_measurement !== 4 ||
-        doc.counts?.metrics_total !== 153 ||
-        doc.counts?.numeric_total !== 129 ||
-        doc.counts?.unavailable_total !== 24 ||
+        doc.counts?.measured_works !== 7 ||
+        doc.counts?.awaiting_measurement !== 3 ||
+        doc.counts?.metrics_total !== 182 ||
+        doc.counts?.numeric_total !== 153 ||
+        doc.counts?.unavailable_total !== 29 ||
         doc.language_modules?.en?.state !== "planned_not_measured" ||
         doc.language_modules?.en?.measured_work_count !== 0 ||
         !Array.isArray(doc.books) || doc.books.length !== 10) {
       throw Error("Русский каталог или научный статус изменён");
     }
     const census = {anna:[28,23],waves:[27,23],silver:[29,24],
-                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11]};
+                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11],resurrection:[29,24]};
     const seen = new Set();
     const editionKeys = new Set();
     let observed = 0, missing = 0;
@@ -96,6 +96,15 @@
             !/^https:\/\/github.com\/drevendev\/Scriptorium\/blob\/master\//.test(book.evidence_url)) {
           throw Error("Подмена измеренного источника или охвата");
         }
+        if (book.key === "resurrection") {
+          const characters=book.metrics.find(m=>m.id==="fantlab.general.characters");
+          const words=book.metrics.find(m=>m.id==="fantlab.general.words");
+          if (book.source_sha256 !== "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0" ||
+              characters?.actual !== 890835 || characters?.reference !== 881244 ||
+              words?.actual !== 136129 || words?.reference !== 126457) {
+            throw Error("Воскресение: подмена закреплённых измерений");
+          }
+        }
         const fields = new Set();
         let available = 0;
         for (const m of book.metrics) {
@@ -124,8 +133,8 @@
       }
     }
     if (seen.size !== 10 || Object.keys(census).some(x=>!seen.has(x)) ||
-        observed !== 129 || missing !== 24 ||
-        doc.books.filter(b=>b.text_status === "measured").length !== 6 ||
+        observed !== 153 || missing !== 29 ||
+        doc.books.filter(b=>b.text_status === "measured").length !== 7 ||
         doc.books.filter(b=>b.translator).length !== 2) throw Error("Подмена итогов каталога");
     const measured = doc.books.filter(b=>b.text_status === "measured");
     for (const book of measured) {

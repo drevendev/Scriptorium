@@ -1,31 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 343
+STATE_REVISION: 344
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-28
-LAST_RESULT: PR #341 merged at 3fd36fce873310192d2c233b682e789dc3372f76; authored seventh measured Reader entry pending later acceptance.
-LAST_VERIFIED_PROGRESS: Six measured Russian works in master; proposed seventh adds 24 numeric/five NOT_RUN fields, total 7/10, 153 numeric and 29 unavailable. Public HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
+LAST_RESULT: PR #342 merged (9060bfc27531e646b3d7c02a170170cf242aca67); PR #343 merged (37ea3e5a5448c6faf910bd57d0edcc6a00bda75f); PR #344 proposes the source-bound supplementary Resurrection benchmark matrix.
+LAST_VERIFIED_PROGRESS: Seven measured Russian editions in master (7/10; 182 fields, 153 numeric and 29 unavailable). Retained FantLab matrix has 113 rows over four of the five source-readiness candidates; #344 proposes 29 independently source-bound Resurrection rows as a supplemental sixth diagnostic, 142 total. Public HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-013-RESURRECTION-ROOT-READER-018
-ISSUES: #285 (Reader), #281 (source-free measured diagnostics)
+UNIT_ID: SCRIP-REPRO-010-RESURRECTION-RETAINED-MATRIX-019
+ISSUES: #281 (scientific benchmark), #285 (generated Reader evidence)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-013-resurrection-measured-reader
-BASE: 3fd36fce873310192d2c233b682e789dc3372f76
-ACCEPTANCE: Retain CI-measured 129-revision Resurrection report, SHA, 29 versioned rows (24 numeric / 5 NOT_RUN). Show seven measured Russian works (182 rows, 153 numeric, 29 unavailable), chart, permalink, comparisons and source-free JSON/CSV. Three works remain pending. FantLab source identity UNKNOWN; M2 0/5.
+PR: #344
+BRANCH: scrip-repro-010-resurrection-matrix
+BASE: 37ea3e5a5448c6faf910bd57d0edcc6a00bda75f
+ACCEPTANCE: Validate checked-in 129-revision Resurrection JSON, source digest, original CI receipt and 29 versioned rows (24 numeric, five NOT_RUN); publish a separate explicitly source-unmatched supplement in JSON/CSV/Markdown and generated Reader evidence. Original five-work readiness/M2 denominator and source identity remain unchanged; M2 0/5. Later exact-head CI and independent acceptance required before merge.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: seven measured Russian works with independent HTTP/keyboard/mobile Reader acceptance.
+Milestone: Seven measured Russian works in the live root Reader, supplemented by transparent source-frozen scientific comparisons in the generated Reader; independent browser/HTTP acceptance is still missing.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #285 Resurrection root Reader | Later exact-head CI acceptance and qualifying merge | Current run authored work, no same-wake merge |
-| P2 | #285 Pages live verification | HTTP assets/JSON/CSV and keyboard/mobile browser proof | Prior HTTP/DNS unavailable |
-| P3 | #281 strict benchmark matrix | Resurrection diagnostic as explicitly source-unmatched | FantLab exact input edition UNKNOWN |
-| P4 | Road to Nowhere alternate | Analyze complete frozen Russian edition | Primary transcription incomplete |
-| P5 | #281 field diagnostics | Expand evidence-bound numeric diagnostics | Unpublished FantLab coefficients/inputs unknown |
+| P1 | #281 / PR #344 | Later-run exact-head CI/review acceptance of supplemental Resurrection diagnostic matrix; qualifying merge | Same-wake authoring forbids immediate merge |
+| P2 | #285 public Reader verification | Live branch Pages assets/JSON/CSV, keyboard and mobile proof | Prior HTTP/browser navigation blocked; do not substitute mock screenshots |
+| P3 | #281 strict benchmark references | Source-matched inputs, rounding evidence or new field-level diagnostics; do not count count proximity as parity | FantLab exact input edition UNKNOWN |
+| P4 | Road to Nowhere alternate | Analyze complete frozen Russian edition as independent measurable slice | Primary transcription incomplete; alternate source gate needed |
+| P5 | #282 AOT/pylem N collision | Measured noun-vs-cardinal bounds with pinned pylem and explicit unbound status | Runtime POS distinction not proven |
 
 M2 stays **0/5**. No source prose is published. Hourly task remains unchanged.
 

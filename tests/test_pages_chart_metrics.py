@@ -38,6 +38,11 @@ class ExpandedChartTests(unittest.TestCase):
         self.assertTrue(all("disabled" in x for x in buttons))
         self.assertEqual(sum(x["aria-pressed"] == "true" for x in buttons), 1)
         self.assertIn('id="chart-unit" class="chart-unit" aria-live="polite"', html)
+        self.assertIn('<details class="chart-table">', html)
+        self.assertIn('id="chart-table-rows"', html)
+        self.assertIn('id="chart-table-caption"', html)
+        self.assertIn('aria-label="Таблица чисел выбранной диаграммы"', html)
+        self.assertEqual(html.count('<tr><th scope="row">'), 7)
         self.assertIn("«Нет данных»", html)
 
     def test_measured_coverage_and_profile_identity(self):
@@ -61,6 +66,8 @@ class ExpandedChartTests(unittest.TestCase):
         self.assertIn("row.value!==null", js)
         self.assertIn("book.profiles?.[k]===baseline[k]", js)
         self.assertIn(".chart-row.chart-missing", css)
+        self.assertIn(".chart-table summary:focus-visible", css)
+        self.assertIn('el("chart-table-rows").replaceChildren(tableNodes)', js)
         self.assertNotIn("innerHTML", js)
 
     @unittest.skipUnless(shutil.which("node"), "Node unavailable: structural checks still run")

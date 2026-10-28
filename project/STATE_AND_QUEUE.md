@@ -1,37 +1,39 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 346
+STATE_REVISION: 347
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-28
-LAST_RESULT: PR #345 merged (0ca6c30d70a1b2f6b98df5dc0e7e636d1446b188); #283 accessible exact-value chart tables authored for later independent acceptance.
+LAST_RESULT: PR #346 merged (5891163130bb2f1afea82bd9a045e0e12548c99b); chart print exact-value lifecycle authored for later acceptance.
 LAST_VERIFIED_PROGRESS: Seven measured Russian editions in master (7/10; 182 fields, 153 numeric and 29 unavailable). Retained FantLab matrix: 142 rows, including 29 supplemental source-unmatched Resurrection rows. Branch Pages build AND deploy completed successfully on master 0ca6c30d (GitHub Actions #40719281314); public HTTP/browser still LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-CHART-TABLE-021
-ISSUES: #283 (accessible charts), #285 (Pages)
+UNIT_ID: SCRIP-SITE-012-PRINT-CHART-022
+ISSUES: #283 (accessible/print charts), #285 (Pages)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-012-chart-data-table
-BASE: 0ca6c30d70a1b2f6b98df5dc0e7e636d1446b188
-ACCEPTANCE: Each of eight chart modes has an on-demand native table with exact
-source-backed observations, units, stable seven-book order, and explicit
-missing-vs-zero distinction. The static no-JS table mirrors the initial
-dialogue chart. No source, corpus, FantLab or M2 gates change.
+BRANCH: scrip-site-012-print-chart-exact-table
+BASE: 5891163130bb2f1afea82bd9a045e0e12548c99b
+ACCEPTANCE: Printing the currently selected one of eight Russian chart metrics
+temporarily opens its exact-value table, preserves full numeric precision and
+missing-vs-zero status in monochrome, and restores the previous disclosure state.
+Works on the static source-backed default chart if the JSON fetch fails, with
+independent positive/negative print-event regression. No book text or parity changes.
+VISUAL_NOT_VERIFIED until desktop/mobile browser print preview can be inspected.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: inspectable eight-metric charts plus exact-value accessible alternatives;
-root Pages deployed by branch workflow but live HTTP/mobile acceptance remains open.
+Milestone: review/merge print-readable exact chart values, then verify real
+branch Pages HTML/JSON and browser keyboard/mobile/print flows.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 chart-table PR | Later exact-head CI, independent review and qualifying merge | Authorship wake excludes merge |
-| P2 | #285 live verification | Public branch Pages HTTP assets, JSON/CSV, keyboard/mobile | HTTP/browser tool blocked; deployment success alone not LIVE_VERIFIED |
-| P3 | #281 FantLab matrix | New per-field diagnostic or source/rounding evidence | Exact FantLab edition UNKNOWN |
-| P4 | Road to Nowhere alternate | Analyze complete frozen Russian edition independently | Primary transcription incomplete |
-| P5 | #282 pinned AOT/pylem | Quantify noun-versus-cardinal effects | Native POS ambiguity unresolved |
+| P1 | #283 chart print lifecycle | Later exact-head CI, independent acceptance and qualifying merge | Same-wake authorship excludes merge |
+| P2 | #285 live Pages verification | Check merged page, JSON/CSV, keyboard/mobile/print behavior | HTTP/browser execution unavailable in prior wakes |
+| P3 | #281 FantLab matrix | New field-level source/rounding diagnostic on already frozen books | Exact FantLab edition remains UNKNOWN |
+| P4 | #282 pinned AOT/pylem | Quantify N noun/cardinal impact without unsupported mapping | Native category ambiguity unresolved |
+| P5 | Road to Nowhere alternate | Analyze independently frozen Russian edition without overstating parity | Primary source transcription incomplete |
 
-M2 stays **0/5**. No source prose is published. Existing hourly schedule unchanged.
+M2 stays **0/5**. Source text is not published. Existing hourly schedule unchanged.
 
 ## Retained evidence and scientific gates
 

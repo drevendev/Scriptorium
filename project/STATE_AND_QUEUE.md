@@ -1,19 +1,19 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 341
+STATE_REVISION: 342
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-28
-LAST_RESULT: Verified PR #339 merged at 1bfa132aebc595794653c44e91c9bbe970499e7a. Authored fail-closed symlink evidence path validation for benchmark readiness/field matrix; later CI acceptance is pending.
+LAST_RESULT: PR #340 merged at a35f8e3d636d8f4f503b232d7a0938462adc9b57. Authored the exact-revision Resurrection field diagnostic and source-free CI output; later CI acceptance/merge pending.
 LAST_VERIFIED_PROGRESS: Six measured Russian editions, 129 numeric and 24 unavailable observations. Book/pair links and JSON/CSV pair exports merged; external Pages HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-SYMLINK-EVIDENCE-016
-ISSUES: #281 (strict evidence readiness and metric matrix)
+UNIT_ID: SCRIP-REPRO-010-RESURRECTION-FIELDS-017
+ISSUES: #281 (strict diagnostic/readiness matrix and retained metric evidence)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-reject-symlinked-evidence
-BASE: 1bfa132aebc595794653c44e91c9bbe970499e7a
-ACCEPTANCE: Benchmark readiness must reject symlinked catalog, retained reference and witness paths, including symlinked parent directories, before reading JSON. Ordinary regular source-free evidence remains valid. Negative regression tests cover both external file links and in-repository directory aliases; exact-head CI, later fresh acceptance and qualifying merge remain required. No inference of FantLab input identity, parity or publication.
+BRANCH: scrip-repro-010-resurrection-measured-fields
+BASE: a35f8e3d636d8f4f503b232d7a0938462adc9b57
+ACCEPTANCE: Verify 129 pinned Resurrection revisions and exact immutable source identity before deriving 29 versioned metric rows, including two FantLab public count deltas and explicit NOT_RUN dictionary fields. Persist source-free create-only receipt and separate diagnostic through CI. Source identity remains UNKNOWN, M2 0/5. New PR requires later fresh exact-head CI acceptance and qualifying merge.
 
 ## Next user-visible milestone and compact queue
 
@@ -21,11 +21,11 @@ Milestone: source-verifiable Russian work comparisons and a publicly verified Re
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 evidence path safety | Later exact-head acceptance/merge of symlink rejection | This run authored the PR |
+| P1 | #281 Resurrection measured diagnostic | Later exact-head CI acceptance/merge; retain verified 29-row source-free receipt | This run authored the PR; external Wikisource replay may return 503 |
 | P2 | #285 public root verification | HTTP assets/export and keyboard/mobile browser acceptance | Previous HTTP/DNS denied; independent code continues |
-| P3 | Resurrection pinned-body replay | Compute versioned derived results from 129 frozen revisions | Legal/source hash and profile gates |
+| P3 | #281 strict benchmark matrix | Incorporate verified Resurrection fields without assuming FantLab source match | Requires successful pinned 129-revision replay |
 | P4 | Road to Nowhere alternate | Analyze a complete separately frozen edition | Not the incomplete original |
-| P5 | #281 strict benchmark report | Extend eligible source-bound metric deltas without claiming parity | FantLab analyzer-input identity unknown |
+| P5 | #281 broader field diagnostics | Extend source-bound measured deltas and honest units | FantLab analyzer-input identity unknown |
 
 M2 remains **0/5**. Exports are diagnostic, not new corpus admissions, parity, licensing or proof of live publication. The same hourly job remains unchanged.
 

@@ -18,13 +18,12 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         report = matrix.build_metric_matrix(ROOT)
         self.assertEqual(report["schema_version"], matrix.SCHEMA_VERSION)
         self.assertEqual(report["works_reported"], 5)
-        self.assertEqual(report["works_with_retained_metric_diagnostics"], 4)
-        self.assertEqual(report["retained_metric_rows"], 142)
+        self.assertEqual(report["works_with_retained_metric_diagnostics"], 5)
+        self.assertEqual(report["retained_metric_rows"], 171)
         self.assertEqual(report["supplemental_retained_metric_rows"], 29)
         self.assertEqual(report["m2_source_matched_pass_count"], 0)
         self.assertEqual([e["metric_evidence"] for e in report["entries"]],
-                         ["RETAINED_DIAGNOSTIC", "RETAINED_DIAGNOSTIC", "RETAINED_DIAGNOSTIC",
-                          "NOT_RUN", "RETAINED_DIAGNOSTIC"])
+                         ["RETAINED_DIAGNOSTIC"] * 5)
         self.assertEqual(report["entries"][0]["metric_rows_with_actual"], 23)
         self.assertEqual(report["entries"][0]["metric_rows_without_actual"], 5)
         anna = report["entries"][0]
@@ -34,7 +33,9 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         self.assertEqual(chars["result"], "UNRESOLVED_SOURCE")
         self.assertTrue(all(e["exact_fantlab_input_identity"] == "UNKNOWN"
                             for e in report["entries"]))
-        self.assertEqual(report["entries"][3]["metric_rows"], [])
+        self.assertEqual((len(report["entries"][3]["metric_rows"]),
+                          report["entries"][3]["metric_rows_with_actual"],
+                          report["entries"][3]["metric_rows_without_actual"]), (29, 24, 5))
         silver = report["entries"][2]
         self.assertEqual((len(silver["metric_rows"]), silver["metric_rows_with_actual"],
                           silver["metric_rows_without_actual"]), (29, 24, 5))
@@ -52,12 +53,10 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         self.assertEqual(json.loads(matrix.render_metric_matrix(report, "json")),
                          report)
         rows = list(csv.DictReader(StringIO(matrix.render_metric_matrix(report, "csv"))))
-        self.assertEqual(len(rows), 143)
-        self.assertEqual(sum(r["status"] == "NOT_RUN" for r in rows), 22)
-        # Core missing rows plus five Resurrection unbound metrics; one absent work remains NOT_RUN.
-        absent = [r for r in rows if not r["metric_id"]]
-        self.assertEqual(len(absent), 1)
-        self.assertTrue(all(r["expected"] == r["actual"] == r["delta"] == "" for r in absent))
+        self.assertEqual(len(rows), 171)
+        self.assertEqual(sum(r["status"] == "NOT_RUN" for r in rows), 26)
+        # All five core works plus supplemental Resurrection have explicit field rows.
+        self.assertTrue(all(r["metric_id"] for r in rows))
         self.assertIn("M2: 0/5", matrix.render_metric_matrix(report, "markdown"))
         self.assertIn("12958", matrix.render_metric_matrix(report, "csv"))
 
@@ -241,10 +240,62 @@ class RetainedMetricMatrixTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, message):
                     karamazov.verify(ROOT, witness)
 
+
+    def test_hyperboloid_pinned_ci_rows_reused_without_parity(self):
+        report = matrix.build_metric_matrix(ROOT)
+        hyper = report["entries"][3]
+        self.assertEqual(hyper["candidate_id"], matrix._HYPER_ID)
+        self.assertEqual(hyper["metric_evidence"], "RETAINED_DIAGNOSTIC")
+        self.assertEqual(hyper["retained_analyzer_revision"], matrix._HYPER_CI_HEAD)
+        self.assertEqual((len(hyper["metric_rows"]), hyper["metric_rows_with_actual"],
+                          hyper["metric_rows_without_actual"]), (29, 24, 5))
+        rows = {row["metric_id"]: row for row in hyper["metric_rows"]}
+        self.assertEqual((rows["fantlab.general.characters"]["expected"],
+                          rows["fantlab.general.characters"]["actual"],
+                          rows["fantlab.general.characters"]["actual_minus_expected"]),
+                         (495539, 499066, 3527))
+        self.assertEqual((rows["fantlab.general.words"]["expected"],
+                          rows["fantlab.general.words"]["actual"],
+                          rows["fantlab.general.words"]["actual_minus_expected"]),
+                         (69126, 71921, 2795))
+        self.assertEqual(rows["fantlab.punctuation.question_exclamation.per_1000_words"]["actual"], 0)
+        self.assertEqual(rows["fantlab.vocabulary.active_dictionary"]["result"], "NOT_RUN")
+        self.assertIsNone(rows["fantlab.vocabulary.active_dictionary"]["actual"])
+        self.assertEqual(rows["scriptorium.general.sentences"]["comparison_kind"], "EXTENSION_ONLY")
+        self.assertTrue(all(row["result"] != "PASS" and
+                            row["display_rounding_evidence"] == "UNKNOWN"
+                            for row in hyper["metric_rows"]))
+        self.assertEqual(report["m2_source_matched_pass_count"], 0)
+
+    def test_hyperboloid_forged_metric_or_parity_evidence_fails_closed(self):
+        cases = (
+            (lambda d: d.__setitem__("m2_parity_admissible", True),
+             "Hyperboloid m2_parity_admissible"),
+            (lambda d: next(r for r in d["metric_rows"] if r["id"] ==
+                            "fantlab.general.characters").__setitem__("reference", 495538),
+             "Hyperboloid displayed reference"),
+            (lambda d: next(r for r in d["metric_rows"] if r["id"] ==
+                            "fantlab.general.characters").__setitem__("actual", 499065),
+             "Hyperboloid character count"),
+            (lambda d: next(r for r in d["metric_rows"] if r["id"] ==
+                            "fantlab.vocabulary.active_dictionary").__setitem__("actual", 0),
+             "Hyperboloid dictionary dependency"),
+            (lambda d: d["metric_rows"][0].__setitem__("status", "parity_pass"),
+             "Hyperboloid missing or fabricated measurement"),
+            (lambda d: d["metric_rows"][0].__setitem__("actual", float("nan")),
+             "invalid numeric metric evidence"),
+            (lambda d: d["metric_rows"][0].__setitem__("kind", "reproduced"),
+             "Hyperboloid metric classification"),
+        )
+        for mutate, message in cases:
+            with self.subTest(expected_failure=message):
+                with self.assertRaisesRegex(ValueError, message):
+                    self._mutate(matrix._HYPER_ARTIFACT, mutate)
+
     def test_resurrection_is_supplemental_and_retains_two_only_fantlab_references(self):
         report = matrix.build_metric_matrix(ROOT)
         self.assertEqual(report["works_reported"], 5)
-        self.assertEqual(report["works_with_retained_metric_diagnostics"], 4)
+        self.assertEqual(report["works_with_retained_metric_diagnostics"], 5)
         self.assertEqual(len(report["entries"]), 5)
         extra, = report["supplemental_diagnostics"]
         self.assertEqual(extra["candidate_id"], "tolstoy-resurrection-ru")
@@ -310,17 +361,17 @@ class RetainedMetricMatrixTests(unittest.TestCase):
     def test_public_guides_do_not_hide_retained_waves_measurements(self):
         """Public evidence counts must agree with the canonical retained matrix."""
         report = matrix.build_metric_matrix(ROOT)
-        self.assertEqual(report["works_with_retained_metric_diagnostics"], 4)
+        self.assertEqual(report["works_with_retained_metric_diagnostics"], 5)
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         method = (ROOT / "docs/BENCHMARK_METRIC_MATRIX.md").read_text(encoding="utf-8")
         readiness = (ROOT / "docs/BENCHMARK_READINESS.md").read_text(encoding="utf-8")
         self.assertIn(f"**{report['retained_metric_rows']} field-level diagnostic/extension rows**", readme)
-        self.assertIn("**four works with retained measurements**", readme)
-        self.assertIn("The remaining **one** frozen work", readme)
+        self.assertIn("**five works with retained measurements**", readme)
+        self.assertIn("All **five** frozen works", readme)
         self.assertIn("**independent search/filter controls for both books**", readme)
         self.assertIn("**two independent**", method)
-        self.assertIn("the one work without retained diagnostics", method)
-        self.assertIn("all 142 rows in exports", method)
+        self.assertIn("five source-readiness works with retained diagnostics", method)
+        self.assertIn("all 171 rows in exports", method)
         self.assertIn("**not a global evidence verdict**", readiness)
         self.assertIn(f"already validates {report['retained_metric_rows']}\n", readiness)
         self.assertIn("**26 reference values are UNKNOWN**", method)

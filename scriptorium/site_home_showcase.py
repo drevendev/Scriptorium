@@ -181,7 +181,6 @@ def render_research_atlas(entries: Sequence[Mapping[str, Any]]) -> str:
         raise ValueError("changed evidence atlas supplemental scope")
     if sum(row.get("actual") is not None for row in supplemental[0]["metric_rows"]) != 24:
         raise ValueError("changed evidence atlas supplemental coverage")
-        raise ValueError("changed evidence atlas scientific boundary")
     source_rows = data.get("entries")
     if type(source_rows) is not list or len(source_rows) != 5:
         raise ValueError("incomplete evidence atlas inventory")

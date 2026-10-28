@@ -137,6 +137,14 @@
         doc.books.filter(b=>b.text_status === "measured").length !== 7 ||
         doc.books.filter(b=>b.translator).length !== 2) throw Error("Подмена итогов каталога");
     const measured = doc.books.filter(b=>b.text_status === "measured");
+    const chartProfiles=["metrics","normalization","dialogue","punctuation"];
+    const baseline=measured[0]?.profiles;
+    for (const book of measured) {
+      if (!chartProfiles.every(k=>typeof baseline?.[k]==="string" &&
+           book.profiles?.[k]===baseline[k])) {
+        throw Error("Несопоставимые профили измерений");
+      }
+    }
     for (const book of measured) {
       const needed = Object.keys(metrics);
       if (book.key === "beketova") {
@@ -255,30 +263,37 @@
     }
   }
 
+  // The frozen editions do not share every measured field; missing is not zero.
   function updateChart() {
     const conf=metrics[currentChart];
     if (!conf) throw Error("Показатель диаграммы не разрешён");
     const rows=data.books.filter(b=>b.text_status==="measured").map(b=>{
       const item=lookup(b,currentChart);
-      if (!item||!isNumeric(item.actual)) throw Error("Нет числа для диаграммы");
-      return {title:b.display_title,value:item.actual};
+      return {title:b.display_title,value:item&&isNumeric(item.actual)?item.actual:null};
     });
-    const high=Math.max(...rows.map(x=>x.value));
+    const known=rows.filter(row=>row.value!==null);
+    const high=Math.max(0,...known.map(row=>row.value));
     const nodes=document.createDocumentFragment();
     for (const row of rows) {
-      const container=document.createElement("div");container.className="chart-row";
+      const container=document.createElement("div");
+      container.className="chart-row"+(row.value===null?" chart-missing":"");
       insertText(container,"span",row.title);
       const track=insertText(container,"div","");
       track.className="bar-track";track.setAttribute("aria-hidden","true");
-      const inner=insertText(track,"span","");
-      inner.style.width=(high>0?100*row.value/high:0).toFixed(2)+"%";
-      insertText(container,"strong",pretty(row.value,conf[2])+(conf[1]==="%"?"%":""));
+      if (row.value!==null) {
+        const inner=insertText(track,"span","");
+        inner.style.width=(high>0?100*row.value/high:0).toFixed(2)+"%";
+      }
+      insertText(container,"strong",row.value===null?"нет данных":
+                 pretty(row.value,conf[2])+(conf[1]==="%"?"%":""));
       nodes.appendChild(container);
     }
     el("chart-series").replaceChildren(nodes);
-    el("chart-unit").textContent=conf[0]+" · "+conf[1]+" · подписи округлены до 2 знаков";
-    for (const b of chartButtons) {
-      b.setAttribute("aria-pressed",String(b.dataset.chart===currentChart));
+    el("chart-unit").textContent=conf[0]+" · "+conf[1]+
+      " · доступно для "+known.length+" из "+rows.length+
+      " книг; нет данных ≠ 0. Числа округлены до "+conf[2]+" знаков.";
+    for (const btn of chartButtons) {
+      btn.setAttribute("aria-pressed",String(btn.dataset.chart===currentChart));
     }
   }
 

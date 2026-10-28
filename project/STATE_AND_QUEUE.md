@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 338
+STATE_REVISION: 339
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-27
-LAST_RESULT: PR #336 verified merged at 6ba4b1bcdac31af6d04d11d19ef5adf3e4f8504c. Proposed history-aware, shareable two-edition comparison URLs for root Pages.
-LAST_VERIFIED_PROGRESS: Root Pages source has 10 Russian-language titles, six measured works (129 numeric / 24 unavailable values). Per-book links #336 are merged, master Pages build #40572592825 succeeded. This work proposes safe two-book pair URLs; public HTTP remains unverified. Generated Reader retains Hyperboloid and Beketova reports. M2 remains 0/5.
+LAST_COMMITTED_RUN_AT: 2026-10-28
+LAST_RESULT: PR #337 verified merged at 61617a516369b352702196d590a38f0729e65f57. Proposed one bounded root Reader improvement: reproducible, source-free two-book comparison JSON export with negative regressions.
+LAST_VERIFIED_PROGRESS: Branch Pages root has 10 Russian-language titles, six measured works (129 numeric / 24 unavailable). Book and pair permalinks are merged; master GitHub-managed Pages build/deploy #40590540066 succeeded. Public URL and screenshots remain LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED after blocked HTTP/DNS reads. Multi-route generated Reader is separate. M2 remains 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-ROOT-PAIR-PERMALINK-013
-ISSUES: #283 (navigation/accessibility), #285 (publication verification)
+UNIT_ID: SCRIP-SITE-ROOT-PAIR-EXPORT-014
+ISSUES: #283 (comparison usability), #285 (publication verification)
 STATUS: AUTHORED_PENDING_EXACT_HEAD_CI_AND_LATER_ACCEPTANCE
-BRANCH: scrip-site-025-pair-permalinks
-BASE: 6ba4b1bcdac31af6d04d11d19ef5adf3e4f8504c
-ACCEPTANCE: Valid `?left=<measured-key>&right=<distinct-measured-key>#pairs` URLs select exactly two pinned Russian measured editions, preserve selector history/reload/back-forward and display an accessible share link. Invalid/pending/partial/duplicate URL pairs safely fall back to two distinct measured defaults. Duplicate UI selectors display an error and hide a stale link; no untrusted URL becomes a fetch path. Static no-JS table and methodology remain. Verify Node positive/negative execution, Python structural tests and later exact-head CI before merge. No measurement, M2, publishing rule or master changes.
+BRANCH: scrip-site-026-pair-json-export
+BASE: 61617a516369b352702196d590a38f0729e65f57
+ACCEPTANCE: Reader compares only two distinct, measured, same-profile Russian editions; a user can download the exact jointly measured table as deterministic JSON with versioned schema, unit, numeric values/difference, two distinct source hashes, evidence links, translator/edition and explicit diagnostic-only status. No source prose, network upload, absent-value-to-zero conversion or falsely source-matched FantLab claim. Positive/negative Node/Python checks; later exact-head hosted CI, independent acceptance and merge required. Deployment/live checks independent and still pending.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make six-book Russian branch Pages comparisons shareable and genuinely navigable, then independently verify public HTTP without implying FantLab parity.
+Milestone: reproducibly export two-book real comparisons, then verify the public branch-root Pages experience without implying FantLab parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 shareable two-book comparison | Later CI/review/merge of pair URLs with history and robust fallback | Authored change requires later acceptance |
-| P2 | #285 live Pages verification | Confirm branch-root Pages URL and assets, keyboard/responsive behavior when allowed | Browser/HTTP restrictions do not block independent code |
-| P3 | Resurrection pinned-body replay | Remeasure 129 frozen revisions with versioned profile, retain source-free derived values | Legal and immutable source SHA checks; no parity |
-| P4 | Road to Nowhere alternate candidate | Verify alternate complete body and retain separate measurements | Do not conflate with incomplete primary edition |
-| P5 | #281 strict benchmark coverage/deltas | Expand inspectable source-matched eligibility report WITHOUT lowering M2 | Exact source-edition identity required for parity |
+| P1 | #283 pair evidence export | Later exact-head CI/review/merge of JSON export with bounded negative tests | Authored change requires later acceptance |
+| P2 | #285 live Pages verification | Confirm branch-root URL/assets and keyboard/mobile with permitted browser | Blocked HTTP/DNS does not block independent product code |
+| P3 | Resurrection pinned-body replay | Recompute 129 frozen revisions with versioned profile and retain derived numbers | Legal/source hash check; no parity |
+| P4 | Road to Nowhere alternate candidate | Measure separately frozen complete alternate edition | Must not conflate with incomplete original |
+| P5 | #281 strict benchmark coverage/deltas | Make source-matched eligibility/deltas inspectable, preserving M2 | FantLab analyzer-input identity remains unresolved |
 
-M2 remains **0/5**. New navigation does not establish an analyzer-input match or corpus admission. The existing hourly task is unchanged.
+M2 remains **0/5**. These root Reader UX improvements do not establish an analyzer-input match or parity-corpus admission. The existing hourly task is unchanged.
 
 ## Retained evidence and scientific gates
 

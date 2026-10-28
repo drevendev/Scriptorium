@@ -83,8 +83,22 @@ def render_stage(entries: Sequence[Mapping[str, Any]]) -> str:
             '</td><td>Unverified</td></tr>'
         )
 
+    supplemental = data.get("supplemental_diagnostics")
+    if (type(supplemental) is not list or len(supplemental) != 1
+            or type(supplemental[0]) is not dict
+            or supplemental[0].get("candidate_id") != "tolstoy-resurrection-ru"
+            or supplemental[0].get("m2_candidate_scope") != "SUPPLEMENTAL_NOT_SOURCE_MATCHED"
+            or supplemental[0].get("exact_fantlab_input_identity") != "UNKNOWN"
+            or supplemental[0].get("metric_evidence") != "RETAINED_DIAGNOSTIC"
+            or supplemental[0].get("metric_rows_with_actual") != 24
+            or supplemental[0].get("metric_rows_without_actual") != 5
+            or type(supplemental[0].get("metric_rows")) is not list
+            or len(supplemental[0]["metric_rows"]) != 29
+            or sum(row.get("actual") is not None for row in supplemental[0]["metric_rows"]) != 24
+            or data.get("supplemental_retained_metric_rows") != 29):
+        raise ValueError("supplemental coverage disagrees with retained rows")
     if (data.get("works_with_retained_metric_diagnostics") != measured_works
-            or data.get("retained_metric_rows") != observed_rows
+            or data.get("retained_metric_rows") != observed_rows + 29
             or measured_total + missing_total != observed_rows):
         raise ValueError("summary coverage disagrees with retained rows")
 
@@ -100,15 +114,15 @@ def render_stage(entries: Sequence[Mapping[str, Any]]) -> str:
         'Explore the full report to see units, edition witnesses and unresolved differences.</p>'
         '</div><a class="stage-link" href="evidence/fantlab/">Open the complete evidence table ↗</a></div>'
         '<div class="stage-stats" aria-label="Diagnostic measurement coverage">'
-        + statistic(str(measured_works), "works with measured fields")
-        + statistic(str(measured_total), "recorded numeric values")
-        + statistic(str(missing_total), "unavailable actual values")
+        + statistic(str(measured_works), "five-work core: measured books")
+        + statistic(str(measured_total), "five-work core: numeric values")
+        + statistic(str(missing_total), "five-work core: unavailable values")
         + statistic("0/5", "proven FantLab source-matched works")
         + '</div>'
         '<p class="stage-disclaimer"><strong>Coverage is not parity.</strong> '
         'A measured value is only a Scriptorium observation. '
         'FantLab input editions and displayed rounding remain UNKNOWN; missing values are never zero. '
-        'One source may be frozen without having field measurements.</p>'
+        'One core source may be frozen without field measurements; the separately pinned Resurrection evidence adds 29 more rows (24 numeric, five NOT_RUN) in the full report, outside this five-work core overview.</p>'
         '<div class="stage-table-scroll" tabindex="0" role="region" '
         'aria-label="Per-work measurement availability" aria-describedby="stage-table-hint">'
         '<table><caption>Recorded fields in frozen works — source identity unverified</caption>'

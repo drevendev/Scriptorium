@@ -12,6 +12,7 @@ import argparse
 from collections.abc import Iterable
 from hashlib import sha256
 import json
+import math
 from pathlib import Path
 from typing import Final
 
@@ -181,7 +182,19 @@ def build_comparison(
     if not scriptorium_revision:
         raise ValueError("scriptorium_revision must be non-empty")
 
-    reference = json.loads(reference_json)
+    from .benchmark_pos import strict_json
+
+    reference = strict_json(reference_json)
+    if not isinstance(reference, dict) or not isinstance(reference.get("expected"), dict):
+        raise ValueError("benchmark reference must contain an expected object")
+    for metric_id, path, _, rule in _reference_specs():
+        value = _lookup(reference["expected"], path)
+        if value is _MISSING:
+            continue
+        if (type(value) not in (int, float) or value < 0
+                or (isinstance(value, float) and not math.isfinite(value))
+                or (rule == "exact_integer" and type(value) is not int)):
+            raise ValueError(f"invalid expected numeric value for {metric_id}")
     lexical_reference = json.loads(reference_json, parse_int=str, parse_float=str)
     text = source_bytes.decode("utf-8")
     analysis = analyze_deterministic_metrics(
@@ -238,8 +251,7 @@ def build_comparison(
 
     pos_metadata = None
     if pos_artifact is not None:
-        from .benchmark_pos import build_pos_comparisons, strict_json
-        strict_json(reference_json)  # Reject duplicate reference keys in POS comparisons.
+        from .benchmark_pos import build_pos_comparisons
         pos_rows, pos_metadata = build_pos_comparisons(
             reference, lexical_reference, pos_artifact,
             normalized_sha256=analysis["normalized_sha256"],

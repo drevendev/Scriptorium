@@ -54,6 +54,15 @@ main { max-width:1300px; margin:0 auto; padding:0 clamp(1rem,3vw,2.5rem) 4rem; }
 .chart-row { grid-template-columns:8.8rem minmax(0,1fr) 5.2rem; }
 .bar-track { min-width:0; overflow:hidden; border-radius:12px; height:.55rem; background:#456b5e; }
 .bar-track span { display:block; height:100%; background:linear-gradient(90deg,#7ac4a8,#f4c78a); border-radius:12px; }
+.chart-table { margin-top:1rem; border-top:1px solid #527469; }
+.chart-table summary { display:list-item; cursor:pointer; min-height:44px; padding:.75rem 0; font-size:.83rem; font-weight:700; color:#f4cf99; }
+.chart-table summary:focus-visible { outline:2px solid #f4cf99; outline-offset:2px; }
+.chart-table .table-region { border-color:#809e90; }
+.chart-table table { min-width:0; width:100%; color:#fff8e8; font-variant-numeric:tabular-nums; }
+.chart-table caption { color:#e3efe9; }
+.chart-table th,.chart-table td { text-align:left; border-bottom:1px solid #527469; padding:.6rem .5rem; }
+.chart-table td:nth-child(2) { white-space:nowrap; }
+@media (max-width:490px) { .chart-table table { min-width:440px; } }
 .chart-foot { border-top:1px solid #527469; padding-top:1rem; margin:1.2rem 0 0; color:#dae9dd; font-size:.78rem; }
 .facts { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:4rem; }
 .facts div { padding:1.15rem 1rem; border-right:1px solid var(--line); }

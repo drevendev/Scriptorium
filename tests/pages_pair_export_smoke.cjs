@@ -32,7 +32,7 @@ const units={
 };
 const unit=id=>{assert.ok(Object.hasOwn(units,id));return units[id];};
 const leftSelect={value:"anna"},rightSelect={value:"beketova"};
-const pairExportButton={disabled:false};
+const pairExportButton={disabled:false},pairCsvButton={disabled:false};
 let clicked=0,filename="",downloadBlob;
 const fakeUrl={
   createObjectURL(blob){downloadBlob=blob;return "blob:test";},
@@ -52,10 +52,10 @@ const fakeDocument={
 };
 const actions=new Function(
   "getBook","pairedIds","lookup","isNumeric","unit",
-  "leftSelect","rightSelect","pairExportButton","URL","document","setTimeout",
-  source.slice(start,end)+"\nreturn {sharedPairRows,buildPairExport,exportPair};"
+  "leftSelect","rightSelect","pairExportButton","pairCsvButton","URL","document","setTimeout",
+  source.slice(start,end)+"\nreturn {sharedPairRows,buildPairExport,exportPair,serializePairCsv,csvText,exportPairCsv};"
 )(getBook,pairedIds,lookup,isNumeric,unit,leftSelect,rightSelect,
-  pairExportButton,fakeUrl,fakeDocument,()=>{});
+  pairExportButton,pairCsvButton,fakeUrl,fakeDocument,()=>{});
 const data=actions.buildPairExport("anna","beketova");
 assert.equal(data.schema,"scriptorium-ru-pair-comparison-v1");
 assert.equal(data.scientific_claim,"DIAGNOSTIC_ONLY");
@@ -94,9 +94,23 @@ catalog.books.find(b=>b.key==="beketova").profiles.metrics=original;
   assert.equal(clicked,1);
   assert.equal(filename,"scriptorium-pair-anna-beketova.json");
   assert.deepEqual(JSON.parse(await downloadBlob.text()),data);
+  const csv=actions.serializePairCsv(data);
+  assert.ok(csv.startsWith("\uFEFFschema,scientific_claim,"));
+  assert.equal(csv.trimEnd().split("\r\n").length,data.metrics.length+1);
+  assert.ok(csv.includes('"Александра Андреевна Бекетова"'));
+  assert.ok(csv.includes('"percentage_points"'));
+  assert.ok(csv.includes('"DIAGNOSTIC_ONLY"'));
+  assert.match(actions.csvText(" =SUM(1,1)"),/^"'/);
+  assert.equal(actions.csvText('Leo "Tolstoy"'),'"Leo ""Tolstoy"""');
+  actions.exportPairCsv();
+  assert.equal(clicked,2);
+  assert.equal(filename,"scriptorium-pair-anna-beketova.csv");
+  assert.equal(await downloadBlob.text(),csv);
   rightSelect.value="anna";
   actions.exportPair();
-  assert.equal(clicked,1);
+  actions.exportPairCsv();
+  assert.equal(clicked,2);
   assert.equal(pairExportButton.disabled,true);
+  assert.equal(pairCsvButton.disabled,true);
   console.log("Root Pages pair export: real numeric, identity, profile and negative cases PASS");
 })().catch(err=>{console.error(err);process.exitCode=1;});

@@ -206,23 +206,29 @@ validated field-level observations in the metric matrix below.
 
 To inspect **actual retained per-metric differences** rather than character counts alone,
 run `python -m scriptorium.benchmark_metric_matrix --root . --format markdown`.
-The source-free matrix validates **142 field-level diagnostic/extension rows**: 113 across the core five-work source-readiness set (**four works with retained measurements**, one missing), and an additional 29 for *Resurrection* as a separately pinned, source-unmatched diagnostic. The original five-work set contains: *Anna Karenina* has 28 (23 numeric,
-five without actuals), *Running on Waves* has 27 (23 numeric, four NOT_RUN),
-and *The Silver Dove* and *The Brothers Karamazov* have 29 each (24 numeric,
-five dictionary-dependent NOT_RUN each). There are 94 measured and 19 unavailable
-actuals among these four. The remaining **one** frozen work, *The Hyperboloid of Engineer Garin*,
-is part of the five-source readiness matrix with NOT_RUN fields, but has a separate 24-measured / 5-NOT_RUN generated Reader report. Both Silver Dove and Karamazov have
-original SHA-pinned source-free CI receipts; only two FantLab displayed counts
-are retained for each. The supplemental *Resurrection* adds 29 fields (24 numeric,
-five NOT_RUN) from 129 pinned chapters; the only retained FantLab references are
-characters 881,244 and words 126,457, with unmatched-source differences of
-+9,591 and +9,672 respectively. In total the six retained diagnostics have
-118 measured fields and 24 unavailable actuals, without increasing M2 progress. Other reference values and exact input identity remain
+The source-free matrix validates **171 field-level diagnostic/extension rows**:
+142 across the five core works (**five works with retained measurements**),
+plus 29 *Resurrection* rows as a sixth, separately pinned source-unmatched
+diagnostic. All **five** frozen works have field observations; none has an
+established FantLab analyzer-input identity. *Anna Karenina* has 28 rows
+(23 numeric, five without actuals), *Running on Waves* has 27
+(23 numeric, four NOT_RUN), while *The Silver Dove*, *The Brothers Karamazov*
+and *The Hyperboloid of Engineer Garin* each have 29 rows (24 numeric,
+five dictionary-dependent NOT_RUN). Among these five core works, 118
+actual values are measured and 24 remain unavailable. The Hyperboloid
+rows reuse the already SHA-pinned, successful CI receipt and verified
+499,066-character source body; its unmatched-reference differences are
++3,527 characters and +2,795 words, **not** a FantLab parity result.
+The supplemental *Resurrection* contributes 29 fields (24 measured, five
+NOT_RUN), with two retained FantLab counts and unmatched differences
++9,591 characters and +9,672 words. In total, the six diagnostics have
+142 measured fields and 29 unavailable actuals. 
+Other reference values and exact input identity remain
 UNKNOWN; none establishes FantLab parity. Anna's historical rows include 4/4 general, 4/4 dialogue,
 14/14 punctuation and 1/6 vocabulary measurements; its other five vocabulary
 actuals are two NOT_RUN and three unresolved.
 
-The generated evidence Reader displays all 29 Silver Dove, 29 Brothers Karamazov and 29 supplemental Resurrection fields in accessible static tables,
+The generated evidence Reader displays all 29 Silver Dove, 29 Brothers Karamazov and 29 supplemental Resurrection fields in accessible static tables, and links to the existing independently validated 29-row Hyperboloid detail route,
 including separate unknown FantLab references and an explicit extension marker.
 It also labels metric units and percentage-point differences, and offers
 **independent search/filter controls for both books** by metric name/ID,

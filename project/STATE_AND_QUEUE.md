@@ -13,7 +13,7 @@ ISSUES: #283 (usability), #285 (publication verification)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
 BRANCH: scrip-site-027-pair-csv-export
 BASE: b636b8932d45d5bf0935836104281f3a721a3378
-ACCEPTANCE: Export deterministic source-free UTF-8 CSV from the exact same seven-to-zero jointly measured observations used by JSON export for two distinct allow-listed, same-profile editions. Preserve metric IDs, numeric left/right/delta, original/percentage-point delta units, all shared profile versions, names/translators, edition and source SHA-256, evidence URLs, DIAGNOSTIC_ONLY/M2 0/5. Quote and spreadsheet-formula-neutralize text, leave signed numeric values numeric. Pending/duplicate/mismatched pairs never export. No-JS percentage-point fallback must be truthful. Positive/negative Python and Node regressions, later exact-head CI/acceptance, independent merge and deployment proof remain required.
+ACCEPTANCE: Export deterministic source-free UTF-8 CSV from the exact same jointly measured observations used by JSON export for two distinct allow-listed, same-profile editions. Preserve metric IDs, numeric left/right/delta, original/percentage-point delta units, all shared profile versions, names/translators, edition and source SHA-256, evidence URLs, DIAGNOSTIC_ONLY/M2 0/5. Quote and spreadsheet-formula-neutralize text, leave signed numeric values numeric. Pending/duplicate/mismatched pairs never export. No-JS percentage-point fallback must be truthful. Positive/negative Python and Node regressions, later exact-head CI/acceptance, independent merge and deployment proof remain required.
 
 ## Next user-visible milestone and compact queue
 

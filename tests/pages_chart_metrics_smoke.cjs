@@ -56,4 +56,39 @@ assert.equal(elements["chart-series"].children[0].children[2].textContent,"0%");
 assert.equal(elements["chart-table-rows"].children[0].children[1].textContent,"0");
 assert.equal(elements["chart-series"].children[0].children[1].children[0].style.width,"0.00%");
 assert.ok(!elements["chart-series"].children[0].className.includes("chart-missing"));
+// Execute the shipped print lifecycle, not a separately rewritten algorithm.
+const printStart=source.indexOf("  // Print the selected metric's exact, source-backed table");
+const printEnd=source.indexOf("  async function initialize()",printStart);
+assert.ok(printStart>=0&&printEnd>printStart,"Print lifecycle missing from shipped JS");
+const printCode=source.slice(printStart,printEnd);
+function printHarness(open,includeTable=true){
+  const table=includeTable?{open}:null;
+  const events={};
+  new Function("document","window",printCode)(
+    {querySelector:selector=>{assert.equal(selector,".chart-table");return table;}},
+    {addEventListener:(type,callback)=>{events[type]=callback;}}
+  );
+  assert.equal(typeof events.beforeprint,"function");
+  assert.equal(typeof events.afterprint,"function");
+  return {table,events};
+}
+for(const initiallyOpen of [false,true]){
+  const {table,events}=printHarness(initiallyOpen);
+  events.afterprint(); // No prior preview must be harmless.
+  assert.equal(table.open,initiallyOpen);
+  events.beforeprint();
+  assert.equal(table.open,true,"Exact data must be printable");
+  events.beforeprint(); // Some browsers dispatch beforeprint more than once.
+  events.afterprint();
+  assert.equal(table.open,initiallyOpen,"Disclosure state must be restored");
+  events.afterprint();
+  assert.equal(table.open,initiallyOpen);
+}
+const absent=printHarness(false,false);
+absent.events.beforeprint();
+absent.events.afterprint(); // Missing table cannot break the rest of Reader.
+const printCss=fs.readFileSync(path.join(root,"assets/pages-reader.css"),"utf8");
+assert.match(printCss,/\.chart-table td:nth-child\(2\).*overflow-wrap:anywhere/);
+assert.match(printCss,/@media print \{[\s\S]*\.chart-table summary \{ display:none; \}/);
+console.log("Print preview opens the exact chart table and restores disclosure state: PASS");
 console.log("Eight real charts and exact-value accessible tables: measured/missing/zero PASS");

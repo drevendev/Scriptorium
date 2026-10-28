@@ -547,6 +547,23 @@
     document.body.appendChild(link);link.click();link.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
+  // Print the selected metric's exact, source-backed table, even when collapsed.
+  // Restore the user's disclosure state after the browser closes print preview.
+  const chartPrintTable = document.querySelector(".chart-table");
+  let chartPrintWasOpen = null;
+  function openChartTableForPrint() {
+    if (!chartPrintTable) return;
+    if (chartPrintWasOpen === null) chartPrintWasOpen = chartPrintTable.open;
+    chartPrintTable.open = true;
+  }
+  function restoreChartTableAfterPrint() {
+    if (!chartPrintTable || chartPrintWasOpen === null) return;
+    chartPrintTable.open = chartPrintWasOpen;
+    chartPrintWasOpen = null;
+  }
+  window.addEventListener("beforeprint", openChartTableForPrint);
+  window.addEventListener("afterprint", restoreChartTableAfterPrint);
+
   async function initialize() {
     try {
       const res=await fetch(file,{cache:"no-store",credentials:"omit"});

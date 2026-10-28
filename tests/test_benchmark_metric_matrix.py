@@ -19,7 +19,8 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         self.assertEqual(report["schema_version"], matrix.SCHEMA_VERSION)
         self.assertEqual(report["works_reported"], 5)
         self.assertEqual(report["works_with_retained_metric_diagnostics"], 4)
-        self.assertEqual(report["retained_metric_rows"], 113)
+        self.assertEqual(report["retained_metric_rows"], 142)
+        self.assertEqual(report["supplemental_retained_metric_rows"], 29)
         self.assertEqual(report["m2_source_matched_pass_count"], 0)
         self.assertEqual([e["metric_evidence"] for e in report["entries"]],
                          ["RETAINED_DIAGNOSTIC", "RETAINED_DIAGNOSTIC", "RETAINED_DIAGNOSTIC",
@@ -51,9 +52,9 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         self.assertEqual(json.loads(matrix.render_metric_matrix(report, "json")),
                          report)
         rows = list(csv.DictReader(StringIO(matrix.render_metric_matrix(report, "csv"))))
-        self.assertEqual(len(rows), 114)
-        self.assertEqual(sum(r["status"] == "NOT_RUN" for r in rows), 17)
-        # Two Anna, four Waves, five Silver Dove, five Karamazov dictionary rows and one absent work are NOT_RUN.
+        self.assertEqual(len(rows), 143)
+        self.assertEqual(sum(r["status"] == "NOT_RUN" for r in rows), 22)
+        # Core missing rows plus five Resurrection unbound metrics; one absent work remains NOT_RUN.
         absent = [r for r in rows if not r["metric_id"]]
         self.assertEqual(len(absent), 1)
         self.assertTrue(all(r["expected"] == r["actual"] == r["delta"] == "" for r in absent))
@@ -240,6 +241,67 @@ class RetainedMetricMatrixTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, message):
                     karamazov.verify(ROOT, witness)
 
+    def test_resurrection_is_supplemental_and_retains_two_only_fantlab_references(self):
+        report = matrix.build_metric_matrix(ROOT)
+        self.assertEqual(report["works_reported"], 5)
+        self.assertEqual(report["works_with_retained_metric_diagnostics"], 4)
+        self.assertEqual(len(report["entries"]), 5)
+        extra, = report["supplemental_diagnostics"]
+        self.assertEqual(extra["candidate_id"], "tolstoy-resurrection-ru")
+        self.assertEqual(extra["m2_candidate_scope"], "SUPPLEMENTAL_NOT_SOURCE_MATCHED")
+        self.assertEqual(extra["exact_fantlab_input_identity"], "UNKNOWN")
+        self.assertEqual(extra["source_witness_sha256"],
+                         "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0")
+        self.assertEqual((len(extra["metric_rows"]), extra["metric_rows_with_actual"],
+                          extra["metric_rows_without_actual"]), (29, 24, 5))
+        rows = {row["metric_id"]: row for row in extra["metric_rows"]}
+        self.assertEqual((rows["fantlab.general.characters"]["expected"],
+                          rows["fantlab.general.characters"]["actual"],
+                          rows["fantlab.general.characters"]["actual_minus_expected"]),
+                         (881244, 890835, 9591))
+        self.assertEqual((rows["fantlab.general.words"]["expected"],
+                          rows["fantlab.general.words"]["actual_minus_expected"]),
+                         (126457, 9672))
+        self.assertEqual(sum(row["expected"] is not None for row in rows.values()), 2)
+        self.assertEqual(rows["scriptorium.general.sentences"]["comparison_kind"],
+                         "EXTENSION_ONLY")
+        self.assertTrue(all(row["comparison_kind"] != "EXTENSION_ONLY"
+                            or row["expected"] is None for row in rows.values()))
+        self.assertTrue(all(row["result"] != "PASS" for row in rows.values()))
+        self.assertEqual(report["m2_source_matched_pass_count"], 0)
+        self.assertIn("Resurrection is a sixth supplemental diagnostic",
+                      matrix.render_metric_matrix(report, "markdown"))
+        self.assertIn("tolstoy-resurrection-ru", matrix.render_metric_matrix(report, "csv"))
+
+    def test_resurrection_tampering_fails_before_publication(self):
+        from scriptorium import resurrection_retained as retained
+        original = retained._load
+
+        for field, mutate, failure in (
+            ("ref", lambda d: d["fantlab"]["public_display_references_retained"]
+             .__setitem__("fantlab.general.characters", "881243"), "dated unmatched FantLab reference"),
+            ("gate", lambda d: d["gates"].__setitem__("m2_parity_admissible", True),
+             "unchanged M2 gate"),
+            ("source", lambda d: d["body_identity"].__setitem__("raw_sha256", "f" * 64),
+             "frozen source identity"),
+            ("status", lambda d: d["metric_rows"][4].__setitem__("result", "PASS"),
+             "unmatched reference status"),
+            ("delta", lambda d: d["metric_rows"][4].__setitem__(
+                "actual_minus_fantlab_display", 0), "integer reference delta"),
+            ("unknown", lambda d: d["metric_rows"][22].__setitem__("actual", 0),
+             "unbound dictionary state"),
+        ):
+            def changed(root, relative):
+                value = original(root, relative)
+                if relative == retained.ARTIFACT_PATH:
+                    value = copy.deepcopy(value)
+                    mutate(value)
+                return value
+
+            with self.subTest(field=field), patch.object(retained, "_load", side_effect=changed):
+                with self.assertRaisesRegex(ValueError, failure):
+                    retained.verify(ROOT)
+
     def test_nonfinite_metric_values_fail_closed(self):
         with self.assertRaisesRegex(ValueError, "numeric metric"):
             self._mutate(matrix.DIAGNOSTIC,
@@ -258,7 +320,7 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         self.assertIn("**independent search/filter controls for both books**", readme)
         self.assertIn("**two independent**", method)
         self.assertIn("the one work without retained diagnostics", method)
-        self.assertIn("all 113 rows in exports", method)
+        self.assertIn("all 142 rows in exports", method)
         self.assertIn("**not a global evidence verdict**", readiness)
         self.assertIn(f"already validates {report['retained_metric_rows']}\n", readiness)
         self.assertIn("**26 reference values are UNKNOWN**", method)

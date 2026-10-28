@@ -1,7 +1,8 @@
 """Verified source-free inventory of retained cross-work FantLab metric diagnostics.
 
 Readiness (five source witnesses) is validated first. Anna Karenina has 28 rows, Running on Waves 27, Silver Dove 29 and Brothers Karamazov 29.
-The remaining candidate lacks a metric artifact and remains NOT_RUN. Unknown input identity never becomes parity.
+The remaining original candidate has no field run. Resurrection is separately verified
+as a sixth source-unmatched diagnostic, never an addition to the five-work M2 gate.
 """
 from __future__ import annotations
 
@@ -17,7 +18,7 @@ import re
 
 from .benchmark import _MISSING, _lookup, _reference_specs
 from .benchmark_readiness import build_readiness, _load
-from . import full_work_gallery, running_waves_diagnostic, silver_dove_retained, karamazov_retained
+from . import full_work_gallery, running_waves_diagnostic, silver_dove_retained, karamazov_retained, resurrection_retained
 from .csv_safety import safe_csv_text
 
 SCHEMA_VERSION = "scriptorium-fantlab-retained-metrics-v1"
@@ -278,6 +279,7 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
     silver_observed = silver_dove_retained.verify(root, silver_witness)
     karamazov_witness = next(e for e in entries if e['candidate_id'] == karamazov_retained.CANDIDATE_ID)
     karamazov_observed = karamazov_retained.verify(root, karamazov_witness)
+    resurrection_observed = resurrection_retained.verify(root)
     output_entries: list[dict[str, object]] = []
     for source in entries:
         is_anna = source["candidate_id"] == _ANNA_ID
@@ -302,22 +304,44 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
                                            silver_dove_retained.REPLAY_HEAD_SHA if is_silver else
                                            karamazov_retained.REPLAY_HEAD_SHA if is_karamazov else None),
         })
+    # The five independently validated readiness candidates and their M2
+    # denominator remain unchanged. Resurrection is a sixth, supplemental
+    # source-frozen DIAGNOSTIC, not another claimed matched FantLab input.
+    supplemental = [{
+        "candidate_id": resurrection_retained.CANDIDATE_ID,
+        "title": "Воскресение",
+        "author": "Лев Толстой",
+        "source_witness_sha256": resurrection_retained.diagnostic.FROZEN_BODY_SHA256,
+        "source_manifest": resurrection_retained.MANIFEST_PATH,
+        "reference_url": resurrection_retained.diagnostic.FANTLAB_URL,
+        "reference_date": resurrection_retained.diagnostic.FANTLAB_DATE,
+        "exact_fantlab_input_identity": "UNKNOWN",
+        "metric_evidence": "RETAINED_DIAGNOSTIC",
+        "m2_candidate_scope": "SUPPLEMENTAL_NOT_SOURCE_MATCHED",
+        "metric_rows": resurrection_observed,
+        "metric_rows_with_actual": sum(r["actual"] is not None for r in resurrection_observed),
+        "metric_rows_without_actual": sum(r["actual"] is None for r in resurrection_observed),
+        "original_ci_artifact_sha256": resurrection_retained.ORIGINAL_JSON_SHA256,
+        "retained_analyzer_revision": None,
+    }]
     return {
         "schema_version": SCHEMA_VERSION,
         "source_readiness_schema": readiness["schema_version"],
         "works_reported": 5,
         "works_with_retained_metric_diagnostics": 4,
-        "retained_metric_rows": len(observed) + len(wave_observed) + len(silver_observed) + len(karamazov_observed),
+        "retained_metric_rows": len(observed) + len(wave_observed) + len(silver_observed) + len(karamazov_observed) + len(resurrection_observed),
+        "supplemental_retained_metric_rows": len(resurrection_observed),
         "m2_source_matched_pass_count": 0,
-        "note": "Retained observations are diagnostic or extension, NOT parity. One work has no field run; Silver Dove and Brothers Karamazov each have only two retained FantLab reference counts. Exact FantLab input identity and decimal rounding remain UNKNOWN.",
+        "note": "Five core works retain the unchanged source-readiness/M2 denominator; Resurrection is supplemental source-unmatched evidence. One core work has no field run. Silver Dove, Brothers Karamazov and Resurrection each have only two retained FantLab reference counts. None establishes input identity or decimal rounding.",
         "entries": output_entries,
+        "supplemental_diagnostics": supplemental,
     }
 
 
 def render_metric_matrix(report: dict[str, object], kind: str) -> str:
     if kind == "json":
         return json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n"
-    entries = report["entries"]
+    entries = report["entries"] + report["supplemental_diagnostics"]
     if kind == "csv":
         stream = StringIO(newline="")
         writer = csv.writer(stream, lineterminator="\n")
@@ -353,7 +377,8 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
     lines.extend([
         "", "## Retained source-unmatched diagnostic rows", "",
         "All numeric differences are **actual minus expected** on an unmatched public transcription.",
-        "Unknown actual is not zero; displayed-rounding policy remains UNKNOWN.", "",
+        "Unknown actual is not zero; displayed-rounding policy remains UNKNOWN.",
+        "Resurrection is a sixth supplemental diagnostic, outside the fixed five-work M2 source-readiness set.", "",
         "| Metric ID | FantLab expected | Scriptorium actual | Raw Δ | Status |",
         "| --- | ---: | ---: | ---: | --- |",
     ])
@@ -368,7 +393,7 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
                 f"| {row['metric_id']} | {fmt(row['expected'])} | {fmt(row['actual'])} | "
                 f"{fmt(row['actual_minus_expected'])} | {row['result']} |"
             )
-    lines.extend(["", "One work still lacks field observations. Silver Dove and Brothers Karamazov each have two displayed FantLab references; missing reference values are unknown, not zero.", ""])
+    lines.extend(["", "Among the five readiness works, one lacks field observations. Silver Dove, Brothers Karamazov and supplemental Resurrection each have only two displayed FantLab references; missing reference values are unknown, not zero. M2 remains 0/5.", ""])
     return "\n".join(lines)
 
 

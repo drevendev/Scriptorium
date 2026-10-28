@@ -38,7 +38,30 @@ class ExpandedChartTests(unittest.TestCase):
         self.assertTrue(all("disabled" in x for x in buttons))
         self.assertEqual(sum(x["aria-pressed"] == "true" for x in buttons), 1)
         self.assertIn('id="chart-unit" class="chart-unit" aria-live="polite"', html)
+        self.assertIn('<details class="chart-table">', html)
+        self.assertIn('id="chart-table-rows"', html)
+        self.assertIn('id="chart-table-caption"', html)
+        self.assertIn('aria-label="Таблица чисел выбранной диаграммы"', html)
+        chart_rows = html.split('<tbody id="chart-table-rows">', 1)[1].split('</tbody>', 1)[0]
+        self.assertEqual(chart_rows.count('<tr><th scope="row">'), 7)
         self.assertIn("«Нет данных»", html)
+
+    def test_no_js_table_uses_exact_frozen_values(self):
+        """Static fallback must not mislabel rounded values as exact."""
+        import re
+
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        fallback = html.split('<tbody id="chart-table-rows">', 1)[1].split('</tbody>', 1)[0]
+        pattern = r'<tr><th scope="row">([^<]+)</th><td>([^<]+)</td><td>%</td></tr>'
+        rows = re.findall(pattern, fallback)
+        data = json.loads((ROOT / "assets/evidence-snapshot.json").read_text(encoding="utf-8"))
+        measured = [b for b in data["books"] if b["text_status"] == "measured"]
+        expected = [(b["display_title"], str(next(m["actual"] for m in b["metrics"]
+                        if m["id"] == "fantlab.dialogue.share_percent"))) for b in measured]
+        self.assertEqual(len(rows), 7)
+        self.assertEqual(rows, expected)
+        self.assertNotEqual(re.findall(pattern, fallback.replace(
+            f"<td>{expected[0][1]}</td>", "<td>34,97</td>", 1)), expected)
 
     def test_measured_coverage_and_profile_identity(self):
         data = json.loads((ROOT / "assets/evidence-snapshot.json").read_text(encoding="utf-8"))
@@ -61,6 +84,8 @@ class ExpandedChartTests(unittest.TestCase):
         self.assertIn("row.value!==null", js)
         self.assertIn("book.profiles?.[k]===baseline[k]", js)
         self.assertIn(".chart-row.chart-missing", css)
+        self.assertIn(".chart-table summary:focus-visible", css)
+        self.assertIn('el("chart-table-rows").replaceChildren(tableNodes)', js)
         self.assertNotIn("innerHTML", js)
 
     @unittest.skipUnless(shutil.which("node"), "Node unavailable: structural checks still run")

@@ -274,6 +274,7 @@
     const known=rows.filter(row=>row.value!==null);
     const high=Math.max(0,...known.map(row=>row.value));
     const nodes=document.createDocumentFragment();
+    const tableNodes=document.createDocumentFragment();
     for (const row of rows) {
       const container=document.createElement("div");
       container.className="chart-row"+(row.value===null?" chart-missing":"");
@@ -287,8 +288,16 @@
       insertText(container,"strong",row.value===null?"нет данных":
                  pretty(row.value,conf[2])+(conf[1]==="%"?"%":""));
       nodes.appendChild(container);
+      const tableRow=document.createElement("tr");
+      insertText(tableRow,"th",row.title).scope="row";
+      insertText(tableRow,"td",row.value===null?"нет данных":exact(row.value));
+      insertText(tableRow,"td",conf[1]);
+      tableNodes.appendChild(tableRow);
     }
     el("chart-series").replaceChildren(nodes);
+    el("chart-table-rows").replaceChildren(tableNodes);
+    el("chart-table-caption").textContent=conf[0]+" · "+conf[1]+
+      " · "+known.length+" из "+rows.length+" измеренных книг";
     el("chart-unit").textContent=conf[0]+" · "+conf[1]+
       " · доступно для "+known.length+" из "+rows.length+
       " книг; нет данных ≠ 0. Числа округлены до "+conf[2]+" знаков.";

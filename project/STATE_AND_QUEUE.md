@@ -1,35 +1,35 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 345
+STATE_REVISION: 346
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-28
-LAST_RESULT: PR #344 merged (caf2379d9c0eb2b8b892200536aa5a205c255707); #283 expanded root Reader chart pending later independent acceptance.
-LAST_VERIFIED_PROGRESS: Seven measured Russian editions in master (7/10; 182 fields, 153 numeric and 29 unavailable). Retained FantLab matrix has 113 rows over four of the five source-readiness candidates; #344 merged 29 independently source-bound Resurrection rows as a supplemental sixth diagnostic, 142 total. Public HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
+LAST_RESULT: PR #345 merged (0ca6c30d70a1b2f6b98df5dc0e7e636d1446b188); #283 accessible exact-value chart tables authored for later independent acceptance.
+LAST_VERIFIED_PROGRESS: Seven measured Russian editions in master (7/10; 182 fields, 153 numeric and 29 unavailable). Retained FantLab matrix: 142 rows, including 29 supplemental source-unmatched Resurrection rows. Branch Pages build AND deploy completed successfully on master 0ca6c30d (GitHub Actions #40719281314); public HTTP/browser still LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-CHART-COVERAGE-020
-ISSUES: #283 (reader accessibility), #285 (Pages publication)
+UNIT_ID: SCRIP-SITE-012-CHART-TABLE-021
+ISSUES: #283 (accessible charts), #285 (Pages)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-012-expanded-metric-charts
-BASE: caf2379d9c0eb2b8b892200536aa5a205c255707
-ACCEPTANCE: Eight real source-frozen chart dimensions retain all seven measured books.
-Unmeasured Beketova dialogue/narration lengths are explicitly missing, never zero;
-profile mismatch is rejected before rendering. No change to source snapshots, corpus,
-FantLab parity gates, downloads or scientifically valid comparison scope.
+BRANCH: scrip-site-012-chart-data-table
+BASE: 0ca6c30d70a1b2f6b98df5dc0e7e636d1446b188
+ACCEPTANCE: Each of eight chart modes has an on-demand native table with exact
+source-backed observations, units, stable seven-book order, and explicit
+missing-vs-zero distinction. The static no-JS table mirrors the initial
+dialogue chart. No source, corpus, FantLab or M2 gates change.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: eight verified Russian chart views; root Pages actual public HTTP/mobile
-acceptance remains VISUAL_NOT_VERIFIED and LIVE_NOT_VERIFIED.
+Milestone: inspectable eight-metric charts plus exact-value accessible alternatives;
+root Pages deployed by branch workflow but live HTTP/mobile acceptance remains open.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 expanded-chart PR | Later exact-head CI, independent review and qualifying merge | Authorship wake excludes merge |
-| P2 | #285 live verification | Check public branch Pages assets, JSON/CSV, keyboard/mobile | Prior HTTP/browser blocked; do not invent screenshots |
-| P3 | #281 strict FantLab matrix | New field-level diagnostics or source/rounding evidence | Exact FantLab edition UNKNOWN |
-| P4 | Road to Nowhere alternate | Analyze complete frozen Russian edition as an independent slice | Primary transcription incomplete |
-| P5 | #282 pinned AOT/pylem | Quantify noun-vs-cardinal bounds | Native POS ambiguity not established |
+| P1 | #283 chart-table PR | Later exact-head CI, independent review and qualifying merge | Authorship wake excludes merge |
+| P2 | #285 live verification | Public branch Pages HTTP assets, JSON/CSV, keyboard/mobile | HTTP/browser tool blocked; deployment success alone not LIVE_VERIFIED |
+| P3 | #281 FantLab matrix | New per-field diagnostic or source/rounding evidence | Exact FantLab edition UNKNOWN |
+| P4 | Road to Nowhere alternate | Analyze complete frozen Russian edition independently | Primary transcription incomplete |
+| P5 | #282 pinned AOT/pylem | Quantify noun-versus-cardinal effects | Native POS ambiguity unresolved |
 
 M2 stays **0/5**. No source prose is published. Existing hourly schedule unchanged.
 

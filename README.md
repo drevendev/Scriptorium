@@ -4,7 +4,7 @@
 
 **Russian-first public Reader (merged as PR #333; live HTTP not independently verified):** GitHub Pages uses `master / (root)`. The new home page groups **10 Russian-language works**: seven with actual source-pinned observations and three clearly marked as work in progress. The 7 measured books provide **182 fields, 153 numeric observations and 29 explicitly unavailable values**. Search, book-to-book rate comparisons, chart bars, JSON exports and source metadata are reader-facing; cross-language original/translation analysis is not yet present. The multi-route Python-generated Reader remains a **separate local/CI build** in `build/site`, rather than the root branch Pages experience; its retained FantLab matrix currently covers four measured books and one unmeasured source. The Hyperboloid generated route described below is separately measured and does not silently alter that matrix.
 
-**Seventh measured Russian work (this PR, not yet published):** Tolstoy’s *Resurrection* has 29 source-frozen fields (24 numeric, five NOT_RUN) from 129 pinned revisions, body SHA-256, two public FantLab count references and original CI-artifact hashes. `?book=resurrection#measurements` becomes usable only after publication. FantLab input identity is UNKNOWN, comparison DIAGNOSTIC_ONLY, M2 0/5. No source prose is published.
+**Seventh measured Russian work (merged to master in #342; HTTP unverified):** Tolstoy’s *Resurrection* has 29 source-frozen fields (24 numeric, five NOT_RUN) from 129 pinned revisions, body SHA-256, two public FantLab count references and original CI-artifact hashes. `?book=resurrection#measurements` is implemented in the root Reader; independent live-route verification remains outstanding. FantLab input identity is UNKNOWN, comparison DIAGNOSTIC_ONLY, M2 0/5. No source prose is published.
 
 **Shareable book views (root Reader source):** Every measured Russian edition can now be opened directly in the same-page metric explorer, for example [Beketova's Russian translation](https://drevendev.github.io/Scriptorium/?book=beketova#measurements) or [Silver Dove](https://drevendev.github.io/Scriptorium/?book=silver#measurements). These addresses select only allow-listed, verified measurement records; pending/invalid IDs fall back to Anna Karenina. Back/forward, keyboard focus and source-JSON fallbacks are retained. The URL is a target for the existing branch Pages deployment **after the relevant commit is published**—the README link alone is not proof of live deployment. This public root navigation is separate from the generated Reader's multi-page routes.
 
@@ -30,7 +30,7 @@ python -m scriptorium.site_renderer --repo-root . --output build/site
 
 The separate, historical *Actions artifact deployment* job remains guarded by `SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true`, but is **not required** for GitHub's already configured branch Pages publication. Do not change the deployment gate or repository settings to make the root homepage work. See [#285](https://github.com/drevendev/Scriptorium/issues/285) for the distinction and [#284](https://github.com/drevendev/Scriptorium/issues/284) for unresolved software/data reuse licensing.
 
-**Retained Resurrection field diagnostic (CI/replay and root Reader, source-free):** The 129 exact pinned Russian Wikisource chapters of Tolstoy's *Resurrection* can be replayed into **29 versioned Scriptorium fields** in one verified pass. The output retains numerical values, units, two publicly documented FantLab count references and signed deltas, with dictionary-dependent values as `NOT_RUN`. It includes no chapter prose, and explicitly records **unknown FantLab input edition, diagnostic-only comparison and M2 0/5**. CI creates separate create-only replay/field receipts; the verified source-free 29-row receipt is retained in this PR's Reader snapshot (24 numeric and five NOT_RUN), subject to independent CI acceptance and deployment. Reproduce when the pinned source endpoint is reachable:
+**Retained Resurrection field diagnostic (CI/replay and root Reader, source-free):** The 129 exact pinned Russian Wikisource chapters of Tolstoy's *Resurrection* can be replayed into **29 versioned Scriptorium fields** in one verified pass. The output retains numerical values, units, two publicly documented FantLab count references and signed deltas, with dictionary-dependent values as `NOT_RUN`. It includes no chapter prose, and explicitly records **unknown FantLab input edition, diagnostic-only comparison and M2 0/5**. CI creates separate create-only replay/field receipts; the verified source-free 29-row receipt is retained in master (24 numeric and five NOT_RUN). GitHub Pages live-route verification remains outstanding. Reproduce when the pinned source endpoint is reachable:
 
 ```bash
 python -m scriptorium.resurrection_diagnostic \
@@ -49,7 +49,7 @@ comparison of two analyses to the canonical Reader and its real-work gallery.
 
 The Russian module (`ru`) is the initial product priority. Every analyzed literary body has an **analysis language** and an independent **edition identity**. A translated work additionally records the author's original language, a named translator and a specific edition/source family; another translator or translation revision becomes a separate identity, not another spelling of the title. The measured Russian translation of **Дети капитана Гранта** by **А. А. Бекетова** has 11 real derived fields, but no measured French original. The researched translation of **О происхождении видов** by **С. А. Рачинский** has no retained numeric fields, and its English source is not analyzed here. Never place invented English/French numbers into Russian graphs. See [versioned language/translation contract](docs/TRANSLATIONS_AND_LANGUAGE_MODULES.md).
 
-**Coverage target:** 10 analyzed works, each individually rights-cleared, byte/source-frozen and measured. Current committed root-Reader data (merged PR #333): 6 measured / 10 catalogued; the remaining four are labelled honestly and require separate reproducible measurements. This is unrelated to the stricter FantLab M2 source-matched parity requirement (0/5).
+**Coverage target:** 10 analyzed works, each individually rights-cleared, byte/source-frozen and measured. Current committed root-Reader data (through merged PR #342): 7 measured / 10 catalogued; the remaining three are labelled honestly and require separate reproducible measurements. This is unrelated to the stricter FantLab M2 source-matched parity requirement (0/5).
 
 ## Try your own text
 
@@ -204,20 +204,23 @@ validated field-level observations in the metric matrix below.
 
 To inspect **actual retained per-metric differences** rather than character counts alone,
 run `python -m scriptorium.benchmark_metric_matrix --root . --format markdown`.
-The source-free matrix validates **113 field-level diagnostic/extension rows** across
-**four works with retained measurements**: *Anna Karenina* has 28 (23 numeric,
+The source-free matrix validates **142 field-level diagnostic/extension rows**: 113 across the core five-work source-readiness set (**four works with retained measurements**, one missing), and an additional 29 for *Resurrection* as a separately pinned, source-unmatched diagnostic. The original five-work set contains: *Anna Karenina* has 28 (23 numeric,
 five without actuals), *Running on Waves* has 27 (23 numeric, four NOT_RUN),
 and *The Silver Dove* and *The Brothers Karamazov* have 29 each (24 numeric,
 five dictionary-dependent NOT_RUN each). There are 94 measured and 19 unavailable
-actuals. The remaining **one** frozen work, *The Hyperboloid of Engineer Garin*,
-is not part of that five-source matrix, but has a separate 24-measured / 5-NOT_RUN generated Reader report. Both Silver Dove and Karamazov have
+actuals among these four. The remaining **one** frozen work, *The Hyperboloid of Engineer Garin*,
+is part of the five-source readiness matrix with NOT_RUN fields, but has a separate 24-measured / 5-NOT_RUN generated Reader report. Both Silver Dove and Karamazov have
 original SHA-pinned source-free CI receipts; only two FantLab displayed counts
-are retained for each. Other reference values and exact input identity remain
+are retained for each. The supplemental *Resurrection* adds 29 fields (24 numeric,
+five NOT_RUN) from 129 pinned chapters; the only retained FantLab references are
+characters 881,244 and words 126,457, with unmatched-source differences of
++9,591 and +9,672 respectively. In total the six retained diagnostics have
+118 measured fields and 24 unavailable actuals, without increasing M2 progress. Other reference values and exact input identity remain
 UNKNOWN; none establishes FantLab parity. Anna's historical rows include 4/4 general, 4/4 dialogue,
 14/14 punctuation and 1/6 vocabulary measurements; its other five vocabulary
 actuals are two NOT_RUN and three unresolved.
 
-The Reader displays all 29 Silver Dove and 29 Brothers Karamazov fields in accessible static tables,
+The generated evidence Reader displays all 29 Silver Dove, 29 Brothers Karamazov and 29 supplemental Resurrection fields in accessible static tables,
 including separate unknown FantLab references and an explicit extension marker.
 It also labels metric units and percentage-point differences, and offers
 **independent search/filter controls for both books** by metric name/ID,
@@ -231,7 +234,7 @@ Scriptorium candidates**, not author-style or FantLab-parity evidence.
 Neither retained work is source-matched to FantLab's analyzer input, displayed
 rounding is unproven, and **M2 stays 0/5**.
 Build the site with `scriptorium site --repo-root . --output build/site` and open
-`build/site/evidence/fantlab/index.html` to browse the same verified five-work evidence
+`build/site/evidence/fantlab/index.html` to browse the same verified five-work readiness evidence plus the separately labelled Resurrection diagnostic
 and download its source-free JSON/CSV. The same page now also shows each
 frozen work's character count, signed diagnostic difference from FantLab's
 displayed count and source/edition/rights link. It also shows **signed

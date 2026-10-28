@@ -41,9 +41,17 @@ def _pairs_unique(pairs: list[tuple[str, object]]) -> dict[str, object]:
 
 
 def _load(root: Path, relative: str) -> dict[str, object]:
-    if relative.startswith("/") or ".." in Path(relative).parts:
+    path = Path(relative)
+    if path.is_absolute() or ".." in path.parts:
         raise ValueError("unsafe evidence path")
-    data = json.loads((root / relative).read_text(encoding="utf-8"), object_pairs_hook=_pairs_unique)
+    # Repository metadata must be regular paths, never symlink aliases to
+    # another evidence file or to private content outside --root.
+    target = root
+    for part in path.parts:
+        target = target / part
+        if target.is_symlink():
+            raise ValueError("unsafe symlinked evidence path")
+    data = json.loads(target.read_text(encoding="utf-8"), object_pairs_hook=_pairs_unique)
     if not isinstance(data, dict):
         raise ValueError(f"invalid evidence object: {relative}")
     return data

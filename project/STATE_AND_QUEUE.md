@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 340
+STATE_REVISION: 341
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-28
-LAST_RESULT: PR #338 verified merged at b636b8932d45d5bf0935836104281f3a721a3378. Authored root Reader CSV export from the same pinned JSON comparison data and corrected static percentage-point delta units.
-LAST_VERIFIED_PROGRESS: Six measured Russian editions, 129 numeric and 24 unavailable observations. Book/pair permalinks and pair JSON export merged. Root Pages HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED; generated Reader is a separate local/CI build. M2 0/5.
+LAST_RESULT: Verified PR #339 merged at 1bfa132aebc595794653c44e91c9bbe970499e7a. Authored fail-closed symlink evidence path validation for benchmark readiness/field matrix; later CI acceptance is pending.
+LAST_VERIFIED_PROGRESS: Six measured Russian editions, 129 numeric and 24 unavailable observations. Book/pair links and JSON/CSV pair exports merged; external Pages HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-ROOT-PAIR-CSV-015
-ISSUES: #283 (usability), #285 (publication verification)
+UNIT_ID: SCRIP-REPRO-010-SYMLINK-EVIDENCE-016
+ISSUES: #281 (strict evidence readiness and metric matrix)
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-027-pair-csv-export
-BASE: b636b8932d45d5bf0935836104281f3a721a3378
-ACCEPTANCE: Export deterministic source-free UTF-8 CSV from the exact same jointly measured observations used by JSON export for two distinct allow-listed, same-profile editions. Preserve metric IDs, numeric left/right/delta, original/percentage-point delta units, all shared profile versions, names/translators, edition and source SHA-256, evidence URLs, DIAGNOSTIC_ONLY/M2 0/5. Quote and spreadsheet-formula-neutralize text, leave signed numeric values numeric. Pending/duplicate/mismatched pairs never export. No-JS percentage-point fallback must be truthful. Positive/negative Python and Node regressions, later exact-head CI/acceptance, independent merge and deployment proof remain required.
+BRANCH: scrip-repro-010-reject-symlinked-evidence
+BASE: 1bfa132aebc595794653c44e91c9bbe970499e7a
+ACCEPTANCE: Benchmark readiness must reject symlinked catalog, retained reference and witness paths, including symlinked parent directories, before reading JSON. Ordinary regular source-free evidence remains valid. Negative regression tests cover both external file links and in-repository directory aliases; exact-head CI, later fresh acceptance and qualifying merge remain required. No inference of FantLab input identity, parity or publication.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: usable evidence-bound JSON and CSV comparisons for measured Russian works, then verify real Pages.
+Milestone: source-verifiable Russian work comparisons and a publicly verified Reader.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 CSV pair export | Exact-head CI, later fresh acceptance and qualifying merge | This run authored it |
+| P1 | #281 evidence path safety | Later exact-head acceptance/merge of symlink rejection | This run authored the PR |
 | P2 | #285 public root verification | HTTP assets/export and keyboard/mobile browser acceptance | Previous HTTP/DNS denied; independent code continues |
 | P3 | Resurrection pinned-body replay | Compute versioned derived results from 129 frozen revisions | Legal/source hash and profile gates |
 | P4 | Road to Nowhere alternate | Analyze a complete separately frozen edition | Not the incomplete original |
-| P5 | #281 benchmark report | Explain source-matched eligibility and exact metric deltas | FantLab analyzer-input identity unknown |
+| P5 | #281 strict benchmark report | Extend eligible source-bound metric deltas without claiming parity | FantLab analyzer-input identity unknown |
 
 M2 remains **0/5**. Exports are diagnostic, not new corpus admissions, parity, licensing or proof of live publication. The same hourly job remains unchanged.
 

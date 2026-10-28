@@ -133,6 +133,30 @@ class ReadinessTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "running body trace raw digest"):
             build_readiness(self.root)
 
+    def test_rejects_symlink_to_external_catalog(self):
+        path = self.root / CATALOG
+        with tempfile.TemporaryDirectory() as outside:
+            replacement = Path(outside) / "catalog.json"
+            replacement.write_bytes(path.read_bytes())
+            path.unlink()
+            try:
+                path.symlink_to(replacement)
+            except (OSError, NotImplementedError):
+                self.skipTest("filesystem does not allow symlinks")
+            with self.assertRaisesRegex(ValueError, "symlinked evidence"):
+                build_readiness(self.root)
+
+    def test_rejects_symlinked_parent_even_with_in_root_witnesses(self):
+        traces = self.root / "corpus/candidates/source-edition-traces"
+        preserved = self.root / "trace-witnesses"
+        traces.rename(preserved)
+        try:
+            traces.symlink_to(preserved, target_is_directory=True)
+        except (OSError, NotImplementedError):
+            self.skipTest("filesystem does not allow symlinks")
+        with self.assertRaisesRegex(ValueError, "symlinked evidence"):
+            build_readiness(self.root)
+
     def test_rejects_falsified_fantlab_url_and_duplicate_json_fields(self):
         path = self.root / CATALOG
         data = json.loads(path.read_text(encoding="utf-8"))

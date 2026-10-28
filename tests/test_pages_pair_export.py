@@ -28,6 +28,10 @@ class PairExportTests(unittest.TestCase):
         matching = [attrs for attrs in buttons if attrs.get("id") == "pair-export"]
         self.assertEqual(len(matching), 1)
         self.assertIn("disabled", matching[0])
+        csv_buttons = [attrs for attrs in buttons if attrs.get("id") == "pair-export-csv"]
+        self.assertEqual(len(csv_buttons), 1)
+        self.assertIn("disabled", csv_buttons[0])
+        self.assertIn("<td>% · Δ в п.п.</td>", html)
         self.assertIn("Только совместные измерения", html)
         self.assertIn('class="evidence-actions"', html)
 
@@ -36,6 +40,11 @@ class PairExportTests(unittest.TestCase):
         for claim in (
             "function sharedPairRows(a,b)",
             "function buildPairExport(leftKey,rightKey)",
+            "function serializePairCsv(report)",
+            "function csvText(value)",
+            "function exportPairCsv()",
+            'pairCsvButton.addEventListener("click",exportPairCsv)',
+            "pairCsvButton.disabled=rows.length===0;",
             "sharedPairRows(a,b)",
             'schema:"scriptorium-ru-pair-comparison-v1"',
             'scientific_claim:"DIAGNOSTIC_ONLY"',

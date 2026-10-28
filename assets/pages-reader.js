@@ -34,6 +34,7 @@
   const rightSelect = el("pair-right");
   const pairMetric = el("pair-metric");
   const pairExportButton = el("pair-export");
+  const pairCsvButton = el("pair-export-csv");
   let data;
   let currentBook = "anna";
   let currentChart = "fantlab.dialogue.share_percent";
@@ -339,8 +340,64 @@
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
 
+
+  // Flat CSV from the same validated evidence-bound JSON comparison.
+  // Text is quoted and neutralized against spreadsheet formulas.
+  function csvText(value) {
+    const raw=String(value??"");
+    // Keep the full original text after the apostrophe. Unicode format marks
+    // and full-width operators can hide spreadsheet formulas on import.
+    const unsafe=/^[\t\r\n\u0000]/u.test(raw) ||
+      /^[\s\p{Cf}]*[=+@＝＋－＠-]/u.test(raw);
+    const safe=unsafe?"'"+raw:raw;
+    return '"'+safe.replaceAll('"','""')+'"';
+  }
+  function serializePairCsv(report) {
+    const headers=[
+      "schema","scientific_claim","fantlab_input_identity","m2_source_matched",
+      "comparison_direction","measurement_profiles",
+      "left_key","left_candidate_id","left_title","left_author","left_translator",
+      "left_edition_id","left_source_sha256","left_evidence_url",
+      "right_key","right_candidate_id","right_title","right_author","right_translator",
+      "right_edition_id","right_source_sha256","right_evidence_url",
+      "metric_id","unit","delta_unit","left_actual","right_actual","delta_right_minus_left"
+    ];
+    const lines=report.metrics.map(metric=>{
+      const fields=[
+        report.schema,report.scientific_claim,report.fantlab_input_identity,
+        report.m2_source_matched,report.comparison_direction,
+        JSON.stringify(report.measurement_profiles),
+        report.left.key,report.left.candidate_id,report.left.title,report.left.author,
+        report.left.translator?.name||"",report.left.edition_id,
+        report.left.source_sha256,report.left.evidence_url,
+        report.right.key,report.right.candidate_id,report.right.title,report.right.author,
+        report.right.translator?.name||"",report.right.edition_id,
+        report.right.source_sha256,report.right.evidence_url,
+        metric.id,metric.unit,metric.delta_unit,
+        metric.left_actual,metric.right_actual,metric.delta_right_minus_left
+      ];
+      return fields.slice(0,-3).map(csvText).concat(fields.slice(-3).map(String)).join(",");
+    });
+    return "\uFEFF"+[headers.join(","),...lines].join("\r\n")+"\r\n";
+  }
+  function exportPairCsv() {
+    const result=buildPairExport(leftSelect.value,rightSelect.value);
+    if (!result) {
+      pairCsvButton.disabled=true;
+      return;
+    }
+    const blob=new Blob([serializePairCsv(result)],{type:"text/csv;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");
+    link.href=url;
+    link.download="scriptorium-pair-"+result.left.key+"-"+result.right.key+".csv";
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
   function updatePair() {
     pairExportButton.disabled=true;
+    pairCsvButton.disabled=true;
     const a=getBook(leftSelect.value),b=getBook(rightSelect.value);
     if (!a||!b) throw Error("Книга отсутствует в измеренном корпусе");
     const matchingProfiles=["metrics","normalization","dialogue","vocabulary","punctuation"];
@@ -372,6 +429,7 @@
     }
     el("pair-rows").replaceChildren(fragment);
     pairExportButton.disabled=rows.length===0;
+    pairCsvButton.disabled=rows.length===0;
     el("pair-caption").textContent=a.display_title+" → "+b.display_title+" · правая минус левая";
     el("pair-status").textContent=rows.length+" совместно измеренных нормированных метрик. "+
       (a.translator||b.translator?"Одна из версий — русский перевод. ":"")+
@@ -462,7 +520,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,...chartButtons];
+      const inputs=[one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>{currentChart=btn.dataset.chart;updateChart();});
@@ -486,6 +544,7 @@
       search.addEventListener("input",updateSingle);
       out.addEventListener("click",exportSelected);
       pairExportButton.addEventListener("click",exportPair);
+      pairCsvButton.addEventListener("click",exportPairCsv);
       leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",updatePair);

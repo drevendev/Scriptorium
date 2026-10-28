@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 339
+STATE_REVISION: 340
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-28
-LAST_RESULT: PR #337 verified merged at 61617a516369b352702196d590a38f0729e65f57. Proposed one bounded root Reader improvement: reproducible, source-free two-book comparison JSON export with negative regressions.
-LAST_VERIFIED_PROGRESS: Branch Pages root has 10 Russian-language titles, six measured works (129 numeric / 24 unavailable). Book and pair permalinks are merged; master GitHub-managed Pages build/deploy #40590540066 succeeded. Public URL and screenshots remain LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED after blocked HTTP/DNS reads. Multi-route generated Reader is separate. M2 remains 0/5.
+LAST_RESULT: PR #338 verified merged at b636b8932d45d5bf0935836104281f3a721a3378. Authored root Reader CSV export from the same pinned JSON comparison data and corrected static percentage-point delta units.
+LAST_VERIFIED_PROGRESS: Six measured Russian editions, 129 numeric and 24 unavailable observations. Book/pair permalinks and pair JSON export merged. Root Pages HTTP/browser LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED; generated Reader is a separate local/CI build. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-ROOT-PAIR-EXPORT-014
-ISSUES: #283 (comparison usability), #285 (publication verification)
-STATUS: AUTHORED_PENDING_EXACT_HEAD_CI_AND_LATER_ACCEPTANCE
-BRANCH: scrip-site-026-pair-json-export
-BASE: 61617a516369b352702196d590a38f0729e65f57
-ACCEPTANCE: Reader compares only two distinct, measured, same-profile Russian editions; a user can download the exact jointly measured table as deterministic JSON with versioned schema, unit, numeric values/difference, two distinct source hashes, evidence links, translator/edition and explicit diagnostic-only status. No source prose, network upload, absent-value-to-zero conversion or falsely source-matched FantLab claim. Positive/negative Node/Python checks; later exact-head hosted CI, independent acceptance and merge required. Deployment/live checks independent and still pending.
+UNIT_ID: SCRIP-SITE-ROOT-PAIR-CSV-015
+ISSUES: #283 (usability), #285 (publication verification)
+STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
+BRANCH: scrip-site-027-pair-csv-export
+BASE: b636b8932d45d5bf0935836104281f3a721a3378
+ACCEPTANCE: Export deterministic source-free UTF-8 CSV from the exact same jointly measured observations used by JSON export for two distinct allow-listed, same-profile editions. Preserve metric IDs, numeric left/right/delta, original/percentage-point delta units, all shared profile versions, names/translators, edition and source SHA-256, evidence URLs, DIAGNOSTIC_ONLY/M2 0/5. Quote and spreadsheet-formula-neutralize text, leave signed numeric values numeric. Pending/duplicate/mismatched pairs never export. No-JS percentage-point fallback must be truthful. Positive/negative Python and Node regressions, later exact-head CI/acceptance, independent merge and deployment proof remain required.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: reproducibly export two-book real comparisons, then verify the public branch-root Pages experience without implying FantLab parity.
+Milestone: usable evidence-bound JSON and CSV comparisons for measured Russian works, then verify real Pages.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 pair evidence export | Later exact-head CI/review/merge of JSON export with bounded negative tests | Authored change requires later acceptance |
-| P2 | #285 live Pages verification | Confirm branch-root URL/assets and keyboard/mobile with permitted browser | Blocked HTTP/DNS does not block independent product code |
-| P3 | Resurrection pinned-body replay | Recompute 129 frozen revisions with versioned profile and retain derived numbers | Legal/source hash check; no parity |
-| P4 | Road to Nowhere alternate candidate | Measure separately frozen complete alternate edition | Must not conflate with incomplete original |
-| P5 | #281 strict benchmark coverage/deltas | Make source-matched eligibility/deltas inspectable, preserving M2 | FantLab analyzer-input identity remains unresolved |
+| P1 | #283 CSV pair export | Exact-head CI, later fresh acceptance and qualifying merge | This run authored it |
+| P2 | #285 public root verification | HTTP assets/export and keyboard/mobile browser acceptance | Previous HTTP/DNS denied; independent code continues |
+| P3 | Resurrection pinned-body replay | Compute versioned derived results from 129 frozen revisions | Legal/source hash and profile gates |
+| P4 | Road to Nowhere alternate | Analyze a complete separately frozen edition | Not the incomplete original |
+| P5 | #281 benchmark report | Explain source-matched eligibility and exact metric deltas | FantLab analyzer-input identity unknown |
 
-M2 remains **0/5**. These root Reader UX improvements do not establish an analyzer-input match or parity-corpus admission. The existing hourly task is unchanged.
+M2 remains **0/5**. Exports are diagnostic, not new corpus admissions, parity, licensing or proof of live publication. The same hourly job remains unchanged.
 
 ## Retained evidence and scientific gates
 

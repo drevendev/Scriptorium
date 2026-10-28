@@ -306,6 +306,27 @@
     }
   }
 
+  // Share an allow-listed chart, never an arbitrary metric or data source.
+  function chartFromUrl() {
+    const requested = new URLSearchParams(window.location.search).get("metric");
+    return Object.prototype.hasOwnProperty.call(metrics, requested) ? requested :
+      "fantlab.dialogue.share_percent";
+  }
+  function selectChart(id, addHistory=false) {
+    if (!Object.prototype.hasOwnProperty.call(metrics, id)) return;
+    currentChart = id;
+    updateChart();
+    const link = el("share-chart");
+    link.href = "?metric=" + encodeURIComponent(id) + "#charts";
+    link.textContent = "Прямая ссылка на диаграмму «" + metrics[id][0] + "» ↗";
+    if (addHistory) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("metric", id);
+      url.hash = "charts";
+      window.history.pushState(null, "", url);
+    }
+  }
+
   const pairedIds = [
     "fantlab.dialogue.share_percent",
     "fantlab.dialogue.author_text_inside_dialogue_percent",
@@ -573,7 +594,7 @@
       const inputs=[one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
-        btn.addEventListener("click",()=>{currentChart=btn.dataset.chart;updateChart();});
+        btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
       }
       for(const anchor of bookLinks) {
         anchor.addEventListener("click",event=>{
@@ -587,6 +608,7 @@
       }
       one.addEventListener("change",()=>selectBook(one.value,true));
       window.addEventListener("popstate",()=>{
+        selectChart(chartFromUrl());
         selectBook(bookFromUrl());
         const [left,right] = pairFromUrl();
         selectPair(left,right);
@@ -598,7 +620,7 @@
       leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",updatePair);
-      updateChart();
+      selectChart(chartFromUrl());
       const [left,right] = pairFromUrl();
       selectPair(left,right);
       selectBook(bookFromUrl());

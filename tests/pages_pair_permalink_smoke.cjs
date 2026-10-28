@@ -36,7 +36,7 @@ assert.equal(window.location.hash,"#pairs");
 assert.equal(window.history.pushes.length,1);
 assert.equal(renders,2);
 for(const query of [
- "?left=resurrection&right=anna",
+ "?left=road&right=anna",
  "?left=anna&right=anna",
  "?left=../../secrets&right=silver",
  "?left=silver",
@@ -46,8 +46,10 @@ for(const query of [
  window.location=new URL("https://drevendev.github.io/Scriptorium/"+query);
  assert.deepEqual(routes.pairFromUrl(),["anna","karamazov"],query);
 }
+window.location=new URL("https://drevendev.github.io/Scriptorium/?left=resurrection&right=anna#pairs");
+assert.deepEqual(routes.pairFromUrl(),["resurrection","anna"]);
 const before=renders;
-routes.selectPair("resurrection","anna",true);
+routes.selectPair("road","anna",true);
 assert.equal(renders,before);
 assert.equal(window.history.pushes.length,1);
 routes.selectPair("anna","anna",true);

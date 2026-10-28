@@ -55,13 +55,15 @@ assert.equal(scroll.count, 1);
 assert.equal(window.history.pushes.length, 1);
 assert.equal(routes.current(), "silver");
 
+window.location = new URL("https://drevendev.github.io/Scriptorium/?book=resurrection#measurements");
+assert.equal(routes.bookFromUrl(), "resurrection");
 // Unknown and pending IDs are never source paths or fabricated book measurements.
-for (const bad of ["resurrection", "../../secrets", "SILVER", "", "__proto__"]) {
+for (const bad of ["road", "../../secrets", "SILVER", "", "__proto__"]) {
   window.location = new URL("https://drevendev.github.io/Scriptorium/?book=" + encodeURIComponent(bad));
   assert.equal(routes.bookFromUrl(), "anna");
 }
 const before = renders;
-routes.selectBook("resurrection", true, true);
+routes.selectBook("road", true, true);
 assert.equal(renders, before);
 assert.equal(window.history.pushes.length, 1);
 

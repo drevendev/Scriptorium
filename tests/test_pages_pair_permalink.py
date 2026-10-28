@@ -26,7 +26,7 @@ class PairLinks(unittest.TestCase):
                          ["?left=anna&right=karamazov#pairs"])
         doc=json.loads((ROOT/"assets/evidence-snapshot.json").read_text(encoding="utf-8"))
         measured={b["key"] for b in doc["books"] if b["text_status"]=="measured"}
-        self.assertEqual(len(measured),6)
+        self.assertEqual(len(measured),7)
         self.assertTrue({"anna","karamazov"}.issubset(measured))
         self.assertIn('id="pair-status" class="control-note" aria-live="polite"',html)
         css=(ROOT/"assets/pages-reader.css").read_text(encoding="utf-8")

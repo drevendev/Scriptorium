@@ -25,9 +25,9 @@ SOURCE=(
  ("karamazov","corpus/candidates/diagnostics/dostoevsky-brothers-karamazov-ru.json",29,24),
  ("hyperboloid","corpus/candidates/diagnostics/tolstoy-hyperboloid-garin-wikisource-ru.retained.json",29,24),
  ("beketova","corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json",11,11),
+ ("resurrection","corpus/candidates/diagnostics/tolstoy-resurrection-ru.retained.json",29,24),
 )
 PENDING={
- "resurrection":"corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.json",
  "road":"corpus/candidates/source-edition-traces/grin-road-nowhere-ru.json",
  "petersburg":"corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.json",
  "darwin":"corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json",
@@ -62,11 +62,11 @@ class RussianBranchReaderTests(unittest.TestCase):
         self.assertEqual(d["fantlab_input_identity"],"UNKNOWN")
         self.assertIs(d["comparability"]["m2_parity_admissible"],False)
         self.assertEqual(d["counts"],{
-          "work_count":10,"measured_works":6,"awaiting_measurement":4,
-          "metrics_total":153,"numeric_total":129,"unavailable_total":24,
+          "work_count":10,"measured_works":7,"awaiting_measurement":3,
+          "metrics_total":182,"numeric_total":153,"unavailable_total":29,
           "m2_source_matched":0
         })
-        self.assertEqual(d["language_modules"]["ru"]["measured_work_count"],6)
+        self.assertEqual(d["language_modules"]["ru"]["measured_work_count"],7)
         self.assertEqual(d["language_modules"]["en"]["state"],"planned_not_measured")
         self.assertEqual(d["language_modules"]["en"]["measured_work_count"],0)
         self.assertEqual(d["language_modules"]["fr"]["measured_work_count"],0)
@@ -74,11 +74,11 @@ class RussianBranchReaderTests(unittest.TestCase):
         self.assertEqual({b["language"] for b in d["books"]},{"ru"})
         self.assertEqual(len({b["candidate_id"] for b in d["books"]}),10)
         self.assertEqual(len({(b["family_id"],b["edition_id"]) for b in d["books"]}),10)
-        self.assertEqual(sum(b["measured"] for b in d["books"]),129)
-        self.assertEqual(sum(b["unavailable"] for b in d["books"]),24)
-        self.assertEqual(sum(len(b["metrics"]) for b in d["books"]),153)
+        self.assertEqual(sum(b["measured"] for b in d["books"]),153)
+        self.assertEqual(sum(b["unavailable"] for b in d["books"]),29)
+        self.assertEqual(sum(len(b["metrics"]) for b in d["books"]),182)
 
-    def test_exact_source_free_measurements_preserved_for_six_books(self):
+    def test_exact_source_free_measurements_preserved_for_seven_books(self):
         works={b["key"]:b for b in self.data["books"]}
         for key,path,total,observed in SOURCE:
             with self.subTest(book=key):
@@ -118,6 +118,19 @@ class RussianBranchReaderTests(unittest.TestCase):
                         "fantlab.general.words":"69126",
                     })
                     readings={m["id"]:(m["actual"],m["reference"]) for m in artifact["metric_rows"]}
+                elif key=="resurrection":
+                    self.assertIs(artifact["gates"]["m2_parity_admissible"],False)
+                    self.assertIs(artifact["source_text_committed"],False)
+                    self.assertEqual(artifact["body_identity"]["chapter_count"],129)
+                    self.assertEqual(artifact["source_evidence"]["original_ci_artifact_json_sha256"],"c122b9c95273bb78064c66d4e58fd82beb5e95480f1b98c78c71f5fcf536eefe")
+                    self.assertEqual(artifact["source_evidence"]["original_ci_archive_sha256"],"b74edf2ac8d721a4d65f59bd4eb0df8f84a443829664577368a28fbe4d6ad78b")
+                    self.assertEqual(b["source_sha256"],artifact["source_body_sha256"])
+                    from scriptorium.resurrection_diagnostic import FROZEN_BODY_SHA256, FROZEN_BODY_CHARACTERS, FANTLAB_REFERENCES
+                    self.assertEqual(FROZEN_BODY_SHA256,b["source_sha256"])
+                    self.assertEqual(FROZEN_BODY_CHARACTERS,890835)
+                    self.assertEqual(artifact["fantlab"]["public_display_references_retained"],FANTLAB_REFERENCES)
+                    self.assertEqual(sum(m["actual"] is None for m in artifact["metric_rows"]),5)
+                    readings={m["metric_id"]:(m["actual"],None if m["fantlab_display"] is None else float(m["fantlab_display"])) for m in artifact["metric_rows"]}
                 elif key=="beketova":
                     self.assertIs(artifact["gates"]["m2_parity_admissible"],False)
                     self.assertIs(artifact["source_text_committed"],False)
@@ -187,7 +200,7 @@ class RussianBranchReaderTests(unittest.TestCase):
         self.assertIn('<html lang="ru">',h)
         self.assertEqual(sum(t=="h1" for t,_ in parsed.start),1)
         self.assertEqual(sum(t=="article" and a.get("class","").startswith("book") for t,a in parsed.start),10)
-        self.assertEqual(h.count('class="chart-row"'),6)
+        self.assertEqual(h.count('class="chart-row"'),7)
         self.assertIn('id="pair-left"',h)
         self.assertIn('id="pair-right"',h)
         self.assertIn('id="pair-metric"',h)
@@ -200,9 +213,9 @@ class RussianBranchReaderTests(unittest.TestCase):
         self.assertIn('id="translations"',h)
         self.assertIn("Бекетовой",h)
         self.assertIn("Рачинского",h)
+        self.assertIn("182",h)
         self.assertIn("153",h)
-        self.assertIn("129",h)
-        self.assertIn("24",h)
+        self.assertIn("29",h)
         self.assertIn("M2: 0/5",h)
         for anchor in ("#books","#pairs","#measurements","#translations","#method"):
             self.assertIn(anchor,parsed.links)
@@ -215,8 +228,8 @@ class RussianBranchReaderTests(unittest.TestCase):
     def test_js_fails_closed_on_wrong_language_unknown_or_fake_parity(self):
         js=self.js
         self.assertIn('doc.schema !== "scriptorium-ru-reader-v2"',js)
-        self.assertIn('doc.counts?.measured_works !== 6',js)
-        self.assertIn('doc.counts?.metrics_total !== 153',js)
+        self.assertIn('doc.counts?.measured_works !== 7',js)
+        self.assertIn('doc.counts?.metrics_total !== 182',js)
         self.assertIn('doc.comparability?.m2_parity_admissible !== false',js)
         self.assertIn('doc.language_modules?.en?.measured_work_count !== 0',js)
         self.assertIn("book.original_language !== book.language",js)

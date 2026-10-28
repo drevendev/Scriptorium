@@ -81,8 +81,13 @@ assert.ok(data.metrics.some(m=>m.delta_unit==="percentage_points"));
 assert.ok(data.metrics.some(m=>m.delta_unit==="на 1000 слов"));
 assert.ok(data.metrics.some(m=>m.delta_unit==="символов / предложение"));
 assert.deepEqual(actions.buildPairExport("anna","beketova"),data);
+const resurrectionPair=actions.buildPairExport("anna","resurrection");
+assert.ok(resurrectionPair && resurrectionPair.metrics.length>=7);
+assert.equal(resurrectionPair.right.source_sha256,"2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0");
+assert.equal(resurrectionPair.fantlab_input_identity,"UNKNOWN");
+assert.equal(resurrectionPair.m2_source_matched,0);
 for(const [left,right] of [
-  ["anna","anna"],["resurrection","anna"],
+  ["anna","anna"],["road","anna"],
   ["anna","darwin"],["../../private","silver"],["anna","SILVER"]
 ]) assert.equal(actions.buildPairExport(left,right),null,left+"/"+right);
 const original=catalog.books.find(b=>b.key==="beketova").profiles.metrics;

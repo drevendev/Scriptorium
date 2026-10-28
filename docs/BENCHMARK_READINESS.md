@@ -14,7 +14,11 @@ No manuscripts are read, downloaded or uploaded. The report checks duplicate JSO
 keys, five explicit candidate identities, rights evidence, cross-record FantLab
 URL/work ID/date/count agreement, frozen body sizes and SHA-256 identities,
 normalization profiles, and explicitly unknown analyzer-input identity.
-Contradictions fail closed rather than yielding a misleading partial table.
+Symlinked catalog, reference and witness paths (including parent directories)
+are rejected rather than following aliases to other local or private files.
+This is a check of checked-out evidence paths, not a substitute for filesystem
+isolation against concurrent malicious changes. Contradictions fail closed
+rather than yielding a misleading partial table.
 
 The current **five frozen public candidates** are *Anna Karenina*, *The Brothers
 Karamazov*, *The Silver Dove*, *The Hyperboloid of Engineer Garin* and *Running

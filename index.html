@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Scriptorium: шесть измеренных русских книг, четыре произведения в работе, красивые диаграммы, сравнения и атрибуция переводчиков. Все числа из проверенных исходных данных.">
+<meta name="description" content="Scriptorium: семь измеренных русских книг, три произведения в работе, красивые диаграммы, сравнения и атрибуция переводчиков. Все числа из проверенных исходных данных.">
 <title>Scriptorium — литературный Reader на русском языке</title>
 <link rel="stylesheet" href="./assets/pages-reader.css"></head><body>
 <a class="skip-link" href="#main">Перейти к содержанию</a>
@@ -22,15 +22,20 @@
 <button type="button" data-chart="fantlab.dialogue.share_percent" aria-pressed="true" disabled>Диалоги</button>
 <button type="button" data-chart="fantlab.general.mean_sentence_length_chars" aria-pressed="false" disabled>Длина фразы</button>
 <button type="button" data-chart="fantlab.punctuation.comma.per_1000_words" aria-pressed="false" disabled>Запятые</button>
+<button type="button" data-chart="fantlab.punctuation.dash.per_1000_words" aria-pressed="false" disabled>Тире</button>
+<button type="button" data-chart="fantlab.general.mean_word_length_chars" aria-pressed="false" disabled>Длина слова</button>
+<button type="button" data-chart="fantlab.dialogue.author_text_inside_dialogue_percent" aria-pressed="false" disabled>Ремарки</button>
+<button type="button" data-chart="fantlab.dialogue.mean_dialogue_sentence_length_chars" aria-pressed="false" disabled>Длина реплики</button>
+<button type="button" data-chart="fantlab.dialogue.mean_narration_sentence_length_chars" aria-pressed="false" disabled>Авторская фраза</button>
 </div>
-<p id="chart-unit" class="chart-unit">Доля диалогов · %</p>
+<p id="chart-unit" class="chart-unit" aria-live="polite">Доля диалогов · % · доступно для 7 из 7 измеренных книг</p>
 <div id="chart-series" class="chart-series"><div class="chart-row"><span title="Анна Каренина">Анна Каренина</span><div class="bar-track" aria-hidden="true"><span style="width:71.70%"></span></div><strong>34,97%</strong></div>
 <div class="chart-row"><span title="Бегущая по волнам">Бегущая по волнам</span><div class="bar-track" aria-hidden="true"><span style="width:73.57%"></span></div><strong>35,89%</strong></div>
 <div class="chart-row"><span title="Серебряный голубь">Серебряный голубь</span><div class="bar-track" aria-hidden="true"><span style="width:41.96%"></span></div><strong>20,47%</strong></div>
 <div class="chart-row"><span title="Братья Карамазовы">Братья Карамазовы</span><div class="bar-track" aria-hidden="true"><span style="width:100.00%"></span></div><strong>48,78%</strong></div>
 <div class="chart-row"><span title="Гиперболоид инженера Гарина">Гиперболоид инженера Гарина</span><div class="bar-track" aria-hidden="true"><span style="width:68.30%"></span></div><strong>33,32%</strong></div>
 <div class="chart-row"><span title="Дети капитана Гранта">Дети капитана Гранта</span><div class="bar-track" aria-hidden="true"><span style="width:66.57%"></span></div><strong>32,47%</strong></div><div class="chart-row"><span title="Воскресение">Воскресение</span><div class="bar-track" aria-hidden="true"><span style="width:61.14%"></span></div><strong>29,82%</strong></div></div>
-<p class="chart-foot">Русские оригиналы и русские переводы показаны как разные редакции; сопоставление здесь исключительно описательное.</p>
+<p class="chart-foot">Русские оригиналы и русские переводы показаны как разные редакции; сопоставление исключительно описательное. «Нет данных» означает не измерено, а не ноль. Точные показатели доступны в реестре ниже.</p>
 </div></section>
 <section class="facts" aria-label="Фактический прогресс"><div><strong>07 <small>/ 10</small></strong><span>книг измерены; ещё 3 в подготовке</span></div>
 <div><strong>182</strong><span>зафиксированные поля метрик</span></div>

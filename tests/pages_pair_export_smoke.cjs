@@ -105,7 +105,10 @@ catalog.books.find(b=>b.key==="beketova").profiles.metrics=original;
   actions.exportPairCsv();
   assert.equal(clicked,2);
   assert.equal(filename,"scriptorium-pair-anna-beketova.csv");
-  assert.equal(await downloadBlob.text(),csv);
+  // Blob.text() strips the UTF-8 BOM; validate downloaded bytes instead.
+  const downloadedCsv=Buffer.from(await downloadBlob.arrayBuffer());
+  assert.deepEqual(downloadedCsv,Buffer.from(csv,"utf8"));
+  assert.deepEqual([...downloadedCsv.subarray(0,3)],[0xEF,0xBB,0xBF]);
   rightSelect.value="anna";
   actions.exportPair();
   actions.exportPairCsv();

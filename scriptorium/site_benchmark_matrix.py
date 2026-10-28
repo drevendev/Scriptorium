@@ -236,8 +236,8 @@ def build(root: Path) -> dict[str, str]:
     if (report["schema_version"] != matrix.SCHEMA_VERSION
             or report["m2_source_matched_pass_count"] != 0
             or report["works_reported"] != 5
-            or report["works_with_retained_metric_diagnostics"] != 4
-            or report["retained_metric_rows"] != 142
+            or report["works_with_retained_metric_diagnostics"] != 5
+            or report["retained_metric_rows"] != 171
             or report["supplemental_retained_metric_rows"] != 29
             or len(entries) != 5):
         raise ValueError("FantLab evidence publication gate has changed")
@@ -282,6 +282,27 @@ def build(root: Path) -> dict[str, str]:
             or {r["metric_id"] for r in karamazov["metric_rows"]}
                != set(_METRIC_PRESENTATION) | {"scriptorium.general.sentences"}):
         raise ValueError("retained Brothers Karamazov diagnostic coverage changed")
+
+    hyperboloid = next(
+        (entry for entry in entries if entry["candidate_id"] ==
+         "tolstoy-hyperboloid-garin-wikisource-ru"), None
+    )
+    if (hyperboloid is None or len(hyperboloid["metric_rows"]) != 29
+            or hyperboloid["metric_rows_with_actual"] != 24
+            or hyperboloid["metric_rows_without_actual"] != 5
+            or hyperboloid["exact_fantlab_input_identity"] != "UNKNOWN"
+            or {r["metric_id"] for r in hyperboloid["metric_rows"]} !=
+               set(_METRIC_PRESENTATION) | {"scriptorium.general.sentences"}):
+        raise ValueError("retained Hyperboloid diagnostic coverage changed")
+    hyperboloid_reference_counts = {
+        r["metric_id"]: (r["expected"], r["actual"], r["actual_minus_expected"])
+        for r in hyperboloid["metric_rows"] if r["expected"] is not None
+    }
+    if hyperboloid_reference_counts != {
+        "fantlab.general.characters": (495539, 499066, 3527),
+        "fantlab.general.words": (69126, 71921, 2795),
+    }:
+        raise ValueError("Hyperboloid source-unmatched reference deltas changed")
 
     supplemental = report["supplemental_diagnostics"]
     if (not isinstance(supplemental, list) or len(supplemental) != 1
@@ -697,6 +718,7 @@ def build(root: Path) -> dict[str, str]:
         'decimal display rounding is UNKNOWN. Count resemblance does not prove source '
         'identity. Missing measurements are NOT_RUN, never zero.</p>'
         '<p class="actions"><a href="#silver-title">Explore Silver Dove’s 29 measured and unknown fields ↓</a> <a href="#karamazov-title">Explore Brothers Karamazov’s 29 fields ↓</a> <a href="#resurrection-title">Explore Resurrection’s 29 fields ↓</a> '
+        '<a href="../../works/hyperboloid-garin-measured/">Explore Hyperboloid’s 29 fields ↗</a> '
         '<a class="primary-action" href="metrics.json" download>'
         'Download verified JSON</a> <a href="metrics.csv" download>'
         'Download metric CSV</a> <a href="readiness.json" download>'
@@ -705,8 +727,9 @@ def build(root: Path) -> dict[str, str]:
         'docs/BENCHMARK_METRIC_MATRIX.md">Read the methodology ↗</a></p>'
         '</header>'
         '<section aria-labelledby="works-title"><h2 id="works-title">Five frozen public candidates</h2>'
-        '<p>Four works have retained metric observations. The remaining one '
-        'has NOT_RUN metric status. Each source row shows public-domain '
+        '<p>All five works have retained source-unmatched metric observations. '
+        'Hyperboloid’s 29 fields also have a separately verified full-work '
+        'detail page. Each source row shows public-domain '
         'edition evidence, frozen text characters (including spaces), FantLab '
         'displayed characters, a signed count difference and relative drift '
         '(frozen − FantLab displayed) / FantLab displayed × 100, rounded to '

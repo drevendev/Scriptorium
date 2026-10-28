@@ -345,7 +345,11 @@
   // Text is quoted and neutralized against spreadsheet formulas.
   function csvText(value) {
     const raw=String(value??"");
-    const safe=/^[\s\uFEFF]*[=+@-]/u.test(raw)?"'"+raw:raw;
+    // Keep the full original text after the apostrophe. Unicode format marks
+    // and full-width operators can hide spreadsheet formulas on import.
+    const unsafe=/^[\t\r\n\u0000]/u.test(raw) ||
+      /^[\s\p{Cf}]*[=+@＝＋－＠-]/u.test(raw);
+    const safe=unsafe?"'"+raw:raw;
     return '"'+safe.replaceAll('"','""')+'"';
   }
   function serializePairCsv(report) {

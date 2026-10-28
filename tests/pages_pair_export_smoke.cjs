@@ -101,6 +101,13 @@ catalog.books.find(b=>b.key==="beketova").profiles.metrics=original;
   assert.ok(csv.includes('"percentage_points"'));
   assert.ok(csv.includes('"DIAGNOSTIC_ONLY"'));
   assert.match(actions.csvText(" =SUM(1,1)"),/^"'/);
+  for(const unsafe of [
+    "\u200B=SUM(1,1)", "\u2060＋SUM(1,1)", "\uFEFF＠SUM(1,1)",
+    "\tplain text", "\rplain text", "\nplain text", "\u0000plain text",
+    "－1", "＝HYPERLINK(1,2)"
+  ]) assert.equal(actions.csvText(unsafe), '"\''+unsafe+'"');
+  assert.equal(actions.csvText("\u200Bsafe text"), '"\u200Bsafe text"');
+  assert.equal(actions.csvText("Русский перевод - 1913"), '"Русский перевод - 1913"');
   assert.equal(actions.csvText('Leo "Tolstoy"'),'"Leo ""Tolstoy"""');
   actions.exportPairCsv();
   assert.equal(clicked,2);

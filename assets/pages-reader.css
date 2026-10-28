@@ -262,3 +262,15 @@ footer a { color:#ffdaa3; }
 #measurements-title:focus-visible { outline:3px solid var(--green); outline-offset:5px; border-radius:3px; }
 
 @media (max-width:490px) { .chart-row { grid-template-columns:6.8rem minmax(0,1fr) 5rem; } }
+
+/* Print the chart's exact-value table rather than relying on bar colors. */
+@media print {
+ .chart-table { display:block; background:#fff !important; color:#000 !important; }
+ .chart-table summary { display:none; }
+ .chart-table .table-region { overflow:visible; border:0; }
+ .chart-table table { width:100%; min-width:0; table-layout:fixed; color:#000 !important; font-size:9pt; }
+ .chart-table caption,.chart-table th,.chart-table td { color:#000 !important; border-color:#555 !important; }
+ .chart-table th:first-child { width:42%; }
+ .chart-table td:nth-child(2) { white-space:normal; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }
+ .chart-table tr { break-inside:avoid; }
+}

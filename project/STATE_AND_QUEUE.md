@@ -1,38 +1,35 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 349
+STATE_REVISION: 350
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-29
-LAST_RESULT: PR #348 merged into master at 43038d2780322ce720932d4e9cc7bc8a2ef33138. Root Reader metric permalinks proposed for independent acceptance.
+LAST_RESULT: PR #349 merged into master at 07b67e44486223f31c9a580ce57a2c0ac50fcbec. Selected pair-chart metric URL restoration proposed for later independent acceptance.
 LAST_VERIFIED_PROGRESS: Root Reader has seven measured Russian editions (7/10; 182 fields, 153 numeric, 29 unavailable). FantLab matrix has 171 diagnostic rows (142 numeric, 29 unavailable), all source-unmatched. M2 0/5. LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-CHART-PERMALINK-024
+UNIT_ID: SCRIP-SITE-012-PAIR-CHART-URL-028
 ISSUE: #283 Reader UX; #285 Pages verification
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-012-chart-permalinks-20261029
-BASE: 43038d2780322ce720932d4e9cc7bc8a2ef33138
-ACCEPTANCE: All eight allow-listed root Reader charts have metric-specific links
-and Back/Forward restoration. Unknown/inherited-object property names fall
-back to the measured dialogue chart; clicking a chart retains book/pair URL
-parameters. Keyboard-accessible link and existing static fallback remain.
-Node regressions verify the shipped handlers and HTML. Full exact-head CI
-and site build must pass before a later qualifying merge; no same-wake merge.
-No scientific observations changed.
+BRANCH: scrip-site-028-pair-chart-permalink
+BASE: 07b67e44486223f31c9a580ce57a2c0ac50fcbec
+ACCEPTANCE: The shared two-book comparison URL retains the selected allow-listed
+graph metric and measured edition IDs. Reload/Back/Forward restore the metric.
+Changing it preserves unrelated query parameters. Unsupported IDs fall back to
+the measured dialogue view. Node smoke, structural tests and exact-head CI
+must pass before a separate later qualifying merge. No scientific values changed.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: publish shareable metric-specific graphs and accessible exact-value
-tables for seven independently measured Russian editions.
+Milestone: share a specific measured pair graph for seven Russian editions.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 chart permalinks | Later fresh independent acceptance and qualifying merge | Exact-head checks and review |
-| P2 | #285 live Pages | Confirm public root route, desktop/mobile/keyboard/print | Previous HTTP/browser restriction |
-| P3 | #281 FantLab reference | Establish independent displayed rounding or exact source edition | FantLab input identity unknown |
-| P4 | #282 native AOT/pylem | Quantify noun/cardinal N ambiguity | Native ambiguity |
-| P5 | Road to Nowhere | Analyze existing frozen alternate Russian body when provenance gates pass | Approved body and metric receipt |
+| P1 | #283 pair chart metric URL | Later fresh acceptance and qualifying merge | Exact-head checks and review |
+| P2 | #285 live Pages | Verify root route and desktop/mobile/keyboard/print | HTTP/browser access restriction |
+| P3 | #281 FantLab reference | Establish rounding evidence or exact source edition | Input identity unknown |
+| P4 | #282 AOT/pylem | Quantify noun/cardinal N ambiguity | Native ambiguity |
+| P5 | Road to Nowhere | Measure existing alternate frozen Russian body | Rights/receipt gate |
 
 M2 remains **0/5**. The existing perpetual hourly schedule remains unchanged.
 

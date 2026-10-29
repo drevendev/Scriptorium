@@ -48,6 +48,17 @@ class PairLinks(unittest.TestCase):
         self.assertNotIn("fetch(window.location",js)
         self.assertNotIn("innerHTML",js)
 
+    def test_selected_pair_chart_metric_is_url_bound_and_allowlisted(self):
+        js=(ROOT/"assets/pages-reader.js").read_text(encoding="utf-8")
+        for fragment in ('function pairMetricAllowed(id)', 'pairedIds.includes(id)',
+                         'function pairMetricFromUrl()', 'get("pair_metric")',
+                         'url.searchParams.set("pair_metric", id)',
+                         'url.searchParams.set("pair_metric", pairMetric.value)',
+                         'pairMetric.value = pairMetricFromUrl()',
+                         'selectPairMetric(pairMetric.value,true)'):
+            with self.subTest(fragment=fragment):
+                self.assertIn(fragment,js)
+
     @unittest.skipUnless(shutil.which("node"),"Node missing; structural tests still run")
     def test_actual_routing_functions(self):
         for args in (["node","--check",str(ROOT/"assets/pages-reader.js")],

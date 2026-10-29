@@ -521,6 +521,26 @@
     return getBook(left) && getBook(right) && left !== right ?
       [left, right] : ["anna", "karamazov"];
   }
+  // URL selection can name only a shipped pair chart and measured metric.
+  function pairMetricAllowed(id) {
+    return pairedIds.includes(id) &&
+      [...pairMetric.options].some(option => option.value === id);
+  }
+  function pairMetricFromUrl() {
+    const id = new URLSearchParams(window.location.search).get("pair_metric");
+    return pairMetricAllowed(id) ? id : "fantlab.dialogue.share_percent";
+  }
+  function selectPairMetric(id, addHistory=false) {
+    if (!pairMetricAllowed(id)) return;
+    pairMetric.value = id;
+    selectPair(leftSelect.value,rightSelect.value);
+    if (addHistory) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("pair_metric", id);
+      url.hash = "pairs";
+      window.history.pushState(null, "", url);
+    }
+  }
   function selectPair(left, right, addHistory=false) {
     if (!getBook(left) || !getBook(right)) return;
     leftSelect.value = left;
@@ -534,13 +554,15 @@
     }
     share.hidden = false;
     share.href = "?left=" + encodeURIComponent(left) +
-                 "&right=" + encodeURIComponent(right) + "#pairs";
+                 "&right=" + encodeURIComponent(right) +
+                 "&pair_metric=" + encodeURIComponent(pairMetric.value) + "#pairs";
     share.textContent = "Прямая ссылка: «" + getBook(left).display_title +
                         "» и «" + getBook(right).display_title + "» ↗";
     if (addHistory) {
       const url = new URL(window.location.href);
       url.searchParams.set("left", left);
       url.searchParams.set("right", right);
+      url.searchParams.set("pair_metric", pairMetric.value);
       url.hash = "pairs";
       window.history.pushState(null, "", url);
     }
@@ -611,6 +633,7 @@
         selectChart(chartFromUrl());
         selectBook(bookFromUrl());
         const [left,right] = pairFromUrl();
+        pairMetric.value = pairMetricFromUrl();
         selectPair(left,right);
       });
       search.addEventListener("input",updateSingle);
@@ -619,9 +642,10 @@
       pairCsvButton.addEventListener("click",exportPairCsv);
       leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
-      pairMetric.addEventListener("change",updatePair);
+      pairMetric.addEventListener("change",()=>selectPairMetric(pairMetric.value,true));
       selectChart(chartFromUrl());
       const [left,right] = pairFromUrl();
+      pairMetric.value = pairMetricFromUrl();
       selectPair(left,right);
       selectBook(bookFromUrl());
     } catch (_) {

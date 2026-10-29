@@ -10,28 +10,37 @@ assert(start>=0&&end>start,"Shipped pair-route functions not found");
 const books=catalog.books.filter(b=>b.text_status==="measured");
 const getBook=k=>books.find(b=>b.key===k);
 const window={
-  location:new URL("https://drevendev.github.io/Scriptorium/?book=silver&left=waves&right=beketova#pairs"),
+  location:new URL("https://drevendev.github.io/Scriptorium/?book=silver&left=waves&right=beketova&pair_metric=fantlab.punctuation.dash.per_1000_words#pairs"),
   history:{pushes:[],pushState(_state,_title,url){
     this.pushes.push(String(url));
     window.location=new URL(String(url),window.location.href);
   }}
 };
 const l={value:"anna"},r={value:"karamazov"};
+const choices=["fantlab.dialogue.share_percent","fantlab.general.mean_sentence_length_chars",
+  "fantlab.punctuation.comma.per_1000_words","fantlab.punctuation.dash.per_1000_words",
+  "fantlab.general.mean_word_length_chars"];
+const pairMetric={value:choices[0],options:choices.map(value=>({value}))};
+const pairedIds=[...choices,"fantlab.dialogue.author_text_inside_dialogue_percent",
+                 "fantlab.punctuation.question.per_1000_words"];
 const share={hidden:false,href:"",textContent:"",removeAttribute(k){assert.equal(k,"href");this.href="";}};
 const el=id=>{assert.equal(id,"share-pair");return share;};
 let renders=0;
-const routes=new Function("window","getBook","leftSelect","rightSelect","updatePair","el",
-  source.slice(start,end)+"\nreturn {pairFromUrl,selectPair};"
-)(window,getBook,l,r,()=>{renders++;},el);
+const routes=new Function("window","getBook","leftSelect","rightSelect","pairMetric",
+  "pairedIds","updatePair","el",
+  source.slice(start,end)+"\nreturn {pairFromUrl,pairMetricFromUrl,selectPairMetric,selectPair};"
+)(window,getBook,l,r,pairMetric,pairedIds,()=>{renders++;},el);
+assert.equal(routes.pairMetricFromUrl(),"fantlab.punctuation.dash.per_1000_words");
+pairMetric.value=routes.pairMetricFromUrl();
 assert.deepEqual(routes.pairFromUrl(),["waves","beketova"]);
 routes.selectPair(...routes.pairFromUrl());
 assert.equal(l.value,"waves");
 assert.equal(r.value,"beketova");
-assert.equal(share.href,"?left=waves&right=beketova#pairs");
+assert.equal(share.href,"?left=waves&right=beketova&pair_metric=fantlab.punctuation.dash.per_1000_words#pairs");
 assert.match(share.textContent,/Гранта/);
 assert.equal(window.history.pushes.length,0);
 routes.selectPair("anna","silver",true);
-assert.equal(window.location.search,"?book=silver&left=anna&right=silver");
+assert.equal(window.location.search,"?book=silver&left=anna&right=silver&pair_metric=fantlab.punctuation.dash.per_1000_words");
 assert.equal(window.location.hash,"#pairs");
 assert.equal(window.history.pushes.length,1);
 assert.equal(renders,2);
@@ -62,4 +71,29 @@ assert.equal(l.value,"karamazov");
 assert.equal(r.value,"hyperboloid");
 assert.equal(window.history.pushes.length,1);
 assert.equal(share.hidden,false);
-console.log("Pages pair permalink valid, translation, invalid, duplicate and history PASS");
+window.location=new URL("https://drevendev.github.io/Scriptorium/?book=anna&left=anna&right=beketova#pairs");
+pairMetric.value=routes.pairMetricFromUrl();
+assert.equal(pairMetric.value,"fantlab.dialogue.share_percent");
+routes.selectPair("anna","beketova");
+routes.selectPairMetric("fantlab.general.mean_word_length_chars",true);
+assert.equal(pairMetric.value,"fantlab.general.mean_word_length_chars");
+assert.equal(window.location.searchParams.get("pair_metric"),pairMetric.value);
+assert.equal(window.location.searchParams.get("book"),"anna");
+assert.equal(window.location.searchParams.get("right"),"beketova");
+assert.equal(window.location.hash,"#pairs");
+assert.equal(share.href,"?left=anna&right=beketova&pair_metric=fantlab.general.mean_word_length_chars#pairs");
+const validPushes=window.history.pushes.length;
+for(const invalid of ["__proto__","constructor","does.not.exist",
+                      "fantlab.dialogue.author_text_inside_dialogue_percent"]){
+  window.location=new URL("https://drevendev.github.io/Scriptorium/?left=anna&right=beketova&pair_metric="+encodeURIComponent(invalid)+"#pairs");
+  assert.equal(routes.pairMetricFromUrl(),"fantlab.dialogue.share_percent");
+  routes.selectPairMetric(invalid,true);
+  assert.equal(window.history.pushes.length,validPushes);
+}
+window.location=new URL("https://drevendev.github.io/Scriptorium/?left=silver&right=waves&pair_metric=fantlab.punctuation.comma.per_1000_words#pairs");
+const [restoredLeft,restoredRight]=routes.pairFromUrl();
+pairMetric.value=routes.pairMetricFromUrl();
+routes.selectPair(restoredLeft,restoredRight);
+assert.equal(pairMetric.value,"fantlab.punctuation.comma.per_1000_words");
+assert.equal(share.href,"?left=silver&right=waves&pair_metric=fantlab.punctuation.comma.per_1000_words#pairs");
+console.log("Pages pair chart permalink: allow-list, reload, back/forward, history PASS");

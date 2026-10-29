@@ -24,6 +24,7 @@
   };
   const el = id => document.getElementById(id);
   const chartButtons = [...document.querySelectorAll("[data-chart]")];
+  const chartSortButton = el("chart-sort");
   const bookLinks = [...document.querySelectorAll("[data-book]")];
   const one = el("choose-book");
   const search = el("search-metric");
@@ -38,6 +39,7 @@
   let data;
   let currentBook = "anna";
   let currentChart = "fantlab.dialogue.share_percent";
+  let sortChart = false;
 
   function isNumeric(x) {
     return typeof x === "number" && Number.isFinite(x);
@@ -267,9 +269,15 @@
   function updateChart() {
     const conf=metrics[currentChart];
     if (!conf) throw Error("Показатель диаграммы не разрешён");
-    const rows=data.books.filter(b=>b.text_status==="measured").map(b=>{
+    const rows=data.books.filter(b=>b.text_status==="measured").map((b,ordinal)=>{
       const item=lookup(b,currentChart);
-      return {title:b.display_title,value:item&&isNumeric(item.actual)?item.actual:null};
+      return {title:b.display_title,value:item&&isNumeric(item.actual)?item.actual:null,ordinal};
+    });
+    // Presentation-only ordering; ties stay in catalog order and unknown is not zero.
+    if (sortChart) rows.sort((a,b)=>{
+      if (a.value===null) return b.value===null ? a.ordinal-b.ordinal : 1;
+      if (b.value===null) return -1;
+      return b.value-a.value || a.ordinal-b.ordinal;
     });
     const known=rows.filter(row=>row.value!==null);
     const high=Math.max(0,...known.map(row=>row.value));
@@ -304,6 +312,8 @@
     for (const btn of chartButtons) {
       btn.setAttribute("aria-pressed",String(btn.dataset.chart===currentChart));
     }
+    chartSortButton.setAttribute("aria-pressed",String(sortChart));
+    chartSortButton.textContent=sortChart ? "Вернуть порядок каталога" : "Сортировать по значению ↓";
   }
 
   // Share an allow-listed chart, never an arbitrary metric or data source.
@@ -591,11 +601,12 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,...chartButtons];
+      const inputs=[one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,chartSortButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
       }
+      chartSortButton.addEventListener("click",()=>{sortChart=!sortChart;updateChart();});
       for(const anchor of bookLinks) {
         anchor.addEventListener("click",event=>{
           // Modified click still opens the source JSON, even without site JS.

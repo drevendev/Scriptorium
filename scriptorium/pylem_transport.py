@@ -108,7 +108,8 @@ def consume_sidecar_response(
         for value in runtime_pos:
             if not isinstance(value, str) or not value.strip():
                 raise ValueError("sidecar returned blank/non-string runtime POS")
-            value = value.strip()
+            if value != value.strip():
+                raise ValueError("sidecar runtime POS must be canonical without surrounding whitespace")
             if value not in KNOWN_RUNTIME_POS:
                 raise ValueError(f"sidecar returned unknown runtime POS value: {value!r}")
             validated.append(value)

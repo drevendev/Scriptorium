@@ -46,6 +46,18 @@ class ExpandedChartTests(unittest.TestCase):
         self.assertEqual(chart_rows.count('<tr><th scope="row">'), 7)
         self.assertIn("«Нет данных»", html)
 
+    def test_sort_toggle_accessibility_and_fallback(self):
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        css = (ROOT / "assets/pages-reader.css").read_text(encoding="utf-8")
+        js = (ROOT / "assets/pages-reader.js").read_text(encoding="utf-8")
+        self.assertIn('id="chart-sort" aria-pressed="false" disabled', html)
+        self.assertIn("порядок каталога", html)
+        self.assertIn("if (sortChart) rows.sort", js)
+        self.assertIn("a.ordinal-b.ordinal", js)
+        self.assertIn('chartSortButton.setAttribute("aria-pressed",String(sortChart))', js)
+        self.assertIn(".chart-sort button:focus-visible", css)
+        self.assertIn(".chart-sort { display:none !important; }", css)
+
     def test_no_js_table_uses_exact_frozen_values(self):
         """Static fallback must not mislabel rounded values as exact."""
         import re

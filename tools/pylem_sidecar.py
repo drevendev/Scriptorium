@@ -37,6 +37,15 @@ def build_response(request):
     rows = request.get("tokens")
     if not isinstance(rows, list):
         raise ValueError("request tokens must be an array")
+    # Validate request identity before importing or running native morphology.
+    # JSON booleans compare equal to Python integer ordinals (False == 0).
+    for ordinal, row in enumerate(rows):
+        if (
+            not isinstance(row, dict)
+            or type(row.get("ordinal")) is not int
+            or row["ordinal"] != ordinal
+        ):
+            raise ValueError("request token ordinal mismatch")
 
     try:
         installed = version("pylem")
@@ -51,8 +60,6 @@ def build_response(request):
     cache = {}
     output_rows = []
     for ordinal, row in enumerate(rows):
-        if not isinstance(row, dict) or row.get("ordinal") != ordinal:
-            raise ValueError("request token ordinal mismatch")
         token = row.get("text")
         if not isinstance(token, str):
             raise ValueError("request token missing text")

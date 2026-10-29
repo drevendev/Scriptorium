@@ -1,39 +1,41 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 349
+STATE_REVISION: 350
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-29
-LAST_RESULT: PR #348 merged into master at 43038d2780322ce720932d4e9cc7bc8a2ef33138. Root Reader metric permalinks proposed for independent acceptance.
+LAST_RESULT: PR #350 merged at 1aa708d5308241e816180436afc69b99afbbb831. Strict integer sidecar identity guards proposed for later acceptance.
 LAST_VERIFIED_PROGRESS: Root Reader has seven measured Russian editions (7/10; 182 fields, 153 numeric, 29 unavailable). FantLab matrix has 171 diagnostic rows (142 numeric, 29 unavailable), all source-unmatched. M2 0/5. LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-CHART-PERMALINK-024
-ISSUE: #283 Reader UX; #285 Pages verification
+UNIT_ID: SCRIP-MORPH-011-STRICT-SIDECAR-IDENTITIES
+ISSUE: Provenance integrity of pinned pylem sidecar transport; related to #282.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-012-chart-permalinks-20261029
-BASE: 43038d2780322ce720932d4e9cc7bc8a2ef33138
-ACCEPTANCE: All eight allow-listed root Reader charts have metric-specific links
-and Back/Forward restoration. Unknown/inherited-object property names fall
-back to the measured dialogue chart; clicking a chart retains book/pair URL
-parameters. Keyboard-accessible link and existing static fallback remain.
-Node regressions verify the shipped handlers and HTML. Full exact-head CI
-and site build must pass before a later qualifying merge; no same-wake merge.
-No scientific observations changed.
+BRANCH: scrip-morph-011-strict-indices
+BASE: 1aa708d5308241e816180436afc69b99afbbb831
+ACCEPTANCE: Reject JSON boolean token ordinals and response token_count,
+which otherwise compare equal to Python integer indices. Native producer
+rejects malformed request indices before loading the pinned runtime.
+Positive canonical integer and negative malformed response/request
+regressions must pass on exact-head CI. This does not change POS metrics,
+backend pins, corpus inputs or M2 evidence. Later acceptance/merge only.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: publish shareable metric-specific graphs and accessible exact-value
-tables for seven independently measured Russian editions.
+Milestone: retain trustworthy native POS diagnostics while making
+the seven-measured-book Reader and pair comparisons verifiably accessible.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 chart permalinks | Later fresh independent acceptance and qualifying merge | Exact-head checks and review |
-| P2 | #285 live Pages | Confirm public root route, desktop/mobile/keyboard/print | Previous HTTP/browser restriction |
-| P3 | #281 FantLab reference | Establish independent displayed rounding or exact source edition | FantLab input identity unknown |
-| P4 | #282 native AOT/pylem | Quantify noun/cardinal N ambiguity | Native ambiguity |
-| P5 | Road to Nowhere | Analyze existing frozen alternate Russian body when provenance gates pass | Approved body and metric receipt |
+| P1 | Strict sidecar identities | Independent exact-head acceptance and qualifying merge | Full PR CI and native smoke |
+| P2 | #285 live Pages | Verify public Reader desktop/mobile, keyboard and printing | Prior HTTP/browser restriction |
+| P3 | #282 native AOT/pylem | Further quantify N noun/cardinal ambiguity with exact native evidence | Unrecoverable N runtime tag |
+| P4 | #281 FantLab reference | Independently establish displayed rounding or input edition identity | FantLab source input unknown |
+| P5 | #284 code/data licensing | Establish reuse permissions and attribution | Owner rights decision where needed |
 
+PR #349 chart metric URLs and PR #350 POS canonicalization are merged into
+master; the separate pair-chart permalink branch remains unpublished after
+an actual PR-create safety denial, and is not retried without capability change.
 M2 remains **0/5**. The existing perpetual hourly schedule remains unchanged.
 
 ## Retained evidence and scientific gates

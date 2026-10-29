@@ -1,6 +1,7 @@
 import ast
 from hashlib import sha256
 import json
+import runpy
 import unittest
 from pathlib import Path
 
@@ -53,6 +54,55 @@ class PylemTransportTests(unittest.TestCase):
         self.assertEqual(artifact["metrics"]["defined"]["count"], 1)
         self.assertEqual(artifact["metrics"]["undefined"]["count"], 2)
         self.assertEqual(artifact["metrics"]["buckets"]["adjective"]["count"], 1)
+
+    def test_boolean_token_counts_and_ordinals_are_not_integers(self):
+        # Python considers True == 1 and False == 0, but JSON booleans
+        # are not valid protocol index/count identities.
+        request = build_sidecar_request("Раз два.")
+        response = self._response(request, [["N"], ["N"]])
+        self.assertEqual(
+            consume_sidecar_response(request, response)["metrics"]["undefined"]["count"],
+            2,
+        )
+
+        for row_index, boolean in ((0, False), (1, True)):
+            for origin in ("request", "response"):
+                with self.subTest(row_index=row_index, origin=origin):
+                    candidate_request = build_sidecar_request("Раз два.")
+                    candidate_response = self._response(
+                        candidate_request, [["N"], ["N"]]
+                    )
+                    target = (
+                        candidate_request["tokens"][row_index]
+                        if origin == "request"
+                        else candidate_response["rows"][row_index]
+                    )
+                    target["ordinal"] = boolean
+                    with self.assertRaisesRegex(ValueError, "ordinal mismatch"):
+                        consume_sidecar_response(candidate_request, candidate_response)
+
+        request = build_sidecar_request("Раз.")
+        response = self._response(request, [["N"]])
+        response["token_count"] = True
+        with self.assertRaisesRegex(ValueError, "token count mismatch"):
+            consume_sidecar_response(request, response)
+
+        empty_request = build_sidecar_request("")
+        empty_response = self._response(empty_request, [])
+        empty_response["token_count"] = False
+        with self.assertRaisesRegex(ValueError, "token count mismatch"):
+            consume_sidecar_response(empty_request, empty_response)
+
+    def test_native_sidecar_preflights_boolean_request_ordinal(self):
+        # The producer rejects malformed request identity without installing
+        # or importing the pinned native package.
+        sidecar = runpy.run_path(
+            str(Path(__file__).resolve().parents[1] / "tools/pylem_sidecar.py")
+        )
+        request = build_sidecar_request("Раз.")
+        request["tokens"][0]["ordinal"] = False
+        with self.assertRaisesRegex(ValueError, "ordinal mismatch"):
+            sidecar["build_response"](request)
 
     def test_transport_identity_mismatch_fails_closed(self):
         request = build_sidecar_request("Красный дом.")

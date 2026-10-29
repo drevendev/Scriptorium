@@ -82,7 +82,12 @@ def consume_sidecar_response(
     canonical_tokens = word_tokens(normalized)
     if len(request_tokens) != len(canonical_tokens):
         raise ValueError("sidecar request token count does not match canonical tokenization")
-    if response.get("token_count") != len(request_tokens) or len(rows) != len(request_tokens):
+    response_token_count = response.get("token_count")
+    if (
+        type(response_token_count) is not int
+        or response_token_count != len(request_tokens)
+        or len(rows) != len(request_tokens)
+    ):
         raise ValueError("sidecar response token count mismatch")
 
     candidates: list[tuple[str, ...]] = []
@@ -97,7 +102,14 @@ def consume_sidecar_response(
         if token != canonical_token.text:
             raise ValueError("sidecar request token text does not match canonical tokenization")
         expected_hash = _sha256_text(token)
-        if request_row.get("ordinal") != ordinal or response_row.get("ordinal") != ordinal:
+        request_ordinal = request_row.get("ordinal")
+        response_ordinal = response_row.get("ordinal")
+        if (
+            type(request_ordinal) is not int
+            or type(response_ordinal) is not int
+            or request_ordinal != ordinal
+            or response_ordinal != ordinal
+        ):
             raise ValueError("sidecar token ordinal mismatch")
         if request_row.get("sha256") != expected_hash or response_row.get("token_sha256") != expected_hash:
             raise ValueError("sidecar token identity mismatch")

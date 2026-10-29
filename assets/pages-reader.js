@@ -253,6 +253,38 @@
       ? "Показано "+shown+" из "+catalogCards.length+" книг: "+
         measured+" измерено, "+pending+" в подготовке. Переводы — отдельные редакции."
       : "Книг не найдено. Очистите поиск или измените фильтр.";
+    // A share link is explicit: typing never changes history or sends a query.
+    const raw=catalogSearch.value.trim();
+    const share=el("share-catalog");
+    share.hidden=!safeCatalogQuery(raw);
+    if (!share.hidden) {
+      share.href="?catalog="+encodeURIComponent(mode)+
+        (raw?"&q="+encodeURIComponent(raw):"")+"#books";
+      share.textContent=raw ? "Ссылка на этот поиск ↗" : "Ссылка на выбранный список ↗";
+    } else {
+      share.removeAttribute("href");
+    }
+  }
+
+  function safeCatalogQuery(raw) {
+    return typeof raw==="string" && raw.length<=120 &&
+      !/[\u0000-\u001f\u007f]/u.test(raw);
+  }
+
+  // Reject foreign/oversized URL input, preserve all static cards on failed JSON.
+  function catalogFromUrl() {
+    const params=new URLSearchParams(window.location.search);
+    const requested=params.get("catalog");
+    const mode=["all","measured","pending","translated"].includes(requested)
+      ? requested : "all";
+    const raw=params.get("q")||"";
+    return {mode,query:safeCatalogQuery(raw)?raw:""};
+  }
+  function restoreCatalogFromUrl() {
+    const state=catalogFromUrl();
+    catalogFilter.value=state.mode;
+    catalogSearch.value=state.query;
+    updateCatalog();
   }
 
   function updateSingle() {
@@ -664,10 +696,11 @@
       }
       catalogFilter.addEventListener("change",updateCatalog);
       catalogSearch.addEventListener("input",updateCatalog);
-      updateCatalog();
+      restoreCatalogFromUrl();
       el("catalog-tools").hidden=false;
       one.addEventListener("change",()=>selectBook(one.value,true));
       window.addEventListener("popstate",()=>{
+        restoreCatalogFromUrl();
         selectChart(chartFromUrl());
         selectBook(bookFromUrl());
         const [left,right] = pairFromUrl();

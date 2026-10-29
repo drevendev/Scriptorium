@@ -77,7 +77,7 @@ class PylemTransportTests(unittest.TestCase):
 
     def test_noncanonical_runtime_pos_cannot_split_transport_and_diagnostic_views(self):
         request = build_sidecar_request("Красный дом.")
-        for row in ([" N"], ["N "], [" N "], ["\\tA"], ["A\\n"]):
+        for row in ([" N"], ["N "], [" N "], [chr(9) + "A"], ["A" + chr(10)]):
             with self.subTest(row=row):
                 response = self._response(request, [row, ["N"]])
                 with self.assertRaisesRegex(ValueError, "canonical"):

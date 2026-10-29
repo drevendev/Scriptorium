@@ -1,41 +1,40 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 348
+STATE_REVISION: 349
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-28
-LAST_RESULT: PR #347 merged into master at 74b3af67c7b6d5f6222b940fc11c78eae23d212d. Hyperboloid's independently retained measurement receipt is proposed for five-work diagnostic matrix integration; no same-wake merge.
-LAST_VERIFIED_PROGRESS: Seven measured Russian editions in master (7/10; 182 fields, 153 numeric and 29 unavailable). Current master FantLab matrix: 142 rows. This branch proposes 171 rows (five core measured candidates + supplemental Resurrection); none is parity. Pages HTTP/browser remains LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
+LAST_COMMITTED_RUN_AT: 2026-10-29
+LAST_RESULT: PR #348 merged into master at 43038d2780322ce720932d4e9cc7bc8a2ef33138. Root Reader metric permalinks proposed for independent acceptance.
+LAST_VERIFIED_PROGRESS: Root Reader has seven measured Russian editions (7/10; 182 fields, 153 numeric, 29 unavailable). FantLab matrix has 171 diagnostic rows (142 numeric, 29 unavailable), all source-unmatched. M2 0/5. LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-HYPERBOLOID-MATRIX-023
-ISSUE: #281 (retained cross-work diagnostics)
+UNIT_ID: SCRIP-SITE-012-CHART-PERMALINK-024
+ISSUE: #283 Reader UX; #285 Pages verification
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-010-hyperboloid-matrix-20261028
-BASE: 74b3af67c7b6d5f6222b940fc11c78eae23d212d
-ACCEPTANCE: Reuse the exact pinned Hyperboloid 29-row CI artifact already
-published by the separate generated Reader route. Validate independent frozen
-body/reference identity, original CI/source hashes and 24 measured / five
-explicit NOT_RUN fields. Extend source-free five-work JSON/CSV/Markdown from
-142 to 171 rows, link the existing Hyperboloid detail page, preserve unknown
-values, unchanged five-work M2 denominator and zero parity claims. Full CI and
-site build must pass on exact PR head before a later qualifying merge.
+BRANCH: scrip-site-012-chart-permalinks-20261029
+BASE: 43038d2780322ce720932d4e9cc7bc8a2ef33138
+ACCEPTANCE: All eight allow-listed root Reader charts have metric-specific links
+and Back/Forward restoration. Unknown/inherited-object property names fall
+back to the measured dialogue chart; clicking a chart retains book/pair URL
+parameters. Keyboard-accessible link and existing static fallback remain.
+Node regressions verify the shipped handlers and HTML. Full exact-head CI
+and site build must pass before a later qualifying merge; no same-wake merge.
+No scientific observations changed.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: publish five measured source-frozen diagnostic works in the generated
-evidence Reader (pending fresh acceptance), without claiming FantLab parity.
+Milestone: publish shareable metric-specific graphs and accessible exact-value
+tables for seven independently measured Russian editions.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Hyperboloid retained matrix | Independent exact-head CI review and qualifying merge of this implementation | Same-wake authorship forbids merge |
-| P2 | #285 Pages verification | Confirm actual root Pages and generated-route publication boundaries; browser keyboard/mobile/print checks | Previous direct HTTP navigation blocked |
-| P3 | #281 FantLab reference analysis | Resolve independent displayed precision and exact edition identity for one ready frozen work | Unknown FantLab source input |
-| P4 | #282 pinned AOT/pylem | Quantify N noun/cardinal impact with exact native evidence | Native ambiguity unresolved |
-| P5 | Road to Nowhere alternate | Analyze independently frozen Russian literary body, if source gates pass | Source transcription incomplete |
+| P1 | #283 chart permalinks | Later fresh independent acceptance and qualifying merge | Exact-head checks and review |
+| P2 | #285 live Pages | Confirm public root route, desktop/mobile/keyboard/print | Previous HTTP/browser restriction |
+| P3 | #281 FantLab reference | Establish independent displayed rounding or exact source edition | FantLab input identity unknown |
+| P4 | #282 native AOT/pylem | Quantify noun/cardinal N ambiguity | Native ambiguity |
+| P5 | Road to Nowhere | Analyze existing frozen alternate Russian body when provenance gates pass | Approved body and metric receipt |
 
-M2 stays **0/5**. No books or private text are published by this matrix change.
-Existing perpetual hourly schedule unchanged.
+M2 remains **0/5**. The existing perpetual hourly schedule remains unchanged.
 
 ## Retained evidence and scientific gates
 

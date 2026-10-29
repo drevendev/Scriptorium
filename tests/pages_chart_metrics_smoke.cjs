@@ -92,3 +92,52 @@ assert.match(printCss,/\.chart-table td:nth-child\(2\).*overflow-wrap:anywhere/)
 assert.match(printCss,/@media print \{[\s\S]*\.chart-table summary \{ display:none; \}/);
 console.log("Print preview opens the exact chart table and restores disclosure state: PASS");
 console.log("Eight real charts and exact-value accessible tables: measured/missing/zero PASS");
+
+/* Exercise chart URL selection against shipped code and real Node URL handling. */
+const linkStart=source.indexOf("  // Share an allow-listed chart");
+const linkEnd=source.indexOf("  const pairedIds =",linkStart);
+assert.ok(linkStart>0&&linkEnd>linkStart);
+const chartLinkCode=source.slice(linkStart,linkEnd);
+const fallbackChart="fantlab.dialogue.share_percent";
+function chartLinkHarness(query){
+  const anchor={href:"",textContent:""};
+  const win={location:new URL("https://drevendev.github.io/Scriptorium/?book=beketova&left=anna&right=waves"+(query?"&metric="+encodeURIComponent(query):"")+"#books")};
+  win.history={pushState(_a,_b,url){win.location=new URL(String(url));}};
+  let renders=0;
+  const ctl=new Function("window","metrics","el","updateChart",
+    "let currentChart='fantlab.dialogue.share_percent';\n"+chartLinkCode+
+    "return {chartFromUrl,selectChart,current:()=>currentChart};")(
+      win,metrics,id=>{assert.equal(id,"share-chart");return anchor;},()=>renders++);
+  return {win,anchor,ctl,renders:()=>renders};
+}
+for(const id of ids){
+  const h=chartLinkHarness(id);
+  assert.equal(h.ctl.chartFromUrl(),id);
+  h.ctl.selectChart(h.ctl.chartFromUrl());
+  assert.equal(h.ctl.current(),id);
+  assert.equal(h.anchor.href,"?metric="+encodeURIComponent(id)+"#charts");
+  assert.ok(h.anchor.textContent.includes(metrics[id][0]));
+  assert.equal(h.renders(),1);
+  h.ctl.selectChart(fallbackChart,true);
+  assert.equal(h.win.location.searchParams.get("metric"),fallbackChart);
+  assert.equal(h.win.location.searchParams.get("book"),"beketova");
+  assert.equal(h.win.location.searchParams.get("left"),"anna");
+  assert.equal(h.win.location.hash,"#charts");
+  h.win.location=new URL("https://drevendev.github.io/Scriptorium/?metric="+encodeURIComponent(id)+"#charts");
+  h.ctl.selectChart(h.ctl.chartFromUrl());
+  assert.equal(h.ctl.current(),id,"Back/Forward metric restoration");
+}
+for(const invalid of [null,"does.not.exist","__proto__","constructor","toString"]){
+  const h=chartLinkHarness(invalid);
+  assert.equal(h.ctl.chartFromUrl(),fallbackChart);
+  h.ctl.selectChart(h.ctl.chartFromUrl());
+  assert.equal(h.anchor.href,"?metric="+fallbackChart+"#charts");
+  const n=h.renders();
+  h.ctl.selectChart(invalid);
+  assert.equal(h.renders(),n,"invalid metric must not render");
+}
+const siteHtml=fs.readFileSync(path.join(root,"index.html"),"utf8");
+assert.match(siteHtml,/id="charts" aria-labelledby="chart-title"/);
+assert.match(siteHtml,/id="share-chart" href="\?metric=fantlab\.dialogue\.share_percent#charts"/);
+assert.match(siteHtml,/id="chart-table-rows"/);
+console.log("Eight source-backed chart permalinks, URL fallback and history: PASS");

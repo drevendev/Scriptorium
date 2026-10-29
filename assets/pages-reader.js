@@ -210,6 +210,18 @@
     parent.appendChild(node);
     return node;
   }
+  // Source-unmatched arithmetic only, not parity, tolerance or a pass/fail score.
+  function diagnosticDelta(m) {
+    if (m.kind==="extension") return "N/A";
+    if (!isNumeric(m.actual)||!isNumeric(m.reference)) return "—";
+    const delta=m.actual-m.reference;
+    if (!Number.isFinite(delta)) return "—";
+    if (delta===0) return "0";
+    const whole=Number.isInteger(m.actual)&&Number.isInteger(m.reference);
+    const magnitude=Math.abs(delta);
+    const display=!whole&&magnitude<0.0005?"<0,001":pretty(magnitude,whole?0:3);
+    return (delta>0?"+":"−")+display+(unit(m.id)==="%"?" п.п.":"");
+  }
   function makeTableRow(m) {
     const tr=document.createElement("tr");
     const th=insertText(tr,"th",label(m.id));
@@ -217,6 +229,7 @@
     insertText(th,"code",m.id);
     insertText(tr,"td",m.actual===null?m.status.toUpperCase():exact(m.actual));
     insertText(tr,"td",m.kind==="extension"?"N/A":exact(m.reference));
+    insertText(tr,"td",diagnosticDelta(m),"benchmark-delta");
     insertText(tr,"td",unit(m.id));
     insertText(tr,"td",m.kind==="extension"?"Расширение Scriptorium":
                m.actual===null?m.status.toUpperCase():"Диагностика · несовпавший источник");
@@ -298,7 +311,7 @@
     if (!selected.length) {
       const row=document.createElement("tr");
       const td=insertText(row,"td","Ничего не найдено. Очистите поиск, чтобы увидеть все метрики.");
-      td.colSpan=5; nodes.appendChild(row);
+      td.colSpan=6; nodes.appendChild(row);
     }
     body.replaceChildren(nodes);
     el("table-caption").textContent=book.display_title+" · "+book.metrics.length+

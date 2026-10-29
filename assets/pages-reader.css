@@ -100,6 +100,8 @@ section { scroll-margin-top:2rem; }
 .control label { display:block; font-weight:750; font-size:.78rem; margin-bottom:.4rem; }
 .control input,.control select { width:100%; min-height:48px; background:#fff; color:var(--ink); border:2px solid #6d897c; border-radius:5px; padding:.55rem .7rem; }
 .control-note { flex:1 1 100%; margin:0; color:var(--subtle); font-size:.77rem; }
+.benchmark-delta { white-space:nowrap; font-variant-numeric:tabular-nums; }
+@media print { .benchmark-delta { white-space:normal; } }
 .table-region { max-width:100%; overflow-x:auto; border:1px solid var(--line); border-radius:6px; }
 table { border-collapse:collapse; width:100%; min-width:750px; font-size:.82rem; }
 caption { font-size:.83rem; padding:.8rem; text-align:left; font-weight:700; }

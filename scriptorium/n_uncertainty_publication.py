@@ -9,7 +9,7 @@ import re
 from collections.abc import Mapping
 
 SCHEMA = "scriptorium-native-n-uncertainty-summary-v1"
-_SHA = re.compile(r"[0-9a-f]{64}\\Z")
+_SHA = re.compile(r"[0-9a-f]{64}$")
 
 
 def _int(value: object, name: str) -> int:

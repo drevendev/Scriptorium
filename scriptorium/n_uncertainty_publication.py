@@ -10,6 +10,7 @@ from collections.abc import Mapping
 
 SCHEMA = "scriptorium-native-n-uncertainty-summary-v1"
 _SHA = re.compile(r"[0-9a-f]{64}$")
+_COMMIT = re.compile(r"[0-9a-f]{40}$")
 
 
 def _int(value: object, name: str) -> int:
@@ -40,9 +41,10 @@ def validate_n_summary(doc: object) -> dict[str, float]:
              "runtime_profile", "pylem_sdist_sha256"}
     if not isinstance(evidence, dict) or set(evidence) != ekeys:
         raise ValueError("native N evidence identity mismatch")
+    if not isinstance(evidence["scriptorium_revision"], str) or _COMMIT.fullmatch(evidence["scriptorium_revision"]) is None:
+        raise ValueError("native N scriptorium_revision must be an exact commit SHA")
     for key in ("artifact_json_sha256", "native_control_artifact_sha256",
-                "scriptorium_revision", "normalized_sha256", "runtime_analysis_sha256",
-                "pylem_sdist_sha256"):
+                "normalized_sha256", "runtime_analysis_sha256", "pylem_sdist_sha256"):
         if not isinstance(evidence[key], str) or _SHA.fullmatch(evidence[key]) is None:
             raise ValueError(f"native N {key} is not an immutable SHA-256 / commit identity")
     if (_int(evidence["artifact_id"], "artifact_id") == 0

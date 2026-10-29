@@ -1,24 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 350
+STATE_REVISION: 351
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-29
-LAST_RESULT: PR #350 merged at 1aa708d5308241e816180436afc69b99afbbb831. Strict integer sidecar identity guards proposed for later acceptance.
+LAST_RESULT: #351 merged on master at a7953c43fbab7e0064f9a4554ed44aa9bfdccab0; new source-free native N uncertainty showcase authored for later review.
 LAST_VERIFIED_PROGRESS: Root Reader has seven measured Russian editions (7/10; 182 fields, 153 numeric, 29 unavailable). FantLab matrix has 171 diagnostic rows (142 numeric, 29 unavailable), all source-unmatched. M2 0/5. LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-011-STRICT-SIDECAR-IDENTITIES
-ISSUE: Provenance integrity of pinned pylem sidecar transport; related to #282.
+UNIT_ID: SCRIP-MORPH-012-NATIVE-N-SHOWCASE
+ISSUE: #282 native noun/cardinal ambiguity measured evidence.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-morph-011-strict-indices
-BASE: 1aa708d5308241e816180436afc69b99afbbb831
-ACCEPTANCE: Reject JSON boolean token ordinals and response token_count,
-which otherwise compare equal to Python integer indices. Native producer
-rejects malformed request indices before loading the pinned runtime.
-Positive canonical integer and negative malformed response/request
-regressions must pass on exact-head CI. This does not change POS metrics,
-backend pins, corpus inputs or M2 evidence. Later acceptance/merge only.
+BRANCH: scrip-morph-012-native-n-showcase
+BASE: a7953c43fbab7e0064f9a4554ed44aa9bfdccab0
+ACCEPTANCE: Preserve pinned CI artifact SHA-256, source/runtime identity, actual
+full-work N-only and excluded mixed-N counts, per-cell DP bigram ranges and
+sentence-position bounds. Ship a source-free, accessible Russian public
+explanation and JSON summary with positive/negative regressions, no
+FantLab parity assertion. PR must pass exact-head tests; later acceptance/merge only.
 
 ## Next user-visible milestone and compact queue
 
@@ -27,9 +26,9 @@ the seven-measured-book Reader and pair comparisons verifiably accessible.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Strict sidecar identities | Independent exact-head acceptance and qualifying merge | Full PR CI and native smoke |
+| P1 | #282 native N reader showcase | Independently accept source-free quantitative evidence, accessible page, tests and merge | Exact-head CI; N stays unresolved |
 | P2 | #285 live Pages | Verify public Reader desktop/mobile, keyboard and printing | Prior HTTP/browser restriction |
-| P3 | #282 native AOT/pylem | Further quantify N noun/cardinal ambiguity with exact native evidence | Unrecoverable N runtime tag |
+| P3 | #282 native AOT/pylem | Investigate further mixed-N/homonym ambiguity without silent resolution | Unrecoverable original AOT N enum |
 | P4 | #281 FantLab reference | Independently establish displayed rounding or input edition identity | FantLab source input unknown |
 | P5 | #284 code/data licensing | Establish reuse permissions and attribution | Owner rights decision where needed |
 

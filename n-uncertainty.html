@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Измеренная неопределённость N в русском тексте Анны Карениной: 55 081 неоднозначных токенов, границы POS-биграмм и проверенные данные pylem 0.0.18.">
+<title>Что скрывает N? · Scriptorium</title>
+<link rel="stylesheet" href="./assets/pages-reader.css">
+<style>
+.n-page{max-width:1050px;margin:auto;padding:3rem 0 5rem}
+.n-hero{padding:clamp(1.2rem,4vw,3rem);background:#163c32;color:#fff8e8;border-radius:12px;margin-bottom:2rem}
+.n-hero .eyebrow{color:#f1cf92}.n-hero h1{font:500 clamp(2.35rem,5.5vw,4.8rem)/1.1 Georgia,serif;letter-spacing:-.035em;margin:.4rem 0 1rem}
+.n-hero h1 em{color:#f0c88f}.n-hero p{max-width:72ch;line-height:1.8}.n-hero a{color:#ffe4b6}
+.n-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin:1.5rem 0 2.3rem}
+.n-stat,.n-panel{padding:clamp(1rem,2.5vw,1.7rem);border:1px solid var(--line);background:var(--surface);border-radius:8px}
+.n-stat strong{font:500 clamp(1.8rem,4vw,3rem)/1.1 Georgia,serif;display:block;font-variant-numeric:tabular-nums}
+.n-stat span{display:block;color:var(--subtle);font-size:.88rem;margin-top:.55rem}
+.n-page h2{font-size:clamp(1.8rem,3.2vw,2.5rem);margin:0 0 .65rem}
+.n-page h3{font-size:1.3rem}.n-page p{line-height:1.75}.n-panel{margin:1.5rem 0}
+.n-track{height:1.2rem;background:#dfe9e0;border:1px solid #799184;border-radius:20px;overflow:hidden}
+.n-track>span{display:block;width:20.449%;height:100%;background:#265b4b}
+.n-table{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.n-table table{width:100%;min-width:540px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.n-table caption{text-align:left;padding:.9rem 1rem;color:var(--subtle);font-size:.85rem}
+.n-table th,.n-table td{text-align:left;padding:.8rem 1rem;border-bottom:1px solid #bcc9bf}
+.n-table th{font-weight:700}.n-table thead{background:#e9efe7}.n-table tr:last-child td,.n-table tr:last-child th{border-bottom:none}
+.n-alert{background:#f3e8d6;border-left:5px solid #a36c2d;padding:1rem 1.2rem;margin:1.5rem 0}
+.n-meta{overflow-wrap:anywhere;font-size:.84rem;color:var(--subtle)}
+.n-meta code{overflow-wrap:anywhere}.n-actions{display:flex;flex-wrap:wrap;gap:1rem}
+.n-actions a{display:inline-flex;align-items:center;min-height:44px;font-weight:700}
+.n-table:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+@media(max-width:650px){.n-stats{grid-template-columns:1fr}.n-page{padding:2rem 0 3rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media(forced-colors:active){.n-track{border:1px solid CanvasText}.n-track>span{background:Highlight}}
+@media print{.n-hero,.n-panel,.n-stat,.n-table{background:white!important;color:black!important;box-shadow:none}.n-hero a{color:black}.n-track{display:none}.n-panel,.n-stat{break-inside:avoid}}
+</style>
+</head><body>
+<a class="skip-link" href="#main">Перейти к данным</a>
+<header class="site-top"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a>
+<nav aria-label="Навигация"><a href="./#books">Библиотека</a><a href="./#pairs">Сравнения</a><a href="./#method">Методология</a></nav></header>
+<main id="main"><div class="n-page">
+<section class="n-hero" aria-labelledby="n-title"><p class="eyebrow">ИЗМЕРЕННОЕ ОГРАНИЧЕНИЕ · РУССКАЯ МОРФОЛОГИЯ</p>
+<h1 id="n-title">Что скрывает <em>N</em>?</h1>
+<p>В закреплённом AOT/pylem 0.0.18 обозначение <strong>N</strong> может относиться и к существительному, и к количественному числительному. Мы измерили масштаб этой неопределённости на полной зафиксированной русской редакции «Анны Карениной», не угадывая правильный разбор каждого слова.</p>
+<p><a href="./#method">К методологии проекта ↗</a> · <a href="./assets/n-uncertainty-anna.json">Скачать проверяемые производные данные ↗</a></p></section>
+<div class="n-stats" aria-label="Основные измерения"><div class="n-stat"><strong>55 081</strong><span>токенов с исключительно N среди кандидатов; распределить на существительные и числительные нельзя</span></div>
+<div class="n-stat"><strong>20,45%</strong><span>от 269 358 словоформ Scriptorium; это неопределённость, а не доля существительных</span></div>
+<div class="n-stat"><strong>19 670</strong><span>смешанных N + другие теги — исключены из условных границ</span></div></div>
+<section class="n-panel" aria-labelledby="n-share"><h2 id="n-share">Где теряется определённость</h2>
+<p>Из 269 358 токенов у 117 554 есть консервативно определённая категория; ещё 55 081 содержат только N. В гипотезе, где все такие N отнесены к существительным <em>или</em> числительным, определёнными стали бы 172 635 токенов. Это <strong>не</strong> подтверждённая морфология FantLab.</p>
+<div class="n-track" role="img" aria-label="Доля только N: 55 081 из 269 358 токенов, 20,45 процента"><span></span></div>
+<p class="n-meta">Полоса показывает долю N-only от всех токенов, а не доверительный интервал. Минимум и максимум для каждого POS-бакета — 0…55 081; оба максимума одновременно невозможны.</p></section>
+<section class="n-panel" aria-labelledby="n-bigram"><h2 id="n-bigram">Влияние на биграммы</h2>
+<p>Границы вычислены для <strong>каждой пары отдельно</strong> динамическим программированием с единственным назначением N для каждого токена. Они не описывают одну общую возможную разметку.</p>
+<div class="n-table" role="region" tabindex="0" aria-label="Границы POS-биграмм"><table><caption>Анна Каренина · условные границы частот при назначении только N-only токенов, событий на всю книгу</caption>
+<thead><tr><th scope="col">Биграмма</th><th scope="col">Минимум</th><th scope="col">Максимум</th><th scope="col">На 1000 слов, максимум</th></tr></thead><tbody>
+<tr><th scope="row">Существительное → существительное</th><td>0</td><td>9 992</td><td>37,10</td></tr>
+<tr><th scope="row">Существительное → числительное</th><td>0</td><td>8 402</td><td>31,19</td></tr>
+<tr><th scope="row">Числительное → существительное</th><td>0</td><td>8 402</td><td>31,19</td></tr>
+<tr><th scope="row">Числительное → числительное</th><td>0</td><td>9 992</td><td>37,10</td></tr>
+</tbody></table></div>
+<p class="n-meta">Например, для «существительное → числительное» простое сложение возможных рёбер дало бы 9 992, но с общей меткой соседних токенов достижимый максимум — только 8 402.</p></section>
+<section class="n-panel" aria-labelledby="n-position"><h2 id="n-position">Позиция в предложении</h2>
+<p>Для первых пяти позиций верхняя граница одинакова для каждой из двух конкурирующих категорий, но не может достигаться для обеих одновременно.</p>
+<div class="n-table" role="region" tabindex="0" aria-label="Позиционные ограничения"><table><caption>Условное максимальное число N-only токенов на позиции и доля от 21 228 предложений</caption>
+<thead><tr><th scope="col">Позиция</th><th scope="col">Минимум</th><th scope="col">Максимум</th><th scope="col">Макс. доля предложений</th></tr></thead><tbody>
+<tr><th scope="row">1</th><td>0</td><td>2 787</td><td>13,13%</td></tr><tr><th scope="row">2</th><td>0</td><td>3 203</td><td>15,09%</td></tr>
+<tr><th scope="row">3</th><td>0</td><td>3 151</td><td>14,84%</td></tr><tr><th scope="row">4</th><td>0</td><td>3 451</td><td>16,26%</td></tr>
+<tr><th scope="row">5</th><td>0</td><td>3 440</td><td>16,21%</td></tr>
+</tbody></table></div></section>
+<section class="n-panel" aria-labelledby="n-controls"><h2 id="n-controls">Проверка нативными примерами</h2>
+<p>На закреплённом pylem проверены три лексических набора по три слова. Названия групп — человеческая аннотация примеров, а <strong>не</strong> восстановленная часть речи из AOT.</p>
+<div class="n-table" role="region" tabindex="0" aria-label="Нативные контрольные группы"><table><caption>Сколько отдельных словоформ получили только N в pylem 0.0.18</caption>
+<thead><tr><th scope="col">Примеры</th><th scope="col">N-only</th><th scope="col">Всего</th></tr></thead><tbody>
+<tr><th scope="row">Примеры существительных</th><td>3</td><td>3</td></tr>
+<tr><th scope="row">Примеры числительных</th><td>2</td><td>3</td></tr>
+<tr><th scope="row">Контроль других частей речи</th><td>0</td><td>3</td></tr></tbody></table></div></section>
+<div class="n-alert"><strong>Статус: DIAGNOSTIC_ONLY · M2: 0/5.</strong> Эти условные границы не являются вероятностями, оценкой правильности разбора или воспроизведением FantLab. Точная редакция входа FantLab, словарь и выбор омонимов неизвестны. Смешанные N с другими тегами не перераспределялись.</div>
+<section class="n-panel" aria-labelledby="n-evidence"><h2 id="n-evidence">Как повторить и проверить</h2>
+<p>Измерение произведено исходным закреплённым Python 3.9 / AOT-пакетом <code>pylem==0.0.18</code>, а расчёт границ — версионированным кодом Scriptorium. GitHub Actions сохранил исходный source-free JSON; контрольные суммы связывают его с точным входом и нативным результатом.</p>
+<p class="n-meta"><strong>Source SHA-256:</strong> <code>1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205</code><br>
+<strong>Runtime-analysis SHA-256:</strong> <code>00cb365eeb6e187362cb1cb54acc6718c230791df18013702907dfee6446d69d</code><br>
+<strong>Полный JSON SHA-256:</strong> <code>6da40b4723cafc0288fea530a35f8d910b76e7ccffd60f754e6aa899412e5554</code><br>
+<strong>Head:</strong> <code>17a38f6e1dd372ca5eb4b51127d18e4ffb29b8e8</code></p>
+<div class="n-actions"><a href="./assets/n-uncertainty-anna.json">Машинный отчёт ↗</a><a href="https://github.com/drevendev/Scriptorium/actions/runs/40825478901">Нативный CI и исходный артефакт ↗</a><a href="https://github.com/drevendev/Scriptorium/issues/282">Открытый научный вопрос #282 ↗</a></div>
+<p class="n-meta">Артефакты GitHub Actions имеют ограниченный срок хранения; закреплённые исходные ревизии, генератор и компактная производная сводка остаются в репозитории. Исходная художественная проза на этой странице отсутствует.</p></section>
+</div></main><footer><p class="footer-heading">SCRIPTORIUM <span aria-hidden="true">✦</span> ИССЛЕДОВАНИЕ ЯЗЫКА</p><p>Наблюдение измерено, правило FantLab остаётся неизвестным. M2: 0/5.</p><a href="./">Вернуться к русской библиотеке ↗</a></footer></body></html>

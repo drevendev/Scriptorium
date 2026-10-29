@@ -1,0 +1,121 @@
+{
+  "schema_version": "scriptorium-native-n-uncertainty-summary-v1",
+  "status": "diagnostic_only",
+  "source_text_included": false,
+  "m2_parity_admissible": false,
+  "work": {
+    "candidate_id": "tolstoy-anna-karenina-ru",
+    "title": "Анна Каренина",
+    "language": "ru"
+  },
+  "evidence": {
+    "workflow_url": "https://github.com/drevendev/Scriptorium/actions/runs/40825478901",
+    "artifact_id": 12876751227,
+    "artifact_json_sha256": "6da40b4723cafc0288fea530a35f8d910b76e7ccffd60f754e6aa899412e5554",
+    "native_control_artifact_sha256": "083a92a0cc381f4c06cf3e606a1af2ad6187c936cd7dc21c53d7df95344c5e63",
+    "scriptorium_revision": "17a38f6e1dd372ca5eb4b51127d18e4ffb29b8e8",
+    "normalized_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+    "runtime_analysis_sha256": "00cb365eeb6e187362cb1cb54acc6718c230791df18013702907dfee6446d69d",
+    "pylem_version": "0.0.18",
+    "runtime_profile": "pylem-0.0.18-python39-sidecar-v1",
+    "pylem_sdist_sha256": "66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515"
+  },
+  "counts": {
+    "word_count": 269358,
+    "sentence_count": 21228,
+    "baseline_defined": 117554,
+    "n_only": 55081,
+    "n_mixed_excluded": 19670,
+    "conditional_defined": 172635
+  },
+  "bucket_bounds": {
+    "noun": [
+      0,
+      55081
+    ],
+    "cardinal": [
+      0,
+      55081
+    ]
+  },
+  "bigram_bounds": [
+    {
+      "first": "noun",
+      "second": "noun",
+      "min": 0,
+      "max": 9992,
+      "independent_edge_upper": 9992
+    },
+    {
+      "first": "noun",
+      "second": "cardinal",
+      "min": 0,
+      "max": 8402,
+      "independent_edge_upper": 9992
+    },
+    {
+      "first": "cardinal",
+      "second": "noun",
+      "min": 0,
+      "max": 8402,
+      "independent_edge_upper": 9992
+    },
+    {
+      "first": "cardinal",
+      "second": "cardinal",
+      "min": 0,
+      "max": 9992,
+      "independent_edge_upper": 9992
+    }
+  ],
+  "sentence_position_bounds": [
+    {
+      "position": 1,
+      "min": 0,
+      "max": 2787
+    },
+    {
+      "position": 2,
+      "min": 0,
+      "max": 3203
+    },
+    {
+      "position": 3,
+      "min": 0,
+      "max": 3151
+    },
+    {
+      "position": 4,
+      "min": 0,
+      "max": 3451
+    },
+    {
+      "position": 5,
+      "min": 0,
+      "max": 3440
+    }
+  ],
+  "native_controls": {
+    "noun_examples": {
+      "token_count": 3,
+      "n_only": 3
+    },
+    "cardinal_examples": {
+      "token_count": 3,
+      "n_only": 2
+    },
+    "other_pos_controls": {
+      "token_count": 3,
+      "n_only": 0
+    }
+  },
+  "boundary": {
+    "only_n_only_reassigned": true,
+    "n_mixed_excluded": true,
+    "cell_bounds_jointly_attainable": false,
+    "native_roles_are_fixture_annotations": true,
+    "fantlab_dictionary_equivalence": "unknown",
+    "fantlab_homonym_selection": "unresolved",
+    "production_pos_mapping_changed": false
+  }
+}

@@ -75,6 +75,21 @@ class PylemTransportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unknown runtime POS"):
             consume_sidecar_response(request, response)
 
+    def test_noncanonical_runtime_pos_cannot_split_transport_and_diagnostic_views(self):
+        request = build_sidecar_request("Красный дом.")
+        for row in ([" N"], ["N "], [" N "], ["\\tA"], ["A\\n"]):
+            with self.subTest(row=row):
+                response = self._response(request, [row, ["N"]])
+                with self.assertRaisesRegex(ValueError, "canonical"):
+                    consume_sidecar_response(request, response)
+
+        # A canonical N remains intentionally unresolved, not guessed as noun/cardinal.
+        accepted = consume_sidecar_response(
+            request, self._response(request, [["A"], ["N"]])
+        )
+        self.assertEqual(accepted["metrics"]["defined"]["count"], 1)
+        self.assertEqual(accepted["metrics"]["undefined"]["count"], 1)
+
     def test_provider_identity_mismatch_fails_closed(self):
         request = build_sidecar_request("слово")
         response = self._response(request, [["N"]])

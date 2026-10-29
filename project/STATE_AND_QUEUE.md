@@ -1,22 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 354
+STATE_REVISION: 355
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-29
-LAST_RESULT: #354 merged at a1b034c5392284ed46bd869512cc98ab723e5632; authored Reader catalogue filtering with verified measured/pending/translation identity.
-LAST_VERIFIED_PROGRESS: 7/10 measured Russian editions, 182 fields (153 numeric, 29 unavailable). #354 merged; latest Pages deployment and public browser/HTTP still NOT_VERIFIED here. M2 0/5.
+LAST_RESULT: #355 merged at 042902a7acdd6473b4f5ee322d86c393a6754d5f; authored Russian catalogue title/author/translator search over verified metadata.
+LAST_VERIFIED_PROGRESS: 7/10 measured Russian editions, 182 fields (153 numeric, 29 unavailable). GitHub-managed Pages deployment succeeded for #355 master (run 40905969413); live HTTP/browser NOT_VERIFIED. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-035-RUSSIAN-CATALOG-FILTER
+UNIT_ID: SCRIP-SITE-036-RUSSIAN-CATALOG-SEARCH
 ISSUE: #283 accessible Russian Reader discovery.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-035-catalog-filters
-BASE: a1b034c5392284ed46bd869512cc98ab723e5632
-ACCEPTANCE: All ten source-bound cards/provenance links remain visible without JS
-or on failed JSON verification. Once verified, filters expose measured 7,
-pending 3 and Russian translations 2 (Beketova measured, Rachinsky pending)
-with live count, keyboard and print behavior. No numeric or M2 promotion.
+BRANCH: scrip-site-036-russian-catalog-search
+BASE: 042902a7acdd6473b4f5ee322d86c393a6754d5f
+ACCEPTANCE: Search trusted Russian title/author/translator names combined with
+existing measured/pending/translation filters; preserve accurate counts and empty
+states, case/yo normalization, keyboard input and static no-JS provenance links.
+Positive/negative regressions; no text indexing, numeric/M2 promotion.
 
 ## Next user-visible milestone and compact queue
 
@@ -24,13 +24,13 @@ Milestone: make all measured and pending Russian editions and named translators 
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Russian catalogue filters | Show measured/pending/translated editions, preserve source links and no-JS fallback; later accept/merge | Exact-head data-binding, keyboard and static tests |
+| P1 | #283 searchable Russian catalogue | Search verified title, author and translator names with status filtering and no-JS fallback | Exact-head CI and later acceptance/merge |
 | P2 | #285 live Pages | Verify public Reader desktop/mobile, keyboard and printing | Prior HTTP/browser restriction |
 | P3 | #282 native AOT/pylem | Investigate further mixed-N/homonym ambiguity without silent resolution | Unrecoverable original AOT N enum |
 | P4 | #281 FantLab reference | Independently establish displayed rounding or input edition identity | FantLab source input unknown |
 | P5 | #284 code/data licensing | Establish reuse permissions and attribution | Owner rights decision where needed |
 
-PRs #349 through #354 are merged into master; the separate pair-chart
+PRs #349 through #355 are merged into master; the separate pair-chart
 permalink branch remains unpublished after an actual PR-create safety denial,
 and is not retried without capability change.
 M2 remains **0/5**. The existing perpetual hourly schedule remains unchanged.
@@ -71,7 +71,7 @@ own manifest gates. Short excerpts/fixtures do not count as corpus admission.
 ## Scoped operational blockers
 
 - #265: default-branch rules prevent deletion/non-fast-forward and require PRs, with zero required approvals in the read ruleset. Connector identity has push/triage, not admin. No unsupported deletion/settings mutation or ref bypass.
-- #285 Pages: latest master/root 982a7d3 built and deployed successfully (pages build and deployment #40867940451), including the native N page. Public URL HTTP and desktop/mobile visual verification remain blocked/unverified. The separate pair-chart metric permalink branch is not deployed.
+- #285 Pages: latest master/root 042902a7 built and deployed successfully (pages build and deployment #40905969413), including the catalogue filters and native N page. Public URL HTTP and desktop/mobile visual verification remain blocked/unverified. The separate pair-chart metric permalink branch is not deployed.
 - #284 licensing: do not infer a code/data license or publish externally before the rights gate is resolved.
 - Local checkout: Git DNS failed; exact source blobs were recovered and verified for actual local tests. Hosted full-repository CI supplies complete integrated execution evidence, not the limited local closure.
 - Browser HTTP navigation returned ERR_BLOCKED_BY_ADMINISTRATOR. Current visual changes are VISUAL_NOT_VERIFIED; structural tests are not live browser acceptance. Continue other executable work without bypassing the restriction.

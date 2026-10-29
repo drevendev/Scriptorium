@@ -90,6 +90,20 @@ class NativeNPublicationTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     validate_n_summary(doc)
 
+    def test_bucket_bounds_require_literal_json_integers(self):
+        """False and float count endpoints must not pass Python numeric equality."""
+        for label, invalid in (
+            ("noun", [False, 55081]),
+            ("noun", [0.0, 55081]),
+            ("cardinal", [0, 55081.0]),
+            ("cardinal", [False, 55081.0]),
+        ):
+            with self.subTest(label=label, invalid=invalid):
+                doc = record()
+                doc["bucket_bounds"][label] = invalid
+                with self.assertRaisesRegex(ValueError, "JSON integers"):
+                    validate_n_summary(doc)
+
     def test_unexpected_manuscript_field_rejected(self):
         doc = record()
         doc["normalized_text"] = "private text"

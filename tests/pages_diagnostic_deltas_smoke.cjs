@@ -29,5 +29,5 @@ for(const [m,want] of [
  [{id:"test",kind:"candidate",actual:NaN,reference:1},"—"],
  [{id:"test",kind:"extension",actual:2,reference:null},"N/A"]
 ])assert.equal(render(m),want);
-for(const m of db.books.find(b=>b.key==="beketova").metrics)assert.equal(render(m),"—");
+for(const m of db.books.find(b=>b.key==="beketova").metrics)assert.equal(render(m),m.kind==="extension"?"N/A":"—");
 console.log("Shipped Reader deltas: pinned numeric, missing, zero and negative cases PASS");

@@ -1,0 +1,82 @@
+name: Road to Nowhere alternate measured fields
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/road-nowhere-alternate-diagnostic.yml"
+      - "scriptorium/road_nowhere_diagnostic.py"
+      - "scriptorium/road_nowhere_freeze.py"
+      - "scriptorium/single_page_revision.py"
+      - "scriptorium/single_page_body.py"
+      - "scriptorium/metrics.py"
+      - "scriptorium/dialogue.py"
+      - "scriptorium/text.py"
+      - "scriptorium/vocabulary.py"
+      - "tests/test_road_nowhere_diagnostic.py"
+      - "tests/test_road_nowhere_freeze.py"
+      - "corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-revision.json"
+      - "corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-body.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    name: Replay pinned 442656-character alternate text transiently
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Run exact-body positive/negative tests
+        run: python -m unittest discover -s tests -p test_road_nowhere_diagnostic.py -v
+      - name: Measure body without persisting literary text
+        run: |
+          python -m scriptorium.road_nowhere_diagnostic \
+            --revision-manifest corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-revision.json \
+            --body-manifest corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-body.json \
+            --output /tmp/road-nowhere-alternate-measurements.json
+      - name: Check source-free 29-field two-reference evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("/tmp/road-nowhere-alternate-measurements.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          rows = {r["metric_id"]:r for r in data["metric_rows"]}
+          assert len(rows) == len(data["metric_rows"]) == 29
+          assert 21 <= sum(r["actual"] is not None for r in rows.values()) <= 24
+          assert rows["fantlab.general.characters"]["actual"] == 442656
+          assert rows["fantlab.general.characters"]["fantlab_display"] == "438439"
+          assert rows["fantlab.general.characters"]["actual_minus_fantlab_display"] == 4217
+          assert rows["fantlab.general.words"]["fantlab_display"] == "61299"
+          assert data["body_identity"]["revision_id"] == 5585836
+          assert data["body_identity"]["raw_sha256"] == "e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee"
+          assert data["source_text_committed"] is False
+          assert data["gates"]["alternate_transcription_diagnostic_ready"] is True
+          assert data["gates"]["primary_1965_transcription_body_ready"] is False
+          assert data["gates"]["m2_parity_admissible"] is False
+          assert data["gates"]["m2_weight"] == 0
+          assert all(row["fantlab_display"] is None for key,row in rows.items()
+                     if key not in ("fantlab.general.characters", "fantlab.general.words"))
+          assert all(rows[key]["actual"] is None for key in (
+              "fantlab.vocabulary.active_dictionary", "fantlab.vocabulary.active_nondictionary",
+              "fantlab.vocabulary.uasz_3000", "fantlab.vocabulary.uasz_10000",
+              "fantlab.vocabulary.uasz_100000"))
+          print("ROAD_NOWHERE_SOURCE_FREE_29_FIELDS=PASS; M2=0")
+          PY
+      - name: Upload derived JSON only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: road-nowhere-alternate-measured-fields
+          path: /tmp/road-nowhere-alternate-measurements.json
+          if-no-files-found: error
+          retention-days: 7

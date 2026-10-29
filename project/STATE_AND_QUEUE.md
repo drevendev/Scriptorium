@@ -1,38 +1,39 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 355
+STATE_REVISION: 356
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-29
-LAST_RESULT: #355 merged at 042902a7acdd6473b4f5ee322d86c393a6754d5f; authored Russian catalogue title/author/translator search over verified metadata.
-LAST_VERIFIED_PROGRESS: 7/10 measured Russian editions, 182 fields (153 numeric, 29 unavailable). GitHub-managed Pages deployment succeeded for #355 master (run 40905969413); live HTTP/browser NOT_VERIFIED. M2 0/5.
+LAST_RESULT: #356 merged at 6a2b58e10a46a2fc29100a3d8cf26a051efa35c6; authored shareable Russian catalogue filter/search views.
+LAST_VERIFIED_PROGRESS: 7/10 measured Russian editions, 182 fields (153 numeric, 29 unavailable). Root-branch Pages deployed #356 master successfully (run 40924968831); live HTTP/browser NOT_VERIFIED. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-036-RUSSIAN-CATALOG-SEARCH
+UNIT_ID: SCRIP-SITE-037-RUSSIAN-CATALOG-PERMALINKS
 ISSUE: #283 accessible Russian Reader discovery.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-036-russian-catalog-search
-BASE: 042902a7acdd6473b4f5ee322d86c393a6754d5f
-ACCEPTANCE: Search trusted Russian title/author/translator names combined with
-existing measured/pending/translation filters; preserve accurate counts and empty
-states, case/yo normalization, keyboard input and static no-JS provenance links.
-Positive/negative regressions; no text indexing, numeric/M2 promotion.
+BRANCH: scrip-site-037-catalog-permalinks
+BASE: 6a2b58e10a46a2fc29100a3d8cf26a051efa35c6
+ACCEPTANCE: Explicit share link preserves measured/pending/translation filter and
+bounded metadata search. Reload and Back/Forward restore verified catalogue state.
+Reject invalid filter/oversized/control-character queries; preserve all ten static
+source-linked cards without JS/valid JSON. Positive/negative regressions.
+No new measurements or M2 claim.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make all measured and pending Russian editions and named translators easy to discover without overstating scientific status.
+Milestone: help readers share and revisit source-verified Russian catalogue views.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 searchable Russian catalogue | Search verified title, author and translator names with status filtering and no-JS fallback | Exact-head CI and later acceptance/merge |
-| P2 | #285 live Pages | Verify public Reader desktop/mobile, keyboard and printing | Prior HTTP/browser restriction |
-| P3 | #282 native AOT/pylem | Investigate further mixed-N/homonym ambiguity without silent resolution | Unrecoverable original AOT N enum |
-| P4 | #281 FantLab reference | Independently establish displayed rounding or input edition identity | FantLab source input unknown |
+| P1 | #283 share filtered catalogue | Validated filter/search permalink and URL restoration | Later exact-head PR acceptance and merge |
+| P2 | #285 Pages browser acceptance | Verify deployed Reader desktop/mobile, keyboard and printing | Existing HTTP/browser restriction |
+| P3 | #282 native AOT/pylem | Investigate mixed-N/homonym ambiguity without silent resolution | Original AOT N enum absent |
+| P4 | #281 FantLab reference | Establish displayed rounding or input-edition identity | FantLab input unknown |
 | P5 | #284 code/data licensing | Establish reuse permissions and attribution | Owner rights decision where needed |
 
-PRs #349 through #355 are merged into master; the separate pair-chart
-permalink branch remains unpublished after an actual PR-create safety denial,
-and is not retried without capability change.
+PRs #349 through #356 are merged into master. The separate pair-chart
+permalink branch remains unpublished after an actual PR-create safety denial;
+do not retry without a material capability change.
 M2 remains **0/5**. The existing perpetual hourly schedule remains unchanged.
 
 ## Retained evidence and scientific gates
@@ -71,7 +72,7 @@ own manifest gates. Short excerpts/fixtures do not count as corpus admission.
 ## Scoped operational blockers
 
 - #265: default-branch rules prevent deletion/non-fast-forward and require PRs, with zero required approvals in the read ruleset. Connector identity has push/triage, not admin. No unsupported deletion/settings mutation or ref bypass.
-- #285 Pages: latest master/root 042902a7 built and deployed successfully (pages build and deployment #40905969413), including the catalogue filters and native N page. Public URL HTTP and desktop/mobile visual verification remain blocked/unverified. The separate pair-chart metric permalink branch is not deployed.
+- #285 Pages: latest master/root 6a2b58e built and deployed successfully (pages build and deployment #40924968831), including the catalogue search and native N page. Public URL HTTP and desktop/mobile visual verification remain blocked/unverified. The separate pair-chart metric permalink branch is not deployed.
 - #284 licensing: do not infer a code/data license or publish externally before the rights gate is resolved.
 - Local checkout: Git DNS failed; exact source blobs were recovered and verified for actual local tests. Hosted full-repository CI supplies complete integrated execution evidence, not the limited local closure.
 - Browser HTTP navigation returned ERR_BLOCKED_BY_ADMINISTRATOR. Current visual changes are VISUAL_NOT_VERIFIED; structural tests are not live browser acceptance. Continue other executable work without bypassing the restriction.

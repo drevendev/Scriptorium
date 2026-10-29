@@ -1,23 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 351
+STATE_REVISION: 352
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-29
-LAST_RESULT: #351 merged on master at a7953c43fbab7e0064f9a4554ed44aa9bfdccab0; new source-free native N uncertainty showcase authored for later review.
-LAST_VERIFIED_PROGRESS: Root Reader has seven measured Russian editions (7/10; 182 fields, 153 numeric, 29 unavailable). FantLab matrix has 171 diagnostic rows (142 numeric, 29 unavailable), all source-unmatched. M2 0/5. LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED.
+LAST_RESULT: #352 merged on master at 472c667a974ca5081c19e4727ea5b93167c38137; published native N summary now gets strict integer-bound validation in a focused later-acceptance PR.
+LAST_VERIFIED_PROGRESS: Root Reader has seven measured Russian editions (7/10; 182 fields, 153 numeric, 29 unavailable). FantLab matrix has 171 diagnostic rows (142 numeric, 29 unavailable), all source-unmatched. Master 472c667a successfully built and deployed by GitHub Pages Actions #40852198486; public HTTP/visual readback remains LIVE_NOT_VERIFIED / VISUAL_NOT_VERIFIED. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-012-NATIVE-N-SHOWCASE
-ISSUE: #282 native noun/cardinal ambiguity measured evidence.
+UNIT_ID: SCRIP-MORPH-013-STRICT-N-BOUND-TYPES
+ISSUE: #282 native noun/cardinal ambiguity and trustworthy source-free evidence.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-morph-012-native-n-showcase
-BASE: a7953c43fbab7e0064f9a4554ed44aa9bfdccab0
-ACCEPTANCE: Preserve pinned CI artifact SHA-256, source/runtime identity, actual
-full-work N-only and excluded mixed-N counts, per-cell DP bigram ranges and
-sentence-position bounds. Ship a source-free, accessible Russian public
-explanation and JSON summary with positive/negative regressions, no
-FantLab parity assertion. PR must pass exact-head tests; later acceptance/merge only.
+BRANCH: scrip-morph-013-strict-n-bound-types
+BASE: 472c667a974ca5081c19e4727ea5b93167c38137
+ACCEPTANCE: Reject boolean and floating-point noun/cardinal bound endpoints
+that Python equality otherwise accepts as integers. Preserve frozen native
+counts, reference identities, source-free UI and M2 0/5. Positive and negative
+regressions must pass on exact PR head; later independent acceptance/merge only.
 
 ## Next user-visible milestone and compact queue
 
@@ -26,15 +25,15 @@ the seven-measured-book Reader and pair comparisons verifiably accessible.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 native N reader showcase | Independently accept source-free quantitative evidence, accessible page, tests and merge | Exact-head CI; N stays unresolved |
+| P1 | #282 strict native N bound types | Reject boolean/float lookalikes in released source-free N scientific JSON, with regression tests; later accept/merge | Exact-head CI, no numerical reinterpretation |
 | P2 | #285 live Pages | Verify public Reader desktop/mobile, keyboard and printing | Prior HTTP/browser restriction |
 | P3 | #282 native AOT/pylem | Investigate further mixed-N/homonym ambiguity without silent resolution | Unrecoverable original AOT N enum |
 | P4 | #281 FantLab reference | Independently establish displayed rounding or input edition identity | FantLab source input unknown |
 | P5 | #284 code/data licensing | Establish reuse permissions and attribution | Owner rights decision where needed |
 
-PR #349 chart metric URLs and PR #350 POS canonicalization are merged into
-master; the separate pair-chart permalink branch remains unpublished after
-an actual PR-create safety denial, and is not retried without capability change.
+PRs #349, #350, #351 and #352 are merged into master; the separate pair-chart
+permalink branch remains unpublished after an actual PR-create safety denial,
+and is not retried without capability change.
 M2 remains **0/5**. The existing perpetual hourly schedule remains unchanged.
 
 ## Retained evidence and scientific gates
@@ -73,7 +72,7 @@ own manifest gates. Short excerpts/fixtures do not count as corpus admission.
 ## Scoped operational blockers
 
 - #265: default-branch rules prevent deletion/non-fast-forward and require PRs, with zero required approvals in the read ruleset. Connector identity has push/triage, not admin. No unsupported deletion/settings mutation or ref bypass.
-- #285 Pages: branch master/root deploy succeeded on 6ba4b1bc (pages build and deployment #40572592825); proposed comparison URLs are not deployed/LIVE_VERIFIED without later merge, deployment and HTTP readback.
+- #285 Pages: latest master/root 472c667a built and deployed successfully (pages build and deployment #40852198486), including the native N page. Public URL HTTP and desktop/mobile visual verification remain blocked/unverified. The separate pair-chart metric permalink branch is not deployed.
 - #284 licensing: do not infer a code/data license or publish externally before the rights gate is resolved.
 - Local checkout: Git DNS failed; exact source blobs were recovered and verified for actual local tests. Hosted full-repository CI supplies complete integrated execution evidence, not the limited local closure.
 - Browser HTTP navigation returned ERR_BLOCKED_BY_ADMINISTRATOR. Current visual changes are VISUAL_NOT_VERIFIED; structural tests are not live browser acceptance. Continue other executable work without bypassing the restriction.

@@ -62,7 +62,16 @@ def validate_n_summary(doc: object) -> dict[str, float]:
             n["baseline_defined"] + n["n_only"] != n["conditional_defined"] or
             n["conditional_defined"] + n["n_mixed_excluded"] > n["word_count"]):
         raise ValueError("native N token partition inconsistent")
-    if doc["bucket_bounds"] != {"noun": [0, n["n_only"]], "cardinal": [0, n["n_only"]]}:
+    bounds = doc["bucket_bounds"]
+    if not isinstance(bounds, dict) or set(bounds) != {"noun", "cardinal"}:
+        raise ValueError("native N noun/cardinal bounds missing")
+    for pair in bounds.values():
+        # Python considers False == 0 and 55081.0 == 55081. A JSON
+        # scientific count must be an integer, not a coercible lookalike.
+        if (not isinstance(pair, list) or len(pair) != 2
+                or any(type(value) is not int for value in pair)):
+            raise ValueError("native N bucket bounds must contain JSON integers")
+    if bounds != {"noun": [0, n["n_only"]], "cardinal": [0, n["n_only"]]}:
         raise ValueError("native N noun/cardinal bounds must remain conditional")
     pairs = doc["bigram_bounds"]
     expected_pairs = {(a, b) for a in ("noun", "cardinal") for b in ("noun", "cardinal")}

@@ -28,6 +28,7 @@
   const bookLinks = [...document.querySelectorAll("[data-book]")];
   const catalogCards = [...document.querySelectorAll("#books .book[data-catalog-key]")];
   const catalogFilter = el("catalog-filter");
+  const catalogSearch = el("catalog-search");
   const one = el("choose-book");
   const search = el("search-metric");
   const status = el("table-status");
@@ -226,16 +227,22 @@
   function updateCatalog() {
     const mode=["all","measured","pending","translated"].includes(catalogFilter.value)
       ? catalogFilter.value : "all";
+    const query=catalogSearch.value.normalize("NFKC").toLocaleLowerCase("ru")
+      .replace(/ё/g,"е").trim();
     let shown=0, measured=0, pending=0;
     for (const card of catalogCards) {
       const book=data.books.find(b=>b.key===card.dataset.catalogKey);
       if (!book) throw Error("Нет проверенного источника для карточки");
       const isMeasured=book.text_status==="measured";
       const isTranslation=book.original_language!==book.language;
-      const visible=mode==="all" ||
+      // Search only validated edition, author and translator metadata, never book text.
+      const text=[book.display_title,book.display_author,book.translator?.name||""]
+        .join(" ").normalize("NFKC").toLocaleLowerCase("ru").replace(/ё/g,"е");
+      const modeMatches=mode==="all" ||
         (mode==="measured" && isMeasured) ||
         (mode==="pending" && !isMeasured) ||
         (mode==="translated" && isTranslation);
+      const visible=modeMatches && (!query || text.includes(query));
       card.hidden=!visible;
       if (visible) {
         shown++;
@@ -245,7 +252,7 @@
     el("catalog-filter-status").textContent=shown
       ? "Показано "+shown+" из "+catalogCards.length+" книг: "+
         measured+" измерено, "+pending+" в подготовке. Переводы — отдельные редакции."
-      : "По этому фильтру книг нет. Выберите «Все 10 книг».";
+      : "Книг не найдено. Очистите поиск или измените фильтр.";
   }
 
   function updateSingle() {
@@ -639,7 +646,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,chartSortButton,...chartButtons];
+      const inputs=[catalogFilter,catalogSearch,one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,chartSortButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -656,6 +663,7 @@
         });
       }
       catalogFilter.addEventListener("change",updateCatalog);
+      catalogSearch.addEventListener("input",updateCatalog);
       updateCatalog();
       el("catalog-tools").hidden=false;
       one.addEventListener("change",()=>selectBook(one.value,true));

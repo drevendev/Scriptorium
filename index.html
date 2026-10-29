@@ -59,7 +59,17 @@
 <section id="books" class="library" aria-labelledby="books-title">
 <div class="section-head"><p class="eyebrow">01 / БИБЛИОТЕКА · РУССКИЕ ТЕКСТЫ</p><h2 id="books-title">Десять книг. Семь измеренных.</h2>
 <p>Произведения на русском языке — первый модуль Scriptorium. Для переводов обязательно фиксируются язык оригинала, переводчик и редакция. Три карточки пока обозначают подготовку источников, <strong>не готовые результаты анализа</strong>.</p></div>
-<div class="book-grid"><article class="book" data-status="measured">
+<div class="catalog-tools" id="catalog-tools" hidden>
+<label for="catalog-filter">Показать в библиотеке</label>
+<select id="catalog-filter" disabled>
+<option value="all">Все 10 книг</option>
+<option value="measured">Измеренные (7)</option>
+<option value="pending">В подготовке (3)</option>
+<option value="translated">Русские переводы (2)</option>
+</select>
+<p id="catalog-filter-status" role="status" aria-live="polite">Показано 10 из 10 книг.</p>
+</div>
+<div class="book-grid"><article class="book" data-status="measured" data-catalog-key="anna">
   <p class="book-id">КНИГА 01 / 10 · ИЗМЕРЕНА</p>
   <h3>Анна Каренина</h3><p class="byline">Лев Толстой</p>
   
@@ -67,7 +77,7 @@
   <div class="book-bar" aria-hidden="true"><span style="width:82.14%"></span></div>
   <a data-book="anna" href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
 </article>
-<article class="book" data-status="measured">
+<article class="book" data-status="measured" data-catalog-key="waves">
   <p class="book-id">КНИГА 02 / 10 · ИЗМЕРЕНА</p>
   <h3>Бегущая по волнам</h3><p class="byline">Александр Грин</p>
   
@@ -75,7 +85,7 @@
   <div class="book-bar" aria-hidden="true"><span style="width:85.19%"></span></div>
   <a data-book="waves" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
 </article>
-<article class="book" data-status="measured">
+<article class="book" data-status="measured" data-catalog-key="silver">
   <p class="book-id">КНИГА 03 / 10 · ИЗМЕРЕНА</p>
   <h3>Серебряный голубь</h3><p class="byline">Андрей Белый</p>
   
@@ -83,7 +93,7 @@
   <div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div>
   <a data-book="silver" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/bely-silver-dove-ru.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
 </article>
-<article class="book" data-status="measured">
+<article class="book" data-status="measured" data-catalog-key="karamazov">
   <p class="book-id">КНИГА 04 / 10 · ИЗМЕРЕНА</p>
   <h3>Братья Карамазовы</h3><p class="byline">Фёдор Достоевский</p>
   
@@ -91,7 +101,7 @@
   <div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div>
   <a data-book="karamazov" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/dostoevsky-brothers-karamazov-ru.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
 </article>
-<article class="book" data-status="measured">
+<article class="book" data-status="measured" data-catalog-key="hyperboloid">
   <p class="book-id">КНИГА 05 / 10 · ИЗМЕРЕНА</p>
   <h3>Гиперболоид инженера Гарина</h3><p class="byline">Алексей Толстой</p>
   
@@ -99,7 +109,7 @@
   <div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div>
   <a data-book="hyperboloid" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/tolstoy-hyperboloid-garin-wikisource-ru.retained.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
 </article>
-<article class="book" data-status="measured">
+<article class="book" data-status="measured" data-catalog-key="beketova">
   <p class="book-id">КНИГА 06 / 10 · ИЗМЕРЕНА</p>
   <h3>Дети капитана Гранта</h3><p class="byline">Жюль Верн</p>
   <p class="original-language">Русский перевод · оригинал на французском</p><p class="translator">Перевод: <strong>Александра Андреевна Бекетова</strong></p>
@@ -107,14 +117,14 @@
   <div class="book-bar" aria-hidden="true"><span style="width:100.00%"></span></div>
   <a data-book="beketova" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/verne-children-captain-grant-beketova-ru.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
 </article>
-<article class="book" data-status="measured">
+<article class="book" data-status="measured" data-catalog-key="resurrection">
   <p class="book-id">КНИГА 07 / 10 · ИЗМЕРЕНА</p>
   <h3>Воскресение</h3><p class="byline">Лев Толстой</p>
   <p class="availability">24 из 29 метрик измерены · 129 закреплённых ревизий</p>
   <div class="book-bar" aria-hidden="true"><span style="width:82.76%"></span></div>
   <a data-book="resurrection" href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/tolstoy-resurrection-ru.retained.json">Исследовать метрики <span aria-hidden="true">↗</span></a>
 </article>
-<article class="book book-research" data-status="pending">
+<article class="book book-research" data-status="pending" data-catalog-key="road">
   <p class="book-id">КНИГА 08 / 10 · ПОДГОТОВКА</p>
   <h3>Дорога в никуда</h3><p class="byline">Александр Грин</p>
   
@@ -122,7 +132,7 @@
   
   <a  href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/source-edition-traces/grin-road-nowhere-ru.json">Проверить источник <span aria-hidden="true">↗</span></a>
 </article>
-<article class="book book-research" data-status="pending">
+<article class="book book-research" data-status="pending" data-catalog-key="petersburg">
   <p class="book-id">КНИГА 09 / 10 · ПОДГОТОВКА</p>
   <h3>Петербург</h3><p class="byline">Андрей Белый</p>
   
@@ -130,7 +140,7 @@
   
   <a  href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.json">Проверить источник <span aria-hidden="true">↗</span></a>
 </article>
-<article class="book book-research" data-status="pending">
+<article class="book book-research" data-status="pending" data-catalog-key="darwin">
   <p class="book-id">КНИГА 10 / 10 · ПОДГОТОВКА</p>
   <h3>О происхождении видов</h3><p class="byline">Чарльз Дарвин</p>
   <p class="original-language">Русский перевод · оригинал на английском</p><p class="translator">Перевод: <strong>Сергей Александрович Рачинский</strong></p>

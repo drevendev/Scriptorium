@@ -26,6 +26,8 @@
   const chartButtons = [...document.querySelectorAll("[data-chart]")];
   const chartSortButton = el("chart-sort");
   const bookLinks = [...document.querySelectorAll("[data-book]")];
+  const catalogCards = [...document.querySelectorAll("#books .book[data-catalog-key]")];
+  const catalogFilter = el("catalog-filter");
   const one = el("choose-book");
   const search = el("search-metric");
   const status = el("table-status");
@@ -138,6 +140,15 @@
         observed !== 153 || missing !== 29 ||
         doc.books.filter(b=>b.text_status === "measured").length !== 7 ||
         doc.books.filter(b=>b.translator).length !== 2) throw Error("Подмена итогов каталога");
+    // The static cards must match the verified evidence record exactly.
+    const cardKeys=catalogCards.map(card=>card.dataset.catalogKey);
+    if (cardKeys.length!==doc.books.length ||
+        new Set(cardKeys).size!==doc.books.length ||
+        doc.books.some(book=>{
+          const card=catalogCards.find(c=>c.dataset.catalogKey===book.key);
+          return !card || card.dataset.status!==(
+            book.text_status==="measured"?"measured":"pending");
+        })) throw Error("Карточки библиотеки не соответствуют проверенным данным");
     const measured = doc.books.filter(b=>b.text_status === "measured");
     const chartProfiles=["metrics","normalization","dialogue","punctuation"];
     const baseline=measured[0]?.profiles;
@@ -210,6 +221,33 @@
                m.actual===null?m.status.toUpperCase():"Диагностика · несовпавший источник");
     return tr;
   }
+  // Presentation-only filtering; never promote research leads to measured books.
+  // Static provenance links remain visible when JS or verified data is unavailable.
+  function updateCatalog() {
+    const mode=["all","measured","pending","translated"].includes(catalogFilter.value)
+      ? catalogFilter.value : "all";
+    let shown=0, measured=0, pending=0;
+    for (const card of catalogCards) {
+      const book=data.books.find(b=>b.key===card.dataset.catalogKey);
+      if (!book) throw Error("Нет проверенного источника для карточки");
+      const isMeasured=book.text_status==="measured";
+      const isTranslation=book.original_language!==book.language;
+      const visible=mode==="all" ||
+        (mode==="measured" && isMeasured) ||
+        (mode==="pending" && !isMeasured) ||
+        (mode==="translated" && isTranslation);
+      card.hidden=!visible;
+      if (visible) {
+        shown++;
+        if (isMeasured) measured++; else pending++;
+      }
+    }
+    el("catalog-filter-status").textContent=shown
+      ? "Показано "+shown+" из "+catalogCards.length+" книг: "+
+        measured+" измерено, "+pending+" в подготовке. Переводы — отдельные редакции."
+      : "По этому фильтру книг нет. Выберите «Все 10 книг».";
+  }
+
   function updateSingle() {
     const book=getBook(currentBook);
     if (!book) return;
@@ -601,7 +639,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,chartSortButton,...chartButtons];
+      const inputs=[catalogFilter,one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,chartSortButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -617,6 +655,9 @@
           selectBook(anchor.dataset.book,true,true);
         });
       }
+      catalogFilter.addEventListener("change",updateCatalog);
+      updateCatalog();
+      el("catalog-tools").hidden=false;
       one.addEventListener("change",()=>selectBook(one.value,true));
       window.addEventListener("popstate",()=>{
         selectChart(chartFromUrl());

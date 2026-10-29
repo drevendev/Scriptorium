@@ -287,3 +287,16 @@ footer a { color:#ffdaa3; }
 .chart-sort button:focus-visible { outline:3px solid #fff; outline-offset:3px; }
 .chart-sort span { color:#e0e9e0; font-size:.78rem; line-height:1.5; }
 @media print { .chart-sort { display:none !important; } }
+
+/* Progressive enhancement for the verified ten-edition Russian catalogue. */
+.catalog-tools { display:flex; flex-wrap:wrap; align-items:center; gap:.75rem 1rem;
+  padding:1rem 1.1rem; margin:1.1rem 0 1.3rem; border:1px solid var(--line);
+  border-radius:8px; background:var(--wash); }
+.catalog-tools label { font-weight:750; font-size:.85rem; }
+.catalog-tools select { min-height:44px; min-width:min(100%,15rem);
+  padding:.55rem .7rem; border:2px solid var(--green); border-radius:5px;
+  background:var(--surface); color:var(--ink); }
+.catalog-tools p { flex-basis:100%; margin:0; font-size:.8rem; color:var(--subtle); }
+.catalog-tools[hidden],.book[hidden] { display:none !important; }
+@media (max-width:490px) { .catalog-tools select { width:100%; } }
+@media print { .catalog-tools { display:none !important; } }

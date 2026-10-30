@@ -4,7 +4,9 @@ STATE_REVISION: 363
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
 LAST_RESULT: #362 merged and master Pages deployment 41011022171 succeeded. The post-merge branch-root QA artifact omitted its new no-JavaScript CSV; focused preview-closure patch authored for later acceptance.
-LAST_VERIFIED_PROGRESS: 8/10 measured in master; 211 fields (177 numeric, 34 NOT_RUN/unava## Current delivery and acceptance
+LAST_VERIFIED_PROGRESS: 8/10 measured in master; 211 fields (177 numeric, 34 NOT_RUN/unavailable), M2 0/5.
+
+## Current delivery and acceptance
 
 UNIT_ID: SCRIP-SITE-043-ROOT-PREVIEW-CSV-CLOSURE
 ISSUE: #283 accessible Reader; #285 Pages acceptance.

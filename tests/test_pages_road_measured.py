@@ -62,7 +62,7 @@ class RoadEighthReaderTests(unittest.TestCase):
     def test_frozen_rows_provenance_and_no_source_prose(self):
         assert_retained(self.artifact, self.book)
         raw = RETAINED_PATH.read_bytes()
-        expected_blob = sha1(b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw).hexdigest()
+        expected_blob = sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
         self.assertEqual(self.book["blob_sha1"], expected_blob)
         self.assertNotIn("wikitext", self.artifact)
         self.assertNotIn("literary_body", self.artifact)

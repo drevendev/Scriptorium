@@ -28,6 +28,7 @@ SOURCE=(
  ("resurrection","corpus/candidates/diagnostics/tolstoy-resurrection-ru.retained.json",29,24),
  ("road","corpus/candidates/diagnostics/grin-road-nowhere-ru.retained.json",29,24),
  ("oblomov","corpus/candidates/diagnostics/goncharov-oblomov-ru.json",29,24),
+  ("humiliated","corpus/candidates/diagnostics/dostoevsky-humiliated-and-insulted-ru.retained.json",29,24),
 )
 PENDING={
  "petersburg":"corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.json",
@@ -63,23 +64,23 @@ class RussianBranchReaderTests(unittest.TestCase):
         self.assertEqual(d["fantlab_input_identity"],"UNKNOWN")
         self.assertIs(d["comparability"]["m2_parity_admissible"],False)
         self.assertEqual(d["counts"],{
-          "work_count":11,"measured_works":9,"awaiting_measurement":2,
-          "metrics_total":240,"numeric_total":201,"unavailable_total":39,
+          "work_count":12,"measured_works":10,"awaiting_measurement":2,
+          "metrics_total":269,"numeric_total":225,"unavailable_total":44,
           "m2_source_matched":0
         })
-        self.assertEqual(d["language_modules"]["ru"]["measured_work_count"],9)
+        self.assertEqual(d["language_modules"]["ru"]["measured_work_count"],10)
         self.assertEqual(d["language_modules"]["en"]["state"],"planned_not_measured")
         self.assertEqual(d["language_modules"]["en"]["measured_work_count"],0)
         self.assertEqual(d["language_modules"]["fr"]["measured_work_count"],0)
-        self.assertEqual(len(d["books"]),11)
+        self.assertEqual(len(d["books"]),12)
         self.assertEqual({b["language"] for b in d["books"]},{"ru"})
-        self.assertEqual(len({b["candidate_id"] for b in d["books"]}),11)
-        self.assertEqual(len({(b["family_id"],b["edition_id"]) for b in d["books"]}),11)
-        self.assertEqual(sum(b["measured"] for b in d["books"]),201)
-        self.assertEqual(sum(b["unavailable"] for b in d["books"]),39)
-        self.assertEqual(sum(len(b["metrics"]) for b in d["books"]),240)
+        self.assertEqual(len({b["candidate_id"] for b in d["books"]}),12)
+        self.assertEqual(len({(b["family_id"],b["edition_id"]) for b in d["books"]}),12)
+        self.assertEqual(sum(b["measured"] for b in d["books"]),225)
+        self.assertEqual(sum(b["unavailable"] for b in d["books"]),44)
+        self.assertEqual(sum(len(b["metrics"]) for b in d["books"]),269)
 
-    def test_exact_source_free_measurements_preserved_for_seven_books(self):
+    def test_exact_source_free_measurements_preserved_for_ten_books(self):
         works={b["key"]:b for b in self.data["books"]}
         for key,path,total,observed in SOURCE:
             with self.subTest(book=key):
@@ -137,6 +138,15 @@ class RussianBranchReaderTests(unittest.TestCase):
                     self.assertIs(artifact["gates"]["source_text_committed"],False)
                     self.assertEqual(artifact["gates"]["source_edition_print_collation"],"NOT_RUN")
                     self.assertEqual(artifact["source"]["revision_id"],5724579)
+                    self.assertEqual(b["source_sha256"],artifact["body"]["raw_sha256"])
+                    readings={m["metric_id"]:(m["actual"],None) for m in artifact["metric_rows"]}
+                elif key=="humiliated":
+                    self.assertIs(artifact["gates"]["m2_parity_admissible"],False)
+                    self.assertIs(artifact["gates"]["source_text_committed"],False)
+                    self.assertEqual(artifact["gates"]["fantlab_input_identity"],"UNKNOWN")
+                    self.assertEqual(artifact["gates"]["source_edition_print_collation"],"NOT_RUN")
+                    self.assertEqual(artifact["source"]["revision_id"],5611473)
+                    self.assertEqual(artifact["body"]["characters_including_spaces"],713925)
                     self.assertEqual(b["source_sha256"],artifact["body"]["raw_sha256"])
                     readings={m["metric_id"]:(m["actual"],None) for m in artifact["metric_rows"]}
                 elif key=="beketova":
@@ -207,8 +217,8 @@ class RussianBranchReaderTests(unittest.TestCase):
         parsed=Tags(h)
         self.assertIn('<html lang="ru">',h)
         self.assertEqual(sum(t=="h1" for t,_ in parsed.start),1)
-        self.assertEqual(sum(t=="article" and a.get("class","").startswith("book") for t,a in parsed.start),11)
-        self.assertEqual(h.count('class="chart-row"'),9)
+        self.assertEqual(sum(t=="article" and a.get("class","").startswith("book") for t,a in parsed.start),12)
+        self.assertEqual(h.count('class="chart-row"'),10)
         self.assertIn('id="pair-left"',h)
         self.assertIn('id="pair-right"',h)
         self.assertIn('id="pair-metric"',h)
@@ -221,9 +231,9 @@ class RussianBranchReaderTests(unittest.TestCase):
         self.assertIn('id="translations"',h)
         self.assertIn("Бекетовой",h)
         self.assertIn("Рачинского",h)
-        self.assertIn("240",h)
-        self.assertIn("201",h)
-        self.assertIn("39",h)
+        self.assertIn("269",h)
+        self.assertIn("225",h)
+        self.assertIn("44",h)
         self.assertIn("M2: 0/5",h)
         for anchor in ("#books","#pairs","#measurements","#translations","#method"):
             self.assertIn(anchor,parsed.links)
@@ -236,8 +246,8 @@ class RussianBranchReaderTests(unittest.TestCase):
     def test_js_fails_closed_on_wrong_language_unknown_or_fake_parity(self):
         js=self.js
         self.assertIn('doc.schema !== "scriptorium-ru-reader-v2"',js)
-        self.assertIn('doc.counts?.measured_works !== 9',js)
-        self.assertIn('doc.counts?.metrics_total !== 240',js)
+        self.assertIn('doc.counts?.measured_works !== 10',js)
+        self.assertIn('doc.counts?.metrics_total !== 269',js)
         self.assertIn('doc.comparability?.m2_parity_admissible !== false',js)
         self.assertIn('doc.language_modules?.en?.measured_work_count !== 0',js)
         self.assertIn("book.original_language !== book.language",js)

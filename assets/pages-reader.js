@@ -55,19 +55,20 @@
         doc.fantlab_input_identity !== "UNKNOWN" ||
         doc.comparability?.m2_parity_admissible !== false ||
         doc.counts?.m2_source_matched !== 0 ||
-        doc.counts?.work_count !== 11 ||
-        doc.counts?.measured_works !== 9 ||
+        doc.counts?.work_count !== 12 ||
+        doc.counts?.measured_works !== 10 ||
         doc.counts?.awaiting_measurement !== 2 ||
-        doc.counts?.metrics_total !== 240 ||
-        doc.counts?.numeric_total !== 201 ||
-        doc.counts?.unavailable_total !== 39 ||
+        doc.counts?.metrics_total !== 269 ||
+        doc.counts?.numeric_total !== 225 ||
+        doc.counts?.unavailable_total !== 44 ||
+        doc.language_modules?.ru?.measured_work_count !== 10 ||
         doc.language_modules?.en?.state !== "planned_not_measured" ||
         doc.language_modules?.en?.measured_work_count !== 0 ||
-        !Array.isArray(doc.books) || doc.books.length !== 11) {
+        !Array.isArray(doc.books) || doc.books.length !== 12) {
       throw Error("Русский каталог или научный статус изменён");
     }
     const census = {anna:[28,23],waves:[27,23],silver:[29,24],
-                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11],resurrection:[29,24],road:[29,24],oblomov:[29,24]};
+                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11],resurrection:[29,24],road:[29,24],oblomov:[29,24],humiliated:[29,24]};
     const seen = new Set();
     const editionKeys = new Set();
     let observed = 0, missing = 0;
@@ -138,6 +139,24 @@
             throw Error("Обломов: подмена исходника или научного статуса");
           }
         }
+        if (book.key === "humiliated") {
+          const chars=book.metrics.find(m=>m.id==="fantlab.general.characters");
+          const words=book.metrics.find(m=>m.id==="fantlab.general.words");
+          const sentences=book.metrics.find(m=>m.id==="scriptorium.general.sentences");
+          const dialogue=book.metrics.find(m=>m.id==="fantlab.dialogue.share_percent");
+          if (book.candidate_id!=="dostoevsky-humiliated-and-insulted-azlib-ru" ||
+              book.source_revision_id!==5611473 ||
+              book.edition_id!=="ru-wikisource-az-lib-oldid-5611473" ||
+              book.source_sha256!=="ffc6825db7f442c7df93136e8ddf90ce44be8801cdbaa727d5fe642db3fad8fa" ||
+              book.blob_sha1!=="acfb3fb1cd0eb3713e45b062438253d19a68bcad" ||
+              book.original_language!=="ru" || book.translator!==null ||
+              chars?.actual!==713925 || words?.actual!==118157 ||
+              sentences?.actual!==10381 || sentences?.kind!=="extension" ||
+              dialogue?.actual!==56.66327827623132 ||
+              book.metrics.some(m=>m.reference!==null)) {
+            throw Error("Униженные и оскорбленные: подмена закреплённого источника или научного статуса");
+          }
+        }
         const fields = new Set();
         let available = 0;
         for (const m of book.metrics) {
@@ -165,9 +184,9 @@
             typeof book.trace !== "string") throw Error("Нельзя считать заявку измеренной книгой");
       }
     }
-    if (seen.size !== 11 || Object.keys(census).some(x=>!seen.has(x)) ||
-        observed !== 201 || missing !== 39 ||
-        doc.books.filter(b=>b.text_status === "measured").length !== 9 ||
+    if (seen.size !== 12 || Object.keys(census).some(x=>!seen.has(x)) ||
+        observed !== 225 || missing !== 44 ||
+        doc.books.filter(b=>b.text_status === "measured").length !== 10 ||
         doc.books.filter(b=>b.translator).length !== 2) throw Error("Подмена итогов каталога");
     // The static cards must match the verified evidence record exactly.
     const cardKeys=catalogCards.map(card=>card.dataset.catalogKey);

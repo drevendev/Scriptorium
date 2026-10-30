@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 370
+STATE_REVISION: 371
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: Merged #369 supplied exact-source successful CI run 41111720059. Current scoped PR retains its source-free 29-field Dostoevsky artifact and adds exact-byte/negative regressions; independent acceptance remains pending.
-LAST_VERIFIED_PROGRESS: Ten full-text diagnostics now have observed numbers (the tenth in CI); nine measured Russian works remain in master Reader with 240 retained fields (201 numeric / 39 unavailable). The tenth record is pending retention merge and Reader integration. M2 0/5; M3 open.
+LAST_COMMITTED_RUN_AT: 2026-10-31
+LAST_RESULT: #370 merged exact tenth source-free Dostoevsky diagnostic. Current focused Reader PR proposes tenth measured card, eight expanded charts and 269-field no-JS CSV for later acceptance and publication.
+LAST_VERIFIED_PROGRESS: Ten full-text diagnostic works, 225 numeric and 44 unavailable/NOT_RUN fields in current feature branch. Nine measured books remain in master Reader until PR merges. M2 0/5, M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-091-HUMILIATED-RETAINED
-ISSUE: #281 reproducible field evidence; #283 Reader delivery.
+UNIT_ID: SCRIP-SITE-092-HUMILIATED-TENTH-READER
+ISSUE: #281 reproducible evidence; #283 Reader delivery.
 STATUS: PR_CREATED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-corpus-091-humiliated-retained
-BASE: 5b9aead33ce15a59794c7cf3b8c992d4c19b9193
+BRANCH: scrip-site-092-humiliated-tenth-reader
+BASE: 40c236d5a37c4e02ed7fba0eaa4fb28d4c56686b
 
-ACCEPTANCE: Independently verify extracted JSON SHA-256 bcd4e9cde2aa75364ef458749c9b1f26b72b75e1ab8df0d70c4fc6f3f018a634 (9,843 bytes) against successful original Actions artifact 13001889862; full literary body 713,925 chars including spaces, 29 unique fields (24 numeric / 5 dictionary NOT_RUN), public-domain source oldid 5611473, hashes/rights and no prose. Later-run review and exact-head CI required for merge; Reader remains nine measured works until a separate verified card/CSV site PR. FantLab input UNKNOWN, print collation NOT_RUN, M2 0/5.
+ACCEPTANCE: Exact retained 9843-byte Dostoevsky JSON SHA-256 bcd4e9cde2aa75364ef458749c9b1f26b72b75e1ab8df0d70c4fc6f3f018a634, oldid 5611473, literary body 713925 characters with spaces and 29 fields (24 numeric, five NOT_RUN) appear unchanged in Reader. Verify ten measured books, eight chart choices and ten-bar accessible table, book/pair routes and search, 269-row CSV (225 numeric, 44 unavailable), exact preservation of preceding 240 CSV data rows, source/rights/privacy/translation gates and M2 0/5. Require later independent exact-head CI/review before merge, then root Pages deployment and separate live browser acceptance.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Publish a tenth *actually measured* Russian novel with source hashes and a source-free Reader card, while keeping full FantLab parity unresolved.
+Milestone: Publish the ten-book Russian Reader with source-bound exports while preserving strict FantLab parity gates.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept/merge retained 10th diagnostic | Exact archived JSON bytes/hash, 29 values, source gates, all applicable CI/checks, no prose | Current PR requires later independent exact-head acceptance |
-| P2 | Publish Dostoevsky as tenth Reader book | Card, eight charts, 29-field metrics, accessible table, 269-row CSV, profiles/rights checks | Retained source-free 29-field JSON merged and verified |
-| P3 | #281 strict FantLab benchmark | Source-unmatched field-level diagnostics, explicit edition and rounding evidence | FantLab analyzer input UNKNOWN |
-| P4 | #285 Pages live UX | Independent HTTP, keyboard, desktop/mobile and CSV download acceptance | Browser navigation restricted; existing CI independently checks structure |
-| P5 | #282 AOT N ambiguity | Native noun/cardinal conditional bounds under pinned pylem | Dictionary/runtime evidence |
+| P1 | Accept and merge tenth Reader PR in later wake | Exact HEAD, passing applicable CI, diff/source/CSV/UX findings | Current feature PR |
+| P2 | Confirm Pages publication | Post-merge root Pages build, live tenth book, CSV, keyboard and mobile screenshots | P1 merge; browser may be restricted |
+| P3 | #281 strict FantLab benchmark | Source-unmatched field diagnostics, edition identity and rounding evidence | FantLab analyzer input UNKNOWN |
+| P4 | #282 AOT N ambiguity | Pinned pylem noun/cardinal conditional bounds | Dictionary/runtime evidence |
+| P5 | Compare real books and translator provenance | Source-checked profiles, separate editions, no fake parity | Independent of blocked M2 |
 
 ## Retained evidence and scientific gates
 

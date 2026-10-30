@@ -1,35 +1,34 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 363
+STATE_REVISION: 364
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: #362 merged and master Pages deployment 41011022171 succeeded. The post-merge branch-root QA artifact omitted its new no-JavaScript CSV; focused preview-closure patch authored for later acceptance.
-LAST_VERIFIED_PROGRESS: 8/10 measured in master; 211 fields (177 numeric, 34 NOT_RUN/unavailable), M2 0/5.
+LAST_RESULT: PR #363 merged into master at 10a5a88514611afe0d2ff89a631cf86acf8293d3. New independent two-author voice/rhythm preview authored for later acceptance; master is unchanged by this new unit.
+LAST_VERIFIED_PROGRESS: 8/10 full Russian works measured; 211 fields (177 numeric, 34 unavailable), M2 0/5; M3 gate remains open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-043-ROOT-PREVIEW-CSV-CLOSURE
-ISSUE: #283 accessible Reader; #285 Pages acceptance.
+UNIT_ID: SCRIP-VOICE-001-SOURCE-BOUND-TWO-AUTHOR-PREVIEW
+ISSUE: #283 Reader user-visible experience; #281 scientific provenance/benchmark boundary.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-043-complete-root-preview-csv
-BASE: fc439781b8c5dfd2397c1b10bf5a67a549ce1505
-ACCEPTANCE: The exact-head branch-root QA artifact includes every root Reader local asset referenced by HTML and the separately fetched verified evidence JSON. In particular, the new 211-row source-bound CSV is staged, checked nonempty and compared byte-for-byte to the committed static artifact. A positive/negative regression catches missing CSV staging. Later exact-head CI and independent acceptance/merge are required; do not confuse a QA artifact with the separately published Pages site.
+BRANCH: scrip-voice-001-two-author-preview
+BASE: 10a5a88514611afe0d2ff89a631cf86acf8293d3
+
+ACCEPTANCE: Deterministic offline Python calculation consumes only the eight-work source-bound Reader snapshot, checks that two independent Russian-original full works >=300k each belong to Grin and Tolstoy with expected fixed source hashes, edition IDs, compatible profile versions and actual measured metrics. For eight mean/rate features calculate word-count-weighted means and population standard deviations; reject translated, changed-source, incompatible-profile, missing, duplicated or invalid inputs. Retained source-free JSON must equal exact Python recomputation. Russian root-branch Pages route has four labelled charts, eight-row fully accessible exact table, four work hashes/provenance, full uncertainty explanation and usable no-JavaScript navigation. Stage route and JSON into exact-head QA preview, verify tests and later head/checks before qualifying merge. **This is a descriptive extension preview, not FantLab parity, validated author voice, cross-validation or M3 completion**. Verify the actual live browser route separately.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Keep the no-JavaScript 211-field CSV downloadable in reproducible root-Reader QA previews, then expand independently licensed literary bodies.
+Milestone: Publish the independently verified source-bound Grin-versus-Tolstoy descriptive voice comparison, then expand real analyzed Russian works.
 
-| Priority | Unit | Deliverable | Scoped dependency |
+| Priority | Executable unit | User-visible acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283/#285 Reader root preview | Test and merge all-asset source-bound QA preview; confirm exact-head workflow artifact | Fresh PR checks and later acceptance |
-| P2 | #283 ninth/tenth works | Prepare independently licensed full text and measure (Petersburg/Darwin or a new admitted body) | Source body/rights gates |
-| P3 | #281 FantLab parity | Investigate exact input identity and published rounding with actual benchmark bytes | FantLab input undisclosed |
-| P4 | #282 morphology | Quantify unresolved noun/cardinal N under original AOT semantics | Native enum ambiguity |
-| P5 | #285 live Pages | HTTP/mobile/keyboard check if authorized browser access resumes | Current navigation restriction |
+| P1 | #283 two-author descriptive preview | Later exact-head CI acceptance/merge, Pages branch deployment; no fake M3/parity | Open feature branch and fresh checks |
+| P2 | #283 ninth and tenth independent works | Frozen legally usable >=300k bodies, measured diagnostics, Reader rows with source proof | Petersburg/Darwin body/rights gaps; choose another ready public-domain work if possible |
+| P3 | #281 FantLab benchmark | Field-by-field source/profile/rounding evidence without source-unmatched PASS | FantLab analyzer input unknown |
+| P4 | #282 AOT POS ambiguity | Native noun/cardinal impact and honest uncertainty under pinned pylem | Dictionary/runtime evidence |
+| P5 | #285 Pages live UX | Real desktop/mobile, keyboard and screen route validation | Browser navigation restricted; structural checks remain executable |
 
-The successful root-branch Pages deployment of #362 is verified by GitHub (not a browser live-view claim). No metrics changed: eight measured, 211 fields, M2 0/5. The QA preview is an independent disposable artifact and does not alter the branch-deploy publishing model.
-
-mains unchanged.
+The existing root-branch Pages deployment of #362 is GitHub-verified; later PR #363 fixed the downloadable QA archive without touching metrics. This new preview does not alter the established 8/10 work count, translation identities or scientific M1–M5 gates.
 
 ## Retained evidence and scientific gates
 

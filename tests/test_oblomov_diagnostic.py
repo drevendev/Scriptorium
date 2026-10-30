@@ -113,6 +113,20 @@ class OblomovMeasureTests(unittest.TestCase):
                 diag.build_diagnostic(fetcher=changed_fetch)
             analyzer.assert_not_called()
 
+    def test_retained_real_source_free_snapshot_without_network(self):
+        path = (Path(__file__).resolve().parents[1]
+                / "corpus/candidates/diagnostics/goncharov-oblomov-ru.json")
+        artifact = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(artifact["source"]["revision_id"], diag.REVISION_ID)
+        self.assertEqual(artifact["body"]["characters_including_spaces"], 930248)
+        self.assertEqual(artifact["source"]["wikitext_sha256"],
+                         "fb3e3817792ed1769aa5cd9cc5b33a8326c56ff76007ca92331ac9fad516b394")
+        self.assertEqual(len(artifact["metric_rows"]), 29)
+        self.assertEqual(sum(row["actual"] is not None for row in artifact["metric_rows"]), 24)
+        self.assertEqual(artifact["gates"]["m2_weight"], 0)
+        self.assertFalse(artifact["gates"]["source_text_committed"])
+        self.assertNotIn("\"wikitext\":", json.dumps(artifact))
+
     def test_create_only_json_output_never_overwrites(self):
         artifact = {"body": {"characters_including_spaces": 320000}, "gates": {"source_text_committed": False}}
         with tempfile.TemporaryDirectory() as temporary:

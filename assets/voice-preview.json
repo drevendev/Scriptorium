@@ -1,65 +1,29 @@
 {
-  "schema_version": "scriptorium-author-rhythm-preview-v1",
-  "language": "ru",
-  "source_snapshot": "assets/evidence-snapshot.json",
-  "source_snapshot_git_blob_sha1": "aca0d012d57be04d0cf23bb360f08f6e19007702",
   "aggregation": {
-    "weight": "scriptorium_measured_word_count_per_work",
-    "mean": "sum(word_weight * work_metric) / sum(word_weight)",
     "dispersion": "sqrt(sum(word_weight * (work_metric - weighted_mean)^2) / sum(word_weight))",
+    "mean": "sum(word_weight * work_metric) / sum(word_weight)",
+    "not_a_pooled_raw_text_analysis": true,
     "round_decimal_places": 6,
-    "not_a_pooled_raw_text_analysis": true
-  },
-  "scientific_boundary": {
-    "class": "independent_descriptive_extension_preview",
-    "fantlab_input_identity": "UNKNOWN",
-    "m2_parity_admissible": false,
-    "m2_source_matched": 0,
-    "m3_accepted": false,
-    "cross_validation": "NOT_RUN",
-    "uncertainty": "ONLY_TWO_WORKS_PER_AUTHOR",
-    "translation_mixed": false,
-    "source_text_committed": false
-  },
-  "source_metric_profiles": {
-    "metrics": "scriptorium-metrics-v4",
-    "normalization": "scriptorium-text-v1",
-    "dialogue": "scriptorium-dialogue-v1",
-    "vocabulary": "scriptorium-vocabulary-v1",
-    "punctuation": "scriptorium-punctuation-v2"
+    "weight": "scriptorium_measured_word_count_per_work"
   },
   "authors": [
     {
       "author_id": "grin",
       "display_name": "Александр Грин",
-      "work_count": 2,
-      "word_weight_total": 120850,
-      "works": [
-        {
-          "key": "waves",
-          "candidate_id": "grin-running-on-waves-ru",
-          "title": "Бегущая по волнам",
-          "edition_id": "ru-frozen-363819",
-          "source_sha256": "41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc",
-          "characters_including_spaces": 363819,
-          "word_weight": 55778,
-          "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json"
-        },
-        {
-          "key": "road",
-          "candidate_id": "grin-road-nowhere-ru",
-          "title": "Дорога в никуда",
-          "edition_id": "ru-wikisource-az-lib-oldid-5585836",
-          "source_sha256": "e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee",
-          "characters_including_spaces": 442656,
-          "word_weight": 65072,
-          "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-road-nowhere-ru.retained.json"
-        }
-      ],
       "metrics": [
         {
           "id": "fantlab.general.mean_word_length_chars",
           "label": "Средняя длина слова",
+          "per_work": [
+            {
+              "value": 5.159363906916705,
+              "work_key": "waves"
+            },
+            {
+              "value": 5.392626628964839,
+              "work_key": "road"
+            }
+          ],
           "unit": "знаков/слово",
           "weighted_mean": 5.284965,
           "weighted_population_stddev": 0.116286
@@ -67,6 +31,16 @@
         {
           "id": "fantlab.general.mean_sentence_length_chars",
           "label": "Средняя длина предложения",
+          "per_work": [
+            {
+              "value": 72.55458603896103,
+              "work_key": "waves"
+            },
+            {
+              "value": 66.5516025149517,
+              "work_key": "road"
+            }
+          ],
           "unit": "знаков/предложение",
           "weighted_mean": 69.322264,
           "weighted_population_stddev": 2.992603
@@ -74,6 +48,16 @@
         {
           "id": "fantlab.dialogue.share_percent",
           "label": "Доля диалогов",
+          "per_work": [
+            {
+              "value": 35.88986183443132,
+              "work_key": "waves"
+            },
+            {
+              "value": 45.31181857828172,
+              "work_key": "road"
+            }
+          ],
           "unit": "%",
           "weighted_mean": 40.963139,
           "weighted_population_stddev": 4.697026
@@ -81,6 +65,16 @@
         {
           "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
           "label": "Авторские ремарки в диалогах",
+          "per_work": [
+            {
+              "value": 34.563165459722235,
+              "work_key": "waves"
+            },
+            {
+              "value": 31.815373281526632,
+              "work_key": "road"
+            }
+          ],
           "unit": "%",
           "weighted_mean": 33.08361,
           "weighted_population_stddev": 1.369827
@@ -88,6 +82,16 @@
         {
           "id": "fantlab.punctuation.comma.per_1000_words",
           "label": "Запятые",
+          "per_work": [
+            {
+              "value": 143.67671841944852,
+              "work_key": "waves"
+            },
+            {
+              "value": 139.16892058028031,
+              "work_key": "road"
+            }
+          ],
           "unit": "на 1000 слов",
           "weighted_mean": 141.249483,
           "weighted_population_stddev": 2.247224
@@ -95,6 +99,16 @@
         {
           "id": "fantlab.punctuation.dash.per_1000_words",
           "label": "Тире",
+          "per_work": [
+            {
+              "value": 39.87235110617089,
+              "work_key": "waves"
+            },
+            {
+              "value": 57.45942955495451,
+              "work_key": "road"
+            }
+          ],
           "unit": "на 1000 слов",
           "weighted_mean": 49.34216,
           "weighted_population_stddev": 8.767496
@@ -102,6 +116,16 @@
         {
           "id": "fantlab.punctuation.question.per_1000_words",
           "label": "Вопросы",
+          "per_work": [
+            {
+              "value": 5.71910072071426,
+              "work_key": "waves"
+            },
+            {
+              "value": 10.265552003934104,
+              "work_key": "road"
+            }
+          ],
           "unit": "на 1000 слов",
           "weighted_mean": 8.167149,
           "weighted_population_stddev": 2.266493
@@ -109,43 +133,63 @@
         {
           "id": "fantlab.punctuation.semicolon.per_1000_words",
           "label": "Точка с запятой",
+          "per_work": [
+            {
+              "value": 3.926279178170605,
+              "work_key": "waves"
+            },
+            {
+              "value": 2.643225965084829,
+              "work_key": "road"
+            }
+          ],
           "unit": "на 1000 слов",
           "weighted_mean": 3.235416,
           "weighted_population_stddev": 0.639627
+        }
+      ],
+      "word_weight_total": 120850,
+      "work_count": 2,
+      "works": [
+        {
+          "candidate_id": "grin-running-on-waves-ru",
+          "characters_including_spaces": 363819,
+          "edition_id": "ru-frozen-363819",
+          "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json",
+          "key": "waves",
+          "source_sha256": "41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc",
+          "title": "Бегущая по волнам",
+          "word_weight": 55778
+        },
+        {
+          "candidate_id": "grin-road-nowhere-ru",
+          "characters_including_spaces": 442656,
+          "edition_id": "ru-wikisource-az-lib-oldid-5585836",
+          "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-road-nowhere-ru.retained.json",
+          "key": "road",
+          "source_sha256": "e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee",
+          "title": "Дорога в никуда",
+          "word_weight": 65072
         }
       ]
     },
     {
       "author_id": "tolstoy",
       "display_name": "Лев Толстой",
-      "work_count": 2,
-      "word_weight_total": 405487,
-      "works": [
-        {
-          "key": "anna",
-          "candidate_id": "tolstoy-anna-karenina-ru",
-          "title": "Анна Каренина",
-          "edition_id": "ru-wikisource-239-chapters",
-          "source_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
-          "characters_including_spaces": 1705605,
-          "word_weight": 269358,
-          "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json"
-        },
-        {
-          "key": "resurrection",
-          "candidate_id": "tolstoy-resurrection-ru",
-          "title": "Воскресение",
-          "edition_id": "ru-wikisource-129-chapters",
-          "source_sha256": "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0",
-          "characters_including_spaces": 890835,
-          "word_weight": 136129,
-          "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/tolstoy-resurrection-ru.retained.json"
-        }
-      ],
       "metrics": [
         {
           "id": "fantlab.general.mean_word_length_chars",
           "label": "Средняя длина слова",
+          "per_work": [
+            {
+              "value": 4.9825511029930425,
+              "work_key": "anna"
+            },
+            {
+              "value": 5.204401707204196,
+              "work_key": "resurrection"
+            }
+          ],
           "unit": "знаков/слово",
           "weighted_mean": 5.05703,
           "weighted_population_stddev": 0.104767
@@ -153,6 +197,16 @@
         {
           "id": "fantlab.general.mean_sentence_length_chars",
           "label": "Средняя длина предложения",
+          "per_work": [
+            {
+              "value": 78.99585453175052,
+              "work_key": "anna"
+            },
+            {
+              "value": 91.4059375,
+              "work_key": "resurrection"
+            }
+          ],
           "unit": "знаков/предложение",
           "weighted_mean": 83.162134,
           "weighted_population_stddev": 5.860545
@@ -160,6 +214,16 @@
         {
           "id": "fantlab.dialogue.share_percent",
           "label": "Доля диалогов",
+          "per_work": [
+            {
+              "value": 34.97462555501088,
+              "work_key": "anna"
+            },
+            {
+              "value": 29.824824938941546,
+              "work_key": "resurrection"
+            }
+          ],
           "unit": "%",
           "weighted_mean": 33.245748,
           "weighted_population_stddev": 2.431945
@@ -167,6 +231,16 @@
         {
           "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
           "label": "Авторские ремарки в диалогах",
+          "per_work": [
+            {
+              "value": 38.39203965651457,
+              "work_key": "anna"
+            },
+            {
+              "value": 39.32446834822573,
+              "work_key": "resurrection"
+            }
+          ],
           "unit": "%",
           "weighted_mean": 38.705072,
           "weighted_population_stddev": 0.440331
@@ -174,6 +248,16 @@
         {
           "id": "fantlab.punctuation.comma.per_1000_words",
           "label": "Запятые",
+          "per_work": [
+            {
+              "value": 146.31457020025394,
+              "work_key": "anna"
+            },
+            {
+              "value": 149.94600709621022,
+              "work_key": "resurrection"
+            }
+          ],
           "unit": "на 1000 слов",
           "weighted_mean": 147.533706,
           "weighted_population_stddev": 1.714912
@@ -181,6 +265,16 @@
         {
           "id": "fantlab.punctuation.dash.per_1000_words",
           "label": "Тире",
+          "per_work": [
+            {
+              "value": 46.57370488346364,
+              "work_key": "anna"
+            },
+            {
+              "value": 38.99242630152282,
+              "work_key": "resurrection"
+            }
+          ],
           "unit": "на 1000 слов",
           "weighted_mean": 44.028539,
           "weighted_population_stddev": 3.580188
@@ -188,6 +282,16 @@
         {
           "id": "fantlab.punctuation.question.per_1000_words",
           "label": "Вопросы",
+          "per_work": [
+            {
+              "value": 8.471996376569473,
+              "work_key": "anna"
+            },
+            {
+              "value": 6.662797787392841,
+              "work_key": "resurrection"
+            }
+          ],
           "unit": "на 1000 слов",
           "weighted_mean": 7.864617,
           "weighted_population_stddev": 0.854377
@@ -195,11 +299,67 @@
         {
           "id": "fantlab.punctuation.semicolon.per_1000_words",
           "label": "Точка с запятой",
+          "per_work": [
+            {
+              "value": 4.094921999717847,
+              "work_key": "anna"
+            },
+            {
+              "value": 2.108294338458374,
+              "work_key": "resurrection"
+            }
+          ],
           "unit": "на 1000 слов",
           "weighted_mean": 3.427977,
           "weighted_population_stddev": 0.938166
         }
+      ],
+      "word_weight_total": 405487,
+      "work_count": 2,
+      "works": [
+        {
+          "candidate_id": "tolstoy-anna-karenina-ru",
+          "characters_including_spaces": 1705605,
+          "edition_id": "ru-wikisource-239-chapters",
+          "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json",
+          "key": "anna",
+          "source_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+          "title": "Анна Каренина",
+          "word_weight": 269358
+        },
+        {
+          "candidate_id": "tolstoy-resurrection-ru",
+          "characters_including_spaces": 890835,
+          "edition_id": "ru-wikisource-129-chapters",
+          "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/tolstoy-resurrection-ru.retained.json",
+          "key": "resurrection",
+          "source_sha256": "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0",
+          "title": "Воскресение",
+          "word_weight": 136129
+        }
       ]
     }
-  ]
+  ],
+  "language": "ru",
+  "schema_version": "scriptorium-author-rhythm-preview-v1",
+  "scientific_boundary": {
+    "class": "independent_descriptive_extension_preview",
+    "cross_validation": "NOT_RUN",
+    "fantlab_input_identity": "UNKNOWN",
+    "m2_parity_admissible": false,
+    "m2_source_matched": 0,
+    "m3_accepted": false,
+    "source_text_committed": false,
+    "translation_mixed": false,
+    "uncertainty": "ONLY_TWO_WORKS_PER_AUTHOR"
+  },
+  "source_metric_profiles": {
+    "dialogue": "scriptorium-dialogue-v1",
+    "metrics": "scriptorium-metrics-v4",
+    "normalization": "scriptorium-text-v1",
+    "punctuation": "scriptorium-punctuation-v2",
+    "vocabulary": "scriptorium-vocabulary-v1"
+  },
+  "source_snapshot": "assets/evidence-snapshot.json",
+  "source_snapshot_git_blob_sha1": "aca0d012d57be04d0cf23bb360f08f6e19007702"
 }

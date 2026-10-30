@@ -100,6 +100,28 @@ class AuthorRhythmPreviewTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "blob identity"):
             voice.build_preview(self.input, source_blob_sha1="not-a-sha")
 
+    def test_per_work_traces_replay_all_32_individual_measurements(self):
+        """Each visible per-book value must come from its exact frozen source row."""
+        indexed = {book["key"]: book for book in self.input["books"]}
+        count = 0
+        for author in self.retained["authors"]:
+            expected_keys = [work["key"] for work in author["works"]]
+            for metric in author["metrics"]:
+                rows = metric["per_work"]
+                self.assertEqual([row["work_key"] for row in rows], expected_keys)
+                for row in rows:
+                    source_rows = [entry for entry in indexed[row["work_key"]]["metrics"]
+                                   if entry["id"] == metric["id"]]
+                    self.assertEqual(len(source_rows), 1)
+                    self.assertEqual(source_rows[0]["status"], "measured")
+                    self.assertEqual(source_rows[0]["kind"], "candidate")
+                    self.assertEqual(row["value"], float(source_rows[0]["actual"]))
+                    count += 1
+        self.assertEqual(count, 32)
+        corrupted = deepcopy(self.retained)
+        corrupted["authors"][0]["metrics"][0]["per_work"][0]["value"] += 0.25
+        self.assertNotEqual(corrupted, self.build())
+
     def test_static_reader_visible_accessible_and_matches_derived(self):
         html = SITE.read_text(encoding="utf-8")
         landing = LANDING.read_text(encoding="utf-8")
@@ -115,7 +137,17 @@ class AuthorRhythmPreviewTests(unittest.TestCase):
         self.assertIn("Нет перекрёстной проверки", html)
         self.assertNotIn('<script', html)
         self.assertEqual(html.count('class="metric-card"'), 4)
-        self.assertEqual(html.count('<tr><th scope="row">'), 8)
+        self.assertEqual(html.count('<tr><th scope="row">'), 16)
+        self.assertIn('id="works" aria-labelledby="works-title"', html)
+        self.assertIn('scope="colgroup"', html)
+        for idx, metric in enumerate(self.retained["authors"][0]["metrics"]):
+            other = self.retained["authors"][1]["metrics"][idx]
+            expected_row = ('<tr><th scope="row">' + metric["label"] + '</th><td>'
+                            + metric["unit"] + '</td>'
+                            + ''.join(f'<td>{row["value"]:.6f}</td>'
+                                      for row in metric["per_work"] + other["per_work"])
+                            + '</tr>')
+            self.assertIn(expected_row, html)
         self.assertIn('href="./voice/"', landing)
         for author in self.retained["authors"]:
             self.assertIn(author["display_name"], html)

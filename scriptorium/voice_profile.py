@@ -151,6 +151,13 @@ def build_preview(snapshot: Mapping[str, object], *, source_blob_sha1: str) -> d
                 "id": metric_id, "label": label, "unit": unit,
                 "weighted_mean": round(average, 6),
                 "weighted_population_stddev": round(dispersion, 6),
+                # Preserve independently measured book values, not merely their
+                # weighted aggregate. These are source-bound observations, not
+                # a within-author confidence interval or validated style score.
+                "per_work": [
+                    {"work_key": row["key"], "value": value}
+                    for row, value in zip(work_rows, values)
+                ],
             })
         for row in work_rows:
             del row["measurements"]

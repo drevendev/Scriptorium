@@ -32,6 +32,11 @@ _ROMANS = ("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "X
 _PARTS = ("ЧАСТЬ ПЕРВАЯ", "ЧАСТЬ ВТОРАЯ", "ЧАСТЬ ТРЕТЬЯ", "ЧАСТЬ ЧЕТВЕРТАЯ")
 _CHAPTERS = (15, 11, 10, 9)
 _HEADINGS = re.compile(r"(?m)^===\s*([^\n]*?)\s*===\s*$")
+# The pinned Wikisource heading spells "и оскорбленные" with U+00A0.
+# Match only its harmless space variants; never rewrite the literary body.
+_TITLE_HEADING = re.compile(
+    r"(?m)^===[ \t]*Униженные[ \t\u00a0]+и[ \t\u00a0]+оскорбленные[ \t\u00a0]*===[ \t]*$"
+)
 _UNBOUND = frozenset({
     "fantlab.vocabulary.active_dictionary", "fantlab.vocabulary.active_nondictionary",
     "fantlab.vocabulary.uasz_3000", "fantlab.vocabulary.uasz_10000",
@@ -56,9 +61,12 @@ def extract_literary_body(wikitext: str) -> str:
     """
     if not isinstance(wikitext, str):
         raise TypeError("pinned Wikisource page must be text")
-    title_marker = "=== Униженные и оскорбленные ==="
-    preface, found, remainder = wikitext.partition(title_marker)
-    if not found or not preface.lstrip().startswith("{{Отексте"):
+    title_match = _TITLE_HEADING.search(wikitext)
+    if title_match is None:
+        raise ValueError("missing exact novel source template/title")
+    preface = wikitext[:title_match.start()]
+    remainder = wikitext[title_match.end():]
+    if not preface.lstrip().startswith("{{Отексте"):
         raise ValueError("missing exact novel source template/title")
     if not re.search(r"\|\s*ЛИЦЕНЗИЯ\s*=\s*PD-old(?:-70)?(?:\s|\|)", preface):
         raise ValueError("missing public-domain source notice")
@@ -70,7 +78,10 @@ def extract_literary_body(wikitext: str) -> str:
         raise ValueError("missing editorial-commentary boundary")
     if "=== Комментарии ===" in comments:
         raise ValueError("duplicate commentary boundary")
-    observed = tuple(match.group(1).strip() for match in _HEADINGS.finditer(title_marker + novel))
+    observed = tuple(
+        match.group(1).strip().replace("\u00a0", " ")
+        for match in _HEADINGS.finditer(wikitext[title_match.start():title_match.end()] + novel)
+    )
     if observed != expected_headings():
         raise ValueError("incomplete, duplicated or reordered four-part/epilogue heading inventory")
     start = novel.find("=== Глава I ===")

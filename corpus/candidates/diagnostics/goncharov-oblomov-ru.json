@@ -190,7 +190,7 @@
       "unit": "occurrences/1000_words"
     },
     {
-      "actual": 0,
+      "actual": 0.0,
       "compatibility_status": "inferred",
       "fantlab_display": null,
       "metric_id": "fantlab.punctuation.triple_exclamation.per_1000_words",

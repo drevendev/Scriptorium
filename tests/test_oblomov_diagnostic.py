@@ -81,6 +81,12 @@ class OblomovMeasureTests(unittest.TestCase):
         literary = diag.extract_literary_body(actual_style)
         self.assertEqual(literary, self.body)
 
+    def test_nonbreaking_space_end_anchor_is_not_rewritten_in_prose(self):
+        variant = self.raw.replace("И он рассказал ему, что здесь написано.",
+                                   "И\u00a0он рассказал ему, что здесь написано.")
+        body = diag.extract_literary_body(variant)
+        self.assertIn("И\u00a0он рассказал ему", body)
+
     def test_missing_chapter_and_tampered_footer_fail_closed(self):
         changed = self.raw.replace("=== VII ===", "=== VII СТРАНИЦА ПОТЕРЯНА ===", 1)
         with self.assertRaisesRegex(ValueError, "chapter inventory"):

@@ -83,7 +83,14 @@ def extract_literary_body(wikitext: str) -> str:
     composed = "=== Обломов ===" + before
     observed = tuple(match.group(1).strip() for match in _HEADINGS.finditer(composed))
     if observed != expected_headings():
-        raise ValueError("incomplete, reordered or changed four-part chapter inventory")
+        expected = expected_headings()
+        index = next((n for n in range(min(len(observed), len(expected)))
+                      if observed[n] != expected[n]), min(len(observed), len(expected)))
+        raise ValueError("incomplete, reordered or changed four-part chapter inventory"
+                         f"; count={len(observed)} expected={len(expected)}"
+                         f"; first_mismatch={index}"
+                         f"; observed_heading={observed[index][:65] if index < len(observed) else None!r}"
+                         f"; expected_heading={expected[index] if index < len(expected) else None!r}")
     body = _HEADINGS.sub("\n", before)
     body = re.sub(r"^\s*<center>.*?</center>\s*", "", body, flags=re.DOTALL)
     body = re.sub(r"'{2,5}", "", body).strip() + "\n"

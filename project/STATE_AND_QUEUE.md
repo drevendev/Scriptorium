@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 362
+STATE_REVISION: 363
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: #361 merged as e2653667de1a7224e2d1d198dd4923e22aeb8bb8; branch Pages run 40999630626 succeeded on that exact head. Static source-bound CSV fallback authored for later acceptance.
-LAST_VERIFIED_PROGRESS: 8/10 measured in master; 211 fields (177 numeric, 34 NOT_RUN/unavailable), M2 0/5.
+LAST_RESULT: #362 merged and master Pages deployment 41011022171 succeeded. The post-merge branch-root QA artifact omitted its new no-JavaScript CSV; focused preview-closure patch authored for later acceptance.
+LAST_VERIFIED_PROGRESS: 8/10 measured in master; 211 fields (177 numeric, 34 NOT_RUN/unava## Current delivery and acceptance
 
-## Current delivery and acceptance
-
-UNIT_ID: SCRIP-SITE-042-STATIC-MEASUREMENT-CSV
-ISSUE: #283 accessible Reader.
+UNIT_ID: SCRIP-SITE-043-ROOT-PREVIEW-CSV-CLOSURE
+ISSUE: #283 accessible Reader; #285 Pages acceptance.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-042-static-source-bound-csv
-BASE: e2653667de1a7224e2d1d198dd4923e22aeb8bb8
-ACCEPTANCE: Public root Reader provides a complete, source-free UTF-8 BOM CSV to users without JavaScript (and as a fallback if interactive validation cannot start). The committed 211-row artifact must be byte-for-byte identical to the validated 8-edition browser export (177 numeric, 34 status-only rows), preserve translator/edition/source digests and DIAGNOSTIC_ONLY/M2 0/5, be spreadsheet-formula safe, and never include pending candidates or source prose. Existing smoke must fail on static/serializer drift and missing fallback link. Later fresh exact-head CI, acceptance and qualifying merge required.
+BRANCH: scrip-site-043-complete-root-preview-csv
+BASE: fc439781b8c5dfd2397c1b10bf5a67a549ce1505
+ACCEPTANCE: The exact-head branch-root QA artifact includes every root Reader local asset referenced by HTML and the separately fetched verified evidence JSON. In particular, the new 211-row source-bound CSV is staged, checked nonempty and compared byte-for-byte to the committed static artifact. A positive/negative regression catches missing CSV staging. Later exact-head CI and independent acceptance/merge are required; do not confuse a QA artifact with the separately published Pages site.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Make all eight measured books and their 211 fields genuinely accessible even without JavaScript, then expand independent licensed literary bodies.
+Milestone: Keep the no-JavaScript 211-field CSV downloadable in reproducible root-Reader QA previews, then expand independently licensed literary bodies.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Reader static CSV | Review/test and merge no-JavaScript CSV fallback, byte-identical to live serializer | Fresh exact-head CI |
-| P2 | #285 Pages | Confirm publication of static fallback; HTTP/mobile/keyboard acceptance only if permitted | Browser/HTTP restriction |
-| P3 | #283 ninth/tenth works | Prepare independently licensed source bodies and run reproducible analyzer (Petersburg/Darwin) | Body/rights gates still open |
-| P4 | #281 FantLab parity | Identify exact analyzer-input edition and displayed rounding without weakening acceptance | FantLab input undisclosed |
-| P5 | #282 morphology | Quantify unresolved noun/cardinal N with preserved ambiguity bounds | Original AOT enum unavailable |
+| P1 | #283/#285 Reader root preview | Test and merge all-asset source-bound QA preview; confirm exact-head workflow artifact | Fresh PR checks and later acceptance |
+| P2 | #283 ninth/tenth works | Prepare independently licensed full text and measure (Petersburg/Darwin or a new admitted body) | Source body/rights gates |
+| P3 | #281 FantLab parity | Investigate exact input identity and published rounding with actual benchmark bytes | FantLab input undisclosed |
+| P4 | #282 morphology | Quantify unresolved noun/cardinal N under original AOT semantics | Native enum ambiguity |
+| P5 | #285 live Pages | HTTP/mobile/keyboard check if authorized browser access resumes | Current navigation restriction |
 
-PR #361 and its exact-head Pages workflow are successful, but direct live HTTP/visual evidence is still unavailable; this static CSV is a proposed new feature until merged and published. Road measurements are DIAGNOSTIC for an alternate source family. The perpetual hourly task remains unchanged.
+The successful root-branch Pages deployment of #362 is verified by GitHub (not a browser live-view claim). No metrics changed: eight measured, 211 fields, M2 0/5. The QA preview is an independent disposable artifact and does not alter the branch-deploy publishing model.
+
+mains unchanged.
 
 ## Retained evidence and scientific gates
 

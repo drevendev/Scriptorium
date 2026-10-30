@@ -1,0 +1,3 @@
+# 2026-10-30 — Branch-root QA preview includes the static metric CSV
+
+The branch-root preview staging omitted `assets/scriptorium-ru-measured-metrics.csv` introduced by #362, leaving its non-JavaScript download link broken in the downloadable QA copy despite successful branch publication. The focused patch copies and byte-checks the committed CSV into the exact-head preview and adds a link-inventory regression that fails if any referenced Reader asset or JS-fetched evidence JSON is omitted. No corpus data, analyzer values, publishing interlocks or FantLab parity claims change. Later exact-head CI and acceptance remain required.

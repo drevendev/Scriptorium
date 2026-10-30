@@ -68,7 +68,7 @@ class RussianBranchReaderTests(unittest.TestCase):
           "metrics_total":269,"numeric_total":225,"unavailable_total":44,
           "m2_source_matched":0
         })
-        self.assertEqual(d["language_modules"]["ru"]["measured_work_count"],9)
+        self.assertEqual(d["language_modules"]["ru"]["measured_work_count"],10)
         self.assertEqual(d["language_modules"]["en"]["state"],"planned_not_measured")
         self.assertEqual(d["language_modules"]["en"]["measured_work_count"],0)
         self.assertEqual(d["language_modules"]["fr"]["measured_work_count"],0)

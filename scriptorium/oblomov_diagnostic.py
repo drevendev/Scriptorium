@@ -101,7 +101,9 @@ def extract_literary_body(wikitext: str) -> str:
         raise ValueError("unexpanded markup inside literary body")
     if "Гороховой улице" not in body[:400]:
         raise ValueError("beginning of novel was not retained")
-    if not body.rstrip().endswith("И он рассказал ему, что здесь написано."):
+    # Wikisource retains non-breaking spaces; normalize whitespace only for
+    # the end-anchor assertion, never for the hashed/measured body itself.
+    if not " ".join(body[-160:].split()).endswith("И он рассказал ему, что здесь написано."):
         raise ValueError("end of novel was not retained")
     if len(body) < BODY_MINIMUM:
         raise ValueError("full literary body below 300000 characters including spaces")

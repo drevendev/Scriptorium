@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 365
+STATE_REVISION: 366
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: PR #364 merged at 3b6006fdc723e963925789de448260d1ba276169, and master Pages deployment succeeded. Independent four-work observation trace authored for later acceptance; no new measurement or FantLab parity claim.
+LAST_RESULT: PR #365 confirmed merged at 364032edff8e7ee10180f6c2e6ae1112e91b9b1d. Observed two-work ranges (all 8 metrics) and two visual comparisons authored for later acceptance; no new measured book or M2/M3 claim.
 LAST_VERIFIED_PROGRESS: 8/10 full Russian works measured; 211 fields (177 numeric, 34 unavailable), M2 0/5; M3 gate remains open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-VOICE-002-PER-WORK-OBSERVATIONS
+UNIT_ID: SCRIP-VOICE-003-OBSERVED-RANGES
 ISSUE: #283 reader usability; #281 evidence and benchmark boundary.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-voice-002-per-work-observations
-BASE: 3b6006fdc723e963925789de448260d1ba276169
+BRANCH: scrip-voice-003-observed-book-ranges
+BASE: 364032edff8e7ee10180f6c2e6ae1112e91b9b1d
 
-ACCEPTANCE: For the already merged source-bound two-author preview, derive and retain all 32 distinct per-work scalar observations (8 metrics x 4 frozen Russian editions) from the verified source snapshot, keyed by the pinned work identity and without changing the 16 weighted author summaries. A visible non-JavaScript, keyboard-accessible table presents all four editions, units and values with honest display rounding. Python replay verifies every observation and fails on changed source/edition/hash/profile, missing measurements and tampered retained JSON. CI checks exact snapshot-to-derived equality; Pages QA archive must contain the static route and JSON. Later stateless acceptance reviews final PR head/checks before merge. This is descriptive source-bound evidence, NOT validated author voice, FantLab parity or M3 completion.
+ACCEPTANCE: From the 32 source-bound individual observations merged in #365, show for all 8 metrics the exact min/max across the two independent works per author and classify interval overlap using full-precision measurements. Display two real range plots with per-metric observed-min-to-max axes, plus an accessible eight-row table and explicit absence of statistical confidence/validation claims. Automated test must reproduce all ranges and plot geometry from the pinned JSON and reject tampered observations. Publish through existing protected master/branch Pages after later-run acceptance; M2 remains 0/5 and M3 open.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Make the merged Grin/Tolstoy rhythm comparison inspectable per book, then expand the measured Russian corpus.
+Milestone: Expose observed within-author book ranges (not confidence intervals) for the merged Grin/Tolstoy preview, then expand the measured Russian corpus.
 
 | Priority | Executable unit | User-visible acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 source-bound per-work metric table | All 32 actual book values individually traceable, negative regressions, successful merge/Pages; no invented author profile | Current focused PR; fresh exact-head CI |
+| P1 | #283 observed two-work ranges | Eight source-backed exact min/max rows, two readable plots, overlap caveat, negative regression, later-run merge/Pages | Current focused PR; fresh exact-head CI |
 | P2 | #283 ninth and tenth measured works | Separate rights-cleared >=300k Russian bodies, reproducible measured reports, Reader integration | Petersburg/Darwin unresolved bodies; choose independently ready lawful source |
 | P3 | #281 FantLab benchmark | Source-matched field-by-field evidence and explicit unchanged rounding/tolerance | FantLab analyzer input unknown |
 | P4 | #282 AOT POS ambiguity | Native noun/cardinal uncertainty and exact diagnostic under pinned pylem | Dictionary/runtime evidence |

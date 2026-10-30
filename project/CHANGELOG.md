@@ -3,6 +3,12 @@
 This log records changes to project meaning, gates and durable control state. Normal
 code changes remain in Git history and their issues/PRs.
 
+## 2026-10-30 — Ninth measured Reader book (PR candidate)
+
+- Prepare source-bound Goncharov *Oblomov* (Wikisource oldid 5724579) for the Reader using merged #367's 29-field source-free measurements; 24 numeric and five explicitly NOT_RUN.
+- Extend static chart/table, per-work comparisons, exports and complete CSV from 211 to 240 fields; preserve immutable witness identity and two unmeasured research leads.
+- Keep claimed 1954 print collation NOT_RUN, FantLab input UNKNOWN, M2 0/5 and M3 open; require later independent CI/PR acceptance and separate live Pages verification.
+
 ## 2026-09-11 — Bootstrap contract
 
 - Created the repository-native EndlessZen project contract.

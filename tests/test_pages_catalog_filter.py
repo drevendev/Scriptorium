@@ -14,7 +14,7 @@ class CatalogueFilterTests(unittest.TestCase):
         data=json.loads((ROOT/"assets/evidence-snapshot.json").read_text(encoding="utf-8"))
         cards=re.findall(r'<article class="book(?: book-research)?" data-status="(measured|pending)" data-catalog-key="([a-z]+)">',html)
         self.assertEqual([key for _,key in cards],[book["key"] for book in data["books"]])
-        self.assertEqual([kind for kind,_ in cards],["measured"]*8+["pending"]*2)
+        self.assertEqual([kind for kind,_ in cards],["measured"]*9+["pending"]*2)
         self.assertEqual(sum(book["language"]!=book["original_language"] for book in data["books"]),2)
         self.assertIn('id="catalog-tools" hidden',html)
         self.assertIn('id="catalog-filter" disabled',html)

@@ -1,34 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 367
+STATE_REVISION: 368
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: PR #366 merged at master 601e1ee298b6cabd6bbab08752994604e88d568f. Hosted exact-revision Oblomov measurement replay passed; derived 29-field snapshot (24 numeric, 5 NOT_RUN) retained in this PR; independent later-wake acceptance and Reader integration outstanding; M2 0/5.
-LAST_VERIFIED_PROGRESS: 8/10 full Russian works measured; 211 fields (177 numeric, 34 unavailable), M2 0/5; M3 open.
+LAST_RESULT: Source-free full Oblomov diagnostic (#367) is merged at master 5d90255d8362df52160ccf97acecba5c71ff7d2e; ninth Reader integration proposed in branch scrip-reader-089-oblomov-evidence pending CI and later-run acceptance.
+LAST_VERIFIED_PROGRESS: Nine full Russian works measured and retained, eight shown in current master Reader (211 fields). This branch proposes nine / eleven catalogued and 240 fields (201 numeric, 39 unknown). M2 0/5; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-088-OBLOMOV-MEASURED
-ISSUE: #281 evidence boundary; #283 reader catalogue.
-STATUS: CI_MEASURED_SNAPSHOT_RETAINED_IN_PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-corpus-088-oblomov-measured
-BASE: 601e1ee298b6cabd6bbab08752994604e88d568f
+UNIT_ID: SCRIP-READER-089-OBLOMOV-PUBLIC
+ISSUE: #283 Reader experience; #281 benchmark evidence.
+STATUS: PR_PENDING_CI_AND_LATER_REVIEW
+BRANCH: scrip-reader-089-oblomov-evidence
+BASE: 5d90255d8362df52160ccf97acecba5c71ff7d2e
 
-ACCEPTANCE: For the public-domain Russian original Goncharov's Oblomov, replay Wikisource az.lib.ru exact revision oldid 5724579 transiently, reject changes in rights, source digest, four-part 46-chapter inventory and literary-body boundaries. Verify >=300,000 characters including spaces and produce real deterministic 29-field JSON with source/body hashes, profiles, five NOT_RUN dictionary fields and no source text. Hosted oldid 5724579 run #41077141367 confirmed 930248 characters, 147447 words and 24/29 numeric fields; source SHA-256 fb3e3817792ed1769aa5cd9cc5b33a8326c56ff76007ca92331ac9fad516b394; retained derived snapshot must match every fresh replay. Reader still has only eight measured works until the snapshot is later accepted and integrated. No established FantLab input/edition match, hence DIAGNOSTIC_ONLY and M2 0/5.
+ACCEPTANCE: Source-free derived *Oblomov* JSON from merged #367 maps 29 real fields into ninth Reader card, charts/no-JS table, per-book export and 240-field pinned CSV. Pin public-domain Wikisource oldid 5724579, 930248 characters including spaces, 147447 words, 14353 sentences, exact SHA-256, four parts/46 chapters and five NOT_RUN dictionary fields. The claimed 1954 print edition is NOT_RUN; FantLab input UNKNOWN, M2 weight zero. Keep both research leads unmeasured. Merge only after fresh exact-head CI and later independent acceptance; verify Pages live separately.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Publish a verified ninth fully measured Russian book from a rights-cleared full-text witness, with distinct edition identity and inspectable reader results, while maintaining source-matched FantLab research independently.
+Milestone: Publish ninth measured Russian book with provenance and honest interactive/no-JS results.
 
-| Priority | Executable unit | User-visible acceptance | Scoped dependency |
+| Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 / #283 Oblomov exact-source measurement | Source/body hashes, 29 honest fields, positive/negative regressions, source-free CI artifact | Current PR measured/replayed; later-run independent acceptance plus historical-data CI equality |
-| P2 | #283 ninth Reader book | After acceptance, add 930248-character Oblomov retained results to Reader with detail/charts and provenance | Requires P1 source/body evidence and rights/completeness verification |
-| P3 | #281 strict FantLab benchmark | Field-by-field provenance and unmatched-source diagnostics with unchanged rounding rules | FantLab analyzer input unknown |
-| P4 | #282 AOT N ambiguity | Native noun/cardinal uncertainty diagnostics under pinned pylem | Dictionary/runtime evidence |
-| P5 | #285 Pages live UX | Actual desktop/mobile HTTP, keyboard and route validation | Browser tool may block; structural CI remains executable |
-
-Previous #366 range plots are merged in master; do not re-review unchanged heads. Master currently has 8 measured books / 211 fields; public Pages direct live/browser verification remains incomplete.
+| P1 | Accept ninth Reader PR | Inspect exact 29-field source/rights, charts/CSV, tests and fresh review before merge | Later wake and CI |
+| P2 | #281 strict FantLab benchmark | Source-unmatched field-by-field diagnostics, explicit edition and rounding evidence | FantLab analyzer input UNKNOWN |
+| P3 | #282 AOT N ambiguity | Native noun/cardinal bounds under pinned pylem | Dictionary/runtime evidence |
+| P4 | #285 Pages live UX | Actual HTTP, keyboard, desktop/mobile and CSV download validation | Browser navigation currently restricted; CI checks independently |
+| P5 | Next legally usable Russian book | Distinct witness, rights, >=300k, reproducible full analysis | Independent of blocked scans/OCR |
 
 ## Retained evidence and scientific gates
 

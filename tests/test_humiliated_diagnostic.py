@@ -75,6 +75,28 @@ class HumiliatedMeasureTests(unittest.TestCase):
         self.assertNotIn('"wikitext":', serialized)
         self.assertEqual(json.loads(serialized), artifact)
 
+    def test_pinned_title_nbsp_variant_is_source_bound(self):
+        """The exact Wiki revision uses a non-breaking space in the title heading."""
+        nbsp = self.source.replace(
+            "=== Униженные и оскорбленные ===",
+            "=== Униженные и\u00a0оскорбленные ===",
+            1,
+        )
+        self.assertEqual(diag.extract_literary_body(nbsp), self.body)
+        artifact = diag.build_diagnostic(fetcher=_fetcher(nbsp))
+        self.assertEqual(artifact["body"]["raw_sha256"], sha256(self.body.encode("utf-8")).hexdigest())
+        self.assertNotEqual(
+            artifact["source"]["wikitext_sha256"],
+            sha256(self.source.encode("utf-8")).hexdigest(),
+        )
+        duplicated = nbsp.replace(
+            "=== Униженные и\u00a0оскорбленные ===",
+            "=== Униженные и\u00a0оскорбленные ===\n=== Униженные и оскорбленные ===",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, "heading inventory"):
+            diag.extract_literary_body(duplicated)
+
     def test_commentary_not_in_body(self):
         self.assertNotIn("Буданова", self.body)
         self.assertNotIn("Впервые опубликовано", self.body)

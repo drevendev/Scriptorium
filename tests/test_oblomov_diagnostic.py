@@ -102,7 +102,7 @@ class OblomovMeasureTests(unittest.TestCase):
             analyzer.assert_not_called()
 
     def test_create_only_json_output_never_overwrites(self):
-        artifact = {"gates": {"source_text_committed": False}}
+        artifact = {"body": {"characters_including_spaces": 320000}, "gates": {"source_text_committed": False}}
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary) / "measured.json"
             with patch.object(diag, "build_diagnostic", return_value=artifact):

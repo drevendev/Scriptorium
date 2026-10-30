@@ -2,7 +2,7 @@
   "schema_version": "scriptorium-author-rhythm-preview-v1",
   "language": "ru",
   "source_snapshot": "assets/evidence-snapshot.json",
-  "source_snapshot_git_blob_sha1": "aca0d012d57be04d0cf23bb360f08f6e19007702",
+  "source_snapshot_git_blob_sha1": "590051a0e9741b59f5aa28de8713ed0c9b9e1752",
   "aggregation": {
     "weight": "scriptorium_measured_word_count_per_work",
     "mean": "sum(word_weight * work_metric) / sum(word_weight)",

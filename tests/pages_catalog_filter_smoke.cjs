@@ -26,7 +26,7 @@ for(const [mode,keys,measured,pending] of [
  ["measured",["anna","waves","silver","karamazov","hyperboloid","beketova","resurrection","road","oblomov"],9,0],
  ["pending",["petersburg","darwin"],0,2],
  ["translated",["beketova","darwin"],1,1],
- ["unknown",data.books.map(b=>b.key),8,2]]){
+ ["unknown",data.books.map(b=>b.key),9,2]]){
  filter.value=mode;run();
  assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),keys,mode);
  assert.ok(status.textContent.includes(measured+" измерено, "+pending+" в подготовке"),mode);

@@ -38,7 +38,7 @@ for(const id of ids){
   }
   const expected=measured.filter(book=>book.metrics.some(m=>m.id===id&&Number.isFinite(m.actual))).length;
   assert.equal(expected,id.includes("mean_dialogue_sentence")||id.includes("mean_narration_sentence")?8:9,id);
-  assert.ok(elements["chart-unit"].textContent.includes(expected+" из 8"),id);
+  assert.ok(elements["chart-unit"].textContent.includes(expected+" из 9"),id);
   assert.equal(buttons.filter(btn=>btn.attrs["aria-pressed"]==="true").length,1,id);
   const missing=rows.filter(row=>row.className.includes("chart-missing"));
   assert.equal(missing.length,9-expected,id);
@@ -110,7 +110,7 @@ const printCss=fs.readFileSync(path.join(root,"assets/pages-reader.css"),"utf8")
 assert.match(printCss,/\.chart-table td:nth-child\(2\).*overflow-wrap:anywhere/);
 assert.match(printCss,/@media print \{[\s\S]*\.chart-table summary \{ display:none; \}/);
 console.log("Print preview opens the exact chart table and restores disclosure state: PASS");
-console.log("Eight real charts and exact-value accessible tables: measured/missing/zero PASS");
+console.log("Nine-book real charts and exact-value accessible tables: measured/missing/zero PASS");
 
 /* Exercise chart URL selection against shipped code and real Node URL handling. */
 const linkStart=source.indexOf("  // Share an allow-listed chart");

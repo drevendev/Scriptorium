@@ -95,7 +95,9 @@ def extract_literary_body(wikitext: str) -> str:
     unexpected = {mark: body.count(mark) for mark in markers if mark in body}
     if unexpected:
         # Expose marker categories/counts only, never a prose snippet or location.
-        raise ValueError("unexpanded wiki/HTML markup in novel body: " + repr(unexpected))
+        html_closers = sorted(set(re.findall(r"</([A-Za-z][A-Za-z0-9]*)\\s*>", body)))
+        raise ValueError("unexpanded wiki/HTML markup in novel body: " + repr(unexpected)
+                         + "; closing_tag_names=" + repr(html_closers))
     if "Прошлого года, двадцать второго марта" not in body[:350]:
         raise ValueError("beginning of novel was not retained")
     if "навеки счастливы вместе" not in " ".join(body[-1300:].split()):

@@ -75,6 +75,12 @@ class OblomovMeasureTests(unittest.TestCase):
         self.assertNotIn("И он рассказал ему", serialized)
         self.assertEqual(json.loads(serialized), artifact)
 
+    def test_attested_wikisource_heading_break_without_prose_markup(self):
+        actual_style = self.raw.replace("=== IX Сон Обломова ===",
+                                        "=== IX <br>Сон Обломова ===", 1)
+        literary = diag.extract_literary_body(actual_style)
+        self.assertEqual(literary, self.body)
+
     def test_missing_chapter_and_tampered_footer_fail_closed(self):
         changed = self.raw.replace("=== VII ===", "=== VII СТРАНИЦА ПОТЕРЯНА ===", 1)
         with self.assertRaisesRegex(ValueError, "chapter inventory"):

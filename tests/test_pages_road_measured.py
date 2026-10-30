@@ -70,8 +70,8 @@ class RoadEighthReaderTests(unittest.TestCase):
 
     def test_catalogue_consistency_and_non_parity(self):
         self.assertEqual(self.catalog["counts"], {
-            "work_count": 10, "measured_works": 8, "awaiting_measurement": 2,
-            "metrics_total": 211, "numeric_total": 177, "unavailable_total": 34,
+            "work_count": 11, "measured_works": 9, "awaiting_measurement": 2,
+            "metrics_total": 240, "numeric_total": 201, "unavailable_total": 39,
             "m2_source_matched": 0
         })
         self.assertEqual([b["key"] for b in self.catalog["books"] if b["text_status"] != "measured"],

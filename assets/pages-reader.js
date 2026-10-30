@@ -55,18 +55,18 @@
         doc.comparability?.m2_parity_admissible !== false ||
         doc.counts?.m2_source_matched !== 0 ||
         doc.counts?.work_count !== 10 ||
-        doc.counts?.measured_works !== 7 ||
-        doc.counts?.awaiting_measurement !== 3 ||
-        doc.counts?.metrics_total !== 182 ||
-        doc.counts?.numeric_total !== 153 ||
-        doc.counts?.unavailable_total !== 29 ||
+        doc.counts?.measured_works !== 8 ||
+        doc.counts?.awaiting_measurement !== 2 ||
+        doc.counts?.metrics_total !== 211 ||
+        doc.counts?.numeric_total !== 177 ||
+        doc.counts?.unavailable_total !== 34 ||
         doc.language_modules?.en?.state !== "planned_not_measured" ||
         doc.language_modules?.en?.measured_work_count !== 0 ||
         !Array.isArray(doc.books) || doc.books.length !== 10) {
       throw Error("Русский каталог или научный статус изменён");
     }
     const census = {anna:[28,23],waves:[27,23],silver:[29,24],
-                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11],resurrection:[29,24]};
+                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11],resurrection:[29,24],road:[29,24]};
     const seen = new Set();
     const editionKeys = new Set();
     let observed = 0, missing = 0;
@@ -110,6 +110,17 @@
             throw Error("Воскресение: подмена закреплённых измерений");
           }
         }
+        if (book.key === "road") {
+          const characters=book.metrics.find(m=>m.id==="fantlab.general.characters");
+          const words=book.metrics.find(m=>m.id==="fantlab.general.words");
+          if (book.source_sha256 !== "e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee" ||
+              book.source_revision_id !== 5585836 ||
+              book.edition_id !== "ru-wikisource-az-lib-oldid-5585836" ||
+              characters?.actual !== 442656 || characters?.reference !== 438439 ||
+              words?.actual !== 65072 || words?.reference !== 61299) {
+            throw Error("Дорога в никуда: подмена закреплённой альтернативной редакции");
+          }
+        }
         const fields = new Set();
         let available = 0;
         for (const m of book.metrics) {
@@ -138,8 +149,8 @@
       }
     }
     if (seen.size !== 10 || Object.keys(census).some(x=>!seen.has(x)) ||
-        observed !== 153 || missing !== 29 ||
-        doc.books.filter(b=>b.text_status === "measured").length !== 7 ||
+        observed !== 177 || missing !== 34 ||
+        doc.books.filter(b=>b.text_status === "measured").length !== 8 ||
         doc.books.filter(b=>b.translator).length !== 2) throw Error("Подмена итогов каталога");
     // The static cards must match the verified evidence record exactly.
     const cardKeys=catalogCards.map(card=>card.dataset.catalogKey);

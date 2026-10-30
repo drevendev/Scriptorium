@@ -117,6 +117,23 @@ class HumiliatedMeasureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "editorial-commentary boundary"):
             diag.extract_literary_body(bad)
 
+    def test_inline_emphasis_removes_only_balanced_tags(self):
+        original = "Читатель слышит историю"
+        tagged = self.source.replace(original, "<u>Читатель <sup>слышит</sup> историю</u>", 1)
+        self.assertEqual(diag.extract_literary_body(tagged), self.body)
+        for replacement in (
+            "<u>Читатель слышит историю",
+            "Читатель</u> слышит историю",
+            "<u>Читатель</sup> слышит историю</u>",
+            "<u class='unexpected'>Читатель слышит историю</u>",
+            "<unknown>Читатель слышит историю</unknown>",
+        ):
+            altered = self.source.replace(original, replacement, 1)
+            with self.subTest(replacement=replacement), self.assertRaisesRegex(
+                ValueError, "(formatting|HTML)"
+            ):
+                diag.extract_literary_body(altered)
+
     def test_unexpanded_markup_is_rejected(self):
         bad = self.source.replace("Читатель слышит историю", "{{ИСКАЖЕНО}} Читатель слышит историю", 1)
         with self.assertRaisesRegex(ValueError, "markup"):

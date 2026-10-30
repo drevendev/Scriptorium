@@ -91,8 +91,11 @@ def extract_literary_body(wikitext: str) -> str:
     # Apostrophes only mark emphasis in this pinned Wikisource family; the
     # resulting body retains native punctuation, case and all other spacing.
     body = re.sub(r"'{2,5}", "", body).strip() + "\n"
-    if any(mark in body for mark in ("{{", "}}", "[[", "]]", "<ref", "</", "<br", "<center")):
-        raise ValueError("unexpanded wiki/HTML markup in novel body")
+    markers = ("{{", "}}", "[[", "]]", "<ref", "</", "<br", "<center")
+    unexpected = {mark: body.count(mark) for mark in markers if mark in body}
+    if unexpected:
+        # Expose marker categories/counts only, never a prose snippet or location.
+        raise ValueError("unexpanded wiki/HTML markup in novel body: " + repr(unexpected))
     if "Прошлого года, двадцать второго марта" not in body[:350]:
         raise ValueError("beginning of novel was not retained")
     if "навеки счастливы вместе" not in " ".join(body[-1300:].split()):

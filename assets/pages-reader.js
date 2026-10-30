@@ -39,6 +39,7 @@
   const pairMetric = el("pair-metric");
   const pairExportButton = el("pair-export");
   const pairCsvButton = el("pair-export-csv");
+  const libraryCsvButton = el("library-export-csv");
   let data;
   let currentBook = "anna";
   let currentChart = "fantlab.dialogue.share_percent";
@@ -560,6 +561,57 @@
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
 
+
+  // Export every verified observed/unavailable field without admitting pending works.
+  // UNKNOWN is an empty numeric cell with an explicit status, never the number zero.
+  // CSV never implies FantLab source/algorithm parity and contains no source text.
+  function serializeLibraryCsv(doc) {
+    verify(doc);
+    const headers=[
+      "export_schema","scientific_claim","fantlab_input_identity","m2_source_matched",
+      "book_key","candidate_id","title","author","original_language","analysis_language",
+      "translator_id","translator_name","edition_id","source_sha256","source_revision_id",
+      "source_evidence_url","fantlab_reference_url","normalization_profile","metrics_profile",
+      "dialogue_profile","vocabulary_profile","punctuation_profile",
+      "metric_id","unit","actual","actual_status","fantlab_reference_display",
+      "reference_status","metric_kind","comparison_class"
+    ];
+    const lines=[];
+    for (const book of doc.books) {
+      if (book.text_status!=="measured") continue;
+      for (const metric of book.metrics) {
+        const fields=[
+          "scriptorium-ru-metric-catalog-csv-v1","DIAGNOSTIC_ONLY","UNKNOWN",0,
+          book.key,book.candidate_id,book.display_title,book.display_author,
+          book.original_language,book.language,book.translator?.id||"",
+          book.translator?.name||"",book.edition_id,book.source_sha256,
+          book.source_revision_id??"",book.evidence_url,book.fantlab_url||"",
+          book.profiles.normalization,book.profiles.metrics,book.profiles.dialogue,
+          book.profiles.vocabulary,book.profiles.punctuation,
+          metric.id,unit(metric.id),metric.actual===null?"":metric.actual,
+          metric.status,metric.reference===null?"":metric.reference,
+          metric.kind==="extension"?"NOT_APPLICABLE":
+            metric.reference===null?"UNKNOWN":"DISPLAY_REFERENCE_ONLY",
+          metric.kind,metric.kind==="extension"?"EXTENSION_ONLY":"DIAGNOSTIC_UNMATCHED_SOURCE"
+        ];
+        if (fields.length!==headers.length) throw Error("Некорректная структура CSV");
+        lines.push(fields.map(csvText).join(","));
+      }
+    }
+    if (lines.length!==doc.counts.metrics_total) throw Error("Неполная таблица измерений");
+    return "\uFEFF"+[headers.join(","),...lines].join("\r\n")+"\r\n";
+  }
+  function exportLibraryCsv() {
+    const payload=serializeLibraryCsv(data);
+    const blob=new Blob([payload],{type:"text/csv;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");
+    link.href=url;
+    link.download="scriptorium-ru-measured-metrics.csv";
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
   function updatePair() {
     pairExportButton.disabled=true;
     pairCsvButton.disabled=true;
@@ -702,7 +754,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogSearch,one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,chartSortButton,...chartButtons];
+      const inputs=[catalogFilter,catalogSearch,one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,libraryCsvButton,chartSortButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -734,6 +786,7 @@
       out.addEventListener("click",exportSelected);
       pairExportButton.addEventListener("click",exportPair);
       pairCsvButton.addEventListener("click",exportPairCsv);
+       libraryCsvButton.addEventListener("click",exportLibraryCsv);
       leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",updatePair);

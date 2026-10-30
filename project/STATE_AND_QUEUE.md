@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 359
+STATE_REVISION: 361
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: #359 merged as 2c1072f1bd0afc511e668967aa82950e4425a59c. Road alternate source-free full-body CI ZIP SHA-256 55c39e7b0c4a69a9c86fe3afc7c1d9c63620c4f9d52eb23be4dd688cda6b39f0 and extracted JSON SHA-256 a0cfc008f9e8580a203e39c83a3e65755143c593038adaa275037bbed7dc1e92 independently checked. Eighth Reader card authored pending new CI / later acceptance.
-LAST_VERIFIED_PROGRESS: 7/10 measured in master; 8/10 proposed with 211 fields (177 numeric and 34 NOT_RUN/unavailable). M2 0/5.
+LAST_RESULT: #360 merged as e76fffcbf8d0086e1527faad19169d2bfa0eccfc, confirmed in master. Whole-library measured-metric CSV authored for later review; exact-head CI and publication not yet accepted.
+LAST_VERIFIED_PROGRESS: 8/10 measured in master; 211 fields (177 numeric, 34 NOT_RUN/unavailable), M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-040-ROAD-MEASURED-READER
-ISSUE: #283 Reader acceptance, #281 diagnostic evidence.
+UNIT_ID: SCRIP-SITE-041-MEASURED-LIBRARY-CSV
+ISSUE: #283 accessible Reader, #281 evidence reporting.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-040-road-measured-reader
-BASE: 2c1072f1bd0afc511e668967aa82950e4425a59c
-ACCEPTANCE: Retain all 29 CI-authenticated derived Road fields; display eighth Russian measured book, charts, no-JS exact-value table, filters and direct links with positive/adversarial tests. Keep oldid 5585836 az.lib source identity distinct from incomplete Pravda-1965 family, FantLab input UNKNOWN and M2 0/5. Fresh exact-head CI and later independent PR acceptance/merge/publication verification mandatory.
+BRANCH: scrip-site-041-metric-catalog-csv
+BASE: e76fffcbf8d0086e1527faad19169d2bfa0eccfc
+ACCEPTANCE: Verify source-bound CSV has exactly 211 fields from 8 measured Russian editions; 177 numeric values, 34 explicitly status-labeled empty numeric cells, translator/edition/source SHA and profile identity, never pending candidates or literary prose. All strings are CSV-formula-safe, scientific claim DIAGNOSTIC_ONLY and M2 0/5. Regression tests cover exact download, null-versus-zero and tampered source evidence. Later fresh exact-head CI, independent acceptance and qualifying merge required.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: deliver eight real analyzed Russian-language editions with source-bound metrics and accessible comparison, without false FantLab parity.
+Milestone: Publish an accessible, downloadable full measurement table alongside the eight real analyzed Russian-language editions; then expand independently licensed literary bodies.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 eighth Reader book | Independently review/check and merge the Road evidence + 8-book Reader PR | Fresh exact-head CI |
-| P2 | #285 Pages | Confirm post-merge root-branch deployment; attempt HTTP, mobile, keyboard/live readback | Browser/HTTP restriction |
-| P3 | #281 FantLab | Establish input edition and displayed rounding before asserting compatible parity | Exact FantLab input undisclosed |
-| P4 | #282 morphology | Quantify noun/cardinal N uncertainty with preserved bounds | Original AOT enum unavailable |
-| P5 | #283 ninth/tenth works | Prepare independent licensed literary body and run analyzer (Darwin/Petersburg) | Body and rights gates open |
+| P1 | #283 / #281 Reader CSV | Independently review/check and merge full 211-row metric export | Fresh exact-head CI |
+| P2 | #285 Pages | Confirm post-merge publication; attempt HTTP/mobile/keyboard acceptance | Browser/HTTP restriction |
+| P3 | #283 ninth/tenth works | Prepare independent licensed bodies and run reproducible analyzer (Petersburg/Darwin) | Body/rights gates still open |
+| P4 | #281 FantLab parity | Establish exact input-edition identity and rounding evidence before parity claim | FantLab input undisclosed |
+| P5 | #282 morphology | Quantify unresolved noun/cardinal N with preserved ambiguity bounds | Original AOT enum unavailable |
 
-PR #359 is merged; Road measurements are derived from a different, alternate source family and are NOT FantLab parity. The existing perpetual hourly schedule remains unchanged.
+PR #360 is merged; Road measurements remain DIAGNOSTIC for an alternate source family, not FantLab parity. The same perpetual hourly task remains unchanged.
 
 ## Retained evidence and scientific gates
 
@@ -65,7 +65,7 @@ own manifest gates. Short excerpts/fixtures do not count as corpus admission.
 ## Scoped operational blockers
 
 - #265: default-branch rules prevent deletion/non-fast-forward and require PRs, with zero required approvals in the read ruleset. Connector identity has push/triage, not admin. No unsupported deletion/settings mutation or ref bypass.
-- #285 Pages: latest master/root 6a2b58e built and deployed successfully (pages build and deployment #40924968831), including the catalogue search and native N page. Public URL HTTP and desktop/mobile visual verification remain blocked/unverified. The separate pair-chart metric permalink branch is not deployed.
+- #285 Pages: #360 is now merged into master. Live HTTP and desktop/mobile visual verification remain blocked/unverified despite earlier successful root deployments. Do not infer current LIVE_VERIFIED from CI.
 - #284 licensing: do not infer a code/data license or publish externally before the rights gate is resolved.
 - Local checkout: Git DNS failed; exact source blobs were recovered and verified for actual local tests. Hosted full-repository CI supplies complete integrated execution evidence, not the limited local closure.
 - Browser HTTP navigation returned ERR_BLOCKED_BY_ADMINISTRATOR. Current visual changes are VISUAL_NOT_VERIFIED; structural tests are not live browser acceptance. Continue other executable work without bypassing the restriction.

@@ -1,0 +1,73 @@
+name: Oblomov source-free measured candidate
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/oblomov-measured.yml"
+      - "scriptorium/oblomov_diagnostic.py"
+      - "scriptorium/single_page_body.py"
+      - "scriptorium/metrics.py"
+      - "scriptorium/text.py"
+      - "scriptorium/dialogue.py"
+      - "scriptorium/vocabulary.py"
+      - "tests/test_oblomov_diagnostic.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    name: Measure exact full four-part 1859 novel, retain derived JSON only
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Verify positive and fail-closed negative regressions
+        run: python -m unittest discover -s tests -p test_oblomov_diagnostic.py -v
+      - name: Fetch pinned Wikisource oldid and measure in memory
+        run: |
+          python -m scriptorium.oblomov_diagnostic \
+            --output "$RUNNER_TEMP/oblomov-measured.json"
+      - name: Verify derived artifact and scientific boundaries
+        run: |
+          python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          path = Path(os.environ["RUNNER_TEMP"]) / "oblomov-measured.json"
+          payload = json.loads(path.read_text(encoding="utf-8"))
+          rows = payload["metric_rows"]
+          assert len(rows) == 29 and len({r["metric_id"] for r in rows}) == 29
+          assert payload["body"]["characters_including_spaces"] >= 300000
+          assert payload["body"]["normalized_characters_including_spaces"] >= 300000
+          assert payload["source"]["revision_id"] == 5724579
+          assert payload["gates"]["complete_chapter_inventory"] is True
+          assert payload["gates"]["source_text_committed"] is False
+          assert payload["gates"]["m2_weight"] == 0
+          assert payload["gates"]["m2_parity_admissible"] is False
+          assert payload["gates"]["fantlab_input_identity"] == "UNKNOWN"
+          assert all(r["fantlab_display"] is None for r in rows)
+          assert len([r for r in rows if r["actual"] is not None]) >= 20
+          assert all(r["actual"] is None for r in rows
+                     if r["result"] == "NOT_RUN_DICTIONARY_UNBOUND")
+          assert re.fullmatch(r"[0-9a-f]{64}", payload["body"]["raw_sha256"])
+          assert re.fullmatch(r"[0-9a-f]{64}", payload["source"]["wikitext_sha256"])
+          assert path.stat().st_size < 50000
+          assert all(k not in payload for k in ("wikitext", "full_text", "literary_prose"))
+          print("OBLOMOV_MEASUREMENT=PASS; source_free=true; M2=0/5")
+          PY
+      - name: Upload derived JSON, never Wikisource text
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: oblomov-source-free-measured-fields
+          path: ${{ runner.temp }}/oblomov-measured.json
+          if-no-files-found: error
+          retention-days: 7

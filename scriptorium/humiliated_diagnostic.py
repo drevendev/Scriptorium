@@ -91,13 +91,29 @@ def extract_literary_body(wikitext: str) -> str:
     # Apostrophes only mark emphasis in this pinned Wikisource family; the
     # resulting body retains native punctuation, case and all other spacing.
     body = re.sub(r"'{2,5}", "", body).strip() + "\n"
+    # The pinned witness contains inline underlining and superscript formatting.
+    # Remove ONLY paired, attribute-free tags and preserve their inner content.
+    # Unknown/altered markup fails closed rather than silently dropping prose.
+    inline_tags = re.compile(r"</?[A-Za-z][^<>]*>")
+    open_tags: list[str] = []
+    for match in inline_tags.finditer(body):
+        tag = match.group()
+        if tag not in ("<u>", "</u>", "<sup>", "</sup>"):
+            raise ValueError("unexpected HTML tag (formatting contract drift)")
+        name = "u" if "u>" in tag and "sup" not in tag else "sup"
+        if tag.startswith("</"):
+            if not open_tags or open_tags.pop() != name:
+                raise ValueError("unbalanced HTML inline formatting")
+        else:
+            open_tags.append(name)
+    if open_tags:
+        raise ValueError("unclosed HTML inline formatting")
+    body = inline_tags.sub("", body)
     markers = ("{{", "}}", "[[", "]]", "<ref", "</", "<br", "<center")
     unexpected = {mark: body.count(mark) for mark in markers if mark in body}
-    if unexpected:
-        # Expose marker categories/counts only, never a prose snippet or location.
-        html_closers = sorted(set(re.findall(r"</([A-Za-z][A-Za-z0-9]*)", body)))
-        raise ValueError("unexpanded wiki/HTML markup in novel body: " + repr(unexpected)
-                         + "; closing_tag_names=" + repr(html_closers))
+    if unexpected or re.search(r"</?[A-Za-z]", body):
+        # Reveal marker classes only; no source context in public CI logs.
+        raise ValueError("unexpanded wiki/HTML markup in novel body: " + repr(unexpected))
     if "Прошлого года, двадцать второго марта" not in body[:350]:
         raise ValueError("beginning of novel was not retained")
     if "навеки счастливы вместе" not in " ".join(body[-1300:].split()):

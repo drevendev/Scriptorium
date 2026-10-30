@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Сравнение авторского ритма Грина и Толстого: четыре реально измеренных русскоязычных произведения, восемь показателей, воспроизводимая методика.">
+<title>Почерк авторов · Грин и Толстой — Scriptorium</title>
+<link rel="stylesheet" href="../assets/pages-reader.css">
+<style>
+.voice-wrap { max-width:1160px; margin:0 auto; padding:0 clamp(1rem,3.5vw,3rem) 5rem; }
+.voice-hero { padding:clamp(3rem,6vw,6rem) 0 3rem; max-width:930px; }
+.voice-hero h1 { font:500 clamp(2.8rem,6.2vw,5.75rem)/1.08 Georgia,serif; letter-spacing:-.035em; margin:.65rem 0 1.5rem; }
+.voice-hero h1 em { color:var(--green); font-weight:400; }
+.voice-lede { max-width:74ch; color:var(--subtle); font-size:1.14rem; line-height:1.8; }
+.voice-meta { display:flex; gap:1rem; flex-wrap:wrap; margin:2rem 0; }
+.voice-meta span { display:block; padding:.65rem 1rem; background:var(--wash); border:1px solid var(--line); border-radius:.35rem; font-weight:700; font-variant-numeric:tabular-nums; }
+.voice-section { padding:2.5rem 0; border-top:1px solid var(--line); }
+.voice-section h2 { font-size:clamp(1.8rem,3.2vw,3rem); margin:.2rem 0 1rem; }
+.voice-section > p { max-width:78ch; color:var(--subtle); }
+.voice-note { border-left:5px solid var(--gold); padding:1rem 1.3rem; background:var(--surface); margin:1rem 0 2rem; }
+.voice-note strong { display:block; }
+.metric-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); padding:0; list-style:none; gap:1rem; margin:1.8rem 0; }
+.metric-card { background:var(--surface); border:1px solid var(--line); border-radius:.7rem; padding:1.3rem; min-width:0; }
+.metric-card h3 { margin:0; font-size:1.45rem; }
+.unit { font-size:.9rem; color:var(--subtle); margin:.4rem 0 1rem; }
+.series { display:grid; grid-template-columns:4.5rem minmax(0,1fr) 4.2rem; gap:.7rem; align-items:center; margin:.85rem 0; font-variant-numeric:tabular-nums; }
+.series strong { text-align:right; font-size:.95rem; }
+.bar-rail { background:#e0e4dd; border-radius:3px; height:1rem; overflow:hidden; }
+.bar-fill { display:block; height:100%; border-radius:3px; }
+.bar-fill.emerald { background:#266c56; }
+.bar-fill.amber { background:#9b662b; }
+.scroll-table { overflow-x:auto; border:1px solid var(--line); background:var(--surface); border-radius:.5rem; }
+.scroll-table table { width:100%; min-width:770px; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+.scroll-table caption { text-align:left; padding:1rem; color:var(--subtle); }
+.scroll-table th,.scroll-table td { padding:.75rem .85rem; border-bottom:1px solid var(--line); text-align:left; }
+.scroll-table thead th { background:var(--wash); font-weight:750; }
+.scroll-table tbody th { font-weight:650; }
+.author-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin-top:1.6rem; }
+.author-card { background:var(--surface); border:1px solid var(--line); border-top:5px solid #266c56; border-radius:.6rem; padding:1.4rem; min-width:0; }
+.author-card.tolstoy { border-top-color:#9b662b; }
+.author-card h3 { font-size:2rem; margin:.3rem 0; }
+.author-summary { color:var(--subtle); }
+.source-works { list-style:none; padding:0; margin:1rem 0 0; }
+.source-works li { padding:1.1rem 0; border-top:1px solid var(--line); display:grid; gap:.4rem; }
+.source-works span { font-size:.88rem; color:var(--subtle); }
+.source-works details summary { cursor:pointer; min-height:44px; padding:.65rem .2rem; text-decoration:underline; text-underline-offset:.2em; }
+.source-works code { display:block; overflow-wrap:anywhere; font-size:.8rem; }
+.voice-actions { display:flex; align-items:center; flex-wrap:wrap; gap:.8rem; margin:1.5rem 0; }
+.voice-actions a { display:inline-flex; align-items:center; min-height:46px; border:1px solid var(--green); padding:.7rem 1rem; background:var(--surface); border-radius:.4rem; }
+.voice-footer { padding:2rem 0; border-top:1px solid var(--line); color:var(--subtle); }
+@media(max-width:720px) { .metric-grid,.author-grid{grid-template-columns:1fr;} .voice-hero{padding-top:2rem;} }
+@media(max-width:450px) { .series { grid-template-columns:3.9rem minmax(0,1fr) 3.6rem; gap:.4rem; font-size:.86rem; } }
+@media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+@media(forced-colors:active) { .bar-fill { forced-color-adjust:auto; background:Highlight; } }
+@media print { body{background:#fff;color:#111} .metric-card,.author-card,.scroll-table {break-inside:avoid;background:#fff;} .voice-actions{display:none;} .scroll-table{overflow:visible;} .scroll-table table{min-width:0;font-size:9pt;} }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="site-top"><a class="brand" href="../"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a><nav aria-label="Навигация"><a href="../#books">Библиотека</a><a href="../#pairs">Сравнение книг</a><a href="#data">Точные данные</a><a href="#sources">Источники</a></nav></header>
+<main class="voice-wrap" id="main">
+<section class="voice-hero" aria-labelledby="hero-title">
+<p class="eyebrow">ЭКСПЕРИМЕНТАЛЬНАЯ МАСТЕРСКАЯ · РУССКИЙ КОРПУС</p>
+<h1 id="hero-title">Один язык.<br><em>Два авторских ритма.</em></h1>
+<p class="voice-lede">Чем отличаются предложения, диалоги и знаки препинания у Александра Грина и Льва Толстого? Здесь — только результаты анализа настоящих книг, а не оценки «хорошего стиля» или тексты, придуманные нейросетью.</p>
+<div class="voice-meta"><span>2 автора</span><span>4 полных произведения</span><span>8 сравнимых показателей</span><span>0 заявлений о паритете с FantLab</span></div>
+<div class="voice-actions"><a href="#charts">Смотреть диаграммы ↘</a><a href="#data">Читать таблицу ↘</a><a href="../assets/voice-preview.json">Исходные производные данные JSON ↗</a></div>
+<div class="voice-note" role="note"><strong>Предварительный описательный срез, не подтверждённый авторский профиль.</strong> Всего две книги каждого автора; результаты зависят от выбранных редакций. Нет перекрёстной проверки, доверительных интервалов или подбора коэффициентов. Соответствие методике FantLab не доказано. <b>M2: 0/5 · M3: открыт.</b></div>
+</section>
+<section class="voice-section" id="charts" aria-labelledby="charts-title"><p class="eyebrow">01 / НАГЛЯДНО</p><h2 id="charts-title">Как звучит проза — в измерениях.</h2>
+<p>На каждой паре полос значения нормированы по большему из двух средних только внутри своего показателя. Длина полосы не означает качество текста или научную достоверность. Точные средние, разброс и единицы — в таблице ниже.</p>
+<ul class="metric-grid"><li class="metric-card"><h3>Средняя длина предложения</h3><p class="unit">знаков/предложение · средневзвешенное</p><div class="series"><span>Грин</span><span class="bar-rail" aria-hidden="true"><span class="bar-fill emerald" style="width:83.36%"></span></span><strong>69.32</strong></div><div class="series"><span>Толстой</span><span class="bar-rail" aria-hidden="true"><span class="bar-fill amber" style="width:100.00%"></span></span><strong>83.16</strong></div></li>
+<li class="metric-card"><h3>Доля диалогов</h3><p class="unit">% · средневзвешенное</p><div class="series"><span>Грин</span><span class="bar-rail" aria-hidden="true"><span class="bar-fill emerald" style="width:100.00%"></span></span><strong>40.96</strong></div><div class="series"><span>Толстой</span><span class="bar-rail" aria-hidden="true"><span class="bar-fill amber" style="width:81.16%"></span></span><strong>33.25</strong></div></li>
+<li class="metric-card"><h3>Запятые</h3><p class="unit">на 1000 слов · средневзвешенное</p><div class="series"><span>Грин</span><span class="bar-rail" aria-hidden="true"><span class="bar-fill emerald" style="width:95.74%"></span></span><strong>141.25</strong></div><div class="series"><span>Толстой</span><span class="bar-rail" aria-hidden="true"><span class="bar-fill amber" style="width:100.00%"></span></span><strong>147.53</strong></div></li>
+<li class="metric-card"><h3>Тире</h3><p class="unit">на 1000 слов · средневзвешенное</p><div class="series"><span>Грин</span><span class="bar-rail" aria-hidden="true"><span class="bar-fill emerald" style="width:100.00%"></span></span><strong>49.34</strong></div><div class="series"><span>Толстой</span><span class="bar-rail" aria-hidden="true"><span class="bar-fill amber" style="width:89.23%"></span></span><strong>44.03</strong></div></li></ul>
+</section>
+<section class="voice-section" id="data" aria-labelledby="data-title"><p class="eyebrow">02 / ВОСПРОИЗВОДИМЫЕ ЧИСЛА</p><h2 id="data-title">Восемь показателей. Два независимых набора книг.</h2>
+<p>Средние вычислены с весами по числу слов Scriptorium в каждой книге. σ — <strong>взвешенное популяционное стандартное отклонение двух произведений</strong>, а не ошибка или доверительный интервал. Все наблюдения предварительные / inferred, значения округлены до 6 знаков и не равны общему анализу склеенных текстов.</p>
+<div class="scroll-table" tabindex="0" role="region" aria-label="Точные средневзвешенные показатели и стандартные отклонения авторов">
+<table><caption>Два автора · 8 версионированных показателей · русские оригиналы, без переводов</caption><thead><tr><th scope="col">Показатель</th><th scope="col">Единица</th><th scope="col">Грин · μ</th><th scope="col">Грин · σ</th><th scope="col">Толстой · μ</th><th scope="col">Толстой · σ</th></tr></thead><tbody>
+<tr><th scope="row">Средняя длина слова</th><td>знаков/слово</td><td>5.284965</td><td>0.116286</td><td>5.057030</td><td>0.104767</td></tr>
+<tr><th scope="row">Средняя длина предложения</th><td>знаков/предложение</td><td>69.322264</td><td>2.992603</td><td>83.162134</td><td>5.860545</td></tr>
+<tr><th scope="row">Доля диалогов</th><td>%</td><td>40.963139</td><td>4.697026</td><td>33.245748</td><td>2.431945</td></tr>
+<tr><th scope="row">Авторские ремарки в диалогах</th><td>%</td><td>33.083610</td><td>1.369827</td><td>38.705072</td><td>0.440331</td></tr>
+<tr><th scope="row">Запятые</th><td>на 1000 слов</td><td>141.249483</td><td>2.247224</td><td>147.533706</td><td>1.714912</td></tr>
+<tr><th scope="row">Тире</th><td>на 1000 слов</td><td>49.342160</td><td>8.767496</td><td>44.028539</td><td>3.580188</td></tr>
+<tr><th scope="row">Вопросы</th><td>на 1000 слов</td><td>8.167149</td><td>2.266493</td><td>7.864617</td><td>0.854377</td></tr>
+<tr><th scope="row">Точка с запятой</th><td>на 1000 слов</td><td>3.235416</td><td>0.639627</td><td>3.427977</td><td>0.938166</td></tr>
+</tbody></table></div>
+</section>
+<section class="voice-section" id="sources" aria-labelledby="sources-title"><p class="eyebrow">03 / ИСТОЧНИКИ И ПРОВЕРЯЕМОСТЬ</p><h2 id="sources-title">Какие именно книги посчитаны.</h2>
+<p>Ни один литературный текст не хранится в этом отчёте. Книги идентифицируются закреплёнными редакциями, контрольными суммами и ссылками на проверенные производные результаты.</p>
+<div class="author-grid"><article class="author-card grin"><p class="eyebrow">АВТОР 01</p><h3>Александр Грин</h3><p class="author-summary">2 полных русскоязычных произведения · 120 850 слов по Scriptorium</p><ul class="source-works"><li><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json">Бегущая по волнам</a><span>363 819 знаков · 55 778 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-frozen-363819</p><code>41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc</code></details></li><li><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-road-nowhere-ru.retained.json">Дорога в никуда</a><span>442 656 знаков · 65 072 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-wikisource-az-lib-oldid-5585836</p><code>e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee</code></details></li></ul></article>
+<article class="author-card tolstoy"><p class="eyebrow">АВТОР 02</p><h3>Лев Толстой</h3><p class="author-summary">2 полных русскоязычных произведения · 405 487 слов по Scriptorium</p><ul class="source-works"><li><a href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json">Анна Каренина</a><span>1 705 605 знаков · 269 358 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-wikisource-239-chapters</p><code>1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205</code></details></li><li><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/tolstoy-resurrection-ru.retained.json">Воскресение</a><span>890 835 знаков · 136 129 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-wikisource-129-chapters</p><code>2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0</code></details></li></ul></article></div>
+</section>
+<section class="voice-section" id="method" aria-labelledby="method-title"><p class="eyebrow">04 / НАУЧНАЯ ГРАНИЦА</p><h2 id="method-title">Метод, ограничения и повторяемость.</h2>
+<p>Формула для каждого показателя: <strong>μ = Σ(w × x) / Σw</strong>, <strong>σ = √(Σ(w × (x − μ)²) / Σw)</strong>, где w — количество измеренных слов в конкретной книге. Количество слов не является заменой числа предложений при вычислении длины предложений; эти результаты — средние из двух отдельно измеренных показателей.</p>
+<p>Источник данных: зафиксированный <a href="../assets/evidence-snapshot.json">реестр Reader</a>; версия алгоритма <code>scriptorium-author-rhythm-preview-v1</code>; модули нормализации <code>scriptorium-text-v1</code>, метрик <code>scriptorium-metrics-v4</code>, диалогов <code>scriptorium-dialogue-v1</code>, словаря <code>scriptorium-vocabulary-v1</code>, пунктуации <code>scriptorium-punctuation-v2</code>. Проверяемые вычисления: <a href="https://github.com/drevendev/Scriptorium/blob/master/scriptorium/voice_profile.py">Python-модуль и тесты в GitHub</a>.</p>
+<p>Морфологические коэффициенты FantLab неизвестны. Идентичность источников FantLab не установлена. Переводческие версии не объединяются с оригиналами. Это экспериментальное расширение, а не воспроизведение FantLab, классификация авторства или выполненный M3.</p>
+</section>
+<footer class="voice-footer"><p>Scriptorium · исследуйте прозу по наблюдаемым данным. <a href="../">Вернуться в библиотеку ↗</a></p></footer>
+</main></body></html>

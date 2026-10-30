@@ -5,6 +5,7 @@ on:
     paths:
       - "index.html"
       - "assets/**"
+      - "voice/**"
       - ".github/workflows/pages.yml"
       - "scriptorium/**"
       - "site/**"
@@ -20,6 +21,7 @@ on:
     paths:
       - "index.html"
       - "assets/**"
+      - "voice/**"
       - ".github/workflows/pages.yml"
       - "scriptorium/**"
       - "site/**"
@@ -59,6 +61,9 @@ jobs:
       - name: Run standard-library test suite
         run: python -m unittest discover -s tests -v
 
+      - name: Verify frozen source-bound author preview
+        run: python -m scriptorium.voice_profile --check assets/voice-preview.json
+
       - name: Check root Reader JavaScript syntax
         run: node --check assets/pages-reader.js
 
@@ -78,16 +83,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p build/branch-root-preview/assets
+          mkdir -p build/branch-root-preview/assets build/branch-root-preview/voice
           cp index.html build/branch-root-preview/index.html
           cp assets/pages-reader.css build/branch-root-preview/assets/pages-reader.css
           cp assets/pages-reader.js build/branch-root-preview/assets/pages-reader.js
           cp assets/evidence-snapshot.json build/branch-root-preview/assets/evidence-snapshot.json
           cp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
+          cp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
+          cp voice/index.html build/branch-root-preview/voice/index.html
           test -s build/branch-root-preview/index.html
           test -s build/branch-root-preview/assets/evidence-snapshot.json
           test -s build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
+          test -s build/branch-root-preview/assets/voice-preview.json
+          test -s build/branch-root-preview/voice/index.html
           cmp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
+          cmp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
+          cmp voice/index.html build/branch-root-preview/voice/index.html
           test -z "$(find build/branch-root-preview -type l -print -quit)"
 
       - name: Upload exact branch-root Reader preview

@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 361
+STATE_REVISION: 362
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: #360 merged as e76fffcbf8d0086e1527faad19169d2bfa0eccfc, confirmed in master. Whole-library measured-metric CSV authored for later review; exact-head CI and publication not yet accepted.
+LAST_RESULT: #361 merged as e2653667de1a7224e2d1d198dd4923e22aeb8bb8; branch Pages run 40999630626 succeeded on that exact head. Static source-bound CSV fallback authored for later acceptance.
 LAST_VERIFIED_PROGRESS: 8/10 measured in master; 211 fields (177 numeric, 34 NOT_RUN/unavailable), M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-041-MEASURED-LIBRARY-CSV
-ISSUE: #283 accessible Reader, #281 evidence reporting.
+UNIT_ID: SCRIP-SITE-042-STATIC-MEASUREMENT-CSV
+ISSUE: #283 accessible Reader.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-041-metric-catalog-csv
-BASE: e76fffcbf8d0086e1527faad19169d2bfa0eccfc
-ACCEPTANCE: Verify source-bound CSV has exactly 211 fields from 8 measured Russian editions; 177 numeric values, 34 explicitly status-labeled empty numeric cells, translator/edition/source SHA and profile identity, never pending candidates or literary prose. All strings are CSV-formula-safe, scientific claim DIAGNOSTIC_ONLY and M2 0/5. Regression tests cover exact download, null-versus-zero and tampered source evidence. Later fresh exact-head CI, independent acceptance and qualifying merge required.
+BRANCH: scrip-site-042-static-source-bound-csv
+BASE: e2653667de1a7224e2d1d198dd4923e22aeb8bb8
+ACCEPTANCE: Public root Reader provides a complete, source-free UTF-8 BOM CSV to users without JavaScript (and as a fallback if interactive validation cannot start). The committed 211-row artifact must be byte-for-byte identical to the validated 8-edition browser export (177 numeric, 34 status-only rows), preserve translator/edition/source digests and DIAGNOSTIC_ONLY/M2 0/5, be spreadsheet-formula safe, and never include pending candidates or source prose. Existing smoke must fail on static/serializer drift and missing fallback link. Later fresh exact-head CI, acceptance and qualifying merge required.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Publish an accessible, downloadable full measurement table alongside the eight real analyzed Russian-language editions; then expand independently licensed literary bodies.
+Milestone: Make all eight measured books and their 211 fields genuinely accessible even without JavaScript, then expand independent licensed literary bodies.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 / #281 Reader CSV | Independently review/check and merge full 211-row metric export | Fresh exact-head CI |
-| P2 | #285 Pages | Confirm post-merge publication; attempt HTTP/mobile/keyboard acceptance | Browser/HTTP restriction |
-| P3 | #283 ninth/tenth works | Prepare independent licensed bodies and run reproducible analyzer (Petersburg/Darwin) | Body/rights gates still open |
-| P4 | #281 FantLab parity | Establish exact input-edition identity and rounding evidence before parity claim | FantLab input undisclosed |
+| P1 | #283 Reader static CSV | Review/test and merge no-JavaScript CSV fallback, byte-identical to live serializer | Fresh exact-head CI |
+| P2 | #285 Pages | Confirm publication of static fallback; HTTP/mobile/keyboard acceptance only if permitted | Browser/HTTP restriction |
+| P3 | #283 ninth/tenth works | Prepare independently licensed source bodies and run reproducible analyzer (Petersburg/Darwin) | Body/rights gates still open |
+| P4 | #281 FantLab parity | Identify exact analyzer-input edition and displayed rounding without weakening acceptance | FantLab input undisclosed |
 | P5 | #282 morphology | Quantify unresolved noun/cardinal N with preserved ambiguity bounds | Original AOT enum unavailable |
 
-PR #360 is merged; Road measurements remain DIAGNOSTIC for an alternate source family, not FantLab parity. The same perpetual hourly task remains unchanged.
+PR #361 and its exact-head Pages workflow are successful, but direct live HTTP/visual evidence is still unavailable; this static CSV is a proposed new feature until merged and published. Road measurements are DIAGNOSTIC for an alternate source family. The perpetual hourly task remains unchanged.
 
 ## Retained evidence and scientific gates
 
@@ -39,12 +39,12 @@ candidate records before acting; this delivery does not recalculate, admit or re
 - Resurrection: 129 revisions, 890,835 characters; source identity unknown.
 - Brothers Karamazov: 98 admitted revisions, 1,810,351 characters; source identity unknown.
 - Silver Dove: 563,125 characters; source identity unknown.
-- Hyperboloid: frozen 499,066-character body and source-free measured CI receipt (24 actual / 5 NOT_RUN); future generated Reader retention still pending; print/FantLab identity unresolved.
+- Hyperboloid: frozen 499,066-character body and source-free measured CI receipt (24 actual / 5 NOT_RUN); root Reader retention verified in master; print/FantLab identity unresolved.
 - Running on Waves: frozen 363,819-character body and diagnostics; denominator resemblance is hypothesis only.
 - Children of Captain Grant / Alexandra A. Beketova: frozen 1,095,467-character Russian translation and 11 measured derived fields; distinct from French original/other translations, no FantLab result/input identity.
 - Aelita and We: published FantLab inputs are below 300k; zero M2 weight. We's public body remains separately unfrozen.
 - Petersburg: exact 632-page 1916 PDF and OCR/body contract; literary selection, body, size and identity gates remain open.
-- Shining World is incomplete; Road to Nowhere has 442,656 frozen alternate characters and 24 measured plus 5 NOT_RUN rows (Reader proposed, FantLab input identity UNKNOWN); White Guard mixes source families; Twelve Chairs retains unresolved template/body semantics; Klim Samgin retains unresolved historical-renderer/FantLab equivalence.
+- Shining World is incomplete; Road to Nowhere has 442,656 frozen alternate characters and 24 measured plus 5 NOT_RUN rows (Reader merged, FantLab input identity UNKNOWN); White Guard mixes source families; Twelve Chairs retains unresolved template/body semantics; Klim Samgin retains unresolved historical-renderer/FantLab equivalence.
 - Darwin/Rachinsky: SCRIP-CORPUS-078 through 084 retain zero-argument yo, references containment, VAR documentation/provider drift and six-revision identity evidence, not full historical replay/body/parity. Effective unresolved surface remains 4 tag shapes/130 tokens and 37 template shapes/2,356 invocations.
 - Perelman 1913: SCRIP-CORPUS-085 exact-PDF anchors include carrier 60 without a directly visible folio. Sampled +9 compatibility cannot establish total/global mapping, PDF/DjVu equivalence, OCR/body/size or FantLab identity. Do not interpolate missing folios arithmetically.
 

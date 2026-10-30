@@ -30,6 +30,10 @@ const run=new Function("metrics","catalogCards","data","URL","document","setTime
   "return {verify,serializeLibraryCsv,exportLibraryCsv,csvText};"
 )(metricMap,cards,catalog,browserUrl,doc,()=>{});
 const csv=run.serializeLibraryCsv(catalog);
+assert.equal(fs.readFileSync(path.join(root,"assets/scriptorium-ru-measured-metrics.csv"),"utf8"),csv,
+  "committed no-JavaScript CSV must exactly match the validated browser serializer");
+assert.match(html, /<a id="library-static-csv" href="\.\/assets\/scriptorium-ru-measured-metrics\.csv" download="scriptorium-ru-measured-metrics\.csv">/);
+assert.match(html, /<noscript>[\s\S]*?<a href="\.\/assets\/scriptorium-ru-measured-metrics\.csv"/);
 assert.ok(csv.startsWith("\uFEFFexport_schema,scientific_claim,"));
 const records=csv.slice(1).trimEnd().split("\r\n");
 const headers=records[0].split(",");

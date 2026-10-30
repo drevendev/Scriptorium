@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 368
+STATE_REVISION: 369
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: Source-free full Oblomov diagnostic (#367) is merged at master 5d90255d8362df52160ccf97acecba5c71ff7d2e; ninth Reader integration proposed in branch scrip-reader-089-oblomov-evidence pending CI and later-run acceptance.
-LAST_VERIFIED_PROGRESS: Nine full Russian works measured and retained, eight shown in current master Reader (211 fields). This branch proposes nine / eleven catalogued and 240 fields (201 numeric, 39 unknown). M2 0/5; M3 open.
+LAST_RESULT: Ninth Russian Reader book *Oblomov* was merged in #368 at master e7dc72081bf94e1df610bd08ec510104a4af3911. Proposed tenth full-source diagnostic targets Dostoevsky's *Humiliated and Insulted*, immutable Wikisource oldid 5611473. Actual exact-revision measurement and admission remain NOT_RUN until hosted verification.
+LAST_VERIFIED_PROGRESS: Nine Russian works measured and shown in the master Reader; 240 retained fields (201 numerical, 39 unavailable). Tenth candidate is NOT an additional counted work. M2 remains 0/5; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-089-OBLOMOV-PUBLIC
-ISSUE: #283 Reader experience; #281 benchmark evidence.
-STATUS: PR_PENDING_CI_AND_LATER_REVIEW
-BRANCH: scrip-reader-089-oblomov-evidence
-BASE: 5d90255d8362df52160ccf97acecba5c71ff7d2e
+UNIT_ID: SCRIP-CORPUS-090-HUMILIATED-MEASURED
+ISSUE: #281 reproducible field evidence; #283 Reader delivery.
+STATUS: PR_CANDIDATE_PENDING_REAL_REPLAY_AND_LATER_REVIEW
+BRANCH: scrip-corpus-090-humiliated-measured
+BASE: e7dc72081bf94e1df610bd08ec510104a4af3911
 
-ACCEPTANCE: Source-free derived *Oblomov* JSON from merged #367 maps 29 real fields into ninth Reader card, charts/no-JS table, per-book export and 240-field pinned CSV. Pin public-domain Wikisource oldid 5724579, 930248 characters including spaces, 147447 words, 14353 sentences, exact SHA-256, four parts/46 chapters and five NOT_RUN dictionary fields. The claimed 1954 print edition is NOT_RUN; FantLab input UNKNOWN, M2 weight zero. Keep both research leads unmeasured. Merge only after fresh exact-head CI and later independent acceptance; verify Pages live separately.
+ACCEPTANCE: Pinned oldid 5611473 source must identify Russian public-domain Dostoevsky, all four parts (15+11+10+9 chapters) and epilogue; exclude editorial commentary and confirm start/end anchors and >=300,000 actual characters including spaces. Hosted replay must yield a source-free, versioned 29-field JSON artifact with hashes and 5 NOT_RUN dictionary fields, no original prose. Do not count a tenth measured work until exact-source CI and independent acceptance pass. Print collation and FantLab input UNKNOWN, M2 weight 0. Retain only derived evidence in repository via later PR; Reader admission requires separately verified integration and Pages gate.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Publish ninth measured Russian book with provenance and honest interactive/no-JS results.
+Milestone: Publish a tenth *actually measured* Russian novel with source hashes and a source-free Reader card, while keeping full FantLab parity unresolved.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept ninth Reader PR | Inspect exact 29-field source/rights, charts/CSV, tests and fresh review before merge | Later wake and CI |
-| P2 | #281 strict FantLab benchmark | Source-unmatched field-by-field diagnostics, explicit edition and rounding evidence | FantLab analyzer input UNKNOWN |
-| P3 | #282 AOT N ambiguity | Native noun/cardinal bounds under pinned pylem | Dictionary/runtime evidence |
-| P4 | #285 Pages live UX | Actual HTTP, keyboard, desktop/mobile and CSV download validation | Browser navigation currently restricted; CI checks independently |
-| P5 | Next legally usable Russian book | Distinct witness, rights, >=300k, reproducible full analysis | Independent of blocked scans/OCR |
+| P1 | Source-free tenth work replay | Exact oldid, rights, 52 ordered headings, full body and 29-field artifact from hosted CI | Real wikitext/replay; NOT_RUN until observed |
+| P2 | Retain and publish verified tenth results | Separate later-run acceptance, immutable digests/values, Reader charts/CSV and no-JS table | Actual successful P1 evidence |
+| P3 | #281 strict FantLab benchmark | Source-unmatched field-level diagnostics, explicit edition and rounding evidence | FantLab analyzer input UNKNOWN |
+| P4 | #285 Pages live UX | Independent HTTP, keyboard, desktop/mobile and CSV download acceptance | Browser navigation restricted; existing CI independently checks structure |
+| P5 | #282 AOT N ambiguity | Native noun/cardinal conditional bounds under pinned pylem | Dictionary/runtime evidence |
 
 ## Retained evidence and scientific gates
 

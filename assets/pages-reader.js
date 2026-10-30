@@ -55,19 +55,19 @@
         doc.fantlab_input_identity !== "UNKNOWN" ||
         doc.comparability?.m2_parity_admissible !== false ||
         doc.counts?.m2_source_matched !== 0 ||
-        doc.counts?.work_count !== 10 ||
-        doc.counts?.measured_works !== 8 ||
+        doc.counts?.work_count !== 11 ||
+        doc.counts?.measured_works !== 9 ||
         doc.counts?.awaiting_measurement !== 2 ||
-        doc.counts?.metrics_total !== 211 ||
-        doc.counts?.numeric_total !== 177 ||
-        doc.counts?.unavailable_total !== 34 ||
+        doc.counts?.metrics_total !== 240 ||
+        doc.counts?.numeric_total !== 201 ||
+        doc.counts?.unavailable_total !== 39 ||
         doc.language_modules?.en?.state !== "planned_not_measured" ||
         doc.language_modules?.en?.measured_work_count !== 0 ||
-        !Array.isArray(doc.books) || doc.books.length !== 10) {
+        !Array.isArray(doc.books) || doc.books.length !== 11) {
       throw Error("Русский каталог или научный статус изменён");
     }
     const census = {anna:[28,23],waves:[27,23],silver:[29,24],
-                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11],resurrection:[29,24],road:[29,24]};
+                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11],resurrection:[29,24],road:[29,24],oblomov:[29,24]};
     const seen = new Set();
     const editionKeys = new Set();
     let observed = 0, missing = 0;
@@ -122,6 +122,22 @@
             throw Error("Дорога в никуда: подмена закреплённой альтернативной редакции");
           }
         }
+        if (book.key === "oblomov") {
+          const chars=book.metrics.find(m=>m.id==="fantlab.general.characters");
+          const words=book.metrics.find(m=>m.id==="fantlab.general.words");
+          const sentences=book.metrics.find(m=>m.id==="scriptorium.general.sentences");
+          if (book.candidate_id!=="goncharov-oblomov-azlib-ru" ||
+              book.source_revision_id!==5724579 ||
+              book.edition_id!=="ru-wikisource-az-lib-oldid-5724579" ||
+              book.source_sha256!=="144a5ea17195e7ce10d69a5855a67781510dac51fd44237e1bc856536c3b3887" ||
+              book.blob_sha1!=="98c9877658ab1dd7467e5a4b2fd0abb4103deb98" ||
+              chars?.actual!==930248 || chars?.reference!==null ||
+              words?.actual!==147447 || words?.reference!==null ||
+              sentences?.actual!==14353 || sentences?.kind!=="extension" ||
+              book.metrics.some(m=>m.reference!==null)) {
+            throw Error("Обломов: подмена исходника или научного статуса");
+          }
+        }
         const fields = new Set();
         let available = 0;
         for (const m of book.metrics) {
@@ -149,9 +165,9 @@
             typeof book.trace !== "string") throw Error("Нельзя считать заявку измеренной книгой");
       }
     }
-    if (seen.size !== 10 || Object.keys(census).some(x=>!seen.has(x)) ||
-        observed !== 177 || missing !== 34 ||
-        doc.books.filter(b=>b.text_status === "measured").length !== 8 ||
+    if (seen.size !== 11 || Object.keys(census).some(x=>!seen.has(x)) ||
+        observed !== 201 || missing !== 39 ||
+        doc.books.filter(b=>b.text_status === "measured").length !== 9 ||
         doc.books.filter(b=>b.translator).length !== 2) throw Error("Подмена итогов каталога");
     // The static cards must match the verified evidence record exactly.
     const cardKeys=catalogCards.map(card=>card.dataset.catalogKey);

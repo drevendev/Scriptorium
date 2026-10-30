@@ -1,6 +1,6 @@
 # Candidate: Ivan Goncharov — Oblomov (1859), Russian original
 
-Status: **source-bound deterministic measurement implementation pending hosted execution and later acceptance**. Do not count as the ninth measured Reader work until the full pinned-source CI artifact passes, is independently reviewed, retained and integrated. No FantLab parity claim.
+Status: **source-bound deterministic measurement completed on GitHub Actions and retained as an unmerged PR artifact; independent acceptance and Reader integration pending**. Do not count as the ninth published Reader work until the source-free snapshot is accepted and integrated. No FantLab parity claim.
 
 ## Source and rights
 
@@ -21,6 +21,6 @@ python -m unittest discover -s tests -p test_oblomov_diagnostic.py -v
 python -m scriptorium.oblomov_diagnostic --output /tmp/oblomov-measured.json
 ```
 
-The command fetches only exact Wikisource revision 5724579 transiently, rejects source/rights/chapter/size drift, measures the exact extracted literary body with the existing deterministic 29-field analyzer and creates **source-free JSON only**. Missing dictionary-dependent metrics are NOT_RUN rather than fabricated zeros. The GitHub Actions workflow retains only the derived JSON for later independent acceptance and Reader publication. It never commits full literary prose or downloads to Pages.
+The command fetches only exact Wikisource revision 5724579 transiently, rejects source/rights/chapter/size drift, measures the exact extracted literary body with the existing deterministic 29-field analyzer and creates **source-free JSON only**. The hosted replay on 2026-10-30 confirmed **930,248 literary characters (including spaces), 147,447 words, 25,533 unique words, 14,353 sentences**, **24 numeric fields and 5 explicitly NOT_RUN dictionary fields**. The raw/normalized body SHA-256 is `144a5ea17195e7ce10d69a5855a67781510dac51fd44237e1bc856536c3b3887`; the pinned Wikisource wikitext SHA-256 is `fb3e3817792ed1769aa5cd9cc5b33a8326c56ff76007ca92331ac9fad516b394`. Missing dictionary-dependent metrics are NOT_RUN rather than fabricated zeros. The GitHub Actions workflow retains only the derived JSON for later independent acceptance and Reader publication. It never commits full literary prose or downloads to Pages.
 
-All measurements remain Scriptorium inferred/extension candidates, not compatible FantLab PARITY_PASS. The frozen source SHA-256, exact character count, field results and workflow CI evidence will be taken from real execution, not estimated from web previews.
+All measurements remain Scriptorium inferred/extension candidates, not compatible FantLab PARITY_PASS. The retained source-free observed JSON is `corpus/candidates/diagnostics/goncharov-oblomov-ru.json`, checked against a fresh replay in the CI workflow, sourced from [GitHub Actions run #41077141367](https://github.com/drevendev/Scriptorium/actions/runs/41077141367) and artifact `12988365968`. This does not independently verify the claimed 1954 print collation or FantLab input identity; M2 remains 0/5.

@@ -1,34 +1,34 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 366
+STATE_REVISION: 367
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: PR #365 confirmed merged at 364032edff8e7ee10180f6c2e6ae1112e91b9b1d. Observed two-work ranges (all 8 metrics) and two visual comparisons authored for later acceptance; no new measured book or M2/M3 claim.
-LAST_VERIFIED_PROGRESS: 8/10 full Russian works measured; 211 fields (177 numeric, 34 unavailable), M2 0/5; M3 gate remains open.
+LAST_RESULT: PR #366 merged at master 601e1ee298b6cabd6bbab08752994604e88d568f. Authoring a separate exact-revision Oblomov source-free measurement pipeline for independent CI acceptance; no new retained measurement or M2/M3 claim.
+LAST_VERIFIED_PROGRESS: 8/10 full Russian works measured; 211 fields (177 numeric, 34 unavailable), M2 0/5; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-VOICE-003-OBSERVED-RANGES
-ISSUE: #283 reader usability; #281 evidence and benchmark boundary.
+UNIT_ID: SCRIP-CORPUS-088-OBLOMOV-MEASURED
+ISSUE: #281 evidence boundary; #283 reader catalogue.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-voice-003-observed-book-ranges
-BASE: 364032edff8e7ee10180f6c2e6ae1112e91b9b1d
+BRANCH: scrip-corpus-088-oblomov-measured
+BASE: 601e1ee298b6cabd6bbab08752994604e88d568f
 
-ACCEPTANCE: From the 32 source-bound individual observations merged in #365, show for all 8 metrics the exact min/max across the two independent works per author and classify interval overlap using full-precision measurements. Display two real range plots with per-metric observed-min-to-max axes, plus an accessible eight-row table and explicit absence of statistical confidence/validation claims. Automated test must reproduce all ranges and plot geometry from the pinned JSON and reject tampered observations. Publish through existing protected master/branch Pages after later-run acceptance; M2 remains 0/5 and M3 open.
+ACCEPTANCE: For the public-domain Russian original Goncharov's Oblomov, replay Wikisource az.lib.ru exact revision oldid 5724579 transiently, reject changes in rights, source digest, four-part 46-chapter inventory and literary-body boundaries. Verify >=300,000 characters including spaces and produce real deterministic 29-field JSON with source/body hashes, profiles, five NOT_RUN dictionary fields and no source text. Host CI artifact is a prerequisite to separately retaining source-bound results and adding a ninth Reader entry; do not claim completion from only a code PR. No established FantLab input/edition match, hence DIAGNOSTIC_ONLY and M2 0/5.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Expose observed within-author book ranges (not confidence intervals) for the merged Grin/Tolstoy preview, then expand the measured Russian corpus.
+Milestone: Publish a verified ninth fully measured Russian book from a rights-cleared full-text witness, with distinct edition identity and inspectable reader results, while maintaining source-matched FantLab research independently.
 
 | Priority | Executable unit | User-visible acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 observed two-work ranges | Eight source-backed exact min/max rows, two readable plots, overlap caveat, negative regression, later-run merge/Pages | Current focused PR; fresh exact-head CI |
-| P2 | #283 ninth and tenth measured works | Separate rights-cleared >=300k Russian bodies, reproducible measured reports, Reader integration | Petersburg/Darwin unresolved bodies; choose independently ready lawful source |
-| P3 | #281 FantLab benchmark | Source-matched field-by-field evidence and explicit unchanged rounding/tolerance | FantLab analyzer input unknown |
-| P4 | #282 AOT POS ambiguity | Native noun/cardinal uncertainty and exact diagnostic under pinned pylem | Dictionary/runtime evidence |
-| P5 | #285 Pages live UX | Real desktop/mobile HTTP, keyboard and route validation | Browser route may be access-restricted; structural CI remains executable |
+| P1 | #281 / #283 Oblomov exact-source measurement | Source/body hashes, 29 honest fields, positive/negative regressions, source-free CI artifact | Current focused PR; live Wikisource oldid replay and later-run acceptance |
+| P2 | #283 ninth Reader book | Retain accepted Oblomov derived measurements; book detail, charts and comparison linked from Reader | Requires P1 source/body evidence and rights/completeness verification |
+| P3 | #281 strict FantLab benchmark | Field-by-field provenance and unmatched-source diagnostics with unchanged rounding rules | FantLab analyzer input unknown |
+| P4 | #282 AOT N ambiguity | Native noun/cardinal uncertainty diagnostics under pinned pylem | Dictionary/runtime evidence |
+| P5 | #285 Pages live UX | Actual desktop/mobile HTTP, keyboard and route validation | Browser tool may block; structural CI remains executable |
 
-After PR #364, GitHub reports successful root-branch Pages build/deployment on exact master 3b6006fdc723e963925789de448260d1ba276169. Direct browser/HTTP inspection remains LIVE_NOT_VERIFIED; do not equate the hosted CI result with visual acceptance. Reader remains 8/10 measured, 211 total fields and M2 0/5; M3 remains open.
+Previous #366 range plots are merged in master; do not re-review unchanged heads. Master currently has 8 measured books / 211 fields; public Pages direct live/browser verification remains incomplete.
 
 ## Retained evidence and scientific gates
 

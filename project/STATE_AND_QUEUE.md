@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 369
+STATE_REVISION: 370
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: Ninth Russian Reader book *Oblomov* was merged in #368 at master e7dc72081bf94e1df610bd08ec510104a4af3911. Proposed tenth full-source diagnostic targets Dostoevsky's *Humiliated and Insulted*, immutable Wikisource oldid 5611473. Actual exact-revision measurement and admission remain NOT_RUN until hosted verification.
-LAST_VERIFIED_PROGRESS: Nine Russian works measured and shown in the master Reader; 240 retained fields (201 numerical, 39 unavailable). Tenth candidate is NOT an additional counted work. M2 remains 0/5; M3 open.
+LAST_RESULT: Merged #369 supplied exact-source successful CI run 41111720059. Current scoped PR retains its source-free 29-field Dostoevsky artifact and adds exact-byte/negative regressions; independent acceptance remains pending.
+LAST_VERIFIED_PROGRESS: Ten full-text diagnostics now have observed numbers (the tenth in CI); nine measured Russian works remain in master Reader with 240 retained fields (201 numeric / 39 unavailable). The tenth record is pending retention merge and Reader integration. M2 0/5; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-090-HUMILIATED-MEASURED
+UNIT_ID: SCRIP-CORPUS-091-HUMILIATED-RETAINED
 ISSUE: #281 reproducible field evidence; #283 Reader delivery.
-STATUS: PR_CANDIDATE_PENDING_REAL_REPLAY_AND_LATER_REVIEW
-BRANCH: scrip-corpus-090-humiliated-measured
-BASE: e7dc72081bf94e1df610bd08ec510104a4af3911
+STATUS: PR_CREATED_PENDING_LATER_ACCEPTANCE
+BRANCH: scrip-corpus-091-humiliated-retained
+BASE: 5b9aead33ce15a59794c7cf3b8c992d4c19b9193
 
-ACCEPTANCE: Pinned oldid 5611473 source must identify Russian public-domain Dostoevsky, all four parts (15+11+10+9 chapters) and epilogue; exclude editorial commentary and confirm start/end anchors and >=300,000 actual characters including spaces. Hosted replay must yield a source-free, versioned 29-field JSON artifact with hashes and 5 NOT_RUN dictionary fields, no original prose. Do not count a tenth measured work until exact-source CI and independent acceptance pass. Print collation and FantLab input UNKNOWN, M2 weight 0. Retain only derived evidence in repository via later PR; Reader admission requires separately verified integration and Pages gate.
+ACCEPTANCE: Independently verify extracted JSON SHA-256 bcd4e9cde2aa75364ef458749c9b1f26b72b75e1ab8df0d70c4fc6f3f018a634 (9,843 bytes) against successful original Actions artifact 13001889862; full literary body 713,925 chars including spaces, 29 unique fields (24 numeric / 5 dictionary NOT_RUN), public-domain source oldid 5611473, hashes/rights and no prose. Later-run review and exact-head CI required for merge; Reader remains nine measured works until a separate verified card/CSV site PR. FantLab input UNKNOWN, print collation NOT_RUN, M2 0/5.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: Publish a tenth *actually measured* Russian novel with source hashes 
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Source-free tenth work replay | Exact oldid, rights, 52 ordered headings, full body and 29-field artifact from hosted CI | Real wikitext/replay; NOT_RUN until observed |
-| P2 | Retain and publish verified tenth results | Separate later-run acceptance, immutable digests/values, Reader charts/CSV and no-JS table | Actual successful P1 evidence |
+| P1 | Accept/merge retained 10th diagnostic | Exact archived JSON bytes/hash, 29 values, source gates, all applicable CI/checks, no prose | Current PR requires later independent exact-head acceptance |
+| P2 | Publish Dostoevsky as tenth Reader book | Card, eight charts, 29-field metrics, accessible table, 269-row CSV, profiles/rights checks | Retained source-free 29-field JSON merged and verified |
 | P3 | #281 strict FantLab benchmark | Source-unmatched field-level diagnostics, explicit edition and rounding evidence | FantLab analyzer input UNKNOWN |
 | P4 | #285 Pages live UX | Independent HTTP, keyboard, desktop/mobile and CSV download acceptance | Browser navigation restricted; existing CI independently checks structure |
 | P5 | #282 AOT N ambiguity | Native noun/cardinal conditional bounds under pinned pylem | Dictionary/runtime evidence |

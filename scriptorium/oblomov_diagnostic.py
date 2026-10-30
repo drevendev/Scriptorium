@@ -81,7 +81,10 @@ def extract_literary_body(wikitext: str) -> str:
     if preface is None:
         raise ValueError("unexpected literary title/preface layout")
     composed = "=== Обломов ===" + before
-    observed = tuple(match.group(1).strip() for match in _HEADINGS.finditer(composed))
+    # The exact selected Wikisource revision spells Part I, chapter IX as
+    # "IX <br>Сон Обломова". Normalize that heading-only break, not prose.
+    observed = tuple(re.sub(r"\s*<br\s*/?>\s*", " ", match.group(1)).strip()
+                     for match in _HEADINGS.finditer(composed))
     if observed != expected_headings():
         expected = expected_headings()
         index = next((n for n in range(min(len(observed), len(expected)))

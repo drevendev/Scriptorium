@@ -1,4 +1,4 @@
-"""Regression contract for nine source-backed all-book Russian Reader charts."""
+"""Regression contract for ten source-backed all-book Russian Reader charts."""
 from __future__ import annotations
 from html.parser import HTMLParser
 import json
@@ -43,7 +43,7 @@ class ExpandedChartTests(unittest.TestCase):
         self.assertIn('id="chart-table-caption"', html)
         self.assertIn('aria-label="Таблица чисел выбранной диаграммы"', html)
         chart_rows = html.split('<tbody id="chart-table-rows">', 1)[1].split('</tbody>', 1)[0]
-        self.assertEqual(chart_rows.count('<tr><th scope="row">'), 9)
+        self.assertEqual(chart_rows.count('<tr><th scope="row">'), 10)
         self.assertIn("«Нет данных»", html)
 
     def test_sort_toggle_accessibility_and_fallback(self):
@@ -70,7 +70,7 @@ class ExpandedChartTests(unittest.TestCase):
         measured = [b for b in data["books"] if b["text_status"] == "measured"]
         expected = [(b["display_title"], str(next(m["actual"] for m in b["metrics"]
                         if m["id"] == "fantlab.dialogue.share_percent"))) for b in measured]
-        self.assertEqual(len(rows), 9)
+        self.assertEqual(len(rows), 10)
         self.assertEqual(rows, expected)
         self.assertNotEqual(re.findall(pattern, fallback.replace(
             f"<td>{expected[0][1]}</td>", "<td>34,97</td>", 1)), expected)
@@ -78,14 +78,14 @@ class ExpandedChartTests(unittest.TestCase):
     def test_measured_coverage_and_profile_identity(self):
         data = json.loads((ROOT / "assets/evidence-snapshot.json").read_text(encoding="utf-8"))
         books = [b for b in data["books"] if b["text_status"] == "measured"]
-        self.assertEqual(len(books), 9)
+        self.assertEqual(len(books), 10)
         keys = ("metrics", "normalization", "dialogue", "punctuation")
         self.assertEqual(len({tuple(b["profiles"][k] for k in keys) for b in books}), 1)
         for metric_id in IDS:
             with self.subTest(metric=metric_id):
                 actual = [next((row["actual"] for row in b["metrics"] if row["id"] == metric_id), None) for b in books]
                 present = sum(type(v) in (int, float) for v in actual)
-                self.assertEqual(present, 8 if metric_id in IDS[-2:] else 9)
+                self.assertEqual(present, 9 if metric_id in IDS[-2:] else 10)
                 if metric_id in IDS[-2:]: self.assertIsNone(actual[5])  # Beketova translation
 
     def test_render_fail_closed_and_no_synthetic_zeros(self):

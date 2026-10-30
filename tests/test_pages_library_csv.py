@@ -1,4 +1,4 @@
-"""End-to-end exported CSV contract for all nine measured Russian Reader editions."""
+"""End-to-end exported CSV contract for all ten measured Russian Reader editions."""
 from html.parser import HTMLParser
 from pathlib import Path
 import shutil
@@ -26,7 +26,7 @@ class LibraryCsvExportTests(unittest.TestCase):
         buttons = [b for b in parser.buttons if b.get("id") == "library-export-csv"]
         self.assertEqual(len(buttons), 1)
         self.assertIn("disabled", buttons[0])
-        self.assertIn("Скачать все 240 полей (CSV)", html)
+        self.assertIn("Скачать все 269 полей (CSV)", html)
         self.assertIn('id="evidence-source"', html)
         self.assertIn("Без JavaScript доступны карточки", html)
         js = (ROOT / "assets/pages-reader.js").read_text(encoding="utf-8")

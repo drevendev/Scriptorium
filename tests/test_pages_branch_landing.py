@@ -74,13 +74,13 @@ class RussianBranchReaderTests(unittest.TestCase):
         self.assertEqual(d["language_modules"]["fr"]["measured_work_count"],0)
         self.assertEqual(len(d["books"]),12)
         self.assertEqual({b["language"] for b in d["books"]},{"ru"})
-        self.assertEqual(len({b["candidate_id"] for b in d["books"]}),11)
-        self.assertEqual(len({(b["family_id"],b["edition_id"]) for b in d["books"]}),11)
+        self.assertEqual(len({b["candidate_id"] for b in d["books"]}),12)
+        self.assertEqual(len({(b["family_id"],b["edition_id"]) for b in d["books"]}),12)
         self.assertEqual(sum(b["measured"] for b in d["books"]),225)
         self.assertEqual(sum(b["unavailable"] for b in d["books"]),44)
         self.assertEqual(sum(len(b["metrics"]) for b in d["books"]),269)
 
-    def test_exact_source_free_measurements_preserved_for_seven_books(self):
+    def test_exact_source_free_measurements_preserved_for_ten_books(self):
         works={b["key"]:b for b in self.data["books"]}
         for key,path,total,observed in SOURCE:
             with self.subTest(book=key):

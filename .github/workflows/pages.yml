@@ -83,8 +83,11 @@ jobs:
           cp assets/pages-reader.css build/branch-root-preview/assets/pages-reader.css
           cp assets/pages-reader.js build/branch-root-preview/assets/pages-reader.js
           cp assets/evidence-snapshot.json build/branch-root-preview/assets/evidence-snapshot.json
+          cp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           test -s build/branch-root-preview/index.html
           test -s build/branch-root-preview/assets/evidence-snapshot.json
+          test -s build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
+          cmp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           test -z "$(find build/branch-root-preview -type l -print -quit)"
 
       - name: Upload exact branch-root Reader preview

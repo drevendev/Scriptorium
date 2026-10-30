@@ -145,6 +145,41 @@ class PagesWorkflowContractTests(unittest.TestCase):
         self.assertIn("test -z", self.workflow)
         self.assertNotIn("cp -r . build/branch-root-preview", self.workflow)
 
+    def test_branch_preview_includes_every_root_reader_local_asset(self) -> None:
+        """A root-Reader QA ZIP must not contain a broken no-JS CSV link."""
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        referenced = set(
+            re.findall(r'(?:href|src)="\./(assets/[A-Za-z0-9_.-]+)"', html)
+        )
+        self.assertIn("assets/scriptorium-ru-measured-metrics.csv", referenced)
+        referenced.add("assets/evidence-snapshot.json")  # fetched by Reader JS
+
+        def missing(workflow: str) -> set[str]:
+            return {
+                path for path in referenced
+                if f"cp {path} build/branch-root-preview/{path}" not in workflow
+            }
+
+        self.assertEqual(missing(self.workflow), set())
+        without_csv = self.workflow.replace(
+            "cp assets/scriptorium-ru-measured-metrics.csv "
+            "build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv",
+            "",
+            1,
+        )
+        self.assertEqual(
+            missing(without_csv), {"assets/scriptorium-ru-measured-metrics.csv"}
+        )
+        self.assertIn(
+            "test -s build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv",
+            self.workflow,
+        )
+        self.assertIn(
+            "cmp assets/scriptorium-ru-measured-metrics.csv "
+            "build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv",
+            self.workflow,
+        )
+
     def test_only_disposable_site_tree_is_uploaded(self) -> None:
         upload_step = re.search(
             r"- name: Upload GitHub Pages artifact\n(?P<body>(?:\s{8,}.*\n?)+?)\n  deploy:",

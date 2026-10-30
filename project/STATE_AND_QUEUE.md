@@ -1,44 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 358
+STATE_REVISION: 359
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-29
-LAST_RESULT: #358 merged at 3cc1061dd53469a1eafba2ac3efb35dc9275278f; proposed Road to Nowhere alternate exact-body diagnostic.
-LAST_VERIFIED_PROGRESS: 7/10 measured Russian editions, 182 fields (153 numeric, 29 unavailable). #358 merged; updated-master Pages deployment/live HTTP/browser NOT_VERIFIED. M2 0/5. Road alternate numeric diagnostic NOT_RUN until exact-head workflow succeeds.
+LAST_COMMITTED_RUN_AT: 2026-10-30
+LAST_RESULT: #359 merged as 2c1072f1bd0afc511e668967aa82950e4425a59c. Road alternate source-free full-body CI ZIP SHA-256 55c39e7b0c4a69a9c86fe3afc7c1d9c63620c4f9d52eb23be4dd688cda6b39f0 and extracted JSON SHA-256 a0cfc008f9e8580a203e39c83a3e65755143c593038adaa275037bbed7dc1e92 independently checked. Eighth Reader card authored pending new CI / later acceptance.
+LAST_VERIFIED_PROGRESS: 7/10 measured in master; 8/10 proposed with 211 fields (177 numeric and 34 NOT_RUN/unavailable). M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-039-ROAD-ALTERNATE-DIAGNOSTIC
-ISSUE: #281 field-level source-frozen but source-unmatched diagnostics.
+UNIT_ID: SCRIP-SITE-040-ROAD-MEASURED-READER
+ISSUE: #283 Reader acceptance, #281 diagnostic evidence.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-repro-039-road-alternate-diagnostic
-BASE: 3cc1061dd53469a1eafba2ac3efb35dc9275278f
-ACCEPTANCE: Replay exact Wikisource az.lib alternate oldid 5585836 and
-442,656-character frozen public body to produce 29 source-free numeric/unknown
-metric rows and only two pinned FantLab count references. Preserve source
-edition/rights and separately incomplete primary-1965 route, NOT_RUN vs zero
-and M2=0/5. Run positive/adversarial tests and exact-head CI; later independent
-acceptance of artifact and separate Reader retention before claiming an eighth
-measured public book.
+BRANCH: scrip-site-040-road-measured-reader
+BASE: 2c1072f1bd0afc511e668967aa82950e4425a59c
+ACCEPTANCE: Retain all 29 CI-authenticated derived Road fields; display eighth Russian measured book, charts, no-JS exact-value table, filters and direct links with positive/adversarial tests. Keep oldid 5585836 az.lib source identity distinct from incomplete Pravda-1965 family, FantLab input UNKNOWN and M2 0/5. Fresh exact-head CI and later independent PR acceptance/merge/publication verification mandatory.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: move toward 8/10 real Russian Reader measurements by replaying
-one already source-frozen public-domain work without inventing FantLab parity.
+Milestone: deliver eight real analyzed Russian-language editions with source-bound metrics and accessible comparison, without false FantLab parity.
 
 | Priority | Unit | Deliverable | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 Road alternate diagnostic | Capture and later retain 29-field source-free CI artifact | Pinned source replay and exact-head check |
-| P2 | #283 eighth Reader book | Source-bound Road measured detail and charts | Independent retained artifact / full render verification |
-| P3 | #285 Pages live/browser | Desktop/mobile, keyboard and print checks | HTTP/browser navigation restriction |
-| P4 | #281 strict FantLab parity | Input-source identity and rounding evidence | Exact FantLab input unknown |
-| P5 | #282 native morphology | Separate N noun/cardinal uncertainty | Original AOT enum unavailable |
+| P1 | #283 eighth Reader book | Independently review/check and merge the Road evidence + 8-book Reader PR | Fresh exact-head CI |
+| P2 | #285 Pages | Confirm post-merge root-branch deployment; attempt HTTP, mobile, keyboard/live readback | Browser/HTTP restriction |
+| P3 | #281 FantLab | Establish input edition and displayed rounding before asserting compatible parity | Exact FantLab input undisclosed |
+| P4 | #282 morphology | Quantify noun/cardinal N uncertainty with preserved bounds | Original AOT enum unavailable |
+| P5 | #283 ninth/tenth works | Prepare independent licensed literary body and run analyzer (Darwin/Petersburg) | Body and rights gates open |
 
-PRs #349 through #358 are merged into master. A separate pair-chart
-permalink branch remains unpublished after an actual PR-create safety denial;
-do not retry unchanged. A clean PR for the independent Road diagnostic does
-not reopen that denied branch or imply Pages publication. M2 stays **0/5**.
-The existing perpetual hourly schedule remains unchanged.
+PR #359 is merged; Road measurements are derived from a different, alternate source family and are NOT FantLab parity. The existing perpetual hourly schedule remains unchanged.
 
 ## Retained evidence and scientific gates
 
@@ -55,7 +44,7 @@ candidate records before acting; this delivery does not recalculate, admit or re
 - Children of Captain Grant / Alexandra A. Beketova: frozen 1,095,467-character Russian translation and 11 measured derived fields; distinct from French original/other translations, no FantLab result/input identity.
 - Aelita and We: published FantLab inputs are below 300k; zero M2 weight. We's public body remains separately unfrozen.
 - Petersburg: exact 632-page 1916 PDF and OCR/body contract; literary selection, body, size and identity gates remain open.
-- Shining World is incomplete; Road to Nowhere has a >=300k alternate frozen route but no FantLab identity; White Guard mixes source families; Twelve Chairs retains unresolved template/body semantics; Klim Samgin retains unresolved historical-renderer/FantLab equivalence.
+- Shining World is incomplete; Road to Nowhere has 442,656 frozen alternate characters and 24 measured plus 5 NOT_RUN rows (Reader proposed, FantLab input identity UNKNOWN); White Guard mixes source families; Twelve Chairs retains unresolved template/body semantics; Klim Samgin retains unresolved historical-renderer/FantLab equivalence.
 - Darwin/Rachinsky: SCRIP-CORPUS-078 through 084 retain zero-argument yo, references containment, VAR documentation/provider drift and six-revision identity evidence, not full historical replay/body/parity. Effective unresolved surface remains 4 tag shapes/130 tokens and 37 template shapes/2,356 invocations.
 - Perelman 1913: SCRIP-CORPUS-085 exact-PDF anchors include carrier 60 without a directly visible folio. Sampled +9 compatibility cannot establish total/global mapping, PDF/DjVu equivalence, OCR/body/size or FantLab identity. Do not interpolate missing folios arithmetically.
 

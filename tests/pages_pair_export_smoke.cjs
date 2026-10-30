@@ -87,7 +87,7 @@ assert.equal(resurrectionPair.right.source_sha256,"2725a60a810d8aae4beff9dbc73ff
 assert.equal(resurrectionPair.fantlab_input_identity,"UNKNOWN");
 assert.equal(resurrectionPair.m2_source_matched,0);
 for(const [left,right] of [
-  ["anna","anna"],["road","anna"],
+  ["anna","anna"],["petersburg","anna"],
   ["anna","darwin"],["../../private","silver"],["anna","SILVER"]
 ]) assert.equal(actions.buildPairExport(left,right),null,left+"/"+right);
 const original=catalog.books.find(b=>b.key==="beketova").profiles.metrics;

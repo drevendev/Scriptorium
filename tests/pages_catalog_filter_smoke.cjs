@@ -22,11 +22,11 @@ const make=d=>new Function("data","catalogCards","catalogFilter","catalogSearch"
   d,cards,filter,search,id=>id==="share-catalog"?share:status,{location});
 const {updateCatalog:run,restoreCatalogFromUrl:restore}=make(data);
 for(const [mode,keys,measured,pending] of [
- ["all",data.books.map(b=>b.key),7,3],
- ["measured",["anna","waves","silver","karamazov","hyperboloid","beketova","resurrection"],7,0],
- ["pending",["road","petersburg","darwin"],0,3],
+ ["all",data.books.map(b=>b.key),8,2],
+ ["measured",["anna","waves","silver","karamazov","hyperboloid","beketova","resurrection","road"],8,0],
+ ["pending",["petersburg","darwin"],0,2],
  ["translated",["beketova","darwin"],1,1],
- ["unknown",data.books.map(b=>b.key),7,3]]){
+ ["unknown",data.books.map(b=>b.key),8,2]]){
  filter.value=mode;run();
  assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),keys,mode);
  assert.ok(status.textContent.includes(measured+" измерено, "+pending+" в подготовке"),mode);
@@ -61,7 +61,7 @@ assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),
                  ["anna","hyperboloid","resurrection"]);
 location.search="?catalog=measured&q="+encodeURIComponent("x".repeat(121));
 restore();assert.equal(search.value,"");
-assert.equal(cards.filter(c=>!c.hidden).length,7);
+assert.equal(cards.filter(c=>!c.hidden).length,8);
 location.search="?catalog=translated&q="+encodeURIComponent("\u0000");
 restore();assert.equal(search.value,"");
 assert.equal(cards.filter(c=>!c.hidden).length,2);

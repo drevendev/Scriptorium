@@ -11,6 +11,7 @@ on:
       - "scriptorium/dialogue.py"
       - "scriptorium/vocabulary.py"
       - "tests/test_oblomov_diagnostic.py"
+      - "corpus/candidates/diagnostics/goncharov-oblomov-ru.json"
   workflow_dispatch:
 
 permissions:
@@ -61,6 +62,10 @@ jobs:
           assert re.fullmatch(r"[0-9a-f]{64}", payload["body"]["raw_sha256"])
           assert re.fullmatch(r"[0-9a-f]{64}", payload["source"]["wikitext_sha256"])
           assert path.stat().st_size < 50000
+          frozen = json.loads(Path(
+              "corpus/candidates/diagnostics/goncharov-oblomov-ru.json"
+          ).read_text(encoding="utf-8"))
+          assert payload == frozen, "pinned observed 29-field artifact differs from source replay"
           assert all(k not in payload for k in ("wikitext", "full_text", "literary_prose"))
           print("OBLOMOV_MEASUREMENT=PASS; source_free=true; M2=0/5")
           PY

@@ -1,34 +1,34 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 364
+STATE_REVISION: 365
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-30
-LAST_RESULT: PR #363 merged into master at 10a5a88514611afe0d2ff89a631cf86acf8293d3. New independent two-author voice/rhythm preview authored for later acceptance; master is unchanged by this new unit.
+LAST_RESULT: PR #364 merged at 3b6006fdc723e963925789de448260d1ba276169, and master Pages deployment succeeded. Independent four-work observation trace authored for later acceptance; no new measurement or FantLab parity claim.
 LAST_VERIFIED_PROGRESS: 8/10 full Russian works measured; 211 fields (177 numeric, 34 unavailable), M2 0/5; M3 gate remains open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-VOICE-001-SOURCE-BOUND-TWO-AUTHOR-PREVIEW
-ISSUE: #283 Reader user-visible experience; #281 scientific provenance/benchmark boundary.
+UNIT_ID: SCRIP-VOICE-002-PER-WORK-OBSERVATIONS
+ISSUE: #283 reader usability; #281 evidence and benchmark boundary.
 STATUS: AUTHORED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-voice-001-two-author-preview
-BASE: 10a5a88514611afe0d2ff89a631cf86acf8293d3
+BRANCH: scrip-voice-002-per-work-observations
+BASE: 3b6006fdc723e963925789de448260d1ba276169
 
-ACCEPTANCE: Deterministic offline Python calculation consumes only the eight-work source-bound Reader snapshot, checks that two independent Russian-original full works >=300k each belong to Grin and Tolstoy with expected fixed source hashes, edition IDs, compatible profile versions and actual measured metrics. For eight mean/rate features calculate word-count-weighted means and population standard deviations; reject translated, changed-source, incompatible-profile, missing, duplicated or invalid inputs. Retained source-free JSON must equal exact Python recomputation. Russian root-branch Pages route has four labelled charts, eight-row fully accessible exact table, four work hashes/provenance, full uncertainty explanation and usable no-JavaScript navigation. Stage route and JSON into exact-head QA preview, verify tests and later head/checks before qualifying merge. **This is a descriptive extension preview, not FantLab parity, validated author voice, cross-validation or M3 completion**. Verify the actual live browser route separately.
+ACCEPTANCE: For the already merged source-bound two-author preview, derive and retain all 32 distinct per-work scalar observations (8 metrics x 4 frozen Russian editions) from the verified source snapshot, keyed by the pinned work identity and without changing the 16 weighted author summaries. A visible non-JavaScript, keyboard-accessible table presents all four editions, units and values with honest display rounding. Python replay verifies every observation and fails on changed source/edition/hash/profile, missing measurements and tampered retained JSON. CI checks exact snapshot-to-derived equality; Pages QA archive must contain the static route and JSON. Later stateless acceptance reviews final PR head/checks before merge. This is descriptive source-bound evidence, NOT validated author voice, FantLab parity or M3 completion.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Publish the independently verified source-bound Grin-versus-Tolstoy descriptive voice comparison, then expand real analyzed Russian works.
+Milestone: Make the merged Grin/Tolstoy rhythm comparison inspectable per book, then expand the measured Russian corpus.
 
 | Priority | Executable unit | User-visible acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 two-author descriptive preview | Later exact-head CI acceptance/merge, Pages branch deployment; no fake M3/parity | Open feature branch and fresh checks |
-| P2 | #283 ninth and tenth independent works | Frozen legally usable >=300k bodies, measured diagnostics, Reader rows with source proof | Petersburg/Darwin body/rights gaps; choose another ready public-domain work if possible |
-| P3 | #281 FantLab benchmark | Field-by-field source/profile/rounding evidence without source-unmatched PASS | FantLab analyzer input unknown |
-| P4 | #282 AOT POS ambiguity | Native noun/cardinal impact and honest uncertainty under pinned pylem | Dictionary/runtime evidence |
-| P5 | #285 Pages live UX | Real desktop/mobile, keyboard and screen route validation | Browser navigation restricted; structural checks remain executable |
+| P1 | #283 source-bound per-work metric table | All 32 actual book values individually traceable, negative regressions, successful merge/Pages; no invented author profile | Current focused PR; fresh exact-head CI |
+| P2 | #283 ninth and tenth measured works | Separate rights-cleared >=300k Russian bodies, reproducible measured reports, Reader integration | Petersburg/Darwin unresolved bodies; choose independently ready lawful source |
+| P3 | #281 FantLab benchmark | Source-matched field-by-field evidence and explicit unchanged rounding/tolerance | FantLab analyzer input unknown |
+| P4 | #282 AOT POS ambiguity | Native noun/cardinal uncertainty and exact diagnostic under pinned pylem | Dictionary/runtime evidence |
+| P5 | #285 Pages live UX | Real desktop/mobile HTTP, keyboard and route validation | Browser route may be access-restricted; structural CI remains executable |
 
-The existing root-branch Pages deployment of #362 is GitHub-verified; later PR #363 fixed the downloadable QA archive without touching metrics. This new preview does not alter the established 8/10 work count, translation identities or scientific M1–M5 gates.
+After PR #364, GitHub reports successful root-branch Pages build/deployment on exact master 3b6006fdc723e963925789de448260d1ba276169. Direct browser/HTTP inspection remains LIVE_NOT_VERIFIED; do not equate the hosted CI result with visual acceptance. Reader remains 8/10 measured, 211 total fields and M2 0/5; M3 remains open.
 
 ## Retained evidence and scientific gates
 

@@ -62,56 +62,136 @@
           "label": "Средняя длина слова",
           "unit": "знаков/слово",
           "weighted_mean": 5.284965,
-          "weighted_population_stddev": 0.116286
+          "weighted_population_stddev": 0.116286,
+          "per_work": [
+            {
+              "value": 5.159363906916705,
+              "work_key": "waves"
+            },
+            {
+              "value": 5.392626628964839,
+              "work_key": "road"
+            }
+          ]
         },
         {
           "id": "fantlab.general.mean_sentence_length_chars",
           "label": "Средняя длина предложения",
           "unit": "знаков/предложение",
           "weighted_mean": 69.322264,
-          "weighted_population_stddev": 2.992603
+          "weighted_population_stddev": 2.992603,
+          "per_work": [
+            {
+              "value": 72.55458603896103,
+              "work_key": "waves"
+            },
+            {
+              "value": 66.5516025149517,
+              "work_key": "road"
+            }
+          ]
         },
         {
           "id": "fantlab.dialogue.share_percent",
           "label": "Доля диалогов",
           "unit": "%",
           "weighted_mean": 40.963139,
-          "weighted_population_stddev": 4.697026
+          "weighted_population_stddev": 4.697026,
+          "per_work": [
+            {
+              "value": 35.88986183443132,
+              "work_key": "waves"
+            },
+            {
+              "value": 45.31181857828172,
+              "work_key": "road"
+            }
+          ]
         },
         {
           "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
           "label": "Авторские ремарки в диалогах",
           "unit": "%",
           "weighted_mean": 33.08361,
-          "weighted_population_stddev": 1.369827
+          "weighted_population_stddev": 1.369827,
+          "per_work": [
+            {
+              "value": 34.563165459722235,
+              "work_key": "waves"
+            },
+            {
+              "value": 31.815373281526632,
+              "work_key": "road"
+            }
+          ]
         },
         {
           "id": "fantlab.punctuation.comma.per_1000_words",
           "label": "Запятые",
           "unit": "на 1000 слов",
           "weighted_mean": 141.249483,
-          "weighted_population_stddev": 2.247224
+          "weighted_population_stddev": 2.247224,
+          "per_work": [
+            {
+              "value": 143.67671841944852,
+              "work_key": "waves"
+            },
+            {
+              "value": 139.16892058028031,
+              "work_key": "road"
+            }
+          ]
         },
         {
           "id": "fantlab.punctuation.dash.per_1000_words",
           "label": "Тире",
           "unit": "на 1000 слов",
           "weighted_mean": 49.34216,
-          "weighted_population_stddev": 8.767496
+          "weighted_population_stddev": 8.767496,
+          "per_work": [
+            {
+              "value": 39.87235110617089,
+              "work_key": "waves"
+            },
+            {
+              "value": 57.45942955495451,
+              "work_key": "road"
+            }
+          ]
         },
         {
           "id": "fantlab.punctuation.question.per_1000_words",
           "label": "Вопросы",
           "unit": "на 1000 слов",
           "weighted_mean": 8.167149,
-          "weighted_population_stddev": 2.266493
+          "weighted_population_stddev": 2.266493,
+          "per_work": [
+            {
+              "value": 5.71910072071426,
+              "work_key": "waves"
+            },
+            {
+              "value": 10.265552003934104,
+              "work_key": "road"
+            }
+          ]
         },
         {
           "id": "fantlab.punctuation.semicolon.per_1000_words",
           "label": "Точка с запятой",
           "unit": "на 1000 слов",
           "weighted_mean": 3.235416,
-          "weighted_population_stddev": 0.639627
+          "weighted_population_stddev": 0.639627,
+          "per_work": [
+            {
+              "value": 3.926279178170605,
+              "work_key": "waves"
+            },
+            {
+              "value": 2.643225965084829,
+              "work_key": "road"
+            }
+          ]
         }
       ]
     },
@@ -148,56 +228,136 @@
           "label": "Средняя длина слова",
           "unit": "знаков/слово",
           "weighted_mean": 5.05703,
-          "weighted_population_stddev": 0.104767
+          "weighted_population_stddev": 0.104767,
+          "per_work": [
+            {
+              "value": 4.9825511029930425,
+              "work_key": "anna"
+            },
+            {
+              "value": 5.204401707204196,
+              "work_key": "resurrection"
+            }
+          ]
         },
         {
           "id": "fantlab.general.mean_sentence_length_chars",
           "label": "Средняя длина предложения",
           "unit": "знаков/предложение",
           "weighted_mean": 83.162134,
-          "weighted_population_stddev": 5.860545
+          "weighted_population_stddev": 5.860545,
+          "per_work": [
+            {
+              "value": 78.99585453175052,
+              "work_key": "anna"
+            },
+            {
+              "value": 91.4059375,
+              "work_key": "resurrection"
+            }
+          ]
         },
         {
           "id": "fantlab.dialogue.share_percent",
           "label": "Доля диалогов",
           "unit": "%",
           "weighted_mean": 33.245748,
-          "weighted_population_stddev": 2.431945
+          "weighted_population_stddev": 2.431945,
+          "per_work": [
+            {
+              "value": 34.97462555501088,
+              "work_key": "anna"
+            },
+            {
+              "value": 29.824824938941546,
+              "work_key": "resurrection"
+            }
+          ]
         },
         {
           "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
           "label": "Авторские ремарки в диалогах",
           "unit": "%",
           "weighted_mean": 38.705072,
-          "weighted_population_stddev": 0.440331
+          "weighted_population_stddev": 0.440331,
+          "per_work": [
+            {
+              "value": 38.39203965651457,
+              "work_key": "anna"
+            },
+            {
+              "value": 39.32446834822573,
+              "work_key": "resurrection"
+            }
+          ]
         },
         {
           "id": "fantlab.punctuation.comma.per_1000_words",
           "label": "Запятые",
           "unit": "на 1000 слов",
           "weighted_mean": 147.533706,
-          "weighted_population_stddev": 1.714912
+          "weighted_population_stddev": 1.714912,
+          "per_work": [
+            {
+              "value": 146.31457020025394,
+              "work_key": "anna"
+            },
+            {
+              "value": 149.94600709621022,
+              "work_key": "resurrection"
+            }
+          ]
         },
         {
           "id": "fantlab.punctuation.dash.per_1000_words",
           "label": "Тире",
           "unit": "на 1000 слов",
           "weighted_mean": 44.028539,
-          "weighted_population_stddev": 3.580188
+          "weighted_population_stddev": 3.580188,
+          "per_work": [
+            {
+              "value": 46.57370488346364,
+              "work_key": "anna"
+            },
+            {
+              "value": 38.99242630152282,
+              "work_key": "resurrection"
+            }
+          ]
         },
         {
           "id": "fantlab.punctuation.question.per_1000_words",
           "label": "Вопросы",
           "unit": "на 1000 слов",
           "weighted_mean": 7.864617,
-          "weighted_population_stddev": 0.854377
+          "weighted_population_stddev": 0.854377,
+          "per_work": [
+            {
+              "value": 8.471996376569473,
+              "work_key": "anna"
+            },
+            {
+              "value": 6.662797787392841,
+              "work_key": "resurrection"
+            }
+          ]
         },
         {
           "id": "fantlab.punctuation.semicolon.per_1000_words",
           "label": "Точка с запятой",
           "unit": "на 1000 слов",
           "weighted_mean": 3.427977,
-          "weighted_population_stddev": 0.938166
+          "weighted_population_stddev": 0.938166,
+          "per_work": [
+            {
+              "value": 4.094921999717847,
+              "work_key": "anna"
+            },
+            {
+              "value": 2.108294338458374,
+              "work_key": "resurrection"
+            }
+          ]
         }
       ]
     }

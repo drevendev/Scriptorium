@@ -30,6 +30,7 @@
 .bar-fill.amber { background:#9b662b; }
 .scroll-table { overflow-x:auto; border:1px solid var(--line); background:var(--surface); border-radius:.5rem; }
 .scroll-table table { width:100%; min-width:770px; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+.work-detail-table table { min-width:930px; }
 .scroll-table caption { text-align:left; padding:1rem; color:var(--subtle); }
 .scroll-table th,.scroll-table td { padding:.75rem .85rem; border-bottom:1px solid var(--line); text-align:left; }
 .scroll-table thead th { background:var(--wash); font-weight:750; }
@@ -56,14 +57,14 @@
 </head>
 <body>
 <a class="skip-link" href="#main">Перейти к содержанию</a>
-<header class="site-top"><a class="brand" href="../"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a><nav aria-label="Навигация"><a href="../#books">Библиотека</a><a href="../#pairs">Сравнение книг</a><a href="#data">Точные данные</a><a href="#sources">Источники</a></nav></header>
+<header class="site-top"><a class="brand" href="../"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a><nav aria-label="Навигация"><a href="../#books">Библиотека</a><a href="../#pairs">Сравнение книг</a><a href="#data">Сводка</a><a href="#works">По книгам</a><a href="#sources">Источники</a></nav></header>
 <main class="voice-wrap" id="main">
 <section class="voice-hero" aria-labelledby="hero-title">
 <p class="eyebrow">ЭКСПЕРИМЕНТАЛЬНАЯ МАСТЕРСКАЯ · РУССКИЙ КОРПУС</p>
 <h1 id="hero-title">Один язык.<br><em>Два авторских ритма.</em></h1>
 <p class="voice-lede">Чем отличаются предложения, диалоги и знаки препинания у Александра Грина и Льва Толстого? Здесь — только результаты анализа настоящих книг, а не оценки «хорошего стиля» или тексты, придуманные нейросетью.</p>
 <div class="voice-meta"><span>2 автора</span><span>4 полных произведения</span><span>8 сравнимых показателей</span><span>0 заявлений о паритете с FantLab</span></div>
-<div class="voice-actions"><a href="#charts">Смотреть диаграммы ↘</a><a href="#data">Читать таблицу ↘</a><a href="../assets/voice-preview.json">Исходные производные данные JSON ↗</a></div>
+<div class="voice-actions"><a href="#charts">Смотреть диаграммы ↘</a><a href="#data">Читать сводку ↘</a><a href="#works">Проверить по книгам ↘</a><a href="../assets/voice-preview.json">Исходные производные данные JSON ↗</a></div>
 <div class="voice-note" role="note"><strong>Предварительный описательный срез, не подтверждённый авторский профиль.</strong> Всего две книги каждого автора; результаты зависят от выбранных редакций. Нет перекрёстной проверки, доверительных интервалов или подбора коэффициентов. Соответствие методике FantLab не доказано. <b>M2: 0/5 · M3: открыт.</b></div>
 </section>
 <section class="voice-section" id="charts" aria-labelledby="charts-title"><p class="eyebrow">01 / НАГЛЯДНО</p><h2 id="charts-title">Как звучит проза — в измерениях.</h2>
@@ -87,12 +88,31 @@
 <tr><th scope="row">Точка с запятой</th><td>на 1000 слов</td><td>3.235416</td><td>0.639627</td><td>3.427977</td><td>0.938166</td></tr>
 </tbody></table></div>
 </section>
-<section class="voice-section" id="sources" aria-labelledby="sources-title"><p class="eyebrow">03 / ИСТОЧНИКИ И ПРОВЕРЯЕМОСТЬ</p><h2 id="sources-title">Какие именно книги посчитаны.</h2>
+<section class="voice-section" id="works" aria-labelledby="works-title">
+<p class="eyebrow">03 / ЧЕТЫРЕ КНИГИ</p><h2 id="works-title">За каждым средним — две разные книги.</h2>
+<p>Здесь видны <strong>32 самостоятельных наблюдения</strong> из четырёх закреплённых редакций. Например, доля диалогов в двух книгах Грина заметно различается. Не принимайте сводный показатель автора за неизменную черту его прозы. В таблице показаны значения с округлением до шести знаков; полная точность и связь каждого числа с книгой сохранены в <a href="../assets/voice-preview.json">исходном JSON</a>.</p>
+<div class="scroll-table work-detail-table" tabindex="0" role="region" aria-label="Восемь показателей по каждой из четырёх отдельных книг">
+<table><caption>Исходные измерения отдельных книг · измерительный профиль Scriptorium · не FantLab parity</caption>
+<thead><tr><th scope="col" rowspan="2">Показатель</th><th scope="col" rowspan="2">Единица</th><th scope="colgroup" colspan="2">Александр Грин</th><th scope="colgroup" colspan="2">Лев Толстой</th></tr>
+<tr><th scope="col">Бегущая по волнам</th><th scope="col">Дорога в никуда</th><th scope="col">Анна Каренина</th><th scope="col">Воскресение</th></tr></thead>
+<tbody>
+<tr><th scope="row">Средняя длина слова</th><td>знаков/слово</td><td>5.159364</td><td>5.392627</td><td>4.982551</td><td>5.204402</td></tr>
+<tr><th scope="row">Средняя длина предложения</th><td>знаков/предложение</td><td>72.554586</td><td>66.551603</td><td>78.995855</td><td>91.405937</td></tr>
+<tr><th scope="row">Доля диалогов</th><td>%</td><td>35.889862</td><td>45.311819</td><td>34.974626</td><td>29.824825</td></tr>
+<tr><th scope="row">Авторские ремарки в диалогах</th><td>%</td><td>34.563165</td><td>31.815373</td><td>38.392040</td><td>39.324468</td></tr>
+<tr><th scope="row">Запятые</th><td>на 1000 слов</td><td>143.676718</td><td>139.168921</td><td>146.314570</td><td>149.946007</td></tr>
+<tr><th scope="row">Тире</th><td>на 1000 слов</td><td>39.872351</td><td>57.459430</td><td>46.573705</td><td>38.992426</td></tr>
+<tr><th scope="row">Вопросы</th><td>на 1000 слов</td><td>5.719101</td><td>10.265552</td><td>8.471996</td><td>6.662798</td></tr>
+<tr><th scope="row">Точка с запятой</th><td>на 1000 слов</td><td>3.926279</td><td>2.643226</td><td>4.094922</td><td>2.108294</td></tr>
+</tbody></table></div>
+<p>Все четыре редакции и исходные SHA-256 перечислены ниже. Это отдельные диагностические измерения, а не результат анализа склеенных текстов. Совпадение с FantLab не установлено, проверка M3 не выполнена.</p>
+</section>
+<section class="voice-section" id="sources" aria-labelledby="sources-title"><p class="eyebrow">04 / ИСТОЧНИКИ И ПРОВЕРЯЕМОСТЬ</p><h2 id="sources-title">Какие именно книги посчитаны.</h2>
 <p>Ни один литературный текст не хранится в этом отчёте. Книги идентифицируются закреплёнными редакциями, контрольными суммами и ссылками на проверенные производные результаты.</p>
 <div class="author-grid"><article class="author-card grin"><p class="eyebrow">АВТОР 01</p><h3>Александр Грин</h3><p class="author-summary">2 полных русскоязычных произведения · 120 850 слов по Scriptorium</p><ul class="source-works"><li><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json">Бегущая по волнам</a><span>363 819 знаков · 55 778 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-frozen-363819</p><code>41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc</code></details></li><li><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-road-nowhere-ru.retained.json">Дорога в никуда</a><span>442 656 знаков · 65 072 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-wikisource-az-lib-oldid-5585836</p><code>e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee</code></details></li></ul></article>
 <article class="author-card tolstoy"><p class="eyebrow">АВТОР 02</p><h3>Лев Толстой</h3><p class="author-summary">2 полных русскоязычных произведения · 405 487 слов по Scriptorium</p><ul class="source-works"><li><a href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json">Анна Каренина</a><span>1 705 605 знаков · 269 358 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-wikisource-239-chapters</p><code>1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205</code></details></li><li><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/tolstoy-resurrection-ru.retained.json">Воскресение</a><span>890 835 знаков · 136 129 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-wikisource-129-chapters</p><code>2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0</code></details></li></ul></article></div>
 </section>
-<section class="voice-section" id="method" aria-labelledby="method-title"><p class="eyebrow">04 / НАУЧНАЯ ГРАНИЦА</p><h2 id="method-title">Метод, ограничения и повторяемость.</h2>
+<section class="voice-section" id="method" aria-labelledby="method-title"><p class="eyebrow">05 / НАУЧНАЯ ГРАНИЦА</p><h2 id="method-title">Метод, ограничения и повторяемость.</h2>
 <p>Формула для каждого показателя: <strong>μ = Σ(w × x) / Σw</strong>, <strong>σ = √(Σ(w × (x − μ)²) / Σw)</strong>, где w — количество измеренных слов в конкретной книге. Количество слов не является заменой числа предложений при вычислении длины предложений; эти результаты — средние из двух отдельно измеренных показателей.</p>
 <p>Источник данных: зафиксированный <a href="../assets/evidence-snapshot.json">реестр Reader</a>; версия алгоритма <code>scriptorium-author-rhythm-preview-v1</code>; модули нормализации <code>scriptorium-text-v1</code>, метрик <code>scriptorium-metrics-v4</code>, диалогов <code>scriptorium-dialogue-v1</code>, словаря <code>scriptorium-vocabulary-v1</code>, пунктуации <code>scriptorium-punctuation-v2</code>. Проверяемые вычисления: <a href="https://github.com/drevendev/Scriptorium/blob/master/scriptorium/voice_profile.py">Python-модуль и тесты в GitHub</a>.</p>
 <p>Морфологические коэффициенты FantLab неизвестны. Идентичность источников FantLab не установлена. Переводческие версии не объединяются с оригиналами. Это экспериментальное расширение, а не воспроизведение FantLab, классификация авторства или выполненный M3.</p>

@@ -33,7 +33,7 @@ class LibraryCsvExportTests(unittest.TestCase):
         self.assertIn("function serializeLibraryCsv(doc)", js)
         self.assertIn("verify(doc);", js)
         self.assertIn('libraryCsvButton.addEventListener("click",exportLibraryCsv)', js)
-        self.assertIn("pairCsvButton,libraryCsvButton,chartSortButton", js)
+        self.assertIn("pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton", js)
         self.assertNotIn("innerHTML", js)
         self.assertNotIn("sendBeacon", js)
 

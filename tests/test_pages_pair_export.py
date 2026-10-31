@@ -31,8 +31,11 @@ class PairExportTests(unittest.TestCase):
         csv_buttons = [attrs for attrs in buttons if attrs.get("id") == "pair-export-csv"]
         self.assertEqual(len(csv_buttons), 1)
         self.assertIn("disabled", csv_buttons[0])
+        md_buttons = [a for a in buttons if a.get("id") == "pair-export-markdown"]
+        self.assertEqual(len(md_buttons), 1)
+        self.assertIn("disabled", md_buttons[0])
         self.assertIn("<td>% · Δ в п.п.</td>", html)
-        self.assertIn("Только совместные измерения", html)
+        self.assertIn("JSON/CSV — только совместные измерения", html)
         self.assertIn('class="evidence-actions"', html)
 
     def test_export_is_source_free_scientifically_labeled_and_allowlisted(self):
@@ -43,6 +46,10 @@ class PairExportTests(unittest.TestCase):
             "function serializePairCsv(report)",
             "function csvText(value)",
             "function exportPairCsv()",
+            "function serializePairMarkdown(report, coverage)",
+            "function exportPairMarkdown()",
+            'pairMarkdownButton.addEventListener("click",exportPairMarkdown)',
+            "pairMarkdownButton.disabled=rows.length===0;",
             'pairCsvButton.addEventListener("click",exportPairCsv)',
             "pairCsvButton.disabled=rows.length===0;",
             "sharedPairRows(a,b)",

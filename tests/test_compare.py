@@ -434,7 +434,7 @@ class LocalComparisonTests(unittest.TestCase):
                     self.assertIn(self.b["source"]["raw_sha256"], derived)
                     self.assertEqual(direct.read_bytes(), staged.read_bytes())
 
-    def test_direct_manuscripts_reject_bad_bytes_identical_sources_and_overwrite(self):
+    def test_direct_manuscripts_reject_bad_bytes_and_overwrite_allow_same_text(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             first, second, bad = (root / name for name in
@@ -446,7 +446,6 @@ class LocalComparisonTests(unittest.TestCase):
             destination.write_text("PRESERVE", encoding="utf-8")
             scenarios = (
                 (str(first), str(bad), str(root / "invalid.md")),
-                (str(first), str(first), str(root / "same.md")),
                 (str(first), str(second), str(destination)),
             )
             for left, right, output in scenarios:
@@ -460,6 +459,16 @@ class LocalComparisonTests(unittest.TestCase):
                     if output != str(destination):
                         self.assertFalse(Path(output).exists())
                     self.assertEqual(destination.read_text(encoding="utf-8"), "PRESERVE")
+            # Repeated input is a valid identity comparison; exact deltas
+            # must remain zero, not become a fabricated failure or a PASS claim.
+            same = root / "same.md"
+            self.assertEqual(cli.main(["compare", "--texts", str(first), str(first),
+                                       "--format", "markdown", "--output", str(same)]), 0)
+            self.assertIn(self.a["source"]["raw_sha256"], same.read_text(encoding="utf-8"))
+            self.assertNotIn(LEFT, same.read_text(encoding="utf-8"))
+            unchanged = compare.build_comparison(self.a, self.a)
+            self.assertTrue(all(Decimal(row["difference"]) == 0 for row in unchanged["metrics"]
+                                if row["comparison_status"] == "comparable"))
             alias = root / "PRIVATE-alias.txt"
             try:
                 alias.symlink_to(first)

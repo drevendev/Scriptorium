@@ -100,7 +100,7 @@ catalog.books.find(b=>b.key==="beketova").profiles.metrics=original;
   assert.equal(filename,"scriptorium-pair-anna-beketova.json");
   assert.deepEqual(JSON.parse(await downloadBlob.text()),data);
   const csv=actions.serializePairCsv(data);
-  assert.ok(csv.startsWith("\uFEFFschema,scientific_claim,"));
+  assert.ok(csv.startsWith("\uFEFFschema,csv_schema,scientific_claim,"));
   assert.equal(csv.trimEnd().split("\r\n").length,data.metrics.length+1);
   assert.ok(csv.includes('"Александра Андреевна Бекетова"'));
   assert.ok(csv.includes('"percentage_points"'));

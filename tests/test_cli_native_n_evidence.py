@@ -55,6 +55,13 @@ class NativeNRetainedCliTests(unittest.TestCase):
                           pair["conditional_max"], pair["evidence_status"]),
                          ("", "0", "8402", "CONDITIONAL_N_ONLY"))
         self.assertNotIn("PASS", {row["evidence_status"] for row in rows})
+        self.assertEqual({row["candidate_id"] for row in rows}, {"tolstoy-anna-karenina-ru"})
+        self.assertEqual({row["pylem_version"] for row in rows}, {"0.0.18"})
+        self.assertEqual({row["runtime_analysis_sha256"] for row in rows},
+                         {"00cb365eeb6e187362cb1cb54acc6718c230791df18013702907dfee6446d69d"})
+        conditional_defined = next(row for row in rows if row["measure"] == "conditional_defined")
+        self.assertEqual((conditional_defined["observed"], conditional_defined["evidence_status"]),
+                         ("172635", "DERIVED_CONDITIONAL"))
         self.assertTrue(all(row["observed"] == "" for row in rows
                             if row["evidence_status"] == "CONDITIONAL_N_ONLY"))
 

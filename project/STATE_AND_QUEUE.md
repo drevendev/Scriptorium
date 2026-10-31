@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 381
+STATE_REVISION: 382
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-31
-LAST_RESULT: #380 merged at 41a9f2e7ad8096a5c3ae5b8e39024f7b18ae3d97. Preparing a source-free Reader Markdown pair export with nine eligible metrics, unavailable values and full edition/translator context.
+LAST_RESULT: #381 merged at f9d784e6fdaf4787ac86095e031e61cdc5f89d97. Preparing a real-catalogue, source-free single-edition Markdown download for the root Reader.
 LAST_VERIFIED_PROGRESS: Ten source-bound measured Russian works in master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab input identity UNKNOWN (M2 0/5; M3 open). Live browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-PAIR-MARKDOWN
-ISSUE: Human-readable Reader paired download over the existing verified Russian catalogue.
+UNIT_ID: SCRIP-READER-SINGLE-MARKDOWN
+ISSUE: Download an independently source-bound measured book as a readable offline Markdown report.
 STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-reader-pair-markdown
-BASE: 41a9f2e7ad8096a5c3ae5b8e39024f7b18ae3d97
+BRANCH: scrip-reader-single-markdown
+BASE: f9d784e6fdaf4787ac86095e031e61cdc5f89d97
 
-ACCEPTANCE: Reader exports a source-free Markdown paired report with all nine eligible comparison metrics and honest missingness, right-minus-left delta units, source hashes, translator/edition identities and measured profiles. Escape Markdown/HTML titles; reject altered scientific claims, inconsistent metrics, missing translation identity and duplicate/unmeasured/incompatible pairs. JSON/CSV remain unchanged. Hosted CI, later independent acceptance and live browser verification remain separate. No M2 parity claim.
+ACCEPTANCE: All ten measured Russian editions export their complete 11/27/28/29-field measured/unavailable registry as source-free escaped Markdown, with candidate/source/translator IDs, hashes, profile versions and scientific status; true zero is retained and absent/reference-only values remain explicit. Reject pending editions, tampered identities/statuses/values and duplicate fields. Existing per-book JSON, CSV library and pair exports are unchanged. Hosted CI, independent later acceptance, deployment and live browser verification are separate. M2 remains 0/5.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Readable source-bound comparisons in the Russian Reader and portable offline reports, with 10 measured books and 2 distinct research leads.
+Milestone: Offline-readable, source-bound reports for both individual Russian editions and book comparisons, over ten measured books and two distinct research leads.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge Reader paired Markdown PR | Exact-head hosted CI, diff and privacy check; later wake | Applicable checks and fresh head |
+| P1 | Independently accept/merge single-edition Reader Markdown PR | Exact-head hosted CI, diff and privacy check; later wake | Applicable checks and fresh head |
 | P2 | Verify root Reader live | Latest master Pages, public HTML/CSV, real desktop/mobile/keyboard | Existing HTTP/browser administrator restriction |
 | P3 | #282 native N discriminator | Measured noun/cardinal evidence and negative controls | Public pylem adapter loses source enum |
 | P4 | #281 source-matched FantLab benchmark | Input identity plus per-field displayed-rounding evidence | Exact analyzer-input identity UNKNOWN |

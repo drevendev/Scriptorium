@@ -23,7 +23,7 @@ class PairLinks(unittest.TestCase):
         html=(ROOT/"index.html").read_text(encoding="utf-8")
         links=Links(html).links
         self.assertEqual([a["href"] for a in links if a.get("id")=="share-pair"],
-                         ["?left=anna&right=karamazov#pairs"])
+                         ["?left=anna&right=karamazov&pair_metric=fantlab.dialogue.share_percent#pairs"])
         doc=json.loads((ROOT/"assets/evidence-snapshot.json").read_text(encoding="utf-8"))
         measured={b["key"] for b in doc["books"] if b["text_status"]=="measured"}
         self.assertEqual(len(measured),10)
@@ -34,15 +34,18 @@ class PairLinks(unittest.TestCase):
 
     def test_allowlisted_routing_and_history(self):
         js=(ROOT/"assets/pages-reader.js").read_text(encoding="utf-8")
-        for fragment in ('function pairFromUrl() {','params.get("left"), right = params.get("right")',
+        for fragment in ('function pairMetricFromUrl() {','.get("pair_metric")',
+                         'function pairFromUrl() {','params.get("left"), right = params.get("right")',
                          'getBook(left) && getBook(right) && left !== right',
                          'function selectPair(left, right, addHistory=false)',
                          'if (!getBook(left) || !getBook(right)) return',
                          'share.removeAttribute("href")','url.searchParams.set("left", left)',
                          'url.searchParams.set("right", right)',
+                         'url.searchParams.set("pair_metric", pairMetric.value)',
                          'window.history.pushState(null, "", url)','selectPair(left,right)',
                          'leftSelect.addEventListener("change",()=>selectPair',
-                         'rightSelect.addEventListener("change",()=>selectPair'):
+                         'rightSelect.addEventListener("change",()=>selectPair',
+                         'pairMetric.addEventListener("change",()=>selectPair'):
             with self.subTest(fragment=fragment):
                 self.assertIn(fragment,js)
         self.assertNotIn("fetch(window.location",js)

@@ -733,6 +733,12 @@
     }
     el("paired-graphic").replaceChildren(graph);
   }
+  // Paired links carry only selected chart options, never arbitrary input paths.
+  function pairMetricFromUrl() {
+    const requested = new URLSearchParams(window.location.search).get("pair_metric");
+    return [...pairMetric.options].some(option=>option.value===requested)
+      ? requested : "fantlab.dialogue.share_percent";
+  }
   // An allow-listed measured edition is a UI key, never a network path.
   // Invalid, missing, pending and duplicate URL pairs resolve to honest defaults.
   function pairFromUrl() {
@@ -754,13 +760,15 @@
     }
     share.hidden = false;
     share.href = "?left=" + encodeURIComponent(left) +
-                 "&right=" + encodeURIComponent(right) + "#pairs";
+                 "&right=" + encodeURIComponent(right) +
+                 "&pair_metric=" + encodeURIComponent(pairMetric.value) + "#pairs";
     share.textContent = "Прямая ссылка: «" + getBook(left).display_title +
                         "» и «" + getBook(right).display_title + "» ↗";
     if (addHistory) {
       const url = new URL(window.location.href);
       url.searchParams.set("left", left);
       url.searchParams.set("right", right);
+      url.searchParams.set("pair_metric", pairMetric.value);
       url.hash = "pairs";
       window.history.pushState(null, "", url);
     }
@@ -837,6 +845,7 @@
         selectChart(chartFromUrl());
         selectBook(bookFromUrl());
         const [left,right] = pairFromUrl();
+        pairMetric.value=pairMetricFromUrl();
         selectPair(left,right);
       });
       search.addEventListener("input",updateSingle);
@@ -846,9 +855,10 @@
        libraryCsvButton.addEventListener("click",exportLibraryCsv);
       leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
-      pairMetric.addEventListener("change",updatePair);
+      pairMetric.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       selectChart(chartFromUrl());
       const [left,right] = pairFromUrl();
+      pairMetric.value=pairMetricFromUrl();
       selectPair(left,right);
       selectBook(bookFromUrl());
     } catch (_) {

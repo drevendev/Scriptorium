@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 374
+STATE_REVISION: 375
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-31
-LAST_RESULT: #373 is confirmed merged as 4e1884fcb04109abead87d3acf17d58edbff7c0b. New PR prepares source-bound edition and translator context next to the root Reader pair comparison; existing metrics and export semantics are unchanged.
+LAST_RESULT: #374 is confirmed merged as 3fe9d6460499c524dc03e66de4a0e54acb9cdcc2. New pair-metric deep link PR adds reproducible selected chart state without touching derived evidence.
 LAST_VERIFIED_PROGRESS: Ten fully analyzed Russian works in the master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab source-input identity remains UNKNOWN (M2 0/5; M3 open). Live Pages HTTP and desktop/mobile visuals remain NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-PAIR-EDITION-CONTEXT
+UNIT_ID: SCRIP-SITE-PAIR-METRIC-PERMALINK
 ISSUE: #283 literary Reader and translator-aware provenance.
 STATUS: PR_CREATED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-reader-pair-edition-context
-BASE: 4e1884fcb04109abead87d3acf17d58edbff7c0b
+BRANCH: scrip-reader-pair-metric-link
+BASE: 3fe9d6460499c524dc03e66de4a0e54acb9cdcc2
 
-ACCEPTANCE: The root Reader's paired comparison identifies each selected measured Russian edition with its original language, named translator when present, edition ID and digest prefix immediately beside the chart/table. The default no-JavaScript pair remains accurate; invalid/unverified JSON never populates misleading dynamic data. A translated Russian edition is explicitly NOT described as a French/English original or as evidence of a translator's causal influence. Existing comparisons, exports, pinned measurements and M2 0/5 are unchanged. Positive/negative Node and Python structural regression tests plus exact-head CI and later independent acceptance are required.
+ACCEPTANCE: A shared Reader pair permalink encodes both measured editions and a valid selected paired-chart metric. Reload and Back/Forward restore all three controls; unsupported or inherited-property metric names fall back to the accurate static dialogue default. Pair changes preserve the selected metric; metric changes update history only after verified JSON. No-JS context and scientific caveats stay accurate; no measurement, JSON or CSV change. Positive/negative Node and Python tests, exact-head CI and later independent acceptance required.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: Ten-book Russian Reader with readable, edition-aware descriptive comp
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge edition-context PR | Exact-head CI, truthful translation contexts, static fallback and existing pair exports | Later wake and successful checks |
-| P2 | Verify tenth book at live Pages | Full root deployment, HTML/CSV, desktop/mobile/keyboard validation | Existing HTTP/browser administrator restriction |
+| P1 | Later accept/merge pair-metric permalink PR | Exact-head CI, URL allowlist, history, static fallback and existing pair exports | Later wake and successful checks |
+| P2 | Verify current Reader at live Pages | #374 master Pages deployment SUCCESS; HTML/CSV, desktop/mobile/keyboard still unverified | Existing HTTP/browser administrator restriction |
 | P3 | #282 native N discriminator | Source-backed measured noun/cardinal distinction and negative controls | Public adapter loses source enum |
 | P4 | #281 source-matched FantLab benchmark | Actual analyzer-input identity and per-field deltas/rounding | Identity UNKNOWN |
 | P5 | Distinct measured Russian translation editions | Rights, translator/edition IDs, normalized same-language comparison | Need independently frozen second edition |

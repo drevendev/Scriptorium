@@ -647,11 +647,33 @@
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
 
+  function pairEditionDescription(book, side) {
+    const translated=book.original_language!==book.language;
+    const origin={fr:"французского",en:"английского",ru:"русского"};
+    const type=translated
+      ? "русский перевод с "+(origin[book.original_language]||book.original_language)+
+        "; переводчик: "+book.translator.name
+      : "русский оригинал";
+    return side+" · "+book.display_title+" — "+type+
+      ". Редакция: "+book.edition_id+
+      " · SHA-256: "+book.source_sha256.slice(0,12)+"…";
+  }
+  function updatePairEditionContext(left,right) {
+    el("pair-left-edition").textContent=pairEditionDescription(left,"Слева");
+    el("pair-right-edition").textContent=pairEditionDescription(right,"Справа");
+    const translated=left.original_language!==left.language ||
+      right.original_language!==right.language;
+    el("pair-edition-caveat").textContent=translated
+      ? "Сопоставляются две измеренные русскоязычные редакции, НЕ французский/английский оригинал с переводом. Разница не доказывает вклад переводчика или автора; FantLab parity неизвестна."
+      : "Сопоставляются две отдельные русскоязычные редакции. Разница не доказывает влияние автора или совпадение с входом FantLab.";
+  }
+
   function updatePair() {
     pairExportButton.disabled=true;
     pairCsvButton.disabled=true;
     const a=getBook(leftSelect.value),b=getBook(rightSelect.value);
     if (!a||!b) throw Error("Книга отсутствует в измеренном корпусе");
+    updatePairEditionContext(a,b);
     const matchingProfiles=["metrics","normalization","dialogue","vocabulary","punctuation"];
     if (!matchingProfiles.every(profile=>
       typeof a.profiles?.[profile]==="string" &&

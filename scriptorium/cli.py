@@ -50,7 +50,7 @@ def main(argv: list[str] | None = None) -> int:
     if not args or args[0] in {"-h", "--help"}:
         print("Scriptorium Reader — private text analysis and evidence-labelled literary reports")
         print("Usage: scriptorium <analyze|epub|batch|compare|diagnostic|evidence|n-evidence|site> [options]")
-        print("  analyze     UTF-8 manuscript -> JSON, HTML or CSV (29 metrics)")
+        print("  analyze     UTF-8 manuscript -> JSON, HTML, Markdown or CSV (29 metrics)")
         print("  epub        Local EPUB XHTML spine -> Reader reports and source-free identity")
         print("  batch       Explicit UTF-8 manifest -> private JSON/HTML reports and index")
         print("  compare     Two private analysis JSON files -> HTML, JSON or CSV; no uploads")

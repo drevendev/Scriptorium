@@ -1,4 +1,4 @@
-"""Privacy-safe local text analysis with JSON and standalone HTML output."""
+"""Privacy-safe local analysis with JSON, standalone HTML, Markdown and CSV output."""
 
 from __future__ import annotations
 
@@ -219,6 +219,128 @@ word/sentence denominator, or a complete vocabulary window. No null is a parity 
 </body>
 </html>
 '''
+
+
+
+def _markdown_text(value: object) -> str:
+    """Escape one single-line value as untrusted Markdown/HTML text."""
+    collapsed = " ".join(str(value).split())
+    sanitized = escape(collapsed, quote=False)
+    specials = {"\\", "|", "*", "_", "[", "]", chr(96)}
+    return "".join("\\" + char if char in specials else char for char in sanitized)
+
+
+def render_markdown(artifact: dict[str, object], *, title: str | None = None) -> str:
+    """Render a source-free, reproducible, human-readable 29-metric report.
+
+    This is a presentation of the current inferred/extension metric artifact,
+    not a second engine, a new evidence profile or a FantLab parity result.
+    """
+    if artifact.get("schema_version") != LOCAL_ANALYSIS_SCHEMA:
+        raise ValueError("unsupported local analysis schema")
+    source = _mapping(artifact.get("source"), "source")
+    if source.get("source_text_embedded") is not False:
+        raise ValueError("local analysis must not embed source text")
+    analyzer = _mapping(artifact.get("analyzer"), "analyzer")
+    profiles = _mapping(analyzer.get("profiles"), "analyzer.profiles")
+    dependencies = _mapping(analyzer.get("dependencies"), "analyzer.dependencies")
+    representativeness = _mapping(artifact.get("representativeness"), "representativeness")
+    metrics = _mapping(artifact.get("metrics"), "metrics")
+    if set(metrics) != set(METRIC_LABELS):
+        raise ValueError("local Markdown requires all 29 current metrics")
+
+    def required(value: object, label: str) -> str:
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"{label} must be non-empty text")
+        return _markdown_text(value)
+
+    for digest_name in ("raw_sha256", "normalized_sha256"):
+        digest = source.get(digest_name)
+        if not isinstance(digest, str) or len(digest) != 64 or any(
+            char not in "0123456789abcdef" for char in digest
+        ):
+            raise ValueError(f"source.{digest_name} must be a SHA-256 digest")
+    for count_name in ("byte_count", "normalized_character_count"):
+        count = source.get(count_name)
+        if isinstance(count, bool) or not isinstance(count, int) or count < 0:
+            raise ValueError(f"source.{count_name} must be a nonnegative integer")
+    threshold = representativeness.get("meets_calibration_threshold")
+    if not isinstance(threshold, bool):
+        raise ValueError("representativeness must be explicitly true or false")
+
+    display_title = _nonempty_text(title) if title is not None else "Scriptorium local analysis"
+    status = (
+        "At least 300,000 normalized characters; legal and edition admission NOT established."
+        if threshold else
+        "Short input: valid local analysis, limited author-profile representativeness."
+    )
+    lines = [
+        "# " + _markdown_text(display_title),
+        "",
+        "> **Scientific status:** deterministic inferred/extension measurements,",
+        "> **NOT** verified FantLab parity. No manuscript text is embedded.",
+        "",
+        "**Representativeness:** " + status,
+        "",
+        "## Provenance and method",
+        "",
+        "- Raw SHA-256: " + source["raw_sha256"],
+        "- Normalized SHA-256: " + source["normalized_sha256"],
+        "- Input bytes: " + str(source["byte_count"]),
+        "- Normalized characters (including spaces): " + str(source["normalized_character_count"]),
+        "- Metric contract: " + required(artifact.get("metric_contract_id"), "metric contract"),
+        "- Scriptorium revision: " + (
+            required(analyzer["scriptorium_revision"], "revision")
+            if analyzer.get("scriptorium_revision") is not None else "not recorded"
+        ),
+    ]
+    for key in ("normalization", "metrics", "dialogue", "vocabulary", "punctuation"):
+        lines.append("- " + key.capitalize() + " profile: " + required(profiles.get(key), key))
+    dictionary = dependencies.get("vocabulary_dictionary")
+    if dictionary is None:
+        lines.append("- Dictionary: not supplied; dictionary-dependent metrics are unavailable.")
+    else:
+        dictionary = _mapping(dictionary, "vocabulary_dictionary")
+        lines.append("- Dictionary profile: " + required(dictionary.get("profile"), "dictionary profile"))
+        lines.append("- Dictionary lexeme SHA-256: " + required(
+            dictionary.get("normalized_lexemes_sha256"), "dictionary hash"
+        ))
+        lines.append("- Normalized dictionary lexemes: " + str(dictionary.get("lexeme_count")))
+    lines += [
+        "",
+        "**Unknown is not zero.** Unavailable values can reflect missing dictionary,",
+        "insufficient text or a zero denominator. Decimal digits reflect deterministic",
+        "output, not known FantLab precision. A source-matched benchmark and rights",
+        "evidence are separate requirements.",
+        "",
+    ]
+    for group, prefixes in (
+        ("General", ("fantlab.general.", "scriptorium.general.")),
+        ("Dialogue", ("fantlab.dialogue.",)),
+        ("Vocabulary", ("fantlab.vocabulary.",)),
+        ("Punctuation", ("fantlab.punctuation.",)),
+    ):
+        lines += [
+            "## " + group, "",
+            "| Metric | Metric ID | Value | Unit | Evidence status | Raw count |",
+            "| :-- | :-- | --: | :-- | :-- | --: |",
+        ]
+        for metric_id, row in _rows(metrics, prefixes):
+            evidence = row.get("compatibility_status")
+            if evidence not in ("inferred", "extension"):
+                raise ValueError("local report must remain inferred or extension")
+            unit = required(row.get("unit"), "metric unit")
+            raw_count = _csv_number(row.get("raw_count"))
+            lines.append(
+                "| " + _markdown_text(METRIC_LABELS[metric_id]) +
+                " | " + metric_id +
+                " | " + _markdown_text(_format_value(row.get("value"))) +
+                " | " + unit +
+                " | " + evidence +
+                " | " + (raw_count if raw_count else "Unavailable") + " |"
+            )
+        lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def render_csv(artifact: dict[str, object]) -> str:
@@ -455,7 +577,7 @@ def _write_new(path: Path, content: str) -> None:
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Analyze a local UTF-8 text without publishing source text.")
     parser.add_argument("text", type=Path)
-    parser.add_argument("--format", choices=("json", "html", "csv"), default="json")
+    parser.add_argument("--format", choices=("json", "html", "csv", "markdown"), default="json")
     parser.add_argument("--title")
     parser.add_argument("--scriptorium-revision")
     parser.add_argument("--dictionary", type=Path)
@@ -489,6 +611,8 @@ def main(argv: list[str] | None = None) -> int:
             rendered = json.dumps(artifact, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False) + "\n"
         elif args.format == "html":
             rendered = render_html(artifact, title=args.title)
+        elif args.format == "markdown":
+            rendered = render_markdown(artifact, title=args.title)
         else:
             rendered = render_csv(artifact)
         if args.output is None:

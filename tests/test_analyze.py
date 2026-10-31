@@ -1,4 +1,5 @@
 import contextlib
+import copy
 from hashlib import sha256
 import io
 import json
@@ -6,7 +7,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from scriptorium.analyze import build_local_analysis, main, render_html
+from scriptorium.analyze import build_local_analysis, main, render_html, render_markdown
 
 
 SOURCE = "Кот, кот.\n— Да? — сказал он. — Нет."
@@ -99,6 +100,78 @@ class LocalAnalysisTests(unittest.TestCase):
             with contextlib.redirect_stderr(io.StringIO()):
                 with self.assertRaises(SystemExit):
                     main([str(source)])
+
+
+    def test_markdown_report_has_all_metrics_and_source_provenance(self):
+        artifact = build_local_analysis(SOURCE.encode("utf-8"), scriptorium_revision="abc")
+        report = render_markdown(artifact, title="Demo | <script>alert(1)</script>")
+        self.assertIn("# Demo \\| &lt;script&gt;alert(1)&lt;/script&gt;", report)
+        self.assertNotIn("<script>", report)
+        self.assertIn(artifact["source"]["raw_sha256"], report)
+        self.assertIn(artifact["source"]["normalized_sha256"], report)
+        self.assertIn("Short input: valid local analysis", report)
+        self.assertIn("NOT** verified FantLab parity", report)
+        metric_lines = [
+            line for line in report.splitlines()
+            if line.startswith("| ") and (
+                "| fantlab." in line or "| scriptorium." in line
+            )
+        ]
+        self.assertEqual(len(metric_lines), 29)
+        self.assertIn("| Words | fantlab.general.words |", report)
+        self.assertIn("inferred", report)
+        self.assertIn("extension", report)
+        self.assertNotIn(SOURCE, report)
+        self.assertEqual(report, render_markdown(artifact, title="Demo | <script>alert(1)</script>"))
+
+    def test_markdown_unknown_is_not_zero_and_profiles_are_bound(self):
+        empty = build_local_analysis(b"")
+        report = render_markdown(empty)
+        self.assertIn("| Words | fantlab.general.words | 0 |", report)
+        self.assertIn(
+            "| Dictionary variety · 3,000-word window | "
+            "fantlab.vocabulary.uasz_3000 | Unavailable |", report
+        )
+        self.assertIn("Dictionary: not supplied", report)
+        self.assertIn(empty["analyzer"]["profiles"]["metrics"], report)
+
+    def test_markdown_rejects_tampered_or_untrustworthy_evidence(self):
+        original = build_local_analysis(SOURCE.encode("utf-8"))
+        changes = [
+            lambda a: a["source"].update(source_text_embedded=True),
+            lambda a: a["source"].update(raw_sha256="not-a-hash"),
+            lambda a: a["metrics"]["fantlab.general.words"].update(value=float("nan")),
+            lambda a: a["metrics"]["fantlab.general.words"].update(value=True),
+            lambda a: a["metrics"]["fantlab.general.words"].update(compatibility_status="reproduced"),
+            lambda a: a["analyzer"]["profiles"].update(metrics=None),
+        ]
+        for change in changes:
+            with self.subTest(change=changes.index(change)):
+                artifact = copy.deepcopy(original)
+                change(artifact)
+                with self.assertRaises(ValueError):
+                    render_markdown(artifact)
+
+    def test_markdown_cli_stdout_and_create_only_are_reproducible(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "private.txt"
+            target = root / "report.md"
+            source.write_text(SOURCE, encoding="utf-8")
+            expected = render_markdown(build_local_analysis(source.read_bytes()))
+            with contextlib.redirect_stdout(io.StringIO()) as stream:
+                self.assertEqual(main([str(source), "--format", "markdown"]), 0)
+            self.assertEqual(stream.getvalue(), expected)
+            self.assertEqual(main([str(source), "--format", "markdown",
+                                   "--output", str(target)]), 0)
+            self.assertEqual(target.read_text(encoding="utf-8"), expected)
+            before = target.read_bytes()
+            with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                main([str(source), "--format", "markdown", "--output", str(target)])
+            self.assertEqual(target.read_bytes(), before)
+            with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                main([str(source), "--format", "markdown", "--output", str(source)])
+            self.assertEqual(source.read_bytes(), SOURCE.encode("utf-8"))
 
 
 if __name__ == "__main__":

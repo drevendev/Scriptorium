@@ -19,8 +19,10 @@ scriptorium compare --texts first.txt second.txt --format markdown --output dire
 file (32 MiB each), computes its source digests and uses the same 29-metric
 analyzer and strict comparison contract as `analyze` followed by `compare`.
 It never writes intermediate JSON or includes manuscript prose in the exported
-report. Duplicate/same normalized texts, invalid bytes and existing output
-paths are rejected; output creation remains atomic and create-only. Imported
+report. Same normalized texts are valid identity comparisons with zero differences
+for measured rows; contradictory metrics for one normalized text are rejected.
+Invalid UTF-8, symlinks and existing output paths fail closed; output creation
+remains atomic and create-only. Imported
 JSON hashes are still unverified declarations; direct-text hashes originate
 from the locally read input bytes. Neither route establishes legal provenance,
 FantLab input identity or parity (M2 0/5).

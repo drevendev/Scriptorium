@@ -77,7 +77,7 @@
 </select>
 <label for="catalog-search">Найти книгу, автора или переводчика</label>
 <input id="catalog-search" type="search" autocomplete="off" maxlength="120" placeholder="Например, Бекетова" disabled>
-<p id="catalog-filter-status" role="status" aria-live="polite">Показано 11 из 11 книг.</p>
+<p id="catalog-filter-status" role="status" aria-live="polite">Показано 12 из 12 книг.</p>
 <p class="catalog-share"><a id="share-catalog" href="?catalog=all#books">Ссылка на выбранный список ↗</a></p>
 </div>
 <div class="book-grid"><article class="book" data-status="measured" data-catalog-key="anna">
@@ -174,7 +174,12 @@
   <p class="availability">Перевод Рачинского 1864 года: ревизии известны, полный литературный текст ещё не собран</p>
   
   <a  href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/source-edition-traces/darwin-origin-species-rachinsky-1864-ru.json">Проверить источник <span aria-hidden="true">↗</span></a>
-</article></div></section>
+</article></div>
+<div id="catalog-empty" class="catalog-empty" hidden>
+<h3>Книг по этому запросу нет</h3>
+<p>Измените запрос или вернитесь к полной библиотеке: 10 измеренных русскоязычных книг и 2 источника в подготовке.</p>
+<button id="catalog-reset" type="button" disabled>Показать все 12 книг</button>
+</div></section>
 <section id="pairs" class="workbench comparison-panel" aria-labelledby="pairs-title">
 <div class="section-head"><p class="eyebrow">02 / СРАВНЕНИЕ РИТМА</p><h2 id="pairs-title">Две книги — рядом.</h2>
 <p>Сравнивайте одинаковые нормированные метрики только при совпадении профиля измерений. Таблица содержит точные наблюдения и разницу «правая − левая». Сопоставление описательное: оно не доказывает, что стиль вызван именно автором или переводчиком. После загрузки проверенного JSON показываются девять метрик даже при пропусках: «нет данных» — не ноль; JSON/CSV содержат только измерения обеих книг.</p></div>

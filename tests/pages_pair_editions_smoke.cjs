@@ -33,5 +33,6 @@ const fake={...anna,display_title:"<img src=x onerror=alert(1)>"};
 updatePairEditionContext(fake,kara);
 assert.ok(slots["pair-left-edition"].textContent.includes(fake.display_title));
 assert.ok(!source.slice(start,end).includes("innerHTML"));
-assert.equal(pairEditionDescription(bek,"Справа"),slots["pairEditionDescription"]?.textContent||pairEditionDescription(bek,"Справа"));
+assert.throws(()=>pairEditionDescription({...bek,translator:null},"Справа"),TypeError,
+  "A translated edition must never silently lose its named translator");
 console.log("Root Reader paired edition, translation and text-only negative cases PASS");

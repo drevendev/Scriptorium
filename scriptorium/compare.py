@@ -542,7 +542,7 @@ small{display:block;font-size:.75rem;font-weight:400;color:#4f635a}details summa
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Compare two locally generated Scriptorium Reader JSON reports.")
+    parser = argparse.ArgumentParser(description="Compare two local Reader JSON reports, or UTF-8 manuscripts with --texts.")
     parser.add_argument("left", type=Path)
     parser.add_argument("right", type=Path)
     parser.add_argument("--texts", action="store_true", help="Read two local UTF-8 manuscripts directly, not analysis JSON")

@@ -91,6 +91,7 @@ class NativeNRetainedCliTests(unittest.TestCase):
                 (("counts", "n_only"), True),
                 (("boundary", "fantlab_homonym_selection"), "reproduced"),
                 (("bucket_bounds", "noun"), [0, 1]),
+                (("bigram_bounds", 1, "max"), 8300),  # schema-valid but not the frozen native witness
             ]:
                 with self.subTest(path=path):
                     forged = json.loads(json.dumps(doc))

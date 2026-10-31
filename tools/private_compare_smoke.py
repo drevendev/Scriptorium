@@ -65,7 +65,7 @@ def main() -> None:
         assert markdown.count('M2 0/5') == 1
         assert a['source']['raw_sha256'] in markdown and b['source']['raw_sha256'] in markdown
         assert markdown.count('| fantlab.general.words |') == 1
-        assert len([line for line in markdown.split('## All 29 measured fields')[1].splitlines()
+        assert len([line for line in markdown.split('## All 29 metric fields (including unavailable)')[1].splitlines()
                     if line.startswith('| ') and not line.startswith(('| Metric', '| :--'))]) == 29
         for row, exported in zip(result['metrics'], csv_rows):
             assert row['metric_id'] == exported['metric_id']

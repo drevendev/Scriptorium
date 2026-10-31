@@ -369,7 +369,7 @@ class LocalComparisonTests(unittest.TestCase):
         self.assertIn("percentage", report)
         metrics_section = report.split("## All 29 measured fields\n", 1)[1]
         metric_lines = [line for line in metrics_section.splitlines()
-                        if line.startswith("| ") and not line.startswith("| Metric")]
+                        if line.startswith("| ") and not line.startswith(("| Metric", "| :--"))]
         self.assertEqual(len(metric_lines), 29)
         self.assertIn("Unavailable", report)
         self.assertIn("inferred", report)

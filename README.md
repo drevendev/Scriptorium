@@ -95,9 +95,14 @@ python -m pip install .
 scriptorium analyze manuscript.txt --format html --output report.html
 scriptorium analyze manuscript.txt --output analysis.json
 scriptorium analyze manuscript.txt --format csv --output metrics.csv
+scriptorium analyze manuscript.txt --format markdown --output report.md
 ```
 
-Open `report.html` locally. All **29 metric rows** retain their units and algorithm
+Open `report.html` locally, or read `report.md` as a portable, source-free Markdown table
+with canonical metric IDs, exact numeric values, profile versions and SHA-256 identities.
+Both reports label inferred/extension evidence and preserve unavailable values as unknown;
+neither implies FantLab parity. Keep `analysis.json` for reproducible private comparisons.
+All **29 metric rows** retain their units and algorithm
 profiles; unavailable measurements stay unknown. The report has readable metric names,
 a four-value overview, exact numeric values and keyboard-accessible tables. JSON and
 CSV include source digests, not manuscript content. Choose a new output filename for

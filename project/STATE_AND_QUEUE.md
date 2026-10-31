@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 378
+STATE_REVISION: 379
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-31
-LAST_RESULT: #377 merged as 7ffd7e8b5c17a421532dea8a4bb768df38e6b2e7. New Reader catalogue empty-state recovery PR candidate builds on ten measured and two pending works, with no data or science changes.
-LAST_VERIFIED_PROGRESS: Ten source-bound measured Russian works in master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab input identity remains UNKNOWN (M2 0/5; M3 open). Live browser/mobile verification is NOT_VERIFIED.
+LAST_RESULT: #378 confirmed merged as a74bee3bd41f5b70057ef366211a44df5a160b04. New independent private Markdown analysis-report PR candidate preserves the existing 29-field engine and source-free evidence.
+LAST_VERIFIED_PROGRESS: Ten source-bound measured Russian works in master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab input identity UNKNOWN (M2 0/5; M3 open). Live browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-CATALOG-EMPTY
-ISSUE: #283 literary Reader search/mobile accessibility.
+UNIT_ID: SCRIP-CLI-LOCAL-MARKDOWN
+ISSUE: Independent offline Reader output; existing analyze command.
 STATUS: PR_READY_FOR_LATER_ACCEPTANCE
-BRANCH: scrip-reader-catalog-empty-recovery
-BASE: 7ffd7e8b5c17a421532dea8a4bb768df38e6b2e7
+BRANCH: scrip-cli-local-markdown
+BASE: a74bee3bd41f5b70057ef366211a44df5a160b04
 
-ACCEPTANCE: Zero-result combined filter/search shows a visible keyboard-operable recovery action; reset restores all 12 verified cards, removes only catalog/q URL selectors while keeping unrelated links, and focuses search. Normal matches hide recovery; invalid/unverified JSON never enables reset; no-JS fallback retains all 12 cards with accurate initial count. Node positive/negative and Python checks plus exact-head CI/later independent acceptance required. No corpus, metrics or M2 gate change.
+ACCEPTANCE: Local UTF-8 manuscript -> Markdown 29-metric report with readable labels and canonical IDs, exact values, explicit unknown/inferred/extension states, digest/profile provenance, short-text caveat and no manuscript body. Fail on tampered scientific statuses/digests and unsafe Markdown/HTML input. CLI stdout/create-only and positive/negative regressions; exact-head hosted CI and later independent merge required. No source/corpus/metric-definition/M2 gate change.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Russian Reader with nine honest side-by-side metrics and recoverable accessible 12-book catalogue search.
+Milestone: Portable offline analysis reports and honest Russian Reader with 10 measured works and 2 clearly separate research leads.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept and merge catalogue empty-state PR | Exact-head CI, zero-result reset with URL preservation, twelve-card no-JS fallback | Later wake and passing checks |
-| P2 | Verify current Reader at live Pages | Latest master deployment and live HTML/CSV, desktop/mobile/keyboard | Existing HTTP/browser administrator restriction |
-| P3 | #282 native N discriminator | Source-backed measured noun/cardinal distinction with negative controls | Public adapter loses source enum |
-| P4 | #281 source-matched FantLab benchmark | Actual analyzer-input identity and per-field rounding evidence | Identity UNKNOWN |
-| P5 | Distinct measured Russian translation edition | Rights, translator/edition IDs, normalized same-language comparison | Need independently frozen second edition |
+| P1 | Later accept/merge offline Markdown report PR | Exact-head full CI and independent diff/evidence review | Later wake / applicable passing checks |
+| P2 | Verify current root Reader live | Latest master branch Pages deployment, public HTML/CSV, desktop/mobile/keyboard | Existing HTTP/browser administrator restriction |
+| P3 | #282 native N discriminator | Source-backed measured noun/cardinal distinction and negative controls | Public pylem adapter loses source enum |
+| P4 | #281 source-matched FantLab benchmark | Input identity plus independent per-field rounding evidence | Exact analyzer-input identity UNKNOWN |
+| P5 | Second measured Russian translation edition | Rights, translator/edition source IDs, reproducible same-language comparison | Independently frozen distinct edition needed |
 
 ## Retained evidence and scientific gates
 

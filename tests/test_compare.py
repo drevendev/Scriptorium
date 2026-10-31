@@ -441,7 +441,7 @@ class LocalComparisonTests(unittest.TestCase):
                                   ("PRIVATE-first.txt", "PRIVATE-second.txt", "PRIVATE-invalid.txt"))
             first.write_text(LEFT, encoding="utf-8")
             second.write_text(RIGHT, encoding="utf-8")
-            bad.write_bytes(b"\\xff\\xfe")
+            bad.write_bytes(b"\xff\xfe")
             destination = root / "existing.md"
             destination.write_text("PRESERVE", encoding="utf-8")
             scenarios = (

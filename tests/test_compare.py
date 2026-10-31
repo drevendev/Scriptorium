@@ -367,7 +367,7 @@ class LocalComparisonTests(unittest.TestCase):
         self.assertIn("M2 0/5", report)
         self.assertIn("right minus left", report)
         self.assertIn("percentage", report)
-        metrics_section = report.split("## All 29 measured fields\n", 1)[1]
+        metrics_section = report.split("## All 29 metric fields (including unavailable)\n", 1)[1]
         metric_lines = [line for line in metrics_section.splitlines()
                         if line.startswith("| ") and not line.startswith(("| Metric", "| :--"))]
         self.assertEqual(len(metric_lines), 29)

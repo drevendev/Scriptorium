@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 371
+STATE_REVISION: 372
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-31
-LAST_RESULT: #370 merged exact tenth source-free Dostoevsky diagnostic. Current focused Reader PR proposes tenth measured card, eight expanded charts and 269-field no-JS CSV for later acceptance and publication.
-LAST_VERIFIED_PROGRESS: Ten full-text diagnostic works, 225 numeric and 44 unavailable/NOT_RUN fields in current feature branch. Nine measured books remain in master Reader until PR merges. M2 0/5, M3 open.
+LAST_RESULT: #371 is confirmed merged as 871de8f92e114035fd9cd4ebb4e6241cc3678762. Ten source-frozen Russian Reader works and 269 metric rows are in master. Current scoped proposal exposes the existing five-work-plus-supplemental, source-free FantLab diagnostic matrix through the installed CLI; no parity upgrade.
+LAST_VERIFIED_PROGRESS: Ten fully analyzed Russian works in the master Reader; 225 measured and 44 explicitly unavailable values. FantLab source-input identity remains UNKNOWN (M2 0/5, M3 open). Public Pages remains LIVE_NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-092-HUMILIATED-TENTH-READER
-ISSUE: #281 reproducible evidence; #283 Reader delivery.
+UNIT_ID: SCRIP-REPRO-EVIDENCE-CLI
+ISSUE: #281 source-bound cross-work FantLab benchmark and reader-facing evidence.
 STATUS: PR_CREATED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-site-092-humiliated-tenth-reader
-BASE: 40c236d5a37c4e02ed7fba0eaa4fb28d4c56686b
+BRANCH: scrip-reader-cli-retained-evidence
+BASE: 871de8f92e114035fd9cd4ebb4e6241cc3678762
 
-ACCEPTANCE: Exact retained 9843-byte Dostoevsky JSON SHA-256 bcd4e9cde2aa75364ef458749c9b1f26b72b75e1ab8df0d70c4fc6f3f018a634, oldid 5611473, literary body 713925 characters with spaces and 29 fields (24 numeric, five NOT_RUN) appear unchanged in Reader. Verify ten measured books, eight chart choices and ten-bar accessible table, book/pair routes and search, 269-row CSV (225 numeric, 44 unavailable), exact preservation of preceding 240 CSV data rows, source/rights/privacy/translation gates and M2 0/5. Require later independent exact-head CI/review before merge, then root Pages deployment and separate live browser acceptance.
+ACCEPTANCE: `scriptorium evidence --root . --format markdown|json|csv` calls the already verified retained metric matrix, never a fresh web scrape or analyzer. Five pinned readiness works plus one separately labelled supplemental Resurrection diagnostic; 171 retained metric rows, source UNKNOWN, M2 0/5; CSV missing actuals are blank with NOT_RUN rather than zero. Installed CLI help and README explain that source-free evidence files require a repository checkout. Output is create-only, with no private paths leaked on errors. Focused positive/negative tests plus actual exact-head CI and later independent acceptance are required; no merge in authoring wake.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Publish the ten-book Russian Reader with source-bound exports while preserving strict FantLab parity gates.
+Milestone: Reproducible ten-book Russian Reader and inspectable FantLab diagnostics, preserving hard edition/parity gates.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept and merge tenth Reader PR in later wake | Exact HEAD, passing applicable CI, diff/source/CSV/UX findings | Current feature PR |
-| P2 | Confirm Pages publication | Post-merge root Pages build, live tenth book, CSV, keyboard and mobile screenshots | P1 merge; browser may be restricted |
-| P3 | #281 strict FantLab benchmark | Source-unmatched field diagnostics, edition identity and rounding evidence | FantLab analyzer input UNKNOWN |
-| P4 | #282 AOT N ambiguity | Pinned pylem noun/cardinal conditional bounds | Dictionary/runtime evidence |
-| P5 | Compare real books and translator provenance | Source-checked profiles, separate editions, no fake parity | Independent of blocked M2 |
+| P1 | Accept and merge CLI evidence PR on a later wake | Exact HEAD, passing applicable CI, working installed `scriptorium evidence` and no scientific status change | Current feature PR |
+| P2 | Verify published tenth Reader | Root Pages deployment and live tenth card/CSV, keyboard/mobile acceptance | Browser HTTP restriction may persist |
+| P3 | #281 deeper source-matched benchmark evidence | Real edition-input identity, per-field reference precision and deltas | FantLab analyzer input UNKNOWN |
+| P4 | #282 AOT N ambiguity | Native pylem noun/cardinal conditional bounds, source-frozen evidence | Pinned runtime/dictionary evidence |
+| P5 | Better real-book comparisons and translator provenance | Source-checked editions/profiles, honest limitations | Independent of blocked M2 |
 
 ## Retained evidence and scientific gates
 

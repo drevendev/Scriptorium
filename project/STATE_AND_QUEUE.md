@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 380
+STATE_REVISION: 381
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-31
-LAST_RESULT: #379 merged at cbc0cd5a585c90c4ffedd6763ed80fa26e86f850. Preparing a focused offline Markdown export for the existing two-report comparison with 29 metric rows, immutable digests and explicit unavailable/incomparable states.
+LAST_RESULT: #380 merged at 41a9f2e7ad8096a5c3ae5b8e39024f7b18ae3d97. Preparing a source-free Reader Markdown pair export with nine eligible metrics, unavailable values and full edition/translator context.
 LAST_VERIFIED_PROGRESS: Ten source-bound measured Russian works in master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab input identity UNKNOWN (M2 0/5; M3 open). Live browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CLI-COMPARE-MARKDOWN
-ISSUE: Installed private comparison CLI, extending earlier local analysis Markdown output.
-STATUS: PR_READY_FOR_LATER_ACCEPTANCE
-BRANCH: scrip-cli-compare-markdown
-BASE: cbc0cd5a585c90c4ffedd6763ed80fa26e86f850
+UNIT_ID: SCRIP-READER-PAIR-MARKDOWN
+ISSUE: Human-readable Reader paired download over the existing verified Russian catalogue.
+STATUS: PR_PENDING_LATER_ACCEPTANCE
+BRANCH: scrip-reader-pair-markdown
+BASE: 41a9f2e7ad8096a5c3ae5b8e39024f7b18ae3d97
 
-ACCEPTANCE: `scriptorium compare first.json second.json --format markdown --output comparison.md` produces a reproducible local source-free report: all 29 metrics, exact right-minus-left decimals and percentage-point units; honest unavailable/incomparable statuses; source hashes and algorithm/dictionary identity. Fail closed on malformed comparison claims and metric registry. Escape Markdown/HTML titles and metadata; no manuscript bytes, overwrite or privacy leaks. Retain JSON/CSV/HTML contracts. Require exact-head hosted CI and later independent merge. No M2 parity claim.
+ACCEPTANCE: Reader exports a source-free Markdown paired report with all nine eligible comparison metrics and honest missingness, right-minus-left delta units, source hashes, translator/edition identities and measured profiles. Escape Markdown/HTML titles; reject altered scientific claims, inconsistent metrics, missing translation identity and duplicate/unmeasured/incompatible pairs. JSON/CSV remain unchanged. Hosted CI, later independent acceptance and live browser verification remain separate. No M2 parity claim.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Portable offline analysis **and comparison** reports alongside the Russian Reader's 10 measured books and 2 clearly distinct research leads.
+Milestone: Readable source-bound comparisons in the Russian Reader and portable offline reports, with 10 measured books and 2 distinct research leads.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge Markdown pair comparison PR | Exact-head hosted CI, diff and privacy check; later wake | Applicable checks and fresh head |
+| P1 | Independently accept/merge Reader paired Markdown PR | Exact-head hosted CI, diff and privacy check; later wake | Applicable checks and fresh head |
 | P2 | Verify root Reader live | Latest master Pages, public HTML/CSV, real desktop/mobile/keyboard | Existing HTTP/browser administrator restriction |
 | P3 | #282 native N discriminator | Measured noun/cardinal evidence and negative controls | Public pylem adapter loses source enum |
 | P4 | #281 source-matched FantLab benchmark | Input identity plus per-field displayed-rounding evidence | Exact analyzer-input identity UNKNOWN |

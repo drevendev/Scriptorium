@@ -63,17 +63,17 @@ const pretty=(n,places=2)=>n.toFixed(places);
 const exact=String;
 const leftSelect={value:"anna"},rightSelect={value:"beketova"};
 const pairMetric={value:"fantlab.dialogue.mean_dialogue_sentence_length_chars"};
-const pairExportButton={disabled:true},pairCsvButton={disabled:true};
+const pairExportButton={disabled:true},pairCsvButton={disabled:true},pairMarkdownButton={disabled:true};
 const viewStart=source.indexOf("  function updatePair() {");
 const viewEnd=source.indexOf("  // Paired links carry only",viewStart);
 assert(viewStart>=0&&viewEnd>viewStart,"Shipped comparison renderer missing");
 const updatePair=new Function(
   "getBook","updatePairEditionContext","sharedPairRows","pairCoverageRows",
   "document","el","insertText","unit","label","pretty","exact","pairedIds",
-  "pairMetric","pairExportButton","pairCsvButton","leftSelect","rightSelect",
+  "pairMetric","pairExportButton","pairCsvButton","pairMarkdownButton","leftSelect","rightSelect",
   source.slice(viewStart,viewEnd)+"\nreturn updatePair;"
 )(getBook,()=>{},sharedPairRows,pairCoverageRows,document,el,insertText,
-  unit,label,pretty,exact,pairedIds,pairMetric,pairExportButton,pairCsvButton,leftSelect,rightSelect);
+  unit,label,pretty,exact,pairedIds,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,leftSelect,rightSelect);
 updatePair();
 const rendered=slots["pair-rows"].children[0].children;
 assert.equal(rendered.length,9);
@@ -83,6 +83,7 @@ assert.match(slots["pair-status"].textContent,/7 из 9/);
 assert.match(slots["paired-graphic"].children[0].children[0].textContent,/недоступна/);
 assert.equal(pairExportButton.disabled,false);
 assert.equal(pairCsvButton.disabled,false);
+assert.equal(pairMarkdownButton.disabled,false);
 pairMetric.value="fantlab.general.mean_word_length_chars";
 updatePair();
 assert.equal(slots["paired-graphic"].children[0].children.filter(x=>x.className==="pair-row").length,2);

@@ -40,6 +40,7 @@
   const pairMetric = el("pair-metric");
   const pairExportButton = el("pair-export");
   const pairCsvButton = el("pair-export-csv");
+  const pairMarkdownButton = el("pair-export-markdown");
   const libraryCsvButton = el("library-export-csv");
   let data;
   let currentBook = "anna";
@@ -643,6 +644,102 @@
   }
 
 
+  // Markdown keeps all nine eligible metric slots, including honest missing cells.
+  function markdownCell(value) {
+    return String(value??"")
+      .replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029\u202a-\u202e\u2066-\u2069]/g," ")
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+      .replace(/\\/g,"\\\\").replace(/\|/g,"\\|")
+      .replace(/[\x60*_\[\]]/g,"\\$&");
+  }
+  function serializePairMarkdown(report, coverage) {
+    if (report?.schema!=="scriptorium-ru-pair-comparison-v1" ||
+        report.scientific_claim!=="DIAGNOSTIC_ONLY" ||
+        report.fantlab_input_identity!=="UNKNOWN" || report.m2_source_matched!==0 ||
+        report.text_included!==false || report.comparison_direction!=="right_minus_left" ||
+        !Array.isArray(report.metrics) || !report.metrics.length ||
+        !Array.isArray(coverage) || coverage.length!==pairedIds.length)
+      throw Error("Недостоверный научный статус Markdown-сравнения");
+    for (const edition of [report.left,report.right]) {
+      if (!edition || edition.analysis_language!=="ru" ||
+          !["ru","fr","en"].includes(edition.original_language) ||
+          !["title","author","candidate_id","edition_id","evidence_url"].every(k=>
+            typeof edition[k]==="string" && edition[k].length>0) ||
+          !/^[a-f0-9]{64}$/.test(edition.source_sha256||"") ||
+          (edition.original_language!=="ru" &&
+            (!edition.translator?.id || !edition.translator?.name)))
+        throw Error("Неполное происхождение редакции Markdown-сравнения");
+    }
+    const profileKeys=["metrics","normalization","dialogue","vocabulary","punctuation"];
+    if (!profileKeys.every(k=>typeof report.measurement_profiles?.[k]==="string" &&
+        report.measurement_profiles[k].length>0))
+      throw Error("Нет профиля Markdown-сравнения");
+    const observed=new Map(report.metrics.map(m=>[m.id,m]));
+    if (observed.size!==report.metrics.length ||
+        report.metrics.some(m=>!pairedIds.includes(m.id)))
+      throw Error("Неизвестная метрика Markdown-сравнения");
+    const table=coverage.map((row,i)=>{
+      if (row.id!==pairedIds[i] ||
+          ![row.left,row.right].every(n=>n===null||isNumeric(n)))
+        throw Error("Неполные измерения Markdown-сравнения");
+      const both=row.left!==null&&row.right!==null,m=observed.get(row.id);
+      if (both!==Boolean(m) || (both &&
+          (m.left_actual!==row.left || m.right_actual!==row.right ||
+           m.unit!==unit(row.id) ||
+           m.delta_unit!==(m.unit==="%"?"percentage_points":m.unit) ||
+           m.delta_right_minus_left!==row.right-row.left)))
+        throw Error("Несогласованные значения Markdown-сравнения");
+      return "| "+[
+        label(row.id)+" ("+row.id+")",
+        row.left===null?"нет данных":String(row.left),
+        row.right===null?"нет данных":String(row.right),
+        both?String(m.delta_right_minus_left):"нет совместного измерения",
+        unit(row.id)+(unit(row.id)==="%"?" (Δ в п.п.)":"")
+      ].map(markdownCell).join(" | ")+" |";
+    });
+    const provenance=[
+      ["Произведение","title"],["Автор","author"],["Работа (ID)","candidate_id"],
+      ["Редакция (ID)","edition_id"],["Язык оригинала","original_language"],
+      ["Язык анализа","analysis_language"],["SHA-256","source_sha256"],
+      ["Источник измерений","evidence_url"]
+    ].map(([title,key])=>"| "+[title,report.left[key],report.right[key]]
+      .map(markdownCell).join(" | ")+" |");
+    for (const [index,title,key] of [[6,"Переводчик (ID)","id"],[7,"Переводчик","name"]])
+      provenance.splice(index,0,"| "+[
+        title,report.left.translator?.[key]||"не применимо",
+        report.right.translator?.[key]||"не применимо"
+      ].map(markdownCell).join(" | ")+" |");
+    const profiles=profileKeys.map(k=>"| "+[k,report.measurement_profiles[k]]
+      .map(markdownCell).join(" | ")+" |");
+    return [
+      "# Scriptorium · сравнение двух измеренных русскоязычных редакций","",
+      "**DIAGNOSTIC_ONLY** · вход FantLab: **UNKNOWN** · **M2: 0/5**.",
+      "Описательная диагностика; разница не доказывает влияние автора или переводчика.",
+      "Не сравнивает иностранный оригинал с переводом. Исходные тексты не включены.","",
+      "## Редакции и происхождение","","| Поле | Левая | Правая |",
+      "| --- | --- | --- |",...provenance,"",
+      "## Версии алгоритмов","","| Профиль | Версия |","| --- | --- |",...profiles,"",
+      "## Показатели","",
+      report.metrics.length+" из "+pairedIds.length+" метрик измерены с обеих сторон. «Нет данных» не ноль.",
+      "Направление Δ: **правая − левая**; проценты сравниваются в процентных пунктах.","",
+      "| Метрика (ID) | Левая | Правая | Δ правая − левая | Единица |",
+      "| --- | ---: | ---: | ---: | --- |",...table,""
+    ].join("\n");
+  }
+  function exportPairMarkdown() {
+    const result=buildPairExport(leftSelect.value,rightSelect.value);
+    if (!result) { pairMarkdownButton.disabled=true; return; }
+    const text=serializePairMarkdown(result,pairCoverageRows(
+      getBook(result.left.key),getBook(result.right.key)));
+    const blob=new Blob([text],{type:"text/markdown;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");
+    link.href=url;
+    link.download="scriptorium-pair-"+result.left.key+"-"+result.right.key+".md";
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
   // Export every verified observed/unavailable field without admitting pending works.
   // UNKNOWN is an empty numeric cell with an explicit status, never the number zero.
   // CSV never implies FantLab source/algorithm parity and contains no source text.
@@ -717,6 +814,7 @@
   function updatePair() {
     pairExportButton.disabled=true;
     pairCsvButton.disabled=true;
+    pairMarkdownButton.disabled=true;
     const a=getBook(leftSelect.value),b=getBook(rightSelect.value);
     if (!a||!b) throw Error("Книга отсутствует в измеренном корпусе");
     updatePairEditionContext(a,b);
@@ -753,6 +851,7 @@
     el("pair-rows").replaceChildren(fragment);
     pairExportButton.disabled=rows.length===0;
     pairCsvButton.disabled=rows.length===0;
+    pairMarkdownButton.disabled=rows.length===0;
     el("pair-caption").textContent=a.display_title+" → "+b.display_title+" · правая минус левая";
     el("pair-status").textContent=rows.length+" из "+pairedIds.length+
       " показателей измерены в обеих книгах; остальные отмечены «нет данных». "+
@@ -869,7 +968,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogSearch,catalogReset,one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,libraryCsvButton,chartSortButton,...chartButtons];
+      const inputs=[catalogFilter,catalogSearch,catalogReset,one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -903,6 +1002,7 @@
       out.addEventListener("click",exportSelected);
       pairExportButton.addEventListener("click",exportPair);
       pairCsvButton.addEventListener("click",exportPairCsv);
+      pairMarkdownButton.addEventListener("click",exportPairMarkdown);
        libraryCsvButton.addEventListener("click",exportLibraryCsv);
       leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));

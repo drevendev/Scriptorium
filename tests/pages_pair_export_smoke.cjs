@@ -36,7 +36,8 @@ const units={
 };
 const unit=id=>{assert.ok(Object.hasOwn(units,id));return units[id];};
 const leftSelect={value:"anna"},rightSelect={value:"beketova"};
-const pairExportButton={disabled:false},pairCsvButton={disabled:false};
+const pairExportButton={disabled:false},pairCsvButton={disabled:false},pairMarkdownButton={disabled:false};
+const label=id=>id;
 let clicked=0,filename="",downloadBlob;
 const fakeUrl={
   createObjectURL(blob){downloadBlob=blob;return "blob:test";},
@@ -55,11 +56,11 @@ const fakeDocument={
   body:{appendChild(){}}
 };
 const actions=new Function(
-  "getBook","pairedIds","lookup","isNumeric","unit",
-  "leftSelect","rightSelect","pairExportButton","pairCsvButton","URL","document","setTimeout",
-  source.slice(start,end)+"\nreturn {sharedPairRows,buildPairExport,exportPair,serializePairCsv,csvText,exportPairCsv};"
-)(getBook,pairedIds,lookup,isNumeric,unit,leftSelect,rightSelect,
-  pairExportButton,pairCsvButton,fakeUrl,fakeDocument,()=>{});
+  "getBook","pairedIds","lookup","isNumeric","unit","label",
+  "leftSelect","rightSelect","pairExportButton","pairCsvButton","pairMarkdownButton","URL","document","setTimeout",
+  source.slice(start,end)+"\nreturn {sharedPairRows,pairCoverageRows,buildPairExport,exportPair,serializePairCsv,csvText,exportPairCsv,serializePairMarkdown,exportPairMarkdown};"
+)(getBook,pairedIds,lookup,isNumeric,unit,label,leftSelect,rightSelect,
+  pairExportButton,pairCsvButton,pairMarkdownButton,fakeUrl,fakeDocument,()=>{});
 const data=actions.buildPairExport("anna","beketova");
 assert.equal(data.schema,"scriptorium-ru-pair-comparison-v1");
 assert.equal(data.scientific_claim,"DIAGNOSTIC_ONLY");
@@ -177,11 +178,52 @@ catalog.books.find(b=>b.key==="beketova").profiles.metrics=original;
   const downloadedCsv=Buffer.from(await downloadBlob.arrayBuffer());
   assert.deepEqual(downloadedCsv,Buffer.from(csv,"utf8"));
   assert.deepEqual([...downloadedCsv.subarray(0,3)],[0xEF,0xBB,0xBF]);
+  const coverage=actions.pairCoverageRows(getBook("anna"),getBook("beketova"));
+  const md=actions.serializePairMarkdown(data,coverage);
+  assert.match(md,/DIAGNOSTIC_ONLY/);
+  assert.match(md,/M2: 0\/5/);
+  assert.match(md,/Александра Андреевна Бекетова/);
+  assert.match(md,/alexandra-a-beketova/);
+  assert.match(md,new RegExp(data.right.source_sha256));
+  assert.equal(md.split("\n").filter(line=>line.startsWith("| fantlab.")).length,9);
+  assert.equal(md.split("\n").filter(line=>line.includes("нет данных")).length,2);
+  assert.match(md,/Δ в п\.п\./);
+  assert.equal(actions.serializePairMarkdown(data,coverage),md);
+  const complete=actions.serializePairMarkdown(resurrectionPair,
+    actions.pairCoverageRows(getBook("anna"),getBook("resurrection")));
+  assert.equal(complete.split("\n").filter(line=>line.includes("нет данных")).length,0);
+  const injected=structuredClone(data);
+  injected.right.title="<script>alert(1)</script> | [evil](javascript:alert(1)) \n next";
+  const safe=actions.serializePairMarkdown(injected,coverage);
+  assert.doesNotMatch(safe,/<script>|^\s*next/m);
+  assert.match(safe,/&lt;script&gt;/);
+  assert.match(safe,/\\\|/);
+  assert.match(safe,/\\\[evil\\\]/);
+  const forged=structuredClone(data);
+  forged.scientific_claim="REPRODUCED";
+  assert.throws(()=>actions.serializePairMarkdown(forged,coverage),/научный статус/);
+  const missingTranslator=structuredClone(data);
+  missingTranslator.right.translator=null;
+  assert.throws(()=>actions.serializePairMarkdown(missingTranslator,coverage),/происхождение/);
+  const forgedMetric=structuredClone(data);
+  forgedMetric.metrics[0].delta_right_minus_left=999;
+  assert.throws(()=>actions.serializePairMarkdown(forgedMetric,coverage),/Несогласованные/);
+  const zero=structuredClone(data),zeroCoverage=structuredClone(coverage);
+  zero.metrics[0].left_actual=0;
+  zero.metrics[0].delta_right_minus_left=zero.metrics[0].right_actual;
+  zeroCoverage[0].left=0;
+  assert.match(actions.serializePairMarkdown(zero,zeroCoverage),/\| 0 \|/);
+  actions.exportPairMarkdown();
+  assert.equal(clicked,3);
+  assert.equal(filename,"scriptorium-pair-anna-beketova.md");
+  assert.equal(await downloadBlob.text(),md);
   rightSelect.value="anna";
   actions.exportPair();
   actions.exportPairCsv();
-  assert.equal(clicked,2);
+  actions.exportPairMarkdown();
+  assert.equal(clicked,3);
   assert.equal(pairExportButton.disabled,true);
   assert.equal(pairCsvButton.disabled,true);
+  assert.equal(pairMarkdownButton.disabled,true);
   console.log("Root Pages pair export: real numeric, identity, profile and negative cases PASS");
 })().catch(err=>{console.error(err);process.exitCode=1;});

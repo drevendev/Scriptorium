@@ -10,7 +10,14 @@ scriptorium analyze second.txt --output second.json
 scriptorium compare first.json second.json --output comparison.html
 scriptorium compare first.json second.json --format json --output comparison.json
 scriptorium compare first.json second.json --format csv --output comparison.csv
+scriptorium compare first.json second.json --format markdown --output comparison.md
 ```
+
+The Markdown report is a fully offline 29-row table with exact right-minus-left
+values, explicit unavailable/incomparable statuses, source hashes, profile and
+dictionary identities, and a clear **M2 0/5** scientific boundary. Its title and
+all metadata are Markdown/HTML-escaped; it contains no manuscript text. This
+presentation is source-free like the existing JSON, HTML and CSV formats.
 
 Open the HTML locally. All formats preserve metric IDs, source digests, declared
 algorithm/dependency identities and measurement units. HTML includes a keyboard

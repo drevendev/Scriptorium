@@ -10,17 +10,21 @@ const cards0=[...html.matchAll(/<article class="book(?: book-research)?" data-st
 assert.equal(cards0.length,12);
 assert.deepEqual(cards0.map(m=>m[2]),data.books.map(b=>b.key));
 const cards=cards0.map(m=>({dataset:{status:m[1],catalogKey:m[2]},hidden:false}));
-const filter={value:"all"},search={value:""},status={textContent:""};
+const filter={value:"all"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
+const empty={hidden:true};
 const share={hidden:false,href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
 }};
-const location={search:""};
+const location={search:"",href:"https://drevendev.github.io/Scriptorium/"};
+const browser={location,history:{replaceState(_state,_title,url){
+  location.href=String(url);location.search=new URL(location.href).search;
+}}};
 const s=js.indexOf("  function updateCatalog() {"),e=js.indexOf("  function updateSingle() {",s);
 assert.ok(s>=0&&e>s);
-const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl};";
+const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog};";
 const make=d=>new Function("data","catalogCards","catalogFilter","catalogSearch","el","window",code)(
-  d,cards,filter,search,id=>id==="share-catalog"?share:status,{location});
-const {updateCatalog:run,restoreCatalogFromUrl:restore}=make(data);
+  d,cards,filter,search,id=>id==="share-catalog"?share:id==="catalog-empty"?empty:status,browser);
+const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog}=make(data);
 for(const [mode,keys,measured,pending] of [
  ["all",data.books.map(b=>b.key),10,2],
  ["measured",["anna","waves","silver","karamazov","hyperboloid","beketova","resurrection","road","oblomov","humiliated"],10,0],
@@ -30,6 +34,7 @@ for(const [mode,keys,measured,pending] of [
  filter.value=mode;run();
  assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),keys,mode);
  assert.ok(status.textContent.includes(measured+" измерено, "+pending+" в подготовке"),mode);
+ assert.equal(empty.hidden,true,mode);
 }
 for(const [q,mode,keys] of [
  ["Толстой","all",["anna","hyperboloid","resurrection"]],
@@ -45,6 +50,7 @@ for(const [q,mode,keys] of [
  search.value=q;filter.value=mode;run();
  assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),keys,q);
  if(!keys.length)assert.match(status.textContent,/Книг не найдено/);
+ assert.equal(empty.hidden,keys.length!==0,q);
 }
 search.value="";filter.value="all";run();
 assert.equal(cards.filter(c=>!c.hidden).length,12);
@@ -57,6 +63,20 @@ assert.equal(share.href,"?catalog=translated&q="+encodeURIComponent("Бекет�
 location.search="?catalog=pending&q="+encodeURIComponent("Бекетова");
 restore();assert.equal(cards.filter(c=>!c.hidden).length,0);
 assert.match(status.textContent,/Книг не найдено/);
+assert.equal(empty.hidden,false);
+location.href="https://drevendev.github.io/Scriptorium/?left=anna&right=beketova&catalog=pending&q=%D0%91%D0%B5%D0%BA%D0%B5%D1%82%D0%BE%D0%B2%D0%B0#books";
+location.search=new URL(location.href).search;
+restore();assert.equal(empty.hidden,false);
+resetCatalog();
+assert.equal(empty.hidden,true);
+assert.equal(search.value,"");assert.equal(filter.value,"all");
+assert.equal(cards.filter(c=>!c.hidden).length,12);
+assert.equal(search.focused,true);
+const clean=new URL(location.href);
+assert.equal(clean.searchParams.has("catalog"),false);
+assert.equal(clean.searchParams.has("q"),false);
+assert.equal(clean.searchParams.get("left"),"anna");
+assert.equal(clean.searchParams.get("right"),"beketova");
 location.search="?catalog=__proto__&q="+encodeURIComponent("Толстой");
 restore();assert.equal(filter.value,"all");
 assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),
@@ -75,6 +95,11 @@ search.value="";filter.value="all";run();
 const tampered=structuredClone(data);tampered.books=tampered.books.filter(b=>b.key!=="darwin");
 assert.throws(()=>make(tampered).updateCatalog(),/Нет проверенного источника/);
 assert.match(html,/id="catalog-tools" hidden/);
+assert.match(html,/id="catalog-empty" class="catalog-empty" hidden/);
+assert.match(html,/id="catalog-reset" type="button" disabled/);
+assert.match(html,/Показано 12 из 12 книг/);
+assert.match(js,/catalogReset.addEventListener\("click",resetCatalog\)/);
+assert.match(css,/\.catalog-empty\[hidden\]\s*\{\s*display:none\s*!important/);
 assert.match(html,/id="catalog-filter" disabled/);
 assert.match(html,/id="catalog-search" type="search" autocomplete="off"[^>]*disabled/);
 assert.match(html,/id="catalog-search"[^>]*maxlength="120"/);
@@ -84,4 +109,4 @@ assert.match(js,/verify\(incoming\); data=incoming/);
 assert.match(js,/el\("catalog-tools"\)\.hidden=false/);
 assert.match(css,/\.catalog-tools\[hidden\],\.book\[hidden\]\s*\{\s*display:none\s*!important/);
 assert.match(css,/@media print\s*\{\s*\.catalog-tools\s*\{\s*display:none/);
-console.log("Verified real-data catalogue filters, safe share links, URL restoration, malformed inputs and no-JS fallback: PASS");
+console.log("Verified catalogue filters, zero-result recovery, safe reset URLs, invalid inputs and no-JS fallback: PASS");

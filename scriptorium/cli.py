@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import sys
 
-COMMANDS = {"batch": "scriptorium.batch", "analyze": "scriptorium.analyze", "epub": "scriptorium.epub", "compare": "scriptorium.compare", "site": "scriptorium.site_renderer"}
+COMMANDS = {"batch": "scriptorium.batch", "analyze": "scriptorium.analyze", "epub": "scriptorium.epub", "compare": "scriptorium.compare", "site": "scriptorium.site_renderer", "evidence": "scriptorium.benchmark_metric_matrix"}
 MAX_DIAGNOSTIC_BYTES = 8 * 1024 * 1024
 
 
@@ -49,12 +49,13 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if not args or args[0] in {"-h", "--help"}:
         print("Scriptorium Reader — private text analysis and evidence-labelled literary reports")
-        print("Usage: scriptorium <analyze|epub|batch|compare|diagnostic|site> [options]")
+        print("Usage: scriptorium <analyze|epub|batch|compare|diagnostic|evidence|site> [options]")
         print("  analyze     UTF-8 manuscript -> JSON, HTML or CSV (29 metrics)")
         print("  epub        Local EPUB XHTML spine -> Reader reports and source-free identity")
         print("  batch       Explicit UTF-8 manifest -> private JSON/HTML reports and index")
         print("  compare     Two private analysis JSON files -> HTML, JSON or CSV; no uploads")
         print("  diagnostic  Curated historical diagnostic -> offline HTML")
+        print("  evidence    Source-free FantLab metric deltas (requires repository checkout; M2 0/5)")
         print("  site        Build the canonical allow-listed site from a repository checkout")
         print("Run scriptorium <command> --help for command options.")
         return 0 if args else 2

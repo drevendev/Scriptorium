@@ -162,7 +162,16 @@ scriptorium compare analysis.json second-analysis.json --output comparison.html
 scriptorium compare analysis.json second-analysis.json --format json --output comparison.json
 scriptorium compare analysis.json second-analysis.json --format csv --output comparison.csv
 scriptorium compare analysis.json second-analysis.json --format markdown --output comparison.md
+# Or directly compare two private UTF-8 manuscripts without intermediate JSON:
+scriptorium compare --texts first-manuscript.txt second-manuscript.txt --format markdown --output direct-comparison.md
 ```
+
+The `--texts` path runs the same local deterministic analyzer on both manuscripts
+and compares their 29 measurements without uploading text; each input is bounded
+to 32 MiB. Its source-free output is byte-identical to the two-JSON-report path
+for the same input bytes and profiles. Unlike imported JSON, the hashes are
+computed from the actual selected local files; no edition identity or FantLab
+parity is established (M2 0/5).
 
 Use `comparison.md` for a portable Markdown table with complete provenance,
 29 metric comparisons, unknown/incompatible statuses and the unchanged scientific caveat.

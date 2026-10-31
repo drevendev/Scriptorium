@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 377
+STATE_REVISION: 378
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-31
-LAST_RESULT: #376 merged as e9ae1265e47a06ea62689887ce291620dc68f527. New Reader pair-coverage PR shows both observed and unavailable dialogue sentence-length metrics without altering any source measurements or parity gates.
+LAST_RESULT: #377 merged as 7ffd7e8b5c17a421532dea8a4bb768df38e6b2e7. New Reader catalogue empty-state recovery PR candidate builds on ten measured and two pending works, with no data or science changes.
 LAST_VERIFIED_PROGRESS: Ten source-bound measured Russian works in master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab input identity remains UNKNOWN (M2 0/5; M3 open). Live browser/mobile verification is NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-PAIR-COVERAGE
-ISSUE: #283 literary Reader and comparison accessibility.
+UNIT_ID: SCRIP-SITE-CATALOG-EMPTY
+ISSUE: #283 literary Reader search/mobile accessibility.
 STATUS: PR_READY_FOR_LATER_ACCEPTANCE
-BRANCH: scrip-reader-pair-coverage
-BASE: e9ae1265e47a06ea62689887ce291620dc68f527
+BRANCH: scrip-reader-catalog-empty-recovery
+BASE: 7ffd7e8b5c17a421532dea8a4bb768df38e6b2e7
 
-ACCEPTANCE: In root Reader, each same-profile pair shows nine eligible normalized metrics including missing cells explicitly as «нет данных» and no fabricated delta; a missing metric's chart displays an unavailable message. The two additional sentence-length charts work for measured books. Existing JSON/CSV schemas export only jointly measured numbers, retaining edition and translator evidence. Preserve 10-book catalog, 269 measurements, no-JS initial table, M2 0/5; Node positive/negative, Python structure, exact-head CI and later independent acceptance required.
+ACCEPTANCE: Zero-result combined filter/search shows a visible keyboard-operable recovery action; reset restores all 12 verified cards, removes only catalog/q URL selectors while keeping unrelated links, and focuses search. Normal matches hide recovery; invalid/unverified JSON never enables reset; no-JS fallback retains all 12 cards with accurate initial count. Node positive/negative and Python checks plus exact-head CI/later independent acceptance required. No corpus, metrics or M2 gate change.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Russian Reader with complete, honest side-by-side comparison of nine compatible measures and reproducible source-free provenance.
+Milestone: Russian Reader with nine honest side-by-side metrics and recoverable accessible 12-book catalogue search.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept and merge pair-coverage PR | Exact-head CI, nine rows with two honest Beketova gaps, correct two new charts, unchanged numeric export schemas | Later wake and passing checks |
+| P1 | Later accept and merge catalogue empty-state PR | Exact-head CI, zero-result reset with URL preservation, twelve-card no-JS fallback | Later wake and passing checks |
 | P2 | Verify current Reader at live Pages | Latest master deployment and live HTML/CSV, desktop/mobile/keyboard | Existing HTTP/browser administrator restriction |
 | P3 | #282 native N discriminator | Source-backed measured noun/cardinal distinction with negative controls | Public adapter loses source enum |
 | P4 | #281 source-matched FantLab benchmark | Actual analyzer-input identity and per-field rounding evidence | Identity UNKNOWN |

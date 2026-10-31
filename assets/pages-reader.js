@@ -477,6 +477,8 @@
   const pairedIds = [
     "fantlab.dialogue.share_percent",
     "fantlab.dialogue.author_text_inside_dialogue_percent",
+    "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+    "fantlab.dialogue.mean_narration_sentence_length_chars",
     "fantlab.general.mean_sentence_length_chars",
     "fantlab.general.mean_word_length_chars",
     "fantlab.punctuation.comma.per_1000_words",
@@ -488,6 +490,18 @@
       const av=lookup(a,id),bv=lookup(b,id);
       return (av&&bv&&isNumeric(av.actual)&&isNumeric(bv.actual))?
         [{id,left:av.actual,right:bv.actual}]:[];
+    });
+  }
+  // The visual table includes unavailable eligible metrics. Numeric exports remain
+  // restricted to fields actually measured in both independently bound editions.
+  function pairCoverageRows(a,b) {
+    return pairedIds.map(id=>{
+      const l=lookup(a,id),r=lookup(b,id);
+      return {
+        id,
+        left:l&&isNumeric(l.actual)?l.actual:null,
+        right:r&&isNumeric(r.actual)?r.actual:null
+      };
     });
   }
   // Source-free, edition-bound and deterministic. The export contains only
@@ -704,14 +718,17 @@
       return;
     }
     const rows=sharedPairRows(a,b);
+    const coverage=pairCoverageRows(a,b);
     const fragment=document.createDocumentFragment();
-    for (const m of rows) {
+    for (const m of coverage) {
       const tr=document.createElement("tr");
       insertText(tr,"th",label(m.id)).scope="row";
-      insertText(tr,"td",exact(m.left));
-      insertText(tr,"td",exact(m.right));
-      const d=m.right-m.left;
-      insertText(tr,"td",(d>0?"+":"")+pretty(d,3));
+      insertText(tr,"td",m.left===null?"нет данных":exact(m.left));
+      insertText(tr,"td",m.right===null?"нет данных":exact(m.right));
+      const comparable=m.left!==null&&m.right!==null;
+      const d=comparable?m.right-m.left:null;
+      insertText(tr,"td",d===null?"— (нет совместного измерения)":
+        (d>0?"+":"")+pretty(d,3));
       insertText(tr,"td",unit(m.id)+(unit(m.id)==="%"?" · Δ в п.п.":""));
       fragment.appendChild(tr);
     }
@@ -719,7 +736,8 @@
     pairExportButton.disabled=rows.length===0;
     pairCsvButton.disabled=rows.length===0;
     el("pair-caption").textContent=a.display_title+" → "+b.display_title+" · правая минус левая";
-    el("pair-status").textContent=rows.length+" совместно измеренных нормированных метрик. "+
+    el("pair-status").textContent=rows.length+" из "+pairedIds.length+
+      " показателей измерены в обеих книгах; остальные отмечены «нет данных». "+
       (a.translator||b.translator?"Одна из версий — русский перевод. ":"")+
       "Описательная диагностика, не FantLab parity.";
     const id=pairMetric.value;

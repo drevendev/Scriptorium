@@ -12,6 +12,8 @@ assert.ok(start>=0&&end>start,"Shipped pair-export source not found");
 const pairedIds=[
   "fantlab.dialogue.share_percent",
   "fantlab.dialogue.author_text_inside_dialogue_percent",
+  "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+  "fantlab.dialogue.mean_narration_sentence_length_chars",
   "fantlab.general.mean_sentence_length_chars",
   "fantlab.general.mean_word_length_chars",
   "fantlab.punctuation.comma.per_1000_words",
@@ -24,6 +26,8 @@ const isNumeric=n=>typeof n==="number"&&Number.isFinite(n);
 const units={
   "fantlab.dialogue.share_percent":"%",
   "fantlab.dialogue.author_text_inside_dialogue_percent":"%",
+  "fantlab.dialogue.mean_dialogue_sentence_length_chars":"символов / предложение",
+  "fantlab.dialogue.mean_narration_sentence_length_chars":"символов / предложение",
   "fantlab.general.mean_sentence_length_chars":"символов / предложение",
   "fantlab.general.mean_word_length_chars":"символов / слово",
   "fantlab.punctuation.comma.per_1000_words":"на 1000 слов",
@@ -68,7 +72,9 @@ assert.equal(data.right.translator.id,"alexandra-a-beketova");
 assert.match(data.left.source_sha256,/^[a-f0-9]{64}$/);
 assert.match(data.right.source_sha256,/^[a-f0-9]{64}$/);
 assert.notEqual(data.left.source_sha256,data.right.source_sha256);
-assert.ok(data.metrics.length>=3);
+assert.equal(data.metrics.length,7,"Beketova has seven jointly measured normalized metrics");
+assert.ok(!data.metrics.some(m=>m.id==="fantlab.dialogue.mean_dialogue_sentence_length_chars"));
+assert.ok(!data.metrics.some(m=>m.id==="fantlab.dialogue.mean_narration_sentence_length_chars"));
 for(const metric of data.metrics){
   assert.equal(metric.delta_right_minus_left,metric.right_actual-metric.left_actual);
   assert.ok(pairedIds.includes(metric.id));
@@ -82,7 +88,8 @@ assert.ok(data.metrics.some(m=>m.delta_unit==="на 1000 слов"));
 assert.ok(data.metrics.some(m=>m.delta_unit==="символов / предложение"));
 assert.deepEqual(actions.buildPairExport("anna","beketova"),data);
 const resurrectionPair=actions.buildPairExport("anna","resurrection");
-assert.ok(resurrectionPair && resurrectionPair.metrics.length>=7);
+assert.ok(resurrectionPair && resurrectionPair.metrics.length===9,
+  "Two fully measured novels export both dialogue-length metrics");
 assert.equal(resurrectionPair.right.source_sha256,"2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0");
 assert.equal(resurrectionPair.fantlab_input_identity,"UNKNOWN");
 assert.equal(resurrectionPair.m2_source_matched,0);

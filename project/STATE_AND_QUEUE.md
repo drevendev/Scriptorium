@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 382
+STATE_REVISION: 383
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-10-31
-LAST_RESULT: #381 merged at f9d784e6fdaf4787ac86095e031e61cdc5f89d97. Preparing a real-catalogue, source-free single-edition Markdown download for the root Reader.
+LAST_COMMITTED_RUN_AT: 2026-11-01
+LAST_RESULT: #382 merged at 183cd701d51b5383ab98d3f513390f89a1233d7c. Delivering direct private manuscript comparison through the existing canonical analyzer and compare CLI.
 LAST_VERIFIED_PROGRESS: Ten source-bound measured Russian works in master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab input identity UNKNOWN (M2 0/5; M3 open). Live browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-SINGLE-MARKDOWN
-ISSUE: Download an independently source-bound measured book as a readable offline Markdown report.
+UNIT_ID: SCRIP-COMPARE-DIRECT-TEXTS
+ISSUE: Compare two local UTF-8 manuscripts directly without intermediate analysis JSON files.
 STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-reader-single-markdown
-BASE: f9d784e6fdaf4787ac86095e031e61cdc5f89d97
+BRANCH: scrip-compare-direct-texts
+BASE: 183cd701d51b5383ab98d3f513390f89a1233d7c
 
-ACCEPTANCE: All ten measured Russian editions export their complete 11/27/28/29-field measured/unavailable registry as source-free escaped Markdown, with candidate/source/translator IDs, hashes, profile versions and scientific status; true zero is retained and absent/reference-only values remain explicit. Reject pending editions, tampered identities/statuses/values and duplicate fields. Existing per-book JSON, CSV library and pair exports are unchanged. Hosted CI, independent later acceptance, deployment and live browser verification are separate. M2 remains 0/5.
+ACCEPTANCE: `scriptorium compare --texts A.txt B.txt` reuses the canonical 29-metric deterministic analyzer and exact-decimal comparison path across HTML/JSON/CSV/Markdown; outputs match the two-report pipeline byte-for-byte. Bounds/symlink/UTF-8/same-text and create-only failures are tested without path/prose leaks. Existing JSON input mode and profiles unchanged; no FantLab source identity or M2 parity claim. Require hosted CI and independent later-run acceptance.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Offline-readable, source-bound reports for both individual Russian editions and book comparisons, over ten measured books and two distinct research leads.
+Milestone: Readable, privacy-safe manuscript-to-manuscript comparison in one installed CLI command while retaining exact scientific caveats and all four report formats.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge single-edition Reader Markdown PR | Exact-head hosted CI, diff and privacy check; later wake | Applicable checks and fresh head |
+| P1 | Independently accept/merge direct-text comparison PR | Exact-head CI, diff, installed-wheel privacy and output-equivalence check | Later wake / applicable checks |
 | P2 | Verify root Reader live | Latest master Pages, public HTML/CSV, real desktop/mobile/keyboard | Existing HTTP/browser administrator restriction |
 | P3 | #282 native N discriminator | Measured noun/cardinal evidence and negative controls | Public pylem adapter loses source enum |
 | P4 | #281 source-matched FantLab benchmark | Input identity plus per-field displayed-rounding evidence | Exact analyzer-input identity UNKNOWN |

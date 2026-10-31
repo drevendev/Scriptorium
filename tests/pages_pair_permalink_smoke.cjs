@@ -17,24 +17,40 @@ const window={
   }}
 };
 const l={value:"anna"},r={value:"karamazov"};
+const pairMetric={value:"fantlab.dialogue.share_percent",options:[
+  "fantlab.dialogue.share_percent","fantlab.general.mean_sentence_length_chars",
+  "fantlab.punctuation.comma.per_1000_words","fantlab.punctuation.dash.per_1000_words",
+  "fantlab.general.mean_word_length_chars"].map(value=>({value}))};
 const share={hidden:false,href:"",textContent:"",removeAttribute(k){assert.equal(k,"href");this.href="";}};
 const el=id=>{assert.equal(id,"share-pair");return share;};
 let renders=0;
-const routes=new Function("window","getBook","leftSelect","rightSelect","updatePair","el",
-  source.slice(start,end)+"\nreturn {pairFromUrl,selectPair};"
-)(window,getBook,l,r,()=>{renders++;},el);
+const routes=new Function("window","getBook","leftSelect","rightSelect","pairMetric","updatePair","el",
+  source.slice(start,end)+"\nreturn {pairMetricFromUrl,pairFromUrl,selectPair};"
+)(window,getBook,l,r,pairMetric,()=>{renders++;},el);
 assert.deepEqual(routes.pairFromUrl(),["waves","beketova"]);
+assert.equal(routes.pairMetricFromUrl(),"fantlab.dialogue.share_percent");
 routes.selectPair(...routes.pairFromUrl());
 assert.equal(l.value,"waves");
 assert.equal(r.value,"beketova");
-assert.equal(share.href,"?left=waves&right=beketova#pairs");
+assert.equal(share.href,"?left=waves&right=beketova&pair_metric=fantlab.dialogue.share_percent#pairs");
 assert.match(share.textContent,/Гранта/);
 assert.equal(window.history.pushes.length,0);
+pairMetric.value="fantlab.punctuation.dash.per_1000_words";
 routes.selectPair("anna","silver",true);
-assert.equal(window.location.search,"?book=silver&left=anna&right=silver");
+assert.equal(window.location.search,"?book=silver&left=anna&right=silver&pair_metric=fantlab.punctuation.dash.per_1000_words");
+assert.equal(share.href,"?left=anna&right=silver&pair_metric=fantlab.punctuation.dash.per_1000_words#pairs");
 assert.equal(window.location.hash,"#pairs");
 assert.equal(window.history.pushes.length,1);
 assert.equal(renders,2);
+for(const invalid of ["__proto__","constructor","toString","unknown",""]){
+ window.location=new URL("https://drevendev.github.io/Scriptorium/?left=anna&right=silver&pair_metric="+encodeURIComponent(invalid));
+ assert.equal(routes.pairMetricFromUrl(),"fantlab.dialogue.share_percent",invalid);
+}
+window.location=new URL("https://drevendev.github.io/Scriptorium/?left=anna&right=silver&pair_metric=fantlab.general.mean_sentence_length_chars");
+assert.equal(routes.pairMetricFromUrl(),"fantlab.general.mean_sentence_length_chars");
+pairMetric.value=routes.pairMetricFromUrl();
+routes.selectPair(...routes.pairFromUrl());
+assert.equal(share.href,"?left=anna&right=silver&pair_metric=fantlab.general.mean_sentence_length_chars#pairs");
 for(const query of [
  "?left=petersburg&right=anna",
  "?left=anna&right=anna",

@@ -352,6 +352,61 @@ class LocalComparisonTests(unittest.TestCase):
         self.assertEqual(exported["difference"], target["difference"])
         self.assertFalse(exported["difference"].startswith("'"))
 
+    def test_markdown_comparison_preserves_complete_source_free_evidence(self):
+        compared = compare.build_comparison(self.a, self.b)
+        title = "Notes <script>alert(1)</script> | `test`"
+        report = compare.render_markdown(compared, title=title)
+        self.assertEqual(report, compare.render_markdown(compared, title=title))
+        self.assertIn("&lt;script&gt;", report)
+        self.assertIn(r"\|", report)
+        self.assertNotIn("<script>", report)
+        self.assertNotIn(LEFT, report)
+        self.assertNotIn(RIGHT, report)
+        self.assertIn(self.a["source"]["raw_sha256"], report)
+        self.assertIn(self.b["source"]["normalized_sha256"], report)
+        self.assertIn("M2 0/5", report)
+        self.assertIn("right minus left", report)
+        self.assertIn("percentage", report)
+        metrics_section = report.split("## All 29 measured fields\n", 1)[1]
+        metric_lines = [line for line in metrics_section.splitlines()
+                        if line.startswith("| ") and not line.startswith("| Metric")]
+        self.assertEqual(len(metric_lines), 29)
+        self.assertIn("Unavailable", report)
+        self.assertIn("inferred", report)
+
+    def test_markdown_distinguishes_zero_unavailable_and_incompatible(self):
+        same = compare.render_markdown(compare.build_comparison(self.a, self.a))
+        words = next(line for line in same.splitlines()
+                     if "| fantlab.general.words |" in line)
+        self.assertIn("| 0 |", words)
+        missing = next(line for line in same.splitlines()
+                       if "| fantlab.vocabulary.uasz_3000 |" in line)
+        self.assertIn("Unavailable", missing)
+        incompatible = copy.deepcopy(self.b)
+        incompatible["analyzer"]["profiles"]["metrics"] = "future-metrics-v99"
+        report = compare.render_markdown(compare.build_comparison(self.a, incompatible))
+        self.assertIn("Not comparable", report)
+        self.assertNotIn("| 0 |", next(line for line in report.splitlines()
+                         if "| fantlab.general.words |" in line))
+
+    def test_markdown_rejects_forged_status_and_metric_registry(self):
+        valid = compare.build_comparison(self.a, self.b)
+        mutations = (
+            lambda data: data.update(scientific_boundary="FantLab parity proven"),
+            lambda data: data["metrics"].pop(),
+            lambda data: data["metrics"][0].update(comparison_status="passed"),
+            lambda data: data["metrics"][0].update(metric_id="<img src=x>"),
+            lambda data: data["metrics"][0].update(difference="0") if
+                data["metrics"][0]["comparison_status"] != "comparable" else
+                data["metrics"][0].update(difference=None),
+        )
+        for mutate in mutations:
+            with self.subTest(mutation=str(mutate)):
+                forged = copy.deepcopy(valid)
+                mutate(forged)
+                with self.assertRaises(compare.CompareError):
+                    compare.render_markdown(forged)
+
     def test_private_reader_cli_real_analyze_to_compare_all_formats(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -360,7 +415,7 @@ class LocalComparisonTests(unittest.TestCase):
             right.write_text(RIGHT, encoding="utf-8")
             for source, output in ((left, root / "A.json"), (right, root / "B.json")):
                 self.assertEqual(cli.main(["analyze", str(source), "--output", str(output)]), 0)
-            for format_ in ("json", "html", "csv"):
+            for format_ in ("json", "html", "csv", "markdown"):
                 output = root / ("comparison." + format_)
                 self.assertEqual(cli.main(["compare", str(root / "A.json"), str(root / "B.json"),
                                            "--format", format_, "--output", str(output)]), 0)

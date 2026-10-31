@@ -453,7 +453,7 @@ def render_markdown(comparison: dict[str, object], *, title: str = "Two private 
                  " |")
     lines.extend([
         "",
-        "## All 29 measured fields",
+        "## All 29 metric fields (including unavailable)",
         "",
         "| Metric | Metric ID | Left | Right | Difference | Unit | Difference unit | Status | Reason | Evidence |",
         "| :-- | :-- | --: | --: | --: | :-- | :-- | :-- | :-- | :-- |",

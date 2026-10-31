@@ -16,7 +16,7 @@ import re
 
 from .analyze import (
     LOCAL_ANALYSIS_SCHEMA, MAX_ANALYSIS_BYTES, REPRESENTATIVE_CHARACTERS,
-    LocalInputError, _read_bounded_regular_file, _write_new,
+    LocalInputError, _markdown_text, _read_bounded_regular_file, _write_new,
 )
 from .csv_safety import safe_csv_text
 from .metric_labels import METRIC_LABELS
@@ -385,6 +385,110 @@ def render_csv(comparison: dict[str, object]) -> str:
     return out.getvalue()
 
 
+
+def render_markdown(comparison: dict[str, object], *, title: str = "Two private analyses") -> str:
+    """Portable source-free Markdown for two validated Reader analyses.
+
+    build_comparison() validates the inputs first. Presentation gates also
+    reject a caller-supplied false parity claim or altered metric registry.
+    """
+    boundary = "Inferred/extension local measurements only; not verified FantLab parity (M2 0/5)."
+    if (type(comparison) is not dict
+            or comparison.get("schema_version") != SCHEMA
+            or comparison.get("direction") != "right_minus_left"
+            or comparison.get("scientific_boundary") != boundary):
+        raise CompareError("unsupported private comparison contract")
+    rows = comparison.get("metrics")
+    if type(rows) is not list or len(rows) != len(METRIC_LABELS):
+        raise CompareError("private comparison requires 29 metrics")
+    baseline = _snapshot()
+    canonical = baseline["metrics"]
+
+    def value(item: object, *, missing: str = "Unavailable") -> str:
+        return missing if item is None else _markdown_text(item)
+
+    left = comparison.get("left_source")
+    right = comparison.get("right_source")
+    if type(left) is not dict or type(right) is not dict:
+        raise CompareError("missing comparison provenance")
+    lines = [
+        "# " + _markdown_text(title),
+        "",
+        "> **Scientific status:** " + _markdown_text(boundary),
+        "> Imported JSON values and hashes are unauthenticated declarations.",
+        "> No manuscript text is embedded or uploaded.",
+        "",
+        "**Difference:** right minus left. Percentage differences are percentage",
+        "points, not relative percentage changes. Unknown is not zero.",
+        "Incompatible methods have no numeric difference.",
+        "",
+        "## Source and method provenance",
+        "",
+        "| Field | Left report | Right report |",
+        "| :-- | :-- | :-- |",
+    ]
+    fields = (
+        ("Raw SHA-256", "raw_sha256"),
+        ("Normalized SHA-256", "normalized_sha256"),
+        ("Input bytes", "bytes"),
+        ("Normalized characters (including spaces)", "normalized_characters"),
+        ("Meets 300,000-character calibration floor", "meets_calibration_threshold"),
+        ("Scriptorium revision", "scriptorium_revision"),
+    )
+    for label, key in fields:
+        if key not in left or key not in right:
+            raise CompareError("missing comparison source metadata")
+        lines.append("| " + label + " | " + value(left[key], missing="not recorded") +
+                     " | " + value(right[key], missing="not recorded") + " |")
+    for key in sorted(baseline["profiles"]):
+        for source in (left, right):
+            if type(source.get("profiles")) is not dict or key not in source["profiles"]:
+                raise CompareError("missing comparison algorithm profile")
+        lines.append("| " + _markdown_text(key) + " profile | " +
+                     value(left["profiles"][key]) + " | " + value(right["profiles"][key]) + " |")
+    lines.append("| Dictionary identity | " +
+                 value(json.dumps(left.get("dictionary"), ensure_ascii=False, sort_keys=True)) +
+                 " | " +
+                 value(json.dumps(right.get("dictionary"), ensure_ascii=False, sort_keys=True)) +
+                 " |")
+    lines.extend([
+        "",
+        "## All 29 measured fields",
+        "",
+        "| Metric | Metric ID | Left | Right | Difference | Unit | Difference unit | Status | Reason | Evidence |",
+        "| :-- | :-- | --: | --: | --: | :-- | :-- | :-- | :-- | :-- |",
+    ])
+    seen = set()
+    for row in rows:
+        if type(row) is not dict:
+            raise CompareError("invalid comparison metric row")
+        metric_id = row.get("metric_id")
+        if (type(metric_id) is not str or metric_id not in canonical or metric_id in seen
+                or row.get("label") != METRIC_LABELS[metric_id]
+                or row.get("unit") != canonical[metric_id]["unit"]
+                or row.get("compatibility_status") != canonical[metric_id]["compatibility_status"]
+                or row.get("definition_evidence") != canonical[metric_id]["definition_evidence"]):
+            raise CompareError("invalid comparison metric identity")
+        seen.add(metric_id)
+        status = row.get("comparison_status")
+        if status not in ("comparable", "unavailable", "incomparable"):
+            raise CompareError("invalid comparison metric status")
+        if (status == "comparable") != (row.get("difference") is not None):
+            raise CompareError("inconsistent comparison delta")
+        difference = value(row.get("difference"),
+                           missing="Not comparable" if status == "incomparable" else "Unavailable")
+        cells = (
+            row["label"], metric_id, value(row.get("left")), value(row.get("right")),
+            difference, row["unit"], value(row.get("difference_unit")),
+            status, value(row.get("reason")), row["compatibility_status"],
+        )
+        lines.append("| " + " | ".join(_markdown_text(cell) if index in (0, 1, 5, 7, 9)
+                     else cell for index, cell in enumerate(cells)) + " |")
+    if seen != set(METRIC_LABELS):
+        raise CompareError("incomplete comparison metric registry")
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def render_html(comparison: dict[str, object], *, title: str = "Two private analyses") -> str:
     name = escape(title)
     rows = []
@@ -441,7 +545,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Compare two locally generated Scriptorium Reader JSON reports.")
     parser.add_argument("left", type=Path)
     parser.add_argument("right", type=Path)
-    parser.add_argument("--format", choices=("json", "html", "csv"), default="html")
+    parser.add_argument("--format", choices=("json", "html", "csv", "markdown"), default="html")
     parser.add_argument("--title", default="Two private analyses")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
@@ -449,7 +553,8 @@ def main(argv: list[str] | None = None) -> int:
         comparison = build_comparison(load_report(args.left), load_report(args.right))
         rendered = {"html": lambda: render_html(comparison, title=args.title),
                     "json": lambda: render_json(comparison),
-                    "csv": lambda: render_csv(comparison)}[args.format]()
+                    "csv": lambda: render_csv(comparison),
+                    "markdown": lambda: render_markdown(comparison, title=args.title)}[args.format]()
         if args.output is None:
             print(rendered, end="")
         else:

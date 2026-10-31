@@ -10,7 +10,14 @@ scriptorium analyze second.txt --output second.json
 scriptorium compare first.json second.json --output comparison.html
 scriptorium compare first.json second.json --format json --output comparison.json
 scriptorium compare first.json second.json --format csv --output comparison.csv
+scriptorium compare first.json second.json --format markdown --output comparison.md
 ```
+
+The Markdown report is a fully offline 29-row table with exact right-minus-left
+values, explicit unavailable/incomparable statuses, source hashes, profile and
+dictionary identities, and a clear **M2 0/5** scientific boundary. Its title and
+all metadata are Markdown/HTML-escaped; it contains no manuscript text. This
+presentation is source-free like the existing JSON, HTML and CSV formats.
 
 Open the HTML locally. All formats preserve metric IDs, source digests, declared
 algorithm/dependency identities and measurement units. HTML includes a keyboard
@@ -55,7 +62,7 @@ this comparison. **M2 remains 0/5**, and AOT-lineage compatibility remains the t
 `tests/test_compare.py` and `tests/test_imported_mean_integrity.py` construct their
 reports with the real `build_local_analysis()`, not analyzer stubs. The Reader workflow
 also builds the full repository wheel, installs it outside the checkout and runs
-`tools/private_compare_smoke.py`: real texts, 29 rows, HTML/JSON/CSV, exact deltas,
+`tools/private_compare_smoke.py`: real texts, 29 rows, HTML/JSON/CSV/Markdown, exact deltas,
 deterministic output, create-only behavior and negative input rejection.
 
 ## Local browser Comparison Desk (issue #280)

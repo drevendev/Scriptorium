@@ -47,7 +47,7 @@ def main() -> None:
         a, b = map(load_report, paths)
         expected = build_comparison(a, b)
         values = {}
-        for fmt in ('json', 'html', 'csv'):
+        for fmt in ('json', 'html', 'csv', 'markdown'):
             output = root / f'comparison.{fmt}'
             run('compare', *map(str, paths), '--format', fmt, '--output', str(output))
             payload = output.read_text(encoding='utf-8')
@@ -61,6 +61,12 @@ def main() -> None:
         assert result == expected and len(result['metrics']) == 29
         csv_rows = list(csv.DictReader(io.StringIO(values['csv'])))
         assert len(csv_rows) == 29 and values['html'].count("scope='row'") == 29
+        markdown = values['markdown']
+        assert markdown.count('M2 0/5') == 1
+        assert a['source']['raw_sha256'] in markdown and b['source']['raw_sha256'] in markdown
+        assert markdown.count('| fantlab.general.words |') == 1
+        assert len([line for line in markdown.split('## All 29 metric fields (including unavailable)')[1].splitlines()
+                    if line.startswith('| ') and not line.startswith(('| Metric', '| :--'))]) == 29
         for row, exported in zip(result['metrics'], csv_rows):
             assert row['metric_id'] == exported['metric_id']
             assert (row['difference'] or '') == exported['difference']
@@ -75,7 +81,7 @@ def main() -> None:
         failed_output = root / 'should-not-exist.json'
         failure = run('compare', str(bad), str(paths[1]), '--output', str(failed_output), ok=False)
         assert not failed_output.exists() and str(root) not in failure.stderr
-    print('Installed private comparison PASS: real analyzer, 29 metrics, HTML/JSON/CSV, exact deltas, deterministic create-only exports and invalid-report rejection')
+    print('Installed private comparison PASS: real analyzer, 29 metrics, HTML/JSON/CSV/Markdown, exact deltas, deterministic create-only exports and invalid-report rejection')
 
 
 if __name__ == '__main__':

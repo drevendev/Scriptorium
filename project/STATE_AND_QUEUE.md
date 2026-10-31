@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 379
+STATE_REVISION: 380
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-31
-LAST_RESULT: #378 confirmed merged as a74bee3bd41f5b70057ef366211a44df5a160b04. New independent private Markdown analysis-report PR candidate preserves the existing 29-field engine and source-free evidence.
+LAST_RESULT: #379 merged at cbc0cd5a585c90c4ffedd6763ed80fa26e86f850. Preparing a focused offline Markdown export for the existing two-report comparison with 29 metric rows, immutable digests and explicit unavailable/incomparable states.
 LAST_VERIFIED_PROGRESS: Ten source-bound measured Russian works in master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab input identity UNKNOWN (M2 0/5; M3 open). Live browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CLI-LOCAL-MARKDOWN
-ISSUE: Independent offline Reader output; existing analyze command.
+UNIT_ID: SCRIP-CLI-COMPARE-MARKDOWN
+ISSUE: Installed private comparison CLI, extending earlier local analysis Markdown output.
 STATUS: PR_READY_FOR_LATER_ACCEPTANCE
-BRANCH: scrip-cli-local-markdown
-BASE: a74bee3bd41f5b70057ef366211a44df5a160b04
+BRANCH: scrip-cli-compare-markdown
+BASE: cbc0cd5a585c90c4ffedd6763ed80fa26e86f850
 
-ACCEPTANCE: Local UTF-8 manuscript -> Markdown 29-metric report with readable labels and canonical IDs, exact values, explicit unknown/inferred/extension states, digest/profile provenance, short-text caveat and no manuscript body. Fail on tampered scientific statuses/digests and unsafe Markdown/HTML input. CLI stdout/create-only and positive/negative regressions; exact-head hosted CI and later independent merge required. No source/corpus/metric-definition/M2 gate change.
+ACCEPTANCE: `scriptorium compare first.json second.json --format markdown --output comparison.md` produces a reproducible local source-free report: all 29 metrics, exact right-minus-left decimals and percentage-point units; honest unavailable/incomparable statuses; source hashes and algorithm/dictionary identity. Fail closed on malformed comparison claims and metric registry. Escape Markdown/HTML titles and metadata; no manuscript bytes, overwrite or privacy leaks. Retain JSON/CSV/HTML contracts. Require exact-head hosted CI and later independent merge. No M2 parity claim.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Portable offline analysis reports and honest Russian Reader with 10 measured works and 2 clearly separate research leads.
+Milestone: Portable offline analysis **and comparison** reports alongside the Russian Reader's 10 measured books and 2 clearly distinct research leads.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge offline Markdown report PR | Exact-head full CI and independent diff/evidence review | Later wake / applicable passing checks |
-| P2 | Verify current root Reader live | Latest master branch Pages deployment, public HTML/CSV, desktop/mobile/keyboard | Existing HTTP/browser administrator restriction |
-| P3 | #282 native N discriminator | Source-backed measured noun/cardinal distinction and negative controls | Public pylem adapter loses source enum |
-| P4 | #281 source-matched FantLab benchmark | Input identity plus independent per-field rounding evidence | Exact analyzer-input identity UNKNOWN |
-| P5 | Second measured Russian translation edition | Rights, translator/edition source IDs, reproducible same-language comparison | Independently frozen distinct edition needed |
+| P1 | Independently accept/merge Markdown pair comparison PR | Exact-head hosted CI, diff and privacy check; later wake | Applicable checks and fresh head |
+| P2 | Verify root Reader live | Latest master Pages, public HTML/CSV, real desktop/mobile/keyboard | Existing HTTP/browser administrator restriction |
+| P3 | #282 native N discriminator | Measured noun/cardinal evidence and negative controls | Public pylem adapter loses source enum |
+| P4 | #281 source-matched FantLab benchmark | Input identity plus per-field displayed-rounding evidence | Exact analyzer-input identity UNKNOWN |
+| P5 | Second measured Russian translation edition | Legal provenance, translator/edition IDs, reproducible comparison | Independent frozen distinct edition |
 
 ## Retained evidence and scientific gates
 

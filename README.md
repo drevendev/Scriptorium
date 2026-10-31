@@ -157,7 +157,11 @@ scriptorium analyze second-manuscript.txt --output second-analysis.json
 scriptorium compare analysis.json second-analysis.json --output comparison.html
 scriptorium compare analysis.json second-analysis.json --format json --output comparison.json
 scriptorium compare analysis.json second-analysis.json --format csv --output comparison.csv
+scriptorium compare analysis.json second-analysis.json --format markdown --output comparison.md
 ```
+
+Use `comparison.md` for a portable Markdown table with complete provenance,
+29 metric comparisons, unknown/incompatible statuses and the unchanged scientific caveat.
 
 Open `comparison.html` for the same 29 measurements, explicit units, source identities
 and **right minus left** differences. Percentage differences use percentage points.

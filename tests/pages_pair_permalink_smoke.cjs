@@ -4,7 +4,7 @@ const fs=require("node:fs"),path=require("node:path"),assert=require("node:asser
 const root=path.resolve(__dirname,"..");
 const source=fs.readFileSync(path.join(root,"assets/pages-reader.js"),"utf8");
 const catalog=JSON.parse(fs.readFileSync(path.join(root,"assets/evidence-snapshot.json"),"utf8"));
-const start=source.indexOf("  function pairFromUrl() {");
+const start=source.indexOf("  function pairMetricFromUrl() {");
 const end=source.indexOf("  function exportSelected() {",start);
 assert(start>=0&&end>start,"Shipped pair-route functions not found");
 const books=catalog.books.filter(b=>b.text_status==="measured");

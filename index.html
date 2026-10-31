@@ -185,6 +185,12 @@
 <div class="control"><label for="pair-metric">Показатель для диаграммы</label><select id="pair-metric" disabled>
 <option value="fantlab.dialogue.share_percent">Доля диалогов</option><option value="fantlab.general.mean_sentence_length_chars">Длина предложения</option><option value="fantlab.punctuation.comma.per_1000_words">Запятые на 1000 слов</option><option value="fantlab.punctuation.dash.per_1000_words">Тире на 1000 слов</option><option value="fantlab.general.mean_word_length_chars">Длина слова</option></select></div>
 <p id="pair-status" class="control-note" aria-live="polite">Данные для интерактивного сравнения загружаются локально из проверенного JSON.</p></div>
+
+<div class="pair-editions" id="pair-editions" aria-label="Редакции выбранных текстов">
+  <p class="pair-edition" id="pair-left-edition">Слева · Анна Каренина — русский оригинал. Редакция: ru-wikisource-239-chapters · SHA-256: 1dcf2af815f6…</p>
+  <p class="pair-edition" id="pair-right-edition">Справа · Братья Карамазовы — русский оригинал. Редакция: ru-wikisource-98 · SHA-256: 26b9991c95b3…</p>
+  <p class="pair-edition-caveat" id="pair-edition-caveat">Сопоставляются две отдельные русскоязычные редакции. Разница не доказывает влияние автора или совпадение с входом FantLab.</p>
+</div>
 <div class="paired-graphic" id="paired-graphic" aria-live="polite"><p class="pair-static">Для графического сравнения требуется JavaScript. Полностью читаемая таблица доступна ниже.</p></div>
 <div class="table-region" tabindex="0" role="region" aria-label="Таблица сравнения измерений">
 <table><caption id="pair-caption">Анна Каренина и Братья Карамазовы · справа минус слева · диагностика</caption>

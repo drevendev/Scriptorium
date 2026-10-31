@@ -202,6 +202,14 @@ footer a { color:#ffdaa3; }
 .book-research h3 { color:#3a5147; }
 .book-research a { color:var(--green-deep); }
 .comparison-panel { margin-bottom:3.5rem; }
+.pair-editions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.65rem; margin:1rem 0; }
+.pair-edition { margin:0; padding:.8rem 1rem; border-radius:6px;
+  border:1px solid var(--line); background:var(--surface); font-size:.81rem;
+  line-height:1.6; overflow-wrap:anywhere; }
+.pair-edition-caveat { grid-column:1/-1; margin:.1rem 0 0; font-size:.79rem;
+  line-height:1.5; color:var(--subtle); }
+@media (max-width:780px) { .pair-editions { grid-template-columns:1fr; } }
 .paired-graphic { display:grid; gap:.6rem; margin:1.2rem 0;
   padding:clamp(1rem,2vw,1.6rem); border:1px solid var(--line);
   border-radius:8px; background:var(--wash); }

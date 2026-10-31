@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 373
+STATE_REVISION: 374
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-31
-LAST_RESULT: #372 is confirmed merged as 63a4fad8660c15eacc13b9af9e68c5e8bd2a5790. PR #373 exposes existing pinned source-free AOT/pylem N-collision measurements through the installed CLI; no new native measurement or POS mapping claim.
+LAST_RESULT: #373 is confirmed merged as 4e1884fcb04109abead87d3acf17d58edbff7c0b. New PR prepares source-bound edition and translator context next to the root Reader pair comparison; existing metrics and export semantics are unchanged.
 LAST_VERIFIED_PROGRESS: Ten fully analyzed Russian works in the master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab source-input identity remains UNKNOWN (M2 0/5; M3 open). Live Pages HTTP and desktop/mobile visuals remain NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-N-RETAINED-CLI
-ISSUE: #282 native AOT/pylem N ambiguity.
-STATUS: PR_CREATED_PENDING_LATER_ACCEPTANCE (#373)
-BRANCH: scrip-native-n-retained-cli
-BASE: 63a4fad8660c15eacc13b9af9e68c5e8bd2a5790
+UNIT_ID: SCRIP-SITE-PAIR-EDITION-CONTEXT
+ISSUE: #283 literary Reader and translator-aware provenance.
+STATUS: PR_CREATED_PENDING_LATER_ACCEPTANCE
+BRANCH: scrip-reader-pair-edition-context
+BASE: 4e1884fcb04109abead87d3acf17d58edbff7c0b
 
-ACCEPTANCE: Installed scriptorium n-evidence --root . --format markdown|json|csv validates only retained assets/n-uncertainty-anna.json through the existing fail-closed native witness gate, displays actual 55,081 N-only and 19,670 excluded N-mixed tokens out of 269,358 source-bound words, and renders four separately conditional bigram bounds, five positions and native lexical controls without assigning grammatical identities. Supports bounded input, no prose uploads, create-only outputs and path-safe errors. Retains M2 0/5 and production mapping. Positive/negative tests and exact-head full CI are required, then later independent review and merge.
+ACCEPTANCE: The root Reader's paired comparison identifies each selected measured Russian edition with its original language, named translator when present, edition ID and digest prefix immediately beside the chart/table. The default no-JavaScript pair remains accurate; invalid/unverified JSON never populates misleading dynamic data. A translated Russian edition is explicitly NOT described as a French/English original or as evidence of a translator's causal influence. Existing comparisons, exports, pinned measurements and M2 0/5 are unchanged. Positive/negative Node and Python structural regression tests plus exact-head CI and later independent acceptance are required.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Ten-book Russian Reader plus inspectable source-free FantLab and native AOT evidence; hard edition/parity gates unchanged.
+Milestone: Ten-book Russian Reader with readable, edition-aware descriptive comparisons and transparent source-free AOT/FantLab evidence.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge #373 after full checks | Exact HEAD and tests, visible conditional bounds, no scientific-status drift | CI and later wake |
-| P2 | Verify published tenth Reader | Root Pages deployment plus live tenth card/CSV, keyboard/mobile acceptance | Browser HTTP restriction may persist |
-| P3 | #282 deeper native N discriminator research | Genuine AOT source-backed noun/cardinal distinction, positive/negative controls and source-free measured proof, if feasible | Existing public adapter loses original enum |
-| P4 | #281 source-matched FantLab benchmark | Real edition-input identity, per-field precision/equality and deltas | FantLab analyzer input UNKNOWN |
-| P5 | Translator-aware real-book comparisons | Traceable edition/translator metadata and distinct comparison identities | Independent of M2 |
+| P1 | Later accept/merge edition-context PR | Exact-head CI, truthful translation contexts, static fallback and existing pair exports | Later wake and successful checks |
+| P2 | Verify tenth book at live Pages | Full root deployment, HTML/CSV, desktop/mobile/keyboard validation | Existing HTTP/browser administrator restriction |
+| P3 | #282 native N discriminator | Source-backed measured noun/cardinal distinction and negative controls | Public adapter loses source enum |
+| P4 | #281 source-matched FantLab benchmark | Actual analyzer-input identity and per-field deltas/rounding | Identity UNKNOWN |
+| P5 | Distinct measured Russian translation editions | Rights, translator/edition IDs, normalized same-language comparison | Need independently frozen second edition |
 
 ## Retained evidence and scientific gates
 

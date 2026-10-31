@@ -380,7 +380,7 @@ class LocalComparisonTests(unittest.TestCase):
                      if "| fantlab.general.words |" in line)
         self.assertIn("| 0 |", words)
         missing = next(line for line in same.splitlines()
-                       if "| fantlab.vocabulary.uasz_3000 |" in line)
+                       if r"fantlab.vocabulary.uasz\_3000" in line)
         self.assertIn("Unavailable", missing)
         incompatible = copy.deepcopy(self.b)
         incompatible["analyzer"]["profiles"]["metrics"] = "future-metrics-v99"

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+from hashlib import sha1
 from io import StringIO
 import json
 from pathlib import Path
@@ -19,11 +20,17 @@ from .n_uncertainty_publication import validate_n_summary
 SCHEMA = "scriptorium-native-n-cli-evidence-v1"
 RETAINED_PATH = Path("assets/n-uncertainty-anna.json")
 MAX_EVIDENCE_BYTES = 64 * 1024
+# Exact reviewed git blob for the retained AOT/pylem witness; prevents plausible
+# numerical edits from passing the schema validator as original native evidence.
+RETAINED_GIT_BLOB_SHA1 = "876e85cd5eed0d2bbf92ee63caed467cb493b1ca"
 
 
 def build_native_n_report(root: Path) -> dict[str, object]:
     """Validate exact retained, source-free native evidence before rendering."""
     raw = _read_bounded_regular_file(root / RETAINED_PATH, MAX_EVIDENCE_BYTES, "native N evidence")
+    blob = b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw
+    if sha1(blob).hexdigest() != RETAINED_GIT_BLOB_SHA1:
+        raise ValueError("retained native N witness differs from reviewed Git blob")
     witness = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_keys)
     rates = validate_n_summary(witness)
     return {

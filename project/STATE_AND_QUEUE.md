@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 372
+STATE_REVISION: 373
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-10-31
-LAST_RESULT: #371 is confirmed merged as 871de8f92e114035fd9cd4ebb4e6241cc3678762. Ten source-frozen Russian Reader works and 269 metric rows are in master. Current scoped proposal exposes the existing five-work-plus-supplemental, source-free FantLab diagnostic matrix through the installed CLI; no parity upgrade.
-LAST_VERIFIED_PROGRESS: Ten fully analyzed Russian works in the master Reader; 225 measured and 44 explicitly unavailable values. FantLab source-input identity remains UNKNOWN (M2 0/5, M3 open). Public Pages remains LIVE_NOT_VERIFIED.
+LAST_RESULT: #372 is confirmed merged as 63a4fad8660c15eacc13b9af9e68c5e8bd2a5790. PR #373 exposes existing pinned source-free AOT/pylem N-collision measurements through the installed CLI; no new native measurement or POS mapping claim.
+LAST_VERIFIED_PROGRESS: Ten fully analyzed Russian works in the master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab source-input identity remains UNKNOWN (M2 0/5; M3 open). Live Pages HTTP and desktop/mobile visuals remain NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-EVIDENCE-CLI
-ISSUE: #281 source-bound cross-work FantLab benchmark and reader-facing evidence.
-STATUS: PR_CREATED_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-reader-cli-retained-evidence
-BASE: 871de8f92e114035fd9cd4ebb4e6241cc3678762
+UNIT_ID: SCRIP-MORPH-N-RETAINED-CLI
+ISSUE: #282 native AOT/pylem N ambiguity.
+STATUS: PR_CREATED_PENDING_LATER_ACCEPTANCE (#373)
+BRANCH: scrip-native-n-retained-cli
+BASE: 63a4fad8660c15eacc13b9af9e68c5e8bd2a5790
 
-ACCEPTANCE: `scriptorium evidence --root . --format markdown|json|csv` calls the already verified retained metric matrix, never a fresh web scrape or analyzer. Five pinned readiness works plus one separately labelled supplemental Resurrection diagnostic; 171 retained metric rows, source UNKNOWN, M2 0/5; CSV missing actuals are blank with NOT_RUN rather than zero. Installed CLI help and README explain that source-free evidence files require a repository checkout. Output is create-only, with no private paths leaked on errors. Focused positive/negative tests plus actual exact-head CI and later independent acceptance are required; no merge in authoring wake.
+ACCEPTANCE: Installed scriptorium n-evidence --root . --format markdown|json|csv validates only retained assets/n-uncertainty-anna.json through the existing fail-closed native witness gate, displays actual 55,081 N-only and 19,670 excluded N-mixed tokens out of 269,358 source-bound words, and renders four separately conditional bigram bounds, five positions and native lexical controls without assigning grammatical identities. Supports bounded input, no prose uploads, create-only outputs and path-safe errors. Retains M2 0/5 and production mapping. Positive/negative tests and exact-head full CI are required, then later independent review and merge.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Reproducible ten-book Russian Reader and inspectable FantLab diagnostics, preserving hard edition/parity gates.
+Milestone: Ten-book Russian Reader plus inspectable source-free FantLab and native AOT evidence; hard edition/parity gates unchanged.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept and merge CLI evidence PR on a later wake | Exact HEAD, passing applicable CI, working installed `scriptorium evidence` and no scientific status change | Current feature PR |
-| P2 | Verify published tenth Reader | Root Pages deployment and live tenth card/CSV, keyboard/mobile acceptance | Browser HTTP restriction may persist |
-| P3 | #281 deeper source-matched benchmark evidence | Real edition-input identity, per-field reference precision and deltas | FantLab analyzer input UNKNOWN |
-| P4 | #282 AOT N ambiguity | Native pylem noun/cardinal conditional bounds, source-frozen evidence | Pinned runtime/dictionary evidence |
-| P5 | Better real-book comparisons and translator provenance | Source-checked editions/profiles, honest limitations | Independent of blocked M2 |
+| P1 | Independently accept/merge #373 after full checks | Exact HEAD and tests, visible conditional bounds, no scientific-status drift | CI and later wake |
+| P2 | Verify published tenth Reader | Root Pages deployment plus live tenth card/CSV, keyboard/mobile acceptance | Browser HTTP restriction may persist |
+| P3 | #282 deeper native N discriminator research | Genuine AOT source-backed noun/cardinal distinction, positive/negative controls and source-free measured proof, if feasible | Existing public adapter loses original enum |
+| P4 | #281 source-matched FantLab benchmark | Real edition-input identity, per-field precision/equality and deltas | FantLab analyzer input UNKNOWN |
+| P5 | Translator-aware real-book comparisons | Traceable edition/translator metadata and distinct comparison identities | Independent of M2 |
 
 ## Retained evidence and scientific gates
 

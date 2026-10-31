@@ -105,6 +105,55 @@ catalog.books.find(b=>b.key==="beketova").profiles.metrics=original;
   assert.ok(csv.includes('"Александра Андреевна Бекетова"'));
   assert.ok(csv.includes('"percentage_points"'));
   assert.ok(csv.includes('"DIAGNOSTIC_ONLY"'));
+  // CSV must retain the translation's original/analysis languages and stable ID.
+  const parseRow=line=>{
+    const values=[];let value="",quoted=false;
+    for (let i=0;i<line.length;i++) {
+      const ch=line[i];
+      if (ch==='"') {
+        if (quoted&&line[i+1]==='"') {value+='"';i++;}
+        else quoted=!quoted;
+      } else if (ch===","&&!quoted) {values.push(value);value="";}
+      else value+=ch;
+    }
+    assert.equal(quoted,false);
+    values.push(value);
+    return values;
+  };
+  const records=csv.slice(1).trimEnd().split("\r\n");
+  const csvColumns=records[0].split(",");
+  assert.equal(csvColumns.length,35);
+  const col=name=>{const n=csvColumns.indexOf(name);assert.ok(n>=0,name);return n;};
+  const row=parseRow(records[1]);
+  assert.equal(row.length,csvColumns.length);
+  assert.equal(row[col("schema")],"scriptorium-ru-pair-comparison-v1");
+  assert.equal(row[col("csv_schema")],"scriptorium-ru-pair-csv-v2");
+  assert.equal(row[col("left_original_language")],"ru");
+  assert.equal(row[col("left_analysis_language")],"ru");
+  assert.equal(row[col("left_translator_id")],"");
+  assert.equal(row[col("right_original_language")],"fr");
+  assert.equal(row[col("right_analysis_language")],"ru");
+  assert.equal(row[col("right_translator_id")],"alexandra-a-beketova");
+  assert.equal(row[col("right_translator")],"Александра Андреевна Бекетова");
+  assert.equal(row[col("left_source_sha256")],data.left.source_sha256);
+  assert.equal(row[col("right_source_sha256")],data.right.source_sha256);
+  assert.equal(row[col("metric_id")],data.metrics[0].id);
+  assert.equal(Number(row[col("delta_right_minus_left")]),data.metrics[0].delta_right_minus_left);
+  for (const record of records.slice(1)) assert.equal(parseRow(record).length,csvColumns.length);
+  const reverse=actions.buildPairExport("beketova","anna");
+  const reversedRow=parseRow(actions.serializePairCsv(reverse).slice(1).trimEnd().split("\r\n")[1]);
+  assert.equal(reversedRow[col("left_translator_id")],"alexandra-a-beketova");
+  assert.equal(reversedRow[col("right_translator_id")],"");
+  for (const mutate of [
+    item=>{item.right.translator=null;},
+    item=>{item.right.translator.id="";},
+    item=>{item.right.analysis_language="en";},
+    item=>{item.right.original_language="de";}
+  ]) {
+    const invalid=structuredClone(data);
+    mutate(invalid);
+    assert.throws(()=>actions.serializePairCsv(invalid),/происхождение/);
+  }
   assert.match(actions.csvText(" =SUM(1,1)"),/^"'/);
   for(const unsafe of [
     "\u200B=SUM(1,1)", "\u2060＋SUM(1,1)", "\uFEFF＠SUM(1,1)",

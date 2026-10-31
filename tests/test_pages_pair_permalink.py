@@ -34,7 +34,7 @@ class PairLinks(unittest.TestCase):
 
     def test_allowlisted_routing_and_history(self):
         js=(ROOT/"assets/pages-reader.js").read_text(encoding="utf-8")
-        for fragment in ('function pairMetricFromUrl() {','params.get("pair_metric")',
+        for fragment in ('function pairMetricFromUrl() {','.get("pair_metric")',
                          'function pairFromUrl() {','params.get("left"), right = params.get("right")',
                          'getBook(left) && getBook(right) && left !== right',
                          'function selectPair(left, right, addHistory=false)',

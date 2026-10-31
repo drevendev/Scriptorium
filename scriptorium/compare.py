@@ -16,7 +16,7 @@ import re
 
 from .analyze import (
     LOCAL_ANALYSIS_SCHEMA, MAX_ANALYSIS_BYTES, REPRESENTATIVE_CHARACTERS,
-    LocalInputError, _markdown_text, _read_bounded_regular_file, _write_new,
+    LocalInputError, build_local_analysis, _markdown_text, _read_bounded_regular_file, _write_new,
 )
 from .csv_safety import safe_csv_text
 from .metric_labels import METRIC_LABELS
@@ -545,12 +545,20 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Compare two locally generated Scriptorium Reader JSON reports.")
     parser.add_argument("left", type=Path)
     parser.add_argument("right", type=Path)
+    parser.add_argument("--texts", action="store_true", help="Read two local UTF-8 manuscripts directly, not analysis JSON")
     parser.add_argument("--format", choices=("json", "html", "csv", "markdown"), default="html")
     parser.add_argument("--title", default="Two private analyses")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
     try:
-        comparison = build_comparison(load_report(args.left), load_report(args.right))
+        if args.texts:
+            # Reuse the same deterministic analysis and identity contract as
+            # 'analyze A/B -> compare'; never store or export source prose.
+            left = build_local_analysis(_read_bounded_regular_file(args.left, MAX_ANALYSIS_BYTES, "manuscript"))
+            right = build_local_analysis(_read_bounded_regular_file(args.right, MAX_ANALYSIS_BYTES, "manuscript"))
+        else:
+            left, right = load_report(args.left), load_report(args.right)
+        comparison = build_comparison(left, right)
         rendered = {"html": lambda: render_html(comparison, title=args.title),
                     "json": lambda: render_json(comparison),
                     "csv": lambda: render_csv(comparison),
@@ -562,7 +570,11 @@ def main(argv: list[str] | None = None) -> int:
     except FileExistsError:
         parser.error("comparison output already exists; choose another destination")
     except (LocalInputError, CompareError):
+        if args.texts:
+            parser.error("invalid or unsupported UTF-8 manuscripts; check the two input files")
         parser.error("invalid or unsupported local analysis JSON; check the two generated reports")
+    except UnicodeDecodeError:
+        parser.error("manuscripts must be UTF-8")
     except (OSError, UnicodeError, ValueError, TypeError, RecursionError):
         parser.error("unable to compare local analyses or create the report")
     return 0

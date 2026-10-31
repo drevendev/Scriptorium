@@ -14,7 +14,7 @@ STATUS: PR_PENDING_LATER_ACCEPTANCE
 BRANCH: scrip-compare-direct-texts
 BASE: 183cd701d51b5383ab98d3f513390f89a1233d7c
 
-ACCEPTANCE: `scriptorium compare --texts A.txt B.txt` reuses the canonical 29-metric deterministic analyzer and exact-decimal comparison path across HTML/JSON/CSV/Markdown; outputs match the two-report pipeline byte-for-byte. Bounds/symlink/UTF-8/same-text and create-only failures are tested without path/prose leaks. Existing JSON input mode and profiles unchanged; no FantLab source identity or M2 parity claim. Require hosted CI and independent later-run acceptance.
+ACCEPTANCE: `scriptorium compare --texts A.txt B.txt` reuses the canonical 29-metric deterministic analyzer and exact-decimal comparison path across HTML/JSON/CSV/Markdown; outputs match the two-report pipeline byte-for-byte. Bounds/symlink/UTF-8/create-only failures and same-text zero-difference behavior are tested without path/prose leaks. Existing JSON input mode and profiles unchanged; no FantLab source identity or M2 parity claim. Require hosted CI and independent later-run acceptance.
 
 ## Next user-visible milestone and compact queue
 

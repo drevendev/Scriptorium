@@ -29,6 +29,7 @@
   const catalogCards = [...document.querySelectorAll("#books .book[data-catalog-key]")];
   const catalogFilter = el("catalog-filter");
   const catalogSearch = el("catalog-search");
+  const catalogReset = el("catalog-reset");
   const one = el("choose-book");
   const search = el("search-metric");
   const status = el("table-status");
@@ -309,6 +310,7 @@
         if (isMeasured) measured++; else pending++;
       }
     }
+    el("catalog-empty").hidden=shown!==0;
     el("catalog-filter-status").textContent=shown
       ? "Показано "+shown+" из "+catalogCards.length+" книг: "+
         measured+" измерено, "+pending+" в подготовке. Переводы — отдельные редакции."
@@ -324,6 +326,22 @@
     } else {
       share.removeAttribute("href");
     }
+  }
+
+  // An explicit empty-state reset preserves unrelated work/comparison links.
+  function resetCatalog() {
+    catalogFilter.value="all";
+    catalogSearch.value="";
+    try {
+      const url=new URL(window.location.href);
+      url.searchParams.delete("catalog");
+      url.searchParams.delete("q");
+      window.history.replaceState(null,"",url);
+    } catch (_) {
+      // Local file previews can disallow history changes; reset still works.
+    }
+    updateCatalog();
+    catalogSearch.focus();
   }
 
   function safeCatalogQuery(raw) {
@@ -851,7 +869,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogSearch,one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,libraryCsvButton,chartSortButton,...chartButtons];
+      const inputs=[catalogFilter,catalogSearch,catalogReset,one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,libraryCsvButton,chartSortButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -869,6 +887,7 @@
       }
       catalogFilter.addEventListener("change",updateCatalog);
       catalogSearch.addEventListener("input",updateCatalog);
+      catalogReset.addEventListener("click",resetCatalog);
       restoreCatalogFromUrl();
       el("catalog-tools").hidden=false;
       one.addEventListener("change",()=>selectBook(one.value,true));

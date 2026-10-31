@@ -313,3 +313,15 @@ footer a { color:#ffdaa3; }
 .catalog-tools[hidden],.book[hidden] { display:none !important; }
 @media (max-width:490px) { .catalog-tools select,.catalog-tools input { width:100%; max-width:none; } }
 @media print { .catalog-tools { display:none !important; } }
+
+/* Empty-state recovery is visible only after verified catalogue filtering. */
+.catalog-empty { margin:1.25rem 0 0; padding:clamp(1.2rem,3vw,2rem); max-width:44rem;
+  background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--gold);
+  border-radius:8px; }
+.catalog-empty[hidden] { display:none !important; }
+.catalog-empty h3 { margin:0 0 .55rem; font-size:clamp(1.3rem,2.2vw,1.8rem); }
+.catalog-empty p { color:var(--subtle); font-size:.88rem; line-height:1.65; }
+.catalog-empty button { min-height:48px; padding:.65rem 1rem; border:1px solid var(--green);
+  border-radius:5px; color:var(--ink); background:#e2ede5; font-weight:750; cursor:pointer; }
+.catalog-empty button:focus-visible { outline:3px solid var(--green); outline-offset:3px; }
+@media print { .catalog-empty { display:none !important; } }

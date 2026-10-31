@@ -35,6 +35,7 @@
   const status = el("table-status");
   const body = el("measurement-rows");
   const out = el("export-button");
+  const singleMarkdownButton = el("export-markdown-button");
   const leftSelect = el("pair-left");
   const rightSelect = el("pair-right");
   const pairMetric = el("pair-metric");
@@ -945,6 +946,91 @@
     document.body.appendChild(link);link.click();link.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
+  // Human-readable one-edition report. Never serialize book prose or promote
+  // unmatched FantLab display numbers to a passed benchmark.
+  function serializeBookMarkdown(book) {
+    const required=["key","candidate_id","display_title","display_author","edition_id","evidence_url"];
+    const profileKeys=["normalization","metrics","dialogue","vocabulary","punctuation"];
+    if (!book || book.text_status!=="measured" || book.language!=="ru" ||
+        !["ru","fr","en"].includes(book.original_language) ||
+        !required.every(k=>typeof book[k]==="string" && book[k].trim()) ||
+        !/^[a-f0-9]{64}$/.test(book.source_sha256||"") ||
+        !/^https:\/\/github.com\/drevendev\/Scriptorium\/blob\/master\//.test(book.evidence_url) ||
+        (book.original_language!=="ru" &&
+          (!book.translator?.id || !book.translator?.name)) ||
+        !profileKeys.every(k=>typeof book.profiles?.[k]==="string" && book.profiles[k]) ||
+        !Number.isInteger(book.measured) || !Number.isInteger(book.unavailable) ||
+        !Array.isArray(book.metrics) || !book.metrics.length ||
+        book.metrics.length!==book.measured+book.unavailable) {
+      throw Error("Неполный проверенный источник Markdown-отчёта");
+    }
+    const seen=new Set();
+    let measured=0;
+    const rows=book.metrics.map(m=>{
+      if (!m || typeof m.id!=="string" || seen.has(m.id) ||
+          !/^(fantlab|scriptorium)\.[a-z0-9_.]+$/.test(m.id) ||
+          !(m.actual===null || isNumeric(m.actual)) ||
+          !(m.reference===null || isNumeric(m.reference)) ||
+          !["measured","not_run","unavailable"].includes(m.status) ||
+          (m.actual!==null)!==(m.status==="measured") ||
+          !["candidate","extension"].includes(m.kind) ||
+          (m.kind==="extension" && m.reference!==null)) {
+        throw Error("Непроверенное значение Markdown-отчёта");
+      }
+      seen.add(m.id);
+      if (m.actual!==null) measured++;
+      const fields=[
+        label(m.id),m.id,m.actual===null?m.status.toUpperCase():String(m.actual),
+        m.kind==="extension"?"N/A":m.reference===null?"UNKNOWN":String(m.reference),
+        diagnosticDelta(m),unit(m.id),
+        m.kind==="extension"?"EXTENSION_ONLY":"DIAGNOSTIC_UNMATCHED_SOURCE"
+      ];
+      return "| "+fields.map(markdownCell).join(" | ")+" |";
+    });
+    if (measured!==book.measured) throw Error("Подмена числа измерений Markdown-отчёта");
+    const metadata=[
+      ["Название",book.display_title],["Автор",book.display_author],
+      ["Кандидат (ID)",book.candidate_id],["Редакция (ID)",book.edition_id],
+      ["Язык оригинала",book.original_language],["Язык анализа",book.language],
+      ["Переводчик",book.translator?.name||"не применимо"],
+      ["Переводчик (ID)",book.translator?.id||"не применимо"],
+      ["SHA-256 источника",book.source_sha256],
+      ["Свидетельство анализа",book.evidence_url],
+      ["Референс FantLab",book.fantlab_url||"UNKNOWN"]
+    ].map(([name,value])=>"| "+[name,value].map(markdownCell).join(" | ")+" |");
+    const profiles=profileKeys.map(key=>"| "+[key,book.profiles[key]]
+      .map(markdownCell).join(" | ")+" |");
+    return [
+      "# Scriptorium · измерения русскоязычной редакции","",
+      "**DIAGNOSTIC_ONLY** · вход FantLab: **UNKNOWN** · **M2: 0/5**.",
+      "Это производные результаты, не подтверждённое совпадение с FantLab.",
+      "Δ S−F — диагностическая разница Scriptorium минус опубликованное значение FantLab",
+      "для неустановленного соответствия редакций; для процентов — в процентных пунктах.",
+      "Неизвестное значение и NOT_RUN — не ноль. Литературный текст не включён.","",
+      "## Редакция и происхождение","","| Поле | Значение |","| --- | --- |",
+      ...metadata,"",
+      "## Профили измерений","","| Профиль | Версия |","| --- | --- |",
+      ...profiles,"",
+      "## Полный реестр измерений","",
+      book.metrics.length+" полей: "+book.measured+" измерено; "+
+        book.unavailable+" недоступно. N/A — расширение Scriptorium.","",
+      "| Метрика | ID | Scriptorium | FantLab | Δ S−F | Единица | Статус |",
+      "| --- | --- | ---: | ---: | ---: | --- | --- |",...rows,""
+    ].join("\n");
+  }
+  function exportSelectedMarkdown() {
+    verify(data);
+    const book=getBook(currentBook);
+    if (!book) { singleMarkdownButton.disabled=true; return; }
+    const report=serializeBookMarkdown(book);
+    const blob=new Blob([report],{type:"text/markdown;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");
+    link.href=url;
+    link.download="scriptorium-"+book.key+"-derived.md";
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
   // Print the selected metric's exact, source-backed table, even when collapsed.
   // Restore the user's disclosure state after the browser closes print preview.
   const chartPrintTable = document.querySelector(".chart-table");
@@ -968,7 +1054,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogSearch,catalogReset,one,search,out,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,...chartButtons];
+      const inputs=[catalogFilter,catalogSearch,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -1000,6 +1086,7 @@
       });
       search.addEventListener("input",updateSingle);
       out.addEventListener("click",exportSelected);
+      singleMarkdownButton.addEventListener("click",exportSelectedMarkdown);
       pairExportButton.addEventListener("click",exportPair);
       pairCsvButton.addEventListener("click",exportPairCsv);
       pairMarkdownButton.addEventListener("click",exportPairMarkdown);

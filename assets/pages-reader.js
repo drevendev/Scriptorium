@@ -554,29 +554,43 @@
     return '"'+safe.replaceAll('"','""')+'"';
   }
   function serializePairCsv(report) {
+    // Keep translation identity inspectable even when JSON is not retained.
+    for (const edition of [report.left,report.right]) {
+      if (!["ru","fr","en"].includes(edition.original_language) ||
+          edition.analysis_language !== "ru" ||
+          (edition.original_language !== edition.analysis_language &&
+           (!edition.translator?.id || !edition.translator?.name))) {
+        throw Error("Неполное происхождение редакции для CSV");
+      }
+    }
     const headers=[
-      "schema","scientific_claim","fantlab_input_identity","m2_source_matched",
+      "schema","csv_schema","scientific_claim","fantlab_input_identity","m2_source_matched",
       "comparison_direction","measurement_profiles",
-      "left_key","left_candidate_id","left_title","left_author","left_translator",
+      "left_key","left_candidate_id","left_title","left_author",
+      "left_original_language","left_analysis_language","left_translator_id","left_translator",
       "left_edition_id","left_source_sha256","left_evidence_url",
-      "right_key","right_candidate_id","right_title","right_author","right_translator",
+      "right_key","right_candidate_id","right_title","right_author",
+      "right_original_language","right_analysis_language","right_translator_id","right_translator",
       "right_edition_id","right_source_sha256","right_evidence_url",
       "metric_id","unit","delta_unit","left_actual","right_actual","delta_right_minus_left"
     ];
     const lines=report.metrics.map(metric=>{
       const fields=[
-        report.schema,report.scientific_claim,report.fantlab_input_identity,
-        report.m2_source_matched,report.comparison_direction,
+        report.schema,"scriptorium-ru-pair-csv-v2",report.scientific_claim,
+        report.fantlab_input_identity,report.m2_source_matched,report.comparison_direction,
         JSON.stringify(report.measurement_profiles),
         report.left.key,report.left.candidate_id,report.left.title,report.left.author,
-        report.left.translator?.name||"",report.left.edition_id,
-        report.left.source_sha256,report.left.evidence_url,
+        report.left.original_language,report.left.analysis_language,
+        report.left.translator?.id||"",report.left.translator?.name||"",
+        report.left.edition_id,report.left.source_sha256,report.left.evidence_url,
         report.right.key,report.right.candidate_id,report.right.title,report.right.author,
-        report.right.translator?.name||"",report.right.edition_id,
-        report.right.source_sha256,report.right.evidence_url,
+        report.right.original_language,report.right.analysis_language,
+        report.right.translator?.id||"",report.right.translator?.name||"",
+        report.right.edition_id,report.right.source_sha256,report.right.evidence_url,
         metric.id,metric.unit,metric.delta_unit,
         metric.left_actual,metric.right_actual,metric.delta_right_minus_left
       ];
+      if (fields.length!==headers.length) throw Error("Неполная схема CSV");
       return fields.slice(0,-3).map(csvText).concat(fields.slice(-3).map(String)).join(",");
     });
     return "\uFEFF"+[headers.join(","),...lines].join("\r\n")+"\r\n";

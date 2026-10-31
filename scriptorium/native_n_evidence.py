@@ -51,20 +51,21 @@ def render_native_n_report(report: dict[str, object], kind: str) -> str:
     if kind == "csv":
         stream = StringIO(newline="")
         writer = csv.writer(stream, lineterminator="\n")
-        writer.writerow(("category", "measure", "observed", "conditional_min", "conditional_max", "unit", "evidence_status"))
+        writer.writerow(("category", "measure", "observed", "conditional_min", "conditional_max", "unit", "evidence_status", "candidate_id", "pylem_version", "runtime_analysis_sha256"))
 
         def row(category: str, measure: str, observed: int | str = "",
                 low: int | str = "", high: int | str = "", unit: str = "tokens",
                 status: str = "OBSERVED_NATIVE") -> None:
-            writer.writerow((safe_csv_text(category), safe_csv_text(measure), observed, low, high, unit, status))
+            writer.writerow((safe_csv_text(category), safe_csv_text(measure), observed, low, high, unit, status, safe_csv_text(witness["work"]["candidate_id"]), evidence["pylem_version"], evidence["runtime_analysis_sha256"]))
 
         for key in ("word_count", "sentence_count", "baseline_defined", "n_only",
                     "n_mixed_excluded", "conditional_defined"):
             row("count", key, counts[key],
-                unit="sentences" if key == "sentence_count" else "word tokens")
-        row("rate", "n_only_percent_of_words", f"{rates['n_only_percent_of_words']:.6f}", unit="percent")
+                unit="sentences" if key == "sentence_count" else "word tokens",
+                status="DERIVED_CONDITIONAL" if key == "conditional_defined" else "OBSERVED_NATIVE")
+        row("rate", "n_only_percent_of_words", f"{rates['n_only_percent_of_words']:.6f}", unit="percent", status="DERIVED_NATIVE")
         row("rate", "conditional_noun_or_cardinal_percent_of_defined",
-            f"{rates['conditional_noun_or_cardinal_percent_of_defined']:.6f}", unit="percent")
+            f"{rates['conditional_noun_or_cardinal_percent_of_defined']:.6f}", unit="percent", status="DERIVED_CONDITIONAL")
         for bucket, bounds in witness["bucket_bounds"].items():
             row("bucket", bucket, low=bounds[0], high=bounds[1], status="CONDITIONAL_N_ONLY")
         for pair in witness["bigram_bounds"]:

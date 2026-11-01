@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 394
+STATE_REVISION: 395
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #393 independently merged at 9a59cc4f5449588f1b49dc95a233861499917c7a. Shishmareva first-narrative source identity is frozen (oldid 5634933, 572,587 literary characters, normalized SHA-256 61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f). PR #394 has a separately versioned 29-field source-free measurement: official exact-oldid hosted run 41354289366 passed, measuring 93,704 words and 4,382 sentences with 24 actual / five dictionary-unbound NOT_RUN fields. Derived JSON retained on the PR branch; final exact-head artifact cmp/CI and later independent merge remain required.
-LAST_VERIFIED_PROGRESS: Ten published measured Russian books, 269 metric rows (225 numeric, 44 unavailable); Shishmareva has a source-free 24 numeric / five NOT_RUN PR artifact, NOT YET part of Reader. M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
+LAST_COMMITTED_RUN_AT: 2026-11-02
+LAST_RESULT: #394 independently merged at cdb010c024158af1a12d96b9aade49d0874adaa9, accepting 29 source-free Shishmareva measurements. Focused branch scrip-reader-shishmareva-measured now proposes an 11th measured Russian Reader entry from exact oldid 5634933 and frozen SHA-256; hosted exact-head CI and later acceptance are required.
+LAST_VERIFIED_PROGRESS: Master has ten published measured works (269 rows, 225 numeric, 44 unavailable). Branch proposes 11 of 13, 298 rows (249 numeric, 49 unavailable), an 11-row chart and Shishmareva translation card. M2 0/5, M3 open. Pages deployment/live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-ROBINSON-SHISHMAREVA-MEASURED
-ISSUE: compute 29 real source-free metric rows from exact replay-verified Shishmareva 1935 first narrative; do not claim English original or FantLab source identity
-STATUS: PR_PENDING_EXACT_HEAD_CI_AND_LATER_ACCEPTANCE
-BRANCH: scrip-robinson-shishmareva-measured
-BASE: 9a59cc4f5449588f1b49dc95a233861499917c7a
+UNIT_ID: SCRIP-READER-SHISHMAREVA-11TH
+ISSUE: expose independently accepted Shishmareva 1935 first narrative as a measured, distinctly attributed Russian translation in root Reader
+STATUS: PR_CANDIDATE_PENDING_CI_AND_LATER_ACCEPTANCE
+BRANCH: scrip-reader-shishmareva-measured
+BASE: cdb010c024158af1a12d96b9aade49d0874adaa9
 
-ACCEPTANCE: Re-fetch official pinned oldid 5634933, replay the merged #393 body manifest, verify 572,587 literary characters and exact raw/normalized SHA-256, then compute the frozen 29-field Scriptorium metric contract with explicit profile/units/unknowns, 5 dictionary-dependent NOT_RUN rows, source-free create-only JSON and exact-replay CI. Preserve M2 0/5, unavailable print collation and Trusov comparison; later independent exact-head review/merge required before Reader admission.
+ACCEPTANCE: exact #394 artifact blob and oldid 5634933, 572,587 literary characters, source SHA-256 61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f, 24 numeric + 5 NOT_RUN; render 11 measured of 13 catalogued, eight chart modes, static/no-JS table, shared comparison, 298-row downloadable CSV. Verify translation/edition ID, rights and profile binding; preserve 10 prior books byte-for-byte, zero text disclosure, FantLab input UNKNOWN/print NOT_RUN, M2 0/5. Run focused and complete exact-head tests; later separate fresh review/merge. Pages/live screenshots require independently allowed browser access.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: independently frozen and measured Russian translations of Robinson Crusoe, then source-verified, honestly confounded Reader comparisons.
+Milestone: independently measured Russian translations of Robinson Crusoe presented with source-bound reader links; then genuinely two-translation comparison with explicit historical confounders.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Shishmareva exact-oldid 29-field measured source-free JSON | Hosted source replay, metric contract, source-free artifact, full exact-head CI; later merge | #393 merged, working PR |
-| P2 | Publish source-verified Shishmareva measured card on Reader | Only independently accepted retained numbers; 29 labelled fields, source/translator and chart/table/CSV consistency | P1 merged measured artifact; site/browser evidence |
-| P3 | Resolve Trusov 1775 Page/Index transclusion independently | Pin true historical Page dependency graph, literary boundaries, body SHA-256+count | Scan/Page dependencies, not P1/P2 |
-| P4 | Publish two-translation comparison and test #285 | Both complete frozen source identities, deterministic deltas and accessible chart/table; historical confounders | P2+P3; live HTTP restricted |
-| P5 | #282/#281 AOT/FantLab compatibility | Native POS source collision resolved or source-exact benchmark evidence | New primary evidence |
+| P1 | Accept/merge current 11th measured Shishmareva Reader PR | Exact-source 29 rows, 11-book charts/tables/CSV, accessibility/static fallbacks, full CI, later exact-head review | Current focused branch; Pages verification separate |
+| P2 | Recover Trusov 1775 historical Page/Index transclusion | Pin the actual historical page revision dependency graph, complete first narrative body SHA-256 and >=300k character gate | Independent Page/scan analysis; no blanket block |
+| P3 | Publish two distinct Robinson translation comparisons | Both independently frozen 29-field profiles, all deltas labelled diagnostic; intermediaries/abridgments acknowledged | Needs Trusov measured witness |
+| P4 | Validate actual root Reader production desktop/mobile and fallback | Successful real branch Pages publication, HTTP/keyboard/mobile checks where permitted | Browser ADMIN_BLOCKED historically; do not evade |
+| P5 | #282/#281 native AOT/FantLab metric compatibility | New source-matched benchmark evidence or measured POS N collision discrimination | Primary evidence not yet available |
 
 ## Retained evidence and scientific gates
 

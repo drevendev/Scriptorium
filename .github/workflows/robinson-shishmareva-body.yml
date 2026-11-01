@@ -1,0 +1,73 @@
+name: Robinson Shishmareva exact literary-body witness
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/robinson-shishmareva-body.yml"
+      - "scriptorium/robinson_shishmareva_body.py"
+      - "tests/test_robinson_shishmareva_body.py"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-shishmareva-1935-ru.body.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-literary-body:
+    name: Recompute pinned Shishmareva body without storing prose
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Focused structural, privacy and negative regressions
+        run: python -m unittest discover -s tests -p 'test_robinson_shishmareva_body.py' -v
+      - name: Capture only exact page literary-body checksums
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.robinson_shishmareva_body capture \
+            --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+            --output build/repro/robinson-shishmareva.body.json
+      - name: Assert corpus threshold, safety and scientific limits
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('build/repro/robinson-shishmareva.body.json')
+          m = json.loads(p.read_text(encoding='utf-8'))
+          assert m['schema_version'] == 'scriptorium-robinson-shishmareva-literary-body-v1'
+          assert m['source_revision']['revision_id'] == 5634933
+          assert m['extraction']['source_text_committed'] is False
+          assert m['literary_body_identity']['character_count_including_spaces'] >= 300000
+          assert m['m2_contribution'] == 0 and m['m2_parity_admissible'] is False
+          assert m['fantlab_analyzer_input_identity'] == 'UNKNOWN'
+          assert not {'wikitext', 'body', 'source_text', 'novel_text'} & m.keys()
+          print('Source-free body witness: char_count=', m['literary_body_identity']['character_count_including_spaces'])
+          print('Raw body sha256=', m['literary_body_identity']['raw_sha256'])
+          print('Normalized body sha256=', m['literary_body_identity']['normalized_sha256'])
+          PY
+      - name: Verify retained body manifest (when present)
+        run: |
+          file=corpus/candidates/source-edition-traces/defoe-robinson-crusoe-shishmareva-1935-ru.body.json
+          if test -f "$file"; then
+            cmp "$file" build/repro/robinson-shishmareva.body.json
+            python -m scriptorium.robinson_shishmareva_body replay \
+              --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+              --body-manifest "$file"
+          fi
+      - name: Upload only source-free body identity
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: robinson-shishmareva-literary-body
+          path: build/repro/robinson-shishmareva.body.json
+          if-no-files-found: error
+          retention-days: 7

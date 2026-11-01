@@ -30,6 +30,7 @@ SCHEMA = "scriptorium-robinson-shishmareva-literary-body-v1"
 
 _CATEGORY = re.compile(r"\[\[\s*Категория\s*:[^\[\]]+\]\]", re.IGNORECASE)
 _INLINE_TEMPLATE = re.compile(r"\{\{(?P<name>[A-Za-zА-Яа-яёЁ0-9]+)\|(?P<arg>[^{}|]*)(?P<tail>\|[^{}]*)?\}\}")
+_PLAIN_HEADING = re.compile(r"(?m)^[ \t]*(?P<marks>={2,3})[ \t]*(?P<label>[^=\n][^\n]*?)[ \t]*(?P=marks)[ \t]*$")
 _BQ_TAG = re.compile(r"</?blockquote\s*>", re.IGNORECASE)
 _REF_TAG = re.compile(r"<ref\b", re.IGNORECASE)
 _NONBODY_MARKUP = re.compile(r"<\s*pages\b|\{\{\s*:|<\s*/?\s*(?:includeonly|noinclude|onlyinclude)\b", re.I)
@@ -110,6 +111,15 @@ def extract_literary_body(source: str) -> str:
     subtitle, story = _trim_scaffolding(source)
     if "{{" in subtitle or "}}" in subtitle:
         raise ValueError("unresolved epigraph markup")
+    # Direct-prose witness uses plain chapter headings. Preserve their labels
+    # as literary structure, but never strip arbitrary tables or other markup.
+    def plain_heading(match: re.Match[str]) -> str:
+        label = match.group("label").strip()
+        if not label or "{{" in label or "}}" in label or "[[" in label:
+            raise ValueError("unsupported chapter heading content")
+        return "\\n\\n" + label + "\\n\\n"
+
+    story = _PLAIN_HEADING.sub(plain_heading, story)
     story = _INLINE_TEMPLATE.sub(_replace_template, story)
     if "{{" in story or "}}" in story:
         raise ValueError("unresolved nested/body template")

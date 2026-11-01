@@ -61,20 +61,20 @@
         doc.fantlab_input_identity !== "UNKNOWN" ||
         doc.comparability?.m2_parity_admissible !== false ||
         doc.counts?.m2_source_matched !== 0 ||
-        doc.counts?.work_count !== 12 ||
-        doc.counts?.measured_works !== 10 ||
+        doc.counts?.work_count !== 13 ||
+        doc.counts?.measured_works !== 11 ||
         doc.counts?.awaiting_measurement !== 2 ||
-        doc.counts?.metrics_total !== 269 ||
-        doc.counts?.numeric_total !== 225 ||
-        doc.counts?.unavailable_total !== 44 ||
-        doc.language_modules?.ru?.measured_work_count !== 10 ||
+        doc.counts?.metrics_total !== 298 ||
+        doc.counts?.numeric_total !== 249 ||
+        doc.counts?.unavailable_total !== 49 ||
+        doc.language_modules?.ru?.measured_work_count !== 11 ||
         doc.language_modules?.en?.state !== "planned_not_measured" ||
         doc.language_modules?.en?.measured_work_count !== 0 ||
-        !Array.isArray(doc.books) || doc.books.length !== 12) {
+        !Array.isArray(doc.books) || doc.books.length !== 13) {
       throw Error("Русский каталог или научный статус изменён");
     }
     const census = {anna:[28,23],waves:[27,23],silver:[29,24],
-                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11],resurrection:[29,24],road:[29,24],oblomov:[29,24],humiliated:[29,24]};
+                    karamazov:[29,24],hyperboloid:[29,24],beketova:[11,11],resurrection:[29,24],road:[29,24],oblomov:[29,24],humiliated:[29,24],shishmareva:[29,24]};
     const seen = new Set();
     const editionKeys = new Set();
     let observed = 0, missing = 0;
@@ -163,6 +163,27 @@
             throw Error("Униженные и оскорбленные: подмена закреплённого источника или научного статуса");
           }
         }
+
+        if (book.key === "shishmareva") {
+          const get=id=>book.metrics.find(m=>m.id===id);
+          if (book.candidate_id!=="defoe-robinson-shishmareva-1935-vol1-ru" ||
+              book.source_revision_id!==5634933 ||
+              book.edition_id!=="ru-shishmareva-academia-1935-vol1-oldid-5634933" ||
+              book.source_sha256!=="61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f" ||
+              book.blob_sha1!=="0afd42fe5825b7eb6b07ca209aef963e006f333b" ||
+              book.original_language!=="en" ||
+              book.translator?.id!=="maria-shishmareva" ||
+              book.translator?.name!=="Мария Шишмарёва" ||
+              book.translator?.authority_trace!=="corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.json" ||
+              get("fantlab.general.characters")?.actual!==572587 ||
+              get("fantlab.general.words")?.actual!==93704 ||
+              get("scriptorium.general.sentences")?.actual!==4382 ||
+              get("fantlab.vocabulary.unique_words")?.actual!==16739 ||
+              get("fantlab.dialogue.share_percent")?.actual!==0.2405145502922629 ||
+              book.metrics.some(m=>m.reference!==null) ||
+              book.metrics.filter(m=>m.actual===null).length!==5)
+            throw Error("Шишмарёва: подмена измеренной редакции, переводчика или статуса");
+        }
         const fields = new Set();
         let available = 0;
         for (const m of book.metrics) {
@@ -190,10 +211,10 @@
             typeof book.trace !== "string") throw Error("Нельзя считать заявку измеренной книгой");
       }
     }
-    if (seen.size !== 12 || Object.keys(census).some(x=>!seen.has(x)) ||
-        observed !== 225 || missing !== 44 ||
-        doc.books.filter(b=>b.text_status === "measured").length !== 10 ||
-        doc.books.filter(b=>b.translator).length !== 2) throw Error("Подмена итогов каталога");
+    if (seen.size !== 13 || Object.keys(census).some(x=>!seen.has(x)) ||
+        observed !== 249 || missing !== 49 ||
+        doc.books.filter(b=>b.text_status === "measured").length !== 11 ||
+        doc.books.filter(b=>b.translator).length !== 3) throw Error("Подмена итогов каталога");
     // The static cards must match the verified evidence record exactly.
     const cardKeys=catalogCards.map(card=>card.dataset.catalogKey);
     if (cardKeys.length!==doc.books.length ||
@@ -815,10 +836,10 @@
         doc.scientific_claim!=="DIAGNOSTIC_ONLY" ||
         doc.fantlab_input_identity!=="UNKNOWN" ||
         doc.counts?.m2_source_matched!==0 ||
-        doc.counts?.measured_works!==10 || !Array.isArray(doc.books))
+        doc.counts?.measured_works!==11 || !Array.isArray(doc.books))
       throw Error("Не подтверждён научный статус диаграммы");
     const measured=doc.books.filter(book=>book.text_status==="measured");
-    if (measured.length!==10) throw Error("Неполный измеренный каталог");
+    if (measured.length!==11) throw Error("Неполный измеренный каталог");
     const profiles=["metrics","normalization","dialogue","punctuation"];
     const baseline=measured[0].profiles;
     const rows=measured.map((book,ordinal)=>{

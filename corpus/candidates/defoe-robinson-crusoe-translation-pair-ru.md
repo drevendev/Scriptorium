@@ -23,3 +23,26 @@ The [Wikisource list of translations](https://ru.wikisource.org/w/index.php?oldi
 4. Only then run the 29 deterministic metrics and source-free comparison with explicit intermediary/orthography caveats. No FantLab parity weight without independent analyzer-input identity. **M2 stays 0/5.**
 
 Machine-readable record: [`source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.json`](source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.json). **No Reader measured-book card should be added from this screening alone.**
+
+
+## Source-free exact-oldid inventory probe
+
+A bounded first experiment is now implemented in
+`scriptorium.robinson_revision_probe`. It requests exactly the two pinned
+MediaWiki revisions by ID, verifies their returned IDs, timestamps and provider SHA-1,
+then records wikitext SHA-256/byte count and an aggregate markup/transclusion inventory.
+Only source-free JSON is written; no chapters, source prose or user manuscripts are
+uploaded. Reproducible command (requires ordinary MediaWiki access):
+
+```sh
+python -m scriptorium.robinson_revision_probe \
+  --screening corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.json \
+  --output build/repro/robinson-translations.revision-inventory.json
+```
+
+The scoped GitHub Actions workflow uploads only the derived inventory for inspection.
+The existence of that workflow is not proof that its live fetch succeeded. The
+wikitext length is **not** a body count; an oldid may reference an index or depend
+on non-frozen transclusions. Independently inspected original narrative boundaries,
+body hashes, >=300,000-character checks, measurements and parity all remain
+**NOT_RUN** pending actual output and a separate fail-closed extraction contract.

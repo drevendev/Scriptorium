@@ -203,3 +203,18 @@ Canonical evidence:
 
 - [`ilf-petrov-twelve-chairs-ru.md`](ilf-petrov-twelve-chairs-ru.md) — public source-free candidate note.
 - `source-edition-traces/ilf-petrov-twelve-chairs-ru.json` — FantLab counts, dual edition-family trace, public-domain/legal boundary, facsimile lead, coauthorship caveat and fail-closed admissibility.
+
+## Shishmareva Robinson Crusoe: exact-revision measurement candidate
+
+The 1935 ACADEMIA volume-1 Russian translation by **Maria A. Shishmareva** is frozen as `defoe-robinson-shishmareva-1935-vol1-ru`: pinned Wikisource oldid `5634933`, first-narrative body **572,587 characters including spaces**, 1,032,692 UTF-8 bytes and raw/normalized SHA-256 `61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f`. The merged body receipt lives in `source-edition-traces/defoe-robinson-crusoe-shishmareva-1935-ru.body.json`. Source text is not committed.
+
+To reproduce source-free numerical fields after an approved exact-revision fetch, run:
+
+```bash
+python -m scriptorium.robinson_shishmareva_diagnostic capture \\
+  --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \\
+  --body-manifest corpus/candidates/source-edition-traces/defoe-robinson-crusoe-shishmareva-1935-ru.body.json \\
+  --output /tmp/shishmareva-fields.json
+```
+
+The new test and GitHub Actions workflow check raw and normalized identity before invoking `scriptorium-metrics-v4`. All **29 fields** have units/profile metadata; dictionary-dependent fields stay unknown when no licensed dictionary identity is provided. A generated GitHub artifact is **not** an admitted measured Reader work until reviewed and retained with exact CI replay. The Trusov 1775 historical scan transclusions remain unmeasured; FantLab input and print-edition identities are unknown; this is **DIAGNOSTIC ONLY**, not M2 parity.

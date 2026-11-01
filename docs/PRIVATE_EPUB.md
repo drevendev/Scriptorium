@@ -12,11 +12,13 @@ reader, OCR tool, JavaScript engine or DRM remover.
 scriptorium epub my-book.epub --output analysis.json --provenance-output source-identity.json
 scriptorium epub my-book.epub --format html --title 'Private reading' --output analysis.html
 scriptorium epub my-book.epub --format csv --output analysis.csv
+scriptorium epub my-book.epub --format markdown --title 'Private reading' --output analysis.md
 scriptorium compare analysis.json another-analysis.json --output comparison.html
 ```
 
-The main JSON/HTML/CSV outputs use the *existing* 29-metric Reader analysis
-contract. `analysis.json` is immediately accepted by the normal private comparison
+The main JSON/HTML/CSV/Markdown outputs use the *existing* 29-metric Reader analysis
+contract. Markdown reuses the exact same renderer as `scriptorium analyze`, including
+escaped display titles, explicit unavailable values, source digests and profile labels. `analysis.json` is immediately accepted by the normal private comparison
 command. The JSON contains the SHA-256 of the extracted UTF-8 body, **not** the
 raw EPUB container. It never contains the manuscript's prose.
 

@@ -1,4 +1,4 @@
-/* Real, pinned ten-book catalogue against the shipped filter implementation. */
+/* Real, pinned eleven-book catalogue against the shipped filter implementation. */
 "use strict";
 const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path");
 const root=path.resolve(__dirname,"..");
@@ -7,7 +7,7 @@ const data=JSON.parse(fs.readFileSync(path.join(root,"assets/evidence-snapshot.j
 const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
 const css=fs.readFileSync(path.join(root,"assets/pages-reader.css"),"utf8");
 const cards0=[...html.matchAll(/<article class="book(?: book-research)?" data-status="(measured|pending)" data-catalog-key="([a-z]+)">/g)];
-assert.equal(cards0.length,12);
+assert.equal(cards0.length,13);
 assert.deepEqual(cards0.map(m=>m[2]),data.books.map(b=>b.key));
 const cards=cards0.map(m=>({dataset:{status:m[1],catalogKey:m[2]},hidden:false}));
 const filter={value:"all"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
@@ -26,11 +26,11 @@ const make=d=>new Function("data","catalogCards","catalogFilter","catalogSearch"
   d,cards,filter,search,id=>id==="share-catalog"?share:id==="catalog-empty"?empty:status,browser);
 const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog}=make(data);
 for(const [mode,keys,measured,pending] of [
- ["all",data.books.map(b=>b.key),10,2],
- ["measured",["anna","waves","silver","karamazov","hyperboloid","beketova","resurrection","road","oblomov","humiliated"],10,0],
+ ["all",data.books.map(b=>b.key),11,2],
+ ["measured",["anna","waves","silver","karamazov","hyperboloid","beketova","resurrection","road","oblomov","humiliated","shishmareva"],11,0],
  ["pending",["petersburg","darwin"],0,2],
- ["translated",["beketova","darwin"],1,1],
- ["unknown",data.books.map(b=>b.key),10,2]]){
+ ["translated",["beketova","shishmareva","darwin"],2,1],
+ ["unknown",data.books.map(b=>b.key),11,2]]){
  filter.value=mode;run();
  assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),keys,mode);
  assert.ok(status.textContent.includes(measured+" измерено, "+pending+" в подготовке"),mode);
@@ -43,6 +43,7 @@ for(const [q,mode,keys] of [
  ["Лев Толстой","all",["anna","resurrection"]],
  ["БЕКЕТОВА","all",["beketova"]],
  ["Рачинский","translated",["darwin"]],
+ ["Шишмарёва","translated",["shishmareva"]],
  ["О ПРОИСХОЖДЕНИИ","all",["darwin"]],
  ["Бекетова","pending",[]],
  ["несуществующая книга","all",[]]
@@ -53,7 +54,7 @@ for(const [q,mode,keys] of [
  assert.equal(empty.hidden,keys.length!==0,q);
 }
 search.value="";filter.value="all";run();
-assert.equal(cards.filter(c=>!c.hidden).length,12);
+assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(share.href,"?catalog=all#books");
 location.search="?catalog=translated&q="+encodeURIComponent("Бекетова");
 restore();
@@ -70,7 +71,7 @@ restore();assert.equal(empty.hidden,false);
 resetCatalog();
 assert.equal(empty.hidden,true);
 assert.equal(search.value,"");assert.equal(filter.value,"all");
-assert.equal(cards.filter(c=>!c.hidden).length,12);
+assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(search.focused,true);
 const clean=new URL(location.href);
 assert.equal(clean.searchParams.has("catalog"),false);
@@ -83,10 +84,10 @@ assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),
                  ["anna","hyperboloid","resurrection"]);
 location.search="?catalog=measured&q="+encodeURIComponent("x".repeat(121));
 restore();assert.equal(search.value,"");
-assert.equal(cards.filter(c=>!c.hidden).length,10);
+assert.equal(cards.filter(c=>!c.hidden).length,11);
 location.search="?catalog=translated&q="+encodeURIComponent("\u0000");
 restore();assert.equal(search.value,"");
-assert.equal(cards.filter(c=>!c.hidden).length,2);
+assert.equal(cards.filter(c=>!c.hidden).length,3);
 search.value="<img src=x>";filter.value="all";run();
 assert.ok(!share.href.includes("<img"));assert.ok(share.href.includes("%3Cimg"));
 search.value="x".repeat(121);run();assert.equal(share.hidden,true);
@@ -97,7 +98,7 @@ assert.throws(()=>make(tampered).updateCatalog(),/Нет проверенног�
 assert.match(html,/id="catalog-tools" hidden/);
 assert.match(html,/id="catalog-empty" class="catalog-empty" hidden/);
 assert.match(html,/id="catalog-reset" type="button" disabled/);
-assert.match(html,/Показано 12 из 12 книг/);
+assert.match(html,/Показано 13 из 13 книг/);
 assert.match(js,/catalogReset.addEventListener\("click",resetCatalog\)/);
 assert.match(css,/\.catalog-empty\[hidden\]\s*\{\s*display:none\s*!important/);
 assert.match(html,/id="catalog-filter" disabled/);

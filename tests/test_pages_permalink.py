@@ -30,7 +30,7 @@ class PagesEditionPermalinkTests(unittest.TestCase):
         html = (ROOT / "index.html").read_text(encoding="utf-8")
         links = AnchorReader(html).links
         cards = [a for a in links if "data-book" in a]
-        self.assertEqual(len(cards), 10)
+        self.assertEqual(len(cards), 11)
         self.assertEqual({a["data-book"] for a in cards}, measured)
         for a in cards:
             self.assertTrue(a["href"].startswith(

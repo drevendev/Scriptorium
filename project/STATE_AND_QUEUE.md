@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 390
+STATE_REVISION: 391
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #389 independently accepted and merged at 96a8cda6914b4516e8371dc08b1f20de0922582c; direct EPUB-to-EPUB comparisons proposed for later acceptance.
+LAST_RESULT: #390 independently merged at dcd90599f8411170e6ac775d348b745e5aeb9e8d. Source-screened Robinson translation pair proposed; no new measurements.
 LAST_VERIFIED_PROGRESS: Ten measured Russian books, 269 metric rows (225 numeric, 44 unavailable); M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CLI-DIRECT-EPUB-COMPARE
-ISSUE: compare two private EPUB editions without staging JSON reports
+UNIT_ID: SCRIP-CORPUS-ROBINSON-PAIR-SCREEN
+ISSUE: independent translator/edition/rights witnesses for a meaningful Russian translation pair
 STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-compare-direct-epubs
-BASE: 96a8cda6914b4516e8371dc08b1f20de0922582c
+BRANCH: scrip-robinson-translation-pair
+BASE: dcd90599f8411170e6ac775d348b745e5aeb9e8d
 
-ACCEPTANCE: `scriptorium compare --epubs A.epub B.epub --format markdown --output pair.md` reuses bounded EPUB extraction and the 29-metric analyzer/comparator. All four outputs are byte-identical to the staged EPUB JSON path; body/archive identity is labelled correctly; malformed/unsafe/symlinked inputs and occupied output are rejected; no original prose or intermediate output is created. Later exact-head CI and independent acceptance gate merge. M2 0/5 unchanged.
+ACCEPTANCE: Two primary Wikisource oldids, distinct translators, edition and source-language scope, explicit PD statements, no invented body digests/counts and no false parity. Later-run PR acceptance required.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Local EPUB-to-EPUB comparison with exact 29-metric, source-free differences; useful for investigating independently identified translations.
+Milestone: two independently frozen and measured translations of the first Robinson Crusoe narrative, then an honestly confounded reader comparison.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge EPUB comparison | Fresh diff and exact-head applicable checks, focused positive/negative CLI tests | Later wake |
-| P2 | Second measured Russian translation | Legal source/translator/edition/digests and reproducible metrics | Independent frozen edition |
-| P3 | Verify root Reader live | Master Pages HTTP and real desktop/mobile/keyboard | Browser HTTP restricted |
-| P4 | #282 pylem N discriminator | Native noun/cardinal evidence | Runtime source enum unavailable |
-| P5 | #281 strict FantLab parity | Exact input identity and displayed-rounding evidence | Input identity UNKNOWN |
+| P1 | Accept/merge translation-pair screening | Fresh source/diff and exact-head applicable checks | Later wake |
+| P2 | Freeze Shishmareva + Trusov first-book literary bodies | Exact oldid bytes, body SHA-256, >=300k EACH, independent rights/edition identity | MediaWiki body replay |
+| P3 | Publish source-free pair comparison | Deterministic 29-metric data and transparent intermediary/orthography caveats | P2 |
+| P4 | Verify root Reader live (#285) | HTTP and desktop/mobile/keyboard | Browser HTTP restricted |
+| P5 | #282/#281 AOT/FantLab compatibility | Native POS resolution or exact benchmark input identity | Evidence missing |
 
 ## Retained evidence and scientific gates
 

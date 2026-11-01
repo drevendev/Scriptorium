@@ -16,7 +16,7 @@ const window={
     window.location=new URL(String(url),window.location.href);
   }}
 };
-const l={value:"anna"},r={value:"karamazov"};
+const l={value:"anna"},r={value:"karamazov"},swap={disabled:true};
 const pairMetric={value:"fantlab.dialogue.share_percent",options:[
   "fantlab.dialogue.share_percent","fantlab.general.mean_sentence_length_chars",
   "fantlab.punctuation.comma.per_1000_words","fantlab.punctuation.dash.per_1000_words",
@@ -24,9 +24,9 @@ const pairMetric={value:"fantlab.dialogue.share_percent",options:[
 const share={hidden:false,href:"",textContent:"",removeAttribute(k){assert.equal(k,"href");this.href="";}};
 const el=id=>{assert.equal(id,"share-pair");return share;};
 let renders=0;
-const routes=new Function("window","getBook","leftSelect","rightSelect","pairMetric","updatePair","el",
-  source.slice(start,end)+"\nreturn {pairMetricFromUrl,pairFromUrl,selectPair};"
-)(window,getBook,l,r,pairMetric,()=>{renders++;},el);
+const routes=new Function("window","getBook","leftSelect","rightSelect","pairMetric","updatePair","el","pairSwapButton",
+  source.slice(start,end)+"\nreturn {pairMetricFromUrl,pairFromUrl,selectPair,swapPair};"
+)(window,getBook,l,r,pairMetric,()=>{renders++;},el,swap);
 assert.deepEqual(routes.pairFromUrl(),["waves","beketova"]);
 assert.equal(routes.pairMetricFromUrl(),"fantlab.dialogue.share_percent");
 routes.selectPair(...routes.pairFromUrl());
@@ -78,4 +78,28 @@ assert.equal(l.value,"karamazov");
 assert.equal(r.value,"hyperboloid");
 assert.equal(window.history.pushes.length,1);
 assert.equal(share.hidden,false);
-console.log("Pages pair permalink valid, translation, invalid, duplicate and history PASS");
+assert.equal(swap.disabled,false);
+window.location=new URL("https://drevendev.github.io/Scriptorium/?book=silver&left=karamazov&right=hyperboloid&pair_metric=fantlab.punctuation.comma.per_1000_words#pairs");
+pairMetric.value="fantlab.punctuation.comma.per_1000_words";
+routes.selectPair(...routes.pairFromUrl());
+const count=window.history.pushes.length;
+routes.swapPair();
+assert.equal(l.value,"hyperboloid");
+assert.equal(r.value,"karamazov");
+assert.equal(pairMetric.value,"fantlab.punctuation.comma.per_1000_words");
+assert.equal(window.location.search,"?book=silver&left=hyperboloid&right=karamazov&pair_metric=fantlab.punctuation.comma.per_1000_words");
+assert.equal(share.href,"?left=hyperboloid&right=karamazov&pair_metric=fantlab.punctuation.comma.per_1000_words#pairs");
+assert.equal(window.history.pushes.length,count+1);
+routes.swapPair();
+assert.equal(l.value,"karamazov");
+assert.equal(r.value,"hyperboloid");
+routes.selectPair("anna","anna",true);
+assert.equal(swap.disabled,true);
+routes.swapPair();
+assert.equal(window.history.pushes.length,count+2);
+routes.selectPair("anna","beketova");
+assert.equal(swap.disabled,false);
+routes.swapPair();
+assert.equal(l.value,"beketova");
+assert.equal(r.value,"anna");
+console.log("Pages pair permalink, safe swap, translator, duplicate and history PASS");

@@ -202,6 +202,10 @@ footer a { color:#ffdaa3; }
 .book-research h3 { color:#3a5147; }
 .book-research a { color:var(--green-deep); }
 .comparison-panel { margin-bottom:3.5rem; }
+.control-pair-swap { flex:0 0 auto; }
+.control-pair-swap button { min-height:48px; padding:.55rem 1rem; border:1px solid var(--green); border-radius:5px; background:var(--surface); color:var(--green-deep); font-weight:750; }
+.control-pair-swap button:hover:not(:disabled) { background:#e2ede5; }
+.control-pair-swap button:disabled { opacity:.6; }
 .pair-editions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
   gap:.65rem; margin:1rem 0; }
 .pair-edition { margin:0; padding:.8rem 1rem; border-radius:6px;

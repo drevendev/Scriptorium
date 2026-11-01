@@ -96,3 +96,12 @@ spaces**, lawful use evidence, source matching and the existing metric gate.
 
 The synthetic test EPUBs contain only original short text and intentionally
 hostile ZIP/XML inputs. No copyrighted full book is committed.
+
+## Compare two local EPUB editions
+
+`scriptorium compare --epubs first.epub second.epub --format markdown --output comparison.md`
+uses this same bounded XHTML spine extraction and canonical 29-metric comparison
+without writing book prose or intermediate reports. Source hashes identify the
+extracted text bodies, not ZIP archives; run `scriptorium epub --provenance-output`
+on each file for archive-level identity. No translator/edition proof or FantLab
+parity is implied (M2 0/5).

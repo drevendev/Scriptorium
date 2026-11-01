@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 389
+STATE_REVISION: 390
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #388 independently accepted and merged at b5fcef586fd922a73751040a0f45c92ca5019ab9; canonical EPUB Markdown reports proposed for later acceptance.
+LAST_RESULT: #389 independently accepted and merged at 96a8cda6914b4516e8371dc08b1f20de0922582c; direct EPUB-to-EPUB comparisons proposed for later acceptance.
 LAST_VERIFIED_PROGRESS: Ten measured Russian books, 269 metric rows (225 numeric, 44 unavailable); M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CLI-EPUB-MARKDOWN
-ISSUE: independent private EPUB output-format parity; builds on the merged EPUB CLI and analyzer Markdown renderer
+UNIT_ID: SCRIP-CLI-DIRECT-EPUB-COMPARE
+ISSUE: compare two private EPUB editions without staging JSON reports
 STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-epub-markdown-reports
-BASE: b5fcef586fd922a73751040a0f45c92ca5019ab9
+BRANCH: scrip-compare-direct-epubs
+BASE: 96a8cda6914b4516e8371dc08b1f20de0922582c
 
-ACCEPTANCE: An unencrypted, bounded local EPUB with XHTML spine can emit a private 29-metric Markdown report using the existing `analyze.render_markdown` serializer, with the same exact body hash, normalized identity, absent-value semantics and inferred/extension labels as JSON/HTML/CSV. `--title` is escaped, no manuscript prose is embedded, provenance receipt stays source-free, and existing destinations are not overwritten. Focused positive/negative EPUB CLI tests and later full exact-head CI must pass before independent later-run merge. Scientific M2 0/5 and live browser verification remain separate.
+ACCEPTANCE: `scriptorium compare --epubs A.epub B.epub --format markdown --output pair.md` reuses bounded EPUB extraction and the 29-metric analyzer/comparator. All four outputs are byte-identical to the staged EPUB JSON path; body/archive identity is labelled correctly; malformed/unsafe/symlinked inputs and occupied output are rejected; no original prose or intermediate output is created. Later exact-head CI and independent acceptance gate merge. M2 0/5 unchanged.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Local EPUB → readable Markdown metrics with source-verified identities, consistent with TXT and existing private comparisons.
+Milestone: Local EPUB-to-EPUB comparison with exact 29-metric, source-free differences; useful for investigating independently identified translations.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge EPUB Markdown output | Exact-head code review, positive/negative EPUB CLI test, applicable full CI | Later wake/checks |
-| P2 | Second measured Russian translation | Distinct legal source, translator/edition, hashes, reproducible measures | Independent frozen edition |
-| P3 | Verify root Reader live | Current master Pages, HTTP, desktop/mobile/keyboard | Browser HTTP restricted |
-| P4 | #282 pylem N discriminator | Native noun/cardinal positive/negative evidence | Runtime source enum unavailable |
-| P5 | #281 cross-work FantLab parity | Exact input identity and displayed-rounding evidence | Input identity UNKNOWN |
+| P1 | Independently accept/merge EPUB comparison | Fresh diff and exact-head applicable checks, focused positive/negative CLI tests | Later wake |
+| P2 | Second measured Russian translation | Legal source/translator/edition/digests and reproducible metrics | Independent frozen edition |
+| P3 | Verify root Reader live | Master Pages HTTP and real desktop/mobile/keyboard | Browser HTTP restricted |
+| P4 | #282 pylem N discriminator | Native noun/cardinal evidence | Runtime source enum unavailable |
+| P5 | #281 strict FantLab parity | Exact input identity and displayed-rounding evidence | Input identity UNKNOWN |
 
 ## Retained evidence and scientific gates
 

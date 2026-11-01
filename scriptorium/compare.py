@@ -19,6 +19,7 @@ from .analyze import (
     LocalInputError, build_local_analysis, _markdown_text, _read_bounded_regular_file, _write_new,
 )
 from .csv_safety import safe_csv_text
+from .epub import EpubError, MAX_ARCHIVE_BYTES, extract_epub
 from .metric_labels import METRIC_LABELS
 from .metrics import analyze_deterministic_metrics
 
@@ -542,10 +543,12 @@ small{display:block;font-size:.75rem;font-weight:400;color:#4f635a}details summa
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Compare two local Reader JSON reports, or UTF-8 manuscripts with --texts.")
+    parser = argparse.ArgumentParser(description="Compare two Reader JSON reports, UTF-8 texts, or EPUB XHTML-spine bodies.")
     parser.add_argument("left", type=Path)
     parser.add_argument("right", type=Path)
-    parser.add_argument("--texts", action="store_true", help="Read two local UTF-8 manuscripts directly, not analysis JSON")
+    input_modes = parser.add_mutually_exclusive_group()
+    input_modes.add_argument("--texts", action="store_true", help="Read two local UTF-8 manuscripts directly, not analysis JSON")
+    input_modes.add_argument("--epubs", action="store_true", help="Read two local unencrypted EPUBs through bounded XHTML-spine extraction")
     parser.add_argument("--format", choices=("json", "html", "csv", "markdown"), default="html")
     parser.add_argument("--title", default="Two private analyses")
     parser.add_argument("--output", type=Path)
@@ -556,6 +559,13 @@ def main(argv: list[str] | None = None) -> int:
             # 'analyze A/B -> compare'; never store or export source prose.
             left = build_local_analysis(_read_bounded_regular_file(args.left, MAX_ANALYSIS_BYTES, "manuscript"))
             right = build_local_analysis(_read_bounded_regular_file(args.right, MAX_ANALYSIS_BYTES, "manuscript"))
+        elif args.epubs:
+            # Reuse `epub A/B -> compare` without writing source prose or
+            # intermediate reports. Raw SHA-256 identifies the extracted body,
+            # NOT the EPUB ZIP archive (see `epub --provenance-output`).
+            left_body, _ = extract_epub(_read_bounded_regular_file(args.left, MAX_ARCHIVE_BYTES, "EPUB"))
+            right_body, _ = extract_epub(_read_bounded_regular_file(args.right, MAX_ARCHIVE_BYTES, "EPUB"))
+            left, right = build_local_analysis(left_body), build_local_analysis(right_body)
         else:
             left, right = load_report(args.left), load_report(args.right)
         comparison = build_comparison(left, right)
@@ -569,9 +579,11 @@ def main(argv: list[str] | None = None) -> int:
             _write_new(args.output, rendered)
     except FileExistsError:
         parser.error("comparison output already exists; choose another destination")
-    except (LocalInputError, CompareError):
+    except (LocalInputError, CompareError, EpubError):
         if args.texts:
             parser.error("invalid or unsupported UTF-8 manuscripts; check the two input files")
+        if args.epubs:
+            parser.error("invalid or unsupported EPUB archives; check the two input files")
         parser.error("invalid or unsupported local analysis JSON; check the two generated reports")
     except UnicodeDecodeError:
         parser.error("manuscripts must be UTF-8")

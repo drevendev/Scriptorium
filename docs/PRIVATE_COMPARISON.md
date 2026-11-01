@@ -13,6 +13,8 @@ scriptorium compare first.json second.json --format csv --output comparison.csv
 scriptorium compare first.json second.json --format markdown --output comparison.md
 # Equivalently, analyze two local UTF-8 manuscripts in one private step:
 scriptorium compare --texts first.txt second.txt --format markdown --output direct.md
+# Compare local EPUB editions directly, without intermediate reports:
+scriptorium compare --epubs edition-a.epub edition-b.epub --format markdown --output editions.md
 ```
 
 `--texts` reads each selected UTF-8 manuscript as a bounded regular, non-symlink
@@ -26,6 +28,15 @@ remains atomic and create-only. Imported
 JSON hashes are still unverified declarations; direct-text hashes originate
 from the locally read input bytes. Neither route establishes legal provenance,
 FantLab input identity or parity (M2 0/5).
+
+The mutually exclusive `--epubs` mode reuses the same bounded EPUB 2/3 XHTML-spine
+reader and canonical analyzer as `scriptorium epub` (32 MiB per archive, no DRM
+bypass, no remote requests). It writes no intermediate prose or JSON; output is
+byte-identical to first generating two EPUB analysis JSON reports and comparing
+them. SHA-256 source fields denote **extracted UTF-8 body bytes**, not ZIP archive
+bytes. Use `epub --provenance-output` for archive and body identity receipts.
+Encrypted, unsafe, malformed, symlinked or unreadable EPUB files fail closed.
+Neither translation authorship nor source-edition/FantLab identity is inferred.
 
 The Markdown report is a fully offline 29-row table with exact right-minus-left
 values, explicit unavailable/incomparable statuses, source hashes, profile and

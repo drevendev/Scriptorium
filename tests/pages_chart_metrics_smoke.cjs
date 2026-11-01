@@ -1,4 +1,4 @@
-/* Exercise shipped chart code, with the real pinned ten-book evidence JSON. */
+/* Exercise shipped chart code, with the real pinned eleven-book evidence JSON. */
 "use strict";
 const assert=require("node:assert/strict");
 const fs=require("node:fs");
@@ -13,7 +13,7 @@ const metrics=new Function(source.slice(source.indexOf("  const metrics ="),sour
 const ids=Object.keys(metrics);
 assert.equal(ids.length,8);
 const measured=catalog.books.filter(b=>b.text_status==="measured");
-assert.equal(measured.length,10);
+assert.equal(measured.length,11);
 const node=tag=>({tag,children:[],style:{},attrs:{},className:"",textContent:"",appendChild(n){this.children.push(n);return n;},setAttribute(k,v){this.attrs[k]=v;},replaceChildren(f){this.children=f.children;}});
 const elements={"chart-series":node("div"),"chart-unit":node("p"),"chart-table-rows":node("tbody"),"chart-table-caption":node("caption")};
 const chartSortButton=node("button");
@@ -25,11 +25,11 @@ const render=(id,data=catalog,sorted=false)=>action(data,metrics,id,(book,key)=>
 for(const id of ids){
   render(id);
   const rows=elements["chart-series"].children;
-  assert.equal(rows.length,10,id);
+  assert.equal(rows.length,11,id);
   const tab=elements["chart-table-rows"].children;
-  assert.equal(tab.length,10,id);
-  assert.ok(elements["chart-table-caption"].textContent.includes("из 10"),id);
-  for(let i=0;i<10;i++){
+  assert.equal(tab.length,11,id);
+  assert.ok(elements["chart-table-caption"].textContent.includes("из 11"),id);
+  for(let i=0;i<11;i++){
     assert.equal(tab[i].children[0].tag,"th",id);
     assert.equal(tab[i].children[0].textContent,measured[i].display_title,id);
     assert.equal(tab[i].children[2].textContent,metrics[id][1],id);
@@ -37,11 +37,11 @@ for(const id of ids){
     assert.equal(tab[i].children[1].textContent,field&&Number.isFinite(field.actual)?String(field.actual):"нет данных",id);
   }
   const expected=measured.filter(book=>book.metrics.some(m=>m.id===id&&Number.isFinite(m.actual))).length;
-  assert.equal(expected,id.includes("mean_dialogue_sentence")||id.includes("mean_narration_sentence")?9:10,id);
-  assert.ok(elements["chart-unit"].textContent.includes(expected+" из 10"),id);
+  assert.equal(expected,id.includes("mean_dialogue_sentence")||id.includes("mean_narration_sentence")?10:11,id);
+  assert.ok(elements["chart-unit"].textContent.includes(expected+" из 11"),id);
   assert.equal(buttons.filter(btn=>btn.attrs["aria-pressed"]==="true").length,1,id);
   const missing=rows.filter(row=>row.className.includes("chart-missing"));
-  assert.equal(missing.length,10-expected,id);
+  assert.equal(missing.length,11-expected,id);
   for(const row of missing){assert.equal(row.children[2].textContent,"нет данных");assert.equal(row.children[1].children.length,0);}
 }
 render("fantlab.dialogue.mean_dialogue_sentence_length_chars");
@@ -110,7 +110,7 @@ const printCss=fs.readFileSync(path.join(root,"assets/pages-reader.css"),"utf8")
 assert.match(printCss,/\.chart-table td:nth-child\(2\).*overflow-wrap:anywhere/);
 assert.match(printCss,/@media print \{[\s\S]*\.chart-table summary \{ display:none; \}/);
 console.log("Print preview opens the exact chart table and restores disclosure state: PASS");
-console.log("Ten-book real charts and exact-value accessible tables: measured/missing/zero PASS");
+console.log("Eleven-book real charts and exact-value accessible tables: measured/missing/zero PASS");
 
 /* Exercise chart URL selection against shipped code and real Node URL handling. */
 const linkStart=source.indexOf("  // Share an allow-listed chart");

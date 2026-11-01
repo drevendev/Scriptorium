@@ -56,9 +56,9 @@ class OblomovReaderTests(unittest.TestCase):
         self.assertIn('data-status="measured" data-catalog-key="oblomov"',html)
         self.assertIn('data-book="oblomov"',html)
         self.assertIn('<tr><th scope="row">Обломов</th><td>41.849119265457624</td><td>%</td></tr>',html)
-        self.assertEqual(self.catalog["counts"]["metrics_total"],269)
-        self.assertEqual(self.catalog["counts"]["numeric_total"],225)
-        self.assertEqual(self.catalog["counts"]["unavailable_total"],44)
+        self.assertEqual(self.catalog["counts"]["metrics_total"],298)
+        self.assertEqual(self.catalog["counts"]["numeric_total"],249)
+        self.assertEqual(self.catalog["counts"]["unavailable_total"],49)
         self.assertEqual(self.catalog["counts"]["m2_source_matched"],0)
     def test_tampering_rejected(self):
         for change in (

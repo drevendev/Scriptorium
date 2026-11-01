@@ -55,6 +55,8 @@ jobs:
           print('Raw body sha256=', m['literary_body_identity']['raw_sha256'])
           print('Normalized body sha256=', m['literary_body_identity']['normalized_sha256'])
           PY
+          # Only derived identities/metadata (never source prose) are emitted for review.
+          cat build/repro/robinson-shishmareva.body.json
       - name: Verify retained body manifest (when present)
         run: |
           file=corpus/candidates/source-edition-traces/defoe-robinson-crusoe-shishmareva-1935-ru.body.json

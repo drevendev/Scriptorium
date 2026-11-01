@@ -31,6 +31,51 @@ SCHEMA = "scriptorium-robinson-shishmareva-literary-body-v1"
 _CATEGORY = re.compile(r"\[\[\s*Категория\s*:[^\[\]]+\]\]", re.IGNORECASE)
 _INLINE_TEMPLATE = re.compile(r"\{\{(?P<name>[A-Za-zА-Яа-яёЁ0-9]+)\|(?P<arg>[^{}|]*)(?P<tail>\|[^{}]*)?\}\}")
 _PLAIN_HEADING = re.compile(r"(?m)^[ \t]*(?P<marks>={2,3})[ \t]*(?P<label>[^=\n][^\n]*?)[ \t]*(?P=marks)[ \t]*$")
+
+_TABLE_BLOCK = re.compile(r"(?ms)^\{\|[^\n]*\n.*?^\|\}[ \t]*(?:\n|$)")
+_CELL_ATTRIBUTES = re.compile(r"^(?:style|class|align|valign|width|colspan|rowspan)\s*=", re.I)
+
+
+def _render_wiki_table(match: re.Match[str]) -> str:
+    """Preserve prose from a bounded well-formed Wikisource table, not layout.
+
+    Never drop a cell's words. Only recognized layout attributes can be removed;
+    unknown table syntax is rejected instead of becoming linguistic input.
+    """
+    lines = match.group(0).strip().splitlines()
+    if len(lines) < 3 or not lines[0].startswith("{|") or lines[-1].strip() != "|}":
+        raise ValueError("malformed direct-prose table")
+    if "{{" in lines[0] or "}}" in lines[0]:
+        raise ValueError("template in table layout")
+    cells: list[str] = []
+    for line in lines[1:-1]:
+        trimmed = line.lstrip()
+        if trimmed.startswith("|-"):
+            if "{{" in trimmed or "}}" in trimmed:
+                raise ValueError("template in table row layout")
+            continue
+        if trimmed.startswith("|+"):
+            cells.append(trimmed[2:].strip())
+            continue
+        if trimmed.startswith("!") or trimmed.startswith("{|") or trimmed.startswith("|}"):
+            raise ValueError("unsupported nested table/header syntax")
+        if trimmed.startswith("|"):
+            for cell in trimmed[1:].split("||"):
+                cell = cell.strip()
+                if _CELL_ATTRIBUTES.match(cell):
+                    if "|" not in cell:
+                        raise ValueError("unclosed table cell attributes")
+                    _, cell = cell.split("|", 1)
+                if cell.strip():
+                    cells.append(cell.strip())
+        elif trimmed:
+            if not cells:
+                raise ValueError("table text without preceding cell")
+            cells[-1] += " " + trimmed
+    if not cells:
+        raise ValueError("table contains no visible literary cells")
+    return "\n\n" + "\n\n".join(cells) + "\n\n"
+
 _BQ_TAG = re.compile(r"</?blockquote\s*>", re.IGNORECASE)
 _REF_TAG = re.compile(r"<ref\b", re.IGNORECASE)
 _NONBODY_MARKUP = re.compile(r"<\s*pages\b|\{\{\s*:|<\s*/?\s*(?:includeonly|noinclude|onlyinclude)\b", re.I)
@@ -121,6 +166,9 @@ def extract_literary_body(source: str) -> str:
 
     story = _PLAIN_HEADING.sub(plain_heading, story)
     story = _INLINE_TEMPLATE.sub(_replace_template, story)
+    if story.count("{|" ) != 2 or story.count("|}") != 2:
+        raise ValueError("expected exactly two direct-prose literary tables")
+    story = _TABLE_BLOCK.sub(_render_wiki_table, story)
     if "{{" in story or "}}" in story:
         raise ValueError("unresolved nested/body template")
     if story.count("<blockquote>") != story.count("</blockquote>"):

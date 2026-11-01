@@ -61,6 +61,12 @@ jobs:
           print('Exact two-revision source-free inventory captured; full literary bodies remain NOT_RUN')
           PY
 
+      - name: Ensure exact deterministic inventory matches the retained witness
+        run: |
+          cmp \
+            corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+            build/repro/robinson-translations.revision-inventory.json
+
       - name: Upload only source-free revision inventory
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:

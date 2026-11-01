@@ -3,14 +3,14 @@
 STATE_REVISION: 394
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #393 independently merged at 9a59cc4f5449588f1b49dc95a233861499917c7a. Shishmareva first-narrative source identity is frozen (oldid 5634933, 572,587 literary characters, normalized SHA-256 61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f). Implemented a separately versioned source-free 29-field measurement workflow and negative regressions in a new PR; hosted actual metrics, artifact retention and fresh CI acceptance remain required.
-LAST_VERIFIED_PROGRESS: Ten published measured Russian books, 269 metric rows (225 numeric, 44 unavailable); Shishmareva is a measured-candidate PR, NOT YET part of Reader. M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
+LAST_RESULT: #393 independently merged at 9a59cc4f5449588f1b49dc95a233861499917c7a. Shishmareva first-narrative source identity is frozen (oldid 5634933, 572,587 literary characters, normalized SHA-256 61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f). PR #394 has a separately versioned 29-field source-free measurement: official exact-oldid hosted run 41354289366 passed, measuring 93,704 words and 4,382 sentences with 24 actual / five dictionary-unbound NOT_RUN fields. Derived JSON retained on the PR branch; final exact-head artifact cmp/CI and later independent merge remain required.
+LAST_VERIFIED_PROGRESS: Ten published measured Russian books, 269 metric rows (225 numeric, 44 unavailable); Shishmareva has a source-free 24 numeric / five NOT_RUN PR artifact, NOT YET part of Reader. M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
 UNIT_ID: SCRIP-CORPUS-ROBINSON-SHISHMAREVA-MEASURED
 ISSUE: compute 29 real source-free metric rows from exact replay-verified Shishmareva 1935 first narrative; do not claim English original or FantLab source identity
-STATUS: PR_PENDING_CI_AND_LATER_ACCEPTANCE
+STATUS: PR_PENDING_EXACT_HEAD_CI_AND_LATER_ACCEPTANCE
 BRANCH: scrip-robinson-shishmareva-measured
 BASE: 9a59cc4f5449588f1b49dc95a233861499917c7a
 

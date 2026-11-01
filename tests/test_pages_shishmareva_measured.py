@@ -65,7 +65,7 @@ class ShishmarevaReaderTests(unittest.TestCase):
 
     def test_exact_source_translation_and_metric_identity(self):
         raw = PATH.read_bytes()
-        self.assertEqual(sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest(), BLOB_SHA)
+        self.assertEqual(sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest(), BLOB_SHA)
         check(self.artifact, self.book)
         self.assertNotIn("literary_body", self.artifact)
         self.assertNotIn("wikitext", self.artifact)

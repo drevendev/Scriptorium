@@ -66,6 +66,10 @@ main { max-width:1300px; margin:0 auto; padding:0 clamp(1rem,3vw,2.5rem) 4rem; }
 .chart-share { margin:-.3rem 0 1rem; color:#e3efe9; font-size:.8rem; line-height:1.5; }
 .chart-share a { display:inline-flex; align-items:center; min-height:44px; color:#f4cf99; font-weight:750; }
 .chart-share a:focus-visible { outline-color:#f4cf99; }
+.chart-share button { min-height:44px; margin:.3rem .45rem .3rem .7rem; padding:.45rem .75rem; border:2px solid #f4cf99; border-radius:5px; background:#f4cf99; color:#193327; font:750 .8rem/1.3 system-ui,sans-serif; cursor:pointer; }
+.chart-share button:focus-visible { outline:3px solid #fff; outline-offset:3px; }
+.chart-share button[hidden] { display:none !important; }
+.chart-share .copy-feedback { display:inline-block; color:#e3efe9; font-weight:700; }
 @media print { .chart-share { display:none !important; } }
 .chart-foot { border-top:1px solid #527469; padding-top:1rem; margin:1.2rem 0 0; color:#dae9dd; font-size:.78rem; }
 .facts { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:4rem; }

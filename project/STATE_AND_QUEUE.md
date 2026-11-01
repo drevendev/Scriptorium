@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 391
+STATE_REVISION: 392
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #390 independently merged at dcd90599f8411170e6ac775d348b745e5aeb9e8d. Source-screened Robinson translation pair proposed; no new measurements.
+LAST_RESULT: #391 independently merged at 3cd4ab7878f46439a1c8ba4ed9bb25f57130d0cc. Exact-oldid Robinson translation source-free inventory probe proposed; raw/body facts NOT_RUN until CI.
 LAST_VERIFIED_PROGRESS: Ten measured Russian books, 269 metric rows (225 numeric, 44 unavailable); M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-ROBINSON-PAIR-SCREEN
-ISSUE: independent translator/edition/rights witnesses for a meaningful Russian translation pair
+UNIT_ID: SCRIP-CORPUS-ROBINSON-REVISION-PROBE
+ISSUE: execute source-free exact-oldid inventory before choosing literary body extraction contracts
 STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-robinson-translation-pair
-BASE: dcd90599f8411170e6ac775d348b745e5aeb9e8d
+BRANCH: scrip-robinson-pinned-revision-inventory
+BASE: 3cd4ab7878f46439a1c8ba4ed9bb25f57130d0cc
 
-ACCEPTANCE: Two primary Wikisource oldids, distinct translators, edition and source-language scope, explicit PD statements, no invented body digests/counts and no false parity. Later-run PR acceptance required.
+ACCEPTANCE: Official MediaWiki API returns only the two exact oldids; strict provider/revision validation, source-free wikitext digests and markup topology; positive/negative regressions and a scoped CI artifact. No literary-body or threshold claims until independently frozen; later-run exact-head CI acceptance required.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,9 +22,9 @@ Milestone: two independently frozen and measured translations of the first Robin
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept/merge translation-pair screening | Fresh source/diff and exact-head applicable checks | Later wake |
-| P2 | Freeze Shishmareva + Trusov first-book literary bodies | Exact oldid bytes, body SHA-256, >=300k EACH, independent rights/edition identity | MediaWiki body replay |
-| P3 | Publish source-free pair comparison | Deterministic 29-metric data and transparent intermediary/orthography caveats | P2 |
+| P1 | Accept/merge exact-oldid inventory probe | Fresh exact-head CI, two source-free identities, no prose leakage or body overclaim | Later wake; official MediaWiki fetch |
+| P2 | Inspect observed Trusov/Shishmareva markup and freeze both literary bodies | Confirm scope/transclusions; exact body SHA-256 and >=300k EACH | P1 inventory + edition boundary evidence |
+| P3 | Publish reproducible 29-metric translation comparison | Both body hashes, derivation versions, confounders and source-free Reader data | P2 |
 | P4 | Verify root Reader live (#285) | HTTP and desktop/mobile/keyboard | Browser HTTP restricted |
 | P5 | #282/#281 AOT/FantLab compatibility | Native POS resolution or exact benchmark input identity | Evidence missing |
 

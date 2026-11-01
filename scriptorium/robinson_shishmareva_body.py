@@ -128,6 +128,17 @@ def extract_literary_body(source: str) -> str:
     story = _BQ_TAG.sub("\n\n", story)
     if _REF_TAG.search(story) and story.lower().count("<ref") != story.lower().count("</ref>"):
         raise ValueError("unsupported or unbalanced editorial notes")
+    # Fail closed with source-free aggregate counts of unsupported structures.
+    structural = {
+        "table_open": len(re.findall(r"(?m)^[ \t]*\{\|", story)),
+        "table_row": len(re.findall(r"(?m)^[ \t]*\|-", story)),
+        "table_close": len(re.findall(r"(?m)^[ \t]*\|\}", story)),
+        "leading_pipe": len(re.findall(r"(?m)^[ \t]*\|[^|]", story)),
+        "leading_bang": len(re.findall(r"(?m)^[ \t]*!", story)),
+        "unresolved_heading": len(re.findall(r"(?m)^[ \t]*={2,6}", story)),
+    }
+    if any(structural.values()):
+        raise ValueError(f"unsupported structural markup counts: {structural}")
     body = extract_transcription_body(f'<div class="text">{subtitle}\n\n{story}</div>')
     if len(body) < 300_000:
         raise ValueError("actual literary body below 300000-character threshold")

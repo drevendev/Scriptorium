@@ -1,0 +1,61 @@
+{
+  "schema_version": "scriptorium-translation-pair-screening-v1",
+  "screened_at": "2026-11-01",
+  "original_work": {
+    "author": "Daniel Defoe",
+    "title": "Robinson Crusoe (first narrative)",
+    "language": "en",
+    "first_publication_year": 1719
+  },
+  "witnesses": [
+    {
+      "work_id": "defoe-robinson-trusov-1775-vol1-ru",
+      "translator": "Yakov Ivanovich Trusov",
+      "source_language": "fr",
+      "analysis_language": "ru",
+      "translation_first_published": "1762-1764",
+      "edition": "St Petersburg: Imperial Academy of Sciences, second edition 1775, volume 1",
+      "scope": "First Robinson narrative ONLY; 1775 volume 2 continues with other adventures and MUST be excluded",
+      "source_revision": "https://ru.wikisource.org/w/index.php?oldid=5041937",
+      "revision_oldid": 5041937,
+      "rights_source_label": "PD-old-70",
+      "rights_statement": "Russian Wikisource declares the original and translation public domain and notes CC BY-SA terms for website contributions",
+      "source_wikitext_sha256": null,
+      "literary_body_sha256": null,
+      "literary_characters_including_spaces": null,
+      "extraction_status": "NOT_RUN",
+      "admitted_for_calibration": false
+    },
+    {
+      "work_id": "defoe-robinson-shishmareva-1935-vol1-ru",
+      "translator": "Maria Andreevna Shishmareva",
+      "source_language": "en",
+      "analysis_language": "ru",
+      "translation_first_published": "1928-12-22 per Wikisource",
+      "edition": "Moscow-Leningrad: ACADEMIA 1935, vol. 1, edited by A. Frankovsky",
+      "scope": "First Robinson narrative ONLY; exclude editorial foreword and later volumes",
+      "source_revision": "https://ru.wikisource.org/w/index.php?oldid=5634933",
+      "revision_oldid": 5634933,
+      "rights_source_label": "PD-old-70",
+      "rights_statement": "Russian Wikisource explicitly declares original and translator rights expired in Russia/life-plus-70 jurisdictions; website contributions subject to CC BY-SA terms",
+      "source_wikitext_sha256": null,
+      "literary_body_sha256": null,
+      "literary_characters_including_spaces": null,
+      "extraction_status": "NOT_RUN",
+      "admitted_for_calibration": false
+    }
+  ],
+  "comparison": {
+    "source_languages_differ": true,
+    "historical_orthography_confounded": true,
+    "first_narrative_scope_match": "NOT_VERIFIED",
+    "comparison_status": "NOT_RUN",
+    "corpus_char_threshold_including_spaces": 300000,
+    "threshold_verified_for_each": false,
+    "fantlab_input_identity": "UNKNOWN",
+    "fantlab_parity_admissible": false,
+    "m2_contribution": 0,
+    "interpretation": "Differences cannot be attributed to translation style alone: the French intermediary, historical spelling, editorial scope and possible abridgment must be assessed."
+  },
+  "next_executable": "Replay each exact MediaWiki revision; fail-closed body extraction excluding other volumes/foreword; record raw and normalized SHA-256 and character counts; only then analyze and publish clearly diagnostic comparison."
+}

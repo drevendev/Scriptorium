@@ -1,16 +1,16 @@
 {
   "schema": "scriptorium-ru-reader-v2",
-  "produced_from": "measured-four-at-master-f8479c7; hyperboloid-ci-40469834658; beketova-source-free-blobs; resurrection-129-revision-ci-40653324912; road-nowhere-ci-40969367325-source-free-retention; oblomov-merged-pr-367-oldid-5724579; humiliated-retained-pr-370-oldid-5611473",
+  "produced_from": "measured-four-at-master-f8479c7; hyperboloid-ci-40469834658; beketova-source-free-blobs; resurrection-129-revision-ci-40653324912; road-nowhere-ci-40969367325-source-free-retention; oblomov-merged-pr-367-oldid-5724579; humiliated-retained-pr-370-oldid-5611473; shishmareva-measured-pr-394-oldid-5634933",
   "language_module": "ru",
   "scientific_claim": "DIAGNOSTIC_ONLY",
   "fantlab_input_identity": "UNKNOWN",
   "counts": {
-    "work_count": 12,
-    "measured_works": 10,
+    "work_count": 13,
+    "measured_works": 11,
     "awaiting_measurement": 2,
-    "metrics_total": 269,
-    "numeric_total": 225,
-    "unavailable_total": 44,
+    "metrics_total": 298,
+    "numeric_total": 249,
+    "unavailable_total": 49,
     "m2_source_matched": 0
   },
   "books": [
@@ -2201,6 +2201,245 @@
     },
     {
       "language": "ru",
+      "original_title": "Robinson Crusoe",
+      "translator": {
+        "id": "maria-shishmareva",
+        "name": "Мария Шишмарёва",
+        "authority_trace": "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.json"
+      },
+      "metrics": [
+        {
+          "id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+          "actual": 40.853658536585364,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+          "actual": 125,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.mean_narration_sentence_length_chars",
+          "actual": 128.74357224118316,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.dialogue.share_percent",
+          "actual": 0.2405145502922629,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.characters",
+          "actual": 572587,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_sentence_length_chars",
+          "actual": 129.45025102692836,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.mean_word_length_chars",
+          "actual": 4.892469905233502,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.general.words",
+          "actual": 93704,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.colon.per_1000_words",
+          "actual": 5.7734995304362675,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.comma.per_1000_words",
+          "actual": 126.44070690685562,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.dash.per_1000_words",
+          "actual": 6.648595577563391,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.ellipsis.per_1000_words",
+          "actual": 0.13873473917869034,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation.per_1000_words",
+          "actual": 1.430035003841885,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+          "actual": 0.010671903013745411,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.parentheses.per_1000_words",
+          "actual": 1.8035516093229744,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.period.per_1000_words",
+          "actual": 43.690770938273715,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question.per_1000_words",
+          "actual": 1.6541449671305388,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_ellipsis.per_1000_words",
+          "actual": 0.010671903013745411,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.question_exclamation.per_1000_words",
+          "actual": 0,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.quote.per_1000_words",
+          "actual": 5.261248185776488,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.semicolon.per_1000_words",
+          "actual": 6.541876547425937,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.punctuation.triple_exclamation.per_1000_words",
+          "actual": 0,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_dictionary",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.active_nondictionary",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_10000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_100000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.uasz_3000",
+          "actual": null,
+          "reference": null,
+          "status": "not_run",
+          "kind": "candidate"
+        },
+        {
+          "id": "fantlab.vocabulary.unique_words",
+          "actual": 16739,
+          "reference": null,
+          "status": "measured",
+          "kind": "candidate"
+        },
+        {
+          "id": "scriptorium.general.sentences",
+          "actual": 4382,
+          "reference": null,
+          "status": "measured",
+          "kind": "extension"
+        }
+      ],
+      "measured": 24,
+      "unavailable": 5,
+      "key": "shishmareva",
+      "candidate_id": "defoe-robinson-shishmareva-1935-vol1-ru",
+      "title": "Robinson Crusoe",
+      "author": "Daniel Defoe",
+      "display_title": "Робинзон Крузо · Шишмарёва",
+      "display_author": "Даниэль Дефо",
+      "family_id": "defoe-robinson-crusoe-first-narrative",
+      "edition_id": "ru-shishmareva-academia-1935-vol1-oldid-5634933",
+      "original_language": "en",
+      "text_status": "measured",
+      "source_sha256": "61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f",
+      "source_revision_id": 5634933,
+      "blob_sha1": "0afd42fe5825b7eb6b07ca209aef963e006f333b",
+      "evidence_url": "https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/defoe-robinson-crusoe-shishmareva-1935-ru.measured.json",
+      "fantlab_url": null,
+      "profiles": {
+        "dialogue": "scriptorium-dialogue-v1",
+        "metrics": "scriptorium-metrics-v4",
+        "normalization": "scriptorium-text-v1",
+        "punctuation": "scriptorium-punctuation-v2",
+        "vocabulary": "scriptorium-vocabulary-v1"
+      },
+      "source_family_note": "ACADEMIA 1935, vol. 1, first Robinson narrative, Wikisource oldid 5634933, print collation NOT_RUN; FantLab input UNKNOWN; Trusov not measured; DIAGNOSTIC_ONLY"
+    },
+    {
+      "language": "ru",
       "original_title": null,
       "translator": null,
       "metrics": [],
@@ -2244,7 +2483,7 @@
     "ru": {
       "state": "active",
       "analyzer_profile": "scriptorium-metrics-v4",
-      "measured_work_count": 10
+      "measured_work_count": 11
     },
     "en": {
       "state": "planned_not_measured",

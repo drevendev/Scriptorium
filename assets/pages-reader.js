@@ -475,7 +475,8 @@
     chartSortButton.textContent=sortChart ? "Вернуть порядок каталога" : "Сортировать по значению ↓";
   }
 
-  // Only allow-listed metric and descending order can control a shared chart.
+  // Share an allow-listed chart, never an arbitrary metric or data source.
+  // Ranking is an explicit, validated presentation option.
   function chartFromUrl() {
     const requested = new URLSearchParams(window.location.search).get("metric");
     return Object.prototype.hasOwnProperty.call(metrics, requested) ? requested :

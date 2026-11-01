@@ -173,6 +173,8 @@ scriptorium compare analysis.json second-analysis.json --format csv --output com
 scriptorium compare analysis.json second-analysis.json --format markdown --output comparison.md
 # Or directly compare two private UTF-8 manuscripts without intermediate JSON:
 scriptorium compare --texts first-manuscript.txt second-manuscript.txt --format markdown --output direct-comparison.md
+# Or compare two private unencrypted EPUB editions without intermediate JSON:
+scriptorium compare --epubs translation-a.epub translation-b.epub --format markdown --output translations.md
 ```
 
 The `--texts` path runs the same local deterministic analyzer on both manuscripts
@@ -181,6 +183,14 @@ to 32 MiB. Its source-free output is byte-identical to the two-JSON-report path
 for the same input bytes and profiles. Unlike imported JSON, the hashes are
 computed from the actual selected local files; no edition identity or FantLab
 parity is established (M2 0/5).
+
+The `--epubs` mode uses the same bounded EPUB 2/3 XHTML-spine extractor and
+29-metric analyzer as the separate `scriptorium epub` command; all four export
+formats match separately analyzing each EPUB as JSON and comparing the two reports.
+No extracted prose or intermediate JSON is written. Comparison source hashes
+identify **extracted UTF-8 bodies, not EPUB archive bytes**; use
+`scriptorium epub --provenance-output` for archive/body identities. Encryption,
+DRM bypass, guessed translator/edition identities and FantLab parity are excluded.
 
 Use `comparison.md` for a portable Markdown table with complete provenance,
 29 metric comparisons, unknown/incompatible statuses and the unchanged scientific caveat.

@@ -1,30 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 386
+STATE_REVISION: 387
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #385 merged into master at 7394439fee89738a7a4f89e651e4c120849c4f9d; chart-specific source-bound CSV export prepared for independent acceptance.
+LAST_RESULT: #386 independently accepted and merged at 37474d215ef0861392a8b5ca91229732c21efa61; ranked chart permalinks proposed for later acceptance.
 LAST_VERIFIED_PROGRESS: Ten measured Russian books, 269 metric rows (225 numeric, 44 unavailable); M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-CHART-CSV
-ISSUE: Self-contained product slice with rationale in PR
+UNIT_ID: SCRIP-SITE-CHART-RANKED-LINK
+ISSUE: Self-contained Reader UX correctness fix (PR rationale)
 STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-reader-chart-csv-export
-BASE: 7394439fee89738a7a4f89e651e4c120849c4f9d
+BRANCH: scrip-reader-ranked-chart-permalinks
+BASE: 37474d215ef0861392a8b5ca91229732c21efa61
 
-ACCEPTANCE: All eight real Reader charts offer a ten-edition UTF-8 CSV using exact numbers (no chart rounding), displayed catalogue/ranked order, units, source SHA-256, translator identity, evidence URL and compatible profiles. Explicit missing/not-recorded is distinct from zero. Disabled before validation and in no-JS fallback. Positive/negative runtime and structural tests, exact-head later CI acceptance and separate live Pages/browser verification required. No parity claim, text or telemetry.
+ACCEPTANCE: All eight real ten-book charts preserve ranked/catalog ordering in explicit shareable links, reload and Back/Forward; sorting button updates URL without discarding unrelated reader state. Only `chart_order=ranked` selects descending order; invalid values default to catalogue. Chart CSV follows restored order, missing-last and true-zero semantics unchanged. Source-bound positive/negative tests and later exact-head CI pass; Pages/browser live verification remains separate. No prose, telemetry, fabricated values or scientific-gate changes.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Export trustworthy exact values behind real-book diagrams, with source provenance and scientific limitations.
+Milestone: Share exact source-backed Reader charts with their selected metric and ranking order.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge chart CSV PR | Exact-head diff, CI, source/status CSV tests | Later wake/checks |
-| P2 | Verify root Reader live | Current master Pages and actual desktop/mobile | Browser HTTP restricted |
-| P3 | Second measured Russian translation | Distinct legal source, translator, hashes, reproducible pair | Independent frozen edition |
+| P1 | Independently accept/merge ranked chart link PR | Exact-head diff, Node smoke, applicable CI, safe URL restore | Later wake/checks |
+| P2 | Second measured Russian translation | Distinct legal source, translator/edition, hashes, reproducible measures | Independent frozen edition |
+| P3 | Verify root Reader live | Current master Pages, HTTP, desktop/mobile/keyboard | Browser HTTP restricted |
 | P4 | #282 pylem N discriminator | Native noun/cardinal positive/negative evidence | Runtime source enum unavailable |
 | P5 | #281 cross-work FantLab parity | Exact input identity and displayed-rounding evidence | Input identity UNKNOWN |
 

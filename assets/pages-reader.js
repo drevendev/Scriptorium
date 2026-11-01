@@ -475,22 +475,33 @@
     chartSortButton.textContent=sortChart ? "Вернуть порядок каталога" : "Сортировать по значению ↓";
   }
 
-  // Share an allow-listed chart, never an arbitrary metric or data source.
+  // Only allow-listed metric and descending order can control a shared chart.
   function chartFromUrl() {
     const requested = new URLSearchParams(window.location.search).get("metric");
     return Object.prototype.hasOwnProperty.call(metrics, requested) ? requested :
       "fantlab.dialogue.share_percent";
+  }
+  function chartOrderFromUrl() {
+    return new URLSearchParams(window.location.search).get("chart_order")==="ranked";
+  }
+  function restoreChartFromUrl() {
+    sortChart=chartOrderFromUrl();
+    selectChart(chartFromUrl());
   }
   function selectChart(id, addHistory=false) {
     if (!Object.prototype.hasOwnProperty.call(metrics, id)) return;
     currentChart = id;
     updateChart();
     const link = el("share-chart");
-    link.href = "?metric=" + encodeURIComponent(id) + "#charts";
-    link.textContent = "Прямая ссылка на диаграмму «" + metrics[id][0] + "» ↗";
+    link.href = "?metric=" + encodeURIComponent(id) +
+      (sortChart ? "&chart_order=ranked" : "") + "#charts";
+    link.textContent = "Прямая ссылка на диаграмму «" + metrics[id][0] + "»" +
+      (sortChart ? " (по убыванию)" : "") + " ↗";
     if (addHistory) {
       const url = new URL(window.location.href);
       url.searchParams.set("metric", id);
+      if (sortChart) url.searchParams.set("chart_order","ranked");
+      else url.searchParams.delete("chart_order");
       url.hash = "charts";
       window.history.pushState(null, "", url);
     }
@@ -1134,7 +1145,7 @@
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
       }
-      chartSortButton.addEventListener("click",()=>{sortChart=!sortChart;updateChart();});
+      chartSortButton.addEventListener("click",()=>{sortChart=!sortChart;selectChart(currentChart,true);});
       chartCsvButton.addEventListener("click",exportChartCsv);
       for(const anchor of bookLinks) {
         anchor.addEventListener("click",event=>{
@@ -1154,7 +1165,7 @@
       one.addEventListener("change",()=>selectBook(one.value,true));
       window.addEventListener("popstate",()=>{
         restoreCatalogFromUrl();
-        selectChart(chartFromUrl());
+        restoreChartFromUrl();
         selectBook(bookFromUrl());
         const [left,right] = pairFromUrl();
         pairMetric.value=pairMetricFromUrl();
@@ -1171,7 +1182,7 @@
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairSwapButton.addEventListener("click",swapPair);
-      selectChart(chartFromUrl());
+      restoreChartFromUrl();
       const [left,right] = pairFromUrl();
       pairMetric.value=pairMetricFromUrl();
       selectPair(left,right);

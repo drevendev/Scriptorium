@@ -53,7 +53,7 @@ def main(argv: list[str] | None = None) -> int:
         print("  analyze     UTF-8 manuscript -> JSON, HTML, Markdown or CSV (29 metrics)")
         print("  epub        Local EPUB XHTML spine -> JSON/HTML/CSV/Markdown and source-free identity")
         print("  batch       Explicit UTF-8 manifest -> private JSON/HTML reports and index")
-        print("  compare     Two private JSON reports (or UTF-8 manuscripts with --texts) -> HTML/JSON/CSV/Markdown")
+        print("  compare     Two private JSON reports, --texts or --epubs -> HTML/JSON/CSV/Markdown")
         print("  diagnostic  Curated historical diagnostic -> offline HTML")
         print("  evidence    Source-free FantLab metric deltas (requires repository checkout; M2 0/5)")
         print("  n-evidence  Retained native AOT/pylem N-only uncertainty bounds (M2 0/5)")

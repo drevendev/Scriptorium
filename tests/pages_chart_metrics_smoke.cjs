@@ -124,8 +124,8 @@ function chartLinkHarness(query){
   win.history={pushState(_a,_b,url){win.location=new URL(String(url));}};
   let renders=0;
   const ctl=new Function("window","metrics","el","updateChart",
-    "let currentChart='fantlab.dialogue.share_percent';\n"+chartLinkCode+
-    "return {chartFromUrl,selectChart,current:()=>currentChart};")(
+    "let currentChart='fantlab.dialogue.share_percent',sortChart=false;\n"+chartLinkCode+
+    "return {chartFromUrl,chartOrderFromUrl,restoreChartFromUrl,selectChart,current:()=>currentChart,sorted:()=>sortChart,setSorted:v=>{sortChart=v;}};")(
       win,metrics,id=>{assert.equal(id,"share-chart");return anchor;},()=>renders++);
   return {win,anchor,ctl,renders:()=>renders};
 }
@@ -155,6 +155,40 @@ for(const invalid of [null,"does.not.exist","__proto__","constructor","toString"
   h.ctl.selectChart(invalid);
   assert.equal(h.renders(),n,"invalid metric must not render");
 }
+/* Ranked chart order is explicit in URLs and history; invalid modes fail closed. */
+for(const id of ids){
+  const h=chartLinkHarness(id);
+  h.ctl.setSorted(true);
+  h.ctl.selectChart(id,true);
+  assert.equal(h.anchor.href,"?metric="+encodeURIComponent(id)+"&chart_order=ranked#charts");
+  assert.ok(h.anchor.textContent.includes("по убыванию"));
+  assert.equal(h.win.location.searchParams.get("chart_order"),"ranked");
+  assert.equal(h.win.location.searchParams.get("book"),"beketova");
+  assert.equal(h.win.location.searchParams.get("right"),"waves");
+  h.ctl.setSorted(false);
+  h.ctl.selectChart(id,true);
+  assert.equal(h.win.location.searchParams.has("chart_order"),false,"catalog order removes URL override");
+  assert.equal(h.anchor.href,"?metric="+encodeURIComponent(id)+"#charts");
+  h.win.location=new URL("https://drevendev.github.io/Scriptorium/?metric="+encodeURIComponent(id)+"&chart_order=ranked#charts");
+  h.ctl.restoreChartFromUrl();
+  assert.equal(h.ctl.sorted(),true,"Back/Forward ranked order restoration");
+  assert.equal(h.ctl.current(),id);
+  assert.equal(h.anchor.href,"?metric="+encodeURIComponent(id)+"&chart_order=ranked#charts");
+  h.win.location=new URL("https://drevendev.github.io/Scriptorium/?metric="+encodeURIComponent(id)+"#charts");
+  h.ctl.restoreChartFromUrl();
+  assert.equal(h.ctl.sorted(),false,"Back/Forward catalogue order restoration");
+}
+for(const unsafe of ["no","ranked!","Ranked","__proto__","0","ranked%00"]){
+  const h=chartLinkHarness(fallbackChart);
+  h.win.location=new URL("https://drevendev.github.io/Scriptorium/?chart_order="+unsafe+"#charts");
+  h.ctl.restoreChartFromUrl();
+  assert.equal(h.ctl.sorted(),false,"unrecognised chart order must not sort: "+unsafe);
+  assert.equal(h.anchor.href,"?metric="+fallbackChart+"#charts");
+}
+assert.match(source,/chartSortButton\.addEventListener\("click",\(\)=>\{sortChart=!sortChart;selectChart\(currentChart,true\);\}\)/);
+assert.equal((source.match(/restoreChartFromUrl\(\);/g)||[]).length,2);
+console.log("Eight chart ranking permalinks, reload/history, invalid order and source wiring: PASS");
+
 const siteHtml=fs.readFileSync(path.join(root,"index.html"),"utf8");
 assert.match(siteHtml,/id="charts" aria-labelledby="chart-title"/);
 assert.match(siteHtml,/id="share-chart" href="\?metric=fantlab\.dialogue\.share_percent#charts"/);

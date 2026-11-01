@@ -11,7 +11,21 @@ scriptorium compare first.json second.json --output comparison.html
 scriptorium compare first.json second.json --format json --output comparison.json
 scriptorium compare first.json second.json --format csv --output comparison.csv
 scriptorium compare first.json second.json --format markdown --output comparison.md
+# Equivalently, analyze two local UTF-8 manuscripts in one private step:
+scriptorium compare --texts first.txt second.txt --format markdown --output direct.md
 ```
+
+`--texts` reads each selected UTF-8 manuscript as a bounded regular, non-symlink
+file (32 MiB each), computes its source digests and uses the same 29-metric
+analyzer and strict comparison contract as `analyze` followed by `compare`.
+It never writes intermediate JSON or includes manuscript prose in the exported
+report. Same normalized texts are valid identity comparisons with zero differences
+for measured rows; contradictory metrics for one normalized text are rejected.
+Invalid UTF-8, symlinks and existing output paths fail closed; output creation
+remains atomic and create-only. Imported
+JSON hashes are still unverified declarations; direct-text hashes originate
+from the locally read input bytes. Neither route establishes legal provenance,
+FantLab input identity or parity (M2 0/5).
 
 The Markdown report is a fully offline 29-row table with exact right-minus-left
 values, explicit unavailable/incomparable statuses, source hashes, profile and

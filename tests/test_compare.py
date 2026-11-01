@@ -407,6 +407,81 @@ class LocalComparisonTests(unittest.TestCase):
                 with self.assertRaises(compare.CompareError):
                     compare.render_markdown(forged)
 
+    def test_direct_manuscript_comparison_matches_two_report_pipeline(self):
+        # Two input modes must use identical deterministic metrics, hashes and
+        # scientific status, including the exact JSON-decimal difference policy.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            first, second = root / "PRIVATE-A.txt", root / "PRIVATE-B.txt"
+            first.write_text(LEFT, encoding="utf-8")
+            second.write_text(RIGHT, encoding="utf-8")
+            first_json, second_json = root / "A.json", root / "B.json"
+            self.assertEqual(cli.main(["analyze", str(first), "--output", str(first_json)]), 0)
+            self.assertEqual(cli.main(["analyze", str(second), "--output", str(second_json)]), 0)
+            for format_ in ("json", "html", "csv", "markdown"):
+                with self.subTest(format=format_):
+                    direct = root / ("direct." + format_)
+                    staged = root / ("staged." + format_)
+                    self.assertEqual(cli.main(["compare", "--texts", str(first), str(second),
+                                               "--format", format_, "--output", str(direct)]), 0)
+                    self.assertEqual(cli.main(["compare", str(first_json), str(second_json),
+                                               "--format", format_, "--output", str(staged)]), 0)
+                    self.assertEqual(direct.read_bytes(), staged.read_bytes())
+                    derived = direct.read_text(encoding="utf-8")
+                    self.assertNotIn(LEFT, derived)
+                    self.assertNotIn(RIGHT, derived)
+                    self.assertIn(self.a["source"]["raw_sha256"], derived)
+                    self.assertIn(self.b["source"]["raw_sha256"], derived)
+                    self.assertEqual(direct.read_bytes(), staged.read_bytes())
+
+    def test_direct_manuscripts_reject_bad_bytes_and_overwrite_allow_same_text(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            first, second, bad = (root / name for name in
+                                  ("PRIVATE-first.txt", "PRIVATE-second.txt", "PRIVATE-invalid.txt"))
+            first.write_text(LEFT, encoding="utf-8")
+            second.write_text(RIGHT, encoding="utf-8")
+            bad.write_bytes(b"\xff\xfe")
+            destination = root / "existing.md"
+            destination.write_text("PRESERVE", encoding="utf-8")
+            scenarios = (
+                (str(first), str(bad), str(root / "invalid.md")),
+                (str(first), str(second), str(destination)),
+            )
+            for left, right, output in scenarios:
+                with self.subTest(right=Path(right).name, output=Path(output).name):
+                    stderr = io.StringIO()
+                    with contextlib.redirect_stderr(stderr), self.assertRaises(SystemExit) as exc:
+                        cli.main(["compare", "--texts", left, right,
+                                  "--format", "markdown", "--output", output])
+                    self.assertEqual(exc.exception.code, 2)
+                    self.assertNotIn("PRIVATE-", stderr.getvalue())
+                    if output != str(destination):
+                        self.assertFalse(Path(output).exists())
+                    self.assertEqual(destination.read_text(encoding="utf-8"), "PRESERVE")
+            # Repeated input is a valid identity comparison; exact deltas
+            # must remain zero, not become a fabricated failure or a PASS claim.
+            same = root / "same.md"
+            self.assertEqual(cli.main(["compare", "--texts", str(first), str(first),
+                                       "--format", "markdown", "--output", str(same)]), 0)
+            self.assertIn(self.a["source"]["raw_sha256"], same.read_text(encoding="utf-8"))
+            self.assertNotIn(LEFT, same.read_text(encoding="utf-8"))
+            unchanged = compare.build_comparison(self.a, self.a)
+            self.assertTrue(all(Decimal(row["difference"]) == 0 for row in unchanged["metrics"]
+                                if row["comparison_status"] == "comparable"))
+            alias = root / "PRIVATE-alias.txt"
+            try:
+                alias.symlink_to(first)
+            except (OSError, NotImplementedError):
+                return
+            with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                cli.main(["compare", "--texts", str(alias), str(second)])
+            help_text = io.StringIO()
+            with contextlib.redirect_stdout(help_text), self.assertRaises(SystemExit) as exc:
+                cli.main(["compare", "--help"])
+            self.assertEqual(exc.exception.code, 0)
+            self.assertIn("--texts", help_text.getvalue())
+
     def test_private_reader_cli_real_analyze_to_compare_all_formats(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

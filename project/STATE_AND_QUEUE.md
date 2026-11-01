@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 388
+STATE_REVISION: 389
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #387 independently accepted and merged at f77e0279a3bcf47d357d1d3c4f5b7a36a18ce979; verified chart-link copying proposed for later acceptance.
+LAST_RESULT: #388 independently accepted and merged at b5fcef586fd922a73751040a0f45c92ca5019ab9; canonical EPUB Markdown reports proposed for later acceptance.
 LAST_VERIFIED_PROGRESS: Ten measured Russian books, 269 metric rows (225 numeric, 44 unavailable); M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-CHART-COPY
-ISSUE: #283 — shareable Reader chart UX; no duplicate product claim
+UNIT_ID: SCRIP-CLI-EPUB-MARKDOWN
+ISSUE: independent private EPUB output-format parity; builds on the merged EPUB CLI and analyzer Markdown renderer
 STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-reader-chart-permalink-copy
-BASE: f77e0279a3bcf47d357d1d3c4f5b7a36a18ce979
+BRANCH: scrip-epub-markdown-reports
+BASE: b5fcef586fd922a73751040a0f45c92ca5019ab9
 
-ACCEPTANCE: Any of the eight source-backed chart metrics, in catalogue or ranked order, can be copied as the current exact same-site metric/order URL after JSON integrity validation. No book prose, analytics or foreign URL can enter the clipboard. The action is hidden/disabled without verified data; normal anchor fallback always works. Clipboard permission denial, unavailable API, invalid links and native keyboard controls have honest accessible responses. Node source-bound positive/negative tests and later exact-head CI must pass. Browser desktop/mobile visual checks remain separate.
+ACCEPTANCE: An unencrypted, bounded local EPUB with XHTML spine can emit a private 29-metric Markdown report using the existing `analyze.render_markdown` serializer, with the same exact body hash, normalized identity, absent-value semantics and inferred/extension labels as JSON/HTML/CSV. `--title` is escaped, no manuscript prose is embedded, provenance receipt stays source-free, and existing destinations are not overwritten. Focused positive/negative EPUB CLI tests and later full exact-head CI must pass before independent later-run merge. Scientific M2 0/5 and live browser verification remain separate.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Share one verified Reader chart and ordering with a single accessible copy action.
+Milestone: Local EPUB → readable Markdown metrics with source-verified identities, consistent with TXT and existing private comparisons.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge source-bound chart copying | Exact-head review, chart copy Node smoke, applicable CI | Later wake/checks |
+| P1 | Independently accept/merge EPUB Markdown output | Exact-head code review, positive/negative EPUB CLI test, applicable full CI | Later wake/checks |
 | P2 | Second measured Russian translation | Distinct legal source, translator/edition, hashes, reproducible measures | Independent frozen edition |
 | P3 | Verify root Reader live | Current master Pages, HTTP, desktop/mobile/keyboard | Browser HTTP restricted |
 | P4 | #282 pylem N discriminator | Native noun/cardinal positive/negative evidence | Runtime source enum unavailable |

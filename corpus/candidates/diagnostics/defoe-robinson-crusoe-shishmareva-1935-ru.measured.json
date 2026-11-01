@@ -1,0 +1,289 @@
+{
+  "analysis_language": "ru",
+  "body": {
+    "characters_including_spaces": 572587,
+    "extraction_profile": "scriptorium-robinson-shishmareva-first-narrative-v1",
+    "normalized_characters_including_spaces": 572587,
+    "normalized_sha256": "61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f",
+    "raw_sha256": "61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f",
+    "utf8_byte_count": 1032692
+  },
+  "candidate_id": "defoe-robinson-shishmareva-1935-vol1-ru",
+  "display_author": "Даниэль Дефо",
+  "display_title": "Робинзон Крузо (первое повествование, том 1)",
+  "gates": {
+    "comparison_class": "DIAGNOSTIC_ONLY",
+    "comparison_with_trusov": "NOT_RUN",
+    "corpus_admitted_for_calibration": false,
+    "fantlab_input_identity": "UNKNOWN",
+    "literary_body_source_replay": true,
+    "m2_parity_admissible": false,
+    "m2_weight": 0,
+    "minimum_300000_characters": true,
+    "print_edition_collation": "NOT_RUN",
+    "source_text_committed": false
+  },
+  "metric_rows": [
+    {
+      "actual": 40.853658536585364,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "percent"
+    },
+    {
+      "actual": 125.0,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "characters/sentence"
+    },
+    {
+      "actual": 128.74357224118316,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.dialogue.mean_narration_sentence_length_chars",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "characters/sentence"
+    },
+    {
+      "actual": 0.2405145502922629,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.dialogue.share_percent",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "percent"
+    },
+    {
+      "actual": 572587,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.general.characters",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "characters"
+    },
+    {
+      "actual": 129.45025102692836,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.general.mean_sentence_length_chars",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "characters/sentence"
+    },
+    {
+      "actual": 4.892469905233502,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.general.mean_word_length_chars",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "characters/word"
+    },
+    {
+      "actual": 93704,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.general.words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "words"
+    },
+    {
+      "actual": 5.7734995304362675,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.colon.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 126.44070690685562,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.comma.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 6.648595577563391,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.dash.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 0.13873473917869034,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.ellipsis.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 1.430035003841885,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.exclamation.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 0.010671903013745411,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 1.8035516093229744,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.parentheses.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 43.690770938273715,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.period.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 1.6541449671305388,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.question.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 0.010671903013745411,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.question_ellipsis.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 0.0,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.question_exclamation.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 5.261248185776488,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.quote.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 6.541876547425937,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.semicolon.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": 0.0,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.punctuation.triple_exclamation.per_1000_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "actual": null,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.vocabulary.active_dictionary",
+      "result": "NOT_RUN_DICTIONARY_UNBOUND",
+      "unit": "words"
+    },
+    {
+      "actual": null,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.vocabulary.active_nondictionary",
+      "result": "NOT_RUN_DICTIONARY_UNBOUND",
+      "unit": "words"
+    },
+    {
+      "actual": null,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.vocabulary.uasz_10000",
+      "result": "NOT_RUN_DICTIONARY_UNBOUND",
+      "unit": "unique_dictionary_words/window"
+    },
+    {
+      "actual": null,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.vocabulary.uasz_100000",
+      "result": "NOT_RUN_DICTIONARY_UNBOUND",
+      "unit": "unique_dictionary_words/window"
+    },
+    {
+      "actual": null,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.vocabulary.uasz_3000",
+      "result": "NOT_RUN_DICTIONARY_UNBOUND",
+      "unit": "unique_dictionary_words/window"
+    },
+    {
+      "actual": 16739,
+      "compatibility_status": "inferred",
+      "fantlab_display": null,
+      "metric_id": "fantlab.vocabulary.unique_words",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "words"
+    },
+    {
+      "actual": 4382,
+      "compatibility_status": "extension",
+      "fantlab_display": null,
+      "metric_id": "scriptorium.general.sentences",
+      "result": "MEASURED_REFERENCE_UNAVAILABLE",
+      "unit": "sentences"
+    }
+  ],
+  "numeric_metric_count": 24,
+  "original_language": "en",
+  "schema_version": "scriptorium-robinson-shishmareva-diagnostic-v1",
+  "scriptorium": {
+    "metric_contract_id": "fantlab-2022-v1",
+    "profiles": {
+      "dialogue": "scriptorium-dialogue-v1",
+      "metrics": "scriptorium-metrics-v4",
+      "normalization": "scriptorium-text-v1",
+      "punctuation": "scriptorium-punctuation-v2",
+      "vocabulary": "scriptorium-vocabulary-v1"
+    },
+    "schema_version": "scriptorium-deterministic-metrics-v4",
+    "vocabulary_dictionary_dependency": null
+  },
+  "source": {
+    "edition": "ACADEMIA 1935, volume 1; first narrative; editor A. Frankovsky",
+    "edition_identity_independently_matched": false,
+    "mediawiki_sha1": "65380366cfbd0039de07a2920bb3ad057422b733",
+    "page_id": 946454,
+    "revision_id": 5634933,
+    "revision_timestamp": "2025-09-03T11:05:17Z",
+    "rights_evidence": "Wikisource PD-old-70 notice; contributions have separate CC BY-SA terms",
+    "url": "https://ru.wikisource.org/w/index.php?oldid=5634933",
+    "wikitext_sha256": "784584e78e13f3941c8f9b128e26d1704b95040e430761329cb0b93fcdb92258"
+  },
+  "translator": "Мария Андреевна Шишмарёва",
+  "unavailable_metric_count": 5,
+  "version": "scriptorium-robinson-shishmareva-measured-v1"
+}

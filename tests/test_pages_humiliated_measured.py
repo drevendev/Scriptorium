@@ -68,10 +68,10 @@ class HumiliatedReaderTests(unittest.TestCase):
         self.assertIn('data-status="measured" data-catalog-key="humiliated"',html)
         self.assertIn('data-book="humiliated"',html)
         self.assertIn('<tr><th scope="row">Униженные и оскорбленные</th><td>56.66327827623132</td><td>%</td></tr>',html)
-        self.assertIn("Скачать все 269 полей (CSV)",html)
+        self.assertIn("Скачать все 298 полей (CSV)",html)
         self.assertEqual(self.catalog["counts"],{
-          "work_count":12,"measured_works":10,"awaiting_measurement":2,
-          "metrics_total":269,"numeric_total":225,"unavailable_total":44,"m2_source_matched":0
+          "work_count":13,"measured_works":11,"awaiting_measurement":2,
+          "metrics_total":298,"numeric_total":249,"unavailable_total":49,"m2_source_matched":0
         })
         self.assertEqual([b["key"] for b in self.catalog["books"] if b["text_status"]!="measured"],["petersburg","darwin"])
     def test_tampering_refused(self):

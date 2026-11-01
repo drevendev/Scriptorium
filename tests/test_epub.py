@@ -155,5 +155,41 @@ class EpubIngestionTests(unittest.TestCase):
             self.assertIn("metric_id", (root / "report.csv").read_text(encoding="utf-8"))
 
 
+    def test_markdown_epub_matches_canonical_renderer_and_preserves_privacy(self):
+        from scriptorium import cli
+        from scriptorium.analyze import build_local_analysis, render_markdown
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            archive = book()
+            epub_file = root / "private.epub"
+            epub_file.write_bytes(archive)
+            report = root / "analysis.md"
+            receipt = root / "source-identity.json"
+            title = "Private | [Draft] <script>"
+            args = ["epub", str(epub_file), "--format", "markdown", "--title", title,
+                    "--output", str(report), "--provenance-output", str(receipt)]
+            self.assertEqual(cli.main(args), 0)
+            body, witness = epub.extract_epub(archive)
+            expected = render_markdown(build_local_analysis(body), title=title)
+            actual = report.read_text(encoding="utf-8")
+            self.assertEqual(actual, expected)
+            self.assertIn("## Dialogue", actual)
+            self.assertIn("NOT** verified FantLab parity", actual)
+            self.assertIn(r"Private \| \[Draft\] &lt;script&gt;", actual)
+            self.assertNotIn("<script>", actual)
+            self.assertNotIn("Привет, мир!", actual)
+            self.assertNotIn("Первый текст", actual)
+            provenance = json.loads(receipt.read_text(encoding="utf-8"))
+            self.assertEqual(provenance["archive_sha256"], witness["archive_sha256"])
+            self.assertEqual(provenance["extracted_body_sha256"], witness["extracted_body_sha256"])
+            self.assertEqual(provenance["normalized_sha256"], build_local_analysis(body)["source"]["normalized_sha256"])
+            with redirect_stderr(StringIO()) as error:
+                with self.assertRaises(SystemExit):
+                    cli.main(args)
+            self.assertIn("already exists", error.getvalue())
+            self.assertNotIn(str(report), error.getvalue())
+            self.assertEqual(report.read_text(encoding="utf-8"), actual)
+
+
 if __name__ == "__main__":
     unittest.main()

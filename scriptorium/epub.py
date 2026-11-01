@@ -236,10 +236,10 @@ def extract_epub(archive_bytes: bytes) -> tuple[bytes, dict[str, object]]:
 
 def main(argv: list[str] | None = None) -> int:
     from .analyze import (LocalInputError, _read_bounded_regular_file, _write_new,
-                          build_local_analysis, render_csv, render_html)
+                          build_local_analysis, render_csv, render_html, render_markdown)
     parser = argparse.ArgumentParser(description="Analyze a local unencrypted XHTML EPUB; no uploads or DRM bypass.")
     parser.add_argument("epub", type=Path)
-    parser.add_argument("--format", choices=("json", "html", "csv"), default="json")
+    parser.add_argument("--format", choices=("json", "html", "csv", "markdown"), default="json")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--provenance-output", type=Path,
                         help="separate create-only JSON containing archive/body/normalized identities")
@@ -264,6 +264,8 @@ def main(argv: list[str] | None = None) -> int:
             rendered = json.dumps(analysis, sort_keys=True, indent=2, ensure_ascii=False, allow_nan=False) + "\n"
         elif args.format == "html":
             rendered = render_html(analysis, title=args.title)
+        elif args.format == "markdown":
+            rendered = render_markdown(analysis, title=args.title)
         else:
             rendered = render_csv(analysis)
         if args.output is None:

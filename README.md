@@ -131,9 +131,12 @@ the book or writing its extracted chapters to disk:
 scriptorium epub book.epub --output analysis.json --provenance-output epub-identity.json
 scriptorium epub book.epub --format html --output analysis.html
 scriptorium epub book.epub --format csv --output metrics.csv
+scriptorium epub book.epub --format markdown --output analysis.md
 ```
 
-The regular Reader **29-metric** reports work with `scriptorium compare`.
+The regular Reader **29-metric** reports use the same evidence and profile labels as
+TXT analysis. Markdown is a portable source-free table; retain a JSON report for
+`scriptorium compare`.
 The separate source-free receipt records the **archive**, **extracted UTF-8
 body** and **engine-normalized text** SHA-256 identities plus the versioned
 extraction profile. EPUB reading order follows OPF spine order; unsupported

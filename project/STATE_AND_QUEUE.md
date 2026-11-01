@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 385
+STATE_REVISION: 386
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #384 confirmed merged into master at 5314bf36843950fb2c15603a175a07c4d5b55020. Three source-bound same-author comparison starters prepared for later independent acceptance.
-LAST_VERIFIED_PROGRESS: Ten measured Russian books and 269 metric rows (225 numeric, 44 unavailable); FantLab input UNKNOWN (M2 0/5; M3 open). Live/browser/mobile NOT_VERIFIED.
+LAST_RESULT: #385 merged into master at 7394439fee89738a7a4f89e651e4c120849c4f9d; chart-specific source-bound CSV export prepared for independent acceptance.
+LAST_VERIFIED_PROGRESS: Ten measured Russian books, 269 metric rows (225 numeric, 44 unavailable); M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-SAME-AUTHOR-LAUNCHES
-ISSUE: #283, discoverable source-verified same-author comparisons
+UNIT_ID: SCRIP-SITE-CHART-CSV
+ISSUE: Self-contained product slice with rationale in PR
 STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-reader-same-author-pairs
-BASE: 5314bf36843950fb2c15603a175a07c4d5b55020
+BRANCH: scrip-reader-chart-csv-export
+BASE: 7394439fee89738a7a4f89e651e4c120849c4f9d
 
-ACCEPTANCE: Root Reader offers keyboard-focusable, mobile-readable deep links for precisely three verified pairs of separately measured Russian originals: Tolstoy (Anna/Resurrection), Grin (Waves/Road), Dostoevsky (Karamazov/Humiliated). Routes use the existing verified pair selector and dialogue-share metric; provenance/author/edition/profile checks reject any unmeasured, mismatched or translated pair. The no-JavaScript static fallback is disclosed rather than implying a deep link rendered. Python source-backed positive/negative regression, Pages build and later independent exact-head CI/PR acceptance required; live Pages visual/HTTP acceptance separate. No new author-profile or parity claim.
+ACCEPTANCE: All eight real Reader charts offer a ten-edition UTF-8 CSV using exact numbers (no chart rounding), displayed catalogue/ranked order, units, source SHA-256, translator identity, evidence URL and compatible profiles. Explicit missing/not-recorded is distinct from zero. Disabled before validation and in no-JS fallback. Positive/negative runtime and structural tests, exact-head later CI acceptance and separate live Pages/browser verification required. No parity claim, text or telemetry.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Discoverable, trustworthy same-author two-book comparisons from the ten pinned measured Russian editions, without implying causal author-voice or FantLab parity.
+Milestone: Export trustworthy exact values behind real-book diagrams, with source provenance and scientific limitations.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge same-author launch PR | Exact-head CI, diff, source-identity tests, responsive semantics | Later wake / applicable checks |
-| P2 | Verify root Reader live | Latest master Pages, HTTP, real mobile/desktop/keyboard acceptance | Browser access restricted |
-| P3 | Second measured Russian translation edition | Legal provenance, distinct source/translator identity, reproducible comparison | Independent frozen edition |
-| P4 | #282 native N discriminator | Measured noun/cardinal evidence and negative controls | pylem runtime loses source enum |
-| P5 | #281 source-matched FantLab benchmark | Input identity plus displayed-rounding evidence | Exact analyzer-input identity UNKNOWN |
+| P1 | Independently accept/merge chart CSV PR | Exact-head diff, CI, source/status CSV tests | Later wake/checks |
+| P2 | Verify root Reader live | Current master Pages and actual desktop/mobile | Browser HTTP restricted |
+| P3 | Second measured Russian translation | Distinct legal source, translator, hashes, reproducible pair | Independent frozen edition |
+| P4 | #282 pylem N discriminator | Native noun/cardinal positive/negative evidence | Runtime source enum unavailable |
+| P5 | #281 cross-work FantLab parity | Exact input identity and displayed-rounding evidence | Input identity UNKNOWN |
 
 ## Retained evidence and scientific gates
 

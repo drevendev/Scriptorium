@@ -1,0 +1,70 @@
+name: Robinson translation revision inventory
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/robinson-revision-probe.yml"
+      - "scriptorium/robinson_revision_probe.py"
+      - "tests/test_robinson_revision_probe.py"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  revision-inventory:
+    name: Probe two exact oldids without storing prose
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact pull-request head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run focused positive and negative regressions
+        run: python -m unittest discover -s tests -p 'test_robinson_revision_probe.py' -v
+
+      - name: Fetch exact Wikisource revisions and write source-free topology
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.robinson_revision_probe \
+            --screening corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.json \
+            --output build/repro/robinson-translations.revision-inventory.json
+
+      - name: Enforce no body/parity claims
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('build/repro/robinson-translations.revision-inventory.json')
+          inventory = json.loads(p.read_text(encoding='utf-8'))
+          assert inventory['schema_version'] == 'scriptorium-robinson-revision-inventory-v1'
+          assert {w['revision_id'] for w in inventory['witnesses']} == {5041937, 5634933}
+          assert inventory['source_text_committed'] is False
+          assert inventory['both_literary_bodies_frozen'] is False
+          assert inventory['m2_contribution'] == 0
+          for w in inventory['witnesses']:
+              assert w['literary_body_sha256'] is None
+              assert w['literary_characters_including_spaces'] is None
+              assert w['body_extraction_status'] == 'NOT_RUN'
+              assert w['corpus_threshold_verified'] is False
+              assert w['m2_parity_admissible'] is False
+          print('Exact two-revision source-free inventory captured; full literary bodies remain NOT_RUN')
+          PY
+
+      - name: Upload only source-free revision inventory
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: robinson-translations-revision-inventory
+          path: build/repro/robinson-translations.revision-inventory.json
+          if-no-files-found: error
+          retention-days: 7

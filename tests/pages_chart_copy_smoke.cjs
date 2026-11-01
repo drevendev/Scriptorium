@@ -14,7 +14,7 @@ const code=source.slice(start,end)+"return {verifiedChartShareUrl,copyChartShare
 const ids=[...html.matchAll(/data-chart="([^"]+)"/g)].map(match=>match[1]);
 assert.equal(ids.length,8);
 assert.equal(new Set(ids).size,8);
-assert.equal(data.counts.measured_works,10);
+assert.equal(data.counts.measured_works,11);
 const metrics=Object.fromEntries(ids.map(id=>[id,true]));
 const anchor={hidden:false,href:"",getAttribute(name){
   assert.equal(name,"href");return this.href;

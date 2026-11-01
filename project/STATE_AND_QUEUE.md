@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 387
+STATE_REVISION: 388
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #386 independently accepted and merged at 37474d215ef0861392a8b5ca91229732c21efa61; ranked chart permalinks proposed for later acceptance.
+LAST_RESULT: #387 independently accepted and merged at f77e0279a3bcf47d357d1d3c4f5b7a36a18ce979; verified chart-link copying proposed for later acceptance.
 LAST_VERIFIED_PROGRESS: Ten measured Russian books, 269 metric rows (225 numeric, 44 unavailable); M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-CHART-RANKED-LINK
-ISSUE: Self-contained Reader UX correctness fix (PR rationale)
+UNIT_ID: SCRIP-SITE-CHART-COPY
+ISSUE: #283 — shareable Reader chart UX; no duplicate product claim
 STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-reader-ranked-chart-permalinks
-BASE: 37474d215ef0861392a8b5ca91229732c21efa61
+BRANCH: scrip-reader-chart-permalink-copy
+BASE: f77e0279a3bcf47d357d1d3c4f5b7a36a18ce979
 
-ACCEPTANCE: All eight real ten-book charts preserve ranked/catalog ordering in explicit shareable links, reload and Back/Forward; sorting button updates URL without discarding unrelated reader state. Only `chart_order=ranked` selects descending order; invalid values default to catalogue. Chart CSV follows restored order, missing-last and true-zero semantics unchanged. Source-bound positive/negative tests and later exact-head CI pass; Pages/browser live verification remains separate. No prose, telemetry, fabricated values or scientific-gate changes.
+ACCEPTANCE: Any of the eight source-backed chart metrics, in catalogue or ranked order, can be copied as the current exact same-site metric/order URL after JSON integrity validation. No book prose, analytics or foreign URL can enter the clipboard. The action is hidden/disabled without verified data; normal anchor fallback always works. Clipboard permission denial, unavailable API, invalid links and native keyboard controls have honest accessible responses. Node source-bound positive/negative tests and later exact-head CI must pass. Browser desktop/mobile visual checks remain separate.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Share exact source-backed Reader charts with their selected metric and ranking order.
+Milestone: Share one verified Reader chart and ordering with a single accessible copy action.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge ranked chart link PR | Exact-head diff, Node smoke, applicable CI, safe URL restore | Later wake/checks |
+| P1 | Independently accept/merge source-bound chart copying | Exact-head review, chart copy Node smoke, applicable CI | Later wake/checks |
 | P2 | Second measured Russian translation | Distinct legal source, translator/edition, hashes, reproducible measures | Independent frozen edition |
 | P3 | Verify root Reader live | Current master Pages, HTTP, desktop/mobile/keyboard | Browser HTTP restricted |
 | P4 | #282 pylem N discriminator | Native noun/cardinal positive/negative evidence | Runtime source enum unavailable |

@@ -26,6 +26,7 @@
   const chartButtons = [...document.querySelectorAll("[data-chart]")];
   const chartSortButton = el("chart-sort");
   const chartCsvButton = el("chart-export-csv");
+  const chartCopyButton = el("copy-chart-link");
   const bookLinks = [...document.querySelectorAll("[data-book]")];
   const catalogCards = [...document.querySelectorAll("#books .book[data-catalog-key]")];
   const catalogFilter = el("catalog-filter");
@@ -1135,6 +1136,43 @@
   window.addEventListener("beforeprint", openChartTableForPrint);
   window.addEventListener("afterprint", restoreChartTableAfterPrint);
 
+  // Only a validated same-page chart permalink may enter the clipboard.
+  function verifiedChartShareUrl() {
+    const anchor=el("share-chart");
+    const href=anchor?.getAttribute("href");
+    if (anchor.hidden || typeof href!=="string" || !href.startsWith("?metric=")) return null;
+    try {
+      const page=new URL(window.location.href), target=new URL(href,page);
+      const params=target.searchParams;
+      if (target.origin!==page.origin || target.pathname!==page.pathname ||
+          target.hash!=="#charts" || params.getAll("metric").length!==1 ||
+          !Object.prototype.hasOwnProperty.call(metrics,params.get("metric")) ||
+          [...params.keys()].some(key=>key!=="metric" && key!=="chart_order") ||
+          (params.has("chart_order") && (params.getAll("chart_order").length!==1 ||
+                                        params.get("chart_order")!=="ranked"))) return null;
+      return target.href;
+    } catch (_) { return null; }
+  }
+
+  async function copyChartShareUrl() {
+    if (chartCopyButton.disabled) return;
+    const feedback=el("copy-chart-feedback"), link=verifiedChartShareUrl();
+    if (!link) {
+      feedback.textContent="Нет проверенной ссылки для копирования.";
+      return;
+    }
+    if (!window.isSecureContext || typeof window.navigator?.clipboard?.writeText!=="function") {
+      feedback.textContent="Копирование недоступно. Откройте ссылку рядом и скопируйте адрес.";
+      return;
+    }
+    try {
+      await window.navigator.clipboard.writeText(link);
+      feedback.textContent="Ссылка на диаграмму скопирована.";
+    } catch (_) {
+      feedback.textContent="Не удалось скопировать. Откройте ссылку рядом и скопируйте адрес.";
+    }
+  }
+
   async function initialize() {
     try {
       const res=await fetch(file,{cache:"no-store",credentials:"omit"});
@@ -1184,6 +1222,12 @@
       pairMetric.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairSwapButton.addEventListener("click",swapPair);
       restoreChartFromUrl();
+      chartCopyButton.hidden=false;
+      chartCopyButton.disabled=false;
+      chartCopyButton.addEventListener("click",copyChartShareUrl);
+      for (const control of [...chartButtons,chartSortButton])
+        control.addEventListener("click",()=>{el("copy-chart-feedback").textContent="";});
+      window.addEventListener("popstate",()=>{el("copy-chart-feedback").textContent="";});
       const [left,right] = pairFromUrl();
       pairMetric.value=pairMetricFromUrl();
       selectPair(left,right);

@@ -3,7 +3,7 @@
 STATE_REVISION: 393
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #392 merged at eabd24893004df0cca59850b192b9725bcce2762. A focused source-free Shishmareva 1935 direct-prose extractor and offline/CI checks are proposed; the actual literary body hash/length remain NOT_RUN until exact-oldid hosted capture and acceptance.
+LAST_RESULT: #392 merged at eabd24893004df0cca59850b192b9725bcce2762. Exact-oldid Shishmareva 1935 literary body captured in source-free hosted CI: 572,587 characters / 1,032,692 UTF-8 bytes, raw and normalized SHA-256 61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f. Saved derived manifest in PR; independent final-head replay/CI and later acceptance still required.
 LAST_VERIFIED_PROGRESS: Ten measured Russian books, 269 metric rows (225 numeric, 44 unavailable); M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
@@ -14,7 +14,7 @@ STATUS: PR_PENDING_LATER_ACCEPTANCE
 BRANCH: scrip-robinson-shishmareva-body
 BASE: eabd24893004df0cca59850b192b9725bcce2762
 
-ACCEPTANCE: Exact oldid+page/source hash pinned to merged inventory; positive/negative offline parser regressions; CI-derived literary count >=300,000 INCLUDING spaces, raw and normalized SHA-256, source-free replay; no source text leakage and no unsupported print/FantLab parity. Until an actual hosted capture passes, literary body identity/threshold remain NOT_RUN.
+ACCEPTANCE: Official MediaWiki oldid 5634933 replayed in scoped CI with exact page/revision/digest identity, 572,587 actual literary characters (>=300k), 1,032,692 UTF-8 bytes, raw+normalized SHA-256 61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f. Source-free derived manifest retained. Full fresh exact-head deterministic replay/check acceptance and later independent merge are still outstanding; print collation and FantLab analyzer input identity UNKNOWN.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: independently frozen and measured Russian translations of Robinson Cr
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Shishmareva 1935 direct-prose body extraction and source-free CI | Exact oldid 5634933, boundaries, template rendering, >=300k actual body, both digests, deterministic replay and later independent acceptance | Hosted MediaWiki retrieval; current PR |
+| P1 | Shishmareva 1935 direct-prose body extraction and source-free CI | Exact oldid 5634933 and already measured 572,587-character body, strict source-free manifest cmp/replay at final head, and later independent merge acceptance | Hosted MediaWiki retrieval; current PR |
 | P2 | Analyze the frozen Shishmareva first narrative | Real 29-field reproducible source-free metrics with units/profile versions; no invented unavailable POS | P1 body identity |
 | P3 | Resolve Trusov 1775 Page/Index transclusion independently | Pin the actual historical Page source graph, narrative boundaries, and SHA-256+count | Scan/Page dependencies, not P2 |
 | P4 | Publish verified comparison/Reader and test #285 | Two frozen source identities, deterministic metric deltas and accessible chart/table | P2+P3; live HTTP restricted |

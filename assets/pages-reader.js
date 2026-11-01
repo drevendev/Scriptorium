@@ -25,6 +25,7 @@
   const el = id => document.getElementById(id);
   const chartButtons = [...document.querySelectorAll("[data-chart]")];
   const chartSortButton = el("chart-sort");
+  const chartCsvButton = el("chart-export-csv");
   const bookLinks = [...document.querySelectorAll("[data-book]")];
   const catalogCards = [...document.querySelectorAll("#books .book[data-catalog-key]")];
   const catalogFilter = el("catalog-filter");
@@ -792,6 +793,72 @@
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
 
+
+  // Exact values behind a chart; absent field != NOT_RUN != numeric zero.
+  function serializeChartCsv(doc, id, sorted) {
+    if (!Object.prototype.hasOwnProperty.call(metrics,id))
+      throw Error("Показатель CSV не разрешён");
+    if (!doc || doc.schema!=="scriptorium-ru-reader-v2" ||
+        doc.scientific_claim!=="DIAGNOSTIC_ONLY" ||
+        doc.fantlab_input_identity!=="UNKNOWN" ||
+        doc.counts?.m2_source_matched!==0 ||
+        doc.counts?.measured_works!==10 || !Array.isArray(doc.books))
+      throw Error("Не подтверждён научный статус диаграммы");
+    const measured=doc.books.filter(book=>book.text_status==="measured");
+    if (measured.length!==10) throw Error("Неполный измеренный каталог");
+    const profiles=["metrics","normalization","dialogue","punctuation"];
+    const baseline=measured[0].profiles;
+    const rows=measured.map((book,ordinal)=>{
+      if (!/^[a-f0-9]{64}$/.test(book.source_sha256||"") ||
+          book.language!=="ru" || !["ru","fr","en"].includes(book.original_language) ||
+          !book.edition_id || !book.evidence_url ||
+          !profiles.every(k=>typeof book.profiles?.[k]==="string" &&
+             book.profiles[k]===baseline[k]) ||
+          (book.original_language!==book.language &&
+             (!book.translator?.id || !book.translator?.name)))
+        throw Error("CSV: неподтверждённая редакция или профиль");
+      const field=lookup(book,id);
+      if (field && (!["measured","not_run","unavailable"].includes(field.status) ||
+                    (field.status==="measured")!==isNumeric(field.actual)))
+        throw Error("CSV: неверный статус измерения");
+      return {book,ordinal,value:field&&isNumeric(field.actual)?field.actual:null,
+              status:field?.status||"not_recorded"};
+    });
+    if(sorted) rows.sort((a,b)=>{
+      if(a.value===null)return b.value===null?a.ordinal-b.ordinal:1;
+      if(b.value===null)return -1;
+      return b.value-a.value||a.ordinal-b.ordinal;
+    });
+    const header=["schema","scientific_claim","fantlab_input_identity","m2_source_matched",
+      "metric_id","metric_label","unit","sort_order","position","book_key",
+      "title","author","original_language","analysis_language","translator_id",
+      "translator","edition_id","source_sha256","evidence_url","actual","status",
+      "metrics_profile","normalization_profile","dialogue_profile","punctuation_profile"];
+    const lines=rows.map(({book,value,status},i)=>{
+      const cells=["scriptorium-ru-chart-csv-v1",doc.scientific_claim,
+        doc.fantlab_input_identity,doc.counts.m2_source_matched,id,
+        metrics[id][0],metrics[id][1],sorted?"value_desc":"catalog",i+1,
+        book.key,book.display_title,book.display_author,
+        book.original_language,book.language,book.translator?.id||"",
+        book.translator?.name||"",book.edition_id,book.source_sha256,
+        book.evidence_url,value===null?"":String(value),status,
+        ...profiles.map(k=>book.profiles[k])];
+      if (cells.length!==header.length) throw Error("CSV: неполная строка");
+      return cells.map(csvText).join(",");
+    });
+    return "\uFEFF"+[header.join(","),...lines].join("\r\n")+"\r\n";
+  }
+  function exportChartCsv() {
+    const payload=serializeChartCsv(data,currentChart,sortChart);
+    const blob=new Blob([payload],{type:"text/csv;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");
+    link.href=url;
+    link.download="scriptorium-chart-"+currentChart+(sortChart?"-ranked":"")+".csv";
+    document.body.appendChild(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
   function pairEditionDescription(book, side) {
     const translated=book.original_language!==book.language;
     const origin={fr:"французского",en:"английского",ru:"русского"};
@@ -1062,12 +1129,13 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogSearch,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,...chartButtons];
+      const inputs=[catalogFilter,catalogSearch,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
       }
       chartSortButton.addEventListener("click",()=>{sortChart=!sortChart;updateChart();});
+      chartCsvButton.addEventListener("click",exportChartCsv);
       for(const anchor of bookLinks) {
         anchor.addEventListener("click",event=>{
           // Modified click still opens the source JSON, even without site JS.

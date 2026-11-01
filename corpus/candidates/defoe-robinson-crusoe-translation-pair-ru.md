@@ -46,3 +46,23 @@ wikitext length is **not** a body count; an oldid may reference an index or depe
 on non-frozen transclusions. Independently inspected original narrative boundaries,
 body hashes, >=300,000-character checks, measurements and parity all remain
 **NOT_RUN** pending actual output and a separate fail-closed extraction contract.
+
+
+### Verified exact-revision topology (GitHub Actions, 2026-11-01)
+
+The scoped [CI run 41333954878](https://github.com/drevendev/Scriptorium/actions/runs/41333954878)
+successfully fetched both oldids using the official MediaWiki API. The
+[source-free replay inventory](source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json)
+records their provider SHA-1 and exact wikitext SHA-256; the workflow now
+compares the live inventory byte-for-byte with this committed evidence.
+
+| Exact revision | Revision wikitext (characters / UTF-8 bytes; **not book size**) | Observed structure | Immediate extraction consequence |
+| --- | ---: | --- | --- |
+| Trusov **5041937** | **1,516 / 2,397** | **1** `<pages>` tag, **2** template openers | The pinned top-level revision is only a small transclusion carrier; first map and freeze the scan-backed Page/Index dependency graph. Its **literary-body size is unknown**. |
+| Shishmareva **5634933** | **575,223 / 1,036,654** | **0** `<pages>` tags, **19** template openers | A substantial single-revision wikitext body exists, but front matter, 19 templates and volume scope need an independently verified extraction contract. **575,223 is not an admitted literary-character count**. |
+
+These observations separate the two executable paths: test Shishmareva's
+literary boundary/markup and provenance first; scope Trusov's independent
+historical scan/Page dependencies without making that difficult path a
+prerequisite for measuring other eligible translations. Both bodies remain
+**NOT_RUN** for extraction, SHA-256, >=300k and 29-metric analysis. M2 stays 0/5.

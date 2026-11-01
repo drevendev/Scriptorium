@@ -117,7 +117,7 @@ def extract_literary_body(source: str) -> str:
         label = match.group("label").strip()
         if not label or "{{" in label or "}}" in label or "[[" in label:
             raise ValueError("unsupported chapter heading content")
-        return "\\n\\n" + label + "\\n\\n"
+        return "\n\n" + label + "\n\n"
 
     story = _PLAIN_HEADING.sub(plain_heading, story)
     story = _INLINE_TEMPLATE.sub(_replace_template, story)

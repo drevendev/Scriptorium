@@ -26,9 +26,9 @@ def sample(story="Я родился в 1632 году.\n\nВторой абзац
 
 class ShishmarevaTests(unittest.TestCase):
     def test_extract_preserves_narrative_subtitle_dialogue_and_diary(self):
-        text = extract_literary_body(sample("А" * 300_010))
+        text = extract_literary_body(sample("== Глава I ==\n" + "А" * 300_010))
         self.assertGreater(len(text), 300_000)
-        for part in ("Подзаголовок моряка", "А" * 100, "Дневник", "Пятница", "Строка дневника"):
+        for part in ("Подзаголовок моряка", "Глава I", "А" * 100, "Дневник", "Пятница", "Строка дневника"):
             self.assertIn(part, text)
         for artifact in ("Отексте", "ACADEMIA", "Категория:", "примечания", "Редакторское примечание", "<blockquote>", "<ref>", "{{"):
             self.assertNotIn(artifact, text)
@@ -43,6 +43,7 @@ class ShishmarevaTests(unittest.TestCase):
             base.replace("[[Категория:Тест 4]]", "[[Категория:Тест 4]]НЕОЖИДАННО", 1),
             base.replace("<blockquote>", "", 1),
             base.replace("{{Razr2|Пятница}}", "{{Unfamiliar|Пятница}}", 1),
+            base.replace("В тексте", "==== Unexpected markup ====\nВ тексте", 1),
             base.replace("В тексте", "<pages index='unfrozen' />В тексте", 1),
             base.replace("<ref>", "<ref name='open'>", 1).replace("</ref>", "", 1),
         ):

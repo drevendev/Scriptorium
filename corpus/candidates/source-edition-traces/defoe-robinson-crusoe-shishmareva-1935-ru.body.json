@@ -1,0 +1,36 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "defoe-robinson-shishmareva-1935-vol1-ru",
+  "comparison_with_trusov": "NOT_RUN",
+  "corpus_character_threshold_including_spaces": 300000,
+  "corpus_threshold_verified": true,
+  "extraction": {
+    "profile": "scriptorium-robinson-shishmareva-first-narrative-v1",
+    "scope": "1935 volume 1, first narrative; subtitle and direct novel prose only; metadata, editorial foreword link, trailing notes and categories excluded",
+    "source_text_committed": false,
+    "transcluded_literary_body": false
+  },
+  "fantlab_analyzer_input_identity": "UNKNOWN",
+  "literary_body_identity": {
+    "character_count_including_spaces": 572587,
+    "normalization_profile": "scriptorium-text-v1",
+    "normalized_character_count_including_spaces": 572587,
+    "normalized_sha256": "61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f",
+    "raw_sha256": "61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f",
+    "utf8_byte_count": 1032692
+  },
+  "m2_contribution": 0,
+  "m2_parity_admissible": false,
+  "print_edition_collation": "NOT_RUN",
+  "schema_version": "scriptorium-robinson-shishmareva-literary-body-v1",
+  "source_revision": {
+    "mediawiki_sha1": "65380366cfbd0039de07a2920bb3ad057422b733",
+    "page_id": 946454,
+    "revision_id": 5634933,
+    "timestamp_utc": "2025-09-03T11:05:17Z",
+    "title": "Робинзон Крузо (Дефо; Шишмарёва)",
+    "wikitext_characters_including_spaces": 575223,
+    "wikitext_sha256": "784584e78e13f3941c8f9b128e26d1704b95040e430761329cb0b93fcdb92258",
+    "wikitext_utf8_bytes": 1036654
+  }
+}

@@ -1,0 +1,92 @@
+name: Robinson Shishmareva source-free 29-field measurement
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/robinson-shishmareva-measured.yml"
+      - "scriptorium/robinson_shishmareva_diagnostic.py"
+      - "scriptorium/robinson_shishmareva_body.py"
+      - "scriptorium/metrics.py"
+      - "scriptorium/text.py"
+      - "scriptorium/dialogue.py"
+      - "scriptorium/vocabulary.py"
+      - "tests/test_robinson_shishmareva_diagnostic.py"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-shishmareva-1935-ru.body.json"
+      - "corpus/candidates/diagnostics/defoe-robinson-crusoe-shishmareva-1935-ru.measured.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    name: Replay first narrative and measure 29 fields without prose
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Test source, digest, unknown and privacy guards
+        run: |
+          python -m unittest discover -s tests -p 'test_robinson_shishmareva_body.py' -v
+          python -m unittest discover -s tests -p 'test_robinson_shishmareva_diagnostic.py' -v
+      - name: Measure pinned novel transiently
+        run: |
+          python -m scriptorium.robinson_shishmareva_diagnostic capture \
+            --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+            --body-manifest corpus/candidates/source-edition-traces/defoe-robinson-crusoe-shishmareva-1935-ru.body.json \
+            --output /tmp/shishmareva-source-free-measurements.json
+      - name: Inspect source-free measurements and immutable gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('/tmp/shishmareva-source-free-measurements.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          rows = {r['metric_id']: r for r in data['metric_rows']}
+          assert data['schema_version'] == 'scriptorium-robinson-shishmareva-diagnostic-v1'
+          assert len(rows) == len(data['metric_rows']) == 29
+          assert 21 <= data['numeric_metric_count'] <= 24
+          assert data['numeric_metric_count'] + data['unavailable_metric_count'] == 29
+          assert rows['fantlab.general.characters']['actual'] == 572587
+          assert data['source']['revision_id'] == 5634933
+          assert data['body']['raw_sha256'] == '61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f'
+          assert data['source']['wikitext_sha256'] == '784584e78e13f3941c8f9b128e26d1704b95040e430761329cb0b93fcdb92258'
+          assert data['gates']['m2_weight'] == 0
+          assert data['gates']['m2_parity_admissible'] is False
+          assert data['gates']['source_text_committed'] is False
+          assert data['gates']['fantlab_input_identity'] == 'UNKNOWN'
+          assert all(rows[i]['actual'] is None for i in (
+            'fantlab.vocabulary.active_dictionary', 'fantlab.vocabulary.active_nondictionary',
+            'fantlab.vocabulary.uasz_3000', 'fantlab.vocabulary.uasz_10000',
+            'fantlab.vocabulary.uasz_100000'))
+          assert not {'wikitext', 'literary_text', 'novel_text', 'full_text'} & data.keys()
+          print('SHISHMAREVA_MEASUREMENT=PASS; fields=29; numeric=', data['numeric_metric_count'])
+          # Derived metadata and measurements only, never private or book text.
+          print(p.read_text(encoding='utf-8'))
+          PY
+      - name: Reproduce exact saved output when admitted
+        run: |
+          saved=corpus/candidates/diagnostics/defoe-robinson-crusoe-shishmareva-1935-ru.measured.json
+          if test -f "$saved"; then
+            cmp "$saved" /tmp/shishmareva-source-free-measurements.json
+            python -m scriptorium.robinson_shishmareva_diagnostic replay \
+              --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+              --body-manifest corpus/candidates/source-edition-traces/defoe-robinson-crusoe-shishmareva-1935-ru.body.json \
+              --output "$saved"
+          fi
+      - name: Upload source-free measurements only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: shishmareva-29-fields
+          path: /tmp/shishmareva-source-free-measurements.json
+          if-no-files-found: error
+          retention-days: 7

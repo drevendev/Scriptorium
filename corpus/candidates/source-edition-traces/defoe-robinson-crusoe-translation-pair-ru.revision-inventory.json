@@ -1,0 +1,68 @@
+{
+  "both_literary_bodies_frozen": false,
+  "comparison_status": "NOT_RUN",
+  "first_narrative_scope_match": "NOT_VERIFIED",
+  "input_screening_sha256": "f710d3f3e5cee54ef7a3110d41942cd6b718aa47266710b655e00aff58fee910",
+  "m2_contribution": 0,
+  "schema_version": "scriptorium-robinson-revision-inventory-v1",
+  "source_text_committed": false,
+  "status": "REVISION_WIKITEXT_INVENTORY_ONLY",
+  "witnesses": [
+    {
+      "admitted_for_calibration": false,
+      "body_extraction_status": "NOT_RUN",
+      "corpus_threshold_verified": false,
+      "fantlab_input_identity": "UNKNOWN",
+      "historical_transclusion_dependencies": "UNRESOLVED",
+      "literary_body_sha256": null,
+      "literary_characters_including_spaces": null,
+      "m2_parity_admissible": false,
+      "markup_inventory": {
+        "category_links": 6,
+        "headings": 0,
+        "inclusion_tags": 0,
+        "page_namespace_links": 0,
+        "pages_tags": 1,
+        "template_openers": 2,
+        "transclusion_openers": 0
+      },
+      "mediawiki_sha1": "7e33f041501ee748294b3d5f330be2e80f9aa5bc",
+      "page_id": 946461,
+      "revision_id": 5041937,
+      "timestamp_utc": "2023-09-03T17:55:09Z",
+      "title": "Жизнь и приключения Робинзона Круза, природного англичанина (Дефо; Трусов)/1775 (ДО)/1",
+      "wikitext_characters_including_spaces": 1516,
+      "wikitext_sha256": "9322fd5cdcfa91dae7116edee78f32c1ef9fa135dd36e3bf5061d376bcc7fc65",
+      "wikitext_utf8_bytes": 2397,
+      "work_id": "defoe-robinson-trusov-1775-vol1-ru"
+    },
+    {
+      "admitted_for_calibration": false,
+      "body_extraction_status": "NOT_RUN",
+      "corpus_threshold_verified": false,
+      "fantlab_input_identity": "UNKNOWN",
+      "historical_transclusion_dependencies": "UNRESOLVED",
+      "literary_body_sha256": null,
+      "literary_characters_including_spaces": null,
+      "m2_parity_admissible": false,
+      "markup_inventory": {
+        "category_links": 5,
+        "headings": 0,
+        "inclusion_tags": 0,
+        "page_namespace_links": 0,
+        "pages_tags": 0,
+        "template_openers": 19,
+        "transclusion_openers": 0
+      },
+      "mediawiki_sha1": "65380366cfbd0039de07a2920bb3ad057422b733",
+      "page_id": 946454,
+      "revision_id": 5634933,
+      "timestamp_utc": "2025-09-03T11:05:17Z",
+      "title": "Робинзон Крузо (Дефо; Шишмарёва)",
+      "wikitext_characters_including_spaces": 575223,
+      "wikitext_sha256": "784584e78e13f3941c8f9b128e26d1704b95040e430761329cb0b93fcdb92258",
+      "wikitext_utf8_bytes": 1036654,
+      "work_id": "defoe-robinson-shishmareva-1935-vol1-ru"
+    }
+  ]
+}

@@ -175,7 +175,7 @@ class EpubIngestionTests(unittest.TestCase):
             self.assertEqual(actual, expected)
             self.assertIn("## Dialogue", actual)
             self.assertIn("NOT** verified FantLab parity", actual)
-            self.assertIn(r"Private \\| \\[Draft\\] &lt;script&gt;", actual)
+            self.assertIn(r"Private \| \[Draft\] &lt;script&gt;", actual)
             self.assertNotIn("<script>", actual)
             self.assertNotIn("Привет, мир!", actual)
             self.assertNotIn("Первый текст", actual)

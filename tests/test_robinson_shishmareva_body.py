@@ -19,6 +19,8 @@ def sample(story="Я родился в 1632 году.\n\nВторой абзац
         "<blockquote>{{h3|Дневник|caps=1}}\nСтрока дневника.</blockquote>\n"
         "{{Razr2|Пятница}}. Да.\n"
         "В тексте<ref>Редакторское примечание, не роман.</ref> конец.\n"
+        '{|\n|-\n| Первое слово.\n|}\n'
+        '{|\n|-\n|style="width:50%"| Второе слово.\n|}\n'
         "{{примечания|title=}}\n"
         + "\n".join(f"[[Категория:Тест {n}]]" for n in range(5))
     )
@@ -28,7 +30,7 @@ class ShishmarevaTests(unittest.TestCase):
     def test_extract_preserves_narrative_subtitle_dialogue_and_diary(self):
         text = extract_literary_body(sample("== Глава I ==\n" + "А" * 300_010))
         self.assertGreater(len(text), 300_000)
-        for part in ("Подзаголовок моряка", "Глава I", "А" * 100, "Дневник", "Пятница", "Строка дневника"):
+        for part in ("Подзаголовок моряка", "Глава I", "А" * 100, "Первое слово", "Второе слово", "Дневник", "Пятница", "Строка дневника"):
             self.assertIn(part, text)
         for artifact in ("Отексте", "ACADEMIA", "Категория:", "примечания", "Редакторское примечание", "<blockquote>", "<ref>", "{{"):
             self.assertNotIn(artifact, text)

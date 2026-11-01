@@ -39,6 +39,7 @@
   const leftSelect = el("pair-left");
   const rightSelect = el("pair-right");
   const pairMetric = el("pair-metric");
+  const pairSwapButton = el("pair-swap");
   const pairExportButton = el("pair-export");
   const pairCsvButton = el("pair-export-csv");
   const pairMarkdownButton = el("pair-export-markdown");
@@ -901,6 +902,7 @@
     if (!getBook(left) || !getBook(right)) return;
     leftSelect.value = left;
     rightSelect.value = right;
+    pairSwapButton.disabled = left === right;
     updatePair();
     const share = el("share-pair");
     if (left === right) {
@@ -922,6 +924,12 @@
       url.hash = "pairs";
       window.history.pushState(null, "", url);
     }
+  }
+
+  function swapPair() {
+    // Keep signed deltas, provenance, chart and permalink in the canonical renderer.
+    if (pairSwapButton.disabled || leftSelect.value === rightSelect.value) return;
+    selectPair(rightSelect.value, leftSelect.value, true);
   }
 
   function exportSelected() {
@@ -1054,7 +1062,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogSearch,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,...chartButtons];
+      const inputs=[catalogFilter,catalogSearch,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -1094,6 +1102,7 @@
       leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
+      pairSwapButton.addEventListener("click",swapPair);
       selectChart(chartFromUrl());
       const [left,right] = pairFromUrl();
       pairMetric.value=pairMetricFromUrl();

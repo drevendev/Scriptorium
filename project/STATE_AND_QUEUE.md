@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 383
+STATE_REVISION: 384
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #382 merged at 183cd701d51b5383ab98d3f513390f89a1233d7c. Delivering direct private manuscript comparison through the existing canonical analyzer and compare CLI.
-LAST_VERIFIED_PROGRESS: Ten source-bound measured Russian works in master Reader; 269 metric rows (225 numeric, 44 unavailable). FantLab input identity UNKNOWN (M2 0/5; M3 open). Live browser/mobile NOT_VERIFIED.
+LAST_RESULT: #383 merged into master at 983d13f57b18541aaae92017c7a573c32a3f1220. Reader pair-direction swap prepared for later independent acceptance.
+LAST_VERIFIED_PROGRESS: Ten measured Russian books and 269 metric rows (225 numeric, 44 unavailable); FantLab input UNKNOWN (M2 0/5; M3 open). Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-COMPARE-DIRECT-TEXTS
-ISSUE: Compare two local UTF-8 manuscripts directly without intermediate analysis JSON files.
+UNIT_ID: SCRIP-SITE-PAIR-SWAP
+ISSUE: #283, reversible comparison direction
 STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-compare-direct-texts
-BASE: 183cd701d51b5383ab98d3f513390f89a1233d7c
+BRANCH: scrip-reader-pair-swap
+BASE: 983d13f57b18541aaae92017c7a573c32a3f1220
 
-ACCEPTANCE: `scriptorium compare --texts A.txt B.txt` reuses the canonical 29-metric deterministic analyzer and exact-decimal comparison path across HTML/JSON/CSV/Markdown; outputs match the two-report pipeline byte-for-byte. Bounds/symlink/UTF-8/create-only failures and same-text zero-difference behavior are tested without path/prose leaks. Existing JSON input mode and profiles unchanged; no FantLab source identity or M2 parity claim. Require hosted CI and independent later-run acceptance.
+ACCEPTANCE: A keyboard-accessible 48px swap control reverses two distinct measured editions through the existing renderer; left/right signed delta, source/translator attribution, chart and share URL update together, preserving metric and unrelated URL parameters. Duplicate selections cannot swap, and no-JavaScript/unverified data leave the control disabled. Positive and negative shipped-Node and Python regressions, hosted CI and later independent acceptance required. Live Pages verification separate.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Readable, privacy-safe manuscript-to-manuscript comparison in one installed CLI command while retaining exact scientific caveats and all four report formats.
+Milestone: Trustworthy reversible two-book comparisons for the ten source-verified Russian editions, without scientific overclaim.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/merge direct-text comparison PR | Exact-head CI, diff, installed-wheel privacy and output-equivalence check | Later wake / applicable checks |
-| P2 | Verify root Reader live | Latest master Pages, public HTML/CSV, real desktop/mobile/keyboard | Existing HTTP/browser administrator restriction |
-| P3 | #282 native N discriminator | Measured noun/cardinal evidence and negative controls | Public pylem adapter loses source enum |
-| P4 | #281 source-matched FantLab benchmark | Input identity plus per-field displayed-rounding evidence | Exact analyzer-input identity UNKNOWN |
-| P5 | Second measured Russian translation edition | Legal provenance, translator/edition IDs, reproducible comparison | Independent frozen distinct edition |
+| P1 | Independently accept/merge pair-swap PR | Exact-head CI, diff, route/translation tests | Later wake / applicable checks |
+| P2 | Verify root Reader live | Latest master Pages, HTTP, real mobile/desktop/keyboard acceptance | Browser access restricted |
+| P3 | #282 native N discriminator | Measured noun/cardinal evidence and negative controls | pylem runtime loses source enum |
+| P4 | #281 source-matched FantLab benchmark | Input identity plus displayed-rounding evidence | Exact analyzer-input identity UNKNOWN |
+| P5 | Second measured Russian translation edition | Legal provenance, distinct source/translator identity, reproducible comparison | Independent frozen edition |
 
 ## Retained evidence and scientific gates
 

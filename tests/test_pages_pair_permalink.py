@@ -29,8 +29,11 @@ class PairLinks(unittest.TestCase):
         self.assertEqual(len(measured),10)
         self.assertTrue({"anna","karamazov"}.issubset(measured))
         self.assertIn('id="pair-status" class="control-note" aria-live="polite"',html)
+        self.assertIn('id="pair-swap" type="button" disabled',html)
+        self.assertIn('aria-label="Поменять местами левую и правую книги"',html)
         css=(ROOT/"assets/pages-reader.css").read_text(encoding="utf-8")
         self.assertIn(".permalink-help a { display:inline-flex; min-height:44px",css)
+        self.assertIn(".control-pair-swap button { min-height:48px",css)
 
     def test_allowlisted_routing_and_history(self):
         js=(ROOT/"assets/pages-reader.js").read_text(encoding="utf-8")
@@ -45,7 +48,10 @@ class PairLinks(unittest.TestCase):
                          'window.history.pushState(null, "", url)','selectPair(left,right)',
                          'leftSelect.addEventListener("change",()=>selectPair',
                          'rightSelect.addEventListener("change",()=>selectPair',
-                         'pairMetric.addEventListener("change",()=>selectPair'):
+                         'pairMetric.addEventListener("change",()=>selectPair',
+                         'pairSwapButton.addEventListener("click",swapPair)',
+                         'pairSwapButton.disabled = left === right',
+                         'function swapPair() {'):
             with self.subTest(fragment=fragment):
                 self.assertIn(fragment,js)
         self.assertNotIn("fetch(window.location",js)

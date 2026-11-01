@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 393
+STATE_REVISION: 394
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-01
-LAST_RESULT: #392 merged at eabd24893004df0cca59850b192b9725bcce2762. Exact-oldid Shishmareva 1935 literary body captured in source-free hosted CI: 572,587 characters / 1,032,692 UTF-8 bytes, raw and normalized SHA-256 61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f. Saved derived manifest in PR; independent final-head replay/CI and later acceptance still required.
-LAST_VERIFIED_PROGRESS: Ten measured Russian books, 269 metric rows (225 numeric, 44 unavailable); M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
+LAST_RESULT: #393 independently merged at 9a59cc4f5449588f1b49dc95a233861499917c7a. Shishmareva first-narrative source identity is frozen (oldid 5634933, 572,587 literary characters, normalized SHA-256 61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f). Implemented a separately versioned source-free 29-field measurement workflow and negative regressions in a new PR; hosted actual metrics, artifact retention and fresh CI acceptance remain required.
+LAST_VERIFIED_PROGRESS: Ten published measured Russian books, 269 metric rows (225 numeric, 44 unavailable); Shishmareva is a measured-candidate PR, NOT YET part of Reader. M2 0/5, M3 open. Live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-ROBINSON-SHISHMAREVA-BODY
-ISSUE: reproducibly extract the 1935 first-narrative literary body from the already frozen 5634933 oldid, excluding editorial/markup material
-STATUS: PR_PENDING_LATER_ACCEPTANCE
-BRANCH: scrip-robinson-shishmareva-body
-BASE: eabd24893004df0cca59850b192b9725bcce2762
+UNIT_ID: SCRIP-CORPUS-ROBINSON-SHISHMAREVA-MEASURED
+ISSUE: compute 29 real source-free metric rows from exact replay-verified Shishmareva 1935 first narrative; do not claim English original or FantLab source identity
+STATUS: PR_PENDING_CI_AND_LATER_ACCEPTANCE
+BRANCH: scrip-robinson-shishmareva-measured
+BASE: 9a59cc4f5449588f1b49dc95a233861499917c7a
 
-ACCEPTANCE: Official MediaWiki oldid 5634933 replayed in scoped CI with exact page/revision/digest identity, 572,587 actual literary characters (>=300k), 1,032,692 UTF-8 bytes, raw+normalized SHA-256 61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f. Source-free derived manifest retained. Full fresh exact-head deterministic replay/check acceptance and later independent merge are still outstanding; print collation and FantLab analyzer input identity UNKNOWN.
+ACCEPTANCE: Re-fetch official pinned oldid 5634933, replay the merged #393 body manifest, verify 572,587 literary characters and exact raw/normalized SHA-256, then compute the frozen 29-field Scriptorium metric contract with explicit profile/units/unknowns, 5 dictionary-dependent NOT_RUN rows, source-free create-only JSON and exact-replay CI. Preserve M2 0/5, unavailable print collation and Trusov comparison; later independent exact-head review/merge required before Reader admission.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,10 +22,10 @@ Milestone: independently frozen and measured Russian translations of Robinson Cr
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Shishmareva 1935 direct-prose body extraction and source-free CI | Exact oldid 5634933 and already measured 572,587-character body, strict source-free manifest cmp/replay at final head, and later independent merge acceptance | Hosted MediaWiki retrieval; current PR |
-| P2 | Analyze the frozen Shishmareva first narrative | Real 29-field reproducible source-free metrics with units/profile versions; no invented unavailable POS | P1 body identity |
-| P3 | Resolve Trusov 1775 Page/Index transclusion independently | Pin the actual historical Page source graph, narrative boundaries, and SHA-256+count | Scan/Page dependencies, not P2 |
-| P4 | Publish verified comparison/Reader and test #285 | Two frozen source identities, deterministic metric deltas and accessible chart/table | P2+P3; live HTTP restricted |
+| P1 | Shishmareva exact-oldid 29-field measured source-free JSON | Hosted source replay, metric contract, source-free artifact, full exact-head CI; later merge | #393 merged, working PR |
+| P2 | Publish source-verified Shishmareva measured card on Reader | Only independently accepted retained numbers; 29 labelled fields, source/translator and chart/table/CSV consistency | P1 merged measured artifact; site/browser evidence |
+| P3 | Resolve Trusov 1775 Page/Index transclusion independently | Pin true historical Page dependency graph, literary boundaries, body SHA-256+count | Scan/Page dependencies, not P1/P2 |
+| P4 | Publish two-translation comparison and test #285 | Both complete frozen source identities, deterministic deltas and accessible chart/table; historical confounders | P2+P3; live HTTP restricted |
 | P5 | #282/#281 AOT/FantLab compatibility | Native POS source collision resolved or source-exact benchmark evidence | New primary evidence |
 
 ## Retained evidence and scientific gates

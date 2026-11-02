@@ -48,7 +48,8 @@ def transclusion_input(wikitext: str) -> str:
 
 def capture(graph: Mapping[str, object], *, graph_sha256: str,
             query: Callable[..., dict] = _api_query,
-            batch_size: int = 20, delay: float = 0) -> dict:
+            batch_size: int = 20, delay: float = 0,
+            observer: Callable[[dict, str], None] | None = None) -> dict:
     """Fetch each pinned oldid (batched), verify identity and retain hashes only."""
     validate(graph)
     if not isinstance(graph_sha256, str) or not _HEX.fullmatch(graph_sha256):
@@ -110,6 +111,8 @@ def capture(graph: Mapping[str, object], *, graph_sha256: str,
                 chars += 1
             digest.update(candidate.encode("utf-8"))
             chars += len(candidate)
+            if observer is not None:
+                observer(identity, candidate)
             pages.append({
                 "page_sequence":identity["page_sequence"],
                 "revision_id":identity["revision_id"],

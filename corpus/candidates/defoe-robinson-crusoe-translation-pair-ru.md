@@ -126,3 +126,45 @@ python -m scriptorium.robinson_trusov_content \
   --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
   --output build/repro/trusov-1775.content-preflight.json
 ```
+
+## Pinned template-shape audit (new PR candidate)
+
+The accepted #397 preflight confirms **34 of 150** Page inputs still contain
+**64 unexpanded double-brace openers**. The source-bound template-shape audit
+reuses the exact historical oldid and provider-identity checks, classifies
+balanced calls, nested braces and argument *counts* while keeping argument
+values, raw Page prose and literary text entirely transient. Unsupported or
+dynamic template titles are represented by hashes; unclassified triple-brace
+openers remain explicit. This is **not template expansion or historical
+rendering**, and does not verify page-joining semantics, literary coverage,
+300,000 characters, admission or FantLab input identity.
+
+The modified preflight workflow obtains the frozen Page source **once** and
+writes both the original byte-for-byte receipt-checked preflight and the new
+source-free shape inventory. To run a local live capture with ordinary
+Wikisource access:
+
+```sh
+python -m scriptorium.robinson_trusov_template_shapes \
+  --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+  --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
+  --preflight-output build/repro/trusov-1775.content-preflight.json \
+  --output build/repro/trusov-1775.template-shapes.json
+```
+
+The [exact-head live capture](https://github.com/drevendev/Scriptorium/actions/runs/41402787490)
+classified all **64** unresolved openers on **34 of 150 Pages**:
+**30 `heading`**, **28 `nop`**, **4 `ВАР`**, and **2 parser/dynamic
+unresolved invocations**, with **zero** other unclassified openers. The
+[retained source-free summary](diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json)
+records the complete report SHA-256
+`e27a3eff597a359c3d34e2c15cacb09d1b597fb3651c39ea5b76978a88902f3f`
+(48,390 bytes) and is checked against recomputed JSON by CI. The original
+preflight retained receipt also passed unchanged, including its SHA-256.
+Template classes are an actionable extraction frontier, **not** rendered text.
+
+The emitted shape inventory remains diagnostic: all invocations are unresolved
+until their exact identities, binding/expansion semantics and body inclusion
+effects are independently tested. Preserve the last accepted #397 receipt if
+a provider rate limit prevents a new capture; a CI run that does not complete
+is NOT_RUN, not failed scientific parity.

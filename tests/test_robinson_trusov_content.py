@@ -72,6 +72,13 @@ class TrusovContentTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "empty"):
             transclusion_input("<noinclude>no transclusion</noinclude>")
 
+    def test_proofread_page_content_model_is_supported(self):
+        graph, digest = fixture()
+        def proofread_model(page):
+            page["revisions"][0]["slots"]["main"]["contentmodel"] = "proofread-page"
+        report = capture(graph, graph_sha256=digest, query=mock_query(graph, proofread_model))
+        self.assertEqual(report["page_count"], 150)
+
     def test_identity_drift_is_not_a_source_match(self):
         graph, digest = fixture()
         mutations = (

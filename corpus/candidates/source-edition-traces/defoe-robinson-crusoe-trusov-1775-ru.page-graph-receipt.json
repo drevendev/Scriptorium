@@ -1,0 +1,41 @@
+{
+  "schema_version": "scriptorium-robinson-trusov-page-graph-receipt-v1",
+  "candidate_id": "defoe-robinson-trusov-1775-vol1-ru",
+  "carrier_oldid": 5041937,
+  "carrier_timestamp_utc": "2023-09-03T17:55:09Z",
+  "carrier_wikitext_sha256": "9322fd5cdcfa91dae7116edee78f32c1ef9fa135dd36e3bf5061d376bcc7fc65",
+  "proofreadpage_index": "Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf",
+  "page_range_inclusive": [
+    2,
+    151
+  ],
+  "page_revision_count": 150,
+  "distinct_page_ids": 150,
+  "selected_revision_date_utc": "2023-08-17",
+  "first_page": {
+    "sequence": 2,
+    "page_id": 946574,
+    "oldid": 4958669,
+    "mediawiki_sha1": "8a4a91dbb7cd8bec22375a9d9d5ce6c3a9820ed7"
+  },
+  "last_page": {
+    "sequence": 151,
+    "page_id": 946570,
+    "oldid": 4958664,
+    "mediawiki_sha1": "3fe4e830fb8c3262c064f34a16c94d3af33bfb8a"
+  },
+  "full_source_free_graph_sha256": "d2104ad33fc15ddb8479c13b9fdbe0abf94f8418e76c02261a803b79130ebaa4",
+  "full_graph_size_bytes": 56594,
+  "graph_location": "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json",
+  "graph_in_git": true,
+  "workflow_run_url": "https://github.com/drevendev/Scriptorium/actions/runs/41375340104",
+  "historical_selection_policy": "latest_page_revision_at_or_before_carrier_save",
+  "historical_render_equivalence_proven": false,
+  "literary_body_sha256": null,
+  "literary_characters_including_spaces": null,
+  "corpus_threshold_verified": false,
+  "admitted_for_calibration": false,
+  "fantlab_input_identity": "UNKNOWN",
+  "m2_parity_admissible": false,
+  "source_text_committed": false
+}

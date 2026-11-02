@@ -66,3 +66,52 @@ literary boundary/markup and provenance first; scope Trusov's independent
 historical scan/Page dependencies without making that difficult path a
 prerequisite for measuring other eligible translations. Both bodies remain
 **NOT_RUN** for extraction, SHA-256, >=300k and 29-metric analysis. M2 stays 0/5.
+
+## Trusov 1775: historical Page dependency capture (PR candidate)
+
+The pinned Trusov carrier is a 1,516-character **transclusion** page, not a
+1,516-character book. `scriptorium.robinson_trusov_pages` fetches exact
+`oldid=5041937` bytes, verifies them against the accepted revision inventory,
+and parses exactly one unambiguous [ProofreadPage selector](https://www.mediawiki.org/wiki/Help:Extension:ProofreadPage/Pages_tag/en).
+Unknown selectors fail closed instead of guessing a historical edition's coverage.
+Page-namespace revisions are selected using the deterministic historical policy
+**latest revision not later than carrier-save 2023-09-03 17:55:09 UTC**,
+using batched current-page lookup and single-title historical fallback (required by the MediaWiki API). Only Page titles, oldids, timestamps, provider SHA-1
+and selector metadata are retained; Wikisource prose stays in process memory.
+
+```sh
+python -m scriptorium.robinson_trusov_pages capture \
+  --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+  --output build/repro/trusov-1775.historical-pages.json
+python -m scriptorium.robinson_trusov_pages replay \
+  --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+  --manifest build/repro/trusov-1775.historical-pages.json
+```
+
+**Scientific limit:** this as-of-save selection is a reproducible historical
+hypothesis, **not** proof of MediaWiki parser-cache/render equivalence or print
+edition collation. The proposed real-source workflow must successfully capture
+the graph before claiming frozen Page identities. No literary-body SHA-256,
+>=300,000-character admission, 29-field analysis, translation comparison or
+FantLab parity is established by this tool. Volume 2 is excluded; M2 remains 0/5.
+
+### Live graph capture verified in PR #396 (2026-11-02)
+
+[Exact-head CI run 41375340104](https://github.com/drevendev/Scriptorium/actions/runs/41375340104)
+successfully captured the pinned carrier's ProofreadPage index
+**`Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf`**
+and **150 distinct Page-revision identities, pages 2–151 inclusive**.
+All 150 selected Page revisions date to **2023-08-17**, earlier than the
+carrier's 2023-09-03 save. The full **source-free JSON** (56,594 bytes,
+SHA-256 `d2104ad33fc15ddb8479c13b9fdbe0abf94f8418e76c02261a803b79130ebaa4`)
+is stored temporarily as the run's `robinson-trusov-historical-pages` artifact.
+The [durable receipt](source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json)
+preserves the checksum, selection, first/last revision identities and scientific gates.
+CI checks the reproduced full graph against that checksum.
+
+**Do not claim the full Page graph JSON is committed in Git:** the receipt is,
+the complete graph remains the reproducible workflow artifact until separately
+adopted. None of these 150 pinned Page identities proves literary-body coverage,
+transclusion rendering fidelity, the 300k threshold or FantLab parity.
+
+The complete 150-Page *source-free historical identity graph* is now durably frozen at [`source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json`](source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json) and checksummed against the adjacent receipt; replay locally without Wikisource access using `python -m scriptorium.robinson_trusov_pages verify --manifest corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json`. Exact-source *live* replay remains an explicit optional/manual action because provider 429 cannot be accepted as graph mismatch. Neither offline validity nor a historical revision selection proves the 1775 printed literary text, full volume, >=300k threshold or FantLab parity.

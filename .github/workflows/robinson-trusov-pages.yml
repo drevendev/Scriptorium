@@ -1,0 +1,54 @@
+name: Trusov 1775 historical Page dependency graph
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/robinson-trusov-pages.yml"
+      - "scriptorium/robinson_trusov_pages.py"
+      - "tests/test_robinson_trusov_pages.py"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json"
+  workflow_dispatch:
+    inputs:
+      live_replay:
+        description: Re-fetch exact pinned Wikisource oldid and Page revisions (provider may return HTTP 429)
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  trusov-page-dependencies:
+    name: Verify frozen historical Page graph without network
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Focused source-free positive and negative tests
+        run: python -m unittest discover -s tests -p 'test_robinson_trusov_pages.py' -v
+
+      - name: Verify committed Page graph digest and scientific gates (offline)
+        run: |
+          python -m scriptorium.robinson_trusov_pages verify \
+            --manifest corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+            --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json
+
+      - name: Optional pinned-source live replay (explicit manual request only)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.live_replay }}
+        run: |
+          python -m scriptorium.robinson_trusov_pages replay \
+            --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+            --manifest corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json

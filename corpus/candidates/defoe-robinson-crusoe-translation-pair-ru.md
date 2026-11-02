@@ -152,6 +152,17 @@ python -m scriptorium.robinson_trusov_template_shapes \
   --output build/repro/trusov-1775.template-shapes.json
 ```
 
+The [exact-head live capture](https://github.com/drevendev/Scriptorium/actions/runs/41402787490)
+classified all **64** unresolved openers on **34 of 150 Pages**:
+**30 `heading`**, **28 `nop`**, **4 `ВАР`**, and **2 parser/dynamic
+unresolved invocations**, with **zero** other unclassified openers. The
+[retained source-free summary](diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json)
+records the complete report SHA-256
+`e27a3eff597a359c3d34e2c15cacb09d1b597fb3651c39ea5b76978a88902f3f`
+(48,390 bytes) and is checked against recomputed JSON by CI. The original
+preflight retained receipt also passed unchanged, including its SHA-256.
+Template classes are an actionable extraction frontier, **not** rendered text.
+
 The emitted shape inventory remains diagnostic: all invocations are unresolved
 until their exact identities, binding/expansion semantics and body inclusion
 effects are independently tested. Preserve the last accepted #397 receipt if

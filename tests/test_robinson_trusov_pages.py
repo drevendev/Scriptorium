@@ -26,7 +26,7 @@ def mock_query(params):
             'slots':{'main':{'contentmodel':'wikitext','content':SOURCE}}
         }]}]}}
     titles = params['titles'].split('|')
-    assert params['rvdir']=='older' and params['rvstart']==ANCHOR
+    assert 'rvstart' not in params or len(titles)==1
     return {'query':{'pages':[{'pageid':900+i,'title':title,'revisions':[{
         'revid':1000+int(title.rsplit('/',1)[1]),'timestamp':'2022-01-01T00:00:00Z',
         'sha1':'b'*40}]} for i,title in enumerate(titles)]}}
@@ -58,6 +58,21 @@ class TrusovGraphTests(unittest.TestCase):
         bad=inventory();bad['witnesses'][0]['wikitext_sha256']='0'*64
         with self.assertRaisesRegex(ValueError,'carrier identity mismatch'):
             capture(bad,query=mock_query)
+
+    def test_newer_page_is_resolved_singly_at_anchor(self):
+        calls=[]
+        def newer(params):
+            calls.append(dict(params))
+            result=mock_query(params)
+            if 'titles' in params and 'rvstart' not in params:
+                result['query']['pages'][0]['revisions'][0]['timestamp']='2025-01-01T00:00:00Z'
+            return result
+        record=capture(inventory(),query=newer)
+        self.assertEqual(record['pages'][0]['timestamp_utc'],'2022-01-01T00:00:00Z')
+        historic=[c for c in calls if 'rvstart' in c]
+        self.assertEqual(len(historic),1)
+        self.assertEqual(historic[0]['rvstart'],ANCHOR)
+        self.assertEqual(historic[0]['titles'],'Страница:Том 1.djvu/10')
 
     def test_future_page_revision_is_not_historic(self):
         def future(params):

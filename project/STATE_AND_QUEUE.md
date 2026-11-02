@@ -3,18 +3,18 @@
 STATE_REVISION: 396
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-02
-LAST_RESULT: #395 independently merged to master (68f9fc3841b8c9c9e094e56a8f3d8bb39286d48a). PR #396 now implements the Trusov 1775 historical Page dependency graph. Live CI run 41375340104 retrieved 150 Page identities from pages 2–151 and uploaded source-free JSON; full graph SHA-256 d2104ad33fc15ddb8479c13b9fdbe0abf94f8418e76c02261a803b79130ebaa4 is bound by a committed receipt and retained 150-Page JSON. Exact-head offline CI and later acceptance remain pending; opt-in live replay is separate from network-independent PR checks.
-LAST_VERIFIED_PROGRESS: Master has 11 measured Russian works (298 rows: 249 numeric, 49 unavailable) among 13 catalogue entries. Trusov exact carrier oldid 5041937 selects 150 historical Page-revision identities; full 150-Page source-free graph now committed with digest receipt; offline verification in PR CI, optional manual live re-fetch. Literary rendering/body/size/29 metrics NOT_RUN. M2 0/5, M3 open. Pages live/browser/mobile NOT_VERIFIED.
+LAST_RESULT: PR #396 merged at 35f72c82df302fe1bf5c18b79fb3945ef97f43d2; this PR adds a pinned-source, source-free 150-Page content/transclusion-input preflight with positive/negative tests and CI. Live Page content capture and literary render/size remain unverified until exact-head run.
+LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian works, 298 fields (249 numeric, 49 unavailable), and the 150-Page Trusov historical graph frozen in Git (SHA-256 d2104ad33fc15ddb8479c13b9fdbe0abf94f8418e76c02261a803b79130ebaa4). This preflight checks each pinned Page revision/content and emits only source-free candidate hashes/markup counts; candidate is NOT a literary body. M2 0/5, M3 open; Pages live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-HISTORICAL-PAGES
-ISSUE: recover the pinned 1775 Trusov first-narrative Page/Index dependency graph without source-text publication
-STATUS: PR_UPDATED; REAL_SOURCE_GRAPH_CAPTURE_PASS; FROZEN_GRAPH_IN_GIT; OFFLINE_CI_AND_LATER_ACCEPTANCE_PENDING
-BRANCH: scrip-robinson-trusov-page-graph
-BASE: 68f9fc3841b8c9c9e094e56a8f3d8bb39286d48a
+UNIT_ID: SCRIP-TRUSOV-PINNED-CONTENT-PREFLIGHT
+ISSUE: inspect 150 frozen historical Page contents, retain only derived hashes and markup diagnostics
+STATUS: PR_CANDIDATE; FIXTURE_TESTS_IN_CI_PENDING; LIVE_CONTENT_NOT_RUN
+BRANCH: scrip-trusov-pinned-page-content-preflight
+BASE: 35f72c82df302fe1bf5c18b79fb3945ef97f43d2
 
-ACCEPTANCE: fetch exact oldid 5041937 and reject mismatched provider SHA-1/content digest; fail closed on unknown ProofreadPage selectors and out-of-range intervals; resolve every selected Page to a bounded, ordered as-of-2023-09-03 revision identity; reject duplicates/missing/newer Page revisions; serialize no source prose; retain per-Page oldid/provider hash and explicitly unproven rendering/body/300k/FantLab gates; run local fixtures and real-source CI before later exact-head merge.
+ACCEPTANCE: verify full frozen graph and each pinned Page's oldid/page ID/title/timestamp/provider SHA-1 before inspecting its wikitext; reject missing, changed, duplicate or non-wikitext responses and unknown inclusion tags; source-free 150-page candidate hashes/markup inventory, no source prose or fabricated literary size/parity; positive and negative CI plus real-provider output before later merge. The diagnostic transclusion input retains unexpanded markup and explicit synthetic page joins: NOT literary body.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: add a second independently measured Russian Robinson Crusoe translati
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept and durably freeze Trusov 1775 Page graph | Source-free 150-page committed graph, exact SHA-256 receipt, independent offline verify and later PR acceptance | #396 exact-head CI; live provider re-fetch optional and rate-limited |
-| P2 | Render/freeze Trusov first narrative only | Source/normalized literary SHA-256, complete coverage and >=300k gate, reproducible no-text receipt | Requires trustworthy pinned Page graph and markup rules |
+| P1 | Capture source-free pinned Trusov Page content preflight | Verify 150/150 oldid/page/title/SHA-1 and derived per-page candidate hashes/markup inventory, no prose; CI PASS | Requires frozen graph #396 (MERGED); MediaWiki content rate limit is scoped to live fetch |
+| P2 | Resolve actual Trusov 1775 transclusion and freeze first narrative | Verified complete, normalized literary SHA-256, page-join/template semantics and >=300k gate | Depends on source-free pinned Page content preflight and print/body verification |
 | P3 | Run Trusov 29 metrics and show honest translation pair in Reader | Distinct translation sources/profiles, diagnostic deltas and historical/French intermediary caveats | Requires accepted first-narrative body, not FantLab input identity |
 | P4 | Reconcile stale Reader README and verify root Pages desktop/mobile | No stale PR-candidate/counter language; actual deployed browser flow and fallback evidence if allowed | HTTP browser historically ADMIN_BLOCKED; docs/structural tests independent |
 | P5 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Primary dependency evidence still unresolved |

@@ -94,3 +94,22 @@ edition collation. The proposed real-source workflow must successfully capture
 the graph before claiming frozen Page identities. No literary-body SHA-256,
 >=300,000-character admission, 29-field analysis, translation comparison or
 FantLab parity is established by this tool. Volume 2 is excluded; M2 remains 0/5.
+
+### Live graph capture verified in PR #396 (2026-11-02)
+
+[Exact-head CI run 41375340104](https://github.com/drevendev/Scriptorium/actions/runs/41375340104)
+successfully captured the pinned carrier's ProofreadPage index
+**`Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf`**
+and **150 distinct Page-revision identities, pages 2–151 inclusive**.
+All 150 selected Page revisions date to **2023-08-17**, earlier than the
+carrier's 2023-09-03 save. The full **source-free JSON** (56,594 bytes,
+SHA-256 `d2104ad33fc15ddb8479c13b9fdbe0abf94f8418e76c02261a803b79130ebaa4`)
+is stored temporarily as the run's `robinson-trusov-historical-pages` artifact.
+The [durable receipt](source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json)
+preserves the checksum, selection, first/last revision identities and scientific gates.
+CI checks the reproduced full graph against that checksum.
+
+**Do not claim the full Page graph JSON is committed in Git:** the receipt is,
+the complete graph remains the reproducible workflow artifact until separately
+adopted. None of these 150 pinned Page identities proves literary-body coverage,
+transclusion rendering fidelity, the 300k threshold or FantLab parity.

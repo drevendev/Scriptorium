@@ -195,6 +195,63 @@ def validate_preflight(result: Mapping[str, object], graph: Mapping[str, object]
             raise ValueError("unresolved markup counter mismatch")
 
 
+
+def verify_receipt(report_file: Path, receipt_file: Path, graph: Mapping[str, object]) -> dict:
+    """Validate a reproducible, source-free report against its retained digest receipt."""
+    raw = report_file.read_bytes()
+    report = json.loads(raw)
+    validate_preflight(report, graph)
+    receipt = json.loads(receipt_file.read_text(encoding="utf-8"))
+    expected_keys = {
+        "schema_version", "candidate_id", "page_graph_sha256",
+        "source_free_report_sha256", "source_free_report_bytes", "page_count",
+        "transclusion_input_profile", "transclusion_input_candidate_sha256",
+        "transclusion_input_candidate_characters_including_spaces",
+        "pages_with_unresolved_templates", "pages_with_unresolved_links",
+        "pages_with_unrendered_html", "source_text_committed", "literary_body_sha256",
+        "literary_characters_including_spaces", "literary_coverage_verified",
+        "corpus_threshold_verified", "admitted_for_calibration",
+        "historical_render_equivalence_proven", "fantlab_input_identity",
+        "m2_parity_admissible", "evidence_workflow_run", "evidence_workflow_head_sha",
+        "status",
+    }
+    if set(receipt) != expected_keys or receipt["schema_version"] != (
+            "scriptorium-robinson-trusov-page-content-preflight-receipt-v1"):
+        raise ValueError("unrecognized source-free Page content receipt")
+    if (sha256(raw).hexdigest() != receipt["source_free_report_sha256"]
+        or len(raw) != receipt["source_free_report_bytes"]):
+        raise ValueError("source-free report receipt digest or size mismatch")
+    mapping = {
+        "candidate_id": "candidate_id",
+        "source_page_graph_sha256": "page_graph_sha256",
+        "page_count": "page_count",
+        "transclusion_profile": "transclusion_input_profile",
+        "transclusion_input_candidate_sha256": "transclusion_input_candidate_sha256",
+        "transclusion_input_candidate_characters_including_spaces":
+            "transclusion_input_candidate_characters_including_spaces",
+        "pages_with_unresolved_templates": "pages_with_unresolved_templates",
+        "pages_with_unresolved_links": "pages_with_unresolved_links",
+        "pages_with_unrendered_html": "pages_with_unrendered_html",
+        "source_text_committed": "source_text_committed",
+        "literary_body_sha256": "literary_body_sha256",
+        "literary_characters_including_spaces": "literary_characters_including_spaces",
+        "literary_coverage_verified": "literary_coverage_verified",
+        "corpus_threshold_verified": "corpus_threshold_verified",
+        "admitted_for_calibration": "admitted_for_calibration",
+        "historical_render_equivalence_proven": "historical_render_equivalence_proven",
+        "fantlab_input_identity": "fantlab_input_identity",
+        "m2_parity_admissible": "m2_parity_admissible",
+        "status": "status",
+    }
+    if any(report.get(key) != receipt.get(target) for key, target in mapping.items()):
+        raise ValueError("source-free report differs from committed receipt")
+    if (receipt["evidence_workflow_run"] !=
+        "https://github.com/drevendev/Scriptorium/actions/runs/41390834128"
+        or receipt["evidence_workflow_head_sha"] !=
+        "71ba78b664def7a04ead31d01b158532109515c2"):
+        raise ValueError("unexpected primary source-capture evidence")
+    return report
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Inspect exact historical Page contents without prose.")
     parser.add_argument("--graph", type=Path, required=True)

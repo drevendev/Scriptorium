@@ -191,7 +191,9 @@ def verify_observation(report: Mapping[str, object], summary: Mapping[str, objec
             name: count for name, count in observed.items() if name is not None
         } or summary["parser_or_dynamic_template_count"] != observed[None]):
         raise ValueError("template title classification drift")
-    for key in ("candidate_id", "page_count", "page_graph_sha256",
+    if summary["source_page_graph_sha256"] != report["page_graph_sha256"]:
+        raise ValueError("template source graph digest mismatch")
+    for key in ("candidate_id", "page_count",
                 "transclusion_input_candidate_sha256", "pages_with_invocations",
                 "total_invocations", "unclassified_openers",
                 "source_text_committed", "literary_body_sha256",

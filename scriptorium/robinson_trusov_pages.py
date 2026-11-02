@@ -105,36 +105,66 @@ def _carrier_source(inventory: Mapping[str, object], query: Callable[..., dict])
 
 def _historical_pages(selection: Mapping[str, object], anchor: str,
                       query: Callable[..., dict]) -> list[dict[str, object]]:
+    """Batch current identities, then resolve newer Pages singly at the anchor.
+
+    MediaWiki rejects rvstart/rvlimit with multiple titles (rvmultpages).
+    An already-old current Page needs no history query; a newer one does.
+    """
     expected = [f"Страница:{selection['index']}/{num}" for num in selection["pages"]]
     results: dict[str, dict[str, object]] = {}
+    anchor_dt = _parse_utc_timestamp(anchor)
+
+    def one_identity(page: object, title: str) -> dict[str, object]:
+        if not isinstance(page, dict) or page.get("title") != title or page.get("missing"):
+            raise ValueError("unexpected/missing historical Page")
+        revisions = page.get("revisions")
+        if not isinstance(revisions, list) or len(revisions) != 1 or not isinstance(revisions[0], dict):
+            raise ValueError("missing/duplicated Page revision")
+        rev = revisions[0]
+        revision_id, timestamp, provider_sha = rev.get("revid"), rev.get("timestamp"), rev.get("sha1")
+        if (type(revision_id) is not int or revision_id <= 0
+            or not isinstance(timestamp, str)
+            or not isinstance(provider_sha, str) or not _HEX.fullmatch(provider_sha)
+            or type(page.get("pageid")) is not int or page["pageid"] <= 0):
+            raise ValueError("invalid historical Page revision identity")
+        _parse_utc_timestamp(timestamp)
+        return {"title": title, "page_id": page["pageid"],
+                "revision_id": revision_id, "timestamp_utc": timestamp,
+                "mediawiki_sha1": provider_sha}
+
     for off in range(0, len(expected), BATCH_SIZE):
         titles = expected[off:off + BATCH_SIZE]
         payload = query({"action": "query", "prop": "revisions", "titles": "|".join(titles),
-                         "rvprop": "ids|timestamp|sha1", "rvlimit": "1",
-                         "rvstart": anchor, "rvdir": "older", "redirects": "0"})
+                         "rvprop": "ids|timestamp|sha1", "redirects": "0"})
         q = payload.get("query") if isinstance(payload, dict) and "error" not in payload else None
         pages = q.get("pages") if isinstance(q, dict) else None
         if not isinstance(pages, list) or len(pages) != len(titles):
-            raise ValueError("incomplete historical Page response")
+            raise ValueError("incomplete current Page inventory")
+        pages_by_title = {}
         for page in pages:
-            if not isinstance(page, dict) or page.get("title") not in titles or page.get("missing"):
-                raise ValueError("unexpected/missing historical Page")
-            title = page["title"]
-            revisions = page.get("revisions")
-            if (title in results or not isinstance(revisions, list) or len(revisions) != 1
-                or not isinstance(revisions[0], dict)):
-                raise ValueError("missing/duplicated Page revision")
-            rev = revisions[0]
-            revision_id, timestamp, provider_sha = rev.get("revid"), rev.get("timestamp"), rev.get("sha1")
-            if (type(revision_id) is not int or revision_id <= 0
-                or not isinstance(timestamp, str) or _parse_utc_timestamp(timestamp) > _parse_utc_timestamp(anchor)
-                or not isinstance(provider_sha, str) or not _HEX.fullmatch(provider_sha)):
-                raise ValueError("invalid historical Page revision identity")
-            results[title] = {"title": title, "page_id": page.get("pageid"),
-                              "revision_id": revision_id, "timestamp_utc": timestamp,
-                              "mediawiki_sha1": provider_sha}
-            if type(page.get("pageid")) is not int or page["pageid"] <= 0:
-                raise ValueError("invalid Page pageid")
+            title = page.get("title") if isinstance(page, dict) else None
+            if title not in titles or title in pages_by_title:
+                raise ValueError("unexpected/duplicate current Page")
+            pages_by_title[title] = page
+        for title in titles:
+            current = one_identity(pages_by_title[title], title)
+            selected = current
+            if _parse_utc_timestamp(current["timestamp_utc"]) > anchor_dt:
+                historical = query({"action": "query", "prop": "revisions", "titles": title,
+                                    "rvprop": "ids|timestamp|sha1", "rvlimit": "1",
+                                    "rvstart": anchor, "rvdir": "older", "redirects": "0"})
+                hq = historical.get("query") if isinstance(historical, dict) and "error" not in historical else None
+                history_pages = hq.get("pages") if isinstance(hq, dict) else None
+                if not isinstance(history_pages, list) or len(history_pages) != 1:
+                    raise ValueError("historical single-Page query unavailable")
+                selected = one_identity(history_pages[0], title)
+                if selected["page_id"] != current["page_id"]:
+                    raise ValueError("historical Page identity changed")
+            if _parse_utc_timestamp(selected["timestamp_utc"]) > anchor_dt:
+                raise ValueError("historical Page revision newer than anchor")
+            if title in results:
+                raise ValueError("duplicate Page title in selected graph")
+            results[title] = selected
     if set(results) != set(expected) or len({v["revision_id"] for v in results.values()}) != len(expected):
         raise ValueError("historical Page graph incomplete/duplicate")
     return [{"page_sequence": n, **results[t]} for n, t in zip(selection["pages"], expected)]

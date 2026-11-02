@@ -109,9 +109,20 @@ The [durable receipt](source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru
 preserves the checksum, selection, first/last revision identities and scientific gates.
 CI checks the reproduced full graph against that checksum.
 
-**Do not claim the full Page graph JSON is committed in Git:** the receipt is,
-the complete graph remains the reproducible workflow artifact until separately
-adopted. None of these 150 pinned Page identities proves literary-body coverage,
+**Historical note:** this warning applied only to the early #396 draft. The full 150-Page graph is now committed in Git and checked against its receipt. None of these 150 pinned Page identities proves literary-body coverage,
 transclusion rendering fidelity, the 300k threshold or FantLab parity.
 
 The complete 150-Page *source-free historical identity graph* is now durably frozen at [`source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json`](source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json) and checksummed against the adjacent receipt; replay locally without Wikisource access using `python -m scriptorium.robinson_trusov_pages verify --manifest corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json`. Exact-source *live* replay remains an explicit optional/manual action because provider 429 cannot be accepted as graph mismatch. Neither offline validity nor a historical revision selection proves the 1775 printed literary text, full volume, >=300k threshold or FantLab parity.
+
+## Exact historical Page content preflight (new PR candidate)
+
+`scriptorium.robinson_trusov_content` consumes the committed #396 graph and uses batched MediaWiki `revids` queries to verify all 150 exact historical Page sources by oldid, page ID, title, timestamp and provider SHA-1. It emits per-Page wikitext/transclusion-input SHA-256, derived character counts and unresolved markup totals **without retaining or uploading any Page prose**. Only explicit `noinclude` spans and `includeonly` wrappers are handled. Unknown `onlyinclude` or unbalanced inclusion tags fail closed.
+
+The resulting concatenation is deliberately **unrendered transclusion input**, not a normalized literary body. It contains unresolved templates, links, HTML and synthetic page breaks. Any 300,000-character comparison against these counts is invalid for corpus admission. Full literary extraction, printed volume collation, FantLab input identity and 29-field analysis remain `NOT_RUN`. Initial CI must verify live pinned-page content before recording numeric results.
+
+```sh
+python -m scriptorium.robinson_trusov_content \
+  --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+  --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
+  --output build/repro/trusov-1775.content-preflight.json
+```

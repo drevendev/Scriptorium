@@ -8,6 +8,7 @@ on:
       - "tests/test_robinson_trusov_content.py"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json"
+      - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json"
   workflow_dispatch:
 
 permissions:
@@ -53,7 +54,13 @@ jobs:
           assert result["literary_body_sha256"] is None
           assert result["corpus_threshold_verified"] is False
           assert result["m2_parity_admissible"] is False
-          print("Source-free 150-page preflight; literary body NOT_RUN")
+          from scriptorium.robinson_trusov_content import verify_receipt
+          verified=verify_receipt(
+            Path("build/repro/trusov-1775.content-preflight.json"),
+            Path("corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json"),
+            graph)
+          assert verified == result
+          print("Source-free 150-page preflight digest and retained receipt PASS; literary body NOT_RUN")
           PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

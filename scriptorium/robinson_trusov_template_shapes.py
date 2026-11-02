@@ -184,7 +184,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         args.preflight_output.parent.mkdir(parents=True, exist_ok=True)
         with args.preflight_output.open("x", encoding="utf-8") as stream:
             json.dump(preflight, stream, sort_keys=True, indent=2, ensure_ascii=False)
-            stream.write("\\n")
+            stream.write("\n")
     print(f"Audited {report['page_count']} pinned Pages, "
           f"{report['total_invocations']} unresolved invocations; literary body NOT_RUN")
     return 0

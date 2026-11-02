@@ -90,10 +90,15 @@ def capture(graph: Mapping[str, object], *, graph_sha256: str,
                 raise ValueError("historical Page source identity drift")
             main = rev.get("slots", {}).get("main") if isinstance(rev.get("slots"), dict) else None
             source = main.get("content") if isinstance(main, dict) else None
-            if (not isinstance(source, str) or not source.strip()
-                or main.get("contentmodel", "wikitext") != "wikitext"
-                or len(source.encode("utf-8")) > 200_000):
-                raise ValueError("invalid Page wikitext")
+            model = main.get("contentmodel", "wikitext") if isinstance(main, dict) else None
+            if model not in ("wikitext", "proofread-page"):
+                raise ValueError(f"unsupported historical Page content model for oldid {rid}: {model!r}")
+            if not isinstance(source, str):
+                raise ValueError(f"missing historical Page source text for oldid {rid}")
+            if not source.strip():
+                raise ValueError(f"empty historical Page source for oldid {rid}; body coverage unknown")
+            if len(source.encode("utf-8")) > 200_000:
+                raise ValueError(f"oversized historical Page source for oldid {rid}")
             seen[rid] = source
         if set(seen) != set(expected):
             raise ValueError("incomplete pinned oldid coverage")

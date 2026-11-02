@@ -102,7 +102,7 @@ class TrusovContentTests(unittest.TestCase):
             capture(graph, graph_sha256=digest, query=missing)
         def bad_model(p):
             p["revisions"][0]["slots"]["main"]["contentmodel"] = "json"
-        with self.assertRaisesRegex(ValueError, "wikitext"):
+        with self.assertRaisesRegex(ValueError, "content model"):
             capture(graph, graph_sha256=digest, query=mock_query(graph, bad_model))
         def broken(p):
             p["revisions"][0]["slots"]["main"]["content"] = "<noinclude>unclosed"

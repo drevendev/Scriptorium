@@ -1,12 +1,14 @@
 """Regression tests for one-request, source-free Trusov template-shape inventory."""
 import copy
+from collections import Counter
+from pathlib import Path
 from hashlib import sha256
 import json
 import unittest
 
 from test_robinson_trusov_content import fixture, mock_query, PRIVATE_SOURCE
 from scriptorium.robinson_trusov_template_shapes import (
-    capture_shapes, invocation_shapes, validate_shapes,
+    capture_shapes, invocation_shapes, validate_shapes, verify_observation,
 )
 
 
@@ -74,6 +76,51 @@ class TrusovTemplateShapesTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unexpected Page shape"):
             validate_shapes(bad, graph, prior)
 
+
+    def test_observation_is_byte_and_class_bound(self):
+        graph, digest = fixture()
+        report = capture_shapes(graph, digest, query=mock_query(graph))
+        contents = (json.dumps(report, sort_keys=True, indent=2,
+                               ensure_ascii=False) + "\n").encode("utf-8")
+        observed = Counter(
+            call["template_title"]
+            for page in report["pages"] for call in page["invocations"]
+        )
+        summary = {
+            "schema_version": "scriptorium-trusov-template-shape-observation-v1",
+            "candidate_id": report["candidate_id"],
+            "source_page_graph_sha256": report["page_graph_sha256"],
+            "transclusion_input_candidate_sha256":
+                report["transclusion_input_candidate_sha256"],
+            "full_source_free_report_sha256": sha256(contents).hexdigest(),
+            "full_source_free_report_bytes": len(contents),
+            "primary_workflow_run":
+                "https://github.com/drevendev/Scriptorium/actions/runs/41402787490",
+            "primary_workflow_head_sha":
+                "f91fd2dfe011f6dce171bac099d89b758fd7a5f9",
+            "page_count": report["page_count"],
+            "pages_with_invocations": report["pages_with_invocations"],
+            "total_invocations": report["total_invocations"],
+            "unclassified_openers": report["unclassified_openers"],
+            "literal_template_counts": {
+                title: count for title, count in observed.items() if title is not None
+            },
+            "parser_or_dynamic_template_count": observed[None],
+            "source_text_committed": False, "literary_body_sha256": None,
+            "corpus_threshold_verified": False,
+            "historical_render_equivalence_proven": False,
+            "fantlab_input_identity": "UNKNOWN", "m2_parity_admissible": False,
+            "status": "UNRESOLVED_TEMPLATE_SHAPES_ONLY",
+        }
+        verify_observation(report, summary)
+        altered = copy.deepcopy(summary)
+        altered["full_source_free_report_sha256"] = "a" * 64
+        with self.assertRaisesRegex(ValueError, "byte digest drift"):
+            verify_observation(report, altered)
+        altered = copy.deepcopy(summary)
+        altered["literal_template_counts"]["t"] += 1
+        with self.assertRaisesRegex(ValueError, "classification drift"):
+            verify_observation(report, altered)
 
 if __name__ == "__main__":
     unittest.main()

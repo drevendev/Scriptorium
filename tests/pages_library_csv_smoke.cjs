@@ -1,4 +1,4 @@
-/* Run shipped catalogue CSV serializer against the pinned ten-book evidence, not fixtures. */
+/* Run shipped catalogue CSV serializer against the pinned eleven-book evidence, not fixtures. */
 "use strict";
 const assert=require("node:assert/strict");
 const fs=require("node:fs");
@@ -9,7 +9,7 @@ const catalog=JSON.parse(fs.readFileSync(path.join(root,"assets/evidence-snapsho
 const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
 const cards=[...html.matchAll(/<article class="book(?: book-research)?" data-status="(measured|pending)" data-catalog-key="([a-z]+)">/g)]
   .map(match=>({dataset:{status:match[1],catalogKey:match[2]}}));
-assert.equal(cards.length,12);
+assert.equal(cards.length,13);
 const section=(first,last)=>{
   const start=source.indexOf(first),end=source.indexOf(last,start);
   assert.ok(start>=0&&end>start,first);
@@ -37,7 +37,7 @@ assert.match(html, /<noscript>[\s\S]*?<a href="\.\/assets\/scriptorium-ru-measur
 assert.ok(csv.startsWith("\uFEFFexport_schema,scientific_claim,"));
 const records=csv.slice(1).trimEnd().split("\r\n");
 const headers=records[0].split(",");
-assert.equal(records.length,270);
+assert.equal(records.length,299);
 const parse=line=>[...line.matchAll(/"((?:[^"]|"")*)"(?:,|$)/g)]
   .map(m=>m[1].replaceAll('""','"'));
 const rows=records.slice(1).map(parse);
@@ -45,9 +45,9 @@ for(const row of rows)assert.equal(row.length,headers.length);
 const column=name=>headers.indexOf(name);
 const index=Object.fromEntries(headers.map((name,i)=>[name,i]));
 assert.ok(Object.values(index).every(Number.isInteger));
-assert.equal(rows.filter(r=>r[index.actual]!=="").length,225);
-assert.equal(rows.filter(r=>r[index.actual]==="").length,44);
-assert.equal(new Set(rows.map(r=>r[index.book_key])).size,10);
+assert.equal(rows.filter(r=>r[index.actual]!=="").length,249);
+assert.equal(rows.filter(r=>r[index.actual]==="").length,49);
+assert.equal(new Set(rows.map(r=>r[index.book_key])).size,11);
 assert.equal(rows.filter(r=>r[index.book_key]==="darwin"||r[index.book_key]==="petersburg").length,0);
 for(const row of rows){
   assert.equal(row[index.scientific_claim],"DIAGNOSTIC_ONLY");
@@ -77,6 +77,12 @@ assert.equal(humiliated[index.reference_status],"UNKNOWN");
 assert.equal(humiliated[index.source_revision_id],"5611473");
 assert.equal(humiliated[index.source_sha256],"ffc6825db7f442c7df93136e8ddf90ce44be8801cdbaa727d5fe642db3fad8fa");
 assert.equal(rows.filter(r=>r[index.book_key]==="humiliated"&&r[index.actual]==="").length,5);
+const shishmareva=rows.find(r=>r[index.book_key]==="shishmareva"&&r[index.metric_id]==="fantlab.general.characters");
+assert.equal(shishmareva[index.actual],"572587");
+assert.equal(shishmareva[index.source_revision_id],"5634933");
+assert.equal(shishmareva[index.translator_id],"maria-shishmareva");
+assert.equal(shishmareva[index.translator_name],"Мария Шишмарёва");
+assert.equal(rows.filter(r=>r[index.book_key]==="shishmareva"&&r[index.actual]==="").length,5);
 const beketova=rows.find(r=>r[index.book_key]==="beketova"&&r[index.metric_id]==="fantlab.general.characters");
 assert.equal(beketova[index.translator_name],"Александра Андреевна Бекетова");
 assert.equal(beketova[index.original_language],"fr");
@@ -101,5 +107,5 @@ assert.throws(()=>run.serializeLibraryCsv(altered),/научный статус/
   assert.equal(await downloaded.text(),csv.replace(/^\uFEFF/,""));
   const bytes=new Uint8Array(await downloaded.arrayBuffer());
   assert.deepEqual([...bytes.slice(0,3)],[0xef,0xbb,0xbf]);
-  console.log("Full Reader catalogue CSV: 269 source-bound rows / 225 numeric / 44 status-only, safe download PASS");
+  console.log("Full Reader catalogue CSV: 298 source-bound rows / 249 numeric / 49 status-only, safe download PASS");
 })().catch(error=>{console.error(error);process.exitCode=1;});

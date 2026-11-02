@@ -1,4 +1,4 @@
-/* Exercise shipped one-edition Markdown export on all ten pinned source-free books. */
+/* Exercise shipped one-edition Markdown export on all eleven pinned source-free books. */
 "use strict";
 const assert=require("node:assert/strict");
 const fs=require("node:fs");
@@ -38,7 +38,7 @@ const actions=new Function("data","getBook","currentBook","singleMarkdownButton"
   assert.equal(doc,catalog); verified++;
 },browserUrl,browserDocument,()=>{});
 const measured=catalog.books.filter(book=>book.text_status==="measured");
-assert.equal(measured.length,10);
+assert.equal(measured.length,11);
 let fields=0;
 for(const book of measured) {
   const text=actions.serializeBookMarkdown(book);
@@ -50,7 +50,7 @@ for(const book of measured) {
   assert.equal(actions.serializeBookMarkdown(book),text);
   fields+=rows.length;
 }
-assert.equal(fields,269);
+assert.equal(fields,298);
 const anna=getBook("anna"),beketova=getBook("beketova");
 const translated=actions.serializeBookMarkdown(beketova);
 assert.ok(translated.includes(beketova.translator.name));
@@ -58,6 +58,9 @@ assert.ok(translated.includes(beketova.translator.id));
 assert.match(translated,/UNKNOWN/);
 assert.match(translated,/^\| .* \| NOT_RUN \|/m.test(translated)
   ? /NOT_RUN/ : /DIAGNOSTIC_ONLY/);
+const shishmareva=getBook("shishmareva");
+assert.ok(actions.serializeBookMarkdown(shishmareva).includes("Мария Шишмарёва"));
+assert.ok(actions.serializeBookMarkdown(shishmareva).includes("5634933"));
 const injection=actions.serializeBookMarkdown({...anna,display_title:"Danger | *bold* <script> [link]"});
 assert.ok(injection.includes("Danger \\| \\*bold\\* &lt;script&gt; \\[link\\]"));
 assert.ok(!injection.includes("Danger | *bold* <script> [link]"));
@@ -87,5 +90,5 @@ for(const bad of failures) assert.throws(()=>actions.serializeBookMarkdown(bad))
   pending.exportSelectedMarkdown();
   assert.equal(button.disabled,true);
   assert.equal(clicked,1);
-  console.log("Root Pages book Markdown: 10 books / 269 fields, source identity, safe download, six negatives PASS");
+  console.log("Root Pages book Markdown: 11 books / 298 fields, source identity, safe download, six negatives PASS");
 })().catch(e=>{console.error(e);process.exitCode=1});

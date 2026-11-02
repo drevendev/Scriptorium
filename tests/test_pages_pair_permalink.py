@@ -26,7 +26,7 @@ class PairLinks(unittest.TestCase):
                          ["?left=anna&right=karamazov&pair_metric=fantlab.dialogue.share_percent#pairs"])
         doc=json.loads((ROOT/"assets/evidence-snapshot.json").read_text(encoding="utf-8"))
         measured={b["key"] for b in doc["books"] if b["text_status"]=="measured"}
-        self.assertEqual(len(measured),10)
+        self.assertEqual(len(measured),11)
         self.assertTrue({"anna","karamazov"}.issubset(measured))
         self.assertIn('id="pair-status" class="control-note" aria-live="polite"',html)
         self.assertIn('id="pair-swap" type="button" disabled',html)

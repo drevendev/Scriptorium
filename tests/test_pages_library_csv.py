@@ -26,7 +26,7 @@ class LibraryCsvExportTests(unittest.TestCase):
         buttons = [b for b in parser.buttons if b.get("id") == "library-export-csv"]
         self.assertEqual(len(buttons), 1)
         self.assertIn("disabled", buttons[0])
-        self.assertIn("Скачать все 269 полей (CSV)", html)
+        self.assertIn("Скачать все 298 полей (CSV)", html)
         self.assertIn('id="evidence-source"', html)
         self.assertIn("Без JavaScript доступны карточки", html)
         js = (ROOT / "assets/pages-reader.js").read_text(encoding="utf-8")

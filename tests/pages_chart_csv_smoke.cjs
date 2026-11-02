@@ -1,4 +1,4 @@
-/* Exercise the shipped chart CSV serializer on the ten pinned measured books. */
+/* Exercise the shipped chart CSV serializer on the eleven pinned measured books. */
 "use strict";
 const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path");
 const root=path.resolve(__dirname,"..");
@@ -13,7 +13,7 @@ const parse=csv=>{
   assert(csv.startsWith("\uFEFF"));
   const [head,...lines]=csv.slice(1).trimEnd().split("\r\n");
   const labels=head.split(",");
-  assert.equal(lines.length,10);
+  assert.equal(lines.length,11);
   return lines.map(line=>{
     const cells=[...line.matchAll(/"((?:[^"]|"")*)"(?:,|$)/g)].map(m=>m[1].replaceAll('""','"'));
     assert.equal(cells.length,labels.length);
@@ -21,7 +21,7 @@ const parse=csv=>{
   });
 };
 const measured=doc.books.filter(b=>b.text_status==="measured");
-assert.equal(measured.length,10);
+assert.equal(measured.length,11);
 for(const id of Object.keys(metrics)){
   for(const sorted of [false,true]){
     const rows=parse(serialize(doc,id,sorted));
@@ -57,4 +57,4 @@ assert.throws(()=>serialize({...doc,scientific_claim:"PARITY"},"fantlab.dialogue
 assert.throws(()=>serialize(doc,"constructor",false),/не разрешён/);
 const damaged=JSON.parse(JSON.stringify(doc));damaged.books[0].source_sha256="bad";
 assert.throws(()=>serialize(damaged,"fantlab.dialogue.share_percent",false),/редакция/);
-console.log("8 metrics × 2 orders, 10 actual editions, zero/missing, safety/provenance: PASS");
+console.log("8 metrics × 2 orders, 11 actual editions, zero/missing, safety/provenance: PASS");

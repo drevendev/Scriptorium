@@ -52,7 +52,7 @@ class TestSameAuthorLaunches(unittest.TestCase):
         self.assertEqual(self.links.navs[0].get("aria-label"),
                          "Готовые сравнения книг одного автора")
         self.assertEqual(set(self.links.links), set(EXPECTED))
-        self.assertEqual(len(self.books), 10)
+        self.assertEqual(len(self.books), 11)
 
         for group, (left_id, right_id, author) in EXPECTED.items():
             with self.subTest(group=group):

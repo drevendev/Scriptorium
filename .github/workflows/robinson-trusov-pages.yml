@@ -48,6 +48,17 @@ jobs:
           from scriptorium.robinson_trusov_pages import validate
           obj = json.loads(Path('build/repro/trusov-1775.historical-pages.json').read_text(encoding='utf-8'))
           validate(obj)
+          import hashlib
+          receipt = json.loads(Path('corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json').read_text(encoding='utf-8'))
+          raw = Path('build/repro/trusov-1775.historical-pages.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest() == receipt['full_source_free_graph_sha256']
+          assert len(raw) == receipt['full_graph_size_bytes']
+          assert len(obj['pages']) == receipt['page_revision_count'] == 150
+          assert [obj['selection']['from'], obj['selection']['to']] == receipt['page_range_inclusive']
+          assert obj['selection']['index'] == receipt['proofreadpage_index']
+          assert obj['pages'][0]['revision_id'] == receipt['first_page']['oldid']
+          assert obj['pages'][-1]['revision_id'] == receipt['last_page']['oldid']
+          assert len(set(page['page_id'] for page in obj['pages'])) == 150
           assert len(obj['pages']) == obj['selection']['page_count']
           assert obj['literary_body_sha256'] is None
           assert obj['corpus_threshold_verified'] is False

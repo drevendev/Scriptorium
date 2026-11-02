@@ -1,0 +1,66 @@
+name: Trusov 1775 historical Page dependency graph
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/robinson-trusov-pages.yml"
+      - "scriptorium/robinson_trusov_pages.py"
+      - "tests/test_robinson_trusov_pages.py"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trusov-page-dependencies:
+    name: Recover exact oldid's historical Page revision dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Focused source-free positive and negative tests
+        run: python -m unittest discover -s tests -p 'test_robinson_trusov_pages.py' -v
+
+      - name: Resolve Page revision selection at carrier-save timestamp
+        run: |
+          set -euo pipefail
+          mkdir -p build/repro
+          python -m scriptorium.robinson_trusov_pages capture \
+            --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+            --output build/repro/trusov-1775.historical-pages.json
+
+      - name: Verify scientific and disclosure gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.robinson_trusov_pages import validate
+          obj = json.loads(Path('build/repro/trusov-1775.historical-pages.json').read_text(encoding='utf-8'))
+          validate(obj)
+          assert len(obj['pages']) == obj['selection']['page_count']
+          assert obj['literary_body_sha256'] is None
+          assert obj['corpus_threshold_verified'] is False
+          assert obj['m2_parity_admissible'] is False
+          assert obj['historical_render_equivalence_proven'] is False
+          assert obj['source_text_committed'] is False
+          print('Source-free historical Page revision graph; literary body and parity NOT_RUN')
+          PY
+
+      - name: Upload source-free graph for later exact-identity acceptance
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: robinson-trusov-historical-pages
+          path: build/repro/trusov-1775.historical-pages.json
+          if-no-files-found: error
+          retention-days: 7

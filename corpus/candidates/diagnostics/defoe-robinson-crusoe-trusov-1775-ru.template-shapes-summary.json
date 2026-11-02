@@ -1,0 +1,27 @@
+{
+  "schema_version": "scriptorium-trusov-template-shape-observation-v1",
+  "candidate_id": "defoe-robinson-trusov-1775-vol1-ru",
+  "source_page_graph_sha256": "d2104ad33fc15ddb8479c13b9fdbe0abf94f8418e76c02261a803b79130ebaa4",
+  "transclusion_input_candidate_sha256": "04e02a782655b53a2f00592ba99d4a28d227e5e99e72e7c0e126b6b9f06b48c2",
+  "full_source_free_report_sha256": "e27a3eff597a359c3d34e2c15cacb09d1b597fb3651c39ea5b76978a88902f3f",
+  "full_source_free_report_bytes": 48390,
+  "primary_workflow_run": "https://github.com/drevendev/Scriptorium/actions/runs/41402787490",
+  "primary_workflow_head_sha": "f91fd2dfe011f6dce171bac099d89b758fd7a5f9",
+  "page_count": 150,
+  "pages_with_invocations": 34,
+  "total_invocations": 64,
+  "unclassified_openers": 0,
+  "literal_template_counts": {
+    "heading": 30,
+    "nop": 28,
+    "ВАР": 4
+  },
+  "parser_or_dynamic_template_count": 2,
+  "source_text_committed": false,
+  "literary_body_sha256": null,
+  "corpus_threshold_verified": false,
+  "historical_render_equivalence_proven": false,
+  "fantlab_input_identity": "UNKNOWN",
+  "m2_parity_admissible": false,
+  "status": "UNRESOLVED_TEMPLATE_SHAPES_ONLY"
+}

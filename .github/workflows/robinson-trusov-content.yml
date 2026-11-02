@@ -8,6 +8,7 @@ on:
       - "tests/test_robinson_trusov_content.py"
       - "scriptorium/robinson_trusov_template_shapes.py"
       - "tests/test_robinson_trusov_template_shapes.py"
+      - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json"
@@ -68,6 +69,9 @@ jobs:
           from scriptorium.robinson_trusov_template_shapes import validate_shapes
           shapes=json.loads(Path("build/repro/trusov-1775.template-shapes.json").read_text(encoding="utf-8"))
           validate_shapes(shapes, graph, result)
+          from scriptorium.robinson_trusov_template_shapes import verify_observation
+          summary=json.loads(Path("corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json").read_text(encoding="utf-8"))
+          verify_observation(shapes, summary)
           assert shapes["total_invocations"] + shapes["unclassified_openers"] == sum(x["template_openers"] for x in result["pages"])
           print("Pinned template shapes and original preflight receipt PASS; literary body NOT_RUN")
           PY

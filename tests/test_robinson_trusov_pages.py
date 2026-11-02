@@ -2,8 +2,10 @@
 import copy
 from hashlib import sha256
 import json
+from pathlib import Path
+import tempfile
 import unittest
-from scriptorium.robinson_trusov_pages import capture, select_pages, validate, WORK_ID
+from scriptorium.robinson_trusov_pages import capture, select_pages, validate, verify_frozen_graph, WORK_ID
 
 SOURCE = '<pages index="Том 1.djvu" from="10" to="12" />'
 TITLE = 'Жизнь и приключения Робинзона Круза, природного англичанина (Дефо; Трусов)/1775 (ДО)/1'
@@ -102,6 +104,26 @@ class TrusovGraphTests(unittest.TestCase):
         altered['m2_parity_admissible']=True
         with self.assertRaisesRegex(ValueError,'scientific gate'):
             validate(altered)
+
+    def test_committed_graph_replays_offline_and_detects_digest_drift(self):
+        root = Path(__file__).resolve().parents[1]
+        base = root / "corpus/candidates/source-edition-traces"
+        original = base / "defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
+        receipt = base / "defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json"
+        frozen = verify_frozen_graph(original, receipt)
+        self.assertEqual(len(frozen["pages"]), 150)
+        self.assertIsNone(frozen["literary_body_sha256"])
+        tampered = copy.deepcopy(frozen)
+        tampered["pages"][0]["mediawiki_sha1"] = "f" * 40
+        with tempfile.TemporaryDirectory() as temp:
+            candidate = Path(temp) / "tampered.json"
+            candidate.write_text(json.dumps(tampered, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "digest"):
+                verify_frozen_graph(candidate, receipt)
+        duplicate = copy.deepcopy(frozen)
+        duplicate["pages"][1]["page_id"] = duplicate["pages"][0]["page_id"]
+        with self.assertRaisesRegex(ValueError, "duplicate Page identity"):
+            validate(duplicate)
 
 
 if __name__ == '__main__':

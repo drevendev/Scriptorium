@@ -191,6 +191,13 @@ def capture(inventory: Mapping[str, object], *, query: Callable[..., dict] = _ap
 def validate(result: Mapping[str, object]) -> None:
     if result.get("schema_version") != SCHEMA or result.get("candidate_id") != WORK_ID:
         raise ValueError("unsupported Trusov graph")
+    if set(result) != {"admitted_for_calibration", "candidate_id", "carrier",
+                          "corpus_threshold_verified", "fantlab_input_identity",
+                          "historical_render_equivalence_proven", "literary_body_sha256",
+                          "literary_characters_including_spaces", "m2_parity_admissible",
+                          "page_revision_identities_frozen", "pages", "schema_version",
+                          "selection", "selection_policy", "source_text_committed"}:
+        raise ValueError("unexpected source-free graph shape or prose leakage")
     for key, value in {"historical_render_equivalence_proven": False,
                        "source_text_committed": False,
                        "literary_body_sha256": None, "literary_characters_including_spaces": None,
@@ -229,6 +236,46 @@ def validate(result: Mapping[str, object]) -> None:
             raise ValueError("Page revision newer than carrier")
     if len({r["revision_id"] for r in records}) != len(records):
         raise ValueError("duplicate Page revision")
+    if len({r["page_id"] for r in records}) != len(records):
+        raise ValueError("duplicate Page identity")
+
+
+
+def verify_frozen_graph(manifest: Path, receipt_file: Path) -> dict:
+    """Offline, exact-byte verification of the source-free historical graph.
+
+    A verified graph proves selected revision identities, NOT historical render
+    equivalence, whole-book extraction, print collation, 300k size or parity.
+    """
+    raw = manifest.read_bytes()
+    graph = json.loads(raw)
+    validate(graph)
+    receipt = json.loads(receipt_file.read_text(encoding="utf-8"))
+    if (receipt.get("schema_version") != "scriptorium-robinson-trusov-page-graph-receipt-v1"
+        or receipt.get("candidate_id") != WORK_ID
+        or receipt.get("graph_in_git") is not True):
+        raise ValueError("unrecognized or uncommitted Page graph receipt")
+    if (sha256(raw).hexdigest() != receipt.get("full_source_free_graph_sha256")
+        or len(raw) != receipt.get("full_graph_size_bytes")):
+        raise ValueError("source-free Page graph digest/size mismatch")
+    if (graph["carrier"]["revision_id"] != receipt.get("carrier_oldid")
+        or graph["carrier"]["wikitext_sha256"] != receipt.get("carrier_wikitext_sha256")
+        or graph["carrier"]["timestamp_utc"] != receipt.get("carrier_timestamp_utc")
+        or graph["selection"]["index"] != receipt.get("proofreadpage_index")
+        or [graph["selection"]["from"], graph["selection"]["to"]] != receipt.get("page_range_inclusive")
+        or len(graph["pages"]) != receipt.get("page_revision_count")
+        or len({p["page_id"] for p in graph["pages"]}) != receipt.get("distinct_page_ids")
+        or graph["selection_policy"] != receipt.get("historical_selection_policy")):
+        raise ValueError("source-free Page graph receipt identity mismatch")
+    for selected, expected in ((graph["pages"][0], receipt.get("first_page")),
+                               (graph["pages"][-1], receipt.get("last_page"))):
+        if not isinstance(expected, dict) or any(
+            selected.get(src) != expected.get(dst)
+            for src, dst in (("page_sequence", "sequence"), ("page_id", "page_id"),
+                             ("revision_id", "oldid"), ("mediawiki_sha1", "mediawiki_sha1"))
+        ):
+            raise ValueError("Page graph receipt boundary mismatch")
+    return graph
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -240,7 +287,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     p = sub.add_parser("replay")
     p.add_argument("--inventory", type=Path, required=True)
     p.add_argument("--manifest", type=Path, required=True)
+    p = sub.add_parser("verify")
+    p.add_argument("--manifest", type=Path, required=True)
+    p.add_argument("--receipt", type=Path, required=True)
     args = parser.parse_args(argv)
+    if args.command == "verify":
+        verified = verify_frozen_graph(args.manifest, args.receipt)
+        print(f"Verified {len(verified['pages'])} frozen source-free Page identities; literary body NOT_RUN")
+        return 0
     inventory = json.loads(args.inventory.read_text(encoding="utf-8"))
     if args.command == "capture":
         if args.inventory.resolve() == args.output.resolve():

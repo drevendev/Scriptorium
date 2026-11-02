@@ -7,14 +7,22 @@ on:
       - "scriptorium/robinson_trusov_pages.py"
       - "tests/test_robinson_trusov_pages.py"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json"
   workflow_dispatch:
+    inputs:
+      live_replay:
+        description: Re-fetch exact pinned Wikisource oldid and Page revisions (provider may return HTTP 429)
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   trusov-page-dependencies:
-    name: Recover exact oldid's historical Page revision dependencies
+    name: Verify frozen historical Page graph without network
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -32,46 +40,15 @@ jobs:
       - name: Focused source-free positive and negative tests
         run: python -m unittest discover -s tests -p 'test_robinson_trusov_pages.py' -v
 
-      - name: Resolve Page revision selection at carrier-save timestamp
+      - name: Verify committed Page graph digest and scientific gates (offline)
         run: |
-          set -euo pipefail
-          mkdir -p build/repro
-          python -m scriptorium.robinson_trusov_pages capture \
+          python -m scriptorium.robinson_trusov_pages verify \
+            --manifest corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+            --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json
+
+      - name: Optional pinned-source live replay (explicit manual request only)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.live_replay }}
+        run: |
+          python -m scriptorium.robinson_trusov_pages replay \
             --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
-            --output build/repro/trusov-1775.historical-pages.json
-
-      - name: Verify scientific and disclosure gates
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          from scriptorium.robinson_trusov_pages import validate
-          obj = json.loads(Path('build/repro/trusov-1775.historical-pages.json').read_text(encoding='utf-8'))
-          validate(obj)
-          import hashlib
-          receipt = json.loads(Path('corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json').read_text(encoding='utf-8'))
-          raw = Path('build/repro/trusov-1775.historical-pages.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest() == receipt['full_source_free_graph_sha256']
-          assert len(raw) == receipt['full_graph_size_bytes']
-          assert len(obj['pages']) == receipt['page_revision_count'] == 150
-          assert [obj['selection']['from'], obj['selection']['to']] == receipt['page_range_inclusive']
-          assert obj['selection']['index'] == receipt['proofreadpage_index']
-          assert obj['pages'][0]['revision_id'] == receipt['first_page']['oldid']
-          assert obj['pages'][-1]['revision_id'] == receipt['last_page']['oldid']
-          assert len(set(page['page_id'] for page in obj['pages'])) == 150
-          assert len(obj['pages']) == obj['selection']['page_count']
-          assert obj['literary_body_sha256'] is None
-          assert obj['corpus_threshold_verified'] is False
-          assert obj['m2_parity_admissible'] is False
-          assert obj['historical_render_equivalence_proven'] is False
-          assert obj['source_text_committed'] is False
-          print('Source-free historical Page revision graph; literary body and parity NOT_RUN')
-          PY
-
-      - name: Upload source-free graph for later exact-identity acceptance
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: robinson-trusov-historical-pages
-          path: build/repro/trusov-1775.historical-pages.json
-          if-no-files-found: error
-          retention-days: 7
+            --manifest corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json

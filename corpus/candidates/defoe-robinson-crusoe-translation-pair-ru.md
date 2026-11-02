@@ -113,3 +113,5 @@ CI checks the reproduced full graph against that checksum.
 the complete graph remains the reproducible workflow artifact until separately
 adopted. None of these 150 pinned Page identities proves literary-body coverage,
 transclusion rendering fidelity, the 300k threshold or FantLab parity.
+
+The complete 150-Page *source-free historical identity graph* is now durably frozen at [`source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json`](source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json) and checksummed against the adjacent receipt; replay locally without Wikisource access using `python -m scriptorium.robinson_trusov_pages verify --manifest corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json`. Exact-source *live* replay remains an explicit optional/manual action because provider 429 cannot be accepted as graph mismatch. Neither offline validity nor a historical revision selection proves the 1775 printed literary text, full volume, >=300k threshold or FantLab parity.

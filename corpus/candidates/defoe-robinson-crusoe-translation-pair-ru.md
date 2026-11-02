@@ -66,3 +66,31 @@ literary boundary/markup and provenance first; scope Trusov's independent
 historical scan/Page dependencies without making that difficult path a
 prerequisite for measuring other eligible translations. Both bodies remain
 **NOT_RUN** for extraction, SHA-256, >=300k and 29-metric analysis. M2 stays 0/5.
+
+## Trusov 1775: historical Page dependency capture (PR candidate)
+
+The pinned Trusov carrier is a 1,516-character **transclusion** page, not a
+1,516-character book. `scriptorium.robinson_trusov_pages` fetches exact
+`oldid=5041937` bytes, verifies them against the accepted revision inventory,
+and parses exactly one unambiguous [ProofreadPage selector](https://www.mediawiki.org/wiki/Help:Extension:ProofreadPage/Pages_tag/en).
+Unknown selectors fail closed instead of guessing a historical edition's coverage.
+Page-namespace revisions are selected using the deterministic historical policy
+**latest revision not later than carrier-save 2023-09-03 17:55:09 UTC**,
+in eight-title batches. Only Page titles, oldids, timestamps, provider SHA-1
+and selector metadata are retained; Wikisource prose stays in process memory.
+
+```sh
+python -m scriptorium.robinson_trusov_pages capture \
+  --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+  --output build/repro/trusov-1775.historical-pages.json
+python -m scriptorium.robinson_trusov_pages replay \
+  --inventory corpus/candidates/source-edition-traces/defoe-robinson-crusoe-translation-pair-ru.revision-inventory.json \
+  --manifest build/repro/trusov-1775.historical-pages.json
+```
+
+**Scientific limit:** this as-of-save selection is a reproducible historical
+hypothesis, **not** proof of MediaWiki parser-cache/render equivalence or print
+edition collation. The proposed real-source workflow must successfully capture
+the graph before claiming frozen Page identities. No literary-body SHA-256,
+>=300,000-character admission, 29-field analysis, translation comparison or
+FantLab parity is established by this tool. Volume 2 is excluded; M2 remains 0/5.

@@ -76,7 +76,7 @@ and parses exactly one unambiguous [ProofreadPage selector](https://www.mediawik
 Unknown selectors fail closed instead of guessing a historical edition's coverage.
 Page-namespace revisions are selected using the deterministic historical policy
 **latest revision not later than carrier-save 2023-09-03 17:55:09 UTC**,
-in eight-title batches. Only Page titles, oldids, timestamps, provider SHA-1
+using batched current-page lookup and single-title historical fallback (required by the MediaWiki API). Only Page titles, oldids, timestamps, provider SHA-1
 and selector metadata are retained; Wikisource prose stays in process memory.
 
 ```sh

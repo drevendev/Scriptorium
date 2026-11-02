@@ -126,7 +126,8 @@ def validate_shapes(report: Mapping[str, object], graph: Mapping[str, object],
 
 def capture_shapes(graph: Mapping[str, object], graph_sha256: str,
                    *, query: Callable[..., dict] = _api_query,
-                   delay: float = 0.75) -> dict:
+                   delay: float = 0.75,
+                   preflight_output: dict | None = None) -> dict:
     """One historical source fetch; preserve accepted preflight and output shapes."""
     pages: list[dict] = []
     def observe(identity: dict, candidate: str) -> None:
@@ -153,6 +154,8 @@ def capture_shapes(graph: Mapping[str, object], graph_sha256: str,
         "status": "UNRESOLVED_TEMPLATE_SHAPES_ONLY",
     }
     validate_shapes(result, graph, preflight)
+    if preflight_output is not None:
+        preflight_output.update(preflight)
     return result
 
 
@@ -161,18 +164,27 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--graph", type=Path, required=True)
     parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--preflight-output", type=Path)
     parser.add_argument("--delay", type=float, default=0.75)
     args = parser.parse_args(argv)
-    if args.output.exists() or args.output.resolve() in (
-            args.graph.resolve(), args.receipt.resolve()):
+    outputs = [args.output] + ([args.preflight_output] if args.preflight_output else [])
+    if len({x.resolve() for x in outputs}) != len(outputs) or any(
+            x.exists() or x.resolve() in (args.graph.resolve(), args.receipt.resolve())
+            for x in outputs):
         parser.error("output exists or would overwrite frozen evidence")
     graph = verify_frozen_graph(args.graph, args.receipt)
+    preflight: dict = {}
     report = capture_shapes(graph, sha256(args.graph.read_bytes()).hexdigest(),
-                            delay=args.delay)
+                            delay=args.delay, preflight_output=preflight)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x", encoding="utf-8") as stream:
         json.dump(report, stream, sort_keys=True, indent=2, ensure_ascii=False)
         stream.write("\n")
+    if args.preflight_output:
+        args.preflight_output.parent.mkdir(parents=True, exist_ok=True)
+        with args.preflight_output.open("x", encoding="utf-8") as stream:
+            json.dump(preflight, stream, sort_keys=True, indent=2, ensure_ascii=False)
+            stream.write("\\n")
     print(f"Audited {report['page_count']} pinned Pages, "
           f"{report['total_invocations']} unresolved invocations; literary body NOT_RUN")
     return 0

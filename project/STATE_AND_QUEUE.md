@@ -1,32 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 395
+STATE_REVISION: 396
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-02
-LAST_RESULT: #394 independently merged at cdb010c024158af1a12d96b9aade49d0874adaa9, accepting 29 source-free Shishmareva measurements. Focused branch scrip-reader-shishmareva-measured now proposes an 11th measured Russian Reader entry from exact oldid 5634933 and frozen SHA-256; hosted exact-head CI and later acceptance are required.
-LAST_VERIFIED_PROGRESS: Master has ten published measured works (269 rows, 225 numeric, 44 unavailable). Branch proposes 11 of 13, 298 rows (249 numeric, 49 unavailable), an 11-row chart and Shishmareva translation card. M2 0/5, M3 open. Pages deployment/live/browser/mobile NOT_VERIFIED.
+LAST_RESULT: #395 independently merged to master (68f9fc3841b8c9c9e094e56a8f3d8bb39286d48a). PR #396 now implements the Trusov 1775 historical Page dependency graph. Live CI run 41375340104 retrieved 150 Page identities from pages 2–151 and uploaded source-free JSON; full graph SHA-256 d2104ad33fc15ddb8479c13b9fdbe0abf94f8418e76c02261a803b79130ebaa4 is bound by a committed receipt and retained 150-Page JSON. Exact-head offline CI and later acceptance remain pending; opt-in live replay is separate from network-independent PR checks.
+LAST_VERIFIED_PROGRESS: Master has 11 measured Russian works (298 rows: 249 numeric, 49 unavailable) among 13 catalogue entries. Trusov exact carrier oldid 5041937 selects 150 historical Page-revision identities; full 150-Page source-free graph now committed with digest receipt; offline verification in PR CI, optional manual live re-fetch. Literary rendering/body/size/29 metrics NOT_RUN. M2 0/5, M3 open. Pages live/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-SHISHMAREVA-11TH
-ISSUE: expose independently accepted Shishmareva 1935 first narrative as a measured, distinctly attributed Russian translation in root Reader
-STATUS: PR_CANDIDATE_PENDING_CI_AND_LATER_ACCEPTANCE
-BRANCH: scrip-reader-shishmareva-measured
-BASE: cdb010c024158af1a12d96b9aade49d0874adaa9
+UNIT_ID: SCRIP-TRUSOV-HISTORICAL-PAGES
+ISSUE: recover the pinned 1775 Trusov first-narrative Page/Index dependency graph without source-text publication
+STATUS: PR_UPDATED; REAL_SOURCE_GRAPH_CAPTURE_PASS; FROZEN_GRAPH_IN_GIT; OFFLINE_CI_AND_LATER_ACCEPTANCE_PENDING
+BRANCH: scrip-robinson-trusov-page-graph
+BASE: 68f9fc3841b8c9c9e094e56a8f3d8bb39286d48a
 
-ACCEPTANCE: exact #394 artifact blob and oldid 5634933, 572,587 literary characters, source SHA-256 61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f, 24 numeric + 5 NOT_RUN; render 11 measured of 13 catalogued, eight chart modes, static/no-JS table, shared comparison, 298-row downloadable CSV. Verify translation/edition ID, rights and profile binding; preserve 10 prior books byte-for-byte, zero text disclosure, FantLab input UNKNOWN/print NOT_RUN, M2 0/5. Run focused and complete exact-head tests; later separate fresh review/merge. Pages/live screenshots require independently allowed browser access.
+ACCEPTANCE: fetch exact oldid 5041937 and reject mismatched provider SHA-1/content digest; fail closed on unknown ProofreadPage selectors and out-of-range intervals; resolve every selected Page to a bounded, ordered as-of-2023-09-03 revision identity; reject duplicates/missing/newer Page revisions; serialize no source prose; retain per-Page oldid/provider hash and explicitly unproven rendering/body/300k/FantLab gates; run local fixtures and real-source CI before later exact-head merge.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: independently measured Russian translations of Robinson Crusoe presented with source-bound reader links; then genuinely two-translation comparison with explicit historical confounders.
+Milestone: add a second independently measured Russian Robinson Crusoe translation for an honest, source-bound paired Reader comparison.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept/merge current 11th measured Shishmareva Reader PR | Exact-source 29 rows, 11-book charts/tables/CSV, accessibility/static fallbacks, full CI, later exact-head review | Current focused branch; Pages verification separate |
-| P2 | Recover Trusov 1775 historical Page/Index transclusion | Pin the actual historical page revision dependency graph, complete first narrative body SHA-256 and >=300k character gate | Independent Page/scan analysis; no blanket block |
-| P3 | Publish two distinct Robinson translation comparisons | Both independently frozen 29-field profiles, all deltas labelled diagnostic; intermediaries/abridgments acknowledged | Needs Trusov measured witness |
-| P4 | Validate actual root Reader production desktop/mobile and fallback | Successful real branch Pages publication, HTTP/keyboard/mobile checks where permitted | Browser ADMIN_BLOCKED historically; do not evade |
-| P5 | #282/#281 native AOT/FantLab metric compatibility | New source-matched benchmark evidence or measured POS N collision discrimination | Primary evidence not yet available |
+| P1 | Accept and durably freeze Trusov 1775 Page graph | Source-free 150-page committed graph, exact SHA-256 receipt, independent offline verify and later PR acceptance | #396 exact-head CI; live provider re-fetch optional and rate-limited |
+| P2 | Render/freeze Trusov first narrative only | Source/normalized literary SHA-256, complete coverage and >=300k gate, reproducible no-text receipt | Requires trustworthy pinned Page graph and markup rules |
+| P3 | Run Trusov 29 metrics and show honest translation pair in Reader | Distinct translation sources/profiles, diagnostic deltas and historical/French intermediary caveats | Requires accepted first-narrative body, not FantLab input identity |
+| P4 | Reconcile stale Reader README and verify root Pages desktop/mobile | No stale PR-candidate/counter language; actual deployed browser flow and fallback evidence if allowed | HTTP browser historically ADMIN_BLOCKED; docs/structural tests independent |
+| P5 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Primary dependency evidence still unresolved |
+
 
 ## Retained evidence and scientific gates
 

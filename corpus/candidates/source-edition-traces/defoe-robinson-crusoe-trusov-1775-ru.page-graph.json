@@ -1,0 +1,1232 @@
+{
+  "admitted_for_calibration": false,
+  "candidate_id": "defoe-robinson-trusov-1775-vol1-ru",
+  "carrier": {
+    "mediawiki_sha1": "7e33f041501ee748294b3d5f330be2e80f9aa5bc",
+    "page_id": 946461,
+    "revision_id": 5041937,
+    "timestamp_utc": "2023-09-03T17:55:09Z",
+    "title": "Жизнь и приключения Робинзона Круза, природного англичанина (Дефо; Трусов)/1775 (ДО)/1",
+    "wikitext_characters_including_spaces": 1516,
+    "wikitext_sha256": "9322fd5cdcfa91dae7116edee78f32c1ef9fa135dd36e3bf5061d376bcc7fc65",
+    "wikitext_utf8_bytes": 2397
+  },
+  "corpus_threshold_verified": false,
+  "fantlab_input_identity": "UNKNOWN",
+  "historical_render_equivalence_proven": false,
+  "literary_body_sha256": null,
+  "literary_characters_including_spaces": null,
+  "m2_parity_admissible": false,
+  "page_revision_identities_frozen": true,
+  "pages": [
+    {
+      "mediawiki_sha1": "8a4a91dbb7cd8bec22375a9d9d5ce6c3a9820ed7",
+      "page_id": 946574,
+      "page_sequence": 2,
+      "revision_id": 4958669,
+      "timestamp_utc": "2023-08-17T22:52:03Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/2"
+    },
+    {
+      "mediawiki_sha1": "821e1280c8c20df4be41f2048784a79825e6d1b9",
+      "page_id": 946575,
+      "page_sequence": 3,
+      "revision_id": 4958680,
+      "timestamp_utc": "2023-08-17T22:52:14Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/3"
+    },
+    {
+      "mediawiki_sha1": "a13636fff1100de36a60ee919fb345249e48797e",
+      "page_id": 946577,
+      "page_sequence": 4,
+      "revision_id": 4958691,
+      "timestamp_utc": "2023-08-17T22:52:25Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/4"
+    },
+    {
+      "mediawiki_sha1": "d89deba7ea4544370dcbbe3758166374bc1cbcbe",
+      "page_id": 946578,
+      "page_sequence": 5,
+      "revision_id": 4958702,
+      "timestamp_utc": "2023-08-17T22:52:36Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/5"
+    },
+    {
+      "mediawiki_sha1": "8c70fd00545706882f5881cba8f2c51feca70849",
+      "page_id": 946579,
+      "page_sequence": 6,
+      "revision_id": 4958714,
+      "timestamp_utc": "2023-08-17T22:52:47Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/6"
+    },
+    {
+      "mediawiki_sha1": "cc4bd31648d422e151e49d68ddf79673e8724ff9",
+      "page_id": 946580,
+      "page_sequence": 7,
+      "revision_id": 4958725,
+      "timestamp_utc": "2023-08-17T22:52:58Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/7"
+    },
+    {
+      "mediawiki_sha1": "bf4f5d2fafd4a0c9c48ced7f778746aca14d47f0",
+      "page_id": 946581,
+      "page_sequence": 8,
+      "revision_id": 4958736,
+      "timestamp_utc": "2023-08-17T22:53:09Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/8"
+    },
+    {
+      "mediawiki_sha1": "de71efb5c3f486913bd7fb0646da957995f7ad20",
+      "page_id": 946582,
+      "page_sequence": 9,
+      "revision_id": 4958747,
+      "timestamp_utc": "2023-08-17T22:53:20Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/9"
+    },
+    {
+      "mediawiki_sha1": "26484a1574c00ba51344f170b72880a884891a94",
+      "page_id": 946583,
+      "page_sequence": 10,
+      "revision_id": 4958606,
+      "timestamp_utc": "2023-08-17T22:51:01Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/10"
+    },
+    {
+      "mediawiki_sha1": "a2ffbf0a2f7ae33d7fafb5b63e67edafaa31a2fb",
+      "page_id": 946584,
+      "page_sequence": 11,
+      "revision_id": 4958617,
+      "timestamp_utc": "2023-08-17T22:51:12Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/11"
+    },
+    {
+      "mediawiki_sha1": "4b11b885333dfef835f83e71d1573f0e094cf3c7",
+      "page_id": 946585,
+      "page_sequence": 12,
+      "revision_id": 4958628,
+      "timestamp_utc": "2023-08-17T22:51:23Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/12"
+    },
+    {
+      "mediawiki_sha1": "77d59c5db411faf8c6c6bce17559f321be486c94",
+      "page_id": 946586,
+      "page_sequence": 13,
+      "revision_id": 4958639,
+      "timestamp_utc": "2023-08-17T22:51:34Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/13"
+    },
+    {
+      "mediawiki_sha1": "2909b9ff250e56e10d69cddf31980ad2442a77e7",
+      "page_id": 946587,
+      "page_sequence": 14,
+      "revision_id": 4958651,
+      "timestamp_utc": "2023-08-17T22:51:45Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/14"
+    },
+    {
+      "mediawiki_sha1": "20cc5ab9708add8983e2976a7c2cf660c4f22fc0",
+      "page_id": 946597,
+      "page_sequence": 15,
+      "revision_id": 4958662,
+      "timestamp_utc": "2023-08-17T22:51:56Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/15"
+    },
+    {
+      "mediawiki_sha1": "8f375f7c588189ea8506bbf815774e9c672e7d1f",
+      "page_id": 946598,
+      "page_sequence": 16,
+      "revision_id": 4958665,
+      "timestamp_utc": "2023-08-17T22:51:59Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/16"
+    },
+    {
+      "mediawiki_sha1": "34ac6eebeb0a1355b7bb9da379bb22b41ba014fe",
+      "page_id": 946599,
+      "page_sequence": 17,
+      "revision_id": 4958666,
+      "timestamp_utc": "2023-08-17T22:52:00Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/17"
+    },
+    {
+      "mediawiki_sha1": "fb2a36a268eb0039c3437eafd99e0d6a94cdebb9",
+      "page_id": 946600,
+      "page_sequence": 18,
+      "revision_id": 4958667,
+      "timestamp_utc": "2023-08-17T22:52:01Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/18"
+    },
+    {
+      "mediawiki_sha1": "44fe3d19367fbc797c7252c2a3fd57b25e8e8adc",
+      "page_id": 946601,
+      "page_sequence": 19,
+      "revision_id": 4958668,
+      "timestamp_utc": "2023-08-17T22:52:02Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/19"
+    },
+    {
+      "mediawiki_sha1": "d6ca635da5bbaabe05d1e079f4d5d28ad731f3a6",
+      "page_id": 946602,
+      "page_sequence": 20,
+      "revision_id": 4958670,
+      "timestamp_utc": "2023-08-17T22:52:04Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/20"
+    },
+    {
+      "mediawiki_sha1": "b4c6af2f3b3837b3e1300a28420fe966d2d167e0",
+      "page_id": 946603,
+      "page_sequence": 21,
+      "revision_id": 4958671,
+      "timestamp_utc": "2023-08-17T22:52:05Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/21"
+    },
+    {
+      "mediawiki_sha1": "f0313ba23cacb8daae1b5b106fbbeb7c05cb888d",
+      "page_id": 946604,
+      "page_sequence": 22,
+      "revision_id": 4958672,
+      "timestamp_utc": "2023-08-17T22:52:06Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/22"
+    },
+    {
+      "mediawiki_sha1": "a2e016efedcb81927124fad105839da96bffcdcb",
+      "page_id": 946605,
+      "page_sequence": 23,
+      "revision_id": 4958673,
+      "timestamp_utc": "2023-08-17T22:52:07Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/23"
+    },
+    {
+      "mediawiki_sha1": "82a83993ca77af958bb6a1e89d485a3f318b4512",
+      "page_id": 946606,
+      "page_sequence": 24,
+      "revision_id": 4958674,
+      "timestamp_utc": "2023-08-17T22:52:08Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/24"
+    },
+    {
+      "mediawiki_sha1": "1536e1f2923e090efca28969e3724b3000ed28a1",
+      "page_id": 946607,
+      "page_sequence": 25,
+      "revision_id": 4958675,
+      "timestamp_utc": "2023-08-17T22:52:09Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/25"
+    },
+    {
+      "mediawiki_sha1": "3d56b032eef1c36af0bf92c03da368ef3f24bb99",
+      "page_id": 946608,
+      "page_sequence": 26,
+      "revision_id": 4958676,
+      "timestamp_utc": "2023-08-17T22:52:10Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/26"
+    },
+    {
+      "mediawiki_sha1": "7757ca926ac76a12a12b944890575767d58ae519",
+      "page_id": 946609,
+      "page_sequence": 27,
+      "revision_id": 4958677,
+      "timestamp_utc": "2023-08-17T22:52:11Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/27"
+    },
+    {
+      "mediawiki_sha1": "bf2982086ba96a17b0348378dc6656a4a76915d9",
+      "page_id": 946610,
+      "page_sequence": 28,
+      "revision_id": 4958678,
+      "timestamp_utc": "2023-08-17T22:52:12Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/28"
+    },
+    {
+      "mediawiki_sha1": "7ebc2092f5b4da99fe8039bd0334589ab4cacee6",
+      "page_id": 946611,
+      "page_sequence": 29,
+      "revision_id": 4958679,
+      "timestamp_utc": "2023-08-17T22:52:13Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/29"
+    },
+    {
+      "mediawiki_sha1": "02731a0911db064210ec547c21cbf7756d613491",
+      "page_id": 946612,
+      "page_sequence": 30,
+      "revision_id": 4958681,
+      "timestamp_utc": "2023-08-17T22:52:15Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/30"
+    },
+    {
+      "mediawiki_sha1": "8c9ab26020a7a3e460e3e23f09e76b752e4e571f",
+      "page_id": 946613,
+      "page_sequence": 31,
+      "revision_id": 4958682,
+      "timestamp_utc": "2023-08-17T22:52:16Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/31"
+    },
+    {
+      "mediawiki_sha1": "a897ce61def6d19930e42b9c1354a4b3e894a07e",
+      "page_id": 946614,
+      "page_sequence": 32,
+      "revision_id": 4958683,
+      "timestamp_utc": "2023-08-17T22:52:17Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/32"
+    },
+    {
+      "mediawiki_sha1": "1328c98c14eb6bf69aeffb3564a7467bccd7c618",
+      "page_id": 946615,
+      "page_sequence": 33,
+      "revision_id": 4958684,
+      "timestamp_utc": "2023-08-17T22:52:18Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/33"
+    },
+    {
+      "mediawiki_sha1": "15d2b58a8d1d896651bd84ccff27d2193658a0f1",
+      "page_id": 946616,
+      "page_sequence": 34,
+      "revision_id": 4958685,
+      "timestamp_utc": "2023-08-17T22:52:19Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/34"
+    },
+    {
+      "mediawiki_sha1": "5027a5e35548f86297e53a63dc0b051f8ad5f497",
+      "page_id": 946617,
+      "page_sequence": 35,
+      "revision_id": 4958686,
+      "timestamp_utc": "2023-08-17T22:52:20Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/35"
+    },
+    {
+      "mediawiki_sha1": "d9acba29e5e1398dc26fd3ef6930d1adf90c9e80",
+      "page_id": 946618,
+      "page_sequence": 36,
+      "revision_id": 4958687,
+      "timestamp_utc": "2023-08-17T22:52:21Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/36"
+    },
+    {
+      "mediawiki_sha1": "963ac7d05b6f6e87e2bcbe0ce0aab4923896e333",
+      "page_id": 946619,
+      "page_sequence": 37,
+      "revision_id": 4958688,
+      "timestamp_utc": "2023-08-17T22:52:22Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/37"
+    },
+    {
+      "mediawiki_sha1": "03e643bda0c13400b8a81907a4b5d68b244493a8",
+      "page_id": 946620,
+      "page_sequence": 38,
+      "revision_id": 4958689,
+      "timestamp_utc": "2023-08-17T22:52:23Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/38"
+    },
+    {
+      "mediawiki_sha1": "e08c26d48f3e5360753e50ef580225b0b6563e4a",
+      "page_id": 946621,
+      "page_sequence": 39,
+      "revision_id": 4958690,
+      "timestamp_utc": "2023-08-17T22:52:24Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/39"
+    },
+    {
+      "mediawiki_sha1": "fe1d0ab5431e446955779c8be4dcf2045cec5502",
+      "page_id": 946622,
+      "page_sequence": 40,
+      "revision_id": 4958692,
+      "timestamp_utc": "2023-08-17T22:52:26Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/40"
+    },
+    {
+      "mediawiki_sha1": "247621d77977273f35bb932825015215c361fb34",
+      "page_id": 946623,
+      "page_sequence": 41,
+      "revision_id": 4958693,
+      "timestamp_utc": "2023-08-17T22:52:27Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/41"
+    },
+    {
+      "mediawiki_sha1": "90c9a105b1abefda247056c6143be54428b9554f",
+      "page_id": 946624,
+      "page_sequence": 42,
+      "revision_id": 4958694,
+      "timestamp_utc": "2023-08-17T22:52:28Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/42"
+    },
+    {
+      "mediawiki_sha1": "7225b35aa85596d5e6d247afeb0f4588c997b9cf",
+      "page_id": 946625,
+      "page_sequence": 43,
+      "revision_id": 4958695,
+      "timestamp_utc": "2023-08-17T22:52:29Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/43"
+    },
+    {
+      "mediawiki_sha1": "01e5cf53fe63522ffd1d6b2092f857f13bf45dd9",
+      "page_id": 946626,
+      "page_sequence": 44,
+      "revision_id": 4958696,
+      "timestamp_utc": "2023-08-17T22:52:30Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/44"
+    },
+    {
+      "mediawiki_sha1": "17d4abc6af34c62e4a106e91da60b394b66431b0",
+      "page_id": 946627,
+      "page_sequence": 45,
+      "revision_id": 4958697,
+      "timestamp_utc": "2023-08-17T22:52:31Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/45"
+    },
+    {
+      "mediawiki_sha1": "f2994ff51b0ccf01f018d758c11090ba6a033a34",
+      "page_id": 946628,
+      "page_sequence": 46,
+      "revision_id": 4958698,
+      "timestamp_utc": "2023-08-17T22:52:32Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/46"
+    },
+    {
+      "mediawiki_sha1": "1b5eb25a32309c6de47c18d2768001b33f68ed99",
+      "page_id": 946629,
+      "page_sequence": 47,
+      "revision_id": 4958699,
+      "timestamp_utc": "2023-08-17T22:52:33Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/47"
+    },
+    {
+      "mediawiki_sha1": "db7b1a13fb59c4e4567fb2a1ba722e8ee5b47a04",
+      "page_id": 946630,
+      "page_sequence": 48,
+      "revision_id": 4958700,
+      "timestamp_utc": "2023-08-17T22:52:34Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/48"
+    },
+    {
+      "mediawiki_sha1": "e19ea236c4a6687196c103a8b12a390ba42aefc9",
+      "page_id": 946631,
+      "page_sequence": 49,
+      "revision_id": 4958701,
+      "timestamp_utc": "2023-08-17T22:52:35Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/49"
+    },
+    {
+      "mediawiki_sha1": "e3d212411e209b4ceba3db386b67c73f3ae79e7e",
+      "page_id": 946632,
+      "page_sequence": 50,
+      "revision_id": 4958703,
+      "timestamp_utc": "2023-08-17T22:52:37Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/50"
+    },
+    {
+      "mediawiki_sha1": "a4bf53b73f9e30c43dd138202745437752218e37",
+      "page_id": 946633,
+      "page_sequence": 51,
+      "revision_id": 4958704,
+      "timestamp_utc": "2023-08-17T22:52:38Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/51"
+    },
+    {
+      "mediawiki_sha1": "8d92fa2ae1dcaeda2d6a989b9b90118013dff8b0",
+      "page_id": 946634,
+      "page_sequence": 52,
+      "revision_id": 4958705,
+      "timestamp_utc": "2023-08-17T22:52:39Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/52"
+    },
+    {
+      "mediawiki_sha1": "812a3c515b5884ec4b649979bbe896f2f96ca689",
+      "page_id": 946635,
+      "page_sequence": 53,
+      "revision_id": 4958706,
+      "timestamp_utc": "2023-08-17T22:52:40Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/53"
+    },
+    {
+      "mediawiki_sha1": "9d9f83b8d86eb8a672a56a585cdd4f6930393489",
+      "page_id": 946636,
+      "page_sequence": 54,
+      "revision_id": 4958708,
+      "timestamp_utc": "2023-08-17T22:52:41Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/54"
+    },
+    {
+      "mediawiki_sha1": "d9e611c543091bf2539d5656ae48895178b9ec9f",
+      "page_id": 946637,
+      "page_sequence": 55,
+      "revision_id": 4958709,
+      "timestamp_utc": "2023-08-17T22:52:42Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/55"
+    },
+    {
+      "mediawiki_sha1": "7972de6468d61543e761474d763f44329d5180df",
+      "page_id": 946638,
+      "page_sequence": 56,
+      "revision_id": 4958710,
+      "timestamp_utc": "2023-08-17T22:52:43Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/56"
+    },
+    {
+      "mediawiki_sha1": "ed54bddf053aadfd76805a1192dde31418d4341d",
+      "page_id": 946660,
+      "page_sequence": 57,
+      "revision_id": 4958711,
+      "timestamp_utc": "2023-08-17T22:52:44Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/57"
+    },
+    {
+      "mediawiki_sha1": "c0b3e741f13d1ba25f72864e7a10df5fb78b7c48",
+      "page_id": 946661,
+      "page_sequence": 58,
+      "revision_id": 4958712,
+      "timestamp_utc": "2023-08-17T22:52:45Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/58"
+    },
+    {
+      "mediawiki_sha1": "a091e35a8e720fd41c8f55e740c7c37dab985ddd",
+      "page_id": 946662,
+      "page_sequence": 59,
+      "revision_id": 4958713,
+      "timestamp_utc": "2023-08-17T22:52:46Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/59"
+    },
+    {
+      "mediawiki_sha1": "a131ec480bfbc041e5978088c0c0a62a5c581a12",
+      "page_id": 946663,
+      "page_sequence": 60,
+      "revision_id": 4958715,
+      "timestamp_utc": "2023-08-17T22:52:48Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/60"
+    },
+    {
+      "mediawiki_sha1": "9b1e4ba01744c0f8ccac865b677a3be6114db7af",
+      "page_id": 946664,
+      "page_sequence": 61,
+      "revision_id": 4958716,
+      "timestamp_utc": "2023-08-17T22:52:49Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/61"
+    },
+    {
+      "mediawiki_sha1": "c9c2dc5aa1a5f4c956cb55d98caf6f104f747fc0",
+      "page_id": 946665,
+      "page_sequence": 62,
+      "revision_id": 4958717,
+      "timestamp_utc": "2023-08-17T22:52:50Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/62"
+    },
+    {
+      "mediawiki_sha1": "2ab5feb891868b3a2479533c638c9e5ac7340e1c",
+      "page_id": 946666,
+      "page_sequence": 63,
+      "revision_id": 4958718,
+      "timestamp_utc": "2023-08-17T22:52:51Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/63"
+    },
+    {
+      "mediawiki_sha1": "e95d001b2a737edb3d4f29972d967c386638de2f",
+      "page_id": 946667,
+      "page_sequence": 64,
+      "revision_id": 4958719,
+      "timestamp_utc": "2023-08-17T22:52:52Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/64"
+    },
+    {
+      "mediawiki_sha1": "97254f652b7818a4044f374c7d79d6d424b8328d",
+      "page_id": 946668,
+      "page_sequence": 65,
+      "revision_id": 4958720,
+      "timestamp_utc": "2023-08-17T22:52:53Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/65"
+    },
+    {
+      "mediawiki_sha1": "1d97171d49c2aad9cdcd664ea18be7a94fa5ffd5",
+      "page_id": 946669,
+      "page_sequence": 66,
+      "revision_id": 4958721,
+      "timestamp_utc": "2023-08-17T22:52:54Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/66"
+    },
+    {
+      "mediawiki_sha1": "e2e9ece55a43abc6e42a95011fc83762e9a37aad",
+      "page_id": 946670,
+      "page_sequence": 67,
+      "revision_id": 4958722,
+      "timestamp_utc": "2023-08-17T22:52:55Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/67"
+    },
+    {
+      "mediawiki_sha1": "dc83aa74a2f99fb052929db77fb89c9f39015c8e",
+      "page_id": 946671,
+      "page_sequence": 68,
+      "revision_id": 4958723,
+      "timestamp_utc": "2023-08-17T22:52:56Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/68"
+    },
+    {
+      "mediawiki_sha1": "03a9d7c8d74b1d1f3dd51eb5d0a635b39c88ce9f",
+      "page_id": 946672,
+      "page_sequence": 69,
+      "revision_id": 4958724,
+      "timestamp_utc": "2023-08-17T22:52:57Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/69"
+    },
+    {
+      "mediawiki_sha1": "b2d65d289860eb25c10cf01699996eb1b0915039",
+      "page_id": 946673,
+      "page_sequence": 70,
+      "revision_id": 4958726,
+      "timestamp_utc": "2023-08-17T22:52:59Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/70"
+    },
+    {
+      "mediawiki_sha1": "3c6e4b1d3d71be45419088d85e7e807ec354cf06",
+      "page_id": 946674,
+      "page_sequence": 71,
+      "revision_id": 4958727,
+      "timestamp_utc": "2023-08-17T22:53:00Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/71"
+    },
+    {
+      "mediawiki_sha1": "cc9e395da4f32773720e6e94127cd6b29ea63025",
+      "page_id": 946675,
+      "page_sequence": 72,
+      "revision_id": 4958728,
+      "timestamp_utc": "2023-08-17T22:53:01Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/72"
+    },
+    {
+      "mediawiki_sha1": "884b3bfe912fea735fc8ff9cbf666261b2978dcf",
+      "page_id": 946676,
+      "page_sequence": 73,
+      "revision_id": 4958729,
+      "timestamp_utc": "2023-08-17T22:53:02Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/73"
+    },
+    {
+      "mediawiki_sha1": "79c95369ccd706583830ccc80bcc1f9a490967c7",
+      "page_id": 946677,
+      "page_sequence": 74,
+      "revision_id": 4958730,
+      "timestamp_utc": "2023-08-17T22:53:03Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/74"
+    },
+    {
+      "mediawiki_sha1": "9021478b839dd991991f50a92316097aa66b5918",
+      "page_id": 946678,
+      "page_sequence": 75,
+      "revision_id": 4958731,
+      "timestamp_utc": "2023-08-17T22:53:04Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/75"
+    },
+    {
+      "mediawiki_sha1": "564f5a92555b2e9a083257cdf3144e49d6590cee",
+      "page_id": 946679,
+      "page_sequence": 76,
+      "revision_id": 4958732,
+      "timestamp_utc": "2023-08-17T22:53:05Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/76"
+    },
+    {
+      "mediawiki_sha1": "29580d59a098d547eb58811e3796d9ae754334b5",
+      "page_id": 946680,
+      "page_sequence": 77,
+      "revision_id": 4958733,
+      "timestamp_utc": "2023-08-17T22:53:06Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/77"
+    },
+    {
+      "mediawiki_sha1": "92e9a8560439683890cadfa2786ea9d87ba70c15",
+      "page_id": 946681,
+      "page_sequence": 78,
+      "revision_id": 4958734,
+      "timestamp_utc": "2023-08-17T22:53:07Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/78"
+    },
+    {
+      "mediawiki_sha1": "3ab6b97d9708a58e8d60e72c638809438b95ac1d",
+      "page_id": 946682,
+      "page_sequence": 79,
+      "revision_id": 4958735,
+      "timestamp_utc": "2023-08-17T22:53:08Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/79"
+    },
+    {
+      "mediawiki_sha1": "d60fbea5df2340aae121afbbe14a2dcbbf69bfc5",
+      "page_id": 946683,
+      "page_sequence": 80,
+      "revision_id": 4958737,
+      "timestamp_utc": "2023-08-17T22:53:10Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/80"
+    },
+    {
+      "mediawiki_sha1": "fcfe312d81385f069ae714cd3962564ec896b361",
+      "page_id": 946684,
+      "page_sequence": 81,
+      "revision_id": 4958738,
+      "timestamp_utc": "2023-08-17T22:53:11Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/81"
+    },
+    {
+      "mediawiki_sha1": "a896af3257fd5ce2f84e1b0e30db848df97b4766",
+      "page_id": 946686,
+      "page_sequence": 82,
+      "revision_id": 4958739,
+      "timestamp_utc": "2023-08-17T22:53:12Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/82"
+    },
+    {
+      "mediawiki_sha1": "0eccaa23769408d8fb2113368201095c3757d455",
+      "page_id": 946687,
+      "page_sequence": 83,
+      "revision_id": 4958740,
+      "timestamp_utc": "2023-08-17T22:53:13Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/83"
+    },
+    {
+      "mediawiki_sha1": "31de8d5cb53bca267f95f94115445dbac92a8e64",
+      "page_id": 946688,
+      "page_sequence": 84,
+      "revision_id": 4958741,
+      "timestamp_utc": "2023-08-17T22:53:14Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/84"
+    },
+    {
+      "mediawiki_sha1": "4e18c0231c015fbf281b1bcc02721aa320188c45",
+      "page_id": 946689,
+      "page_sequence": 85,
+      "revision_id": 4958742,
+      "timestamp_utc": "2023-08-17T22:53:15Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/85"
+    },
+    {
+      "mediawiki_sha1": "87e564fd8a2044850ad56e42f53d7b9e668a2aa2",
+      "page_id": 946690,
+      "page_sequence": 86,
+      "revision_id": 4958743,
+      "timestamp_utc": "2023-08-17T22:53:16Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/86"
+    },
+    {
+      "mediawiki_sha1": "59dc9857f7761abb4bfd40de3c58f60332a72917",
+      "page_id": 946691,
+      "page_sequence": 87,
+      "revision_id": 4958744,
+      "timestamp_utc": "2023-08-17T22:53:17Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/87"
+    },
+    {
+      "mediawiki_sha1": "351d66ec91d4df3ac5f806f5dddbee675677617e",
+      "page_id": 946692,
+      "page_sequence": 88,
+      "revision_id": 4958745,
+      "timestamp_utc": "2023-08-17T22:53:18Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/88"
+    },
+    {
+      "mediawiki_sha1": "70e711ac15f27718a005e2696b4d9876b4b57c33",
+      "page_id": 946693,
+      "page_sequence": 89,
+      "revision_id": 4958746,
+      "timestamp_utc": "2023-08-17T22:53:19Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/89"
+    },
+    {
+      "mediawiki_sha1": "fa24a69469002a286250b1fcd296b335e7a3f15a",
+      "page_id": 946694,
+      "page_sequence": 90,
+      "revision_id": 4958748,
+      "timestamp_utc": "2023-08-17T22:53:21Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/90"
+    },
+    {
+      "mediawiki_sha1": "f56ee51dbb4e3c054f81367604a3b6ea66f3f7ff",
+      "page_id": 946695,
+      "page_sequence": 91,
+      "revision_id": 4958749,
+      "timestamp_utc": "2023-08-17T22:53:22Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/91"
+    },
+    {
+      "mediawiki_sha1": "5d329f53d64ded1caf982d0cd1512be5428edd16",
+      "page_id": 946696,
+      "page_sequence": 92,
+      "revision_id": 4958750,
+      "timestamp_utc": "2023-08-17T22:53:23Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/92"
+    },
+    {
+      "mediawiki_sha1": "09467e651987dbbd40136da5fe348d2dc83afcc9",
+      "page_id": 946697,
+      "page_sequence": 93,
+      "revision_id": 4958751,
+      "timestamp_utc": "2023-08-17T22:53:24Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/93"
+    },
+    {
+      "mediawiki_sha1": "630e0e0e633c4112893d0ddfd9a54132ba0f9dd9",
+      "page_id": 946698,
+      "page_sequence": 94,
+      "revision_id": 4958752,
+      "timestamp_utc": "2023-08-17T22:53:25Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/94"
+    },
+    {
+      "mediawiki_sha1": "287e215e32008a6f4946513eea7e44e95fa645cc",
+      "page_id": 946699,
+      "page_sequence": 95,
+      "revision_id": 4958753,
+      "timestamp_utc": "2023-08-17T22:53:26Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/95"
+    },
+    {
+      "mediawiki_sha1": "fbcc9ba489d83e6caa985943f196e2a73da2fdd8",
+      "page_id": 946700,
+      "page_sequence": 96,
+      "revision_id": 4958754,
+      "timestamp_utc": "2023-08-17T22:53:27Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/96"
+    },
+    {
+      "mediawiki_sha1": "44836622fb2caa315828c938f8090030fcbd01f9",
+      "page_id": 946701,
+      "page_sequence": 97,
+      "revision_id": 4958755,
+      "timestamp_utc": "2023-08-17T22:53:28Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/97"
+    },
+    {
+      "mediawiki_sha1": "c466ed26b808c4c8dba2711f8a2141a7359b5614",
+      "page_id": 946702,
+      "page_sequence": 98,
+      "revision_id": 4958756,
+      "timestamp_utc": "2023-08-17T22:53:29Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/98"
+    },
+    {
+      "mediawiki_sha1": "b4f38035eb61e33c1b77e8b8910785fa7339c42d",
+      "page_id": 946703,
+      "page_sequence": 99,
+      "revision_id": 4958757,
+      "timestamp_utc": "2023-08-17T22:53:30Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/99"
+    },
+    {
+      "mediawiki_sha1": "6b25dcf7aa7c7705fb081d0c9cafe8b23b61fea4",
+      "page_id": 946704,
+      "page_sequence": 100,
+      "revision_id": 4958607,
+      "timestamp_utc": "2023-08-17T22:51:02Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/100"
+    },
+    {
+      "mediawiki_sha1": "96571d095b383fce83427d15b63527700b619822",
+      "page_id": 946705,
+      "page_sequence": 101,
+      "revision_id": 4958608,
+      "timestamp_utc": "2023-08-17T22:51:03Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/101"
+    },
+    {
+      "mediawiki_sha1": "b6396fed16ae46c8e936878a90759569c2422c79",
+      "page_id": 946706,
+      "page_sequence": 102,
+      "revision_id": 4958609,
+      "timestamp_utc": "2023-08-17T22:51:04Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/102"
+    },
+    {
+      "mediawiki_sha1": "809c9e2440db0b3a6ef571359587a8b695ebc2d2",
+      "page_id": 946707,
+      "page_sequence": 103,
+      "revision_id": 4958610,
+      "timestamp_utc": "2023-08-17T22:51:05Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/103"
+    },
+    {
+      "mediawiki_sha1": "f73eb91fb0ad13526adc99b44d4915c290f143d8",
+      "page_id": 946708,
+      "page_sequence": 104,
+      "revision_id": 4958611,
+      "timestamp_utc": "2023-08-17T22:51:06Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/104"
+    },
+    {
+      "mediawiki_sha1": "35d8a803775a10d5c2318b4d4f64daaf6f38a20e",
+      "page_id": 946709,
+      "page_sequence": 105,
+      "revision_id": 4958612,
+      "timestamp_utc": "2023-08-17T22:51:07Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/105"
+    },
+    {
+      "mediawiki_sha1": "e5365255a9b46b1dfeaa225d397ce93a65c72398",
+      "page_id": 946710,
+      "page_sequence": 106,
+      "revision_id": 4958613,
+      "timestamp_utc": "2023-08-17T22:51:08Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/106"
+    },
+    {
+      "mediawiki_sha1": "fbca4165c9e8b814f8bdee067bbfbceaadddadcf",
+      "page_id": 946711,
+      "page_sequence": 107,
+      "revision_id": 4958614,
+      "timestamp_utc": "2023-08-17T22:51:09Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/107"
+    },
+    {
+      "mediawiki_sha1": "a3091f0bf7a88180821fc548a65ff5c4853c72ee",
+      "page_id": 946712,
+      "page_sequence": 108,
+      "revision_id": 4958615,
+      "timestamp_utc": "2023-08-17T22:51:10Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/108"
+    },
+    {
+      "mediawiki_sha1": "915514b12744f0c4c26429124206345315d97374",
+      "page_id": 946713,
+      "page_sequence": 109,
+      "revision_id": 4958616,
+      "timestamp_utc": "2023-08-17T22:51:11Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/109"
+    },
+    {
+      "mediawiki_sha1": "2c558ae2e3daa034755a405d9be76924d83991f3",
+      "page_id": 946714,
+      "page_sequence": 110,
+      "revision_id": 4958618,
+      "timestamp_utc": "2023-08-17T22:51:13Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/110"
+    },
+    {
+      "mediawiki_sha1": "cb4b4ba114346f71bf53a32e82c058918c433bff",
+      "page_id": 946715,
+      "page_sequence": 111,
+      "revision_id": 4958619,
+      "timestamp_utc": "2023-08-17T22:51:14Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/111"
+    },
+    {
+      "mediawiki_sha1": "877059e50831ff721f88bb153eacf72ce14520b2",
+      "page_id": 946716,
+      "page_sequence": 112,
+      "revision_id": 4958620,
+      "timestamp_utc": "2023-08-17T22:51:15Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/112"
+    },
+    {
+      "mediawiki_sha1": "1fbacf7953587edc0c932b4908729924dc46f7f9",
+      "page_id": 946717,
+      "page_sequence": 113,
+      "revision_id": 4958621,
+      "timestamp_utc": "2023-08-17T22:51:16Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/113"
+    },
+    {
+      "mediawiki_sha1": "45a1ca364cb6e7c0f6651767edc7424116222840",
+      "page_id": 946718,
+      "page_sequence": 114,
+      "revision_id": 4958622,
+      "timestamp_utc": "2023-08-17T22:51:17Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/114"
+    },
+    {
+      "mediawiki_sha1": "29715059aee10bfc605c62faffd990b4210feed1",
+      "page_id": 946719,
+      "page_sequence": 115,
+      "revision_id": 4958623,
+      "timestamp_utc": "2023-08-17T22:51:18Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/115"
+    },
+    {
+      "mediawiki_sha1": "c82cc3ca76a9cc9a48842bed7bebd29abaeb2224",
+      "page_id": 946720,
+      "page_sequence": 116,
+      "revision_id": 4958624,
+      "timestamp_utc": "2023-08-17T22:51:19Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/116"
+    },
+    {
+      "mediawiki_sha1": "7584ef72f664ffa1e7101a571457c61157e280a5",
+      "page_id": 946721,
+      "page_sequence": 117,
+      "revision_id": 4958625,
+      "timestamp_utc": "2023-08-17T22:51:20Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/117"
+    },
+    {
+      "mediawiki_sha1": "431ea0f7476a0ddb6884a751cbe8ffcd39200203",
+      "page_id": 946722,
+      "page_sequence": 118,
+      "revision_id": 4958626,
+      "timestamp_utc": "2023-08-17T22:51:21Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/118"
+    },
+    {
+      "mediawiki_sha1": "428dc17ddc64245c49f04a38066573e7d96c955e",
+      "page_id": 946723,
+      "page_sequence": 119,
+      "revision_id": 4958627,
+      "timestamp_utc": "2023-08-17T22:51:22Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/119"
+    },
+    {
+      "mediawiki_sha1": "df9a6c275e0bf29dfaa13de56355b2cd98b357f6",
+      "page_id": 946724,
+      "page_sequence": 120,
+      "revision_id": 4958629,
+      "timestamp_utc": "2023-08-17T22:51:24Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/120"
+    },
+    {
+      "mediawiki_sha1": "8924ed63cc09faa8631371340df11070a80a65c1",
+      "page_id": 946725,
+      "page_sequence": 121,
+      "revision_id": 4958630,
+      "timestamp_utc": "2023-08-17T22:51:25Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/121"
+    },
+    {
+      "mediawiki_sha1": "c4ccbf584ff62a353ad7da5965f62497bed0f175",
+      "page_id": 946726,
+      "page_sequence": 122,
+      "revision_id": 4958631,
+      "timestamp_utc": "2023-08-17T22:51:26Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/122"
+    },
+    {
+      "mediawiki_sha1": "ab9d9cade42a320ab3164355a5106b6432d1b200",
+      "page_id": 946727,
+      "page_sequence": 123,
+      "revision_id": 4958632,
+      "timestamp_utc": "2023-08-17T22:51:27Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/123"
+    },
+    {
+      "mediawiki_sha1": "b45b02e83b6fff28c4292ab8fa6d2a853cd08bc4",
+      "page_id": 946728,
+      "page_sequence": 124,
+      "revision_id": 4958633,
+      "timestamp_utc": "2023-08-17T22:51:28Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/124"
+    },
+    {
+      "mediawiki_sha1": "7d41e3ddf730a82852119cf59865df06eb1e486c",
+      "page_id": 946729,
+      "page_sequence": 125,
+      "revision_id": 4958634,
+      "timestamp_utc": "2023-08-17T22:51:29Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/125"
+    },
+    {
+      "mediawiki_sha1": "2bb91226675efb57a3c928a8552951081b19b232",
+      "page_id": 946730,
+      "page_sequence": 126,
+      "revision_id": 4958635,
+      "timestamp_utc": "2023-08-17T22:51:30Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/126"
+    },
+    {
+      "mediawiki_sha1": "bc7a7c302fefdcbdedbcc34434341c250d4ff0ea",
+      "page_id": 946731,
+      "page_sequence": 127,
+      "revision_id": 4958636,
+      "timestamp_utc": "2023-08-17T22:51:31Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/127"
+    },
+    {
+      "mediawiki_sha1": "436f12c0ce1d5a8be9fb8f300c4824e74a70107d",
+      "page_id": 946732,
+      "page_sequence": 128,
+      "revision_id": 4958637,
+      "timestamp_utc": "2023-08-17T22:51:32Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/128"
+    },
+    {
+      "mediawiki_sha1": "2c159ad4dd649fc2cff5863c078f9fb78c925dfe",
+      "page_id": 946733,
+      "page_sequence": 129,
+      "revision_id": 4958638,
+      "timestamp_utc": "2023-08-17T22:51:33Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/129"
+    },
+    {
+      "mediawiki_sha1": "2dde5b026207ed4bd6c3c4b7f43eb73912585552",
+      "page_id": 946734,
+      "page_sequence": 130,
+      "revision_id": 4958640,
+      "timestamp_utc": "2023-08-17T22:51:35Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/130"
+    },
+    {
+      "mediawiki_sha1": "221af6b6e91204a303b021e5b55c518c2c64f687",
+      "page_id": 946735,
+      "page_sequence": 131,
+      "revision_id": 4958641,
+      "timestamp_utc": "2023-08-17T22:51:36Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/131"
+    },
+    {
+      "mediawiki_sha1": "4c85e1894cf4a3a2e61866082c67d0dddb75c778",
+      "page_id": 946736,
+      "page_sequence": 132,
+      "revision_id": 4958642,
+      "timestamp_utc": "2023-08-17T22:51:37Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/132"
+    },
+    {
+      "mediawiki_sha1": "fc8293fbcd810302f1b23beb09ded12f88aed0e0",
+      "page_id": 946737,
+      "page_sequence": 133,
+      "revision_id": 4958643,
+      "timestamp_utc": "2023-08-17T22:51:38Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/133"
+    },
+    {
+      "mediawiki_sha1": "a3ebe2760d25d8e686a913a4cc664af8dbed202f",
+      "page_id": 946738,
+      "page_sequence": 134,
+      "revision_id": 4958645,
+      "timestamp_utc": "2023-08-17T22:51:39Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/134"
+    },
+    {
+      "mediawiki_sha1": "248366e0520258d773685ffda2c32dcb86543f54",
+      "page_id": 946739,
+      "page_sequence": 135,
+      "revision_id": 4958646,
+      "timestamp_utc": "2023-08-17T22:51:40Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/135"
+    },
+    {
+      "mediawiki_sha1": "d3460efb062702f6fb1a968eeab1fc6b68ff8f21",
+      "page_id": 946740,
+      "page_sequence": 136,
+      "revision_id": 4958647,
+      "timestamp_utc": "2023-08-17T22:51:41Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/136"
+    },
+    {
+      "mediawiki_sha1": "ae325631127ede7bfe6d1479d2177fe7638bfbb9",
+      "page_id": 946741,
+      "page_sequence": 137,
+      "revision_id": 4958648,
+      "timestamp_utc": "2023-08-17T22:51:42Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/137"
+    },
+    {
+      "mediawiki_sha1": "5337eaff76e4474639bfa4d61b522f12b81de494",
+      "page_id": 946742,
+      "page_sequence": 138,
+      "revision_id": 4958649,
+      "timestamp_utc": "2023-08-17T22:51:43Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/138"
+    },
+    {
+      "mediawiki_sha1": "94138ab0e3ece3d92341fe1e22e670860b93f7f3",
+      "page_id": 946743,
+      "page_sequence": 139,
+      "revision_id": 4958650,
+      "timestamp_utc": "2023-08-17T22:51:44Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/139"
+    },
+    {
+      "mediawiki_sha1": "34204c1a913e1f11a19b07ad7e52c855b6efc8cd",
+      "page_id": 946744,
+      "page_sequence": 140,
+      "revision_id": 4958652,
+      "timestamp_utc": "2023-08-17T22:51:46Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/140"
+    },
+    {
+      "mediawiki_sha1": "8f65a210fcfe9040301a36fad75193830ce6f4b9",
+      "page_id": 946745,
+      "page_sequence": 141,
+      "revision_id": 4958653,
+      "timestamp_utc": "2023-08-17T22:51:47Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/141"
+    },
+    {
+      "mediawiki_sha1": "e00acf93092c7d6d24ac4caa48cd8366c9dd6e23",
+      "page_id": 946746,
+      "page_sequence": 142,
+      "revision_id": 4958654,
+      "timestamp_utc": "2023-08-17T22:51:48Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/142"
+    },
+    {
+      "mediawiki_sha1": "3e6e7c8b572cd9a1061327d3235b647f17069822",
+      "page_id": 946747,
+      "page_sequence": 143,
+      "revision_id": 4958655,
+      "timestamp_utc": "2023-08-17T22:51:49Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/143"
+    },
+    {
+      "mediawiki_sha1": "d23bee7e0f16692007941cef8eb73da457ae863c",
+      "page_id": 946748,
+      "page_sequence": 144,
+      "revision_id": 4958656,
+      "timestamp_utc": "2023-08-17T22:51:50Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/144"
+    },
+    {
+      "mediawiki_sha1": "f77a002c4ea6c5bec98c8f7191f2fa819178fd0b",
+      "page_id": 946749,
+      "page_sequence": 145,
+      "revision_id": 4958657,
+      "timestamp_utc": "2023-08-17T22:51:51Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/145"
+    },
+    {
+      "mediawiki_sha1": "45a45fb203a7155cf68da4573ae2ad56d9371ca1",
+      "page_id": 946750,
+      "page_sequence": 146,
+      "revision_id": 4958658,
+      "timestamp_utc": "2023-08-17T22:51:52Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/146"
+    },
+    {
+      "mediawiki_sha1": "b20e91b2a32f498680550283825683440d949852",
+      "page_id": 946751,
+      "page_sequence": 147,
+      "revision_id": 4958659,
+      "timestamp_utc": "2023-08-17T22:51:53Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/147"
+    },
+    {
+      "mediawiki_sha1": "16458813fbd1c9acf2422f219bc154b3930b924d",
+      "page_id": 946573,
+      "page_sequence": 148,
+      "revision_id": 4958660,
+      "timestamp_utc": "2023-08-17T22:51:54Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/148"
+    },
+    {
+      "mediawiki_sha1": "7649866db7bd09c8bc7d6e8022792a6e3ab2610d",
+      "page_id": 946572,
+      "page_sequence": 149,
+      "revision_id": 4958661,
+      "timestamp_utc": "2023-08-17T22:51:55Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/149"
+    },
+    {
+      "mediawiki_sha1": "0eda699167366d9df5d5bbdec7d07bd8d7b86dcf",
+      "page_id": 946571,
+      "page_sequence": 150,
+      "revision_id": 4958663,
+      "timestamp_utc": "2023-08-17T22:51:57Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/150"
+    },
+    {
+      "mediawiki_sha1": "3fe4e830fb8c3262c064f34a16c94d3af33bfb8a",
+      "page_id": 946570,
+      "page_sequence": 151,
+      "revision_id": 4958664,
+      "timestamp_utc": "2023-08-17T22:51:58Z",
+      "title": "Страница:Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf/151"
+    }
+  ],
+  "schema_version": "scriptorium-robinson-trusov-page-dependencies-v1",
+  "selection": {
+    "from": 2,
+    "index": "Жизнь и приключения Робинзона Круза. Часть 1. Пер. Я. Трусовым, 1775.pdf",
+    "page_count": 150,
+    "to": 151
+  },
+  "selection_policy": "latest_page_revision_at_or_before_carrier_save",
+  "source_text_committed": false
+}

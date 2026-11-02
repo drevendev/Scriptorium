@@ -159,6 +159,53 @@ def capture_shapes(graph: Mapping[str, object], graph_sha256: str,
     return result
 
 
+
+def verify_observation(report: Mapping[str, object], summary: Mapping[str, object]) -> None:
+    """Bind a retained source-free class histogram to exact live JSON bytes."""
+    expected_keys = {
+        "schema_version", "candidate_id", "source_page_graph_sha256",
+        "transclusion_input_candidate_sha256", "full_source_free_report_sha256",
+        "full_source_free_report_bytes", "primary_workflow_run",
+        "primary_workflow_head_sha", "page_count", "pages_with_invocations",
+        "total_invocations", "unclassified_openers", "literal_template_counts",
+        "parser_or_dynamic_template_count", "source_text_committed",
+        "literary_body_sha256", "corpus_threshold_verified",
+        "historical_render_equivalence_proven", "fantlab_input_identity",
+        "m2_parity_admissible", "status",
+    }
+    if set(summary) != expected_keys or summary["schema_version"] != (
+            "scriptorium-trusov-template-shape-observation-v1"):
+        raise ValueError("unrecognized Trusov template observation")
+    encoded = (json.dumps(report, sort_keys=True, indent=2,
+                          ensure_ascii=False) + "\n").encode("utf-8")
+    if (summary["full_source_free_report_sha256"] != sha256(encoded).hexdigest()
+            or summary["full_source_free_report_bytes"] != len(encoded)):
+        raise ValueError("template report byte digest drift")
+    from collections import Counter
+    observed = Counter(
+        call["template_title"]
+        for row in report["pages"]
+        for call in row["invocations"]
+    )
+    if (summary["literal_template_counts"] != {
+            name: count for name, count in observed.items() if name is not None
+        } or summary["parser_or_dynamic_template_count"] != observed[None]):
+        raise ValueError("template title classification drift")
+    for key in ("candidate_id", "page_count", "page_graph_sha256",
+                "transclusion_input_candidate_sha256", "pages_with_invocations",
+                "total_invocations", "unclassified_openers",
+                "source_text_committed", "literary_body_sha256",
+                "corpus_threshold_verified",
+                "historical_render_equivalence_proven", "fantlab_input_identity",
+                "m2_parity_admissible", "status"):
+        if summary[key] != report[key]:
+            raise ValueError(f"template observation mismatch: {key}")
+    if (summary["primary_workflow_run"] !=
+            "https://github.com/drevendev/Scriptorium/actions/runs/41402787490"
+        or summary["primary_workflow_head_sha"] !=
+            "f91fd2dfe011f6dce171bac099d89b758fd7a5f9"):
+        raise ValueError("unverified primary template-shape capture provenance")
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Source-free pinned Trusov Page template inventory")
     parser.add_argument("--graph", type=Path, required=True)

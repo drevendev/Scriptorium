@@ -126,3 +126,34 @@ python -m scriptorium.robinson_trusov_content \
   --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
   --output build/repro/trusov-1775.content-preflight.json
 ```
+
+## Pinned template-shape audit (new PR candidate)
+
+The accepted #397 preflight confirms **34 of 150** Page inputs still contain
+**64 unexpanded double-brace openers**. The source-bound template-shape audit
+reuses the exact historical oldid and provider-identity checks, classifies
+balanced calls, nested braces and argument *counts* while keeping argument
+values, raw Page prose and literary text entirely transient. Unsupported or
+dynamic template titles are represented by hashes; unclassified triple-brace
+openers remain explicit. This is **not template expansion or historical
+rendering**, and does not verify page-joining semantics, literary coverage,
+300,000 characters, admission or FantLab input identity.
+
+The modified preflight workflow obtains the frozen Page source **once** and
+writes both the original byte-for-byte receipt-checked preflight and the new
+source-free shape inventory. To run a local live capture with ordinary
+Wikisource access:
+
+```sh
+python -m scriptorium.robinson_trusov_template_shapes \
+  --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+  --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
+  --preflight-output build/repro/trusov-1775.content-preflight.json \
+  --output build/repro/trusov-1775.template-shapes.json
+```
+
+The emitted shape inventory remains diagnostic: all invocations are unresolved
+until their exact identities, binding/expansion semantics and body inclusion
+effects are independently tested. Preserve the last accepted #397 receipt if
+a provider rate limit prevents a new capture; a CI run that does not complete
+is NOT_RUN, not failed scientific parity.

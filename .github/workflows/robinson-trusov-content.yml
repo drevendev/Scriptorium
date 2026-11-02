@@ -1,0 +1,64 @@
+name: Trusov 1775 pinned Page content preflight
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/robinson-trusov-content.yml"
+      - "scriptorium/robinson_trusov_content.py"
+      - "tests/test_robinson_trusov_content.py"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
+      - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trusov-page-content:
+    name: Verify exact historical Page source content without prose
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Source-free and negative regression tests
+        run: python -m unittest discover -s tests -p 'test_robinson_trusov_content.py' -v
+      - name: Capture pinned Page contents with bounded MediaWiki requests
+        run: |
+          mkdir -p build/repro
+          python -m scriptorium.robinson_trusov_content \
+            --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+            --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
+            --output build/repro/trusov-1775.content-preflight.json
+      - name: Validate source-free output and preserve unknown scientific gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.robinson_trusov_pages import verify_frozen_graph
+          from scriptorium.robinson_trusov_content import validate_preflight
+          base=Path("corpus/candidates/source-edition-traces")
+          graph=verify_frozen_graph(base/"defoe-robinson-crusoe-trusov-1775-ru.page-graph.json",base/"defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json")
+          result=json.loads(Path("build/repro/trusov-1775.content-preflight.json").read_text(encoding="utf-8"))
+          validate_preflight(result, graph)
+          assert result["page_count"]==150
+          assert result["status"]=="TRANSCLUSION_INPUT_PREFLIGHT_ONLY"
+          assert result["literary_body_sha256"] is None
+          assert result["corpus_threshold_verified"] is False
+          assert result["m2_parity_admissible"] is False
+          print("Source-free 150-page preflight; literary body NOT_RUN")
+          PY
+      - name: Upload only derived diagnostic identities
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: robinson-trusov-page-content-preflight
+          path: build/repro/trusov-1775.content-preflight.json
+          if-no-files-found: error
+          retention-days: 7

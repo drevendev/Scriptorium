@@ -131,7 +131,7 @@ class TrusovProjectionTests(unittest.TestCase):
             validate_projection(altered, graph, preflight, shapes)
         altered = copy.deepcopy(report)
         altered["pages"][0]["flat_var_preview_count"] = 2
-        with self.assertRaisesRegex(ValueError, "VAR preview count"):
+        with self.assertRaisesRegex(ValueError, "VAR preview refusal partition"):
             validate_projection(altered, graph, preflight, shapes)
         altered = copy.deepcopy(report)
         altered["var_preview_profile"] = "historical_render_verified"

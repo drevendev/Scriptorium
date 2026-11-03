@@ -14,7 +14,7 @@ STATUS: PR_CANDIDATE; EXACT_150_PAGE_CI_PENDING; LOCAL_FULL_REPO_NOT_RUN; LITERA
 BRANCH: scrip-trusov-var-orthography-preview
 BASE: 0f91f9c466cb7b3e46c30be4142cdc7acd4c0103
 
-ACCEPTANCE: The accepted conservative joined projected-wikitext identity remains unchanged. A separate v2 diagnostic probes both positional ВАР branches only for strict flat two-argument literal calls. Nested/multiple calls, named args, markup and unknown selectors stay unresolved. Per-page and joined SHA-256 plus bounded counts are source-free; workflow checks frozen oldids/preflight/shape receipts, no false literary-body or parity claims. Tests cover positive and negative branches.
+ACCEPTANCE: The accepted conservative joined projected-wikitext identity remains unchanged. A separate v2 diagnostic probes both positional ВАР branches only for strict flat two-argument literal calls. Nested/multiple calls, named args, markup and unknown selectors stay unresolved. Per-page and joined SHA-256, bounded counts, and source-free refusal-category partition are checked against the exact four pinned ВАР invocations. Workflow checks frozen oldids/preflight/shape receipts, no false literary-body or parity claims. Tests cover positive and negative branches.
 
 ## Next user-visible milestone and compact queue
 

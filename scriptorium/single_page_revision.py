@@ -5,9 +5,11 @@ from __future__ import annotations
 import argparse
 from hashlib import sha256
 import json
+import time
 from pathlib import Path
 import re
 from typing import Callable, Mapping, Sequence
+from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -19,17 +21,56 @@ _HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
 _HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
+def _retry_delay(header: object, attempt: int) -> int:
+    """Honor bounded Retry-After seconds; never retry sooner than five seconds."""
+    if header is None:
+        return 5 * (attempt + 1)
+    if not isinstance(header, str) or not header.isdecimal():
+        raise RuntimeError("unsupported MediaWiki Retry-After header; not retrying early")
+    seconds = int(header)
+    if seconds > 60:
+        raise RuntimeError("MediaWiki Retry-After exceeds bounded capture; not retrying early")
+    return max(5, seconds)
+
+
 def _api_query(params: dict[str, str]) -> dict[str, object]:
-    encoded = urlencode({**params, "format": "json", "formatversion": "2"})
+    """Read-only Action API transport with bounded, etiquette-aware transient retries.
+
+    Exact revision/title/SHA validation belongs to each caller and is never
+    relaxed by a retry. Invalid JSON, unknown API errors and source drift are
+    not silently retried or converted into successful source evidence.
+    """
+    encoded = urlencode({"maxlag": "5", **params, "format": "json", "formatversion": "2"})
     request = Request(
         f"{API_URL}?{encoded}",
         headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
     )
-    with urlopen(request, timeout=30) as response:
-        payload = json.load(response)
-    if not isinstance(payload, dict):
-        raise ValueError("unexpected MediaWiki API response")
-    return payload
+    for attempt in range(3):
+        try:
+            with urlopen(request, timeout=30) as response:
+                payload = json.load(response)
+                headers = getattr(response, "headers", None)
+                retry_after = headers.get("Retry-After") if headers is not None else None
+        except HTTPError as exc:
+            # A generic 503 may be a costly cache-layer timeout, not maxlag.
+            # Retry that status only when the server explicitly provides a delay.
+            retry_after = exc.headers.get("Retry-After") if exc.headers else None
+            if exc.code != 429 and not (exc.code == 503 and retry_after is not None):
+                raise
+            if attempt == 2:
+                raise RuntimeError("MediaWiki HTTP rate limit persisted after three attempts") from exc
+            time.sleep(_retry_delay(retry_after, attempt))
+            continue
+        if not isinstance(payload, dict):
+            raise ValueError("unexpected MediaWiki API response")
+        error = payload.get("error")
+        code = error.get("code") if isinstance(error, dict) else None
+        if code not in {"maxlag", "ratelimited"}:
+            return payload
+        if attempt == 2:
+            raise RuntimeError(f"MediaWiki {code} persisted after three attempts")
+        time.sleep(_retry_delay(retry_after, attempt))
+    raise AssertionError("unreachable MediaWiki transport retry state")
 
 
 def fetch_pinned_revision(

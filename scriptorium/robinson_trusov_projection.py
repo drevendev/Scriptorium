@@ -18,12 +18,15 @@ from .robinson_trusov_pages import verify_frozen_graph
 from .robinson_trusov_template_shapes import capture_shapes, invocation_shapes, validate_shapes
 from .single_page_revision import _api_query
 
-SCHEMA = "scriptorium-trusov-standalone-projection-v3"
-VAR_PREVIEW_PROFILE = "bounded_flat_and_multiline_VAR_orthography_branch_only_inferred_v2"
+SCHEMA = "scriptorium-trusov-standalone-projection-v4"
+VAR_PREVIEW_PROFILE = "bounded_flat_and_multiline_VAR_orthography_branch_only_inferred_v3"
 VAR_CALL = re.compile(r"\{\{ВАР\|([^{}|]*)\|([^{}|]*)\}\}")
 VAR_START = re.compile(r"(?<!\{)\{\{\s*ВАР(?=\s*[|}])")
-VAR_REFUSAL_KEYS = ("multiline", "multiple_templates_on_line",
-                    "non_plain_branch", "unsupported_shape")
+VAR_REFUSAL_KEYS = (
+    "call_too_large", "too_many_line_breaks", "nested_braces",
+    "unbalanced_braces", "extra_arguments", "unsupported_shape",
+    "multiple_templates_on_line", "non_plain_branch",
+)
 HEX = re.compile(r"[a-f0-9]{64}\Z")
 STYLE = re.compile(r"[A-Za-z0-9.% -]{1,20}\Z")
 
@@ -87,28 +90,53 @@ def _enclosed_in_outer_markup(projected: str, start: int) -> bool:
 
 def _var_preview_partition(
     projected: str,
-) -> tuple[list[tuple[int, int, str, str, bool]], dict[str, int]]:
-    """Classify each literal VAR opener exactly once, without rendering MediaWiki.
+) -> tuple[list[tuple[int, int, str, str, bool]], dict[str, int], list[dict[str, str]]]:
+    """Classify VAR calls once, binding each decision to a source-free call SHA-256.
 
-    Anonymous argument whitespace, including line breaks, is kept verbatim.
-    Only one plain two-argument invocation in its surrounding line span is
-    previewable. Oversized/malformed/markup/nested invocations fail closed.
+    A refusal reason is a first-failing conservative gate, not evidence of
+    MediaWiki's historical expansion. Never persist the branch arguments.
     """
     if not isinstance(projected, str):
         raise TypeError("VAR preview input must be text")
     accepted: list[tuple[int, int, str, str, bool]] = []
     reasons = {key: 0 for key in VAR_REFUSAL_KEYS}
+    decisions: list[dict[str, str]] = []
+
+    def refuse(reason: str, literal: str) -> None:
+        reasons[reason] += 1
+        decisions.append({
+            "invocation_sha256": sha256(literal.encode("utf-8")).hexdigest(),
+            "decision": reason,
+        })
+
     for match in VAR_START.finditer(projected):
         start = match.start()
-        end = _matching_brace_end(projected, start)
+        try:
+            end = _matching_brace_end(projected, start)
+        except ValueError:
+            # This local preview refuses unbalanced input. Full source-shape
+            # capture independently rejects it; no false pinned report survives.
+            refuse("unbalanced_braces", projected[start:])
+            continue
         literal = projected[start:end]
         multiline = "\n" in literal or "\r" in literal
-        if len(literal) > 4096 or (multiline and literal.count("\n") > 12):
-            reasons["multiline" if multiline else "unsupported_shape"] += 1
+        if len(literal) > 4096:
+            refuse("call_too_large", literal)
+            continue
+        if multiline and literal.count("\n") > 12:
+            refuse("too_many_line_breaks", literal)
+            continue
+        if "{{" in literal[2:] or "}}" in literal[:-2]:
+            refuse("nested_braces", literal)
             continue
         flat = VAR_CALL.fullmatch(literal)
         if flat is None:
-            reasons["unsupported_shape"] += 1
+            inner = literal[2:-2]
+            if (inner.count("|") > 2 and
+                    not any(mark in inner for mark in ("[[", "]]", "<!--", "-->"))):
+                refuse("extra_arguments", literal)
+            else:
+                refuse("unsupported_shape", literal)
             continue
 
         line_start = projected.rfind("\n", 0, start) + 1
@@ -118,7 +146,7 @@ def _var_preview_partition(
         outside = projected[line_start:start] + projected[end:line_end]
         if (_enclosed_in_outer_markup(projected, start) or
                 any(mark in outside for mark in ("{{", "}}")) or "{{{" in context):
-            reasons["multiple_templates_on_line"] += 1
+            refuse("multiple_templates_on_line", literal)
             continue
         branches = flat.groups()
         if (any(mark in context for mark in ("<!--", "-->", "[[", "]]")) or
@@ -127,10 +155,14 @@ def _var_preview_partition(
                     "''" in branch or
                     not all(char.isprintable() or char in "\r\n" for char in branch)
                     for branch in branches)):
-            reasons["non_plain_branch"] += 1
+            refuse("non_plain_branch", literal)
             continue
         accepted.append((start, end, branches[0], branches[1], multiline))
-    return accepted, reasons
+        decisions.append({
+            "invocation_sha256": sha256(literal.encode("utf-8")).hexdigest(),
+            "decision": "multiline_preview" if multiline else "flat_preview",
+        })
+    return accepted, reasons, decisions
 
 
 def preview_var_orthographies(projected: str) -> tuple[str, str, int, int]:
@@ -140,7 +172,7 @@ def preview_var_orthographies(projected: str) -> tuple[str, str, int, int]:
     2 as modern; the 2023 template revision is not pinned. This experiment
     cannot establish a literary body, a printed edition or FantLab input.
     """
-    accepted, _ = _var_preview_partition(projected)
+    accepted, _, _ = _var_preview_partition(projected)
     historical: list[str] = []
     modern: list[str] = []
     flat_count = multiline_count = cursor = 0
@@ -160,6 +192,11 @@ def preview_var_orthographies(projected: str) -> tuple[str, str, int, int]:
 def var_preview_refusal_reasons(projected: str) -> dict[str, int]:
     """Report residual unsafe calls after both flat and multiline previews."""
     return _var_preview_partition(projected)[1]
+
+
+def var_preview_call_partition(projected: str) -> list[dict[str, str]]:
+    """Source-free exact-call decisions, checked against the pinned shape digests."""
+    return _var_preview_partition(projected)[2]
 
 
 def project_page(candidate: str) -> tuple[str, int, int, int, int]:
@@ -221,6 +258,8 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
         pages.append({
             "page_sequence": identity["page_sequence"],
             "revision_id": identity["revision_id"],
+            "source_mediawiki_sha1": identity["mediawiki_sha1"],
+            "var_call_partition": var_preview_call_partition(projected),
             "projected_wikitext_sha256": sha256(projected.encode("utf-8")).hexdigest(),
             "projected_wikitext_characters_including_spaces": len(projected),
             "handled_nop": nop, "handled_heading": heading,
@@ -320,14 +359,16 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
         raise ValueError("incomplete Page projection")
     counters = {k: 0 for k in ("handled_nop", "handled_heading", "unresolved_invocations", "unclassified_openers")}
     for row, identity, shape in zip(pages, graph["pages"], shapes["pages"]):
-        if set(row) != {"page_sequence", "revision_id", "projected_wikitext_sha256",
+        if set(row) != {"page_sequence", "revision_id", "source_mediawiki_sha1",
+                        "var_call_partition", "projected_wikitext_sha256",
                         "projected_wikitext_characters_including_spaces",
                         "flat_var_preview_count", "multiline_var_preview_count", "var_preview_refusal_reasons",
                         "pre_reform_var_preview_sha256",
                         "modern_var_preview_sha256", *counters}:
             raise ValueError("unrecognized Page projection field / prose leakage")
-        if (row["page_sequence"], row["revision_id"]) != (identity["page_sequence"], identity["revision_id"]):
-            raise ValueError("Page revision order drift")
+        if ((row["page_sequence"], row["revision_id"], row["source_mediawiki_sha1"]) !=
+                (identity["page_sequence"], identity["revision_id"], identity["mediawiki_sha1"])):
+            raise ValueError("Page revision/source SHA-1 drift")
         if not HEX.fullmatch(str(row["projected_wikitext_sha256"])):
             raise ValueError("invalid projection digest")
         if type(row["projected_wikitext_characters_including_spaces"]) is not int or row["projected_wikitext_characters_including_spaces"] < 0:
@@ -343,6 +384,24 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
         if (type(var_count) is not int or type(multiline_count) is not int or
                 not 0 <= var_count + multiline_count <= source_vars):
             raise ValueError("VAR preview count exceeds pinned source calls")
+        # Bind the source-free per-call decision to the pinned exact invocation,
+        # not merely to a page-level total that could conceal a swapped call.
+        source_calls = [c for c in shape["invocations"] if c["template_title"] == "ВАР"]
+        decisions = row["var_call_partition"]
+        if not isinstance(decisions, list) or len(decisions) != len(source_calls):
+            raise ValueError("VAR invocation identity mismatch")
+        histogram = {key: 0 for key in (*VAR_REFUSAL_KEYS, "flat_preview", "multiline_preview")}
+        for observed, source_call in zip(decisions, source_calls):
+            if (not isinstance(observed, dict) or
+                    set(observed) != {"invocation_sha256", "decision"} or
+                    observed["invocation_sha256"] != source_call["invocation_sha256"] or
+                    observed["decision"] not in histogram):
+                raise ValueError("VAR invocation identity/decision mismatch")
+            histogram[observed["decision"]] += 1
+        if (histogram["flat_preview"] != var_count or
+                histogram["multiline_preview"] != multiline_count or
+                any(histogram[k] != reasons[k] for k in VAR_REFUSAL_KEYS)):
+            raise ValueError("VAR decision histogram mismatch")
         if any(not HEX.fullmatch(str(row[key])) for key in
                ("pre_reform_var_preview_sha256", "modern_var_preview_sha256")):
             raise ValueError("invalid Page VAR preview digest")

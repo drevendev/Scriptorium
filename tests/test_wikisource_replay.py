@@ -79,6 +79,8 @@ class WikisourceReplayTests(unittest.TestCase):
         self.assertEqual(set(records), {"A", "B"})
         self.assertEqual(calls[0]["revids"], "11|12")
         self.assertEqual(calls[0]["rvprop"], "ids|timestamp|sha1|content")
+        self.assertNotIn("redirects", calls[0])
+        self.assertEqual(calls[0]["rvslots"], "main")
 
         def bad_query(params):
             payload = query(params)

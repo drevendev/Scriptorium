@@ -79,10 +79,10 @@ class TrusovProjectionTests(unittest.TestCase):
         self.assertNotIn("дѣло", json.dumps(refusals, ensure_ascii=False))
 
     def test_refusal_diagnostics_partition_distinct_limits_and_nested_calls(self):
-        source = ("{{ВАР|" + "x" * 4097 + "|new}}\\n"
-                  "{{ВАР|" + "\\n".join(["old"] * 14) + "|new}}\\n"
-                  "{{ВАР|old{{nested}}|new}}\\n"
-                  "{{ВАР|a|b|c}}\\n")
+        source = ("{{ВАР|" + "x" * 4097 + "|new}}\n"
+                  "{{ВАР|" + "\n".join(["old"] * 14) + "|new}}\n"
+                  "{{ВАР|old{{nested}}|new}}\n"
+                  "{{ВАР|a|b|c}}\n")
         reasons = var_preview_refusal_reasons(source)
         self.assertEqual(reasons["call_too_large"], 1)
         self.assertEqual(reasons["too_many_line_breaks"], 1)

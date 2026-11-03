@@ -22,6 +22,48 @@ HEX = re.compile(r"[a-f0-9]{64}\Z")
 STYLE = re.compile(r"[A-Za-z0-9.% -]{1,20}\Z")
 
 
+class ProjectedPageJoin:
+    """Streaming identity for a synthetic-LF Page join, never a literary body.
+
+    No Page text leaves transient process memory. The alphabetic-edge counter
+    signals seams that *may* need historical ProofreadPage hyphenation rules;
+    it does not attempt word restoration or normalize manuscript spelling.
+    """
+
+    PROFILE = "one_LF_between_projected_Page_inputs_diagnostic_only"
+
+    def __init__(self) -> None:
+        self._digest = sha256()
+        self._pages = 0
+        self._characters = 0
+        self._alphabetic_edges = 0
+        self._previous_last: str | None = None
+
+    def add(self, page: str) -> None:
+        if not isinstance(page, str) or not page:
+            raise ValueError("empty or non-text projected Page")
+        if self._pages:
+            self._digest.update(b"\n")
+            self._characters += 1
+            if self._previous_last and self._previous_last.isalpha() and page[0].isalpha():
+                self._alphabetic_edges += 1
+        self._digest.update(page.encode("utf-8"))
+        self._characters += len(page)
+        self._pages += 1
+        self._previous_last = page[-1]
+
+    def source_free_identity(self) -> dict[str, str | int]:
+        if not self._pages:
+            raise ValueError("no projected Pages to join")
+        return {
+            "projected_page_join_profile": self.PROFILE,
+            "joined_projected_wikitext_sha256": self._digest.hexdigest(),
+            "joined_projected_wikitext_characters_including_spaces": self._characters,
+            "projected_page_join_seams": self._pages - 1,
+            "alphabetic_page_edge_seams": self._alphabetic_edges,
+        }
+
+
 def project_page(candidate: str) -> tuple[str, int, int, int, int]:
     """Only unwrap isolated, literal nop and plain two-field heading lines.
 
@@ -67,9 +109,11 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
                        shapes_output: dict | None = None) -> dict:
     """Reuse one exact-identity fetch for original preflight, shapes and probe."""
     pages: list[dict] = []
+    joined = ProjectedPageJoin()
 
     def observe(identity: dict, candidate: str) -> None:
         projected, nop, heading, unresolved, residual = project_page(candidate)
+        joined.add(projected)
         pages.append({
             "page_sequence": identity["page_sequence"],
             "revision_id": identity["revision_id"],
@@ -89,6 +133,7 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
         "page_count": len(pages),
         "source_page_graph_sha256": graph_sha256,
         "transclusion_input_candidate_sha256": preflight["transclusion_input_candidate_sha256"],
+        **joined.source_free_identity(),
         "pages": pages,
         "handled_nop": sum(p["handled_nop"] for p in pages),
         "handled_heading": sum(p["handled_heading"] for p in pages),
@@ -114,6 +159,9 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
     """Strict schema prevents evidence inflation or accidentally persisting prose."""
     expected = {"schema_version", "candidate_id", "page_count",
                 "source_page_graph_sha256", "transclusion_input_candidate_sha256",
+                "projected_page_join_profile", "joined_projected_wikitext_sha256",
+                "joined_projected_wikitext_characters_including_spaces",
+                "projected_page_join_seams", "alphabetic_page_edge_seams",
                 "pages", "handled_nop", "handled_heading", "unresolved_invocations",
                 "unclassified_openers", "source_text_committed", "literary_body_sha256",
                 "corpus_threshold_verified", "historical_render_equivalence_proven",
@@ -134,6 +182,9 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
         report["page_count"] != len(graph["pages"])):
         raise ValueError("frozen source identity mismatch")
     validate_shapes(shapes, graph, preflight)
+    if (report["projected_page_join_profile"] != ProjectedPageJoin.PROFILE or
+        not HEX.fullmatch(str(report["joined_projected_wikitext_sha256"]))):
+        raise ValueError("unrecognized projected Page join identity")
     pages = report["pages"]
     if not isinstance(pages, list) or len(pages) != len(graph["pages"]):
         raise ValueError("incomplete Page projection")
@@ -155,6 +206,19 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
         if (row["handled_nop"] + row["handled_heading"] + row["unresolved_invocations"] !=
                 len(shape["invocations"]) or row["unclassified_openers"] != shape["unclassified_openers"]):
             raise ValueError("projection versus pinned shape count drift")
+    expected_join_characters = (
+        sum(row["projected_wikitext_characters_including_spaces"] for row in pages)
+        + len(pages) - 1
+    )
+    if (type(report["joined_projected_wikitext_characters_including_spaces"]) is not int or
+        report["joined_projected_wikitext_characters_including_spaces"] != expected_join_characters):
+        raise ValueError("projected Page join character count mismatch")
+    if (type(report["projected_page_join_seams"]) is not int or
+        report["projected_page_join_seams"] != len(pages) - 1):
+        raise ValueError("projected Page seam count mismatch")
+    if (type(report["alphabetic_page_edge_seams"]) is not int or
+        not 0 <= report["alphabetic_page_edge_seams"] <= report["projected_page_join_seams"]):
+        raise ValueError("invalid alphabetic Page edge counter")
     if any(report[k] != counters[k] for k in counters):
         raise ValueError("projection total mismatch")
     if (report["handled_nop"] > 28 or report["handled_heading"] > 30 or

@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 399
+STATE_REVISION: 400
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-03
-LAST_RESULT: PR #399 merged in master at 8fec2c27a3652ca1b6a4afe8710f2fc421ec83ec (Reader README front door). Current PR candidate adds a conservative, source-free Trusov 1775 standalone-template projection on the 150 frozen Page revisions.
-LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 64 classified template invocations on 34 Pages are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
+LAST_RESULT: PR #400 merged in master at 54c754e24d5eecff2bddd54000e6c7d47ff7bfff (58/64 provisional template projections). Current candidate binds a synthetic-LF projected Page-join identity and seam-risk counter without claiming a literary body.
+LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 58/64 provisionally handled template invocations (28 nop, 30 heading; 4 ВАР plus 2 dynamic unresolved) are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-1775-TEMPLATE-PROJECTION
-ISSUE: reduce the unresolved Trusov Page template frontier without inventing historical rendering or publishing book text
+UNIT_ID: SCRIP-TRUSOV-1775-PROJECTED-PAGE-JOIN
+ISSUE: identify the complete synthetic-LF join of provisionally projected Pages without publishing book prose or claiming historical Page-boundary rules
 STATUS: PR_CANDIDATE; EXACT_150_PAGE_CI_PENDING; LOCAL_FULL_REPO_NOT_RUN; LITERARY_BODY_NOT_RUN
-BRANCH: scrip-trusov-standalone-template-projection
-BASE: 8fec2c27a3652ca1b6a4afe8710f2fc421ec83ec
+BRANCH: scrip-trusov-projected-page-join
+BASE: 54c754e24d5eecff2bddd54000e6c7d47ff7bfff
 
-ACCEPTANCE: Reuse one identity-verified MediaWiki Page fetch to recompute accepted preflight and shape receipts and emit a source-free per-Page projection ledger. Only standalone no-argument nop and flat two-argument heading are tentatively projected; all other templates remain counted, unresolved and unmodified. Negative tests reject source-content leakage, false body/parity claims and identity drift. The result is explicitly provisional wikitext, not a licensed/frozen literary body or evidence of >=300k characters; no new Reader card or M2 advancement.
+ACCEPTANCE: Reuse the accepted single-pass exact-source Page fetch to produce a streaming SHA-256 and character count for the one-LF-between-projected-Pages candidate, exactly 149 seam slots and a source-free alphabetic-edge risk count. Keep per-Page identities and original preflight/template-shape receipts unchanged; negative tests reject tampering, source prose and unsupported scientific claims. This synthetic join is NOT a rendered literary body, printed edition, >=300k corpus gate or M2 evidence.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: add a second independently measured Russian Robinson Crusoe translati
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Reduce Trusov 1775 template frontier and freeze the first narrative | Verified complete normalized literary SHA-256, page join, VAR/parser semantics and >=300k gate | Provisional nop/heading projection CI is pending; 4 VAR and 2 dynamic/parser calls, historical rendering, literary body and print identity still unresolved |
+| P1 | Reduce Trusov 1775 template frontier and freeze the first narrative | Verified complete normalized literary SHA-256, historically justified page joins, VAR/parser semantics and >=300k gate | 58/64 template calls provisionally handled; proposed synthetic-LF join is only a diagnostic identity; 4 ВАР and 2 parser calls plus historical/print equivalence remain unresolved |
 | P2 | Run Trusov 29 metrics and show an honest Reader translation pair | Distinct translator/edition, source-frozen body, diagnostic deltas and historical/French intermediary caveats | Requires accepted first narrative and a complete literary body |
 | P3 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Native data availability; no silent noun/cardinal inference |
 | P4 | Verify branch-root Reader desktop/mobile and live Pages | HTTP readback, layout/focus/screenshot evidence and clear visual gate outcome | Browser HTTP navigation historically blocked; no unverified publication claim |

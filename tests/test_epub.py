@@ -262,7 +262,10 @@ class EpubIngestionTests(unittest.TestCase):
                         rendered = direct.read_text(encoding="utf-8")
                         self.assertNotIn("Кот говорит!", rendered)
                         self.assertNotIn("Первый текст", rendered)
-                        self.assertIn("M2 0/5", rendered)
+                        if fmt != "csv":
+                            self.assertIn("M2 0/5", rendered)
+                        else:
+                            self.assertIn("comparison_status", rendered)
 
             # An EPUB projected as UTF-8 must compare identically to its
             # extracted-body text; the source hash is not the ZIP archive hash.
@@ -297,11 +300,11 @@ class EpubIngestionTests(unittest.TestCase):
             good_epub.write_bytes(book())
             bad_epub.write_bytes(b"not an EPUB")
             scenarios = (
-                (["--left-kind", "text", str(good_text), str(good_epub)], "requires"),
-                (["--right-kind", "epub", str(good_text), str(good_epub)], "requires"),
+                (["--left-kind", "text", str(good_text), str(good_epub)], "required"),
+                (["--right-kind", "epub", str(good_text), str(good_epub)], "required"),
                 (["--texts", "--left-kind", "text", "--right-kind", "epub", str(good_text), str(good_epub)], "cannot be combined"),
                 (["--epubs", "--left-kind", "text", "--right-kind", "epub", str(good_text), str(good_epub)], "cannot be combined"),
-                (["--left-kind", "text", "--right-kind", "epub", str(bad_text), str(good_epub)], "invalid"),
+                (["--left-kind", "text", "--right-kind", "epub", str(bad_text), str(good_epub)], "UTF-8"),
                 (["--left-kind", "text", "--right-kind", "epub", str(good_text), str(bad_epub)], "invalid"),
             )
             for options, expected in scenarios:

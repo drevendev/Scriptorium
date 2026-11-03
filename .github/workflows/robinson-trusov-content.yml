@@ -86,11 +86,10 @@ jobs:
             sum(p["projected_wikitext_characters_including_spaces"] for p in projection["pages"]) + 149
           )
           from scriptorium.robinson_trusov_projection import VAR_PREVIEW_PROFILE
-          from collections import Counter
           assert projection["var_preview_profile"] == VAR_PREVIEW_PROFILE
           assert projection["flat_var_preview_count"] == sum(p["flat_var_preview_count"] for p in projection["pages"])
-          assert 0 <= projection["flat_var_preview_count"] <= shapes["literal_template_counts"]["ВАР"]
-          assert projection["unresolved_invocations"] >= shapes["literal_template_counts"]["ВАР"]
+          assert 0 <= projection["flat_var_preview_count"] <= summary["literal_template_counts"]["ВАР"]
+          assert projection["unresolved_invocations"] >= summary["literal_template_counts"]["ВАР"]
           assert len(projection["joined_pre_reform_var_preview_sha256"]) == 64
           assert len(projection["joined_modern_var_preview_sha256"]) == 64
           assert projection["literary_body_sha256"] is None

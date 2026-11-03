@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 400
+STATE_REVISION: 402
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-03
-LAST_RESULT: PR #400 merged in master at 54c754e24d5eecff2bddd54000e6c7d47ff7bfff (58/64 provisional template projections). Current candidate binds a synthetic-LF projected Page-join identity and seam-risk counter without claiming a literary body.
+LAST_RESULT: PR #401 merged in master at f757780b6eb8147ece55c436db76174de62c01b0 (source-free synthetic Page join and 149 seam slots). Current candidate hardens transient MediaWiki readback after a real CI provider-response failure; no literary-body claim.
 LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 58/64 provisionally handled template invocations (28 nop, 30 heading; 4 ВАР plus 2 dynamic unresolved) are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-1775-PROJECTED-PAGE-JOIN
-ISSUE: identify the complete synthetic-LF join of provisionally projected Pages without publishing book prose or claiming historical Page-boundary rules
-STATUS: PR_CANDIDATE; EXACT_150_PAGE_CI_PENDING; LOCAL_FULL_REPO_NOT_RUN; LITERARY_BODY_NOT_RUN
-BRANCH: scrip-trusov-projected-page-join
-BASE: 54c754e24d5eecff2bddd54000e6c7d47ff7bfff
+UNIT_ID: SCRIP-QA-MEDIAWIKI-TRANSIENT-READBACK
+ISSUE: bound transient Wikimedia API maxlag/429/rate-limit retry without masking exact historical source or checksum failures
+STATUS: PR_CANDIDATE; FULL_CI_PENDING; LOCAL_FULL_REPO_NOT_RUN; LITERARY_BODY_NOT_RUN
+BRANCH: scrip-mediawiki-read-retry-20261103
+BASE: f757780b6eb8147ece55c436db76174de62c01b0
 
-ACCEPTANCE: Reuse the accepted single-pass exact-source Page fetch to produce a streaming SHA-256 and character count for the one-LF-between-projected-Pages candidate, exactly 149 seam slots and a source-free alphabetic-edge risk count. Keep per-Page identities and original preflight/template-shape receipts unchanged; negative tests reject tampering, source prose and unsupported scientific claims. This synthetic join is NOT a rendered literary body, printed edition, >=300k corpus gate or M2 evidence.
+ACCEPTANCE: Read-only API calls set maxlag=5 and retry only explicit maxlag/ratelimited or HTTP 429/503 with bounded Retry-After; 503 without server delay, unknown API errors, invalid responses and source-identity drift fail closed. Regression tests prove delays, caps, no silent successes; all existing pinned oldid/sha invariants remain unchanged.
 
 ## Next user-visible milestone and compact queue
 
@@ -67,5 +67,6 @@ own manifest gates. Short excerpts/fixtures do not count as corpus admission.
 - #265: default-branch rules prevent deletion/non-fast-forward and require PRs, with zero required approvals in the read ruleset. Connector identity has push/triage, not admin. No unsupported deletion/settings mutation or ref bypass.
 - #285 Pages: #360 is now merged into master. Live HTTP and desktop/mobile visual verification remain blocked/unverified despite earlier successful root deployments. Do not infer current LIVE_VERIFIED from CI.
 - #284 licensing: do not infer a code/data license or publish externally before the rights gate is resolved.
+- MediaWiki transient-readback candidate: the earlier Klim Samgin exact-source CI failed once with `MediaWiki response missing query` and a fresh rerun succeeded. The response body was not retained, so its precise cause is UNKNOWN; retry only explicit server-transient indicators, preserve exact revision verification and fail closed on all other responses.
 - Local checkout: Git DNS failed; exact source blobs were recovered and verified for actual local tests. Hosted full-repository CI supplies complete integrated execution evidence, not the limited local closure.
 - Browser HTTP navigation returned ERR_BLOCKED_BY_ADMINISTRATOR. Current visual changes are VISUAL_NOT_VERIFIED; structural tests are not live browser acceptance. Continue other executable work without bypassing the restriction.

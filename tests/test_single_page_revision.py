@@ -1,7 +1,14 @@
+import io
+import json
 import unittest
+from unittest.mock import patch
+from urllib.error import HTTPError
+from urllib.parse import parse_qs, urlsplit
 
 from scriptorium.single_page_revision import (
     MANIFEST_VERSION,
+    API_URL,
+    _api_query,
     build_manifest,
     fetch_pinned_revision,
     replay_manifest,
@@ -35,6 +42,85 @@ def _payload(*, title=TITLE, revision_id=REVISION_ID, content="Тестовый 
 
 
 class SinglePageRevisionTests(unittest.TestCase):
+
+    def test_transport_retries_only_explicit_transient_api_errors(self):
+        class Reply(io.BytesIO):
+            def __init__(self, body, retry_after=None):
+                super().__init__(json.dumps(body).encode("utf-8"))
+                self.headers = {"Retry-After": retry_after} if retry_after is not None else {}
+
+        good = _payload()
+        with patch("scriptorium.single_page_revision.urlopen",
+                   side_effect=[Reply({"error": {"code": "maxlag"}}, "7"), Reply(good)]) as open_url, \
+             patch("scriptorium.single_page_revision.time.sleep") as sleep:
+            self.assertEqual(_api_query({"action": "query", "revids": str(REVISION_ID)}), good)
+            self.assertEqual(open_url.call_count, 2)
+            self.assertEqual(sleep.call_args.args, (7,))
+            url = open_url.call_args.args[0].full_url
+            self.assertEqual(parse_qs(urlsplit(url).query)["maxlag"], ["5"])
+            self.assertEqual(parse_qs(urlsplit(url).query)["revids"], [str(REVISION_ID)])
+
+        with patch("scriptorium.single_page_revision.urlopen",
+                   side_effect=[Reply({"error": {"code": "ratelimited"}}), Reply(good)]) as open_url, \
+             patch("scriptorium.single_page_revision.time.sleep") as sleep:
+            self.assertEqual(_api_query({"action": "query"}), good)
+            self.assertEqual(open_url.call_count, 2)
+            sleep.assert_called_once_with(5)
+
+    def test_transport_retries_429_but_does_not_guess_on_unmarked_503(self):
+        class Reply(io.BytesIO):
+            def __init__(self, body):
+                super().__init__(json.dumps(body).encode("utf-8"))
+                self.headers = {}
+
+        limited = HTTPError(API_URL, 429, "Too Many Requests", {"Retry-After": "8"}, None)
+        with patch("scriptorium.single_page_revision.urlopen",
+                   side_effect=[limited, Reply(_payload())]) as open_url, \
+             patch("scriptorium.single_page_revision.time.sleep") as sleep:
+            self.assertEqual(_api_query({"action": "query"}), _payload())
+            self.assertEqual(open_url.call_count, 2)
+            sleep.assert_called_once_with(8)
+
+        cache_timeout = HTTPError(API_URL, 503, "Service Unavailable", {}, None)
+        with patch("scriptorium.single_page_revision.urlopen", side_effect=cache_timeout) as open_url, \
+             patch("scriptorium.single_page_revision.time.sleep") as sleep:
+            with self.assertRaises(HTTPError):
+                _api_query({"action": "query"})
+            self.assertEqual(open_url.call_count, 1)
+            sleep.assert_not_called()
+
+    def test_transport_fails_closed_after_bounded_retries_and_bad_responses(self):
+        class Reply(io.BytesIO):
+            def __init__(self, body, retry_after=None):
+                super().__init__(json.dumps(body).encode("utf-8"))
+                self.headers = {"Retry-After": retry_after} if retry_after else {}
+
+        with patch("scriptorium.single_page_revision.urlopen",
+                   side_effect=[Reply({"error": {"code": "maxlag"}}) for _ in range(3)]) as open_url, \
+             patch("scriptorium.single_page_revision.time.sleep") as sleep:
+            with self.assertRaisesRegex(RuntimeError, "after three attempts"):
+                _api_query({"action": "query"})
+            self.assertEqual(open_url.call_count, 3)
+            self.assertEqual([call.args[0] for call in sleep.call_args_list], [5, 10])
+
+        with patch("scriptorium.single_page_revision.urlopen",
+                   return_value=Reply({"error": {"code": "maxlag"}}, "120")) as open_url, \
+             patch("scriptorium.single_page_revision.time.sleep") as sleep:
+            with self.assertRaisesRegex(RuntimeError, "exceeds bounded capture"):
+                _api_query({"action": "query"})
+            self.assertEqual(open_url.call_count, 1)
+            sleep.assert_not_called()
+
+        for bad in ({"error": {"code": "badvalue"}}, {"unrelated": "no query"}):
+            with self.subTest(bad=bad):
+                with patch("scriptorium.single_page_revision.urlopen",
+                           return_value=Reply(bad)) as open_url, \
+                     patch("scriptorium.single_page_revision.time.sleep") as sleep:
+                    with self.assertRaisesRegex(ValueError, "missing query"):
+                        fetch_pinned_revision(title=TITLE, revision_id=REVISION_ID, query=_api_query)
+                    self.assertEqual(open_url.call_count, 1)
+                    sleep.assert_not_called()
+
     def test_fetch_pinned_revision_returns_source_free_identity(self):
         observed = fetch_pinned_revision(
             title=TITLE,

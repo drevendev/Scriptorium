@@ -7,12 +7,12 @@ const root=path.resolve(__dirname,"..");
 const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
 const js=fs.readFileSync(path.join(root,"assets/pages-reader.js"),"utf8");
 const db=JSON.parse(fs.readFileSync(path.join(root,"assets/evidence-snapshot.json"),"utf8"));
-const ids=JSON.parse(js.match(/  const pairedIds = (\\[[\\s\\S]*?\\]);/)[1]);
-const names=JSON.parse(js.match(/  const names = (\\{[\\s\\S]*?\\});\\n  const el =/)[1]);
-const metrics=JSON.parse(js.match(/  const metrics = (\\{[\\s\\S]*?\\});\\n  const names =/)[1]);
-const tbody=html.match(/<tbody id="pair-rows">([\\s\\S]*?)<\\/tbody>/);
+const ids=JSON.parse(js.match(/  const pairedIds = (\[[\s\S]*?\]);/)[1]);
+const names=JSON.parse(js.match(/  const names = (\{[\s\S]*?\});\n  const el =/)[1]);
+const metrics=JSON.parse(js.match(/  const metrics = (\{[\s\S]*?\});\n  const names =/)[1]);
+const tbody=html.match(/<tbody id="pair-rows">([\s\S]*?)<\/tbody>/);
 assert.ok(tbody,"Default paired comparison must remain available without scripts");
-const rows=[...tbody[1].matchAll(/<tr data-static-metric="([^"]+)"><th scope="row">([^<]+)<\\/th><td>([^<]+)<\\/td><td>([^<]+)<\\/td><td>([^<]+)<\\/td><td>([^<]+)<\\/td><\\/tr>/g)];
+const rows=[...tbody[1].matchAll(/<tr data-static-metric="([^"]+)"><th scope="row">([^<]+)<\/th><td>([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><\/tr>/g)];
 assert.equal(rows.length,ids.length,"All eligible pair metrics must be rendered statically");
 assert.equal((tbody[1].match(/<tr /g)||[]).length,rows.length,"No unverified static rows");
 const left=db.books.find(b=>b.key==="anna"&&b.text_status==="measured");
@@ -37,5 +37,5 @@ for (let i=0;i<ids.length;i++) {
 }
 assert.equal(names["fantlab.punctuation.question.per_1000_words"],"Вопросительные знаки");
 assert.match(html,/Сопоставление описательное/);
-assert.match(html,/M2: 0\\/5/);
+assert.match(html,/M2: 0\/5/);
 console.log("Static paired comparison: nine exact measured rows, units and signed deltas PASS");

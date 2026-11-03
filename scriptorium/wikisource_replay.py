@@ -33,7 +33,6 @@ def fetch_pinned_chapter_revisions(
                 "revids": "|".join(str(value) for value in requested_ids),
                 "rvprop": "ids|timestamp|sha1|content",
                 "rvslots": "main",
-                "redirects": "0",
             }
         )
         query_obj = payload.get("query")

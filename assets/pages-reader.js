@@ -914,6 +914,19 @@
       : "Сопоставляются две отдельные русскоязычные редакции. Разница не доказывает влияние автора или совпадение с входом FantLab.";
   }
 
+  // Only paired measured values receive a signed, unit-aware chart delta.
+  // Tiny nonzero differences must never be displayed as exact zero.
+  function pairDeltaDescription(row) {
+    const difference=row.right-row.left;
+    const magnitude=Math.abs(difference);
+    const signedValue=magnitude>0 && magnitude<0.001
+      ? (difference>0?"положительная":"отрицательная")+" (менее 0,001)"
+      : (difference>0?"+":difference<0?"−":"")+pretty(magnitude,3);
+    const differenceUnit=unit(row.id)==="%"?"п.п.":unit(row.id);
+    return "Δ (правая − левая): "+signedValue+" "+differenceUnit+
+      " — диагностическая разница редакций, не эффект автора или переводчика.";
+  }
+
   function updatePair() {
     pairExportButton.disabled=true;
     pairCsvButton.disabled=true;
@@ -967,6 +980,7 @@
       insertText(graph,"p","Эта метрика недоступна хотя бы для одного текста. Подмена нулём запрещена.");
     } else {
       insertText(graph,"h3",label(curr.id)+" · "+unit(curr.id));
+      insertText(graph,"p",pairDeltaDescription(curr),"pair-delta");
       const max=Math.max(curr.left,curr.right);
       const items=[
         {label:a.display_title,value:curr.left,tone:"a"},

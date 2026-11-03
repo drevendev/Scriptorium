@@ -13,6 +13,7 @@ from pathlib import Path
 import re
 from typing import Callable, Mapping, Sequence
 
+from .mediawiki_template_invocation import _matching_brace_end
 from .robinson_trusov_pages import verify_frozen_graph
 from .robinson_trusov_template_shapes import capture_shapes, invocation_shapes, validate_shapes
 from .single_page_revision import _api_query
@@ -20,6 +21,9 @@ from .single_page_revision import _api_query
 SCHEMA = "scriptorium-trusov-standalone-projection-v2"
 VAR_PREVIEW_PROFILE = "flat_two_argument_VAR_orthography_branch_only_inferred_v1"
 VAR_CALL = re.compile(r"\{\{ВАР\|([^{}|\r\n]*)\|([^{}|\r\n]*)\}\}")
+VAR_START = re.compile(r"(?<!\{)\{\{ВАР(?=[|}])")
+VAR_REFUSAL_KEYS = ("multiline", "multiple_templates_on_line",
+                    "non_plain_branch", "unsupported_shape")
 HEX = re.compile(r"[a-f0-9]{64}\Z")
 STYLE = re.compile(r"[A-Za-z0-9.% -]{1,20}\Z")
 
@@ -82,7 +86,9 @@ def preview_var_orthographies(projected: str) -> tuple[str, str, int]:
     modern: list[str] = []
     accepted = 0
     for line in projected.splitlines(keepends=True):
-        if line.count("{{") != 1 or line.count("}}") != 1 or "{{{" in line:
+        if (line.count("{{") != 1 or line.count("}}") != 1 or
+                "{{{" in line or "<!--" in line or "-->" in line or
+                "[[" in line or "]]" in line):
             historical.append(line)
             modern.append(line)
             continue
@@ -102,6 +108,41 @@ def preview_var_orthographies(projected: str) -> tuple[str, str, int]:
         modern.append(line[:match.start()] + after + line[match.end():])
         accepted += 1
     return "".join(historical), "".join(modern), accepted
+
+
+def var_preview_refusal_reasons(projected: str) -> dict[str, int]:
+    """Source-free partition of pinned VAR calls that cannot be previewed.
+
+    This uses the same flat-call acceptance as preview_var_orthographies;
+    neither invocation bodies nor neighboring prose leave transient memory.
+    """
+    if not isinstance(projected, str):
+        raise TypeError("VAR preview input must be text")
+    reasons = {key: 0 for key in VAR_REFUSAL_KEYS}
+    for match in VAR_START.finditer(projected):
+        start = match.start()
+        end = _matching_brace_end(projected, start)
+        literal = projected[start:end]
+        if "\n" in literal or "\r" in literal:
+            reasons["multiline"] += 1
+            continue
+        flat = VAR_CALL.fullmatch(literal)
+        if flat is None:
+            reasons["unsupported_shape"] += 1
+            continue
+        line_start = projected.rfind("\n", 0, start) + 1
+        line_end = projected.find("\n", end)
+        line = projected[line_start:] if line_end < 0 else projected[line_start:line_end]
+        if (line.count("{{") != 1 or line.count("}}") != 1 or
+                "{{{" in line):
+            reasons["multiple_templates_on_line"] += 1
+            continue
+        if (any(markup in line for markup in ("<!--", "-->", "[[", "]]")) or
+                not all(branch.strip() and branch.isprintable() and
+                        not any(ch in branch for ch in "<>[]=")
+                        for branch in flat.groups())):
+            reasons["non_plain_branch"] += 1
+    return reasons
 
 
 def project_page(candidate: str) -> tuple[str, int, int, int, int]:
@@ -157,6 +198,7 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
         projected, nop, heading, unresolved, residual = project_page(candidate)
         joined.add(projected)
         historical, modern, var_count = preview_var_orthographies(projected)
+        var_refusals = var_preview_refusal_reasons(projected)
         pre_reform_preview.add(historical)
         modern_preview.add(modern)
         pages.append({
@@ -166,6 +208,7 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
             "projected_wikitext_characters_including_spaces": len(projected),
             "handled_nop": nop, "handled_heading": heading,
             "flat_var_preview_count": var_count,
+            "var_preview_refusal_reasons": var_refusals,
             "pre_reform_var_preview_sha256": sha256(historical.encode("utf-8")).hexdigest(),
             "modern_var_preview_sha256": sha256(modern.encode("utf-8")).hexdigest(),
             "unresolved_invocations": unresolved,
@@ -190,6 +233,10 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
             modern_preview.source_free_identity()["joined_projected_wikitext_sha256"]
         ),
         "flat_var_preview_count": sum(p["flat_var_preview_count"] for p in pages),
+        "var_preview_refusal_reasons": {
+            key: sum(p["var_preview_refusal_reasons"][key] for p in pages)
+            for key in VAR_REFUSAL_KEYS
+        },
         "pages": pages,
         "handled_nop": sum(p["handled_nop"] for p in pages),
         "handled_heading": sum(p["handled_heading"] for p in pages),
@@ -220,6 +267,7 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
                 "projected_page_join_seams", "alphabetic_page_edge_seams",
                 "var_preview_profile", "joined_pre_reform_var_preview_sha256",
                 "joined_modern_var_preview_sha256", "flat_var_preview_count",
+                "var_preview_refusal_reasons",
                 "pages", "handled_nop", "handled_heading", "unresolved_invocations",
                 "unclassified_openers", "source_text_committed", "literary_body_sha256",
                 "corpus_threshold_verified", "historical_render_equivalence_proven",
@@ -254,7 +302,8 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
     for row, identity, shape in zip(pages, graph["pages"], shapes["pages"]):
         if set(row) != {"page_sequence", "revision_id", "projected_wikitext_sha256",
                         "projected_wikitext_characters_including_spaces",
-                        "flat_var_preview_count", "pre_reform_var_preview_sha256",
+                        "flat_var_preview_count", "var_preview_refusal_reasons",
+                        "pre_reform_var_preview_sha256",
                         "modern_var_preview_sha256", *counters}:
             raise ValueError("unrecognized Page projection field / prose leakage")
         if (row["page_sequence"], row["revision_id"]) != (identity["page_sequence"], identity["revision_id"]):
@@ -265,6 +314,11 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
             raise ValueError("invalid projection character count")
         var_count = row["flat_var_preview_count"]
         source_vars = sum(call["template_title"] == "ВАР" for call in shape["invocations"])
+        reasons = row["var_preview_refusal_reasons"]
+        if (not isinstance(reasons, dict) or set(reasons) != set(VAR_REFUSAL_KEYS) or
+                any(type(v) is not int or v < 0 for v in reasons.values()) or
+                var_count + sum(reasons.values()) != source_vars):
+            raise ValueError("VAR preview refusal partition mismatch")
         if type(var_count) is not int or not 0 <= var_count <= source_vars:
             raise ValueError("VAR preview count exceeds pinned source calls")
         if any(not HEX.fullmatch(str(row[key])) for key in
@@ -290,6 +344,12 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
     if (type(report["alphabetic_page_edge_seams"]) is not int or
         not 0 <= report["alphabetic_page_edge_seams"] <= report["projected_page_join_seams"]):
         raise ValueError("invalid alphabetic Page edge counter")
+    expected_reasons = {
+        key: sum(p["var_preview_refusal_reasons"][key] for p in pages)
+        for key in VAR_REFUSAL_KEYS
+    }
+    if report["var_preview_refusal_reasons"] != expected_reasons:
+        raise ValueError("VAR preview refusal aggregate mismatch")
     expected_vars = sum(p["flat_var_preview_count"] for p in pages)
     if (type(report["flat_var_preview_count"]) is not int or
         report["flat_var_preview_count"] != expected_vars or expected_vars > 4):
@@ -327,7 +387,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"Pinned Trusov 150-page provisional projection: {report['handled_nop']} nop, "
           f"{report['handled_heading']} plain heading, {report['unresolved_invocations']} "
           f"unresolved; {report['flat_var_preview_count']} VAR branch previews "
-          f"(historical rendering NOT_VERIFIED); literary body NOT_RUN")
+          f"(historical rendering NOT_VERIFIED), refusal reasons "
+          f"{report['var_preview_refusal_reasons']}; literary body NOT_RUN")
     return 0
 
 

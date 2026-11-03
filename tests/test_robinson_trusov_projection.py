@@ -29,7 +29,9 @@ class TrusovProjectionTests(unittest.TestCase):
                   "{{ВАР||new}}\n"
                   "{{ВАР|old|[link]}}\n"
                   "{{ВАР|old|new}} and {{nop}}\n"
-                  "{{#if:yes|{{ВАР|before|after}}|other}}\n")
+                  "{{#if:yes|{{ВАР|before|after}}|other}}\n"
+                  "{{outer\n|{{ВАР|a|b}}\n}}\n"
+                  "<!--\n{{ВАР|hidden|visible}}\n-->\n")
         old, new, flat, multiline = preview_var_orthographies(unsafe)
         self.assertEqual((old, new, flat, multiline), (unsafe, unsafe, 0, 0))
 
@@ -42,12 +44,18 @@ class TrusovProjectionTests(unittest.TestCase):
         ))
         self.assertEqual(sum(var_preview_refusal_reasons(source).values()), 0)
         self.assertEqual(project_page(source)[0], source)
+        crlf = "A {{ВАР|old\r\nword|new\r\nword}} Z\r\n"
+        self.assertEqual(preview_var_orthographies(crlf), (
+            "A old\r\nword Z\r\n", "A new\r\nword Z\r\n", 0, 1,
+        ))
 
     def test_var_preview_bounded_multiline_refusal(self):
         source = "{{ВАР|" + "\n".join(["text"] * 14) + "|modern}}\n"
         old, new, flat, multiline = preview_var_orthographies(source)
         self.assertEqual((old, new, flat, multiline), (source, source, 0, 0))
         self.assertEqual(var_preview_refusal_reasons(source)["multiline"], 1)
+        with self.assertRaisesRegex(ValueError, "unclosed"):
+            preview_var_orthographies("{{ВАР|old|new")
 
     def test_var_preview_refusal_categories_do_not_expose_source(self):
         source = ("{{ВАР|дѣло|дело}}\n"

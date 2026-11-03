@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 412
+STATE_REVISION: 413
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-03
-LAST_RESULT: #412 merged at 34273bea63e32d954b7673579d80de9d1b382c7c; #411 closed. Explicit mixed TXT/EPUB/JSON comparisons are available in the installed CLI with local-only inputs. Next independent Reader slice adds signed, unit-labelled pair deltas beside already measured charts; source/parity gates unchanged.
+LAST_RESULT: #413 merged at 85200776cee4eede7919a5b9aff06adbc02493ef, adding signed unit-aware chart deltas. This focused #283 Reader follow-up prevents tiny nonzero paired table deltas displaying as zero; the actual source observations and JSON/CSV/Markdown exports remain unchanged. Independent later acceptance and exact-head CI still required.
 LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 58/64 provisionally handled template invocations (28 nop, 30 heading; 4 ВАР plus 2 dynamic unresolved) are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-PAIR-SIGNED-DELTA
+UNIT_ID: SCRIP-SITE-PAIR-TABLE-PRECISION
 ISSUE: #283 — improve Reader paired-chart quantitative clarity
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_NOT_RUN; LATER_ACCEPTANCE_REQUIRED; LIVE_PAGES_UNCHANGED
-BRANCH: scrip-reader-pair-delta-callout
-BASE: 34273bea63e32d954b7673579d80de9d1b382c7c
+BRANCH: scrip-reader-pair-table-precision
+BASE: 85200776cee4eede7919a5b9aff06adbc02493ef
 
-ACCEPTANCE: A shared measured pair displays a visible signed right-minus-left chart delta in the metric's unit (percentage points for percentages). Missing metrics display no fabricated delta; swapping books reverses its sign. Under-0.001 nonzero differences must not be rounded to zero. Retain accessible paired table, static fallback and all source/provenance caveats.
+ACCEPTANCE: Interactive paired table must distinguish signed differences below 0.001 from exact zero, preserve missing-value markers, invert signs when books swap, and leave machine-readable exact differences untouched. Keep the merged chart label, source-free publication, provenance caveats and static fallback.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: add a second independently measured Russian Robinson Crusoe translati
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 signed, unit-labelled pair deltas in branch-root Reader | Positive, negative, missing, zero and tiny-delta regressions; exact-head Pages build and later acceptance | Existing 11 measured Russian editions; no FantLab parity claim |
+| P1 | #283 tiny pair-table delta precision following merged #413 | Signed positive/negative <0.001, exact zero and unavailable; exact-head Reader checks and later acceptance | Real 11-book catalogue; no new measurements or parity claims |
 | P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct source, run 29 metrics, show truthful same-work translator pair | Trusov literary body and historical renderer still unverified |
 | P3 | #408 White Guard exact-oldid 20-chapter replay | Provider-frozen immutable 11/9 source manifest; pinned-only CI | Requires an independently verified live provider bootstrap |
 | P4 | #282/#281 AOT/FantLab compatibility and metric readiness | New POS-N discrimination or source-matched benchmark delta | Native runtime/reference identity unresolved |

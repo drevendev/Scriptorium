@@ -234,7 +234,7 @@ alphabetic seam count remain **NOT_RUN**. Remaining four ВАР and two dynamic
 template calls still require historically bound semantics; source-bound
 first-narrative selection and print collation remain open. M2 remains **0/5**.
 
-### Explicit orthography-branch preview for flat ВАР (PR candidate)
+### Explicit orthography-branch preview for flat ВАР (merged PR #403)
 
 The [Wikisource ВАР documentation](https://ru.wikisource.org/wiki/Шаблон:ВАР/Документация)
 identifies the **first** positional argument as pre-reform spelling and the
@@ -261,9 +261,29 @@ multiple templates on a line, non-plain branch, unsupported shape).
 Each row checks that previews plus refusals exactly match its pinned
 ВАР invocation count; the diagnostic does not expose any argument values. It never writes prose.
 
-Until the scoped exact-head workflow completes on the 150 pinned
-oldids, the number of previewable ВАР calls is **NOT_RUN** (maximum four).
+Exact-head [CI #41640743857](https://github.com/drevendev/Scriptorium/actions/runs/41640743857)
+confirmed **0/4** single-line eligible previews and **4/4 multiline refusals**
+without drift in pinned oldids, previous shape receipts or projected-page identity.
 A preview is neither verified MediaWiki rendering nor a literary-body
 hash or a corpus admission. Two dynamic/parser calls, Page joins,
 proofreading/orthographic conventions and print collation remain open.
 M2 remains **0/5**.
+
+### Bounded multiline ВАР preview experiment (issue #404, PR candidate)
+
+The next diagnostic extends the two-branch preview to a single flat multiline
+`{{ВАР|first|second}}` invocation in a bounded line span. It preserves anonymous
+argument whitespace exactly, rejects calls above 4,096 characters / 12 LF
+boundaries or with a branch above 2,048 characters, and refuses nested groups,
+named/extra arguments, markup, comments, control characters or neighboring
+template calls. The accepted conservative Page join and unresolved historical
+invocation count remain unchanged. Separate per-page and joined SHA-256 digests,
+flat versus multiline preview counts and residual refusal categories are emitted
+without source text. Acceptance requires exact-head CI replay of all 150 oldids;
+no specific live multiline count is claimed before that replay.
+
+**Scientific limit:** this is a provisional source-free orthography branch
+experiment, not a pinned 2023 MediaWiki renderer, a proven 1775 printed edition,
+a complete first narrative, a size/admission gate, a measured second translation
+or FantLab parity. The two parser/dynamic invocations and Page seam semantics
+remain unresolved; M2 stays **0/5**.

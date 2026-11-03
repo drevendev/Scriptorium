@@ -15,6 +15,10 @@ scriptorium compare first.json second.json --format markdown --output comparison
 scriptorium compare --texts first.txt second.txt --format markdown --output direct.md
 # Compare local EPUB editions directly, without intermediate reports:
 scriptorium compare --epubs edition-a.epub edition-b.epub --format markdown --output editions.md
+# Mix a local UTF-8 translation and an EPUB edition (no intermediate reports):
+scriptorium compare translation.txt edition.epub --left-kind text --right-kind epub --format html --output mixed.html
+# Or compare an EPUB directly with an existing verified-by-you JSON report:
+scriptorium compare edition.epub analysis.json --left-kind epub --right-kind json --format csv --output mixed.csv
 ```
 
 `--texts` reads each selected UTF-8 manuscript as a bounded regular, non-symlink
@@ -37,6 +41,20 @@ them. SHA-256 source fields denote **extracted UTF-8 body bytes**, not ZIP archi
 bytes. Use `epub --provenance-output` for archive and body identity receipts.
 Encrypted, unsafe, malformed, symlinked or unreadable EPUB files fail closed.
 Neither translation authorship nor source-edition/FantLab identity is inferred.
+
+For mixed inputs, `--left-kind` and `--right-kind` explicitly select
+`text` (UTF-8), `epub` (bounded XHTML-spine projection) or `json`
+(validated Scriptorium analysis). **Both** options are required; do not
+guess type from file extensions. They cannot be combined with legacy
+`--texts`/`--epubs` switches. Each side reuses the same analyzer, identity
+and rejection policy as the corresponding single-kind CLI path. For EPUB,
+the comparison source hash is of the **extracted text**, not the ZIP container.
+The generated source-free report is byte-identical to analyzing each side
+into JSON first. No intermediate manuscript text is written; supplied file
+names and error details are not printed in failed comparisons. Keep each
+translation/edition's provenance separately; a hash is not rights or edition
+authentication. All four report formats work, and occupied outputs remain
+create-only.
 
 The Markdown report is a fully offline 29-row table with exact right-minus-left
 values, explicit unavailable/incomparable statuses, source hashes, profile and

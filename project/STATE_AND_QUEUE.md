@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 409
+STATE_REVISION: 411
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-03
-LAST_RESULT: #405 merged at 1a91fb9780019e3e0143ca0eb5ca8f1efbd9a18b; exact 150-oldid CI yielded 0 flat and 0 multiline VAR previews (3 multiline limit, 1 unsupported). #407 merged at 96a33ab82ef07ca2802868549c44dcde9aa76b4f, fixing the revids/redirects API request. #409 now distinguishes bounded refusal reasons and binds each call to a frozen source SHA-1 and invocation digest.
+LAST_RESULT: #410 merged at 040c6c9c14e346377f25ff7997c830f929b89894; #409 closed. Four pinned Trusov VAR calls now have exact-oldid/SHA-1/invocation-digest-bound refusals (3 too_many_line_breaks, 1 unsupported_shape). #411 targets an independent mixed TXT/EPUB/JSON comparison CLI slice; neither parsing diagnosis nor local comparison establishes historical body identity or FantLab parity.
 LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 58/64 provisionally handled template invocations (28 nop, 30 heading; 4 ВАР plus 2 dynamic unresolved) are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-1775-FOUR-VAR-REFUSAL-CLASSIFICATION
-ISSUE: #409 — diagnose four pinned VAR refusals with exact call/source identity
-STATUS: PR_CANDIDATE; EXACT_150_PAGE_CI_PENDING; LOCAL_FULL_REPO_NOT_RUN; LITERARY_BODY_NOT_RUN
-BRANCH: scrip-trusov-var-refusal-classification
-BASE: 96a33ab82ef07ca2802868549c44dcde9aa76b4f
+UNIT_ID: SCRIP-COMPARE-MIXED-LOCAL-INPUTS
+ISSUE: #411 — compare explicit mixed TXT/EPUB/JSON private input pairs
+STATUS: PR_CANDIDATE; EXACT_HEAD_CI_NOT_RUN; LATER_ACCEPTANCE_REQUIRED; LIVE_PAGES_UNCHANGED
+BRANCH: scrip-compare-mixed-local-inputs
+BASE: 040c6c9c14e346377f25ff7997c830f929b89894
 
-ACCEPTANCE: Distinguish call size, LF limit, nesting, unbalanced, extra argument and unsafe branch causes without arguments/prose. Bind four exact calls to frozen page oldids, MediaWiki SHA-1 and invocation SHA-256. Keep existing conservative Page join and branch previews unchanged. Verify synthetic tests and exact oldid CI; 2023 renderer, 1775 print, complete narrative and M2 remain unverified.
+ACCEPTANCE: Explicit independent left/right input kinds, with existing same-kind flags preserved; no extension guessing or source upload. Mixed reports are byte-identical to the two-report pipeline in four export formats. Reject malformed/symlinked inputs, conflicting flags and clobber; preserve raw/extracted-body digest distinction and M2 0/5.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,11 +22,11 @@ Milestone: add a second independently measured Russian Robinson Crusoe translati
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #409 source-identity-bound diagnosis of four real ВАР refusals; select a renderer dependency or a safe changed projection from observed exact-head causes | Four digest-bound decisions and separate size, line-span and structural refusal counts in pinned CI; no false literary-body gate | Historical template semantics and two parser/dynamic calls remain unresolved; next selection depends on actual reasons |
+| P1 | #411 private mixed TXT/EPUB/JSON CLI comparison | Same validated 29 metrics, exact byte-for-byte staged equivalence in JSON/HTML/CSV/Markdown, negative path/privacy tests | Independent of Trusov; require later exact-head checks and review |
 | P2 | Run Trusov 29 metrics and show an honest Reader translation pair | Distinct translator/edition, source-frozen body, diagnostic deltas and historical/French intermediary caveats | Requires accepted first narrative and a complete literary body |
 | P3 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Native data availability; no silent noun/cardinal inference |
 | P4 | Verify branch-root Reader desktop/mobile and live Pages | HTTP readback, layout/focus/screenshot evidence and clear visual gate outcome | Browser HTTP navigation historically blocked; no unverified publication claim |
-| P5 | Keep CLI/Reader source-bound comparison examples reproducible | Local test for private TXT/EPUB comparison and documented output provenance | Independent of historical template resolution |
+| P5 | Historical Trusov VAR semantics and Page seams after #410 | Reconstruct verifiable 2023 template semantics, keep source/body/size gates separate | 3 line-span and 1 shape refusal; 2 dynamic/parser calls unresolved; no arbitrary limit changes |
 
 
 ## Retained evidence and scientific gates

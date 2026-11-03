@@ -542,6 +542,24 @@ small{display:block;font-size:.75rem;font-weight:400;color:#4f635a}details summa
             "<footer><p>No tracking, server, manuscript text or FantLab parity claim.</p></footer></main></body></html>\n")
 
 
+def _load_local_input(path: Path, kind: str) -> dict[str, object]:
+    """Analyze a local manuscript/EPUB or validate a precomputed report.
+
+    Never infer a private file type from its name, write intermediate bodies,
+    or substitute an EPUB container digest for its extracted-body identity.
+    """
+    if kind == "json":
+        return load_report(path)
+    if kind == "text":
+        return build_local_analysis(
+            _read_bounded_regular_file(path, MAX_ANALYSIS_BYTES, "manuscript")
+        )
+    if kind == "epub":
+        body, _ = extract_epub(_read_bounded_regular_file(path, MAX_ARCHIVE_BYTES, "EPUB"))
+        return build_local_analysis(body)
+    raise CompareError("unsupported local input type")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Compare two Reader JSON reports, UTF-8 texts, or EPUB XHTML-spine bodies.")
     parser.add_argument("left", type=Path)
@@ -549,25 +567,29 @@ def main(argv: list[str] | None = None) -> int:
     input_modes = parser.add_mutually_exclusive_group()
     input_modes.add_argument("--texts", action="store_true", help="Read two local UTF-8 manuscripts directly, not analysis JSON")
     input_modes.add_argument("--epubs", action="store_true", help="Read two local unencrypted EPUBs through bounded XHTML-spine extraction")
+    parser.add_argument("--left-kind", choices=("json", "text", "epub"),
+                        help="Explicit left input type for mixed local comparisons (requires --right-kind)")
+    parser.add_argument("--right-kind", choices=("json", "text", "epub"),
+                        help="Explicit right input type for mixed local comparisons (requires --left-kind)")
     parser.add_argument("--format", choices=("json", "html", "csv", "markdown"), default="html")
     parser.add_argument("--title", default="Two private analyses")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
+    if (args.left_kind is None) != (args.right_kind is None):
+        parser.error("both --left-kind and --right-kind are required")
+    if args.left_kind is not None and (args.texts or args.epubs):
+        parser.error("per-side input kinds cannot be combined with --texts or --epubs")
+    if args.left_kind is not None:
+        kinds = (args.left_kind, args.right_kind)
+    elif args.texts:
+        kinds = ("text", "text")
+    elif args.epubs:
+        kinds = ("epub", "epub")
+    else:
+        kinds = ("json", "json")
     try:
-        if args.texts:
-            # Reuse the same deterministic analysis and identity contract as
-            # 'analyze A/B -> compare'; never store or export source prose.
-            left = build_local_analysis(_read_bounded_regular_file(args.left, MAX_ANALYSIS_BYTES, "manuscript"))
-            right = build_local_analysis(_read_bounded_regular_file(args.right, MAX_ANALYSIS_BYTES, "manuscript"))
-        elif args.epubs:
-            # Reuse `epub A/B -> compare` without writing source prose or
-            # intermediate reports. Raw SHA-256 identifies the extracted body,
-            # NOT the EPUB ZIP archive (see `epub --provenance-output`).
-            left_body, _ = extract_epub(_read_bounded_regular_file(args.left, MAX_ARCHIVE_BYTES, "EPUB"))
-            right_body, _ = extract_epub(_read_bounded_regular_file(args.right, MAX_ARCHIVE_BYTES, "EPUB"))
-            left, right = build_local_analysis(left_body), build_local_analysis(right_body)
-        else:
-            left, right = load_report(args.left), load_report(args.right)
+        left = _load_local_input(args.left, kinds[0])
+        right = _load_local_input(args.right, kinds[1])
         comparison = build_comparison(left, right)
         rendered = {"html": lambda: render_html(comparison, title=args.title),
                     "json": lambda: render_json(comparison),
@@ -580,11 +602,13 @@ def main(argv: list[str] | None = None) -> int:
     except FileExistsError:
         parser.error("comparison output already exists; choose another destination")
     except (LocalInputError, CompareError, EpubError):
-        if args.texts:
+        if kinds == ("text", "text"):
             parser.error("invalid or unsupported UTF-8 manuscripts; check the two input files")
-        if args.epubs:
+        if kinds == ("epub", "epub"):
             parser.error("invalid or unsupported EPUB archives; check the two input files")
-        parser.error("invalid or unsupported local analysis JSON; check the two generated reports")
+        if kinds == ("json", "json"):
+            parser.error("invalid or unsupported local analysis JSON; check the two generated reports")
+        parser.error("invalid or unsupported mixed local inputs; check the declared input kinds")
     except UnicodeDecodeError:
         parser.error("manuscripts must be UTF-8")
     except (OSError, UnicodeError, ValueError, TypeError, RecursionError):

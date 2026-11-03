@@ -61,6 +61,17 @@ const unit=id=>id.endsWith("_percent")||id==="fantlab.dialogue.share_percent"?"%
 const label=id=>id;
 const pretty=(n,places=2)=>n.toFixed(places);
 const exact=String;
+const deltaStart=source.indexOf("  function pairDeltaDescription(row) {");
+const deltaEnd=source.indexOf("  function updatePair() {",deltaStart);
+assert(deltaStart>=0&&deltaEnd>deltaStart,"Shipped signed-delta function missing");
+const pairDeltaDescription=new Function("pretty","unit",
+  source.slice(deltaStart,deltaEnd)+"\nreturn pairDeltaDescription;"
+)(pretty,unit);
+assert.match(pairDeltaDescription({id:"fantlab.dialogue.share_percent",left:3,right:3}),/0\.000 п\.п\./);
+assert.match(pairDeltaDescription({id:"fantlab.dialogue.share_percent",left:3,right:3.00000001}),
+  /положительная \(менее 0,001\) п\.п\./);
+assert.match(pairDeltaDescription({id:"fantlab.dialogue.share_percent",left:3.00000001,right:3}),
+  /отрицательная \(менее 0,001\) п\.п\./);
 const leftSelect={value:"anna"},rightSelect={value:"beketova"};
 const pairMetric={value:"fantlab.dialogue.mean_dialogue_sentence_length_chars"};
 const pairExportButton={disabled:true},pairCsvButton={disabled:true},pairMarkdownButton={disabled:true};
@@ -71,9 +82,10 @@ const updatePair=new Function(
   "getBook","updatePairEditionContext","sharedPairRows","pairCoverageRows",
   "document","el","insertText","unit","label","pretty","exact","pairedIds",
   "pairMetric","pairExportButton","pairCsvButton","pairMarkdownButton","leftSelect","rightSelect",
+  "pairDeltaDescription",
   source.slice(viewStart,viewEnd)+"\nreturn updatePair;"
 )(getBook,()=>{},sharedPairRows,pairCoverageRows,document,el,insertText,
-  unit,label,pretty,exact,pairedIds,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,leftSelect,rightSelect);
+  unit,label,pretty,exact,pairedIds,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,leftSelect,rightSelect,pairDeltaDescription);
 updatePair();
 const rendered=slots["pair-rows"].children[0].children;
 assert.equal(rendered.length,9);
@@ -81,6 +93,8 @@ assert.equal(rendered.filter(row=>row.children[2].textContent==="нет данн
 assert.equal(rendered.filter(row=>row.children[3].textContent==="— (нет совместного измерения)").length,2);
 assert.match(slots["pair-status"].textContent,/7 из 9/);
 assert.match(slots["paired-graphic"].children[0].children[0].textContent,/недоступна/);
+assert.equal(slots["paired-graphic"].children[0].children.some(x=>x.className==="pair-delta"),false,
+  "Unavailable metric must not create an invented delta");
 assert.equal(pairExportButton.disabled,false);
 assert.equal(pairCsvButton.disabled,false);
 assert.equal(pairMarkdownButton.disabled,false);
@@ -93,4 +107,15 @@ updatePair();
 assert.equal(slots["pair-rows"].children[0].children.length,9);
 assert.equal(slots["paired-graphic"].children[0].children.filter(x=>x.className==="pair-row").length,2);
 assert.match(slots["pair-status"].textContent,/9 из 9/);
+pairMetric.value="fantlab.dialogue.share_percent";
+updatePair();
+const delta=()=>slots["paired-graphic"].children[0].children.find(x=>x.className==="pair-delta")?.textContent;
+assert.match(delta(),/^Δ \(правая − левая\): \+/);
+assert.match(delta(),/п\.п\./);
+assert.match(delta(),/не эффект автора или переводчика/);
+leftSelect.value="karamazov";
+rightSelect.value="anna";
+updatePair();
+assert.match(delta(),/^Δ \(правая − левая\): −/);
+assert.match(delta(),/п\.п\./);
 console.log("Reader pair coverage: complete/partial, missing/nonfinite, zero, DOM and chart PASS");

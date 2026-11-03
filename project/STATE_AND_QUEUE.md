@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 411
+STATE_REVISION: 412
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-03
-LAST_RESULT: #410 merged at 040c6c9c14e346377f25ff7997c830f929b89894; #409 closed. Four pinned Trusov VAR calls now have exact-oldid/SHA-1/invocation-digest-bound refusals (3 too_many_line_breaks, 1 unsupported_shape). #411 targets an independent mixed TXT/EPUB/JSON comparison CLI slice; neither parsing diagnosis nor local comparison establishes historical body identity or FantLab parity.
+LAST_RESULT: #412 merged at 34273bea63e32d954b7673579d80de9d1b382c7c; #411 closed. Explicit mixed TXT/EPUB/JSON comparisons are available in the installed CLI with local-only inputs. Next independent Reader slice adds signed, unit-labelled pair deltas beside already measured charts; source/parity gates unchanged.
 LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 58/64 provisionally handled template invocations (28 nop, 30 heading; 4 ВАР plus 2 dynamic unresolved) are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-COMPARE-MIXED-LOCAL-INPUTS
-ISSUE: #411 — compare explicit mixed TXT/EPUB/JSON private input pairs
+UNIT_ID: SCRIP-SITE-PAIR-SIGNED-DELTA
+ISSUE: #283 — improve Reader paired-chart quantitative clarity
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_NOT_RUN; LATER_ACCEPTANCE_REQUIRED; LIVE_PAGES_UNCHANGED
-BRANCH: scrip-compare-mixed-local-inputs
-BASE: 040c6c9c14e346377f25ff7997c830f929b89894
+BRANCH: scrip-reader-pair-delta-callout
+BASE: 34273bea63e32d954b7673579d80de9d1b382c7c
 
-ACCEPTANCE: Explicit independent left/right input kinds, with existing same-kind flags preserved; no extension guessing or source upload. Mixed reports are byte-identical to the two-report pipeline in four export formats. Reject malformed/symlinked inputs, conflicting flags and clobber; preserve raw/extracted-body digest distinction and M2 0/5.
+ACCEPTANCE: A shared measured pair displays a visible signed right-minus-left chart delta in the metric's unit (percentage points for percentages). Missing metrics display no fabricated delta; swapping books reverses its sign. Under-0.001 nonzero differences must not be rounded to zero. Retain accessible paired table, static fallback and all source/provenance caveats.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,12 +22,11 @@ Milestone: add a second independently measured Russian Robinson Crusoe translati
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #411 private mixed TXT/EPUB/JSON CLI comparison | Same validated 29 metrics, exact byte-for-byte staged equivalence in JSON/HTML/CSV/Markdown, negative path/privacy tests | Independent of Trusov; require later exact-head checks and review |
-| P2 | Run Trusov 29 metrics and show an honest Reader translation pair | Distinct translator/edition, source-frozen body, diagnostic deltas and historical/French intermediary caveats | Requires accepted first narrative and a complete literary body |
-| P3 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Native data availability; no silent noun/cardinal inference |
-| P4 | Verify branch-root Reader desktop/mobile and live Pages | HTTP readback, layout/focus/screenshot evidence and clear visual gate outcome | Browser HTTP navigation historically blocked; no unverified publication claim |
-| P5 | Historical Trusov VAR semantics and Page seams after #410 | Reconstruct verifiable 2023 template semantics, keep source/body/size gates separate | 3 line-span and 1 shape refusal; 2 dynamic/parser calls unresolved; no arbitrary limit changes |
-
+| P1 | #283 signed, unit-labelled pair deltas in branch-root Reader | Positive, negative, missing, zero and tiny-delta regressions; exact-head Pages build and later acceptance | Existing 11 measured Russian editions; no FantLab parity claim |
+| P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct source, run 29 metrics, show truthful same-work translator pair | Trusov literary body and historical renderer still unverified |
+| P3 | #408 White Guard exact-oldid 20-chapter replay | Provider-frozen immutable 11/9 source manifest; pinned-only CI | Requires an independently verified live provider bootstrap |
+| P4 | #282/#281 AOT/FantLab compatibility and metric readiness | New POS-N discrimination or source-matched benchmark delta | Native runtime/reference identity unresolved |
+| P5 | #285 Reader live Pages, desktop/mobile verification | Live HTTP, keyboard/focus and screenshot evidence | Browser navigation historically blocked; preserve last valid publication |
 
 ## Retained evidence and scientific gates
 

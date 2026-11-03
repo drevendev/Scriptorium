@@ -23,6 +23,10 @@ class PairCoverageTests(unittest.TestCase):
         self.assertIn('m.right===null?"нет данных":exact(m.right)',js)
         self.assertIn('const d=comparable?m.right-m.left:null;',js)
         self.assertIn('const rows=sharedPairRows(a,b);',js)
+        self.assertIn('"pair-delta"',js)
+        self.assertIn("function pairDeltaDescription(row)",js)
+        css=(ROOT/"assets/pages-reader.css").read_text(encoding="utf-8")
+        self.assertIn(".pair-delta {",css)
         self.assertNotIn("innerHTML",js)
 
     @unittest.skipUnless(shutil.which("node"),"Node unavailable: structural tests still run")

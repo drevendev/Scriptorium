@@ -170,10 +170,10 @@ a provider rate limit prevents a new capture; a CI run that does not complete
 is NOT_RUN, not failed scientific parity.
 
 
-### Trusov provisional standalone-template projection (new PR candidate)
+### Trusov provisional standalone-template projection (accepted PR #400)
 
 The accepted exact-source shape audit records **30 heading, 28 nop, 4 ВАР,
-and 2 dynamic/parser invocations** across 150 pinned Pages. The new
+and 2 dynamic/parser invocations** across 150 pinned Pages. The accepted
 scriptorium.robinson_trusov_projection probe reuses **one** historical Page
 fetch to recompute the previously frozen preflight and shape observations and
 produce a third, source-free per-Page ledger (counts, revisions, SHA-256 digests).
@@ -207,9 +207,29 @@ Run one bounded probe (ordinary Wikisource access required; outputs must be new 
       --shapes-output build/repro/trusov-1775.template-shapes.json \
       --output build/repro/trusov-1775.projection.json
 
-The scoped PR workflow checks the two accepted receipts again and validates
-the projection ledger with negative tests. Until exact-head CI completes,
-the number of actually handled invocations is **NOT_RUN**, not a claimed
-58/64 success. The remaining markup and first-narrative boundary still require
-source-bound extraction, normalization and independent scientific acceptance.
-M2 remains **0/5**.
+The [exact-head pinned-source verification](https://github.com/drevendev/Scriptorium/actions/runs/41592937429)
+confirmed **58/64 provisional** template operations on all 150 oldids
+(28 nop, 30 heading; four ВАР and two dynamic/parser calls unresolved).
+The previously accepted preflight and shape receipts were recomputed unchanged.
+Those operations are a **wikitext projection**, not a rendered source or a
+measured book; the first-narrative body and character threshold remain NOT_RUN.
+
+### Source-free joined projection identity (new PR candidate)
+
+The next bounded extraction probe adds an independently versioned
+**one-LF-between-projected-Pages** streaming SHA-256 and character count
+to the same exact-source, single-pass CI run. It also counts the 149 synthetic
+Page seams and source-free *alphabetic-edge* seams where both adjacent Page
+fragments end/start with letters; these indicate potential word-continuation
+review points, **not** verified broken words or an inferred hyphenation rule.
+The full projected wikitext remains **transient**; the retained output contains
+only digests, lengths, counters, pinned revision identities and scientific
+unknown/NOT_RUN flags.
+
+This synthetic join is not a MediaWiki/ProofreadPage rendering, normalized
+literary-body hash, actual ≥300k text measurement, evidence that all chapters
+are present, or print/FantLab edition identity. Until exact-head live CI has
+captured and validated the new fields, the actual joined SHA/count and
+alphabetic seam count remain **NOT_RUN**. Remaining four ВАР and two dynamic
+template calls still require historically bound semantics; source-bound
+first-narrative selection and print collation remain open. M2 remains **0/5**.

@@ -88,9 +88,11 @@ jobs:
           from scriptorium.robinson_trusov_projection import VAR_PREVIEW_PROFILE
           assert projection["var_preview_profile"] == VAR_PREVIEW_PROFILE
           assert projection["flat_var_preview_count"] == sum(p["flat_var_preview_count"] for p in projection["pages"])
-          assert 0 <= projection["flat_var_preview_count"] <= summary["literal_template_counts"]["ВАР"]
+          assert projection["multiline_var_preview_count"] == sum(p["multiline_var_preview_count"] for p in projection["pages"])
+          assert 0 <= projection["flat_var_preview_count"] + projection["multiline_var_preview_count"] <= summary["literal_template_counts"]["ВАР"]
           assert projection["unresolved_invocations"] >= summary["literal_template_counts"]["ВАР"]
-          assert sum(projection["var_preview_refusal_reasons"].values()) + projection["flat_var_preview_count"] == summary["literal_template_counts"]["ВАР"]
+          assert (sum(projection["var_preview_refusal_reasons"].values()) + projection["flat_var_preview_count"] + projection["multiline_var_preview_count"] == summary["literal_template_counts"]["ВАР"])
+          print(f"Trusov VAR preview: flat={projection['flat_var_preview_count']}, multiline={projection['multiline_var_preview_count']}, residual={projection['var_preview_refusal_reasons']}")
           assert len(projection["joined_pre_reform_var_preview_sha256"]) == 64
           assert len(projection["joined_modern_var_preview_sha256"]) == 64
           assert projection["literary_body_sha256"] is None

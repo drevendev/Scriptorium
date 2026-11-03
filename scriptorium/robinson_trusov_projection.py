@@ -18,9 +18,9 @@ from .robinson_trusov_pages import verify_frozen_graph
 from .robinson_trusov_template_shapes import capture_shapes, invocation_shapes, validate_shapes
 from .single_page_revision import _api_query
 
-SCHEMA = "scriptorium-trusov-standalone-projection-v2"
-VAR_PREVIEW_PROFILE = "flat_two_argument_VAR_orthography_branch_only_inferred_v1"
-VAR_CALL = re.compile(r"\{\{ВАР\|([^{}|\r\n]*)\|([^{}|\r\n]*)\}\}")
+SCHEMA = "scriptorium-trusov-standalone-projection-v3"
+VAR_PREVIEW_PROFILE = "bounded_flat_and_multiline_VAR_orthography_branch_only_inferred_v2"
+VAR_CALL = re.compile(r"\{\{ВАР\|([^{}|]*)\|([^{}|]*)\}\}")
 VAR_START = re.compile(r"(?<!\{)\{\{\s*ВАР(?=\s*[|}])")
 VAR_REFUSAL_KEYS = ("multiline", "multiple_templates_on_line",
                     "non_plain_branch", "unsupported_shape")
@@ -70,79 +70,96 @@ class ProjectedPageJoin:
         }
 
 
-def preview_var_orthographies(projected: str) -> tuple[str, str, int]:
-    """Preview plain VAR branch choices without asserting historical rendering.
+def _enclosed_in_outer_markup(projected: str, start: int) -> bool:
+    """Fail closed on multiline comments, links or enclosing brace groups."""
+    if (projected.rfind("<!--", 0, start) > projected.rfind("-->", 0, start) or
+            projected.rfind("[[", 0, start) > projected.rfind("]]", 0, start)):
+        return True
+    cursor = 0
+    while True:
+        opening = projected.find("{{", cursor, start)
+        if opening < 0:
+            return False
+        if _matching_brace_end(projected, opening) > start:
+            return True
+        cursor = opening + 2
 
-    Current Wikisource documentation names the first argument pre-reform and
-    the second modern. No 2023 module/template revision is pinned here, so
-    neither preview may be used as an admitted literary body or FantLab input.
-    Inline prose is allowed only when exactly one flat call occurs on a line.
-    Nested calls, named arguments, markup and non-printable branches stay
-    literally untouched in *both* previews.
+
+def _var_preview_partition(
+    projected: str,
+) -> tuple[list[tuple[int, int, str, str, bool]], dict[str, int]]:
+    """Classify each literal VAR opener exactly once, without rendering MediaWiki.
+
+    Anonymous argument whitespace, including line breaks, is kept verbatim.
+    Only one plain two-argument invocation in its surrounding line span is
+    previewable. Oversized/malformed/markup/nested invocations fail closed.
     """
     if not isinstance(projected, str):
         raise TypeError("VAR preview input must be text")
-    historical: list[str] = []
-    modern: list[str] = []
-    accepted = 0
-    for line in projected.splitlines(keepends=True):
-        if (line.count("{{") != 1 or line.count("}}") != 1 or
-                "{{{" in line or "<!--" in line or "-->" in line or
-                "[[" in line or "]]" in line):
-            historical.append(line)
-            modern.append(line)
-            continue
-        match = VAR_CALL.search(line)
-        if match is None:
-            historical.append(line)
-            modern.append(line)
-            continue
-        before, after = match.group(1), match.group(2)
-        if not all(branch.strip() and branch.isprintable() and
-                   not any(ch in branch for ch in "<>[]=")
-                   for branch in (before, after)):
-            historical.append(line)
-            modern.append(line)
-            continue
-        historical.append(line[:match.start()] + before + line[match.end():])
-        modern.append(line[:match.start()] + after + line[match.end():])
-        accepted += 1
-    return "".join(historical), "".join(modern), accepted
-
-
-def var_preview_refusal_reasons(projected: str) -> dict[str, int]:
-    """Source-free partition of pinned VAR calls that cannot be previewed.
-
-    This uses the same flat-call acceptance as preview_var_orthographies;
-    neither invocation bodies nor neighboring prose leave transient memory.
-    """
-    if not isinstance(projected, str):
-        raise TypeError("VAR preview input must be text")
+    accepted: list[tuple[int, int, str, str, bool]] = []
     reasons = {key: 0 for key in VAR_REFUSAL_KEYS}
     for match in VAR_START.finditer(projected):
         start = match.start()
         end = _matching_brace_end(projected, start)
         literal = projected[start:end]
-        if "\n" in literal or "\r" in literal:
-            reasons["multiline"] += 1
+        multiline = "\n" in literal or "\r" in literal
+        if len(literal) > 4096 or (multiline and literal.count("\n") > 12):
+            reasons["multiline" if multiline else "unsupported_shape"] += 1
             continue
         flat = VAR_CALL.fullmatch(literal)
         if flat is None:
             reasons["unsupported_shape"] += 1
             continue
+
         line_start = projected.rfind("\n", 0, start) + 1
-        line_end = projected.find("\n", end)
-        line = projected[line_start:] if line_end < 0 else projected[line_start:line_end]
-        if (line.count("{{") != 1 or line.count("}}") != 1 or
-                "{{{" in line):
+        line_break = projected.find("\n", end)
+        line_end = len(projected) if line_break < 0 else line_break
+        context = projected[line_start:line_end]
+        outside = projected[line_start:start] + projected[end:line_end]
+        if (_enclosed_in_outer_markup(projected, start) or
+                any(mark in outside for mark in ("{{", "}}")) or "{{{" in context):
             reasons["multiple_templates_on_line"] += 1
             continue
-        if (any(markup in line for markup in ("<!--", "-->", "[[", "]]")) or
-                not all(branch.strip() and branch.isprintable() and
-                        not any(ch in branch for ch in "<>[]=")
-                        for branch in flat.groups())):
+        branches = flat.groups()
+        if (any(mark in context for mark in ("<!--", "-->", "[[", "]]")) or
+                any(not branch.strip() or len(branch) > 2048 or
+                    any(char in branch for char in "<>[]={}#") or
+                    "''" in branch or
+                    not all(char.isprintable() or char in "\r\n" for char in branch)
+                    for branch in branches)):
             reasons["non_plain_branch"] += 1
-    return reasons
+            continue
+        accepted.append((start, end, branches[0], branches[1], multiline))
+    return accepted, reasons
+
+
+def preview_var_orthographies(projected: str) -> tuple[str, str, int, int]:
+    """Preview literal flat/multiline VAR branches, NOT historical rendering.
+
+    The current Wikisource help describes argument 1 as pre-reform and argument
+    2 as modern; the 2023 template revision is not pinned. This experiment
+    cannot establish a literary body, a printed edition or FantLab input.
+    """
+    accepted, _ = _var_preview_partition(projected)
+    historical: list[str] = []
+    modern: list[str] = []
+    flat_count = multiline_count = cursor = 0
+    for start, end, before, after, multiline in accepted:
+        if start < cursor:
+            raise ValueError("overlapping VAR invocation preview")
+        historical.extend((projected[cursor:start], before))
+        modern.extend((projected[cursor:start], after))
+        flat_count += not multiline
+        multiline_count += multiline
+        cursor = end
+    historical.append(projected[cursor:])
+    modern.append(projected[cursor:])
+    return "".join(historical), "".join(modern), flat_count, multiline_count
+
+
+def var_preview_refusal_reasons(projected: str) -> dict[str, int]:
+    """Report residual unsafe calls after both flat and multiline previews."""
+    return _var_preview_partition(projected)[1]
 
 
 def project_page(candidate: str) -> tuple[str, int, int, int, int]:
@@ -197,7 +214,7 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
     def observe(identity: dict, candidate: str) -> None:
         projected, nop, heading, unresolved, residual = project_page(candidate)
         joined.add(projected)
-        historical, modern, var_count = preview_var_orthographies(projected)
+        historical, modern, flat_count, multiline_count = preview_var_orthographies(projected)
         var_refusals = var_preview_refusal_reasons(projected)
         pre_reform_preview.add(historical)
         modern_preview.add(modern)
@@ -207,7 +224,8 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
             "projected_wikitext_sha256": sha256(projected.encode("utf-8")).hexdigest(),
             "projected_wikitext_characters_including_spaces": len(projected),
             "handled_nop": nop, "handled_heading": heading,
-            "flat_var_preview_count": var_count,
+            "flat_var_preview_count": flat_count,
+            "multiline_var_preview_count": multiline_count,
             "var_preview_refusal_reasons": var_refusals,
             "pre_reform_var_preview_sha256": sha256(historical.encode("utf-8")).hexdigest(),
             "modern_var_preview_sha256": sha256(modern.encode("utf-8")).hexdigest(),
@@ -233,6 +251,7 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
             modern_preview.source_free_identity()["joined_projected_wikitext_sha256"]
         ),
         "flat_var_preview_count": sum(p["flat_var_preview_count"] for p in pages),
+        "multiline_var_preview_count": sum(p["multiline_var_preview_count"] for p in pages),
         "var_preview_refusal_reasons": {
             key: sum(p["var_preview_refusal_reasons"][key] for p in pages)
             for key in VAR_REFUSAL_KEYS
@@ -266,6 +285,7 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
                 "joined_projected_wikitext_characters_including_spaces",
                 "projected_page_join_seams", "alphabetic_page_edge_seams",
                 "var_preview_profile", "joined_pre_reform_var_preview_sha256",
+                "multiline_var_preview_count",
                 "joined_modern_var_preview_sha256", "flat_var_preview_count",
                 "var_preview_refusal_reasons",
                 "pages", "handled_nop", "handled_heading", "unresolved_invocations",
@@ -302,7 +322,7 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
     for row, identity, shape in zip(pages, graph["pages"], shapes["pages"]):
         if set(row) != {"page_sequence", "revision_id", "projected_wikitext_sha256",
                         "projected_wikitext_characters_including_spaces",
-                        "flat_var_preview_count", "var_preview_refusal_reasons",
+                        "flat_var_preview_count", "multiline_var_preview_count", "var_preview_refusal_reasons",
                         "pre_reform_var_preview_sha256",
                         "modern_var_preview_sha256", *counters}:
             raise ValueError("unrecognized Page projection field / prose leakage")
@@ -313,13 +333,15 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
         if type(row["projected_wikitext_characters_including_spaces"]) is not int or row["projected_wikitext_characters_including_spaces"] < 0:
             raise ValueError("invalid projection character count")
         var_count = row["flat_var_preview_count"]
+        multiline_count = row["multiline_var_preview_count"]
         source_vars = sum(call["template_title"] == "ВАР" for call in shape["invocations"])
         reasons = row["var_preview_refusal_reasons"]
         if (not isinstance(reasons, dict) or set(reasons) != set(VAR_REFUSAL_KEYS) or
                 any(type(v) is not int or v < 0 for v in reasons.values()) or
-                var_count + sum(reasons.values()) != source_vars):
+                var_count + multiline_count + sum(reasons.values()) != source_vars):
             raise ValueError("VAR preview refusal partition mismatch")
-        if type(var_count) is not int or not 0 <= var_count <= source_vars:
+        if (type(var_count) is not int or type(multiline_count) is not int or
+                not 0 <= var_count + multiline_count <= source_vars):
             raise ValueError("VAR preview count exceeds pinned source calls")
         if any(not HEX.fullmatch(str(row[key])) for key in
                ("pre_reform_var_preview_sha256", "modern_var_preview_sha256")):
@@ -351,8 +373,12 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
     if report["var_preview_refusal_reasons"] != expected_reasons:
         raise ValueError("VAR preview refusal aggregate mismatch")
     expected_vars = sum(p["flat_var_preview_count"] for p in pages)
+    expected_multiline_vars = sum(p["multiline_var_preview_count"] for p in pages)
     if (type(report["flat_var_preview_count"]) is not int or
-        report["flat_var_preview_count"] != expected_vars or expected_vars > 4):
+        type(report["multiline_var_preview_count"]) is not int or
+        report["flat_var_preview_count"] != expected_vars or
+        report["multiline_var_preview_count"] != expected_multiline_vars or
+        expected_vars + expected_multiline_vars > 4):
         raise ValueError("VAR preview aggregate count drift")
     if any(report[k] != counters[k] for k in counters):
         raise ValueError("projection total mismatch")
@@ -387,6 +413,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"Pinned Trusov 150-page provisional projection: {report['handled_nop']} nop, "
           f"{report['handled_heading']} plain heading, {report['unresolved_invocations']} "
           f"unresolved; {report['flat_var_preview_count']} VAR branch previews "
+          f"and {report['multiline_var_preview_count']} multiline VAR previews "
           f"(historical rendering NOT_VERIFIED), refusal reasons "
           f"{report['var_preview_refusal_reasons']}; literary body NOT_RUN")
     return 0

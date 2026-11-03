@@ -17,7 +17,9 @@ from .robinson_trusov_pages import verify_frozen_graph
 from .robinson_trusov_template_shapes import capture_shapes, invocation_shapes, validate_shapes
 from .single_page_revision import _api_query
 
-SCHEMA = "scriptorium-trusov-standalone-projection-v1"
+SCHEMA = "scriptorium-trusov-standalone-projection-v2"
+VAR_PREVIEW_PROFILE = "flat_two_argument_VAR_orthography_branch_only_inferred_v1"
+VAR_CALL = re.compile(r"\{\{ВАР\|([^{}|\r\n]*)\|([^{}|\r\n]*)\}\}")
 HEX = re.compile(r"[a-f0-9]{64}\Z")
 STYLE = re.compile(r"[A-Za-z0-9.% -]{1,20}\Z")
 
@@ -62,6 +64,44 @@ class ProjectedPageJoin:
             "projected_page_join_seams": self._pages - 1,
             "alphabetic_page_edge_seams": self._alphabetic_edges,
         }
+
+
+def preview_var_orthographies(projected: str) -> tuple[str, str, int]:
+    """Preview plain VAR branch choices without asserting historical rendering.
+
+    Current Wikisource documentation names the first argument pre-reform and
+    the second modern. No 2023 module/template revision is pinned here, so
+    neither preview may be used as an admitted literary body or FantLab input.
+    Inline prose is allowed only when exactly one flat call occurs on a line.
+    Nested calls, named arguments, markup and non-printable branches stay
+    literally untouched in *both* previews.
+    """
+    if not isinstance(projected, str):
+        raise TypeError("VAR preview input must be text")
+    historical: list[str] = []
+    modern: list[str] = []
+    accepted = 0
+    for line in projected.splitlines(keepends=True):
+        if line.count("{{") != 1 or line.count("}}") != 1 or "{{{" in line:
+            historical.append(line)
+            modern.append(line)
+            continue
+        match = VAR_CALL.search(line)
+        if match is None:
+            historical.append(line)
+            modern.append(line)
+            continue
+        before, after = match.group(1), match.group(2)
+        if not all(branch.strip() and branch.isprintable() and
+                   not any(ch in branch for ch in "<>[]=")
+                   for branch in (before, after)):
+            historical.append(line)
+            modern.append(line)
+            continue
+        historical.append(line[:match.start()] + before + line[match.end():])
+        modern.append(line[:match.start()] + after + line[match.end():])
+        accepted += 1
+    return "".join(historical), "".join(modern), accepted
 
 
 def project_page(candidate: str) -> tuple[str, int, int, int, int]:
@@ -110,16 +150,24 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
     """Reuse one exact-identity fetch for original preflight, shapes and probe."""
     pages: list[dict] = []
     joined = ProjectedPageJoin()
+    pre_reform_preview = ProjectedPageJoin()
+    modern_preview = ProjectedPageJoin()
 
     def observe(identity: dict, candidate: str) -> None:
         projected, nop, heading, unresolved, residual = project_page(candidate)
         joined.add(projected)
+        historical, modern, var_count = preview_var_orthographies(projected)
+        pre_reform_preview.add(historical)
+        modern_preview.add(modern)
         pages.append({
             "page_sequence": identity["page_sequence"],
             "revision_id": identity["revision_id"],
             "projected_wikitext_sha256": sha256(projected.encode("utf-8")).hexdigest(),
             "projected_wikitext_characters_including_spaces": len(projected),
             "handled_nop": nop, "handled_heading": heading,
+            "flat_var_preview_count": var_count,
+            "pre_reform_var_preview_sha256": sha256(historical.encode("utf-8")).hexdigest(),
+            "modern_var_preview_sha256": sha256(modern.encode("utf-8")).hexdigest(),
             "unresolved_invocations": unresolved,
             "unclassified_openers": residual,
         })
@@ -134,6 +182,14 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
         "source_page_graph_sha256": graph_sha256,
         "transclusion_input_candidate_sha256": preflight["transclusion_input_candidate_sha256"],
         **joined.source_free_identity(),
+        "var_preview_profile": VAR_PREVIEW_PROFILE,
+        "joined_pre_reform_var_preview_sha256": (
+            pre_reform_preview.source_free_identity()["joined_projected_wikitext_sha256"]
+        ),
+        "joined_modern_var_preview_sha256": (
+            modern_preview.source_free_identity()["joined_projected_wikitext_sha256"]
+        ),
+        "flat_var_preview_count": sum(p["flat_var_preview_count"] for p in pages),
         "pages": pages,
         "handled_nop": sum(p["handled_nop"] for p in pages),
         "handled_heading": sum(p["handled_heading"] for p in pages),
@@ -162,6 +218,8 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
                 "projected_page_join_profile", "joined_projected_wikitext_sha256",
                 "joined_projected_wikitext_characters_including_spaces",
                 "projected_page_join_seams", "alphabetic_page_edge_seams",
+                "var_preview_profile", "joined_pre_reform_var_preview_sha256",
+                "joined_modern_var_preview_sha256", "flat_var_preview_count",
                 "pages", "handled_nop", "handled_heading", "unresolved_invocations",
                 "unclassified_openers", "source_text_committed", "literary_body_sha256",
                 "corpus_threshold_verified", "historical_render_equivalence_proven",
@@ -185,13 +243,19 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
     if (report["projected_page_join_profile"] != ProjectedPageJoin.PROFILE or
         not HEX.fullmatch(str(report["joined_projected_wikitext_sha256"]))):
         raise ValueError("unrecognized projected Page join identity")
+    if report["var_preview_profile"] != VAR_PREVIEW_PROFILE or any(
+            not HEX.fullmatch(str(report[key])) for key in
+            ("joined_pre_reform_var_preview_sha256", "joined_modern_var_preview_sha256")):
+        raise ValueError("invalid VAR preview profile or digest")
     pages = report["pages"]
     if not isinstance(pages, list) or len(pages) != len(graph["pages"]):
         raise ValueError("incomplete Page projection")
     counters = {k: 0 for k in ("handled_nop", "handled_heading", "unresolved_invocations", "unclassified_openers")}
     for row, identity, shape in zip(pages, graph["pages"], shapes["pages"]):
         if set(row) != {"page_sequence", "revision_id", "projected_wikitext_sha256",
-                        "projected_wikitext_characters_including_spaces", *counters}:
+                        "projected_wikitext_characters_including_spaces",
+                        "flat_var_preview_count", "pre_reform_var_preview_sha256",
+                        "modern_var_preview_sha256", *counters}:
             raise ValueError("unrecognized Page projection field / prose leakage")
         if (row["page_sequence"], row["revision_id"]) != (identity["page_sequence"], identity["revision_id"]):
             raise ValueError("Page revision order drift")
@@ -199,6 +263,13 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
             raise ValueError("invalid projection digest")
         if type(row["projected_wikitext_characters_including_spaces"]) is not int or row["projected_wikitext_characters_including_spaces"] < 0:
             raise ValueError("invalid projection character count")
+        var_count = row["flat_var_preview_count"]
+        source_vars = sum(call["template_title"] == "ВАР" for call in shape["invocations"])
+        if type(var_count) is not int or not 0 <= var_count <= source_vars:
+            raise ValueError("VAR preview count exceeds pinned source calls")
+        if any(not HEX.fullmatch(str(row[key])) for key in
+               ("pre_reform_var_preview_sha256", "modern_var_preview_sha256")):
+            raise ValueError("invalid Page VAR preview digest")
         for k in counters:
             if type(row[k]) is not int or row[k] < 0:
                 raise ValueError("invalid projection counter")
@@ -219,6 +290,10 @@ def validate_projection(report: Mapping[str, object], graph: Mapping[str, object
     if (type(report["alphabetic_page_edge_seams"]) is not int or
         not 0 <= report["alphabetic_page_edge_seams"] <= report["projected_page_join_seams"]):
         raise ValueError("invalid alphabetic Page edge counter")
+    expected_vars = sum(p["flat_var_preview_count"] for p in pages)
+    if (type(report["flat_var_preview_count"]) is not int or
+        report["flat_var_preview_count"] != expected_vars or expected_vars > 4):
+        raise ValueError("VAR preview aggregate count drift")
     if any(report[k] != counters[k] for k in counters):
         raise ValueError("projection total mismatch")
     if (report["handled_nop"] > 28 or report["handled_heading"] > 30 or
@@ -251,7 +326,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             writer.write("\n")
     print(f"Pinned Trusov 150-page provisional projection: {report['handled_nop']} nop, "
           f"{report['handled_heading']} plain heading, {report['unresolved_invocations']} "
-          f"unresolved; literary body NOT_RUN")
+          f"unresolved; {report['flat_var_preview_count']} VAR branch previews "
+          f"(historical rendering NOT_VERIFIED); literary body NOT_RUN")
     return 0
 
 

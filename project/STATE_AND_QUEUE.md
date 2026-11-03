@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 402
+STATE_REVISION: 403
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-03
-LAST_RESULT: PR #401 merged in master at f757780b6eb8147ece55c436db76174de62c01b0 (source-free synthetic Page join and 149 seam slots). Current candidate hardens transient MediaWiki readback after a real CI provider-response failure; no literary-body claim.
+LAST_RESULT: PR #402 merged in master at 0f91f9c466cb7b3e46c30be4142cdc7acd4c0103 (bounded MediaWiki rate-limit retry with exact-source fail-closed behavior). Current PR candidate previews both flat ВАР orthography branches without claiming MediaWiki rendering or changing the accepted conservative projected Page join.
 LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 58/64 provisionally handled template invocations (28 nop, 30 heading; 4 ВАР plus 2 dynamic unresolved) are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-QA-MEDIAWIKI-TRANSIENT-READBACK
-ISSUE: bound transient Wikimedia API maxlag/429/rate-limit retry without masking exact historical source or checksum failures
-STATUS: PR_CANDIDATE; FULL_CI_PENDING; LOCAL_FULL_REPO_NOT_RUN; LITERARY_BODY_NOT_RUN
-BRANCH: scrip-mediawiki-read-retry-20261103
-BASE: f757780b6eb8147ece55c436db76174de62c01b0
+UNIT_ID: SCRIP-TRUSOV-1775-VAR-ORTHOGRAPHY-PREVIEW
+ISSUE: evaluate explicit pre-reform vs modern branches of flat ВАР calls while preserving source-free provenance and historical-render uncertainty
+STATUS: PR_CANDIDATE; EXACT_150_PAGE_CI_PENDING; LOCAL_FULL_REPO_NOT_RUN; LITERARY_BODY_NOT_RUN
+BRANCH: scrip-trusov-var-orthography-preview
+BASE: 0f91f9c466cb7b3e46c30be4142cdc7acd4c0103
 
-ACCEPTANCE: Read-only API calls set maxlag=5 and retry only explicit maxlag/ratelimited or HTTP 429/503 with bounded Retry-After; 503 without server delay, unknown API errors, invalid responses and source-identity drift fail closed. Regression tests prove delays, caps, no silent successes; all existing pinned oldid/sha invariants remain unchanged.
+ACCEPTANCE: The accepted conservative joined projected-wikitext identity remains unchanged. A separate v2 diagnostic probes both positional ВАР branches only for strict flat two-argument literal calls. Nested/multiple calls, named args, markup and unknown selectors stay unresolved. Per-page and joined SHA-256 plus bounded counts are source-free; workflow checks frozen oldids/preflight/shape receipts, no false literary-body or parity claims. Tests cover positive and negative branches.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: add a second independently measured Russian Robinson Crusoe translati
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Reduce Trusov 1775 template frontier and freeze the first narrative | Verified complete normalized literary SHA-256, historically justified page joins, VAR/parser semantics and >=300k gate | 58/64 template calls provisionally handled; proposed synthetic-LF join is only a diagnostic identity; 4 ВАР and 2 parser calls plus historical/print equivalence remain unresolved |
+| P1 | Probe both explicit ВАР orthography choices; then reduce dynamic template frontier and freeze narrative | Exact pinned-source preview counts for plain two-argument ВАР, distinct hashes, conservative unchanged join; eventually verified narrative + >=300k | Four ВАР and two dynamic calls still unverified as historical render; synthetic LF seams / historical print mapping unresolved |
 | P2 | Run Trusov 29 metrics and show an honest Reader translation pair | Distinct translator/edition, source-frozen body, diagnostic deltas and historical/French intermediary caveats | Requires accepted first narrative and a complete literary body |
 | P3 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Native data availability; no silent noun/cardinal inference |
 | P4 | Verify branch-root Reader desktop/mobile and live Pages | HTTP readback, layout/focus/screenshot evidence and clear visual gate outcome | Browser HTTP navigation historically blocked; no unverified publication claim |

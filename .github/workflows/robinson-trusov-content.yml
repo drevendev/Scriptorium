@@ -80,9 +80,14 @@ jobs:
           from scriptorium.robinson_trusov_projection import validate_projection
           projection=json.loads(Path("build/repro/trusov-1775.projection.json").read_text(encoding="utf-8"))
           validate_projection(projection, graph, result, shapes)
+          assert projection["projected_page_join_profile"] == "one_LF_between_projected_Page_inputs_diagnostic_only"
+          assert projection["projected_page_join_seams"] == 149
+          assert projection["joined_projected_wikitext_characters_including_spaces"] == (
+            sum(p["projected_wikitext_characters_including_spaces"] for p in projection["pages"]) + 149
+          )
           assert projection["literary_body_sha256"] is None
           assert projection["historical_render_equivalence_proven"] is False
-          print("Pinned original preflight, shapes and standalone template projection PASS; literary body NOT_RUN")
+          print("Pinned preflight, shapes, template projection and synthetic Page join PASS; literary body NOT_RUN")
           PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

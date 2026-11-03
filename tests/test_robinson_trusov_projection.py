@@ -6,7 +6,7 @@ import unittest
 
 from test_robinson_trusov_content import fixture, mock_query, PRIVATE_SOURCE
 from scriptorium.robinson_trusov_projection import (
-    project_page, preview_var_orthographies, var_preview_refusal_reasons, capture_projection, validate_projection, ProjectedPageJoin,
+    project_page, preview_var_orthographies, var_preview_refusal_reasons, var_preview_call_partition, capture_projection, validate_projection, ProjectedPageJoin,
 )
 
 
@@ -53,9 +53,10 @@ class TrusovProjectionTests(unittest.TestCase):
         source = "{{ВАР|" + "\n".join(["text"] * 14) + "|modern}}\n"
         old, new, flat, multiline = preview_var_orthographies(source)
         self.assertEqual((old, new, flat, multiline), (source, source, 0, 0))
-        self.assertEqual(var_preview_refusal_reasons(source)["multiline"], 1)
-        with self.assertRaisesRegex(ValueError, "unclosed"):
-            preview_var_orthographies("{{ВАР|old|new")
+        self.assertEqual(var_preview_refusal_reasons(source)["too_many_line_breaks"], 1)
+        unclosed = "{{ВАР|old|new"
+        self.assertEqual(preview_var_orthographies(unclosed), (unclosed, unclosed, 0, 0))
+        self.assertEqual(var_preview_refusal_reasons(unclosed)["unbalanced_braces"], 1)
 
     def test_var_preview_refusal_categories_do_not_expose_source(self):
         source = ("{{ВАР|дѣло|дело}}\n"
@@ -63,16 +64,38 @@ class TrusovProjectionTests(unittest.TestCase):
                   "{{ВАР|a=b|plain}}\n"
                   "{{other|{{ВАР|a|b}}}}\n"
                   "{{ ВАР|old|new}}\n"
+                  "{{ВАР|old|new|third}}\n"
                   "{{ВАР|" + "\n".join(["text"] * 14) + "|modern}}\n")
         old, new, flat, multiline = preview_var_orthographies(source)
         refusals = var_preview_refusal_reasons(source)
         self.assertEqual((flat, multiline), (1, 1))
         self.assertEqual(refusals, {
-            "multiline": 1, "multiple_templates_on_line": 1,
-            "non_plain_branch": 1, "unsupported_shape": 1,
+            "call_too_large": 0, "too_many_line_breaks": 1,
+            "nested_braces": 0, "unbalanced_braces": 0,
+            "extra_arguments": 1, "unsupported_shape": 1,
+            "multiple_templates_on_line": 1, "non_plain_branch": 1,
         })
-        self.assertEqual(sum(refusals.values()) + flat + multiline, 6)
+        self.assertEqual(sum(refusals.values()) + flat + multiline, 7)
         self.assertNotIn("дѣло", json.dumps(refusals, ensure_ascii=False))
+
+    def test_refusal_diagnostics_partition_distinct_limits_and_nested_calls(self):
+        source = ("{{ВАР|" + "x" * 4097 + "|new}}\\n"
+                  "{{ВАР|" + "\\n".join(["old"] * 14) + "|new}}\\n"
+                  "{{ВАР|old{{nested}}|new}}\\n"
+                  "{{ВАР|a|b|c}}\\n")
+        reasons = var_preview_refusal_reasons(source)
+        self.assertEqual(reasons["call_too_large"], 1)
+        self.assertEqual(reasons["too_many_line_breaks"], 1)
+        self.assertEqual(reasons["nested_braces"], 1)
+        self.assertEqual(reasons["extra_arguments"], 1)
+        self.assertEqual(sum(reasons.values()), 4)
+        decisions = var_preview_call_partition(source)
+        self.assertEqual(len(decisions), 4)
+        self.assertEqual({d["decision"] for d in decisions},
+                         {"call_too_large", "too_many_line_breaks",
+                          "nested_braces", "extra_arguments"})
+        self.assertTrue(all(len(d["invocation_sha256"]) == 64 for d in decisions))
+        self.assertNotIn("old", json.dumps(decisions))
 
     def test_joined_projection_digest_is_source_free_not_body(self):
         join = ProjectedPageJoin()
@@ -145,10 +168,14 @@ class TrusovProjectionTests(unittest.TestCase):
         self.assertIsNone(report["literary_body_sha256"])
         self.assertNotIn(PRIVATE_SOURCE, json.dumps(report, ensure_ascii=False))
         self.assertNotIn("Secret heading", json.dumps(report, ensure_ascii=False))
+        self.assertEqual(report["pages"][0]["source_mediawiki_sha1"],
+                         graph["pages"][0]["mediawiki_sha1"])
+        self.assertEqual([d["decision"] for d in report["pages"][0]["var_call_partition"]],
+                         ["flat_preview", "multiline_preview"])
         validate_projection(report, graph, preflight, shapes)
 
         altered = copy.deepcopy(report)
-        altered["pages"][0]["var_preview_refusal_reasons"]["multiline"] = 1
+        altered["pages"][0]["var_preview_refusal_reasons"]["too_many_line_breaks"] = 1
         with self.assertRaisesRegex(ValueError, "VAR preview refusal partition"):
             validate_projection(altered, graph, preflight, shapes)
         altered = copy.deepcopy(report)
@@ -193,7 +220,19 @@ class TrusovProjectionTests(unittest.TestCase):
             validate_projection(altered, graph, preflight, shapes)
         altered = copy.deepcopy(report)
         altered["pages"][1]["revision_id"] += 1
-        with self.assertRaisesRegex(ValueError, "order drift"):
+        with self.assertRaisesRegex(ValueError, "revision/source SHA-1 drift"):
+            validate_projection(altered, graph, preflight, shapes)
+        altered = copy.deepcopy(report)
+        altered["pages"][0]["source_mediawiki_sha1"] = "0" * 40
+        with self.assertRaisesRegex(ValueError, "revision/source SHA-1 drift"):
+            validate_projection(altered, graph, preflight, shapes)
+        altered = copy.deepcopy(report)
+        altered["pages"][0]["var_call_partition"][0]["invocation_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "VAR invocation identity"):
+            validate_projection(altered, graph, preflight, shapes)
+        altered = copy.deepcopy(report)
+        altered["pages"][0]["var_call_partition"][0]["decision"] = "non_plain_branch"
+        with self.assertRaisesRegex(ValueError, "VAR decision histogram"):
             validate_projection(altered, graph, preflight, shapes)
 
 

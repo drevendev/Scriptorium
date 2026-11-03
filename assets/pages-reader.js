@@ -914,6 +914,16 @@
       : "Сопоставляются две отдельные русскоязычные редакции. Разница не доказывает влияние автора или совпадение с входом FantLab.";
   }
 
+  // Rounded presentation must never turn a real small pair difference into zero.
+  // Exact source observations and unrounded machine-readable exports stay unchanged.
+  function pairTableDeltaText(difference) {
+    if (!Number.isFinite(difference)) throw Error("Неизвестная разница сравнения");
+    if (difference === 0) return "0";
+    if (Math.abs(difference) < 0.001)
+      return (difference > 0 ? "+" : "−") + "<0,001";
+    return (difference > 0 ? "+" : "") + pretty(difference,3);
+  }
+
   // Only paired measured values receive a signed, unit-aware chart delta.
   // Tiny nonzero differences must never be displayed as exact zero.
   function pairDeltaDescription(row) {
@@ -960,7 +970,7 @@
       const comparable=m.left!==null&&m.right!==null;
       const d=comparable?m.right-m.left:null;
       insertText(tr,"td",d===null?"— (нет совместного измерения)":
-        (d>0?"+":"")+pretty(d,3));
+        pairTableDeltaText(d));
       insertText(tr,"td",unit(m.id)+(unit(m.id)==="%"?" · Δ в п.п.":""));
       fragment.appendChild(tr);
     }

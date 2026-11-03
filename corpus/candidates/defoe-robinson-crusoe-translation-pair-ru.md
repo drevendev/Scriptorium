@@ -233,3 +233,28 @@ captured and validated the new fields, the actual joined SHA/count and
 alphabetic seam count remain **NOT_RUN**. Remaining four ВАР and two dynamic
 template calls still require historically bound semantics; source-bound
 first-narrative selection and print collation remain open. M2 remains **0/5**.
+
+### Explicit orthography-branch preview for flat ВАР (PR candidate)
+
+The [Wikisource ВАР documentation](https://ru.wikisource.org/wiki/Шаблон:ВАР/Документация)
+identifies the **first** positional argument as pre-reform spelling and the
+**second** as modern spelling. This is a current documentation claim, not
+a pin of the historical 2023 Lua module/template version used by the 150
+Trusov Page revisions.
+
+The independent **source-free preview** compares both choices for a
+single flat, exactly two-argument ВАР call per line. Plain inline calls
+are eligible, but nested/multiple templates, named parameters, HTML,
+wiki links, empty or non-printable branches are left unresolved.
+The existing conservative page projection remains unchanged; ВАР
+invocations are **still counted as unresolved** for historical
+rendering purposes. The new versioned diagnostic adds per-page and
+whole-join digests of both hypothetical branches, plus the number of
+unambiguous flat calls actually previewed. It never writes prose.
+
+Until the scoped exact-head workflow completes on the 150 pinned
+oldids, the number of previewable ВАР calls is **NOT_RUN** (maximum four).
+A preview is neither verified MediaWiki rendering nor a literary-body
+hash or a corpus admission. Two dynamic/parser calls, Page joins,
+proofreading/orthographic conventions and print collation remain open.
+M2 remains **0/5**.

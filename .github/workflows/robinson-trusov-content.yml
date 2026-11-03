@@ -8,6 +8,8 @@ on:
       - "tests/test_robinson_trusov_content.py"
       - "scriptorium/robinson_trusov_template_shapes.py"
       - "tests/test_robinson_trusov_template_shapes.py"
+      - "scriptorium/robinson_trusov_projection.py"
+      - "tests/test_robinson_trusov_projection.py"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json"
@@ -36,14 +38,16 @@ jobs:
         run: |
           python -m unittest discover -s tests -p 'test_robinson_trusov_content.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_template_shapes.py' -v
+          python -m unittest discover -s tests -p 'test_robinson_trusov_projection.py' -v
       - name: Capture pinned Page contents with bounded MediaWiki requests
         run: |
           mkdir -p build/repro
-          python -m scriptorium.robinson_trusov_template_shapes \
+          python -m scriptorium.robinson_trusov_projection \
             --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
             --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
             --preflight-output build/repro/trusov-1775.content-preflight.json \
-            --output build/repro/trusov-1775.template-shapes.json
+            --shapes-output build/repro/trusov-1775.template-shapes.json \
+            --output build/repro/trusov-1775.projection.json
       - name: Validate source-free output and preserve unknown scientific gates
         run: |
           python - <<'PY'
@@ -73,7 +77,12 @@ jobs:
           summary=json.loads(Path("corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json").read_text(encoding="utf-8"))
           verify_observation(shapes, summary)
           assert shapes["total_invocations"] + shapes["unclassified_openers"] == sum(x["template_openers"] for x in result["pages"])
-          print("Pinned template shapes and original preflight receipt PASS; literary body NOT_RUN")
+          from scriptorium.robinson_trusov_projection import validate_projection
+          projection=json.loads(Path("build/repro/trusov-1775.projection.json").read_text(encoding="utf-8"))
+          validate_projection(projection, graph, result, shapes)
+          assert projection["literary_body_sha256"] is None
+          assert projection["historical_render_equivalence_proven"] is False
+          print("Pinned original preflight, shapes and standalone template projection PASS; literary body NOT_RUN")
           PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -82,5 +91,6 @@ jobs:
           path: |
             build/repro/trusov-1775.content-preflight.json
             build/repro/trusov-1775.template-shapes.json
+            build/repro/trusov-1775.projection.json
           if-no-files-found: error
           retention-days: 7

@@ -127,7 +127,8 @@ def validate_shapes(report: Mapping[str, object], graph: Mapping[str, object],
 def capture_shapes(graph: Mapping[str, object], graph_sha256: str,
                    *, query: Callable[..., dict] = _api_query,
                    delay: float = 0.75,
-                   preflight_output: dict | None = None) -> dict:
+                   preflight_output: dict | None = None,
+                   projection_observer: Callable[[dict, str], None] | None = None) -> dict:
     """One historical source fetch; preserve accepted preflight and output shapes."""
     pages: list[dict] = []
     def observe(identity: dict, candidate: str) -> None:
@@ -135,6 +136,8 @@ def capture_shapes(graph: Mapping[str, object], graph_sha256: str,
         pages.append({"page_sequence": identity["page_sequence"],
                       "revision_id": identity["revision_id"],
                       "invocations": calls, "unclassified_openers": residual})
+        if projection_observer is not None:
+            projection_observer(identity, candidate)
     preflight = capture(graph, graph_sha256=graph_sha256, query=query,
                         delay=delay, observer=observe)
     result = {

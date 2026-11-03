@@ -194,7 +194,7 @@
 </div></section>
 <section id="pairs" class="workbench comparison-panel" aria-labelledby="pairs-title">
 <div class="section-head"><p class="eyebrow">02 / СРАВНЕНИЕ РИТМА</p><h2 id="pairs-title">Две книги — рядом.</h2>
-<p>Сравнивайте одинаковые нормированные метрики только при совпадении профиля измерений. Таблица содержит точные наблюдения и разницу «правая − левая»; ненулевые разницы меньше 0,001 показываются со знаком и знаком «<», а не как ноль. Сопоставление описательное: оно не доказывает, что стиль вызван именно автором или переводчиком. Диаграмма подписывает разницу «правая − левая» с единицей измерения; точные наблюдения остаются в таблице. После загрузки проверенного JSON показываются девять метрик даже при пропусках: «нет данных» — не ноль; JSON/CSV содержат только измерения обеих книг, Markdown также показывает пропуски.</p></div>
+<p>Сравнивайте одинаковые нормированные метрики только при совпадении профиля измерений. Таблица содержит точные наблюдения и разницу «правая − левая»; ненулевые разницы меньше 0,001 показываются со знаком и знаком «<», а не как ноль. Сопоставление описательное: оно не доказывает, что стиль вызван именно автором или переводчиком. Диаграмма подписывает разницу «правая − левая» с единицей измерения; точные наблюдения остаются в таблице. Без JavaScript таблица ниже уже показывает все девять совместных измерений выбранных редакций с точными значениями; после загрузки проверенного JSON доступны другие пары и пропуски: «нет данных» — не ноль; JSON/CSV содержат только измерения обеих книг, Markdown также показывает пропуски.</p></div>
 <p class="permalink-help">Хотите поделиться сравнением? <a id="share-pair" href="?left=anna&amp;right=karamazov&amp;pair_metric=fantlab.dialogue.share_percent#pairs">Прямая ссылка на «Анну Каренину» и «Братьев Карамазовых» ↗</a>. Ссылка фиксирует две измеренные редакции и показатель, а не научную совместимость с FantLab.</p>
 <nav class="pair-starters" aria-label="Готовые сравнения книг одного автора">
   <p class="pair-starters-heading">Один автор, две книги <span>Начните с реальных измерений разных произведений. Это наблюдения, не доказательство индивидуального стиля.</span></p>
@@ -220,7 +220,17 @@
 <div class="table-region" tabindex="0" role="region" aria-label="Таблица сравнения измерений">
 <table><caption id="pair-caption">Анна Каренина и Братья Карамазовы · справа минус слева · диагностика</caption>
 <thead><tr><th scope="col">Метрика</th><th scope="col">Левая книга</th><th scope="col">Правая книга</th><th scope="col">Δ (правая − левая)</th><th scope="col">Единица</th></tr></thead>
-<tbody id="pair-rows"><tr><th scope="row">Доля диалогов</th><td>34,97</td><td>48,78</td><td>+13,81</td><td>% · Δ в п.п.</td></tr><tr><th scope="row">Средняя длина предложения</th><td>79</td><td>82,35</td><td>+3,35</td><td>символов/предложение</td></tr><tr><th scope="row">Запятые</th><td>146,31</td><td>150,55</td><td>+4,24</td><td>на 1000 слов</td></tr></tbody></table></div>
+<tbody id="pair-rows">
+<tr data-static-metric="fantlab.dialogue.share_percent"><th scope="row">Доля диалогов</th><td>34.97462555501088</td><td>48.78165217645698</td><td>+13,807</td><td>% · Δ в п.п.</td></tr>
+<tr data-static-metric="fantlab.dialogue.author_text_inside_dialogue_percent"><th scope="row">Авторские ремарки внутри диалогов</th><td>38.39203965651457</td><td>30.62487903412669</td><td>-7,767</td><td>% · Δ в п.п.</td></tr>
+<tr data-static-metric="fantlab.dialogue.mean_dialogue_sentence_length_chars"><th scope="row">Длина реплики</th><td>51.53638271820885</td><td>62.341827266238404</td><td>+10,805</td><td>символов / предложение</td></tr>
+<tr data-static-metric="fantlab.dialogue.mean_narration_sentence_length_chars"><th scope="row">Длина авторского предложения</th><td>109.54996977634495</td><td>115.89735099337749</td><td>+6,347</td><td>символов / предложение</td></tr>
+<tr data-static-metric="fantlab.general.mean_sentence_length_chars"><th scope="row">Длина предложения</th><td>78.99585453175052</td><td>82.3485827716739</td><td>+3,353</td><td>символов / предложение</td></tr>
+<tr data-static-metric="fantlab.general.mean_word_length_chars"><th scope="row">Длина слова</th><td>4.9825511029930425</td><td>4.866872079289272</td><td>-0,116</td><td>символов / слово</td></tr>
+<tr data-static-metric="fantlab.punctuation.comma.per_1000_words"><th scope="row">Запятые</th><td>146.31457020025394</td><td>150.55375819510775</td><td>+4,239</td><td>на 1000 слов</td></tr>
+<tr data-static-metric="fantlab.punctuation.dash.per_1000_words"><th scope="row">Тире</th><td>46.57370488346364</td><td>31.60615553159075</td><td>-14,968</td><td>на 1000 слов</td></tr>
+<tr data-static-metric="fantlab.punctuation.question.per_1000_words"><th scope="row">Вопросительные знаки</th><td>8.471996376569473</td><td>9.678358068436639</td><td>+1,206</td><td>на 1000 слов</td></tr>
+</tbody></table></div>
 <div class="evidence-actions"><button type="button" id="pair-export" disabled>Скачать сравнение (JSON)</button><button type="button" id="pair-export-csv" disabled>Скачать таблицу (CSV)</button><button type="button" id="pair-export-markdown" disabled>Скачать отчёт (Markdown)</button><span>JSON/CSV — только совместные измерения; Markdown — все 9 полей, включая пропуски · без текста произведений</span></div>
 <p class="evidence-warning">Сравнение оригинала и перевода станет доступным, когда обе конкретные редакции будут независимо измерены в собственных языковых профилях. Совпадение названия или автора не означает совпадения текста.</p>
 </section>

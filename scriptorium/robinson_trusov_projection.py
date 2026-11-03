@@ -70,6 +70,21 @@ class ProjectedPageJoin:
         }
 
 
+def _enclosed_in_outer_markup(projected: str, start: int) -> bool:
+    """Fail closed on multiline comments, links or enclosing brace groups."""
+    if (projected.rfind("<!--", 0, start) > projected.rfind("-->", 0, start) or
+            projected.rfind("[[", 0, start) > projected.rfind("]]", 0, start)):
+        return True
+    cursor = 0
+    while True:
+        opening = projected.find("{{", cursor, start)
+        if opening < 0:
+            return False
+        if _matching_brace_end(projected, opening) > start:
+            return True
+        cursor = opening + 2
+
+
 def _var_preview_partition(
     projected: str,
 ) -> tuple[list[tuple[int, int, str, str, bool]], dict[str, int]]:
@@ -101,7 +116,8 @@ def _var_preview_partition(
         line_end = len(projected) if line_break < 0 else line_break
         context = projected[line_start:line_end]
         outside = projected[line_start:start] + projected[end:line_end]
-        if any(mark in outside for mark in ("{{", "}}")) or "{{{" in context:
+        if (_enclosed_in_outer_markup(projected, start) or
+                any(mark in outside for mark in ("{{", "}}")) or "{{{" in context):
             reasons["multiple_templates_on_line"] += 1
             continue
         branches = flat.groups()
@@ -144,6 +160,7 @@ def preview_var_orthographies(projected: str) -> tuple[str, str, int, int]:
 def var_preview_refusal_reasons(projected: str) -> dict[str, int]:
     """Report residual unsafe calls after both flat and multiline previews."""
     return _var_preview_partition(projected)[1]
+
 
 def project_page(candidate: str) -> tuple[str, int, int, int, int]:
     """Only unwrap isolated, literal nop and plain two-field heading lines.

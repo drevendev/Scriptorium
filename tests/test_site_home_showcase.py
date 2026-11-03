@@ -210,8 +210,13 @@ class HomeShowcaseTests(unittest.TestCase):
     def test_readme_links_to_expected_pages_without_fake_live_claim(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         self.assertIn("https://drevendev.github.io/Scriptorium/", readme)
-        self.assertRegex(readme, r"not a\s+claim that the public site is already live")
-        self.assertIn("SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true", readme)
+        history = (ROOT / "docs/reader-history.md").read_text(encoding="utf-8")
+        # The README retains explicit live-verification caveats; the
+        # legacy artifact-deploy switch remains in archived release notes.
+        self.assertIn("GitHub merges and CI builds alone are **not** independent live-site", readme)
+        self.assertIn("LIVE_VERIFIED` / `VISUAL_VERIFIED` remains **NOT_RUN**", readme)
+        self.assertIn("SCRIPTORIUM_PAGES_DEPLOY_ENABLED=true", history)
+        self.assertIn("not current acceptance or live-deployment evidence", history)
         self.assertIn("build/site/index.html", readme)
 
 

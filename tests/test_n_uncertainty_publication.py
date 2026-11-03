@@ -64,8 +64,14 @@ class NativeNPublicationTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         self.assertIn(".n-table:focus-visible", html)
         self.assertIn('class="n-table" role="region" tabindex="0"', html)
-        self.assertNotIn(r"\n\n**Russian-first", readme)
-        self.assertIn("\n\n**Russian-first", readme)
+        history = (ROOT / "docs/reader-history.md").read_text(encoding="utf-8")
+        # The concise Reader introduction supersedes the old fixed phrase;
+        # the native-N evidence and its caveats remain available in history.
+        self.assertIn("Russian-first literary analyzer", readme)
+        self.assertIn("docs/reader-history.md", readme)
+        self.assertIn("n-uncertainty.html", history)
+        self.assertIn("M2 parity remains 0/5", readme)
+        self.assertIn("not current acceptance or live-deployment evidence", history)
 
     def test_tampering_counts_identity_or_parity_fails_closed(self):
         for path, value in [

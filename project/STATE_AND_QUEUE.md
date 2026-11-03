@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 397
+STATE_REVISION: 398
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-02
-LAST_RESULT: PR #397 merged at 3983b10e71f607feaf193544fabd4f70d74e44bc, accepting source-free real-provider preflight for all 150 Trusov Pages. Current scoped PR candidate classifies the 64 unresolved template openers from the same pinned source fetch without publishing prose.
-LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian works, 298 fields (249 numeric, 49 unavailable); Trusov 150-Page graph and #397 content preflight are accepted (317,178 unrendered characters, 34 Pages with 64 template openers), not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
+LAST_COMMITTED_RUN_AT: 2026-11-03
+LAST_RESULT: PR #398 merged in master at e02ac7de48fa1e15fd2938789afcea70bf2307f2 (64 Trusov template invocations classified from pinned 150-Page source; literary body unresolved). Current PR candidate repairs the user-facing Reader README and archives stale release claims.
+LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters, 64 classified template invocations on 34 Pages are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-PINNED-TEMPLATE-SHAPES
-ISSUE: classify the 64 observed unresolved brace openers without expanding or publishing source text
-STATUS: PR_CANDIDATE; LOCAL_REGRESSIONS_NOT_RUN; LIVE_PROVIDER_NOT_RUN
-BRANCH: scrip-trusov-template-invocation-inventory
-BASE: 3983b10e71f607feaf193544fabd4f70d74e44bc
+UNIT_ID: SCRIP-READER-FRONT-DOOR-11
+ISSUE: correct misleading pre-merge Reader documentation and make the current functioning 11-book experience discoverable
+STATUS: PR_CANDIDATE; STRUCTURAL_CHECKS_PASS; INTEGRATED_CI_NOT_RUN; LIVE_NOT_VERIFIED
+BRANCH: scrip-reader-11-book-front-door
+BASE: e02ac7de48fa1e15fd2938789afcea70bf2307f2
 
-ACCEPTANCE: reuse the exact 150-Page historical source verifier, preserve old #397 preflight output byte-for-byte, classify template titles/argument counts/dynamic calls and nested/unsupported openers into source-free JSON, detect provider/source drift and prohibit false body/size/parity claims; require positive/negative CI and one real-provider run before later independent merge. Even successful shape capture does not constitute template expansion or literary coverage.
+ACCEPTANCE: README first screen has an actual Reader action and local two-command walkthrough, exact 11/13 and 298/249/49 labels, translator/edition and missing-value caveats, M2 0/5, and separate Pages/browser status. Preserve old release notes explicitly as history rather than presenting PR-candidate claims as current state. No analyzer, source/body, site assets or publication settings changed.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,11 +22,11 @@ Milestone: add a second independently measured Russian Robinson Crusoe translati
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Classify Trusov Page template invocation shapes | Pinned 150 Page capture reuses exact preflight, surfaces 64 unresolved brace openers by safe names/digests and argument shapes; no text or false literary-body claims | Frozen graph and #397 receipt accepted; actual live capture and later acceptance still needed |
-| P2 | Resolve actual Trusov 1775 transclusion and freeze first narrative | Verified complete, normalized literary SHA-256, page-join/template semantics and >=300k gate | Depends on source-free pinned Page content preflight and print/body verification |
-| P3 | Run Trusov 29 metrics and show honest translation pair in Reader | Distinct translation sources/profiles, diagnostic deltas and historical/French intermediary caveats | Requires accepted first-narrative body, not FantLab input identity |
-| P4 | Reconcile stale Reader README and verify root Pages desktop/mobile | No stale PR-candidate/counter language; actual deployed browser flow and fallback evidence if allowed | HTTP browser historically ADMIN_BLOCKED; docs/structural tests independent |
-| P5 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Primary dependency evidence still unresolved |
+| P1 | Resolve actual Trusov 1775 transclusion and freeze first narrative | Verified complete, normalized literary SHA-256, page-join/template semantics and >=300k gate | #398 shape inventory accepted; source/body, template expansion and print identity still unverified |
+| P2 | Run Trusov 29 metrics and show an honest Reader translation pair | Distinct translator/edition, source-frozen body, diagnostic deltas and historical/French intermediary caveats | Requires accepted first narrative and a complete literary body |
+| P3 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Native data availability; no silent noun/cardinal inference |
+| P4 | Verify branch-root Reader desktop/mobile and live Pages | HTTP readback, layout/focus/screenshot evidence and clear visual gate outcome | Browser HTTP navigation historically blocked; no unverified publication claim |
+| P5 | Keep CLI/Reader source-bound comparison examples reproducible | Local test for private TXT/EPUB comparison and documented output provenance | Independent of historical template resolution |
 
 
 ## Retained evidence and scientific gates

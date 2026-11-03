@@ -168,3 +168,48 @@ until their exact identities, binding/expansion semantics and body inclusion
 effects are independently tested. Preserve the last accepted #397 receipt if
 a provider rate limit prevents a new capture; a CI run that does not complete
 is NOT_RUN, not failed scientific parity.
+
+
+### Trusov provisional standalone-template projection (new PR candidate)
+
+The accepted exact-source shape audit records **30 heading, 28 nop, 4 ВАР,
+and 2 dynamic/parser invocations** across 150 pinned Pages. The new
+scriptorium.robinson_trusov_projection probe reuses **one** historical Page
+fetch to recompute the previously frozen preflight and shape observations and
+produce a third, source-free per-Page ledger (counts, revisions, SHA-256 digests).
+No projected wikitext or book prose is written to disk.
+
+The deliberately **inferred, partial** plain-text projection handles only
+standalone, no-argument nop lines as paragraph separators and
+standalone, flat two-positional-argument heading lines with
+a plain heading label. Inline/nested calls, extra heading arguments, all
+ВАР orthography choices and parser/dynamic calls stay untouched and
+explicitly unresolved. The candidate does **not** implement full Page
+joining, MediaWiki's parser/cache or historical rendering and cannot
+freeze a literary body, prove the >=300k corpus threshold or support
+a measured two-translation comparison yet.
+
+Primary semantics: [Wikisource Nop documentation](https://wikisource.org/wiki/Template:Nop/doc)
+explains its paragraph-boundary purpose;
+[Russian Wikisource Heading documentation](https://ru.wikisource.org/wiki/Шаблон:Heading/Документация)
+describes the format and title arguments; and
+[ВАР documentation](https://ru.wikisource.org/wiki/Шаблон:ВАР/Документация)
+makes explicit that selection depends on historical vs modern orthography
+(and Lua). These are **current documentation leads**, not proof of the
+exact 2023 template revisions or reproduced historical output.
+
+Run one bounded probe (ordinary Wikisource access required; outputs must be new paths):
+
+    python -m scriptorium.robinson_trusov_projection \
+      --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+      --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
+      --preflight-output build/repro/trusov-1775.content-preflight.json \
+      --shapes-output build/repro/trusov-1775.template-shapes.json \
+      --output build/repro/trusov-1775.projection.json
+
+The scoped PR workflow checks the two accepted receipts again and validates
+the projection ledger with negative tests. Until exact-head CI completes,
+the number of actually handled invocations is **NOT_RUN**, not a claimed
+58/64 success. The remaining markup and first-narrative boundary still require
+source-bound extraction, normalization and independent scientific acceptance.
+M2 remains **0/5**.

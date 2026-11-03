@@ -21,7 +21,7 @@ from .single_page_revision import _api_query
 SCHEMA = "scriptorium-trusov-standalone-projection-v2"
 VAR_PREVIEW_PROFILE = "flat_two_argument_VAR_orthography_branch_only_inferred_v1"
 VAR_CALL = re.compile(r"\{\{ВАР\|([^{}|\r\n]*)\|([^{}|\r\n]*)\}\}")
-VAR_START = re.compile(r"(?<!\{)\{\{ВАР(?=[|}])")
+VAR_START = re.compile(r"(?<!\{)\{\{\s*ВАР(?=\s*[|}])")
 VAR_REFUSAL_KEYS = ("multiline", "multiple_templates_on_line",
                     "non_plain_branch", "unsupported_shape")
 HEX = re.compile(r"[a-f0-9]{64}\Z")

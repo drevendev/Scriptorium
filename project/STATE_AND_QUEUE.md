@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 398
+STATE_REVISION: 399
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-03
-LAST_RESULT: PR #398 merged in master at e02ac7de48fa1e15fd2938789afcea70bf2307f2 (64 Trusov template invocations classified from pinned 150-Page source; literary body unresolved). Current PR candidate repairs the user-facing Reader README and archives stale release claims.
-LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters, 64 classified template invocations on 34 Pages are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
+LAST_RESULT: PR #399 merged in master at 8fec2c27a3652ca1b6a4afe8710f2fc421ec83ec (Reader README front door). Current PR candidate adds a conservative, source-free Trusov 1775 standalone-template projection on the 150 frozen Page revisions.
+LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 64 classified template invocations on 34 Pages are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-FRONT-DOOR-11
-ISSUE: correct misleading pre-merge Reader documentation and make the current functioning 11-book experience discoverable
-STATUS: PR_CANDIDATE; STRUCTURAL_CHECKS_PASS; INTEGRATED_CI_NOT_RUN; LIVE_NOT_VERIFIED
-BRANCH: scrip-reader-11-book-front-door
-BASE: e02ac7de48fa1e15fd2938789afcea70bf2307f2
+UNIT_ID: SCRIP-TRUSOV-1775-TEMPLATE-PROJECTION
+ISSUE: reduce the unresolved Trusov Page template frontier without inventing historical rendering or publishing book text
+STATUS: PR_CANDIDATE; EXACT_150_PAGE_CI_PENDING; LOCAL_FULL_REPO_NOT_RUN; LITERARY_BODY_NOT_RUN
+BRANCH: scrip-trusov-standalone-template-projection
+BASE: 8fec2c27a3652ca1b6a4afe8710f2fc421ec83ec
 
-ACCEPTANCE: README first screen has an actual Reader action and local two-command walkthrough, exact 11/13 and 298/249/49 labels, translator/edition and missing-value caveats, M2 0/5, and separate Pages/browser status. Preserve old release notes explicitly as history rather than presenting PR-candidate claims as current state. No analyzer, source/body, site assets or publication settings changed.
+ACCEPTANCE: Reuse one identity-verified MediaWiki Page fetch to recompute accepted preflight and shape receipts and emit a source-free per-Page projection ledger. Only standalone no-argument nop and flat two-argument heading are tentatively projected; all other templates remain counted, unresolved and unmodified. Negative tests reject source-content leakage, false body/parity claims and identity drift. The result is explicitly provisional wikitext, not a licensed/frozen literary body or evidence of >=300k characters; no new Reader card or M2 advancement.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: add a second independently measured Russian Robinson Crusoe translati
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Resolve actual Trusov 1775 transclusion and freeze first narrative | Verified complete, normalized literary SHA-256, page-join/template semantics and >=300k gate | #398 shape inventory accepted; source/body, template expansion and print identity still unverified |
+| P1 | Reduce Trusov 1775 template frontier and freeze the first narrative | Verified complete normalized literary SHA-256, page join, VAR/parser semantics and >=300k gate | Provisional nop/heading projection CI is pending; 4 VAR and 2 dynamic/parser calls, historical rendering, literary body and print identity still unresolved |
 | P2 | Run Trusov 29 metrics and show an honest Reader translation pair | Distinct translator/edition, source-frozen body, diagnostic deltas and historical/French intermediary caveats | Requires accepted first narrative and a complete literary body |
 | P3 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Native data availability; no silent noun/cardinal inference |
 | P4 | Verify branch-root Reader desktop/mobile and live Pages | HTTP readback, layout/focus/screenshot evidence and clear visual gate outcome | Browser HTTP navigation historically blocked; no unverified publication claim |

@@ -226,6 +226,113 @@ class EpubIngestionTests(unittest.TestCase):
             self.assertEqual(result["right_source"]["raw_sha256"], sha256(extracted_b).hexdigest())
             self.assertIn("0/5", result["scientific_boundary"])
 
+
+    def test_mixed_text_epub_and_json_matches_staged_analysis_in_all_formats(self):
+        from scriptorium import cli
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            manuscript = root / "PRIVATE-translation.txt"
+            archive = root / "PRIVATE-edition.epub"
+            manuscript.write_text("Кот говорит! Пёс отвечает. Длиннее ли это предложение?", encoding="utf-8")
+            raw_archive = book()
+            archive.write_bytes(raw_archive)
+            txt_json, epub_json = root / "text-analysis.json", root / "epub-analysis.json"
+            self.assertEqual(cli.main(["analyze", str(manuscript), "--output", str(txt_json)]), 0)
+            self.assertEqual(cli.main(["epub", str(archive), "--output", str(epub_json)]), 0)
+            cases = (
+                ("text", manuscript, txt_json, "epub", archive, epub_json),
+                ("epub", archive, epub_json, "text", manuscript, txt_json),
+                ("json", txt_json, txt_json, "epub", archive, epub_json),
+                ("text", manuscript, txt_json, "json", epub_json, epub_json),
+            )
+            for index, (a_kind, a_path, a_json, b_kind, b_path, b_json) in enumerate(cases):
+                for fmt in ("json", "html", "csv", "markdown"):
+                    with self.subTest(case=index, fmt=fmt):
+                        direct, staged = root / f"mixed-{index}.{fmt}", root / f"staged-{index}.{fmt}"
+                        self.assertEqual(cli.main([
+                            "compare", str(a_path), str(b_path),
+                            "--left-kind", a_kind, "--right-kind", b_kind,
+                            "--format", fmt, "--output", str(direct),
+                        ]), 0)
+                        self.assertEqual(cli.main([
+                            "compare", str(a_json), str(b_json),
+                            "--format", fmt, "--output", str(staged),
+                        ]), 0)
+                        self.assertEqual(direct.read_bytes(), staged.read_bytes())
+                        rendered = direct.read_text(encoding="utf-8")
+                        self.assertNotIn("Кот говорит!", rendered)
+                        self.assertNotIn("Первый текст", rendered)
+                        self.assertIn("M2 0/5", rendered)
+
+            # An EPUB projected as UTF-8 must compare identically to its
+            # extracted-body text; the source hash is not the ZIP archive hash.
+            projected = root / "PRIVATE-extracted.txt"
+            body, _ = epub.extract_epub(raw_archive)
+            projected.write_bytes(body)
+            result_file = root / "identical.json"
+            self.assertEqual(cli.main([
+                "compare", str(archive), str(projected),
+                "--left-kind", "epub", "--right-kind", "text",
+                "--format", "json", "--output", str(result_file),
+            ]), 0)
+            result = json.loads(result_file.read_text(encoding="utf-8"))
+            self.assertEqual(len(result["metrics"]), 29)
+            self.assertEqual(result["left_source"]["raw_sha256"], sha256(body).hexdigest())
+            self.assertEqual(result["right_source"]["raw_sha256"], sha256(body).hexdigest())
+            self.assertNotEqual(result["left_source"]["raw_sha256"], sha256(raw_archive).hexdigest())
+            self.assertTrue(all(float(row["difference"]) == 0 for row in result["metrics"]
+                                if row["comparison_status"] == "comparable"))
+
+    def test_mixed_input_rejects_ambiguous_options_bad_sources_and_occupied_output(self):
+        from scriptorium import cli
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            good_text = root / "PRIVATE-good.txt"
+            bad_text = root / "PRIVATE-invalid.txt"
+            good_epub = root / "PRIVATE-valid.epub"
+            bad_epub = root / "PRIVATE-invalid.epub"
+            output = root / "PRIVATE-result.json"
+            good_text.write_text("Кот спит. Пёс бежит.", encoding="utf-8")
+            bad_text.write_bytes(b"\xff\xfe")
+            good_epub.write_bytes(book())
+            bad_epub.write_bytes(b"not an EPUB")
+            scenarios = (
+                (["--left-kind", "text", str(good_text), str(good_epub)], "requires"),
+                (["--right-kind", "epub", str(good_text), str(good_epub)], "requires"),
+                (["--texts", "--left-kind", "text", "--right-kind", "epub", str(good_text), str(good_epub)], "cannot be combined"),
+                (["--epubs", "--left-kind", "text", "--right-kind", "epub", str(good_text), str(good_epub)], "cannot be combined"),
+                (["--left-kind", "text", "--right-kind", "epub", str(bad_text), str(good_epub)], "invalid"),
+                (["--left-kind", "text", "--right-kind", "epub", str(good_text), str(bad_epub)], "invalid"),
+            )
+            for options, expected in scenarios:
+                with self.subTest(options=options[:4]):
+                    stderr = StringIO()
+                    with redirect_stderr(stderr), self.assertRaises(SystemExit) as failure:
+                        cli.main(["compare", *options, "--format", "json", "--output", str(output)])
+                    self.assertEqual(failure.exception.code, 2)
+                    self.assertIn(expected, stderr.getvalue())
+                    self.assertNotIn("PRIVATE-", stderr.getvalue())
+                    self.assertFalse(output.exists())
+            output.write_text("PRESERVE", encoding="utf-8")
+            stderr = StringIO()
+            with redirect_stderr(stderr), self.assertRaises(SystemExit) as failure:
+                cli.main(["compare", str(good_text), str(good_epub),
+                          "--left-kind", "text", "--right-kind", "epub",
+                          "--format", "json", "--output", str(output)])
+            self.assertEqual(failure.exception.code, 2)
+            self.assertEqual(output.read_text(encoding="utf-8"), "PRESERVE")
+            self.assertNotIn("PRIVATE-", stderr.getvalue())
+            link = root / "PRIVATE-alias.epub"
+            try:
+                link.symlink_to(good_epub)
+            except (OSError, NotImplementedError):
+                pass
+            else:
+                with redirect_stderr(StringIO()), self.assertRaises(SystemExit) as failure:
+                    cli.main(["compare", str(good_text), str(link),
+                              "--left-kind", "text", "--right-kind", "epub"])
+                self.assertEqual(failure.exception.code, 2)
+
     def test_direct_epub_comparison_rejects_bad_inputs_and_clobber(self):
         from scriptorium import cli
         with tempfile.TemporaryDirectory() as folder:

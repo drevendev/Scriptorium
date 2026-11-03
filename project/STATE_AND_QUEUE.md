@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 404
+STATE_REVISION: 409
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-03
-LAST_RESULT: PR #403 merged in master at 188f8ebcf26571dc54a7517e740341c2422982ca (diagnostic single-line ВАР branch previews). Exact oldid CI found 0/4 flat eligible and 4/4 multiline calls; current issue #404 implements bounded multiline preview without historical-render claim.
+LAST_RESULT: #405 merged at 1a91fb9780019e3e0143ca0eb5ca8f1efbd9a18b; exact 150-oldid CI yielded 0 flat and 0 multiline VAR previews (3 multiline limit, 1 unsupported). #407 merged at 96a33ab82ef07ca2802868549c44dcde9aa76b4f, fixing the revids/redirects API request. #409 now distinguishes bounded refusal reasons and binds each call to a frozen source SHA-1 and invocation digest.
 LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 58/64 provisionally handled template invocations (28 nop, 30 heading; 4 ВАР plus 2 dynamic unresolved) are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-1775-BOUNDED-MULTILINE-VAR
-ISSUE: #404 — source-free two-branch diagnostic preview for plain multiline VAR calls
+UNIT_ID: SCRIP-TRUSOV-1775-FOUR-VAR-REFUSAL-CLASSIFICATION
+ISSUE: #409 — diagnose four pinned VAR refusals with exact call/source identity
 STATUS: PR_CANDIDATE; EXACT_150_PAGE_CI_PENDING; LOCAL_FULL_REPO_NOT_RUN; LITERARY_BODY_NOT_RUN
-BRANCH: scrip-trusov-multiline-var-preview
-BASE: 188f8ebcf26571dc54a7517e740341c2422982ca
+BRANCH: scrip-trusov-var-refusal-classification
+BASE: 96a33ab82ef07ca2802868549c44dcde9aa76b4f
 
-ACCEPTANCE: Preserve pinned 150 oldids, conservative projected Page join and previous source-free receipts; classify every known ВАР exactly once as flat preview, bounded multiline preview or residual refusal. Limit size, LF count, markup/nesting/ambiguous neighboring calls and control characters; keep positional whitespace verbatim. Emit distinct counts and per-page/joined orthography hashes, no prose or false scientific claim. Positive/negative regressions plus exact-head CI required; 2023 MediaWiki renderer, 1775 printed edition, complete narrative and M2 stay unverified.
+ACCEPTANCE: Distinguish call size, LF limit, nesting, unbalanced, extra argument and unsafe branch causes without arguments/prose. Bind four exact calls to frozen page oldids, MediaWiki SHA-1 and invocation SHA-256. Keep existing conservative Page join and branch previews unchanged. Verify synthetic tests and exact oldid CI; 2023 renderer, 1775 print, complete narrative and M2 remain unverified.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: add a second independently measured Russian Robinson Crusoe translati
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Complete issue #404 bounded multiline ВАР diagnostics; then resolve dynamic frontier | Exact 150-oldid CI distinguishes flat/multiline accepted counts from refusals; conservative Page join retained; narrative/size gates remain separate | Four historical ВАР and two parser/dynamic calls remain unverified as rendered; synthetic LF seams / print mapping open |
+| P1 | #409 source-identity-bound diagnosis of four real ВАР refusals; select a renderer dependency or a safe changed projection from observed exact-head causes | Four digest-bound decisions and separate size, line-span and structural refusal counts in pinned CI; no false literary-body gate | Historical template semantics and two parser/dynamic calls remain unresolved; next selection depends on actual reasons |
 | P2 | Run Trusov 29 metrics and show an honest Reader translation pair | Distinct translator/edition, source-frozen body, diagnostic deltas and historical/French intermediary caveats | Requires accepted first narrative and a complete literary body |
 | P3 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Native data availability; no silent noun/cardinal inference |
 | P4 | Verify branch-root Reader desktop/mobile and live Pages | HTTP readback, layout/focus/screenshot evidence and clear visual gate outcome | Browser HTTP navigation historically blocked; no unverified publication claim |

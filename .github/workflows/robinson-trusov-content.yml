@@ -92,6 +92,15 @@ jobs:
           assert 0 <= projection["flat_var_preview_count"] + projection["multiline_var_preview_count"] <= summary["literal_template_counts"]["ВАР"]
           assert projection["unresolved_invocations"] >= summary["literal_template_counts"]["ВАР"]
           assert (sum(projection["var_preview_refusal_reasons"].values()) + projection["flat_var_preview_count"] + projection["multiline_var_preview_count"] == summary["literal_template_counts"]["ВАР"])
+          # A decision per literal call, exactly bound to frozen 2023 oldid/SHA-1
+          # and invocation SHA-256. Never echo arguments or page prose.
+          var_rows=[p for p in projection["pages"] if p["var_call_partition"]]
+          assert sum(len(p["var_call_partition"]) for p in var_rows)==4
+          assert {p["page_sequence"] for p in var_rows} <= {148,149,150,151}
+          for p in var_rows:
+            frozen=next(x for x in graph["pages"] if x["page_sequence"]==p["page_sequence"])
+            assert (p["revision_id"],p["source_mediawiki_sha1"]) == (frozen["revision_id"],frozen["mediawiki_sha1"])
+            print(f"Trusov VAR Page {p['page_sequence']} oldid={p['revision_id']} source_sha1={p['source_mediawiki_sha1']} decisions={[d['decision'] for d in p['var_call_partition']]}")
           print(f"Trusov VAR preview: flat={projection['flat_var_preview_count']}, multiline={projection['multiline_var_preview_count']}, residual={projection['var_preview_refusal_reasons']}")
           assert len(projection["joined_pre_reform_var_preview_sha256"]) == 64
           assert len(projection["joined_modern_var_preview_sha256"]) == 64

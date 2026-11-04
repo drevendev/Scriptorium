@@ -45,10 +45,11 @@ was made. The reviewed artifact was downloaded and checked before adoption.
 
 The final workflow has **no bootstrap branch or current-title capture**. It
 runs the standard-library suite, verifies the committed byte pin, replays the
-exact oldids, and uploads only a successful source-free receipt. The working
-checkout and Actions token are read-only; no provider edits or repository writes
-occur in CI. A future source update needs an explicit reviewed change to both
-the manifest and its pin, with a new capture/replay provenance record.
+exact oldids, and uploads only a successful source-free receipt. Its GitHub
+token has `contents: read`, and checkout does not persist credentials. The local
+build workspace remains writable; CI performs no provider edits or remote
+repository writes. A future source update needs an explicit reviewed change to
+both the manifest and its pin, with a new capture/replay provenance record.
 
 ## Validation and scope
 

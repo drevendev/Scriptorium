@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 415
+STATE_REVISION: 416
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-04
-LAST_RESULT: Prepared a complete no-JavaScript single-work evidence table for the 28 frozen Anna Karenina metrics (23 numeric, five explicitly unavailable) plus human-readable punctuation/UASZ labels, pinned-data smoke verification and Pages CI. Pending later independent review and merge. No live Pages claim.
-LAST_VERIFIED_PROGRESS: Master already contains the merged #415 exact nine-metric no-JavaScript paired table; 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov historical rendering remains unverified. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
+LAST_RESULT: Prepared fail-closed validation for non-negative FantLab/Scriptorium POS count partitions, including zero and invalid-type regressions. PR candidate for later exact-head CI acceptance; no new morphology measurement or parity claim.
+LAST_VERIFIED_PROGRESS: #416 merged at 20ea0b6e7c51dde6d7984abb63ccc64d12826df3; root Reader retains 28 Anna static measurements and 9 static comparison rows. 11 measured Russian editions; 13 catalogue cards; 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-SINGLE-STATIC-FULL
-ISSUE: #283 — readable, source-bound measurements without JavaScript
+UNIT_ID: SCRIP-REPRO-POS-ACCOUNTING-NONNEGATIVE
+ISSUE: #281 — fail-closed diagnostic POS accounting evidence
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_NOT_RUN; LATER_ACCEPTANCE_REQUIRED; MASTER_AND_LIVE_UNCHANGED
-BRANCH: scrip-reader-static-single-28-measurements
-BASE: abe620529e698d4384df993f73f2ff4086a6a955
+BRANCH: scrip-repro-pos-accounting-nonnegative
+BASE: 20ea0b6e7c51dde6d7984abb63ccc64d12826df3
 
-ACCEPTANCE: Render all 28 pinned Anna Karenina fields in the root Reader without JavaScript, exactly matching source-backed measured numbers, FantLab display references, missingness, scientific status, signed descriptive delta and units. Keep readable punctuation/volume labels consistent with the interactive Reader. A regression smoke must fail for missing, stale, reordered, invented, or silently zero-filled rows. The fallback must remain visible when verified JSON fails; no manuscript text or M2 claim.
+ACCEPTANCE: Reject negative, Boolean, float and non-integer FantLab or Scriptorium POS count inputs before producing a source-unmatched diagnostic delta, even if a negative partition sums correctly. Keep honest empty (all-zero) partitions valid and preserve positive accounting. No POS mapping/profile changes, new provider claim or M2 progress.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: first honest comparison of two independently measured Russian translations of the same work; independently ship reader/analyzer improvements while the second historical body is blocked.
+Milestone: first honest comparison of two independently measured Russian translations of the same work; ship independent analyzer/science and Reader slices while the Trusov source remains blocked.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 full single-work no-script evidence table | 28 pinned rows and explicit missing values, later exact-head CI acceptance | Existing Anna pinned evidence; no corpus or parity claim |
-| P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct source, run 29 metrics, truthful same-work pair | Trusov historical literary body and renderer unverified; select independent work if unchanged |
-| P3 | #408 White Guard exact-oldid 20-chapter replay | Provider-frozen immutable 11/9 manifest and pinned-only CI | Requires independently verified live provider bootstrap |
-| P4 | #282/#281 AOT/FantLab compatibility and metric readiness | New native POS-N discriminator or source-matched field delta | Native runtime/reference identity unresolved |
-| P5 | #283/#285 Reader live Pages, desktop/mobile verification | HTTP and keyboard/focus screenshots | Browser navigation previously blocked; preserve last publication |
+| P1 | #281 fail-closed POS count accounting | Focused negative/zero regressions, exact-head CI, later PR acceptance | Existing diagnostics only |
+| P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct source, run 29 metrics, truthful same-work comparison | Trusov historical literary body and renderer unverified; independent fallback required if unchanged |
+| P3 | #408 White Guard exact-oldid 20-chapter replay | Provider-frozen immutable 11/9 manifest and pinned-only CI | Verified provider bootstrap required |
+| P4 | #282/#281 AOT/FantLab compatibility and source-bound metric readiness | New native N disambiguator or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |
+| P5 | #283/#285 Reader live Pages, desktop/mobile verification | HTTP, keyboard/focus and mobile screenshots | Browser navigation previously blocked; preserve last publication |
 
 ## Retained evidence and scientific gates
 

@@ -6,11 +6,97 @@ import unittest
 
 from test_robinson_trusov_content import fixture, mock_query, PRIVATE_SOURCE
 from scriptorium.robinson_trusov_projection import (
-    project_page, capture_projection, validate_projection, ProjectedPageJoin,
+    project_page, preview_var_orthographies, var_preview_refusal_reasons, var_preview_call_partition, capture_projection, validate_projection, ProjectedPageJoin,
 )
 
 
 class TrusovProjectionTests(unittest.TestCase):
+    def test_var_orthography_previews_are_opt_in_and_distinct(self):
+        source = "Начало {{ВАР|мѣсто|место}} продолжение\n"
+        old, new, flat, multiline = preview_var_orthographies(source)
+        self.assertEqual((old, new, flat, multiline), (
+            "Начало мѣсто продолжение\n", "Начало место продолжение\n", 1, 0,
+        ))
+        self.assertEqual(project_page(source)[0], source)
+        with self.assertRaises(TypeError):
+            preview_var_orthographies(None)
+
+    def test_var_preview_never_expands_nested_named_or_markup_calls(self):
+        unsafe = ("{{other|{{ВАР|старое|новое}}}}\n"
+                  "{{ВАР|old|new|third}}\n"
+                  "{{ВАР|a=b|plain}}\n"
+                  "{{ВАР|<b>old</b>|plain}}\n"
+                  "{{ВАР||new}}\n"
+                  "{{ВАР|old|[link]}}\n"
+                  "{{ВАР|old|new}} and {{nop}}\n"
+                  "{{#if:yes|{{ВАР|before|after}}|other}}\n"
+                  "{{outer\n|{{ВАР|a|b}}\n}}\n"
+                  "<!--\n{{ВАР|hidden|visible}}\n-->\n")
+        old, new, flat, multiline = preview_var_orthographies(unsafe)
+        self.assertEqual((old, new, flat, multiline), (unsafe, unsafe, 0, 0))
+
+    def test_multiline_var_preview_keeps_anonymous_whitespace(self):
+        source = "Before {{ВАР|дѣло\nдалѣе|дело\nдалее}} after\n"
+        old, new, flat, multiline = preview_var_orthographies(source)
+        self.assertEqual((old, new, flat, multiline), (
+            "Before дѣло\nдалѣе after\n",
+            "Before дело\nдалее after\n", 0, 1,
+        ))
+        self.assertEqual(sum(var_preview_refusal_reasons(source).values()), 0)
+        self.assertEqual(project_page(source)[0], source)
+        crlf = "A {{ВАР|old\r\nword|new\r\nword}} Z\r\n"
+        self.assertEqual(preview_var_orthographies(crlf), (
+            "A old\r\nword Z\r\n", "A new\r\nword Z\r\n", 0, 1,
+        ))
+
+    def test_var_preview_bounded_multiline_refusal(self):
+        source = "{{ВАР|" + "\n".join(["text"] * 14) + "|modern}}\n"
+        old, new, flat, multiline = preview_var_orthographies(source)
+        self.assertEqual((old, new, flat, multiline), (source, source, 0, 0))
+        self.assertEqual(var_preview_refusal_reasons(source)["too_many_line_breaks"], 1)
+        unclosed = "{{ВАР|old|new"
+        self.assertEqual(preview_var_orthographies(unclosed), (unclosed, unclosed, 0, 0))
+        self.assertEqual(var_preview_refusal_reasons(unclosed)["unbalanced_braces"], 1)
+
+    def test_var_preview_refusal_categories_do_not_expose_source(self):
+        source = ("{{ВАР|дѣло|дело}}\n"
+                  "{{ВАР|old|\nmodern}}\n"
+                  "{{ВАР|a=b|plain}}\n"
+                  "{{other|{{ВАР|a|b}}}}\n"
+                  "{{ ВАР|old|new}}\n"
+                  "{{ВАР|old|new|third}}\n"
+                  "{{ВАР|" + "\n".join(["text"] * 14) + "|modern}}\n")
+        old, new, flat, multiline = preview_var_orthographies(source)
+        refusals = var_preview_refusal_reasons(source)
+        self.assertEqual((flat, multiline), (1, 1))
+        self.assertEqual(refusals, {
+            "call_too_large": 0, "too_many_line_breaks": 1,
+            "nested_braces": 0, "unbalanced_braces": 0,
+            "extra_arguments": 1, "unsupported_shape": 1,
+            "multiple_templates_on_line": 1, "non_plain_branch": 1,
+        })
+        self.assertEqual(sum(refusals.values()) + flat + multiline, 7)
+        self.assertNotIn("дѣло", json.dumps(refusals, ensure_ascii=False))
+
+    def test_refusal_diagnostics_partition_distinct_limits_and_nested_calls(self):
+        source = ("{{ВАР|" + "x" * 4097 + "|new}}\n"
+                  "{{ВАР|" + "\n".join(["old"] * 14) + "|new}}\n"
+                  "{{ВАР|old{{nested}}|new}}\n"
+                  "{{ВАР|a|b|c}}\n")
+        reasons = var_preview_refusal_reasons(source)
+        self.assertEqual(reasons["call_too_large"], 1)
+        self.assertEqual(reasons["too_many_line_breaks"], 1)
+        self.assertEqual(reasons["nested_braces"], 1)
+        self.assertEqual(reasons["extra_arguments"], 1)
+        self.assertEqual(sum(reasons.values()), 4)
+        decisions = var_preview_call_partition(source)
+        self.assertEqual(len(decisions), 4)
+        self.assertEqual({d["decision"] for d in decisions},
+                         {"call_too_large", "too_many_line_breaks",
+                          "nested_braces", "extra_arguments"})
+        self.assertTrue(all(len(d["invocation_sha256"]) == 64 for d in decisions))
+        self.assertNotIn("old", json.dumps(decisions))
+
     def test_joined_projection_digest_is_source_free_not_body(self):
         join = ProjectedPageJoin()
         with self.assertRaisesRegex(ValueError, "no projected Pages"):
@@ -57,7 +143,8 @@ class TrusovProjectionTests(unittest.TestCase):
             if page["title"] == graph["pages"][0]["title"]:
                 page["revisions"][0]["slots"]["main"]["content"] = (
                     "<noinclude>header</noinclude>" + PRIVATE_SOURCE +
-                    "\n{{nop}}\n{{heading|4|Secret heading}}\n" +
+                    "\n{{nop}}\n{{heading|4|Secret heading}}\n{{ВАР|ѣ|е}}\n" +
+                    "{{ВАР|first\nline|second\nline}}\n" +
                     "<noinclude>footer</noinclude>"
                 )
         preflight, shapes = {}, {}
@@ -70,14 +157,43 @@ class TrusovProjectionTests(unittest.TestCase):
                          sum(p["projected_wikitext_characters_including_spaces"] for p in report["pages"]) + 149)
         self.assertEqual(report["handled_nop"], 1)
         self.assertEqual(report["handled_heading"], 1)
-        self.assertEqual(report["unresolved_invocations"], 149)
-        self.assertEqual(shapes["total_invocations"], 151)
+        self.assertEqual(report["unresolved_invocations"], 151)
+        self.assertEqual(shapes["total_invocations"], 153)
+        self.assertEqual(report["flat_var_preview_count"], 1)
+        self.assertEqual(report["multiline_var_preview_count"], 1)
+        self.assertEqual(sum(report["var_preview_refusal_reasons"].values()), 0)
+        self.assertNotEqual(report["joined_pre_reform_var_preview_sha256"],
+                            report["joined_modern_var_preview_sha256"])
         self.assertFalse(report["corpus_threshold_verified"])
         self.assertIsNone(report["literary_body_sha256"])
         self.assertNotIn(PRIVATE_SOURCE, json.dumps(report, ensure_ascii=False))
         self.assertNotIn("Secret heading", json.dumps(report, ensure_ascii=False))
+        self.assertEqual(report["pages"][0]["source_mediawiki_sha1"],
+                         graph["pages"][0]["mediawiki_sha1"])
+        self.assertEqual([d["decision"] for d in report["pages"][0]["var_call_partition"]],
+                         ["flat_preview", "multiline_preview"])
         validate_projection(report, graph, preflight, shapes)
 
+        altered = copy.deepcopy(report)
+        altered["pages"][0]["var_preview_refusal_reasons"]["too_many_line_breaks"] = 1
+        with self.assertRaisesRegex(ValueError, "VAR preview refusal partition"):
+            validate_projection(altered, graph, preflight, shapes)
+        altered = copy.deepcopy(report)
+        altered["flat_var_preview_count"] = 2
+        with self.assertRaisesRegex(ValueError, "VAR preview aggregate"):
+            validate_projection(altered, graph, preflight, shapes)
+        altered = copy.deepcopy(report)
+        altered["pages"][0]["flat_var_preview_count"] = 2
+        with self.assertRaisesRegex(ValueError, "VAR preview refusal partition"):
+            validate_projection(altered, graph, preflight, shapes)
+        altered = copy.deepcopy(report)
+        altered["pages"][0]["multiline_var_preview_count"] = 2
+        with self.assertRaisesRegex(ValueError, "VAR preview refusal partition"):
+            validate_projection(altered, graph, preflight, shapes)
+        altered = copy.deepcopy(report)
+        altered["var_preview_profile"] = "historical_render_verified"
+        with self.assertRaisesRegex(ValueError, "VAR preview profile"):
+            validate_projection(altered, graph, preflight, shapes)
         altered = copy.deepcopy(report)
         altered["pages"][0]["text"] = PRIVATE_SOURCE
         with self.assertRaisesRegex(ValueError, "leakage"):
@@ -104,7 +220,19 @@ class TrusovProjectionTests(unittest.TestCase):
             validate_projection(altered, graph, preflight, shapes)
         altered = copy.deepcopy(report)
         altered["pages"][1]["revision_id"] += 1
-        with self.assertRaisesRegex(ValueError, "order drift"):
+        with self.assertRaisesRegex(ValueError, "revision/source SHA-1 drift"):
+            validate_projection(altered, graph, preflight, shapes)
+        altered = copy.deepcopy(report)
+        altered["pages"][0]["source_mediawiki_sha1"] = "0" * 40
+        with self.assertRaisesRegex(ValueError, "revision/source SHA-1 drift"):
+            validate_projection(altered, graph, preflight, shapes)
+        altered = copy.deepcopy(report)
+        altered["pages"][0]["var_call_partition"][0]["invocation_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "VAR invocation identity"):
+            validate_projection(altered, graph, preflight, shapes)
+        altered = copy.deepcopy(report)
+        altered["pages"][0]["var_call_partition"][0]["decision"] = "non_plain_branch"
+        with self.assertRaisesRegex(ValueError, "VAR decision histogram"):
             validate_projection(altered, graph, preflight, shapes)
 
 

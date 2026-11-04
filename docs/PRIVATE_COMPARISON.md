@@ -15,6 +15,10 @@ scriptorium compare first.json second.json --format markdown --output comparison
 scriptorium compare --texts first.txt second.txt --format markdown --output direct.md
 # Compare local EPUB editions directly, without intermediate reports:
 scriptorium compare --epubs edition-a.epub edition-b.epub --format markdown --output editions.md
+# Mix a local UTF-8 translation and an EPUB edition (no intermediate reports):
+scriptorium compare translation.txt edition.epub --left-kind text --right-kind epub --format html --output mixed.html
+# Or compare an EPUB directly with an existing verified-by-you JSON report:
+scriptorium compare edition.epub analysis.json --left-kind epub --right-kind json --format csv --output mixed.csv
 ```
 
 `--texts` reads each selected UTF-8 manuscript as a bounded regular, non-symlink
@@ -38,6 +42,20 @@ bytes. Use `epub --provenance-output` for archive and body identity receipts.
 Encrypted, unsafe, malformed, symlinked or unreadable EPUB files fail closed.
 Neither translation authorship nor source-edition/FantLab identity is inferred.
 
+For mixed inputs, `--left-kind` and `--right-kind` explicitly select
+`text` (UTF-8), `epub` (bounded XHTML-spine projection) or `json`
+(validated Scriptorium analysis). **Both** options are required; do not
+guess type from file extensions. They cannot be combined with legacy
+`--texts`/`--epubs` switches. Each side reuses the same analyzer, identity
+and rejection policy as the corresponding single-kind CLI path. For EPUB,
+the comparison source hash is of the **extracted text**, not the ZIP container.
+The generated source-free report is byte-identical to analyzing each side
+into JSON first. No intermediate manuscript text is written; supplied file
+names and error details are not printed in failed comparisons. Keep each
+translation/edition's provenance separately; a hash is not rights or edition
+authentication. All four report formats work, and occupied outputs remain
+create-only.
+
 The Markdown report is a fully offline 29-row table with exact right-minus-left
 values, explicit unavailable/incomparable statuses, source hashes, profile and
 dictionary identities, and a clear **M2 0/5** scientific boundary. Its title and
@@ -46,8 +64,16 @@ presentation is source-free like the existing JSON, HTML and CSV formats.
 
 Open the HTML locally. All formats preserve metric IDs, source digests, declared
 algorithm/dependency identities and measurement units. HTML includes a keyboard
-skip link, focusable scroll region, source details and a table alternative. Existing
-outputs are never overwritten. Shell redirection is not create-only; prefer `--output`.
+skip link, focusable scroll region, source details and a table alternative. The
+HTML also shows **14 punctuation-rate comparisons** as side-by-side bars, on a
+single scale across both reports. The longest comparable bar is the highest
+observed rate per 1,000 words, **not** percent of the text or a FantLab score;
+tiny nonzero rates retain a visible tick. Each pair retains exact left/right
+readings and a signed right-minus-left difference. Missing rates and mismatched
+methods display a notice instead of a misleading bar (neither means zero).
+The full 29-row table is preserved for keyboard, print and exact-value use; the
+bars work without JavaScript. Existing outputs are never overwritten. Shell
+redirection is not create-only; prefer `--output`.
 
 ## Interpretation
 

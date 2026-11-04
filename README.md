@@ -11,7 +11,7 @@
 | **11 measured Russian-language editions** | 13 catalogue cards; 2 research leads are explicitly **not analyzed** |
 | **298 recorded metric fields** | 249 numeric observations; 49 unavailable / NOT_RUN — never converted to zero |
 | **8 interactive charts** | Exact-value accessible tables, labels, units, chart links, CSV exports |
-| **Book and pair comparisons** | Author/translator attribution, edition hashes, signed **descriptive** differences |
+| **Book and pair comparisons** | Author/translator attribution, edition hashes, signed **descriptive** chart/table deltas (right minus left; percentage points for percents; nonzero differences below 0.001 visibly bounded instead of rounded to zero), an exact nine-metric no-JavaScript pair-table fallback plus three measured punctuation mini-charts, all 28 Anna Karenina metrics without JavaScript (23 measured, 5 unavailable), accessible tables and exact-value exports |
 
 The results include Russian originals and **separately identified translations**, including Alexandra Beketova's *Children of Captain Grant* and Maria Shishmareva's *Robinson Crusoe*. The latter is pinned to Wikisource oldid `5634933`: **572,587 characters including spaces; 24 numeric measurements and 5 NOT_RUN**. See the [source-free measured record](corpus/candidates/diagnostics/defoe-robinson-crusoe-shishmareva-1935-ru.measured.json). An English/French original has **not** been analyzed as a counterpart; cross-language or two-translation conclusions are **not** available yet.
 
@@ -49,6 +49,8 @@ scriptorium analyze manuscript.txt --output analysis.json
 scriptorium analyze manuscript.txt --format csv --output metrics.csv
 scriptorium analyze manuscript.txt --format markdown --output report.md
 ```
+
+The standalone HTML report includes a **14-category punctuation-frequency chart** drawn from the same measured values as its exact table. It works without JavaScript; each bar is scaled to the highest available rate **within that one report**, not to a percentage or FantLab score. Zero and unavailable measurements remain distinct; tiny nonzero rates have visible ticks. This is a descriptive visualization, not parity evidence.
 
 Open `report.html` locally, or read `report.md` as a portable, source-free Markdown table
 with canonical metric IDs, exact numeric values, profile versions and SHA-256 identities.
@@ -117,6 +119,9 @@ scriptorium compare analysis.json second-analysis.json --format markdown --outpu
 scriptorium compare --texts first-manuscript.txt second-manuscript.txt --format markdown --output direct-comparison.md
 # Or compare two private unencrypted EPUB editions without intermediate JSON:
 scriptorium compare --epubs translation-a.epub translation-b.epub --format markdown --output translations.md
+# Or mix local TXT, EPUB and existing analysis JSON inputs explicitly:
+scriptorium compare draft.txt edition.epub --left-kind text --right-kind epub --output mixed.html
+scriptorium compare edition.epub analysis.json --left-kind epub --right-kind json --format markdown --output mixed.md
 ```
 
 The `--texts` path runs the same local deterministic analyzer on both manuscripts
@@ -134,11 +139,21 @@ identify **extracted UTF-8 bodies, not EPUB archive bytes**; use
 `scriptorium epub --provenance-output` for archive/body identities. Encryption,
 DRM bypass, guessed translator/edition identities and FantLab parity are excluded.
 
+For different source types, give **both** `--left-kind` and `--right-kind`
+(`text`, `epub`, `json`); legacy `--texts` and `--epubs` keep working
+for same-type pairs. Types are never inferred from filenames. The mixed
+comparison uses the same bounded local readers, 29 metrics, extracted-body
+SHA-256 for EPUB and create-only source-free reports; it does not establish
+translator/edition identity or FantLab parity.
+
 Use `comparison.md` for a portable Markdown table with complete provenance,
 29 metric comparisons, unknown/incompatible statuses and the unchanged scientific caveat.
 
-Open `comparison.html` for the same 29 measurements, explicit units, source identities
-and **right minus left** differences. Percentage differences use percentage points.
+Open `comparison.html` for the same 29 measurements, plus a no-JavaScript
+**14-category punctuation comparison chart**: both reports share one scale for
+rates per 1,000 words, with exact values and signed differences beside every pair.
+Method-incompatible/missing rates never become false zero bars; the complete
+accessible table remains available, alongside source identities and exact **right minus left** differences. Percentage differences use percentage points.
 Unknown measurements do not become zero; different methods or dictionaries are labelled
 incomparable where applicable. JSON decimal observations and their differences retain
 precision. Contradictory counts, means, punctuation rates and same-text results are rejected.

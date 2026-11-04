@@ -17,15 +17,33 @@ def fetch_pinned_chapter_revisions(
 ) -> dict[str, str]:
     """Fetch the exact recorded revisions and fail closed on identity drift."""
 
-    expected = tuple(identities)
+    expected_rows = []
+    titles: set[str] = set()
+    for row in identities:
+        if not isinstance(row, Mapping):
+            raise ValueError("pinned identity must be an object")
+        row = dict(row)
+        revision_id = row.get("revision_id")
+        if type(revision_id) is not int or revision_id <= 0:
+            raise ValueError("invalid expected revision id")
+        for key in ("title", "revision_timestamp", "mediawiki_sha1"):
+            if not isinstance(row.get(key), str) or not row[key]:
+                raise ValueError(f"invalid expected {key}")
+        if "page_id" in row and (type(row["page_id"]) is not int or row["page_id"] <= 0):
+            raise ValueError("invalid expected page id")
+        if row["title"] in titles:
+            raise ValueError("duplicate expected chapter title")
+        titles.add(row["title"])
+        expected_rows.append(row)
+    expected = tuple(expected_rows)
     records: dict[str, str] = {}
-    by_revision_id = {int(row["revision_id"]): row for row in expected}
+    by_revision_id = {row["revision_id"]: row for row in expected}
     if len(by_revision_id) != len(expected):
         raise ValueError("packed manifest contains duplicate revision ids")
 
     for offset in range(0, len(expected), 40):
         batch = expected[offset : offset + 40]
-        requested_ids = [int(row["revision_id"]) for row in batch]
+        requested_ids = [row["revision_id"] for row in batch]
         payload = query(
             {
                 "action": "query",
@@ -33,9 +51,10 @@ def fetch_pinned_chapter_revisions(
                 "revids": "|".join(str(value) for value in requested_ids),
                 "rvprop": "ids|timestamp|sha1|content",
                 "rvslots": "main",
-                "redirects": "0",
             }
         )
+        if not isinstance(payload, dict):
+            raise ValueError("unexpected MediaWiki API response")
         query_obj = payload.get("query")
         if not isinstance(query_obj, dict):
             raise ValueError("MediaWiki response missing query")
@@ -57,7 +76,7 @@ def fetch_pinned_chapter_revisions(
             if not isinstance(revision, dict):
                 raise ValueError(f"unexpected revision object for {title!r}")
             revision_id = revision.get("revid")
-            if not isinstance(revision_id, int) or revision_id not in by_revision_id:
+            if type(revision_id) is not int or revision_id not in by_revision_id:
                 raise ValueError(f"unexpected revision id from MediaWiki: {revision_id!r}")
             if revision_id not in requested_ids:
                 raise ValueError(f"revision {revision_id} returned outside requested batch")
@@ -133,7 +152,7 @@ def replay_packed_manifest(
         "normalized_sha256": sha256(normalized.encode("utf-8")).hexdigest(),
     }
     for key, value in observed.items():
-        if composite_identity.get(key) != value:
+        if type(composite_identity.get(key)) is not type(value) or composite_identity.get(key) != value:
             raise ValueError(
                 f"frozen composite identity drift for {key}: "
                 f"observed {value!r}, expected {composite_identity.get(key)!r}"

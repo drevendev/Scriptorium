@@ -9,10 +9,11 @@ import json
 from pathlib import Path
 import re
 from typing import Callable, Iterable
-from urllib.parse import urlencode, quote
-from urllib.request import Request, urlopen
+from urllib.parse import quote
+from urllib.request import urlopen
 
 from .text import NORMALIZATION_PROFILE, normalize_text
+from .mediawiki_api import query_json
 
 
 API_URL = "https://ru.wikisource.org/w/api.php"
@@ -80,16 +81,7 @@ def expected_chapters() -> tuple[dict[str, object], ...]:
 
 
 def _api_query(params: dict[str, str]) -> dict[str, object]:
-    encoded = urlencode({**params, "format": "json", "formatversion": "2"})
-    request = Request(
-        f"{API_URL}?{encoded}",
-        headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
-    )
-    with urlopen(request, timeout=30) as response:
-        payload = json.load(response)
-    if not isinstance(payload, dict):
-        raise ValueError("unexpected MediaWiki API response")
-    return payload
+    return query_json(params, api_url=API_URL, user_agent=USER_AGENT, opener=urlopen)
 
 
 def fetch_current_chapter_revisions(
@@ -140,7 +132,7 @@ def fetch_current_chapter_revisions(
             revid = revision.get("revid")
             timestamp = revision.get("timestamp")
             mw_sha1 = revision.get("sha1")
-            if not isinstance(revid, int) or not isinstance(timestamp, str) or not isinstance(mw_sha1, str):
+            if type(revid) is not int or revid <= 0 or not isinstance(timestamp, str) or not isinstance(mw_sha1, str):
                 raise ValueError(f"incomplete revision identity for {title}")
             if title in records:
                 raise ValueError(f"duplicate chapter response: {title}")
@@ -222,7 +214,9 @@ def build_manifest(
     for chapter in chapters:
         title = str(chapter["title"])
         revision = revisions[title]
-        revision_id = int(revision["revision_id"])
+        revision_id = revision["revision_id"]
+        if type(revision_id) is not int or revision_id <= 0:
+            raise ValueError("invalid captured revision_id")
         if revision_id in revision_ids:
             raise ValueError(f"duplicate revision id {revision_id}")
         revision_ids.add(revision_id)

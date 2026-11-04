@@ -3,6 +3,7 @@ import json
 import unittest
 from unittest.mock import patch
 from urllib.error import HTTPError
+from scriptorium.mediawiki_api import MediaWikiReadError
 from urllib.parse import parse_qs, urlsplit
 
 from scriptorium.single_page_revision import (
@@ -84,7 +85,7 @@ class SinglePageRevisionTests(unittest.TestCase):
         cache_timeout = HTTPError(API_URL, 503, "Service Unavailable", {}, None)
         with patch("scriptorium.single_page_revision.urlopen", side_effect=cache_timeout) as open_url, \
              patch("scriptorium.single_page_revision.time.sleep") as sleep:
-            with self.assertRaises(HTTPError):
+            with self.assertRaisesRegex(MediaWikiReadError, "HTTP status 503"):
                 _api_query({"action": "query"})
             self.assertEqual(open_url.call_count, 1)
             sleep.assert_not_called()
@@ -116,7 +117,8 @@ class SinglePageRevisionTests(unittest.TestCase):
                 with patch("scriptorium.single_page_revision.urlopen",
                            return_value=Reply(bad)) as open_url, \
                      patch("scriptorium.single_page_revision.time.sleep") as sleep:
-                    with self.assertRaisesRegex(ValueError, "missing query"):
+                    expected_error = "non-retryable MediaWiki API error" if "error" in bad else "missing query"
+                    with self.assertRaisesRegex(ValueError, expected_error):
                         fetch_pinned_revision(title=TITLE, revision_id=REVISION_ID, query=_api_query)
                     self.assertEqual(open_url.call_count, 1)
                     sleep.assert_not_called()

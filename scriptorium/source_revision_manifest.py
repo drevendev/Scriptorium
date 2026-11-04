@@ -66,13 +66,13 @@ def _validated_receipt_rows(receipt: Mapping[str, object]) -> tuple[Mapping[str,
         if not isinstance(row, dict):
             raise ValueError("chapter receipt rows must be objects")
         for key in ("ordinal", "part", "chapter", "title"):
-            if row.get(key) != chapter[key]:
+            if type(row.get(key)) is not type(chapter[key]) or row.get(key) != chapter[key]:
                 raise ValueError(
                     f"chapter identity drift at ordinal {chapter['ordinal']}: "
                     f"{key}={row.get(key)!r}, expected {chapter[key]!r}"
                 )
         revision_id = row.get("revision_id")
-        if not isinstance(revision_id, int) or revision_id <= 0:
+        if type(revision_id) is not int or revision_id <= 0:
             raise ValueError(f"invalid revision_id at {chapter['title']!r}")
         if revision_id in revision_ids:
             raise ValueError(f"duplicate revision_id {revision_id}")
@@ -156,7 +156,9 @@ def decode_chapter_identities(manifest: Mapping[str, object]) -> tuple[dict[str,
     composition = manifest.get("composition")
     if not isinstance(composition, dict):
         raise ValueError("packed manifest missing composition")
-    if composition.get("part_chapter_counts") != list(PART_CHAPTER_COUNTS):
+    counts = composition.get("part_chapter_counts")
+    if (not isinstance(counts, list) or any(type(count) is not int for count in counts)
+            or counts != list(PART_CHAPTER_COUNTS)):
         raise ValueError("packed manifest chapter-count contract drift")
 
     encoding = manifest.get("chapter_identity_encoding")
@@ -176,7 +178,7 @@ def decode_chapter_identities(manifest: Mapping[str, object]) -> tuple[dict[str,
         raise ValueError("packed manifest revision_id count mismatch")
     if not isinstance(offsets, list) or len(offsets) != len(expected):
         raise ValueError("packed manifest timestamp-offset count mismatch")
-    if width != _SHA1_B64_NO_PADDING_WIDTH or not isinstance(concat, str):
+    if type(width) is not int or width != _SHA1_B64_NO_PADDING_WIDTH or not isinstance(concat, str):
         raise ValueError("unsupported packed MediaWiki SHA-1 encoding")
     if len(concat) != width * len(expected):
         raise ValueError("packed MediaWiki SHA-1 payload length mismatch")
@@ -187,12 +189,12 @@ def decode_chapter_identities(manifest: Mapping[str, object]) -> tuple[dict[str,
     for index, chapter in enumerate(expected):
         revision_id = revision_ids[index]
         offset = offsets[index]
-        if not isinstance(revision_id, int) or revision_id <= 0:
+        if type(revision_id) is not int or revision_id <= 0:
             raise ValueError(f"invalid packed revision_id at ordinal {index + 1}")
         if revision_id in seen_revision_ids:
             raise ValueError(f"duplicate packed revision_id {revision_id}")
         seen_revision_ids.add(revision_id)
-        if not isinstance(offset, int) or offset < 0:
+        if type(offset) is not int or offset < 0:
             raise ValueError(f"invalid packed timestamp offset at ordinal {index + 1}")
         chunk = concat[index * width : (index + 1) * width]
         try:
@@ -201,7 +203,10 @@ def decode_chapter_identities(manifest: Mapping[str, object]) -> tuple[dict[str,
             raise ValueError(f"invalid packed MediaWiki SHA-1 at ordinal {index + 1}") from exc
         if len(raw_sha1) != _SHA1_WIDTH_BYTES:
             raise ValueError(f"invalid packed MediaWiki SHA-1 width at ordinal {index + 1}")
-        timestamp = base_timestamp + timedelta(seconds=offset)
+        try:
+            timestamp = base_timestamp + timedelta(seconds=offset)
+        except (OverflowError, ValueError):
+            raise ValueError(f"invalid packed timestamp offset at ordinal {index + 1}") from None
         rows.append(
             {
                 **chapter,

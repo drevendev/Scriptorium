@@ -233,3 +233,57 @@ captured and validated the new fields, the actual joined SHA/count and
 alphabetic seam count remain **NOT_RUN**. Remaining four ВАР and two dynamic
 template calls still require historically bound semantics; source-bound
 first-narrative selection and print collation remain open. M2 remains **0/5**.
+
+### Explicit orthography-branch preview for flat ВАР (merged PR #403)
+
+The [Wikisource ВАР documentation](https://ru.wikisource.org/wiki/Шаблон:ВАР/Документация)
+identifies the **first** positional argument as pre-reform spelling and the
+**second** as modern spelling. This is a current documentation claim, not
+a pin of the historical 2023 Lua module/template version used by the 150
+Trusov Page revisions.
+
+The exact oldid-verified [source-free invocation inventory](https://github.com/drevendev/Scriptorium/actions/runs/41402787490)
+places the **four** ВАР calls on Pages **148–151**, with **two
+anonymous arguments each**, no named arguments and no nested braces.
+This identifies the shape, **not** the literal contents or line layout.
+
+The independent **source-free preview** compares both choices for a
+single flat, exactly two-argument ВАР call per line. Plain inline calls
+are eligible, but nested/multiple templates, named parameters, HTML,
+wiki links, empty or non-printable branches are left unresolved.
+The existing conservative page projection remains unchanged; ВАР
+invocations are **still counted as unresolved** for historical
+rendering purposes. The new versioned diagnostic adds per-page and
+whole-join digests of both hypothetical branches, plus the number of
+unambiguous flat calls actually previewed. Every unpreviewable ВАР is
+partitioned by a **source-free rejection category** (multiline,
+multiple templates on a line, non-plain branch, unsupported shape).
+Each row checks that previews plus refusals exactly match its pinned
+ВАР invocation count; the diagnostic does not expose any argument values. It never writes prose.
+
+Exact-head [CI #41640743857](https://github.com/drevendev/Scriptorium/actions/runs/41640743857)
+confirmed **0/4** single-line eligible previews and **4/4 multiline refusals**
+without drift in pinned oldids, previous shape receipts or projected-page identity.
+A preview is neither verified MediaWiki rendering nor a literary-body
+hash or a corpus admission. Two dynamic/parser calls, Page joins,
+proofreading/orthographic conventions and print collation remain open.
+M2 remains **0/5**.
+
+### Bounded multiline ВАР preview experiment (issue #404, PR candidate)
+
+The next diagnostic extends the two-branch preview to a single flat multiline
+`{{ВАР|first|second}}` invocation in a bounded line span. It preserves anonymous
+argument whitespace exactly, rejects calls above 4,096 characters / 12 LF
+boundaries or with a branch above 2,048 characters, and refuses nested groups,
+named/extra arguments, markup, comments, control characters or neighboring
+template calls. The accepted conservative Page join and unresolved historical
+invocation count remain unchanged. Separate per-page and joined SHA-256 digests,
+flat versus multiline preview counts and residual refusal categories are emitted
+without source text. Acceptance requires exact-head CI replay of all 150 oldids;
+no specific live multiline count is claimed before that replay.
+
+**Scientific limit:** this is a provisional source-free orthography branch
+experiment, not a pinned 2023 MediaWiki renderer, a proven 1775 printed edition,
+a complete first narrative, a size/admission gate, a measured second translation
+or FantLab parity. The two parser/dynamic invocations and Page seam semantics
+remain unresolved; M2 stays **0/5**.

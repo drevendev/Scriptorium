@@ -1,6 +1,7 @@
 """Regression coverage for descriptive, source-unmatched Reader deltas."""
 from __future__ import annotations
 import json
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -13,8 +14,17 @@ class ReaderDeltaTests(unittest.TestCase):
         html=(ROOT/"index.html").read_text(encoding="utf-8")
         data=json.loads((ROOT/"assets/evidence-snapshot.json").read_text(encoding="utf-8"))
         rows=html.split('<tbody id="measurement-rows">',1)[1].split("</tbody>",1)[0]
-        self.assertEqual(rows.count("<tr>"),4)
-        self.assertEqual(rows.count('class="benchmark-delta"'),4)
+        # The earlier four-row excerpt was replaced by the complete pinned
+        # 28-metric table. Keep an exact one-row-per-field contract here; the
+        # Node smoke additionally checks every value, label, unit and delta.
+        metric_ids=[m["id"] for m in data["books"][0]["metrics"]]
+        static_ids=re.findall(r'<tr data-static-single-metric="([^"]+)">',rows)
+        self.assertEqual(static_ids,metric_ids)
+        self.assertEqual(len(static_ids),28)
+        self.assertEqual(rows.count('class="benchmark-delta"'),len(metric_ids))
+        self.assertEqual(rows.count("<tr "),len(metric_ids))
+        self.assertIn("NOT_RUN",rows)
+        self.assertIn("UNAVAILABLE",rows)
         for value in ("+12\u00a0958","+16\u00a0083","−0,145 п.п.","−0,174"):
             self.assertIn(value,rows)
         for metric in ("fantlab.general.characters","fantlab.general.words",

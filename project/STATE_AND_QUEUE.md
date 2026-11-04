@@ -1,33 +1,34 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 402
+STATE_REVISION: 422
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-03
-LAST_RESULT: PR #401 merged in master at f757780b6eb8147ece55c436db76174de62c01b0 (source-free synthetic Page join and 149 seam slots). Current candidate hardens transient MediaWiki readback after a real CI provider-response failure; no literary-body claim.
-LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 58/64 provisionally handled template invocations (28 nop, 30 heading; 4 ВАР plus 2 dynamic unresolved) are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
+LAST_COMMITTED_RUN_AT: 2026-11-04
+LAST_RESULT: Owner-requested interactive batch prepares shared bounded MediaWiki read reliability and exact source-identity types (#424/#425) on the existing retry branch. Five malformed-identity acceptances were reproduced on exact master; 45 targeted offline tests pass after repair. Full exact-head CI and later acceptance remain required.
+LAST_VERIFIED_PROGRESS: Native master 5f14001b794fd3a46eed9ad4d11e29d74b8307f5 contains merged #422 (White Guard identity delivery); its stale PR_CANDIDATE text is superseded, not re-merged. No PR was open at batch orientation. Root Reader: 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-QA-MEDIAWIKI-TRANSIENT-READBACK
-ISSUE: bound transient Wikimedia API maxlag/429/rate-limit retry without masking exact historical source or checksum failures
-STATUS: PR_CANDIDATE; FULL_CI_PENDING; LOCAL_FULL_REPO_NOT_RUN; LITERARY_BODY_NOT_RUN
+UNIT_ID: SCRIP-INGEST-IMMUTABLE-RELIABILITY
+ISSUES: #424 (shared bounded transport), #425 (exact identity scalar types)
+STATUS: PR_CANDIDATE; TARGETED_LOCAL_TESTS_PASS; FINAL_EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
 BRANCH: scrip-mediawiki-read-retry-20261103
-BASE: f757780b6eb8147ece55c436db76174de62c01b0
+BASE: 5f14001b794fd3a46eed9ad4d11e29d74b8307f5
 
-ACCEPTANCE: Read-only API calls set maxlag=5 and retry only explicit maxlag/ratelimited or HTTP 429/503 with bounded Retry-After; 503 without server delay, unknown API errors, invalid responses and source-identity drift fail closed. Regression tests prove delays, caps, no silent successes; all existing pinned oldid/sha invariants remain unchanged.
+ACCEPTANCE: Reuse the accepted single-page policy in a shared transport; retry only explicit provider throttling, at most three attempts and 60 seconds total sleep, respecting Retry-After. Preserve exact requested IDs and all caller provenance checks. Reject malformed/mixed errors, nonfinite/duplicate JSON, coerced revision IDs and type-confused packed/single-page identities. Valid deterministic evidence bytes and scientific gates stay unchanged. Run exact-head full CI and pinned-provider checks; later independent acceptance, no same-run merge.
+
+See [reliability policy, offline verification and outbox reconciliation](../docs/WIKISOURCE_RELIABILITY.md). The old retry branch's code/test blobs already match master; its divergent ancestry is not proof of missing product work. Integrate current master without force and preserve its newer changes.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: add a second independently measured Russian Robinson Crusoe translation for an honest, source-bound paired Reader comparison.
+Milestone: first honest comparison of two independently measured Russian translations of the same work; ship independent analyzer/science and Reader slices while the Trusov source remains blocked.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Reduce Trusov 1775 template frontier and freeze the first narrative | Verified complete normalized literary SHA-256, historically justified page joins, VAR/parser semantics and >=300k gate | 58/64 template calls provisionally handled; proposed synthetic-LF join is only a diagnostic identity; 4 ВАР and 2 parser calls plus historical/print equivalence remain unresolved |
-| P2 | Run Trusov 29 metrics and show an honest Reader translation pair | Distinct translator/edition, source-frozen body, diagnostic deltas and historical/French intermediary caveats | Requires accepted first narrative and a complete literary body |
-| P3 | #282/#281 native AOT/FantLab compatibility | New measured POS-N discrimination or source-matched benchmark evidence | Native data availability; no silent noun/cardinal inference |
-| P4 | Verify branch-root Reader desktop/mobile and live Pages | HTTP readback, layout/focus/screenshot evidence and clear visual gate outcome | Browser HTTP navigation historically blocked; no unverified publication claim |
-| P5 | Keep CLI/Reader source-bound comparison examples reproducible | Local test for private TXT/EPUB comparison and documented output provenance | Independent of historical template resolution |
-
+| P1 | Fresh acceptance of #424/#425 delivery | Exact-head full CI, unchanged retained evidence, offline adversarial tests, qualifying merge | Do not author and merge the same semantic change in one run |
+| P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct literary body, run 29 metrics, truthful same-work comparison | Trusov historical body/renderer unverified; exclude unchanged blocked work and choose an independent slice |
+| P3 | White Guard literary-body preflight after merged #422 | Inspect the pinned 20-page body/template surface; define conservative extraction and source-free tests | Identity inventory is not body/size/print-edition admission; preserve the 11/9 split |
+| P4 | #282/#281 AOT/FantLab compatibility and source-bound metric readiness | New native N disambiguator or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |
+| P5 | #283/#285 Reader live Pages, desktop/mobile verification | HTTP, keyboard/focus and mobile screenshots | Browser navigation previously blocked; preserve last publication and continue independent work |
 
 ## Retained evidence and scientific gates
 
@@ -44,7 +45,7 @@ candidate records before acting; this delivery does not recalculate, admit or re
 - Children of Captain Grant / Alexandra A. Beketova: frozen 1,095,467-character Russian translation and 11 measured derived fields; distinct from French original/other translations, no FantLab result/input identity.
 - Aelita and We: published FantLab inputs are below 300k; zero M2 weight. We's public body remains separately unfrozen.
 - Petersburg: exact 632-page 1916 PDF and OCR/body contract; literary selection, body, size and identity gates remain open.
-- Shining World is incomplete; Road to Nowhere has 442,656 frozen alternate characters and 24 measured plus 5 NOT_RUN rows (Reader merged, FantLab input identity UNKNOWN); White Guard mixes source families; Twelve Chairs retains unresolved template/body semantics; Klim Samgin retains unresolved historical-renderer/FantLab equivalence.
+- Shining World is incomplete; Road to Nowhere has 442,656 frozen alternate characters and 24 measured plus 5 NOT_RUN rows (Reader merged, FantLab input identity UNKNOWN); White Guard mixes source families and has 20 captured/replayed identity rows adopted by merged #422, not a measured body; Twelve Chairs retains unresolved template/body semantics; Klim Samgin retains unresolved historical-renderer/FantLab equivalence.
 - Darwin/Rachinsky: SCRIP-CORPUS-078 through 084 retain zero-argument yo, references containment, VAR documentation/provider drift and six-revision identity evidence, not full historical replay/body/parity. Effective unresolved surface remains 4 tag shapes/130 tokens and 37 template shapes/2,356 invocations.
 - Perelman 1913: SCRIP-CORPUS-085 exact-PDF anchors include carrier 60 without a directly visible folio. Sampled +9 compatibility cannot establish total/global mapping, PDF/DjVu equivalence, OCR/body/size or FantLab identity. Do not interpolate missing folios arithmetically.
 
@@ -65,8 +66,8 @@ own manifest gates. Short excerpts/fixtures do not count as corpus admission.
 ## Scoped operational blockers
 
 - #265: default-branch rules prevent deletion/non-fast-forward and require PRs, with zero required approvals in the read ruleset. Connector identity has push/triage, not admin. No unsupported deletion/settings mutation or ref bypass.
-- #285 Pages: #360 is now merged into master. Live HTTP and desktop/mobile visual verification remain blocked/unverified despite earlier successful root deployments. Do not infer current LIVE_VERIFIED from CI.
+- #285 Pages: #360 is merged into master. Live HTTP and desktop/mobile visual verification remain blocked/unverified despite earlier successful root deployments. Do not infer current LIVE_VERIFIED from CI.
 - #284 licensing: do not infer a code/data license or publish externally before the rights gate is resolved.
-- MediaWiki transient-readback candidate: the earlier Klim Samgin exact-source CI failed once with `MediaWiki response missing query` and a fresh rerun succeeded. The response body was not retained, so its precise cause is UNKNOWN; retry only explicit server-transient indicators, preserve exact revision verification and fail closed on all other responses.
-- Local checkout: Git DNS failed; exact source blobs were recovered and verified for actual local tests. Hosted full-repository CI supplies complete integrated execution evidence, not the limited local closure.
-- Browser HTTP navigation returned ERR_BLOCKED_BY_ADMINISTRATOR. Current visual changes are VISUAL_NOT_VERIFIED; structural tests are not live browser acceptance. Continue other executable work without bypassing the restriction.
+- MediaWiki transient-readback: the earlier Klim Samgin exact-source CI failed once with `MediaWiki response missing query` and a fresh rerun succeeded. The response body was not retained, so its precise cause is UNKNOWN. #424 handles only independently documented transient signals, not a claimed reproduction of that historical cause.
+- Local checkout: Git DNS failed in this environment. Five production module blobs and the existing single-page test blob were recovered and SHA-verified. Forty-five local tests exercise the real modules with synthetic responses and mocked transport/sleep. The full repository suite and actual provider replay are separate hosted-CI evidence, not the local subset.
+- Browser HTTP navigation previously returned ERR_BLOCKED_BY_ADMINISTRATOR. This batch has no UI change and makes no new browser/live verification claim. Do not bypass the restriction.

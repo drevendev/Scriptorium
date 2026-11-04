@@ -327,6 +327,56 @@ class LocalComparisonTests(unittest.TestCase):
             bad["metrics"]["fantlab.punctuation.question.per_1000_words"]["value"] = 0.0
             compare.validate_report(bad)
 
+    def test_private_html_shows_all_14_paired_punctuation_rates_and_exact_deltas(self):
+        result = compare.build_comparison(self.a, self.b)
+        html = compare.render_html(result, title="Translation <comparison>")
+        rows = [row for row in result["metrics"] if row["metric_id"].startswith("fantlab.punctuation.")]
+        self.assertEqual(len(rows), 14)
+        self.assertEqual(html.count('class="punctuation-pair"'), 14)
+        self.assertEqual(html.count('class="pair-track"'), 28)
+        self.assertIn("Translation &lt;comparison&gt;", html)
+        self.assertIn("highest available comparable rate across both reports", html)
+        self.assertIn("not</strong> a percent", html)
+        self.assertIn("@media print", html)
+        self.assertIn("prefers-color-scheme:dark", html)
+        # Assert on a rendered bar attribute, not the identical CSS selector.
+        self.assertIn('data-nonzero="true" style="width: ', html)
+        self.assertIn('style="width: 100.00%"', html)
+        for row in rows:
+            with self.subTest(metric=row["metric_id"]):
+                self.assertEqual(row["comparison_status"], "comparable")
+                self.assertIn('data-metric-id="' + row["metric_id"] + '"', html)
+                self.assertIn("Left: " + row["left"] + " occurrences / 1,000 words", html)
+                self.assertIn("Right: " + row["right"] + " occurrences / 1,000 words", html)
+                self.assertIn("Right minus left: " + row["difference"] +
+                              " occurrences / 1,000 words", html)
+        self.assertNotIn(LEFT, html)
+        self.assertNotIn(RIGHT, html)
+        self.assertNotIn("<script", html)
+        self.assertEqual(compare.render_html(result, title="Translation <comparison>"), html)
+
+    def test_punctuation_pair_chart_marks_incomparable_unavailable_and_true_zero(self):
+        changed_method = copy.deepcopy(self.b)
+        changed_method["analyzer"]["profiles"]["metrics"] = "future-metrics-v99"
+        incomparable = compare.render_html(compare.build_comparison(self.a, changed_method))
+        self.assertEqual(incomparable.count("Incomparable methods — no paired bars"), 14)
+        self.assertIn("No comparable punctuation rates", incomparable)
+        self.assertNotIn('class="pair-track"', incomparable)
+
+        empty = compare.render_html(
+            compare.build_comparison(build_local_analysis(b""), self.b))
+        self.assertEqual(empty.count("Unavailable — at least one rate is not run; not zero"), 14)
+        self.assertNotIn('class="pair-track"', empty)
+
+        no_punctuation = build_local_analysis("Кот".encode("utf-8"))
+        zeros = compare.render_html(
+            compare.build_comparison(no_punctuation, copy.deepcopy(no_punctuation)))
+        self.assertEqual(zeros.count('class="pair-track"'), 28)
+        self.assertEqual(zeros.count('style="width: 0.00%"'), 28)
+        self.assertNotIn('class="pair-fill pair-left" data-nonzero="true"', zeros)
+        self.assertNotIn('class="pair-fill pair-right" data-nonzero="true"', zeros)
+        self.assertIn("Right minus left: 0.0 occurrences / 1,000 words", zeros)
+
     def test_private_html_csv_and_json_are_deterministic(self):
         result = compare.build_comparison(self.a, self.b)
         html = compare.render_html(result, title="My <a> Books")

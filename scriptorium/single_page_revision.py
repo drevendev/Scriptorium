@@ -9,9 +9,9 @@ import time
 from pathlib import Path
 import re
 from typing import Callable, Mapping, Sequence
-from urllib.error import HTTPError
-from urllib.parse import urlencode
-from urllib.request import Request, urlopen
+from urllib.request import urlopen
+
+from .mediawiki_api import query_json
 
 
 API_URL = "https://ru.wikisource.org/w/api.php"
@@ -21,56 +21,9 @@ _HEX40_RE = re.compile(r"^[0-9a-f]{40}$")
 _HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
-def _retry_delay(header: object, attempt: int) -> int:
-    """Honor bounded Retry-After seconds; never retry sooner than five seconds."""
-    if header is None:
-        return 5 * (attempt + 1)
-    if not isinstance(header, str) or not header.isdecimal():
-        raise RuntimeError("unsupported MediaWiki Retry-After header; not retrying early")
-    seconds = int(header)
-    if seconds > 60:
-        raise RuntimeError("MediaWiki Retry-After exceeds bounded capture; not retrying early")
-    return max(5, seconds)
-
-
 def _api_query(params: dict[str, str]) -> dict[str, object]:
-    """Read-only Action API transport with bounded, etiquette-aware transient retries.
-
-    Exact revision/title/SHA validation belongs to each caller and is never
-    relaxed by a retry. Invalid JSON, unknown API errors and source drift are
-    not silently retried or converted into successful source evidence.
-    """
-    encoded = urlencode({"maxlag": "5", **params, "format": "json", "formatversion": "2"})
-    request = Request(
-        f"{API_URL}?{encoded}",
-        headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
-    )
-    for attempt in range(3):
-        try:
-            with urlopen(request, timeout=30) as response:
-                payload = json.load(response)
-                headers = getattr(response, "headers", None)
-                retry_after = headers.get("Retry-After") if headers is not None else None
-        except HTTPError as exc:
-            # A generic 503 may be a costly cache-layer timeout, not maxlag.
-            # Retry that status only when the server explicitly provides a delay.
-            retry_after = exc.headers.get("Retry-After") if exc.headers else None
-            if exc.code != 429 and not (exc.code == 503 and retry_after is not None):
-                raise
-            if attempt == 2:
-                raise RuntimeError("MediaWiki HTTP rate limit persisted after three attempts") from exc
-            time.sleep(_retry_delay(retry_after, attempt))
-            continue
-        if not isinstance(payload, dict):
-            raise ValueError("unexpected MediaWiki API response")
-        error = payload.get("error")
-        code = error.get("code") if isinstance(error, dict) else None
-        if code not in {"maxlag", "ratelimited"}:
-            return payload
-        if attempt == 2:
-            raise RuntimeError(f"MediaWiki {code} persisted after three attempts")
-        time.sleep(_retry_delay(retry_after, attempt))
-    raise AssertionError("unreachable MediaWiki transport retry state")
+    return query_json(params, api_url=API_URL, user_agent=USER_AGENT,
+                      opener=urlopen, sleep=time.sleep)
 
 
 def fetch_pinned_revision(
@@ -81,9 +34,9 @@ def fetch_pinned_revision(
 ) -> dict[str, object]:
     """Fetch exactly one pinned revision and retain prose only in process memory."""
 
-    if not title:
+    if not isinstance(title, str) or not title:
         raise ValueError("title must be non-empty")
-    if not isinstance(revision_id, int) or revision_id <= 0:
+    if type(revision_id) is not int or revision_id <= 0:
         raise ValueError("revision_id must be a positive integer")
 
     payload = query(
@@ -95,6 +48,8 @@ def fetch_pinned_revision(
             "rvslots": "main",
         }
     )
+    if not isinstance(payload, dict):
+        raise ValueError("unexpected MediaWiki API response")
     query_obj = payload.get("query")
     if not isinstance(query_obj, dict):
         raise ValueError("MediaWiki response missing query")
@@ -110,7 +65,7 @@ def fetch_pinned_revision(
             f"pinned revision title drift: observed {observed_title!r}, expected {title!r}"
         )
     page_id = page.get("pageid")
-    if not isinstance(page_id, int) or page_id <= 0:
+    if type(page_id) is not int or page_id <= 0:
         raise ValueError("MediaWiki page id missing for pinned revision")
 
     revisions = page.get("revisions")
@@ -120,7 +75,7 @@ def fetch_pinned_revision(
     if not isinstance(revision, dict):
         raise ValueError("unexpected MediaWiki revision object")
     observed_revision_id = revision.get("revid")
-    if observed_revision_id != revision_id:
+    if type(observed_revision_id) is not int or observed_revision_id != revision_id:
         raise ValueError(
             "pinned revision id drift: "
             f"observed {observed_revision_id!r}, expected {revision_id!r}"
@@ -198,10 +153,12 @@ def validate_manifest(manifest: Mapping[str, object]) -> None:
     identity = manifest.get("source_identity")
     if not isinstance(identity, dict):
         raise ValueError("manifest source_identity missing")
-    if not isinstance(identity.get("page_id"), int) or int(identity["page_id"]) <= 0:
+    if type(identity.get("page_id")) is not int or identity["page_id"] <= 0:
         raise ValueError("invalid source page_id")
-    if not isinstance(identity.get("revision_id"), int) or int(identity["revision_id"]) <= 0:
+    if type(identity.get("revision_id")) is not int or identity["revision_id"] <= 0:
         raise ValueError("invalid source revision_id")
+    if not isinstance(identity.get("title"), str) or not identity["title"]:
+        raise ValueError("invalid source title")
     timestamp = identity.get("revision_timestamp")
     if not isinstance(timestamp, str) or not timestamp.endswith("Z"):
         raise ValueError("invalid source revision timestamp")
@@ -210,13 +167,13 @@ def validate_manifest(manifest: Mapping[str, object]) -> None:
         raise ValueError("invalid source MediaWiki SHA-1")
     for key in ("wikitext_character_count", "wikitext_utf8_byte_count"):
         value = identity.get(key)
-        if not isinstance(value, int) or value <= 0:
+        if type(value) is not int or value <= 0:
             raise ValueError(f"invalid source {key}")
     wikitext_sha256 = identity.get("wikitext_sha256")
     if not isinstance(wikitext_sha256, str) or not _HEX64_RE.fullmatch(wikitext_sha256):
         raise ValueError("invalid source wikitext SHA-256")
     scope = manifest.get("capture_scope")
-    if scope != {
+    if not isinstance(scope, dict) or any(type(value) is not bool for value in scope.values()) or scope != {
         "revision_wikitext_identity_frozen": True,
         "literary_body_extraction_frozen": False,
         "composite_identity_frozen": False,
@@ -243,8 +200,14 @@ def replay_manifest(
     assert isinstance(title, str)
     assert isinstance(revision_id, int)
     observed = fetcher(title=title, revision_id=revision_id)
-    if observed != identity:
-        differing = sorted(key for key in set(observed) | set(identity) if observed.get(key) != identity.get(key))
+    if not isinstance(observed, dict):
+        raise ValueError("pinned revision identity drift: invalid object")
+    differing = sorted(
+        key for key in set(observed) | set(identity)
+        if key not in observed or key not in identity
+        or type(observed[key]) is not type(identity[key]) or observed[key] != identity[key]
+    )
+    if differing:
         raise ValueError(f"pinned revision identity drift: {differing}")
     return {
         "receipt_version": "scriptorium-single-page-source-replay-v1",

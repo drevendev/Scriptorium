@@ -17,6 +17,21 @@
   const names = {
     "fantlab.general.characters":"Символы с пробелами",
     "fantlab.general.words":"Слова",
+    "fantlab.punctuation.question.per_1000_words":"Вопросительные знаки",
+    "fantlab.punctuation.colon.per_1000_words":"Двоеточия",
+    "fantlab.punctuation.ellipsis.per_1000_words":"Многоточия",
+    "fantlab.punctuation.exclamation_ellipsis.per_1000_words":"Восклицания с многоточием",
+    "fantlab.punctuation.exclamation.per_1000_words":"Восклицательные знаки",
+    "fantlab.punctuation.parentheses.per_1000_words":"Скобки",
+    "fantlab.punctuation.period.per_1000_words":"Точки",
+    "fantlab.punctuation.question_ellipsis.per_1000_words":"Вопросы с многоточием",
+    "fantlab.punctuation.question_exclamation.per_1000_words":"Вопросы с восклицанием",
+    "fantlab.punctuation.quote.per_1000_words":"Кавычки",
+    "fantlab.punctuation.semicolon.per_1000_words":"Точки с запятой",
+    "fantlab.punctuation.triple_exclamation.per_1000_words":"Тройные восклицания",
+    "fantlab.vocabulary.uasz_3000":"УАСЗ · окно 3 000",
+    "fantlab.vocabulary.uasz_10000":"УАСЗ · окно 10 000",
+    "fantlab.vocabulary.uasz_100000":"УАСЗ · окно 100 000",
     "fantlab.vocabulary.unique_words":"Уникальные словоформы",
     "fantlab.vocabulary.active_dictionary":"Словарные формы",
     "fantlab.vocabulary.active_nondictionary":"Внесловарные формы",
@@ -914,6 +929,29 @@
       : "Сопоставляются две отдельные русскоязычные редакции. Разница не доказывает влияние автора или совпадение с входом FantLab.";
   }
 
+  // Rounded presentation must never turn a real small pair difference into zero.
+  // Exact source observations and unrounded machine-readable exports stay unchanged.
+  function pairTableDeltaText(difference) {
+    if (!Number.isFinite(difference)) throw Error("Неизвестная разница сравнения");
+    if (difference === 0) return "0";
+    if (Math.abs(difference) < 0.001)
+      return (difference > 0 ? "+" : "−") + "<0,001";
+    return (difference > 0 ? "+" : "") + pretty(difference,3);
+  }
+
+  // Only paired measured values receive a signed, unit-aware chart delta.
+  // Tiny nonzero differences must never be displayed as exact zero.
+  function pairDeltaDescription(row) {
+    const difference=row.right-row.left;
+    const magnitude=Math.abs(difference);
+    const signedValue=magnitude>0 && magnitude<0.001
+      ? (difference>0?"положительная":"отрицательная")+" (менее 0,001)"
+      : (difference>0?"+":difference<0?"−":"")+pretty(magnitude,3);
+    const differenceUnit=unit(row.id)==="%"?"п.п.":unit(row.id);
+    return "Δ (правая − левая): "+signedValue+" "+differenceUnit+
+      " — диагностическая разница редакций, не эффект автора или переводчика.";
+  }
+
   function updatePair() {
     pairExportButton.disabled=true;
     pairCsvButton.disabled=true;
@@ -947,7 +985,7 @@
       const comparable=m.left!==null&&m.right!==null;
       const d=comparable?m.right-m.left:null;
       insertText(tr,"td",d===null?"— (нет совместного измерения)":
-        (d>0?"+":"")+pretty(d,3));
+        pairTableDeltaText(d));
       insertText(tr,"td",unit(m.id)+(unit(m.id)==="%"?" · Δ в п.п.":""));
       fragment.appendChild(tr);
     }
@@ -967,6 +1005,7 @@
       insertText(graph,"p","Эта метрика недоступна хотя бы для одного текста. Подмена нулём запрещена.");
     } else {
       insertText(graph,"h3",label(curr.id)+" · "+unit(curr.id));
+      insertText(graph,"p",pairDeltaDescription(curr),"pair-delta");
       const max=Math.max(curr.left,curr.right);
       const items=[
         {label:a.display_title,value:curr.left,tone:"a"},

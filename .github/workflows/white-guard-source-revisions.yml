@@ -1,0 +1,45 @@
+name: White Guard pinned source identities
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/white-guard-source-revisions.yml'
+      - 'scriptorium/white_guard*.py'
+      - 'scriptorium/wikisource_freeze.py'
+      - 'tests/test_white_guard*.py'
+      - 'corpus/candidates/source-edition-traces/bulgakov-white-guard-ru.source-revisions.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact reviewed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Test canonical implementation and pinned inventory
+        run: python -m unittest discover -s tests -v
+      - name: Replay committed identities only
+        run: |
+          set -euo pipefail
+          mkdir -p build/white-guard
+          python -m scriptorium.white_guard_delivery \
+            --manifest corpus/candidates/source-edition-traces/bulgakov-white-guard-ru.source-revisions.json \
+            > build/white-guard/replay.json
+      - name: Retain only the successful source-free replay receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: white-guard-source-identities
+          path: build/white-guard/replay.json
+          if-no-files-found: error
+          retention-days: 7

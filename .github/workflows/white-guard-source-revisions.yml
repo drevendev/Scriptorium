@@ -1,0 +1,92 @@
+name: White Guard pinned source identities
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/white-guard-source-revisions.yml'
+      - 'scriptorium/white_guard*.py'
+      - 'scriptorium/wikisource_freeze.py'
+      - 'tests/test_white_guard*.py'
+      - 'corpus/candidates/source-edition-traces/bulgakov-white-guard-ru.source-revisions.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact reviewed source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Test canonical implementation
+        run: python -m unittest discover -s tests -v
+      - name: Capture once and replay exact provider identities
+        env:
+          BOOTSTRAP_AUTHORIZED: ${{ github.event_name == 'pull_request' && github.event.pull_request.draft && github.head_ref == 'scrip-white-guard-pinned-delivery' }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          from scriptorium.white_guard_revisions import build_manifest, validate_manifest, replay_manifest, canonical_json_text
+
+          committed = Path('corpus/candidates/source-edition-traces/bulgakov-white-guard-ru.source-revisions.json')
+          output = Path('build/white-guard')
+          output.mkdir(parents=True, exist_ok=True)
+          if committed.is_file():
+              raw = committed.read_bytes()
+              manifest = json.loads(raw)
+              mode = 'pinned_replay'
+          else:
+              if committed.exists() or committed.is_symlink() or os.environ.get('BOOTSTRAP_AUTHORIZED') != 'true':
+                  raise ValueError('Missing committed manifest: explicit draft bootstrap required')
+              manifest = build_manifest()
+              raw = canonical_json_text(manifest).encode('utf-8')
+              mode = 'bootstrap_then_pinned_replay'
+          identities = validate_manifest(manifest)
+          forbidden = {'wikitext', 'content', 'body', 'text', 'source_text'}
+          def source_free(value):
+              if isinstance(value, dict):
+                  if forbidden.intersection(value):
+                      raise ValueError('Source prose is forbidden in retained evidence')
+                  for child in value.values():
+                      source_free(child)
+              elif isinstance(value, list):
+                  for child in value:
+                      source_free(child)
+          source_free(manifest)
+          result = replay_manifest(manifest)
+          if result.get('verified') is not True or len(identities) != 20:
+              raise ValueError('Exact twenty-chapter replay did not pass')
+          receipt = {
+              'schema_version': 'scriptorium-white-guard-delivery-v1',
+              'mode': mode,
+              'manifest_sha256': hashlib.sha256(raw).hexdigest(),
+              'replay': result,
+              'source_partition_counts': {'paris-concorde-1927': 11, 'moscow-pravda-1989': 9},
+              'literary_body_measured': False,
+              'm2_parity_admissible': False,
+          }
+          source_free(receipt)
+          if mode == 'bootstrap_then_pinned_replay':
+              (output / 'bulgakov-white-guard-ru.source-revisions.observed.json').write_bytes(raw)
+          (output / 'replay.json').write_text(canonical_json_text(receipt), encoding='utf-8')
+          print('White Guard: 20 pinned identities verified; mixed editions; no literary body or M2 claim.')
+          PY
+      - name: Retain only validated source-free evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: white-guard-source-identities
+          path: build/white-guard/*.json
+          if-no-files-found: error
+          retention-days: 7

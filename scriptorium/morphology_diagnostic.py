@@ -173,8 +173,10 @@ def build_fantlab_pos_accounting(
 
 def _required_int(mapping: Mapping[str, object], key: str) -> int:
     value = mapping.get(key)
-    if isinstance(value, bool) or not isinstance(value, int):
-        raise ValueError(f"{key} must be an integer")
+    # Counts are non-negative, including when a diagnostic source is not yet
+    # edition-matched. A self-consistent negative partition is still invalid.
+    if type(value) is not int or value < 0:
+        raise ValueError(f"{key} must be a non-negative integer")
     return value
 
 

@@ -1,0 +1,100 @@
+name: White Guard pinned literary-body preflight
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/white-guard-body-preflight.yml'
+      - 'scriptorium/white_guard_body_preflight.py'
+      - 'scriptorium/white_guard_delivery.py'
+      - 'scriptorium/white_guard_revisions.py'
+      - 'scriptorium/wikisource_replay.py'
+      - 'scriptorium/wikisource_freeze.py'
+      - 'scriptorium/mediawiki_api.py'
+      - 'tests/test_white_guard_body_preflight.py'
+      - 'corpus/candidates/source-edition-traces/bulgakov-white-guard-ru.source-revisions.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-body:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact candidate revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Verify source-free and failure-path regressions
+        run: python -m unittest discover -s tests -p 'test_white_guard_body_preflight.py' -v
+      - name: Replay 20 pinned historical revisions without publishing prose
+        run: |
+          set -euo pipefail
+          mkdir -p build/white-guard
+          python -m scriptorium.white_guard_body_preflight > build/white-guard/body-preflight.json
+      - name: Validate safe receipt and display actionable coverage
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+
+          report = json.loads(Path('build/white-guard/body-preflight.json').read_text(encoding='utf-8'))
+          top = {
+              'schema_version', 'candidate_id', 'manifest_sha256', 'provider_replay',
+              'extraction_profile', 'chapter_count', 'candidate_chapter_count', 'chapters',
+              'candidate_composite_characters_including_spaces', 'candidate_composite_sha256',
+              'candidate_meets_size_threshold', 'literary_body_extraction_frozen',
+              'single_edition_identity', 'fantlab_input_identity', 'm2_parity_admissible',
+              'source_text_committed',
+          }
+          chapter_keys = {
+              'chapter', 'source_family_id', 'revision_id', 'wikitext_characters',
+              'wikitext_sha256', 'extraction_status', 'candidate_body_characters',
+              'candidate_body_sha256',
+          }
+          assert set(report) == top, 'unsafe or incomplete receipt schema'
+          assert report['schema_version'] == 'scriptorium-white-guard-body-preflight-v1'
+          assert report['provider_replay'] == 'VERIFIED_IDENTITIES'
+          assert report['chapter_count'] == len(report['chapters']) == 20
+          assert [c['chapter'] for c in report['chapters']] == list(range(1, 21))
+          assert [c['source_family_id'] for c in report['chapters']] == (
+              ['paris-concorde-1927'] * 11 + ['moscow-pravda-1989'] * 9
+          )
+          assert all(set(c) == chapter_keys for c in report['chapters'])
+          assert all(c['extraction_status'] in {'CANDIDATE_ONLY', 'UNSUPPORTED_MARKUP'}
+                     for c in report['chapters'])
+          assert report['candidate_chapter_count'] == sum(
+              c['extraction_status'] == 'CANDIDATE_ONLY' for c in report['chapters']
+          )
+          assert report['source_text_committed'] is False
+          assert report['literary_body_extraction_frozen'] is False
+          assert report['single_edition_identity'] is False
+          assert report['fantlab_input_identity'] == 'unknown'
+          assert report['m2_parity_admissible'] is False
+          if report['candidate_chapter_count'] != 20:
+              assert report['candidate_composite_characters_including_spaces'] is None
+              assert report['candidate_composite_sha256'] is None
+              assert report['candidate_meets_size_threshold'] is None
+          statuses = Counter(c['extraction_status'] for c in report['chapters'])
+          print('Verified pinned revision inventory: 20 (Paris 1927: 11; Moscow 1989: 9)')
+          print('Body parser coverage:', dict(sorted(statuses.items())))
+          print('Unsupported chapter numbers:', [c['chapter'] for c in report['chapters']
+                                               if c['extraction_status'] == 'UNSUPPORTED_MARKUP'])
+          print('Composite tentative character count:',
+                report['candidate_composite_characters_including_spaces'])
+          print('Scientific admission: NOT established; FantLab input identity: UNKNOWN')
+          PY
+      - name: Retain only validated source-free receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: white-guard-body-preflight
+          path: build/white-guard/body-preflight.json
+          if-no-files-found: error
+          retention-days: 7

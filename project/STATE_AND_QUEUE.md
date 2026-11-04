@@ -1,29 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 423
+STATE_REVISION: 424
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-04
-LAST_RESULT: The reliable immutable replay #426 was merged into master at ac15b12c7841fc2d0ef73258965e813266fa290c (closes #424/#425). This PR candidate adds a runnable, source-free White Guard pinned-body preflight and adversarial synthetic tests; actual provider content and full CI remain NOT_RUN until independently verified.
-LAST_VERIFIED_PROGRESS: Master ac15b12c7841fc2d0ef73258965e813266fa290c includes #422 and #426. No other open PR at selection. Root Reader: 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
+LAST_RESULT: PR #427 merged into master at c75528359fa82f4d1591a756ae0a6f56719567d7. This PR candidate adds a read-only GitHub Actions execution path for the already merged 20-revision White Guard body preflight; real historical response and its receipt remain NOT_RUN pending exact-head hosted CI.
+LAST_VERIFIED_PROGRESS: Master c75528359fa82f4d1591a756ae0a6f56719567d7 includes #422, #426 and #427. Pages workflow 41891038592 completed successfully; live HTTP/browser/mobile remains NOT_VERIFIED. Root Reader: 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-WHITE-GUARD-BODY-PREFLIGHT
-ISSUES: follow-up to completed #408/#423 identity freeze; distinct body-gate slice
-STATUS: PR_CANDIDATE; SYNTHETIC_LOCAL_SMOKE_PASS; EXACT_HEAD_HOSTED_CI_PENDING; REAL_PROVIDER_BODY_NOT_RUN; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-white-guard-body-preflight-20261104
-BASE: ac15b12c7841fc2d0ef73258965e813266fa290c
+UNIT_ID: SCRIP-CORPUS-WHITE-GUARD-HOSTED-BODY-PREFLIGHT
+ISSUES: follow-up to merged #427 (source-free extraction implemented; historical provider still unmeasured)
+STATUS: PR_CANDIDATE; WORKFLOW_YAML_LOCALLY_VALIDATED; HOSTED_CI_PENDING; REAL_PROVIDER_NOT_RUN; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-white-guard-live-body-preflight-20261104
+BASE: c75528359fa82f4d1591a756ae0a6f56719567d7
 
-ACCEPTANCE: Replay only the pinned 20 revision IDs, fail closed on altered/missing identities, inspect chapter extractability using existing source-free extractor, report only per-chapter hashes/lengths and safe CANDIDATE_ONLY/UNSUPPORTED_MARKUP statuses. Preserve the 11/9 Paris/Moscow source family split, prohibit incomplete composite hashes, and never promote tentative body/size to edition identity or M2 parity. Verify actual full CI at exact head and run real provider/body experiment separately; later wake may accept and merge this PR after reviews/checks. See [preflight contract](../docs/WHITE_GUARD_BODY_PREFLIGHT.md).
+ACCEPTANCE: Run the merged preflight against exactly 20 pinned historical revisions on a read-only hosted runner, assert source-free receipt schema, 11/9 edition split, conservative null semantics and all non-admission flags; retain only derived receipt for seven days. Synthetic negative tests must pass. A successful provider replay identifies which chapters are CANDIDATE_ONLY versus UNSUPPORTED_MARKUP; no mixed-edition body is admitted. Provider failures have no receipt and remain scoped, not counted as parser failures. Later fresh acceptance and exact-head checks required for merge. See [preflight contract](../docs/WHITE_GUARD_BODY_PREFLIGHT.md).
 
 ## Next user-visible milestone and compact queue
 
-Milestone: first honest comparison of two independently measured Russian translations of the same work; meanwhile advance White Guard body readiness and verified independent analyzer/Reader slices.
+Milestone: first honest comparison of two independently measured Russian translations of the same work; advance White Guard body readiness without treating an unmatched edition as FantLab parity.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Review and, if gates pass, merge this preflight PR | Exact-head CI, source-free safety and negative tests; later acceptance | No same-run author+merge |
-| P2 | White Guard pinned 20-page literary-body experiment | Run live pinned preflight; categorize actual unsupported shapes, freeze a fully validated mixed-source candidate only with hash, length and provenance | Mixed 1927/1989 input is never one edition; live MediaWiki access required |
+| P1 | White Guard hosted live body preflight workflow (this PR) | Run exact-head CI and inspect source-free real provider receipt; later acceptance/merge | Provider network and PR workflow execution, not an M2 prerequisite |
+| P2 | White Guard actual extraction shapes | Classify real unsupported chapters and prepare reviewed literary-body experiment (never silently concatenate 1927/1989 as one edition) | Requires a successful historical provider receipt |
 | P3 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct literary body, run 29 metrics, truthful same-work comparison | Trusov historical renderer unresolved; select independent work if unchanged blocked |
 | P4 | #282/#281 AOT/FantLab compatibility or source-bound metric readiness | Native N disambiguation or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |
 | P5 | #283/#285 Reader live Pages, desktop/mobile verification | HTTP, keyboard/focus and mobile screenshots | Browser navigation previously restricted; preserve last publication |

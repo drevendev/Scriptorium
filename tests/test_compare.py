@@ -339,6 +339,9 @@ class LocalComparisonTests(unittest.TestCase):
         self.assertIn("not</strong> a percent", html)
         self.assertIn("@media print", html)
         self.assertIn("prefers-color-scheme:dark", html)
+        # Assert on a rendered bar attribute, not the identical CSS selector.
+        self.assertIn('data-nonzero="true" style="width: ', html)
+        self.assertIn('style="width: 100.00%"', html)
         for row in rows:
             with self.subTest(metric=row["metric_id"]):
                 self.assertEqual(row["comparison_status"], "comparable")

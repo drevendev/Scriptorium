@@ -81,7 +81,7 @@ def build_preflight(
         "schema_version": SCHEMA_VERSION,
         "candidate_id": manifest["candidate_id"],
         "manifest_sha256": MANIFEST_SHA256,
-        "provider_replay": "VERIFIED_IDENTITIES",
+        "provider_replay": "VERIFIED_IDENTITIES" if fetcher is fetch_pinned_chapter_revisions else "INJECTED_FIXTURE",
         "extraction_profile": EXTRACTION_PROFILE,
         "chapter_count": len(identities),
         "candidate_chapter_count": len(candidates),

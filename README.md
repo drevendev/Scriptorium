@@ -50,6 +50,8 @@ scriptorium analyze manuscript.txt --format csv --output metrics.csv
 scriptorium analyze manuscript.txt --format markdown --output report.md
 ```
 
+The standalone HTML report includes a **14-category punctuation-frequency chart** drawn from the same measured values as its exact table. It works without JavaScript; each bar is scaled to the highest available rate **within that one report**, not to a percentage or FantLab score. Zero and unavailable measurements remain distinct; tiny nonzero rates have visible ticks. This is a descriptive visualization, not parity evidence.
+
 Open `report.html` locally, or read `report.md` as a portable, source-free Markdown table
 with canonical metric IDs, exact numeric values, profile versions and SHA-256 identities.
 Both reports label inferred/extension evidence and preserve unavailable values as unknown;

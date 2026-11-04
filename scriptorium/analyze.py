@@ -121,6 +121,7 @@ def render_html(artifact: dict[str, object], *, title: str | None = None, saved_
             '</div>'
         )
     overview += '</dl></section>'
+    punctuation_chart = _render_punctuation_chart(metrics)
     included = {metric_id for _, rows in groups for metric_id, _ in rows}
     other = [(metric_id, _mapping(metrics[metric_id], metric_id))
              for metric_id in sorted(metrics) if metric_id not in included]
@@ -179,6 +180,16 @@ h1, h2 {{ line-height: 1.15; }}
 .highlight dt {{ font: 600 .88rem/1.4 system-ui, sans-serif; }}
 .highlight dd {{ margin: .45rem 0 0; font: 700 clamp(1.25rem, 3vw, 2rem)/1.2 system-ui, sans-serif; overflow-wrap: anywhere; }}
 .highlight-unit {{ font: 400 .75rem/1.35 system-ui, sans-serif; }}
+.punctuation-figure {{ border-block: 1px solid color-mix(in srgb, CanvasText 22%, Canvas); padding-block: 1rem 1.5rem; margin-block-end: 1.5rem; }}
+.punctuation-figure > p {{ max-width: 74ch; }}
+.punctuation-chart {{ list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: .7rem; }}
+.punctuation-item {{ min-width: 0; border: 1px solid color-mix(in srgb, CanvasText 22%, Canvas); border-radius: .5rem; padding: .75rem 1rem; display: grid; align-content: start; gap: .4rem; }}
+.punctuation-title {{ font: 600 .9rem/1.4 system-ui, sans-serif; }}
+.punctuation-track {{ display: block; height: .7rem; background: color-mix(in srgb, CanvasText 12%, Canvas); border-radius: .3rem; overflow: hidden; }}
+.punctuation-fill {{ display: block; height: 100%; background: currentColor; }}
+.punctuation-fill[data-nonzero="true"] {{ min-width: 2px; }}
+.punctuation-value, .punctuation-missing {{ font: .82rem/1.4 system-ui, sans-serif; overflow-wrap: anywhere; }}
+@media print {{ .punctuation-item {{ break-inside: avoid; }} .punctuation-fill {{ print-color-adjust: exact; }} }}
 .table-wrap {{ overflow-x: auto; margin-block: 1rem 2rem; }}
 .metric-label {{ display: block; font-weight: 700; }}
 .metric-id {{ display: block; font-size: .78em; font-weight: 400; color: color-mix(in srgb, CanvasText 72%, Canvas); margin-block-start: .2rem; }}
@@ -201,6 +212,7 @@ code {{ overflow-wrap: anywhere; }}
 <p class="badge">{escape(threshold_state)}</p>
 {saved_note}
 {overview}
+{punctuation_chart}
 <div class="meta">
 <p><strong>Raw SHA-256:</strong> <code>{escape(str(source.get('raw_sha256')))}</code></p>
 <p><strong>Normalized SHA-256:</strong> <code>{escape(str(source.get('normalized_sha256')))}</code></p>
@@ -429,6 +441,62 @@ def _csv_text(value: object) -> str:
     if not isinstance(value, str):
         raise ValueError("metric identity field must be text or null")
     return safe_csv_text(value)
+
+def _render_punctuation_chart(metrics: dict[str, object]) -> str:
+    """Plot observed punctuation rates without JS or a second metric engine.
+
+    A full bar denotes the highest available rate *within this report*; it
+    is not 100% of the prose and is never a FantLab parity score.
+    """
+    rows = _rows(metrics, ("fantlab.punctuation.",))
+    data: list[tuple[str, Decimal | None, object]] = []
+    for metric_id, row in rows:
+        raw = row.get("value")
+        if raw is None:
+            rate = None
+        else:
+            if isinstance(raw, bool) or not isinstance(raw, (int, float, Decimal)):
+                raise ValueError("punctuation rate must be numeric or unavailable")
+            rate = Decimal(str(raw))
+            if not rate.is_finite() or rate < 0:
+                raise ValueError("punctuation rate must be nonnegative and finite")
+        data.append((metric_id, rate, raw))
+
+    maximum = max((rate for _, rate, _ in data if rate is not None), default=Decimal(0))
+    items = []
+    for metric_id, rate, raw in data:
+        label = escape(METRIC_LABELS.get(metric_id, metric_id))
+        if rate is None:
+            bar = '<span class="punctuation-missing">Unavailable — not zero</span>'
+        else:
+            width = (rate / maximum * 100) if maximum else Decimal(0)
+            # A tiny positive rate retains a visible 2px mark, never a zero label.
+            nonzero = ' data-nonzero="true"' if rate > 0 else ""
+            bar = (
+                '<span class="punctuation-track" aria-hidden="true">'
+                f'<span class="punctuation-fill"{nonzero} style="width: {width:.2f}%"></span></span>'
+                f'<span class="punctuation-value">{escape(_format_value(raw))} '
+                'occurrences / 1,000 words</span>'
+            )
+        items.append(
+            f'<li class="punctuation-item" data-metric-id="{escape(metric_id, quote=True)}">'
+            f'<span class="punctuation-title">{label}</span>{bar}</li>'
+        )
+    empty_note = (
+        '<p role="status">All punctuation rates are unavailable for this input; '
+        'unavailable does not mean zero.</p>'
+        if not any(rate is not None for _, rate, _ in data) else ""
+    )
+    return (
+        '<section class="punctuation-figure" aria-labelledby="punctuation-chart-heading">'
+        '<h2 id="punctuation-chart-heading">Punctuation at a glance</h2>'
+        '<p>Observed occurrences per 1,000 words. The longest bar marks the largest '
+        'rate in this report, <strong>not</strong> a percentage or a FantLab parity '
+        'score. Tiny nonzero rates retain a visible tick. The exact values and '
+        'evidence statuses follow in the table.</p>'
+        f'{empty_note}<ol class="punctuation-chart">{"".join(items)}</ol></section>'
+    )
+
 
 def _render_metric_group(name: str, rows: list[tuple[str, dict[str, object]]]) -> str:
     body = []

@@ -118,5 +118,58 @@ class MorphologyDiagnosticTests(unittest.TestCase):
             build_fantlab_pos_accounting(expected, pos)
 
 
+    def test_fantlab_pos_accounting_rejects_negative_counts(self):
+        # Valid partitions must not turn corrupt negative evidence into a
+        # plausible delta just because the three numbers still sum up.
+        for side, field in (
+            ("reference", "words"),
+            ("reference", "defined_pos_words"),
+            ("reference", "undefined_pos_words"),
+            ("scriptorium", "word_count"),
+            ("scriptorium", "defined"),
+            ("scriptorium", "undefined"),
+        ):
+            with self.subTest(side=side, field=field):
+                expected = {"words": 4, "defined_pos_words": 3, "undefined_pos_words": 1}
+                pos = {
+                    "input": {"word_count": 4},
+                    "metrics": {"defined": {"count": 2}, "undefined": {"count": 2}},
+                }
+                if side == "reference":
+                    expected[field] = -1
+                elif field == "word_count":
+                    pos["input"]["word_count"] = -1
+                else:
+                    pos["metrics"][field]["count"] = -1
+                with self.assertRaisesRegex(ValueError, "non-negative integer"):
+                    build_fantlab_pos_accounting(expected, pos)
+
+        # A negative defined count can be hidden by a matching excess
+        # undefined count. Internal sum checks alone did not reject it.
+        expected = {"words": 4, "defined_pos_words": -1, "undefined_pos_words": 5}
+        pos = {
+            "input": {"word_count": 4},
+            "metrics": {"defined": {"count": -1}, "undefined": {"count": 5}},
+        }
+        with self.assertRaisesRegex(ValueError, "non-negative integer"):
+            build_fantlab_pos_accounting(expected, pos)
+
+    def test_zero_pos_partition_is_valid_and_noninteger_counts_fail(self):
+        expected = {"words": 0, "defined_pos_words": 0, "undefined_pos_words": 0}
+        pos = {
+            "input": {"word_count": 0},
+            "metrics": {"defined": {"count": 0}, "undefined": {"count": 0}},
+        }
+        report = build_fantlab_pos_accounting(expected, pos)
+        self.assertEqual(report["defined_pos_words"], {"expected": 0, "actual": 0, "delta": 0})
+        self.assertEqual(report["undefined_pos_words"], {"expected": 0, "actual": 0, "delta": 0})
+        for invalid in (True, 0.0, "0", None):
+            with self.subTest(invalid=invalid):
+                expected["words"] = invalid
+                with self.assertRaisesRegex(ValueError, "non-negative integer"):
+                    build_fantlab_pos_accounting(expected, pos)
+                expected["words"] = 0
+
+
 if __name__ == "__main__":
     unittest.main()

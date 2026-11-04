@@ -17,6 +17,7 @@
   const names = {
     "fantlab.general.characters":"Символы с пробелами",
     "fantlab.general.words":"Слова",
+    "fantlab.punctuation.question.per_1000_words":"Вопросительные знаки",
     "fantlab.vocabulary.unique_words":"Уникальные словоформы",
     "fantlab.vocabulary.active_dictionary":"Словарные формы",
     "fantlab.vocabulary.active_nondictionary":"Внесловарные формы",

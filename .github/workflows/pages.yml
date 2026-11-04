@@ -67,6 +67,9 @@ jobs:
       - name: Check root Reader JavaScript syntax
         run: node --check assets/pages-reader.js
 
+      - name: Verify exact source-backed no-script paired table
+        run: node tests/pages_pair_static_fallback_smoke.cjs
+
       - name: Build canonical Pages artifact
         run: python -m scriptorium.site_renderer --repo-root . --output build/site
 

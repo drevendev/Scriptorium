@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 413
+STATE_REVISION: 414
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-03
-LAST_RESULT: #413 merged at 85200776cee4eede7919a5b9aff06adbc02493ef, adding signed unit-aware chart deltas. This focused #283 Reader follow-up prevents tiny nonzero paired table deltas displaying as zero; the actual source observations and JSON/CSV/Markdown exports remain unchanged. Independent later acceptance and exact-head CI still required.
+LAST_COMMITTED_RUN_AT: 2026-11-04
+LAST_RESULT: Reader no-JavaScript paired comparison fallback prepared with all nine exact source-backed Anna/Karamazov measurements, provenance-safe signed deltas and a human-readable question-mark label. This #283 patch requires independent CI and later acceptance; master and Pages are unchanged.
 LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 58/64 provisionally handled template invocations (28 nop, 30 heading; 4 ВАР plus 2 dynamic unresolved) are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-PAIR-TABLE-PRECISION
-ISSUE: #283 — improve Reader paired-chart quantitative clarity
+UNIT_ID: SCRIP-SITE-PAIR-STATIC-EXACT
+ISSUE: #283 — make pair comparisons useful without JavaScript
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_NOT_RUN; LATER_ACCEPTANCE_REQUIRED; LIVE_PAGES_UNCHANGED
-BRANCH: scrip-reader-pair-table-precision
-BASE: 85200776cee4eede7919a5b9aff06adbc02493ef
+BRANCH: scrip-reader-static-pair-exact-fallback
+BASE: 3e9adc0099fd4635b642261188c083646173d0df
 
-ACCEPTANCE: Interactive paired table must distinguish signed differences below 0.001 from exact zero, preserve missing-value markers, invert signs when books swap, and leave machine-readable exact differences untouched. Keep the merged chart label, source-free publication, provenance caveats and static fallback.
+ACCEPTANCE: The branch-root Reader renders the complete nine-metric default paired table without JavaScript; numeric cells are exactly the pinned source-free JSON numbers, signed deltas match the live Reader's three-decimal presentation and units; dynamic selection still replaces the fallback safely. No source text or parity claim is added. Regression smoke must reject missing, stale or invented rows.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: add a second independently measured Russian Robinson Crusoe translati
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 tiny pair-table delta precision following merged #413 | Signed positive/negative <0.001, exact zero and unavailable; exact-head Reader checks and later acceptance | Real 11-book catalogue; no new measurements or parity claims |
+| P1 | #283 complete exact no-JS default pair table | Nine pinned measured metrics and signed deltas match validated Reader snapshot; later exact-head acceptance | Existing 11 measured editions; no new parity/corpus claim |
 | P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct source, run 29 metrics, show truthful same-work translator pair | Trusov literary body and historical renderer still unverified |
 | P3 | #408 White Guard exact-oldid 20-chapter replay | Provider-frozen immutable 11/9 source manifest; pinned-only CI | Requires an independently verified live provider bootstrap |
 | P4 | #282/#281 AOT/FantLab compatibility and metric readiness | New POS-N discrimination or source-matched benchmark delta | Native runtime/reference identity unresolved |

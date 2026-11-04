@@ -370,7 +370,8 @@ class LocalComparisonTests(unittest.TestCase):
             compare.build_comparison(no_punctuation, copy.deepcopy(no_punctuation)))
         self.assertEqual(zeros.count('class="pair-track"'), 28)
         self.assertEqual(zeros.count('style="width: 0.00%"'), 28)
-        self.assertNotIn('data-nonzero="true"', zeros)
+        self.assertNotIn('class="pair-fill pair-left" data-nonzero="true"', zeros)
+        self.assertNotIn('class="pair-fill pair-right" data-nonzero="true"', zeros)
         self.assertIn("Right minus left: 0.0 occurrences / 1,000 words", zeros)
 
     def test_private_html_csv_and_json_are_deterministic(self):

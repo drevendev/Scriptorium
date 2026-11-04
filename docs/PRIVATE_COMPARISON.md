@@ -64,8 +64,16 @@ presentation is source-free like the existing JSON, HTML and CSV formats.
 
 Open the HTML locally. All formats preserve metric IDs, source digests, declared
 algorithm/dependency identities and measurement units. HTML includes a keyboard
-skip link, focusable scroll region, source details and a table alternative. Existing
-outputs are never overwritten. Shell redirection is not create-only; prefer `--output`.
+skip link, focusable scroll region, source details and a table alternative. The
+HTML also shows **14 punctuation-rate comparisons** as side-by-side bars, on a
+single scale across both reports. The longest comparable bar is the highest
+observed rate per 1,000 words, **not** percent of the text or a FantLab score;
+tiny nonzero rates retain a visible tick. Each pair retains exact left/right
+readings and a signed right-minus-left difference. Missing rates and mismatched
+methods display a notice instead of a misleading bar (neither means zero).
+The full 29-row table is preserved for keyboard, print and exact-value use; the
+bars work without JavaScript. Existing outputs are never overwritten. Shell
+redirection is not create-only; prefer `--output`.
 
 ## Interpretation
 

@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 418
+STATE_REVISION: 419
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-04
-LAST_RESULT: Prepared a source-backed, accessible 14-category punctuation-rate chart in local HTML reports, with no JavaScript, exact table alternatives, missing-value states and regressions. CI/later acceptance pending; no new literary measurement or FantLab parity claim.
-LAST_VERIFIED_PROGRESS: #418 merged at 25912c66e4bacc0134bd67599ffbbecc1766bdf2; root Reader retains 28 Anna static measurements and 9 static comparison rows. 11 measured Russian editions; 13 catalogue cards; 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
+LAST_RESULT: Prepared paired, exact, no-JavaScript punctuation-rate charts for private two-work HTML comparison, preserving unavailable/incomparable distinctions, print/table access, and scientific caveats. CI and later acceptance pending; no new literary measurements or parity claim.
+LAST_VERIFIED_PROGRESS: #419 merged at fa3551b2f295029eb2865dc0696dccd566e02054; 14-rate local single-work chart now in master. Root Reader retains 28 Anna static measurements and 9 static comparison rows. 11 measured Russian editions; 13 catalogue cards; 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-LOCAL-PUNCTUATION-VISUAL
-ISSUE: #283 — readable, accessible local HTML punctuation visualization
+UNIT_ID: SCRIP-READER-PRIVATE-PAIRED-PUNCTUATION
+ISSUE: #283 — compare local punctuation measurements accessibly
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_NOT_RUN; LATER_ACCEPTANCE_REQUIRED; MASTER_AND_LIVE_UNCHANGED
-BRANCH: scrip-reader-local-punctuation-chart
-BASE: 25912c66e4bacc0134bd67599ffbbecc1766bdf2
+BRANCH: scrip-reader-private-punctuation-pair-chart
+BASE: fa3551b2f295029eb2865dc0696dccd566e02054
 
-ACCEPTANCE: Plot all 14 source-derived punctuation rates without JavaScript, retaining exact values/units and semantic table alternatives. Show unavailable separately from zero, a visible tick for tiny nonzero values, per-report normalization notice and scientific caveat. Validate positive/negative/empty behavior, keep JSON and profiles unchanged.
+ACCEPTANCE: Plot 14 comparable punctuation rates from both private reports on a shared visual scale without JavaScript, retaining exact values/deltas and the complete 29-row table. No bars for incompatible/missing values, true zeros stay zeros, tiny nonzero tick visible, print/dark/mobile support, positive/negative regressions and scientific caveat. No new metrics or profiles.
 
 
 ## Next user-visible milestone and compact queue
@@ -23,7 +23,7 @@ Milestone: first honest comparison of two independently measured Russian transla
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 local HTML punctuation visualization | 14 exact source-backed rates, accessible no-script bars, unknown/zero distinctions and tests; later PR acceptance | Existing deterministic metrics only |
+| P1 | #283 private HTML paired punctuation comparisons | Two exact rates per 14 categories on shared scale, accessible no-script bars, signed delta labels, unknown/method distinctions, regressions and later PR acceptance | Existing deterministic metrics and private comparison schema |
 | P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct source, run 29 metrics, truthful same-work comparison | Trusov historical literary body and renderer unverified; independent fallback required if unchanged |
 | P3 | #408 White Guard exact-oldid 20-chapter replay | Provider-frozen immutable 11/9 manifest and pinned-only CI | Verified provider bootstrap required |
 | P4 | #282/#281 AOT/FantLab compatibility and source-bound metric readiness | New native N disambiguator or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |

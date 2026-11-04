@@ -108,6 +108,12 @@ class LocalAnalysisTests(unittest.TestCase):
         part = zero_html.split(f'data-metric-id="{metric_id}"', 1)[1].split("</li>", 1)[0]
         self.assertIn('style="width: 0.00%"', part)
         self.assertNotIn('data-nonzero="true"', part)
+        tiny = copy.deepcopy(original)
+        tiny["metrics"][metric_id]["value"] = Decimal("1E-30")
+        tiny_html = render_html(tiny)
+        tiny_part = tiny_html.split(f'data-metric-id="{metric_id}"', 1)[1].split("</li>", 1)[0]
+        self.assertIn('data-nonzero="true"', tiny_part)
+        self.assertIn('1E-30 occurrences / 1,000 words', tiny_part)
 
     def test_deterministic_json_and_html(self):
         a = build_local_analysis(SOURCE.encode("utf-8"), scriptorium_revision="abc")

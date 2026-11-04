@@ -39,7 +39,7 @@ assert.equal(names["fantlab.punctuation.question.per_1000_words"],"Вопрос�
 assert.match(html,/Сопоставление описательное/);
 assert.match(html,/M2: 0\/5/);
 // Source-bound, genuinely visual no-script punctuation comparison in root Pages.
-const staticSections=[...html.matchAll(/<section class="static-pair-metric" data-static-punctuation="([^"]+)">([\\s\\S]*?)<\\/section>/g)];
+const staticSections=[...html.matchAll(/<section class="static-pair-metric" data-static-punctuation="([^"]+)">([\s\S]*?)<\/section>/g)];
 const punctuationIds=[
   "fantlab.punctuation.comma.per_1000_words",
   "fantlab.punctuation.dash.per_1000_words",
@@ -51,9 +51,9 @@ assert.match(html,/это не проценты текста и не баллы 
 const fmtTwo=n=>new Intl.NumberFormat("ru-RU",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
 function verifyStaticPair(section, id) {
   const [, , block] = section;
-  const label=names[id];
+  const label=metrics[id]?.[0]||names[id];
   assert.ok(block.includes(label), "Russian metric label missing");
-  const matched=[...block.matchAll(/<div class="pair-row"><span>([^<]+)<\\/span><div class="pair-track" aria-hidden="true"><span class="pair-fill-([ab])" style="width:([\\d.]+)%"><\\/span><\\/div><strong>([^<]+)<\\/strong><\\/div>/g)];
+  const matched=[...block.matchAll(/<div class="pair-row"><span>([^<]+)<\/span><div class="pair-track" aria-hidden="true"><span class="pair-fill-([ab])" style="width:([\d.]+)%"><\/span><\/div><strong>([^<]+)<\/strong><\/div>/g)];
   assert.equal(matched.length,2,"Both source-backed series required");
   const values=[left,right].map(b=>b.metrics.find(m=>m.id===id).actual);
   const max=Math.max(...values);
@@ -68,10 +68,10 @@ function verifyStaticPair(section, id) {
 }
 for(let k=0;k<staticSections.length;k++)verifyStaticPair(staticSections[k],punctuationIds[k]);
 const css=fs.readFileSync(path.join(root,"assets/pages-reader.css"),"utf8");
-assert.match(css,/\\.static-pair-metric \\{ display:grid/);
-assert.match(css,/@media print \\{ \\.static-pair-metric/);
+assert.match(css,/\.static-pair-metric \{ display:grid/);
+assert.match(css,/@media print \{ \.static-pair-metric/);
 // A one-digit visual tamper must invalidate the source-bound rendering contract.
-const swapped=staticSections[0][0].replace(/width:[\\d.]+%/,"width:1.00%");
+const swapped=staticSections[0][0].replace(/width:[\d.]+%/,"width:1.00%");
 assert.throws(()=>verifyStaticPair([null,staticSections[0][1],swapped],punctuationIds[0]));
 
 console.log("Static paired comparison: nine exact measured rows + three source-bound punctuation mini-charts, units and signed deltas PASS");

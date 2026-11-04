@@ -1,0 +1,256 @@
+{
+  "candidate_id": "bulgakov-white-guard-ru",
+  "capture_scope": {
+    "composite_identity_frozen": false,
+    "fantlab_source_edition_match": "unknown",
+    "literary_body_extraction_frozen": false,
+    "literary_page_revisions_frozen": true,
+    "single_edition_identity": false,
+    "source_partition_frozen": true,
+    "source_text_committed": false
+  },
+  "composition_contract": {
+    "literary_page_count": 20,
+    "order": "chapter-number order 1 through 20",
+    "single_edition_identity": false
+  },
+  "legal_basis": "public_domain_original_russian_work_with_wikisource_reuse_terms",
+  "manifest_version": "scriptorium-bulgakov-source-revisions-v1",
+  "pages": [
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 1,
+      "mediawiki_sha1": "62e0c6ce51e0d224eff17dd6326ef9c1fc0110a5",
+      "ordinal": 1,
+      "page_id": 24195,
+      "revision_id": 2423390,
+      "revision_timestamp": "2017-02-06T23:15:52Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 1"
+    },
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 2,
+      "mediawiki_sha1": "1e8e3819e0dd3dfea46feae8b995e30850a09352",
+      "ordinal": 2,
+      "page_id": 24196,
+      "revision_id": 4204161,
+      "revision_timestamp": "2022-03-07T11:06:43Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 2"
+    },
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 3,
+      "mediawiki_sha1": "dc875be24502f0c47b9e8febe63e52b7adae0261",
+      "ordinal": 3,
+      "page_id": 24197,
+      "revision_id": 1948700,
+      "revision_timestamp": "2015-12-03T12:31:05Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 3"
+    },
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 4,
+      "mediawiki_sha1": "73d5561fc9d07156e6e13377003a8c2cb5a92397",
+      "ordinal": 4,
+      "page_id": 24198,
+      "revision_id": 1948702,
+      "revision_timestamp": "2015-12-03T12:32:27Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 4"
+    },
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 5,
+      "mediawiki_sha1": "b1530ba7df8973d5846e0c327e45be3efe09ed89",
+      "ordinal": 5,
+      "page_id": 24199,
+      "revision_id": 1948703,
+      "revision_timestamp": "2015-12-03T12:33:20Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 5"
+    },
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 6,
+      "mediawiki_sha1": "dd8d253414efa28ed90a845aad41f8aa53bdcf92",
+      "ordinal": 6,
+      "page_id": 24200,
+      "revision_id": 1948704,
+      "revision_timestamp": "2015-12-03T12:33:58Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 6"
+    },
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 7,
+      "mediawiki_sha1": "c3234a9cdbe8bb317a2e1007b3051c20f2ca05ee",
+      "ordinal": 7,
+      "page_id": 24201,
+      "revision_id": 1948708,
+      "revision_timestamp": "2015-12-03T12:37:51Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 7"
+    },
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 8,
+      "mediawiki_sha1": "df49aeb5451e7acd56b21543fd1609ecd5e2495d",
+      "ordinal": 8,
+      "page_id": 24202,
+      "revision_id": 1948709,
+      "revision_timestamp": "2015-12-03T12:39:08Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 8"
+    },
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 9,
+      "mediawiki_sha1": "eabd893edb384061f9033f5b54cef6f2e52cc7d0",
+      "ordinal": 9,
+      "page_id": 24203,
+      "revision_id": 1948710,
+      "revision_timestamp": "2015-12-03T12:39:45Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 9"
+    },
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 10,
+      "mediawiki_sha1": "82c96efeb29f693ad23bf05051d943ca35f1f044",
+      "ordinal": 10,
+      "page_id": 24204,
+      "revision_id": 1948711,
+      "revision_timestamp": "2015-12-03T12:40:13Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 10"
+    },
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter": 11,
+      "mediawiki_sha1": "64b4d2b5bce98dc2b719d478b6f736d8f7c53d12",
+      "ordinal": 11,
+      "page_id": 24205,
+      "revision_id": 1948712,
+      "revision_timestamp": "2015-12-03T12:41:09Z",
+      "source_family_id": "paris-concorde-1927",
+      "title": "Белая гвардия (Булгаков)/Глава 11"
+    },
+    {
+      "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. — М.: Правда, 1989.",
+      "chapter": 12,
+      "mediawiki_sha1": "6fac547bed66be93ce77a4554541e925caada91e",
+      "ordinal": 12,
+      "page_id": 24206,
+      "revision_id": 1949046,
+      "revision_timestamp": "2015-12-04T06:58:36Z",
+      "source_family_id": "moscow-pravda-1989",
+      "title": "Белая гвардия (Булгаков)/Глава 12"
+    },
+    {
+      "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. — М.: Правда, 1989.",
+      "chapter": 13,
+      "mediawiki_sha1": "e40b4628535e49b00c584af4016e1853d460519c",
+      "ordinal": 13,
+      "page_id": 24207,
+      "revision_id": 1949047,
+      "revision_timestamp": "2015-12-04T06:59:29Z",
+      "source_family_id": "moscow-pravda-1989",
+      "title": "Белая гвардия (Булгаков)/Глава 13"
+    },
+    {
+      "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. — М.: Правда, 1989.",
+      "chapter": 14,
+      "mediawiki_sha1": "a37f68b8586505c761725c64775ffc748184b684",
+      "ordinal": 14,
+      "page_id": 24208,
+      "revision_id": 1949048,
+      "revision_timestamp": "2015-12-04T07:00:11Z",
+      "source_family_id": "moscow-pravda-1989",
+      "title": "Белая гвардия (Булгаков)/Глава 14"
+    },
+    {
+      "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. — М.: Правда, 1989.",
+      "chapter": 15,
+      "mediawiki_sha1": "d58474ed0d716b581f5d75b07c7065f9a318446d",
+      "ordinal": 15,
+      "page_id": 24209,
+      "revision_id": 5351064,
+      "revision_timestamp": "2025-03-10T21:38:37Z",
+      "source_family_id": "moscow-pravda-1989",
+      "title": "Белая гвардия (Булгаков)/Глава 15"
+    },
+    {
+      "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. — М.: Правда, 1989.",
+      "chapter": 16,
+      "mediawiki_sha1": "ac93460c5eeda19de6ff994110063c34093bc3d6",
+      "ordinal": 16,
+      "page_id": 24210,
+      "revision_id": 1949050,
+      "revision_timestamp": "2015-12-04T07:01:42Z",
+      "source_family_id": "moscow-pravda-1989",
+      "title": "Белая гвардия (Булгаков)/Глава 16"
+    },
+    {
+      "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. — М.: Правда, 1989.",
+      "chapter": 17,
+      "mediawiki_sha1": "b6f61864977e9262beb5480c0926d022ead9388c",
+      "ordinal": 17,
+      "page_id": 24211,
+      "revision_id": 1949051,
+      "revision_timestamp": "2015-12-04T07:03:28Z",
+      "source_family_id": "moscow-pravda-1989",
+      "title": "Белая гвардия (Булгаков)/Глава 17"
+    },
+    {
+      "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. — М.: Правда, 1989.",
+      "chapter": 18,
+      "mediawiki_sha1": "7d4edce0cd30483ff20ccb27f20b56bc464463dc",
+      "ordinal": 18,
+      "page_id": 24212,
+      "revision_id": 1949052,
+      "revision_timestamp": "2015-12-04T07:04:03Z",
+      "source_family_id": "moscow-pravda-1989",
+      "title": "Белая гвардия (Булгаков)/Глава 18"
+    },
+    {
+      "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. — М.: Правда, 1989.",
+      "chapter": 19,
+      "mediawiki_sha1": "7c09da58a9de0b4fc90b8117c7f011dbf68932e9",
+      "ordinal": 19,
+      "page_id": 24213,
+      "revision_id": 1949053,
+      "revision_timestamp": "2015-12-04T07:04:43Z",
+      "source_family_id": "moscow-pravda-1989",
+      "title": "Белая гвардия (Булгаков)/Глава 19"
+    },
+    {
+      "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. — М.: Правда, 1989.",
+      "chapter": 20,
+      "mediawiki_sha1": "9dfa6e26fd1c985a62ffa68247a9dc4548853308",
+      "ordinal": 20,
+      "page_id": 24214,
+      "revision_id": 1949054,
+      "revision_timestamp": "2015-12-04T07:05:21Z",
+      "source_family_id": "moscow-pravda-1989",
+      "title": "Белая гвардия (Булгаков)/Глава 20"
+    }
+  ],
+  "provider": "Russian Wikisource",
+  "source_partition": [
+    {
+      "bibliographic_source": "М. Булгаков. Дни Турбиных (Белая гвардия). — Париж: Concorde, 1927.",
+      "chapter_range": "1-11",
+      "source_family_id": "paris-concorde-1927"
+    },
+    {
+      "bibliographic_source": "Булгаков М. А. Белая гвардия. Жизнь господина де Мольера. Рассказы. — М.: Правда, 1989.",
+      "chapter_range": "12-20",
+      "source_family_id": "moscow-pravda-1989"
+    }
+  ],
+  "source_work_index_revision_id": 4715350,
+  "source_work_url": "https://ru.wikisource.org/wiki/%D0%91%D0%B5%D0%BB%D0%B0%D1%8F_%D0%B3%D0%B2%D0%B0%D1%80%D0%B4%D0%B8%D1%8F_(%D0%91%D1%83%D0%BB%D0%B3%D0%B0%D0%BA%D0%BE%D0%B2)"
+}

@@ -327,6 +327,22 @@ def build_manifest(
     }
 
 
+
+def _same_json_value(actual: object, expected: object) -> bool:
+    """JSON gate equality must not coerce bool/int/float values."""
+    if type(actual) is not type(expected):
+        return False
+    if isinstance(expected, dict):
+        return set(actual) == set(expected) and all(
+            _same_json_value(actual[key], value) for key, value in expected.items()
+        )
+    if isinstance(expected, list):
+        return len(actual) == len(expected) and all(
+            _same_json_value(left, right) for left, right in zip(actual, expected)
+        )
+    return actual == expected
+
+
 def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object], ...]:
     expected_partition = [
         {"source_family_id": SOURCE_FAMILY_1927, "chapter_range": "1-11", "bibliographic_source": SOURCE_1927},
@@ -358,15 +374,15 @@ def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object]
         raise ValueError("provider drift")
     if manifest.get("source_work_url") != WORK_URL:
         raise ValueError("source work URL drift")
-    if manifest.get("source_work_index_revision_id") != WORK_INDEX_REVISION_ID:
+    if not _same_json_value(manifest.get("source_work_index_revision_id"), WORK_INDEX_REVISION_ID):
         raise ValueError("work-index revision drift")
     if manifest.get("legal_basis") != _LEGAL_BASIS:
         raise ValueError("legal basis drift")
-    if manifest.get("source_partition") != expected_partition:
+    if not _same_json_value(manifest.get("source_partition"), expected_partition):
         raise ValueError("source partition drift")
-    if manifest.get("composition_contract") != expected_composition:
+    if not _same_json_value(manifest.get("composition_contract"), expected_composition):
         raise ValueError("composition contract drift")
-    if manifest.get("capture_scope") != expected_scope:
+    if not _same_json_value(manifest.get("capture_scope"), expected_scope):
         raise ValueError("capture scope drift")
     rows = manifest.get("pages")
     expected = expected_pages()
@@ -386,7 +402,7 @@ def validate_manifest(manifest: Mapping[str, object]) -> tuple[dict[str, object]
                 f"missing={missing!r} extra={extra!r}"
             )
         for key in ("ordinal", "chapter", "title", "source_family_id", "bibliographic_source"):
-            if row.get(key) != expected_page[key]:
+            if not _same_json_value(row.get(key), expected_page[key]):
                 raise ValueError(f"literary page/source-partition drift at chapter {expected_page['chapter']}")
         page_id = row.get("page_id")
         revision_id = row.get("revision_id")

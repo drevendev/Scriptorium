@@ -1,5 +1,6 @@
 import contextlib
 import copy
+from decimal import Decimal
 from hashlib import sha256
 import io
 import json
@@ -58,6 +59,55 @@ class LocalAnalysisTests(unittest.TestCase):
         self.assertIn("characters / word", html)
         self.assertIn("characters / sentence", html)
         self.assertNotIn(SOURCE, html)
+
+    def test_punctuation_chart_is_source_bound_exact_and_accessible(self):
+        artifact = build_local_analysis(SOURCE.encode("utf-8"))
+        html = render_html(artifact)
+        rows = {name: row for name, row in artifact["metrics"].items()
+                if name.startswith("fantlab.punctuation.")}
+        self.assertEqual(len(rows), 14)
+        self.assertEqual(html.count('class="punctuation-item"'), len(rows))
+        self.assertIn('aria-labelledby="punctuation-chart-heading"', html)
+        self.assertIn('aria-hidden="true"', html)
+        self.assertIn('Tiny nonzero rates retain a visible tick', html)
+        self.assertIn('print-color-adjust: exact', html)
+        self.assertNotIn("<script", html)
+        rates = [Decimal(str(row["value"])) for row in rows.values() if row["value"] is not None]
+        maximum = max(rates, default=Decimal(0))
+        for metric_id, row in rows.items():
+            with self.subTest(metric_id=metric_id):
+                part = html.split(f'data-metric-id="{metric_id}"', 1)[1].split("</li>", 1)[0]
+                if row["value"] is None:
+                    self.assertIn("Unavailable — not zero", part)
+                    self.assertNotIn('class="punctuation-fill"', part)
+                else:
+                    rate = Decimal(str(row["value"]))
+                    width = (rate / maximum * 100) if maximum else Decimal(0)
+                    self.assertIn(f'width: {width:.2f}%', part)
+                    self.assertIn(f'{row["value"]} occurrences / 1,000 words', part)
+                    if rate > 0:
+                        self.assertIn('data-nonzero="true"', part)
+        self.assertIn('Punctuation: local metrics and evidence', html)
+
+    def test_punctuation_chart_keeps_unknown_and_rejects_impossible_values(self):
+        empty = build_local_analysis(b"")
+        html = render_html(empty)
+        self.assertIn("All punctuation rates are unavailable", html)
+        self.assertIn("Unavailable — not zero", html)
+        metric_id = "fantlab.punctuation.dash.per_1000_words"
+        original = build_local_analysis(SOURCE.encode("utf-8"))
+        for value in (-1, True, float("nan"), float("inf"), "6"):
+            with self.subTest(value=value):
+                altered = copy.deepcopy(original)
+                altered["metrics"][metric_id]["value"] = value
+                with self.assertRaises(ValueError):
+                    render_html(altered)
+        zero = copy.deepcopy(original)
+        zero["metrics"][metric_id]["value"] = 0
+        zero_html = render_html(zero)
+        part = zero_html.split(f'data-metric-id="{metric_id}"', 1)[1].split("</li>", 1)[0]
+        self.assertIn('style="width: 0.00%"', part)
+        self.assertNotIn('data-nonzero="true"', part)
 
     def test_deterministic_json_and_html(self):
         a = build_local_analysis(SOURCE.encode("utf-8"), scriptorium_revision="abc")

@@ -41,9 +41,14 @@ def _same(actual: object, expected: object, field: str) -> None:
         raise ValueError(f"conflicting retained evidence for {field}")
 
 
-def _number(value: object, field: str) -> int | float:
+def _number(value: object, field: str, *, nonnegative: bool = False,
+            integer: bool = False) -> int | float:
     if type(value) not in (int, float) or not math.isfinite(value):
         raise ValueError(f"invalid numeric metric evidence: {field}")
+    if nonnegative and value < 0:
+        raise ValueError(f"negative numeric metric evidence: {field}")
+    if integer and type(value) is not int:
+        raise ValueError(f"non-integer count metric evidence: {field}")
     return value
 
 
@@ -62,7 +67,7 @@ def _verify_metrics(reference: dict[str, object], diagnostic: dict[str, object])
         raise ValueError("retained reference metrics missing")
 
     specs = {
-        metric_id: path for metric_id, path, _, _ in _reference_specs()
+        metric_id: (path, rule) for metric_id, path, _, rule in _reference_specs()
         if _lookup(expected_section, path) is not _MISSING
     }
     if set(observed) != set(specs):
@@ -73,8 +78,12 @@ def _verify_metrics(reference: dict[str, object], diagnostic: dict[str, object])
         item = observed[metric_id]
         if not isinstance(item, dict) or set(item) != {"expected", "actual", "raw_delta", "result"}:
             raise ValueError(f"invalid retained metric row: {metric_id}")
-        expected = _number(_lookup(expected_section, specs[metric_id]), metric_id)
-        _same(_number(item["expected"], metric_id), expected, f"{metric_id} expected")
+        path, rule = specs[metric_id]
+        exact_count = rule == "exact_integer"
+        expected = _number(_lookup(expected_section, path), metric_id,
+                           nonnegative=True, integer=exact_count)
+        _same(_number(item["expected"], metric_id, nonnegative=True,
+                      integer=exact_count), expected, f"{metric_id} expected")
         actual = item["actual"]
         delta = item["raw_delta"]
         result = item["result"]
@@ -83,7 +92,8 @@ def _verify_metrics(reference: dict[str, object], diagnostic: dict[str, object])
                 raise ValueError(f"invalid unknown metric state: {metric_id}")
             state = "NOT_RUN" if result == "not_run" else "UNRESOLVED_NO_ACTUAL"
         else:
-            numeric_actual = _number(actual, f"{metric_id} actual")
+            numeric_actual = _number(actual, f"{metric_id} actual",
+                                     nonnegative=True, integer=exact_count)
             numeric_delta = _number(delta, f"{metric_id} delta")
             if result != "unresolved":
                 raise ValueError(f"source-unmatched metric may not pass/fail: {metric_id}")
@@ -388,6 +398,14 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
         raise ValueError("invalid frozen digest")
 
     observed = _verify_metrics(reference, diagnostic)
+    # A valid-looking signed delta is not proof that the measured text matches
+    # the independently frozen source witness.
+    anna_characters = next(
+        row["actual"] for row in observed
+        if row["metric_id"] == "fantlab.general.characters"
+    )
+    _same(anna_characters, anna["source"]["characters_including_spaces"],
+          "Anna measured characters versus frozen witness")
     wave_witness = next(e for e in entries if e["candidate_id"] == _RUNNING_ID)
     wave_observed = _verify_running_metrics(root, wave_witness)
     silver_witness = next(e for e in entries if e["candidate_id"] == silver_dove_retained.CANDIDATE_ID)

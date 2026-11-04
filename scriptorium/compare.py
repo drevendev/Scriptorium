@@ -490,7 +490,86 @@ def render_markdown(comparison: dict[str, object], *, title: str = "Two private 
     return "\n".join(lines).rstrip() + "\n"
 
 
+
+def _render_punctuation_pair_chart(comparison: dict[str, object]) -> str:
+    """Compare 14 source-backed punctuation rates on one shared visual scale.
+
+    Only rows explicitly marked comparable receive paired bars. All exact
+    measurements and signed differences remain in the complete table below.
+    """
+    rows = [
+        row for row in comparison["metrics"]
+        if row["metric_id"].startswith("fantlab.punctuation.")
+    ]
+    if len(rows) != 14 or len({row["metric_id"] for row in rows}) != 14:
+        raise CompareError("incomplete punctuation comparison")
+
+    observed: list[tuple[dict[str, object], Decimal, Decimal]] = []
+    for row in rows:
+        if row["comparison_status"] != "comparable":
+            continue
+        if row["left"] is None or row["right"] is None:
+            raise CompareError("missing comparable punctuation rate")
+        left, right = (_decimal_token(str(row[side])) for side in ("left", "right"))
+        if left < 0 or right < 0:
+            raise CompareError("negative punctuation rate")
+        observed.append((row, left, right))
+    maximum = max((rate for _, a, b in observed for rate in (a, b)), default=Decimal(0))
+    by_id = {row["metric_id"]: (a, b) for row, a, b in observed}
+
+    def side_bar(side: str, rate: Decimal, exact: str) -> str:
+        width = rate / maximum * 100 if maximum else Decimal(0)
+        nonzero = ' data-nonzero="true"' if rate > 0 else ""
+        return (
+            f'<div class="pair-side"><span class="pair-track" aria-hidden="true">'
+            f'<span class="pair-fill pair-{side}"{nonzero} style="width: {width:.2f}%"></span>'
+            f'</span><span class="pair-value">{side.capitalize()}: '
+            f'{escape(exact)} occurrences / 1,000 words</span></div>'
+        )
+
+    items = []
+    for row in rows:
+        mid = row["metric_id"]
+        label = escape(row["label"])
+        status = row["comparison_status"]
+        if status == "comparable":
+            a, b = by_id[mid]
+            body = (
+                '<div class="pair-sides">'
+                + side_bar("left", a, row["left"]) + side_bar("right", b, row["right"])
+                + '</div><p class="pair-difference">Right minus left: '
+                + escape(row["difference"]) + ' occurrences / 1,000 words</p>'
+            )
+        elif status == "incomparable":
+            body = '<p class="pair-unavailable">Incomparable methods — no paired bars.</p>'
+        elif status == "unavailable":
+            body = '<p class="pair-unavailable">Unavailable — at least one rate is not run; not zero.</p>'
+        else:
+            raise CompareError("invalid punctuation comparison status")
+        items.append(
+            f'<li class="punctuation-pair" data-metric-id="{escape(mid, quote=True)}">'
+            f'<h3>{label}</h3>{body}</li>'
+        )
+    empty = (
+        '<p role="status">No comparable punctuation rates. Unknown is not zero.</p>'
+        if not observed else ""
+    )
+    return (
+        '<section class="punctuation-comparison" aria-labelledby="punctuation-compare-heading">'
+        '<h2 id="punctuation-compare-heading">Punctuation profiles</h2>'
+        '<p>Two measured rates per 1,000 words on one shared scale: the longest '
+        'bar is the highest available comparable rate across both reports, '
+        '<strong>not</strong> a percent of the text or a FantLab score. '
+        'A visible tick marks tiny nonzero values. Exact right-minus-left '
+        'differences, units and all 29 measurements remain in the table.</p>'
+        + empty + '<ol class="punctuation-pairs">' + "".join(items) + '</ol></section>'
+    )
+
+
 def render_html(comparison: dict[str, object], *, title: str = "Two private analyses") -> str:
+    # Enforce the same 29-field identity/status contract used by Markdown.
+    render_markdown(comparison, title=title)
+    punctuation_html = _render_punctuation_pair_chart(comparison)
     name = escape(title)
     rows = []
     for row in comparison["metrics"]:
@@ -522,7 +601,19 @@ code{overflow-wrap:anywhere}.scroll{overflow:auto;border:1px solid #d8d0c0;backg
 table{border-collapse:collapse;width:100%;min-width:50rem;font-variant-numeric:tabular-nums}th,td{text-align:left;border-bottom:1px solid #d8d0c0;padding:.75rem;vertical-align:top}caption{text-align:left;padding:1rem;font-weight:600}
 small{display:block;font-size:.75rem;font-weight:400;color:#4f635a}details summary{cursor:pointer;padding:.75rem 0;min-height:44px}
 .skip{position:absolute;left:-9999px}.skip:focus{left:1rem;top:1rem;background:white;padding:1rem}
-:focus-visible{outline:3px solid #a15b1e;outline-offset:3px}@media(max-width:680px){.cards{grid-template-columns:1fr}}
+:focus-visible{outline:3px solid #a15b1e;outline-offset:3px}
+.punctuation-comparison{margin:1.8rem 0 2.5rem;padding-block:1.25rem;border-block:1px solid #b9c5b9}
+.punctuation-comparison>p{max-width:76ch}.punctuation-pairs{padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));gap:.8rem}
+.punctuation-pair{min-width:0;padding:1rem;background:#fffdfa;border:1px solid #d8d0c0;border-radius:.6rem;break-inside:avoid}
+.punctuation-pair h3{font:600 1rem/1.35 Georgia,serif;margin:0 0 .7rem}
+.pair-sides{display:grid;gap:.5rem}.pair-side{display:grid;gap:.25rem}
+.pair-track{display:block;height:.7rem;overflow:hidden;border-radius:.35rem;background:#d8dfd7}
+.pair-fill{display:block;height:100%}.pair-left{background:#28665d}.pair-right{background:#a35d35}
+.pair-fill[data-nonzero="true"]{min-width:2px}.pair-value,.pair-difference,.pair-unavailable{font-size:.85rem;overflow-wrap:anywhere}
+.pair-difference{font-weight:600;margin:.7rem 0 0}
+@media(max-width:680px){.cards{grid-template-columns:1fr}}
+@media(prefers-color-scheme:dark){body{background:#172721;color:#f2f0e5}.card,.punctuation-pair,.scroll{background:#20332d;border-color:#57746a}small{color:#c5d6c9}.notice{background:#29473f}.punctuation-comparison{border-color:#57746a}.pair-track{background:#425c51}.pair-left{background:#8bd2bd}.pair-right{background:#e6b184}}
+@media print{body{background:#fff;color:#111}.punctuation-pair{break-inside:avoid}.pair-fill{print-color-adjust:exact}.skip{display:none}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}"""
     return ("<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>" +
             "<title>" + name + " · Scriptorium</title><style>" + css + "</style></head><body>" +
@@ -533,7 +624,7 @@ small{display:block;font-size:.75rem;font-weight:400;color:#4f635a}details summa
             "Percent differences are percentage points, never relative percent changes.</p>" +
             "<p>Imported JSON values and hashes are unauthenticated declarations. Rerun the analyzer on your original manuscript to verify them.</p><div class='cards'>" +
             source_card("Left report", comparison["left_source"]) + source_card("Right report", comparison["right_source"]) +
-            "</div><section id='comparison' tabindex='-1' aria-labelledby='metrics-heading'><h2 id='metrics-heading'>Measurements</h2>" +
+            "</div>" + punctuation_html + "<section id='comparison' tabindex='-1' aria-labelledby='metrics-heading'><h2 id='metrics-heading'>Measurements</h2>" +
             "<div class='scroll' tabindex='0' role='region' aria-label='Comparison measurements'>" +
             "<table><caption>29 source-free metric comparisons, values and units</caption><thead><tr>" +
             "<th scope='col'>Metric</th><th scope='col'>Left</th><th scope='col'>Right</th>" +

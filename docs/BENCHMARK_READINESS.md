@@ -52,6 +52,14 @@ within a previously permitted 1e-10 margin. It is a **stored-artifact integrity
 check**, not FantLab display rounding evidence, source-identity proof, or a
 new parity tolerance.
 
+Retained Anna Karenina diagnostic readings now reject impossible negative numeric
+observations and fractional/Boolean exact-count fields even when a forged delta
+is arithmetically self-consistent. The measured character count must also
+equal the independently frozen 1,705,605-character body witness; a plausible
+positive count with a consistently recomputed delta cannot silently replace it.
+Signed deltas remain valid. These checks strengthen retained-artifact integrity,
+not source matching or FantLab metric reproduction.
+
 This incremental slice partially addresses issue #281. Closing the issue still
 requires source-bound metrics across five independently matched works,
 independent reference rounding/display evidence, and complete verified

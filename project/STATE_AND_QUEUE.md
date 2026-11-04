@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 416
+STATE_REVISION: 417
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-04
-LAST_RESULT: Prepared fail-closed validation for non-negative FantLab/Scriptorium POS count partitions, including zero and invalid-type regressions. PR candidate for later exact-head CI acceptance; no new morphology measurement or parity claim.
-LAST_VERIFIED_PROGRESS: #416 merged at 20ea0b6e7c51dde6d7984abb63ccc64d12826df3; root Reader retains 28 Anna static measurements and 9 static comparison rows. 11 measured Russian editions; 13 catalogue cards; 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
+LAST_RESULT: Prepared fail-closed retained benchmark validation: reject impossible negative numeric observations, noninteger count fields and positive character totals inconsistent with the independently frozen Anna witness. Await exact-head CI and later acceptance; no new corpus measurement or parity claim.
+LAST_VERIFIED_PROGRESS: #417 merged at d08542969ee59d1964d183c6bd82af46bc64eeed; root Reader retains 28 Anna static measurements and 9 static comparison rows. 11 measured Russian editions; 13 catalogue cards; 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-POS-ACCOUNTING-NONNEGATIVE
-ISSUE: #281 — fail-closed diagnostic POS accounting evidence
+UNIT_ID: SCRIP-REPRO-RETAINED-METRIC-NUMERIC-WITNESS
+ISSUE: #281 — fail-closed retained metric values and frozen witness agreement
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_NOT_RUN; LATER_ACCEPTANCE_REQUIRED; MASTER_AND_LIVE_UNCHANGED
-BRANCH: scrip-repro-pos-accounting-nonnegative
-BASE: 20ea0b6e7c51dde6d7984abb63ccc64d12826df3
+BRANCH: scrip-repro-retained-metric-numeric-witness
+BASE: d08542969ee59d1964d183c6bd82af46bc64eeed
 
-ACCEPTANCE: Reject negative, Boolean, float and non-integer FantLab or Scriptorium POS count inputs before producing a source-unmatched diagnostic delta, even if a negative partition sums correctly. Keep honest empty (all-zero) partitions valid and preserve positive accounting. No POS mapping/profile changes, new provider claim or M2 progress.
+ACCEPTANCE: Fail on negative or nonnumeric measured/expected values, noninteger exact-count fields and a positive Anna character total inconsistent with the frozen 1,705,605-character witness, even with a self-consistent stored delta. Preserve signed deltas, unavailable states, M2 0/5 and unchanged metric versions.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: first honest comparison of two independently measured Russian transla
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 fail-closed POS count accounting | Focused negative/zero regressions, exact-head CI, later PR acceptance | Existing diagnostics only |
+| P1 | #281 retained metric numeric/witness integrity | Negative/fractional/Boolean forged-field regressions, independent frozen-count binding, exact-head CI and later acceptance | Existing source-free diagnostics only |
 | P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct source, run 29 metrics, truthful same-work comparison | Trusov historical literary body and renderer unverified; independent fallback required if unchanged |
 | P3 | #408 White Guard exact-oldid 20-chapter replay | Provider-frozen immutable 11/9 manifest and pinned-only CI | Verified provider bootstrap required |
 | P4 | #282/#281 AOT/FantLab compatibility and source-bound metric readiness | New native N disambiguator or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |

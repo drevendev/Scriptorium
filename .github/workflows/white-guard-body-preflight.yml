@@ -56,11 +56,11 @@ jobs:
           }
           chapter_keys = {
               'chapter', 'source_family_id', 'revision_id', 'wikitext_characters',
-              'wikitext_sha256', 'extraction_status', 'candidate_body_characters',
-              'candidate_body_sha256',
+              'wikitext_sha256', 'extraction_status', 'extraction_failure_code',
+              'candidate_body_characters', 'candidate_body_sha256',
           }
           assert set(report) == top, 'unsafe or incomplete receipt schema'
-          assert report['schema_version'] == 'scriptorium-white-guard-body-preflight-v1'
+          assert report['schema_version'] == 'scriptorium-white-guard-body-preflight-v2'
           assert report['provider_replay'] == 'VERIFIED_IDENTITIES'
           assert report['chapter_count'] == len(report['chapters']) == 20
           assert [c['chapter'] for c in report['chapters']] == list(range(1, 21))
@@ -70,6 +70,15 @@ jobs:
           assert all(set(c) == chapter_keys for c in report['chapters'])
           assert all(c['extraction_status'] in {'CANDIDATE_ONLY', 'UNSUPPORTED_MARKUP'}
                      for c in report['chapters'])
+          safe_codes = {
+              'BODY_CONTAINER_ABSENT', 'BODY_CONTAINER_MULTIPLE', 'UNSUPPORTED_TEMPLATE',
+              'TABLE_OR_HEADING', 'UNSUPPORTED_INLINE_MARKUP', 'EMPTY_BODY', 'UNCLASSIFIED_ERROR',
+          }
+          assert all(
+              (c['extraction_failure_code'] is None if c['extraction_status'] == 'CANDIDATE_ONLY'
+               else c['extraction_failure_code'] in safe_codes)
+              for c in report['chapters']
+          )
           assert report['candidate_chapter_count'] == sum(
               c['extraction_status'] == 'CANDIDATE_ONLY' for c in report['chapters']
           )
@@ -85,8 +94,10 @@ jobs:
           statuses = Counter(c['extraction_status'] for c in report['chapters'])
           print('Verified pinned revision inventory: 20 (Paris 1927: 11; Moscow 1989: 9)')
           print('Body parser coverage:', dict(sorted(statuses.items())))
-          print('Unsupported chapter numbers:', [c['chapter'] for c in report['chapters']
-                                               if c['extraction_status'] == 'UNSUPPORTED_MARKUP'])
+          print('Unsupported chapter reason codes:', [
+              (c['chapter'], c['extraction_failure_code']) for c in report['chapters']
+              if c['extraction_status'] == 'UNSUPPORTED_MARKUP'
+          ])
           print('Composite tentative character count:',
                 report['candidate_composite_characters_including_spaces'])
           print('Scientific admission: NOT established; FantLab input identity: UNKNOWN')

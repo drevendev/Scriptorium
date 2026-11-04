@@ -41,6 +41,23 @@ _HTML_TAG_RE = re.compile(r"</?(?:span|small|big|i|b|em|strong|sup|sub|br|center
 _BOLD_ITALIC_RE = re.compile(r"'{2,5}")
 _TEMPLATE_RE = re.compile(r"\{\{[^{}]*\}\}")
 _TABLE_OR_HEADING_RE = re.compile(r"(^|\n)\s*(?:\{\||\|-|\|\}|\|[^|]|!|={2,6}\s*)")
+# Only bounded, static classifications may leave the extractor in a source-free receipt.
+BODY_FAILURE_CODES = frozenset({
+    "BODY_CONTAINER_ABSENT",
+    "BODY_CONTAINER_MULTIPLE",
+    "UNSUPPORTED_TEMPLATE",
+    "TABLE_OR_HEADING",
+    "UNSUPPORTED_INLINE_MARKUP",
+    "EMPTY_BODY",
+})
+
+
+class BodyExtractionError(ValueError):
+    """Known structural extraction failure; its code contains no source text."""
+
+    def __init__(self, code: str, message: str):
+        super().__init__(message)
+        self.code = code
 
 
 def roman(value: int) -> str:
@@ -157,7 +174,10 @@ def extract_transcription_body(wikitext: str) -> str:
     text = _NOINCLUDE_RE.sub("", text)
     matches = _BODY_DIV_RE.findall(text)
     if len(matches) != 1:
-        raise ValueError(f"expected exactly one transcription <div> body, got {len(matches)}")
+        raise BodyExtractionError(
+            "BODY_CONTAINER_ABSENT" if not matches else "BODY_CONTAINER_MULTIPLE",
+            f"expected exactly one transcription <div> body, got {len(matches)}",
+        )
     body = matches[0]
     body = _NOTES_HEADING_RE.sub("", body)
     body = _REF_RE.sub("", body)
@@ -175,15 +195,15 @@ def extract_transcription_body(wikitext: str) -> str:
         body = _BOLD_ITALIC_RE.sub("", body)
         body = html.unescape(body)
     if _TEMPLATE_RE.search(body):
-        raise ValueError("unsupported template remains inside transcription body")
+        raise BodyExtractionError("UNSUPPORTED_TEMPLATE", "unsupported template remains inside transcription body")
     if _TABLE_OR_HEADING_RE.search(body):
-        raise ValueError("unsupported table/heading markup remains inside transcription body")
+        raise BodyExtractionError("TABLE_OR_HEADING", "unsupported table/heading markup remains inside transcription body")
     if "[[" in body or "]]" in body or "<" in body or ">" in body:
-        raise ValueError("unsupported wiki/HTML markup remains inside transcription body")
+        raise BodyExtractionError("UNSUPPORTED_INLINE_MARKUP", "unsupported wiki/HTML markup remains inside transcription body")
 
     body = body.replace("\r\n", "\n").replace("\r", "\n").strip()
     if not body:
-        raise ValueError("empty transcription body")
+        raise BodyExtractionError("EMPTY_BODY", "empty transcription body")
 
     paragraphs = re.split(r"\n[ \t]*\n+", body)
     rendered: list[str] = []
@@ -193,7 +213,7 @@ def extract_transcription_body(wikitext: str) -> str:
         if collapsed:
             rendered.append(collapsed)
     if not rendered:
-        raise ValueError("empty rendered transcription body")
+        raise BodyExtractionError("EMPTY_BODY", "empty rendered transcription body")
     return "\n\n".join(rendered)
 
 

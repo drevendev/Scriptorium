@@ -37,6 +37,7 @@ class WhiteGuardBodyPreflightTests(unittest.TestCase):
         self.assertEqual([r["source_family_id"] for r in receipt["chapters"]],
                          [revisions.SOURCE_FAMILY_1927] * 11 + [revisions.SOURCE_FAMILY_1989] * 9)
         self.assertTrue(all(r["extraction_status"] == "CANDIDATE_ONLY" for r in receipt["chapters"]))
+        self.assertTrue(all(r["extraction_failure_code"] is None for r in receipt["chapters"]))
         self.assertEqual(receipt["chapters"][0]["wikitext_sha256"],
                          sha256(data[self.rows[0]["title"]].encode()).hexdigest())
         self.assertIs(receipt["candidate_meets_size_threshold"], False)
@@ -56,6 +57,7 @@ class WhiteGuardBodyPreflightTests(unittest.TestCase):
         self.assertIsNone(receipt["candidate_composite_sha256"])
         self.assertIsNone(receipt["candidate_meets_size_threshold"])
         self.assertEqual(receipt["chapters"][12]["extraction_status"], "UNSUPPORTED_MARKUP")
+        self.assertEqual(receipt["chapters"][12]["extraction_failure_code"], "BODY_CONTAINER_ABSENT")
         self.assertIsNone(receipt["chapters"][12]["candidate_body_characters"])
         self.assertNotIn(PRIVATE_SENTINEL, json.dumps(receipt, ensure_ascii=False))
 
@@ -90,6 +92,49 @@ class WhiteGuardBodyPreflightTests(unittest.TestCase):
         self.assertEqual(receipt["candidate_chapter_count"], 0)
         self.assertNotIn(PRIVATE_SENTINEL, json.dumps(receipt, ensure_ascii=False))
         self.assertTrue(all(r["extraction_status"] == "UNSUPPORTED_MARKUP" for r in receipt["chapters"]))
+
+    def test_each_structural_failure_has_a_safe_code_without_exposing_prose(self):
+        cases = (
+            ("absent", "no body: " + PRIVATE_SENTINEL, "BODY_CONTAINER_ABSENT"),
+            ("multiple", '<div class="text">one</div><div class="text">two</div>',
+             "BODY_CONTAINER_MULTIPLE"),
+            ("template", '<div class="text">one {{Unknown|x}} ' + PRIVATE_SENTINEL + '</div>',
+             "UNSUPPORTED_TEMPLATE"),
+            ("heading", '<div class="text">one\\n== Heading ==\\n' + PRIVATE_SENTINEL + '</div>',
+             "TABLE_OR_HEADING"),
+            ("html", '<div class="text"><section>one</section> ' + PRIVATE_SENTINEL + '</div>',
+             "UNSUPPORTED_INLINE_MARKUP"),
+            ("empty", '<div class="text"> </div>', "EMPTY_BODY"),
+        )
+        for label, source, code in cases:
+            with self.subTest(label=label):
+                data = self.sources()
+                data[self.rows[0]["title"]] = source
+                receipt = preflight.build_preflight(MANIFEST, fetcher=lambda _: data)
+                first = receipt["chapters"][0]
+                self.assertEqual(first["extraction_status"], "UNSUPPORTED_MARKUP")
+                self.assertEqual(first["extraction_failure_code"], code)
+                self.assertIsNone(first["candidate_body_characters"])
+                self.assertEqual(receipt["candidate_chapter_count"], 19)
+                self.assertIsNone(receipt["candidate_composite_sha256"])
+                self.assertNotIn(PRIVATE_SENTINEL, json.dumps(receipt, ensure_ascii=False))
+
+    def test_unknown_or_untrusted_extractor_failures_are_unclassified(self):
+        from scriptorium.wikisource_freeze import BodyExtractionError
+
+        def forged(_):
+            raise BodyExtractionError(PRIVATE_SENTINEL, PRIVATE_SENTINEL)
+
+        for extractor in (forged, lambda _: 23):
+            with self.subTest(extractor=extractor.__name__):
+                receipt = preflight.build_preflight(
+                    MANIFEST, fetcher=lambda _: self.sources(), extractor=extractor
+                )
+                self.assertTrue(all(
+                    c["extraction_failure_code"] == "UNCLASSIFIED_ERROR"
+                    for c in receipt["chapters"]
+                ))
+                self.assertNotIn(PRIVATE_SENTINEL, json.dumps(receipt, ensure_ascii=False))
 
     def test_cli_sanitizes_provider_failure_and_never_outputs_partial_text(self):
         out, err = io.StringIO(), io.StringIO()

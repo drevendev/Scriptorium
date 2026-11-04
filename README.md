@@ -153,7 +153,7 @@ Open `comparison.html` for the same 29 measurements, plus a no-JavaScript
 **14-category punctuation comparison chart**: both reports share one scale for
 rates per 1,000 words, with exact values and signed differences beside every pair.
 Method-incompatible/missing rates never become false zero bars; the complete
-accessible table remains available. Source identities and **right minus left** differences Percentage differences use percentage points.
+accessible table remains available, alongside source identities and exact **right minus left** differences. Percentage differences use percentage points.
 Unknown measurements do not become zero; different methods or dictionaries are labelled
 incomparable where applicable. JSON decimal observations and their differences retain
 precision. Contradictory counts, means, punctuation rates and same-text results are rejected.

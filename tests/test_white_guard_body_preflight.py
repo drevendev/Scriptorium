@@ -32,7 +32,7 @@ class WhiteGuardBodyPreflightTests(unittest.TestCase):
         self.assertEqual(receipt["schema_version"], preflight.SCHEMA_VERSION)
         self.assertEqual(receipt["chapter_count"], 20)
         self.assertEqual(receipt["candidate_chapter_count"], 20)
-        self.assertEqual(receipt["provider_replay"], "VERIFIED_IDENTITIES")
+        self.assertEqual(receipt["provider_replay"], "INJECTED_FIXTURE")
         self.assertEqual([r["chapter"] for r in receipt["chapters"]], list(range(1, 21)))
         self.assertEqual([r["source_family_id"] for r in receipt["chapters"]],
                          [revisions.SOURCE_FAMILY_1927] * 11 + [revisions.SOURCE_FAMILY_1989] * 9)

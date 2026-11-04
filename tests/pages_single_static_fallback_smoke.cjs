@@ -10,9 +10,9 @@ const book=doc.books.find(b=>b.key==="anna"&&b.text_status==="measured");
 assert.ok(book&&book.metrics.length===28&&book.measured===23&&book.unavailable===5);
 assert.equal(doc.scientific_claim,"DIAGNOSTIC_ONLY");
 assert.equal(doc.counts.m2_source_matched,0);
-const metrics=JSON.parse(js.match(/  const metrics = (\\{[\\s\\S]*?\\});\\n  const names =/)[1]);
-const names=JSON.parse(js.match(/  const names = (\\{[\\s\\S]*?\\});\\n  const el =/)[1]);
-const label=id=>metrics[id]?.[0]||names[id]||id.replace(/^fantlab\\./,"").replaceAll("_"," ").replaceAll("."," · ");
+const metrics=JSON.parse(js.match(/  const metrics = (\{[\s\S]*?\});\n  const names =/)[1]);
+const names=JSON.parse(js.match(/  const names = (\{[\s\S]*?\});\n  const el =/)[1]);
+const label=id=>metrics[id]?.[0]||names[id]||id.replace(/^fantlab\./,"").replaceAll("_"," ").replaceAll("."," · ");
 const unit=id=>metrics[id]?.[1]||(id==="scriptorium.general.sentences"?"предложения":
   id==="fantlab.general.characters"?"символы с пробелами":id==="fantlab.general.words"?"слова":
   id.startsWith("fantlab.vocabulary.")?"словоформы / окно, по профилю":
@@ -29,9 +29,9 @@ function diagnostic(m) {
   const shown=!whole&&Math.abs(d)<.0005?"<0,001":fmt(Math.abs(d),whole?0:3);
   return (d>0?"+":"−")+shown+(unit(m.id)==="%"?" п.п.":"");
 }
-const region=html.match(/<tbody id="measurement-rows">([\\s\\S]*?)<\\/tbody>/);
+const region=html.match(/<tbody id="measurement-rows">([\s\S]*?)<\/tbody>/);
 assert.ok(region,"Root Reader must retain a no-script evidence table");
-const re=/<tr data-static-single-metric="([^"]+)"><th scope="row">([^<]+)<code>([^<]+)<\\/code><\\/th><td>([^<]+)<\\/td><td>([^<]+)<\\/td><td class="benchmark-delta">([^<]+)<\\/td><td>([^<]+)<\\/td><td>([^<]+)<\\/td><\\/tr>/g;
+const re=/<tr data-static-single-metric="([^"]+)"><th scope="row">([^<]+)<code>([^<]+)<\/code><\/th><td>([^<]+)<\/td><td>([^<]+)<\/td><td class="benchmark-delta">([^<]+)<\/td><td>([^<]+)<\/td><td>([^<]+)<\/td><\/tr>/g;
 const rows=[...region[1].matchAll(re)];
 assert.equal(rows.length,book.metrics.length,"Missing source-backed static measurements");
 assert.equal((region[1].match(/<tr /g)||[]).length,rows.length,"Unexpected or invalid static row");
@@ -54,6 +54,6 @@ assert.equal(unavailable,5,"Unknown must not become zero");
 assert.match(region[1],/NOT_RUN/);
 assert.match(region[1],/UNAVAILABLE/);
 assert.match(html,/Анна Каренина · полный реестр: 28 полей, 23 измерено, 5 недоступно/);
-assert.match(html,/M2: 0\\/5/);
+assert.match(html,/M2: 0\/5/);
 assert.match(html,/id="measurement-rows"/);
 console.log("No-script Anna table: 28 pinned values, labels, deltas, explicit missingness PASS");

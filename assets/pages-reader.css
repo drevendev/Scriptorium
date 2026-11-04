@@ -249,6 +249,14 @@ footer a { color:#ffdaa3; }
   border-left:4px solid var(--green); border-radius:3px; color:var(--green-deep);
   font-size:.84rem; line-height:1.5; font-weight:700; }
 .graph-caption,.pair-static { font-size:.78rem; color:var(--subtle); margin:0; }
+/* Source-bound no-script punctuation comparison; replaced by validated JS view. */
+.static-pair-metric { display:grid; gap:.4rem; padding:.8rem 0; }
+.static-pair-metric + .static-pair-metric { border-top:1px solid var(--line); }
+.static-pair-metric h3 { margin:0 0 .2rem; font-size:1rem; font-weight:750; }
+.static-pair-metric h3 small { font-size:.76rem; color:var(--subtle); font-weight:500; }
+.static-pair-metric .graph-caption { margin-top:.25rem; }
+@media print { .static-pair-metric { break-inside:avoid; } }
+
 .translation-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
 .translation-card { padding:clamp(1.2rem,3vw,1.9rem); border-radius:9px;
   border:1px solid var(--line); background:var(--surface); }

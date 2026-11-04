@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 419
+STATE_REVISION: 420
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-04
-LAST_RESULT: Prepared paired, exact, no-JavaScript punctuation-rate charts for private two-work HTML comparison, preserving unavailable/incomparable distinctions, print/table access, and scientific caveats. CI and later acceptance pending; no new literary measurements or parity claim.
-LAST_VERIFIED_PROGRESS: #419 merged at fa3551b2f295029eb2865dc0696dccd566e02054; 14-rate local single-work chart now in master. Root Reader retains 28 Anna static measurements and 9 static comparison rows. 11 measured Russian editions; 13 catalogue cards; 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
+LAST_RESULT: Prepared source-bound, no-JavaScript paired punctuation mini-charts in the root Reader (Anna Karenina vs Brothers Karamazov) with accessible rounded labels, exact shared table, method caveats, and regression validation. Later CI/PR acceptance pending; no new scientific measurement.
+LAST_VERIFIED_PROGRESS: #420 merged at bf219286aa7deef4b48c3c62767481f80a5f3d81; 14-category private HTML comparison chart in master. Root Reader: 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-PRIVATE-PAIRED-PUNCTUATION
-ISSUE: #283 — compare local punctuation measurements accessibly
+UNIT_ID: SCRIP-READER-ROOT-PUNCTUATION-PAIR-FALLBACK
+ISSUE: #283 — accessible source-bound paired charts in public root Reader
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_NOT_RUN; LATER_ACCEPTANCE_REQUIRED; MASTER_AND_LIVE_UNCHANGED
-BRANCH: scrip-reader-private-punctuation-pair-chart
-BASE: fa3551b2f295029eb2865dc0696dccd566e02054
+BRANCH: scrip-root-static-punctuation-pairs
+BASE: bf219286aa7deef4b48c3c62767481f80a5f3d81
 
-ACCEPTANCE: Plot 14 comparable punctuation rates from both private reports on a shared visual scale without JavaScript, retaining exact values/deltas and the complete 29-row table. No bars for incompatible/missing values, true zeros stay zeros, tiny nonzero tick visible, print/dark/mobile support, positive/negative regressions and scientific caveat. No new metrics or profiles.
+ACCEPTANCE: No-JavaScript root Pages Reader shows a real, source-bound Anna vs Karamazov paired punctuation chart for comma/dash/question rates (shared scale within each metric only), with readable two-decimal labels, signed differences, exact numeric 9-row table, translation/edition caveats and regression tests. Dynamic JS view stays unchanged.
 
 
 ## Next user-visible milestone and compact queue
@@ -23,7 +23,7 @@ Milestone: first honest comparison of two independently measured Russian transla
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 private HTML paired punctuation comparisons | Two exact rates per 14 categories on shared scale, accessible no-script bars, signed delta labels, unknown/method distinctions, regressions and later PR acceptance | Existing deterministic metrics and private comparison schema |
+| P1 | #283 root Reader no-JavaScript punctuation pairs | Source-backed example charts for comma/dash/question, two actual works, accurate scoped scales and complete exact table with tests | Existing Anna/Karamazov measured snapshot and root static fallback |
 | P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct source, run 29 metrics, truthful same-work comparison | Trusov historical literary body and renderer unverified; independent fallback required if unchanged |
 | P3 | #408 White Guard exact-oldid 20-chapter replay | Provider-frozen immutable 11/9 manifest and pinned-only CI | Verified provider bootstrap required |
 | P4 | #282/#281 AOT/FantLab compatibility and source-bound metric readiness | New native N disambiguator or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |

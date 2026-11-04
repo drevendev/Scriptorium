@@ -15,9 +15,9 @@ from typing import Callable, Mapping
 from .white_guard_delivery import MANIFEST_PATH, MANIFEST_SHA256, load_manifest
 from .white_guard_revisions import canonical_json_text, validate_manifest
 from .wikisource_replay import fetch_pinned_chapter_revisions
-from .wikisource_freeze import extract_transcription_body
+from .wikisource_freeze import BODY_FAILURE_CODES, BodyExtractionError, extract_transcription_body
 
-SCHEMA_VERSION = "scriptorium-white-guard-body-preflight-v1"
+SCHEMA_VERSION = "scriptorium-white-guard-body-preflight-v2"
 EXTRACTION_PROFILE = "scriptorium-wikisource-body-v1-preview-only"
 MAX_CHAPTER_WIKITEXT_CHARACTERS = 2_000_000
 MIN_CORPUS_CHARACTERS = 300_000
@@ -55,6 +55,7 @@ def build_preflight(
             "wikitext_characters": len(source),
             "wikitext_sha256": sha256(raw).hexdigest(),
             "extraction_status": "UNSUPPORTED_MARKUP",
+            "extraction_failure_code": None,
             "candidate_body_characters": None,
             "candidate_body_sha256": None,
         }
@@ -62,9 +63,16 @@ def build_preflight(
             body = extractor(source)
             if not isinstance(body, str) or not body.strip() or len(body) > MAX_CHAPTER_WIKITEXT_CHARACTERS:
                 raise ValueError("invalid candidate body")
-        except (ValueError, TypeError, UnicodeError, RecursionError):
-            # Do not leak the original provider prose or error detail into receipts.
-            pass
+        except BodyExtractionError as exc:
+            # Never surface an unrecognized, possibly attacker-controlled error code.
+            entry["extraction_failure_code"] = (
+                exc.code if exc.code in BODY_FAILURE_CODES else "UNCLASSIFIED_ERROR"
+            )
+        except Exception:
+            # Catch unexpected parser faults only at the extractor boundary.
+            # Provider/identity failures above remain hard failures; never emit
+            # exception messages or provider text into a derived-only receipt.
+            entry["extraction_failure_code"] = "UNCLASSIFIED_ERROR"
         else:
             entry["extraction_status"] = "CANDIDATE_ONLY"
             entry["candidate_body_characters"] = len(body)
@@ -103,7 +111,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         receipt = build_preflight(args.manifest)
-    except (OSError, ValueError, TypeError, UnicodeError, RecursionError):
+    except Exception:
+        # Provider/manifest/programming failures fail closed, without tracebacks
+        # containing potentially private source text or upstream error details.
         print("Pinned White Guard body preflight failed; no receipt issued.", file=sys.stderr)
         return 2
     print(canonical_json_text(receipt), end="")

@@ -1,34 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 422
+STATE_REVISION: 423
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-04
-LAST_RESULT: Owner-requested interactive batch prepares shared bounded MediaWiki read reliability and exact source-identity types (#424/#425) on the existing retry branch. Five malformed-identity acceptances were reproduced on exact master; 45 targeted offline tests pass after repair. Full exact-head CI and later acceptance remain required.
-LAST_VERIFIED_PROGRESS: Native master 5f14001b794fd3a46eed9ad4d11e29d74b8307f5 contains merged #422 (White Guard identity delivery); its stale PR_CANDIDATE text is superseded, not re-merged. No PR was open at batch orientation. Root Reader: 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
+LAST_RESULT: The reliable immutable replay #426 was merged into master at ac15b12c7841fc2d0ef73258965e813266fa290c (closes #424/#425). This PR candidate adds a runnable, source-free White Guard pinned-body preflight and adversarial synthetic tests; actual provider content and full CI remain NOT_RUN until independently verified.
+LAST_VERIFIED_PROGRESS: Master ac15b12c7841fc2d0ef73258965e813266fa290c includes #422 and #426. No other open PR at selection. Root Reader: 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). M2 0/5; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-INGEST-IMMUTABLE-RELIABILITY
-ISSUES: #424 (shared bounded transport), #425 (exact identity scalar types)
-STATUS: PR_CANDIDATE; TARGETED_LOCAL_TESTS_PASS; FINAL_EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-mediawiki-read-retry-20261103
-BASE: 5f14001b794fd3a46eed9ad4d11e29d74b8307f5
+UNIT_ID: SCRIP-CORPUS-WHITE-GUARD-BODY-PREFLIGHT
+ISSUES: follow-up to completed #408/#423 identity freeze; distinct body-gate slice
+STATUS: PR_CANDIDATE; SYNTHETIC_LOCAL_SMOKE_PASS; EXACT_HEAD_HOSTED_CI_PENDING; REAL_PROVIDER_BODY_NOT_RUN; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-white-guard-body-preflight-20261104
+BASE: ac15b12c7841fc2d0ef73258965e813266fa290c
 
-ACCEPTANCE: Reuse the accepted single-page policy in a shared transport; retry only explicit provider throttling, at most three attempts and 60 seconds total sleep, respecting Retry-After. Preserve exact requested IDs and all caller provenance checks. Reject malformed/mixed errors, nonfinite/duplicate JSON, coerced revision IDs and type-confused packed/single-page identities. Valid deterministic evidence bytes and scientific gates stay unchanged. Run exact-head full CI and pinned-provider checks; later independent acceptance, no same-run merge.
-
-See [reliability policy, offline verification and outbox reconciliation](../docs/WIKISOURCE_RELIABILITY.md). The old retry branch's code/test blobs already match master; its divergent ancestry is not proof of missing product work. Integrate current master without force and preserve its newer changes.
+ACCEPTANCE: Replay only the pinned 20 revision IDs, fail closed on altered/missing identities, inspect chapter extractability using existing source-free extractor, report only per-chapter hashes/lengths and safe CANDIDATE_ONLY/UNSUPPORTED_MARKUP statuses. Preserve the 11/9 Paris/Moscow source family split, prohibit incomplete composite hashes, and never promote tentative body/size to edition identity or M2 parity. Verify actual full CI at exact head and run real provider/body experiment separately; later wake may accept and merge this PR after reviews/checks. See [preflight contract](../docs/WHITE_GUARD_BODY_PREFLIGHT.md).
 
 ## Next user-visible milestone and compact queue
 
-Milestone: first honest comparison of two independently measured Russian translations of the same work; ship independent analyzer/science and Reader slices while the Trusov source remains blocked.
+Milestone: first honest comparison of two independently measured Russian translations of the same work; meanwhile advance White Guard body readiness and verified independent analyzer/Reader slices.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Fresh acceptance of #424/#425 delivery | Exact-head full CI, unchanged retained evidence, offline adversarial tests, qualifying merge | Do not author and merge the same semantic change in one run |
-| P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct literary body, run 29 metrics, truthful same-work comparison | Trusov historical body/renderer unverified; exclude unchanged blocked work and choose an independent slice |
-| P3 | White Guard literary-body preflight after merged #422 | Inspect the pinned 20-page body/template surface; define conservative extraction and source-free tests | Identity inventory is not body/size/print-edition admission; preserve the 11/9 split |
-| P4 | #282/#281 AOT/FantLab compatibility and source-bound metric readiness | New native N disambiguator or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |
-| P5 | #283/#285 Reader live Pages, desktop/mobile verification | HTTP, keyboard/focus and mobile screenshots | Browser navigation previously blocked; preserve last publication and continue independent work |
+| P1 | Review and, if gates pass, merge this preflight PR | Exact-head CI, source-free safety and negative tests; later acceptance | No same-run author+merge |
+| P2 | White Guard pinned 20-page literary-body experiment | Run live pinned preflight; categorize actual unsupported shapes, freeze a fully validated mixed-source candidate only with hash, length and provenance | Mixed 1927/1989 input is never one edition; live MediaWiki access required |
+| P3 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct literary body, run 29 metrics, truthful same-work comparison | Trusov historical renderer unresolved; select independent work if unchanged blocked |
+| P4 | #282/#281 AOT/FantLab compatibility or source-bound metric readiness | Native N disambiguation or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |
+| P5 | #283/#285 Reader live Pages, desktop/mobile verification | HTTP, keyboard/focus and mobile screenshots | Browser navigation previously restricted; preserve last publication |
 
 ## Retained evidence and scientific gates
 

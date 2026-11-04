@@ -124,6 +124,43 @@ class RetainedMetricMatrixTests(unittest.TestCase):
                     self._mutate(matrix.DIAGNOSTIC, change)
 
 
+    def test_retained_numeric_evidence_rejects_impossible_values_with_matching_delta(self):
+        metric_id = "fantlab.general.characters"
+        reference_value = 1692647
+
+        for actual, failure in (
+            (-1, "negative numeric metric evidence"),
+            (1.5, "non-integer count metric evidence"),
+            (True, "invalid numeric metric evidence"),
+        ):
+            def forge(doc, value=actual):
+                row = doc["metrics"][metric_id]
+                row["actual"] = value
+                row["raw_delta"] = value - reference_value
+
+            with self.subTest(actual=actual):
+                with self.assertRaisesRegex(ValueError, failure):
+                    self._mutate(matrix.DIAGNOSTIC, forge)
+
+        # Signed differences are allowed, but the underlying measured rate
+        # must never be negative even if its delta was recomputed consistently.
+        def forge_negative_rate(doc):
+            row = doc["metrics"]["fantlab.general.mean_word_length_chars"]
+            row["actual"] = -0.5
+            row["raw_delta"] = -0.5 - row["expected"]
+
+        with self.assertRaisesRegex(ValueError, "negative numeric metric evidence"):
+            self._mutate(matrix.DIAGNOSTIC, forge_negative_rate)
+
+    def test_retained_character_total_must_match_frozen_witness(self):
+        def forge_consistent_delta(doc):
+            row = doc["metrics"]["fantlab.general.characters"]
+            row["actual"] += 1
+            row["raw_delta"] += 1
+
+        with self.assertRaisesRegex(ValueError, "Anna measured characters versus frozen witness"):
+            self._mutate(matrix.DIAGNOSTIC, forge_consistent_delta)
+
     def test_running_on_waves_reuses_frozen_measurements_without_parity(self):
         report = matrix.build_metric_matrix(ROOT)
         wave = report["entries"][-1]

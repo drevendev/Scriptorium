@@ -100,7 +100,7 @@ class WhiteGuardBodyPreflightTests(unittest.TestCase):
              "BODY_CONTAINER_MULTIPLE"),
             ("template", '<div class="text">one {{Unknown|x}} ' + PRIVATE_SENTINEL + '</div>',
              "UNSUPPORTED_TEMPLATE"),
-            ("heading", '<div class="text">one\\n== Heading ==\\n' + PRIVATE_SENTINEL + '</div>',
+            ("heading", '<div class="text">one\n== Heading ==\n' + PRIVATE_SENTINEL + '</div>',
              "TABLE_OR_HEADING"),
             ("html", '<div class="text"><section>one</section> ' + PRIVATE_SENTINEL + '</div>',
              "UNSUPPORTED_INLINE_MARKUP"),

@@ -40,3 +40,23 @@ provider inventory integrity and privacy. It does **not** prove the live
 historical content has been extracted. Real provider execution and literary/
 edition collation must be recorded separately after a successful run. Never
 commit a raw wikitext response or full novel to GitHub or Pages.
+
+## Hosted live evidence (independent of synthetic tests)
+
+The read-only [White Guard pinned literary-body preflight workflow](../.github/workflows/white-guard-body-preflight.yml)
+runs on a relevant pull request and supports manual `workflow_dispatch` once
+the workflow is present on the default branch. It runs the existing synthetic
+negative tests, then queries **only** the 20 recorded historical revision IDs
+on a hosted runner. The job checks an explicit source-free JSON schema,
+chapter ordering, 11/9 source-family partition, extraction statuses and all
+non-admission flags before uploading a seven-day derived-only artifact named
+`white-guard-body-preflight`. Its logs show chapter numbers and status
+counts, not the manuscript or raw MediaWiki responses.
+
+A workflow **failure** (including network/API throttling) means no validated
+hosted receipt; it does not prove any chapter is unsupported. A successful run
+distinguishes `CANDIDATE_ONLY` from `UNSUPPORTED_MARKUP` for each chapter,
+but even 20 candidates do not prove narrative completeness, single-edition
+identity, rights for a new source or FantLab parity. Inspect the actual run,
+exact commit and receipt before recording a measured body claim. Local code
+and fixture tests alone remain `REAL_PROVIDER_NOT_RUN`.

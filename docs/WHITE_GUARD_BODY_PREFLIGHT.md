@@ -33,7 +33,8 @@ fantlab_input_identity=unknown, m2_parity_admissible=false.
 The 300,000-character threshold is a *separate* tentative size check and
 never automatically admits this mixed-source work.
 
-**Verification:** tests/test_white_guard_body_preflight.py uses synthetic,
+**Verification:** injected test fetchers are marked INJECTED_FIXTURE, not
+VERIFIED_IDENTITIES. tests/test_white_guard_body_preflight.py uses synthetic,
 source-free fixtures for all 20 chapters, source partition, partial failures,
 provider inventory integrity and privacy. It does **not** prove the live
 historical content has been extracted. Real provider execution and literary/

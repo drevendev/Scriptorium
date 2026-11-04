@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 414
+STATE_REVISION: 415
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-04
-LAST_RESULT: Reader no-JavaScript paired comparison fallback prepared with all nine exact source-backed Anna/Karamazov measurements, provenance-safe signed deltas and a human-readable question-mark label. This #283 patch requires independent CI and later acceptance; master and Pages are unchanged.
-LAST_VERIFIED_PROGRESS: Master retains 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov 150-Page graph, 317,178 unrendered source characters and 58/64 provisionally handled template invocations (28 nop, 30 heading; 4 ВАР plus 2 dynamic unresolved) are source-free evidence, not a verified literary body. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
+LAST_RESULT: Prepared a complete no-JavaScript single-work evidence table for the 28 frozen Anna Karenina metrics (23 numeric, five explicitly unavailable) plus human-readable punctuation/UASZ labels, pinned-data smoke verification and Pages CI. Pending later independent review and merge. No live Pages claim.
+LAST_VERIFIED_PROGRESS: Master already contains the merged #415 exact nine-metric no-JavaScript paired table; 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Trusov historical rendering remains unverified. M2 0/5, M3 open; live Pages/browser/mobile NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-PAIR-STATIC-EXACT
-ISSUE: #283 — make pair comparisons useful without JavaScript
-STATUS: PR_CANDIDATE; EXACT_HEAD_CI_NOT_RUN; LATER_ACCEPTANCE_REQUIRED; LIVE_PAGES_UNCHANGED
-BRANCH: scrip-reader-static-pair-exact-fallback
-BASE: 3e9adc0099fd4635b642261188c083646173d0df
+UNIT_ID: SCRIP-SITE-SINGLE-STATIC-FULL
+ISSUE: #283 — readable, source-bound measurements without JavaScript
+STATUS: PR_CANDIDATE; EXACT_HEAD_CI_NOT_RUN; LATER_ACCEPTANCE_REQUIRED; MASTER_AND_LIVE_UNCHANGED
+BRANCH: scrip-reader-static-single-28-measurements
+BASE: abe620529e698d4384df993f73f2ff4086a6a955
 
-ACCEPTANCE: The branch-root Reader renders the complete nine-metric default paired table without JavaScript; numeric cells are exactly the pinned source-free JSON numbers, signed deltas match the live Reader's three-decimal presentation and units; dynamic selection still replaces the fallback safely. No source text or parity claim is added. Regression smoke must reject missing, stale or invented rows.
+ACCEPTANCE: Render all 28 pinned Anna Karenina fields in the root Reader without JavaScript, exactly matching source-backed measured numbers, FantLab display references, missingness, scientific status, signed descriptive delta and units. Keep readable punctuation/volume labels consistent with the interactive Reader. A regression smoke must fail for missing, stale, reordered, invented, or silently zero-filled rows. The fallback must remain visible when verified JSON fails; no manuscript text or M2 claim.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: add a second independently measured Russian Robinson Crusoe translation for an honest, source-bound paired Reader comparison.
+Milestone: first honest comparison of two independently measured Russian translations of the same work; independently ship reader/analyzer improvements while the second historical body is blocked.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 complete exact no-JS default pair table | Nine pinned measured metrics and signed deltas match validated Reader snapshot; later exact-head acceptance | Existing 11 measured editions; no new parity/corpus claim |
-| P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct source, run 29 metrics, show truthful same-work translator pair | Trusov literary body and historical renderer still unverified |
-| P3 | #408 White Guard exact-oldid 20-chapter replay | Provider-frozen immutable 11/9 source manifest; pinned-only CI | Requires an independently verified live provider bootstrap |
-| P4 | #282/#281 AOT/FantLab compatibility and metric readiness | New POS-N discrimination or source-matched benchmark delta | Native runtime/reference identity unresolved |
-| P5 | #285 Reader live Pages, desktop/mobile verification | Live HTTP, keyboard/focus and screenshot evidence | Browser navigation historically blocked; preserve last valid publication |
+| P1 | #283 full single-work no-script evidence table | 28 pinned rows and explicit missing values, later exact-head CI acceptance | Existing Anna pinned evidence; no corpus or parity claim |
+| P2 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct source, run 29 metrics, truthful same-work pair | Trusov historical literary body and renderer unverified; select independent work if unchanged |
+| P3 | #408 White Guard exact-oldid 20-chapter replay | Provider-frozen immutable 11/9 manifest and pinned-only CI | Requires independently verified live provider bootstrap |
+| P4 | #282/#281 AOT/FantLab compatibility and metric readiness | New native POS-N discriminator or source-matched field delta | Native runtime/reference identity unresolved |
+| P5 | #283/#285 Reader live Pages, desktop/mobile verification | HTTP and keyboard/focus screenshots | Browser navigation previously blocked; preserve last publication |
 
 ## Retained evidence and scientific gates
 

@@ -9,18 +9,50 @@ from __future__ import annotations
 import argparse
 from hashlib import sha256
 from pathlib import Path
+import re
 import sys
 from typing import Callable, Mapping
 
 from .white_guard_delivery import MANIFEST_PATH, MANIFEST_SHA256, load_manifest
-from .white_guard_revisions import canonical_json_text, validate_manifest
+from .white_guard_revisions import SOURCE_FAMILY_1927, canonical_json_text, validate_manifest
 from .wikisource_replay import fetch_pinned_chapter_revisions
 from .wikisource_freeze import BODY_FAILURE_CODES, BodyExtractionError, extract_transcription_body
 
-SCHEMA_VERSION = "scriptorium-white-guard-body-preflight-v2"
+SCHEMA_VERSION = "scriptorium-white-guard-body-preflight-v3"
 EXTRACTION_PROFILE = "scriptorium-wikisource-body-v1-preview-only"
 MAX_CHAPTER_WIKITEXT_CHARACTERS = 2_000_000
 MIN_CORPUS_CHARACTERS = 300_000
+
+# A whitelisted source-family route, not a bound Index: or Page: revision.
+PROOFREADPAGE_INDEX = "Дни Турбиных (Белая гвардия) (Булгаков, 1927).djvu"
+_BODY_DIV = re.compile(r"""<div\s+class=["'](?:text|indent)["']\s*>(.*?)</div>""", re.I | re.S)
+_PAGES_ONLY = re.compile(
+    r"""<pages\s+index="(?P<index>[^"<>\r\n]+)"\s+from=(?P<first>[0-9]+)\s+to=(?P<last>[0-9]+)\s*/>""",
+    re.I,
+)
+
+
+def _unfrozen_proofreadpage_range(wikitext: str) -> dict[str, object] | None:
+    """Report a narrowly observed page range, never an extracted literary body.
+
+    Reject extra attributes (including section/step/exclude), multiple routes,
+    mixed text, invalid indexes and unbounded spans instead of guessing content.
+    """
+    bodies = _BODY_DIV.findall(wikitext)
+    if len(bodies) != 1:
+        return None
+    match = _PAGES_ONLY.fullmatch(bodies[0].strip())
+    if match is None or match.group("index") != PROOFREADPAGE_INDEX:
+        return None
+    first, last = int(match.group("first")), int(match.group("last"))
+    if not 1 <= first <= last <= 4000 or last - first + 1 > 100:
+        return None
+    return {
+        "index_title": PROOFREADPAGE_INDEX,
+        "first_page": first,
+        "last_page": last,
+        "page_count": last - first + 1,
+    }
 
 
 def build_preflight(
@@ -58,6 +90,7 @@ def build_preflight(
             "extraction_failure_code": None,
             "candidate_body_characters": None,
             "candidate_body_sha256": None,
+            "proofreadpage_page_plan": None,
         }
         try:
             body = extractor(source)
@@ -68,6 +101,9 @@ def build_preflight(
             entry["extraction_failure_code"] = (
                 exc.code if exc.code in BODY_FAILURE_CODES else "UNCLASSIFIED_ERROR"
             )
+            if (entry["extraction_failure_code"] == "PROOFREADPAGE_UNPINNED"
+                    and row["source_family_id"] == SOURCE_FAMILY_1927):
+                entry["proofreadpage_page_plan"] = _unfrozen_proofreadpage_range(source)
         except Exception:
             # Catch unexpected parser faults only at the extractor boundary.
             # Provider/identity failures above remain hard failures; never emit

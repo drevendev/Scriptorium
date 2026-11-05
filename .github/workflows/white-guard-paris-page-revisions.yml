@@ -1,0 +1,94 @@
+name: White Guard Paris Page revision identity capture
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/white-guard-paris-page-revisions.yml'
+      - 'scriptorium/white_guard_page_freeze.py'
+      - 'scriptorium/white_guard_body_preflight.py'
+      - 'scriptorium/darwin_page_freeze.py'
+      - 'scriptorium/mediawiki_api.py'
+      - 'tests/test_white_guard_page_freeze.py'
+      - 'corpus/candidates/source-edition-traces/bulgakov-white-guard-ru.source-revisions.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paris-page-identities:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Test Page inventory, identity replay, privacy and fail-closed guards
+        run: python -m unittest discover -s tests -p 'test_white_guard_page_freeze.py' -v
+      - name: Validate historical parent routes before Page identity capture
+        run: |
+          set -euo pipefail
+          mkdir -p build/white-guard
+          python -m scriptorium.white_guard_body_preflight > build/white-guard/parent-preflight.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.white_guard_page_freeze import CHAPTER_RANGES, PROOFREADPAGE_INDEX
+          report = json.loads(Path('build/white-guard/parent-preflight.json').read_text(encoding='utf-8'))
+          assert report['schema_version'] == 'scriptorium-white-guard-body-preflight-v3'
+          assert report['provider_replay'] == 'VERIFIED_IDENTITIES'
+          assert len(report['chapters']) == 20
+          for chapter, (first, last) in enumerate(CHAPTER_RANGES, start=1):
+              row = report['chapters'][chapter - 1]
+              assert row['source_family_id'] == 'paris-concorde-1927'
+              assert row['chapter'] == chapter
+              assert row['extraction_failure_code'] == 'PROOFREADPAGE_UNPINNED'
+              assert row['proofreadpage_page_plan'] == {
+                  'index_title': PROOFREADPAGE_INDEX,
+                  'first_page': first, 'last_page': last, 'page_count': last - first + 1,
+              }
+          assert report['source_text_committed'] is False
+          assert report['literary_body_extraction_frozen'] is False
+          assert report['m2_parity_admissible'] is False
+          print('Verified pinned Paris chapter routes: 11 / Page dependencies: 185')
+          PY
+          rm build/white-guard/parent-preflight.json
+      - name: Capture Page revision metadata only and replay exact revisions
+        run: |
+          set -euo pipefail
+          python -m scriptorium.white_guard_page_freeze capture --manifest build/white-guard/paris-page-identities.json
+          python -m scriptorium.white_guard_page_freeze replay --manifest build/white-guard/paris-page-identities.json --receipt build/white-guard/paris-page-replay.json
+      - name: Check derived-only evidence and non-admission contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.white_guard_page_freeze import validate_manifest, EXPECTED_PAGE_COUNT
+          root = Path('build/white-guard')
+          manifest = json.loads((root / 'paris-page-identities.json').read_text(encoding='utf-8'))
+          receipt = json.loads((root / 'paris-page-replay.json').read_text(encoding='utf-8'))
+          rows = validate_manifest(manifest)
+          assert len(rows) == EXPECTED_PAGE_COUNT
+          assert receipt['page_revision_count'] == EXPECTED_PAGE_COUNT
+          assert receipt['identity_replay_match'] is True
+          assert receipt['source_text_included'] is False
+          assert receipt['literary_body_frozen'] is False
+          assert receipt['m2_parity_admissible'] is False
+          print('Current Page revision IDs + SHA-1 verified:', len(rows))
+          print('Literary body, edition identity, and FantLab parity: NOT established')
+          PY
+      - name: Retain only validated source-free Page identity artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: white-guard-paris-page-identities
+          path: |
+            build/white-guard/paris-page-identities.json
+            build/white-guard/paris-page-replay.json
+          if-no-files-found: error
+          retention-days: 7

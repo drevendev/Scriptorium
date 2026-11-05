@@ -424,9 +424,12 @@
     if (catalogOrder.value!==selected) catalogOrder.value=selected;
     const collator=new Intl.Collator("ru",{sensitivity:"base",numeric:true});
     const entries=catalogCards.map((card,ordinal)=>{
-      const book=getBook(card.dataset.catalogKey);
+      // All 13 validated catalogue entries are sortable; getBook() deliberately
+      // excludes the two pending editions from measurement/comparison routes.
+      const book=data.books.find(b=>b.key===card.dataset.catalogKey);
       if (!book) throw Error("Нет проверенного источника для сортировки");
-      const field=lookup(book,"fantlab.dialogue.share_percent");
+      const field=book.text_status==="measured"
+        ? lookup(book,"fantlab.dialogue.share_percent") : null;
       return {card,ordinal,title:book.display_title,
         dialogue:book.text_status==="measured"&&field&&isNumeric(field.actual)
           ?field.actual:null};

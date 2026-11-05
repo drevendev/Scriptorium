@@ -34,7 +34,7 @@ class CatalogueFilterTests(unittest.TestCase):
         js=(ROOT/"assets/pages-reader.js").read_text(encoding="utf-8")
         self.assertIn("doc.books.some(book=>{",js)
         self.assertIn('catalogSearch.addEventListener("input",updateCatalog)',js)
-        self.assertIn('catalogOrder.addEventListener("change",sortCatalog)',js)
+        self.assertIn('catalogOrder.addEventListener("change",()=>{sortCatalog();updateCatalog();})',js)
         self.assertIn('catalogReset.addEventListener("click",resetCatalog)',js)
         self.assertIn('el("catalog-empty").hidden=shown!==0;',js)
         self.assertIn('url.searchParams.delete("catalog")',js)

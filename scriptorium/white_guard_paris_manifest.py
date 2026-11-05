@@ -16,7 +16,7 @@ import sys
 from typing import Callable, Mapping
 
 from .white_guard_page_identities import EXPECTED_RANGES, PAGE_PREFIX
-from .white_guard_revisions import canonical_json_text, fetch_pinned_revision_identities
+from .white_guard_revisions import SOURCE_FAMILY_1927, canonical_json_text, fetch_pinned_revision_identities
 
 SCHEMA_VERSION = "scriptorium-white-guard-paris-page-manifest-v1"
 CSV_PATH = Path(__file__).resolve().parent.parent / "corpus/candidates/white_guard_paris_1927_pages.csv"
@@ -102,7 +102,7 @@ def build_receipt(*, verify_provider: bool = False,
         verifier(rows)
     return {
         "schema_version": SCHEMA_VERSION,
-        "source_family_id": "paris-1927",
+        "source_family_id": SOURCE_FAMILY_1927,
         "page_count": len(rows),
         "chapter_count": len(EXPECTED_RANGES),
         "page_manifest_sha256": CSV_SHA256,

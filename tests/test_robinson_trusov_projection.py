@@ -122,7 +122,7 @@ class TrusovProjectionTests(unittest.TestCase):
 
     def test_standalone_projection_keeps_exact_source_line_endings(self):
         # A Page's final line is not the synthetic LF between Pages.
-        for ending in ("\\n", "\\r\\n", "\\r", ""):
+        for ending in ("\n", "\r\n", "\r", ""):
             with self.subTest(ending=repr(ending)):
                 self.assertEqual(
                     project_page("{{heading|4|Финал}}" + ending)[0],

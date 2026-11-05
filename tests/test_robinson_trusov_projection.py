@@ -120,6 +120,32 @@ class TrusovProjectionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "empty or non-text"):
             join.add(None)
 
+    def test_standalone_projection_keeps_exact_source_line_endings(self):
+        # A Page's final line is not the synthetic LF between Pages.
+        for ending in ("\\n", "\\r\\n", "\\r", ""):
+            with self.subTest(ending=repr(ending)):
+                self.assertEqual(
+                    project_page("{{heading|4|Финал}}" + ending)[0],
+                    "Финал" + ending,
+                )
+                self.assertEqual(project_page("{{nop}}" + ending)[0], ending)
+                inline = "Before {{heading|4|Финал}}" + ending
+                self.assertEqual(project_page(inline)[0], inline)
+                prose = "Обычная проза" + ending
+                self.assertEqual(project_page(prose)[0], prose)
+                if ending:
+                    source = "Обычная проза" + ending + "{{heading|4|Финал}}" + ending
+                    self.assertEqual(
+                        project_page(source)[0], "Обычная проза" + ending + "Финал" + ending
+                    )
+
+        # A nop-only Page with no newline is empty and must fail closed at join.
+        projected, nop, heading, unresolved, residual = project_page("{{nop}}")
+        self.assertEqual((projected, nop, heading, unresolved, residual),
+                         ("", 1, 0, 0, 0))
+        with self.assertRaisesRegex(ValueError, "empty or non-text"):
+            ProjectedPageJoin().add(projected)
+
     def test_plain_standalone_templates_only_and_no_prose_output(self):
         source = "PRIVATE TEXT\n{{nop}}\n{{heading|4|ГЛАВА I}}\nAFTER\n"
         projected, nop, heading, unresolved, residual = project_page(source)

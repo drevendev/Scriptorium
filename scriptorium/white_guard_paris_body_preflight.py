@@ -24,7 +24,7 @@ MAX_PAGE_CHARACTERS = 200_000
 # Wiki styling, external links and line-start structures must not become prose metrics.
 _NOINCLUDE = re.compile(r"<noinclude>.*?</noinclude\s*>", re.I | re.S)
 _UNSAFE = re.compile(
-    r"<|>|\{\{|\}\}|\[\[|\]\]|\[(?:[a-z][a-z0-9+.-]*:|//)|'{2,}|^\s*(?:={1,6}\s|[|!]{1,2})"
+    r"<|>|\{\{|\}\}|\[\[|\]\]|\[(?:[a-z][a-z0-9+.-]*:|//)|'{2,}|^[ \t]*(?:={1,6}|[|!]{1,2})"
     r"|^[ \t]*(?:[*#:;]|-{4,})", re.I | re.M
 )
 

@@ -135,3 +135,45 @@ The pre-existing v1 receipt remains historical evidence; new category counts
 require a successful **new exact-revision hosted run** and are NOT_RUN at PR
 creation. Use the category counts to select a reviewed, source-specific fix
 rather than guessing whether every chapter shares the same structure.
+
+
+## Paris Page revision identity capture (separate, source-free unit)
+
+The 11 **historically pinned parent chapters** have already yielded a
+ProofreadPage route plan covering exactly 185 Page numbers, 5–189. The
+`scriptorium.white_guard_page_freeze` module captures a **new snapshot
+of current Page-namespace revision identities**, not the state of the
+transcluded pages when the parent chapters were edited. The source
+family is strictly Paris/Concorde 1927; none of the Moscow/Pravda 1989
+chapters enters this inventory.
+
+To capture and immediately replay current Page identities:
+
+    python -m scriptorium.white_guard_page_freeze capture --manifest paris-page-identities.json
+    python -m scriptorium.white_guard_page_freeze replay --manifest paris-page-identities.json --receipt paris-page-replay.json
+
+The capture records exactly one Page title, revision ID, UTC timestamp,
+MediaWiki SHA-1, and permanent oldid URL per scan-page dependency.
+It records the capture time and explicit current-revision basis, and
+rejects missing, extra, duplicate, malformed and untrusted identities.
+The replay verifies that all 185 historical revision IDs still resolve
+to the exact recorded titles, timestamps and SHA-1 hashes. No page
+content, OCR, transclusion output or full prose is requested by these
+metadata calls or written into either JSON artifact.
+
+The [Paris Page identity workflow](../.github/workflows/white-guard-paris-page-revisions.yml)
+first revalidates the exact 20 pinned parent sources and the 11 expected
+routes; only then does it capture/replay Page identities and retain a
+seven-day metadata-only artifact. A successful workflow creates an
+**ephemeral, source-free frozen-identity candidate**. It does not on
+its own commit a stable manifest, freeze a complete literary body,
+establish the Paris book/scan collation, establish the source version
+FantLab analyzed, or satisfy the >=300,000-character admission gate.
+Any failed historical route validation stops the capture rather than
+silently switching to current parent markup.
+
+After a successful hosted capture, independently validate the artifact,
+commit the verified identities through a later PR, and implement a
+separate versioned Page-content renderer with page-boundary and header/
+footer treatment backed by explicit reproducible tests. Never reuse the
+current rendered parent HTML as if it were oldid-pinned source text.

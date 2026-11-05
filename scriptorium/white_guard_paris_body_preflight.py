@@ -24,6 +24,10 @@ MAX_PAGE_CHARACTERS = 200_000
 # Wiki styling, entities, behavior switches, tables, links and line-start structures
 # must not become prose metrics.
 _NOINCLUDE = re.compile(r"<noinclude>.*?</noinclude\s*>", re.I | re.S)
+# MediaWiki treats a line beginning with a space as preformatted text. Check
+# before .strip(), including the very first line; tabs are rejected as a
+# conservative extension of the unsupported indentation boundary.
+_PREFORMATTED_LINE = re.compile(r"^[ \t]", re.M)
 _UNSAFE = re.compile(
     r"<|>|\{\{|\}\}|\{\||\|\}|&(?:#(?:x[0-9a-f]+|[0-9]+)|[a-z][a-z0-9]+);"
     r"|__[a-z][a-z0-9_]*__|\[\[|\]\]|\[(?:[a-z][a-z0-9+.-]*:|//)|'{2,}|^[ \t]*(?:={1,6}|[|!]{1,2})"
@@ -65,6 +69,8 @@ def candidate_page_body(source: str) -> tuple[str, str | None]:
         if removed > 3:
             return "UNSUPPORTED_PAGE_MARKUP", None
     if "<noinclude" in text.lower() or "</noinclude" in text.lower():
+        return "UNSUPPORTED_PAGE_MARKUP", None
+    if _PREFORMATTED_LINE.search(text):
         return "UNSUPPORTED_PAGE_MARKUP", None
     body = text.strip()
     if not body:

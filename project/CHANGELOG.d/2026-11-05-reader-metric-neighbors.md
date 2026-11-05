@@ -1,0 +1,6 @@
+# 2026-11-05 — Reader measured-neighbor navigation (PR candidate)
+
+- Rank three already measured Russian editions next to the selected book by mean absolute distance after per-field min–max normalization of dialogue share, average sentence length and comma frequency. Stable catalog-order ties; identical columns contribute zero. No external data request or manuscript upload.
+- Use only the 11 source-bound measured entries with complete numeric values and compatible algorithm profiles. Distinguish valid zero from unavailable, exclude two research leads, and link directly to the existing two-book comparison view. Keep a labeled no-JavaScript starter link, responsive layout, accessible status and print behavior.
+- Explicitly label this Scriptorium v1 diagnostic navigation, not an author fingerprint, quality ranking, FantLab reproduction, source identity proof or new metric corpus. Add real-data Node DOM/ranking tests plus Python CI wrapper and metadata/README synchronization.
+- Master includes independently accepted PR #437 at ef614afd24fdf719f5a66b503ba3b6e391c30aa9; this new Reader branch needs later exact-head CI and independent acceptance. No change to the 11/13 Reader coverage, Trusov unresolved historical rendering, or M2 0/5.

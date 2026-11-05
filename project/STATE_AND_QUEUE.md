@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 426
+STATE_REVISION: 427
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-05
-LAST_RESULT: PR #429 merged at b53cce9a123051a7f10f281823a7bf02a9872014 with safe structural diagnostics and privacy regression fixes; this candidate makes pinned Paris <pages /> ranges explicitly inspectable without claiming Page content or modifying extraction.
-LAST_VERIFIED_PROGRESS: Master b53cce9a123051a7f10f281823a7bf02a9872014 includes merged #429. Previous pinned historical replay: Paris 1927 11 UNSUPPORTED_INLINE_MARKUP, Moscow 1989 4 UNSUPPORTED_TEMPLATE + 5 tentative; complete mixed-source size null. The current Paris chapter 1 edit view shows a ProofreadPage <pages /> transclusion (not historical-oldid proof); hosted exact-head v3 plan replay NOT_RUN. Reader: 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Live browser/mobile NOT_VERIFIED; M2 0/5.
+LAST_RESULT: PR candidate adds executable metadata-only capture and exact-revision replay of 185 Paris 1927 ProofreadPage dependencies; hosted capture/results are NOT_RUN until a successful exact-head workflow.
+LAST_VERIFIED_PROGRESS: Master 6b4976430c98445889a3787895eaeddff4dc00a2 includes merged #430. Pinned parent-route replay confirmed 11 Paris routes covering 185 sequential Page numbers; Page-namespace revision identities still UNCAPTURED as of this candidate. Moscow 1989 retains 5 tentative chapters / 4 unsupported templates. Reader 11 measured Russian editions, 13 cards, 298 fields. M2 0/5; live Pages/browser NOT_VERIFIED.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-WHITE-GUARD-PROOFREADPAGE-RANGE-PLAN
-ISSUES: follow-up to merged #429; Paris 1927 currently transcludes unpinned Page-namespace source rather than embedding literal prose
-STATUS: PR_CANDIDATE; PINNED_20_REPLAY_INITIAL_HEAD_SUCCESS; PARIS_11_ROUTE_PLANS_VERIFIED_185_PAGES; FULL_FINAL_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-white-guard-proofreadpage-range-plan-20261105
-BASE: b53cce9a123051a7f10f281823a7bf02a9872014
+UNIT_ID: SCRIP-CORPUS-WHITE-GUARD-PARIS-PAGE-REVISION-CAPTURE
+ISSUES: follow-up to merged #430; parent oldids do not freeze 185 transcluded Page: revisions
+STATUS: PR_CANDIDATE; SOURCE_FREE_METADATA_CAPTURE_AND_REPLAY_IMPLEMENTED; SYNTHETIC_CI_PENDING; HOSTED_185_PAGE_CAPTURE_NOT_RUN; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-white-guard-paris-page-revisions-20261105
+BASE: 6b4976430c98445889a3787895eaeddff4dc00a2
 
-ACCEPTANCE: Preserve conservative v1 extraction semantics and no-source-prose receipts. Expose only narrow source-family-matched <pages /> index/from/to spans as UNFROZEN dependencies in v3, reject unapproved/complex routes, keep mixed-edition/composite/admission gates closed. Hosted replay must validate exact 20 revisions and prove actual non-prose route coverage before any Page dependency freeze is claimed. See [preflight contract](../docs/WHITE_GUARD_BODY_PREFLIGHT.md).
+ACCEPTANCE: Revalidate historical 20-parent inventory and exact 11 ProofreadPage route plans, then capture current Page: revision IDs/UTC timestamps/SHA-1 for exactly 185 pages with bounded metadata-only queries, validate strict schema and replay immutable IDs on hosted runner; no prose, mixed-edition body, corpus or FantLab claims. Persist accepted Page identity set only after independent artifact inspection and later PR. See docs/WHITE_GUARD_BODY_PREFLIGHT.md.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: first honest comparison of two independently measured Russian transla
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | White Guard ProofreadPage route-plan preview (this PR) | Exact-head hosted 20-revision v3 receipt, no raw prose, unpinned Page spans only when exact-safe; targeted negative tests | Historic source must actually match route whitelist; current edit view is not oldid evidence |
-| P2 | Resolve Paris 1927 Page dependency set | Bind Page: oldids/SHA-1 for accepted routes, then test separate renderer on frozen content | No live transclusion shortcut; preserve 1927/1989 partitions and body/parity unknowns |
+| P1 | Capture/replay Paris 1927 Page identities (this PR) | Hosted exact-head parent-route check and 185 Page ID/SHA-1 replay, source-free JSON artifact, strict regressions | Captures current Page identities, not historical transclusion state; provider reads require GitHub Actions |
+| P2 | Independently accept and retain verified Paris Page identity snapshot; build versioned renderer | Validate all Page metadata, then render frozen Page bodies in memory with join/header/footer tests | No live transclusion shortcut; preserve 1927/1989 split, body and parity unknown |
 | P3 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct literary body, run 29 metrics, truthful same-work comparison | Trusov historical renderer unresolved; select independent work if unchanged blocked |
 | P4 | #282/#281 AOT/FantLab compatibility or source-bound metric readiness | Native N disambiguation or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |
 | P5 | #283/#285 Reader live Pages, desktop/mobile verification | HTTP, keyboard/focus and mobile screenshots | Browser navigation previously restricted; preserve last publication |

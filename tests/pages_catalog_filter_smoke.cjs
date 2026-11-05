@@ -10,7 +10,7 @@ const cards0=[...html.matchAll(/<article class="book(?: book-research)?" data-st
 assert.equal(cards0.length,13);
 assert.deepEqual(cards0.map(m=>m[2]),data.books.map(b=>b.key));
 const cards=cards0.map(m=>({dataset:{status:m[1],catalogKey:m[2]},hidden:false}));
-const filter={value:"all"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
+const filter={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
 const empty={hidden:true};
 const share={hidden:false,href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
@@ -22,8 +22,8 @@ const browser={location,history:{replaceState(_state,_title,url){
 const s=js.indexOf("  function updateCatalog() {"),e=js.indexOf("  function updateSingle() {",s);
 assert.ok(s>=0&&e>s);
 const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog};";
-const make=d=>new Function("data","catalogCards","catalogFilter","catalogSearch","el","window",code)(
-  d,cards,filter,search,id=>id==="share-catalog"?share:id==="catalog-empty"?empty:status,browser);
+const make=d=>new Function("data","catalogCards","catalogFilter","catalogSearch","catalogOrder","el","window",code)(
+  d,cards,filter,search,order,id=>id==="share-catalog"?share:id==="catalog-empty"?empty:status,browser);
 const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog}=make(data);
 for(const [mode,keys,measured,pending] of [
  ["all",data.books.map(b=>b.key),11,2],
@@ -56,11 +56,16 @@ for(const [q,mode,keys] of [
 search.value="";filter.value="all";run();
 assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(share.href,"?catalog=all#books");
-location.search="?catalog=translated&q="+encodeURIComponent("Бекетова");
+order.value="dialogue";run();
+assert.equal(share.href,"?catalog=all&catalog_order=dialogue#books");
+search.value="Бекетова";filter.value="translated";run();
+assert.equal(share.href,"?catalog=translated&q="+encodeURIComponent("Бекетова")+"&catalog_order=dialogue#books");
+location.search="?catalog=translated&q="+encodeURIComponent("Бекетова")+"&catalog_order=title";
 restore();
+assert.equal(order.value,"title");
 assert.equal(filter.value,"translated");assert.equal(search.value,"Бекетова");
 assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),["beketova"]);
-assert.equal(share.href,"?catalog=translated&q="+encodeURIComponent("Бекетова")+"#books");
+assert.equal(share.href,"?catalog=translated&q="+encodeURIComponent("Бекетова")+"&catalog_order=title#books");
 location.search="?catalog=pending&q="+encodeURIComponent("Бекетова");
 restore();assert.equal(cards.filter(c=>!c.hidden).length,0);
 assert.match(status.textContent,/Книг не найдено/);
@@ -78,8 +83,8 @@ assert.equal(clean.searchParams.has("catalog"),false);
 assert.equal(clean.searchParams.has("q"),false);
 assert.equal(clean.searchParams.get("left"),"anna");
 assert.equal(clean.searchParams.get("right"),"beketova");
-location.search="?catalog=__proto__&q="+encodeURIComponent("Толстой");
-restore();assert.equal(filter.value,"all");
+location.search="?catalog=__proto__&q="+encodeURIComponent("Толстой")+"&catalog_order=__proto__";
+restore();assert.equal(filter.value,"all");assert.equal(order.value,"catalog");
 assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),
                  ["anna","hyperboloid","resurrection"]);
 location.search="?catalog=measured&q="+encodeURIComponent("x".repeat(121));
@@ -106,6 +111,8 @@ assert.match(html,/id="catalog-search" type="search" autocomplete="off"[^>]*disa
 assert.match(html,/id="catalog-search"[^>]*maxlength="120"/);
 assert.match(html,/id="share-catalog" href="\?catalog=all#books"/);
 assert.match(js,/catalogSearch.addEventListener\("input",updateCatalog\)/);
+assert.match(js,/catalogOrder.addEventListener\("change",\(\)=>\{sortCatalog\(\);updateCatalog\(\);\}\)/);
+assert.match(js,/restoreCatalogFromUrl\(\);\s*sortCatalog\(\);\s*restoreChartFromUrl\(\)/);
 assert.match(js,/verify\(incoming\); data=incoming/);
 assert.match(js,/el\("catalog-tools"\)\.hidden=false/);
 assert.match(css,/\.catalog-tools\[hidden\],\.book\[hidden\]\s*\{\s*display:none\s*!important/);

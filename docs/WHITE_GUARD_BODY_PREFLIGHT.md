@@ -73,9 +73,60 @@ The v2 receipt adds `extraction_failure_code` to each chapter (null when
 - `UNSUPPORTED_TEMPLATE`: at least one template remains after conservative transforms.
 - `TABLE_OR_HEADING`: unhandled table/heading syntax remains.
 - `UNSUPPORTED_INLINE_MARKUP`: unhandled HTML or wiki-link syntax remains.
+- `PROOFREADPAGE_UNPINNED`: `<pages />` transcludes Page-namespace text whose
+  revisions have not been frozen as part of this literary body.
 - `EMPTY_BODY`: recognized body yields no selected text.
 - `UNCLASSIFIED_ERROR`: any other parser error, invalid result, or unknown
   injected diagnostic code; never serialize exception messages.
+
+## Source-free ProofreadPage route plan (receipt v3)
+
+On 2026-11-05, the **current** Wikisource edit-source view of Paris chapter 1
+shows a `<pages index="Дни Турбиных (Белая гвардия) (Булгаков, 1927).djvu"
+from=5 to=9 />` transclusion inside its transcription div. This view is **not**
+evidence that pinned `oldid=2423390` has identical content; the pinned
+provider replay must establish that independently. See the [live page edit
+source](https://ru.wikisource.org/w/index.php?title=Белая_гвардия_(Булгаков)/Глава_1&action=edit)
+and the [official ProofreadPage `pages` tag contract](https://www.mediawiki.org/wiki/Help:Extension:ProofreadPage/Pages_tag/en).
+
+The extractor must **never** drop `<pages />` and count the empty parent as
+literary prose. Receipt v3 reports `PROOFREADPAGE_UNPINNED`, plus an optional
+`proofreadpage_page_plan` only when the *pinned* Paris source has exactly one
+recognized text div containing exactly one whitelisted, unmodified `<pages />`
+route (index title, positive numeric `from`/`to`, at most 100 Page numbers).
+Other indexes, steps, section selectors, excludes, multiple routes, mixed body
+text and malformed ranges stay unsupported with a **null** plan. All plans
+remain **UNFROZEN** topology hints, never actual Page revision identities,
+verified page content, a render-equivalent body or copyright clearance.
+The v2 synthetic and hosted receipts remain historical evidence, not updated
+in place. A new exact-head hosted replay must establish observed v3 plan counts.
+
+### Verified pinned-range replay — 2026-11-05
+
+The [exact-revision hosted run #41945016706](https://github.com/drevendev/Scriptorium/actions/runs/41945016706)
+on initial PR #430 head `5da7380692f114805cb531f40eabd3cc8fb417c0`
+completed successfully, including 12 focused synthetic tests and all 20
+pinned-revision identity/readback and source-free schema validations.
+All **11/11 Paris chapter parents** have the exact whitelisted tag shape.
+The Page-number ranges in chapter order are:
+
+`5–9; 10–32; 33–52; 53–61; 62–80; 81–112; 113–124; 125–138; 139–148; 149–164; 165–189`.
+
+These are **185 contiguous Page-number dependencies** in the declared 1927
+index, with no gaps or overlaps in this *syntactic* topology. The other nine
+1989 chapters remain five tentative bodies and four unsupported templates.
+Overall candidate-body coverage remains **5/20** and the composite stays
+null. No Page: revision IDs, immutable Page: content, Index: revision, complete
+rendering, text/body size or FantLab source identity are established. This
+source-free evidence is not a frozen or analyzed edition; M2 remains **0/5**.
+The original run supports the code at its original head; later documentation
+commits require their own current-head CI before merge.
+
+The independent next task is to resolve every Page-namespace dependency at
+its own immutable revision/MediaWiki SHA-1 and decide page-boundary/section
+semantics before experimenting with a *separate*, versioned transclusion
+renderer. Historic parent oldids alone cannot freeze the content transcluded
+from Page namespace; current render output is not automatically deterministic.
 
 This classifies parser *rejection*, not the correct literary body or print
 edition. No raw wikitext, exception string, prose fragments, or manuscript

@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 425
+STATE_REVISION: 426
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-04
-LAST_RESULT: PR #428 merged at 24ca18e0fdde0dc5e12f73af337d7f78ebee88a7; hosted 20-revision replay completed, with 5 tentative chapters and 15 parser rejections. This PR candidate makes those structural rejections source-free and diagnosable; new-category hosted results remain NOT_RUN pending exact-head CI.
-LAST_VERIFIED_PROGRESS: Master 24ca18e0fdde0dc5e12f73af337d7f78ebee88a7 includes merged #428; previous hosted historical replay #41901683410 succeeded. Paris 1927: 0/11 extractable; Moscow 1989: 5/9 tentative; combined size null. Reader: 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Live HTTP/browser/mobile NOT_VERIFIED; M2 0/5.
+LAST_COMMITTED_RUN_AT: 2026-11-05
+LAST_RESULT: PR #429 merged at b53cce9a123051a7f10f281823a7bf02a9872014 with safe structural diagnostics and privacy regression fixes; this candidate makes pinned Paris <pages /> ranges explicitly inspectable without claiming Page content or modifying extraction.
+LAST_VERIFIED_PROGRESS: Master b53cce9a123051a7f10f281823a7bf02a9872014 includes merged #429. Previous pinned historical replay: Paris 1927 11 UNSUPPORTED_INLINE_MARKUP, Moscow 1989 4 UNSUPPORTED_TEMPLATE + 5 tentative; complete mixed-source size null. The current Paris chapter 1 edit view shows a ProofreadPage <pages /> transclusion (not historical-oldid proof); hosted exact-head v3 plan replay NOT_RUN. Reader: 11 measured Russian editions, 13 catalogue cards, 298 fields (249 numeric, 49 unavailable). Live browser/mobile NOT_VERIFIED; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-WHITE-GUARD-SAFE-STRUCTURAL-DIAGNOSTICS
-ISSUES: follow-up to merged #428; 15 historically unsupported chapters need safe reason categories before parser changes
-STATUS: PR_CANDIDATE; STRUCTURAL_REASON_CODE_TESTS_ADDED; EXACT_HEAD_CI_PENDING; HISTORICAL_REASON_CODES_NOT_RUN; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-white-guard-safe-markup-reasons-20261105
-BASE: 24ca18e0fdde0dc5e12f73af337d7f78ebee88a7
+UNIT_ID: SCRIP-CORPUS-WHITE-GUARD-PROOFREADPAGE-RANGE-PLAN
+ISSUES: follow-up to merged #429; Paris 1927 currently transcludes unpinned Page-namespace source rather than embedding literal prose
+STATUS: PR_CANDIDATE; PINNED_20_REPLAY_INITIAL_HEAD_SUCCESS; PARIS_11_ROUTE_PLANS_VERIFIED_185_PAGES; FULL_FINAL_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-white-guard-proofreadpage-range-plan-20261105
+BASE: b53cce9a123051a7f10f281823a7bf02a9872014
 
-ACCEPTANCE: Preserve the exact existing extraction policy; classify its structural rejections with fixed source-free codes and null codes on successful candidates. Fallback must never embed exception content. Hosted exact-revision workflow validates the versioned v2 schema and prints only chapter numbers/codes, 11/9 partition and non-admission flags. Positive/negative synthetic regressions and later exact-head acceptance are required; a successful replay yields actionable failure counts but no edition/body/parity claims. See [preflight contract](../docs/WHITE_GUARD_BODY_PREFLIGHT.md).
+ACCEPTANCE: Preserve conservative v1 extraction semantics and no-source-prose receipts. Expose only narrow source-family-matched <pages /> index/from/to spans as UNFROZEN dependencies in v3, reject unapproved/complex routes, keep mixed-edition/composite/admission gates closed. Hosted replay must validate exact 20 revisions and prove actual non-prose route coverage before any Page dependency freeze is claimed. See [preflight contract](../docs/WHITE_GUARD_BODY_PREFLIGHT.md).
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: first honest comparison of two independently measured Russian transla
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | White Guard source-free failure categories (this PR) | Exact-head negative tests and hosted 20-revision v2 receipt identifying rejection codes | Hosted runner required for real category counts; not an M2 prerequisite |
-| P2 | White Guard markup-specific extraction repair | Use measured reason counts to fix one supported structure with negatives; rerun pinned preflight | Preserve original 1927/1989 partitions and v1 conservative semantics |
+| P1 | White Guard ProofreadPage route-plan preview (this PR) | Exact-head hosted 20-revision v3 receipt, no raw prose, unpinned Page spans only when exact-safe; targeted negative tests | Historic source must actually match route whitelist; current edit view is not oldid evidence |
+| P2 | Resolve Paris 1927 Page dependency set | Bind Page: oldids/SHA-1 for accepted routes, then test separate renderer on frozen content | No live transclusion shortcut; preserve 1927/1989 partitions and body/parity unknowns |
 | P3 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct literary body, run 29 metrics, truthful same-work comparison | Trusov historical renderer unresolved; select independent work if unchanged blocked |
 | P4 | #282/#281 AOT/FantLab compatibility or source-bound metric readiness | Native N disambiguation or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |
 | P5 | #283/#285 Reader live Pages, desktop/mobile verification | HTTP, keyboard/focus and mobile screenshots | Browser navigation previously restricted; preserve last publication |

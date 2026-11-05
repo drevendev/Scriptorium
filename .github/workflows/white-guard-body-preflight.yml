@@ -58,9 +58,10 @@ jobs:
               'chapter', 'source_family_id', 'revision_id', 'wikitext_characters',
               'wikitext_sha256', 'extraction_status', 'extraction_failure_code',
               'candidate_body_characters', 'candidate_body_sha256',
+              'proofreadpage_page_plan',
           }
           assert set(report) == top, 'unsafe or incomplete receipt schema'
-          assert report['schema_version'] == 'scriptorium-white-guard-body-preflight-v2'
+          assert report['schema_version'] == 'scriptorium-white-guard-body-preflight-v3'
           assert report['provider_replay'] == 'VERIFIED_IDENTITIES'
           assert report['chapter_count'] == len(report['chapters']) == 20
           assert [c['chapter'] for c in report['chapters']] == list(range(1, 21))
@@ -72,13 +73,25 @@ jobs:
                      for c in report['chapters'])
           safe_codes = {
               'BODY_CONTAINER_ABSENT', 'BODY_CONTAINER_MULTIPLE', 'UNSUPPORTED_TEMPLATE',
-              'TABLE_OR_HEADING', 'UNSUPPORTED_INLINE_MARKUP', 'EMPTY_BODY', 'UNCLASSIFIED_ERROR',
+              'TABLE_OR_HEADING', 'UNSUPPORTED_INLINE_MARKUP', 'PROOFREADPAGE_UNPINNED',
+              'EMPTY_BODY', 'UNCLASSIFIED_ERROR',
           }
           assert all(
               (c['extraction_failure_code'] is None if c['extraction_status'] == 'CANDIDATE_ONLY'
                else c['extraction_failure_code'] in safe_codes)
               for c in report['chapters']
           )
+          for c in report['chapters']:
+              route = c['proofreadpage_page_plan']
+              if route is not None:
+                  assert c['source_family_id'] == 'paris-concorde-1927'
+                  assert c['extraction_status'] == 'UNSUPPORTED_MARKUP'
+                  assert c['extraction_failure_code'] == 'PROOFREADPAGE_UNPINNED'
+                  assert set(route) == {'index_title', 'first_page', 'last_page', 'page_count'}
+                  assert route['index_title'] == 'Дни Турбиных (Белая гвардия) (Булгаков, 1927).djvu'
+                  assert type(route['first_page']) is type(route['last_page']) is type(route['page_count']) is int
+                  assert 1 <= route['first_page'] <= route['last_page'] <= 4000
+                  assert 1 <= route['page_count'] == route['last_page'] - route['first_page'] + 1 <= 100
           assert report['candidate_chapter_count'] == sum(
               c['extraction_status'] == 'CANDIDATE_ONLY' for c in report['chapters']
           )
@@ -97,6 +110,11 @@ jobs:
           print('Unsupported chapter reason codes:', [
               (c['chapter'], c['extraction_failure_code']) for c in report['chapters']
               if c['extraction_status'] == 'UNSUPPORTED_MARKUP'
+          ])
+          print('Unfrozen ProofreadPage ranges:', [
+              (c['chapter'], c['proofreadpage_page_plan']['first_page'],
+               c['proofreadpage_page_plan']['last_page']) for c in report['chapters']
+              if c['proofreadpage_page_plan'] is not None
           ])
           print('Composite tentative character count:',
                 report['candidate_composite_characters_including_spaces'])

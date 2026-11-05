@@ -91,4 +91,66 @@ assert.match(html,/id="neighbor-status" role="status" aria-live="polite"/);
 assert.match(html,/стартовая пара, не вычисленная рекомендация/);
 assert.match(source,/updateSingle\(\);\n    updateMetricNeighbors\(book\);/);
 assert.doesNotMatch(source,/innerHTML/);
-console.log("Reader measured neighbors: real ranking, pair links, profiles, missing/zero, static fallback PASS");
+// Startup integration: the literal shipped sorter must process *all* 13 real
+// catalogue cards before the measured-only deep link reaches neighbor rendering.
+// Previously isolated rank/sort tests passed while initialization crashed on
+// the two pending cards, leaving interactive controls and neighbors unusable.
+const realCards=[...html.matchAll(/<article class="book[^"]*" data-status="(measured|pending)" data-catalog-key="([^"]+)"/g)]
+  .map(match=>({dataset:{status:match[1],catalogKey:match[2]}}));
+assert.equal(realCards.length,13);
+assert.deepEqual(realCards.map(card=>card.dataset.catalogKey),data.books.map(book=>book.key));
+assert.ok(realCards.every(card=>data.books.some(book=>
+  book.key===card.dataset.catalogKey &&
+  card.dataset.status===(book.text_status==="measured"?"measured":"pending"))));
+const sortStart=source.indexOf("  function sortCatalog() {");
+const routeStart=source.indexOf("  function bookFromUrl() {");
+const routeEnd=source.indexOf("  function updateChart() {",routeStart);
+const initStart=source.indexOf("  async function initialize() {");
+assert.ok(sortStart>=0 && sortStart<begin && routeStart>end && routeEnd>routeStart && initStart>routeEnd);
+assert.match(source.slice(initStart),
+  /restoreCatalogFromUrl\(\);\s*sortCatalog\(\);[\s\S]*?selectBook\(bookFromUrl\(\)\);/,
+  "The integration exercises the real initialization order");
+const cardOrder=[...realCards];
+const catalogGrid={appendChild(card){
+  const index=cardOrder.indexOf(card);
+  assert.notEqual(index,-1);
+  cardOrder.splice(index,1);
+  cardOrder.push(card);
+}};
+slots["catalog-sort-status"]=new Node("p");
+slots["share-work"]=new Node("a");
+const sortSelection={value:"catalog"};
+const bookSelection={value:""};
+const metricSearch={value:""};
+let singleRenders=0;
+const measuredOnlyBook=key=>data.books.find(book=>
+  book.key===key && book.text_status==="measured");
+assert.equal(measuredOnlyBook("petersburg"),undefined);
+assert.equal(measuredOnlyBook("darwin"),undefined);
+const startup=new Function("data","catalogCards","catalogOrder","catalogGrid",
+  "lookup","isNumeric","el","document","insertText","pretty","getBook",
+  "one","search","updateSingle","window",
+  source.slice(sortStart,begin)+source.slice(begin,end)+source.slice(routeStart,routeEnd)+
+  "\nreturn {sortCatalog,bookFromUrl,selectBook};"
+)(data,realCards,sortSelection,catalogGrid,lookup,isNumeric,el,document,insertText,
+  pretty,measuredOnlyBook,bookSelection,metricSearch,()=>{singleRenders++;},
+  {location:{search:"?book=anna"}});
+startup.sortCatalog();
+assert.deepEqual(cardOrder.map(card=>card.dataset.catalogKey),data.books.map(book=>book.key));
+startup.selectBook(startup.bookFromUrl());
+assert.equal(bookSelection.value,"anna");
+assert.equal(singleRenders,1,"Startup must reach the measured-book view");
+assert.deepEqual(slots["neighbor-list"].children[0].children.map(li=>li.children[0].href),
+  ranked.map(item=>"?left=anna&right="+item.book.key+
+    "&pair_metric=fantlab.dialogue.share_percent#pairs"),
+  "Startup must render all three real measured-neighbor pair links");
+assert.match(slots["neighbor-status"].textContent,/3 ближайшие измеренные редакции/);
+sortSelection.value="dialogue";
+startup.sortCatalog();
+assert.deepEqual(cardOrder.slice(-2).map(card=>card.dataset.catalogKey),
+  ["petersburg","darwin"],"Pending research cards remain last, not ranked as measured");
+sortSelection.value="title";
+startup.sortCatalog();
+assert.equal(cardOrder.length,13);
+assert.equal(singleRenders,1);
+console.log("Reader measured neighbors: real ranking, pair links, profiles, missing/zero, static fallback, 13-card startup integration PASS");

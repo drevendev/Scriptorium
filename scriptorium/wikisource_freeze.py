@@ -48,6 +48,7 @@ BODY_FAILURE_CODES = frozenset({
     "UNSUPPORTED_TEMPLATE",
     "TABLE_OR_HEADING",
     "UNSUPPORTED_INLINE_MARKUP",
+    "PROOFREADPAGE_UNPINNED",
     "EMPTY_BODY",
 })
 
@@ -198,6 +199,12 @@ def extract_transcription_body(wikitext: str) -> str:
         raise BodyExtractionError("UNSUPPORTED_TEMPLATE", "unsupported template remains inside transcription body")
     if _TABLE_OR_HEADING_RE.search(body):
         raise BodyExtractionError("TABLE_OR_HEADING", "unsupported table/heading markup remains inside transcription body")
+    # A <pages /> reference is a dependency on Page: revisions, never text.
+    # Do not strip it and accidentally freeze an empty/truncated literary body.
+    if re.search(r"<pages\b", body, re.IGNORECASE):
+        raise BodyExtractionError(
+            "PROOFREADPAGE_UNPINNED", "ProofreadPage transclusion needs Page revision pins"
+        )
     if "[[" in body or "]]" in body or "<" in body or ">" in body:
         raise BodyExtractionError("UNSUPPORTED_INLINE_MARKUP", "unsupported wiki/HTML markup remains inside transcription body")
 

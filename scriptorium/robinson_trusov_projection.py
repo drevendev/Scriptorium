@@ -218,7 +218,10 @@ def project_page(candidate: str) -> tuple[str, int, int, int, int]:
             continue
         fields = value[2:-2].split("|")
         title = fields[0].strip().casefold()
-        # Preserve the original Page line boundary; only the joined-page\n        # profile may deliberately add a synthetic LF between Pages.\n        ending = ("\r\n" if line.endswith("\r\n") else\n                  "\n" if line.endswith("\n") else\n                  "\r" if line.endswith("\r") else "")
+        # Preserve original Page line endings; only the join may add an LF.
+        ending = ("\r\n" if line.endswith("\r\n") else
+                  "\n" if line.endswith("\n") else
+                  "\r" if line.endswith("\r") else "")
         if title == "nop" and len(fields) == 1:
             # A blank line retains a paragraph break at a page boundary.
             out.append(ending)

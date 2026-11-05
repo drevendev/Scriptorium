@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 432
+STATE_REVISION: 433
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-05
-LAST_RESULT: #435 is MERGED at 4c0304c300cc0291fcd8ffe07bca4de09bbc85ad. Focused Trusov projection fix now preserves per-Page original LF, CRLF, lone CR or absent final line terminator rather than manufacturing LF at a standalone template. Later exact-head CI/review required; historical rendering and literary-body coverage remain UNKNOWN.
+LAST_RESULT: PR #437 was squash-merged at ef614afd24fdf719f5a66b503ba3b6e391c30aa9 (native GitHub confirmation supersedes the earlier PR-candidate queue). Authored an independent measured-neighbor Reader extension on an isolated branch for later CI/review; it only ranks already verified source-free metrics and does not advance Trusov literary-body or FantLab parity gates.
 LAST_VERIFIED_PROGRESS: The branch-root Reader has 11 independently measured Russian-language editions and two correctly marked research leads. The catalogue feature operates only on validated source-free derived results, preserves no-JavaScript ordering and keeps unavailable values after measured values. FantLab input identity remains UNKNOWN; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-TRUSOV-PROJECTION-EOL
-ISSUES: #436 — exact Page projection line-ending integrity
-STATUS: PR_CANDIDATE; HOSTED_CI_NOT_RUN; HISTORICAL_SOURCE_REPLAY_NOT_RUN; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-trusov-projection-line-endings-20261105
-BASE: 4c0304c300cc0291fcd8ffe07bca4de09bbc85ad
+UNIT_ID: SCRIP-SITE-METRIC-NEIGHBORS-v1
+ISSUES: #283 — reader-first functional comparison navigation and accessibility
+STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LIVE_VISUAL_NOT_VERIFIED; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-reader-nearest-measured-v1-20261105
+BASE: ef614afd24fdf719f5a66b503ba3b6e391c30aa9
 
-ACCEPTANCE: For standalone Trusov Page `heading`/`nop`, preserve LF, CRLF, lone CR, and absent terminal line endings; unsupported inline templates/prose stay unchanged. A resulting empty projected Page fails closed at the join; no invented boundary LF, no source prose persisted, no historical-render/body/parity claim. Run exact-head hosted regression suite and accept/merge in a later independent wake.
+ACCEPTANCE: Selecting any of the 11 measured Russian editions reveals three compatible, actually measured comparison neighbors from the retained JSON. Normalize dialogue share, mean sentence length and comma rate across compatible measured books, rank by mean absolute normalized distance with a stable tie break. Exclude pending/unknown/incompatible candidates, distinguish numeric zero, link to real two-book pair views, retain an honest no-JavaScript starter, display scientific caveats, test positive/negative/DOM scenarios. No new corpus admission, invented FantLab result or similar-author claim. Independently verify exact-head hosted tests and later merge; live Pages requires separate verification.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: first honest comparison of two independently measured Russian translations of the same work, while making available edition measurements discoverable and useful on the public Reader.
+Milestone: a discoverable, credible Russian Reader with meaningful links between already measured editions; first true paired comparison of two independently measured Russian translations of *Robinson Crusoe* remains the next evidence milestone.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept Trusov Page projection EOL fix (#436) | Exact-head regressions for LF/CRLF/CR/EOF and no markup/source leakage; later independent acceptance | CI and historical real-source replay pending |
-| P2 | Independently measure the Trusov *Robinson Crusoe* first-book body | Frozen exact body, ≥300k/edition rights verification, 29 fields and honest Shishmareva pair | Historical ProofreadPage/rendering and coverage; four unresolved VAR calls |
-| P3 | #282/#281 AOT/FantLab metric readiness | Measured runtime N disambiguation or explicit field-level evidence; no parity overclaim | Exact provider/reference input identity |
-| P4 | #283/#285 Reader live Pages and desktop/mobile verification | Root branch Reader HTTP, keyboard/focus and mobile screenshot readback | Browser navigation restrictions; preserve last valid publication |
-| P5 | Paris ProofreadPage renderer after merged #433 | Source-free real markup classification, reproducible candidate chapter boundaries | 183 unsupported Page markup; historic transclusion separate |
+| P1 | Later independently accept metric-neighbor Reader change (#283) | Exact-head Python + Node checks, actual snapshot ranking, keyboard/fallback safety; qualifying merge | Hosted CI, fresh head/review |
+| P2 | Independently measure Trusov *Robinson Crusoe* first-book body | Frozen exact literary body ≥300k, provenance/rights and 29 actual metrics, then honest Shishmareva pair | Historical renderer/coverage; four unresolved VAR calls; printed edition still unknown |
+| P3 | #282/#281 AOT/FantLab readiness | Real measured runtime N evidence or strict field-level source matching, keep M2 0/5 until proof | Exact provider/reference input identity |
+| P4 | #283/#285 Reader live Pages and desktop/mobile verification | Branch-root HTTP, keyboard/focus and mobile screenshot readback | Browser navigation restrictions; preserve last valid site |
+| P5 | Paris ProofreadPage renderer after merged #433 | Source-free real markup classification and reproducible chapter boundaries | 183 unsupported Page markup; historic transclusion separate |
 
 ## Retained evidence and scientific gates
 

@@ -32,10 +32,12 @@ const el = id => ({
   "measurements-title": focus
 })[id];
 let renders = 0;
-const routes = new Function("window", "getBook", "one", "search", "updateSingle", "el",
+const neighborRenders = [];
+const routes = new Function("window", "getBook", "one", "search", "updateSingle", "updateMetricNeighbors", "el",
   'let currentBook = "anna";\n' + code +
   '\nreturn {bookFromUrl,selectBook,current:()=>currentBook};'
-)(window, getBook, one, search, () => { renders++; }, el);
+)(window, getBook, one, search, () => { renders++; },
+  book => { neighborRenders.push(book.key); }, el);
 
 assert.equal(routes.bookFromUrl(), "beketova");
 routes.selectBook(routes.bookFromUrl());
@@ -74,4 +76,6 @@ assert.equal(routes.current(), "anna");
 assert.equal(one.value, "anna");
 assert.equal(direct.href, "?book=anna#measurements");
 assert.equal(window.history.pushes.length, 1);
-console.log("Pages per-work deep links: valid, translated, unknown, pending, history, focus PASS");
+assert.deepEqual(neighborRenders, ["beketova", "silver", "anna"],
+  "Deep links and browser navigation must refresh measured-neighbor recommendations");
+console.log("Pages per-work deep links and metric neighbors: valid, translated, unknown, pending, history, focus PASS");

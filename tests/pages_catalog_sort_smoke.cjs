@@ -9,6 +9,8 @@ const start=source.indexOf("  function sortCatalog() {");
 const end=source.indexOf("  function updateSingle() {",start);
 assert.ok(start>=0&&end>start,"Ship the actual catalogue sorter");
 const sortCode=source.slice(start,end)+"return sortCatalog;";
+assert.doesNotMatch(sortCode,/const\s+book\s*=\s*getBook\(/,
+  "The catalogue must not use the measured-only reader lookup for pending cards");
 const keys=catalog.books.map(b=>b.key);
 function harness(doc){
   const cards=keys.map(key=>({dataset:{catalogKey:key},hidden:false}));
@@ -21,9 +23,9 @@ function harness(doc){
   }};
   const selection={value:"catalog"};
   const status={textContent:""};
-  const sorter=new Function("catalogCards","catalogOrder","catalogGrid","getBook",
+  const sorter=new Function("catalogCards","catalogOrder","catalogGrid","data",
     "lookup","isNumeric","el",sortCode)(
-    cards,selection,grid,key=>doc.books.find(b=>b.key===key),
+    cards,selection,grid,doc,
     (book,id)=>book.metrics.find(m=>m.id===id),
     x=>typeof x==="number"&&Number.isFinite(x),
     id=>{assert.equal(id,"catalog-sort-status");return status;});

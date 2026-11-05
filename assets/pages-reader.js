@@ -424,9 +424,12 @@
     if (catalogOrder.value!==selected) catalogOrder.value=selected;
     const collator=new Intl.Collator("ru",{sensitivity:"base",numeric:true});
     const entries=catalogCards.map((card,ordinal)=>{
-      const book=getBook(card.dataset.catalogKey);
+      // All 13 validated catalogue entries are sortable; getBook() deliberately
+      // excludes the two pending editions from measurement/comparison routes.
+      const book=data.books.find(b=>b.key===card.dataset.catalogKey);
       if (!book) throw Error("Нет проверенного источника для сортировки");
-      const field=lookup(book,"fantlab.dialogue.share_percent");
+      const field=book.text_status==="measured"
+        ? lookup(book,"fantlab.dialogue.share_percent") : null;
       return {card,ordinal,title:book.display_title,
         dialogue:book.text_status==="measured"&&field&&isNumeric(field.actual)
           ?field.actual:null};
@@ -446,6 +449,75 @@
     };
     el("catalog-sort-status").textContent=descriptions[selected]+
       " Порядок клавиатуры совпадает с экранным; ссылка на поиск сохраняет выбранную сортировку.";
+  }
+
+
+  // Reader extension v1: a relative, source-free numeric neighborhood, NOT
+  // an authorship classifier, literary-quality score, or FantLab parity.
+  const neighborMetricIds = [
+    "fantlab.dialogue.share_percent",
+    "fantlab.general.mean_sentence_length_chars",
+    "fantlab.punctuation.comma.per_1000_words"
+  ];
+  const neighborProfiles = ["metrics","normalization","dialogue","vocabulary","punctuation"];
+
+  function measuredNeighborValue(book,id) {
+    const row=lookup(book,id);
+    return row?.status==="measured" && isNumeric(row.actual) ? row.actual : null;
+  }
+
+  function rankMetricNeighbors(anchorBook,books) {
+    if (!anchorBook || anchorBook.text_status!=="measured" || !Array.isArray(books)) return [];
+    // Keep all compared measurements and algorithm profiles genuinely compatible.
+    const pool=books.filter(book=>
+      book.text_status==="measured" &&
+      neighborProfiles.every(p=>typeof anchorBook.profiles?.[p]==="string" &&
+        book.profiles?.[p]===anchorBook.profiles[p]) &&
+      neighborMetricIds.every(id=>measuredNeighborValue(book,id)!==null)
+    );
+    if (!pool.includes(anchorBook) || pool.length<2) return [];
+    const spans=neighborMetricIds.map(id=>{
+      const values=pool.map(book=>measuredNeighborValue(book,id));
+      return Math.max(...values)-Math.min(...values);
+    });
+    // All three constant columns contain no ranking information.
+    if (!spans.some(span=>span>0)) return [];
+    return pool.filter(book=>book!==anchorBook).map(book=>({
+      book,
+      distance:neighborMetricIds.reduce((total,id,i)=>
+        total+(spans[i]>0
+          ?Math.abs(measuredNeighborValue(book,id)-measuredNeighborValue(anchorBook,id))/spans[i]
+          :0),0)/neighborMetricIds.length,
+      catalogIndex:books.indexOf(book)
+    })).sort((a,b)=>a.distance-b.distance || a.catalogIndex-b.catalogIndex).slice(0,3);
+  }
+
+  function updateMetricNeighbors(book) {
+    const list=el("neighbor-list");
+    const status=el("neighbor-status");
+    const ranked=rankMetricNeighbors(book,data.books);
+    const fragment=document.createDocumentFragment();
+    for (const item of ranked) {
+      const li=document.createElement("li");
+      const link=document.createElement("a");
+      link.href="?left="+encodeURIComponent(book.key)+"&right="+
+        encodeURIComponent(item.book.key)+
+        "&pair_metric=fantlab.dialogue.share_percent#pairs";
+      link.textContent=item.book.display_title+" — сравнить ↗";
+      li.appendChild(link);
+      insertText(li,"small","Среднее нормированное расстояние: "+
+        pretty(item.distance,3)+" (0 = равенство трёх показателей)");
+      fragment.appendChild(li);
+    }
+    if (!ranked.length) {
+      const li=document.createElement("li");
+      li.textContent="Нет других совместимых измеренных редакций для этого подбора.";
+      fragment.appendChild(li);
+    }
+    list.replaceChildren(fragment);
+    status.textContent=ranked.length
+      ? "Показаны "+ranked.length+" ближайшие измеренные редакции. Это относительное расстояние по трём полям, а не авторский профиль, оценка качества или совпадение с FantLab."
+      : "Подбор недоступен: нужны две разные редакции с тремя совместимыми измерениями и ненулевым разбросом.";
   }
 
   function updateSingle() {
@@ -488,6 +560,7 @@
     one.value = key;
     search.value = "";
     updateSingle();
+    updateMetricNeighbors(book);
     const direct = el("share-work");
     direct.href = "?book=" + encodeURIComponent(key) + "#measurements";
     direct.textContent = "Прямая ссылка на «" + book.display_title + "» ↗";

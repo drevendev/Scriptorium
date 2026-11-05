@@ -363,8 +363,11 @@
     const share=el("share-catalog");
     share.hidden=!safeCatalogQuery(raw);
     if (!share.hidden) {
+      const order=["catalog","title","dialogue"].includes(catalogOrder.value)
+        ? catalogOrder.value : "catalog";
       share.href="?catalog="+encodeURIComponent(mode)+
-        (raw?"&q="+encodeURIComponent(raw):"")+"#books";
+        (raw?"&q="+encodeURIComponent(raw):"")+
+        (order==="catalog"?"":"&catalog_order="+encodeURIComponent(order))+"#books";
       share.textContent=raw ? "Ссылка на этот поиск ↗" : "Ссылка на выбранный список ↗";
     } else {
       share.removeAttribute("href");
@@ -399,12 +402,16 @@
     const mode=["all","measured","pending","translated"].includes(requested)
       ? requested : "all";
     const raw=params.get("q")||"";
-    return {mode,query:safeCatalogQuery(raw)?raw:""};
+    const requestedOrder=params.get("catalog_order");
+    const order=["title","dialogue"].includes(requestedOrder)
+      ? requestedOrder : "catalog";
+    return {mode,query:safeCatalogQuery(raw)?raw:"",order};
   }
   function restoreCatalogFromUrl() {
     const state=catalogFromUrl();
     catalogFilter.value=state.mode;
     catalogSearch.value=state.query;
+    catalogOrder.value=state.order;
     updateCatalog();
   }
 
@@ -438,7 +445,7 @@
       dialogue:"По доле диалогов в измеренных текстах, от большей к меньшей; без измерений — в конце. Ноль не означает отсутствие данных."
     };
     el("catalog-sort-status").textContent=descriptions[selected]+
-      " Порядок клавиатуры совпадает с экранным; ссылки на поиск используют исходный порядок.";
+      " Порядок клавиатуры совпадает с экранным; ссылка на поиск сохраняет выбранную сортировку.";
   }
 
   function updateSingle() {
@@ -1293,7 +1300,7 @@
       }
       catalogFilter.addEventListener("change",updateCatalog);
       catalogSearch.addEventListener("input",updateCatalog);
-      catalogOrder.addEventListener("change",sortCatalog);
+      catalogOrder.addEventListener("change",()=>{sortCatalog();updateCatalog();});
       catalogReset.addEventListener("click",resetCatalog);
       restoreCatalogFromUrl();
       sortCatalog();
@@ -1301,6 +1308,7 @@
       one.addEventListener("change",()=>selectBook(one.value,true));
       window.addEventListener("popstate",()=>{
         restoreCatalogFromUrl();
+        sortCatalog();
         restoreChartFromUrl();
         selectBook(bookFromUrl());
         const [left,right] = pairFromUrl();

@@ -64,7 +64,7 @@ assert.deepEqual(z.order().slice(-4),["anna","shishmareva","petersburg","darwin"
   "Numeric zero before missing observations; missing measurement before research leads");
 assert.match(html,/<select id="catalog-order" disabled>[\s\S]*?value="dialogue"/);
 assert.match(html,/id="catalog-sort-status" role="status" aria-live="polite"/);
-assert.match(source,/catalogOrder.addEventListener\("change",sortCatalog\)/);
+assert.match(source,/catalogOrder.addEventListener\("change",\(\)=>\{sortCatalog\(\);updateCatalog\(\);\}\)/);
 assert.match(source,/sortCatalog\(\);\n      el\("catalog-tools"\)\.hidden=false;/);
 assert.doesNotMatch(source,/innerHTML/);
 console.log("Real catalogue title/metric DOM sorting, zero, unknown, no-JS and keyboard order: PASS");

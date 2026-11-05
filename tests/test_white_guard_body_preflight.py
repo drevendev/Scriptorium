@@ -38,6 +38,7 @@ class WhiteGuardBodyPreflightTests(unittest.TestCase):
                          [revisions.SOURCE_FAMILY_1927] * 11 + [revisions.SOURCE_FAMILY_1989] * 9)
         self.assertTrue(all(r["extraction_status"] == "CANDIDATE_ONLY" for r in receipt["chapters"]))
         self.assertTrue(all(r["extraction_failure_code"] is None for r in receipt["chapters"]))
+        self.assertTrue(all(r["proofreadpage_page_plan"] is None for r in receipt["chapters"]))
         self.assertEqual(receipt["chapters"][0]["wikitext_sha256"],
                          sha256(data[self.rows[0]["title"]].encode()).hexdigest())
         self.assertIs(receipt["candidate_meets_size_threshold"], False)
@@ -116,6 +117,58 @@ class WhiteGuardBodyPreflightTests(unittest.TestCase):
                 self.assertEqual(first["extraction_failure_code"], code)
                 self.assertIsNone(first["candidate_body_characters"])
                 self.assertEqual(receipt["candidate_chapter_count"], 19)
+                self.assertIsNone(receipt["candidate_composite_sha256"])
+                self.assertNotIn(PRIVATE_SENTINEL, json.dumps(receipt, ensure_ascii=False))
+
+    def test_paris_proofreadpage_ranges_remain_unfrozen_dependencies(self):
+        data = self.sources()
+        for idx, row in enumerate(self.rows[:11]):
+            first = 5 + idx * 6
+            data[row["title"]] = (
+                f'<div class="text"><pages index="{preflight.PROOFREADPAGE_INDEX}" '
+                f'from={first} to={first + 4} /></div>'
+            )
+        receipt = preflight.build_preflight(MANIFEST, fetcher=lambda _: data)
+        self.assertEqual(receipt["candidate_chapter_count"], 9)
+        self.assertIsNone(receipt["candidate_composite_sha256"])
+        self.assertIsNone(receipt["candidate_meets_size_threshold"])
+        self.assertFalse(receipt["m2_parity_admissible"])
+        self.assertFalse(receipt["single_edition_identity"])
+        for idx, chapter in enumerate(receipt["chapters"]):
+            if idx < 11:
+                self.assertEqual(chapter["extraction_status"], "UNSUPPORTED_MARKUP")
+                self.assertEqual(chapter["extraction_failure_code"], "PROOFREADPAGE_UNPINNED")
+                self.assertIsNone(chapter["candidate_body_sha256"])
+                self.assertEqual(chapter["proofreadpage_page_plan"], {
+                    "index_title": preflight.PROOFREADPAGE_INDEX,
+                    "first_page": 5 + idx * 6,
+                    "last_page": 9 + idx * 6,
+                    "page_count": 5,
+                })
+            else:
+                self.assertEqual(chapter["extraction_status"], "CANDIDATE_ONLY")
+                self.assertIsNone(chapter["proofreadpage_page_plan"])
+        self.assertNotIn(PRIVATE_SENTINEL, json.dumps(receipt, ensure_ascii=False))
+
+    def test_proofreadpage_plan_refuses_unsupported_shapes_and_untrusted_indexes(self):
+        index = preflight.PROOFREADPAGE_INDEX
+        for fragment in (
+            f'<pages index="other.djvu" from=5 to=9 />',
+            f'<pages index="{index}" from=9 to=5 />',
+            f'<pages index="{index}" from=0 to=5 />',
+            f'<pages index="{index}" from=5 to=500 />',
+            f'<pages index="{index}" from=5 to=9 step=2 />',
+            f'<pages index="{index}" from=5 to=9 /> {PRIVATE_SENTINEL}',
+            f'<pages index="{index}" from=5 to=9 /><pages index="{index}" from=10 to=11 />',
+        ):
+            with self.subTest(fragment=fragment.replace(PRIVATE_SENTINEL, "SECRET")):
+                data = self.sources()
+                data[self.rows[0]["title"]] = '<div class="text">' + fragment + '</div>'
+                receipt = preflight.build_preflight(MANIFEST, fetcher=lambda _: data)
+                first = receipt["chapters"][0]
+                self.assertEqual(first["extraction_status"], "UNSUPPORTED_MARKUP")
+                self.assertEqual(first["extraction_failure_code"], "PROOFREADPAGE_UNPINNED")
+                self.assertIsNone(first["proofreadpage_page_plan"])
                 self.assertIsNone(receipt["candidate_composite_sha256"])
                 self.assertNotIn(PRIVATE_SENTINEL, json.dumps(receipt, ensure_ascii=False))
 

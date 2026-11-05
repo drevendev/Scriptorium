@@ -30,7 +30,8 @@ It removes at most three balanced outer `<noinclude>` regions, while refusing
 interior noinclude, templates, HTML, internal wiki links, single-bracket
 external links (including protocol-relative and `mailto:` schemes), spaced/unspaced MediaWiki headings,
 apostrophe styling, HTML/numeric entities, double-underscore behavior switches,
-table starts/ends, line-start lists/indents and horizontal rules, oversized
+table starts/ends, line-start lists/indents, horizontal rules and
+space/tab-prefixed preformatted lines (checked before trimming), oversized
 or empty pages. An accepted plain-text Page is a **candidate**, not a verified historical
 render: page headers/footers and text joining (a provisional newline), scan
 collation, historical parent revision, section semantics and source edition
@@ -38,6 +39,13 @@ matching still need independent evidence. No unsupported markup is silently
 stripped. Per-chapter candidate length/hash is null if **any** Page fails;
 all 11 chapters remain part of the distinct 1927 source family, never stitched
 to the unrelated 1989 chapters.
+
+**v1 input boundary:** at most three balanced outer noinclude regions may be
+removed. Remaining non-empty, size-bounded literal lines must not start with an
+ASCII space or tab; internal spaces and LF-separated unindented paragraphs are
+permitted. The explicit rejected-syntax set above is a negative filter, **not an
+exhaustive MediaWiki grammar**. Unknown markup may still survive the preflight,
+so even every accepted Page is only a candidate and cannot establish fidelity.
 
 An experiment that produces `CANDIDATE_ONLY` for all 185 pages is *still not*
 an admissible frozen literary body or a proof of historical transclusion. No

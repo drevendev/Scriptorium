@@ -34,6 +34,26 @@ class ParisBodyPreflightTests(unittest.TestCase):
                 self.assertNotEqual(preflight.candidate_page_body(source)[0], "CANDIDATE_ONLY")
         self.assertEqual(preflight.candidate_page_body("a" * (preflight.MAX_PAGE_CHARACTERS + 1))[0], "OVERSIZED_PAGE")
 
+    def test_wikitext_apostrophe_markup_blocks_page_and_chapter_digest(self):
+        for sample in ("Текст ''курсив''.", "'''Жирный'''", "'''''Оба'''''", "''"):
+            with self.subTest(sample=sample):
+                self.assertEqual(preflight.candidate_page_body(sample)[0], "UNSUPPORTED_PAGE_MARKUP")
+        self.assertEqual(preflight.candidate_page_body("rock'n'roll"), ("CANDIDATE_ONLY", "rock'n'roll"))
+        rows = fixture()
+        payload = {r["title"]: "простая проза" for r in rows}
+        payload["Page/6"] = f"{SENTINEL} ''markup''"
+        report = preflight.build_preflight(loader=lambda: rows, fetcher=lambda ids: payload)
+        self.assertEqual(report["candidate_page_count"], 184)
+        self.assertEqual(report["candidate_chapter_count"], 10)
+        self.assertEqual(report["pages"][1]["status"], "UNSUPPORTED_PAGE_MARKUP")
+        self.assertIsNone(report["pages"][1]["candidate_sha256"])
+        self.assertIsNone(report["pages"][1]["candidate_characters_including_spaces"])
+        self.assertEqual(report["chapters"][0]["status"], "INCOMPLETE")
+        self.assertIsNone(report["chapters"][0]["candidate_sha256"])
+        self.assertIsNone(report["chapters"][0]["candidate_characters_including_spaces"])
+        self.assertIsNotNone(report["chapters"][1]["candidate_sha256"])
+        self.assertNotIn(SENTINEL, str(report))
+
     def test_full_synthetic_185_page_replay_has_no_prose_in_receipt(self):
         rows = fixture()
         payload = {r["title"]: f"Page {r['page_number']} {SENTINEL}" for r in rows}

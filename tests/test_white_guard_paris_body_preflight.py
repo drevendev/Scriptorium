@@ -80,6 +80,39 @@ class ParisBodyPreflightTests(unittest.TestCase):
         self.assertIsNotNone(report["chapters"][1]["candidate_sha256"])
         self.assertNotIn(SENTINEL, str(report))
 
+    def test_external_link_markup_blocks_page_and_chapter_digest(self):
+        for source in (
+            "[//en.wikipedia.org Wikipedia]",
+            "[mailto:editor@example.org contact]",
+            "[ftp://example.org data]",
+            "[https://example.org link]",
+            "[SSH+GIT://example.org source]",
+        ):
+            with self.subTest(source=source):
+                self.assertEqual(preflight.candidate_page_body(source),
+                                 ("UNSUPPORTED_PAGE_MARKUP", None))
+        for prose in (
+            "Обычная проза [примечание автора].",
+            "Обычная ссылка без wiki-скобок https://example.org",
+            "Слово [11] и тире — в повествовании.",
+        ):
+            with self.subTest(prose=prose):
+                self.assertEqual(preflight.candidate_page_body(prose), ("CANDIDATE_ONLY", prose))
+        rows = fixture()
+        payload = {r["title"]: "обычная проза" for r in rows}
+        payload["Page/6"] = f"{SENTINEL} [mailto:editor@example.org contact]"
+        report = preflight.build_preflight(loader=lambda: rows, fetcher=lambda ids: payload)
+        self.assertEqual(report["candidate_page_count"], 184)
+        self.assertEqual(report["candidate_chapter_count"], 10)
+        self.assertEqual(report["pages"][1]["status"], "UNSUPPORTED_PAGE_MARKUP")
+        self.assertIsNone(report["pages"][1]["candidate_sha256"])
+        self.assertIsNone(report["pages"][1]["candidate_characters_including_spaces"])
+        self.assertEqual(report["chapters"][0]["status"], "INCOMPLETE")
+        self.assertIsNone(report["chapters"][0]["candidate_sha256"])
+        self.assertIsNone(report["chapters"][0]["candidate_characters_including_spaces"])
+        self.assertIsNotNone(report["chapters"][1]["candidate_sha256"])
+        self.assertNotIn(SENTINEL, str(report))
+
     def test_full_synthetic_185_page_replay_has_no_prose_in_receipt(self):
         rows = fixture()
         payload = {r["title"]: f"Page {r['page_number']} {SENTINEL}" for r in rows}

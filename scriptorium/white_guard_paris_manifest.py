@@ -26,8 +26,8 @@ CAPTURE_RUN = 41959859796
 CAPTURE_ARTIFACT = 13383909900
 CAPTURE_COMMIT = "1eb66bc069a02c3997b65330930931e29aacf88b"
 COLUMNS = ("page_number", "page_id", "revision_id", "revision_timestamp", "mediawiki_sha1")
-_TIMESTAMP = re.compile(r"\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\dZ\\Z")
-_SHA1 = re.compile(r"[0-9a-f]{40}\\Z")
+_TIMESTAMP = re.compile(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ\Z")
+_SHA1 = re.compile(r"[0-9a-f]{40}\Z")
 
 
 def parse_rows(raw: str) -> tuple[dict[str, object], ...]:

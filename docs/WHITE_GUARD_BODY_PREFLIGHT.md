@@ -101,6 +101,27 @@ verified page content, a render-equivalent body or copyright clearance.
 The v2 synthetic and hosted receipts remain historical evidence, not updated
 in place. A new exact-head hosted replay must establish observed v3 plan counts.
 
+### Verified pinned-range replay — 2026-11-05
+
+The [exact-revision hosted run #41945016706](https://github.com/drevendev/Scriptorium/actions/runs/41945016706)
+on initial PR #430 head `5da7380692f114805cb531f40eabd3cc8fb417c0`
+completed successfully, including 12 focused synthetic tests and all 20
+pinned-revision identity/readback and source-free schema validations.
+All **11/11 Paris chapter parents** have the exact whitelisted tag shape.
+The Page-number ranges in chapter order are:
+
+`5–9; 10–32; 33–52; 53–61; 62–80; 81–112; 113–124; 125–138; 139–148; 149–164; 165–189`.
+
+These are **185 contiguous Page-number dependencies** in the declared 1927
+index, with no gaps or overlaps in this *syntactic* topology. The other nine
+1989 chapters remain five tentative bodies and four unsupported templates.
+Overall candidate-body coverage remains **5/20** and the composite stays
+null. No Page: revision IDs, immutable Page: content, Index: revision, complete
+rendering, text/body size or FantLab source identity are established. This
+source-free evidence is not a frozen or analyzed edition; M2 remains **0/5**.
+The original run supports the code at its original head; later documentation
+commits require their own current-head CI before merge.
+
 The independent next task is to resolve every Page-namespace dependency at
 its own immutable revision/MediaWiki SHA-1 and decide page-boundary/section
 semantics before experimenting with a *separate*, versioned transclusion

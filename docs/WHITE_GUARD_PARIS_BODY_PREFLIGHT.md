@@ -27,8 +27,8 @@ reports coverage and retains only that report for seven days.
 
 This **v1 conservative candidate projection is NOT ProofreadPage rendering**.
 It removes at most three balanced outer `<noinclude>` regions, while refusing
-interior noinclude, templates, HTML, wiki links, headings, oversized or empty
-pages. An accepted plain-text Page is a **candidate**, not a verified historical
+interior noinclude, templates, HTML, wiki links, headings, apostrophe styling,
+line-start lists/indents and horizontal rules, oversized or empty pages. An accepted plain-text Page is a **candidate**, not a verified historical
 render: page headers/footers and text joining (a provisional newline), scan
 collation, historical parent revision, section semantics and source edition
 matching still need independent evidence. No unsupported markup is silently

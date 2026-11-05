@@ -174,6 +174,45 @@ class ParisBodyPreflightTests(unittest.TestCase):
                 self.assertIsNotNone(report["chapters"][1]["candidate_sha256"])
                 self.assertNotIn(SENTINEL, str(report))
 
+    def test_space_prefixed_preformatted_lines_fail_before_stripping(self):
+        # MediaWiki preformats a line beginning with ASCII space, including
+        # at the start of the Page. Reject tabs conservatively as well.
+        unsupported = (
+            " Строка.", "Первая строка.\n Вторая строка.",
+            "\n Строка.", "Проза\n\tТабуляция",
+            " \nПроза", "<noinclude>header</noinclude>\n Строка.",
+        )
+        for source in unsupported:
+            with self.subTest(source=source):
+                self.assertEqual(preflight.candidate_page_body(source),
+                                 ("UNSUPPORTED_PAGE_MARKUP", None))
+        plain = (
+            "Первая строка. Вторая строка.",
+            "Первая строка.\nВторая строка.",
+            "\nПроза.\n\nВторая строка.\n",
+            "Внутренние  пробелы остаются.",
+            "<noinclude>header</noinclude>\nПроза.",
+        )
+        for source in plain:
+            with self.subTest(plain=source):
+                status, body = preflight.candidate_page_body(source)
+                self.assertEqual(status, "CANDIDATE_ONLY")
+                self.assertEqual(body, source.replace("<noinclude>header</noinclude>", "").strip())
+        rows = fixture()
+        payload = {r["title"]: "простая проза" for r in rows}
+        payload["Page/6"] = f"{SENTINEL}\n Вторая строка."
+        report = preflight.build_preflight(loader=lambda: rows, fetcher=lambda ids: payload)
+        self.assertEqual(report["candidate_page_count"], 184)
+        self.assertEqual(report["candidate_chapter_count"], 10)
+        self.assertEqual(report["pages"][1]["status"], "UNSUPPORTED_PAGE_MARKUP")
+        self.assertIsNone(report["pages"][1]["candidate_characters_including_spaces"])
+        self.assertIsNone(report["pages"][1]["candidate_sha256"])
+        self.assertEqual(report["chapters"][0]["status"], "INCOMPLETE")
+        self.assertIsNone(report["chapters"][0]["candidate_characters_including_spaces"])
+        self.assertIsNone(report["chapters"][0]["candidate_sha256"])
+        self.assertIsNotNone(report["chapters"][1]["candidate_sha256"])
+        self.assertNotIn(SENTINEL, str(report))
+
     def test_full_synthetic_185_page_replay_has_no_prose_in_receipt(self):
         rows = fixture()
         payload = {r["title"]: f"Page {r['page_number']} {SENTINEL}" for r in rows}

@@ -46,6 +46,8 @@
   const catalogCards = [...document.querySelectorAll("#books .book[data-catalog-key]")];
   const catalogFilter = el("catalog-filter");
   const catalogSearch = el("catalog-search");
+  const catalogOrder = el("catalog-order");
+  const catalogGrid = document.querySelector("#books .book-grid");
   const catalogReset = el("catalog-reset");
   const one = el("choose-book");
   const search = el("search-metric");
@@ -404,6 +406,39 @@
     catalogFilter.value=state.mode;
     catalogSearch.value=state.query;
     updateCatalog();
+  }
+
+  // Reorder actual DOM nodes, not visual CSS order: keyboard navigation
+  // and screen-reader traversal must match the visible catalogue sequence.
+  // The default, no-JS catalogue stays in source order.
+  function sortCatalog() {
+    const selected=["catalog","title","dialogue"].includes(catalogOrder.value)
+      ? catalogOrder.value : "catalog";
+    if (catalogOrder.value!==selected) catalogOrder.value=selected;
+    const collator=new Intl.Collator("ru",{sensitivity:"base",numeric:true});
+    const entries=catalogCards.map((card,ordinal)=>{
+      const book=getBook(card.dataset.catalogKey);
+      if (!book) throw Error("Нет проверенного источника для сортировки");
+      const field=lookup(book,"fantlab.dialogue.share_percent");
+      return {card,ordinal,title:book.display_title,
+        dialogue:book.text_status==="measured"&&field&&isNumeric(field.actual)
+          ?field.actual:null};
+    });
+    if (selected==="title") entries.sort((a,b)=>
+      collator.compare(a.title,b.title)||a.ordinal-b.ordinal);
+    if (selected==="dialogue") entries.sort((a,b)=>{
+      if (a.dialogue===null) return b.dialogue===null?a.ordinal-b.ordinal:1;
+      if (b.dialogue===null) return -1;
+      return b.dialogue-a.dialogue||a.ordinal-b.ordinal;
+    });
+    for (const item of entries) catalogGrid.appendChild(item.card);
+    const descriptions={
+      catalog:"Исходный порядок каталога.",
+      title:"Книги упорядочены по русским названиям.",
+      dialogue:"По доле диалогов в измеренных текстах, от большей к меньшей; без измерений — в конце. Ноль не означает отсутствие данных."
+    };
+    el("catalog-sort-status").textContent=descriptions[selected]+
+      " Порядок клавиатуры совпадает с экранным; ссылки на поиск используют исходный порядок.";
   }
 
   function updateSingle() {
@@ -1239,7 +1274,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogSearch,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,...chartButtons];
+      const inputs=[catalogFilter,catalogSearch,catalogOrder,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -1258,8 +1293,10 @@
       }
       catalogFilter.addEventListener("change",updateCatalog);
       catalogSearch.addEventListener("input",updateCatalog);
+      catalogOrder.addEventListener("change",sortCatalog);
       catalogReset.addEventListener("click",resetCatalog);
       restoreCatalogFromUrl();
+      sortCatalog();
       el("catalog-tools").hidden=false;
       one.addEventListener("change",()=>selectBook(one.value,true));
       window.addEventListener("popstate",()=>{

@@ -13,6 +13,8 @@
 | **8 interactive charts** | Exact-value accessible tables, labels, units, chart links, CSV exports |
 | **Book and pair comparisons** | Author/translator attribution, edition hashes, signed **descriptive** chart/table deltas (right minus left; percentage points for percents; nonzero differences below 0.001 visibly bounded instead of rounded to zero), an exact nine-metric no-JavaScript pair-table fallback plus three measured punctuation mini-charts, all 28 Anna Karenina metrics without JavaScript (23 measured, 5 unavailable), accessible tables and exact-value exports |
 
+The catalogue can now order all 13 edition cards by Russian title or by **measured dialogue share** (descending, with unmeasured entries last). It reorders real page elements so keyboard navigation follows the visual order; without JavaScript the original source-backed catalogue remains readable. Sorting is a local view option: shared catalogue search links open in the original order.
+
 The results include Russian originals and **separately identified translations**, including Alexandra Beketova's *Children of Captain Grant* and Maria Shishmareva's *Robinson Crusoe*. The latter is pinned to Wikisource oldid `5634933`: **572,587 characters including spaces; 24 numeric measurements and 5 NOT_RUN**. See the [source-free measured record](corpus/candidates/diagnostics/defoe-robinson-crusoe-shishmareva-1935-ru.measured.json). An English/French original has **not** been analyzed as a counterpart; cross-language or two-translation conclusions are **not** available yet.
 
 ### Analyze your own writing in two commands

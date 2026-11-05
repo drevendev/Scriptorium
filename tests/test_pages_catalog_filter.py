@@ -21,6 +21,8 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn('id="catalog-reset" type="button" disabled',html)
         self.assertIn("Показано 13 из 13 книг.",html)
         self.assertIn('id="catalog-filter" disabled',html)
+        self.assertIn('id="catalog-order" disabled',html)
+        self.assertIn('id="catalog-sort-status" role="status" aria-live="polite"',html)
         self.assertIn('id="catalog-search" type="search" autocomplete="off"',html)
         self.assertIn('placeholder="Например, Бекетова" disabled',html)
         self.assertIn('maxlength="120"',html)
@@ -32,6 +34,7 @@ class CatalogueFilterTests(unittest.TestCase):
         js=(ROOT/"assets/pages-reader.js").read_text(encoding="utf-8")
         self.assertIn("doc.books.some(book=>{",js)
         self.assertIn('catalogSearch.addEventListener("input",updateCatalog)',js)
+        self.assertIn('catalogOrder.addEventListener("change",sortCatalog)',js)
         self.assertIn('catalogReset.addEventListener("click",resetCatalog)',js)
         self.assertIn('el("catalog-empty").hidden=shown!==0;',js)
         self.assertIn('url.searchParams.delete("catalog")',js)
@@ -39,7 +42,7 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn(".catalog-empty[hidden] { display:none !important; }",css)
         self.assertIn('book.translator?.name||""',js)
         self.assertIn(".catalog-tools select,.catalog-tools input",css)
-        self.assertIn('restoreCatalogFromUrl();\n      el("catalog-tools").hidden=false;',js)
+        self.assertIn('restoreCatalogFromUrl();\n      sortCatalog();\n      el("catalog-tools").hidden=false;',js)
         self.assertIn('window.addEventListener("popstate",()=>{\n        restoreCatalogFromUrl();',js)
         self.assertIn('share.href="?catalog="',js)
         self.assertIn('safeCatalogQuery(raw)',js)
@@ -48,7 +51,8 @@ class CatalogueFilterTests(unittest.TestCase):
     @unittest.skipUnless(shutil.which("node"),"Node unavailable; structural checks still run")
     def test_real_js_behavior(self):
         for command in (["node","--check",str(ROOT/"assets/pages-reader.js")],
-                        ["node",str(ROOT/"tests/pages_catalog_filter_smoke.cjs")]):
+                        ["node",str(ROOT/"tests/pages_catalog_filter_smoke.cjs")],
+                        ["node",str(ROOT/"tests/pages_catalog_sort_smoke.cjs")]):
             result=subprocess.run(command,cwd=ROOT,text=True,capture_output=True,check=False)
             self.assertEqual(result.returncode,0,result.stdout+"\n"+result.stderr)
 

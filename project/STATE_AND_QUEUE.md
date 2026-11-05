@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 427
+STATE_REVISION: 428
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-05
-LAST_RESULT: PR #430 merged at 6b4976430c98445889a3787895eaeddff4dc00a2; prepare a metadata-only 185-Page current-revision capture with exact oldid replay and privacy regressions.
-LAST_VERIFIED_PROGRESS: Master 6b4976430c98445889a3787895eaeddff4dc00a2 includes merged #430. Historical 20-parent replay established all 11 Paris ProofreadPage ranges (185 contiguous dependencies, pages 5–189); these are not Page content/revisions. Moscow remains 5 tentative / 4 unsupported; no complete mixed body. Reader: 11 measured Russian editions, 13 cards, 298 fields. Live browser/mobile NOT_VERIFIED; M2 0/5.
+LAST_RESULT: PR #431 merged at 2240b3aea8d1cc34d8d715c83a562dea86dd7c88; the 185/185 exact-current-Page capture from Actions #41959859796 was independently downloaded, hash-checked and prepared as a durable reviewed CSV plus offline/online replay verifier.
+LAST_VERIFIED_PROGRESS: Master 2240b3aea8d1cc34d8d715c83a562dea86dd7c88 includes merged #431. Hosted capture replayed all 185 current Paris Page oldids; metadata receipt SHA-256 baf64a30cad23740dd0a6a1d51599f6bb7343f99922cf87efcd658f08042dc0f. This PR proposes 185 retained metadata rows, not a historical transclusion or literary body. Reader 11 measured Russian editions / 13 cards; live visual NOT_VERIFIED; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-WHITE-GUARD-PARIS-PAGE-IDENTITY-CAPTURE
-ISSUES: follow-up to merged #430; metadata-only Page: identity binding for 185 Paris dependencies
-STATUS: PR_CANDIDATE; LOCAL_SYNTHETIC_TESTS_6_PASS; HOSTED_CURRENT_PAGE_CAPTURE_NOT_RUN; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-white-guard-paris-page-identity-capture-20261105
-BASE: 6b4976430c98445889a3787895eaeddff4dc00a2
+UNIT_ID: SCRIP-CORPUS-WHITE-GUARD-PARIS-PAGE-MANIFEST-ADOPTION
+ISSUES: follow-up to merged #431; independently retain reviewed 185 Page revision IDs/SHA-1 and test offline + provider replay
+STATUS: PR_CANDIDATE; LOCAL_STUBBED_IMPORT_TESTS_5_PASS; HOSTED_FULL_TESTS_NOT_RUN; FRESH_PROVIDER_REPLAY_NOT_RUN; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-white-guard-paris-page-manifest-adoption-20261105
+BASE: 2240b3aea8d1cc34d8d715c83a562dea86dd7c88
 
-ACCEPTANCE: Replay all 20 pinned parents and exact 11 Paris ranges. Capture current metadata only for 185 Page: titles in bounded batches, replay every captured oldid/sha1, and reject any provider drift without prose or partial receipts. A successful candidate receipt is not an adopted immutable Page manifest, historical rendering or full literary body. See [Page metadata capture contract](../docs/WHITE_GUARD_PARIS_PAGE_IDENTITIES.md).
+ACCEPTANCE: Independently inspect 185 metadata-only rows from successful workflow #41959859796 against checked-in CSV SHA-256 f2f2ea90a65ffb99b5cd12e64f20c15f16f6a2d7ca600cd7084488f311f81c02. Offline strict shape/topology/hash validation, exact-oldid metadata replay command, privacy/negative regressions and exact-head CI; do not claim an atomic historical transclusion. See [retained Page manifest](../docs/WHITE_GUARD_PARIS_FROZEN_PAGES.md).
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: first honest comparison of two independently measured Russian transla
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Capture and replay Paris 1927 current Page: identities (this PR) | 185 exact-page current oldids/SHA-1 captured and replayed, source-free seven-day receipt, privacy regressions | Hosted runner/API; this is not the historical render or immutable admitted manifest |
-| P2 | Adopt reviewed Page: identity manifest and test renderer separately | Review successful capture, commit frozen 185-oldid set, independently replay then develop versioned body renderer | Do not imply parent historical transclusion; preserve 1927/1989 split and body/parity unknowns |
+| P1 | Adopt reviewed Paris Page revision inventory (this PR) | 185 exact-current Page oldids/SHA-1 retained, hash-guarded, source-free offline and fresh-replay checks | Independent exact-head CI and later merge; neither historical transclusion nor book body is established |
+| P2 | Implement bounded, versioned ProofreadPage body renderer | Replay retained 185 oldids; conservative page header/footer handling, real safe extraction experiment with no prose in artifacts | Requires accepted Page manifest and explicit rights/edition semantics; retain 1927/1989 split |
 | P3 | Second independently measured Russian Robinson Crusoe translation | Freeze distinct literary body, run 29 metrics, truthful same-work comparison | Trusov historical renderer unresolved; select independent work if unchanged blocked |
 | P4 | #282/#281 AOT/FantLab compatibility or source-bound metric readiness | Native N disambiguation or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |
 | P5 | #283/#285 Reader live Pages, desktop/mobile verification | HTTP, keyboard/focus and mobile screenshots | Browser navigation previously restricted; preserve last publication |

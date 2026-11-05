@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 429
+STATE_REVISION: 430
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-05
-LAST_RESULT: #432 is confirmed MERGED at adb47e0f0a4d414e38a821a659aa3da484291876. Bounded read-only preflight for all 185 retained Paris Page oldids in a new PR; synthetic 5/5 PASS with mocked repository imports; hosted replay and full CI NOT_RUN at authorship.
-LAST_VERIFIED_PROGRESS: Master holds 185 reviewed Page identities in SHA-pinned CSV. New Page-body preflight never commits prose, distinguishes accepted candidate pages and unsupported markup, and suppresses incomplete chapter digests. Neither historical render nor 300k admission/FantLab parity is established; M2 0/5.
+LAST_RESULT: #433 is MERGED at 9c647ada25ad1390774deb3ba722633a0a4e38c1. Reader catalogue sorting by Russian title or source-backed dialogue share is authored in a focused branch; same-run merge forbidden, exact-head hosted CI and desktop/mobile browser verification NOT_RUN.
+LAST_VERIFIED_PROGRESS: The branch-root Reader has 11 independently measured Russian-language editions and two correctly marked research leads. The catalogue feature operates only on validated source-free derived results, preserves no-JavaScript ordering and keeps unavailable values after measured values. FantLab input identity remains UNKNOWN; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-WHITE-GUARD-PARIS-PAGE-BODY-PREFLIGHT
-ISSUES: follow-up to merged #432; source-free extraction experiment for retained 185 exact Page oldids
-STATUS: PR_CANDIDATE; LOCAL_ISOLATED_SYNTHETIC_TESTS_5_PASS; FULL_LOCAL_TESTS_NOT_RUN; REAL_PROVIDER_REPLAY_NOT_RUN; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-white-guard-paris-body-preflight-20261105
-BASE: adb47e0f0a4d414e38a821a659aa3da484291876
+UNIT_ID: SCRIP-SITE-CATALOG-MEASURED-SORT
+ISSUES: #283 — literary Reader discoverability/accessibility
+STATUS: PR_CANDIDATE; V8_SORT_LOGIC_CHECK_PASS; HOSTED_CI_NOT_RUN; VISUAL_NOT_VERIFIED; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-site-reader-catalog-metric-sort-20261105
+BASE: 9c647ada25ad1390774deb3ba722633a0a4e38c1
 
-ACCEPTANCE: Run exact-head read-only hosted workflow against 185 pinned Page identities with no raw wikitext in logs/artifacts. Inspect statuses and validate conservative per-page and all-or-nothing per-chapter candidate SHA-256/length. Check exceptions, noinclude/template/HTML exclusion, privacy and deterministic replay. This cannot establish historic ProofreadPage transclusion or corpus admission. See [Page body preflight](../docs/WHITE_GUARD_PARIS_BODY_PREFLIGHT.md).
+ACCEPTANCE: Exact-head full Python/Node CI, real eleven-work sorting behavior by title and measured dialogue rate, missing-last and numeric-zero preservation, original no-JS static fallback, matched visual and keyboard DOM order, robust failure without fabricated measurements. No new source text or scientific metric values. Later independent review/merge, and separate branch Pages LIVE_VERIFIED/desktop-mobile checks.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: first honest comparison of two independently measured Russian translations of the same work; advance White Guard body readiness without treating an unmatched edition as FantLab parity.
+Milestone: first honest comparison of two independently measured Russian translations of the same work, while making available edition measurements discoverable and useful on the public Reader.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/revise Paris Page-body preflight PR | Exact head, full CI, 185 real oldids, only safe schema and meaningful candidate coverage; eligible later merge | New hosted replay may reveal unhandled Page markup |
-| P2 | Refine versioned ProofreadPage renderer using actual preflight gaps | Evidence-backed boundary/page-join handling and a reproducible candidate 1927 literary body | Requires real Page observations and historical transclusion distinction |
-| P3 | Second independently measured Russian Robinson Crusoe translation | Frozen distinct body, 29 measured fields, honest same-work comparison | Trusov historical renderer unresolved; independent user-facing slice preferred if unchanged blocked |
-| P4 | #282/#281 AOT/FantLab metric readiness | Runtime N disambiguation or exact-source field evidence without parity overclaim | Native runtime/reference identity unresolved |
-| P5 | #283/#285 Reader live Pages and desktop/mobile verification | HTTP, keyboard/focus and mobile screenshot readback | Browser navigation restrictions; preserve last valid publication |
+| P1 | Accept/revise measured catalogue sort in existing branch/PR | Real 13-card source-backed title/dialogue ordering, CI, keyboard/order verification | Later fresh acceptance; optional visual verification |
+| P2 | Independently measure the Trusov *Robinson Crusoe* first-book body | Frozen exact body, ≥300k/edition rights verification, 29 fields and honest Shishmareva pair | Historical ProofreadPage/rendering and coverage |
+| P3 | #282/#281 AOT/FantLab metric readiness | Measured runtime N disambiguation or explicit field-level evidence; no parity overclaim | Exact provider/reference input identity |
+| P4 | #283/#285 Reader live Pages and desktop/mobile verification | Root branch Reader HTTP, keyboard/focus and mobile screenshot readback | Browser navigation restrictions; preserve last valid publication |
+| P5 | Paris ProofreadPage renderer after merged #433 | Source-free real markup classification, reproducible candidate chapter boundaries | 183 unsupported Page markup; historic transclusion separate |
 
 ## Retained evidence and scientific gates
 

@@ -1,0 +1,81 @@
+name: White Guard Paris Page identity capture
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/white-guard-paris-page-identities.yml'
+      - 'scriptorium/white_guard_page_identities.py'
+      - 'scriptorium/white_guard_body_preflight.py'
+      - 'scriptorium/wikisource_replay.py'
+      - 'scriptorium/white_guard_revisions.py'
+      - 'scriptorium/mediawiki_api.py'
+      - 'tests/test_white_guard_page_identities.py'
+      - 'corpus/candidates/source-edition-traces/bulgakov-white-guard-ru.source-revisions.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  page-identity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Validate Page inventory positive and negative tests
+        run: python -m unittest discover -s tests -p 'test_white_guard_page_identities.py' -v
+      - name: Capture historical-parent-bound current Page revisions
+        run: |
+          set -euo pipefail
+          mkdir -p build/white-guard
+          python -m scriptorium.white_guard_page_identities > build/white-guard/paris-page-identities.json
+      - name: Validate metadata-only receipt
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path('build/white-guard/paris-page-identities.json')
+          receipt = json.loads(p.read_text(encoding='utf-8'))
+          assert set(receipt) == {
+              'schema_version', 'candidate_id', 'parent_manifest_sha256', 'source_family_id',
+              'capture_semantics', 'pinned_parent_replay', 'captured_page_replay',
+              'page_count', 'chapter_count', 'pages', 'source_text_committed',
+              'single_edition_body_frozen', 'fantlab_input_identity', 'm2_parity_admissible',
+          }
+          assert receipt['schema_version'] == 'scriptorium-white-guard-paris-page-identities-v1'
+          assert receipt['source_family_id'] == 'paris-concorde-1927'
+          assert receipt['capture_semantics'] == 'CURRENT_PAGE_REVISIONS_NOT_ATOMIC_HISTORICAL_TRANSCLUSION'
+          assert receipt['pinned_parent_replay'] == 'VERIFIED_IDENTITIES'
+          assert receipt['captured_page_replay'] == 'VERIFIED_IDENTITIES'
+          assert receipt['page_count'] == len(receipt['pages']) == 185
+          assert receipt['chapter_count'] == 11
+          assert [r['page_number'] for r in receipt['pages']] == list(range(5, 190))
+          assert all(set(r) == {
+              'chapter', 'page_number', 'title', 'page_id', 'revision_id',
+              'revision_timestamp', 'mediawiki_sha1'
+          } for r in receipt['pages'])
+          assert len({r['page_id'] for r in receipt['pages']}) == 185
+          assert len({r['revision_id'] for r in receipt['pages']}) == 185
+          assert receipt['source_text_committed'] is False
+          assert receipt['single_edition_body_frozen'] is False
+          assert receipt['fantlab_input_identity'] == 'unknown'
+          assert receipt['m2_parity_admissible'] is False
+          print('Captured and exact-oldid-replayed Page: metadata rows:', len(receipt['pages']))
+          print('Edition/body/FantLab parity: NOT ESTABLISHED')
+          PY
+      - name: Retain validated derived-only identity inventory
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: white-guard-paris-page-identities
+          path: build/white-guard/paris-page-identities.json
+          if-no-files-found: error
+          retention-days: 7

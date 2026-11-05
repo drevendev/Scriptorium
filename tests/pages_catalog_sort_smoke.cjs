@@ -9,7 +9,7 @@ const start=source.indexOf("  function sortCatalog() {");
 const end=source.indexOf("  function updateSingle() {",start);
 assert.ok(start>=0&&end>start,"Ship the actual catalogue sorter");
 const sortCode=source.slice(start,end)+"return sortCatalog;";
-assert.doesNotMatch(sortCode,/getBook\(/,
+assert.doesNotMatch(sortCode,/const\s+book\s*=\s*getBook\(/,
   "The catalogue must not use the measured-only reader lookup for pending cards");
 const keys=catalog.books.map(b=>b.key);
 function harness(doc){

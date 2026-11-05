@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 431
+STATE_REVISION: 432
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-05
-LAST_RESULT: #434 is MERGED at 305200a5217c5df48b25fa50ee13991dd124b644. New focused Reader branch adds allow-listed shared catalogue sorting while preserving source-backed results, original no-JavaScript fallback and unchanged scientific gates; later independent CI/review required.
+LAST_RESULT: #435 is MERGED at 4c0304c300cc0291fcd8ffe07bca4de09bbc85ad. Focused Trusov projection fix now preserves per-Page original LF, CRLF, lone CR or absent final line terminator rather than manufacturing LF at a standalone template. Later exact-head CI/review required; historical rendering and literary-body coverage remain UNKNOWN.
 LAST_VERIFIED_PROGRESS: The branch-root Reader has 11 independently measured Russian-language editions and two correctly marked research leads. The catalogue feature operates only on validated source-free derived results, preserves no-JavaScript ordering and keeps unavailable values after measured values. FantLab input identity remains UNKNOWN; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-CATALOG-SHARED-SORT-PERMALINK
-ISSUES: #283 — literary Reader discoverability/accessibility
-STATUS: PR_CANDIDATE; V8_CATALOG_URL_SMOKE_PASS; HOSTED_CI_NOT_RUN; VISUAL_NOT_VERIFIED; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-site-catalog-sorted-share-20261105
-BASE: 305200a5217c5df48b25fa50ee13991dd124b644
+UNIT_ID: SCRIP-CORPUS-TRUSOV-PROJECTION-EOL
+ISSUES: #436 — exact Page projection line-ending integrity
+STATUS: PR_CANDIDATE; HOSTED_CI_NOT_RUN; HISTORICAL_SOURCE_REPLAY_NOT_RUN; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-trusov-projection-line-endings-20261105
+BASE: 4c0304c300cc0291fcd8ffe07bca4de09bbc85ad
 
-ACCEPTANCE: Exact-head Python/Node CI; share or reload verified catalogue title/dialogue order with filter/search via allow-listed catalog_order; reject invalid URL order; preserve numeric-zero/missing-last, original no-JS static fallback and keyboard DOM order. No new source text or scientific measurements. Later independent review/merge and separate Pages LIVE_VERIFIED/desktop-mobile checks.
+ACCEPTANCE: For standalone Trusov Page `heading`/`nop`, preserve LF, CRLF, lone CR, and absent terminal line endings; unsupported inline templates/prose stay unchanged. A resulting empty projected Page fails closed at the join; no invented boundary LF, no source prose persisted, no historical-render/body/parity claim. Run exact-head hosted regression suite and accept/merge in a later independent wake.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: first honest comparison of two independently measured Russian transla
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept/revise sorted catalogue share links | Real filter/search/sort URL reload, invalid-order fallback, 13-card keyboard DOM order, exact-head CI | Later fresh acceptance; Pages visuals unverified |
-| P2 | Independently measure the Trusov *Robinson Crusoe* first-book body | Frozen exact body, ≥300k/edition rights verification, 29 fields and honest Shishmareva pair | Historical ProofreadPage/rendering and coverage |
+| P1 | Independently accept Trusov Page projection EOL fix (#436) | Exact-head regressions for LF/CRLF/CR/EOF and no markup/source leakage; later independent acceptance | CI and historical real-source replay pending |
+| P2 | Independently measure the Trusov *Robinson Crusoe* first-book body | Frozen exact body, ≥300k/edition rights verification, 29 fields and honest Shishmareva pair | Historical ProofreadPage/rendering and coverage; four unresolved VAR calls |
 | P3 | #282/#281 AOT/FantLab metric readiness | Measured runtime N disambiguation or explicit field-level evidence; no parity overclaim | Exact provider/reference input identity |
 | P4 | #283/#285 Reader live Pages and desktop/mobile verification | Root branch Reader HTTP, keyboard/focus and mobile screenshot readback | Browser navigation restrictions; preserve last valid publication |
 | P5 | Paris ProofreadPage renderer after merged #433 | Source-free real markup classification, reproducible candidate chapter boundaries | 183 unsupported Page markup; historic transclusion separate |

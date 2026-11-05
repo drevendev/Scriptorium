@@ -21,10 +21,10 @@ SCHEMA_VERSION = "scriptorium-white-guard-paris-body-preflight-v1"
 EXTRACTION_PROFILE = "scriptorium-proofreadpage-conservative-page-v1-candidate"
 MAX_PAGE_CHARACTERS = 200_000
 # Only literal, balanced noinclude regions at the outside of a Page are removed.
-# Wiki styling and line-start list/indent/rule syntax must never become prose metrics.
+# Wiki styling, external links and line-start structures must not become prose metrics.
 _NOINCLUDE = re.compile(r"<noinclude>.*?</noinclude\s*>", re.I | re.S)
 _UNSAFE = re.compile(
-    r"<|>|\{\{|\}\}|\[\[|\]\]|\[https?://|'{2,}|^\s*(?:={1,6}\s|[|!]{1,2})"
+    r"<|>|\{\{|\}\}|\[\[|\]\]|\[(?:[a-z][a-z0-9+.-]*:|//)|'{2,}|^\s*(?:={1,6}\s|[|!]{1,2})"
     r"|^[ \t]*(?:[*#:;]|-{4,})", re.I | re.M
 )
 

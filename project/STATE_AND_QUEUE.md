@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 430
+STATE_REVISION: 431
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-05
-LAST_RESULT: #433 is MERGED at 9c647ada25ad1390774deb3ba722633a0a4e38c1. Reader catalogue sorting by Russian title or source-backed dialogue share is authored in a focused branch; same-run merge forbidden, exact-head hosted CI and desktop/mobile browser verification NOT_RUN.
+LAST_RESULT: #434 is MERGED at 305200a5217c5df48b25fa50ee13991dd124b644. New focused Reader branch adds allow-listed shared catalogue sorting while preserving source-backed results, original no-JavaScript fallback and unchanged scientific gates; later independent CI/review required.
 LAST_VERIFIED_PROGRESS: The branch-root Reader has 11 independently measured Russian-language editions and two correctly marked research leads. The catalogue feature operates only on validated source-free derived results, preserves no-JavaScript ordering and keeps unavailable values after measured values. FantLab input identity remains UNKNOWN; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-CATALOG-MEASURED-SORT
+UNIT_ID: SCRIP-SITE-CATALOG-SHARED-SORT-PERMALINK
 ISSUES: #283 — literary Reader discoverability/accessibility
-STATUS: PR_CANDIDATE; V8_SORT_LOGIC_CHECK_PASS; HOSTED_CI_NOT_RUN; VISUAL_NOT_VERIFIED; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-site-reader-catalog-metric-sort-20261105
-BASE: 9c647ada25ad1390774deb3ba722633a0a4e38c1
+STATUS: PR_CANDIDATE; V8_CATALOG_URL_SMOKE_PASS; HOSTED_CI_NOT_RUN; VISUAL_NOT_VERIFIED; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-site-catalog-sorted-share-20261105
+BASE: 305200a5217c5df48b25fa50ee13991dd124b644
 
-ACCEPTANCE: Exact-head full Python/Node CI, real eleven-work sorting behavior by title and measured dialogue rate, missing-last and numeric-zero preservation, original no-JS static fallback, matched visual and keyboard DOM order, robust failure without fabricated measurements. No new source text or scientific metric values. Later independent review/merge, and separate branch Pages LIVE_VERIFIED/desktop-mobile checks.
+ACCEPTANCE: Exact-head Python/Node CI; share or reload verified catalogue title/dialogue order with filter/search via allow-listed catalog_order; reject invalid URL order; preserve numeric-zero/missing-last, original no-JS static fallback and keyboard DOM order. No new source text or scientific measurements. Later independent review/merge and separate Pages LIVE_VERIFIED/desktop-mobile checks.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: first honest comparison of two independently measured Russian transla
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept/revise measured catalogue sort in existing branch/PR | Real 13-card source-backed title/dialogue ordering, CI, keyboard/order verification | Later fresh acceptance; optional visual verification |
+| P1 | Independently accept/revise sorted catalogue share links | Real filter/search/sort URL reload, invalid-order fallback, 13-card keyboard DOM order, exact-head CI | Later fresh acceptance; Pages visuals unverified |
 | P2 | Independently measure the Trusov *Robinson Crusoe* first-book body | Frozen exact body, ≥300k/edition rights verification, 29 fields and honest Shishmareva pair | Historical ProofreadPage/rendering and coverage |
 | P3 | #282/#281 AOT/FantLab metric readiness | Measured runtime N disambiguation or explicit field-level evidence; no parity overclaim | Exact provider/reference input identity |
 | P4 | #283/#285 Reader live Pages and desktop/mobile verification | Root branch Reader HTTP, keyboard/focus and mobile screenshot readback | Browser navigation restrictions; preserve last valid publication |

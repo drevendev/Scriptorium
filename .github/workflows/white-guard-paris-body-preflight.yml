@@ -1,0 +1,115 @@
+name: White Guard Paris pinned Page-body preflight
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/white-guard-paris-body-preflight.yml'
+      - 'scriptorium/white_guard_paris_body_preflight.py'
+      - 'scriptorium/white_guard_paris_manifest.py'
+      - 'scriptorium/wikisource_replay.py'
+      - 'scriptorium/mediawiki_api.py'
+      - 'tests/test_white_guard_paris_body_preflight.py'
+      - 'corpus/candidates/white_guard_paris_1927_pages.csv'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-page-bodies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Verify parser, negative paths and privacy
+        run: python -m unittest discover -s tests -p 'test_white_guard_paris_body_preflight.py' -v
+      - name: Replay pinned oldids and generate source-free candidate receipt
+        run: |
+          set -euo pipefail
+          mkdir -p build/white-guard
+          python -m scriptorium.white_guard_paris_body_preflight > build/white-guard/paris-page-body-preflight.json
+      - name: Validate fixed-schema safe receipt and report coverage
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from collections import Counter
+          from pathlib import Path
+          from scriptorium.white_guard_paris_manifest import CSV_SHA256
+
+          result = json.loads(Path('build/white-guard/paris-page-body-preflight.json').read_text(encoding='utf-8'))
+          assert set(result) == {
+              'schema_version', 'extraction_profile', 'source_family_id',
+              'page_manifest_sha256', 'provider_replay', 'page_count',
+              'candidate_page_count', 'chapter_count', 'candidate_chapter_count',
+              'pages', 'chapters', 'historical_transclusion_proven',
+              'single_edition_body_frozen', 'fantlab_input_identity',
+              'm2_parity_admissible', 'source_text_committed'}
+          assert result['schema_version'] == 'scriptorium-white-guard-paris-body-preflight-v1'
+          assert result['source_family_id'] == 'paris-concorde-1927'
+          assert result['page_manifest_sha256'] == CSV_SHA256
+          assert result['provider_replay'] == 'VERIFIED_IDENTITIES'
+          assert result['page_count'] == len(result['pages']) == 185
+          assert result['chapter_count'] == len(result['chapters']) == 11
+          assert [p['page_number'] for p in result['pages']] == list(range(5,190))
+          assert [c['chapter'] for c in result['chapters']] == list(range(1,12))
+          assert len({p['revision_id'] for p in result['pages']}) == 185
+          assert all(type(p['revision_id']) is int and p['revision_id'] > 0 for p in result['pages'])
+          assert all(set(p) == {
+              'page_number', 'chapter', 'revision_id', 'status',
+              'candidate_characters_including_spaces', 'candidate_sha256'
+          } for p in result['pages'])
+          assert all(set(c) == {
+              'chapter', 'first_page', 'last_page', 'candidate_page_count',
+              'status', 'candidate_characters_including_spaces', 'candidate_sha256'
+          } for c in result['chapters'])
+          safe = {'CANDIDATE_ONLY', 'UNSUPPORTED_PAGE_MARKUP', 'EMPTY_PAGE',
+                  'OVERSIZED_PAGE', 'UNCLASSIFIED_ERROR'}
+          assert all(p['status'] in safe for p in result['pages'])
+          hexdigest = re.compile(r'[a-f0-9]{64}\Z')
+          for p in result['pages']:
+              if p['status'] == 'CANDIDATE_ONLY':
+                  assert type(p['candidate_characters_including_spaces']) is int
+                  assert p['candidate_characters_including_spaces'] > 0
+                  assert isinstance(p['candidate_sha256'], str) and hexdigest.fullmatch(p['candidate_sha256'])
+              else:
+                  assert p['candidate_characters_including_spaces'] is None and p['candidate_sha256'] is None
+          assert result['candidate_page_count'] == sum(p['status'] == 'CANDIDATE_ONLY' for p in result['pages'])
+          assert result['candidate_chapter_count'] == sum(c['status'] == 'CANDIDATE_ONLY' for c in result['chapters'])
+          for chapter in result['chapters']:
+              relevant = [p for p in result['pages'] if p['chapter'] == chapter['chapter']]
+              assert len(relevant) == chapter['last_page'] - chapter['first_page'] + 1
+              assert chapter['candidate_page_count'] == sum(p['status'] == 'CANDIDATE_ONLY' for p in relevant)
+              complete = chapter['candidate_page_count'] == len(relevant)
+              assert chapter['status'] == ('CANDIDATE_ONLY' if complete else 'INCOMPLETE')
+              if complete:
+                  assert type(chapter['candidate_characters_including_spaces']) is int
+                  assert isinstance(chapter['candidate_sha256'], str) and hexdigest.fullmatch(chapter['candidate_sha256'])
+              else:
+                  assert chapter['candidate_characters_including_spaces'] is None
+                  assert chapter['candidate_sha256'] is None
+          assert result['historical_transclusion_proven'] is False
+          assert result['single_edition_body_frozen'] is False
+          assert result['fantlab_input_identity'] == 'unknown'
+          assert result['m2_parity_admissible'] is False
+          assert result['source_text_committed'] is False
+          print('Pinned Paris Page oldids replayed: 185; source prose retained: 0')
+          print('Page candidate coverage:', dict(sorted(Counter(p['status'] for p in result['pages']).items())))
+          print('Complete candidate chapters:', result['candidate_chapter_count'], '/ 11')
+          print('Scientific status: conservative preview only; M2 0/5')
+          PY
+      - name: Retain validated derived-only receipt for seven days
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: white-guard-paris-page-body-preflight
+          path: build/white-guard/paris-page-body-preflight.json
+          if-no-files-found: error
+          retention-days: 7

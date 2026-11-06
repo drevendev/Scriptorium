@@ -1,39 +1,40 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 443
+STATE_REVISION: 444
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #447 confirmed MERGED at 105db2361cf4e5ab3a27c6d319b462350957f8f0; propose complete normalized Markdown N bigram ceilings.
-LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; public conditional N tables #447 merged. M2 0/5. No new admitted works.
+LAST_RESULT: #448 confirmed MERGED at 6286df8f22765011f43e179e50926d9182df7475; proposed conditional source-unmatched word-density diagnostic.
+LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; retained FantLab Anna word/character counts already pinned. M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-NATIVE-N-MARKDOWN-LOOSE-CEILING-v1
-ISSUES: #282 pinned native noun/cardinal N ambiguity
-STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-native-n-markdown-ceilings-20261106
-BASE: 105db2361cf4e5ab3a27c6d319b462350957f8f0
+UNIT_ID: SCRIP-REPRO-WORD-DENSITY-v1
+ISSUES: #281 retained source-unmatched FantLab metric matrix
+STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-word-density-diagnostics-20261106
+BASE: 6286df8f22765011f43e179e50926d9182df7475
 
-ACCEPTANCE: CLI native N Markdown displays, for every retained
-POS-bigram, raw achievable max and looser independent-edge upper bound *and*
-their normalized values per 1,000 total word tokens; labels distinguish the
-two upper limits and explicitly do not claim observed noun/cardinal POS.
-Regression tests verify actual frozen Anna integers and reject edited loose
-ceilings; JSON/CSV and pinned native witness remain unchanged.
-Exact-head CI and separate later acceptance required.
+ACCEPTANCE: `scriptorium word-gap` uses only verified frozen matrix rows; exposes exact
+raw word/character gaps and six-decimal word densities per 1,000 characters,
+with a separately labelled *hypothetical proportional-length-adjusted* residual.
+All six retained entries appear, including supplemental Resurrection; missing fields
+remain NOT_RUN, scientific source identity UNKNOWN and M2 0/5. JSON/CSV/Markdown
+agree; positive frozen Anna values, negative forged count/identity and create-only
+CLI regressions pass. No previous matrix/metric schema or corpus body is changed.
+Fresh exact-head CI and later independent acceptance required.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: verifiable private analyzer pipelines and evidence-backed public
-Russian Reader, with an honestly gated same-novel translation comparison.
+Milestone: reproducible local analyzer plus evidence-backed public Russian Reader,
+with honest source-unmatched benchmark diagnostics and gated translation comparison.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge normalized Markdown N bigram ceilings (#282) | Raw and per-1,000 achievable versus loose bounds, immutable witness, passing exact-head CI | Fresh PR checks |
-| P2 | Reconstruct Trusov first-narrative literary body | Actual >=300k literary text, rights/source identity, 29 derived metrics and honest Shishmareva comparison | Historical VAR/renderer and Page-seam evidence |
-| P3 | #283/#285 Reader live/public acceptance | Public HTTP, desktop/mobile/focus and route/link checks | Browser HTTP restriction / authorized deployment |
-| P4 | #281/#282 AOT/FantLab diagnostic | Native POS uncertainty and source-matched expected/actual deltas; M2 unchanged | Reference analyzer-input identity |
-| P5 | #284 explicit source-code/data licence and attribution | Verified lawful publication and clearly stated code/data rights | Rights/owner evidence |
+| P1 | Later accept/merge conditional word-density diagnostic (#281) | Exact-head CI; read diff/test rows; source-unmatched guard, no parity inflation | Fresh checks |
+| P2 | Reconstruct Trusov first-narrative literary body | Legal >=300k literary text, 29 derived metrics, independently identifiable translator edition | Historical render/Page seams |
+| P3 | #283/#285 Reader live/public acceptance | Public HTTP, desktop/mobile/focus and route/link checks | Browser HTTP restriction / authorized publication |
+| P4 | #281/#282 measurable AOT/FantLab diagnostic | Verified actual-versus-reference evidence and pinned native N treatment | Source match, dictionary and homonym uncertainty |
+| P5 | #284 code/data rights and attribution | Evidence-backed license/attribution for external publication | Rights/owner evidence |
 
 ## Retained evidence and scientific gates
 

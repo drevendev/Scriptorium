@@ -60,7 +60,8 @@ def build_word_density_diagnostic(report: dict[str, object]) -> dict[str, object
                 raise ValueError("invalid retained source-unmatched count delta")
             counts[key] = (expected, actual)
         result = {key: None for key in _OUTPUT_KEYS}
-        result.update(candidate_id=entry["candidate_id"], status="DIAGNOSTIC_ONLY" if available else "NOT_RUN",
+        result.update(candidate_id=entry["candidate_id"], title=entry["title"],
+                      status="DIAGNOSTIC_ONLY" if available else "NOT_RUN",
                       source_identity="UNKNOWN")
         if available:
             expected_chars, actual_chars = counts["fantlab.general.characters"]

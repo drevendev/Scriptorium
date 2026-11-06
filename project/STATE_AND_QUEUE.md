@@ -1,40 +1,38 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 437
+STATE_REVISION: 438
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #441 confirmed MERGED in master at d86a20c8311740a46a6393c25d313e28ee5e10f0; Reader translation-witness readiness panel proposed for later acceptance.
-LAST_VERIFIED_PROGRESS: Reader retains 11 measured editions and 2 research leads. M2 0/5; Trusov historical render/page-join gates remain unresolved.
+LAST_RESULT: #442 confirmed MERGED at b6407de21d4593fc3594438eadabe328122fa02d; prepare machine-readable private report replay verification for later acceptance.
+LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; Shishmareva and Trusov readiness table merged. M2 0/5. No new admitted works.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-ROBINSON-PAIR-READINESS-v1
-ISSUES: #283 public Reader / translation provenance; related #281 reproducibility
+UNIT_ID: SCRIP-CLI-VERIFY-MACHINE-JSON-v1
+ISSUES: #281 reproducibility; builds on merged #440 and #441
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-reader-robinson-pair-readiness-20261106
-BASE: d86a20c8311740a46a6393c25d313e28ee5e10f0
+BRANCH: scrip-cli-verify-machine-json-20261106
+BASE: b6407de21d4593fc3594438eadabe328122fa02d
 
-ACCEPTANCE: Show the actual measured Shishmareva edition beside the
-unmeasured pinned Trusov historical Page witness in the branch-root Reader.
-Provide usable source links and honest edition/translator/coverage evidence.
-Verify 5634933 / 572587 / 24 + 5 against the measured artifact and 5041937 /
-150 Pages against the frozen source-free graph/receipt. No extra measured
-catalogue card, no fabricated comparison or FantLab parity; retain static
-accessibility, keyboard focus, mobile scroll and print. Add positive/tamper
-regressions and check the built site, then later independent acceptance.
+ACCEPTANCE: Offer a deterministic one-line JSON PASS receipt for a successfully
+replayed original UTF-8 / EPUB report, distinguishing EPUB archive proof checked
+with --provenance from archive NOT_CHECKED. No JSON PASS on failure, no source
+text/private paths/revision authentication, unchanged 29 numeric/NOT_RUN metric
+checks and human-readable default. Positive and adversarial subprocess checks
+and exact-head hosted CI before later independent acceptance/merge.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: reproducible private analysis and an evidence-backed Russian
-Reader; the first fully qualified paired translation comparison remains open.
+Milestone: verifiable private analyzer pipelines and evidence-backed public
+Russian Reader, with an honestly gated same-novel translation comparison.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept the source-backed Robinson translation readiness panel | Current-source identity checks, site build, exact-head CI and later merge | Fresh CI and review |
-| P2 | Verify full Trusov first-narrative literary body | Frozen actual ≥300k prose, rights, identity and 29 measured metrics; honest Shishmareva pairing | Historical VAR/rendering, Page seams, printed edition |
-| P3 | #281/#282 AOT/FantLab diagnostic maturity | Measured native N evidence, rigorous source-matched deltas; preserve M2 0/5 | Reference-input identity |
-| P4 | #283/#285 public Reader acceptance | Real live HTTP and mobile/desktop keyboard/focus verification | Browser restriction and deployment interlock |
-| P5 | Paris ProofreadPage historical renderer | Reproducible source-free markup classification and chapter boundaries | Unsupported source Page markup and transclusion |
+| P1 | Later accept/merge structured private verification result | Exact-head full CI, no false PASS, privacy checks and review | Fresh PR checks |
+| P2 | Reconstruct Trusov first-narrative literary body | Actual >=300k literary text, rights/source identity, 29 derived metrics and honest Shishmareva comparison | Historical VAR/renderer and Page-seam evidence |
+| P3 | #283/#285 Reader live/public acceptance | Public HTTP, desktop/mobile/focus and route/link checks | Browser HTTP restriction / authorized deployment |
+| P4 | #281/#282 AOT/FantLab diagnostic | Native POS uncertainty and source-matched expected/actual deltas; M2 unchanged | Reference analyzer-input identity |
+| P5 | #284 explicit source-code/data licence and attribution | Verified lawful publication and clearly stated code/data rights | Rights/owner evidence |
 
 ## Retained evidence and scientific gates
 

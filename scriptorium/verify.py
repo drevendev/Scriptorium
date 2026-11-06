@@ -136,6 +136,8 @@ def main(argv=None):
                         help="extract and verify the original unencrypted EPUB spine in memory")
     parser.add_argument("--provenance", type=Path,
                         help="with --epub, also match the original archive against its source-free sidecar")
+    parser.add_argument("--json", action="store_true",
+                        help="print one source-free, machine-readable PASS record after successful replay")
     parser.add_argument("--dictionary", type=Path, help="same dictionary used in original run")
     parser.add_argument("--dictionary-profile", help="same dictionary profile as original run")
     args = parser.parse_args(argv)
@@ -166,6 +168,20 @@ def main(argv=None):
         parser.error(str(exc))
     except (OSError, UnicodeError, TypeError, ValueError, OverflowError, RecursionError):
         parser.error("unable to verify private inputs")
+    if args.json:
+        print(json.dumps({
+            "schema_version": "scriptorium-local-verification-v1",
+            "status": "PASS",
+            "replay_scope": "current-analyzer-only",
+            "input_kind": "epub" if args.epub else "utf8-text",
+            "verified_metric_count": 29,
+            "archive_identity": ("VERIFIED" if args.provenance is not None else
+                                 "NOT_CHECKED" if args.epub else "NOT_APPLICABLE"),
+            "revision_authenticated": False,
+            "edition_identity": "NOT_ESTABLISHED",
+            "fantlab_parity": "NOT_ESTABLISHED",
+        }, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+        return 0
     print("PASS: source hashes, all 29 metrics and current algorithm profiles replay exactly.")
     if args.epub:
         if args.provenance is not None:

@@ -98,5 +98,75 @@ class PrivateVerificationTests(unittest.TestCase):
             self.assertNotIn(b"SECRET private manuscript", bad.stderr)
 
 
+    def test_machine_readable_success_and_fail_closed_private_text(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            manuscript = root / "very-private-prose.txt"
+            report = root / "private-metrics.json"
+            manuscript.write_bytes(self.source)
+            report.write_bytes(encoded(self.report))
+            command = [sys.executable, "-m", "scriptorium", "verify",
+                       str(manuscript), str(report), "--json"]
+            success = subprocess.run(command, capture_output=True, timeout=30)
+            self.assertEqual(success.returncode, 0, success.stderr.decode())
+            record = json.loads(success.stdout)
+            self.assertEqual(record, {
+                "schema_version": "scriptorium-local-verification-v1",
+                "status": "PASS", "replay_scope": "current-analyzer-only",
+                "input_kind": "utf8-text", "verified_metric_count": 29,
+                "archive_identity": "NOT_APPLICABLE",
+                "revision_authenticated": False,
+                "edition_identity": "NOT_ESTABLISHED",
+                "fantlab_parity": "NOT_ESTABLISHED",
+            })
+            self.assertEqual(success.stdout.count(bytes([10])), 1)
+            for private in (b"very-private", b"private-metrics",
+                            self.source, str(root).encode()):
+                self.assertNotIn(private, success.stdout)
+            report.write_bytes(encoded({**self.report, "private_prose": "NEVER ECHO"}))
+            bad = subprocess.run(command, capture_output=True, timeout=30)
+            self.assertEqual(bad.returncode, 2)
+            self.assertEqual(bad.stdout, b"")
+            self.assertNotIn(b"NEVER ECHO", bad.stderr)
+            self.assertNotIn(str(root).encode(), bad.stderr)
+
+    def test_machine_readable_epub_archive_is_checked_only_with_receipt(self):
+        from test_epub import book
+        from scriptorium.epub import extract_epub
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            archive = root / "private-novel.epub"
+            report = root / "private-analysis.json"
+            receipt = root / "private-provenance.json"
+            epub_bytes = book()
+            extracted, provenance = extract_epub(epub_bytes)
+            analysis = build_local_analysis(extracted)
+            archive.write_bytes(epub_bytes)
+            report.write_bytes(encoded(analysis))
+            receipt.write_bytes(encoded({
+                **provenance,
+                "normalized_sha256": analysis["source"]["normalized_sha256"],
+                "analysis_schema": "scriptorium-local-analysis-v1",
+            }))
+            base = [sys.executable, "-m", "scriptorium", "verify",
+                    "--epub", str(archive), str(report), "--json"]
+            text_only = subprocess.run(base, capture_output=True, timeout=30)
+            self.assertEqual(text_only.returncode, 0, text_only.stderr.decode())
+            self.assertEqual(json.loads(text_only.stdout)["archive_identity"], "NOT_CHECKED")
+            verified = subprocess.run([*base, "--provenance", str(receipt)],
+                                      capture_output=True, timeout=30)
+            self.assertEqual(verified.returncode, 0, verified.stderr.decode())
+            data = json.loads(verified.stdout)
+            self.assertEqual(data["archive_identity"], "VERIFIED")
+            self.assertEqual(data["input_kind"], "epub")
+            self.assertEqual(data["fantlab_parity"], "NOT_ESTABLISHED")
+            receipt.write_bytes(encoded({**provenance, "archive_sha256": "0" * 64}))
+            bad = subprocess.run([*base, "--provenance", str(receipt)],
+                                 capture_output=True, timeout=30)
+            self.assertEqual(bad.returncode, 2)
+            self.assertEqual(bad.stdout, b"")
+            self.assertNotIn(str(root).encode(), bad.stderr)
+
+
 if __name__ == "__main__":
     unittest.main()

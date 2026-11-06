@@ -79,7 +79,18 @@ cat manuscript.txt | scriptorium verify - analysis.json
 scriptorium verify --epub novel.epub novel-analysis.json
 # Also check archive identity when the original provenance sidecar was saved:
 scriptorium verify --epub novel.epub novel-analysis.json --provenance novel-identity.json
+# Deterministic machine-readable success only (nonzero exit and no JSON on failure):
+scriptorium verify manuscript.txt analysis.json --json > verification.json
 ```
+
+`--json` emits one `scriptorium-local-verification-v1` PASS record after a complete
+replay, with `archive_identity` marked `VERIFIED` only when the original EPUB
+sidecar was checked. Without `--provenance`, EPUB archive identity is `NOT_CHECKED`;
+for TXT it is `NOT_APPLICABLE`. No manuscript content, private paths or saved
+revision assertions enter this machine record. A failure exits nonzero with
+stderr and **never emits PASS JSON**; do not treat absent output as success.
+This record is local computation evidence, not a signed attestation or a
+FantLab/rights/edition claim.
 
 A successful verification recomputes all 29 metric rows, source hashes, profiles,
 units, missing values and report metadata with the **current** implementation.

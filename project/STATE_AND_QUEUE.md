@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 433
+STATE_REVISION: 434
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-05
-LAST_RESULT: PR #437 was squash-merged at ef614afd24fdf719f5a66b503ba3b6e391c30aa9 (native GitHub confirmation supersedes the earlier PR-candidate queue). Authored an independent measured-neighbor Reader extension on an isolated branch for later CI/review; it only ranks already verified source-free metrics and does not advance Trusov literary-body or FantLab parity gates.
-LAST_VERIFIED_PROGRESS: The branch-root Reader has 11 independently measured Russian-language editions and two correctly marked research leads. The catalogue feature operates only on validated source-free derived results, preserves no-JavaScript ordering and keeps unavailable values after measured values. FantLab input identity remains UNKNOWN; M2 0/5.
+LAST_COMMITTED_RUN_AT: 2026-11-06
+LAST_RESULT: #438 was independently accepted and merged at 62e5fd5c0113491fa6c928b280f8230e154811af; master CI succeeded. This separate unit adds opt-in, bounded private stdin input to the existing 29-metric analyzer for later PR acceptance.
+LAST_VERIFIED_PROGRESS: Reader retains 11 measured editions and 2 research leads. M2 0/5; Trusov historical render/page-join gates remain unresolved.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-METRIC-NEIGHBORS-v1
-ISSUES: #283 — reader-first functional comparison navigation and accessibility
-STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LIVE_VISUAL_NOT_VERIFIED; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-reader-nearest-measured-v1-20261105
-BASE: ef614afd24fdf719f5a66b503ba3b6e391c30aa9
+UNIT_ID: SCRIP-CLI-PRIVATE-STDIN-v1
+ISSUES: Independent local analyzer usability (open/closed issue+PR search found no existing stdin unit)
+STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-cli-private-stdin-v1-20261106
+BASE: 62e5fd5c0113491fa6c928b280f8230e154811af
 
-ACCEPTANCE: Selecting any of the 11 measured Russian editions reveals three compatible, actually measured comparison neighbors from the retained JSON. Normalize dialogue share, mean sentence length and comma rate across compatible measured books, rank by mean absolute normalized distance with a stable tie break. Exclude pending/unknown/incompatible candidates, distinguish numeric zero, link to real two-book pair views, retain an honest no-JavaScript starter, display scientific caveats, test positive/negative/DOM scenarios. No new corpus admission, invented FantLab result or similar-author claim. Independently verify exact-head hosted tests and later merge; live Pages requires separate verification.
+ACCEPTANCE: Explicit 'scriptorium analyze -' consumes a private piped UTF-8 manuscript, capped at 32 MiB. It refuses TTY input, never echoes private content, retains original SHA-256 and the exact 29-metric JSON/HTML/CSV/Markdown contracts, matches equivalent file input byte-for-byte and refuses to overwrite reports. Positive/negative CLI tests and installed-package smoke precede later merge. No new corpus admission or FantLab parity.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: a discoverable, credible Russian Reader with meaningful links between
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later independently accept metric-neighbor Reader change (#283) | Exact-head Python + Node checks, actual snapshot ranking, keyboard/fallback safety; qualifying merge | Hosted CI, fresh head/review |
+| P1 | Independently accept private stdin CLI feature | Exact-head Python suite and installed package smoke; qualifying merge only after later review | Hosted CI, fresh head/review |
 | P2 | Independently measure Trusov *Robinson Crusoe* first-book body | Frozen exact literary body ≥300k, provenance/rights and 29 actual metrics, then honest Shishmareva pair | Historical renderer/coverage; four unresolved VAR calls; printed edition still unknown |
 | P3 | #282/#281 AOT/FantLab readiness | Real measured runtime N evidence or strict field-level source matching, keep M2 0/5 until proof | Exact provider/reference input identity |
 | P4 | #283/#285 Reader live Pages and desktop/mobile verification | Branch-root HTTP, keyboard/focus and mobile screenshot readback | Browser navigation restrictions; preserve last valid site |

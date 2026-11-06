@@ -28,7 +28,13 @@ python -m pip install .
 scriptorium analyze manuscript.txt --format html --output report.html
 ```
 
-Open `report.html` locally; use `--output analysis.json` for a reproducible JSON result. The analyzer also supports source-free Markdown/CSV, unencrypted EPUB and local pair comparison. **[Commands and examples ↓](#try-your-own-text)** · [EPUB security and limits](docs/PRIVATE_EPUB.md) · [Offline Reader preview](docs/READER_PREVIEW.md).
+Open `report.html` locally; use `--output analysis.json` for a reproducible JSON result. For private text on stdin (without creating a manuscript file):
+
+```bash
+cat manuscript.txt | scriptorium analyze - --format html --output report.html
+```
+
+Only the explicit `-` reads a pipe/redirect, not an interactive terminal. Stdin is limited to 32 MiB, must be UTF-8 and never becomes a corpus upload. The derived report has no source prose; `--output` refuses to overwrite existing output. Avoid piping private results to external services. The analyzer also supports source-free Markdown/CSV, unencrypted EPUB and local pair comparison. **[Commands and examples ↓](#try-your-own-text)** · [EPUB security and limits](docs/PRIVATE_EPUB.md) · [Offline Reader preview](docs/READER_PREVIEW.md).
 
 ### What the numbers do — and do not — mean
 

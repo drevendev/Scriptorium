@@ -12,6 +12,7 @@ import json
 import math
 import os
 import stat
+import sys
 import tempfile
 from pathlib import Path
 from typing import Final, Iterable
@@ -622,6 +623,24 @@ def _read_bounded_regular_file(path: Path, limit: int, label: str) -> bytes:
     return content
 
 
+def _read_bounded_stdin(limit: int) -> bytes:
+    """Explicit '-' stream: bounded source, no private text echo or persistence."""
+    stream = sys.stdin
+    if stream is None or not hasattr(stream, "buffer"):
+        raise LocalInputError("manuscript stdin requires a binary UTF-8 pipe")
+    try:
+        if stream.isatty():
+            raise LocalInputError("manuscript stdin must be piped or redirected")
+        payload = stream.buffer.read(limit + 1)
+    except (OSError, ValueError) as exc:
+        raise LocalInputError("manuscript stdin could not be read") from exc
+    if not isinstance(payload, bytes):
+        raise LocalInputError("manuscript stdin must provide bytes")
+    if len(payload) > limit:
+        raise LocalInputError(f"manuscript exceeds the {limit}-byte input limit")
+    return payload
+
+
 def _write_new(path: Path, content: str) -> None:
     # Publish complete derived output with no replacement, including symlink targets.
     # Keep the temporary file on the same filesystem for atomic hard-link creation.
@@ -644,7 +663,7 @@ def _write_new(path: Path, content: str) -> None:
 
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Analyze a local UTF-8 text without publishing source text.")
-    parser.add_argument("text", type=Path)
+    parser.add_argument("text", type=Path, help="UTF-8 file path or - for private stdin")
     parser.add_argument("--format", choices=("json", "html", "csv", "markdown"), default="json")
     parser.add_argument("--title")
     parser.add_argument("--scriptorium-revision")
@@ -661,7 +680,8 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--dictionary and --dictionary-profile must be supplied together")
 
     try:
-        source_bytes = _read_bounded_regular_file(args.text, MAX_ANALYSIS_BYTES, "manuscript")
+        source_bytes = (_read_bounded_stdin(MAX_ANALYSIS_BYTES) if str(args.text) == "-"
+                        else _read_bounded_regular_file(args.text, MAX_ANALYSIS_BYTES, "manuscript"))
         dictionary_words = None
         if args.dictionary is not None:
             dictionary_bytes = _read_bounded_regular_file(args.dictionary, MAX_DICTIONARY_BYTES, "dictionary")

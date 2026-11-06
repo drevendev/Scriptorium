@@ -14,6 +14,7 @@ from .analyze import (
     LocalInputError, _read_bounded_regular_file, _read_bounded_stdin,
     build_local_analysis,
 )
+from .epub import EpubError, MAX_ARCHIVE_BYTES, extract_epub
 
 MAX_REPORT_BYTES = 2 * 1024 * 1024
 
@@ -94,29 +95,83 @@ def verify_private_report(source_bytes: bytes, report_bytes: bytes, *,
         raise VerificationError("report could not be replayed safely") from exc
 
 
+def verify_epub_provenance(
+    report_bytes: bytes, receipt_bytes: bytes, extracted_provenance: dict[str, object],
+) -> None:
+    """Verify exact EPUB archive identity as well as its extracted-body report.
+
+    An extracted-body hash alone cannot distinguish EPUB archives with identical
+    spine text. This optional source-free sidecar is checked only *after* the
+    report has been replayed against the actual extracted bytes.
+    """
+    try:
+        receipt = json.loads(
+            receipt_bytes.decode("utf-8"), object_pairs_hook=_unique_pairs,
+            parse_constant=_reject_constant,
+        )
+        report = json.loads(
+            report_bytes.decode("utf-8"), object_pairs_hook=_unique_pairs,
+            parse_constant=_reject_constant,
+        )
+        expected = {
+            **extracted_provenance,
+            "normalized_sha256": report["source"]["normalized_sha256"],
+            "analysis_schema": LOCAL_ANALYSIS_SCHEMA,
+        }
+        if _canonical_json(receipt) != _canonical_json(expected):
+            raise VerificationError("EPUB provenance differs from original archive or extraction")
+    except VerificationError:
+        raise
+    except (UnicodeError, json.JSONDecodeError, RecursionError, TypeError,
+            ValueError, KeyError, OverflowError) as exc:
+        raise VerificationError("EPUB provenance must be valid source-free JSON") from exc
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        description="Recompute a private JSON report from its original UTF-8 manuscript.")
-    parser.add_argument("text", type=Path, help="original UTF-8 file or - for piped stdin")
-    parser.add_argument("report", type=Path, help="saved Scriptorium analyze JSON")
+        description="Recompute a private JSON report from its original UTF-8 manuscript or EPUB.")
+    parser.add_argument("text", type=Path, help="original UTF-8 file, - for piped stdin, or EPUB with --epub")
+    parser.add_argument("report", type=Path, help="saved Scriptorium analyze/epub JSON")
+    parser.add_argument("--epub", action="store_true",
+                        help="extract and verify the original unencrypted EPUB spine in memory")
+    parser.add_argument("--provenance", type=Path,
+                        help="with --epub, also match the original archive against its source-free sidecar")
     parser.add_argument("--dictionary", type=Path, help="same dictionary used in original run")
     parser.add_argument("--dictionary-profile", help="same dictionary profile as original run")
     args = parser.parse_args(argv)
     if (args.dictionary is None) != (args.dictionary_profile is None):
         parser.error("--dictionary and --dictionary-profile must be supplied together")
+    if args.provenance is not None and not args.epub:
+        parser.error("--provenance requires --epub")
+    if args.epub and str(args.text) == "-":
+        parser.error("--epub requires an original regular EPUB file")
+    if args.epub and args.dictionary is not None:
+        parser.error("EPUB reports do not support a vocabulary dictionary")
     try:
-        raw = (_read_bounded_stdin(MAX_ANALYSIS_BYTES) if str(args.text) == "-"
-               else _read_bounded_regular_file(args.text, MAX_ANALYSIS_BYTES, "manuscript"))
+        if args.epub:
+            archive = _read_bounded_regular_file(args.text, MAX_ARCHIVE_BYTES, "EPUB")
+            raw, extracted_provenance = extract_epub(archive)
+        else:
+            raw = (_read_bounded_stdin(MAX_ANALYSIS_BYTES) if str(args.text) == "-"
+                   else _read_bounded_regular_file(args.text, MAX_ANALYSIS_BYTES, "manuscript"))
         saved = _read_bounded_regular_file(args.report, MAX_REPORT_BYTES, "report")
         dictionary = (_read_bounded_regular_file(args.dictionary, MAX_DICTIONARY_BYTES, "dictionary")
                       if args.dictionary is not None else None)
         verify_private_report(raw, saved, dictionary_bytes=dictionary,
                               dictionary_profile=args.dictionary_profile)
-    except (VerificationError, LocalInputError) as exc:
+        if args.provenance is not None:
+            receipt = _read_bounded_regular_file(args.provenance, MAX_REPORT_BYTES, "EPUB provenance")
+            verify_epub_provenance(saved, receipt, extracted_provenance)
+    except (VerificationError, LocalInputError, EpubError) as exc:
         parser.error(str(exc))
     except (OSError, UnicodeError, TypeError, ValueError, OverflowError, RecursionError):
         parser.error("unable to verify private inputs")
     print("PASS: source hashes, all 29 metrics and current algorithm profiles replay exactly.")
+    if args.epub:
+        if args.provenance is not None:
+            print("PASS: original EPUB archive SHA-256 and extraction provenance replay exactly.")
+        else:
+            print("EPUB input hash covers extracted UTF-8 spine text, not archive identity; use --provenance to check the archive.")
     print("Saved revision is an unverified declaration; this is NOT rights, edition, or FantLab parity proof.")
     return 0
 

@@ -1,27 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 435
+STATE_REVISION: 436
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #439 is confirmed MERGED in master at a8c4558aa6298061cc98ffeae996a051aef3383d. New source-free private verify CLI is proposed for later acceptance.
+LAST_RESULT: #440 confirmed MERGED in master at 9e27ce8a0d1b40a09af047edc5d130bb7e8019af; extending accepted private replay to original EPUB containers for later acceptance.
 LAST_VERIFIED_PROGRESS: Reader retains 11 measured editions and 2 research leads. M2 0/5; Trusov historical render/page-join gates remain unresolved.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CLI-PRIVATE-REPLAY-v1
-ISSUES: #281 reproducibility-adjacent local delivery; no existing open/closed report-replay PR or issue
+UNIT_ID: SCRIP-CLI-EPUB-REPLAY-v1
+ISSUES: #281 reproducibility-adjacent independent user delivery; no existing EPUB report verification PR
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-cli-private-replay-v1-20261106
-BASE: a8c4558aa6298061cc98ffeae996a051aef3383d
+BRANCH: scrip-cli-epub-verify-v1-20261106
+BASE: 9e27ce8a0d1b40a09af047edc5d130bb7e8019af
 
-ACCEPTANCE: `scriptorium verify manuscript.txt analysis.json` and the explicit
-stdin variant re-run the 29 metrics, raw/normalized SHA-256, units, profiles and
-unknown/zero distinctions. Reject tampering, duplicate/nonfinite JSON, unknown
-fields, incompatible/missing dictionary inputs and nonregular/oversized local
-files without exposing private text. Clearly state saved Git revision metadata,
-rights, edition and FantLab parity are not independently attested.
-Positive/negative unit + subprocess tests, exact-head CI and later-run acceptance
-are required before merge.
+ACCEPTANCE: `scriptorium verify --epub novel.epub analysis.json` replays the
+same bounded in-memory UTF-8 spine projection and all 29 metrics as the existing
+`scriptorium epub` command, without intermediate prose or external requests.
+Optional `--provenance` additionally verifies exact original archive SHA-256,
+extraction profile, chapter counts and source digests; equal prose in a different
+ZIP must fail only when archive evidence is supplied. Malformed sidecars,
+changed books, symlinks and invalid options fail closed with path-free errors.
+Neither mode claims historical edition identity or FantLab parity.
+Positive/negative integration tests, exact-head CI and later acceptance are
+required before merge.
 
 ## Next user-visible milestone and compact queue
 
@@ -30,7 +32,7 @@ first fully qualified paired translation comparison remains open.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept private report replay PR | Exact-head Python suite, CLI subprocess and installed-wheel smoke; later qualifying merge | Fresh CI and review |
+| P1 | Independently accept EPUB report replay PR | Exact-head EPUB/CLI tests, full Python suite and installed-wheel smoke; later qualifying merge | Fresh CI and review |
 | P2 | Verify full Trusov *Robinson Crusoe* first-book literary body | Frozen actual ≥300k prose, rights/identity and 29 measured metrics; honest Shishmareva comparison | Historic rendering/coverage, unresolved VAR and printed edition evidence |
 | P3 | #281/#282 AOT/FantLab diagnostic maturity | Measured native N evidence, rigorous source-matched deltas; preserve M2 0/5 | Reference-input identity |
 | P4 | #283/#285 public Reader acceptance | Real live HTTP and mobile/desktop keyboard/focus verification | Browser restriction and deployment interlock |

@@ -122,7 +122,7 @@ class NativeNRetainedCliTests(unittest.TestCase):
                 (("boundary", "fantlab_homonym_selection"), "reproduced"),
                 (("bucket_bounds", "noun"), [0, 1]),
                 (("bigram_bounds", 1, "max"), 8300),  # schema-valid but not the frozen native witness
-                (("bigram_bounds", 1, "independent_edge_upper"), 8301),
+                (("bigram_bounds", 1, "independent_edge_upper"), 9991),
             ]:
                 with self.subTest(path=path):
                     forged = json.loads(json.dumps(doc))

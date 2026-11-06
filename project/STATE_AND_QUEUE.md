@@ -1,32 +1,40 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 434
+STATE_REVISION: 435
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #438 was independently accepted and merged at 62e5fd5c0113491fa6c928b280f8230e154811af; master CI succeeded. This separate unit adds opt-in, bounded private stdin input to the existing 29-metric analyzer for later PR acceptance.
+LAST_RESULT: #439 is confirmed MERGED in master at a8c4558aa6298061cc98ffeae996a051aef3383d. New source-free private verify CLI is proposed for later acceptance.
 LAST_VERIFIED_PROGRESS: Reader retains 11 measured editions and 2 research leads. M2 0/5; Trusov historical render/page-join gates remain unresolved.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CLI-PRIVATE-STDIN-v1
-ISSUES: Independent local analyzer usability (open/closed issue+PR search found no existing stdin unit)
+UNIT_ID: SCRIP-CLI-PRIVATE-REPLAY-v1
+ISSUES: #281 reproducibility-adjacent local delivery; no existing open/closed report-replay PR or issue
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-cli-private-stdin-v1-20261106
-BASE: 62e5fd5c0113491fa6c928b280f8230e154811af
+BRANCH: scrip-cli-private-replay-v1-20261106
+BASE: a8c4558aa6298061cc98ffeae996a051aef3383d
 
-ACCEPTANCE: Explicit 'scriptorium analyze -' consumes a private piped UTF-8 manuscript, capped at 32 MiB. It refuses TTY input, never echoes private content, retains original SHA-256 and the exact 29-metric JSON/HTML/CSV/Markdown contracts, matches equivalent file input byte-for-byte and refuses to overwrite reports. Positive/negative CLI tests and installed-package smoke precede later merge. No new corpus admission or FantLab parity.
+ACCEPTANCE: `scriptorium verify manuscript.txt analysis.json` and the explicit
+stdin variant re-run the 29 metrics, raw/normalized SHA-256, units, profiles and
+unknown/zero distinctions. Reject tampering, duplicate/nonfinite JSON, unknown
+fields, incompatible/missing dictionary inputs and nonregular/oversized local
+files without exposing private text. Clearly state saved Git revision metadata,
+rights, edition and FantLab parity are not independently attested.
+Positive/negative unit + subprocess tests, exact-head CI and later-run acceptance
+are required before merge.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: a discoverable, credible Russian Reader with meaningful links between already measured editions; first true paired comparison of two independently measured Russian translations of *Robinson Crusoe* remains the next evidence milestone.
+Milestone: reproducible private analysis and measured Russian Reader; the
+first fully qualified paired translation comparison remains open.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept private stdin CLI feature | Exact-head Python suite and installed package smoke; qualifying merge only after later review | Hosted CI, fresh head/review |
-| P2 | Independently measure Trusov *Robinson Crusoe* first-book body | Frozen exact literary body ≥300k, provenance/rights and 29 actual metrics, then honest Shishmareva pair | Historical renderer/coverage; four unresolved VAR calls; printed edition still unknown |
-| P3 | #282/#281 AOT/FantLab readiness | Real measured runtime N evidence or strict field-level source matching, keep M2 0/5 until proof | Exact provider/reference input identity |
-| P4 | #283/#285 Reader live Pages and desktop/mobile verification | Branch-root HTTP, keyboard/focus and mobile screenshot readback | Browser navigation restrictions; preserve last valid site |
-| P5 | Paris ProofreadPage renderer after merged #433 | Source-free real markup classification and reproducible chapter boundaries | 183 unsupported Page markup; historic transclusion separate |
+| P1 | Independently accept private report replay PR | Exact-head Python suite, CLI subprocess and installed-wheel smoke; later qualifying merge | Fresh CI and review |
+| P2 | Verify full Trusov *Robinson Crusoe* first-book literary body | Frozen actual ≥300k prose, rights/identity and 29 measured metrics; honest Shishmareva comparison | Historic rendering/coverage, unresolved VAR and printed edition evidence |
+| P3 | #281/#282 AOT/FantLab diagnostic maturity | Measured native N evidence, rigorous source-matched deltas; preserve M2 0/5 | Reference-input identity |
+| P4 | #283/#285 public Reader acceptance | Real live HTTP and mobile/desktop keyboard/focus verification | Browser restriction and deployment interlock |
+| P5 | Paris ProofreadPage historical renderer | Reproducible source-free markup classification and chapter boundaries | Unsupported source Page markup and transclusion |
 
 ## Retained evidence and scientific gates
 

@@ -19,6 +19,8 @@ Select any measured book in the Reader's measurement registry to see **three oth
 
 The results include Russian originals and **separately identified translations**, including Alexandra Beketova's *Children of Captain Grant* and Maria Shishmareva's *Robinson Crusoe*. The latter is pinned to Wikisource oldid `5634933`: **572,587 characters including spaces; 24 numeric measurements and 5 NOT_RUN**. See the [source-free measured record](corpus/candidates/diagnostics/defoe-robinson-crusoe-shishmareva-1935-ru.measured.json). An English/French original has **not** been analyzed as a counterpart; cross-language or two-translation conclusions are **not** available yet.
 
+The [translation readiness table](https://drevendev.github.io/Scriptorium/#translations) now distinguishes the **measured 1935 Shishmareva edition** (572,587 characters; 24 numeric fields, five NOT_RUN) from the **unmeasured 1775 Trusov witness** (150 frozen historical Page revisions, not a reconstructed literary body). It links directly to each retained evidence record and keeps cross-translator comparisons disabled until both literary texts are independently measured. Trusov's French intermediary is a material confounder; no translation-style or FantLab parity is claimed.
+
 ### Analyze your own writing in two commands
 
 Python **3.13+**; run from a checkout (no account, telemetry, manuscript upload or runtime API required):

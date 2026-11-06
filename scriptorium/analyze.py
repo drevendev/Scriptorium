@@ -628,9 +628,9 @@ def _read_bounded_stdin(limit: int) -> bytes:
     stream = sys.stdin
     if stream is None or not hasattr(stream, "buffer"):
         raise LocalInputError("manuscript stdin requires a binary UTF-8 pipe")
+    if stream.isatty():
+        raise LocalInputError("manuscript stdin must be piped or redirected")
     try:
-        if stream.isatty():
-            raise LocalInputError("manuscript stdin must be piped or redirected")
         payload = stream.buffer.read(limit + 1)
     except (OSError, ValueError) as exc:
         raise LocalInputError("manuscript stdin could not be read") from exc

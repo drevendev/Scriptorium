@@ -48,6 +48,8 @@ This repository serves two different experiences: [branch-root Pages Reader](htt
 
 ### Quantify a real FantLab word-count discrepancy (diagnostic only)
 
+**[See the annotated Anna Karenina word-density case study →](word-density.html).** The root Reader now has a no-JavaScript, source-free visual comparison, a labelled exact-value table and an explicit unmatched-edition warning. Its eight published numeric cells are checked in regression tests against `scriptorium word-gap` over frozen evidence; the case study does not turn density proximity into parity.
+
 Run `scriptorium word-gap --root . --format markdown` (or `json` / `csv`) to calculate **word density per 1,000 characters including spaces**, plus a conditional character-length-adjusted word residual, from the already-verified, source-free FantLab benchmark evidence. For the frozen *Anna Karenina* candidate, FantLab reports 253,275 words / 1,692,647 characters versus Scriptorium's 269,358 / 1,705,605: **149.632499 vs 157.925194 words per 1,000 characters**, a signed gap of **+8.292695** and conditional residual **+14,144.062082 words** after proportional length scaling. This is a concrete segmentation/evidence investigation lead, **not** a measured tokenization error or proof of identical input editions. No manuscripts are fetched or exported; unknowns are `NOT_RUN`, M2 remains **0/5**.
 
 ## Language modules and translations

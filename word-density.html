@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Разрыв между количеством слов в FantLab и Scriptorium для Анны Карениной: подтверждённые исходные счётчики, разные редакции и честная диагностика.">
+<title>Почему число слов не совпадает? · Scriptorium</title>
+<link rel="stylesheet" href="./assets/pages-reader.css">
+<style>
+.gap-page{max-width:1060px;margin:0 auto;padding:clamp(1rem,4vw,3rem) 0 4rem}
+.gap-hero{padding:clamp(1.25rem,4vw,3rem);border-radius:12px;background:#163c32;color:#fff8e8}
+.gap-hero .eyebrow{color:#f2d09b}.gap-hero h1{font:500 clamp(2.1rem,5.5vw,4.6rem)/1.1 Georgia,serif;letter-spacing:-.03em;margin:.4rem 0 1rem}
+.gap-hero em{color:#f2ce94}.gap-hero p{max-width:75ch;line-height:1.75}.gap-hero a{color:#ffe4b6}
+.gap-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.3rem 0}
+.gap-card{background:var(--surface);border:1px solid var(--line);padding:1.3rem;border-radius:9px;min-width:0}
+.gap-card strong{display:block;font:500 clamp(1.7rem,4vw,2.6rem)/1.15 Georgia,serif;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.gap-card span{color:var(--subtle);display:block;margin-top:.5rem}
+.gap-panel{padding:clamp(1.25rem,3vw,2rem);background:var(--surface);border:1px solid var(--line);border-radius:9px;margin:1.5rem 0}
+.gap-panel h2{font:500 clamp(1.65rem,3.5vw,2.35rem)/1.2 Georgia,serif;margin:0 0 1rem}
+.gap-panel p{line-height:1.75;max-width:78ch}
+.gap-bars{list-style:none;padding:0;margin:1.8rem 0;display:grid;gap:1.35rem}
+.gap-bars li{min-width:0}.gap-label{display:flex;gap:1rem;justify-content:space-between;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.gap-label strong{font-weight:700}.gap-track{height:1.1rem;background:#dfebe3;border:1px solid #81978c;border-radius:2rem;overflow:hidden;margin-top:.4rem}
+.gap-track span{height:100%;display:block;background:#346d5b}.gap-bars li:first-child .gap-track span{background:#ab7742}
+.gap-table{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.gap-table:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.gap-table table{width:100%;min-width:610px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.gap-table th,.gap-table td{text-align:left;padding:.85rem 1rem;border-bottom:1px solid #b7c9bd}
+.gap-table thead{background:#e9efe7}.gap-table tr:last-child th,.gap-table tr:last-child td{border:0}
+.gap-warning{padding:1.1rem 1.3rem;border-left:5px solid #94652b;background:#f3e8d6}
+.gap-code{overflow-x:auto;background:#e8ede7;border-radius:6px;padding:1rem;line-height:1.6}
+.gap-actions{display:flex;gap:1rem;flex-wrap:wrap}.gap-actions a{min-height:44px;display:inline-flex;align-items:center;font-weight:700}
+@media(max-width:620px){.gap-grid{grid-template-columns:1fr}.gap-page{padding-bottom:2rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media(forced-colors:active){.gap-track{border:1px solid CanvasText}.gap-track span{background:Highlight!important}}
+@media print{.gap-hero,.gap-card,.gap-panel{background:white!important;color:black!important}.gap-bars{display:none}.gap-panel{break-inside:avoid}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к данным</a>
+<header class="site-top"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a>
+<nav aria-label="Навигация"><a href="./#books">Книги</a><a href="./#pairs">Сравнения</a><a href="./#method">Методология</a></nav></header>
+<main id="main"><div class="gap-page">
+<section class="gap-hero" aria-labelledby="gap-title">
+<p class="eyebrow">ИССЛЕДОВАТЕЛЬСКИЙ КЕЙС · РЕАЛЬНЫЕ СОХРАНЁННЫЕ СЧЁТЧИКИ</p>
+<h1 id="gap-title">Почему <em>слова не сходятся?</em></h1>
+<p>У «Анны Карениной» FantLab и Scriptorium показывают разное количество слов. Вместо объяснения по догадке мы пересчитали плотность слов относительно объёма каждой редакции и отделили измерение от гипотезы.</p>
+<p><a href="./#books">Смотреть измеренные книги ↗</a> · <a href="https://github.com/drevendev/Scriptorium/blob/master/scriptorium/word_gap.py">Открытый алгоритм расчёта ↗</a></p>
+</section>
+<div class="gap-grid" aria-label="Главные результаты">
+<div class="gap-card"><strong>+8,292695</strong><span>слов на 1000 символов: Scriptorium минус FantLab</span></div>
+<div class="gap-card"><strong>M2: 0/5</strong><span>точное совпадение входной редакции FantLab не доказано</span></div>
+</div>
+<section class="gap-panel" aria-labelledby="gap-density">
+<h2 id="gap-density">Две плотности, а не две оценки качества</h2>
+<p>Число слов нормировано на <strong>1000 символов, включая пробелы</strong>. Полосы имеют общий ноль и масштабируются по большей плотности — они не показывают качество произведения или степень совпадения алгоритмов.</p>
+<ul class="gap-bars" aria-label="Сравнение плотности слов">
+<li><div class="gap-label"><span>FantLab</span><strong>149,632499 слов / 1000 символов</strong></div><div class="gap-track" aria-hidden="true"><span style="width:94.748973%"></span></div></li>
+<li><div class="gap-label"><span>Scriptorium</span><strong>157,925194 слов / 1000 символов</strong></div><div class="gap-track" aria-hidden="true"><span style="width:100%"></span></div></li>
+</ul>
+<div class="gap-table" role="region" tabindex="0" aria-label="Точные счётчики для Анны Карениной">
+<table><caption>Сохранённые диагностические наблюдения · «Анна Каренина» · редакции не сопоставлены</caption>
+<thead><tr><th scope="col">Показатель</th><th scope="col">FantLab</th><th scope="col">Scriptorium</th></tr></thead>
+<tbody>
+<tr><th scope="row">Символов с пробелами</th><td><data data-diagnostic="expected_characters" value="1692647">1 692 647</data></td><td><data data-diagnostic="actual_characters" value="1705605">1 705 605</data></td></tr>
+<tr><th scope="row">Слов</th><td><data data-diagnostic="expected_words" value="253275">253 275</data></td><td><data data-diagnostic="actual_words" value="269358">269 358</data></td></tr>
+<tr><th scope="row">Слов на 1000 символов</th><td><data data-diagnostic="fantlab_words_per_1000_characters" value="149.632499">149,632499</data></td><td><data data-diagnostic="scriptorium_words_per_1000_characters" value="157.925194">157,925194</data></td></tr>
+</tbody></table></div>
+<p>Разность плотностей (Scriptorium − FantLab): <data data-diagnostic="density_gap_per_1000_characters" value="8.292695"><strong>+8,292695</strong></data> слова на 1000 символов.</p>
+</section>
+<section class="gap-panel" aria-labelledby="gap-residual">
+<h2 id="gap-residual">Что остаётся после условной поправки?</h2>
+<p>Если бы число слов FantLab масштабировалось строго пропорционально числу символов Scriptorium, условный остаток составил бы <data data-diagnostic="length_adjusted_word_residual" value="14144.062082"><strong>+14 144,062082</strong></data> слова.</p>
+<p><strong>Формула:</strong> слова Scriptorium − (слова FantLab × символы Scriptorium / символы FantLab).</p>
+<div class="gap-warning"><strong>DIAGNOSTIC_ONLY · вход FantLab: UNKNOWN.</strong> Это не оценка ошибки токенизации. Разные редакции, пунктуация, границы слов и неопубликованная методология FantLab могут влиять одновременно. Случайное числовое совпадение не доказывает идентичность текста или воспроизведение FantLab.</div>
+</section>
+<section class="gap-panel" aria-labelledby="gap-replay">
+<h2 id="gap-replay">Повторить по закреплённым свидетельствам</h2>
+<p>CLI анализирует существующие исходно-безопасные записи без получения книжного текста. Отчёт охватывает шесть сохранённых диагностических произведений, а этот кейс подробно разбирает одно. Значения с отсутствующим подтверждением остаются <strong>NOT_RUN</strong>, а не нулём.</p>
+<pre class="gap-code"><code>scriptorium word-gap --root . --format markdown
+scriptorium word-gap --root . --format json
+scriptorium word-gap --root . --format csv</code></pre>
+<div class="gap-actions"><a href="https://github.com/drevendev/Scriptorium#quantify-a-real-fantlab-word-count-discrepancy-diagnostic-only">Документация расчётов ↗</a><a href="./n-uncertainty.html">Следующее ограничение: AOT и тег N ↗</a></div>
+<p>Числа взяты из сохранённых FantLab-сравнений и замороженных производных измерений. Ни один книжный текст не публикуется на этой странице. Формат отображения — шесть знаков после запятой, <strong>не</strong> установленное правило округления FantLab.</p>
+</section>
+</div></main>
+<footer><p class="footer-heading">SCRIPTORIUM <span aria-hidden="true">✦</span> ИССЛЕДОВАНИЕ ЯЗЫКА</p><p>Только диагностическое сравнение неподтверждённых входных редакций. M2: 0/5.</p><a href="./">Вернуться в библиотеку</a></footer>
+</body></html>

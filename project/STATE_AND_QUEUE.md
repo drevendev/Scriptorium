@@ -1,25 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 441
+STATE_REVISION: 442
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #445 confirmed MERGED at 7e915c723f1751cda2145596efd4da943e196fcf; propose #282 normalized N-only sensitivity units.
-LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; #445 frozen-source-route binding merged. M2 0/5. No new admitted works.
+LAST_RESULT: #446 confirmed MERGED at 810ef191279baa87cefa708411510704f1c7b4c1; propose Reader-native-N normalized tables.
+LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; native N conditional-unit CLI #446 merged. M2 0/5. No new admitted works.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-N-CONDITIONAL-UNITS-v1
-ISSUES: #282 retained native noun/cardinal ambiguity
+UNIT_ID: SCRIP-READER-N-CONDITIONAL-UNITS-v1
+ISSUES: #282 pinned native noun/cardinal N ambiguity; #283 Reader evidence UI
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-morph-n-conditional-units-20261106
-BASE: 7e915c723f1751cda2145596efd4da943e196fcf
+BRANCH: scrip-reader-native-n-units-20261106
+BASE: 810ef191279baa87cefa708411510704f1c7b4c1
 
-ACCEPTANCE: The existing source-free n-evidence CLI reports conditional bucket
-percentages, POS-pair rates per 1,000 words and sentence-position percentages
-with explicit denominators, retaining original raw bounds and the separate
-looser independent-edge upper bound in JSON/CSV/Markdown. Mixed-N remains
-excluded, no labels or parity are promoted, arithmetic positive/negative
-regressions run, and exact-head CI passes before later acceptance.
+ACCEPTANCE: The already published root N ambiguity page shows exact source-free
+noun/cardinal conditional percentages, POS-bigram achievable and looser
+independent-edge ceilings per 1,000 words, and sentence-position percentages
+of all sentences, tied by regressions to the immutable native witness.
+Tables are usable without JavaScript, keyboard-scrollable and honest about
+units and FantLab uncertainty. Exact-head CI and later acceptance required.
 
 ## Next user-visible milestone and compact queue
 
@@ -28,7 +28,7 @@ Russian Reader, with an honestly gated same-novel translation comparison.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge N-only conditional-rate CLI | Exact-head CI; raw/normalized units and distinct loose bound verified | Fresh PR checks |
+| P1 | Later accept/merge public N ambiguity normalized tables | Static values match frozen N source, accessible tables and exact-head CI | Fresh PR checks |
 | P2 | Reconstruct Trusov first-narrative literary body | Actual >=300k literary text, rights/source identity, 29 derived metrics and honest Shishmareva comparison | Historical VAR/renderer and Page-seam evidence |
 | P3 | #283/#285 Reader live/public acceptance | Public HTTP, desktop/mobile/focus and route/link checks | Browser HTTP restriction / authorized deployment |
 | P4 | #281/#282 AOT/FantLab diagnostic | Native POS uncertainty and source-matched expected/actual deltas; M2 unchanged | Reference analyzer-input identity |

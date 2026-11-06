@@ -48,9 +48,9 @@ def _fixture(root: Path) -> None:
         witness = {"character_count_including_spaces": count, "raw_sha256": digest, "normalized_sha256": digest, "utf8_byte_count": count * 2, "normalization_profile": "scriptorium-text-v1"}
         if field:
             witness.update({"status": "frozen_public_candidate", "source_text_committed": False})
-            trace[namespace] = {field: witness}
+            trace[namespace] = {"work_url": candidate["source"]["url"], field: witness}
         else:
-            trace["primary_public_transcription"] = {"literary_body_witness": {"raw_sha256": digest, "normalized_sha256": digest, "character_count_including_spaces": count}}
+            trace["primary_public_transcription"] = {"work_url": candidate["source"]["url"], "literary_body_witness": {"raw_sha256": digest, "normalized_sha256": digest, "character_count_including_spaces": count}}
             trace["admissibility"]["frozen_public_minus_fantlab_character_delta"] = count - expected
             body = {"candidate_id": identifier, "composite_identity": witness, "composition": {"source_text_committed": False}, "corpus_admission": {"fantlab_source_edition_match": "unknown"}}
             _write(root, f"corpus/candidates/source-edition-traces/{identifier}.literary-body.json", body)
@@ -137,6 +137,27 @@ class ReadinessTests(unittest.TestCase):
         _write(self.root, ref_path, reference)
         self.assertEqual(build_readiness(self.root)["entries"][0]["fantlab"]["analysis_date"],
                          "2024-02-29")
+
+    def test_rejects_mismatched_public_transcription_routes(self):
+        # A second Wikisource work URL looks trustworthy in isolation, but
+        # must not replace the independently frozen source route silently.
+        first = _SPECS[0][0]
+        catalog_path = self.root / CATALOG
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+        catalog["candidates"][0]["source"]["url"] = "https://ru.wikisource.org/wiki/Different_work"
+        _write(self.root, CATALOG, catalog)
+        with self.assertRaisesRegex(ValueError, "frozen source URL"):
+            build_readiness(self.root)
+
+        # Also reject a rewritten trace when the catalog still points at the
+        # originally admitted public transcription.
+        _fixture(self.root)
+        trace_path = f"corpus/candidates/source-edition-traces/{first}.json"
+        trace = json.loads((self.root / trace_path).read_text(encoding="utf-8"))
+        trace["public_transcription"]["work_url"] = "https://ru.wikisource.org/wiki/Different_work"
+        _write(self.root, trace_path, trace)
+        with self.assertRaisesRegex(ValueError, "frozen source URL"):
+            build_readiness(self.root)
 
     def test_rejects_forged_source_match(self):
         data = json.loads((self.root / CATALOG).read_text(encoding="utf-8"))

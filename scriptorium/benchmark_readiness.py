@@ -151,6 +151,10 @@ def build_readiness(root: Path) -> dict[str, object]:
         source_url = _get(source, "url")
         if not isinstance(source_url, str) or not source_url.startswith("https://ru.wikisource.org/wiki/"):
             raise ValueError("invalid source URL")
+        # A catalog-only source URL can be syntactically valid yet refer to a
+        # different transcription. Bind it to the independent frozen trace.
+        trace_source = namespace if field else "primary_public_transcription"
+        _same(_get(trace, trace_source, "work_url"), source_url, "frozen source URL")
 
         witness_path = trace_path
         if field:

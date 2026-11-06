@@ -158,6 +158,27 @@ The frozen comparison-v1 schema requires every `unresolved_precision` row to hav
 The harness never widens an interval from visible decimal digits and never substitutes
 Python rounding for FantLab behavior.
 
+## Five frozen candidate readiness (diagnostic only)
+
+To inspect the retained legal public-source witnesses against five dated FantLab
+character-count references without reading or publishing book text:
+
+```bash
+python -m scriptorium.benchmark_readiness --root . --format markdown
+python -m scriptorium.benchmark_readiness --root . --format json
+```
+
+The report binds each catalog Wikisource literary-work URL to the corresponding
+independently retained source-edition trace's `work_url`; a syntactically valid but
+different Wikisource route now fails closed instead of silently relabeling an immutable
+body digest. This is a **metadata consistency check**, not proof that Wikisource, a
+printed edition and FantLab's undisclosed analyzer input share the same bytes.
+
+All displayed count deltas remain **DIAGNOSTIC**, other metrics **NOT_RUN**, and M2
+remains **0/5** until five source-matched legally usable works satisfy the strict
+field-by-field rounding requirements. JSON/CSV are source-free but preserve work
+identity and source links for independent inspection.
+
 ## `Шутиха` today
 
 `benchmarks/fantlab/work488.json` remains a reference-only target: Scriptorium has not

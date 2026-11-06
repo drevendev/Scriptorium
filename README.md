@@ -66,6 +66,23 @@ Open `report.html` locally, or read `report.md` as a portable, source-free Markd
 with canonical metric IDs, exact numeric values, profile versions and SHA-256 identities.
 Both reports label inferred/extension evidence and preserve unavailable values as unknown;
 neither implies FantLab parity. Keep `analysis.json` for reproducible private comparisons.
+
+To **verify a saved JSON report** against its original manuscript locally, without
+sending the text or its result to a server:
+
+```bash
+scriptorium verify manuscript.txt analysis.json
+cat manuscript.txt | scriptorium verify - analysis.json
+```
+
+A successful verification recomputes all 29 metric rows, source hashes, profiles,
+units, missing values and report metadata with the **current** implementation.
+It fails on altered text, changed metrics, unsupported report fields or missing
+original dictionary configuration. Supply `--dictionary dictionary.txt
+--dictionary-profile PROFILE` if the original report used one. Input files are
+bounded and symlinks are rejected; error messages do not reveal paths or prose.
+This checks deterministic replay, **not** a report's claimed Git revision,
+legal permission, source-edition match or FantLab parity.
 All **29 metric rows** retain their units and algorithm
 profiles; unavailable measurements stay unknown. The report has readable metric names,
 a four-value overview, exact numeric values and keyboard-accessible tables. JSON and

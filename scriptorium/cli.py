@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import sys
 
-COMMANDS = {"batch": "scriptorium.batch", "analyze": "scriptorium.analyze", "epub": "scriptorium.epub", "compare": "scriptorium.compare", "site": "scriptorium.site_renderer", "evidence": "scriptorium.benchmark_metric_matrix", "n-evidence": "scriptorium.native_n_evidence"}
+COMMANDS = {"batch": "scriptorium.batch", "analyze": "scriptorium.analyze", "verify": "scriptorium.verify", "epub": "scriptorium.epub", "compare": "scriptorium.compare", "site": "scriptorium.site_renderer", "evidence": "scriptorium.benchmark_metric_matrix", "n-evidence": "scriptorium.native_n_evidence"}
 MAX_DIAGNOSTIC_BYTES = 8 * 1024 * 1024
 
 
@@ -49,8 +49,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if not args or args[0] in {"-h", "--help"}:
         print("Scriptorium Reader — private text analysis and evidence-labelled literary reports")
-        print("Usage: scriptorium <analyze|epub|batch|compare|diagnostic|evidence|n-evidence|site> [options]")
+        print("Usage: scriptorium <analyze|verify|epub|batch|compare|diagnostic|evidence|n-evidence|site> [options]")
         print("  analyze     UTF-8 manuscript -> JSON, HTML, Markdown or CSV (29 metrics)")
+        print("  verify      Replay 29 metrics and source hashes against a private saved JSON report")
         print("  epub        Local EPUB XHTML spine -> JSON/HTML/CSV/Markdown and source-free identity")
         print("  batch       Explicit UTF-8 manifest -> private JSON/HTML reports and index")
         print("  compare     Two private JSON reports, --texts or --epubs -> HTML/JSON/CSV/Markdown")

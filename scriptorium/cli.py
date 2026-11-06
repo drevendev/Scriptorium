@@ -51,7 +51,7 @@ def main(argv: list[str] | None = None) -> int:
         print("Scriptorium Reader — private text analysis and evidence-labelled literary reports")
         print("Usage: scriptorium <analyze|verify|epub|batch|compare|diagnostic|evidence|n-evidence|site> [options]")
         print("  analyze     UTF-8 manuscript -> JSON, HTML, Markdown or CSV (29 metrics)")
-        print("  verify      Replay private TXT/EPUB JSON metrics and hashes (--epub, optional --provenance)")
+        print("  verify      Replay private TXT/EPUB reports (--epub, --provenance; --json for CI)")
         print("  epub        Local EPUB XHTML spine -> JSON/HTML/CSV/Markdown and source-free identity")
         print("  batch       Explicit UTF-8 manifest -> private JSON/HTML reports and index")
         print("  compare     Two private JSON reports, --texts or --epubs -> HTML/JSON/CSV/Markdown")

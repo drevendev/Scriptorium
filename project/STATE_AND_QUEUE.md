@@ -1,24 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 440
+STATE_REVISION: 441
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #444 confirmed MERGED at 0bc01dc2a485ade8b57b5fe8e29dc459b407aa30; prepare independent #281 source-route cross-check.
-LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; #444 strict calendar validation merged. M2 0/5. No new admitted works.
+LAST_RESULT: #445 confirmed MERGED at 7e915c723f1751cda2145596efd4da943e196fcf; propose #282 normalized N-only sensitivity units.
+LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; #445 frozen-source-route binding merged. M2 0/5. No new admitted works.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-SOURCE-ROUTE-BINDING-v1
-ISSUES: #281 cross-work readiness/source provenance
+UNIT_ID: SCRIP-MORPH-N-CONDITIONAL-UNITS-v1
+ISSUES: #282 retained native noun/cardinal ambiguity
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-repro-source-route-binding-20261106
-BASE: 0bc01dc2a485ade8b57b5fe8e29dc459b407aa30
+BRANCH: scrip-morph-n-conditional-units-20261106
+BASE: 7e915c723f1751cda2145596efd4da943e196fcf
 
-ACCEPTANCE: The five-work readiness pipeline must reject a catalog's syntactically
-valid but wrong Wikisource literary route when it disagrees with the independently
-frozen source-edition trace. All five existing real witnesses continue to validate;
-negative tests cover catalog and trace drift. Preserve per-metric parity/rights gates,
-underlying source metadata and M2=0/5. Hosted exact-head CI and later review before merge.
+ACCEPTANCE: The existing source-free n-evidence CLI reports conditional bucket
+percentages, POS-pair rates per 1,000 words and sentence-position percentages
+with explicit denominators, retaining original raw bounds and the separate
+looser independent-edge upper bound in JSON/CSV/Markdown. Mixed-N remains
+excluded, no labels or parity are promoted, arithmetic positive/negative
+regressions run, and exact-head CI passes before later acceptance.
 
 ## Next user-visible milestone and compact queue
 
@@ -27,7 +28,7 @@ Russian Reader, with an honestly gated same-novel translation comparison.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge five-work frozen source-route binding | Exact-head CI, positive real witnesses, forged route rejected | Fresh PR checks |
+| P1 | Later accept/merge N-only conditional-rate CLI | Exact-head CI; raw/normalized units and distinct loose bound verified | Fresh PR checks |
 | P2 | Reconstruct Trusov first-narrative literary body | Actual >=300k literary text, rights/source identity, 29 derived metrics and honest Shishmareva comparison | Historical VAR/renderer and Page-seam evidence |
 | P3 | #283/#285 Reader live/public acceptance | Public HTTP, desktop/mobile/focus and route/link checks | Browser HTTP restriction / authorized deployment |
 | P4 | #281/#282 AOT/FantLab diagnostic | Native POS uncertainty and source-matched expected/actual deltas; M2 unchanged | Reference analyzer-input identity |

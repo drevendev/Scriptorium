@@ -1,0 +1,52 @@
+"""Pure arithmetic regressions for source-free native N conditional rates."""
+from __future__ import annotations
+
+import unittest
+from scriptorium.native_n_units import normalized_n_bounds
+
+
+class NativeNUnitTests(unittest.TestCase):
+    def example(self):
+        return {
+            "counts": {"word_count": 100, "sentence_count": 20, "conditional_defined": 50},
+            "bucket_bounds": {"noun": [0, 10], "cardinal": [0, 10]},
+            "bigram_bounds": [{"first": "noun", "second": "cardinal",
+                               "min": 1, "max": 5, "independent_edge_upper": 7}],
+            "sentence_position_bounds": [{"position": 1, "min": 2, "max": 5}],
+        }
+
+    def test_denominators_and_conditional_intervals(self):
+        result = normalized_n_bounds(self.example())
+        self.assertEqual(result["denominators"], {
+            "word_tokens": 100, "all_sentences": 20, "conditionally_defined_tokens": 50,
+        })
+        self.assertEqual(result["bucket_percent_of_conditional_defined"]["noun"], [0.0, 20.0])
+        self.assertEqual(result["bigram_per_1000_word_tokens"], [{
+            "first": "noun", "second": "cardinal", "min": 10.0,
+            "max": 50.0, "independent_edge_upper": 70.0,
+        }])
+        self.assertEqual(result["sentence_position_percent_of_all_sentences"], [
+            {"position": 1, "min": 10.0, "max": 25.0},
+        ])
+        self.assertIn("not_observed", result["status"])
+
+    def test_invalid_denominators_fail_closed(self):
+        for key, value in (("word_count", 0), ("word_count", True),
+                           ("word_count", 100.0), ("sentence_count", 0),
+                           ("conditionally_defined", 0)):
+            witness = self.example()
+            field = "conditional_defined" if key == "conditionally_defined" else key
+            witness["counts"][field] = value
+            with self.subTest(key=key, value=value), self.assertRaises(ValueError):
+                normalized_n_bounds(witness)
+
+    def test_noninteger_and_negative_counts_fail_closed(self):
+        for value in (True, -1, 2.5):
+            witness = self.example()
+            witness["bigram_bounds"][0]["max"] = value
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                normalized_n_bounds(witness)
+
+
+if __name__ == "__main__":
+    unittest.main()

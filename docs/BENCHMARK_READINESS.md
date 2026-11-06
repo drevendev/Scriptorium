@@ -12,7 +12,8 @@ python -m scriptorium.benchmark_readiness --root . --format csv --output /tmp/re
 The output option creates new files only; an existing report is never overwritten.
 No manuscripts are read, downloaded or uploaded. The report checks duplicate JSON
 keys, five explicit candidate identities, rights evidence, cross-record FantLab
-URL/work ID/date/count agreement, frozen body sizes and SHA-256 identities,
+URL/work ID/date/count agreement, **real ISO calendar dates** (not merely matching
+date-shaped strings), frozen body sizes and SHA-256 identities,
 normalization profiles, and explicitly unknown analyzer-input identity.
 Symlinked catalog, reference and witness paths (including parent directories)
 are rejected rather than following aliases to other local or private files.

@@ -1,39 +1,37 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 436
+STATE_REVISION: 437
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #440 confirmed MERGED in master at 9e27ce8a0d1b40a09af047edc5d130bb7e8019af; extending accepted private replay to original EPUB containers for later acceptance.
+LAST_RESULT: #441 confirmed MERGED in master at d86a20c8311740a46a6393c25d313e28ee5e10f0; Reader translation-witness readiness panel proposed for later acceptance.
 LAST_VERIFIED_PROGRESS: Reader retains 11 measured editions and 2 research leads. M2 0/5; Trusov historical render/page-join gates remain unresolved.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CLI-EPUB-REPLAY-v1
-ISSUES: #281 reproducibility-adjacent independent user delivery; no existing EPUB report verification PR
+UNIT_ID: SCRIP-READER-ROBINSON-PAIR-READINESS-v1
+ISSUES: #283 public Reader / translation provenance; related #281 reproducibility
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-cli-epub-verify-v1-20261106
-BASE: 9e27ce8a0d1b40a09af047edc5d130bb7e8019af
+BRANCH: scrip-reader-robinson-pair-readiness-20261106
+BASE: d86a20c8311740a46a6393c25d313e28ee5e10f0
 
-ACCEPTANCE: `scriptorium verify --epub novel.epub analysis.json` replays the
-same bounded in-memory UTF-8 spine projection and all 29 metrics as the existing
-`scriptorium epub` command, without intermediate prose or external requests.
-Optional `--provenance` additionally verifies exact original archive SHA-256,
-extraction profile, chapter counts and source digests; equal prose in a different
-ZIP must fail only when archive evidence is supplied. Malformed sidecars,
-changed books, symlinks and invalid options fail closed with path-free errors.
-Neither mode claims historical edition identity or FantLab parity.
-Positive/negative integration tests, exact-head CI and later acceptance are
-required before merge.
+ACCEPTANCE: Show the actual measured Shishmareva edition beside the
+unmeasured pinned Trusov historical Page witness in the branch-root Reader.
+Provide usable source links and honest edition/translator/coverage evidence.
+Verify 5634933 / 572587 / 24 + 5 against the measured artifact and 5041937 /
+150 Pages against the frozen source-free graph/receipt. No extra measured
+catalogue card, no fabricated comparison or FantLab parity; retain static
+accessibility, keyboard focus, mobile scroll and print. Add positive/tamper
+regressions and check the built site, then later independent acceptance.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: reproducible private analysis and measured Russian Reader; the
-first fully qualified paired translation comparison remains open.
+Milestone: reproducible private analysis and an evidence-backed Russian
+Reader; the first fully qualified paired translation comparison remains open.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Independently accept EPUB report replay PR | Exact-head EPUB/CLI tests, full Python suite and installed-wheel smoke; later qualifying merge | Fresh CI and review |
-| P2 | Verify full Trusov *Robinson Crusoe* first-book literary body | Frozen actual ≥300k prose, rights/identity and 29 measured metrics; honest Shishmareva comparison | Historic rendering/coverage, unresolved VAR and printed edition evidence |
+| P1 | Accept the source-backed Robinson translation readiness panel | Current-source identity checks, site build, exact-head CI and later merge | Fresh CI and review |
+| P2 | Verify full Trusov first-narrative literary body | Frozen actual ≥300k prose, rights, identity and 29 measured metrics; honest Shishmareva pairing | Historical VAR/rendering, Page seams, printed edition |
 | P3 | #281/#282 AOT/FantLab diagnostic maturity | Measured native N evidence, rigorous source-matched deltas; preserve M2 0/5 | Reference-input identity |
 | P4 | #283/#285 public Reader acceptance | Real live HTTP and mobile/desktop keyboard/focus verification | Browser restriction and deployment interlock |
 | P5 | Paris ProofreadPage historical renderer | Reproducible source-free markup classification and chapter boundaries | Unsupported source Page markup and transclusion |

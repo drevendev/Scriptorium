@@ -1,7 +1,7 @@
 """Original, synthetic EPUB fixtures: reading order and fail-closed archive semantics."""
 from __future__ import annotations
 
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
 from hashlib import sha256
 from io import BytesIO, StringIO
 import json
@@ -374,6 +374,96 @@ class EpubIngestionTests(unittest.TestCase):
             rows = json.loads(same.read_text(encoding="utf-8"))["metrics"]
             self.assertTrue(all(float(row["difference"]) == 0 for row in rows
                                 if row["comparison_status"] == "comparable"))
+
+
+    def test_verify_original_epub_and_exact_archive_receipt(self):
+        """A generated EPUB JSON report can be verified without extracting prose to disk."""
+        from scriptorium import cli
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source, report, receipt = (root / "PRIVATE-book.epub",
+                                       root / "PRIVATE-analysis.json",
+                                       root / "PRIVATE-identity.json")
+            source.write_bytes(book())
+            with redirect_stdout(StringIO()):
+                self.assertEqual(cli.main(["epub", str(source), "--output", str(report),
+                                           "--provenance-output", str(receipt)]), 0)
+            output = StringIO()
+            with redirect_stdout(output):
+                self.assertEqual(cli.main(["verify", "--epub", str(source), str(report),
+                                           "--provenance", str(receipt)]), 0)
+            self.assertIn("29 metrics", output.getvalue())
+            self.assertIn("archive SHA-256", output.getvalue())
+            self.assertNotIn("Привет", output.getvalue())
+
+            # Two different ZIP archives may project to precisely the same prose.
+            modified_archive = root / "PRIVATE-different-container.epub"
+            modified_archive.write_bytes(book(extras=[
+                ("OPS/unreferenced.jpg", b"OTHER COVER", ZIP_STORED)]))
+            with redirect_stdout(StringIO()):
+                self.assertEqual(cli.main(["verify", "--epub", str(modified_archive),
+                                           str(report)]), 0)
+            error = StringIO()
+            with redirect_stderr(error), self.assertRaises(SystemExit) as failure:
+                cli.main(["verify", "--epub", str(modified_archive), str(report),
+                          "--provenance", str(receipt)])
+            self.assertEqual(failure.exception.code, 2)
+            self.assertIn("provenance differs", error.getvalue())
+            self.assertNotIn("PRIVATE-", error.getvalue())
+
+            changed_body = root / "PRIVATE-edited-chapter.epub"
+            changed_body.write_bytes(book(chapter2=CH2.replace(
+                "Последняя строка.".encode(), "Новый конец.".encode())))
+            with redirect_stderr(StringIO()), self.assertRaises(SystemExit) as failure:
+                cli.main(["verify", "--epub", str(changed_body), str(report)])
+            self.assertEqual(failure.exception.code, 2)
+
+    def test_verify_epub_rejects_invalid_receipts_and_unsafe_inputs(self):
+        """No raw manuscript, local path, or arbitrary ZIP member is printed."""
+        from scriptorium import cli
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source, report, receipt = (root / "PRIVATE-book.epub",
+                                       root / "PRIVATE-report.json",
+                                       root / "PRIVATE-receipt.json")
+            source.write_bytes(book())
+            with redirect_stdout(StringIO()):
+                self.assertEqual(cli.main(["epub", str(source), "--output", str(report),
+                                           "--provenance-output", str(receipt)]), 0)
+            for raw in (b'{"schema_version":"x","schema_version":"x"}',
+                        b'{"bad":NaN}', b'{"bad":1e999}',
+                        b'\xff', b'{"source_text":"PRIVATE-BOOK-CONTENT"}'):
+                with self.subTest(receipt=raw[:14]):
+                    receipt.write_bytes(raw)
+                    stderr = StringIO()
+                    with redirect_stderr(stderr), self.assertRaises(SystemExit) as failure:
+                        cli.main(["verify", "--epub", str(source), str(report),
+                                  "--provenance", str(receipt)])
+                    self.assertEqual(failure.exception.code, 2)
+                    self.assertNotIn("PRIVATE-", stderr.getvalue())
+            bad_archive = root / "PRIVATE-not-epub.epub"
+            bad_archive.write_bytes(b"not a ZIP")
+            scenarios = (
+                ["verify", "--epub", "-", str(report)],
+                ["verify", str(source), str(report), "--provenance", str(receipt)],
+                ["verify", "--epub", str(bad_archive), str(report)],
+            )
+            for args in scenarios:
+                with self.subTest(args=args[:2]):
+                    stderr = StringIO()
+                    with redirect_stderr(stderr), self.assertRaises(SystemExit) as failure:
+                        cli.main(args)
+                    self.assertEqual(failure.exception.code, 2)
+                    self.assertNotIn("PRIVATE-", stderr.getvalue())
+            symlink = root / "PRIVATE-linked.epub"
+            try:
+                symlink.symlink_to(source)
+            except (OSError, NotImplementedError):
+                pass
+            else:
+                with redirect_stderr(StringIO()), self.assertRaises(SystemExit) as failure:
+                    cli.main(["verify", "--epub", str(symlink), str(report)])
+                self.assertEqual(failure.exception.code, 2)
 
 if __name__ == "__main__":
     unittest.main()

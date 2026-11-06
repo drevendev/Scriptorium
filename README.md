@@ -73,6 +73,10 @@ sending the text or its result to a server:
 ```bash
 scriptorium verify manuscript.txt analysis.json
 cat manuscript.txt | scriptorium verify - analysis.json
+# Or replay a saved EPUB JSON report using the exact local EPUB archive:
+scriptorium verify --epub novel.epub novel-analysis.json
+# Also check archive identity when the original provenance sidecar was saved:
+scriptorium verify --epub novel.epub novel-analysis.json --provenance novel-identity.json
 ```
 
 A successful verification recomputes all 29 metric rows, source hashes, profiles,
@@ -81,7 +85,14 @@ It fails on altered text, changed metrics, unsupported report fields or missing
 original dictionary configuration. Supply `--dictionary dictionary.txt
 --dictionary-profile PROFILE` if the original report used one. Input files are
 bounded and symlinks are rejected; error messages do not reveal paths or prose.
-This checks deterministic replay, **not** a report's claimed Git revision,
+For `--epub`, the same bounded in-memory EPUB 2/3 spine extractor replays its
+UTF-8 body without writing text to disk. Without the optional `--provenance`
+sidecar, **the input hash identifies the extracted body, not the original ZIP**:
+different EPUB archives with identical spine text both pass. With the sidecar
+from `scriptorium epub --provenance-output`, exact archive SHA-256, extraction
+profile, chapter counts and both text digests must also match. Symlinks,
+invalid/oversized EPUBs, malformed sidecars and private-path disclosure fail
+closed. This checks deterministic replay, **not** a report's claimed Git revision,
 legal permission, source-edition match or FantLab parity.
 All **29 metric rows** retain their units and algorithm
 profiles; unavailable measurements stay unknown. The report has readable metric names,

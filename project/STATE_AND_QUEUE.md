@@ -1,40 +1,40 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 444
+STATE_REVISION: 445
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #448 confirmed MERGED at 6286df8f22765011f43e179e50926d9182df7475; proposed conditional source-unmatched word-density diagnostic.
-LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; retained FantLab Anna word/character counts already pinned. M2 0/5.
+LAST_COMMITTED_RUN_AT: 2026-11-07
+LAST_RESULT: Native GitHub confirms #449 MERGED at dc68c7e145ff64be53d36026c5fe7eb319921f82. Prepare a source-backed Anna word-density explanation in the branch-root Reader.
+LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; word-density matrix covers six retained, source-unmatched diagnostics; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-WORD-DENSITY-v1
-ISSUES: #281 retained source-unmatched FantLab metric matrix
+UNIT_ID: SCRIP-READER-WORD-DENSITY-CASE-v1
+ISSUES: #281 word-density diagnostic, #283 reader evidence
 STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-word-density-diagnostics-20261106
-BASE: 6286df8f22765011f43e179e50926d9182df7475
+BRANCH: scrip-reader-word-gap-case-study-20261107
+BASE: dc68c7e145ff64be53d36026c5fe7eb319921f82
 
-ACCEPTANCE: `scriptorium word-gap` uses only verified frozen matrix rows; exposes exact
-raw word/character gaps and six-decimal word densities per 1,000 characters,
-with a separately labelled *hypothetical proportional-length-adjusted* residual.
-All six retained entries appear, including supplemental Resurrection; missing fields
-remain NOT_RUN, scientific source identity UNKNOWN and M2 0/5. JSON/CSV/Markdown
-agree; positive frozen Anna values, negative forged count/identity and create-only
-CLI regressions pass. No previous matrix/metric schema or corpus body is changed.
-Fresh exact-head CI and later independent acceptance required.
+ACCEPTANCE: Root Pages `word-density.html` explains Anna Karenina's retained
+FantLab vs Scriptorium word densities (words per 1,000 characters including spaces)
+with an accessible chart, exact table, hypothetical proportional-length residual
+and explicit `UNKNOWN` source identity / M2 0/5. Eight machine-readable values
+match the six-work `scriptorium word-gap` frozen-evidence report; a one-digit
+corruption fails regression. Root homepage and README link to the new no-JS page;
+no new literary source, metric or corpus admission. Actual CI/build and later
+independent review required. Branch-root deploy/live-browser acceptance separate.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: reproducible local analyzer plus evidence-backed public Russian Reader,
-with honest source-unmatched benchmark diagnostics and gated translation comparison.
+Milestone: reproducible local analyzer plus a public Russian Reader displaying
+measured works and honestly labelled FantLab diagnostic differences.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge conditional word-density diagnostic (#281) | Exact-head CI; read diff/test rows; source-unmatched guard, no parity inflation | Fresh checks |
-| P2 | Reconstruct Trusov first-narrative literary body | Legal >=300k literary text, 29 derived metrics, independently identifiable translator edition | Historical render/Page seams |
-| P3 | #283/#285 Reader live/public acceptance | Public HTTP, desktop/mobile/focus and route/link checks | Browser HTTP restriction / authorized publication |
-| P4 | #281/#282 measurable AOT/FantLab diagnostic | Verified actual-versus-reference evidence and pinned native N treatment | Source match, dictionary and homonym uncertainty |
-| P5 | #284 code/data rights and attribution | Evidence-backed license/attribution for external publication | Rights/owner evidence |
+| P1 | Later accept/merge Anna word-density Reader case (#281/#283) | Fresh head/base, full CI, page/table evidence and review, then verify master | Fresh CI |
+| P2 | Investigate same-input word-boundary policies against retained #449 gap | Reproducible controlled experiment with explicit variants; no FantLab equivalence claim | Exact input must be locally lawful |
+| P3 | #283/#285 Pages live/public acceptance | HTTP, mobile/desktop focus and actual route/link checks | Existing browser navigation restriction |
+| P4 | Trusov first-narrative body and independent translator measurement | Legal >=300k text, 29 metrics and edition witness | Historical render/Page seams |
+| P5 | #284 code/data rights and attribution | Evidence-backed license/attribution before external publication | Rights/owner evidence |
 
 ## Retained evidence and scientific gates
 

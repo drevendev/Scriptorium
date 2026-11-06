@@ -60,6 +60,13 @@ class NativeNRetainedCliTests(unittest.TestCase):
         self.assertIn("40825478901", markdown)
         self.assertIn("M2: 0/5", markdown)
         self.assertIn("Min / 1,000 words", markdown)
+        self.assertIn("Independent-edge upper / 1,000 words", markdown)
+        self.assertIn("the independent-edge upper is a looser bound", markdown)
+        self.assertIn(
+            f"| noun → cardinal | 0 | 8402 | 9992 | 0.000000 | "
+            f"{8402 * 1000 / 269358:.6f} | {9992 * 1000 / 269358:.6f} |",
+            markdown,
+        )
         self.assertIn("NOT FantLab rounding", markdown)
         rows = list(csv.DictReader(io.StringIO(self.invoke("--format", "csv"))))
         self.assertEqual(len(rows), 22)
@@ -115,6 +122,7 @@ class NativeNRetainedCliTests(unittest.TestCase):
                 (("boundary", "fantlab_homonym_selection"), "reproduced"),
                 (("bucket_bounds", "noun"), [0, 1]),
                 (("bigram_bounds", 1, "max"), 8300),  # schema-valid but not the frozen native witness
+                (("bigram_bounds", 1, "independent_edge_upper"), 8301),
             ]:
                 with self.subTest(path=path):
                     forged = json.loads(json.dumps(doc))

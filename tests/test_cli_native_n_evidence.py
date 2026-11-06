@@ -23,7 +23,7 @@ class NativeNRetainedCliTests(unittest.TestCase):
 
     def test_exact_native_witness_never_claims_m2_or_recovers_n(self):
         data = json.loads(self.invoke("--format", "json"))
-        self.assertEqual(data["schema_version"], "scriptorium-native-n-cli-evidence-v1")
+        self.assertEqual(data["schema_version"], "scriptorium-native-n-cli-evidence-v2")
         self.assertEqual(data["m2_source_matched_progress"], "0/5")
         self.assertEqual(data["measurement"], "retained_native_pylem_0.0.18_not_rerun")
         self.assertEqual(data["witness"]["evidence"]["pylem_version"], "0.0.18")
@@ -39,6 +39,18 @@ class NativeNRetainedCliTests(unittest.TestCase):
         self.assertFalse(data["witness"]["m2_parity_admissible"])
         self.assertFalse(data["witness"]["source_text_included"])
         self.assertFalse(data["witness"]["boundary"]["production_pos_mapping_changed"])
+        units = data["conditional_units"]
+        self.assertEqual(units["status"], "conditional_n_only_not_observed_pos_or_fantlab_parity")
+        self.assertEqual(units["denominators"], {
+            "word_tokens": 269358, "all_sentences": 21228,
+            "conditionally_defined_tokens": 172635,
+        })
+        self.assertAlmostEqual(units["bucket_percent_of_conditional_defined"]["noun"][1],
+                               55081 * 100 / 172635)
+        self.assertAlmostEqual(units["bigram_per_1000_word_tokens"][1]["max"],
+                               8402 * 1000 / 269358)
+        self.assertAlmostEqual(units["sentence_position_percent_of_all_sentences"][0]["max"],
+                               2787 * 100 / 21228)
         self.assertNotIn("normalized_text", data)
 
     def test_markdown_and_csv_preserve_conditional_not_observed(self):
@@ -47,6 +59,8 @@ class NativeNRetainedCliTests(unittest.TestCase):
         self.assertIn("8402", markdown)
         self.assertIn("40825478901", markdown)
         self.assertIn("M2: 0/5", markdown)
+        self.assertIn("Min / 1,000 words", markdown)
+        self.assertIn("NOT FantLab rounding", markdown)
         rows = list(csv.DictReader(io.StringIO(self.invoke("--format", "csv"))))
         self.assertEqual(len(rows), 22)
         pair = next(row for row in rows if row["category"] == "bigram"
@@ -54,6 +68,15 @@ class NativeNRetainedCliTests(unittest.TestCase):
         self.assertEqual((pair["observed"], pair["conditional_min"],
                           pair["conditional_max"], pair["evidence_status"]),
                          ("", "0", "8402", "CONDITIONAL_N_ONLY"))
+        self.assertEqual(pair["independent_edge_upper_raw"], "9992")
+        self.assertEqual(pair["conditional_max_normalized"], f"{8402 * 1000 / 269358:.6f}")
+        self.assertEqual(pair["independent_edge_upper_normalized"], f"{9992 * 1000 / 269358:.6f}")
+        self.assertEqual(pair["normalized_unit"], "per_1000_word_tokens")
+        first_position = next(row for row in rows
+                              if row["category"] == "sentence_position" and row["measure"] == "1")
+        self.assertEqual(first_position["conditional_max_normalized"],
+                         f"{2787 * 100 / 21228:.6f}")
+        self.assertEqual(first_position["normalized_unit"], "percent_of_all_sentences")
         self.assertNotIn("PASS", {row["evidence_status"] for row in rows})
         self.assertEqual({row["candidate_id"] for row in rows}, {"tolstoy-anna-karenina-ru"})
         self.assertEqual({row["pylem_version"] for row in rows}, {"0.0.18"})

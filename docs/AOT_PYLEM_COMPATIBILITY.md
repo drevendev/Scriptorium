@@ -224,6 +224,22 @@ decisions, or M2 parity. Provider sdist, runtime candidate SHA, frozen
 normalized source hash and commit are recorded; text and token rows are
 never uploaded. The production POS mapping and M2 0/5 are unchanged.
 
+## Source-free N sensitivity in readable FantLab-shaped units
+
+The checked-in `scriptorium n-evidence --root . --format json` command now
+re-expresses the **already measured** N-only count envelopes with explicit
+denominators: noun/cardinal bucket percentage of *conditionally defined*
+tokens, POS-pair counts **per 1,000 total word tokens**, and sentence-position
+percentage of **all sentences**. Markdown and CSV expose both original integer
+bounds and these calculated rates; CSV also retains the looser independent-edge
+upper bound so it cannot be confused with the exact per-cell conditional maximum.
+The JSON CLI schema is `scriptorium-native-n-cli-evidence-v2` and the new
+derivation is `scriptorium-native-n-conditional-units-v1`. Six-digit CSV/Markdown
+decimal display is Scriptorium presentation precision, **not** FantLab rounding.
+The N-mixed rows stay excluded and the endpoints of different cells are not
+jointly attainable. All records remain source-free; production POS mapping,
+source-matched parity and M2 (0/5) are unchanged.
+
 ## Native lexical contrast controls (SCRIP-MORPH-009)
 
 The pinned Ubuntu 22.04 / Python 3.9 `pylem==0.0.18` smoke now

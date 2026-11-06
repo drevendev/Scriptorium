@@ -1,25 +1,26 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 442
+STATE_REVISION: 443
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #446 confirmed MERGED at 810ef191279baa87cefa708411510704f1c7b4c1; propose Reader-native-N normalized tables.
-LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; native N conditional-unit CLI #446 merged. M2 0/5. No new admitted works.
+LAST_RESULT: #447 confirmed MERGED at 105db2361cf4e5ab3a27c6d319b462350957f8f0; propose complete normalized Markdown N bigram ceilings.
+LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; public conditional N tables #447 merged. M2 0/5. No new admitted works.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-N-CONDITIONAL-UNITS-v1
-ISSUES: #282 pinned native noun/cardinal N ambiguity; #283 Reader evidence UI
+UNIT_ID: SCRIP-NATIVE-N-MARKDOWN-LOOSE-CEILING-v1
+ISSUES: #282 pinned native noun/cardinal N ambiguity
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-reader-native-n-units-20261106
-BASE: 810ef191279baa87cefa708411510704f1c7b4c1
+BRANCH: scrip-native-n-markdown-ceilings-20261106
+BASE: 105db2361cf4e5ab3a27c6d319b462350957f8f0
 
-ACCEPTANCE: The already published root N ambiguity page shows exact source-free
-noun/cardinal conditional percentages, POS-bigram achievable and looser
-independent-edge ceilings per 1,000 words, and sentence-position percentages
-of all sentences, tied by regressions to the immutable native witness.
-Tables are usable without JavaScript, keyboard-scrollable and honest about
-units and FantLab uncertainty. Exact-head CI and later acceptance required.
+ACCEPTANCE: CLI native N Markdown displays, for every retained
+POS-bigram, raw achievable max and looser independent-edge upper bound *and*
+their normalized values per 1,000 total word tokens; labels distinguish the
+two upper limits and explicitly do not claim observed noun/cardinal POS.
+Regression tests verify actual frozen Anna integers and reject edited loose
+ceilings; JSON/CSV and pinned native witness remain unchanged.
+Exact-head CI and separate later acceptance required.
 
 ## Next user-visible milestone and compact queue
 
@@ -28,7 +29,7 @@ Russian Reader, with an honestly gated same-novel translation comparison.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge public N ambiguity normalized tables | Static values match frozen N source, accessible tables and exact-head CI | Fresh PR checks |
+| P1 | Later accept/merge normalized Markdown N bigram ceilings (#282) | Raw and per-1,000 achievable versus loose bounds, immutable witness, passing exact-head CI | Fresh PR checks |
 | P2 | Reconstruct Trusov first-narrative literary body | Actual >=300k literary text, rights/source identity, 29 derived metrics and honest Shishmareva comparison | Historical VAR/renderer and Page-seam evidence |
 | P3 | #283/#285 Reader live/public acceptance | Public HTTP, desktop/mobile/focus and route/link checks | Browser HTTP restriction / authorized deployment |
 | P4 | #281/#282 AOT/FantLab diagnostic | Native POS uncertainty and source-matched expected/actual deltas; M2 unchanged | Reference analyzer-input identity |

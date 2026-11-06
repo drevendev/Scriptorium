@@ -130,10 +130,11 @@ def render_native_n_report(report: dict[str, object], kind: str) -> str:
     for bucket, (lo, hi) in witness["bucket_bounds"].items():
         scaled = units["bucket_percent_of_conditional_defined"][bucket]
         lines.append(f"| {bucket} | {lo} | {hi} | {scaled[0]:.6f} | {scaled[1]:.6f} |")
-    lines += ["", "| Adjacent POS pair | Min | Max | Independent-edge upper | Min / 1,000 words | Max / 1,000 words |",
-              "| --- | ---: | ---: | ---: | ---: | ---: |"]
+    lines += ["", "The achievable maximum respects linked adjacent token assignments; the independent-edge upper is a looser bound, not an observed or jointly attainable count.", "",
+              "| Adjacent POS pair | Min | Max | Independent-edge upper | Min / 1,000 words | Max / 1,000 words | Independent-edge upper / 1,000 words |",
+              "| --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
     for pair, scaled in zip(witness["bigram_bounds"], units["bigram_per_1000_word_tokens"]):
-        lines.append(f"| {pair['first']} → {pair['second']} | {pair['min']} | {pair['max']} | {pair['independent_edge_upper']} | {scaled['min']:.6f} | {scaled['max']:.6f} |")
+        lines.append(f"| {pair['first']} → {pair['second']} | {pair['min']} | {pair['max']} | {pair['independent_edge_upper']} | {scaled['min']:.6f} | {scaled['max']:.6f} | {scaled['independent_edge_upper']:.6f} |")
     lines += ["", "| Sentence position | Min | Max | Min % of all sentences | Max % |",
               "| ---: | ---: | ---: | ---: | ---: |"]
     for position, scaled in zip(witness["sentence_position_bounds"], units["sentence_position_percent_of_all_sentences"]):

@@ -1,24 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 439
+STATE_REVISION: 440
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #443 confirmed MERGED at 99e8b25ec01a01caacfd92e2d078bd5c1ed4059f; strict source-reference calendar validation is a subsequent independent #281 slice.
-LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; private JSON replay verification merged. M2 0/5. No new admitted works.
+LAST_RESULT: #444 confirmed MERGED at 0bc01dc2a485ade8b57b5fe8e29dc459b407aa30; prepare independent #281 source-route cross-check.
+LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; #444 strict calendar validation merged. M2 0/5. No new admitted works.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-REFERENCE-CALENDAR-v1
-ISSUES: #281 strict benchmark reference integrity
+UNIT_ID: SCRIP-REPRO-SOURCE-ROUTE-BINDING-v1
+ISSUES: #281 cross-work readiness/source provenance
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-repro-reference-calendar-20261106
-BASE: 99e8b25ec01a01caacfd92e2d078bd5c1ed4059f
+BRANCH: scrip-repro-source-route-binding-20261106
+BASE: 0bc01dc2a485ade8b57b5fe8e29dc459b407aa30
 
-ACCEPTANCE: The five-work readiness pipeline rejects nonexistent calendar dates
-even when identical invalid FantLab dates are copied into catalog, trace and
-reference. A real leap day remains valid. No changes to metric deltas, source
-identity, scientific thresholds, data or M2 status. Regression test and exact
-head CI before later independent acceptance.
+ACCEPTANCE: The five-work readiness pipeline must reject a catalog's syntactically
+valid but wrong Wikisource literary route when it disagrees with the independently
+frozen source-edition trace. All five existing real witnesses continue to validate;
+negative tests cover catalog and trace drift. Preserve per-metric parity/rights gates,
+underlying source metadata and M2=0/5. Hosted exact-head CI and later review before merge.
 
 ## Next user-visible milestone and compact queue
 
@@ -27,7 +27,7 @@ Russian Reader, with an honestly gated same-novel translation comparison.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge strict FantLab reference calendar check | Exact-head CI; mirrored fake date rejected, valid leap day retained | Fresh PR checks |
+| P1 | Later accept/merge five-work frozen source-route binding | Exact-head CI, positive real witnesses, forged route rejected | Fresh PR checks |
 | P2 | Reconstruct Trusov first-narrative literary body | Actual >=300k literary text, rights/source identity, 29 derived metrics and honest Shishmareva comparison | Historical VAR/renderer and Page-seam evidence |
 | P3 | #283/#285 Reader live/public acceptance | Public HTTP, desktop/mobile/focus and route/link checks | Browser HTTP restriction / authorized deployment |
 | P4 | #281/#282 AOT/FantLab diagnostic | Native POS uncertainty and source-matched expected/actual deltas; M2 unchanged | Reference analyzer-input identity |

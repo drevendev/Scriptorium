@@ -267,6 +267,18 @@ footer a { color:#ffdaa3; }
   padding-top:1rem; font-size:.81rem; }
 .translation-links a { display:inline-flex; align-items:center; min-height:44px; font-weight:750; }
 .translation-links span { color:var(--subtle); }
+.translation-readiness { margin-top:1.5rem; padding:clamp(1.1rem,3vw,1.7rem); background:var(--wash); border:1px solid var(--line); border-left:5px solid var(--gold); border-radius:9px; }
+.translation-readiness h3 { font-size:clamp(1.5rem,2.4vw,2.2rem); margin:.4rem 0 .7rem; }
+.translation-readiness > p:not(.eyebrow) { max-width:78ch; color:var(--subtle); line-height:1.65; }
+.translation-readiness .table-region { margin-top:1rem; }
+.translation-readiness table { width:100%; min-width:700px; border-collapse:collapse; }
+.translation-readiness caption { text-align:left; padding:.75rem; font-size:.86rem; color:var(--subtle); }
+.translation-readiness th,.translation-readiness td { text-align:left; vertical-align:top; border-bottom:1px solid var(--line); padding:.85rem; line-height:1.55; }
+.translation-readiness th { font-weight:750; }
+.translation-readiness a { display:inline-flex; align-items:center; min-height:44px; font-weight:750; }
+.translation-readiness a:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+.translation-readiness-note { font-size:.91rem; }
+@media print { .translation-readiness { background:white; color:black; break-inside:avoid; } .translation-readiness table { min-width:0; } }
 .language-boundary { margin-top:1rem; padding:1rem 1.35rem; background:var(--pale-gold);
   border-left:5px solid var(--gold); border-radius:4px; }
 .language-boundary h3 { font-size:1.2rem; margin:.2rem 0; }

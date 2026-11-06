@@ -18,6 +18,7 @@
 .n-track>span{display:block;width:20.449%;height:100%;background:#265b4b}
 .n-table{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
 .n-table table{width:100%;min-width:540px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+#n-bigram-table{min-width:810px}
 .n-table caption{text-align:left;padding:.9rem 1rem;color:var(--subtle);font-size:.85rem}
 .n-table th,.n-table td{text-align:left;padding:.8rem 1rem;border-bottom:1px solid #bcc9bf}
 .n-table th{font-weight:700}.n-table thead{background:#e9efe7}.n-table tr:last-child td,.n-table tr:last-child th{border-bottom:none}
@@ -47,24 +48,35 @@
 <p>Из 269 358 токенов у 117 554 есть консервативно определённая категория; ещё 55 081 содержат только N. В гипотезе, где все такие N отнесены к существительным <em>или</em> числительным, определёнными стали бы 172 635 токенов. Это <strong>не</strong> подтверждённая морфология FantLab.</p>
 <div class="n-track" role="img" aria-label="Доля только N: 55 081 из 269 358 токенов, 20,45 процента"><span></span></div>
 <p class="n-meta">Полоса показывает долю N-only от всех токенов, а не доверительный интервал. Минимум и максимум для каждого POS-бакета — 0…55 081; оба максимума одновременно невозможны.</p></section>
-<section class="n-panel" aria-labelledby="n-bigram"><h2 id="n-bigram">Влияние на биграммы</h2>
-<p>Границы вычислены для <strong>каждой пары отдельно</strong> динамическим программированием с единственным назначением N для каждого токена. Они не описывают одну общую возможную разметку.</p>
-<div class="n-table" role="region" tabindex="0" aria-label="Границы POS-биграмм"><table><caption>Анна Каренина · условные границы частот при назначении только N-only токенов, событий на всю книгу</caption>
-<thead><tr><th scope="col">Биграмма</th><th scope="col">Минимум</th><th scope="col">Максимум</th><th scope="col">На 1000 слов, максимум</th></tr></thead><tbody>
-<tr><th scope="row">Существительное → существительное</th><td>0</td><td>9 992</td><td>37,10</td></tr>
-<tr><th scope="row">Существительное → числительное</th><td>0</td><td>8 402</td><td>31,19</td></tr>
-<tr><th scope="row">Числительное → существительное</th><td>0</td><td>8 402</td><td>31,19</td></tr>
-<tr><th scope="row">Числительное → числительное</th><td>0</td><td>9 992</td><td>37,10</td></tr>
+<section class="n-panel" aria-labelledby="n-buckets"><h2 id="n-buckets">Два возможных чтения N</h2>
+<p>В условном подмножестве из <strong>172 635 определённых токенов</strong> верхняя граница для каждой из двух категорий — <strong>31,906045%</strong>. Это доля <em>условно определённых</em> токенов, не доля существительных или числительных во всём тексте.</p>
+<div class="n-table" role="region" tabindex="0" aria-label="Границы существительных и числительных"><table id="n-buckets-table"><caption>Индивидуальные границы категорий · знаменатель: 172 635 условно определённых токенов</caption>
+<thead><tr><th scope="col">Категория</th><th scope="col">Мин. токенов</th><th scope="col">Макс. токенов</th><th scope="col">Макс. доля условно определённых</th></tr></thead><tbody>
+<tr data-native-bucket="noun"><th scope="row">Существительное</th><td>0</td><td>55 081</td><td>31,906045%</td></tr>
+<tr data-native-bucket="cardinal"><th scope="row">Числительное</th><td>0</td><td>55 081</td><td>31,906045%</td></tr>
 </tbody></table></div>
-<p class="n-meta">Например, для «существительное → числительное» простое сложение возможных рёбер дало бы 9 992, но с общей меткой соседних токенов достижимый максимум — только 8 402.</p></section>
+<p class="n-meta">У двух категорий одинаковая верхняя граница, но одновременно достигнуть её нельзя. Смешанные N с другими тегами (19 670) исключены. Шесть знаков после запятой — точность отображения Scriptorium, а не правило округления FantLab.</p></section>
+<section class="n-panel" aria-labelledby="n-bigram"><h2 id="n-bigram">Влияние на биграммы</h2>
+<p>Границы вычислены для <strong>каждой пары отдельно</strong> динамическим программированием с единственным назначением N для каждого токена. <strong>Достижимый максимум</strong> учитывает ограничения соседних токенов; <strong>независимый верхний предел</strong> складывает возможные рёбра и может завышать результат. Ни один набор максимумов не является общей разметкой.</p>
+<div class="n-table" role="region" tabindex="0" aria-label="Границы POS-биграмм"><table id="n-bigram-table"><caption>Анна Каренина · условные POS-переходы, ставки на 269 358 словоформ; нормировка на 1000 слов</caption>
+<thead><tr><th scope="col">Биграмма</th><th scope="col">Мин. событий</th><th scope="col">Достижимый макс.</th><th scope="col">Независимый предел</th><th scope="col">Макс. / 1000 слов</th><th scope="col">Независимый / 1000 слов</th></tr></thead><tbody>
+<tr data-native-pair="noun-noun"><th scope="row">Существительное → существительное</th><td>0</td><td>9 992</td><td>9 992</td><td>37,095613</td><td>37,095613</td></tr>
+<tr data-native-pair="noun-cardinal"><th scope="row">Существительное → числительное</th><td>0</td><td>8 402</td><td>9 992</td><td>31,192688</td><td>37,095613</td></tr>
+<tr data-native-pair="cardinal-noun"><th scope="row">Числительное → существительное</th><td>0</td><td>8 402</td><td>9 992</td><td>31,192688</td><td>37,095613</td></tr>
+<tr data-native-pair="cardinal-cardinal"><th scope="row">Числительное → числительное</th><td>0</td><td>9 992</td><td>9 992</td><td>37,095613</td><td>37,095613</td></tr>
+</tbody></table></div>
+<p class="n-meta">Для «существительное → числительное» достижимый максимум — 8 402 (31,192688 на 1000 слов), тогда как независимый предел — 9 992 (37,095613). Все доли условные, не наблюдаемые POS-частоты FantLab.</p></section>
 <section class="n-panel" aria-labelledby="n-position"><h2 id="n-position">Позиция в предложении</h2>
-<p>Для первых пяти позиций верхняя граница одинакова для каждой из двух конкурирующих категорий, но не может достигаться для обеих одновременно.</p>
-<div class="n-table" role="region" tabindex="0" aria-label="Позиционные ограничения"><table><caption>Условное максимальное число N-only токенов на позиции и доля от 21 228 предложений</caption>
+<p>Для первых пяти позиций верхняя граница одинакова для каждой из двух конкурирующих категорий, но не может достигаться для обеих одновременно. Знаменатель — все 21 228 предложений, не число N-only токенов.</p>
+<div class="n-table" role="region" tabindex="0" aria-label="Позиционные ограничения"><table id="n-position-table"><caption>Условный максимум N-only на каждой позиции; доля от 21 228 предложений</caption>
 <thead><tr><th scope="col">Позиция</th><th scope="col">Минимум</th><th scope="col">Максимум</th><th scope="col">Макс. доля предложений</th></tr></thead><tbody>
-<tr><th scope="row">1</th><td>0</td><td>2 787</td><td>13,13%</td></tr><tr><th scope="row">2</th><td>0</td><td>3 203</td><td>15,09%</td></tr>
-<tr><th scope="row">3</th><td>0</td><td>3 151</td><td>14,84%</td></tr><tr><th scope="row">4</th><td>0</td><td>3 451</td><td>16,26%</td></tr>
-<tr><th scope="row">5</th><td>0</td><td>3 440</td><td>16,21%</td></tr>
-</tbody></table></div></section>
+<tr data-native-position="1"><th scope="row">1</th><td>0</td><td>2 787</td><td>13,128886%</td></tr>
+<tr data-native-position="2"><th scope="row">2</th><td>0</td><td>3 203</td><td>15,088562%</td></tr>
+<tr data-native-position="3"><th scope="row">3</th><td>0</td><td>3 151</td><td>14,843603%</td></tr>
+<tr data-native-position="4"><th scope="row">4</th><td>0</td><td>3 451</td><td>16,256831%</td></tr>
+<tr data-native-position="5"><th scope="row">5</th><td>0</td><td>3 440</td><td>16,205012%</td></tr>
+</tbody></table></div>
+<p class="n-meta">Шесть знаков после запятой — формат отображения, а не правило точности FantLab.</p></section>
 <section class="n-panel" aria-labelledby="n-controls"><h2 id="n-controls">Проверка нативными примерами</h2>
 <p>На закреплённом pylem проверены три лексических набора по три слова. Названия групп — человеческая аннотация примеров, а <strong>не</strong> восстановленная часть речи из AOT.</p>
 <div class="n-table" role="region" tabindex="0" aria-label="Нативные контрольные группы"><table><caption>Сколько отдельных словоформ получили только N в pylem 0.0.18</caption>

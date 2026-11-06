@@ -73,6 +73,55 @@ class NativeNPublicationTests(unittest.TestCase):
         self.assertIn("M2 parity remains 0/5", readme)
         self.assertIn("not current acceptance or live-deployment evidence", history)
 
+
+    def test_public_native_n_tables_match_pinned_conditional_units(self):
+        """Visible static figures must track the reviewed N witness and its denominators."""
+        from scriptorium.native_n_units import normalized_n_bounds
+
+        doc = record()
+        units = normalized_n_bounds(doc)
+        html = (ROOT / "n-uncertainty.html").read_text(encoding="utf-8")
+
+        def format_int(value):
+            return f"{value:,}".replace(",", " ")
+
+        def format_ru(value):
+            return f"{value:.6f}".replace(".", ",")
+
+        def assert_rows(markup):
+            names = {"noun": "Существительное", "cardinal": "Числительное"}
+            for category, bounds in doc["bucket_bounds"].items():
+                row = (f'<tr data-native-bucket="{category}"><th scope="row">{names[category]}</th>'
+                       f'<td>{format_int(bounds[0])}</td><td>{format_int(bounds[1])}</td>'
+                       f'<td>{format_ru(units["bucket_percent_of_conditional_defined"][category][1])}%</td></tr>')
+                self.assertIn(row, markup)
+            for pair, scaled in zip(doc["bigram_bounds"], units["bigram_per_1000_word_tokens"]):
+                first, second = pair["first"], pair["second"]
+                row = (f'<tr data-native-pair="{first}-{second}"><th scope="row">'
+                       f'{names[first]} → {names[second].lower()}</th>'
+                       f'<td>{format_int(pair["min"])}</td><td>{format_int(pair["max"])}</td>'
+                       f'<td>{format_int(pair["independent_edge_upper"])}</td>'
+                       f'<td>{format_ru(scaled["max"])}</td>'
+                       f'<td>{format_ru(scaled["independent_edge_upper"])}</td></tr>')
+                self.assertIn(row, markup)
+            for position, scaled in zip(doc["sentence_position_bounds"],
+                                        units["sentence_position_percent_of_all_sentences"]):
+                row = (f'<tr data-native-position="{position["position"]}">'
+                       f'<th scope="row">{position["position"]}</th>'
+                       f'<td>{format_int(position["min"])}</td><td>{format_int(position["max"])}</td>'
+                       f'<td>{format_ru(scaled["max"])}%</td></tr>')
+                self.assertIn(row, markup)
+            for table_id in ("n-buckets-table", "n-bigram-table", "n-position-table"):
+                self.assertIn(f'id="{table_id}"', markup)
+            self.assertIn("M2: 0/5", markup)
+            self.assertIn("не правило округления FantLab", markup)
+
+        assert_rows(html)
+        changed = html.replace("31,192688", "31,192689", 1)
+        self.assertNotEqual(changed, html)
+        with self.assertRaises(AssertionError):
+            assert_rows(changed)
+
     def test_tampering_counts_identity_or_parity_fails_closed(self):
         for path, value in [
             (("counts", "conditional_defined"), 172636),

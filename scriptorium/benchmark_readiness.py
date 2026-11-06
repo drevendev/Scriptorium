@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import csv
 from io import StringIO
+from datetime import date as CalendarDate
 import json
 from pathlib import Path
 import re
@@ -78,6 +79,17 @@ def _sha(value: object) -> str:
     return value
 
 
+def _reference_date(value: object) -> str:
+    """Require an actual ISO calendar day, not just a date-shaped string."""
+    if not isinstance(value, str) or not _DATE.fullmatch(value):
+        raise ValueError("invalid reference date")
+    try:
+        CalendarDate.fromisoformat(value)
+    except ValueError as exc:
+        raise ValueError("invalid reference date") from exc
+    return value
+
+
 def _same(actual: object, expected: object, field: str) -> None:
     if type(actual) is not type(expected) or actual != expected:
         raise ValueError(f"conflicting evidence for {field}")
@@ -119,9 +131,7 @@ def build_readiness(root: Path) -> dict[str, object]:
         work_id = _positive_int(_get(fantlab, "work_id"), "FantLab work ID")
         ref_url = f"https://fantlab.ru/work{work_id}/lp"
         _same(_get(fantlab, "analysis_url"), ref_url, "FantLab URL")
-        date = _get(fantlab, "analysis_date")
-        if not isinstance(date, str) or not _DATE.fullmatch(date):
-            raise ValueError("invalid reference date")
+        date = _reference_date(_get(fantlab, "analysis_date"))
         expected = _positive_int(_get(fantlab, "characters"), "FantLab displayed chars")
         _same(_get(trace, "fantlab", "work_id"), work_id, "trace FantLab ID")
         _same(_get(trace, "fantlab", "analysis_url"), ref_url, "trace FantLab URL")

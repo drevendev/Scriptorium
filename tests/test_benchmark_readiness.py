@@ -103,6 +103,41 @@ class ReadinessTests(unittest.TestCase):
         self.assertIn("already exists", error_output.getvalue())
         self.assertEqual(destination.read_bytes(), before)
 
+    def test_reference_date_must_be_a_real_iso_calendar_day(self):
+        # All three copies can agree on a *fictional* day. String matching
+        # alone previously accepted this and rendered it as dated evidence.
+        first = _SPECS[0][0]
+        trace_path = f"corpus/candidates/source-edition-traces/{first}.json"
+        ref_path = "benchmarks/fantlab/work270306.json"
+        for invalid in ("2022-02-30", "2022-13-01", "2022-2-03", "2022-09-31"):
+            with self.subTest(invalid=invalid):
+                _fixture(self.root)
+                catalog = json.loads((self.root / CATALOG).read_text(encoding="utf-8"))
+                trace = json.loads((self.root / trace_path).read_text(encoding="utf-8"))
+                reference = json.loads((self.root / ref_path).read_text(encoding="utf-8"))
+                catalog["candidates"][0]["fantlab"]["analysis_date"] = invalid
+                trace["fantlab"]["analysis_date"] = invalid
+                reference["reference"]["analysis_date"] = invalid
+                _write(self.root, CATALOG, catalog)
+                _write(self.root, trace_path, trace)
+                _write(self.root, ref_path, reference)
+                with self.assertRaisesRegex(ValueError, "invalid reference date"):
+                    build_readiness(self.root)
+        # A valid leap day is not rejected by an overbroad February rule.
+        _fixture(self.root)
+        catalog = json.loads((self.root / CATALOG).read_text(encoding="utf-8"))
+        trace = json.loads((self.root / trace_path).read_text(encoding="utf-8"))
+        reference = json.loads((self.root / ref_path).read_text(encoding="utf-8"))
+        for record, key in ((catalog["candidates"][0]["fantlab"], "analysis_date"),
+                            (trace["fantlab"], "analysis_date"),
+                            (reference["reference"], "analysis_date")):
+            record[key] = "2024-02-29"
+        _write(self.root, CATALOG, catalog)
+        _write(self.root, trace_path, trace)
+        _write(self.root, ref_path, reference)
+        self.assertEqual(build_readiness(self.root)["entries"][0]["fantlab"]["analysis_date"],
+                         "2024-02-29")
+
     def test_rejects_forged_source_match(self):
         data = json.loads((self.root / CATALOG).read_text(encoding="utf-8"))
         data["candidates"][0]["fantlab_source_edition_match"] = "exact"

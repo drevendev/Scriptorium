@@ -1,25 +1,24 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 438
+STATE_REVISION: 439
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-06
-LAST_RESULT: #442 confirmed MERGED at b6407de21d4593fc3594438eadabe328122fa02d; prepare machine-readable private report replay verification for later acceptance.
-LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; Shishmareva and Trusov readiness table merged. M2 0/5. No new admitted works.
+LAST_RESULT: #443 confirmed MERGED at 99e8b25ec01a01caacfd92e2d078bd5c1ed4059f; strict source-reference calendar validation is a subsequent independent #281 slice.
+LAST_VERIFIED_PROGRESS: Reader 11 measured / 2 leads; private JSON replay verification merged. M2 0/5. No new admitted works.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CLI-VERIFY-MACHINE-JSON-v1
-ISSUES: #281 reproducibility; builds on merged #440 and #441
+UNIT_ID: SCRIP-REPRO-REFERENCE-CALENDAR-v1
+ISSUES: #281 strict benchmark reference integrity
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-cli-verify-machine-json-20261106
-BASE: b6407de21d4593fc3594438eadabe328122fa02d
+BRANCH: scrip-repro-reference-calendar-20261106
+BASE: 99e8b25ec01a01caacfd92e2d078bd5c1ed4059f
 
-ACCEPTANCE: Offer a deterministic one-line JSON PASS receipt for a successfully
-replayed original UTF-8 / EPUB report, distinguishing EPUB archive proof checked
-with --provenance from archive NOT_CHECKED. No JSON PASS on failure, no source
-text/private paths/revision authentication, unchanged 29 numeric/NOT_RUN metric
-checks and human-readable default. Positive and adversarial subprocess checks
-and exact-head hosted CI before later independent acceptance/merge.
+ACCEPTANCE: The five-work readiness pipeline rejects nonexistent calendar dates
+even when identical invalid FantLab dates are copied into catalog, trace and
+reference. A real leap day remains valid. No changes to metric deltas, source
+identity, scientific thresholds, data or M2 status. Regression test and exact
+head CI before later independent acceptance.
 
 ## Next user-visible milestone and compact queue
 
@@ -28,7 +27,7 @@ Russian Reader, with an honestly gated same-novel translation comparison.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge structured private verification result | Exact-head full CI, no false PASS, privacy checks and review | Fresh PR checks |
+| P1 | Later accept/merge strict FantLab reference calendar check | Exact-head CI; mirrored fake date rejected, valid leap day retained | Fresh PR checks |
 | P2 | Reconstruct Trusov first-narrative literary body | Actual >=300k literary text, rights/source identity, 29 derived metrics and honest Shishmareva comparison | Historical VAR/renderer and Page-seam evidence |
 | P3 | #283/#285 Reader live/public acceptance | Public HTTP, desktop/mobile/focus and route/link checks | Browser HTTP restriction / authorized deployment |
 | P4 | #281/#282 AOT/FantLab diagnostic | Native POS uncertainty and source-matched expected/actual deltas; M2 unchanged | Reference analyzer-input identity |

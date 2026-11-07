@@ -324,6 +324,12 @@ validated field-level observations in the metric matrix below.
 
 To inspect **actual retained per-metric differences** rather than character counts alone,
 run `python -m scriptorium.benchmark_metric_matrix --root . --format markdown`.
+The Markdown summary now separates locally measured fields, retained FantLab
+reference values and numeric pairs; individual missing reference values say
+**UNKNOWN**, not **NOT_RUN**. CSV keeps its existing numeric cells and adds
+`reference_availability` / `actual_availability` labels so an absent public
+reference cannot be mistaken for a failed local measurement. Numeric pairs
+remain source-unmatched diagnostics, not evidence of parity.
 The source-free matrix validates **171 field-level diagnostic/extension rows**:
 142 across the five core works (**five works with retained measurements**),
 plus 29 *Resurrection* rows as a sixth, separately pinned source-unmatched

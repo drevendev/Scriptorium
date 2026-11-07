@@ -491,7 +491,8 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
                          "source_url", "source_edition", "translator", "legal_basis",
                          "legal_evidence", "frozen_characters", "normalized_sha256",
                          "normalization_profile", "source_witness_path", "reference_date",
-                         "reference_work_id", "m2_candidate_scope"))
+                         "reference_work_id", "m2_candidate_scope",
+                         "reference_availability", "actual_availability"))
         for entry in entries:
             # This joins independently checked five-work readiness witnesses.
             # Resurrection is supplemental: never borrow another work's rights
@@ -519,6 +520,9 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
                     entry["reference_date"],
                     fantlab.get("work_id") or "UNKNOWN",
                     entry.get("m2_candidate_scope") or "FIVE_WORK_READINESS",
+                    "RECORDED" if row and row["expected"] is not None else "UNKNOWN",
+                    ("MEASURED" if row["actual"] is not None else row["result"])
+                    if row else "NOT_RUN",
                 ))
         return stream.getvalue()
     if kind != "markdown":
@@ -526,15 +530,19 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
     lines = [
         "# Scriptorium · retained FantLab metric diagnostics", "",
         "**M2: 0/5. No FantLab analyzer-input edition matches.** These rows never establish parity.", "",
-        "| Work | Metrics recorded | With actual | Without actual | Input match |",
-        "| --- | ---: | ---: | ---: | --- |",
+        "| Work | Fields retained | Local actuals | FantLab refs retained | Numeric pairs (unmatched) | Input match |",
+        "| --- | ---: | ---: | ---: | ---: | --- |",
     ]
     for entry in entries:
         title = str(entry["title"]).replace("|", "\\|").replace("\n", " ")
+        retained = entry["metric_rows"]
+        reference_count = sum(row["expected"] is not None for row in retained)
+        numeric_pairs = sum(row["expected"] is not None and row["actual"] is not None
+                            for row in retained)
         lines.append(
-            f"| {title} | {len(entry['metric_rows']) if entry['metric_rows'] else 'NOT_RUN'} | "
-            f"{entry['metric_rows_with_actual'] if entry['metric_rows'] else 'NOT_RUN'} | "
-            f"{entry['metric_rows_without_actual'] if entry['metric_rows'] else 'NOT_RUN'} | UNKNOWN |"
+            f"| {title} | {len(retained) if retained else 'NOT_RUN'} | "
+            f"{entry['metric_rows_with_actual'] if retained else 'NOT_RUN'} | "
+            f"{reference_count} | {numeric_pairs} | UNKNOWN |"
         )
     lines.extend(["", "## Five-work provenance (frozen public candidates)", "",
                   "Candidate source rights and hashes do not establish FantLab analyzer-input identity.",
@@ -553,7 +561,8 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
     lines.extend([
         "", "## Retained source-unmatched diagnostic rows", "",
         "All numeric differences are **actual minus expected** on an unmatched public transcription.",
-        "Unknown actual is not zero; displayed-rounding policy remains UNKNOWN.",
+        "A missing FantLab reference is UNKNOWN (not NOT_RUN); an unavailable local actual is NOT_RUN or UNRESOLVED_NO_ACTUAL.",
+        "Numeric pairs are diagnostic only: input identity and displayed-rounding policy remain UNKNOWN.",
         "Resurrection is a sixth supplemental diagnostic, outside the fixed five-work M2 source-readiness set.", "",
         "| Metric ID | FantLab expected | Scriptorium actual | Raw Δ | Status |",
         "| --- | ---: | ---: | ---: | --- |",
@@ -564,10 +573,12 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
         title = str(entry["title"]).replace("|", "\\|").replace("\n", " ")
         lines.extend(["", "### " + title, ""])
         for row in entry["metric_rows"]:
-            fmt = lambda n: "NOT_RUN" if n is None else str(n)
+            reference = "UNKNOWN" if row["expected"] is None else str(row["expected"])
+            actual = row["result"] if row["actual"] is None else str(row["actual"])
+            delta = "UNKNOWN" if row["actual_minus_expected"] is None else str(row["actual_minus_expected"])
             lines.append(
-                f"| {row['metric_id']} | {fmt(row['expected'])} | {fmt(row['actual'])} | "
-                f"{fmt(row['actual_minus_expected'])} | {row['result']} |"
+                f"| {row['metric_id']} | {reference} | {actual} | "
+                f"{delta} | {row['result']} |"
             )
     lines.extend(["", "All five readiness works now have retained, source-unmatched field observations. Hyperboloid, Silver Dove, Brothers Karamazov and supplemental Resurrection each have only two displayed FantLab references; missing reference values are unknown, not zero. M2 remains 0/5.", ""])
     return "\n".join(lines)

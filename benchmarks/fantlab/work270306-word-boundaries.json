@@ -1,0 +1,96 @@
+{
+  "artifact_version": "scriptorium-frozen-anna-word-boundaries-v1",
+  "candidate_id": "tolstoy-anna-karenina-ru",
+  "evidence": {
+    "workflow_run_id": 42331164429,
+    "workflow_job_id": 128277761244,
+    "verified_pr_head_sha": "3ccd96bfb29a37820da50f0c9895c9714fead7b7",
+    "replayed_revision_count": 239,
+    "historical_policy_reference": "benchmarks/fantlab/work270306-policy-sensitivity.json",
+    "replay_result": "SUCCESS",
+    "source_text_committed": false
+  },
+  "source": {
+    "legal_basis": "public_domain",
+    "source_provider": "Russian Wikisource",
+    "revision_manifest": "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json",
+    "normalized_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+    "normalized_character_count_including_spaces": 1705605
+  },
+  "epistemic_status": {
+    "status": "DIAGNOSTIC_ONLY",
+    "fantlab_analyzer_input_identity": "UNKNOWN",
+    "m2_parity_admissible": false,
+    "m2_source_matched_progress": "0/5",
+    "note": "One verified Wikisource source, seven independent word-boundary counterfactuals. Not additive; FantLab's analyzer input edition is unknown."
+  },
+  "probe": {
+    "m2_parity_admissible": false,
+    "normalization_profile": "scriptorium-text-v1",
+    "normalized_characters_including_spaces": 1705605,
+    "normalized_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+    "note": "Independent, one-factor changes to token counts on one exact input; not FantLab tokenization, not additive, not a matched-edition benchmark.",
+    "observed_boundaries": {
+      "initialism_token_reduction_if_merged": 0,
+      "internal_ascii_hyphens": 1611,
+      "internal_curly_apostrophes": 46,
+      "internal_straight_apostrophes": 0,
+      "standalone_dotted_initialisms": 0
+    },
+    "schema_version": "scriptorium-word-boundary-probe-v1",
+    "source_identity_to_fantlab": "UNKNOWN",
+    "source_text_embedded": false,
+    "status": "DIAGNOSTIC_ONLY",
+    "variants": [
+      {
+        "delta_from_current_words": 0,
+        "delta_per_1000_current_words": 0,
+        "description": "Current Scriptorium word tokens",
+        "id": "current_scriptorium_text_v1",
+        "word_count": 269358
+      },
+      {
+        "delta_from_current_words": 1611,
+        "delta_per_1000_current_words": 5.980888,
+        "description": "Split each internal ASCII hyphen",
+        "id": "split_ascii_hyphen",
+        "word_count": 270969
+      },
+      {
+        "delta_from_current_words": 0,
+        "delta_per_1000_current_words": 0,
+        "description": "Split each internal straight apostrophe",
+        "id": "split_straight_apostrophe",
+        "word_count": 269358
+      },
+      {
+        "delta_from_current_words": 46,
+        "delta_per_1000_current_words": 0.170776,
+        "description": "Split each internal curly apostrophe",
+        "id": "split_curly_apostrophe",
+        "word_count": 269404
+      },
+      {
+        "delta_from_current_words": 0,
+        "delta_per_1000_current_words": 0,
+        "description": "Join U+2010/U+2011 lexical connectors",
+        "id": "join_unicode_hyphens",
+        "word_count": 269358
+      },
+      {
+        "delta_from_current_words": 0,
+        "delta_per_1000_current_words": 0,
+        "description": "Merge standalone dotted initialisms",
+        "id": "merge_dotted_initialisms",
+        "word_count": 269358
+      },
+      {
+        "delta_from_current_words": -17,
+        "delta_per_1000_current_words": -0.063113,
+        "description": "Exclude decimal-only word tokens",
+        "id": "exclude_numeric_only",
+        "word_count": 269341
+      }
+    ]
+  }
+}

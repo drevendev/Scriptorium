@@ -1,4 +1,5 @@
 import json
+from hashlib import sha256
 import unittest
 from unittest.mock import patch
 
@@ -87,6 +88,87 @@ class ReproDiagnosticTests(unittest.TestCase):
                 "current_v1_over_dialogue"
             ]["value"]
         )
+
+
+    def test_opt_in_full_input_boundary_evidence_is_source_free(self):
+        sample = "по-русски А.Б. 12 слово‐слово"
+        digest = sha256(sample.encode("utf-8")).hexdigest()
+        manifest = {
+            "bibliographic_source": "Frozen public-domain edition",
+            "source_work_url": "https://example.invalid/source",
+            "legal_basis": "public_domain",
+            "composite_identity": {
+                "normalized_sha256": digest,
+                "normalized_character_count_including_spaces": len(sample),
+            },
+        }
+        reference = json.dumps({
+            "benchmark_id": "synthetic",
+            "reference": {
+                "site": "FantLab", "url": "https://example.invalid/lp",
+                "analysis_date": "2022-09-19", "work_id": 1,
+                "title": "Example", "author": "Example",
+            },
+            "expected": {"characters": len(sample), "words": 6},
+        })
+        with patch("scriptorium.repro_diagnostic.replay_packed_manifest", return_value=sample):
+            normal = build_frozen_diagnostic(reference, manifest, scriptorium_revision="test")
+            self.assertNotIn("word_boundary_sensitivity", normal)
+            artifact = build_frozen_diagnostic(
+                reference, manifest, scriptorium_revision="test",
+                include_boundary_sensitivity=True,
+            )
+        probe = artifact["word_boundary_sensitivity"]
+        rows = {row["id"]: row["word_count"] for row in probe["variants"]}
+        self.assertEqual(probe["normalized_sha256"], digest)
+        self.assertEqual(rows["split_ascii_hyphen"], rows["current_scriptorium_text_v1"] + 1)
+        self.assertEqual(rows["merge_dotted_initialisms"], rows["current_scriptorium_text_v1"] - 1)
+        self.assertEqual(rows["join_unicode_hyphens"], rows["current_scriptorium_text_v1"] - 1)
+        self.assertFalse(probe["source_text_embedded"])
+        self.assertEqual(probe["source_identity_to_fantlab"], "UNKNOWN")
+        self.assertNotIn(sample, json.dumps(artifact, ensure_ascii=False))
+        self.assertFalse(artifact["diagnostic_boundary"]["m2_parity_admissible"])
+
+        bad_manifest = dict(manifest)
+        bad_manifest["composite_identity"] = dict(manifest["composite_identity"], normalized_sha256="0" * 64)
+        with patch("scriptorium.repro_diagnostic.replay_packed_manifest", return_value=sample):
+            with self.assertRaisesRegex(ValueError, "source identity mismatch"):
+                build_frozen_diagnostic(
+                    reference, bad_manifest, scriptorium_revision="test",
+                    include_boundary_sensitivity=True,
+                )
+
+    def test_boundary_probe_rejects_mismatched_policy_count(self):
+        sample = "по-русски"
+        manifest = {
+            "bibliographic_source": "Frozen public-domain edition",
+            "source_work_url": "https://example.invalid/source",
+            "legal_basis": "public_domain",
+            "composite_identity": {
+                "normalized_sha256": sha256(sample.encode("utf-8")).hexdigest(),
+                "normalized_character_count_including_spaces": len(sample),
+            },
+        }
+        reference = json.dumps({
+            "benchmark_id": "synthetic",
+            "reference": {
+                "site": "FantLab", "url": "https://example.invalid/lp",
+                "analysis_date": "2022-09-19", "work_id": 1,
+                "title": "Example", "author": "Example",
+            },
+            "expected": {"characters": len(sample), "words": 1},
+        })
+        with patch("scriptorium.repro_diagnostic.replay_packed_manifest", return_value=sample):
+            with patch("scriptorium.repro_diagnostic.analyze_boundary_probe") as modified:
+                from scriptorium.boundary_probe import analyze_boundary_probe
+                probe = analyze_boundary_probe(sample)
+                probe["variants"][0]["word_count"] += 1
+                modified.return_value = probe
+                with self.assertRaisesRegex(ValueError, "baseline differs"):
+                    build_frozen_diagnostic(
+                        reference, manifest, scriptorium_revision="test",
+                        include_boundary_sensitivity=True,
+                    )
 
 
 if __name__ == "__main__":

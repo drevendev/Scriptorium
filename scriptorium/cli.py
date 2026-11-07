@@ -59,6 +59,7 @@ def main(argv: list[str] | None = None) -> int:
         print("  evidence    Source-free FantLab metric deltas (requires repository checkout; M2 0/5)")
         print("  n-evidence  Retained native AOT/pylem N-only uncertainty bounds (M2 0/5)")
         print("  word-gap    Source-unmatched FantLab word-density and conditional length residual (M2 0/5)")
+        print("  word-boundaries  Private same-input word-boundary sensitivity (diagnostic only)")
         print("  site        Build the canonical allow-listed site from a repository checkout")
         print("Run scriptorium <command> --help for command options.")
         return 0 if args else 2

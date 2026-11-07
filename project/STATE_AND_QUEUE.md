@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 450
+STATE_REVISION: 451
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-07
-LAST_RESULT: #454 MERGED at 8e45338b10db18a0536bc656c75f420b6a4191dd; GitHub-managed Pages run 42365390614 succeeded for exact master. Public HTTP/print visual acceptance remains UNVERIFIED.
+LAST_RESULT: #455 MERGED at e99a9f2ff9d27cdcc162d9292f12ab93a8bd92e9; five-work source-bound diagnostics export verified in master; Pages HTTP/visual acceptance still UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-PROVENANCE-EXPORT-v1
-ISSUES: #281 (partial cross-work readiness)
+UNIT_ID: SCRIP-REPRO-010-REFERENCE-AVAILABILITY-v1
+ISSUES: #281 (partial strict metric comparison readiness)
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-repro-010-provenance-export-20261107
-BASE: 8e45338b10db18a0536bc656c75f420b6a4191dd
+BRANCH: scrip-repro-010-reference-coverage-20261107
+BASE: e99a9f2ff9d27cdcc162d9292f12ab93a8bd92e9
 
-ACCEPTANCE: The existing five-work retained metric matrix exports source rights, edition/translator, both frozen hashes, body length, trace path, reference/date and per-field deltas without borrowing provenance from supplemental Resurrection. Keep missing source evidence UNKNOWN/NOT_RUN and all source matches UNKNOWN; fail-closed regressions and exact-head CI before later acceptance. M2 stays 0/5.
+ACCEPTANCE: The retained 171-field export distinguishes missing FantLab expected values (UNKNOWN) from local NOT_RUN/UNRESOLVED_NO_ACTUAL. Markdown separately counts local values, retained public references and numeric pairs; CSV preserves blank numeric cells and adds explicit availability labels. A real measured zero stays zero. Preserve the v1 JSON contract, all source-match UNKNOWN and M2 0/5; require later independent exact-head CI acceptance.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,9 +22,9 @@ Milestone: publicly readable Russian Reader with verified full-book diagnostics,
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 retained-metric provenance export, then later acceptance | Five-work edition/legal/hash/reference columns in CSV/Markdown plus strict evidence tests; no inferred FantLab matches | Branch PR and exact-head CI |
+| P1 | #281 reference-vs-local field coverage and later acceptance | Exact CSV/Markdown UNKNOWN/NOT_RUN distinction, retained reference counts and measured-zero regression; no parity overclaim | This branch PR, fresh checks and later review |
 | P2 | #283/#285 live Reader route and responsive/print acceptance | HTTP route/asset checks, desktop/mobile/keyboard/print screenshots on actual deployed site | Browser network access currently blocked; not a prerequisite |
-| P3 | #281 next scientific delta/rounding witness | Independent equality/rounding evidence for one source-and-profile-matched metric or honest unresolved record | True FantLab analyzer-input identity currently unknown |
+| P3 | #281 next source-and-profile/rounding witness | Independently observed displayed rounding and source identity for a qualifying field, or explicit unresolved evidence | True FantLab analyzer-input identity currently unknown |
 | P4 | Trusov translator body / #436 exact EOF fidelity | Legal >=300k measurement and source witness; separate bounded EOF correctness fix | Historical-render evidence |
 | P5 | #284 code/data licensing and attribution | Evidence-backed code/data reuse terms only after owner approval | Rights-holder authorization |
 

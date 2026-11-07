@@ -19,8 +19,7 @@ class AnnaPrintContractTests(unittest.TestCase):
             ".gap-table th,.gap-table td { color: #000 !important; padding: .3rem .35rem; overflow-wrap: anywhere; }",
             ".probe-hash { overflow-wrap: anywhere; word-break: break-all; }",
         ):
-            with self.subTest(rule=required):
-                self.assertIn(required, rules)
+            self.assertIn(required, rules)
         self.assertNotIn(".gap-table { display: none", rules)
         self.assertNotIn(".gap-table table { display: none", rules)
         self.assertIn('data-probe="exclude_numeric_only:word_count"', html)

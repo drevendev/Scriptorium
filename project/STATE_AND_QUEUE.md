@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 449
+STATE_REVISION: 450
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-07
-LAST_RESULT: #453 MERGED at bf31bdf370d8b2d9c5d72df10604b24a700e6241; GitHub-managed branch Pages deployed that commit (run 42352705896). Independent public HTTP/visual acceptance remains UNVERIFIED.
+LAST_RESULT: #454 MERGED at 8e45338b10db18a0536bc656c75f420b6a4191dd; GitHub-managed Pages run 42365390614 succeeded for exact master. Public HTTP/print visual acceptance remains UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-ANNA-PRINT-v1
-ISSUES: #283 (partial print acceptance)
-STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED; VISUAL_NOT_VERIFIED
-BRANCH: scrip-site-012-anna-print-tables-20261107
-BASE: bf31bdf370d8b2d9c5d72df10604b24a700e6241
+UNIT_ID: SCRIP-REPRO-010-PROVENANCE-EXPORT-v1
+ISSUES: #281 (partial cross-work readiness)
+STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-repro-010-provenance-export-20261107
+BASE: 8e45338b10db18a0536bc656c75f420b6a4191dd
 
-ACCEPTANCE: Print or save the existing real Anna word-density/boundary research page to portrait PDF without horizontal clipping or unbreakable long panels. Both source-bound exact-value tables must remain printable, with repeated column headings, readable evidence/status labels and breakable SHA. Preserve on-screen scroll accessibility, data/word counts, Reader navigation and scientific gates. Add fail-closed positive/negative structural regression tests; require exact-head CI and later independent acceptance. Screenshots/physical print inspection remain VISUAL_NOT_VERIFIED until available.
+ACCEPTANCE: The existing five-work retained metric matrix exports source rights, edition/translator, both frozen hashes, body length, trace path, reference/date and per-field deltas without borrowing provenance from supplemental Resurrection. Keep missing source evidence UNKNOWN/NOT_RUN and all source matches UNKNOWN; fail-closed regressions and exact-head CI before later acceptance. M2 stays 0/5.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,9 +22,9 @@ Milestone: publicly readable Russian Reader with verified full-book diagnostics,
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later independent acceptance of Anna printable case (#283) | Fresh exact-head CI, real HTML/table values and print CSS verification; qualifying merge only | This PR and its review/check state |
-| P2 | #281 source-bound FantLab readiness matrix | Clear per-work/metric status with strict provenance and NULL/NOT_RUN; no parity overclaim | Independent analyzer/benchmark unit |
-| P3 | #283/#285 live Reader route and responsive acceptance | HTTP route/asset checks, desktop/mobile/keyboard/print screenshots on actual deployed site | Browser network access currently blocked; not a prerequisite |
+| P1 | #281 retained-metric provenance export, then later acceptance | Five-work edition/legal/hash/reference columns in CSV/Markdown plus strict evidence tests; no inferred FantLab matches | Branch PR and exact-head CI |
+| P2 | #283/#285 live Reader route and responsive/print acceptance | HTTP route/asset checks, desktop/mobile/keyboard/print screenshots on actual deployed site | Browser network access currently blocked; not a prerequisite |
+| P3 | #281 next scientific delta/rounding witness | Independent equality/rounding evidence for one source-and-profile-matched metric or honest unresolved record | True FantLab analyzer-input identity currently unknown |
 | P4 | Trusov translator body / #436 exact EOF fidelity | Legal >=300k measurement and source witness; separate bounded EOF correctness fix | Historical-render evidence |
 | P5 | #284 code/data licensing and attribution | Evidence-backed code/data reuse terms only after owner approval | Rights-holder authorization |
 

@@ -56,6 +56,20 @@ Run `scriptorium word-gap --root . --format markdown` (or `json` / `csv`) to cal
 
 Run `scriptorium word-boundaries manuscript.txt --format markdown` to compare seven explicit word-count policies on the *same normalized, privately held UTF-8 input*. The existing `scriptorium-text-v1` tokenization stays unchanged. Independent probes split internal ASCII hyphens, straight/curly apostrophes, or join Unicode U+2010/U+2011 hyphens; a separate probe merges dotted initialisms (such as `А.Б.`), and another excludes decimal-only tokens. The result gives count deltas and per-1,000-current-word rates; use `--format json --output probe.json` to save a create-only, source-free report. Input is bounded to 32 MiB, refuses symlinks, and is never uploaded. Empty input produces `NOT_RUN` for undefined rates. This is a controlled **inferred diagnostic**, not recovered FantLab tokenization or a way to attribute the Anna gap to one cause. [Earlier frozen Anna word/dash sensitivity](benchmarks/fantlab/work270306-policy-sensitivity.json) already tested numeric-only removal and Unicode hyphen joining; the new independent punctuation/initialism variants need a lawful exact-body replay before they can explain any full-book discrepancy. **M2 remains 0/5.**
 
+### Reproduce the pinned full-book boundary experiment
+
+The **existing** frozen Anna Karenina CI replay can run the seven boundary variants
+over exactly the **same 239 identity-checked public-domain Wikisource chapter revisions**
+as the historical 1,705,605-character diagnostic. The opt-in
+`python -m scriptorium.repro_diagnostic --reference benchmarks/fantlab/work270306.json --manifest corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json --scriptorium-revision LOCAL_SHA --with-boundary-probe --output derived.json`
+adds `word_boundary_sensitivity` to the source-free diagnostic; the
+[`repro-diagnostic` CI workflow](.github/workflows/repro-diagnostic.yml) also
+checks that the prior frozen source digest and three previously measured
+word-policy counts have not drifted. **No second fetch** and no prose artifact
+is produced. The new hyphen, apostrophe and initialism totals are
+**NOT_RUN until a successful exact-head hosted replay**; the original
+FantLab analyzer-input edition is still UNKNOWN and M2 remains **0/5**.
+
 ## Language modules and translations
 
 The Russian module (`ru`) is the initial product priority. Every analyzed literary body has an **analysis language** and an independent **edition identity**. A translated work additionally records the author's original language, a named translator and a specific edition/source family; another translator or translation revision becomes a separate identity, not another spelling of the title. The measured Russian translation of **Дети капитана Гранта** by **А. А. Бекетова** has 11 real derived fields, but no measured French original. The researched translation of **О происхождении видов** by **С. А. Рачинский** has no retained numeric fields, and its English source is not analyzed here. Never place invented English/French numbers into Russian graphs. See [versioned language/translation contract](docs/TRANSLATIONS_AND_LANGUAGE_MODULES.md).

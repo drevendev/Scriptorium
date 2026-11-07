@@ -429,6 +429,9 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
             "candidate_id": source["candidate_id"],
             "title": source["title"],
             "author": source["author"],
+            "translator": source["translator"],
+            "source": source["source"],
+            "fantlab": source["fantlab"],
             "source_witness_sha256": source["source"]["raw_sha256"],
             "reference_url": source["fantlab"]["reference_url"],
             "reference_date": source["fantlab"]["analysis_date"],
@@ -484,8 +487,17 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
         stream = StringIO(newline="")
         writer = csv.writer(stream, lineterminator="\n")
         writer.writerow(("candidate_id", "title", "reference_url", "witness_sha256", "metric_id",
-                         "expected", "actual", "delta", "status", "source_match", "rounding_evidence"))
+                         "expected", "actual", "delta", "status", "source_match", "rounding_evidence",
+                         "source_url", "source_edition", "translator", "legal_basis",
+                         "legal_evidence", "frozen_characters", "normalized_sha256",
+                         "normalization_profile", "source_witness_path", "reference_date",
+                         "reference_work_id", "m2_candidate_scope"))
         for entry in entries:
+            # This joins independently checked five-work readiness witnesses.
+            # Resurrection is supplemental: never borrow another work's rights
+            # or edition merely because it also has a retained metric row.
+            source = entry.get("source") or {}
+            fantlab = entry.get("fantlab") or {}
             for row in entry["metric_rows"] or [None]:
                 writer.writerow((
                     safe_csv_text(entry["candidate_id"]), safe_csv_text(str(entry["title"])),
@@ -495,6 +507,18 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
                     row["actual_minus_expected"] if row and row["actual_minus_expected"] is not None else "",
                     row["result"] if row else "NOT_RUN", "UNKNOWN",
                     row["display_rounding_evidence"] if row else "UNKNOWN",
+                    safe_csv_text(source.get("url") or "UNKNOWN"),
+                    safe_csv_text(source.get("edition") or "UNKNOWN"),
+                    safe_csv_text(entry.get("translator") or "NOT_APPLICABLE_OR_UNVERIFIED"),
+                    safe_csv_text(source.get("legal_basis") or "UNKNOWN"),
+                    safe_csv_text(source.get("legal_evidence") or "UNKNOWN"),
+                    source["characters_including_spaces"] if source else "NOT_RUN",
+                    source.get("normalized_sha256") or "UNKNOWN",
+                    source.get("normalization_profile") or "UNKNOWN",
+                    safe_csv_text(source.get("witness_path") or entry.get("source_manifest") or "UNKNOWN"),
+                    entry["reference_date"],
+                    fantlab.get("work_id") or "UNKNOWN",
+                    entry.get("m2_candidate_scope") or "FIVE_WORK_READINESS",
                 ))
         return stream.getvalue()
     if kind != "markdown":
@@ -511,6 +535,20 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
             f"| {title} | {len(entry['metric_rows']) if entry['metric_rows'] else 'NOT_RUN'} | "
             f"{entry['metric_rows_with_actual'] if entry['metric_rows'] else 'NOT_RUN'} | "
             f"{entry['metric_rows_without_actual'] if entry['metric_rows'] else 'NOT_RUN'} | UNKNOWN |"
+        )
+    lines.extend(["", "## Five-work provenance (frozen public candidates)", "",
+                  "Candidate source rights and hashes do not establish FantLab analyzer-input identity.",
+                  "Full source URLs, legal evidence and both SHA-256 digests are in the JSON/CSV exports.", "",
+                  "| Work | Frozen chars (incl. spaces) | Edition | Rights | Raw SHA-256 (prefix) | FantLab date | Input identity |",
+                  "| --- | ---: | --- | --- | --- | --- | --- |"])
+    for entry in report["entries"]:
+        source = entry["source"]
+        title = str(entry["title"]).replace("|", "\\|").replace("\\n", " ")
+        edition = str(source["edition"] or "UNKNOWN").replace("|", "\\|").replace("\\n", " ")
+        lines.append(
+            f"| {title} | {source['characters_including_spaces']:,} | {edition} | "
+            f"{source['legal_basis']} | `{source['raw_sha256'][:12]}…` | "
+            f"{entry['reference_date']} | UNKNOWN |"
         )
     lines.extend([
         "", "## Retained source-unmatched diagnostic rows", "",

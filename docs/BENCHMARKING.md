@@ -179,6 +179,31 @@ remains **0/5** until five source-matched legally usable works satisfy the stric
 field-by-field rounding requirements. JSON/CSV are source-free but preserve work
 identity and source links for independent inspection.
 
+## Retained cross-work field diagnostics (#281)
+
+For the five independently frozen candidates and the separate supplemental
+*Resurrection* diagnostic, run the source-free per-field readiness report:
+
+```bash
+python -m scriptorium.benchmark_metric_matrix --root . --format markdown
+python -m scriptorium.benchmark_metric_matrix --root . --format csv --output retained-metrics.csv
+python -m scriptorium.benchmark_metric_matrix --root . --format json --output retained-metrics.json
+```
+
+The Markdown view includes frozen character lengths, edition labels, legal basis,
+source digest prefixes and FantLab reference dates. CSV includes **full** raw and
+normalized SHA-256, literary source URL, frozen witness path, rights evidence,
+translator/edition identity, normalization profile, reference work/date and
+M2 candidate scope alongside each metric's expected, actual and raw delta.
+Five-core provenance is copied from the independently validated readiness
+witnesses, not inferred from title resemblance. Supplemental *Resurrection*
+rows explicitly retain UNKNOWN / NOT_RUN for readiness-only provenance not
+verified by that report; they retain their own raw witness hash and reference.
+
+All input identities remain **UNKNOWN**. No numeric similarity counts toward
+parity; decimal rounding is unresolved and missing actual values remain
+NOT_RUN. M2 stays **0/5**. No source prose is exported.
+
 ## `Шутиха` today
 
 `benchmarks/fantlab/work488.json` remains a reference-only target: Scriptorium has not

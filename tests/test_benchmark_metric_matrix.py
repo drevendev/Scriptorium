@@ -60,6 +60,40 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         self.assertIn("M2: 0/5", matrix.render_metric_matrix(report, "markdown"))
         self.assertIn("12958", matrix.render_metric_matrix(report, "csv"))
 
+    def test_exports_keep_five_work_provenance_without_inheriting_supplemental_rights(self):
+        report = matrix.build_metric_matrix(ROOT)
+        first = report["entries"][0]
+        source = first["source"]
+        self.assertEqual(source["characters_including_spaces"], 1705605)
+        self.assertIsNone(first["translator"])
+        self.assertEqual(source["raw_sha256"], first["source_witness_sha256"])
+        self.assertEqual(first["fantlab"]["reference_url"], first["reference_url"])
+        rows = list(csv.DictReader(StringIO(matrix.render_metric_matrix(report, "csv"))))
+        self.assertEqual(len(rows), 171)
+        self.assertEqual(rows[0]["source_url"], source["url"])
+        self.assertEqual(rows[0]["legal_basis"], "public_domain")
+        self.assertEqual(rows[0]["legal_evidence"], source["legal_evidence"])
+        self.assertEqual(rows[0]["frozen_characters"], "1705605")
+        self.assertEqual(rows[0]["normalized_sha256"], source["normalized_sha256"])
+        self.assertEqual(rows[0]["normalization_profile"], "scriptorium-text-v1")
+        self.assertEqual(rows[0]["source_witness_path"], source["witness_path"])
+        self.assertEqual(rows[0]["reference_work_id"], str(first["fantlab"]["work_id"]))
+        self.assertEqual(rows[0]["reference_date"], first["reference_date"])
+        self.assertEqual(rows[0]["m2_candidate_scope"], "FIVE_WORK_READINESS")
+        extra = next(row for row in rows if row["candidate_id"] == "tolstoy-resurrection-ru")
+        self.assertEqual(extra["m2_candidate_scope"], "SUPPLEMENTAL_NOT_SOURCE_MATCHED")
+        self.assertEqual(extra["legal_basis"], "UNKNOWN")
+        self.assertEqual(extra["frozen_characters"], "NOT_RUN")
+        self.assertEqual(extra["source_url"], "UNKNOWN")
+        self.assertIn("Five-work provenance", matrix.render_metric_matrix(report, "markdown"))
+        self.assertIn("1,705,605", matrix.render_metric_matrix(report, "markdown"))
+
+    def test_export_neutralizes_formula_in_legal_evidence(self):
+        report = copy.deepcopy(matrix.build_metric_matrix(ROOT))
+        report["entries"][0]["source"]["legal_evidence"] = "\ufeff=1+1"
+        rows = list(csv.DictReader(StringIO(matrix.render_metric_matrix(report, "csv"))))
+        self.assertEqual(rows[0]["legal_evidence"], "'\ufeff=1+1")
+
     def _mutate(self, path, mutate):
         original = matrix._load
 

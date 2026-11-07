@@ -7,6 +7,8 @@ on:
       - "scriptorium/**"
       - "tests/**"
       - "benchmarks/fantlab/work270306.json"
+      - "benchmarks/fantlab/work270306-policy-sensitivity.json"
+      - "benchmarks/fantlab/work270306-word-boundaries.json"
       - "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json"
       - "corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json"
   workflow_dispatch:
@@ -44,7 +46,8 @@ jobs:
             --reference benchmarks/fantlab/work270306.json \
             --manifest corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json \
             --scriptorium-revision "$SCRIPTORIUM_REVISION" \
-            --output build/repro/work270306-wikisource-diagnostic.json
+            --output build/repro/work270306-wikisource-diagnostic.json \
+            --with-boundary-probe
 
       - name: Emit derived diagnostic evidence only
         run: |
@@ -54,6 +57,24 @@ jobs:
 
           path = Path("build/repro/work270306-wikisource-diagnostic.json")
           artifact = json.loads(path.read_text(encoding="utf-8"))
+          # The replay already verified 239 pinned MediaWiki identities and exact
+          # normalized full-book SHA-256. Cross-check older frozen counters too.
+          previous = json.loads(Path("benchmarks/fantlab/work270306-policy-sensitivity.json").read_text(encoding="utf-8"))
+          probe = artifact["word_boundary_sensitivity"]
+          # This historical full-work receipt is source-free and immutable.
+          # Any change in tokenization must update it with new verified evidence.
+          pinned = json.loads(Path("benchmarks/fantlab/work270306-word-boundaries.json").read_text(encoding="utf-8"))
+          if pinned["probe"] != probe or pinned["source"]["normalized_sha256"] != probe["normalized_sha256"]:
+              raise ValueError("retained Anna full-work word-boundary evidence drift")
+          assert probe["normalized_sha256"] == previous["evidence"]["frozen_source_sha256"]
+          observed = {row["id"]: row["word_count"] for row in probe["variants"]}
+          older_counts = previous["word_policy"]["variants"]
+          for probe_id, older_id in (
+              ("current_scriptorium_text_v1", "current_scriptorium_text_v1"),
+              ("exclude_numeric_only", "exclude_numeric_only_tokens"),
+              ("join_unicode_hyphens", "join_unicode_hyphen_connectors"),
+          ):
+              assert observed[probe_id] == older_counts[older_id]["count"]
           summary = {
               "schema_version": artifact["schema_version"],
               "benchmark_id": artifact["benchmark_id"],
@@ -61,6 +82,7 @@ jobs:
               "source_text": artifact["source_text"],
               "diagnostic_boundary": artifact["diagnostic_boundary"],
               "policy_sensitivity": artifact["policy_sensitivity"],
+              "word_boundary_sensitivity": probe,
               "dialogue_sensitivity": artifact["dialogue_sensitivity"],
               "metrics": {
                   metric_id: {

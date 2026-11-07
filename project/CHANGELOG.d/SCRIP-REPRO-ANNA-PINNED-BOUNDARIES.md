@@ -1,0 +1,7 @@
+# SCRIP-REPRO-ANNA-PINNED-BOUNDARIES — complete candidate replay (2026-11-07)
+
+- Extend the existing pinned 239-revision Anna Karenina CI diagnostic with optional seven-variant `word_boundary_sensitivity`, reusing its **single** source replay instead of fetching the same public-domain pages twice.
+- Fail closed if the normalized identity/character length differs from the frozen manifest or the baseline/decimal-only/Unicode-hyphen counts diverge from current policy; hosted CI also compares those three against the older frozen policy receipt.
+- Add opt-in/default, positive one-factor, provenance-mismatch and negative baseline-drift regressions; CI retains only derived counts, source digest and evidence labels. No book prose, paths or unsupported FantLab conclusions enter the artifact.
+- Hosted exact-source run [42331164429](https://github.com/drevendev/Scriptorium/actions/runs/42331164429) **PASS** at PR head `3ccd96b` (239 revisions, 1,705,605 characters, SHA-256 `1dcf2af8…`). Retain all seven source-free counterfactuals in `benchmarks/fantlab/work270306-word-boundaries.json`: baseline **269,358**; ASCII-hyphen splitting **+1,611**, curly-apostrophe splitting **+46**, decimal-token exclusion **−17**, all other variants **0**. These independently measured effects do not add to a FantLab adjustment.
+- The newly committed receipt still needs fresh exact-head CI and later acceptance. FantLab's analyzed edition remains **UNKNOWN**; DIAGNOSTIC_ONLY, M2 **0/5**. Reader/Pages unchanged.

@@ -1,29 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 446
+STATE_REVISION: 447
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-07
-LAST_RESULT: GitHub confirms #450 MERGED at 843c312b785926dca3befbe6fce0b7f03ad7febb. Same-input word-boundary probe is authored as an independent, privacy-safe CLI diagnostic.
-LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; six source-unmatched word-density diagnostics; M2 0/5.
+LAST_RESULT: GitHub confirms #451 MERGED. #452 produced the first full-book Anna word-boundary experiment in hosted run 42331164429 at PR head 3ccd96bfb29a37820da50f0c9895c9714fead7b7; the immutable source-free receipt was committed for later acceptance.
+LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; six source-unmatched word-density diagnostics; Anna pinned 239-revision boundary replay PASS at head 3ccd96b; seven one-factor results saved, M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TEXT-SAME-INPUT-WORD-BOUNDARIES-v1
-ISSUES: #281 tokenizer source-unmatched diagnostic (partial)
-STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-same-input-word-boundary-probe-20261107
-BASE: 843c312b785926dca3befbe6fce0b7f03ad7febb
+UNIT_ID: SCRIP-REPRO-ANNA-PINNED-WORD-BOUNDARIES-v1
+ISSUES: #281 tokenizer/source-unmatched diagnostic (partial)
+STATUS: PR_CANDIDATE; FULL_REPLAY_PASSED_AT_EARLIER_HEAD; NEW_EXACT_HEAD_CI_REQUIRED; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-anna-pinned-boundary-replay-20261107
+BASE: cad8a05605453860ef46b1629d960e16d545ac85
 
-ACCEPTANCE: `scriptorium word-boundaries LOCAL.txt` analyzes one *private* normalized
-input without publishing text; versioned source-free JSON/Markdown reports baseline
-word tokens and independent hyphen/apostrophe/initialism/numeric sensitivity counts.
-Reuses the existing `scriptorium-text-v1` and source-free `policy_diagnostic` instead
-of rewriting production tokenization. Test deterministic synthetic controls,
-Unicode normalization, zero denominator, invalid UTF-8, symlink and overwrite refusals,
-and CLI help; no change to production metrics or legacy evidence.
-Run exact-head CI and later independent review before qualifying merge.
-An actual full-book sensitivity replay is **NOT_RUN**; FantLab input identity is
-UNKNOWN and these synthetic controls do not claim source matching or M2 progress.
+ACCEPTANCE: Opt-in `--with-boundary-probe` on the existing `scriptorium.repro_diagnostic`
+replay reuses the *same*, legally usable 239-revision Anna composite after
+source identity validation, then emits a source-free seven-variant count
+diagnostic in the existing CI artifact. No second source fetch. Cross-check
+normalization SHA/character count against pinned manifest and baseline/numeric/
+Unicode-hyphen counts against both the contemporaneous policy computation and
+older frozen independent evidence. Test opt-in/off behavior, one-factor cases,
+identity mismatch, inconsistent baseline and secrecy. The hosted run 42331164429 passed on PR head 3ccd96b and validated normalized
+SHA-256 1dcf2af8..., 1,705,605 characters and all 239 revisions. Results:
+269,358 baseline; splitting ASCII lexical hyphens +1,611, curly apostrophes
++46, straight apostrophes 0, joining U+2010/U+2011 0, merging dotted
+initialisms 0, excluding decimal-only words −17. Derived artifact committed
+at benchmarks/fantlab/work270306-word-boundaries.json, to be rechecked in
+fresh exact-head CI. Source matching to FantLab remains UNKNOWN; M2 stays 0/5.
 
 ## Next user-visible milestone and compact queue
 
@@ -32,9 +36,9 @@ measured works and honestly labelled FantLab diagnostic differences.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge same-input word-boundary probe (#281) | Fresh exact-head tests/checks, privacy and compatibility diff, then verify master | CI |
-| P2 | Run lawful frozen input through new boundary probe | Exact source identity/hash, one-factor counts; no FantLab attribution | Retrieved authorized bytes/runtime |
-| P3 | #283/#285 Pages live/public acceptance | HTTP, desktop/mobile focus, actual routes | Existing browser navigation restriction |
+| P1 | Later accept/merge pinned Anna full-work boundary experiment (#281, PR #452) | Fresh exact-head CI on retained receipt, source/provenance diff and tests; qualify merge, verify master | Hosted provider/API and CI |
+| P2 | Reader explanation of real full-work boundary deltas | Source-backed per-policy values, units, accessible table/chart and unknown FantLab edition warning | P1 merged result; separate visible slice |
+| P3 | #283/#285 Pages live/public acceptance | HTTP, desktop/mobile focus, actual routes | Browser restriction previously observed |
 | P4 | Trusov first-narrative body and independent translator measurement | Legal >=300k text, 29 metrics and edition witness | Historical render/Page seams |
 | P5 | #284 code/data rights and attribution | Evidence-backed license/attribution before external publication | Rights/owner evidence |
 

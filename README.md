@@ -54,7 +54,29 @@ Run `scriptorium word-gap --root . --format markdown` (or `json` / `csv`) to cal
 
 ### Test word boundaries on the **same** local text
 
-Run `scriptorium word-boundaries manuscript.txt --format markdown` to compare seven explicit word-count policies on the *same normalized, privately held UTF-8 input*. The existing `scriptorium-text-v1` tokenization stays unchanged. Independent probes split internal ASCII hyphens, straight/curly apostrophes, or join Unicode U+2010/U+2011 hyphens; a separate probe merges dotted initialisms (such as `А.Б.`), and another excludes decimal-only tokens. The result gives count deltas and per-1,000-current-word rates; use `--format json --output probe.json` to save a create-only, source-free report. Input is bounded to 32 MiB, refuses symlinks, and is never uploaded. Empty input produces `NOT_RUN` for undefined rates. This is a controlled **inferred diagnostic**, not recovered FantLab tokenization or a way to attribute the Anna gap to one cause. [Earlier frozen Anna word/dash sensitivity](benchmarks/fantlab/work270306-policy-sensitivity.json) already tested numeric-only removal and Unicode hyphen joining; the new independent punctuation/initialism variants need a lawful exact-body replay before they can explain any full-book discrepancy. **M2 remains 0/5.**
+Run `scriptorium word-boundaries manuscript.txt --format markdown` to compare seven explicit word-count policies on the *same normalized, privately held UTF-8 input*. The existing `scriptorium-text-v1` tokenization stays unchanged. Independent probes split internal ASCII hyphens, straight/curly apostrophes, or join Unicode U+2010/U+2011 hyphens; a separate probe merges dotted initialisms (such as `А.Б.`), and another excludes decimal-only tokens. The result gives count deltas and per-1,000-current-word rates; use `--format json --output probe.json` to save a create-only, source-free report. Input is bounded to 32 MiB, refuses symlinks, and is never uploaded. Empty input produces `NOT_RUN` for undefined rates. This is a controlled **inferred diagnostic**, not recovered FantLab tokenization or a way to attribute the Anna gap to one cause. [Earlier frozen Anna word/dash sensitivity](benchmarks/fantlab/work270306-policy-sensitivity.json) already tested numeric-only removal and Unicode hyphen joining; the exact-body replay in [#452](https://github.com/drevendev/Scriptorium/pull/452) now records those independent variants without claiming FantLab semantics. **M2 remains 0/5.**
+
+### Reproduce the pinned full-book boundary experiment
+
+The **existing** frozen Anna Karenina CI replay can run the seven boundary variants
+over exactly the **same 239 identity-checked public-domain Wikisource chapter revisions**
+as the historical 1,705,605-character diagnostic. The opt-in
+`python -m scriptorium.repro_diagnostic --reference benchmarks/fantlab/work270306.json --manifest corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json --scriptorium-revision LOCAL_SHA --with-boundary-probe --output derived.json`
+adds `word_boundary_sensitivity` to the source-free diagnostic; the
+[`repro-diagnostic` CI workflow](.github/workflows/repro-diagnostic.yml) also
+checks that the prior frozen source digest and three previously measured
+word-policy counts have not drifted. **No second fetch** and no prose artifact
+is produced. The first verified [CI run #42331164429](https://github.com/drevendev/Scriptorium/actions/runs/42331164429)
+replayed all **239 pinned revisions** and produced the
+[source-free full-work receipt](benchmarks/fantlab/work270306-word-boundaries.json).
+For the frozen 1,705,605-character input, current Scriptorium counted **269,358 words**;
+splitting internal ASCII hyphens yields **270,969** (+1,611),
+splitting curly apostrophes **269,404** (+46), and excluding numeric-only
+tokens **269,341** (−17). Straight-apostrophe splits, Unicode-hyphen joining
+and dotted-initialism merging each changed the count by **zero**.
+All seven changes are **independent**, not a combined prediction; no variant
+accounts for the unmatched FantLab word-count difference. The original
+FantLab analyzer-input edition is still UNKNOWN and M2 remains **0/5**.
 
 ## Language modules and translations
 

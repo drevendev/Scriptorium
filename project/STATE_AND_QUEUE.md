@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 448
+STATE_REVISION: 449
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-07
-LAST_RESULT: Native GitHub confirms #452 MERGED at e94867171e9e02c56ee9716ee568bb1a0367e02f. Root Reader full-book boundary case study is proposed for later exact-head CI and acceptance.
-LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay has seven source-bound independent word-boundary results; M2 0/5.
+LAST_RESULT: #453 MERGED at bf31bdf370d8b2d9c5d72df10604b24a700e6241; GitHub-managed branch Pages deployed that commit (run 42352705896). Independent public HTTP/visual acceptance remains UNVERIFIED.
+LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-ANNA-BOUNDARY-CASE-v1
-ISSUES: #281 diagnostics (partial), #283 Reader
-STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED; LIVE_NOT_VERIFIED
-BRANCH: scrip-reader-anna-full-boundary-evidence-20261107
-BASE: e94867171e9e02c56ee9716ee568bb1a0367e02f
+UNIT_ID: SCRIP-READER-ANNA-PRINT-v1
+ISSUES: #283 (partial print acceptance)
+STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED; VISUAL_NOT_VERIFIED
+BRANCH: scrip-site-012-anna-print-tables-20261107
+BASE: bf31bdf370d8b2d9c5d72df10604b24a700e6241
 
-ACCEPTANCE: Enhance the existing `word-density.html` Reader case with all seven retained, pinned Anna one-factor word-boundary counts, source identity/CI URL, explicit units and UNKNOWN FantLab source match. A common-zero, clearly signed difference chart, accessible source-backed table and structural/negative numeric regressions are required. Stage the linked root document in branch-root Pages CI preview; no false deployment, additive fit, source text or new metric assertions. Use the immutable JSON receipt from merged #452; require fresh CI and later independent acceptance. No new corpus measurement; M2 0/5.
+ACCEPTANCE: Print or save the existing real Anna word-density/boundary research page to portrait PDF without horizontal clipping or unbreakable long panels. Both source-bound exact-value tables must remain printable, with repeated column headings, readable evidence/status labels and breakable SHA. Preserve on-screen scroll accessibility, data/word counts, Reader navigation and scientific gates. Add fail-closed positive/negative structural regression tests; require exact-head CI and later independent acceptance. Screenshots/physical print inspection remain VISUAL_NOT_VERIFIED until available.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: publicly reachable Russian Reader with verified source-bound full-book diagnostics and usable local analyzer.
+Milestone: publicly readable Russian Reader with verified full-book diagnostics, accessible print/export and useful local analyzer.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later independent review/merge current Anna Reader case | Fresh exact-head CI, rendered HTML/source values, root preview and discussion checks; merge only if gates allow | This PR and CI |
-| P2 | #283/#285 real Pages publication acceptance | Live HTTP actual path, focus/mobile/desktop snapshots and branch-vs-Actions origin verification | Browser or authorized Pages capability |
-| P3 | #411 compare mixed local TXT/EPUB/JSON | One-call private cross-format comparisons, positive/negative regressions | Independent executable analyzer task |
+| P1 | Later independent acceptance of Anna printable case (#283) | Fresh exact-head CI, real HTML/table values and print CSS verification; qualifying merge only | This PR and its review/check state |
+| P2 | #281 source-bound FantLab readiness matrix | Clear per-work/metric status with strict provenance and NULL/NOT_RUN; no parity overclaim | Independent analyzer/benchmark unit |
+| P3 | #283/#285 live Reader route and responsive acceptance | HTTP route/asset checks, desktop/mobile/keyboard/print screenshots on actual deployed site | Browser network access currently blocked; not a prerequisite |
 | P4 | Trusov translator body / #436 exact EOF fidelity | Legal >=300k measurement and source witness; separate bounded EOF correctness fix | Historical-render evidence |
-| P5 | #284 code/data licensing and attribution | Evidence-backed reuse terms; no external unlicensed corpus publication | Rights verification |
+| P5 | #284 code/data licensing and attribution | Evidence-backed code/data reuse terms only after owner approval | Rights-holder authorization |
 
 ## Retained evidence and scientific gates
 

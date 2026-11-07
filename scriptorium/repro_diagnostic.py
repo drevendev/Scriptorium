@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Mapping, Sequence
 
 from .benchmark import build_comparison
+from .boundary_probe import analyze_boundary_probe
 from .dialogue_diagnostic import analyze_dialogue_policy
 from .policy_diagnostic import analyze_word_dash_policy
 from .wikisource_replay import replay_packed_manifest
@@ -18,6 +19,7 @@ def build_frozen_diagnostic(
     manifest: Mapping[str, object],
     *,
     scriptorium_revision: str,
+    include_boundary_sensitivity: bool = False,
 ) -> dict[str, object]:
     """Replay a packed source manifest and build a fail-closed comparison artifact."""
 
@@ -62,6 +64,30 @@ def build_frozen_diagnostic(
             float(expected_dash_rate) if expected_dash_rate is not None else None
         ),
     )
+
+    if include_boundary_sensitivity:
+        # Reuse the exact already-fetched, identity-verified composite. A second
+        # 239-revision provider replay would add load and risk source drift.
+        source_identity = manifest.get("composite_identity")
+        if not isinstance(source_identity, Mapping):
+            raise ValueError("frozen boundary evidence requires a source identity")
+        probe = analyze_boundary_probe(composite)
+        if (
+            probe["normalized_sha256"] != source_identity.get("normalized_sha256")
+            or probe["normalized_characters_including_spaces"]
+            != source_identity.get("normalized_character_count_including_spaces")
+        ):
+            raise ValueError("frozen boundary source identity mismatch")
+        previous = artifact["policy_sensitivity"]["word_policy"]["variants"]
+        observed = {row["id"]: row["word_count"] for row in probe["variants"]}
+        for probe_key, policy_key in (
+            ("current_scriptorium_text_v1", "current_scriptorium_text_v1"),
+            ("exclude_numeric_only", "exclude_numeric_only_tokens"),
+            ("join_unicode_hyphens", "join_unicode_hyphen_connectors"),
+        ):
+            if observed[probe_key] != previous[policy_key]["count"]:
+                raise ValueError("frozen boundary baseline differs from policy diagnostic")
+        artifact["word_boundary_sensitivity"] = probe
 
     expected_dialogue_share = _expected_numeric(
         artifact, "fantlab.dialogue.share_percent"
@@ -109,6 +135,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--scriptorium-revision", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--with-boundary-probe", action="store_true", help="append source-free same-input word-boundary sensitivity to the verified replay")
     return parser
 
 
@@ -121,6 +148,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         args.reference.read_text(encoding="utf-8"),
         manifest,
         scriptorium_revision=args.scriptorium_revision,
+        include_boundary_sensitivity=args.with_boundary_probe,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(

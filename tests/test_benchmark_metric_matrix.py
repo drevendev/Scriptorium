@@ -94,6 +94,48 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         rows = list(csv.DictReader(StringIO(matrix.render_metric_matrix(report, "csv"))))
         self.assertEqual(rows[0]["legal_evidence"], "'\ufeff=1+1")
 
+    def test_reference_coverage_distinguishes_missing_public_values_from_local_not_run(self):
+        report = matrix.build_metric_matrix(ROOT)
+        silver = next(e for e in report["entries"] if e["candidate_id"] == "bely-silver-dove-ru")
+        markdown = matrix.render_metric_matrix(report, "markdown")
+        self.assertIn("FantLab refs retained", markdown)
+        self.assertIn("| 29 | 24 | 2 | 2 | UNKNOWN |", markdown)
+        csv_rows = list(csv.DictReader(StringIO(matrix.render_metric_matrix(report, "csv"))))
+        missing_reference = next(r for r in silver["metric_rows"]
+                                 if r["expected"] is None and r["actual"] is not None)
+        row = next(r for r in csv_rows if r["candidate_id"] == silver["candidate_id"]
+                   and r["metric_id"] == missing_reference["metric_id"])
+        self.assertEqual(row["expected"], "")  # stable machine-readable numeric column
+        self.assertEqual(row["reference_availability"], "UNKNOWN")
+        self.assertEqual(row["actual_availability"], "MEASURED")
+        self.assertEqual(row["actual"], str(missing_reference["actual"]))
+        self.assertIn(f"| {missing_reference['metric_id']} | UNKNOWN | "
+                      f"{missing_reference['actual']} | UNKNOWN |", markdown)
+        self.assertNotIn(f"| {missing_reference['metric_id']} | NOT_RUN |", markdown)
+
+        missing_actual = next(r for r in silver["metric_rows"] if r["actual"] is None)
+        unmeasured = next(r for r in csv_rows if r["candidate_id"] == silver["candidate_id"]
+                          and r["metric_id"] == missing_actual["metric_id"])
+        self.assertEqual(unmeasured["actual"], "")
+        self.assertEqual(unmeasured["actual_availability"], missing_actual["result"])
+        self.assertEqual(unmeasured["reference_availability"], "UNKNOWN")
+
+    def test_reference_coverage_preserves_measured_zero_when_reference_is_unknown(self):
+        report = copy.deepcopy(matrix.build_metric_matrix(ROOT))
+        silver = next(e for e in report["entries"] if e["candidate_id"] == "bely-silver-dove-ru")
+        row = next(r for r in silver["metric_rows"]
+                   if r["expected"] is None and r["actual"] is not None)
+        row["actual"] = 0
+        row["actual_minus_expected"] = None
+        emitted = list(csv.DictReader(StringIO(matrix.render_metric_matrix(report, "csv"))))
+        result = next(r for r in emitted if r["candidate_id"] == silver["candidate_id"]
+                      and r["metric_id"] == row["metric_id"])
+        self.assertEqual((result["expected"], result["actual"], result["delta"]), ("", "0", ""))
+        self.assertEqual((result["reference_availability"], result["actual_availability"]),
+                         ("UNKNOWN", "MEASURED"))
+        self.assertIn(f"| {row['metric_id']} | UNKNOWN | 0 | UNKNOWN |",
+                      matrix.render_metric_matrix(report, "markdown"))
+
     def _mutate(self, path, mutate):
         original = matrix._load
 

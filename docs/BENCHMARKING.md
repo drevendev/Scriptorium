@@ -28,11 +28,23 @@ When an exact, legally usable source edition is established, also provide proven
   --legal-basis "public_domain / license / permission evidence"
 ```
 
-All four provenance claims are required before a source-only integer comparison may
-become `pass` or `fail`: `edition_match=exact`, a non-empty edition/transcription
-identity, a non-empty source reference, and a non-empty legal basis. The raw SHA-256 is
-always computed by the harness from supplied bytes. Missing identity/reference evidence
-keeps a numeric match diagnostic `unresolved`.
+The four caller provenance claims are **necessary but no longer sufficient** for
+integer `pass` / `fail`: `edition_match=exact`, a non-empty edition/transcription
+identity, a source reference, and a legal basis. A separately captured reference
+`source_text` must also declare `edition_matched: true` and contain the **exact**
+`raw_sha256` of the supplied bytes. Missing reference-side identity leaves a
+numeric match `unresolved`; an exact-input claim with missing, invalid or
+contradictory digest fails before analysis. A caller cannot promote a comparison
+merely by passing `--edition-match exact`.
+
+This SHA-256 check establishes **internal byte consistency**, not the provenance
+or authenticity of the reference-side claim. A reference input identity needs
+independent external evidence and review; manually creating a matching JSON hash
+does **not** prove that FantLab used those bytes. Existing `work488.json` declares
+`edition_matched: false` and `raw_sha256: null`, so it remains diagnostic.
+No current Scriptorium candidate qualifies for M2 (0/5). No rounding or other
+metric tolerance is relaxed. The raw SHA-256 is computed locally; source prose
+is never emitted in the output.
 
 The text path is never copied into the repository. The output records raw-byte and
 normalized-text SHA-256 values instead.
@@ -135,8 +147,9 @@ exact field and reference surface.
 ### Integer counts
 
 General character/word counts and dictionary-free unique vocabulary use `exact_integer`.
-With admissible source provenance they may produce `pass` or `fail`; without it they stay
-`unresolved`.
+Only with reference-side input digest binding **and** independently validated
+source provenance may they produce a qualified `pass` or `fail`; without
+the binding they stay `unresolved` even if all caller metadata is populated.
 
 Dictionary-dependent integer counts add a second gate: the FantLab production dictionary
 must also be identified and matched. The current project has no such evidence. Therefore:

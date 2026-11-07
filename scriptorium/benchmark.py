@@ -196,6 +196,10 @@ def build_comparison(
                 or (rule == "exact_integer" and type(value) is not int)):
             raise ValueError(f"invalid expected numeric value for {metric_id}")
     lexical_reference = json.loads(reference_json, parse_int=str, parse_float=str)
+    raw_sha256 = sha256(source_bytes).hexdigest()
+    reference_input_bound = _reference_input_identity_bound(
+        reference.get("source_text"), raw_sha256
+    )
     text = source_bytes.decode("utf-8")
     analysis = analyze_deterministic_metrics(
         text,
@@ -203,7 +207,6 @@ def build_comparison(
         dictionary_profile=dictionary_profile,
     )
 
-    raw_sha256 = sha256(source_bytes).hexdigest()
     source_text = {
         "edition_match": edition_match,
         "edition_label": _none_if_blank(edition_label),
@@ -228,9 +231,10 @@ def build_comparison(
             raise ValueError(f"analyzer does not emit mapped metric {metric_id}")
 
         admission_issues: list[str] = []
-        if not _provenance_admissible(source_text):
+        if not _provenance_admissible(source_text, reference_input_bound):
             admission_issues.append(
-                "Exact edition/legal provenance required for parity is incomplete."
+                "Exact edition/legal provenance and a matching reference input "
+                "SHA-256 witness are required; a caller assertion alone is insufficient."
             )
         if metric_id in _DICTIONARY_DEPENDENT_METRICS:
             admission_issues.append(
@@ -363,9 +367,38 @@ def _comparison_row(
     }
 
 
-def _provenance_admissible(source_text: dict[str, object]) -> bool:
+def _reference_input_identity_bound(reference_source: object, raw_sha256: str) -> bool:
+    """Reject false exact-input claims; a caller's edition label is not FantLab evidence.
+
+    A reference-side digest must be independently acquired and reviewed. Checking
+    it here establishes byte consistency, not the external origin of that witness.
+    """
+    if reference_source is None:
+        return False
+    if not isinstance(reference_source, dict):
+        raise ValueError("reference source_text must be an object")
+    matched = reference_source.get("edition_matched")
+    if type(matched) is not bool:
+        raise ValueError("reference source_text.edition_matched must be boolean")
+    digest = reference_source.get("raw_sha256")
+    if digest is not None and (
+        not isinstance(digest, str) or len(digest) != 64
+        or any(char not in "0123456789abcdef" for char in digest)
+    ):
+        raise ValueError("reference source_text.raw_sha256 must be lowercase SHA-256 or null")
+    if matched and digest is None:
+        raise ValueError("exact reference source needs an input SHA-256 witness")
+    if matched and digest != raw_sha256:
+        raise ValueError("reference input SHA-256 differs from supplied text bytes")
+    return matched and digest == raw_sha256
+
+
+def _provenance_admissible(
+    source_text: dict[str, object], reference_input_bound: bool
+) -> bool:
     return (
-        source_text["edition_match"] == "exact"
+        reference_input_bound
+        and source_text["edition_match"] == "exact"
         and bool(source_text["edition_label"])
         and bool(source_text["source_reference"])
         and bool(source_text["legal_basis"])

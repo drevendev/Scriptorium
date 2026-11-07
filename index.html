@@ -3,12 +3,12 @@
 <meta name="description" content="Scriptorium: одиннадцать измеренных русских книг, два произведения в работе, красивые диаграммы, сравнения и атрибуция переводчиков. Все числа из проверенных исходных данных.">
 <title>Scriptorium — литературный Reader на русском языке</title>
 <link rel="stylesheet" href="./assets/pages-reader.css"></head><body>
-<a class="skip-link" href="#main">Перейти к содержанию</a>
+<nav class="skip-links" aria-label="Быстрые переходы с клавиатуры"><a class="skip-link" href="#main">К содержанию</a><a class="skip-link" href="#books">К библиотеке</a><a class="skip-link" href="#pairs">К сравнению</a><a class="skip-link" href="#measurements">К метрикам</a></nav>
 <header class="site-top">
 <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a>
 <nav aria-label="Основная навигация"><a href="#books">Книги</a><a href="#pairs">Сравнить</a><a href="#measurements">Метрики</a><a href="#translations">Переводы</a><a href="#method">Метод</a><a href="./voice/">Почерк авторов</a></nav>
 </header>
-<main id="main">
+<main id="main" tabindex="-1">
 <section class="hero" aria-labelledby="hero-title">
 <div class="hero-copy"><p class="eyebrow"><span class="spark" aria-hidden="true"></span> ЛИТЕРАТУРНАЯ ЛАБОРАТОРИЯ / РУССКИЙ КОРПУС</p>
 <h1 id="hero-title">У каждой книги — <em>свой ритм.</em></h1>
@@ -44,7 +44,8 @@
 <div class="chart-row"><span title="Робинзон Крузо · Шишмарёва">Робинзон Крузо · Шишмарёва</span><div class="bar-track" aria-hidden="true"><span style="width:0.42%"></span></div><strong>0,24%</strong></div></div>
 <details class="chart-table">
 <summary>Точные значения графика · доступная таблица</summary>
-<div class="table-region" tabindex="0" role="region" aria-label="Таблица чисел выбранной диаграммы">
+<p id="chart-scroll-help" class="table-scroll-help">Если таблица шире экрана, проведите по ней в сторону или перейдите в область таблицы клавишей Tab и прокрутите стрелками.</p>
+<div class="table-region" tabindex="0" role="region" aria-label="Таблица чисел выбранной диаграммы" aria-describedby="chart-scroll-help">
 <table><caption id="chart-table-caption">Доля диалогов · % · 11 из 11 измеренных книг</caption>
 <thead><tr><th scope="col">Книга</th><th scope="col">Значение</th><th scope="col">Единицы</th></tr></thead>
 <tbody id="chart-table-rows">
@@ -66,7 +67,7 @@
 <div><strong>298</strong><span>зафиксированные поля метрик</span></div>
 <div><strong>249</strong><span>числовых наблюдений</span></div>
 <div><strong>49</strong><span>недоступных значения — не нули</span></div></section>
-<section id="books" class="library" aria-labelledby="books-title">
+<section id="books" tabindex="-1" class="library" aria-labelledby="books-title">
 <div class="section-head"><p class="eyebrow">01 / БИБЛИОТЕКА · РУССКИЕ ТЕКСТЫ</p><h2 id="books-title">Тринадцать книг. Одиннадцать измеренных.</h2>
 <p>Произведения на русском языке — первый модуль Scriptorium. Для переводов обязательно фиксируются язык оригинала, переводчик и редакция. Две карточки пока обозначают подготовку источников, <strong>не готовые результаты анализа</strong>.</p></div>
 <div class="catalog-tools" id="catalog-tools" hidden>
@@ -199,7 +200,7 @@
 <p>Измените запрос или вернитесь к полной библиотеке: 11 измеренных русскоязычных книг и 2 источника в подготовке.</p>
 <button id="catalog-reset" type="button" disabled>Показать все 13 книг</button>
 </div></section>
-<section id="pairs" class="workbench comparison-panel" aria-labelledby="pairs-title">
+<section id="pairs" tabindex="-1" class="workbench comparison-panel" aria-labelledby="pairs-title">
 <div class="section-head"><p class="eyebrow">02 / СРАВНЕНИЕ РИТМА</p><h2 id="pairs-title">Две книги — рядом.</h2>
 <p>Сравнивайте одинаковые нормированные метрики только при совпадении профиля измерений. Таблица содержит точные наблюдения и разницу «правая − левая»; ненулевые разницы меньше 0,001 показываются со знаком и знаком «<», а не как ноль. Сопоставление описательное: оно не доказывает, что стиль вызван именно автором или переводчиком. Диаграмма подписывает разницу «правая − левая» с единицей измерения; точные наблюдения остаются в таблице. Без JavaScript таблица ниже уже показывает все девять совместных измерений выбранных редакций с точными значениями; после загрузки проверенного JSON доступны другие пары и пропуски: «нет данных» — не ноль; JSON/CSV содержат только измерения обеих книг, Markdown также показывает пропуски.</p></div>
 <p class="permalink-help">Хотите поделиться сравнением? <a id="share-pair" href="?left=anna&amp;right=karamazov&amp;pair_metric=fantlab.dialogue.share_percent#pairs">Прямая ссылка на «Анну Каренину» и «Братьев Карамазовых» ↗</a>. Ссылка фиксирует две измеренные редакции и показатель, а не научную совместимость с FantLab.</p>
@@ -246,7 +247,8 @@
 </section>
 <p class="graph-caption">Для выбора других книг и метрик включите JavaScript. Статическая таблица и CSV остаются доступными без него. Это диагностическое сопоставление разных произведений.</p>
 </div>
-<div class="table-region" tabindex="0" role="region" aria-label="Таблица сравнения измерений">
+<p id="pair-scroll-help" class="table-scroll-help">Широкую таблицу можно прокручивать вбок: проведите пальцем либо перейдите в область таблицы клавишей Tab и используйте стрелки.</p>
+<div class="table-region" tabindex="0" role="region" aria-label="Таблица сравнения измерений" aria-describedby="pair-scroll-help">
 <table><caption id="pair-caption">Анна Каренина и Братья Карамазовы · справа минус слева · диагностика</caption>
 <thead><tr><th scope="col">Метрика</th><th scope="col">Левая книга</th><th scope="col">Правая книга</th><th scope="col">Δ (правая − левая)</th><th scope="col">Единица</th></tr></thead>
 <tbody id="pair-rows">
@@ -263,7 +265,7 @@
 <div class="evidence-actions"><button type="button" id="pair-export" disabled>Скачать сравнение (JSON)</button><button type="button" id="pair-export-csv" disabled>Скачать таблицу (CSV)</button><button type="button" id="pair-export-markdown" disabled>Скачать отчёт (Markdown)</button><span>JSON/CSV — только совместные измерения; Markdown — все 9 полей, включая пропуски · без текста произведений</span></div>
 <p class="evidence-warning">Сравнение оригинала и перевода станет доступным, когда обе конкретные редакции будут независимо измерены в собственных языковых профилях. Совпадение названия или автора не означает совпадения текста.</p>
 </section>
-<section id="measurements" class="workbench" aria-labelledby="measurements-title">
+<section id="measurements" tabindex="-1" class="workbench" aria-labelledby="measurements-title">
 <div class="section-head"><p class="eyebrow">03 / РЕЕСТР ИЗМЕРЕНИЙ</p><h2 id="measurements-title" tabindex="-1">Откройте любое поле.</h2>
 <p>Отдельное измерение Scriptorium и значение FantLab, если оно есть. <strong>Δ S−F</strong> — разница «Scriptorium минус FantLab»: для процентов — в процентных пунктах, для остальных полей — в указанных единицах. Дробные разницы округлены до трёх знаков (малые ненулевые показаны как &lt;0,001). Это диагностика разных или неустановленных редакций, <strong>не критерий прохождения</strong>. Отсутствующая разница — «—», не ноль. Совпадение методик и исходного текста FantLab не установлено — M2: 0/5.</p><p class="permalink-help">Выбранную редакцию можно открыть по ссылке без поиска заново. <a id="share-work" href="?book=anna#measurements">Прямая ссылка на «Анну Каренину» ↗</a></p></div>
 <div class="controls"><div class="control"><label for="choose-book">Книга</label>
@@ -281,7 +283,8 @@
   </ol>
   <p id="neighbor-status" role="status" aria-live="polite">После проверки локальных измерений появятся рекомендации для выбранной книги.</p>
 </aside>
-<div class="table-region" tabindex="0" role="region" aria-label="Измерения и научные статусы">
+<p id="measurement-scroll-help" class="table-scroll-help">Шесть колонок можно просмотреть на узком экране: проведите по таблице вбок или перейдите в область таблицы клавишей Tab и используйте стрелки.</p>
+<div class="table-region" tabindex="0" role="region" aria-label="Измерения и научные статусы" aria-describedby="measurement-scroll-help">
 <table><caption id="table-caption">Анна Каренина · полный реестр: 28 полей, 23 измерено, 5 недоступно · DIAGNOSTIC_ONLY</caption>
 <thead><tr><th scope="col">Метрика</th><th scope="col">Scriptorium</th><th scope="col">FantLab</th><th scope="col">Δ S−F</th><th scope="col">Единицы</th><th scope="col">Статус</th></tr></thead>
 <tbody id="measurement-rows">

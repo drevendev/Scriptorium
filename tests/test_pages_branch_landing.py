@@ -283,6 +283,59 @@ class RussianBranchReaderTests(unittest.TestCase):
         for forbidden in ("localStorage","sendBeacon","XMLHttpRequest","document.cookie","eval("):
             self.assertNotIn(forbidden,js)
 
+    def test_root_keyboard_shortcuts_and_scroll_instructions(self):
+        """Skip targets and all three wide-table hints must be navigable without JS."""
+        def validate(html):
+            nodes=Tags(html).start
+            identifiers={attrs["id"]:(tag,attrs) for tag,attrs in nodes if "id" in attrs}
+            nav=[attrs for tag,attrs in nodes
+                 if tag=="nav" and attrs.get("class")=="skip-links"]
+            self.assertEqual(len(nav),1)
+            self.assertEqual(nav[0].get("aria-label"),
+                             "Быстрые переходы с клавиатуры")
+            for target in ("main","books","pairs","measurements"):
+                with self.subTest(target=target):
+                    links=[attrs for tag,attrs in nodes if tag=="a"
+                           and attrs.get("class")=="skip-link"
+                           and attrs.get("href")=="#"+target]
+                    self.assertEqual(len(links),1)
+                    self.assertIn(target,identifiers)
+                    self.assertEqual(identifiers[target][1].get("tabindex"),"-1")
+            for region,help_id in (
+                ("Таблица чисел выбранной диаграммы","chart-scroll-help"),
+                ("Таблица сравнения измерений","pair-scroll-help"),
+                ("Измерения и научные статусы","measurement-scroll-help"),
+            ):
+                candidates=[attrs for tag,attrs in nodes
+                            if tag=="div" and attrs.get("role")=="region"
+                            and attrs.get("aria-label")==region]
+                self.assertEqual(len(candidates),1)
+                self.assertEqual(candidates[0].get("tabindex"),"0")
+                self.assertEqual(candidates[0].get("aria-describedby"),help_id)
+                self.assertIn(help_id,identifiers)
+                self.assertEqual(identifiers[help_id][0],"p")
+                self.assertEqual(identifiers[help_id][1].get("class"),
+                                 "table-scroll-help")
+        validate(self.html)
+        for original,damaged in (
+            ('href="#pairs">К сравнению','href="#absent">К сравнению'),
+            ('id="main" tabindex="-1"','id="main"'),
+            ('aria-describedby="pair-scroll-help"','aria-describedby="missing-help"'),
+            ('id="measurement-scroll-help"','id="missing-help"'),
+        ):
+            with self.subTest(mutation=original):
+                self.assertIn(original,self.html)
+                with self.assertRaises(AssertionError):
+                    validate(self.html.replace(original,damaged,1))
+        self.assertIn(".skip-links:focus-within",self.css)
+        self.assertIn(".skip-link:focus",self.css)
+        self.assertIn(".table-scroll-help",self.css)
+        self.assertIn("#main:focus-visible",self.css)
+        self.assertIn(
+            "@media print { .skip-links, .table-scroll-help { display:none !important; } }",
+            self.css
+        )
+
     def test_mobile_print_keyboard_and_readable_charts(self):
         css=self.css
         for needed in ('.skip-link:focus',':focus-visible','min-height:44px',

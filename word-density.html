@@ -44,6 +44,21 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media(forced-colors:active){.gap-track{border:1px solid CanvasText}.gap-track span{background:Highlight!important}}
 @media print{.gap-hero,.gap-card,.gap-panel{background:white!important;color:black!important}.gap-bars{display:none}.gap-panel{break-inside:avoid}}
+
+/* Print: keep the two source-bound tables readable on portrait paper. */
+@media print {
+ .gap-page { max-width: none; padding: 0; }
+ .gap-panel { break-inside: auto; page-break-inside: auto; }
+ .gap-table { overflow: visible; border: 0; }
+ .gap-table table { min-width: 0; width: 100%; table-layout: fixed; font-size: 9pt; }
+ .gap-table thead { display: table-header-group; }
+ .gap-table tr { break-inside: avoid; }
+ .gap-table th,.gap-table td { color: #000 !important; padding: .3rem .35rem; overflow-wrap: anywhere; }
+ .gap-table th:first-child { width: 38%; }
+ .gap-warning { background: #fff !important; color: #000 !important; }
+ .gap-page a, .gap-hero a { color: #000 !important; text-decoration: underline; }
+ .probe-hash { overflow-wrap: anywhere; word-break: break-all; }
+}
 </style>
 </head>
 <body>
@@ -116,6 +131,7 @@
 </tbody></table></div>
 <p class="probe-footnote">Нормировка в последнем столбце — на <strong>1000 базовых слов Scriptorium</strong>, а не на символы, предложения или слова FantLab. Варианты выполнены по отдельности; <strong>их изменения нельзя складывать</strong>.</p>
 <div class="gap-warning"><strong>DIAGNOSTIC_ONLY · FantLab input UNKNOWN · M2: 0/5.</strong> Сами по себе дефисы (+1 611), типографские апострофы (+46) и числа (−17) не объясняют исходный разрыв с FantLab (16 083 слова). Его анализируемая редакция не идентифицирована; это не проверка паритета и не оценка ошибки FantLab.</div>
+<p class="probe-footnote">В печатной версии и при сохранении страницы в PDF сохраняются точные таблицы, статус DIAGNOSTIC_ONLY и SHA-256 источника; цветные полосы не требуются для чтения чисел.</p>
 <h3>Откуда взяты числа?</h3>
 <p>Полный прогон по закреплённым ревизиям: <a href="https://github.com/drevendev/Scriptorium/actions/runs/42331164429">GitHub Actions #42331164429</a>. Исходно-безопасные числовые свидетельства: <a href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-word-boundaries.json">JSON измерений ↗</a>. Нормализация: <code>scriptorium-text-v1</code>; SHA-256 проверенного входа: <code class="probe-hash">1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205</code>. На сайте не хранится книжный текст.</p>
 <p><a href="./word-density.html#gap-density">Сравнить плотности FantLab и Scriptorium ↑</a> · <a href="https://github.com/drevendev/Scriptorium#test-word-boundaries-on-the-same-local-text">Проверить свой локальный текст ↗</a></p>

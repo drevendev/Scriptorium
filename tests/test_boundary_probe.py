@@ -1,5 +1,7 @@
 """Synthetic controls: identical input for every variant; no book prose."""
+import io
 import json
+from contextlib import redirect_stdout
 from pathlib import Path
 import tempfile
 import unittest
@@ -40,6 +42,14 @@ class BoundaryProbeTests(unittest.TestCase):
             json.loads(render_boundary_probe(analyze_boundary_probe("текст"), "json"))["status"],
             "DIAGNOSTIC_ONLY",
         )
+
+    def test_installed_help_exposes_working_command(self):
+        from scriptorium.cli import main as installed_main
+
+        output = io.StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(installed_main(["--help"]), 0)
+        self.assertIn("word-boundaries", output.getvalue())
 
     def test_cli_is_private_create_only_and_fail_closed(self):
         with tempfile.TemporaryDirectory() as directory:

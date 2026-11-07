@@ -15,6 +15,22 @@ JSON, CSV and Markdown are deterministic from the checked-in records and include
 no source prose. CSV emits one row per retained metric, plus a clearly labelled
 **NOT_RUN** coverage row for each candidate without an existing metric artifact.
 
+### Reference coverage is not local measurement coverage
+
+The Markdown summary now counts **FantLab references retained** and **numeric
+expected/actual pairs** separately from locally measured metric values. A
+numeric pair is still **source-unmatched diagnostic evidence**, never a parity
+pass. In individual Markdown rows, missing FantLab expected values are
+**UNKNOWN**, not **NOT_RUN**; missing local actuals retain **NOT_RUN** or
+**UNRESOLVED_NO_ACTUAL**. An unavailable delta is **UNKNOWN**, not zero.
+
+CSV numeric columns remain backward compatible: an absent expected/actual/delta
+is an empty cell, not a zero. The additive `reference_availability` column is
+`RECORDED` or `UNKNOWN`; `actual_availability` is `MEASURED`, `NOT_RUN`, or
+`UNRESOLVED_NO_ACTUAL`. JSON retains the existing versioned v1 contract
+(`null` for missing values). None of these labels proves the source identity,
+FantLab displayed rounding, or any new benchmark measurement.
+
 ## Evidence actually available
 
 - **Five** frozen public candidates have independently recorded

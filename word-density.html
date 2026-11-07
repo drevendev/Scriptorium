@@ -29,6 +29,17 @@
 .gap-warning{padding:1.1rem 1.3rem;border-left:5px solid #94652b;background:#f3e8d6}
 .gap-code{overflow-x:auto;background:#e8ede7;border-radius:6px;padding:1rem;line-height:1.6}
 .gap-actions{display:flex;gap:1rem;flex-wrap:wrap}.gap-actions a{min-height:44px;display:inline-flex;align-items:center;font-weight:700}
+
+/* One-input, one-factor full-book sensitivity; bars use a common zero and |delta| max. */
+.probe-bars{list-style:none;padding:0;margin:1.5rem 0;display:grid;gap:1.2rem}
+.probe-track{height:1.05rem;border:1px solid #81978c;background:#e6eee8;border-radius:5px;overflow:hidden;margin-top:.35rem}
+.probe-track span{display:block;height:100%;min-width:0}.probe-positive{background:#34715e}.probe-negative{background:#ac6b35}
+.probe-legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.9rem;color:var(--subtle)}
+.probe-dot{display:inline-block;width:.8rem;height:.8rem;margin-right:.3rem;vertical-align:middle;background:#34715e}.probe-dot.negative{background:#ac6b35}
+.probe-footnote{color:var(--subtle);font-size:.91rem}.probe-hash{overflow-wrap:anywhere;font: .86rem/1.6 ui-monospace,monospace}
+@media(forced-colors:active){.probe-track{border:1px solid CanvasText}.probe-track span{background:Highlight!important}}
+@media print{.probe-bars{display:none}}
+
 @media(max-width:620px){.gap-grid{grid-template-columns:1fr}.gap-page{padding-bottom:2rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media(forced-colors:active){.gap-track{border:1px solid CanvasText}.gap-track span{background:Highlight!important}}
@@ -72,6 +83,42 @@
 <p>Если бы число слов FantLab масштабировалось строго пропорционально числу символов Scriptorium, условный остаток составил бы <data data-diagnostic="length_adjusted_word_residual" value="14144.062082"><strong>+14 144,062082</strong></data> слова.</p>
 <p><strong>Формула:</strong> слова Scriptorium − (слова FantLab × символы Scriptorium / символы FantLab).</p>
 <div class="gap-warning"><strong>DIAGNOSTIC_ONLY · вход FantLab: UNKNOWN.</strong> Это не оценка ошибки токенизации. Разные редакции, пунктуация, границы слов и неопубликованная методология FantLab могут влиять одновременно. Случайное числовое совпадение не доказывает идентичность текста или воспроизведение FantLab.</div>
+</section>
+
+<section class="gap-panel" id="boundary-experiment" aria-labelledby="boundary-title">
+<p class="eyebrow">ПОЛНЫЙ ТЕКСТ · 239 ЗАКРЕПЛЁННЫХ РЕВИЗИЙ</p>
+<h2 id="boundary-title">Что меняется, если пересчитывать те же слова?</h2>
+<p>Эксперимент на <strong>одном и том же нормализованном тексте</strong> «Анны Карениной» из русской Викитеки. Базовый алгоритм Scriptorium насчитал <strong>269 358 слов</strong>; шесть независимых вариантов меняют <em>только одно правило каждый</em>. Это измеренные различия правил, не восстановленная формула FantLab.</p>
+<div class="gap-grid" aria-label="Проверенный источник и максимум эффекта">
+<div class="gap-card"><strong><data data-probe-meta="normalized_characters_including_spaces" value="1705605">1 705 605</data></strong><span>символов с пробелами · один закреплённый текст</span></div>
+<div class="gap-card"><strong><data data-probe-meta="replayed_revision_count" value="239">239</data></strong><span>исторических ревизий, проверенных по исходной идентичности</span></div>
+</div>
+<h3>Какой эффект заметен на полной книге?</h3>
+<p>Диаграмма показывает <strong>модуль изменения количества слов</strong> относительно базового счётчика. Общая шкала всех полос — от 0 до 1 611 слов; направление и точные значения подписаны текстом. Остальные три нулевых изменения приведены в таблице.</p>
+<ul class="probe-bars" aria-label="Три ненулевых изменения количества слов">
+<li><div class="gap-label"><span>Разделять по внутреннему дефису «-»</span><strong>+1 611 слов</strong></div><div class="probe-track" aria-hidden="true"><span class="probe-positive" style="width:100.0000%"></span></div></li>
+<li><div class="gap-label"><span>Разделять по типографскому апострофу «’»</span><strong>+46 слов</strong></div><div class="probe-track" aria-hidden="true"><span class="probe-positive" style="width:2.8554%"></span></div></li>
+<li><div class="gap-label"><span>Не считать числовые токены</span><strong>−17 слов</strong></div><div class="probe-track" aria-hidden="true"><span class="probe-negative" style="width:1.0552%"></span></div></li>
+</ul>
+<p class="probe-legend"><span><i class="probe-dot" aria-hidden="true"></i>слов стало больше</span><span><i class="probe-dot negative" aria-hidden="true"></i>слов стало меньше</span></p>
+<h3>Все семь проверок с точными значениями</h3>
+<div class="gap-table" role="region" tabindex="0" aria-label="Семь независимых вариантов подсчёта слов">
+<table><caption>Проверенные варианты на одном и том же тексте · отклонение относительно 269 358 слов</caption>
+<thead><tr><th scope="col">Правило подсчёта</th><th scope="col">Слов</th><th scope="col">Изменение, слов</th><th scope="col">Изменение на 1000 исходных слов</th></tr></thead>
+<tbody>
+<tr data-policy="current_scriptorium_text_v1"><th scope="row">Текущий счётчик Scriptorium</th><td><data data-probe="current_scriptorium_text_v1:word_count" value="269358">269 358</data></td><td><data data-probe="current_scriptorium_text_v1:delta_from_current_words" value="0">0</data></td><td><data data-probe="current_scriptorium_text_v1:delta_per_1000_current_words" value="0">0,000000</data></td></tr>
+<tr data-policy="split_ascii_hyphen"><th scope="row">Разделять по внутреннему дефису «-»</th><td><data data-probe="split_ascii_hyphen:word_count" value="270969">270 969</data></td><td><data data-probe="split_ascii_hyphen:delta_from_current_words" value="1611">+1 611</data></td><td><data data-probe="split_ascii_hyphen:delta_per_1000_current_words" value="5.980888">+5,980888</data></td></tr>
+<tr data-policy="split_straight_apostrophe"><th scope="row">Разделять по прямому апострофу «'»</th><td><data data-probe="split_straight_apostrophe:word_count" value="269358">269 358</data></td><td><data data-probe="split_straight_apostrophe:delta_from_current_words" value="0">0</data></td><td><data data-probe="split_straight_apostrophe:delta_per_1000_current_words" value="0">0,000000</data></td></tr>
+<tr data-policy="split_curly_apostrophe"><th scope="row">Разделять по типографскому апострофу «’»</th><td><data data-probe="split_curly_apostrophe:word_count" value="269404">269 404</data></td><td><data data-probe="split_curly_apostrophe:delta_from_current_words" value="46">+46</data></td><td><data data-probe="split_curly_apostrophe:delta_per_1000_current_words" value="0.170776">+0,170776</data></td></tr>
+<tr data-policy="join_unicode_hyphens"><th scope="row">Объединять по Unicode-дефису (U+2010/U+2011)</th><td><data data-probe="join_unicode_hyphens:word_count" value="269358">269 358</data></td><td><data data-probe="join_unicode_hyphens:delta_from_current_words" value="0">0</data></td><td><data data-probe="join_unicode_hyphens:delta_per_1000_current_words" value="0">0,000000</data></td></tr>
+<tr data-policy="merge_dotted_initialisms"><th scope="row">Объединять инициалы «А.Б.»</th><td><data data-probe="merge_dotted_initialisms:word_count" value="269358">269 358</data></td><td><data data-probe="merge_dotted_initialisms:delta_from_current_words" value="0">0</data></td><td><data data-probe="merge_dotted_initialisms:delta_per_1000_current_words" value="0">0,000000</data></td></tr>
+<tr data-policy="exclude_numeric_only"><th scope="row">Не считать числовые токены</th><td><data data-probe="exclude_numeric_only:word_count" value="269341">269 341</data></td><td><data data-probe="exclude_numeric_only:delta_from_current_words" value="-17">−17</data></td><td><data data-probe="exclude_numeric_only:delta_per_1000_current_words" value="-0.063113">−0,063113</data></td></tr>
+</tbody></table></div>
+<p class="probe-footnote">Нормировка в последнем столбце — на <strong>1000 базовых слов Scriptorium</strong>, а не на символы, предложения или слова FantLab. Варианты выполнены по отдельности; <strong>их изменения нельзя складывать</strong>.</p>
+<div class="gap-warning"><strong>DIAGNOSTIC_ONLY · FantLab input UNKNOWN · M2: 0/5.</strong> Сами по себе дефисы (+1 611), типографские апострофы (+46) и числа (−17) не объясняют исходный разрыв с FantLab (16 083 слова). Его анализируемая редакция не идентифицирована; это не проверка паритета и не оценка ошибки FantLab.</div>
+<h3>Откуда взяты числа?</h3>
+<p>Полный прогон по закреплённым ревизиям: <a href="https://github.com/drevendev/Scriptorium/actions/runs/42331164429">GitHub Actions #42331164429</a>. Исходно-безопасные числовые свидетельства: <a href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-word-boundaries.json">JSON измерений ↗</a>. Нормализация: <code>scriptorium-text-v1</code>; SHA-256 проверенного входа: <code class="probe-hash">1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205</code>. На сайте не хранится книжный текст.</p>
+<p><a href="./word-density.html#gap-density">Сравнить плотности FantLab и Scriptorium ↑</a> · <a href="https://github.com/drevendev/Scriptorium#test-word-boundaries-on-the-same-local-text">Проверить свой локальный текст ↗</a></p>
 </section>
 <section class="gap-panel" aria-labelledby="gap-replay">
 <h2 id="gap-replay">Повторить по закреплённым свидетельствам</h2>

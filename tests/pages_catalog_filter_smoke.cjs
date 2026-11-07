@@ -61,6 +61,8 @@ assert.equal(share.href,"?catalog=all&catalog_order=dialogue#books");
 order.value="length";run();
 assert.equal(share.href,"?catalog=all&catalog_order=length#books");
 search.value="Бекетова";filter.value="translated";run();
+assert.equal(share.href,"?catalog=translated&q="+encodeURIComponent("Бекетова")+"&catalog_order=length#books");
+order.value="dialogue";run();
 assert.equal(share.href,"?catalog=translated&q="+encodeURIComponent("Бекетова")+"&catalog_order=dialogue#books");
 location.search="?catalog=translated&q="+encodeURIComponent("Бекетова")+"&catalog_order=length";
 restore();

@@ -1,20 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 453
+STATE_REVISION: 454
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-07
-LAST_RESULT: #457 MERGED at 197a7323bfd0bc84ccc5963f9d8fa290918f2142; Reader keyboard shortcuts and scroll hints verified in master; live browser acceptance remains UNVERIFIED.
+LAST_RESULT: #458 MERGED at 631b8df2f50a8ceffcb05d6e17243ac8464dcb90; per-field diagnostic evidence blockers merged; live browser acceptance remains UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-PER-FIELD-GATE-BLOCKERS-v1
-ISSUES: #281 (partial strict comparison readiness)
+UNIT_ID: SCRIP-REPRO-010-REFERENCE-INPUT-BINDING-v1
+ISSUES: #281 (independent source-input evidence; separate benchmark harness)
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-repro-010-per-field-gates-20261107
-BASE: 197a7323bfd0bc84ccc5963f9d8fa290918f2142
+BRANCH: scrip-repro-010-reference-source-anchor-20261107
+BASE: 631b8df2f50a8ceffcb05d6e17243ac8464dcb90
 
-ACCEPTANCE: The existing 171-field source-free CSV/Markdown exports expose per-metric, deterministic evidence blockers (source identity, missing public reference, local NOT_RUN/unresolved, extension-only and displayed-rounding). Fail closed for forged promotions and inconsistent missing deltas. JSON v1 and existing numeric columns stay stable; source matching remains UNKNOWN, M2 0/5. Later exact-head CI/review required.
+ACCEPTANCE: The CLI/Python benchmark must not return integer PASS/FAIL from
+caller-asserted exact edition alone: a reference-side byte digest and explicit
+input match are additionally required. Missing witness remains unresolved;
+malformed/contradictory exact claims fail before analysis. Existing work488 is
+diagnostic. Positive/negative regressions, unchanged schema v1, M2 0/5.
+Independently sourced reference identity and rounding remain separate gates.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +27,7 @@ Milestone: publicly readable Russian Reader with verified full-book diagnostics,
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 per-field parity evidence blockers | Actionable evidence-gap codes in retained CSV and Markdown; forged promotions fail closed; JSON v1 preserved | This branch PR, later exact-head CI/review |
+| P1 | #281 benchmark input-binding safety | Require reference-side exact-byte SHA witness before integer PASS/FAIL; forged claims rejected, synthetic positive tests | This branch PR, later exact-head CI/review |
 | P2 | #285 live Reader route and responsive/print acceptance | HTTP route/asset checks, desktop/mobile/keyboard/print screenshots on actual deployed site | Browser network access currently blocked; not a prerequisite |
 | P3 | #281 independent source/profile and displayed-rounding witness | Observe a truly source-matched metric and published display policy; do not infer | FantLab analyzer-input identity currently unknown |
 | P4 | Trusov translator body / #436 exact EOF fidelity | Legal >=300k measurement and source witness; separate bounded EOF correctness fix | Historical-render evidence |

@@ -37,7 +37,7 @@ class BenchmarkReferenceSafetyTests(unittest.TestCase):
                                   edition_match='exact', edition_label='Synthetic',
                                   source_reference='https://example.invalid/synthetic',
                                   legal_basis='Original synthetic fixture')
-        self.assertEqual(result['metrics']['fantlab.general.characters']['comparison']['result'], 'pass')
+        self.assertEqual(result['metrics']['fantlab.general.characters']['comparison']['result'], 'unresolved')
         row = result['metrics']['fantlab.general.mean_word_length_chars']
         self.assertEqual(row['expected']['display_text'], '1.0000')
         self.assertEqual(row['comparison']['result'], 'unresolved')

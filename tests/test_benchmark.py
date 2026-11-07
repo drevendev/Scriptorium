@@ -31,10 +31,19 @@ REFERENCE = '''{
 }'''
 
 
+def _source_bound_reference(reference_json: str, source: str) -> str:
+    reference = json.loads(reference_json)
+    reference["source_text"] = {
+        "edition_matched": True,
+        "raw_sha256": sha256(source.encode("utf-8")).hexdigest(),
+    }
+    return json.dumps(reference, ensure_ascii=False)
+
+
 class BenchmarkComparisonTests(unittest.TestCase):
     def test_exact_integer_match_passes_only_with_admissible_provenance(self):
         artifact = build_comparison(
-            REFERENCE,
+            _source_bound_reference(REFERENCE, "Кот, спит."),
             "Кот, спит.".encode("utf-8"),
             scriptorium_revision="abc123",
             edition_match="exact",
@@ -49,6 +58,38 @@ class BenchmarkComparisonTests(unittest.TestCase):
         self.assertTrue(characters["comparison"]["numeric_match"])
         self.assertEqual(characters["comparison"]["raw_delta"], 0)
         self.assertEqual(words["comparison"]["result"], "pass")
+
+    def test_claimed_exact_edition_without_reference_input_binding_is_diagnostic(self):
+        artifact = build_comparison(
+            REFERENCE, "Кот, спит.".encode("utf-8"),
+            scriptorium_revision="abc123", edition_match="exact",
+            edition_label="some claimed edition", source_reference="local:claimed",
+            legal_basis="public_domain",
+        )
+        row = artifact["metrics"]["fantlab.general.characters"]
+        self.assertTrue(row["comparison"]["numeric_match"])
+        self.assertEqual(row["comparison"]["result"], "unresolved")
+        self.assertIn("reference input SHA-256", row["comparison"]["reason"])
+
+    def test_forged_reference_source_identity_fails_before_analysis(self):
+        from unittest.mock import patch
+        for tamper in ("wrong_digest", "string_flag", "missing_digest", "malformed_digest"):
+            ref = json.loads(_source_bound_reference(REFERENCE, "Кот, спит."))
+            if tamper == "wrong_digest":
+                ref["source_text"]["raw_sha256"] = "0" * 64
+            elif tamper == "string_flag":
+                ref["source_text"]["edition_matched"] = "true"
+            elif tamper == "missing_digest":
+                ref["source_text"]["raw_sha256"] = None
+            else:
+                ref["source_text"]["raw_sha256"] = "not-a-hash"
+            with self.subTest(tamper=tamper), patch(
+                "scriptorium.benchmark.analyze_deterministic_metrics"
+            ) as analyze:
+                with self.assertRaises(ValueError):
+                    build_comparison(json.dumps(ref), "Кот, спит.".encode("utf-8"),
+                                     scriptorium_revision="abc123", edition_match="exact")
+                analyze.assert_not_called()
 
     def test_integer_match_is_unresolved_without_exact_provenance(self):
         artifact = build_comparison(
@@ -92,7 +133,9 @@ class BenchmarkComparisonTests(unittest.TestCase):
         self.assertEqual(row["comparison"]["result"], "unresolved")
 
     def test_integer_mismatch_fails_when_provenance_is_admissible(self):
-        reference = REFERENCE.replace('"characters": 10', '"characters": 11')
+        reference = _source_bound_reference(
+            REFERENCE.replace('"characters": 10', '"characters": 11'), "Кот, спит."
+        )
         artifact = build_comparison(
             reference,
             "Кот, спит.".encode("utf-8"),
@@ -149,7 +192,7 @@ class BenchmarkComparisonTests(unittest.TestCase):
         reference = json.loads(REFERENCE)
         reference["expected"]["unique_words"] = 2
         artifact = build_comparison(
-            json.dumps(reference, ensure_ascii=False),
+            _source_bound_reference(json.dumps(reference, ensure_ascii=False), "Кот, кот. Пёс!"),
             "Кот, кот. Пёс!".encode("utf-8"),
             scriptorium_revision="abc123",
             edition_match="exact",

@@ -1,29 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 446
+STATE_REVISION: 447
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-07
-LAST_RESULT: GitHub confirms #450 MERGED at 843c312b785926dca3befbe6fce0b7f03ad7febb. Same-input word-boundary probe is authored as an independent, privacy-safe CLI diagnostic.
-LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; six source-unmatched word-density diagnostics; M2 0/5.
+LAST_RESULT: GitHub confirms #451 MERGED at cad8a05605453860ef46b1629d960e16d545ac85. The next unit reuses the exact frozen Anna replay for a source-bound full-work word-boundary measurement without an extra provider download.
+LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; six source-unmatched word-density diagnostics; Anna boundary experiment NOT_RUN pending exact-head CI; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TEXT-SAME-INPUT-WORD-BOUNDARIES-v1
-ISSUES: #281 tokenizer source-unmatched diagnostic (partial)
+UNIT_ID: SCRIP-REPRO-ANNA-PINNED-WORD-BOUNDARIES-v1
+ISSUES: #281 tokenizer/source-unmatched diagnostic (partial)
 STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-same-input-word-boundary-probe-20261107
-BASE: 843c312b785926dca3befbe6fce0b7f03ad7febb
+BRANCH: scrip-anna-pinned-boundary-replay-20261107
+BASE: cad8a05605453860ef46b1629d960e16d545ac85
 
-ACCEPTANCE: `scriptorium word-boundaries LOCAL.txt` analyzes one *private* normalized
-input without publishing text; versioned source-free JSON/Markdown reports baseline
-word tokens and independent hyphen/apostrophe/initialism/numeric sensitivity counts.
-Reuses the existing `scriptorium-text-v1` and source-free `policy_diagnostic` instead
-of rewriting production tokenization. Test deterministic synthetic controls,
-Unicode normalization, zero denominator, invalid UTF-8, symlink and overwrite refusals,
-and CLI help; no change to production metrics or legacy evidence.
-Run exact-head CI and later independent review before qualifying merge.
-An actual full-book sensitivity replay is **NOT_RUN**; FantLab input identity is
-UNKNOWN and these synthetic controls do not claim source matching or M2 progress.
+ACCEPTANCE: Opt-in `--with-boundary-probe` on the existing `scriptorium.repro_diagnostic`
+replay reuses the *same*, legally usable 239-revision Anna composite after
+source identity validation, then emits a source-free seven-variant count
+diagnostic in the existing CI artifact. No second source fetch. Cross-check
+normalization SHA/character count against pinned manifest and baseline/numeric/
+Unicode-hyphen counts against both the contemporaneous policy computation and
+older frozen independent evidence. Test opt-in/off behavior, one-factor cases,
+identity mismatch, inconsistent baseline and secrecy. An exact-head hosted
+replay is required before claiming full-book results. Source matching to
+FantLab remains UNKNOWN; M2 stays 0/5.
 
 ## Next user-visible milestone and compact queue
 
@@ -32,9 +32,9 @@ measured works and honestly labelled FantLab diagnostic differences.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge same-input word-boundary probe (#281) | Fresh exact-head tests/checks, privacy and compatibility diff, then verify master | CI |
-| P2 | Run lawful frozen input through new boundary probe | Exact source identity/hash, one-factor counts; no FantLab attribution | Retrieved authorized bytes/runtime |
-| P3 | #283/#285 Pages live/public acceptance | HTTP, desktop/mobile focus, actual routes | Existing browser navigation restriction |
+| P1 | Accept/merge pinned Anna full-work boundary experiment (#281) | Fresh exact-head CI with real 239-revision replay, crosscheck frozen counts, review privacy/diff, then verify master | Hosted provider/API and CI |
+| P2 | Interpret independent full-work one-factor deltas | Evidence-backed counts and what variants can/cannot explain; never attribute difference to FantLab without source match | P1 replay evidence |
+| P3 | #283/#285 Pages live/public acceptance | HTTP, desktop/mobile focus, actual routes | Browser restriction previously observed |
 | P4 | Trusov first-narrative body and independent translator measurement | Legal >=300k text, 29 metrics and edition witness | Historical render/Page seams |
 | P5 | #284 code/data rights and attribution | Evidence-backed license/attribution before external publication | Rights/owner evidence |
 

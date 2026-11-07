@@ -1,27 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 445
+STATE_REVISION: 446
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-07
-LAST_RESULT: Native GitHub confirms #449 MERGED at dc68c7e145ff64be53d36026c5fe7eb319921f82. Prepare a source-backed Anna word-density explanation in the branch-root Reader.
-LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; word-density matrix covers six retained, source-unmatched diagnostics; M2 0/5.
+LAST_RESULT: GitHub confirms #450 MERGED at 843c312b785926dca3befbe6fce0b7f03ad7febb. Same-input word-boundary probe is authored as an independent, privacy-safe CLI diagnostic.
+LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; six source-unmatched word-density diagnostics; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-WORD-DENSITY-CASE-v1
-ISSUES: #281 word-density diagnostic, #283 reader evidence
+UNIT_ID: SCRIP-TEXT-SAME-INPUT-WORD-BOUNDARIES-v1
+ISSUES: #281 tokenizer source-unmatched diagnostic (partial)
 STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-reader-word-gap-case-study-20261107
-BASE: dc68c7e145ff64be53d36026c5fe7eb319921f82
+BRANCH: scrip-same-input-word-boundary-probe-20261107
+BASE: 843c312b785926dca3befbe6fce0b7f03ad7febb
 
-ACCEPTANCE: Root Pages `word-density.html` explains Anna Karenina's retained
-FantLab vs Scriptorium word densities (words per 1,000 characters including spaces)
-with an accessible chart, exact table, hypothetical proportional-length residual
-and explicit `UNKNOWN` source identity / M2 0/5. Eight machine-readable values
-match the six-work `scriptorium word-gap` frozen-evidence report; a one-digit
-corruption fails regression. Root homepage and README link to the new no-JS page;
-no new literary source, metric or corpus admission. Actual CI/build and later
-independent review required. Branch-root deploy/live-browser acceptance separate.
+ACCEPTANCE: `scriptorium word-boundaries LOCAL.txt` analyzes one *private* normalized
+input without publishing text; versioned source-free JSON/Markdown reports baseline
+word tokens and independent hyphen/apostrophe/initialism/numeric sensitivity counts.
+Reuses the existing `scriptorium-text-v1` and source-free `policy_diagnostic` instead
+of rewriting production tokenization. Test deterministic synthetic controls,
+Unicode normalization, zero denominator, invalid UTF-8, symlink and overwrite refusals,
+and CLI help; no change to production metrics or legacy evidence.
+Run exact-head CI and later independent review before qualifying merge.
+An actual full-book sensitivity replay is **NOT_RUN**; FantLab input identity is
+UNKNOWN and these synthetic controls do not claim source matching or M2 progress.
 
 ## Next user-visible milestone and compact queue
 
@@ -30,9 +32,9 @@ measured works and honestly labelled FantLab diagnostic differences.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Later accept/merge Anna word-density Reader case (#281/#283) | Fresh head/base, full CI, page/table evidence and review, then verify master | Fresh CI |
-| P2 | Investigate same-input word-boundary policies against retained #449 gap | Reproducible controlled experiment with explicit variants; no FantLab equivalence claim | Exact input must be locally lawful |
-| P3 | #283/#285 Pages live/public acceptance | HTTP, mobile/desktop focus and actual route/link checks | Existing browser navigation restriction |
+| P1 | Later accept/merge same-input word-boundary probe (#281) | Fresh exact-head tests/checks, privacy and compatibility diff, then verify master | CI |
+| P2 | Run lawful frozen input through new boundary probe | Exact source identity/hash, one-factor counts; no FantLab attribution | Retrieved authorized bytes/runtime |
+| P3 | #283/#285 Pages live/public acceptance | HTTP, desktop/mobile focus, actual routes | Existing browser navigation restriction |
 | P4 | Trusov first-narrative body and independent translator measurement | Legal >=300k text, 29 metrics and edition witness | Historical render/Page seams |
 | P5 | #284 code/data rights and attribution | Evidence-backed license/attribution before external publication | Rights/owner evidence |
 

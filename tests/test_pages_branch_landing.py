@@ -294,13 +294,12 @@ class RussianBranchReaderTests(unittest.TestCase):
             self.assertEqual(nav[0].get("aria-label"),
                              "Быстрые переходы с клавиатуры")
             for target in ("main","books","pairs","measurements"):
-                with self.subTest(target=target):
-                    links=[attrs for tag,attrs in nodes if tag=="a"
-                           and attrs.get("class")=="skip-link"
-                           and attrs.get("href")=="#"+target]
-                    self.assertEqual(len(links),1)
-                    self.assertIn(target,identifiers)
-                    self.assertEqual(identifiers[target][1].get("tabindex"),"-1")
+                links=[attrs for tag,attrs in nodes if tag=="a"
+                       and attrs.get("class")=="skip-link"
+                       and attrs.get("href")=="#"+target]
+                self.assertEqual(len(links),1)
+                self.assertIn(target,identifiers)
+                self.assertEqual(identifiers[target][1].get("tabindex"),"-1")
             for region,help_id in (
                 ("Таблица чисел выбранной диаграммы","chart-scroll-help"),
                 ("Таблица сравнения измерений","pair-scroll-help"),

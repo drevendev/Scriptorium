@@ -479,6 +479,47 @@ def build_metric_matrix(root: Path) -> dict[str, object]:
     }
 
 
+
+def _metric_parity_blockers(entry: dict[str, object],
+                            row: dict[str, object] | None) -> tuple[str, ...]:
+    """Explain every unavailable parity gate without changing retained JSON v1.
+
+    Only verified source-unmatched diagnostics reach this renderer. Never infer
+    a source match, reference value, local measurement, or rounding policy.
+    """
+    if entry["exact_fantlab_input_identity"] != "UNKNOWN":
+        raise ValueError("unverified FantLab source input identity promotion")
+    blockers = ["SOURCE_INPUT_UNKNOWN"]
+    if row is None:
+        return tuple(blockers + ["REFERENCE_UNKNOWN", "LOCAL_NOT_RUN"])
+    if row["comparison_kind"] not in ("DIAGNOSTIC_ONLY", "EXTENSION_ONLY"):
+        raise ValueError("unverified metric comparison class promotion")
+    if row["display_rounding_evidence"] != "UNKNOWN":
+        raise ValueError("unverified FantLab rounding evidence promotion")
+    expected, actual, delta = row["expected"], row["actual"], row["actual_minus_expected"]
+    status = row["result"]
+    if (expected is None or actual is None) != (delta is None):
+        raise ValueError("invalid expected/actual/delta availability")
+    if row["comparison_kind"] == "EXTENSION_ONLY":
+        if expected is not None:
+            raise ValueError("extension cannot claim a FantLab counterpart")
+        blockers.append("NO_FANTLAB_COUNTERPART")
+    if expected is None:
+        blockers.append("REFERENCE_UNKNOWN")
+    if actual is None:
+        if status not in ("NOT_RUN", "UNRESOLVED_NO_ACTUAL"):
+            raise ValueError("invalid missing local metric state")
+        blockers.append("LOCAL_NOT_RUN" if status == "NOT_RUN" else "LOCAL_UNRESOLVED")
+    elif expected is None:
+        if status != "MEASURED_NO_REFERENCE":
+            raise ValueError("unverified reference-free comparison state")
+    elif status != "UNRESOLVED_SOURCE":
+        raise ValueError("unverified matched numeric comparison state")
+    if expected is not None and actual is not None:
+        blockers.append("ROUNDING_EVIDENCE_UNKNOWN")
+    return tuple(blockers)
+
+
 def render_metric_matrix(report: dict[str, object], kind: str) -> str:
     if kind == "json":
         return json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + "\n"
@@ -492,7 +533,8 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
                          "legal_evidence", "frozen_characters", "normalized_sha256",
                          "normalization_profile", "source_witness_path", "reference_date",
                          "reference_work_id", "m2_candidate_scope",
-                         "reference_availability", "actual_availability"))
+                         "reference_availability", "actual_availability",
+                         "parity_blockers"))
         for entry in entries:
             # This joins independently checked five-work readiness witnesses.
             # Resurrection is supplemental: never borrow another work's rights
@@ -523,6 +565,7 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
                     "RECORDED" if row and row["expected"] is not None else "UNKNOWN",
                     ("MEASURED" if row["actual"] is not None else row["result"])
                     if row else "NOT_RUN",
+                    ";".join(_metric_parity_blockers(entry, row)),
                 ))
         return stream.getvalue()
     if kind != "markdown":
@@ -563,9 +606,10 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
         "All numeric differences are **actual minus expected** on an unmatched public transcription.",
         "A missing FantLab reference is UNKNOWN (not NOT_RUN); an unavailable local actual is NOT_RUN or UNRESOLVED_NO_ACTUAL.",
         "Numeric pairs are diagnostic only: input identity and displayed-rounding policy remain UNKNOWN.",
+        "Blockers name missing evidence per field; they are not a parity score.",
         "Resurrection is a sixth supplemental diagnostic, outside the fixed five-work M2 source-readiness set.", "",
-        "| Metric ID | FantLab expected | Scriptorium actual | Raw Δ | Status |",
-        "| --- | ---: | ---: | ---: | --- |",
+        "| Metric ID | FantLab expected | Scriptorium actual | Raw Δ | Status | Parity blockers |",
+        "| --- | ---: | ---: | ---: | --- | --- |",
     ])
     for entry in entries:
         if not entry["metric_rows"]:
@@ -578,7 +622,7 @@ def render_metric_matrix(report: dict[str, object], kind: str) -> str:
             delta = "UNKNOWN" if row["actual_minus_expected"] is None else str(row["actual_minus_expected"])
             lines.append(
                 f"| {row['metric_id']} | {reference} | {actual} | "
-                f"{delta} | {row['result']} |"
+                f"{delta} | {row['result']} | {'; '.join(_metric_parity_blockers(entry, row))} |"
             )
     lines.extend(["", "All five readiness works now have retained, source-unmatched field observations. Hyperboloid, Silver Dove, Brothers Karamazov and supplemental Resurrection each have only two displayed FantLab references; missing reference values are unknown, not zero. M2 remains 0/5.", ""])
     return "\n".join(lines)

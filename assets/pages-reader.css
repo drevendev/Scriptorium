@@ -15,8 +15,14 @@ button { cursor:pointer; }
 button:disabled, input:disabled, select:disabled { cursor:not-allowed; }
 h1,h2,h3 { line-height:1.13; font-family:Georgia,"Times New Roman",serif; letter-spacing:-.025em; }
 h2 { font-weight:500; }
-.skip-link { position:absolute; left:1rem; top:-6rem; z-index:100; background:white; padding:.75rem; }
-.skip-link:focus { top:.4rem; }
+.skip-links { position:fixed; inset:0 0 auto; z-index:100; display:flex; flex-wrap:wrap; gap:.4rem; max-width:100%; padding:.45rem; background:var(--surface); border-bottom:1px solid var(--line); box-shadow:0 6px 16px rgba(20,47,37,.16); transform:translateY(-130%); }
+.skip-links:focus-within { transform:translateY(0); }
+.skip-link { display:inline-flex; align-items:center; min-height:44px; padding:.55rem .8rem; color:var(--green-deep); background:var(--surface); font-weight:750; border:1px solid var(--line); border-radius:4px; }
+.skip-link:focus { background:var(--wash); }
+#main:focus-visible, #books:focus-visible, #pairs:focus-visible, #measurements:focus-visible { outline:3px solid var(--focus); outline-offset:4px; }
+.table-scroll-help { margin:.45rem 0 .65rem; color:var(--subtle); font-size:.8rem; line-height:1.5; }
+.chart-table .table-scroll-help { color:#dae9dd; }
+@media print { .skip-links, .table-scroll-help { display:none !important; } }
 .site-top { max-width:1300px; margin:0 auto; padding:1.15rem clamp(1rem,3vw,2.5rem); display:flex; justify-content:space-between; align-items:center; gap:1rem; border-bottom:1px solid var(--line); }
 .brand { display:flex; align-items:center; gap:.65rem; min-height:44px; text-decoration:none; text-transform:uppercase; letter-spacing:.15em; font-size:.9rem; font-weight:850; }
 .brand-mark { display:grid; place-items:center; width:2.2rem; height:2.2rem; border-radius:50%; background:var(--green-deep); color:var(--ivory); font:600 1.4rem Georgia,serif; letter-spacing:0; }

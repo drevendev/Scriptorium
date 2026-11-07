@@ -53,6 +53,19 @@ const expected=catalog.books.map((book,index)=>({
 assert.deepEqual(h.order(),expected);
 assert.deepEqual(h.order().slice(-2),["petersburg","darwin"],"Pending works cannot be ranked as measured");
 assert.match(h.status.textContent,/Ноль не означает отсутствие данных/);
+h.selection.value="length";h.sorter();
+const expectedLengths=catalog.books.map((book,index)=>({
+  book,index,value:book.text_status==="measured"
+    ?book.metrics.find(m=>m.id==="fantlab.general.characters")?.actual??null:null
+})).sort((a,b)=>{
+  if(a.value===null)return b.value===null?a.index-b.index:1;
+  if(b.value===null)return -1;
+  return b.value-a.value||a.index-b.index;
+}).map(x=>x.book.key);
+assert.deepEqual(h.order(),expectedLengths);
+assert.equal(h.order()[0],"karamazov","The largest measured Russian body should lead");
+assert.deepEqual(h.order().slice(-2),["petersburg","darwin"],"Research leads stay last");
+assert.match(h.status.textContent,/символах с пробелами/);
 h.selection.value="__proto__";h.sorter();
 assert.equal(h.selection.value,"catalog");
 assert.deepEqual(h.order(),keys,"Unknown sort modes fail closed");
@@ -64,6 +77,15 @@ synthetic.books.find(b=>b.key==="shishmareva").metrics
 const z=harness(synthetic);z.selection.value="dialogue";z.sorter();
 assert.deepEqual(z.order().slice(-4),["anna","shishmareva","petersburg","darwin"],
   "Numeric zero before missing observations; missing measurement before research leads");
+const lengthSynthetic=structuredClone(catalog);
+lengthSynthetic.books.find(b=>b.key==="anna").metrics
+  .find(m=>m.id==="fantlab.general.characters").actual=0;
+lengthSynthetic.books.find(b=>b.key==="shishmareva").metrics
+  .find(m=>m.id==="fantlab.general.characters").actual=null;
+const l=harness(lengthSynthetic);l.selection.value="length";l.sorter();
+assert.deepEqual(l.order().slice(-4),["anna","shishmareva","petersburg","darwin"],
+  "A real numeric zero sorts before missing length and unmeasured leads");
+assert.match(html,/<select id="catalog-order" disabled>[\s\S]*?value="length"/);
 assert.match(html,/<select id="catalog-order" disabled>[\s\S]*?value="dialogue"/);
 assert.match(html,/id="catalog-sort-status" role="status" aria-live="polite"/);
 assert.match(source,/catalogOrder.addEventListener\("change",\(\)=>\{sortCatalog\(\);updateCatalog\(\);\}\)/);

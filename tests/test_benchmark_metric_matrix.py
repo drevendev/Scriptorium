@@ -136,6 +136,53 @@ class RetainedMetricMatrixTests(unittest.TestCase):
         self.assertIn(f"| {row['metric_id']} | UNKNOWN | 0 | UNKNOWN |",
                       matrix.render_metric_matrix(report, "markdown"))
 
+    def test_per_field_parity_blockers_explain_missing_evidence_without_parity(self):
+        report = matrix.build_metric_matrix(ROOT)
+        anna = report["entries"][0]
+        paired = next(r for r in anna["metric_rows"] if r["expected"] is not None
+                      and r["actual"] is not None)
+        self.assertEqual(matrix._metric_parity_blockers(anna, paired),
+                         ("SOURCE_INPUT_UNKNOWN", "ROUNDING_EVIDENCE_UNKNOWN"))
+        silver = next(e for e in report["entries"] if e["candidate_id"] == "bely-silver-dove-ru")
+        unknown_ref = next(r for r in silver["metric_rows"] if r["actual"] is not None
+                           and r["expected"] is None and r["comparison_kind"] == "DIAGNOSTIC_ONLY")
+        self.assertEqual(matrix._metric_parity_blockers(silver, unknown_ref),
+                         ("SOURCE_INPUT_UNKNOWN", "REFERENCE_UNKNOWN"))
+        missing = next(r for r in silver["metric_rows"] if r["result"] == "NOT_RUN")
+        self.assertIn("LOCAL_NOT_RUN", matrix._metric_parity_blockers(silver, missing))
+        extension = next(r for r in silver["metric_rows"]
+                         if r["comparison_kind"] == "EXTENSION_ONLY")
+        self.assertIn("NO_FANTLAB_COUNTERPART",
+                      matrix._metric_parity_blockers(silver, extension))
+        csv_rows = list(csv.DictReader(StringIO(matrix.render_metric_matrix(report, "csv"))))
+        self.assertEqual(len(csv_rows), 171)
+        self.assertEqual(next(r for r in csv_rows if r["candidate_id"] == anna["candidate_id"]
+                              and r["metric_id"] == paired["metric_id"])["parity_blockers"],
+                         "SOURCE_INPUT_UNKNOWN;ROUNDING_EVIDENCE_UNKNOWN")
+        self.assertIn("Parity blockers", matrix.render_metric_matrix(report, "markdown"))
+        self.assertEqual(json.loads(matrix.render_metric_matrix(report, "json")), report)
+
+    def test_parity_blockers_reject_forged_source_rounding_or_result(self):
+        report = copy.deepcopy(matrix.build_metric_matrix(ROOT))
+        entry = report["entries"][0]
+        paired = next(r for r in entry["metric_rows"] if r["expected"] is not None
+                      and r["actual"] is not None)
+        entry["exact_fantlab_input_identity"] = "MATCHED"
+        with self.assertRaisesRegex(ValueError, "source input"):
+            matrix.render_metric_matrix(report, "csv")
+        entry["exact_fantlab_input_identity"] = "UNKNOWN"
+        paired["display_rounding_evidence"] = "VERIFIED"
+        with self.assertRaisesRegex(ValueError, "rounding evidence"):
+            matrix.render_metric_matrix(report, "markdown")
+        paired["display_rounding_evidence"] = "UNKNOWN"
+        paired["result"] = "PASS"
+        with self.assertRaisesRegex(ValueError, "matched numeric"):
+            matrix.render_metric_matrix(report, "csv")
+        paired["result"] = "UNRESOLVED_SOURCE"
+        paired["actual_minus_expected"] = None
+        with self.assertRaisesRegex(ValueError, "availability"):
+            matrix.render_metric_matrix(report, "markdown")
+
     def _mutate(self, path, mutate):
         original = matrix._load
 

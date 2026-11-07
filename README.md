@@ -331,7 +331,10 @@ reference values and numeric pairs; individual missing reference values say
 **UNKNOWN**, not **NOT_RUN**. CSV keeps its existing numeric cells and adds
 `reference_availability` / `actual_availability` labels so an absent public
 reference cannot be mistaken for a failed local measurement. Numeric pairs
-remain source-unmatched diagnostics, not evidence of parity.
+remain source-unmatched diagnostics, not evidence of parity. The CSV
+`parity_blockers` column and Markdown per-field blocker labels now show exactly
+which source, reference, local or displayed-rounding evidence is still missing;
+they do not change JSON v1 or count as M2 parity.
 The source-free matrix validates **171 field-level diagnostic/extension rows**:
 142 across the five core works (**five works with retained measurements**),
 plus 29 *Resurrection* rows as a sixth, separately pinned source-unmatched

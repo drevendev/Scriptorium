@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 452
+STATE_REVISION: 453
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-07
-LAST_RESULT: #456 MERGED at f573931b9ce0f40761b206c95be975e4646beeba; source-reference UNKNOWN/NOT_RUN distinction verified in master; root Reader keyboard-navigation candidate scoped for later review; live browser acceptance UNVERIFIED.
+LAST_RESULT: #457 MERGED at 197a7323bfd0bc84ccc5963f9d8fa290918f2142; Reader keyboard shortcuts and scroll hints verified in master; live browser acceptance remains UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-ROOT-KEYBOARD-LANDMARKS-v1
-ISSUES: #283 (partial keyboard/mobile accessibility slice)
+UNIT_ID: SCRIP-REPRO-010-PER-FIELD-GATE-BLOCKERS-v1
+ISSUES: #281 (partial strict comparison readiness)
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-site-012-root-keyboard-landmarks-20261107
-BASE: f573931b9ce0f40761b206c95be975e4646beeba
+BRANCH: scrip-repro-010-per-field-gates-20261107
+BASE: 197a7323bfd0bc84ccc5963f9d8fa290918f2142
 
-ACCEPTANCE: The branch-root Reader exposes four keyboard-first skip destinations with focusable targets; all three exact-value scrollable tables have visible instructions and matching aria-describedby references. Source-backed numeric HTML/JS/JSON remain unchanged; no external requests or new data. Positive/negative HTML/CSS regressions and later exact-head CI required. Browser desktop/mobile/print screenshots and live route acceptance remain VISUAL_NOT_VERIFIED.
+ACCEPTANCE: The existing 171-field source-free CSV/Markdown exports expose per-metric, deterministic evidence blockers (source identity, missing public reference, local NOT_RUN/unresolved, extension-only and displayed-rounding). Fail closed for forged promotions and inconsistent missing deltas. JSON v1 and existing numeric columns stay stable; source matching remains UNKNOWN, M2 0/5. Later exact-head CI/review required.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,9 +22,9 @@ Milestone: publicly readable Russian Reader with verified full-book diagnostics,
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 root Reader keyboard shortcuts and wide-table guidance | Focusable skip targets and labelled chart/pair/registry scroll regions; positive/negative tests and later CI acceptance | This branch PR; real browser visual check separately blocked |
+| P1 | #281 per-field parity evidence blockers | Actionable evidence-gap codes in retained CSV and Markdown; forged promotions fail closed; JSON v1 preserved | This branch PR, later exact-head CI/review |
 | P2 | #285 live Reader route and responsive/print acceptance | HTTP route/asset checks, desktop/mobile/keyboard/print screenshots on actual deployed site | Browser network access currently blocked; not a prerequisite |
-| P3 | #281 next source-and-profile/rounding witness | Independently observed displayed rounding and source identity for a qualifying field, or explicit unresolved evidence | True FantLab analyzer-input identity currently unknown |
+| P3 | #281 independent source/profile and displayed-rounding witness | Observe a truly source-matched metric and published display policy; do not infer | FantLab analyzer-input identity currently unknown |
 | P4 | Trusov translator body / #436 exact EOF fidelity | Legal >=300k measurement and source witness; separate bounded EOF correctness fix | Historical-render evidence |
 | P5 | #284 code/data licensing and attribution | Evidence-backed code/data reuse terms only after owner approval | Rights-holder authorization |
 

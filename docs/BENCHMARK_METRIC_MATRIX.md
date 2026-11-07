@@ -31,6 +31,23 @@ is an empty cell, not a zero. The additive `reference_availability` column is
 (`null` for missing values). None of these labels proves the source identity,
 FantLab displayed rounding, or any new benchmark measurement.
 
+### Actionable per-field parity blockers (CSV and Markdown)
+
+Each validated row now carries a deterministic `parity_blockers` CSV value
+(semicolon-delimited) and a human-readable Markdown blocker column. The source-
+unmatched inputs always include `SOURCE_INPUT_UNKNOWN`; an unavailable public
+value adds `REFERENCE_UNKNOWN`, a non-FantLab extension adds
+`NO_FANTLAB_COUNTERPART`, and an absent local value adds `LOCAL_NOT_RUN` or
+`LOCAL_UNRESOLVED`. A numeric pair adds `ROUNDING_EVIDENCE_UNKNOWN` because
+its displayed-reference precision and tie-breaking have not been established.
+The rounding blocker is only evaluated for present pairs; missing values are
+not assumed to have a known rounding policy. Forged source, rounding,
+comparison status or delta availability is rejected, not promoted to parity.
+This is an **evidence-gap inventory**, not a new tolerance or parity score.
+
+The JSON v1 report and the original CSV numeric/status columns remain unchanged;
+neither retained data nor text is recomputed. All M2 candidates remain 0/5.
+
 ## Evidence actually available
 
 - **Five** frozen public candidates have independently recorded

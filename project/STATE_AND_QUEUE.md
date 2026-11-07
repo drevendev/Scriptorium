@@ -1,25 +1,25 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 454
+STATE_REVISION: 455
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-07
-LAST_RESULT: #458 MERGED at 631b8df2f50a8ceffcb05d6e17243ac8464dcb90; per-field diagnostic evidence blockers merged; live browser acceptance remains UNVERIFIED.
+LAST_RESULT: #459 MERGED at 1491e142c7c615c8539a92947a790e8a2ac1ded8; reference-side input SHA gate merged; live browser acceptance remains UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-010-REFERENCE-INPUT-BINDING-v1
-ISSUES: #281 (independent source-input evidence; separate benchmark harness)
+UNIT_ID: SCRIP-SITE-012-CATALOG-LENGTH-SORT-v1
+ISSUES: #283 (bounded Reader navigation slice; visual acceptance remains open)
 STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-repro-010-reference-source-anchor-20261107
-BASE: 631b8df2f50a8ceffcb05d6e17243ac8464dcb90
+BRANCH: scrip-site-012-catalog-length-sort-20261107
+BASE: 1491e142c7c615c8539a92947a790e8a2ac1ded8
 
-ACCEPTANCE: The CLI/Python benchmark must not return integer PASS/FAIL from
-caller-asserted exact edition alone: a reference-side byte digest and explicit
-input match are additionally required. Missing witness remains unresolved;
-malformed/contradictory exact claims fail before analysis. Existing work488 is
-diagnostic. Positive/negative regressions, unchanged schema v1, M2 0/5.
-Independently sourced reference identity and rounding remain separate gates.
+ACCEPTANCE: The branch-root Russian Reader sorts eleven measured edition cards by
+source-bound normalized character counts (spaces included) descending. Two unmeasured
+leads and any missing measurements sort last; numeric zero remains distinct from missing.
+Share links allow only catalog_order=title|dialogue|length; no-JS source order stays intact.
+DOM order matches keyboard order, tests preserve all 13 edition identities and M2 0/5.
+Later exact-head CI, review and live/visual acceptance remain independent.
 
 ## Next user-visible milestone and compact queue
 
@@ -27,9 +27,9 @@ Milestone: publicly readable Russian Reader with verified full-book diagnostics,
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 benchmark input-binding safety | Require reference-side exact-byte SHA witness before integer PASS/FAIL; forged claims rejected, synthetic positive tests | This branch PR, later exact-head CI/review |
+| P1 | #283 measured-length Reader catalogue sorting | Eleven real counts, missing-last, permalink, no-JS fallback, keyboard DOM order, regression tests | Branch PR; later exact-head CI/review |
 | P2 | #285 live Reader route and responsive/print acceptance | HTTP route/asset checks, desktop/mobile/keyboard/print screenshots on actual deployed site | Browser network access currently blocked; not a prerequisite |
-| P3 | #281 independent source/profile and displayed-rounding witness | Observe a truly source-matched metric and published display policy; do not infer | FantLab analyzer-input identity currently unknown |
+| P3 | #281 independent source/profile and displayed-rounding witness | Observe truly source-matched metric and published display policy; do not infer | FantLab analyzer-input identity currently unknown |
 | P4 | Trusov translator body / #436 exact EOF fidelity | Legal >=300k measurement and source witness; separate bounded EOF correctness fix | Historical-render evidence |
 | P5 | #284 code/data licensing and attribution | Evidence-backed code/data reuse terms only after owner approval | Rights-holder authorization |
 

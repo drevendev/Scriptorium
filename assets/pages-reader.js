@@ -363,7 +363,7 @@
     const share=el("share-catalog");
     share.hidden=!safeCatalogQuery(raw);
     if (!share.hidden) {
-      const order=["catalog","title","dialogue"].includes(catalogOrder.value)
+      const order=["catalog","title","dialogue","length"].includes(catalogOrder.value)
         ? catalogOrder.value : "catalog";
       share.href="?catalog="+encodeURIComponent(mode)+
         (raw?"&q="+encodeURIComponent(raw):"")+
@@ -403,7 +403,7 @@
       ? requested : "all";
     const raw=params.get("q")||"";
     const requestedOrder=params.get("catalog_order");
-    const order=["title","dialogue"].includes(requestedOrder)
+    const order=["title","dialogue","length"].includes(requestedOrder)
       ? requestedOrder : "catalog";
     return {mode,query:safeCatalogQuery(raw)?raw:"",order};
   }
@@ -419,7 +419,7 @@
   // and screen-reader traversal must match the visible catalogue sequence.
   // The default, no-JS catalogue stays in source order.
   function sortCatalog() {
-    const selected=["catalog","title","dialogue"].includes(catalogOrder.value)
+    const selected=["catalog","title","dialogue","length"].includes(catalogOrder.value)
       ? catalogOrder.value : "catalog";
     if (catalogOrder.value!==selected) catalogOrder.value=selected;
     const collator=new Intl.Collator("ru",{sensitivity:"base",numeric:true});
@@ -430,9 +430,14 @@
       if (!book) throw Error("Нет проверенного источника для сортировки");
       const field=book.text_status==="measured"
         ? lookup(book,"fantlab.dialogue.share_percent") : null;
+      const lengthField=book.text_status==="measured"
+        ? lookup(book,"fantlab.general.characters") : null;
       return {card,ordinal,title:book.display_title,
         dialogue:book.text_status==="measured"&&field&&isNumeric(field.actual)
-          ?field.actual:null};
+          ?field.actual:null,
+        characters:lengthField?.status==="measured" &&
+          Number.isSafeInteger(lengthField.actual) && lengthField.actual>=0
+          ?lengthField.actual:null};
     });
     if (selected==="title") entries.sort((a,b)=>
       collator.compare(a.title,b.title)||a.ordinal-b.ordinal);
@@ -441,11 +446,17 @@
       if (b.dialogue===null) return -1;
       return b.dialogue-a.dialogue||a.ordinal-b.ordinal;
     });
+    if (selected==="length") entries.sort((a,b)=>{
+      if (a.characters===null) return b.characters===null?a.ordinal-b.ordinal:1;
+      if (b.characters===null) return -1;
+      return b.characters-a.characters||a.ordinal-b.ordinal;
+    });
     for (const item of entries) catalogGrid.appendChild(item.card);
     const descriptions={
       catalog:"Исходный порядок каталога.",
       title:"Книги упорядочены по русским названиям.",
-      dialogue:"По доле диалогов в измеренных текстах, от большей к меньшей; без измерений — в конце. Ноль не означает отсутствие данных."
+      dialogue:"По доле диалогов в измеренных текстах, от большей к меньшей; без измерений — в конце. Ноль не означает отсутствие данных.",
+      length:"По измеренному объёму нормализованного текста в символах с пробелами, от большего к меньшему; без измерений — в конце. Ноль не означает отсутствие данных."
     };
     el("catalog-sort-status").textContent=descriptions[selected]+
       " Порядок клавиатуры совпадает с экранным; ссылка на поиск сохраняет выбранную сортировку.";

@@ -4,9 +4,11 @@ from __future__ import annotations
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from scriptorium import cli, voice_profile
 
@@ -22,6 +24,38 @@ class InstalledVoiceCliTests(unittest.TestCase):
             self.assertEqual(cli.main(["--help"]), 0)
         self.assertIn("voice", output.getvalue())
         self.assertIn("M3 preview", output.getvalue())
+
+    def test_default_source_is_bundled_byte_for_byte(self):
+        packaged = ROOT / "scriptorium" / "data" / "evidence-snapshot.json"
+        self.assertEqual(packaged.read_bytes(), SNAPSHOT.read_bytes())
+        self.assertEqual(voice_profile._git_blob_sha(packaged.read_bytes()),
+                         voice_profile._PACKAGED_SOURCE_BLOB_SHA1)
+        package_config = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+        self.assertIn('"data/evidence-snapshot.json"', package_config)
+
+    def test_default_voice_report_works_outside_checkout(self):
+        with tempfile.TemporaryDirectory() as directory:
+            cwd = Path.cwd()
+            try:
+                os.chdir(directory)
+                output = StringIO()
+                with redirect_stdout(output):
+                    self.assertEqual(cli.main(["voice"]), 0)
+            finally:
+                os.chdir(cwd)
+        self.assertEqual(json.loads(output.getvalue()),
+                         json.loads(DERIVED.read_text(encoding="utf-8")))
+
+    def test_modified_bundled_identity_fails_closed_without_path_leak(self):
+        stderr, stdout = StringIO(), StringIO()
+        with patch.object(voice_profile, "_PACKAGED_SOURCE_BLOB_SHA1", "0" * 40):
+            with redirect_stdout(stdout), redirect_stderr(stderr):
+                with self.assertRaises(SystemExit) as rejected:
+                    cli.main(["voice"])
+        self.assertEqual(rejected.exception.code, 2)
+        self.assertEqual(stdout.getvalue(), "")
+        self.assertNotIn(str(ROOT), stderr.getvalue())
+        self.assertIn("unable to verify", stderr.getvalue())
 
     def test_json_stdout_is_exact_reproduced_artifact_without_status_prefix(self):
         output = StringIO()

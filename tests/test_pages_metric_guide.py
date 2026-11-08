@@ -71,6 +71,15 @@ class PublishedMetricGuideTests(unittest.TestCase):
         self.assertEqual(len(re.findall(r'<section class="metric-group"', page)), 4)
         self.assertEqual(len(re.findall(r'<table>', page)), 4)
 
+    def test_branch_root_preview_contains_metric_guide(self):
+        workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
+        # Pages may be configured as branch deployment; the CI preview must
+        # nevertheless contain every Reader route linked from its first screen.
+        self.assertEqual(workflow.count('      - "metrics.html"'), 2)
+        self.assertIn("cp metrics.html build/branch-root-preview/metrics.html", workflow)
+        self.assertIn("test -s build/branch-root-preview/metrics.html", workflow)
+        self.assertIn("cmp metrics.html build/branch-root-preview/metrics.html", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -333,6 +333,9 @@
       ? catalogFilter.value : "all";
     const query=catalogSearch.value.normalize("NFKC").toLocaleLowerCase("ru")
       .replace(/ё/g,"е").trim();
+    // Allow a reader to find a translation by author AND translator in any order.
+    // Match only the validated metadata; neither text nor queries leave the browser.
+    const terms=query ? query.split(/\s+/u) : [];
     let shown=0, measured=0, pending=0;
     for (const card of catalogCards) {
       const book=data.books.find(b=>b.key===card.dataset.catalogKey);
@@ -346,7 +349,7 @@
         (mode==="measured" && isMeasured) ||
         (mode==="pending" && !isMeasured) ||
         (mode==="translated" && isTranslation);
-      const visible=modeMatches && (!query || text.includes(query));
+      const visible=modeMatches && terms.every(term=>text.includes(term));
       card.hidden=!visible;
       if (visible) {
         shown++;

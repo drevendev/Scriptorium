@@ -30,8 +30,10 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn('id="catalog-filter-status" role="status" aria-live="polite"',html)
         css=(ROOT/"assets/pages-reader.css").read_text(encoding="utf-8")
         self.assertIn(".book[hidden] { display:none !important; }",css)
+        self.assertIn(".book .book-compare",css)
         self.assertIn("@media print { .catalog-tools { display:none !important; } }",css)
         js=(ROOT/"assets/pages-reader.js").read_text(encoding="utf-8")
+        self.assertIn("installCatalogComparisonActions();",js)
         self.assertIn("doc.books.some(book=>{",js)
         self.assertIn('catalogSearch.addEventListener("input",updateCatalog)',js)
         self.assertIn('catalogOrder.addEventListener("change",()=>{sortCatalog();updateCatalog();})',js)
@@ -53,7 +55,8 @@ class CatalogueFilterTests(unittest.TestCase):
     def test_real_js_behavior(self):
         for command in (["node","--check",str(ROOT/"assets/pages-reader.js")],
                         ["node",str(ROOT/"tests/pages_catalog_filter_smoke.cjs")],
-                        ["node",str(ROOT/"tests/pages_catalog_sort_smoke.cjs")]):
+                        ["node",str(ROOT/"tests/pages_catalog_sort_smoke.cjs")],
+                        ["node",str(ROOT/"tests/pages_catalog_compare_smoke.cjs")]):
             result=subprocess.run(command,cwd=ROOT,text=True,capture_output=True,check=False)
             self.assertEqual(result.returncode,0,result.stdout+"\n"+result.stderr)
 

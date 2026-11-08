@@ -1213,6 +1213,40 @@
     selectPair(rightSelect.value, leftSelect.value, true);
   }
 
+  // Progressive enhancement: shortcuts exist only after pinned JSON is verified.
+  // Original static source links remain the no-JavaScript/error fallback.
+  function compareFromCatalog(key) {
+    const book=getBook(key);
+    if (!book) return;
+    const previousLeft=getBook(leftSelect.value);
+    const previousRight=getBook(rightSelect.value);
+    const counterpart=previousRight?.key!==key ? previousRight :
+      previousLeft?.key!==key ? previousLeft :
+      data.books.find(item=>item.text_status==="measured" && item.key!==key);
+    if (!counterpart) return;
+    // Every successful card action must show a real measured chart.
+    if (!sharedPairRows(book,counterpart).some(row=>row.id===pairMetric.value))
+      pairMetric.value="fantlab.dialogue.share_percent";
+    selectPair(key,counterpart.key,true);
+    const target=el("pairs");
+    target.focus({preventScroll:true});
+    target.scrollIntoView({block:"start"});
+  }
+
+  function installCatalogComparisonActions() {
+    for (const card of catalogCards) {
+      const book=getBook(card.dataset.catalogKey);
+      if (!book) continue;
+      const button=document.createElement("button");
+      button.type="button";
+      button.className="book-compare";
+      button.textContent="Сравнить с другой книгой ↗";
+      button.setAttribute("aria-label","Сравнить «"+book.display_title+"» с другой книгой");
+      button.addEventListener("click",()=>compareFromCatalog(book.key));
+      card.appendChild(button);
+    }
+  }
+
   function exportSelected() {
     const book=getBook(currentBook);
     if (!book) return;
@@ -1437,6 +1471,7 @@
       pairMetric.value=pairMetricFromUrl();
       selectPair(left,right);
       selectBook(bookFromUrl());
+      installCatalogComparisonActions();
     } catch (_) {
       status.textContent="Интерактивные данные недоступны. Откройте источник через ссылку на карточке книги; никаких выдуманных значений не подставлено.";
       el("pair-status").textContent="Сравнение недоступно без проверенного JSON. Статическая таблица остаётся для чтения.";

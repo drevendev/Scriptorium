@@ -302,6 +302,17 @@
     parent.appendChild(node);
     return node;
   }
+  // Deep-link measured metric names to the exact, source-free Russian definition.
+  // DOM textContent + URI encoding keep evidence-derived IDs out of HTML markup.
+  function appendMetricDefinition(parent,id,shown=label(id)) {
+    const link=document.createElement("a");
+    link.href="./metrics.html#metric-"+encodeURIComponent(id);
+    link.className="metric-definition-link";
+    link.textContent=shown;
+    link.setAttribute("aria-label","Методика показателя: "+label(id));
+    parent.appendChild(link);
+    return link;
+  }
   // Source-unmatched arithmetic only, not parity, tolerance or a pass/fail score.
   function diagnosticDelta(m) {
     if (m.kind==="extension") return "N/A";
@@ -316,8 +327,9 @@
   }
   function makeTableRow(m) {
     const tr=document.createElement("tr");
-    const th=insertText(tr,"th",label(m.id));
+    const th=insertText(tr,"th","");
     th.scope="row";
+    appendMetricDefinition(th,m.id);
     insertText(th,"code",m.id);
     insertText(tr,"td",m.actual===null?m.status.toUpperCase():exact(m.actual));
     insertText(tr,"td",m.kind==="extension"?"N/A":exact(m.reference));
@@ -1120,7 +1132,9 @@
     const fragment=document.createDocumentFragment();
     for (const m of coverage) {
       const tr=document.createElement("tr");
-      insertText(tr,"th",label(m.id)).scope="row";
+      const th=insertText(tr,"th","");
+      th.scope="row";
+      appendMetricDefinition(th,m.id);
       insertText(tr,"td",m.left===null?"нет данных":exact(m.left));
       insertText(tr,"td",m.right===null?"нет данных":exact(m.right));
       const comparable=m.left!==null&&m.right!==null;
@@ -1145,7 +1159,9 @@
     if (!curr) {
       insertText(graph,"p","Эта метрика недоступна хотя бы для одного текста. Подмена нулём запрещена.");
     } else {
-      insertText(graph,"h3",label(curr.id)+" · "+unit(curr.id));
+      const metricTitle=insertText(graph,"h3",label(curr.id)+" · "+unit(curr.id));
+      insertText(metricTitle,"span"," · ");
+      appendMetricDefinition(metricTitle,curr.id,"Как считается ↗");
       insertText(graph,"p",pairDeltaDescription(curr),"pair-delta");
       const max=Math.max(curr.left,curr.right);
       const items=[

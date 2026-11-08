@@ -77,6 +77,9 @@ jobs:
       - name: Verify full source-backed no-script single-book table
         run: node tests/pages_single_static_fallback_smoke.cjs
 
+      - name: Check metric-to-definition deep links
+        run: node tests/pages_metric_deep_link_smoke.cjs
+
       - name: Build canonical Pages artifact
         run: python -m scriptorium.site_renderer --repo-root . --output build/site
 

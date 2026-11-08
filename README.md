@@ -4,7 +4,7 @@
 
 **[Explore the Russian Reader →](https://drevendev.github.io/Scriptorium/)** · [See the real measured Robinson Crusoe translation](https://drevendev.github.io/Scriptorium/?book=shishmareva#measurements) · [Compare two Russian books](https://drevendev.github.io/Scriptorium/?left=anna&right=beketova&pair_metric=fantlab.punctuation.dash.per_1000_words#pairs)
 
-**[How to read the 29 metrics →](https://drevendev.github.io/Scriptorium/metrics.html)** — Russian-language, no-JavaScript guide to current inferred formulas, exact units, dictionary requirements, punctuation edge cases and FantLab definition evidence. Every field remains **inferred** (or an explicitly labeled Scriptorium extension), not source-matched parity.
+**[How to read the 29 metrics →](https://drevendev.github.io/Scriptorium/metrics.html)** — Russian-language, no-JavaScript guide to current inferred formulas, exact units, dictionary requirements, punctuation edge cases and FantLab definition evidence. Each metric name in the interactive single-book and paired tables links to its exact definition; the full guide is also available without JavaScript. Every field remains **inferred** (or an explicitly labeled Scriptorium extension), not source-matched parity.
 
 ### What works now
 

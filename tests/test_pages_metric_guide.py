@@ -80,6 +80,21 @@ class PublishedMetricGuideTests(unittest.TestCase):
         self.assertIn("test -s build/branch-root-preview/metrics.html", workflow)
         self.assertIn("cmp metrics.html build/branch-root-preview/metrics.html", workflow)
 
+    def test_interactive_reader_links_to_exact_definitions(self):
+        """Only canonical metric IDs become links; no source text or script URLs."""
+        source = (ROOT / "assets/pages-reader.js").read_text(encoding="utf-8")
+        reader = (ROOT / "index.html").read_text(encoding="utf-8")
+        workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
+        self.assertIn('link.href="./metrics.html#metric-"+encodeURIComponent(id);', source)
+        self.assertIn('link.textContent=shown;', source)
+        self.assertIn('link.setAttribute("aria-label","Методика показателя: "+label(id));', source)
+        self.assertIn('appendMetricDefinition(th,m.id);', source)
+        self.assertIn('appendMetricDefinition(metricTitle,curr.id,"Как считается ↗");', source)
+        self.assertEqual(source.count('appendMetricDefinition(th,m.id);'), 2)
+        self.assertEqual(reader.count('href="./metrics.html">Откройте определения всех 29 показателей'), 2)
+        self.assertIn("node tests/pages_metric_deep_link_smoke.cjs", workflow)
+        self.assertNotIn('link.innerHTML', source)
+
 
 if __name__ == "__main__":
     unittest.main()

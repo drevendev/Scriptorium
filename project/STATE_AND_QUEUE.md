@@ -1,33 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 463
+STATE_REVISION: 464
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-08
-LAST_RESULT: #467 MERGED at dd7fc79781ee6db2e0dd5a80975737abeb95e0b2. Next public-facing unit is a 29-field metric glossary linked from the branch-root Reader; M2 remains 0/5.
-LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
+LAST_RESULT: #468 MERGED at 45e80bb943c46e0ec8a1571b8bf9c48931079c89; Russian glossary for all 29 metrics exists in master. This independent PR adds contextual definition links without changing measurements or parity.
+LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; source identity unknown; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-014-METRIC-GUIDE-v1
-ISSUES: #283 (reader accessibility and interpretation); #281 (scientific interpretation remains diagnostic)
+UNIT_ID: SCRIP-SITE-014-CONTEXTUAL-METRIC-LINKS-v1
+ISSUES: #283 (reader comprehension, partial)
 STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED; CI_PENDING
-BRANCH: scrip-reader-metric-glossary-20261108
-BASE: dd7fc79781ee6db2e0dd5a80975737abeb95e0b2
+BRANCH: scrip-reader-contextual-metric-definitions-20261108
+BASE: 45e80bb943c46e0ec8a1571b8bf9c48931079c89
 
-ACCEPTANCE: The published branch-root Russian Reader offers a keyboard-accessible, no-JavaScript guide to all 29 versioned deterministic metrics. Definitions, units and public-definition/surface/extension evidence match the canonical metric contract; no invented compatibility or source prose. Reader/README cross-links and positive/negative structural regressions; later fresh exact-head CI acceptance and merge. Browser screenshots and live deployment remain independently unverified. No M2 promotion or corpus admission.
+ACCEPTANCE: After validation, interactive single-book and paired measurement rows open the exact matching glossary entry in the root Russian Reader; selected pair-chart heading links to the same definition. Static no-JavaScript tables retain exact numeric cells, with nearby links to the complete glossary. Test every canonical ID, encoded fragment safety, and structural entry points; preserve unknown/NOT_RUN, source-mismatch, no text uploads, and M2 0/5. Independent fresh exact-head CI/merge and live browser verification remain separate.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: a readable Russian Reader and trustworthy local comparisons with
-transparent source/metric provenance, accessible results and reproducible exports.
+Milestone: guide readers from **real measured numbers to transparent methods** without losing exact values or accessibility.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 explain all 29 Reader metrics and their limits | Accessible source-free Russian guide with source-aligned definitions and deep links; later CI acceptance | Current focused PR candidate; no same-run merge |
-| P2 | #285 verify live Reader routes, responsive/print and keyboard behavior | HTTP routes/assets and actual desktop/mobile/print screenshots | Browser network access remains unavailable; independent work continues |
-| P3 | #281 source-matched FantLab witness with displayed-rounding evidence | A legally usable >=300k edition and independent analyzer-input match; compare field by field | Exact FantLab source-input identity unknown |
-| P4 | Trusov translator body / #436 exact EOF fidelity | Frozen legal >=300k text and historical-render/EOF witness | Historical-render evidence |
-| P5 | #284 licensing and attribution | Verified code/data rights; no assumptions about public accessibility | Owner/rights-holder authorization |
+| P1 | #283 contextual metric guide links (current PR) | Verified exact 29-field anchors, keyboard/readable links, no-script guide fallback, CI | Later-run exact-head PR acceptance; no same-run merge |
+| P2 | #285 live Reader route and mobile/print/focus verification | Live site HTTP and actual screenshots | Browser HTTP remains unavailable; independent product work continues |
+| P3 | #281 verified source-matched FantLab diagnostic witness | Legal >=300k text and exact reference-input identity, displayed-rounding deltas | FantLab source-input identity unknown |
+| P4 | Trusov translation body / #436 exact EOF fidelity | Frozen rights-verified >=300k text and historical-render witness | Historical EOF/render evidence |
+| P5 | #284 licensing and attribution | Explicit verifiable code/data rights; never assume license | Owner/rights-holder authorization |
 
 ## Retained evidence and scientific gates
 

@@ -59,6 +59,13 @@ const insertText=(parent,tag,value,cls)=>{
 const unit=id=>id.endsWith("_percent")||id==="fantlab.dialogue.share_percent"?"%":
   id.includes("length_chars")?"символов / предложение":"на 1000 слов";
 const label=id=>id;
+// Exercise the actual shipped helper when the isolated pair renderer is evaluated.
+const metricLinkStart=source.indexOf("  function appendMetricDefinition(parent,id,shown=label(id)) {");
+const metricLinkEnd=source.indexOf("  // Source-unmatched",metricLinkStart);
+assert.ok(metricLinkStart>=0&&metricLinkEnd>metricLinkStart);
+const appendMetricDefinition=new Function("document","label",
+  source.slice(metricLinkStart,metricLinkEnd)+"\nreturn appendMetricDefinition;"
+)(document,label);
 const pretty=(n,places=2)=>n.toFixed(places);
 const exact=String;
 const deltaStart=source.indexOf("  function pairTableDeltaText(difference) {");
@@ -87,13 +94,16 @@ const updatePair=new Function(
   "getBook","updatePairEditionContext","sharedPairRows","pairCoverageRows",
   "document","el","insertText","unit","label","pretty","exact","pairedIds",
   "pairMetric","pairExportButton","pairCsvButton","pairMarkdownButton","leftSelect","rightSelect",
-  "pairDeltaDescription","pairTableDeltaText",
+  "pairDeltaDescription","pairTableDeltaText","appendMetricDefinition",
   source.slice(viewStart,viewEnd)+"\nreturn updatePair;"
 )(getBook,()=>{},sharedPairRows,pairCoverageRows,document,el,insertText,
-  unit,label,pretty,exact,pairedIds,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,leftSelect,rightSelect,pairDeltaDescription,pairTableDeltaText);
+  unit,label,pretty,exact,pairedIds,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,leftSelect,rightSelect,pairDeltaDescription,pairTableDeltaText,appendMetricDefinition);
 updatePair();
 const rendered=slots["pair-rows"].children[0].children;
 assert.equal(rendered.length,9);
+assert.ok(rendered.every(row=>row.children[0].children[0]?.href===
+  "./metrics.html#metric-"+encodeURIComponent(row.children[0].children[0].textContent)),
+  "Every paired metric label must link to its matching definition");
 assert.equal(rendered.filter(row=>row.children[2].textContent==="нет данных").length,2);
 assert.equal(rendered.filter(row=>row.children[3].textContent==="— (нет совместного измерения)").length,2);
 assert.match(slots["pair-status"].textContent,/7 из 9/);
@@ -129,7 +139,7 @@ const leftValue=lookup(anna,id).actual;
 const rightMetric=lookup(karamazov,id);
 const savedRightValue=rightMetric.actual;
 const tableDelta=()=>slots["pair-rows"].children[0].children
-  .find(row=>row.children[0].textContent===id).children[3].textContent;
+  .find(row=>row.children[0].children[0].textContent===id).children[3].textContent;
 try {
   rightMetric.actual=leftValue+0.0001;
   leftSelect.value="anna";rightSelect.value="karamazov";updatePair();

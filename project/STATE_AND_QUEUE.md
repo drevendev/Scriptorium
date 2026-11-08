@@ -1,26 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 461
+STATE_REVISION: 462
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-08
-LAST_RESULT: #465 MERGED at b4f8805d7bad5a9dde98e08419211ba30e848eab; dictionary-window active-vocabulary validation is in master. The next independent unit makes per-metric definition evidence visible in private comparison Markdown and HTML; Pages live/browser acceptance remains UNVERIFIED.
+LAST_RESULT: #466 MERGED at 585994945071e9b02430df923d75f0e35ca67555; definition evidence is visible in Markdown/HTML. The next independent slice warns private comparison readers about short/empty inputs and length-sensitive raw deltas; Pages live/browser acceptance remains UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-COMPARE-013-EVIDENCE-EXPORT-v1
-ISSUES: #283 (private report usefulness), #281 (explicit method-evidence status; no parity claim)
+UNIT_ID: SCRIP-COMPARE-014-INTERPRETATION-v1
+ISSUES: #283 (private report comprehension); #281 (scientific interpretation remains diagnostic)
 STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED; CI_PENDING
-BRANCH: scrip-compare-013-method-evidence-20261108
-BASE: b4f8805d7bad5a9dde98e08419211ba30e848eab
+BRANCH: scrip-compare-014-interpretation-20261108
+BASE: 585994945071e9b02430df923d75f0e35ca67555
 
-ACCEPTANCE: In both HTML and Markdown local two-book comparison outputs,
-show the metric's actual canonical definition evidence separately from its
-compatibility classification; do not label the latter "Evidence". Preserve
-all 29 metric identities, source-free output, escaping and unavailable states.
-Include positive real-analyzer and forged-evidence negative regressions; verify
-exact-head CI and accept/merge in a later independent run. No corpus admission
-or FantLab parity promotion.
+ACCEPTANCE: Local two-book Markdown and HTML comparisons show source-free interpretation
+notes before all 29 metrics: raw-count length dependence, any <300k-character
+input (including spaces), empty inputs, and >=2x size skew. Reject malformed
+length/calibration claims at rendering, preserve exact deltas, escaping,
+privacy, source identity, existing JSON/CSV contract and inferred-only
+classification. Exercise real short and unequal analyses plus negative
+tamper regressions; later independent exact-head CI acceptance and merge.
+No M2 promotion or corpus admission.
 
 ## Next user-visible milestone and compact queue
 
@@ -29,7 +30,7 @@ transparent source/metric provenance, accessible results and reproducible export
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283/#281 show definition evidence separately from metric compatibility in HTML/Markdown | Canonical 29-field evidence in both formats; forged evidence rejected; CI and later PR acceptance | Current PR candidate; no same-run merge |
+| P1 | #283/#281 make local comparison length and representativeness caveats visible | Source-free HTML/Markdown interpretation notes, positive/negative regressions, later CI acceptance | Current focused PR candidate; no same-run merge |
 | P2 | #285 verify live Reader routes, responsive/print and keyboard behavior | HTTP routes/assets and actual desktop/mobile/print screenshots | Browser network access remains unavailable; independent work continues |
 | P3 | #281 source-matched FantLab witness with displayed-rounding evidence | A legally usable >=300k edition and independent analyzer-input match; compare field by field | Exact FantLab source-input identity unknown |
 | P4 | Trusov translator body / #436 exact EOF fidelity | Frozen legal >=300k text and historical-render/EOF witness | Historical-render evidence |

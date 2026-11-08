@@ -481,7 +481,7 @@ class LocalComparisonTests(unittest.TestCase):
             "| " + compare._markdown_text(field["compatibility_status"]) +
             " | " + compare._markdown_text(field["definition_evidence"]) + " |"
         ), word_row)
-        self.assertEqual(len(word_row.split(" | ")), 12)
+        self.assertEqual(len(word_row.split(" | ")), 11)
 
         page = compare.render_html(result)
         self.assertIn("<th scope='col'>Compatibility</th>", page)

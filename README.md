@@ -33,6 +33,18 @@ The results include Russian originals and **separately identified translations**
 
 The [translation readiness table](https://drevendev.github.io/Scriptorium/#translations) now distinguishes the **measured 1935 Shishmareva edition** (572,587 characters; 24 numeric fields, five NOT_RUN) from the **unmeasured 1775 Trusov witness** (150 frozen historical Page revisions, not a reconstructed literary body). It links directly to each retained evidence record and keeps cross-translator comparisons disabled until both literary texts are independently measured. Trusov's French intermediary is a material confounder; no translation-style or FantLab parity is claimed.
 
+### Explore two source-backed author rhythm previews from the CLI
+
+The [public author-rhythm preview](voice/) compares **two measured Russian works by Alexander Grin and two by Leo Tolstoy**, using eight versioned metrics per author. From a repository checkout with the package installed, inspect the **same pinned observations** offline as a readable Markdown table or verified JSON:
+
+```bash
+scriptorium voice --format markdown
+scriptorium voice --check assets/voice-preview.json
+scriptorium voice --format json --output author-rhythm.json
+```
+
+The report prints individual book values, word-count-weighted author means and **between-book** population standard deviations. It uses only source-free measurement evidence; it does not read manuscripts, train a classifier, or claim confidence intervals. Two works per author are not enough to establish a stable author fingerprint; M3 remains open and FantLab parity remains **M2 0/5**. Generated files are never overwritten. This command requires the pinned `assets/evidence-snapshot.json` in the checkout and is **not** a general author profiler for arbitrary private text.
+
 ### Analyze your own writing in two commands
 
 Python **3.13+**; run from a checkout (no account, telemetry, manuscript upload or runtime API required):

@@ -10,7 +10,7 @@ const cards0=[...html.matchAll(/<article class="book(?: book-research)?" data-st
 assert.equal(cards0.length,13);
 assert.deepEqual(cards0.map(m=>m[2]),data.books.map(b=>b.key));
 const cards=cards0.map(m=>({dataset:{status:m[1],catalogKey:m[2]},hidden:false}));
-const filter={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
+const filter={value:"all"},origin={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
 const empty={hidden:true};
 const share={hidden:false,href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
@@ -22,8 +22,8 @@ const browser={location,history:{replaceState(_state,_title,url){
 const s=js.indexOf("  function updateCatalog() {"),e=js.indexOf("  function updateSingle() {",s);
 assert.ok(s>=0&&e>s);
 const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog};";
-const make=d=>new Function("data","catalogCards","catalogFilter","catalogSearch","catalogOrder","el","window",code)(
-  d,cards,filter,search,order,id=>id==="share-catalog"?share:id==="catalog-empty"?empty:status,browser);
+const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogSearch","catalogOrder","el","window",code)(
+  d,cards,filter,origin,search,order,id=>id==="share-catalog"?share:id==="catalog-empty"?empty:status,browser);
 const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog}=make(data);
 for(const [mode,keys,measured,pending] of [
  ["all",data.books.map(b=>b.key),11,2],
@@ -36,6 +36,24 @@ for(const [mode,keys,measured,pending] of [
  assert.ok(status.textContent.includes(measured+" измерено, "+pending+" в подготовке"),mode);
  assert.equal(empty.hidden,true,mode);
 }
+// The original-language facet is about edition provenance, not the language
+// of the measured prose: English/French originals are NOT measured here.
+for(const [language,keys,measured,pending] of [
+ ["ru",["anna","waves","silver","karamazov","hyperboloid","resurrection","road","oblomov","humiliated","petersburg"],9,1],
+ ["en",["shishmareva","darwin"],1,1],
+ ["fr",["beketova"],1,0],
+ ["all",data.books.map(b=>b.key),11,2]
+]){
+ origin.value=language;filter.value="all";search.value="";run();
+ assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),keys,language);
+ assert.match(status.textContent,new RegExp(measured+" измерено, "+pending+" в подготовке"));
+}
+origin.value="en";filter.value="measured";search.value="Дефо";run();
+assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),["shishmareva"]);
+origin.value="fr";filter.value="pending";search.value="";run();
+assert.equal(cards.filter(c=>!c.hidden).length,0);
+assert.equal(empty.hidden,false);
+origin.value="all";filter.value="all";search.value="";run();
 for(const [q,mode,keys] of [
  ["Толстой","all",["anna","hyperboloid","resurrection"]],
  ["Гончаров","all",["oblomov"]],
@@ -64,6 +82,12 @@ assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(share.href,"?catalog=all#books");
 order.value="dialogue";run();
 assert.equal(share.href,"?catalog=all&catalog_order=dialogue#books");
+origin.value="fr";filter.value="translated";search.value="Верн";run();
+assert.equal(share.href,"?catalog=translated&original=fr&q="+encodeURIComponent("Верн")+"&catalog_order=dialogue#books");
+location.search="?catalog=translated&original=fr&q="+encodeURIComponent("Верн")+"&catalog_order=dialogue";
+restore();assert.equal(origin.value,"fr");
+assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),["beketova"]);
+origin.value="all";filter.value="all";search.value="";run();
 order.value="length";run();
 assert.equal(share.href,"?catalog=all&catalog_order=length#books");
 search.value="Бекетова";filter.value="translated";run();
@@ -90,16 +114,17 @@ location.search=new URL(location.href).search;
 restore();assert.equal(empty.hidden,false);
 resetCatalog();
 assert.equal(empty.hidden,true);
-assert.equal(search.value,"");assert.equal(filter.value,"all");
+assert.equal(search.value,"");assert.equal(filter.value,"all");assert.equal(origin.value,"all");
 assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(search.focused,true);
 const clean=new URL(location.href);
 assert.equal(clean.searchParams.has("catalog"),false);
 assert.equal(clean.searchParams.has("q"),false);
+assert.equal(clean.searchParams.has("original"),false);
 assert.equal(clean.searchParams.get("left"),"anna");
 assert.equal(clean.searchParams.get("right"),"beketova");
-location.search="?catalog=__proto__&q="+encodeURIComponent("Толстой")+"&catalog_order=__proto__";
-restore();assert.equal(filter.value,"all");assert.equal(order.value,"catalog");
+location.search="?catalog=__proto__&original=__proto__&q="+encodeURIComponent("Толстой")+"&catalog_order=__proto__";
+restore();assert.equal(filter.value,"all");assert.equal(origin.value,"all");assert.equal(order.value,"catalog");
 assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),
                  ["anna","hyperboloid","resurrection"]);
 location.search="?catalog=measured&q="+encodeURIComponent("x".repeat(121));
@@ -122,6 +147,9 @@ assert.match(html,/Показано 13 из 13 книг/);
 assert.match(js,/catalogReset.addEventListener\("click",resetCatalog\)/);
 assert.match(css,/\.catalog-empty\[hidden\]\s*\{\s*display:none\s*!important/);
 assert.match(html,/id="catalog-filter" disabled/);
+assert.match(html,/id="catalog-origin" aria-describedby="catalog-origin-help" disabled/);
+assert.match(html,/id="catalog-origin-help"/);
+assert.match(js,/catalogOrigin.addEventListener\("change",updateCatalog\)/);
 assert.match(html,/id="catalog-search" type="search" autocomplete="off"[^>]*disabled/);
 assert.match(html,/id="catalog-search"[^>]*maxlength="120"/);
 assert.match(html,/id="share-catalog" href="\?catalog=all#books"/);

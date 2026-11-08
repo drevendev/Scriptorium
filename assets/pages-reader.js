@@ -45,6 +45,7 @@
   const bookLinks = [...document.querySelectorAll("[data-book]")];
   const catalogCards = [...document.querySelectorAll("#books .book[data-catalog-key]")];
   const catalogFilter = el("catalog-filter");
+  const catalogOrigin = el("catalog-origin");
   const catalogSearch = el("catalog-search");
   const catalogOrder = el("catalog-order");
   const catalogGrid = document.querySelector("#books .book-grid");
@@ -331,6 +332,8 @@
   function updateCatalog() {
     const mode=["all","measured","pending","translated"].includes(catalogFilter.value)
       ? catalogFilter.value : "all";
+    const origin=["all","ru","en","fr"].includes(catalogOrigin.value)
+      ? catalogOrigin.value : "all";
     const query=catalogSearch.value.normalize("NFKC").toLocaleLowerCase("ru")
       .replace(/ё/g,"е").trim();
     // Allow a reader to find a translation by author AND translator in any order.
@@ -349,7 +352,9 @@
         (mode==="measured" && isMeasured) ||
         (mode==="pending" && !isMeasured) ||
         (mode==="translated" && isTranslation);
-      const visible=modeMatches && terms.every(term=>text.includes(term));
+      const visible=modeMatches &&
+        (origin==="all" || book.original_language===origin) &&
+        terms.every(term=>text.includes(term));
       card.hidden=!visible;
       if (visible) {
         shown++;
@@ -369,6 +374,7 @@
       const order=["catalog","title","dialogue","length"].includes(catalogOrder.value)
         ? catalogOrder.value : "catalog";
       share.href="?catalog="+encodeURIComponent(mode)+
+        (origin==="all"?"":"&original="+encodeURIComponent(origin))+
         (raw?"&q="+encodeURIComponent(raw):"")+
         (order==="catalog"?"":"&catalog_order="+encodeURIComponent(order))+"#books";
       share.textContent=raw ? "Ссылка на этот поиск ↗" : "Ссылка на выбранный список ↗";
@@ -380,10 +386,12 @@
   // An explicit empty-state reset preserves unrelated work/comparison links.
   function resetCatalog() {
     catalogFilter.value="all";
+    catalogOrigin.value="all";
     catalogSearch.value="";
     try {
       const url=new URL(window.location.href);
       url.searchParams.delete("catalog");
+      url.searchParams.delete("original");
       url.searchParams.delete("q");
       window.history.replaceState(null,"",url);
     } catch (_) {
@@ -404,15 +412,19 @@
     const requested=params.get("catalog");
     const mode=["all","measured","pending","translated"].includes(requested)
       ? requested : "all";
+    const requestedOrigin=params.get("original");
+    const origin=["ru","en","fr"].includes(requestedOrigin)
+      ? requestedOrigin : "all";
     const raw=params.get("q")||"";
     const requestedOrder=params.get("catalog_order");
     const order=["title","dialogue","length"].includes(requestedOrder)
       ? requestedOrder : "catalog";
-    return {mode,query:safeCatalogQuery(raw)?raw:"",order};
+    return {mode,origin,query:safeCatalogQuery(raw)?raw:"",order};
   }
   function restoreCatalogFromUrl() {
     const state=catalogFromUrl();
     catalogFilter.value=state.mode;
+    catalogOrigin.value=state.origin;
     catalogSearch.value=state.query;
     catalogOrder.value=state.order;
     updateCatalog();
@@ -1368,7 +1380,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogSearch,catalogOrder,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,...chartButtons];
+      const inputs=[catalogFilter,catalogOrigin,catalogSearch,catalogOrder,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -1386,6 +1398,7 @@
         });
       }
       catalogFilter.addEventListener("change",updateCatalog);
+      catalogOrigin.addEventListener("change",updateCatalog);
       catalogSearch.addEventListener("input",updateCatalog);
       catalogOrder.addEventListener("change",()=>{sortCatalog();updateCatalog();});
       catalogReset.addEventListener("click",resetCatalog);

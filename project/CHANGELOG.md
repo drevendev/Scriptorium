@@ -3,6 +3,11 @@
 This log records changes to project meaning, gates and durable control state. Normal
 code changes remain in Git history and their issues/PRs.
 
+## 2026-11-08 — Original-language facet for the Russian Reader (PR candidate)
+
+- Add a provenance-based catalogue filter for original language (ru/en/fr), combined with existing search/status/order and safe, shareable URLs. English/French originals are not analyzed: only their Russian translations are represented.
+- Preserve 11 measured / 2 research leads, all source hashes and 298 fields, and M2 0/5. Browser/live acceptance remains separate. #461 is confirmed merged; no same-run self-merge of the new slice.
+
 ## 2026-10-30 — Ninth measured Reader book (PR candidate)
 
 - Prepare source-bound Goncharov *Oblomov* (Wikisource oldid 5724579) for the Reader using merged #367's 29-field source-free measurements; 24 numeric and five explicitly NOT_RUN.

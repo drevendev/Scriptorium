@@ -57,6 +57,16 @@ jobs:
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/reader-venv/bin/python" -I "$GITHUB_WORKSPACE/tools/reader_package_smoke.py" "$GITHUB_WORKSPACE"
           "$RUNNER_TEMP/reader-venv/bin/scriptorium" --help
+      - name: Verify bundled author rhythm from outside checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/reader-venv/bin/scriptorium" voice --format markdown > voice-installed.md
+          test -s voice-installed.md
+          grep -q "M2: 0/5; M3: открыт" voice-installed.md
+          "$RUNNER_TEMP/reader-venv/bin/scriptorium" voice --check "$GITHUB_WORKSPACE/assets/voice-preview.json"
+
       - name: Exercise private comparison with the installed analyzer
         shell: bash
         run: |

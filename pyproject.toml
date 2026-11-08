@@ -20,4 +20,4 @@ include = ["scriptorium*"]
 include-package-data = false
 
 [tool.setuptools.package-data]
-scriptorium = ["browser_compare.js"]
+scriptorium = ["browser_compare.js", "data/evidence-snapshot.json"]

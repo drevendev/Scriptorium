@@ -15,6 +15,8 @@ from pathlib import Path
 import re
 
 VERSION = "scriptorium-author-rhythm-preview-v1"
+# Exact Git blob for the pinned, source-free wheel resource; drift must fail closed.
+_PACKAGED_SOURCE_BLOB_SHA1 = "a84986fd72ad616006b8ce179d1653e5ecf13729"
 _MIN_CHARACTERS = 300_000
 _SOURCE_PROFILES = {
     "metrics": "scriptorium-metrics-v4",
@@ -264,7 +266,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Read the pinned source-free two-author rhythm preview (M2 0/5; M3 open)"
     )
-    parser.add_argument("--snapshot", type=Path, default=Path("assets/evidence-snapshot.json"))
+    parser.add_argument("--snapshot", type=Path, help="override the pinned bundled source-free snapshot")
     parser.add_argument("--format", choices=("json", "markdown"), default="json")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--output", type=Path, help="create a new derived report; never overwrite")
@@ -273,7 +275,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.check is not None and args.format != "json":
         parser.error("--check requires JSON format")
     try:
-        raw = _read_bounded_regular_file(args.snapshot, 8 * 1024 * 1024, "snapshot")
+        source = args.snapshot if args.snapshot is not None else Path(__file__).parent / "data" / "evidence-snapshot.json"
+        raw = _read_bounded_regular_file(source, 8 * 1024 * 1024, "snapshot")
+        if args.snapshot is None and _git_blob_sha(raw) != _PACKAGED_SOURCE_BLOB_SHA1:
+            raise ValueError("bundled source-free snapshot identity drift")
         artifact = build_preview(
             json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_pairs),
             source_blob_sha1=_git_blob_sha(raw),

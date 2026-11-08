@@ -35,7 +35,7 @@ The [translation readiness table](https://drevendev.github.io/Scriptorium/#trans
 
 ### Explore two source-backed author rhythm previews from the CLI
 
-The [public author-rhythm preview](voice/) compares **two measured Russian works by Alexander Grin and two by Leo Tolstoy**, using eight versioned metrics per author. From a repository checkout with the package installed, inspect the **same pinned observations** offline as a readable Markdown table or verified JSON:
+The [public author-rhythm preview](voice/) compares **two measured Russian works by Alexander Grin and two by Leo Tolstoy**, using eight versioned metrics per author. Install the Python package from a checkout, then run `scriptorium voice` from **any working directory**. Its wheel includes the exact pinned **source-free measurement snapshot**, not book text or manuscripts. Inspect the same observations offline as Markdown or reproducible JSON:
 
 ```bash
 scriptorium voice --format markdown
@@ -43,7 +43,7 @@ scriptorium voice --check assets/voice-preview.json
 scriptorium voice --format json --output author-rhythm.json
 ```
 
-The report prints individual book values, word-count-weighted author means and **between-book** population standard deviations. It uses only source-free measurement evidence; it does not read manuscripts, train a classifier, or claim confidence intervals. Two works per author are not enough to establish a stable author fingerprint; M3 remains open and FantLab parity remains **M2 0/5**. Generated files are never overwritten. This command requires the pinned `assets/evidence-snapshot.json` in the checkout and is **not** a general author profiler for arbitrary private text.
+The report prints individual book values, word-count-weighted author means and **between-book** population standard deviations. It uses only source-free measurement evidence; it does not read manuscripts, train a classifier, or claim confidence intervals. Two works per author are not enough to establish a stable author fingerprint; M3 remains open and FantLab parity remains **M2 0/5**. Generated files are never overwritten. The bundled source snapshot is checked against its retained Git blob identity on every default run. `--check assets/voice-preview.json` needs that separately supplied reference file (available in a checkout); `--snapshot /path/to/evidence-snapshot.json` explicitly overrides the bundle while retaining source-identity validation. This is **not** a general author profiler for arbitrary private text.
 
 ### Analyze your own writing in two commands
 

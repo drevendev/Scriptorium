@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 465
+STATE_REVISION: 466
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-08
-LAST_RESULT: #469 confirmed merged at 072578ceb1338b1b3ec8ece0d310668403875c13; this PR makes the already pinned two-author rhythm preview available through the installed CLI with a readable, source-free Markdown comparison.
+LAST_RESULT: #470 merged at e9ea388beab09f0eeceff7a09808c2cd9b226d8e; four-book source-bound author rhythm preview runs from the checkout. This PR makes the exact pinned, source-free evidence available with the installed wheel independent of checkout location.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; source identity unknown; M2 0/5; M3 not accepted.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-VOICE-004-CLI-SOURCE-BOUND-REPORT-v1
-ISSUES: #283 (reader usefulness, partial); M3 preview (not M3 acceptance)
+UNIT_ID: SCRIP-VOICE-005-INSTALLED-OFFLINE-SNAPSHOT-v1
+ISSUES: #283 (reader usefulness, partial); M3 descriptive preview (not M3 acceptance)
 STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED; CI_PENDING
-BRANCH: scrip-voice-cli-descriptive-report-20261108
-BASE: 072578ceb1338b1b3ec8ece0d310668403875c13
+BRANCH: scrip-voice-wheel-offline-snapshot
+BASE: e9ea388beab09f0eeceff7a09808c2cd9b226d8e
 
-ACCEPTANCE: `scriptorium voice --format markdown` renders pinned per-book observations, word-weighted means and between-work deviations for Grin and Tolstoy (two independently measured Russian editions each). `--check` replays existing derived JSON unchanged; JSON stdout is machine-readable without stray status text; `--output` never overwrites. Reject duplicate/unbound/symlinked or oversized evidence without echoing private paths. No source prose, no new scientific acceptance: M2 0/5, M3 open. Hosted checks and later independent exact-head acceptance required; live reader unchanged.
+ACCEPTANCE: A wheel-installed `scriptorium voice --format markdown` runs from an unrelated working directory with unchanged four pinned Russian editions and 16 weighted author metrics; bundled evidence bytes match `assets/evidence-snapshot.json` and its retained Git blob exactly. Fail closed on a modified bundle; retain explicit `--snapshot`, `--check`, no-overwrite and private-path protections. Installed-wheel CI verifies the result. M2 0/5, M3 open; site unchanged. Hosted checks and later independent exact-head acceptance required.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: use **real measured Russian books** for transparent, reproducible, ev
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Current source-bound author preview CLI and Markdown report | Four pinned books, eight metric families, deterministic output and negative privacy tests | Hosted CI; later-run exact-head PR acceptance |
+| P1 | Standalone installed-wheel author rhythm preview | Exact bundled evidence, independent working directory, identical source-bound output; fail closed on altered bundle | Hosted CI; later-run exact-head PR acceptance |
 | P2 | #285 live Reader route and mobile/print/focus verification | Live site HTTP and actual screenshots | Browser HTTP unavailable; independent product work continues |
 | P3 | #281 source-matched FantLab diagnostic witness | >=300k legally usable text with true source-input identity and rounding deltas | FantLab source-input identity unknown |
 | P4 | Trusov translation body / #436 exact EOF fidelity | Rights-verified >=300k body and historical render witness | Historical EOF/render evidence |

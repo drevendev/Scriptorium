@@ -5,6 +5,7 @@ import contextlib
 import copy
 import csv
 from decimal import Decimal
+from html import escape
 import io
 import json
 import os
@@ -461,6 +462,41 @@ class LocalComparisonTests(unittest.TestCase):
         exported = next(row for row in rows if row["metric_id"] == "fantlab.general.words")
         self.assertEqual(exported["difference"], target["difference"])
         self.assertFalse(exported["difference"].startswith("'"))
+
+
+    def test_private_comparison_exports_actual_definition_evidence(self):
+        # Regression: Markdown's old 'Evidence' column only repeated the
+        # compatibility status; HTML omitted definition evidence entirely.
+        # Neither value is a verified FantLab parity verdict.
+        result = compare.build_comparison(self.a, self.b)
+        field = next(row for row in result["metrics"]
+                     if row["metric_id"] == "fantlab.general.words")
+        self.assertNotEqual(field["compatibility_status"], field["definition_evidence"])
+
+        md = compare.render_markdown(result)
+        self.assertIn("| Compatibility | Definition evidence |", md)
+        word_row = next(line for line in md.splitlines()
+                        if "| fantlab.general.words |" in line)
+        self.assertTrue(word_row.endswith(
+            "| " + compare._markdown_text(field["compatibility_status"]) +
+            " | " + compare._markdown_text(field["definition_evidence"]) + " |"
+        ), word_row)
+        self.assertEqual(len(word_row.split(" | ")), 12)
+
+        page = compare.render_html(result)
+        self.assertIn("<th scope='col'>Compatibility</th>", page)
+        self.assertIn("<th scope='col'>Definition evidence</th>", page)
+        self.assertIn("<td>" + escape(field["compatibility_status"]) + "</td>"
+                      "<td>" + escape(field["definition_evidence"]) + "</td>", page)
+        self.assertNotIn("verified FantLab parity", word_row)
+
+        # Presentation cannot elevate imported assertions to new evidence.
+        forged = copy.deepcopy(result)
+        forged["metrics"][0]["definition_evidence"] = "verified FantLab parity"
+        with self.assertRaises(compare.CompareError):
+            compare.render_markdown(forged)
+        with self.assertRaises(compare.CompareError):
+            compare.render_html(forged)
 
     def test_markdown_comparison_preserves_complete_source_free_evidence(self):
         compared = compare.build_comparison(self.a, self.b)

@@ -1,39 +1,39 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 459
+STATE_REVISION: 460
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-08
-LAST_RESULT: #463 MERGED at 39805869a0f05a2329ecf5c608d5e2711f87128e; eleven measured cards link to nonduplicate pair comparisons. Private comparison input-integrity hardening proposed; live browser acceptance remains UNVERIFIED.
+LAST_RESULT: #464 MERGED at d167ac630ba4f6a5d9488383acbc25ae6895292c; aggregate punctuation-event budget validation is in master. New bounded vocabulary-window integrity guard proposed; Pages live/browser acceptance remains UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-REPRO-011-PUNCTUATION-EVENT-BUDGET-v1
-ISSUES: #281 (bounded independent private comparison reliability; does not close M1/M2)
-STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED; CI_NOT_RUN
-BRANCH: scrip-repro-011-punctuation-event-budget-20261108
-BASE: 39805869a0f05a2329ecf5c608d5e2711f87128e
+UNIT_ID: SCRIP-REPRO-012-UASZ-ACTIVE-BOUND-v1
+ISSUES: #281 (independent imported-analysis consistency slice; does not close M1/M2)
+STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED; CI_PENDING
+BRANCH: scrip-compare-012-uasz-active-bound-20261108
+BASE: d167ac630ba4f6a5d9488383acbc25ae6895292c
 
-ACCEPTANCE: Imported analysis JSON cannot claim more aggregate punctuation
-events and disjoint word tokens than its normalized character budget, even
-when each 14-category count is individually below that budget and every
-per-1000-word rate is numerically self-consistent. Genuine dense text,
-multi-glyph punctuation and punctuation-only text remain valid. Positive and
-negative tests exercise the actual deterministic analyzer and compare validator;
-hosted exact-head CI and later independent review are separate. Do not equate
-this consistency check with authenticated source hashes or FantLab parity.
+ACCEPTANCE: Any imported dictionary-backed UASZ-N average for a complete
+N-word window must not exceed the document's measured active dictionary
+vocabulary (or N). Test a genuine 3,000-token two-lexeme document against
+forged active-vocabulary partitions that remain otherwise consistent.
+Preserve real reports, dictionary dependency identity and all existing
+unavailable/NOT_RUN semantics. This is a consistency rejection, not source
+authentication or FantLab reproduction.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: publicly readable Russian Reader with verified full-book diagnostics, accessible print/export and useful local analyzer.
+Milestone: readable Russian Reader with source-bound full-book diagnostics,
+accessible comparisons/print and a trustworthy private analyzer.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #281 reject impossible imported comparison count totals | Derived per-row rates plus aggregate disjoint token/punctuation character budget; genuine real reports unchanged | Exact-head CI, later independent PR acceptance |
-| P2 | #285 live Reader route and responsive/print acceptance | HTTP route/asset checks, desktop/mobile/keyboard/print screenshots on actual deployed site | Browser network access currently blocked; not a prerequisite |
-| P3 | #281 independent source/profile and displayed-rounding witness | Observe truly source-matched metric and published display policy; do not infer | FantLab analyzer-input identity currently unknown |
-| P4 | Trusov translator body / #436 exact EOF fidelity | Legal >=300k measurement and source witness; separate bounded EOF correctness fix | Historical-render evidence |
-| P5 | #284 code/data licensing and attribution | Evidence-backed code/data reuse terms only after owner approval | Rights-holder authorization |
+| P1 | #281 reject imported UASZ windows exceeding global active dictionary vocabulary | Positive/negative actual analyzer regressions; exact-head CI, later independent PR acceptance | Current PR candidate; no same-run merge |
+| P2 | #285 verify live Reader routes, responsive/print and keyboard behavior | HTTP route/assets and actual desktop/mobile/print screenshots | Browser network access remains unavailable; independent work continues |
+| P3 | #281 source-matched FantLab witness with displayed-rounding evidence | A legally usable >=300k edition and independent analyzer-input match; compare field by field | Exact FantLab source-input identity unknown |
+| P4 | Trusov translator body / #436 exact EOF fidelity | Frozen legal >=300k text and historical-render/EOF witness | Historical-render evidence |
+| P5 | #284 licensing and attribution | Verified code/data rights; no assumptions about public accessibility | Owner/rights-holder authorization |
 
 ## Retained evidence and scientific gates
 

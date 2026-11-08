@@ -229,7 +229,10 @@ parity is established (M2 0/5).
 Imported analysis JSON is treated as an **untrusted declaration**, not a
 replayed measurement: the comparison validator checks obligatory counts,
 derived punctuation rates and the aggregate budget of disjoint word tokens
-plus punctuation events against the stated normalized character count.
+plus punctuation events against the stated normalized character count. For
+dictionary-backed vocabulary, a rolling UASZ window also cannot claim more
+distinct dictionary lexemes than the document's entire active dictionary
+vocabulary, even when the external lexicon contains more words.
 A self-consistent-looking forged rate cannot claim more events than the
 declared text could contain. These checks reject contradictions; they do
 not authenticate the declared source SHA-256 or prove FantLab compatibility.

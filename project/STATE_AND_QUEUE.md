@@ -1,25 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 455
+STATE_REVISION: 456
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-07
-LAST_RESULT: #459 MERGED at 1491e142c7c615c8539a92947a790e8a2ac1ded8; reference-side input SHA gate merged; live browser acceptance remains UNVERIFIED.
+LAST_COMMITTED_RUN_AT: 2026-11-08
+LAST_RESULT: #460 MERGED at 5aa9362f09d9ad21fad3392d5f3c5efe6aaf393b; measured-length catalogue sorting shipped; live browser acceptance remains UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-CATALOG-LENGTH-SORT-v1
-ISSUES: #283 (bounded Reader navigation slice; visual acceptance remains open)
-STATUS: PR_CANDIDATE; EXACT_HEAD_CI_PENDING; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-site-012-catalog-length-sort-20261107
-BASE: 1491e142c7c615c8539a92947a790e8a2ac1ded8
+UNIT_ID: SCRIP-SITE-012-CATALOG-MULTI-TERM-SEARCH-v1
+ISSUES: #283 (Reader catalogue discovery; full visual acceptance remains open)
+STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED; CI_NOT_RUN
+BRANCH: scrip-site-012-catalog-token-search-20261108
+BASE: 5aa9362f09d9ad21fad3392d5f3c5efe6aaf393b
 
-ACCEPTANCE: The branch-root Russian Reader sorts eleven measured edition cards by
-source-bound normalized character counts (spaces included) descending. Two unmeasured
-leads and any missing measurements sort last; numeric zero remains distinct from missing.
-Share links allow only catalog_order=title|dialogue|length; no-JS source order stays intact.
-DOM order matches keyboard order, tests preserve all 13 edition identities and M2 0/5.
-Later exact-head CI, review and live/visual acceptance remain independent.
+ACCEPTANCE: Readers can search the thirteen real catalogue entries with multiple
+space-separated words across title, author and named translator in either order,
+including repeated spaces/case and е/ё normalization; all terms are required.
+An impossible author+translator combination must show an honest zero-results
+state. Existing four filters, sort/share URL allow-lists, no-JS catalogue,
+eleven measured works/two research leads, 298 derived fields and M2 0/5 are
+unchanged. Test against the real frozen snapshot and negative cases; later
+exact-head CI/review and live desktop/mobile verification are separate.
 
 ## Next user-visible milestone and compact queue
 
@@ -27,7 +29,7 @@ Milestone: publicly readable Russian Reader with verified full-book diagnostics,
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 measured-length Reader catalogue sorting | Eleven real counts, missing-last, permalink, no-JS fallback, keyboard DOM order, regression tests | Branch PR; later exact-head CI/review |
+| P1 | #283 multi-term catalogue discovery | Mixed author/translator/title terms in any order, real-data positive/negative tests, robust no-results/reset | Existing Reader, later exact-head CI/review |
 | P2 | #285 live Reader route and responsive/print acceptance | HTTP route/asset checks, desktop/mobile/keyboard/print screenshots on actual deployed site | Browser network access currently blocked; not a prerequisite |
 | P3 | #281 independent source/profile and displayed-rounding witness | Observe truly source-matched metric and published display policy; do not infer | FantLab analyzer-input identity currently unknown |
 | P4 | Trusov translator body / #436 exact EOF fidelity | Legal >=300k measurement and source witness; separate bounded EOF correctness fix | Historical-render evidence |

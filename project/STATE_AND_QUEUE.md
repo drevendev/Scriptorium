@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 464
+STATE_REVISION: 465
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-08
-LAST_RESULT: #468 MERGED at 45e80bb943c46e0ec8a1571b8bf9c48931079c89; Russian glossary for all 29 metrics exists in master. This independent PR adds contextual definition links without changing measurements or parity.
-LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; source identity unknown; M2 0/5.
+LAST_RESULT: #469 confirmed merged at 072578ceb1338b1b3ec8ece0d310668403875c13; this PR makes the already pinned two-author rhythm preview available through the installed CLI with a readable, source-free Markdown comparison.
+LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; source identity unknown; M2 0/5; M3 not accepted.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-014-CONTEXTUAL-METRIC-LINKS-v1
-ISSUES: #283 (reader comprehension, partial)
+UNIT_ID: SCRIP-VOICE-004-CLI-SOURCE-BOUND-REPORT-v1
+ISSUES: #283 (reader usefulness, partial); M3 preview (not M3 acceptance)
 STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED; CI_PENDING
-BRANCH: scrip-reader-contextual-metric-definitions-20261108
-BASE: 45e80bb943c46e0ec8a1571b8bf9c48931079c89
+BRANCH: scrip-voice-cli-descriptive-report-20261108
+BASE: 072578ceb1338b1b3ec8ece0d310668403875c13
 
-ACCEPTANCE: After validation, interactive single-book and paired measurement rows open the exact matching glossary entry in the root Russian Reader; selected pair-chart heading links to the same definition. Static no-JavaScript tables retain exact numeric cells, with nearby links to the complete glossary. Test every canonical ID, encoded fragment safety, and structural entry points; preserve unknown/NOT_RUN, source-mismatch, no text uploads, and M2 0/5. Independent fresh exact-head CI/merge and live browser verification remain separate.
+ACCEPTANCE: `scriptorium voice --format markdown` renders pinned per-book observations, word-weighted means and between-work deviations for Grin and Tolstoy (two independently measured Russian editions each). `--check` replays existing derived JSON unchanged; JSON stdout is machine-readable without stray status text; `--output` never overwrites. Reject duplicate/unbound/symlinked or oversized evidence without echoing private paths. No source prose, no new scientific acceptance: M2 0/5, M3 open. Hosted checks and later independent exact-head acceptance required; live reader unchanged.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: guide readers from **real measured numbers to transparent methods** without losing exact values or accessibility.
+Milestone: use **real measured Russian books** for transparent, reproducible, evidence-bound author exploration from both Reader and CLI.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 contextual metric guide links (current PR) | Verified exact 29-field anchors, keyboard/readable links, no-script guide fallback, CI | Later-run exact-head PR acceptance; no same-run merge |
-| P2 | #285 live Reader route and mobile/print/focus verification | Live site HTTP and actual screenshots | Browser HTTP remains unavailable; independent product work continues |
-| P3 | #281 verified source-matched FantLab diagnostic witness | Legal >=300k text and exact reference-input identity, displayed-rounding deltas | FantLab source-input identity unknown |
-| P4 | Trusov translation body / #436 exact EOF fidelity | Frozen rights-verified >=300k text and historical-render witness | Historical EOF/render evidence |
-| P5 | #284 licensing and attribution | Explicit verifiable code/data rights; never assume license | Owner/rights-holder authorization |
+| P1 | Current source-bound author preview CLI and Markdown report | Four pinned books, eight metric families, deterministic output and negative privacy tests | Hosted CI; later-run exact-head PR acceptance |
+| P2 | #285 live Reader route and mobile/print/focus verification | Live site HTTP and actual screenshots | Browser HTTP unavailable; independent product work continues |
+| P3 | #281 source-matched FantLab diagnostic witness | >=300k legally usable text with true source-input identity and rounding deltas | FantLab source-input identity unknown |
+| P4 | Trusov translation body / #436 exact EOF fidelity | Rights-verified >=300k body and historical render witness | Historical EOF/render evidence |
+| P5 | #284 licensing and attribution | Explicit verifiable code/data rights | Owner/rights-holder authorization |
 
 ## Retained evidence and scientific gates
 

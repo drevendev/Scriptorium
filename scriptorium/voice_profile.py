@@ -196,23 +196,105 @@ def render_json(artifact: Mapping[str, object]) -> str:
     return json.dumps(artifact, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False) + "\n"
 
 
+def _markdown_cell(value: object) -> str:
+    return str(value).replace("\\", "\\\\").replace("|", "\\|").replace("\r", " ").replace("\n", " ")
+
+
+def render_markdown(artifact: Mapping[str, object]) -> str:
+    """A source-free human report, not a FantLab or statistically accepted author profile."""
+    if (artifact.get("schema_version") != VERSION
+            or artifact.get("scientific_boundary", {}).get("m3_accepted") is not False
+            or artifact.get("scientific_boundary", {}).get("m2_source_matched") != 0):
+        raise ValueError("unverified author-preview scientific boundary")
+    lines = [
+        "# Scriptorium — ритм двух авторов (исследовательский предпросмотр)",
+        "",
+        "> Только описательное расширение Scriptorium: по две измеренные русские книги "
+        "на автора. Это не авторский отпечаток, доверительный интервал, доказательство "
+        "совместимости с FantLab или принятый M3-профиль. M2: 0/5; M3: открыт.",
+        "",
+        "Среднее взвешено по количеству слов каждой книги. Стандартное отклонение "
+        "показывает разброс **между двумя книгами**, а не неопределённость оценки автора.",
+        "",
+        "Источник: `" + _markdown_cell(artifact["source_snapshot"]) + "`, Git blob `"
+        + _markdown_cell(artifact["source_snapshot_git_blob_sha1"]) + "`.",
+        "",
+    ]
+    for author in artifact["authors"]:
+        works = author["works"]
+        if len(works) != 2:
+            raise ValueError("preview requires two independently measured works")
+        lines += [
+            "## " + _markdown_cell(author["display_name"]),
+            "",
+            "Книга 1: " + _markdown_cell(works[0]["title"]) + " (`" + _markdown_cell(works[0]["key"]) + "`).  "
+            "Книга 2: " + _markdown_cell(works[1]["title"]) + " (`" + _markdown_cell(works[1]["key"]) + "`).",
+            "",
+            "| Метрика | Единица | Книга 1 | Книга 2 | Среднее по словам | Разброс между книгами |",
+            "| --- | --- | ---: | ---: | ---: | ---: |",
+        ]
+        for metric in author["metrics"]:
+            observed = metric["per_work"]
+            if len(observed) != 2 or [row["work_key"] for row in observed] != [w["key"] for w in works]:
+                raise ValueError("source-bound book observations missing")
+            lines.append(
+                "| " + _markdown_cell(metric["label"]) + " | " + _markdown_cell(metric["unit"])
+                + " | " + f'{observed[0]["value"]:.6f}'
+                + " | " + f'{observed[1]["value"]:.6f}'
+                + " | " + f'{metric["weighted_mean"]:.6f}'
+                + " | " + f'{metric["weighted_population_stddev"]:.6f}' + " |"
+            )
+        lines.append("")
+    lines.append("Исходные тексты не читаются и не публикуются; единицы и версии показателей сохранены.")
+    return "\n".join(lines) + "\n"
+
+
+def _unique_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    value: dict[str, object] = {}
+    for key, item in pairs:
+        if key in value:
+            raise ValueError("duplicate snapshot JSON field")
+        value[key] = item
+    return value
+
+
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Verify or export source-free two-author descriptive preview")
+    from .analyze import LocalInputError, _read_bounded_regular_file, _write_new
+
+    parser = argparse.ArgumentParser(
+        description="Read the pinned source-free two-author rhythm preview (M2 0/5; M3 open)"
+    )
     parser.add_argument("--snapshot", type=Path, default=Path("assets/evidence-snapshot.json"))
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--output", type=Path)
-    group.add_argument("--check", type=Path)
+    parser.add_argument("--format", choices=("json", "markdown"), default="json")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--output", type=Path, help="create a new derived report; never overwrite")
+    group.add_argument("--check", type=Path, help="verify an existing JSON artifact")
     args = parser.parse_args(argv)
-    raw = args.snapshot.read_bytes()
-    artifact = build_preview(json.loads(raw), source_blob_sha1=_git_blob_sha(raw))
-    if args.check is not None:
-        actual = json.loads(args.check.read_text(encoding="utf-8"))
-        if artifact != actual:
-            raise ValueError("retained author preview differs from deterministic source-derived values")
-    else:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(render_json(artifact), encoding="utf-8")
-    print("VOICE_PREVIEW=VERIFIED; authors=2; editions=4; fields=16; M2=0/5; M3=OPEN")
+    if args.check is not None and args.format != "json":
+        parser.error("--check requires JSON format")
+    try:
+        raw = _read_bounded_regular_file(args.snapshot, 8 * 1024 * 1024, "snapshot")
+        artifact = build_preview(
+            json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_pairs),
+            source_blob_sha1=_git_blob_sha(raw),
+        )
+        if args.check is not None:
+            reference = _read_bounded_regular_file(args.check, 8 * 1024 * 1024, "reference")
+            actual = json.loads(reference.decode("utf-8"), object_pairs_hook=_unique_pairs)
+            if artifact != actual:
+                raise ValueError("retained preview differs from source evidence")
+            print("VOICE_PREVIEW=VERIFIED; authors=2; editions=4; fields=16; M2=0/5; M3=OPEN")
+        else:
+            rendered = render_markdown(artifact) if args.format == "markdown" else render_json(artifact)
+            if args.output is None:
+                print(rendered, end="")
+            else:
+                _write_new(args.output, rendered)
+                print("VOICE_PREVIEW=VERIFIED; authors=2; editions=4; fields=16; M2=0/5; M3=OPEN")
+    except FileExistsError:
+        parser.error("derived report already exists; choose another destination")
+    except (OSError, UnicodeError, ValueError, TypeError, RecursionError, LocalInputError):
+        parser.error("unable to verify the source-free author preview or write the derived report")
     return 0
 
 

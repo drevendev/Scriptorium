@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import sys
 
-COMMANDS = {"batch": "scriptorium.batch", "analyze": "scriptorium.analyze", "verify": "scriptorium.verify", "epub": "scriptorium.epub", "compare": "scriptorium.compare", "site": "scriptorium.site_renderer", "evidence": "scriptorium.benchmark_metric_matrix", "n-evidence": "scriptorium.native_n_evidence", "word-gap": "scriptorium.word_gap", "word-boundaries": "scriptorium.boundary_probe"}
+COMMANDS = {"batch": "scriptorium.batch", "analyze": "scriptorium.analyze", "verify": "scriptorium.verify", "epub": "scriptorium.epub", "compare": "scriptorium.compare", "site": "scriptorium.site_renderer", "evidence": "scriptorium.benchmark_metric_matrix", "n-evidence": "scriptorium.native_n_evidence", "word-gap": "scriptorium.word_gap", "word-boundaries": "scriptorium.boundary_probe", "voice": "scriptorium.voice_profile"}
 MAX_DIAGNOSTIC_BYTES = 8 * 1024 * 1024
 
 
@@ -49,7 +49,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if not args or args[0] in {"-h", "--help"}:
         print("Scriptorium Reader — private text analysis and evidence-labelled literary reports")
-        print("Usage: scriptorium <analyze|verify|epub|batch|compare|diagnostic|evidence|n-evidence|word-gap|word-boundaries|site> [options]")
+        print("Usage: scriptorium <analyze|verify|epub|batch|compare|diagnostic|evidence|n-evidence|word-gap|word-boundaries|voice|site> [options]")
         print("  analyze     UTF-8 manuscript -> JSON, HTML, Markdown or CSV (29 metrics)")
         print("  verify      Replay private TXT/EPUB reports (--epub, --provenance; --json for CI)")
         print("  epub        Local EPUB XHTML spine -> JSON/HTML/CSV/Markdown and source-free identity")
@@ -60,6 +60,7 @@ def main(argv: list[str] | None = None) -> int:
         print("  n-evidence  Retained native AOT/pylem N-only uncertainty bounds (M2 0/5)")
         print("  word-gap    Source-unmatched FantLab word-density and conditional length residual (M2 0/5)")
         print("  word-boundaries  Private same-input word-boundary sensitivity (diagnostic only)")
+        print("  voice       Compare two measured books per author (source-free M3 preview, checkout required)")
         print("  site        Build the canonical allow-listed site from a repository checkout")
         print("Run scriptorium <command> --help for command options.")
         return 0 if args else 2

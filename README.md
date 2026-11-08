@@ -236,6 +236,9 @@ vocabulary, even when the external lexicon contains more words.
 A self-consistent-looking forged rate cannot claim more events than the
 declared text could contain. These checks reject contradictions; they do
 not authenticate the declared source SHA-256 or prove FantLab compatibility.
+Private `compare --format markdown|html` reports now expose both each metric's
+compatibility classification and its actual definition-evidence label; neither
+is a claim of reproduced FantLab behavior. CSV/JSON retain those fields.
 
 The `--epubs` mode uses the same bounded EPUB 2/3 XHTML-spine extractor and
 29-metric analyzer as the separate `scriptorium epub` command; all four export

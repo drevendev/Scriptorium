@@ -350,6 +350,34 @@ class LocalComparisonTests(unittest.TestCase):
         with self.assertRaises(compare.CompareError):
             compare.validate_report(contradictory)
 
+    def test_dictionary_window_cannot_exceed_document_active_vocabulary(self):
+        # The dictionary advertises three lexemes, but only two appear in
+        # this exact 3,000-token text. Every complete window has two distinct
+        # dictionary words; changing the claimed global partition to one or
+        # zero must not make the window's legitimate 2.0 look possible.
+        actual = build_local_analysis(
+            (("Кот " * 2999) + "пёс").encode("utf-8"),
+            dictionary_words=["кот", "пёс", "заяц"],
+            dictionary_profile="test-window-bound-v1",
+        )
+        metrics = actual["metrics"]
+        self.assertEqual(metrics["fantlab.vocabulary.unique_words"]["value"], 2)
+        self.assertEqual(metrics["fantlab.vocabulary.active_dictionary"]["value"], 2)
+        self.assertEqual(metrics["fantlab.vocabulary.uasz_3000"]["value"], 2.0)
+        compare.validate_report(actual)
+        for active in (0, 1):
+            with self.subTest(forged_active_dictionary=active):
+                forged = copy.deepcopy(actual)
+                forged["metrics"]["fantlab.vocabulary.active_dictionary"]["value"] = active
+                forged["metrics"]["fantlab.vocabulary.active_nondictionary"]["value"] = 2 - active
+                # Existing partition and dictionary-size checks still pass.
+                with self.assertRaisesRegex(
+                    compare.CompareError, "dictionary diversity exceeds active vocabulary"
+                ):
+                    compare.validate_report(forged)
+                with self.assertRaises(compare.CompareError):
+                    compare.build_comparison(actual, forged)
+
     def test_punctuation_rates_are_unavailable_without_words(self):
         punctuation_only = build_local_analysis("?! ... —".encode("utf-8"))
         self.assertEqual(punctuation_only["metrics"]["fantlab.general.words"]["value"], 0)

@@ -464,6 +464,44 @@ class LocalComparisonTests(unittest.TestCase):
         self.assertFalse(exported["difference"].startswith("'"))
 
 
+    def test_private_comparison_interpretation_cautions(self):
+        # Real short analyses must not be presented as representative author profiles.
+        result = compare.build_comparison(self.a, self.b)
+        markdown = compare.render_markdown(result)
+        page = compare.render_html(result)
+        for rendered in (markdown, page):
+            self.assertIn("below the 300,000-character calibration floor", rendered)
+            self.assertIn("Raw word, character and sentence counts depend on input length", rendered)
+            self.assertNotIn(LEFT, rendered)
+            self.assertNotIn(RIGHT, rendered)
+        self.assertIn("How to read these differences", page)
+        self.assertIn("## Interpretation notes", markdown)
+        self.assertNotIn("at least twice as many", compare.render_markdown(
+            compare.build_comparison(self.a, self.a)
+        ))
+
+        # Different-sized real local inputs call out the confounding scale.
+        long_input = build_local_analysis((LEFT * 4).encode("utf-8"))
+        unequal = compare.build_comparison(self.a, long_input)
+        self.assertIn("at least twice as many", compare.render_markdown(unequal))
+        self.assertIn("at least twice as many", compare.render_html(unequal))
+
+        empty = compare.build_comparison(build_local_analysis(b""), self.a)
+        self.assertIn("At least one input is empty", compare.render_markdown(empty))
+
+        # Presentation cannot promote forged source lengths or threshold states.
+        for field, fake in (
+            ("normalized_characters", True),
+            ("meets_calibration_threshold", True),
+        ):
+            forged = copy.deepcopy(result)
+            forged["left_source"][field] = fake
+            with self.subTest(field=field):
+                with self.assertRaises(compare.CompareError):
+                    compare.render_markdown(forged)
+                with self.assertRaises(compare.CompareError):
+                    compare.render_html(forged)
+
     def test_private_comparison_exports_actual_definition_evidence(self):
         # Regression: Markdown's old 'Evidence' column only repeated the
         # compatibility status; HTML omitted definition evidence entirely.

@@ -402,6 +402,39 @@ def render_csv(comparison: dict[str, object]) -> str:
 
 
 
+def _interpretation_notes(comparison: dict[str, object]) -> list[str]:
+    """Source-free context for descriptive deltas, not statistical inference."""
+    lengths = []
+    for side in ("left_source", "right_source"):
+        source = comparison.get(side)
+        if type(source) is not dict:
+            raise CompareError("missing comparison provenance")
+        length = source.get("normalized_characters")
+        if type(length) is not int or not 0 <= length <= MAX_ANALYSIS_BYTES:
+            raise CompareError("invalid comparison source length")
+        if source.get("meets_calibration_threshold") is not (length >= REPRESENTATIVE_CHARACTERS):
+            raise CompareError("invalid comparison calibration status")
+        lengths.append(length)
+    shortest, longest = sorted(lengths)
+    notes = [
+        "Raw word, character and sentence counts depend on input length; use rates for "
+        "descriptive style comparisons. Neither deltas nor rates demonstrate causation."
+    ]
+    if shortest < REPRESENTATIVE_CHARACTERS:
+        notes.append(
+            "At least one input is below the 300,000-character calibration floor "
+            "(including spaces). These measurements may not represent an author's broader style."
+        )
+    if shortest == 0:
+        notes.append("At least one input is empty; some rates and differences are unavailable.")
+    elif longest >= shortest * 2:
+        notes.append(
+            "The longer input contains at least twice as many normalized characters as "
+            "the shorter one. Absolute-count differences are especially length-sensitive."
+        )
+    return notes
+
+
 def render_markdown(comparison: dict[str, object], *, title: str = "Two private analyses") -> str:
     """Portable source-free Markdown for two validated Reader analyses.
 
@@ -438,6 +471,10 @@ def render_markdown(comparison: dict[str, object], *, title: str = "Two private 
         "points, not relative percentage changes. Unknown is not zero.",
         "Incompatible methods have no numeric difference.",
         "Compatibility and definition evidence classify the method, not FantLab parity.",
+        "",
+        "## Interpretation notes",
+        "",
+        *["- " + _markdown_text(note) for note in _interpretation_notes(comparison)],
         "",
         "## Source and method provenance",
         "",
@@ -586,6 +623,7 @@ def render_html(comparison: dict[str, object], *, title: str = "Two private anal
     # Enforce the same 29-field identity/status contract used by Markdown.
     render_markdown(comparison, title=title)
     punctuation_html = _render_punctuation_pair_chart(comparison)
+    notes_html = "".join("<li>" + escape(note) + "</li>" for note in _interpretation_notes(comparison))
     name = escape(title)
     rows = []
     for row in comparison["metrics"]:
@@ -613,6 +651,7 @@ def render_html(comparison: dict[str, object], *, title: str = "Two private anal
 main{max-width:75rem;margin:auto;padding:clamp(1rem,4vw,3rem)}h1,h2{font-family:Georgia,serif;line-height:1.16}
 h1{font-size:clamp(2.2rem,5vw,4rem)}.eyebrow{font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#23615b}
 .lead{max-width:69ch;font-size:1.12rem}.notice{background:#e3ece7;padding:1rem 1.25rem;border-left:4px solid #35766e}
+.interpretation{border:1px solid #b9c5b9;border-radius:.6rem;padding:1rem 1.5rem;margin:1.5rem 0;background:#fffdfa}.interpretation h2{margin:.2rem 0}.interpretation li+li{margin-top:.4rem}
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:2rem 0}.card{background:#fffdfa;padding:1.25rem;border:1px solid #d8d0c0;border-radius:.6rem;min-width:0}
 code{overflow-wrap:anywhere}.scroll{overflow:auto;border:1px solid #d8d0c0;background:#fffdfa;border-radius:.5rem}
 table{border-collapse:collapse;width:100%;min-width:50rem;font-variant-numeric:tabular-nums}th,td{text-align:left;border-bottom:1px solid #d8d0c0;padding:.75rem;vertical-align:top}caption{text-align:left;padding:1rem;font-weight:600}
@@ -629,7 +668,7 @@ small{display:block;font-size:.75rem;font-weight:400;color:#4f635a}details summa
 .pair-fill[data-nonzero="true"]{min-width:2px}.pair-value,.pair-difference,.pair-unavailable{font-size:.85rem;overflow-wrap:anywhere}
 .pair-difference{font-weight:600;margin:.7rem 0 0}
 @media(max-width:680px){.cards{grid-template-columns:1fr}}
-@media(prefers-color-scheme:dark){body{background:#172721;color:#f2f0e5}.card,.punctuation-pair,.scroll{background:#20332d;border-color:#57746a}small{color:#c5d6c9}.notice{background:#29473f}.punctuation-comparison{border-color:#57746a}.pair-track{background:#425c51}.pair-left{background:#8bd2bd}.pair-right{background:#e6b184}}
+@media(prefers-color-scheme:dark){body{background:#172721;color:#f2f0e5}.card,.punctuation-pair,.scroll,.interpretation{background:#20332d;border-color:#57746a}small{color:#c5d6c9}.notice{background:#29473f}.punctuation-comparison{border-color:#57746a}.pair-track{background:#425c51}.pair-left{background:#8bd2bd}.pair-right{background:#e6b184}}
 @media print{body{background:#fff;color:#111}.punctuation-pair{break-inside:avoid}.pair-fill{print-color-adjust:exact}.skip{display:none}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}"""
     return ("<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>" +
@@ -639,7 +678,9 @@ small{display:block;font-size:.75rem;font-weight:400;color:#4f635a}details summa
             "Values are exact JSON decimal observations; difference is right minus left.</p><p class='notice'>" +
             escape(comparison["scientific_boundary"]) + " Unavailable or method-incompatible values have no difference. " +
             "Percent differences are percentage points, never relative percent changes.</p>" +
-            "<p>Imported JSON values and hashes are unauthenticated declarations. Rerun the analyzer on your original manuscript to verify them.</p><div class='cards'>" +
+            "<p>Imported JSON values and hashes are unauthenticated declarations. Rerun the analyzer on your original manuscript to verify them.</p>" +
+            "<aside class='interpretation' aria-labelledby='interpretation-heading'><h2 id='interpretation-heading'>How to read these differences</h2><ul>" +
+            notes_html + "</ul></aside><div class='cards'>" +
             source_card("Left report", comparison["left_source"]) + source_card("Right report", comparison["right_source"]) +
             "</div>" + punctuation_html + "<section id='comparison' tabindex='-1' aria-labelledby='metrics-heading'><h2 id='metrics-heading'>Measurements</h2>" +
             "<div class='scroll' tabindex='0' role='region' aria-label='Comparison measurements'>" +

@@ -219,15 +219,26 @@ def validate_report(report: object) -> None:
     # JSON schema/hash declaration alone does not prove this relationship.
     # Recompute the same binary64 expression used by metrics._per_1000 and
     # compare its shortest round-trip decimal, not an ad-hoc tolerance.
+    punctuation_events = 0
     for metric_id, row in rows.items():
         if not metric_id.startswith("fantlab.punctuation."):
             continue
         raw_count = row["raw_count"]
+        punctuation_events += raw_count
         if raw_count > length:
             raise CompareError("punctuation count exceeds normalized source")
         expected = None if words == 0 else Decimal(repr(raw_count * 1000.0 / words))
         if _number(row["value"], metric_id) != expected:
             raise CompareError("punctuation rate contradicts raw count or word denominator")
+
+    # Each metrics-v4 word token occupies at least one normalized character.
+    # Punctuation-v2 greedily consumes disjoint glyph spans and excludes
+    # lexical hyphens inside word tokens. Thus each punctuation event must
+    # occupy at least one *other* character. A report may provide individually
+    # plausible counts and exactly recomputed rates while claiming more events
+    # than its declared normalized text can contain.
+    if words + punctuation_events > length:
+        raise CompareError("word and punctuation event totals exceed normalized source")
 
     if dictionary is None:
         if any(rows[mid]["value"] is not None for mid in _DICTIONARY_METRICS):

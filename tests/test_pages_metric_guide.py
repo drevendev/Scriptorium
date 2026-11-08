@@ -67,6 +67,7 @@ class PublishedMetricGuideTests(unittest.TestCase):
         self.assertIn('href="./?book=anna#measurements"', page)
         self.assertIn('href="./assets/pages-reader.css"', page)
         self.assertIn('href="./#measurements"', page)
+        self.assertNotRegex(page, r'href="[.]\/docs\/[^"]+[.]md"')
         self.assertEqual(len(re.findall(r'<section class="metric-group"', page)), 4)
         self.assertEqual(len(re.findall(r'<table>', page)), 4)
 

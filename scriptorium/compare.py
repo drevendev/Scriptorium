@@ -437,6 +437,7 @@ def render_markdown(comparison: dict[str, object], *, title: str = "Two private 
         "**Difference:** right minus left. Percentage differences are percentage",
         "points, not relative percentage changes. Unknown is not zero.",
         "Incompatible methods have no numeric difference.",
+        "Compatibility and definition evidence classify the method, not FantLab parity.",
         "",
         "## Source and method provenance",
         "",
@@ -471,8 +472,8 @@ def render_markdown(comparison: dict[str, object], *, title: str = "Two private 
         "",
         "## All 29 metric fields (including unavailable)",
         "",
-        "| Metric | Metric ID | Left | Right | Difference | Unit | Difference unit | Status | Reason | Evidence |",
-        "| :-- | :-- | --: | --: | --: | :-- | :-- | :-- | :-- | :-- |",
+        "| Metric | Metric ID | Left | Right | Difference | Unit | Difference unit | Status | Reason | Compatibility | Definition evidence |",
+        "| :-- | :-- | --: | --: | --: | :-- | :-- | :-- | :-- | :-- | :-- |",
     ])
     seen = set()
     for row in rows:
@@ -496,9 +497,9 @@ def render_markdown(comparison: dict[str, object], *, title: str = "Two private 
         cells = (
             row["label"], metric_id, value(row.get("left")), value(row.get("right")),
             difference, row["unit"], value(row.get("difference_unit")),
-            status, value(row.get("reason")), row["compatibility_status"],
+            status, value(row.get("reason")), row["compatibility_status"], row["definition_evidence"],
         )
-        lines.append("| " + " | ".join(_markdown_text(cell) if index in (0, 1, 5, 7, 9)
+        lines.append("| " + " | ".join(_markdown_text(cell) if index in (0, 1, 5, 7, 9, 10)
                      else cell for index, cell in enumerate(cells)) + " |")
     if seen != set(METRIC_LABELS):
         raise CompareError("incomplete comparison metric registry")
@@ -595,7 +596,8 @@ def render_html(comparison: dict[str, object], *, title: str = "Two private anal
             "<tr><th scope='row'>" + escape(row["label"]) + "<small><code>" + escape(row["metric_id"]) +
             "</code></small></th><td>" + cell("left") + "</td><td>" + cell("right") +
             "</td><td>" + cell("unit") + "</td><td>" + cell("difference") + "</td><td>" + cell("difference_unit") +
-            "</td><td>" + cell("comparison_status") + "<small>" + cell("reason") + "</small></td></tr>"
+            "</td><td>" + cell("comparison_status") + "<small>" + cell("reason") + "</small></td>" +
+            "<td>" + cell("compatibility_status") + "</td><td>" + cell("definition_evidence") + "</td></tr>"
         )
     def source_card(label: str, source: dict[str, object]) -> str:
         return ("<article class='card'><h2>" + escape(label) + "</h2><p><strong>Normalized characters:</strong> " +
@@ -641,9 +643,10 @@ small{display:block;font-size:.75rem;font-weight:400;color:#4f635a}details summa
             source_card("Left report", comparison["left_source"]) + source_card("Right report", comparison["right_source"]) +
             "</div>" + punctuation_html + "<section id='comparison' tabindex='-1' aria-labelledby='metrics-heading'><h2 id='metrics-heading'>Measurements</h2>" +
             "<div class='scroll' tabindex='0' role='region' aria-label='Comparison measurements'>" +
-            "<table><caption>29 source-free metric comparisons, values and units</caption><thead><tr>" +
+            "<table><caption>29 source-free metric comparisons, values, units and definition evidence</caption><thead><tr>" +
             "<th scope='col'>Metric</th><th scope='col'>Left</th><th scope='col'>Right</th>" +
             "<th scope='col'>Unit</th><th scope='col'>Difference</th><th scope='col'>Difference unit</th><th scope='col'>Status</th>" +
+            "<th scope='col'>Compatibility</th><th scope='col'>Definition evidence</th>" +
             "</tr></thead><tbody>" + "".join(rows) + "</tbody></table></div></section>" +
             "<footer><p>No tracking, server, manuscript text or FantLab parity claim.</p></footer></main></body></html>\n")
 

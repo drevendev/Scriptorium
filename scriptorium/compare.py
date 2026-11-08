@@ -257,8 +257,12 @@ def validate_report(report: object) -> None:
             derived = _number(rows[metric_id]["value"], metric_id)
             if (derived is None) != (words < window_size):
                 raise CompareError("dictionary diversity window contradicts word count")
-            if derived is not None and derived > min(window_size, dictionary["lexeme_count"]):
-                raise CompareError("dictionary diversity exceeds its maximum possible size")
+            # A rolling window only contains lexemes already present somewhere
+            # in this same document. Its distinct dictionary-word average
+            # cannot exceed the globally observed active dictionary vocabulary,
+            # even when the supplied dictionary itself is much larger.
+            if derived is not None and derived > min(window_size, active_dictionary):
+                raise CompareError("dictionary diversity exceeds active vocabulary")
 
 
 def _digest_metadata(report: dict[str, object]) -> dict[str, object]:

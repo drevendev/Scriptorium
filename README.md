@@ -226,6 +226,14 @@ for the same input bytes and profiles. Unlike imported JSON, the hashes are
 computed from the actual selected local files; no edition identity or FantLab
 parity is established (M2 0/5).
 
+Imported analysis JSON is treated as an **untrusted declaration**, not a
+replayed measurement: the comparison validator checks obligatory counts,
+derived punctuation rates and the aggregate budget of disjoint word tokens
+plus punctuation events against the stated normalized character count.
+A self-consistent-looking forged rate cannot claim more events than the
+declared text could contain. These checks reject contradictions; they do
+not authenticate the declared source SHA-256 or prove FantLab compatibility.
+
 The `--epubs` mode uses the same bounded EPUB 2/3 XHTML-spine extractor and
 29-metric analyzer as the separate `scriptorium epub` command; all four export
 formats match separately analyzing each EPUB as JSON and comparing the two reports.

@@ -1,27 +1,27 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 458
+STATE_REVISION: 459
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-08
-LAST_RESULT: #462 MERGED at bf5c8ac4a5dc5f4350c40b3d5a207ca74d7b76da; verified original-language facet shipped. Card-to-pair navigation proposed; live browser acceptance remains UNVERIFIED.
+LAST_RESULT: #463 MERGED at 39805869a0f05a2329ecf5c608d5e2711f87128e; eleven measured cards link to nonduplicate pair comparisons. Private comparison input-integrity hardening proposed; live browser acceptance remains UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; pinned Anna 239-revision replay retains seven source-bound independent word-boundary results; M2 0/5.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-014-CARD-TO-PAIR-v1
-ISSUES: #283 (Reader usability; full visual acceptance remains open)
+UNIT_ID: SCRIP-REPRO-011-PUNCTUATION-EVENT-BUDGET-v1
+ISSUES: #281 (bounded independent private comparison reliability; does not close M1/M2)
 STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED; CI_NOT_RUN
-BRANCH: scrip-site-014-card-to-pair-20261108
-BASE: bf5c8ac4a5dc5f4350c40b3d5a207ca74d7b76da
+BRANCH: scrip-repro-011-punctuation-event-budget-20261108
+BASE: 39805869a0f05a2329ecf5c608d5e2711f87128e
 
-ACCEPTANCE: After pinned JSON verification, each of eleven measured cards offers a
-44px+ keyboard-accessible comparison action that selects the clicked edition and
-a distinct existing partner, with an available shared chart metric, canonical
-pair permalink and focus/scroll to the results. The two unmeasured leads have
-no comparison action. With disabled JavaScript or rejected JSON, static links
-and tables remain intact. A real Node regression exercises the actual Reader
-functions and pinned eleven-book evidence; hosted exact-head CI and independent
-mobile/browser visual acceptance are separate.
+ACCEPTANCE: Imported analysis JSON cannot claim more aggregate punctuation
+events and disjoint word tokens than its normalized character budget, even
+when each 14-category count is individually below that budget and every
+per-1000-word rate is numerically self-consistent. Genuine dense text,
+multi-glyph punctuation and punctuation-only text remain valid. Positive and
+negative tests exercise the actual deterministic analyzer and compare validator;
+hosted exact-head CI and later independent review are separate. Do not equate
+this consistency check with authenticated source hashes or FantLab parity.
 
 ## Next user-visible milestone and compact queue
 
@@ -29,7 +29,7 @@ Milestone: publicly readable Russian Reader with verified full-book diagnostics,
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 measured book card → live pair comparison | Verified-data-only 11-card navigation, nonduplicate partner, source-backed shared metric, permalink, accessible focus and no-JS fallback | Existing Reader & source-free snapshot; later exact-head CI/review |
+| P1 | #281 reject impossible imported comparison count totals | Derived per-row rates plus aggregate disjoint token/punctuation character budget; genuine real reports unchanged | Exact-head CI, later independent PR acceptance |
 | P2 | #285 live Reader route and responsive/print acceptance | HTTP route/asset checks, desktop/mobile/keyboard/print screenshots on actual deployed site | Browser network access currently blocked; not a prerequisite |
 | P3 | #281 independent source/profile and displayed-rounding witness | Observe truly source-matched metric and published display policy; do not infer | FantLab analyzer-input identity currently unknown |
 | P4 | Trusov translator body / #436 exact EOF fidelity | Legal >=300k measurement and source witness; separate bounded EOF correctness fix | Historical-render evidence |

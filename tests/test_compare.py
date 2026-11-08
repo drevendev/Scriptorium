@@ -285,6 +285,38 @@ class LocalComparisonTests(unittest.TestCase):
         with self.assertRaises(compare.CompareError):
             compare.build_comparison(missing, self.b)
 
+    def test_imported_punctuation_events_respect_normalized_character_budget(self):
+        # Actual metrics-v4 tokens and punctuation-v2 events do not reuse a
+        # source character. Keep dense, compound and zero-word inputs valid.
+        for body in ("а,б", "а...б", "а б", "?! ...", ""):
+            with self.subTest(valid_body=body):
+                compare.validate_report(build_local_analysis(body.encode("utf-8")))
+
+        # Single row remains below declared source length, and its numeric
+        # rate exactly matches the forged raw count. The *combined* word and
+        # punctuation events exceed the available three source characters.
+        tiny = build_local_analysis("а,б".encode("utf-8"))
+        forged = copy.deepcopy(tiny)
+        row = forged["metrics"]["fantlab.punctuation.comma.per_1000_words"]
+        row["raw_count"] += 1
+        words = forged["metrics"]["fantlab.general.words"]["value"]
+        row["value"] = row["raw_count"] * 1000.0 / words
+        self.assertLessEqual(row["raw_count"], forged["source"]["normalized_character_count"])
+        with self.assertRaisesRegex(compare.CompareError, "event totals exceed"):
+            compare.validate_report(forged)
+        with self.assertRaises(compare.CompareError):
+            compare.build_comparison(forged, self.b)
+
+        # Even when different punctuation rows are individually plausible,
+        # a source with two word tokens and one space cannot contain them.
+        spaces = build_local_analysis("а б".encode("utf-8"))
+        for suffix in ("comma", "dash"):
+            metric = spaces["metrics"][f"fantlab.punctuation.{suffix}.per_1000_words"]
+            metric["raw_count"] = 1
+            metric["value"] = 500.0
+        with self.assertRaisesRegex(compare.CompareError, "event totals exceed"):
+            compare.validate_report(spaces)
+
     def test_dictionary_partition_and_window_integrity(self):
         valid = build_local_analysis(
             LEFT.encode("utf-8"), dictionary_words=["кот", "пёс"],

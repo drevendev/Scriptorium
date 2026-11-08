@@ -5,6 +5,7 @@ on:
     paths:
       - "index.html"
       - "word-density.html"
+      - "metrics.html"
       - "assets/**"
       - "voice/**"
       - ".github/workflows/pages.yml"
@@ -22,6 +23,7 @@ on:
     paths:
       - "index.html"
       - "word-density.html"
+      - "metrics.html"
       - "assets/**"
       - "voice/**"
       - ".github/workflows/pages.yml"
@@ -94,6 +96,7 @@ jobs:
           mkdir -p build/branch-root-preview/assets build/branch-root-preview/voice
           cp index.html build/branch-root-preview/index.html
           cp word-density.html build/branch-root-preview/word-density.html
+          cp metrics.html build/branch-root-preview/metrics.html
           cp assets/pages-reader.css build/branch-root-preview/assets/pages-reader.css
           cp assets/pages-reader.js build/branch-root-preview/assets/pages-reader.js
           cp assets/evidence-snapshot.json build/branch-root-preview/assets/evidence-snapshot.json
@@ -102,12 +105,14 @@ jobs:
           cp voice/index.html build/branch-root-preview/voice/index.html
           test -s build/branch-root-preview/index.html
           test -s build/branch-root-preview/word-density.html
+          test -s build/branch-root-preview/metrics.html
           test -s build/branch-root-preview/assets/evidence-snapshot.json
           test -s build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           test -s build/branch-root-preview/assets/voice-preview.json
           test -s build/branch-root-preview/voice/index.html
           cmp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           cmp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
+          cmp metrics.html build/branch-root-preview/metrics.html
           cmp voice/index.html build/branch-root-preview/voice/index.html
           test -z "$(find build/branch-root-preview -type l -print -quit)"
 

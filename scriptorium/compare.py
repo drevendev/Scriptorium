@@ -499,7 +499,7 @@ def render_markdown(comparison: dict[str, object], *, title: str = "Two private 
             difference, row["unit"], value(row.get("difference_unit")),
             status, value(row.get("reason")), row["compatibility_status"], row["definition_evidence"],
         )
-        lines.append("| " + " | ".join(_markdown_text(cell) if index in (0, 1, 5, 7, 9, 10, 11)
+        lines.append("| " + " | ".join(_markdown_text(cell) if index in (0, 1, 5, 7, 9, 10)
                      else cell for index, cell in enumerate(cells)) + " |")
     if seen != set(METRIC_LABELS):
         raise CompareError("incomplete comparison metric registry")

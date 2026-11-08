@@ -99,6 +99,12 @@ section { scroll-margin-top:2rem; }
 .book-bar { height:.4rem; border-radius:10px; overflow:hidden; background:#dbe9dd; }
 .book-bar span { display:block; background:var(--green); height:100%; }
 .book a { min-height:44px; margin-top:.7rem; display:inline-flex; align-items:center; font-size:.83rem; font-weight:750; }
+.book .book-compare { display:inline-flex; align-items:center; justify-content:center; width:100%; min-height:44px;
+  padding:.55rem .7rem; margin-top:.4rem; border:1px solid var(--green); border-radius:5px;
+  background:var(--wash); color:var(--green-deep); font-size:.82rem; font-weight:750; line-height:1.4; }
+.book .book-compare:hover { background:#dbeae0; }
+@media print { .book .book-compare { display:none !important; } }
+
 .book-next { grid-column:1/-1; background:var(--wash); border-style:dashed; display:grid; grid-template-columns:8rem 1fr 1fr; gap:.75rem; align-items:center; }
 .book-next .book-id { margin:0; }
 .book-next .byline { margin:0; }

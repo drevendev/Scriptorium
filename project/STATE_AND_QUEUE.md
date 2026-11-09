@@ -1,30 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 466
+STATE_REVISION: 467
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-08
-LAST_RESULT: #470 merged at e9ea388beab09f0eeceff7a09808c2cd9b226d8e; four-book source-bound author rhythm preview runs from the checkout. This PR makes the exact pinned, source-free evidence available with the installed wheel independent of checkout location.
+LAST_COMMITTED_RUN_AT: 2026-11-09
+LAST_RESULT: #471 merged at 2368ea647866a9110d9c8563855ede6b7b52e126. A four-fold source-bound author-rhythm stress test is now proposed to expose when the descriptive two-work means fail to identify their own author's held-out work.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; source identity unknown; M2 0/5; M3 not accepted.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-VOICE-005-INSTALLED-OFFLINE-SNAPSHOT-v1
-ISSUES: #283 (reader usefulness, partial); M3 descriptive preview (not M3 acceptance)
+UNIT_ID: SCRIP-VOICE-006-HELDOUT-BOOK-STRESS-TEST-v1
+ISSUES: #283 (researcher utility, partial); M3 exploratory diagnostic (not M3 acceptance)
 STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED; CI_PENDING
-BRANCH: scrip-voice-wheel-offline-snapshot
-BASE: e9ea388beab09f0eeceff7a09808c2cd9b226d8e
+BRANCH: scrip-voice-heldout-book-stress-test
+BASE: 2368ea647866a9110d9c8563855ede6b7b52e126
 
-ACCEPTANCE: A wheel-installed `scriptorium voice --format markdown` runs from an unrelated working directory with unchanged four pinned Russian editions and 16 weighted author metrics; bundled evidence bytes match `assets/evidence-snapshot.json` and its retained Git blob exactly. Fail closed on a modified bundle; retain explicit `--snapshot`, `--check`, no-overwrite and private-path protections. Installed-wheel CI verifies the result. M2 0/5, M3 open; site unchanged. Hosted checks and later independent exact-head acceptance required.
+ACCEPTANCE: `scriptorium voice --holdout --format markdown` and JSON run offline with the pinned four >=300k-char Russian edition measurements, exclude each held-out book from both word-weighted training centroids, report all four distances and deterministic source identity. Eight equally weighted symmetric relative feature differences (not probabilities) give 1/4 closer-to-labelled on the current snapshot; unmodified default preview/check/output contracts remain intact. Positive/negative regressions and exact-head hosted CI required. No independent external validation or FantLab parity; M2 0/5 and M3 open.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: use **real measured Russian books** for transparent, reproducible, evidence-bound author exploration from both Reader and CLI.
+Milestone: make **real measured Russian book comparisons** scientifically interpretable, with explicit instability and failure cases instead of implied author fingerprints.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Standalone installed-wheel author rhythm preview | Exact bundled evidence, independent working directory, identical source-bound output; fail closed on altered bundle | Hosted CI; later-run exact-head PR acceptance |
-| P2 | #285 live Reader route and mobile/print/focus verification | Live site HTTP and actual screenshots | Browser HTTP unavailable; independent product work continues |
-| P3 | #281 source-matched FantLab diagnostic witness | >=300k legally usable text with true source-input identity and rounding deltas | FantLab source-input identity unknown |
+| P1 | Four-fold offline held-out-book stress test | Reproducible 4-fold JSON/Markdown, all 8 features, independent held-out exclusion, fail-closed source/author drift | Later-run exact-head CI/review |
+| P2 | #285 live Reader route and mobile/print/focus verification | Actual live site HTTP and desktop/mobile screenshots | Browser HTTP restriction; product work independent |
+| P3 | #281 source-matched FantLab diagnostic witness | >=300k legally usable matched analyzer input and rounding deltas | Source-input identity unknown |
 | P4 | Trusov translation body / #436 exact EOF fidelity | Rights-verified >=300k body and historical render witness | Historical EOF/render evidence |
 | P5 | #284 licensing and attribution | Explicit verifiable code/data rights | Owner/rights-holder authorization |
 

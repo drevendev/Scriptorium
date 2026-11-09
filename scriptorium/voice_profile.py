@@ -268,12 +268,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     parser.add_argument("--snapshot", type=Path, help="override the pinned bundled source-free snapshot")
     parser.add_argument("--format", choices=("json", "markdown"), default="json")
+    parser.add_argument("--holdout", action="store_true",
+                        help="exploratory leave-one-book-out stress test; not accepted M3")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--output", type=Path, help="create a new derived report; never overwrite")
     group.add_argument("--check", type=Path, help="verify an existing JSON artifact")
     args = parser.parse_args(argv)
     if args.check is not None and args.format != "json":
         parser.error("--check requires JSON format")
+    if args.check is not None and args.holdout:
+        parser.error("--holdout cannot be combined with --check")
     try:
         source = args.snapshot if args.snapshot is not None else Path(__file__).parent / "data" / "evidence-snapshot.json"
         raw = _read_bounded_regular_file(source, 8 * 1024 * 1024, "snapshot")
@@ -290,7 +294,13 @@ def main(argv: Sequence[str] | None = None) -> int:
                 raise ValueError("retained preview differs from source evidence")
             print("VOICE_PREVIEW=VERIFIED; authors=2; editions=4; fields=16; M2=0/5; M3=OPEN")
         else:
-            rendered = render_markdown(artifact) if args.format == "markdown" else render_json(artifact)
+            if args.holdout:
+                from .voice_holdout import build_holdout, render_markdown as render_holdout_markdown
+                evaluation = build_holdout(artifact)
+                rendered = (render_holdout_markdown(evaluation) if args.format == "markdown"
+                            else render_json(evaluation))
+            else:
+                rendered = render_markdown(artifact) if args.format == "markdown" else render_json(artifact)
             if args.output is None:
                 print(rendered, end="")
             else:

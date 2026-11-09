@@ -63,7 +63,9 @@ class HoldoutReaderTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
         self.assertIn("cp voice/index.html build/branch-root-preview/voice/index.html", workflow)
         self.assertIn("cmp voice/index.html build/branch-root-preview/voice/index.html", workflow)
-        self.assertIn('voice/#holdout', (ROOT / "README.md").read_text(encoding="utf-8"))
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("](https://drevendev.github.io/Scriptorium/voice/)", readme)
+        self.assertIn("](https://drevendev.github.io/Scriptorium/voice/#holdout)", readme)
 
     def test_stale_or_forged_evidence_cannot_match_published_distances(self):
         corrupt = deepcopy(self.preview)

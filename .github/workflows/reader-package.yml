@@ -66,6 +66,18 @@ jobs:
           test -s voice-installed.md
           grep -q "M2: 0/5; M3: открыт" voice-installed.md
           "$RUNNER_TEMP/reader-venv/bin/scriptorium" voice --check "$GITHUB_WORKSPACE/assets/voice-preview.json"
+          "$RUNNER_TEMP/reader-venv/bin/scriptorium" voice --ablate --format markdown > voice-ablation.md
+          grep -q "M2: 0/5; M3: открыт" voice-ablation.md
+          "$RUNNER_TEMP/reader-venv/bin/scriptorium" voice --ablate --format json > voice-ablation.json
+          "$RUNNER_TEMP/reader-venv/bin/python" - <<'PY'
+          import json
+          with open("voice-ablation.json", encoding="utf-8") as evidence:
+              result = json.load(evidence)
+          assert result["schema_version"] == "scriptorium-author-rhythm-feature-ablation-v1"
+          assert result["baseline_summary"]["nearer_to_labelled_author"] == 1
+          assert [row["summary"]["nearer_to_labelled_author"] for row in result["ablations"]] == [1, 1, 1, 1, 1, 1, 2, 1]
+          assert result["scientific_boundary"]["m3_accepted"] is False
+          PY
 
       - name: Exercise private comparison with the installed analyzer
         shell: bash

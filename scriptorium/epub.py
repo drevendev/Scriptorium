@@ -29,6 +29,9 @@ MAX_TOTAL_EXPANDED = 64 * 1024 * 1024
 MAX_BODY_BYTES = 32 * 1024 * 1024
 MAX_MEMBERS = 256
 MAX_CHAPTERS = 128
+MAX_XML_DEPTH = 128
+MAX_XML_ELEMENTS = 100_000
+_XML_CHUNK_CHARS = 64 * 1024
 _OPF_NS = "{http://www.idpf.org/2007/opf}"
 _CONTAINER_NS = "{urn:oasis:names:tc:opendocument:xmlns:container}"
 _XHTML_NS = "{http://www.w3.org/1999/xhtml}"
@@ -46,7 +49,7 @@ def _safe_name(name: str) -> str:
         raise EpubError("unsupported archive member path")
     parts = name.removesuffix("/").split("/")
     if len(parts) > 12 or any(not part or part in (".", "..") or ":" in part
-                              or any(ord(c) < 32 for c in part) for part in parts):
+                              or any(ord(c) < 32 or ord(c) == 127 for c in part) for part in parts):
         raise EpubError("unsafe archive member path")
     return name
 
@@ -58,10 +61,39 @@ def _load_xml(raw: bytes, label: str) -> ET.Element:
         raise EpubError(f"invalid {label} UTF-8 XML") from exc
     if "\x00" in decoded or re.search(r"<!\s*(?:DOCTYPE|ENTITY)\b", decoded, re.I):
         raise EpubError(f"{label} declares unsupported XML entities or encoding")
+    # Check shape while feeding bounded chunks, before recursive text traversal.
+    # Byte limits still apply at the archive layer; these are additional limits,
+    # not a claim that arbitrary XML is safe merely because it is well formed.
+    parser = ET.XMLPullParser(events=("start", "end"))
+    depth = count = 0
+    root = None
+    def check_events() -> None:
+        nonlocal depth, count, root
+        for event, element in parser.read_events():
+            if event == "start":
+                depth += 1
+                count += 1
+                if root is None:
+                    root = element
+                if depth > MAX_XML_DEPTH or count > MAX_XML_ELEMENTS:
+                    raise EpubError(f"{label} exceeds XML structure limits")
+            else:
+                depth -= 1
+
     try:
-        return ET.fromstring(decoded)
+        for offset in range(0, len(decoded), _XML_CHUNK_CHARS):
+            parser.feed(decoded[offset:offset + _XML_CHUNK_CHARS])
+            check_events()
+        parser.close()
+        # Expat may defer events until close, especially with small chunks.
+        check_events()
+    except EpubError:
+        raise
     except (ET.ParseError, UnicodeError, ValueError) as exc:
         raise EpubError(f"invalid {label} XML") from exc
+    if root is None or depth != 0:
+        raise EpubError(f"invalid {label} XML")
+    return root
 
 
 def _archive_members(archive: ZipFile) -> dict[str, object]:
@@ -74,7 +106,11 @@ def _archive_members(archive: ZipFile) -> dict[str, object]:
     canonical_names = set()
     expanded = 0
     for info in infos:
-        name = _safe_name(info.filename)
+        # ZipInfo.filename can be truncated at NUL (and normalized by the
+        # platform). Validate the original central-directory name first.
+        name = _safe_name(info.orig_filename)
+        if name != info.filename:
+            raise EpubError("ambiguous EPUB archive member name")
         canonical = name.removesuffix("/")
         if canonical in canonical_names:
             raise EpubError("duplicate or ambiguous EPUB archive member")
@@ -112,8 +148,18 @@ def _read_member(archive: ZipFile, members: dict, path: str, limit: int) -> byte
 def _resolved_member(opf_path: str, href: str) -> str:
     if not isinstance(href, str) or len(href) > 512:
         raise EpubError("invalid EPUB spine href")
-    parts = urlsplit(href)
-    if parts.scheme or parts.netloc or parts.query or parts.fragment:
+    # urlsplit strips some raw whitespace/control characters. unquote's strict
+    # mode validates UTF-8, not percent-triplet syntax. Check both before either
+    # operation can change the reference. Spaces must be percent-encoded.
+    if any(ord(char) <= 32 or ord(char) == 127 for char in href):
+        raise EpubError("invalid raw EPUB spine href")
+    if re.search(r"%(?![0-9A-Fa-f]{2})", href):
+        raise EpubError("invalid encoded EPUB spine href")
+    try:
+        parts = urlsplit(href)
+    except ValueError as exc:
+        raise EpubError("invalid EPUB spine href") from exc
+    if parts.scheme or parts.netloc or "?" in href or "#" in href:
         raise EpubError("remote or fragment EPUB spine href is unsupported")
     try:
         decoded = unquote(parts.path, encoding="utf-8", errors="strict")
@@ -208,18 +254,21 @@ def extract_epub(archive_bytes: bytes) -> tuple[bytes, dict[str, object]]:
                 raise EpubError("invalid EPUB mimetype")
             paths = _spine_paths(archive, members)
             chapters = []
+            body_bytes = 0
             for path in paths:
                 chapter = _load_xml(_read_member(archive, members, path, MAX_MEMBER_BYTES), "XHTML")
                 text = _chapter_text(chapter)
                 if text:
-                    chapters.append(text)
+                    encoded = text.encode("utf-8")
+                    body_bytes += len(encoded) + (2 if chapters else 0)
+                    if body_bytes > MAX_BODY_BYTES:
+                        raise EpubError("extracted EPUB body exceeds analysis limit")
+                    chapters.append(encoded)
             if not chapters:
                 raise EpubError("EPUB spine has no readable body text")
     except (BadZipFile, OSError, RuntimeError, EOFError) as exc:
         raise EpubError("invalid or unreadable EPUB archive") from exc
-    body = "\n\n".join(chapters).encode("utf-8")
-    if len(body) > MAX_BODY_BYTES:
-        raise EpubError("extracted EPUB body exceeds analysis limit")
+    body = b"\n\n".join(chapters)
     provenance = {
         "schema_version": PROVENANCE_SCHEMA,
         "extraction_profile": EXTRACTION_PROFILE,

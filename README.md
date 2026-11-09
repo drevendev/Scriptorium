@@ -51,6 +51,8 @@ The report prints individual book values, word-count-weighted author means and *
 
 **Probe which of the eight measurements matters to that fragile result:** `scriptorium voice --ablate --format markdown` repeats the same four leave-one-book-out folds eight times, omitting exactly one feature at a time. The result is **1/4 for seven omissions and 2/4 when question-mark frequency is omitted**; only *Дорога в никуда* changes its nearest author. JSON output (`--format json`) contains the exact seven-feature distances for every book, the omitted metric ID/unit, the preserved pinned data hash, and the scientific boundaries. This is a **sensitivity diagnostic, not a reason to remove question marks or tune a classifier on the same four books**. Validation on genuinely new works/authors is still missing; no FantLab parity or M3 acceptance is claimed. `--ablate` and `--holdout` are mutually exclusive and neither can be combined with `--check`. Reports remain offline and source-text-free; `--output` refuses overwrites.
 
+**[Inspect all eight feature-removal results in the public Reader](https://drevendev.github.io/Scriptorium/voice/#sensitivity)** — accessible counts/diagrams, pinned evidence, reproducibility commands and the warning against selecting features on these same four books. The table does not claim external validation, reliability or FantLab parity.
+
 ### Analyze your own writing in two commands
 
 Python **3.13+**; run from a checkout (no account, telemetry, manuscript upload or runtime API required):

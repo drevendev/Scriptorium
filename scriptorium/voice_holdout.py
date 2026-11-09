@@ -78,6 +78,9 @@ def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
                     or work["word_weight"] > work["characters_including_spaces"]
                     or not isinstance(work.get("source_sha256"), str)
                     or not re.fullmatch(r"[a-f0-9]{64}", work["source_sha256"])
+                    or work["source_sha256"] != source._PINS[work["key"]][2]
+                    or work.get("edition_id") != source._PINS[work["key"]][1]
+                    or work["characters_including_spaces"] != source._PINS[work["key"]][3]
                     or not isinstance(work.get("title"), str) or not work["title"]):
                 raise ValueError("invalid pinned book")
             observed.append({

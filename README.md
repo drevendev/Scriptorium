@@ -35,7 +35,7 @@ The [translation readiness table](https://drevendev.github.io/Scriptorium/#trans
 
 ### Explore two source-backed author rhythm previews from the CLI
 
-The [public author-rhythm preview](voice/) compares **two measured Russian works by Alexander Grin and two by Leo Tolstoy**, using eight versioned metrics per author. Install the Python package from a checkout, then run `scriptorium voice` from **any working directory**. Its wheel includes the exact pinned **source-free measurement snapshot**, not book text or manuscripts. Inspect the same observations offline as Markdown or reproducible JSON:
+The [public author-rhythm preview](https://drevendev.github.io/Scriptorium/voice/) compares **two measured Russian works by Alexander Grin and two by Leo Tolstoy**, using eight versioned metrics per author. Install the Python package from a checkout, then run `scriptorium voice` from **any working directory**. Its wheel includes the exact pinned **source-free measurement snapshot**, not book text or manuscripts. Inspect the same observations offline as Markdown or reproducible JSON:
 
 ```bash
 scriptorium voice --format markdown
@@ -44,6 +44,8 @@ scriptorium voice --format json --output author-rhythm.json
 ```
 
 The report prints individual book values, word-count-weighted author means and **between-book** population standard deviations. It uses only source-free measurement evidence; it does not read manuscripts, train a classifier, or claim confidence intervals. Two works per author are not enough to establish a stable author fingerprint; M3 remains open and FantLab parity remains **M2 0/5**. Generated files are never overwritten. The bundled source snapshot is checked against its retained Git blob identity on every default run. `--check assets/voice-preview.json` needs that separately supplied reference file (available in a checkout); `--snapshot /path/to/evidence-snapshot.json` explicitly overrides the bundle while retaining source-identity validation. This is **not** a general author profiler for arbitrary private text.
+
+**[See the four-fold failures in the public Reader](https://drevendev.github.io/Scriptorium/voice/#holdout): only 1 of 4 books was closer to its known author.** This is an in-sample exploratory negative result, not external validation or FantLab parity.
 
 **Test whether the differences hold up:** `scriptorium voice --holdout --format markdown` performs four leave-one-book-out folds on the same strictly pinned source-free measurements. Each fold removes one book from both author centroids, then reports a normalized, equally weighted eight-feature distance to the remaining books. On these four selected editions, **only 1/4 held-out books is closer to its labelled author** (three are closer to the other author). This is useful *negative* evidence against calling these eight features a reliable author fingerprint. It is not an independently validated classifier, its distance is not a probability, and the selection is too small to establish generalization. Run `scriptorium voice --holdout --format json` for exact machine-readable folds; `--output` still refuses overwrites. The original `voice` JSON/Markdown contracts remain unchanged. M2 0/5, M3 open.
 

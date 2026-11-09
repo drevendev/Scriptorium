@@ -68,19 +68,39 @@
 @media(forced-colors:active) { .range-span {background:Highlight!important; outline:1px solid CanvasText;} }
 @media print { .range-card {break-inside:avoid;background:white;} }
 
+
+/* Fixed common 0–0.25 scale for the four exploratory holdout comparisons. */
+.holdout-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));list-style:none;padding:0;gap:1rem;margin:1.5rem 0}
+.holdout-card{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:.7rem;padding:1.3rem}
+.holdout-card h3{font-size:1.35rem;margin:.45rem 0 .8rem}
+.holdout-status{font-weight:750;margin:0 0 1rem;line-height:1.5}
+.holdout-status.negative{color:#834021}
+.holdout-status.positive{color:#235c43}
+.holdout-series{display:grid;grid-template-columns:4rem minmax(0,1fr) 5.25rem;gap:.65rem;align-items:center;margin:.7rem 0;font-variant-numeric:tabular-nums}
+.holdout-series strong{font-size:.9rem;text-align:right}
+.holdout-rail{height:1rem;background:var(--wash);border:1px solid var(--line);border-radius:.25rem;overflow:hidden}
+.holdout-fill{display:block;height:100%;border-radius:.2rem}
+.holdout-fill.emerald{background:#266c56}
+.holdout-fill.amber{background:#9b662b}
+.holdout-scale{color:var(--subtle);font-size:.93rem}
+@media(max-width:720px){.holdout-grid{grid-template-columns:1fr}}
+@media(max-width:440px){.holdout-series{grid-template-columns:3.5rem minmax(0,1fr) 4.7rem;gap:.35rem;font-size:.88rem}}
+@media(forced-colors:active){.holdout-fill{background:Highlight!important}}
+@media print{.holdout-card{break-inside:avoid;background:#fff}.holdout-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Перейти к содержанию</a>
-<header class="site-top"><a class="brand" href="../"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a><nav aria-label="Навигация"><a href="../#books">Библиотека</a><a href="../#pairs">Сравнение книг</a><a href="#data">Сводка</a><a href="#works">По книгам</a><a href="#ranges">Диапазоны</a><a href="#sources">Источники</a></nav></header>
+<header class="site-top"><a class="brand" href="../"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a><nav aria-label="Навигация"><a href="../#books">Библиотека</a><a href="../#pairs">Сравнение книг</a><a href="#data">Сводка</a><a href="#works">По книгам</a><a href="#ranges">Диапазоны</a><a href="#holdout">Проверка</a><a href="#sources">Источники</a></nav></header>
 <main class="voice-wrap" id="main">
 <section class="voice-hero" aria-labelledby="hero-title">
 <p class="eyebrow">ЭКСПЕРИМЕНТАЛЬНАЯ МАСТЕРСКАЯ · РУССКИЙ КОРПУС</p>
 <h1 id="hero-title">Один язык.<br><em>Два авторских ритма.</em></h1>
 <p class="voice-lede">Чем отличаются предложения, диалоги и знаки препинания у Александра Грина и Льва Толстого? Здесь — только результаты анализа настоящих книг, а не оценки «хорошего стиля» или тексты, придуманные нейросетью.</p>
 <div class="voice-meta"><span>2 автора</span><span>4 полных произведения</span><span>8 сравнимых показателей</span><span>0 заявлений о паритете с FantLab</span></div>
-<div class="voice-actions"><a href="#charts">Смотреть диаграммы ↘</a><a href="#data">Читать сводку ↘</a><a href="#works">Проверить по книгам ↘</a><a href="#ranges">Оценить разброс ↘</a><a href="../assets/voice-preview.json">Исходные производные данные JSON ↗</a></div>
-<div class="voice-note" role="note"><strong>Предварительный описательный срез, не подтверждённый авторский профиль.</strong> Всего две книги каждого автора; результаты зависят от выбранных редакций. Нет перекрёстной проверки, доверительных интервалов или подбора коэффициентов. Соответствие методике FantLab не доказано. <b>M2: 0/5 · M3: открыт.</b></div>
+<div class="voice-actions"><a href="#charts">Смотреть диаграммы ↘</a><a href="#data">Читать сводку ↘</a><a href="#works">Проверить по книгам ↘</a><a href="#ranges">Оценить разброс ↘</a><a href="#holdout">Проверить устойчивость ↘</a><a href="../assets/voice-preview.json">Исходные производные данные JSON ↗</a></div>
+<div class="voice-note" role="note"><strong>Предварительный описательный срез, не подтверждённый авторский профиль.</strong> Всего две книги каждого автора; результаты зависят от выбранных редакций. Внутренняя стресс-проверка на четырёх книгах дала только 1/4 совпадений; независимой внешней проверки и доверительных интервалов нет. Соответствие методике FantLab не доказано. <b>M2: 0/5 · M3: открыт.</b></div>
 </section>
 <section class="voice-section" id="charts" aria-labelledby="charts-title"><p class="eyebrow">01 / НАГЛЯДНО</p><h2 id="charts-title">Как звучит проза — в измерениях.</h2>
 <p>На каждой паре полос значения нормированы по большему из двух средних только внутри своего показателя. Длина полосы не означает качество текста или научную достоверность. Точные средние, разброс и единицы — в таблице ниже.</p>
@@ -120,7 +140,7 @@
 <tr><th scope="row">Вопросы</th><td>на 1000 слов</td><td>5.719101</td><td>10.265552</td><td>8.471996</td><td>6.662798</td></tr>
 <tr><th scope="row">Точка с запятой</th><td>на 1000 слов</td><td>3.926279</td><td>2.643226</td><td>4.094922</td><td>2.108294</td></tr>
 </tbody></table></div>
-<p>Все четыре редакции и исходные SHA-256 перечислены ниже. Это отдельные диагностические измерения, а не результат анализа склеенных текстов. Совпадение с FantLab не установлено, проверка M3 не выполнена.</p>
+<p>Все четыре редакции и исходные SHA-256 перечислены ниже. Это отдельные диагностические измерения, а не результат анализа склеенных текстов. Совпадение с FantLab не установлено, внешняя проверка не проводилась, M3 не принят.</p>
 </section>
 <section class="voice-section" id="ranges" aria-labelledby="ranges-title">
 <p class="eyebrow">04 / РАЗБРОС МЕЖДУ КНИГАМИ</p><h2 id="ranges-title">Не только среднее: диапазон двух произведений.</h2>
@@ -140,12 +160,33 @@
 <tr data-range-id="fantlab.punctuation.question.per_1000_words"><th scope="row">Вопросы</th><td>на 1000 слов</td><td>5.719101–10.265552</td><td>6.662798–8.471996</td><td>пересекаются</td></tr>
 <tr data-range-id="fantlab.punctuation.semicolon.per_1000_words"><th scope="row">Точка с запятой</th><td>на 1000 слов</td><td>2.643226–3.926279</td><td>2.108294–4.094922</td><td>пересекаются</td></tr></tbody></table></div>
 </section>
-<section class="voice-section" id="sources" aria-labelledby="sources-title"><p class="eyebrow">05 / ИСТОЧНИКИ И ПРОВЕРЯЕМОСТЬ</p><h2 id="sources-title">Какие именно книги посчитаны.</h2>
+<section class="voice-section" id="holdout" aria-labelledby="holdout-title">
+<p class="eyebrow">05 / ПРОВЕРКА УСТОЙЧИВОСТИ</p><h2 id="holdout-title">А если убрать одну книгу?</h2>
+<div class="voice-note" role="note"><strong>Только 1 из 4 исключённых книг оказалась ближе к своему автору.</strong> Остальные 3 — к другому. Это отрицательный результат для <em>выбранных восьми характеристик и четырёх редакций</em>, а не опровержение существования авторского стиля и не оценка классификационной точности на новых книгах. <b>M2: 0/5 · M3: открыт.</b></div>
+<p>Для каждой строки исключаем книгу <strong>из обоих авторских центров</strong>. Обучение идёт только на оставшихся трёх книгах: одной своего автора и двух другого. Центры взвешены по числу слов. Расстояние — среднее восьми равновесных относительных расхождений: <strong>2 × |x − центр| / (x + центр)</strong> (если оба нули, берём ноль). Меньше означает ближе, но <strong>расстояние не является вероятностью</strong>.</p>
+<p class="holdout-scale">Все восемь полосных измерений ниже используют одну линейную шкалу <strong>0–0,25</strong>, начиная с нуля; меньшее расстояние означает большую близость. Цвета различают авторов, символ ✓ / × — исход. Точные расстояния приведены в таблице.</p>
+<ul class="holdout-grid">
+<li class="holdout-card" data-holdout-card="waves"><p class="eyebrow">ИСКЛЮЧЕНА ИЗ ОБУЧЕНИЯ · Грин</p><h3>Бегущая по волнам</h3><p class="holdout-status negative">× Ближе к другому автору — Толстой</p><div class="holdout-series"><span>Грин</span><span class="holdout-rail" aria-hidden="true"><span class="holdout-fill emerald" style="width:89.90%"></span></span><strong>0.224762</strong></div><div class="holdout-series"><span>Толстой</span><span class="holdout-rail" aria-hidden="true"><span class="holdout-fill amber" style="width:46.14%"></span></span><strong>0.115350</strong></div></li>
+<li class="holdout-card" data-holdout-card="road"><p class="eyebrow">ИСКЛЮЧЕНА ИЗ ОБУЧЕНИЯ · Грин</p><h3>Дорога в никуда</h3><p class="holdout-status negative">× Ближе к другому автору — Толстой</p><div class="holdout-series"><span>Грин</span><span class="holdout-rail" aria-hidden="true"><span class="holdout-fill emerald" style="width:89.90%"></span></span><strong>0.224762</strong></div><div class="holdout-series"><span>Толстой</span><span class="holdout-rail" aria-hidden="true"><span class="holdout-fill amber" style="width:81.76%"></span></span><strong>0.204390</strong></div></li>
+<li class="holdout-card" data-holdout-card="anna"><p class="eyebrow">ИСКЛЮЧЕНА ИЗ ОБУЧЕНИЯ · Толстой</p><h3>Анна Каренина</h3><p class="holdout-status negative">× Ближе к другому автору — Грин</p><div class="holdout-series"><span>Грин</span><span class="holdout-rail" aria-hidden="true"><span class="holdout-fill emerald" style="width:42.99%"></span></span><strong>0.107464</strong></div><div class="holdout-series"><span>Толстой</span><span class="holdout-rail" aria-hidden="true"><span class="holdout-fill amber" style="width:72.67%"></span></span><strong>0.181683</strong></div></li>
+<li class="holdout-card" data-holdout-card="resurrection"><p class="eyebrow">ИСКЛЮЧЕНА ИЗ ОБУЧЕНИЯ · Толстой</p><h3>Воскресение</h3><p class="holdout-status positive">✓ Ближе к своему автору — Толстой</p><div class="holdout-series"><span>Грин</span><span class="holdout-rail" aria-hidden="true"><span class="holdout-fill emerald" style="width:84.80%"></span></span><strong>0.212003</strong></div><div class="holdout-series"><span>Толстой</span><span class="holdout-rail" aria-hidden="true"><span class="holdout-fill amber" style="width:72.67%"></span></span><strong>0.181683</strong></div></li>
+</ul>
+<div class="scroll-table" tabindex="0" role="region" aria-label="Четыре проверки исключения книги: числовые расстояния и правильность">
+<table><caption>Leave-one-book-out · 4 закреплённые русскоязычные книги · 8 одинаково взвешенных характеристик · расстояние, безразмерное</caption><thead><tr><th scope="col">Исключённая книга</th><th scope="col">Известный автор</th><th scope="col">До Грина</th><th scope="col">До Толстого</th><th scope="col">Ближе к</th><th scope="col">Совпадение</th></tr></thead><tbody>
+<tr data-holdout-key="waves"><th scope="row">Бегущая по волнам</th><td>Грин</td><td>0.224762</td><td>0.115350</td><td>Толстой</td><td>другой</td></tr>
+<tr data-holdout-key="road"><th scope="row">Дорога в никуда</th><td>Грин</td><td>0.224762</td><td>0.204390</td><td>Толстой</td><td>другой</td></tr>
+<tr data-holdout-key="anna"><th scope="row">Анна Каренина</th><td>Толстой</td><td>0.107464</td><td>0.181683</td><td>Грин</td><td>другой</td></tr>
+<tr data-holdout-key="resurrection"><th scope="row">Воскресение</th><td>Толстой</td><td>0.212003</td><td>0.181683</td><td>Толстой</td><td>свой</td></tr>
+</tbody></table></div>
+<p><strong>Ограничения:</strong> это внутривыборочная стресс-проверка четырёх заранее выбранных произведений, <strong>не независимая внешняя валидация</strong>, не доказанный «отпечаток автора», не доверительный интервал и не воспроизведение FantLab. Равные веса признаков не подбирались на независимой выборке; смена книг, редакций и весов может изменить результаты. Статус M3 не принят.</p>
+<p>Воспроизвести без сети из установленного wheel: <code>scriptorium voice --holdout --format markdown</code> (или <code>--format json</code>). Данные и редакции: <a href="../assets/voice-preview.json">закреплённый JSON измерений</a>; алгоритм: <a href="https://github.com/drevendev/Scriptorium/blob/master/scriptorium/voice_holdout.py">Python и тесты</a>. Git blob исходного реестра: <code>a84986fd72ad616006b8ce179d1653e5ecf13729</code>. Художественный текст на страницу не копируется.</p>
+</section>
+<section class="voice-section" id="sources" aria-labelledby="sources-title"><p class="eyebrow">06 / ИСТОЧНИКИ И ПРОВЕРЯЕМОСТЬ</p><h2 id="sources-title">Какие именно книги посчитаны.</h2>
 <p>Ни один литературный текст не хранится в этом отчёте. Книги идентифицируются закреплёнными редакциями, контрольными суммами и ссылками на проверенные производные результаты.</p>
 <div class="author-grid"><article class="author-card grin"><p class="eyebrow">АВТОР 01</p><h3>Александр Грин</h3><p class="author-summary">2 полных русскоязычных произведения · 120 850 слов по Scriptorium</p><ul class="source-works"><li><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json">Бегущая по волнам</a><span>363 819 знаков · 55 778 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-frozen-363819</p><code>41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc</code></details></li><li><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-road-nowhere-ru.retained.json">Дорога в никуда</a><span>442 656 знаков · 65 072 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-wikisource-az-lib-oldid-5585836</p><code>e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee</code></details></li></ul></article>
 <article class="author-card tolstoy"><p class="eyebrow">АВТОР 02</p><h3>Лев Толстой</h3><p class="author-summary">2 полных русскоязычных произведения · 405 487 слов по Scriptorium</p><ul class="source-works"><li><a href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json">Анна Каренина</a><span>1 705 605 знаков · 269 358 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-wikisource-239-chapters</p><code>1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205</code></details></li><li><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/tolstoy-resurrection-ru.retained.json">Воскресение</a><span>890 835 знаков · 136 129 слов</span><details><summary>Редакция и контрольная сумма</summary><p>ru-wikisource-129-chapters</p><code>2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0</code></details></li></ul></article></div>
 </section>
-<section class="voice-section" id="method" aria-labelledby="method-title"><p class="eyebrow">06 / НАУЧНАЯ ГРАНИЦА</p><h2 id="method-title">Метод, ограничения и повторяемость.</h2>
+<section class="voice-section" id="method" aria-labelledby="method-title"><p class="eyebrow">07 / НАУЧНАЯ ГРАНИЦА</p><h2 id="method-title">Метод, ограничения и повторяемость.</h2>
 <p>Формула для каждого показателя: <strong>μ = Σ(w × x) / Σw</strong>, <strong>σ = √(Σ(w × (x − μ)²) / Σw)</strong>, где w — количество измеренных слов в конкретной книге. Количество слов не является заменой числа предложений при вычислении длины предложений; эти результаты — средние из двух отдельно измеренных показателей.</p>
 <p>Источник данных: зафиксированный <a href="../assets/evidence-snapshot.json">реестр Reader</a>; версия алгоритма <code>scriptorium-author-rhythm-preview-v1</code>; модули нормализации <code>scriptorium-text-v1</code>, метрик <code>scriptorium-metrics-v4</code>, диалогов <code>scriptorium-dialogue-v1</code>, словаря <code>scriptorium-vocabulary-v1</code>, пунктуации <code>scriptorium-punctuation-v2</code>. Проверяемые вычисления: <a href="https://github.com/drevendev/Scriptorium/blob/master/scriptorium/voice_profile.py">Python-модуль и тесты в GitHub</a>.</p>
 <p>Морфологические коэффициенты FantLab неизвестны. Идентичность источников FantLab не установлена. Переводческие версии не объединяются с оригиналами. Это экспериментальное расширение, а не воспроизведение FantLab, классификация авторства или выполненный M3.</p>

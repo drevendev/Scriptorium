@@ -124,7 +124,7 @@ function chartLinkHarness(query){
   win.history={pushState(_a,_b,url){win.location=new URL(String(url));}};
   let renders=0;
   const ctl=new Function("window","metrics","el","updateChart",
-    "let currentChart='fantlab.dialogue.share_percent',sortChart=false;\n"+chartLinkCode+
+    "let currentChart='fantlab.dialogue.share_percent',sortChart=false,chartCopyAttempt=0;\n"+chartLinkCode+
     "return {chartFromUrl,chartOrderFromUrl,restoreChartFromUrl,selectChart,current:()=>currentChart,sorted:()=>sortChart,setSorted:v=>{sortChart=v;}};")(
       win,metrics,id=>{assert.equal(id,"share-chart");return anchor;},()=>renders++);
   return {win,anchor,ctl,renders:()=>renders};

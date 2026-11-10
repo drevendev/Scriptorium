@@ -43,6 +43,13 @@ class LocalHtmlEvidenceContractTests(unittest.TestCase):
         cases = [
             lambda a: a["metrics"].pop("fantlab.general.words"),
             lambda a: a["metrics"].update({"unreviewed.metric": {"value": 7}}),
+            lambda a: a["metrics"].update({"fantlab.unproven.new": {
+                "value": 7, "unit": "events", "compatibility_status": "inferred",
+                "definition_evidence": "unsupported",
+            }}),
+            lambda a: a["metrics"].update({"scriptorium.other.unknown": {
+                "value": 7, "unit": "events", "compatibility_status": "extension",
+            }}),
             lambda a: a["metrics"].update({"fantlab.general.words": None}),
         ]
         for mutate in cases:
@@ -51,6 +58,19 @@ class LocalHtmlEvidenceContractTests(unittest.TestCase):
                 mutate(artifact)
                 with self.assertRaises(ValueError):
                     render_html(artifact)
+
+    def test_future_namespaced_extension_stays_visible_and_escaped(self):
+        artifact = copy.deepcopy(self.artifact)
+        artifact["metrics"]["scriptorium.new.<future>"] = {
+            "value": 3, "unit": "events",
+            "compatibility_status": "extension",
+            "definition_evidence": "scriptorium_extension",
+        }
+        html = render_html(artifact)
+        self.assertEqual(html.count('class="metric-id"'), 30)
+        self.assertIn("scriptorium.new.&lt;future&gt;", html)
+        self.assertNotIn("<future>", html)
+        self.assertIn("<h2>Other</h2>", html)
 
     def test_provenance_and_representativeness_must_agree(self):
         cases = [

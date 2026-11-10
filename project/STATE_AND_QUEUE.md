@@ -1,35 +1,34 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 472
+STATE_REVISION: 473
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-10
-LAST_RESULT: #478 merged at 92f58f2bd31b5c02f35bb98157d7e531b9b1eb4d; #481 proposes strict current v3/v4 publication support for #479. No new master or live Pages change from #481.
+LAST_RESULT: #481 merged at ff313efb9fb8fc86bb0f5d4437c3fdfd859e1b61; #479 closed. Master Pages build, branch deployment and package workflows succeeded. The current branch proposes a guarded Reader pair-link copy action; no new master change.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M2 0/5; M3 open. No new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-CURRENT-METRIC-PUBLICATION-v1
-ISSUE: #479
-STATUS: PR_OPEN; LATER_ACCEPTANCE_REQUIRED
-PR: #481
-BRANCH: scrip-site-current-metric-publication
-BASE: 92f58f2bd31b5c02f35bb98157d7e531b9b1eb4d
+UNIT_ID: SCRIP-READER-PAIR-LINK-COPY-v1
+ISSUE: #283 (focused public-reader usability)
+STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-reader-pair-permalink-copy
+BASE: ff313efb9fb8fc86bb0f5d4437c3fdfd859e1b61
 
-ACCEPTANCE: An explicit synthetic publication-manifest entry renders a real current v4 engine result, while a separately labelled structural v3 fixture and historical v1/v2 remain supported. Strict 29-row IDs, per-metric evidence/unit/status, versioned profiles, dictionary dependency, hashes, no-source-text gates, manifest-only paths and fail-closed staged publication. Full exact-head native CI, deterministic site rebuild and installed CLI verification are required before later-run acceptance; no same-run merge. No FantLab parity promotion.
+ACCEPTANCE: On the verified Reader, offer a 44px keyboard-accessible copy control next to the paired permalink. Copy only same-origin, same-path URLs for two different measured editions and an allowed metric. Reject foreign/malformed/duplicate inputs, and report clipboard success/denial to an accessible status. Retain the original static/no-JS pair link and no manuscript transmission. New Node test must run in Pages CI. Independent exact-head verification/merge and browser acceptance remain separate. No FantLab parity promotion.
 
-Verification: Initial focused positive/negative tests are proposed in #481 and not yet independently verified. Local Python/full checkout, installed wheel and live browser tests: NOT_RUN. PR CI needs exact final-head verification. #478 is already merged; its closed issues #476/#477/#480 must not be reopened or reworked.
+Verification: New source-bound Node regression and Pages workflow step proposed; CI / live desktop and mobile browser: NOT_RUN. #481 merge and #479 closure are confirmed.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: publish safe current-engine metric profiles through reviewed manifests, then expose new independently measured real-book comparisons without weakening scientific source-match gates.
+Milestone: ship safely shareable real-book comparisons and expand independently measured editions without changing FantLab parity criteria.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #481 / #479 v3/v4 renderer acceptance | Exact head CI, full suite, reproducible build, verified 29-row current artifact, staged privacy contract; later-run merge | Current PR head and review/check gates |
-| P2 | Independently measured editions for author-profile replication | >=300k legally usable works, separate author/translator/edition identities, held-out tests on new books | Rights/source identity; avoid tuning on the four existing books |
-| P3 | #282 measured AOT N ambiguity and a source-matched FantLab witness | Pinned runtime evidence, unchanged per-metric rounding, source-identity matched reference | Native ambiguity, analyzer-input identity UNKNOWN; M2 0/5 |
-| P4 | #285 live Reader routes / #283 mobile, keyboard and print acceptance | Actual HTTP, mobile/desktop screenshots and interactions | Browser navigation restrictions; source improvements independent |
-| P5 | #284 explicit source-code licence and attribution | Contributor/third-party inventory and owner-authorized licence decision | No invented grant; separate from product PR |
+| P1 | #283 copy measured pair comparison links | Exact-head test, Page build, later-run acceptance | Current PR checks/review |
+| P2 | New independent >=300k source-bound author editions | Rights, distinct author/translator/edition, reproducible measurements and held-out tests | Clear legal source and pin; do not tune the existing four-book pilot |
+| P3 | #282 AOT N ambiguity and source-matched FantLab witness | Native pinned evidence, exact metric deltas, edition/input identity | Pinned morphology, FantLab input identity UNKNOWN; M2 0/5 |
+| P4 | #285 live Reader / #283 mobile, keyboard, print | HTTP verification, desktop/mobile screenshots and tested controls | Browser availability; independent source work permitted |
+| P5 | #284 explicit source-code licence and attribution | Rights inventory and owner-authorized grant | Cannot invent grant |
 
 ## Retained scientific and operational boundaries
 

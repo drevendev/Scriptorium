@@ -186,17 +186,20 @@ class SixBookHoldoutTests(unittest.TestCase):
             self.assertEqual(cli.main([
                 "voice", "--include-dostoevsky", "--holdout", "--format", "markdown",
             ]), 0)
-        self.assertEqual(output.getvalue(), voice_holdout.render_markdown(result) + "\n")
+        self.assertEqual(output.getvalue(), voice_holdout.render_markdown(result))
         with redirect_stderr(StringIO()):
             with self.assertRaises(SystemExit) as denied:
                 cli.main(["voice", "--include-dostoevsky", "--ablate"])
         self.assertEqual(denied.exception.code, 2)
-        self.assertEqual(
-            voice_holdout.build_holdout(voice_profile.build_preview(
-                json.loads(SOURCE.read_text(encoding="utf-8")),
-                source_blob_sha1=voice_profile._git_blob_sha(SOURCE.read_bytes()))),
-            voice_holdout.build_holdout(FourBookHoldoutTests.preview),
+        preserved = voice_profile.build_preview(
+            json.loads(SOURCE.read_text(encoding="utf-8")),
+            source_blob_sha1=voice_profile._git_blob_sha(SOURCE.read_bytes()),
         )
+        self.assertEqual(preserved, json.loads(PREVIEW.read_text(encoding="utf-8")))
+        self.assertEqual(voice_holdout.build_holdout(preserved)["summary"], {
+            "total_folds": 4, "nearer_to_labelled_author": 1,
+            "nearer_to_other_author": 3, "ties": 0,
+        })
 
 
 if __name__ == "__main__":

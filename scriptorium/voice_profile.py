@@ -15,6 +15,7 @@ from pathlib import Path
 import re
 
 VERSION = "scriptorium-author-rhythm-preview-v1"
+EXTENDED_VERSION = "scriptorium-author-rhythm-preview-v2"
 # Exact Git blob for the pinned, source-free wheel resource; drift must fail closed.
 _PACKAGED_SOURCE_BLOB_SHA1 = "a84986fd72ad616006b8ce179d1653e5ecf13729"
 _MIN_CHARACTERS = 300_000
@@ -48,6 +49,20 @@ AUTHORS = (
     ("grin", "Александр Грин", ("waves", "road")),
     ("tolstoy", "Лев Толстой", ("anna", "resurrection")),
 )
+# The opt-in third author uses existing independently frozen source-free
+# measurements. The original v1 preview/holdout/ablation are not re-fitted.
+_DOSTOEVSKY_AUTHOR = ("dostoevsky", "Фёдор Достоевский", ("karamazov", "humiliated"))
+_DOSTOEVSKY_PINS = {
+    "karamazov": (
+        "dostoevsky-brothers-karamazov-ru", "ru-wikisource-98",
+        "26b9991c95b30d262c24ae38fb2332333a58df588a62a4310f9e5c4b507dbce6", 1810351,
+    ),
+    "humiliated": (
+        "dostoevsky-humiliated-and-insulted-azlib-ru",
+        "ru-wikisource-az-lib-oldid-5611473",
+        "ffc6825db7f442c7df93136e8ddf90ce44be8801cdbaa727d5fe642db3fad8fa", 713925,
+    ),
+}
 # Rates and mean lengths only. Unique-vocabulary sizes and absolute counts do
 # not have a meaningful work-weighted author-average interpretation.
 FEATURES = (
@@ -78,7 +93,8 @@ def _number(row: Mapping[str, object], key: str, *, integer: bool = False) -> in
 
 
 def _frozen_work(book: Mapping[str, object], key: str, author: str) -> dict[str, object]:
-    expected_candidate, expected_edition, expected_hash, expected_chars = _PINS[key]
+    pins = _PINS if key in _PINS else _DOSTOEVSKY_PINS
+    expected_candidate, expected_edition, expected_hash, expected_chars = pins[key]
     if (book.get("key") != key or book.get("candidate_id") != expected_candidate
             or book.get("edition_id") != expected_edition
             or book.get("source_sha256") != expected_hash
@@ -116,8 +132,13 @@ def _frozen_work(book: Mapping[str, object], key: str, author: str) -> dict[str,
     }
 
 
-def build_preview(snapshot: Mapping[str, object], *, source_blob_sha1: str) -> dict[str, object]:
+def build_preview(snapshot: Mapping[str, object], *, source_blob_sha1: str,
+                  include_dostoevsky: bool = False) -> dict[str, object]:
     """Produce fixed-source weighted mean and population SD; no source text or M2 claims."""
+    if type(include_dostoevsky) is not bool:
+        raise ValueError("invalid optional author selection")
+    selected_authors = AUTHORS + (_DOSTOEVSKY_AUTHOR,) if include_dostoevsky else AUTHORS
+    required_keys = {key for _, _, keys in selected_authors for key in keys}
     if (not isinstance(snapshot, dict) or snapshot.get("schema") != "scriptorium-ru-reader-v2"
             or snapshot.get("language_module") != "ru"
             or snapshot.get("scientific_claim") != "DIAGNOSTIC_ONLY"
@@ -135,10 +156,10 @@ def build_preview(snapshot: Mapping[str, object], *, source_blob_sha1: str) -> d
         if not isinstance(book, dict) or type(book.get("key")) is not str or book["key"] in indexed:
             raise ValueError("duplicate or malformed edition keys")
         indexed[book["key"]] = book
-    if not set(_PINS).issubset(indexed):
+    if not required_keys.issubset(indexed):
         raise ValueError("incomplete frozen work inventory")
     output_authors = []
-    for author_id, name, keys in AUTHORS:
+    for author_id, name, keys in selected_authors:
         work_rows = [_frozen_work(indexed[key], key, name) for key in keys]
         if len({row["source_sha256"] for row in work_rows}) != len(keys):
             raise ValueError("duplicate source body in author preview")
@@ -169,7 +190,8 @@ def build_preview(snapshot: Mapping[str, object], *, source_blob_sha1: str) -> d
             "works": work_rows, "metrics": metrics,
         })
     return {
-        "schema_version": VERSION, "language": "ru",
+        "schema_version": EXTENDED_VERSION if include_dostoevsky else VERSION,
+        "language": "ru",
         "source_snapshot": "assets/evidence-snapshot.json",
         "source_snapshot_git_blob_sha1": source_blob_sha1,
         "aggregation": {
@@ -204,12 +226,16 @@ def _markdown_cell(value: object) -> str:
 
 def render_markdown(artifact: Mapping[str, object]) -> str:
     """A source-free human report, not a FantLab or statistically accepted author profile."""
-    if (artifact.get("schema_version") != VERSION
+    selected_version = artifact.get("schema_version")
+    if (selected_version not in (VERSION, EXTENDED_VERSION)
+            or len(artifact.get("authors", [])) != (3 if selected_version == EXTENDED_VERSION else 2)
             or artifact.get("scientific_boundary", {}).get("m3_accepted") is not False
             or artifact.get("scientific_boundary", {}).get("m2_source_matched") != 0):
         raise ValueError("unverified author-preview scientific boundary")
     lines = [
-        "# Scriptorium — ритм двух авторов (исследовательский предпросмотр)",
+        ("# Scriptorium — ритм трёх авторов (исследовательский предпросмотр)"
+         if selected_version == EXTENDED_VERSION else
+         "# Scriptorium — ритм двух авторов (исследовательский предпросмотр)"),
         "",
         "> Только описательное расширение Scriptorium: по две измеренные русские книги "
         "на автора. Это не авторский отпечаток, доверительный интервал, доказательство "
@@ -267,6 +293,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         description="Read the pinned source-free two-author rhythm preview (M2 0/5; M3 open)"
     )
     parser.add_argument("--snapshot", type=Path, help="override the pinned bundled source-free snapshot")
+    parser.add_argument("--include-dostoevsky", action="store_true",
+                        help="opt-in source-bound third author from two Russian editions (v2)")
     parser.add_argument("--format", choices=("json", "markdown"), default="json")
     analysis_group = parser.add_mutually_exclusive_group()
     analysis_group.add_argument("--holdout", action="store_true",
@@ -281,6 +309,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         parser.error("--check requires JSON format")
     if args.check is not None and (args.holdout or args.ablate):
         parser.error("--holdout/--ablate cannot be combined with --check")
+    if args.include_dostoevsky and (args.holdout or args.ablate):
+        parser.error("four-book holdout/ablation require the original two-author preview")
     try:
         source = args.snapshot if args.snapshot is not None else Path(__file__).parent / "data" / "evidence-snapshot.json"
         raw = _read_bounded_regular_file(source, 8 * 1024 * 1024, "snapshot")
@@ -289,13 +319,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         artifact = build_preview(
             json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_pairs),
             source_blob_sha1=_git_blob_sha(raw),
+            include_dostoevsky=args.include_dostoevsky,
         )
         if args.check is not None:
             reference = _read_bounded_regular_file(args.check, 8 * 1024 * 1024, "reference")
             actual = json.loads(reference.decode("utf-8"), object_pairs_hook=_unique_pairs)
             if artifact != actual:
                 raise ValueError("retained preview differs from source evidence")
-            print("VOICE_PREVIEW=VERIFIED; authors=2; editions=4; fields=16; M2=0/5; M3=OPEN")
+            print("VOICE_PREVIEW=VERIFIED; authors=" + ("3; editions=6; fields=24" if args.include_dostoevsky
+                  else "2; editions=4; fields=16") + "; M2=0/5; M3=OPEN")
         else:
             if args.holdout:
                 from .voice_holdout import build_holdout, render_markdown as render_holdout_markdown
@@ -313,7 +345,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print(rendered, end="")
             else:
                 _write_new(args.output, rendered)
-                print("VOICE_PREVIEW=VERIFIED; authors=2; editions=4; fields=16; M2=0/5; M3=OPEN")
+                print("VOICE_PREVIEW=VERIFIED; authors=" + ("3; editions=6; fields=24" if args.include_dostoevsky
+                      else "2; editions=4; fields=16") + "; M2=0/5; M3=OPEN")
     except FileExistsError:
         parser.error("derived report already exists; choose another destination")
     except (OSError, UnicodeError, ValueError, TypeError, RecursionError, LocalInputError):

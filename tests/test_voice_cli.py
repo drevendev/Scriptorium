@@ -133,6 +133,35 @@ class InstalledVoiceCliTests(unittest.TestCase):
                 cli.main(["voice", "--check", str(DERIVED), "--format", "markdown"])
             self.assertIn("requires JSON", stderr.getvalue())
 
+    def test_three_author_opt_in_cli_and_four_work_holdout_isolation(self):
+        out = StringIO()
+        with redirect_stdout(out):
+            self.assertEqual(cli.main(["voice", "--include-dostoevsky"]), 0)
+        value = json.loads(out.getvalue())
+        self.assertEqual(value["schema_version"], voice_profile.EXTENDED_VERSION)
+        self.assertEqual(len(value["authors"]), 3)
+        self.assertEqual(value["authors"][-1]["author_id"], "dostoevsky")
+        self.assertIs(value["scientific_boundary"]["m3_accepted"], False)
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "preview.json"
+            with redirect_stdout(StringIO()):
+                self.assertEqual(cli.main(["voice", "--include-dostoevsky",
+                                           "--output", str(target)]), 0)
+                self.assertEqual(cli.main(["voice", "--include-dostoevsky",
+                                           "--check", str(target)]), 0)
+            self.assertEqual(json.loads(target.read_text(encoding="utf-8")), value)
+            with redirect_stderr(StringIO()), self.assertRaises(SystemExit):
+                cli.main(["voice", "--include-dostoevsky", "--output", str(target)])
+        with redirect_stdout(out := StringIO()):
+            self.assertEqual(cli.main(["voice", "--include-dostoevsky",
+                                       "--format", "markdown"]), 0)
+        self.assertIn("Фёдор Достоевский", out.getvalue())
+        for mode in ("--holdout", "--ablate"):
+            with self.subTest(mode=mode):
+                with redirect_stderr(StringIO()), self.assertRaises(SystemExit) as ex:
+                    cli.main(["voice", "--include-dostoevsky", mode])
+                self.assertEqual(ex.exception.code, 2)
+
 
 if __name__ == "__main__":
     unittest.main()

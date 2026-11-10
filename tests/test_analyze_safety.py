@@ -67,7 +67,8 @@ class LocalAnalysisSafetyTests(unittest.TestCase):
     def test_other_metric_family_is_not_silently_lost(self):
         result = analyze.build_local_analysis(b"abc")
         result["metrics"]["scriptorium.extra.metric"] = {
-            "value": 1, "unit": "events", "compatibility_status": "extension"
+            "value": 1, "unit": "events", "compatibility_status": "extension",
+            "definition_evidence": "scriptorium_extension",
         }
         self.assertEqual(analyze.render_html(result).count('scope="row"'), 30)
         self.assertIn("<h2>Other</h2>", analyze.render_html(result))

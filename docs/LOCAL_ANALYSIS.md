@@ -19,7 +19,13 @@ changing their values or formulas. It records the metric contract, normalization
 dialogue/vocabulary/punctuation profiles, raw-byte and normalized-text SHA-256 identities,
 input size and dictionary identity. `--scriptorium-revision <git-sha>` records an explicit
 caller-supplied revision; without it the revision is null, not guessed. The HTML exposes
-profiles under **Analysis profiles**.
+profiles under **Analysis profiles**. The HTML renderer requires all 29 current
+metric IDs and rejects unregistered FantLab fields, unsupported metric namespaces,
+malformed SHA-256 identifiers, contradictory character counts or length thresholds,
+invalid analyzer/dictionary metadata, and missing metric evidence. Explicitly
+labelled Scriptorium extension fields remain visible under **Other**; no added field
+silently becomes a FantLab-compatible result. This checks the artifact's internal consistency; it cannot prove a
+caller's hashes came from a particular manuscript or establish FantLab parity.
 
 Inputs must be UTF-8. CRLF/CR and Unicode composition use the existing normalization
 profile. Empty inputs are supported: counts may be zero, but undefined means or rates

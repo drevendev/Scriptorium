@@ -99,7 +99,9 @@ class LocalHtmlNumericFidelityTests(unittest.TestCase):
                     render_html(self.report)
         metric["value"] = None
         self.assertIn("<td>Unavailable</td>", render_html(self.report))
-        self.report["metrics"]["fantlab.general.characters"]["value"] = 9007199254740993
+        # Keep source-bound character identity unchanged; this tests rendering
+        # of a large exact integer on an independent count row.
+        self.report["metrics"]["fantlab.general.words"]["value"] = 9007199254740993
         self.assertIn("<td>9,007,199,254,740,993</td>", render_html(self.report))
 
 

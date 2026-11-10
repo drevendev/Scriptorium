@@ -17,7 +17,7 @@ import tempfile
 from pathlib import Path
 from typing import Final, Iterable
 
-from .metrics import analyze_deterministic_metrics
+from .metrics import METRIC_CONTRACT_ID, analyze_deterministic_metrics
 from .metric_labels import METRIC_LABELS
 from .csv_safety import safe_csv_text
 
@@ -94,6 +94,7 @@ def render_html(artifact: dict[str, object], *, title: str | None = None, saved_
     metrics = _mapping(artifact.get("metrics"), "metrics")
     if source.get("source_text_embedded") is not False:
         raise ValueError("local analysis must not embed source text")
+    _validate_html_artifact(artifact, source, analyzer, representativeness, metrics)
 
     display_title = _nonempty_text(title) if title is not None else "Scriptorium local analysis"
     groups = (
@@ -442,6 +443,80 @@ def _csv_text(value: object) -> str:
     if not isinstance(value, str):
         raise ValueError("metric identity field must be text or null")
     return safe_csv_text(value)
+
+def _validate_html_artifact(
+    artifact: dict[str, object],
+    source: dict[str, object],
+    analyzer: dict[str, object],
+    representativeness: dict[str, object],
+    metrics: dict[str, object],
+) -> None:
+    """Fail closed on a partial or contradictory local HTML report contract.
+
+    This checks source-free metadata consistency, NOT whether a caller's digest
+    actually identifies the original manuscript or FantLab's input.
+    """
+    if artifact.get("metric_contract_id") != METRIC_CONTRACT_ID:
+        raise ValueError("unsupported local metric contract")
+    if not set(METRIC_LABELS).issubset(metrics):
+        raise ValueError("local HTML requires all 29 current metric IDs")
+    # HTML has always allowed inspectable future Scriptorium extensions in
+    # "Other"; unrecognized FantLab or unqualified metric IDs cannot masquerade
+    # as validated compatibility rows.
+    if any(type(metric_id) is not str or not metric_id.startswith("scriptorium.")
+           for metric_id in set(metrics) - set(METRIC_LABELS)):
+        raise ValueError("local HTML rejects unregistered metric namespaces")
+    for digest_name in ("raw_sha256", "normalized_sha256"):
+        digest = source.get(digest_name)
+        if (type(digest) is not str or len(digest) != 64
+                or any(char not in "0123456789abcdef" for char in digest)):
+            raise ValueError("local HTML requires valid SHA-256 identifiers")
+    for count_name in ("byte_count", "normalized_character_count"):
+        count = source.get(count_name)
+        if type(count) is not int or count < 0:
+            raise ValueError("local HTML requires nonnegative source counts")
+    if (representativeness.get("calibration_threshold_characters") != REPRESENTATIVE_CHARACTERS
+            or type(representativeness.get("meets_calibration_threshold")) is not bool
+            or representativeness["meets_calibration_threshold"] !=
+               (source["normalized_character_count"] >= REPRESENTATIVE_CHARACTERS)):
+        raise ValueError("local HTML representativeness conflicts with source count")
+    profiles = _mapping(analyzer.get("profiles"), "analyzer.profiles")
+    for name in ("normalization", "metrics", "dialogue", "vocabulary", "punctuation"):
+        if type(profiles.get(name)) is not str or not profiles[name].strip():
+            raise ValueError("local HTML missing analyzer profile")
+    if (analyzer.get("scriptorium_revision") is not None
+            and type(analyzer["scriptorium_revision"]) is not str):
+        raise ValueError("local HTML revision must be text or null")
+    dependencies = _mapping(analyzer.get("dependencies"), "analyzer.dependencies")
+    if "vocabulary_dictionary" not in dependencies:
+        raise ValueError("local HTML missing dictionary dependency state")
+    dictionary = dependencies["vocabulary_dictionary"]
+    if dictionary is not None:
+        dictionary = _mapping(dictionary, "vocabulary dictionary")
+        if (type(dictionary.get("profile")) is not str or not dictionary["profile"].strip()
+                or type(dictionary.get("lexeme_count")) is not int
+                or dictionary["lexeme_count"] < 0
+                or type(dictionary.get("normalized_lexemes_sha256")) is not str
+                or len(dictionary["normalized_lexemes_sha256"]) != 64
+                or any(char not in "0123456789abcdef"
+                       for char in dictionary["normalized_lexemes_sha256"])):
+            raise ValueError("local HTML invalid dictionary provenance")
+    for metric_id, raw_row in metrics.items():
+        row = _mapping(raw_row, metric_id)
+        expected_status = "extension" if metric_id.startswith("scriptorium.") else "inferred"
+        if row.get("compatibility_status") != expected_status:
+            raise ValueError("local HTML metric evidence status changed")
+        if (type(row.get("unit")) is not str or not row["unit"].strip()
+                or type(row.get("definition_evidence")) is not str
+                or not row["definition_evidence"].strip()):
+            raise ValueError("local HTML metric unit/evidence missing")
+        _format_value(row.get("value"))
+        raw_count = row.get("raw_count")
+        if raw_count is not None and (type(raw_count) is not int or raw_count < 0):
+            raise ValueError("local HTML raw count must be nonnegative integer or null")
+    if source["normalized_character_count"] != metrics["fantlab.general.characters"]["value"]:
+        raise ValueError("local HTML character count conflicts with metric row")
+
 
 def _render_punctuation_chart(metrics: dict[str, object]) -> str:
     """Plot observed punctuation rates without JS or a second metric engine.

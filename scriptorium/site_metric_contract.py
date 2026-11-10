@@ -132,11 +132,10 @@ def validate_current_analysis(analysis: Any) -> None:
         raise ValueError("current metrics must have exactly 29 canonical rows")
     for metric_id, expected in _ROWS.items():
         is_punctuation = metric_id.startswith("fantlab.punctuation.")
-        keys = frozenset({
-            "value", "unit", "definition_evidence", "compatibility_status",
-            *("raw_count",) if is_punctuation else (),
-        })
-        row = _exact_fields(metrics[metric_id], keys, f"metric {metric_id}")
+        keys = {"value", "unit", "definition_evidence", "compatibility_status"}
+        if is_punctuation:
+            keys.add("raw_count")
+        row = _exact_fields(metrics[metric_id], frozenset(keys), f"metric {metric_id}")
         actual = (row["unit"], row["definition_evidence"], row["compatibility_status"])
         if actual != expected:
             raise ValueError(f"metric {metric_id} contract mismatch")

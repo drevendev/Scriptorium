@@ -19,6 +19,7 @@ from urllib.parse import urlsplit
 
 from .site_publish import staged_site
 from .publication import validate_compatibility_claim
+from .site_metric_contract import validate_current_analysis
 from .site_gallery_filter import evidence_kind, FILTER_CONTROLS, FILTER_JS, FILTER_CSS
 from . import site_frozen_diagnostic
 from . import site_work_comparison
@@ -60,6 +61,8 @@ _SUPPORTED_SHOWCASE_ARTIFACT_SCHEMAS = frozenset(
     {
         "scriptorium-deterministic-metrics-v1",
         "scriptorium-deterministic-metrics-v2",
+        "scriptorium-deterministic-metrics-v3",
+        "scriptorium-deterministic-metrics-v4",
         PROVENANCE_SHOWCASE_PROFILE,
         site_frozen_diagnostic.FROZEN_PROFILE,
     }
@@ -300,6 +303,15 @@ def _validate_metric_showcase(
     metrics = analysis.get("metrics")
     if not isinstance(metrics, Mapping) or not metrics:
         raise PublicationBuildError(f"showcase {entry_id!r} has no publishable metrics")
+
+    if artifact_schema in {
+        "scriptorium-deterministic-metrics-v3",
+        "scriptorium-deterministic-metrics-v4",
+    }:
+        try:
+            validate_current_analysis(analysis)
+        except ValueError as exc:
+            raise PublicationBuildError(f"showcase {entry_id!r} has invalid current analysis: {exc}") from exc
 
     revision_url = _safe_external_url(source.get("revision_url"), f"showcase {entry_id}.source.revision_url")
     return {

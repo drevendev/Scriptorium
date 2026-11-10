@@ -107,7 +107,7 @@ def validate_current_analysis(analysis: Any) -> None:
 
     analysis = _exact_fields(analysis, _ANALYSIS_KEYS, "analysis")
     version = analysis["schema_version"]
-    if version not in _SUPPORTED_PROFILES:
+    if not isinstance(version, str) or version not in _SUPPORTED_PROFILES:
         raise ValueError("unsupported current metric schema")
     if analysis["metric_contract_id"] != "fantlab-2022-v1":
         raise ValueError("metric contract identity mismatch")

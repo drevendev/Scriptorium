@@ -60,6 +60,7 @@
   const rightSelect = el("pair-right");
   const pairMetric = el("pair-metric");
   const pairSwapButton = el("pair-swap");
+  const pairCopyButton = el("copy-pair-link");
   const pairExportButton = el("pair-export");
   const pairCsvButton = el("pair-export-csv");
   const pairMarkdownButton = el("pair-export-markdown");
@@ -1202,6 +1203,8 @@
     pairSwapButton.disabled = left === right;
     updatePair();
     const share = el("share-pair");
+    el("copy-pair-feedback").textContent="";
+    pairCopyButton.disabled = left === right;
     if (left === right) {
       share.hidden = true;
       share.removeAttribute("href");
@@ -1387,6 +1390,44 @@
   window.addEventListener("beforeprint", openChartTableForPrint);
   window.addEventListener("afterprint", restoreChartTableAfterPrint);
 
+  // Copy only same-page, distinct measured-edition links after data verification.
+  function verifiedPairShareUrl() {
+    const anchor=el("share-pair");
+    const href=anchor?.getAttribute("href");
+    if (anchor.hidden || typeof href!=="string" || !href.startsWith("?left=")) return null;
+    try {
+      const page=new URL(window.location.href), target=new URL(href,page);
+      const params=target.searchParams;
+      if (target.origin!==page.origin || target.pathname!==page.pathname ||
+          target.hash!=="#pairs" ||
+          [...params.keys()].some(key=>!["left","right","pair_metric"].includes(key)) ||
+          ["left","right","pair_metric"].some(key=>params.getAll(key).length!==1)) return null;
+      const left=params.get("left"), right=params.get("right"), metric=params.get("pair_metric");
+      if (!getBook(left) || !getBook(right) || left===right ||
+          ![...pairMetric.options].some(option=>option.value===metric)) return null;
+      return target.href;
+    } catch (_) { return null; }
+  }
+
+  async function copyPairShareUrl() {
+    if (pairCopyButton.disabled) return;
+    const feedback=el("copy-pair-feedback"), link=verifiedPairShareUrl();
+    if (!link) {
+      feedback.textContent="Нет проверенной ссылки для копирования.";
+      return;
+    }
+    if (!window.isSecureContext || typeof window.navigator?.clipboard?.writeText!=="function") {
+      feedback.textContent="Копирование недоступно. Откройте ссылку рядом и скопируйте адрес.";
+      return;
+    }
+    try {
+      await window.navigator.clipboard.writeText(link);
+      feedback.textContent="Ссылка на сравнение скопирована.";
+    } catch (_) {
+      feedback.textContent="Не удалось скопировать. Откройте ссылку рядом и скопируйте адрес.";
+    }
+  }
+
   // Only a validated same-page chart permalink may enter the clipboard.
   function verifiedChartShareUrl() {
     const anchor=el("share-chart");
@@ -1476,6 +1517,8 @@
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairSwapButton.addEventListener("click",swapPair);
+      pairCopyButton.hidden=false;
+      pairCopyButton.addEventListener("click",copyPairShareUrl);
       restoreChartFromUrl();
       chartCopyButton.hidden=false;
       chartCopyButton.disabled=false;

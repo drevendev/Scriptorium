@@ -334,6 +334,10 @@ footer a { color:#ffdaa3; }
 /* Shareable edition view and keyboard-visible focus after opening a book. */
 .permalink-help { max-width:70ch; font-size:.85rem; line-height:1.6; }
 .permalink-help a { display:inline-flex; min-height:44px; align-items:center; font-weight:750; text-underline-offset:.2em; }
+.permalink-help button { display:inline-flex; min-height:44px; align-items:center; margin:.25rem .4rem; padding:.5rem .8rem; border:1px solid var(--green); border-radius:5px; background:var(--wash); color:var(--green-deep); font-weight:700; }
+.permalink-help button[hidden] { display:none !important; }
+.permalink-help .copy-feedback { display:inline-block; font-weight:650; color:var(--green-deep); }
+@media print { .permalink-help button,.permalink-help .copy-feedback { display:none !important; } }
 #measurements-title:focus-visible { outline:3px solid var(--green); outline-offset:5px; border-radius:3px; }
 
 @media (max-width:490px) { .chart-row { grid-template-columns:6.8rem minmax(0,1fr) 5rem; } }

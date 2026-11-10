@@ -57,4 +57,4 @@ assert.throws(()=>serialize({...doc,scientific_claim:"PARITY"},"fantlab.dialogue
 assert.throws(()=>serialize(doc,"constructor",false),/не разрешён/);
 const damaged=JSON.parse(JSON.stringify(doc));damaged.books[0].source_sha256="bad";
 assert.throws(()=>serialize(damaged,"fantlab.dialogue.share_percent",false),/редакция/);
-console.log("8 metrics × 2 orders, 11 actual editions, zero/missing, safety/provenance: PASS");
+console.log("9 metrics × 2 orders, 11 actual editions, zero/missing, safety/provenance: PASS");

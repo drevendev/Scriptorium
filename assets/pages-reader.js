@@ -8,6 +8,7 @@
     "fantlab.dialogue.share_percent": ["Доля диалогов","%",2],
     "fantlab.general.mean_sentence_length_chars": ["Длина предложения","символов / предложение",2],
     "fantlab.punctuation.comma.per_1000_words": ["Запятые","на 1000 слов",2],
+    "fantlab.punctuation.question.per_1000_words": ["Вопросительные знаки","на 1000 слов",2],
     "fantlab.punctuation.dash.per_1000_words": ["Тире","на 1000 слов",2],
     "fantlab.general.mean_word_length_chars": ["Длина слова","символов / слово",2],
     "fantlab.dialogue.author_text_inside_dialogue_percent": ["Авторские ремарки внутри диалогов","%",2],

@@ -12,8 +12,8 @@ const end=source.indexOf("  async function initialize() {",start);
 assert.ok(start>=0 && end>start,"production chart copying helpers missing");
 const code=source.slice(start,end)+"return {verifiedChartShareUrl,copyChartShareUrl};";
 const ids=[...html.matchAll(/data-chart="([^"]+)"/g)].map(match=>match[1]);
-assert.equal(ids.length,8);
-assert.equal(new Set(ids).size,8);
+assert.equal(ids.length,9);
+assert.equal(new Set(ids).size,9);
 assert.equal(data.counts.measured_works,11);
 const metrics=Object.fromEntries(ids.map(id=>[id,true]));
 const anchor={hidden:false,href:"",getAttribute(name){
@@ -39,7 +39,7 @@ async function main(){
     assert.match(feedback.textContent,/скопирована/);
     assert.equal(window.location.href,page,"copy must not navigate or mutate history");
   }
-  assert.equal(copied.length,16);
+  assert.equal(copied.length,18);
   for(const href of [
     "", "https://outside.invalid/?metric="+ids[0]+"#charts",
     "?metric=other.metric#charts", "?metric="+ids[0]+"&chart_order=unknown#charts",
@@ -51,7 +51,7 @@ async function main(){
     assert.equal(helpers.verifiedChartShareUrl(),null,href);
     await helpers.copyChartShareUrl();
     assert.match(feedback.textContent,/Нет проверенной ссылки/);
-    assert.equal(copied.length,16);
+    assert.equal(copied.length,18);
   }
   anchor.href="?metric="+ids[0]+"#charts";
   anchor.hidden=true;
@@ -59,7 +59,7 @@ async function main(){
   anchor.hidden=false;
   chartCopyButton.disabled=true;
   await helpers.copyChartShareUrl();
-  assert.equal(copied.length,16);
+  assert.equal(copied.length,18);
   chartCopyButton.disabled=false;
   window.isSecureContext=false;
   await helpers.copyChartShareUrl();
@@ -71,7 +71,7 @@ async function main(){
   window.navigator.clipboard={async writeText(){throw Error("NotAllowedError");}};
   await helpers.copyChartShareUrl();
   assert.match(feedback.textContent,/Не удалось скопировать/);
-  assert.equal(copied.length,16);
+  assert.equal(copied.length,18);
 
   const deferred=[];
   window.navigator.clipboard={writeText(url){
@@ -105,8 +105,8 @@ async function main(){
   await slow;
   assert.equal(feedback.textContent,latestFeedback);
   assert.match(source,/function selectChart\(id, addHistory=false\) \{[\s\S]*?chartCopyAttempt\+\+;/);
-  assert.equal(copied.length,16,"deferred tests never change source-backed routes");
+  assert.equal(copied.length,18,"deferred tests never change source-backed routes");
 
-  console.log("Verified 8×2 live-source chart permalinks, clipboard success/denial, unsafe URL and no-data guards: PASS");
+  console.log("Verified 9×2 live-source chart permalinks, clipboard success/denial, unsafe URL and no-data guards: PASS");
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

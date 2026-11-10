@@ -7,7 +7,7 @@ No literary text is loaded; v1 remains a separate frozen four-work contract.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from math import fsum, isfinite
+from math import fsum, isfinite, sqrt
 import re
 
 from . import voice_profile as source
@@ -47,6 +47,8 @@ def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
             or boundary.get("translation_mixed") is not False
             or boundary.get("source_text_committed") is not False):
         raise ValueError("scientific boundary is not admissible for exploratory holdout")
+    if preview.get("source_metric_profiles") != source._SOURCE_PROFILES:
+        raise ValueError("source metric-profile identity drift")
     authors = preview.get("authors")
     if not isinstance(authors, list) or len(authors) != len(selected_authors):
         raise ValueError("incomplete pinned author observations")
@@ -62,6 +64,12 @@ def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
                 or len(works) != 2 or len(metrics) != len(ids)
                 or [work.get("key") for work in works] != list(work_keys)):
             raise ValueError("incomplete or reordered work evidence")
+        weights = [work.get("word_weight") for work in works]
+        if (any(type(weight) is not int or weight <= 0 for weight in weights)
+                or type(author.get("word_weight_total")) is not int
+                or author["word_weight_total"] != sum(weights)):
+            raise ValueError("inconsistent author word weights")
+        weight_total = sum(weights)
         values_by_work = {key: {} for key in work_keys}
         for metric, (metric_id, label, unit) in zip(metrics, source.FEATURES):
             if (not isinstance(metric, dict) or metric.get("id") != metric_id
@@ -73,6 +81,22 @@ def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
                 raise ValueError("missing source-specific measurements")
             for row in rows:
                 values_by_work[row["work_key"]][metric_id] = _finite(row.get("value"))
+            # Verify the source-bound descriptive preview before using its raw
+            # observations for holdout. Do not treat declared aggregates as
+            # independent source authentication or external validation.
+            values = [values_by_work[key][metric_id] for key in work_keys]
+            mean = fsum(weight * value for weight, value in zip(weights, values)) / weight_total
+            deviation = sqrt(fsum(
+                weight * (value - mean) ** 2 for weight, value in zip(weights, values)
+            ) / weight_total)
+            for field, expected in (
+                ("weighted_mean", mean),
+                ("weighted_population_stddev", deviation),
+            ):
+                reported = metric.get(field)
+                if (type(reported) not in (int, float) or not isfinite(reported)
+                        or reported < 0 or reported != round(expected, 6)):
+                    raise ValueError("inconsistent source-bound author aggregate: " + metric_id)
         for work in works:
             if not isinstance(work, dict):
                 raise ValueError("invalid pinned book")

@@ -10,13 +10,13 @@ LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M
 
 UNIT_ID: SCRIP-LOCAL-HTML-EVIDENCE-CONTRACT-v1
 ISSUE: #484
-STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED
+STATUS: PR_OPEN #485; LATER_ACCEPTANCE_REQUIRED
 BRANCH: scrip-local-html-evidence-contract-20261110
 BASE: 3699bb2921542ab9edbf051b472de7274302be89
 
 ACCEPTANCE: Local offline HTML reports reject absent/extra metric IDs, malformed provenance and contradictory source/metric/threshold counts, invalid profiles/dependencies, unsupported evidence or invalid raw values. Valid 29-metric inferred/extension and missing-data renders remain deterministic and source-free. Python regression tests and exact-head CI required; later-run merge and live Pages acceptance are separate.
 
-Verification: source-level divergence between local HTML and CSV/Markdown guards confirmed; no local full-suite run available in this environment; hosted checks pending.
+Verification: first 1357-test CI suite exposed three existing HTML extension/precision expectations; repaired the current PR, preserving safe namespaced extension rendering and exact unrelated numeric fidelity. Fresh exact-head CI pending; local suite NOT_RUN.
 
 ## Next user-visible milestone and compact queue
 

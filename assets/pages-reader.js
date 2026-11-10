@@ -1517,8 +1517,8 @@
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairSwapButton.addEventListener("click",swapPair);
-       pairCopyButton.hidden=false;
-       pairCopyButton.addEventListener("click",copyPairShareUrl);
+      pairCopyButton.hidden=false;
+      pairCopyButton.addEventListener("click",copyPairShareUrl);
       restoreChartFromUrl();
       chartCopyButton.hidden=false;
       chartCopyButton.disabled=false;

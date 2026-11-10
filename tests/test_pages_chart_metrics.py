@@ -12,6 +12,7 @@ IDS = (
     "fantlab.dialogue.share_percent",
     "fantlab.general.mean_sentence_length_chars",
     "fantlab.punctuation.comma.per_1000_words",
+    "fantlab.punctuation.question.per_1000_words",
     "fantlab.punctuation.dash.per_1000_words",
     "fantlab.general.mean_word_length_chars",
     "fantlab.dialogue.author_text_inside_dialogue_percent",

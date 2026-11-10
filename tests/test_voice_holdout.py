@@ -111,5 +111,93 @@ class FourBookHoldoutTests(unittest.TestCase):
         self.assertEqual(mixed.exception.code, 2)
 
 
+
+class SixBookHoldoutTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        raw = SOURCE.read_bytes()
+        cls.preview = voice_profile.build_preview(
+            json.loads(raw), source_blob_sha1=voice_profile._git_blob_sha(raw),
+            include_dostoevsky=True,
+        )
+
+    def test_six_source_bound_folds_and_negative_result(self):
+        result = voice_holdout.build_holdout(self.preview)
+        self.assertEqual(result["schema_version"], voice_holdout.EXTENDED_VERSION)
+        self.assertEqual(result["source_preview_version"], voice_profile.EXTENDED_VERSION)
+        self.assertEqual(result["method"]["train_works_per_fold"], [1, 2, 2])
+        self.assertEqual(result["summary"], {
+            "total_folds": 6, "nearer_to_labelled_author": 2,
+            "nearer_to_other_author": 4, "ties": 0,
+        })
+        self.assertEqual([f["held_out_work_key"] for f in result["folds"]],
+                         ["waves", "road", "anna", "resurrection", "karamazov", "humiliated"])
+        self.assertEqual([f["nearest_author_id"] for f in result["folds"]],
+                         ["tolstoy", "dostoevsky", "grin", "tolstoy", "grin", "dostoevsky"])
+        author_ids = {"grin", "tolstoy", "dostoevsky"}
+        for fold in result["folds"]:
+            self.assertEqual(set(fold["training_work_keys"]), author_ids)
+            self.assertEqual(set(fold["relative_distances"]), author_ids)
+            self.assertEqual(len(fold["training_work_keys"][fold["known_author_id"]]), 1)
+            self.assertEqual(sum(map(len, fold["training_work_keys"].values())), 5)
+            for aid in author_ids:
+                self.assertNotIn(fold["held_out_work_key"], fold["training_work_keys"][aid])
+                self.assertGreaterEqual(fold["relative_distances"][aid], 0)
+                self.assertLessEqual(fold["relative_distances"][aid], 2)
+        self.assertIs(result["scientific_boundary"]["independent_external_validation"], False)
+        self.assertIs(result["scientific_boundary"]["m3_accepted"], False)
+        self.assertEqual(result["scientific_boundary"]["m2_source_matched"], 0)
+        self.assertEqual(result, voice_holdout.build_holdout(self.preview))
+        text = voice_holdout.render_markdown(result)
+        self.assertIn("2 из 6", text)
+        self.assertIn("М3 остаётся открыт", text)
+        self.assertIn("Достоевского", text)
+
+    def test_six_fold_fails_closed_on_source_and_metric_drift(self):
+        corruptions = (
+            lambda x: x["authors"][-1]["works"][1].__setitem__("source_sha256", "0" * 64),
+            lambda x: x["authors"][-1]["works"][0].__setitem__("edition_id", "different"),
+            lambda x: x["authors"][-1]["works"][0].__setitem__("word_weight", 0),
+            lambda x: x["authors"][-1]["metrics"][0]["per_work"][0].__setitem__("value", None),
+            lambda x: x["authors"][-1]["metrics"][0].__setitem__("unit", "unknown"),
+            lambda x: x["authors"][-1]["metrics"][0]["per_work"].reverse(),
+            lambda x: x["scientific_boundary"].__setitem__("m3_accepted", True),
+            lambda x: x["authors"].reverse(),
+        )
+        for corrupt in corruptions:
+            with self.subTest(corrupt=repr(corrupt)):
+                preview = deepcopy(self.preview)
+                corrupt(preview)
+                with self.assertRaises(ValueError):
+                    voice_holdout.build_holdout(preview)
+        invalid = deepcopy(self.preview)
+        invalid["authors"][-1]["works"][1]["source_sha256"] = invalid["authors"][-1]["works"][0]["source_sha256"]
+        with self.assertRaises(ValueError):
+            voice_holdout.build_holdout(invalid)
+
+    def test_cli_six_fold_roundtrip_and_v1_preservation(self):
+        result = voice_holdout.build_holdout(self.preview)
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(cli.main(["voice", "--include-dostoevsky", "--holdout"]), 0)
+        self.assertEqual(json.loads(output.getvalue()), result)
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(cli.main([
+                "voice", "--include-dostoevsky", "--holdout", "--format", "markdown",
+            ]), 0)
+        self.assertEqual(output.getvalue(), voice_holdout.render_markdown(result) + "\n")
+        with redirect_stderr(StringIO()):
+            with self.assertRaises(SystemExit) as denied:
+                cli.main(["voice", "--include-dostoevsky", "--ablate"])
+        self.assertEqual(denied.exception.code, 2)
+        self.assertEqual(
+            voice_holdout.build_holdout(voice_profile.build_preview(
+                json.loads(SOURCE.read_text(encoding="utf-8")),
+                source_blob_sha1=voice_profile._git_blob_sha(SOURCE.read_bytes()))),
+            voice_holdout.build_holdout(FourBookHoldoutTests.preview),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

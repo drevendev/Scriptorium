@@ -16,7 +16,7 @@ const pairMenu=html.match(/<select id="pair-metric"[\s\S]*?<\/select>/);
 assert.ok(pairMenu);
 const options=[...pairMenu[0].matchAll(/<option value="([^"]+)"/g)].map(m=>({value:m[1]}));
 assert.equal(options.length,7);
-const start=source.indexOf("  function verifiedPairShareUrl() {");
+const start=source.indexOf("  let pairCopyAttempt=0;");
 const end=source.indexOf("  // Only a validated same-page chart permalink may enter the clipboard.",start);
 assert.ok(start>0&&end>start,"production pair clipboard helpers not found");
 const code=source.slice(start,end)+"return {verifiedPairShareUrl,copyPairShareUrl};";
@@ -89,6 +89,43 @@ async function main(){
   await helpers.copyPairShareUrl();
   assert.match(feedback.textContent,/Не удалось скопировать/);
   assert.equal(copied.length,21);
+
+  // A late clipboard promise must not acknowledge a different selected pair.
+  const deferred=[];
+  window.navigator.clipboard={writeText(url){
+    return new Promise((resolve,reject)=>deferred.push({url,resolve,reject}));
+  }};
+  const routeA="?left=anna&right=beketova&pair_metric="+metric+"#pairs";
+  const routeB="?left=waves&right=road&pair_metric="+metric+"#pairs";
+  anchor.href=routeA;
+  const oldSuccess=helpers.copyPairShareUrl();
+  assert.equal(deferred.length,1);
+  anchor.href=routeB;
+  feedback.textContent="";
+  deferred[0].resolve();
+  await oldSuccess;
+  assert.equal(feedback.textContent,"","stale success must not describe the new pair");
+  anchor.href=routeA;
+  const oldFailure=helpers.copyPairShareUrl();
+  anchor.href=routeB;
+  feedback.textContent="";
+  deferred[1].reject(Error("NotAllowedError"));
+  await oldFailure;
+  assert.equal(feedback.textContent,"","stale denial must not describe the new pair");
+  // Two overlapping writes to the same link: only the latest attempt can report.
+  anchor.href=routeA;
+  const slow=helpers.copyPairShareUrl();
+  const fast=helpers.copyPairShareUrl();
+  deferred[3].resolve();
+  await fast;
+  const latestFeedback=feedback.textContent;
+  assert.match(latestFeedback,/скопирована/);
+  deferred[2].reject(Error("late old denial"));
+  await slow;
+  assert.equal(feedback.textContent,latestFeedback);
+  assert.match(source,/function selectPair\(left, right, addHistory=false\) \{[\s\S]*?pairCopyAttempt\+\+;/);
+  assert.equal(copied.length,21,"deferred tests must not affect the verified route corpus");
+
   console.log("Source-bound comparison permalink copy: 21 allowed routes, invalid URLs and clipboard failures PASS");
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

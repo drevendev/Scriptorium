@@ -11,7 +11,7 @@ const end=source.indexOf("  const pairedIds =",start);
 assert.ok(start>=0&&end>start,"Shipped chart function not found");
 const metrics=new Function(source.slice(source.indexOf("  const metrics ="),source.indexOf("  const names ="))+"return metrics;")();
 const ids=Object.keys(metrics);
-assert.equal(ids.length,8);
+assert.equal(ids.length,9);
 const measured=catalog.books.filter(b=>b.text_status==="measured");
 assert.equal(measured.length,11);
 const node=tag=>({tag,children:[],style:{},attrs:{},className:"",textContent:"",appendChild(n){this.children.push(n);return n;},setAttribute(k,v){this.attrs[k]=v;},replaceChildren(f){this.children=f.children;}});
@@ -49,6 +49,19 @@ assert.equal(elements["chart-series"].children[5].children[2].textContent,"не�
 assert.equal(elements["chart-table-rows"].children[5].children[1].textContent,"нет данных");
 render("fantlab.dialogue.share_percent");
 assert.equal(elements["chart-series"].children[5].children[2].textContent,"32,47%");
+// Questions are a measured, language-dependent descriptive rate, not an author classifier.
+const questionId="fantlab.punctuation.question.per_1000_words";
+render(questionId);
+assert.equal(elements["chart-series"].children[0].children[2].textContent,"8,47");
+assert.equal(elements["chart-table-rows"].children[0].children[1].textContent,"8.471996376569473");
+render(questionId,catalog,true);
+assert.equal(elements["chart-series"].children[0].children[0].textContent,"Обломов");
+const questionMissing=structuredClone(catalog);
+questionMissing.books[0].metrics.find(m=>m.id===questionId).actual=null;
+render(questionId,questionMissing,true);
+assert.equal(elements["chart-series"].children.at(-1).children[0].textContent,"Анна Каренина");
+assert.equal(elements["chart-series"].children.at(-1).children[2].textContent,"нет данных");
+render("fantlab.dialogue.share_percent");
 assert.throws(()=>render("fantlab.unregistered"),/Показатель диаграммы не разрешён/);
 const changed=structuredClone(catalog);
 changed.books.find(b=>b.key==="anna").metrics.find(m=>m.id==="fantlab.dialogue.share_percent").actual=0;
@@ -187,10 +200,10 @@ for(const unsafe of ["no","ranked!","Ranked","__proto__","0","ranked%00"]){
 }
 assert.match(source,/chartSortButton\.addEventListener\("click",\(\)=>\{sortChart=!sortChart;selectChart\(currentChart,true\);\}\)/);
 assert.equal((source.match(/restoreChartFromUrl\(\);/g)||[]).length,2);
-console.log("Eight chart ranking permalinks, reload/history, invalid order and source wiring: PASS");
+console.log("Nine chart ranking permalinks, reload/history, invalid order and source wiring: PASS");
 
 const siteHtml=fs.readFileSync(path.join(root,"index.html"),"utf8");
 assert.match(siteHtml,/id="charts" aria-labelledby="chart-title"/);
 assert.match(siteHtml,/id="share-chart" href="\?metric=fantlab\.dialogue\.share_percent#charts"/);
 assert.match(siteHtml,/id="chart-table-rows"/);
-console.log("Eight source-backed chart permalinks, URL fallback and history: PASS");
+console.log("Nine source-backed chart permalinks, URL fallback and history: PASS");

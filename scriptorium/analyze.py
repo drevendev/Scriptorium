@@ -458,8 +458,14 @@ def _validate_html_artifact(
     """
     if artifact.get("metric_contract_id") != METRIC_CONTRACT_ID:
         raise ValueError("unsupported local metric contract")
-    if set(metrics) != set(METRIC_LABELS):
-        raise ValueError("local HTML requires exactly the current 29 metric IDs")
+    if not set(METRIC_LABELS).issubset(metrics):
+        raise ValueError("local HTML requires all 29 current metric IDs")
+    # HTML has always allowed inspectable future Scriptorium extensions in
+    # "Other"; unrecognized FantLab or unqualified metric IDs cannot masquerade
+    # as validated compatibility rows.
+    if any(type(metric_id) is not str or not metric_id.startswith("scriptorium.")
+           for metric_id in set(metrics) - set(METRIC_LABELS)):
+        raise ValueError("local HTML rejects unregistered metric namespaces")
     for digest_name in ("raw_sha256", "normalized_sha256"):
         digest = source.get(digest_name)
         if (type(digest) is not str or len(digest) != 64

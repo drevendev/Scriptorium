@@ -1,4 +1,6 @@
 import unittest
+from random import Random
+from unittest.mock import patch
 
 from scriptorium.metrics import analyze_deterministic_metrics
 from scriptorium.vocabulary import (
@@ -116,6 +118,54 @@ class VocabularyTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "positive"):
             rolling_unique_dictionary_counts(("a",), 0, dictionary)
+
+    def test_streaming_scalar_matches_materialized_series_for_boundary_windows(self):
+        random = Random(1945)
+        for length in (0, 1, 2, 3, 8, 17, 1000):
+            lexemes = tuple(
+                random.choice(("а", "б", "в", "нет", "проза"))
+                for _ in range(length)
+            )
+            for dictionary in (
+                frozenset(), frozenset({"а", "б"}), frozenset(lexemes)
+            ):
+                for window in (1, 2, 3, 7, 10, 3000):
+                    with self.subTest(
+                        length=length, dictionary_size=len(dictionary),
+                        window_size=window
+                    ):
+                        counts = rolling_unique_dictionary_counts(
+                            lexemes, window, dictionary
+                        )
+                        expected = sum(counts) / len(counts) if counts else None
+                        self.assertEqual(
+                            mean_unique_dictionary_words(
+                                lexemes, window, dictionary
+                            ),
+                            expected,
+                        )
+
+    def test_long_work_mean_does_not_materialize_window_series(self):
+        lexemes = ("а", "б", "а", "нет") * 25000
+        with patch(
+            "scriptorium.vocabulary.rolling_unique_dictionary_counts",
+            side_effect=AssertionError("materialized all windows"),
+        ):
+            self.assertEqual(
+                mean_unique_dictionary_words(
+                    lexemes, 3000, frozenset({"а", "б"})
+                ),
+                2.0,
+            )
+
+    def test_invalid_mean_window_rejected_like_public_series(self):
+        for function in (
+            rolling_unique_dictionary_counts, mean_unique_dictionary_words
+        ):
+            for window in (0, -2):
+                with self.subTest(function=function.__name__, window=window):
+                    with self.assertRaisesRegex(ValueError, "positive"):
+                        function(("а",), window, {"а"})
 
     def test_metric_artifact_records_dictionary_dependency_and_uasz_3000(self):
         text = " ".join(("а", "б") * 1500)

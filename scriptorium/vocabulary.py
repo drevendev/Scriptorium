@@ -9,7 +9,7 @@ compatibility evidence.
 from __future__ import annotations
 
 from collections import Counter
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Iterator, Sequence
 from hashlib import sha256
 import json
 from typing import Final
@@ -66,21 +66,20 @@ def dictionary_lexemes_sha256(dictionary_lexemes: Iterable[str]) -> str:
     return sha256(canonical).hexdigest()
 
 
-def rolling_unique_dictionary_counts(
+def _iter_rolling_unique_dictionary_counts(
     lexemes: Sequence[str],
     window_size: int,
     dictionary_lexemes: frozenset[str] | set[str],
-) -> tuple[int, ...]:
-    """Count unique dictionary lexemes in every complete step-1 window.
+) -> Iterator[int]:
+    """Yield one distinct-dictionary count per complete step-1 window.
 
-    The implementation is O(words): a frequency counter is updated as the
-    one-token-step window advances. Incomplete windows do not contribute.
+    Keeping the counts lazy allows the scalar UASZ mean to use O(window_size)
+    counter space instead of storing O(number_of_windows) observations.
     """
-
     if window_size <= 0:
         raise ValueError("window_size must be positive")
     if len(lexemes) < window_size:
-        return ()
+        return
 
     dictionary = dictionary_lexemes
     counts: Counter[str] = Counter()
@@ -93,7 +92,7 @@ def rolling_unique_dictionary_counts(
             unique_dictionary += 1
         counts[lexeme] += 1
 
-    result = [unique_dictionary]
+    yield unique_dictionary
     for start in range(1, len(lexemes) - window_size + 1):
         outgoing = lexemes[start - 1]
         if outgoing in dictionary:
@@ -108,9 +107,20 @@ def rolling_unique_dictionary_counts(
                 unique_dictionary += 1
             counts[incoming] += 1
 
-        result.append(unique_dictionary)
+        yield unique_dictionary
 
-    return tuple(result)
+
+def rolling_unique_dictionary_counts(
+    lexemes: Sequence[str],
+    window_size: int,
+    dictionary_lexemes: frozenset[str] | set[str],
+) -> tuple[int, ...]:
+    """Materialize complete step-1 window counts for callers needing the series.
+
+    The public series helper intentionally returns a tuple; scalar analysis
+    below avoids materializing this potentially large tuple.
+    """
+    return tuple(_iter_rolling_unique_dictionary_counts(lexemes, window_size, dictionary_lexemes))
 
 
 def mean_unique_dictionary_words(
@@ -118,12 +128,19 @@ def mean_unique_dictionary_words(
     window_size: int,
     dictionary_lexemes: frozenset[str] | set[str],
 ) -> float | None:
-    """Return the arithmetic mean of complete rolling-window counts."""
+    """Return the exact integer-sum mean of complete rolling-window counts.
 
-    counts = rolling_unique_dictionary_counts(lexemes, window_size, dictionary_lexemes)
-    if not counts:
+    Sum integer counts before one final division, preserving the v1 scalar
+    and floating-point result while using bounded counter space.
+    """
+    if window_size <= 0:
+        raise ValueError("window_size must be positive")
+    window_count = len(lexemes) - window_size + 1
+    if window_count <= 0:
         return None
-    return sum(counts) / len(counts)
+    return sum(_iter_rolling_unique_dictionary_counts(
+        lexemes, window_size, dictionary_lexemes
+    )) / window_count
 
 
 def analyze_vocabulary(

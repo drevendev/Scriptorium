@@ -84,6 +84,14 @@ For each N in 3,000 / 10,000 / 100,000, the v1 scalar candidate is:
 4. count unique remaining dictionary lexemes in that window;
 5. return the arithmetic mean across all complete windows.
 
+The scalar UASZ implementation streams each complete-window count into an exact
+integer sum, then performs one final division. This keeps the original v1
+values and profile ID unchanged while avoiding a potentially huge tuple of
+counts for book-length manuscripts. Its counter needs space proportional to
+the current window (at most N distinct lexemes), not the total window count;
+the optional `rolling_unique_dictionary_counts` series API still materializes
+a tuple by design.
+
 A text shorter than N has no complete window and returns `null`. Incomplete tail windows
 do not contribute. The implementation maintains a rolling frequency counter, so each
 window family is O(number of words) rather than rebuilding a set for every position.

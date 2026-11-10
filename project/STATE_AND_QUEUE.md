@@ -1,22 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 477
+STATE_REVISION: 478
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-10
-LAST_RESULT: #486 confirmed merged at caca099088053347fd8cf1530da9fb58212f54f8. New Reader chart distribution summary proposed from the same 11 frozen editions; no metric formulas, source prose, corpus admission or FantLab parity changed.
+LAST_RESULT: #487 confirmed merged at b6e97964f462322608f59319ef029125acc4df68. Prepared streaming UASZ mean for book-length dictionary analysis with frozen numeric semantics; no new books or FantLab parity claims.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M2 0/5; M3 open. No new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-CHART-DISTRIBUTION-v1
-ISSUE: #283 (focused chart interpretation slice)
+UNIT_ID: SCRIP-VOCAB-STREAMING-UASZ-v1
+ISSUE: Existing inferred vocabulary profile; focused performance/reproducibility regression
 STATUS: PR_AUTHORED_IN_THIS_RUN; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-reader-chart-range-median-20261110
-BASE: caca099088053347fd8cf1530da9fb58212f54f8
+BRANCH: scrip-vocabulary-streaming-uasz-20261110
+BASE: b6e97964f462322608f59319ef029125acc4df68
 
-ACCEPTANCE: All nine existing charts present source-bound minimum, median and maximum for available measured editions, with explicit sample-only interpretation. Missing values never become zeros; even/odd sample sizes and all-missing state are deterministic; default no-JavaScript summary is pinned to actual dialogue observations. Exact-head tests/Pages build and later independent PR acceptance required; live visual verification separate.
+ACCEPTANCE: Dictionary-dependent UASZ scalar window means stream over book-length token series without retaining all window values. Existing public rolling-series API and exact v1 numeric results, null/zero semantics, fixed profile version and all artifacts remain unchanged. Positive/negative regression tests, exact-head CI and later-run acceptance required.
 
-Verification: source-derived static fallback and real 11-book JavaScript metric summary contracts added; complete exact-head CI and visual browser acceptance NOT_RUN before PR checks.
+Verification: deterministic standalone 3-case prototype PASS (randomized window/length/dictionary oracle, long input, invalid size); exact repository CI NOT_RUN before PR checks.
 
 ## Next user-visible milestone and compact queue
 
@@ -24,7 +24,7 @@ Milestone: ship safely shareable real-book comparisons and expand independently 
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 chart distribution summary (current focused PR) | Minimum/median/maximum on nine charts; missing/zero/even/all-missing tests, static fallback and later-run merge | Existing measured editions; no new source text |
+| P1 | Streaming UASZ means for book-length analysis (current PR) | Exact scalar equivalence, no materialized full-window tuple, edge/invalid-window tests; later-run merge | Existing inferred vocabulary profile, no source/body changes |
 | P2 | New independent >=300k source-bound author editions | Rights, distinct author/translator/edition, reproducible measurements and held-out tests | Clear legal source and pin; do not tune the existing four-book pilot |
 | P3 | #282 AOT N ambiguity and source-matched FantLab witness | Native pinned evidence, exact metric deltas, edition/input identity | Pinned morphology, FantLab input identity UNKNOWN; M2 0/5 |
 | P4 | #285 live Reader / #283 mobile, keyboard, print | HTTP verification, desktop/mobile screenshots and tested controls | Browser availability; independent source work permitted |

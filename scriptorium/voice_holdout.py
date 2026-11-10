@@ -1,9 +1,8 @@
-"""Exploratory leave-one-book-out stress test for the four pinned Russian editions.
+"""Source-bound leave-one-book-out rhythm stress tests (four or six editions).
 
-This tests *whether the four selected works distinguish the two authors under
-one documented distance rule*. It is not an author classifier, external
-validation, confidence interval, FantLab parity, or an accepted M3 profile.
-No literary text is loaded; the input is the strictly source-bound v1 preview.
+These are exploratory in-sample diagnostics, not an author classifier, external
+validation, confidence interval, FantLab parity or an accepted M3 profile.
+No literary text is loaded; v1 remains a separate frozen four-work contract.
 """
 from __future__ import annotations
 
@@ -14,6 +13,7 @@ import re
 from . import voice_profile as source
 
 VERSION = "scriptorium-author-rhythm-holdout-v1"
+EXTENDED_VERSION = "scriptorium-author-rhythm-holdout-v2"
 
 
 def _finite(value: object) -> float:
@@ -23,14 +23,17 @@ def _finite(value: object) -> float:
 
 
 def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
-    """Rebuild each author's centroid without the evaluated book (four folds).
+    """Rebuild each author's centroid without the evaluated book (four or six folds).
 
     Relative distance per feature is 2*abs(x-centroid)/(x+centroid), or 0
     if both are zero. The eight distances are equally weighted; the feature
     scale is not fitted using the held-out book. No held-out work contributes
     to either training centroid or to the feature weighting.
     """
-    if (not isinstance(preview, dict) or preview.get("schema_version") != source.VERSION
+    expanded = isinstance(preview, dict) and preview.get("schema_version") == source.EXTENDED_VERSION
+    selected_authors = source.AUTHORS + (source._DOSTOEVSKY_AUTHOR,) if expanded else source.AUTHORS
+    if (not isinstance(preview, dict)
+            or preview.get("schema_version") not in (source.VERSION, source.EXTENDED_VERSION)
             or preview.get("language") != "ru"
             or preview.get("source_snapshot") != "assets/evidence-snapshot.json"
             or not isinstance(preview.get("source_snapshot_git_blob_sha1"), str)
@@ -45,11 +48,11 @@ def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
             or boundary.get("source_text_committed") is not False):
         raise ValueError("scientific boundary is not admissible for exploratory holdout")
     authors = preview.get("authors")
-    if not isinstance(authors, list) or len(authors) != len(source.AUTHORS):
-        raise ValueError("four pinned author observations required")
+    if not isinstance(authors, list) or len(authors) != len(selected_authors):
+        raise ValueError("incomplete pinned author observations")
     ids = [feature[0] for feature in source.FEATURES]
     observed = []
-    for author, expected in zip(authors, source.AUTHORS):
+    for author, expected in zip(authors, selected_authors):
         author_id, display_name, work_keys = expected
         if (not isinstance(author, dict) or author.get("author_id") != author_id
                 or author.get("display_name") != display_name or author.get("work_count") != 2):
@@ -71,6 +74,9 @@ def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
             for row in rows:
                 values_by_work[row["work_key"]][metric_id] = _finite(row.get("value"))
         for work in works:
+            if not isinstance(work, dict):
+                raise ValueError("invalid pinned book")
+            pins = source._PINS if work.get("key") in source._PINS else source._DOSTOEVSKY_PINS
             if (not isinstance(work, dict) or type(work.get("word_weight")) is not int
                     or work["word_weight"] <= 0
                     or type(work.get("characters_including_spaces")) is not int
@@ -78,9 +84,9 @@ def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
                     or work["word_weight"] > work["characters_including_spaces"]
                     or not isinstance(work.get("source_sha256"), str)
                     or not re.fullmatch(r"[a-f0-9]{64}", work["source_sha256"])
-                    or work["source_sha256"] != source._PINS[work["key"]][2]
-                    or work.get("edition_id") != source._PINS[work["key"]][1]
-                    or work["characters_including_spaces"] != source._PINS[work["key"]][3]
+                    or work["source_sha256"] != pins[work["key"]][2]
+                    or work.get("edition_id") != pins[work["key"]][1]
+                    or work["characters_including_spaces"] != pins[work["key"]][3]
                     or not isinstance(work.get("title"), str) or not work["title"]):
                 raise ValueError("invalid pinned book")
             observed.append({
@@ -89,17 +95,19 @@ def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
                 "source_sha256": work["source_sha256"],
                 "values": values_by_work[work["key"]],
             })
-    if len({w["source_sha256"] for w in observed}) != 4:
+    if len({w["source_sha256"] for w in observed}) != 2 * len(selected_authors):
         raise ValueError("duplicate source bodies in holdout")
     fold_results = []
-    author_ids = [a[0] for a in source.AUTHORS]
+    author_ids = [a[0] for a in selected_authors]
     for held_out in observed:
         training = {
             author_id: [w for w in observed
                         if w["author_id"] == author_id and w["key"] != held_out["key"]]
             for author_id in author_ids
         }
-        if sorted(len(v) for v in training.values()) != [1, 2]:
+        if (len(training[held_out["author_id"]]) != 1
+                or any(len(training[aid]) != 2 for aid in author_ids
+                       if aid != held_out["author_id"])):
             raise ValueError("invalid training fold partition")
         raw_distances = {}
         for author_id in author_ids:
@@ -115,10 +123,9 @@ def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
                     0.0 if denominator == 0 else 2.0 * abs(value - centroid) / denominator
                 )
             raw_distances[author_id] = fsum(relative_errors) / len(ids)
-        if abs(raw_distances[author_ids[0]] - raw_distances[author_ids[1]]) < 1e-12:
-            closer = None
-        else:
-            closer = min(author_ids, key=lambda item: raw_distances[item])
+        best = min(raw_distances.values())
+        winners = [aid for aid in author_ids if abs(raw_distances[aid] - best) < 1e-12]
+        closer = winners[0] if len(winners) == 1 else None
         fold_results.append({
             "held_out_work_key": held_out["key"],
             "held_out_work_title": held_out["title"],
@@ -131,37 +138,111 @@ def build_holdout(preview: Mapping[str, object]) -> dict[str, object]:
                                         else closer == held_out["author_id"],
         })
     return {
-        "schema_version": VERSION,
-        "source_preview_version": source.VERSION,
+        "schema_version": EXTENDED_VERSION if expanded else VERSION,
+        "source_preview_version": source.EXTENDED_VERSION if expanded else source.VERSION,
         "source_snapshot_git_blob_sha1": preview["source_snapshot_git_blob_sha1"],
         "method": {
-            "folds": 4,
-            "training": "exclude_held_out_work_from_both_word_weighted_author_centroids",
+            "folds": len(observed),
+            "training": ("exclude_held_out_work_from_all_word_weighted_author_centroids"
+                         if expanded else "exclude_held_out_work_from_both_word_weighted_author_centroids"),
             "features": ids,
             "feature_distance": "2*abs(observed-centroid)/(observed+centroid); zero_if_both_zero",
             "aggregation": "arithmetic_mean_of_eight_equal_weight_feature_distances",
             "tie_threshold": 1e-12,
-            "train_works_per_fold": [1, 2],
+            "train_works_per_fold": [1, 2, 2] if expanded else [1, 2],
             "distance_is_not_probability": True,
         },
         "summary": {
-            "total_folds": 4,
+            "total_folds": len(observed),
             "nearer_to_labelled_author": sum(f["nearer_to_labelled_author"] is True for f in fold_results),
             "nearer_to_other_author": sum(f["nearer_to_labelled_author"] is False for f in fold_results),
             "ties": sum(f["nearer_to_labelled_author"] is None for f in fold_results),
         },
         "scientific_boundary": {
-            "class": "exploratory_four_work_within_sample_stress_test",
+            "class": ("exploratory_six_work_three_author_within_sample_stress_test"
+                      if expanded else "exploratory_four_work_within_sample_stress_test"),
             "independent_external_validation": False,
             "m2_source_matched": 0, "m3_accepted": False,
-            "works_per_author": 2, "only_two_authors": True,
+            "works_per_author": 2, "only_two_authors": not expanded,
             "no_fantlab_parity_claim": True, "no_source_text_committed": True,
         },
         "folds": fold_results,
     }
 
 
+
+def _render_extended_markdown(result: Mapping[str, object]) -> str:
+    """Six source-bound, exploratory folds; keep the existing v1 prose intact."""
+    boundary = result.get("scientific_boundary")
+    authors = source.AUTHORS + (source._DOSTOEVSKY_AUTHOR,)
+    author_ids = [aid for aid, _, _ in authors]
+    if (result.get("source_preview_version") != source.EXTENDED_VERSION
+            or not isinstance(boundary, dict)
+            or boundary.get("class") != "exploratory_six_work_three_author_within_sample_stress_test"
+            or boundary.get("m3_accepted") is not False
+            or boundary.get("m2_source_matched") != 0
+            or boundary.get("independent_external_validation") is not False
+            or boundary.get("no_source_text_committed") is not True
+            or boundary.get("no_fantlab_parity_claim") is not True):
+        raise ValueError("unverified three-author holdout boundary")
+    folds, summary = result.get("folds"), result.get("summary")
+    if (not isinstance(folds, list) or len(folds) != 6
+            or not isinstance(summary, dict) or summary.get("total_folds") != 6):
+        raise ValueError("missing six-fold holdout evidence")
+    names = {aid: name for aid, name, _ in authors}
+    lines = [
+        "# Scriptorium — шесть проверок авторского ритма (исследовательский эксперимент)",
+        "",
+        "> По две заранее выбранные измеренные русские книги каждого из трёх авторов. "
+        "Это внутренняя стресс-проверка, а не классификатор, независимая внешняя валидация, "
+        "доверительный интервал или соответствие FantLab. M2: 0/5; M3: открыт.",
+        "",
+        "В каждом из шести прогонов исключаем проверяемую книгу из обучающих центров "
+        "всех трёх авторов (1 оставшаяся книга своего автора, 2 книги каждого другого). "
+        "Расстояния — средние восьми равновесных безразмерных величин: "
+        "2 × |значение − центр| / (значение + центр), оба нуля → 0. "
+        "Меньше — ближе, но это не вероятность и не оценка устойчивости авторства.",
+        "",
+        "| Исключённая книга | Известный автор | До Грина | До Толстого | До Достоевского | Ближе к |",
+        "| --- | --- | ---: | ---: | ---: | --- |",
+    ]
+    for fold in folds:
+        known, closest = fold.get("known_author_id"), fold.get("nearest_author_id")
+        if known not in names or (closest is not None and closest not in names):
+            raise ValueError("unknown author in holdout report")
+        distances = fold.get("relative_distances")
+        if not isinstance(distances, dict) or set(distances) != set(author_ids):
+            raise ValueError("incomplete holdout distances")
+        values = [_finite(distances[aid]) for aid in author_ids]
+        lines.append(
+            "| " + source._markdown_cell(fold.get("held_out_work_title"))
+            + " | " + source._markdown_cell(names[known])
+            + " | " + " | ".join(f"{value:.6f}" for value in values)
+            + " | " + (source._markdown_cell(names[closest]) if closest is not None else "равенство")
+            + " |"
+        )
+    correct = summary.get("nearer_to_labelled_author")
+    other = summary.get("nearer_to_other_author")
+    ties = summary.get("ties")
+    if (any(type(v) is not int or v < 0 for v in (correct, other, ties))
+            or correct + other + ties != 6):
+        raise ValueError("invalid holdout summary")
+    lines += [
+        "",
+        f"**Ближе к известному автору: {correct} из 6; "
+        f"к другому: {other}; ничьи: {ties}.**",
+        "",
+        "Маленькая заранее выбранная выборка (по две книги на автора) не даёт "
+        "оценки обобщения на новые произведения или переводчиков. Нельзя "
+        "выбирать признаки по этим шести же книгам и затем называть результат "
+        "независимой проверкой. M3 остаётся открыт; исходные тексты не читаются.",
+        "",
+    ]
+    return "\n".join(lines)
+
 def render_markdown(result: Mapping[str, object]) -> str:
+    if result.get("schema_version") == EXTENDED_VERSION:
+        return _render_extended_markdown(result)
     if (result.get("schema_version") != VERSION
             or result.get("scientific_boundary", {}).get("m3_accepted") is not False
             or result.get("scientific_boundary", {}).get("independent_external_validation") is not False):

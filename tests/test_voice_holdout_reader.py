@@ -67,14 +67,13 @@ class HoldoutReaderTests(unittest.TestCase):
         self.assertIn("](https://drevendev.github.io/Scriptorium/voice/)", readme)
         self.assertIn("](https://drevendev.github.io/Scriptorium/voice/#holdout)", readme)
 
-    def test_stale_or_forged_evidence_cannot_match_published_distances(self):
+    def test_stale_or_forged_evidence_is_rejected_before_published_distances(self):
         corrupt = deepcopy(self.preview)
         corrupt["authors"][0]["metrics"][0]["per_work"][0]["value"] += 3
-        changed = voice_holdout.build_holdout(corrupt)
-        self.assertNotEqual(changed["folds"][0]["relative_distances"],
-                            self.holdout["folds"][0]["relative_distances"])
-        self.assertNotIn(f'{changed["folds"][0]["relative_distances"]["grin"]:.6f}',
-                         self.html.split('data-holdout-card="waves"')[1].split('</li>', 1)[0])
+        # Source-preview aggregates no longer agree with the changed observation.
+        # Fail closed before allowing any plausible public holdout distances.
+        with self.assertRaisesRegex(ValueError, "inconsistent source-bound author aggregate"):
+            voice_holdout.build_holdout(corrupt)
         corrupt = deepcopy(self.preview)
         corrupt["scientific_boundary"]["m3_accepted"] = True
         with self.assertRaises(ValueError):

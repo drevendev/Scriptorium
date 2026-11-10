@@ -405,3 +405,12 @@ footer a { color:#ffdaa3; }
 @media print { .neighbor-panel,.neighbor-panel li { background:#fff !important;
   color:#000 !important; border-color:#555 !important; break-inside:avoid; }
   .neighbor-panel li small,.neighbor-panel #neighbor-status { color:#000 !important; } }
+
+/* The voice page uses pale table headers; do not inherit global white text. */
+.voice-wrap .scroll-table thead th { color:var(--ink); }
+.voice-wrap .scroll-table:focus-visible, .voice-wrap summary:focus-visible {
+  outline:3px solid var(--green-deep); outline-offset:3px;
+}
+@media(forced-colors:active) {
+  .voice-wrap .scroll-table:focus-visible, .voice-wrap summary:focus-visible { outline-color:Highlight; }
+}

@@ -97,6 +97,12 @@ jobs:
           set -euo pipefail
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/reader-venv/bin/python" -I "$GITHUB_WORKSPACE/tools/private_epub_smoke.py" "$GITHUB_WORKSPACE"
+      - name: Verify EPUB rejection and encoding boundaries in installed wheel
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/reader-venv/bin/python" -I "$GITHUB_WORKSPACE/tests/test_epub_boundaries.py" -v
       - name: Verify installed source-free gallery and deterministic output
         shell: bash
         run: |

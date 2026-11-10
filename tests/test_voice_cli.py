@@ -156,11 +156,15 @@ class InstalledVoiceCliTests(unittest.TestCase):
             self.assertEqual(cli.main(["voice", "--include-dostoevsky",
                                        "--format", "markdown"]), 0)
         self.assertIn("Фёдор Достоевский", out.getvalue())
-        for mode in ("--holdout", "--ablate"):
-            with self.subTest(mode=mode):
-                with redirect_stderr(StringIO()), self.assertRaises(SystemExit) as ex:
-                    cli.main(["voice", "--include-dostoevsky", mode])
-                self.assertEqual(ex.exception.code, 2)
+        with redirect_stdout(holdout := StringIO()):
+            self.assertEqual(cli.main(["voice", "--include-dostoevsky",
+                                       "--holdout"]), 0)
+        expanded = json.loads(holdout.getvalue())
+        self.assertEqual(expanded["schema_version"], "scriptorium-author-rhythm-holdout-v2")
+        self.assertEqual(expanded["summary"]["nearer_to_labelled_author"], 2)
+        with redirect_stderr(StringIO()), self.assertRaises(SystemExit) as ex:
+            cli.main(["voice", "--include-dostoevsky", "--ablate"])
+        self.assertEqual(ex.exception.code, 2)
 
 
 if __name__ == "__main__":

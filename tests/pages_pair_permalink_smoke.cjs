@@ -30,7 +30,7 @@ const el=id=>{
 };
 let renders=0;
 const routes=new Function("window","getBook","leftSelect","rightSelect","pairMetric","updatePair","el","pairSwapButton","pairCopyButton",
-  source.slice(start,end)+"\nreturn {pairMetricFromUrl,pairFromUrl,selectPair,swapPair};"
+  "let pairCopyAttempt=0;\n"+source.slice(start,end)+"\nreturn {pairMetricFromUrl,pairFromUrl,selectPair,swapPair};"
 )(window,getBook,l,r,pairMetric,()=>{renders++;},el,swap,pairCopyButton);
 assert.deepEqual(routes.pairFromUrl(),["waves","beketova"]);
 assert.equal(routes.pairMetricFromUrl(),"fantlab.dialogue.share_percent");

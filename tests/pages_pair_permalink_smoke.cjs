@@ -22,11 +22,16 @@ const pairMetric={value:"fantlab.dialogue.share_percent",options:[
   "fantlab.punctuation.comma.per_1000_words","fantlab.punctuation.dash.per_1000_words",
   "fantlab.general.mean_word_length_chars"].map(value=>({value}))};
 const share={hidden:false,href:"",textContent:"",removeAttribute(k){assert.equal(k,"href");this.href="";}};
-const el=id=>{assert.equal(id,"share-pair");return share;};
+const pairCopyButton={disabled:true};
+const copyFeedback={textContent:""};
+const el=id=>{
+  assert.ok(["share-pair","copy-pair-feedback"].includes(id),id);
+  return id==="share-pair"?share:copyFeedback;
+};
 let renders=0;
-const routes=new Function("window","getBook","leftSelect","rightSelect","pairMetric","updatePair","el","pairSwapButton",
+const routes=new Function("window","getBook","leftSelect","rightSelect","pairMetric","updatePair","el","pairSwapButton","pairCopyButton",
   source.slice(start,end)+"\nreturn {pairMetricFromUrl,pairFromUrl,selectPair,swapPair};"
-)(window,getBook,l,r,pairMetric,()=>{renders++;},el,swap);
+)(window,getBook,l,r,pairMetric,()=>{renders++;},el,swap,pairCopyButton);
 assert.deepEqual(routes.pairFromUrl(),["waves","beketova"]);
 assert.equal(routes.pairMetricFromUrl(),"fantlab.dialogue.share_percent");
 routes.selectPair(...routes.pairFromUrl());
@@ -70,6 +75,7 @@ assert.equal(renders,before);
 assert.equal(window.history.pushes.length,1);
 routes.selectPair("anna","anna",true);
 assert.equal(share.hidden,true);
+assert.equal(pairCopyButton.disabled,true);
 assert.equal(share.href,"");
 assert.equal(window.history.pushes.length,1);
 window.location=new URL("https://drevendev.github.io/Scriptorium/?left=karamazov&right=hyperboloid#pairs");
@@ -79,6 +85,7 @@ assert.equal(r.value,"hyperboloid");
 assert.equal(window.history.pushes.length,1);
 assert.equal(share.hidden,false);
 assert.equal(swap.disabled,false);
+assert.equal(pairCopyButton.disabled,false);
 window.location=new URL("https://drevendev.github.io/Scriptorium/?book=silver&left=karamazov&right=hyperboloid&pair_metric=fantlab.punctuation.comma.per_1000_words#pairs");
 pairMetric.value="fantlab.punctuation.comma.per_1000_words";
 routes.selectPair(...routes.pairFromUrl());

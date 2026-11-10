@@ -175,6 +175,51 @@ class SixBookHoldoutTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             voice_holdout.build_holdout(invalid)
 
+    def test_rejects_inconsistent_aggregate_evidence_for_both_versions(self):
+        """The holdout must not ignore changed source-preview declarations."""
+        raw = SOURCE.read_bytes()
+        snapshot = json.loads(raw)
+        for expanded, expected_correct in ((False, 1), (True, 2)):
+            with self.subTest(expanded=expanded):
+                preview = voice_profile.build_preview(
+                    snapshot, source_blob_sha1=voice_profile._git_blob_sha(raw),
+                    include_dostoevsky=expanded,
+                )
+                self.assertEqual(
+                    voice_holdout.build_holdout(preview)["summary"]["nearer_to_labelled_author"],
+                    expected_correct,
+                )
+                for corruption in (
+                    "changed_total", "bool_total",
+                    "changed_mean", "bool_mean", "missing_mean",
+                    "changed_deviation", "nan_deviation", "negative_deviation",
+                    "changed_profile",
+                ):
+                    with self.subTest(expanded=expanded, corruption=corruption):
+                        tampered = deepcopy(preview)
+                        author = tampered["authors"][0]
+                        metric = author["metrics"][0]
+                        if corruption == "changed_total":
+                            author["word_weight_total"] += 1
+                        elif corruption == "bool_total":
+                            author["word_weight_total"] = True
+                        elif corruption == "changed_mean":
+                            metric["weighted_mean"] += .000001
+                        elif corruption == "bool_mean":
+                            metric["weighted_mean"] = False
+                        elif corruption == "missing_mean":
+                            del metric["weighted_mean"]
+                        elif corruption == "changed_deviation":
+                            metric["weighted_population_stddev"] += .000001
+                        elif corruption == "nan_deviation":
+                            metric["weighted_population_stddev"] = float("nan")
+                        elif corruption == "negative_deviation":
+                            metric["weighted_population_stddev"] = -1
+                        else:
+                            tampered["source_metric_profiles"]["vocabulary"] = "unverified"
+                        with self.assertRaises(ValueError):
+                            voice_holdout.build_holdout(tampered)
+
     def test_cli_six_fold_roundtrip_and_v1_preservation(self):
         result = voice_holdout.build_holdout(self.preview)
         output = StringIO()

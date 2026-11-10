@@ -1,22 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 475
+STATE_REVISION: 476
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-10
-LAST_RESULT: #483 merged at 3699bb2921542ab9edbf051b472de7274302be89. New independent local HTML evidence-contract fix is scoped to #484; no core metric formula or corpus data change.
+LAST_RESULT: #485 merged into master at 668787d89007c7b8718bc1042ad7524b89c962f7. #486 proposes a ninth measured Reader chart (questions per 1,000 words); no analyzer formula, source text, corpus admission or FantLab parity change.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M2 0/5; M3 open. No new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-LOCAL-HTML-EVIDENCE-CONTRACT-v1
-ISSUE: #484
-STATUS: PR_OPEN #485; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-local-html-evidence-contract-20261110
-BASE: 3699bb2921542ab9edbf051b472de7274302be89
+UNIT_ID: SCRIP-READER-QUESTION-CHART-v1
+ISSUE: #283 (focused chart slice)
+STATUS: PR_OPEN #486; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-reader-question-chart-20261110
+BASE: 668787d89007c7b8718bc1042ad7524b89c962f7
 
-ACCEPTANCE: Local offline HTML reports reject absent/extra metric IDs, malformed provenance and contradictory source/metric/threshold counts, invalid profiles/dependencies, unsupported evidence or invalid raw values. Valid 29-metric inferred/extension and missing-data renders remain deterministic and source-free. Python regression tests and exact-head CI required; later-run merge and live Pages acceptance are separate.
+ACCEPTANCE: Nine allow-listed Russian Reader charts include source-bound question-mark frequency per 1,000 words across all 11 measured editions. Chart selection, ranking, exact table, accessible control, link/clipboard, CSV and missing-data behavior remain consistent and deterministic; existing no-JavaScript chart stays available. Scientific status remains diagnostic only. Require exact-head CI, later-run acceptance and separate live Pages verification.
 
-Verification: first 1357-test CI suite exposed three existing HTML extension/precision expectations; repaired the current PR, preserving safe namespaced extension rendering and exact unrelated numeric fidelity. Fresh exact-head CI pending; local suite NOT_RUN.
+Verification: feature-branch structural source/HTML/metric-registry and 11-observation checks PASS. Python/Node suite, Pages build and visual browser checks NOT_RUN before exact-head CI.
 
 ## Next user-visible milestone and compact queue
 
@@ -24,7 +24,7 @@ Milestone: ship safely shareable real-book comparisons and expand independently 
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #484 fail-closed local HTML report evidence | 29-row and provenance integrity, negative regressions, CI and later-run acceptance | Focused report PR |
+| P1 | #486 ninth measured Reader chart (questions) | Exact pinned data, full regression CI, later-run acceptance/merge and separate live check | Focused #283 presentation PR |
 | P2 | New independent >=300k source-bound author editions | Rights, distinct author/translator/edition, reproducible measurements and held-out tests | Clear legal source and pin; do not tune the existing four-book pilot |
 | P3 | #282 AOT N ambiguity and source-matched FantLab witness | Native pinned evidence, exact metric deltas, edition/input identity | Pinned morphology, FantLab input identity UNKNOWN; M2 0/5 |
 | P4 | #285 live Reader / #283 mobile, keyboard, print | HTTP verification, desktop/mobile screenshots and tested controls | Browser availability; independent source work permitted |

@@ -10,7 +10,8 @@ LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M
 
 UNIT_ID: SCRIP-READER-PAIR-LINK-COPY-v1
 ISSUE: #283 (focused public-reader usability)
-STATUS: PR_CANDIDATE; LATER_ACCEPTANCE_REQUIRED
+STATUS: PR_OPEN; LATER_ACCEPTANCE_REQUIRED
+PR: #482
 BRANCH: scrip-reader-pair-permalink-copy
 BASE: ff313efb9fb8fc86bb0f5d4437c3fdfd859e1b61
 

@@ -12,7 +12,7 @@
 | --- | --- |
 | **11 measured Russian-language editions** | 13 catalogue cards; 2 research leads are explicitly **not analyzed** |
 | **298 recorded metric fields** | 249 numeric observations; 49 unavailable / NOT_RUN — never converted to zero |
-| **8 interactive charts** | Exact-value accessible tables, labels, units, chart links, CSV exports |
+| **9 interactive charts** | Dialogue, sentence rhythm and punctuation (including questions per 1,000 words); exact-value accessible tables, labels, units, chart links and CSV exports. Question marks are descriptive, not a validated author fingerprint. |
 | **Book and pair comparisons** | Author/translator attribution, edition hashes, signed **descriptive** chart/table deltas (right minus left; percentage points for percents; nonzero differences below 0.001 visibly bounded instead of rounded to zero), an exact nine-metric no-JavaScript pair-table fallback plus three measured punctuation mini-charts, all 28 Anna Karenina metrics without JavaScript (23 measured, 5 unavailable), accessible tables and exact-value exports |
 
 The catalogue can order all 13 edition cards by Russian title, **measured dialogue share**, or **measured normalized-text length in characters including spaces** (both descending, with missing measurements and unmeasured leads last). Zero is distinct from unavailable; length is not a quality or FantLab parity score. It reorders real page elements so keyboard navigation follows the visual order; without JavaScript the original source-backed catalogue remains readable. Shared catalogue search links preserve the selected sort order through the allow-listed `catalog_order=title|dialogue|length` parameter; invalid values fall back to the original order.

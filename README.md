@@ -55,6 +55,8 @@ The report prints individual book values, word-count-weighted author means and *
 
 **[Inspect all eight feature-removal results in the public Reader](https://drevendev.github.io/Scriptorium/voice/#sensitivity)** — accessible counts/diagrams, pinned evidence, reproducibility commands and the warning against selecting features on these same four books. The table does not claim external validation, reliability or FantLab parity.
 
+**Optional third author, versioned source-backed CLI preview:** `scriptorium voice --include-dostoevsky --format markdown` adds **Fyodor Dostoevsky** from two previously measured, separately pinned Russian editions: *The Brothers Karamazov* (1,810,351 characters) and *Humiliated and Insulted* (713,925 characters). The distinct v2 JSON contains three authors and six source-bound works with eight descriptive metrics, book-weighted means and between-book dispersion per author. Generate a reproducible private offline report with `scriptorium voice --include-dostoevsky --format json --output three-authors.json`, and verify with `scriptorium voice --include-dostoevsky --check three-authors.json`. The default v1, public four-book Reader preview, 1/4 holdout and ablation experiments remain **unchanged**; the optional third author is not retrospective external validation of those original experiments. Two books per author cannot establish a reliable fingerprint: **M2 0/5, M3 open**. No manuscripts are fetched or exported.
+
 ### Analyze your own writing in two commands
 
 Python **3.13+**; run from a checkout (no account, telemetry, manuscript upload or runtime API required):

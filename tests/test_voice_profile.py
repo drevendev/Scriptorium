@@ -171,6 +171,58 @@ class AuthorRhythmPreviewTests(unittest.TestCase):
         self.assertEqual(voice.main([
             "--snapshot", str(SNAPSHOT), "--check", str(DERIVED)]), 0)
 
+    def test_optional_dostoevsky_pair_is_independent_and_source_bound(self):
+        expanded = voice.build_preview(self.input, source_blob_sha1=self.git_sha,
+                                       include_dostoevsky=True)
+        self.assertEqual(expanded["schema_version"], voice.EXTENDED_VERSION)
+        self.assertEqual(self.build(), self.retained)
+        self.assertEqual([a["author_id"] for a in expanded["authors"]],
+                         ["grin", "tolstoy", "dostoevsky"])
+        author = expanded["authors"][-1]
+        self.assertEqual([w["key"] for w in author["works"]],
+                         ["karamazov", "humiliated"])
+        self.assertEqual([w["characters_including_spaces"] for w in author["works"]],
+                         [1810351, 713925])
+        self.assertEqual(author["word_weight_total"], 292095 + 118157)
+        self.assertEqual(len(author["metrics"]), 8)
+        indexed = {book["key"]: book for book in self.input["books"]}
+        for metric in author["metrics"]:
+            source_values = [next(row["actual"] for row in indexed[obs["work_key"]]["metrics"]
+                                  if row["id"] == metric["id"]) for obs in metric["per_work"]]
+            self.assertEqual([row["value"] for row in metric["per_work"]], source_values)
+            expected = (292095 * source_values[0] + 118157 * source_values[1]) / 410252
+            self.assertAlmostEqual(metric["weighted_mean"], expected, places=6)
+        self.assertEqual(expanded["scientific_boundary"], self.retained["scientific_boundary"])
+        self.assertIn("ритм трёх авторов", voice.render_markdown(expanded))
+        self.assertIn("Униженные и оскорбленные", voice.render_markdown(expanded))
+
+    def test_optional_dostoevsky_pair_fails_closed(self):
+        keys = {book["key"]: i for i, book in enumerate(self.input["books"])}
+        cases = (
+            ("karamazov", lambda b: b.__setitem__("source_sha256", "0" * 64)),
+            ("humiliated", lambda b: b.__setitem__("edition_id", "unidentified")),
+            ("humiliated", lambda b: b.__setitem__("translator", {"name": "fake"})),
+            ("karamazov", lambda b: next(m for m in b["metrics"]
+              if m["id"] == "fantlab.dialogue.share_percent").__setitem__("status", "not_run")),
+        )
+        for key, change in cases:
+            with self.subTest(key=key, mutation=repr(change)):
+                modified = deepcopy(self.input)
+                change(modified["books"][keys[key]])
+                with self.assertRaises(ValueError):
+                    voice.build_preview(modified, source_blob_sha1=self.git_sha,
+                                        include_dostoevsky=True)
+        missing = deepcopy(self.input)
+        missing["books"] = [b for b in missing["books"] if b["key"] != "humiliated"]
+        with self.assertRaisesRegex(ValueError, "incomplete frozen"):
+            voice.build_preview(missing, source_blob_sha1=self.git_sha,
+                                include_dostoevsky=True)
+        self.assertEqual(voice.build_preview(missing, source_blob_sha1=self.git_sha),
+                         self.retained)
+        with self.assertRaises(ValueError):
+            voice.build_preview(self.input, source_blob_sha1=self.git_sha,
+                                include_dostoevsky="yes")
+
 
 if __name__ == "__main__":
     unittest.main()

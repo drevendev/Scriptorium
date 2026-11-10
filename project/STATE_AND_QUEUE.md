@@ -1,22 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 478
+STATE_REVISION: 479
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-10
-LAST_RESULT: #487 confirmed merged at b6e97964f462322608f59319ef029125acc4df68. Prepared streaming UASZ mean for book-length dictionary analysis with frozen numeric semantics; no new books or FantLab parity claims.
+LAST_RESULT: #488 merged at 21a891e848eb59cbcfbd52238ea5b88fc3889019. Authored opt-in third-author Dostoevsky preview using two existing measured Russian books; v1 four-book holdout unchanged.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M2 0/5; M3 open. No new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-VOCAB-STREAMING-UASZ-v1
-ISSUE: Existing inferred vocabulary profile; focused performance/reproducibility regression
+UNIT_ID: SCRIP-VOICE-THIRD-AUTHOR-v2
+ISSUE: Optional source-bound comparison; existing eleven measured corpus works unchanged
 STATUS: PR_AUTHORED_IN_THIS_RUN; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-vocabulary-streaming-uasz-20261110
-BASE: b6e97964f462322608f59319ef029125acc4df68
+BRANCH: scrip-voice-third-author-dostoevsky-20261110
+BASE: 21a891e848eb59cbcfbd52238ea5b88fc3889019
 
-ACCEPTANCE: Dictionary-dependent UASZ scalar window means stream over book-length token series without retaining all window values. Existing public rolling-series API and exact v1 numeric results, null/zero semantics, fixed profile version and all artifacts remain unchanged. Positive/negative regression tests, exact-head CI and later-run acceptance required.
+ACCEPTANCE: Opt-in v2 adds two existing >=300k exact-pinned Dostoevsky editions and computes the original eight descriptive weighted metrics. Reject missing/change/translator/POS evidence. Default v1 artifact, public Reader, holdout and ablation remain unchanged. Fresh exact-head checks and later independent acceptance required; no scientific milestone promotion.
 
-Verification: deterministic standalone 3-case prototype PASS (randomized window/length/dictionary oracle, long input, invalid size); exact repository CI NOT_RUN before PR checks.
+Verification: code and positive/negative tests authored; CI NOT_RUN before PR.
 
 ## Next user-visible milestone and compact queue
 
@@ -24,7 +24,7 @@ Milestone: ship safely shareable real-book comparisons and expand independently 
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Streaming UASZ means for book-length analysis (current PR) | Exact scalar equivalence, no materialized full-window tuple, edge/invalid-window tests; later-run merge | Existing inferred vocabulary profile, no source/body changes |
+| P1 | Opt-in third-author Dostoevsky preview v2 (current PR) | Two exact-pinned source-bound measured works; v1/holdout unchanged; later-run merge | Existing frozen derived measurements; no new corpus admission |
 | P2 | New independent >=300k source-bound author editions | Rights, distinct author/translator/edition, reproducible measurements and held-out tests | Clear legal source and pin; do not tune the existing four-book pilot |
 | P3 | #282 AOT N ambiguity and source-matched FantLab witness | Native pinned evidence, exact metric deltas, edition/input identity | Pinned morphology, FantLab input identity UNKNOWN; M2 0/5 |
 | P4 | #285 live Reader / #283 mobile, keyboard, print | HTTP verification, desktop/mobile screenshots and tested controls | Browser availability; independent source work permitted |

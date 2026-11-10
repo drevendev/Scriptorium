@@ -10,14 +10,14 @@ LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M
 
 UNIT_ID: SCRIP-READER-ASYNC-CLIPBOARD-STATUS-v1
 ISSUE: #283 (focused public-reader usability)
-STATUS: BRANCH_PATCH_PREPARED; PR_AND_LATER_ACCEPTANCE_REQUIRED
-PR: pending (new focused #283 slice)
+STATUS: PR_OPEN; LATER_ACCEPTANCE_REQUIRED
+PR: #483
 BRANCH: scrip-reader-clipboard-async-state-20261110
 BASE: 4e93e69b2f0f4b559b822858f402243e5368cfd1
 
 ACCEPTANCE: A delayed Clipboard API success or rejection must not display feedback for a different selected book pair/chart, nor overwrite a newer in-flight clipboard result for the same link. Keep same-origin/source allow-list validation, no-JS fallback, 44px controls, and pinned 11 measured editions. Add positive and deferred-promise regression cases to both shipped Node smoke tests. Later exact-head CI/PR review and real browser/mobile acceptance are separate. No FantLab parity promotion.
 
-Verification: prior #482 merge confirmed, local full-suite and browser NOT_RUN; new regression is prepared on a distinct branch; PR/CI pending.
+Verification: prior #482 merge confirmed, local full-suite and browser NOT_RUN; PR #483 created at d578d9e448f0e8c247248e6339c56d3550c2c351; initial checks pending.
 
 ## Next user-visible milestone and compact queue
 

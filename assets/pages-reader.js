@@ -682,6 +682,7 @@
   }
   function selectChart(id, addHistory=false) {
     if (!Object.prototype.hasOwnProperty.call(metrics, id)) return;
+    chartCopyAttempt++;
     currentChart = id;
     updateChart();
     const link = el("share-chart");
@@ -1198,6 +1199,7 @@
   }
   function selectPair(left, right, addHistory=false) {
     if (!getBook(left) || !getBook(right)) return;
+    pairCopyAttempt++;
     leftSelect.value = left;
     rightSelect.value = right;
     pairSwapButton.disabled = left === right;
@@ -1390,6 +1392,8 @@
   window.addEventListener("beforeprint", openChartTableForPrint);
   window.addEventListener("afterprint", restoreChartTableAfterPrint);
 
+  // Ignore late clipboard results after the reader selection has moved.
+  let pairCopyAttempt=0;
   // Copy only same-page, distinct measured-edition links after data verification.
   function verifiedPairShareUrl() {
     const anchor=el("share-pair");
@@ -1411,7 +1415,9 @@
 
   async function copyPairShareUrl() {
     if (pairCopyButton.disabled) return;
+    const sequence=++pairCopyAttempt;
     const feedback=el("copy-pair-feedback"), link=verifiedPairShareUrl();
+    feedback.textContent="";
     if (!link) {
       feedback.textContent="Нет проверенной ссылки для копирования.";
       return;
@@ -1422,12 +1428,15 @@
     }
     try {
       await window.navigator.clipboard.writeText(link);
+      if (sequence!==pairCopyAttempt || verifiedPairShareUrl()!==link) return;
       feedback.textContent="Ссылка на сравнение скопирована.";
     } catch (_) {
+      if (sequence!==pairCopyAttempt || verifiedPairShareUrl()!==link) return;
       feedback.textContent="Не удалось скопировать. Откройте ссылку рядом и скопируйте адрес.";
     }
   }
 
+  let chartCopyAttempt=0;
   // Only a validated same-page chart permalink may enter the clipboard.
   function verifiedChartShareUrl() {
     const anchor=el("share-chart");
@@ -1448,7 +1457,9 @@
 
   async function copyChartShareUrl() {
     if (chartCopyButton.disabled) return;
+    const sequence=++chartCopyAttempt;
     const feedback=el("copy-chart-feedback"), link=verifiedChartShareUrl();
+    feedback.textContent="";
     if (!link) {
       feedback.textContent="Нет проверенной ссылки для копирования.";
       return;
@@ -1459,8 +1470,10 @@
     }
     try {
       await window.navigator.clipboard.writeText(link);
+      if (sequence!==chartCopyAttempt || verifiedChartShareUrl()!==link) return;
       feedback.textContent="Ссылка на диаграмму скопирована.";
     } catch (_) {
+      if (sequence!==chartCopyAttempt || verifiedChartShareUrl()!==link) return;
       feedback.textContent="Не удалось скопировать. Откройте ссылку рядом и скопируйте адрес.";
     }
   }

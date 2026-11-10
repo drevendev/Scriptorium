@@ -1,35 +1,35 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 471
+STATE_REVISION: 472
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-09
-LAST_RESULT: Native GitHub confirms #475 merged at d1e596591ae5adacb7e58734eca9bab653e3cc3d. The previous PR_CANDIDATE entry was stale. Owner-requested interactive delivery batch now implements private EPUB boundary hardening and Reader evidence-table accessibility in #478; not merged in the authoring run.
+LAST_COMMITTED_RUN_AT: 2026-11-10
+LAST_RESULT: #478 merged at 92f58f2bd31b5c02f35bb98157d7e531b9b1eb4d; #481 proposes strict current v3/v4 publication support for #479. No new master or live Pages change from #481.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M2 0/5; M3 open. No new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-INGESTION-VALIDATION-v1
-ISSUES: #476, #477, #480; partial #283. Recovered remaining Drive debt: #479.
+UNIT_ID: SCRIP-SITE-CURRENT-METRIC-PUBLICATION-v1
+ISSUE: #479
 STATUS: PR_OPEN; LATER_ACCEPTANCE_REQUIRED
-PR: #478
-BRANCH: scrip-reader-ingestion-validation
-BASE: d1e596591ae5adacb7e58734eca9bab653e3cc3d
+PR: #481
+BRANCH: scrip-site-current-metric-publication
+BASE: 92f58f2bd31b5c02f35bb98157d7e531b9b1eb4d
 
-ACCEPTANCE: Reject raw href whitespace/controls, malformed percent triplets, malformed authorities and ambiguous original ZIP names before normalization; preserve valid Unicode, encoded spaces, single decoding, historical body identities and path-private errors. Bound XML shape and incremental UTF-8 body bytes. Real synthetic extraction plus CLI regressions run in the canonical suite and installed wheel outside checkout. Restore the voice table header foreground and explicit keyboard focus without changing data or other dark-header tables. Require exact final-head CI, later fresh acceptance and qualifying merge. Browser navigation is blocked by the local environment: VISUAL_NOT_VERIFIED, not a live-site failure.
+ACCEPTANCE: An explicit synthetic publication-manifest entry renders a real current v4 engine result, while a separately labelled structural v3 fixture and historical v1/v2 remain supported. Strict 29-row IDs, per-metric evidence/unit/status, versioned profiles, dictionary dependency, hashes, no-source-text gates, manifest-only paths and fail-closed staged publication. Full exact-head native CI, deterministic site rebuild and installed CLI verification are required before later-run acceptance; no same-run merge. No FantLab parity promotion.
 
-Verification: 17 extraction and three source-level accessibility tests pass locally. Full repository and installed-wheel checks are native CI evidence, not a local full-checkout claim. Initial #478 commit d2e81c39a609fe938059cfbbe5ea067194afb91a passed all three triggered workflows; subsequent revisions require their own exact-head checks. No direct master or deployment-setting change.
+Verification: Initial focused positive/negative tests are proposed in #481 and not yet independently verified. Local Python/full checkout, installed wheel and live browser tests: NOT_RUN. PR CI needs exact final-head verification. #478 is already merged; its closed issues #476/#477/#480 must not be reopened or reworked.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: trustworthy private-file reports and readable evidence, then current-metric publication and independently measured author comparisons rather than more tuning on four books.
+Milestone: publish safe current-engine metric profiles through reviewed manifests, then expose new independently measured real-book comparisons without weakening scientific source-match gates.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #478 ingestion and Reader regression fixes | Exact-head full suite, installed wheel, site build, later acceptance; close #476/#477/#480 only after qualifying merge | Existing PR and claim |
-| P2 | #479 current deterministic v3/v4 publication support recovered from Drive | Actual current-engine artifact through strict manifest/renderer; negative version/privacy tests; deterministic build | Inspect schema-specific validation; no blanket allow-list relaxation |
-| P3 | Independently measured editions for author-profile replication | >=300k legally usable works, separate author/translator/edition identities and held-out tests on new books | Rights and source identities; avoid tuning on these four |
-| P4 | #282 measured AOT N ambiguity and a source-matched FantLab witness | Pinned actual runtime probes, explicit mapping uncertainty; required source-matched deltas with unchanged rounding | Morphology ambiguity and analyzer-input identity UNKNOWN; #281 closed without M2 |
-| P5 | #285 live Reader routes / #283 mobile, keyboard and print acceptance | Actual HTTP, desktop/mobile screenshots and relevant interaction checks | Browser navigation restriction only; independent source fixes remain executable |
+| P1 | #481 / #479 v3/v4 renderer acceptance | Exact head CI, full suite, reproducible build, verified 29-row current artifact, staged privacy contract; later-run merge | Current PR head and review/check gates |
+| P2 | Independently measured editions for author-profile replication | >=300k legally usable works, separate author/translator/edition identities, held-out tests on new books | Rights/source identity; avoid tuning on the four existing books |
+| P3 | #282 measured AOT N ambiguity and a source-matched FantLab witness | Pinned runtime evidence, unchanged per-metric rounding, source-identity matched reference | Native ambiguity, analyzer-input identity UNKNOWN; M2 0/5 |
+| P4 | #285 live Reader routes / #283 mobile, keyboard and print acceptance | Actual HTTP, mobile/desktop screenshots and interactions | Browser navigation restrictions; source improvements independent |
+| P5 | #284 explicit source-code licence and attribution | Contributor/third-party inventory and owner-authorized licence decision | No invented grant; separate from product PR |
 
 ## Retained scientific and operational boundaries
 

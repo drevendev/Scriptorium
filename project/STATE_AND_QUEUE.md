@@ -1,23 +1,23 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 473
+STATE_REVISION: 474
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-10
-LAST_RESULT: #481 merged at ff313efb9fb8fc86bb0f5d4437c3fdfd859e1b61; #479 closed. Master Pages build, branch deployment and package workflows succeeded. The current branch proposes a guarded Reader pair-link copy action; no new master change.
+LAST_RESULT: #482 merged at 4e93e69b2f0f4b559b822858f402243e5368cfd1. Current branch addresses an async clipboard status race affecting verified book-pair and chart links; CI acceptance pending.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M2 0/5; M3 open. No new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-PAIR-LINK-COPY-v1
+UNIT_ID: SCRIP-READER-ASYNC-CLIPBOARD-STATUS-v1
 ISSUE: #283 (focused public-reader usability)
-STATUS: PR_OPEN; LATER_ACCEPTANCE_REQUIRED
-PR: #482
-BRANCH: scrip-reader-pair-permalink-copy
-BASE: ff313efb9fb8fc86bb0f5d4437c3fdfd859e1b61
+STATUS: BRANCH_PATCH_PREPARED; PR_AND_LATER_ACCEPTANCE_REQUIRED
+PR: pending (new focused #283 slice)
+BRANCH: scrip-reader-clipboard-async-state-20261110
+BASE: 4e93e69b2f0f4b559b822858f402243e5368cfd1
 
-ACCEPTANCE: On the verified Reader, offer a 44px keyboard-accessible copy control next to the paired permalink. Copy only same-origin, same-path URLs for two different measured editions and an allowed metric. Reject foreign/malformed/duplicate inputs, and report clipboard success/denial to an accessible status. Retain the original static/no-JS pair link and no manuscript transmission. New Node test must run in Pages CI. Independent exact-head verification/merge and browser acceptance remain separate. No FantLab parity promotion.
+ACCEPTANCE: A delayed Clipboard API success or rejection must not display feedback for a different selected book pair/chart, nor overwrite a newer in-flight clipboard result for the same link. Keep same-origin/source allow-list validation, no-JS fallback, 44px controls, and pinned 11 measured editions. Add positive and deferred-promise regression cases to both shipped Node smoke tests. Later exact-head CI/PR review and real browser/mobile acceptance are separate. No FantLab parity promotion.
 
-Verification: New source-bound Node regression and Pages workflow step proposed; CI / live desktop and mobile browser: NOT_RUN. #481 merge and #479 closure are confirmed.
+Verification: prior #482 merge confirmed, local full-suite and browser NOT_RUN; new regression is prepared on a distinct branch; PR/CI pending.
 
 ## Next user-visible milestone and compact queue
 
@@ -25,7 +25,7 @@ Milestone: ship safely shareable real-book comparisons and expand independently 
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 copy measured pair comparison links | Exact-head test, Page build, later-run acceptance | Current PR checks/review |
+| P1 | #283 prevent stale clipboard acknowledgements for chart and paired links | Deferred-promise regressions, exact-head Pages checks, later-run acceptance | Focused async-state PR |
 | P2 | New independent >=300k source-bound author editions | Rights, distinct author/translator/edition, reproducible measurements and held-out tests | Clear legal source and pin; do not tune the existing four-book pilot |
 | P3 | #282 AOT N ambiguity and source-matched FantLab witness | Native pinned evidence, exact metric deltas, edition/input identity | Pinned morphology, FantLab input identity UNKNOWN; M2 0/5 |
 | P4 | #285 live Reader / #283 mobile, keyboard, print | HTTP verification, desktop/mobile screenshots and tested controls | Browser availability; independent source work permitted |

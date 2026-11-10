@@ -80,6 +80,9 @@ jobs:
       - name: Check metric-to-definition deep links
         run: node tests/pages_metric_deep_link_smoke.cjs
 
+      - name: Verify source-bound comparison permalink copy
+        run: node tests/pages_pair_copy_smoke.cjs
+
       - name: Build canonical Pages artifact
         run: python -m scriptorium.site_renderer --repo-root . --output build/site
 

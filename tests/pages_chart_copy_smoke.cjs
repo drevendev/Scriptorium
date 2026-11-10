@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,"..");
 const source=fs.readFileSync(path.join(root,"assets/pages-reader.js"),"utf8");
 const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
 const data=JSON.parse(fs.readFileSync(path.join(root,"assets/evidence-snapshot.json"),"utf8"));
-const start=source.indexOf("  function verifiedChartShareUrl() {");
+const start=source.indexOf("  let chartCopyAttempt=0;");
 const end=source.indexOf("  async function initialize() {",start);
 assert.ok(start>=0 && end>start,"production chart copying helpers missing");
 const code=source.slice(start,end)+"return {verifiedChartShareUrl,copyChartShareUrl};";
@@ -72,6 +72,41 @@ async function main(){
   await helpers.copyChartShareUrl();
   assert.match(feedback.textContent,/Не удалось скопировать/);
   assert.equal(copied.length,16);
+
+  const deferred=[];
+  window.navigator.clipboard={writeText(url){
+    return new Promise((resolve,reject)=>deferred.push({url,resolve,reject}));
+  }};
+  const routeA="?metric="+ids[0]+"#charts";
+  const routeB="?metric="+ids[1]+"#charts";
+  anchor.href=routeA;
+  const oldSuccess=helpers.copyChartShareUrl();
+  assert.equal(deferred.length,1);
+  anchor.href=routeB;
+  feedback.textContent="";
+  deferred[0].resolve();
+  await oldSuccess;
+  assert.equal(feedback.textContent,"","stale chart success must stay hidden");
+  anchor.href=routeA;
+  const oldFailure=helpers.copyChartShareUrl();
+  anchor.href=routeB;
+  feedback.textContent="";
+  deferred[1].reject(Error("late NotAllowedError"));
+  await oldFailure;
+  assert.equal(feedback.textContent,"","stale chart denial must stay hidden");
+  anchor.href=routeA;
+  const slow=helpers.copyChartShareUrl();
+  const fast=helpers.copyChartShareUrl();
+  deferred[3].resolve();
+  await fast;
+  const latestFeedback=feedback.textContent;
+  assert.match(latestFeedback,/скопирована/);
+  deferred[2].reject(Error("late denial"));
+  await slow;
+  assert.equal(feedback.textContent,latestFeedback);
+  assert.match(source,/function selectChart\(id, addHistory=false\) \{[\s\S]*?chartCopyAttempt\+\+;/);
+  assert.equal(copied.length,16,"deferred tests never change source-backed routes");
+
   console.log("Verified 8×2 live-source chart permalinks, clipboard success/denial, unsafe URL and no-data guards: PASS");
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});

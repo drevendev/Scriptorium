@@ -277,5 +277,84 @@ class StaticSiteRendererTests(unittest.TestCase):
         self.assertEqual(before, self._snapshot())
 
 
+    def _use_current_engine_fixture(self):
+        from scriptorium.metrics import analyze_deterministic_metrics
+
+        self.entry["artifact_schema"] = "scriptorium-deterministic-metrics-v4"
+        self.artifact["analysis"] = analyze_deterministic_metrics(
+            "Солнце взошло. — Здравствуй! Как дела?"
+        )
+        self._write_fixture()
+
+    def test_current_v4_engine_artifact_publishes_deterministically_without_source(self):
+        self._use_current_engine_fixture()
+        first = build_site(self.root, self.output)
+        snapshot = self._snapshot()
+        self.assertEqual(first, build_site(self.root, self.output))
+        self.assertEqual(snapshot, self._snapshot())
+        page = (self.output / "works" / "example" / "index.html").read_text("utf-8")
+        self.assertIn("fantlab.vocabulary.unique_words", page)
+        self.assertIn("fantlab.punctuation.question.per_1000_words", page)
+        self.assertNotIn("SECRET SOURCE PROSE", page)
+        self.assertEqual(len(self.artifact["analysis"]["metrics"]), 29)
+
+    def test_retained_v3_shape_requires_its_own_frozen_profiles(self):
+        # Structural v3 fixture, not a claim that v4-generated counts are v3 measurements.
+        self._use_current_engine_fixture()
+        analysis = self.artifact["analysis"]
+        self.entry["artifact_schema"] = analysis["schema_version"] = (
+            "scriptorium-deterministic-metrics-v3"
+        )
+        analysis["profiles"]["metrics"] = "scriptorium-metrics-v3"
+        analysis["profiles"]["punctuation"] = "scriptorium-punctuation-v1"
+        self._write_fixture()
+        build_site(self.root, self.output)
+        self.assertTrue((self.output / "works" / "example" / "index.html").is_file())
+        analysis["profiles"]["punctuation"] = "scriptorium-punctuation-v2"
+        self._write_fixture()
+        with self.assertRaisesRegex(PublicationBuildError, "metric profile identity"):
+            build_site(self.root, self.output)
+
+    def test_current_artifact_malformed_fields_fail_without_partial_publication(self):
+        self._use_current_engine_fixture()
+        build_site(self.root, self.output)
+        pristine = self._snapshot()
+        baseline = copy.deepcopy(self.artifact)
+        cases = (
+            ("wrong contract", lambda a: a["analysis"].__setitem__("metric_contract_id", "unreviewed")),
+            ("wrong metric profile", lambda a: a["analysis"]["profiles"].__setitem__("metrics", "scriptorium-metrics-v1")),
+            ("wrong punctuation profile", lambda a: a["analysis"]["profiles"].__setitem__("punctuation", "scriptorium-punctuation-v1")),
+            ("extra analysis field", lambda a: a["analysis"].__setitem__("source_text", "PRIVATE MANUSCRIPT")),
+            ("unknown metric", lambda a: a["analysis"]["metrics"].__setitem__("fabricated", {"value": 1})),
+            ("missing metric", lambda a: a["analysis"]["metrics"].pop("fantlab.general.words")),
+            ("false evidence", lambda a: a["analysis"]["metrics"]["fantlab.general.words"].__setitem__("compatibility_status", "reproduced")),
+            ("wrong unit", lambda a: a["analysis"]["metrics"]["fantlab.general.words"].__setitem__("unit", "percent")),
+            ("punctuation raw count", lambda a: a["analysis"]["metrics"]["fantlab.punctuation.question.per_1000_words"].__setitem__("raw_count", True)),
+            ("boolean value", lambda a: a["analysis"]["metrics"]["fantlab.general.words"].__setitem__("value", True)),
+            ("bad digest", lambda a: a["analysis"].__setitem__("normalized_sha256", "not-a-digest")),
+            ("unbound dictionary", lambda a: a["analysis"]["metrics"]["fantlab.vocabulary.active_dictionary"].__setitem__("value", 9)),
+        )
+        for label, mutate in cases:
+            with self.subTest(label=label):
+                self.artifact = copy.deepcopy(baseline)
+                mutate(self.artifact)
+                self._write_fixture()
+                with self.assertRaises(PublicationBuildError):
+                    build_site(self.root, self.output)
+                self.assertEqual(pristine, self._snapshot())
+
+    def test_current_schema_mismatch_and_private_flag_fail_closed(self):
+        self._use_current_engine_fixture()
+        self.artifact["analysis"]["schema_version"] = "scriptorium-deterministic-metrics-v3"
+        self._write_fixture()
+        with self.assertRaisesRegex(PublicationBuildError, "artifact_schema"):
+            build_site(self.root, self.output)
+        self.artifact["analysis"]["schema_version"] = "scriptorium-deterministic-metrics-v4"
+        self.artifact["source"]["source_text_committed"] = True
+        self._write_fixture()
+        with self.assertRaisesRegex(PublicationBuildError, "source text"):
+            build_site(self.root, self.output)
+
+
 if __name__ == "__main__":
     unittest.main()

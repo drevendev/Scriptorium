@@ -42,11 +42,21 @@ closed until their canonical artifact contracts and presentation rules are imple
 This is intentional: a generic renderer must not guess how evidence or admissibility
 should be interpreted for a future artifact family.
 
-Within `work_showcase`, renderer v1 explicitly supports only the two canonical profiles
-already present in the merged publication manifest:
+Within `work_showcase`, the renderer admits the historical v1/v2 artifacts and
+explicit current deterministic profiles:
 
 - `scriptorium-deterministic-metrics-v1`;
-- `scriptorium-deterministic-metrics-v2`.
+- `scriptorium-deterministic-metrics-v2`;
+- `scriptorium-deterministic-metrics-v3`;
+- `scriptorium-deterministic-metrics-v4`.
+
+For v3/v4, version acceptance also requires the complete 29-row metric contract,
+exact frozen normalization/dialogue/vocabulary/metric/punctuation profile identities,
+normalized digest, dictionary dependency shape, per-metric units/definition evidence/
+compatibility status, finite values and punctuation raw counts. A missing dictionary
+cannot accompany fabricated dictionary-dependent vocabulary values. A manifest entry
+is still required: the renderer does not automatically publish analyzer outputs or
+copy private source text. These gates preserve the historical v1/v2 output contract.
 
 A newer or otherwise unknown artifact schema fails closed even when the manifest and
 artifact repeat the same schema string. Supporting another profile is a reviewed
@@ -87,8 +97,8 @@ The build is rejected when, among other cases:
 - an entry ID or slug is duplicate or unsafe;
 - an artifact path is absolute, contains a traversal/double-separator shape, traverses a
   symlink, resolves outside the repository, is missing, or is not JSON;
-- a work-showcase `artifact_schema` is not one of the explicitly supported renderer-v1
-  profiles above;
+- a work-showcase `artifact_schema` is not one of the explicitly supported
+  profiles above, or a v3/v4 metric contract/profile/row fails validation;
 - `source_text_included` is not exactly `false`;
 - a showcase says `source.source_text_committed` is not exactly `false`;
 - manifest schema/status/admissibility labels contradict the canonical showcase;

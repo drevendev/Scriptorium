@@ -1,22 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 476
+STATE_REVISION: 477
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-10
-LAST_RESULT: #485 merged into master at 668787d89007c7b8718bc1042ad7524b89c962f7. #486 proposes a ninth measured Reader chart (questions per 1,000 words); no analyzer formula, source text, corpus admission or FantLab parity change.
+LAST_RESULT: #486 confirmed merged at caca099088053347fd8cf1530da9fb58212f54f8. New Reader chart distribution summary proposed from the same 11 frozen editions; no metric formulas, source prose, corpus admission or FantLab parity changed.
 LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M2 0/5; M3 open. No new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-QUESTION-CHART-v1
-ISSUE: #283 (focused chart slice)
-STATUS: PR_OPEN #486; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-reader-question-chart-20261110
-BASE: 668787d89007c7b8718bc1042ad7524b89c962f7
+UNIT_ID: SCRIP-READER-CHART-DISTRIBUTION-v1
+ISSUE: #283 (focused chart interpretation slice)
+STATUS: PR_AUTHORED_IN_THIS_RUN; LATER_ACCEPTANCE_REQUIRED
+BRANCH: scrip-reader-chart-range-median-20261110
+BASE: caca099088053347fd8cf1530da9fb58212f54f8
 
-ACCEPTANCE: Nine allow-listed Russian Reader charts include source-bound question-mark frequency per 1,000 words across all 11 measured editions. Chart selection, ranking, exact table, accessible control, link/clipboard, CSV and missing-data behavior remain consistent and deterministic; existing no-JavaScript chart stays available. Scientific status remains diagnostic only. Require exact-head CI, later-run acceptance and separate live Pages verification.
+ACCEPTANCE: All nine existing charts present source-bound minimum, median and maximum for available measured editions, with explicit sample-only interpretation. Missing values never become zeros; even/odd sample sizes and all-missing state are deterministic; default no-JavaScript summary is pinned to actual dialogue observations. Exact-head tests/Pages build and later independent PR acceptance required; live visual verification separate.
 
-Verification: feature-branch structural source/HTML/metric-registry and 11-observation checks PASS. Python/Node suite, Pages build and visual browser checks NOT_RUN before exact-head CI.
+Verification: source-derived static fallback and real 11-book JavaScript metric summary contracts added; complete exact-head CI and visual browser acceptance NOT_RUN before PR checks.
 
 ## Next user-visible milestone and compact queue
 
@@ -24,7 +24,7 @@ Milestone: ship safely shareable real-book comparisons and expand independently 
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #486 ninth measured Reader chart (questions) | Exact pinned data, full regression CI, later-run acceptance/merge and separate live check | Focused #283 presentation PR |
+| P1 | #283 chart distribution summary (current focused PR) | Minimum/median/maximum on nine charts; missing/zero/even/all-missing tests, static fallback and later-run merge | Existing measured editions; no new source text |
 | P2 | New independent >=300k source-bound author editions | Rights, distinct author/translator/edition, reproducible measurements and held-out tests | Clear legal source and pin; do not tune the existing four-book pilot |
 | P3 | #282 AOT N ambiguity and source-matched FantLab witness | Native pinned evidence, exact metric deltas, edition/input identity | Pinned morphology, FantLab input identity UNKNOWN; M2 0/5 |
 | P4 | #285 live Reader / #283 mobile, keyboard, print | HTTP verification, desktop/mobile screenshots and tested controls | Browser availability; independent source work permitted |

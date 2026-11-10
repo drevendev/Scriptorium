@@ -40,6 +40,7 @@ class ExpandedChartTests(unittest.TestCase):
         self.assertEqual(sum(x["aria-pressed"] == "true" for x in buttons), 1)
         self.assertIn('id="chart-unit" class="chart-unit" aria-live="polite"', html)
         self.assertIn('<details class="chart-table">', html)
+        self.assertIn('id="chart-summary" class="chart-summary"', html)
         self.assertIn('id="chart-table-rows"', html)
         self.assertIn('id="chart-table-caption"', html)
         self.assertIn('aria-label="Таблица чисел выбранной диаграммы"', html)
@@ -75,6 +76,25 @@ class ExpandedChartTests(unittest.TestCase):
         self.assertEqual(rows, expected)
         self.assertNotEqual(re.findall(pattern, fallback.replace(
             f"<td>{expected[0][1]}</td>", "<td>34,97</td>", 1)), expected)
+
+    def test_no_js_chart_summary_is_source_derived(self):
+        """The baseline median/range cannot drift away from pinned book values."""
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        data = json.loads((ROOT / "assets/evidence-snapshot.json").read_text(encoding="utf-8"))
+        observed = sorted(
+            next(m["actual"] for m in book["metrics"] if m["id"] == "fantlab.dialogue.share_percent")
+            for book in data["books"] if book["text_status"] == "measured"
+        )
+        self.assertEqual(len(observed), 11)
+        summary = html.split('<p id="chart-summary" class="chart-summary">', 1)[1].split("</p>", 1)[0]
+        show = lambda value: f"{value:.2f}".replace(".", ",") + "%"
+        self.assertIn("По 11 измеренным редакциям", summary)
+        self.assertIn("минимум " + show(observed[0]), summary)
+        self.assertIn("медиана " + show(observed[5]), summary)
+        self.assertIn("максимум " + show(observed[-1]), summary)
+        self.assertIn("не доказательство авторства", summary)
+        css = (ROOT / "assets/pages-reader.css").read_text(encoding="utf-8")
+        self.assertIn(".chart-summary {", css)
 
     def test_measured_coverage_and_profile_identity(self):
         data = json.loads((ROOT / "assets/evidence-snapshot.json").read_text(encoding="utf-8"))

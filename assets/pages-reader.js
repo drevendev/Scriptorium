@@ -632,6 +632,18 @@
     });
     const known=rows.filter(row=>row.value!==null);
     const high=Math.max(0,...known.map(row=>row.value));
+    // A distribution summary is descriptive, never an author score or FantLab parity.
+    // Calculate over available values only; a real zero must not disappear.
+    const values=known.map(row=>row.value).sort((a,b)=>a-b);
+    const formatValue=n=>pretty(n,conf[2])+(conf[1]==="%"?"%":" "+conf[1]);
+    const middle=Math.floor(values.length/2);
+    const median=values.length%2 ? values[middle] :
+      values.length ? values[middle-1]/2+values[middle]/2 : null;
+    el("chart-summary").textContent=values.length ?
+      "По "+values.length+" измеренным редакциям: минимум "+formatValue(values[0])+
+      ", медиана "+formatValue(median)+", максимум "+formatValue(values.at(-1))+
+      ". Описательный диапазон этой выборки — не норма и не доказательство авторства." :
+      "Для выбранного показателя нет измеренных значений: минимум, медиана и максимум не рассчитываются. «Нет данных» не равно нулю.";
     const nodes=document.createDocumentFragment();
     const tableNodes=document.createDocumentFragment();
     for (const row of rows) {

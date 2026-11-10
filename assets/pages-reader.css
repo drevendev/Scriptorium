@@ -53,7 +53,8 @@ main { max-width:1300px; margin:0 auto; padding:0 clamp(1rem,3vw,2.5rem) 4rem; }
 .chart-switch button { border:1px solid #809e90; border-radius:4px; padding:.45rem .6rem; min-height:44px; background:transparent; color:#e3efe9; font-size:.73rem; font-weight:650; }
 .chart-switch button[aria-pressed="true"] { background:#f4cf99; color:#243b2e; border-color:#f4cf99; }
 .chart-switch button:disabled { opacity:.75; }
-.chart-unit { margin:.95rem 0 1rem; color:#e3efe9; font-size:.78rem; font-weight:650; }
+.chart-unit { margin:.95rem 0 .55rem; color:#e3efe9; font-size:.78rem; font-weight:650; }
+.chart-summary { margin:0 0 1rem; padding:.7rem .85rem; background:rgba(244,207,153,.08); border-left:3px solid #f4cf99; color:#e3efe9; font-size:.8rem; line-height:1.6; }
 .chart-grid,.chart-series { display:grid; gap:.85rem; }
 .chart-row { display:grid; grid-template-columns:8.8rem minmax(0,1fr) 4rem; gap:.55rem; align-items:center; font-size:.76rem; }
 .chart-row>span { color:#eaf1e9; }

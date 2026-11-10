@@ -15,7 +15,7 @@ assert.equal(ids.length,9);
 const measured=catalog.books.filter(b=>b.text_status==="measured");
 assert.equal(measured.length,11);
 const node=tag=>({tag,children:[],style:{},attrs:{},className:"",textContent:"",appendChild(n){this.children.push(n);return n;},setAttribute(k,v){this.attrs[k]=v;},replaceChildren(f){this.children=f.children;}});
-const elements={"chart-series":node("div"),"chart-unit":node("p"),"chart-table-rows":node("tbody"),"chart-table-caption":node("caption")};
+const elements={"chart-series":node("div"),"chart-unit":node("p"),"chart-summary":node("p"),"chart-table-rows":node("tbody"),"chart-table-caption":node("caption")};
 const chartSortButton=node("button");
 const document={createElement:node,createDocumentFragment:()=>node("fragment")};
 const insertText=(parent,tag,v,cls)=>{const n=node(tag);n.textContent=v;if(cls)n.className=cls;parent.appendChild(n);return n;};
@@ -39,6 +39,19 @@ for(const id of ids){
   const expected=measured.filter(book=>book.metrics.some(m=>m.id===id&&Number.isFinite(m.actual))).length;
   assert.equal(expected,id.includes("mean_dialogue_sentence")||id.includes("mean_narration_sentence")?10:11,id);
   assert.ok(elements["chart-unit"].textContent.includes(expected+" из 11"),id);
+  const actualValues=measured.map(b=>b.metrics.find(m=>m.id===id)?.actual)
+    .filter(v=>typeof v==="number"&&Number.isFinite(v)).sort((a,b)=>a-b);
+  const midpoint=Math.floor(actualValues.length/2);
+  const median=actualValues.length%2 ? actualValues[midpoint] :
+    actualValues[midpoint-1]/2+actualValues[midpoint]/2;
+  const rendered=n=>new Intl.NumberFormat("ru-RU",{maximumFractionDigits:metrics[id][2]}).format(n)+
+    (metrics[id][1]==="%"?"%":" "+metrics[id][1]);
+  const summary=elements["chart-summary"].textContent;
+  assert.ok(summary.includes("По "+expected+" измеренным редакциям"),id);
+  assert.ok(summary.includes("минимум "+rendered(actualValues[0])),id);
+  assert.ok(summary.includes("медиана "+rendered(median)),id);
+  assert.ok(summary.includes("максимум "+rendered(actualValues.at(-1))),id);
+  assert.ok(summary.includes("не доказательство авторства"),id);
   assert.equal(buttons.filter(btn=>btn.attrs["aria-pressed"]==="true").length,1,id);
   const missing=rows.filter(row=>row.className.includes("chart-missing"));
   assert.equal(missing.length,11-expected,id);
@@ -70,6 +83,15 @@ assert.equal(elements["chart-series"].children[0].children[2].textContent,"0%");
 assert.equal(elements["chart-table-rows"].children[0].children[1].textContent,"0");
 assert.equal(elements["chart-series"].children[0].children[1].children[0].style.width,"0.00%");
 assert.ok(!elements["chart-series"].children[0].className.includes("chart-missing"));
+assert.ok(elements["chart-summary"].textContent.includes("минимум 0%"));
+const allMissing=structuredClone(catalog);
+for(const b of allMissing.books.filter(b=>b.text_status==="measured")){
+  b.metrics.find(m=>m.id==="fantlab.dialogue.share_percent").actual=null;
+}
+render("fantlab.dialogue.share_percent",allMissing);
+assert.match(elements["chart-summary"].textContent,/нет измеренных значений/);
+assert.match(elements["chart-summary"].textContent,/«Нет данных» не равно нулю/);
+render("fantlab.dialogue.share_percent",catalog,false);
 // Regression: the rendered graph and accessible table must share stable order.
 render("fantlab.dialogue.share_percent",catalog,true);
 const ranked=measured.map((b,i)=>({title:b.display_title,value:b.metrics.find(m=>m.id==="fantlab.dialogue.share_percent").actual,i})).sort((a,b)=>b.value-a.value||a.i-b.i);

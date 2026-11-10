@@ -1,39 +1,37 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 479
+STATE_REVISION: 480
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-10
-LAST_RESULT: #488 merged at 21a891e848eb59cbcfbd52238ea5b88fc3889019. Authored opt-in third-author Dostoevsky preview using two existing measured Russian books; v1 four-book holdout unchanged.
-LAST_VERIFIED_PROGRESS: 11 measured / 2 leads; FantLab input identity UNKNOWN; M2 0/5; M3 open. No new corpus measurements.
+LAST_RESULT: #489 merged as 922c85ac1060ef582225b1bbb58bbec0a63b1dfd; PR #491 created for opt-in six-book, three-author holdout diagnostic (not merged).
+LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-VOICE-THIRD-AUTHOR-v2
-ISSUE: Optional source-bound comparison; existing eleven measured corpus works unchanged
-STATUS: PR_AUTHORED_IN_THIS_RUN; LATER_ACCEPTANCE_REQUIRED
-BRANCH: scrip-voice-third-author-dostoevsky-20261110
-BASE: 21a891e848eb59cbcfbd52238ea5b88fc3889019
+UNIT_ID: SCRIP-VOICE-SIX-FOLD-v2
+ISSUE: #490 — source-bound six-fold author-rhythm stress test
+STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
+PR: #491
+BRANCH: scrip-voice-six-fold-stress-20261110
+BASE: 922c85ac1060ef582225b1bbb58bbec0a63b1dfd
 
-ACCEPTANCE: Opt-in v2 adds two existing >=300k exact-pinned Dostoevsky editions and computes the original eight descriptive weighted metrics. Reject missing/change/translator/POS evidence. Default v1 artifact, public Reader, holdout and ablation remain unchanged. Fresh exact-head checks and later independent acceptance required; no scientific milestone promotion.
-
-Verification: code and positive/negative tests authored; CI NOT_RUN before PR.
+ACCEPTANCE: Extend the #489 opt-in third author into six deterministic leave-one-out folds with three independently pinned author centroids, explicit per-author training keys, eight identical units/features and honest ties. Reject changing source hash/edition, absent/non-numeric evidence and author/feature drift. Preserve default four-fold v1 preview, ablation and published Reader. Report observed 2/6 successes as **within-sample negative evidence**, not classifier generalization or accepted M3.
+Verification: source-snapshot arithmetic independently cross-checked as 2/6 with no ties; Python/CI, wheel and Pages exact-head checks pending; later independent PR review and qualifying merge only.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: ship safely shareable real-book comparisons and expand independently measured editions without changing FantLab parity criteria.
+Milestone: credible, reproducible real-book descriptive/author comparisons, followed by independently measured rights-cleared editions; do not relax FantLab parity.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Opt-in third-author Dostoevsky preview v2 (current PR) | Two exact-pinned source-bound measured works; v1/holdout unchanged; later-run merge | Existing frozen derived measurements; no new corpus admission |
-| P2 | New independent >=300k source-bound author editions | Rights, distinct author/translator/edition, reproducible measurements and held-out tests | Clear legal source and pin; do not tune the existing four-book pilot |
-| P3 | #282 AOT N ambiguity and source-matched FantLab witness | Native pinned evidence, exact metric deltas, edition/input identity | Pinned morphology, FantLab input identity UNKNOWN; M2 0/5 |
-| P4 | #285 live Reader / #283 mobile, keyboard, print | HTTP verification, desktop/mobile screenshots and tested controls | Browser availability; independent source work permitted |
-| P5 | #284 explicit source-code licence and attribution | Rights inventory and owner-authorized grant | Cannot invent grant |
+| P1 | #491 six-fold three-author stress test | All six folds/negative controls and exact-head CI; later-run qualifying merge | Current source-free six-edition pinned snapshot |
+| P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
+| P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
+| P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | Deployed HTTP readback, desktop/mobile screenshots and verified controls | Browser/deploy access; independent code work permitted |
+| P5 | #284 source-code licence and attribution | Actual rights inventory and owner-granted licence | No implied public licence or invented grant |
 
 ## Retained scientific and operational boundaries
 
-11 measured editions and 2 research leads; four-edition rhythm stress tests are extensions, not a classifier or external validation. M0 closed; M1 open; M2 0/5; M3/M4/M5 open. >=300000 characters INCLUDING spaces and legal evidence required per profile/benchmark work. No published manuscripts. Translation identities are separate; AOT/pylem 0.0.18 N noun/cardinal ambiguity remains. Exact FantLab input identity is UNKNOWN and all source-unmatched comparisons are diagnostic; NOT_RUN is not PASS.
+M0 closed; M1 open; M2 0/5; M3/M4/M5 open. Eleven measured editions; two research leads. The original four-book rhythm 1/4 holdout and ablation are still exploratory source-bound extensions; new six-book 2/6 is also within-sample, NOT external validation. Calibration/author/parity works require >=300,000 characters INCLUDING spaces and explicit reuse rights. No published manuscripts. Translation identities remain separate. AOT/pylem==0.0.18 noun/cardinal runtime N collision remains unresolved. Source-unmatched numeric similarity is DIAGNOSTIC, not parity; UNKNOWN is not zero, NOT_RUN is not PASS.
 
-#284 attribution/rights grant and Trusov body / #436 historical EOF remain scoped unresolved work, not blockers for independent product PRs. #265 non-admin branch rules prohibit direct master commits; deletion/admin capability remains separate. Preserve the existing perpetual schedule.
-
-Reviewed Drive leads were deduplicated: Compare003 mean-integrity guards are already in current compare.py (#279); POS distribution integration is tracked by closed #287; CORPUS-087 is already marked reconciled to #422. The distinct still-missing schema-publication lead is now #479. Do not recreate these issues or blindly replay old patches; private storage identifiers stay private.
+#284 rights grant, Trusov source body / #436 historical EOF and #265 branch protection/cleanup remain scoped, not global prerequisites. Do not mutate perpetual hourly scheduler. Earlier Drive leads deduplicated: Compare003 already in compare.py (#279), POS distributions tracked through #287, CORPUS-087 reconciled to #422; distinct schema-publication lead #479 was closed via #481, not recreated.

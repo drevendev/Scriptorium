@@ -298,7 +298,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--format", choices=("json", "markdown"), default="json")
     analysis_group = parser.add_mutually_exclusive_group()
     analysis_group.add_argument("--holdout", action="store_true",
-                                help="exploratory leave-one-book-out stress test; not accepted M3")
+                                help="exploratory four- or six-fold leave-one-book-out stress test; not accepted M3")
     analysis_group.add_argument("--ablate", action="store_true",
                                 help="rerun four-book holdout with each feature omitted; not feature selection")
     group = parser.add_mutually_exclusive_group()
@@ -309,8 +309,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         parser.error("--check requires JSON format")
     if args.check is not None and (args.holdout or args.ablate):
         parser.error("--holdout/--ablate cannot be combined with --check")
-    if args.include_dostoevsky and (args.holdout or args.ablate):
-        parser.error("four-book holdout/ablation require the original two-author preview")
+    if args.include_dostoevsky and args.ablate:
+        parser.error("four-book feature ablation requires the original two-author preview")
     try:
         source = args.snapshot if args.snapshot is not None else Path(__file__).parent / "data" / "evidence-snapshot.json"
         raw = _read_bounded_regular_file(source, 8 * 1024 * 1024, "snapshot")

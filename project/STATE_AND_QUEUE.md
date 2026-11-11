@@ -1,21 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 486
+STATE_REVISION: 487
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-11
-LAST_RESULT: #497 merged at 316634760a0001ba5c3e643517027e31192ea17c. New #285 root Reader link-audit correctness fix proposed; live browser acceptance remains UNVERIFIED.
+LAST_RESULT: #498 merged at 8ca7d46b0203539aa03aef673b689199b74a3664. Proposed source-bound fixed-scale dialogue chart for private HTML report; live browser acceptance remains UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-013-DUPLICATE-ATTRIBUTE-CLOSURE
-ISSUE: #285 — published root Reader integrity (do not close)
+UNIT_ID: SCRIP-LOCAL-HTML-DIALOGUE-SHARE
+ISSUE: #283 — reader-first local analysis experience (do not close)
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-pages-duplicate-html-attrs-20261111
-BASE: 316634760a0001ba5c3e643517027e31192ea17c
+BRANCH: scrip-local-dialogue-share-html-20261111
+BASE: 8ca7d46b0203539aa03aef673b689199b74a3664
 
-ACCEPTANCE: Reject duplicate href/src/id attributes in branch-published HTML before converting attribute tuples to a dict: browser HTML parsing retains the first value, but dict(attrs) hides it in favor of the last. Tests must fail on a broken first href, unsafe first src and mis-targeted first id, while normal distinct id+href works. Offline audit is not live/visual verification.
-Verification: exact-head CI pending, local full Python suite NOT_RUN, desktop/mobile visual and live HTTP UNVERIFIED. M2 0/5 and M3 open.
+ACCEPTANCE: The local standalone HTML report shows a no-JavaScript dialogue character share on a fixed 0–100% scale, labels the non-whitespace-character denominator and inference status, preserves numeric table/unknown states, and rejects malformed percentages. Positive 0/100/fractional/tiny and negative unavailable/out-of-range/nonfinite/wrong-unit regressions. No schema or source-text change. Exact-head CI and later independent review required; visual/browser acceptance remains UNVERIFIED. M2 0/5 and M3 open.
 
 ## Next user-visible milestone and compact queue
 
@@ -23,7 +22,7 @@ Milestone: a working, accessible Reader showing real-book comparisons and trustw
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #285 root Reader duplicate-attribute audit correctness | Reject browser-first href/src/id bypass; tests cover negative and valid cases | Fresh CI and later independent acceptance |
+| P1 | #283 source-bound local HTML dialogue-share visualization | Exact 0–100% scale, denominator/unknown labels, negative tests; later PR acceptance | Existing inferred metric; no new corpus text |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
 | P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; separate generated Actions build is not the published root |

@@ -109,6 +109,7 @@ jobs:
           cp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           cp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
           cp voice/index.html build/branch-root-preview/voice/index.html
+          cp voice/holdout-three.csv build/branch-root-preview/voice/holdout-three.csv
           test -s build/branch-root-preview/index.html
           test -s build/branch-root-preview/word-density.html
           test -s build/branch-root-preview/metrics.html
@@ -116,10 +117,12 @@ jobs:
           test -s build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           test -s build/branch-root-preview/assets/voice-preview.json
           test -s build/branch-root-preview/voice/index.html
+          test -s build/branch-root-preview/voice/holdout-three.csv
           cmp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           cmp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
           cmp metrics.html build/branch-root-preview/metrics.html
           cmp voice/index.html build/branch-root-preview/voice/index.html
+          cmp voice/holdout-three.csv build/branch-root-preview/voice/holdout-three.csv
           test -z "$(find build/branch-root-preview -type l -print -quit)"
 
       - name: Upload exact branch-root Reader preview

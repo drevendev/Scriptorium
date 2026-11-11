@@ -295,7 +295,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--snapshot", type=Path, help="override the pinned bundled source-free snapshot")
     parser.add_argument("--include-dostoevsky", action="store_true",
                         help="opt-in source-bound third author from two Russian editions (v2)")
-    parser.add_argument("--format", choices=("json", "markdown"), default="json")
+    parser.add_argument("--format", choices=("json", "markdown", "csv"), default="json")
     analysis_group = parser.add_mutually_exclusive_group()
     analysis_group.add_argument("--holdout", action="store_true",
                                 help="exploratory four- or six-fold leave-one-book-out stress test; not accepted M3")
@@ -305,6 +305,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     group.add_argument("--output", type=Path, help="create a new derived report; never overwrite")
     group.add_argument("--check", type=Path, help="verify an existing JSON artifact")
     args = parser.parse_args(argv)
+    if args.format == "csv" and not (args.holdout and args.include_dostoevsky):
+        parser.error("CSV export requires --include-dostoevsky --holdout")
     if args.check is not None and args.format != "json":
         parser.error("--check requires JSON format")
     if args.check is not None and (args.holdout or args.ablate):
@@ -330,9 +332,10 @@ def main(argv: Sequence[str] | None = None) -> int:
                   else "2; editions=4; fields=16") + "; M2=0/5; M3=OPEN")
         else:
             if args.holdout:
-                from .voice_holdout import build_holdout, render_markdown as render_holdout_markdown
+                from .voice_holdout import build_holdout, render_markdown as render_holdout_markdown, render_csv as render_holdout_csv
                 evaluation = build_holdout(artifact)
                 rendered = (render_holdout_markdown(evaluation) if args.format == "markdown"
+                            else render_holdout_csv(evaluation) if args.format == "csv"
                             else render_json(evaluation))
             elif args.ablate:
                 from .voice_ablation import build_ablation, render_markdown as render_ablation_markdown

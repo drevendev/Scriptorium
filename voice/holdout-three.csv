@@ -1,0 +1,7 @@
+schema_version,source_snapshot_git_blob_sha1,held_out_work_key,held_out_work_title,known_author_id,distance_to_grin,distance_to_tolstoy,distance_to_dostoevsky,nearest_author_id,nearest_author_outcome,distance_unit,evidence_scope
+scriptorium-author-rhythm-holdout-v2,a84986fd72ad616006b8ce179d1653e5ecf13729,waves,Бегущая по волнам,grin,0.224762,0.115350,0.193246,tolstoy,other,dimensionless,in_sample_diagnostic
+scriptorium-author-rhythm-holdout-v2,a84986fd72ad616006b8ce179d1653e5ecf13729,road,Дорога в никуда,grin,0.224762,0.204390,0.202832,dostoevsky,other,dimensionless,in_sample_diagnostic
+scriptorium-author-rhythm-holdout-v2,a84986fd72ad616006b8ce179d1653e5ecf13729,anna,Анна Каренина,tolstoy,0.107464,0.181683,0.161290,grin,other,dimensionless,in_sample_diagnostic
+scriptorium-author-rhythm-holdout-v2,a84986fd72ad616006b8ce179d1653e5ecf13729,resurrection,Воскресение,tolstoy,0.212003,0.181683,0.294648,tolstoy,same,dimensionless,in_sample_diagnostic
+scriptorium-author-rhythm-holdout-v2,a84986fd72ad616006b8ce179d1653e5ecf13729,karamazov,Братья Карамазовы,dostoevsky,0.209207,0.220770,0.262534,grin,other,dimensionless,in_sample_diagnostic
+scriptorium-author-rhythm-holdout-v2,a84986fd72ad616006b8ce179d1653e5ecf13729,humiliated,Униженные и оскорбленные,dostoevsky,0.302948,0.355076,0.262534,dostoevsky,same,dimensionless,in_sample_diagnostic

@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Final, Iterable
 
 from .metrics import METRIC_CONTRACT_ID, METRIC_DEFINITIONS, analyze_deterministic_metrics
-from .metric_labels import METRIC_LABELS
+from .metric_labels import METRIC_LABELS, METRIC_LABELS_RU
 from .csv_safety import safe_csv_text
 
 
@@ -118,7 +118,8 @@ def render_html(artifact: dict[str, object], *, title: str | None = None, saved_
         unit = _human_unit(str(metric.get("unit", "")))
         overview += (
             '<div class="highlight">'
-            f'<dt>{escape(label)}</dt>'
+            f'<dt>{escape(label)}<span class="metric-label-ru" lang="ru">'
+            f'{escape(METRIC_LABELS_RU[metric_id])}</span></dt>'
             f'<dd>{escape(value)} <span class="highlight-unit">{escape(unit) if value != "Unavailable" else ""}</span></dd>'
             '</div>'
         )
@@ -203,6 +204,7 @@ h1, h2 {{ line-height: 1.15; }}
 @media print {{ .punctuation-item {{ break-inside: avoid; }} .punctuation-fill {{ print-color-adjust: exact; }} }}
 .table-wrap {{ overflow-x: auto; margin-block: 1rem 2rem; }}
 .metric-label {{ display: block; font-weight: 700; }}
+.metric-label-ru {{ display: block; font: 400 .85rem/1.4 system-ui, sans-serif; color: color-mix(in srgb, CanvasText 78%, Canvas); margin-block-start: .15rem; }}
 .metric-id {{ display: block; font-size: .78em; font-weight: 400; color: color-mix(in srgb, CanvasText 72%, Canvas); margin-block-start: .2rem; }}
 table {{ border-collapse: collapse; width: 100%; min-width: 48rem; font-family: system-ui, sans-serif; }}
 th, td {{ padding: .65rem .75rem; border-bottom: 1px solid color-mix(in srgb, CanvasText 18%, Canvas); text-align: left; vertical-align: top; }}
@@ -219,7 +221,7 @@ code {{ overflow-wrap: anywhere; }}
 <main id="main-content" tabindex="-1">
 <p class="eyebrow">Scriptorium · local-only deterministic analysis</p>
 <h1>{escape(display_title)}</h1>
-<p class="lead">Explore literary statistics in everyday language, with the exact machine metric IDs beneath each label. FantLab-namespaced rows are inferred compatibility candidates, not parity claims. Source text is not embedded in this report.</p>
+<p class="lead">Explore literary statistics in everyday language, with English and Russian labels for all 29 registered metrics and exact machine IDs beneath each label. Canonical units are unchanged. FantLab-namespaced rows are inferred compatibility candidates, not parity claims. Source text is not embedded in this report.</p>
 <p class="badge">{escape(threshold_state)}</p>
 {saved_note}
 {overview}
@@ -603,7 +605,11 @@ def _render_punctuation_chart(metrics: dict[str, object]) -> str:
     maximum = max((rate for _, rate, _ in data if rate is not None), default=Decimal(0))
     items = []
     for metric_id, rate, raw in data:
-        label = escape(METRIC_LABELS.get(metric_id, metric_id))
+        label = (
+            escape(METRIC_LABELS.get(metric_id, metric_id))
+            + '<span class="metric-label-ru" lang="ru">'
+            + escape(METRIC_LABELS_RU[metric_id]) + "</span>"
+        )
         if rate is None:
             bar = '<span class="punctuation-missing">Unavailable — not zero</span>'
         else:
@@ -648,11 +654,20 @@ def _render_metric_group(name: str, rows: list[tuple[str, dict[str, object]]]) -
         # Human labels are presentation-only; the canonical metric ID remains
         # visibly inspectable and the machine-readable artifact is unchanged.
         human_label = METRIC_LABELS.get(metric_id, metric_id)
+        russian_label = METRIC_LABELS_RU.get(metric_id)
+        russian_html = (
+            f'<span class="metric-label-ru" lang="ru">{escape(russian_label)}</span>'
+            if russian_label is not None else ""
+        )
+        accessible_label = (
+            human_label + (", " + russian_label if russian_label is not None else "")
+            + ", metric ID " + metric_id
+        )
         body.append(
             "<tr>"
             f'<th scope="row" data-label="{escape(human_label, quote=True)}" '
-            f'aria-label="{escape(human_label + ", metric ID " + metric_id, quote=True)}">'
-            f'<span class="metric-label">{escape(human_label)}</span>'
+            f'aria-label="{escape(accessible_label, quote=True)}">'
+            f'<span class="metric-label">{escape(human_label)}</span>{russian_html}'
             f'<code class="metric-id">{escape(metric_id)}</code></th>'
             f"<td>{escape(_format_value(value))}</td>"
             f"<td>{escape(_human_unit(str(row.get('unit', ''))))}</td>"

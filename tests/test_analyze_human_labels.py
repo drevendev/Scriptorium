@@ -4,7 +4,7 @@ from __future__ import annotations
 import unittest
 
 from scriptorium.analyze import build_local_analysis, render_html
-from scriptorium.metric_labels import METRIC_LABELS
+from scriptorium.metric_labels import METRIC_LABELS, METRIC_LABELS_RU
 
 
 class OfflineReadableMetricsTests(unittest.TestCase):
@@ -20,7 +20,11 @@ class OfflineReadableMetricsTests(unittest.TestCase):
             with self.subTest(metric=metric_id):
                 self.assertIn(f'data-label="{label}"', page)
                 self.assertIn(f'<span class="metric-label">{label}</span>', page)
-                self.assertIn(f'aria-label="{label}, metric ID {metric_id}"', page)
+                self.assertIn(f'aria-label="{label}, {METRIC_LABELS_RU[metric_id]}, metric ID {metric_id}"', page)
+                self.assertIn(
+                    f'<span class="metric-label-ru" lang="ru">{METRIC_LABELS_RU[metric_id]}</span>',
+                    page,
+                )
                 self.assertIn(f'<code class="metric-id">{metric_id}</code>', page)
 
     def test_names_are_readable_without_css_or_javascript(self):
@@ -43,7 +47,11 @@ class OfflineReadableMetricsTests(unittest.TestCase):
             ('Distinct surface words', 'fantlab.vocabulary.unique_words'),
         ):
             with self.subTest(metric=metric_id):
-                self.assertIn(f'<dt>{label}</dt>', page)
+                self.assertIn(
+                    f'<dt>{label}<span class="metric-label-ru" lang="ru">'
+                    f'{METRIC_LABELS_RU[metric_id]}</span></dt>',
+                    page,
+                )
                 self.assertIn(f'<dd>{_format_value(self.artifact["metrics"][metric_id]["value"])}', page)
         self.assertIn('grid-template-columns: repeat(auto-fit', page)
 
@@ -52,8 +60,12 @@ class OfflineReadableMetricsTests(unittest.TestCase):
         data = copy.deepcopy(self.artifact)
         data['metrics']['fantlab.dialogue.share_percent']['value'] = None
         page = render_html(data)
-        self.assertIn('<dt>Dialogue share</dt><dd>Unavailable', page)
-        self.assertNotIn('<dt>Dialogue share</dt><dd>0', page)
+        heading = (
+            '<dt>Dialogue share<span class="metric-label-ru" lang="ru">'
+            'Доля диалогов</span></dt><dd>'
+        )
+        self.assertIn(heading + 'Unavailable', page)
+        self.assertNotIn(heading + '0', page)
 
     def test_unknown_extension_label_is_escaped_and_identified(self):
         data = dict(self.artifact)

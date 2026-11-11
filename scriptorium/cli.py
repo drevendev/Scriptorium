@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import sys
 
-COMMANDS = {"batch": "scriptorium.batch", "analyze": "scriptorium.analyze", "verify": "scriptorium.verify", "epub": "scriptorium.epub", "compare": "scriptorium.compare", "site": "scriptorium.site_renderer", "evidence": "scriptorium.benchmark_metric_matrix", "n-evidence": "scriptorium.native_n_evidence", "word-gap": "scriptorium.word_gap", "word-boundaries": "scriptorium.boundary_probe", "voice": "scriptorium.voice_profile"}
+COMMANDS = {"batch": "scriptorium.batch", "analyze": "scriptorium.analyze", "verify": "scriptorium.verify", "epub": "scriptorium.epub", "compare": "scriptorium.compare", "metrics": "scriptorium.metric_catalog", "site": "scriptorium.site_renderer", "evidence": "scriptorium.benchmark_metric_matrix", "n-evidence": "scriptorium.native_n_evidence", "word-gap": "scriptorium.word_gap", "word-boundaries": "scriptorium.boundary_probe", "voice": "scriptorium.voice_profile"}
 MAX_DIAGNOSTIC_BYTES = 8 * 1024 * 1024
 
 
@@ -49,12 +49,13 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if not args or args[0] in {"-h", "--help"}:
         print("Scriptorium Reader — private text analysis and evidence-labelled literary reports")
-        print("Usage: scriptorium <analyze|verify|epub|batch|compare|diagnostic|evidence|n-evidence|word-gap|word-boundaries|voice|site> [options]")
+        print("Usage: scriptorium <analyze|verify|epub|batch|compare|metrics|diagnostic|evidence|n-evidence|word-gap|word-boundaries|voice|site> [options]")
         print("  analyze     UTF-8 manuscript -> JSON, HTML, Markdown or CSV (29 metrics)")
         print("  verify      Replay private TXT/EPUB reports (--epub, --provenance; --json for CI)")
         print("  epub        Local EPUB XHTML spine -> JSON/HTML/CSV/Markdown and source-free identity")
         print("  batch       Explicit UTF-8 manifest -> private JSON/HTML reports and index")
         print("  compare     Two private JSON reports, --texts or --epubs -> HTML/JSON/CSV/Markdown")
+        print("  metrics     Look up the 29 installed metric IDs, units and evidence (text/JSON)")
         print("  diagnostic  Curated historical diagnostic -> offline HTML")
         print("  evidence    Source-free FantLab metric deltas (requires repository checkout; M2 0/5)")
         print("  n-evidence  Retained native AOT/pylem N-only uncertainty bounds (M2 0/5)")

@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 488
+STATE_REVISION: 489
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-11
-LAST_RESULT: #499 merged at 856e0606fa814ebfa2438888c931e3490dab1f20. Proposed strict registered-unit/evidence validation for local HTML reports; exact-head PR CI and later review pending.
+LAST_RESULT: #500 confirmed merged at 738695847c26e304d65568913e31f0b6d8935ed3. Proposed installed offline metric catalogue as an independent local-reader usability slice; CI and later review are separate.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-LOCAL-HTML-REGISTERED-CONTRACT
-ISSUE: #283 — truthful local analysis presentation (do not close)
+UNIT_ID: SCRIP-CLI-METRIC-CATALOG-V1
+ISSUE: #283 — readable, truthful metric definitions (do not close)
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-html-registered-metric-contract-20261111
-BASE: 856e0606fa814ebfa2438888c931e3490dab1f20
+BRANCH: scrip-cli-metric-catalog-20261111
+BASE: 738695847c26e304d65568913e31f0b6d8935ed3
 
-ACCEPTANCE: Imported/saved local HTML reports reject any changed unit or definition-evidence declaration for all 29 registered engine metrics, including unavailable rows and punctuation rates. Valid short/empty/dictionary-backed artifacts, deterministic render, source-free outputs, and explicitly labelled future Scriptorium extensions remain supported. Positive contract matching and negative unit/evidence tampering regressions; no formulas, JSON/CSV schema, corpus or FantLab parity changes. Exact-head CI and later independent review required; visual/browser acceptance remains UNVERIFIED. M2 0/5 and M3 open.
+ACCEPTANCE: The installed `scriptorium metrics [metric-id]` command lists all 29 actual registered engine definitions with canonical ID, human label, unit, definition evidence and inference/extension status in readable text or source-free JSON; the five dictionary-dependent rows are marked. Reject unknown IDs without leaking caller-controlled input; create-only output; no scientific computation, source ingestion, dependency change or parity claim. Positive and negative regressions, installed-wheel smoke, exact-head CI and later independent review required. M2 0/5 and M3 open.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: a working, accessible Reader showing real-book comparisons and trustw
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 strict registered-unit/evidence integrity for local HTML | 29 engine declarations cross-checked; tampered imported units/evidence rejected; later PR acceptance | Existing deterministic metrics and local renderer |
+| P1 | #283 offline CLI metric catalogue | Source-free text/JSON descriptions of all 29 registered units/evidence, exact-ID lookup, safe file output; later PR acceptance | Existing engine definitions and labels |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
 | P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; separate generated Actions build is not the published root |

@@ -6,6 +6,8 @@
 
 **[How to read the 29 metrics →](https://drevendev.github.io/Scriptorium/metrics.html)** — Russian-language, no-JavaScript guide to current inferred formulas, exact units, dictionary requirements, punctuation edge cases and FantLab definition evidence. Each metric name in the interactive single-book and paired tables links to its exact definition; the full guide is also available without JavaScript. Every field remains **inferred** (or an explicitly labeled Scriptorium extension), not source-matched parity.
 
+**Look up metrics offline:** the installed `scriptorium metrics` command lists all 29 engine-defined IDs, units, evidence labels and dictionary requirements, while `scriptorium metrics fantlab.dialogue.share_percent --format json` inspects a single definition without opening or uploading a manuscript. See [local analysis and the metric catalog](docs/LOCAL_ANALYSIS.md). These are **inferred/extension definitions, not FantLab parity**.
+
 ### What works now
 
 | In the `master` Reader | Verified source-backed scope |

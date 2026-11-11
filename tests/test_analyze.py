@@ -90,7 +90,7 @@ class LocalAnalysisTests(unittest.TestCase):
         artifact = build_local_analysis(SOURCE.encode("utf-8"))
         altered = copy.deepcopy(artifact)
         altered["metrics"]["fantlab.general.words"]["compatibility_status"] = "extension"
-        with self.assertRaisesRegex(ValueError, "registered metric contract mismatch"):
+        with self.assertRaisesRegex(ValueError, "metric evidence status changed"):
             render_html(altered)
 
     def test_dialogue_share_chart_is_fixed_scale_and_source_bound(self):

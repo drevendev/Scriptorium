@@ -118,7 +118,7 @@ def render_html(artifact: dict[str, object], *, title: str | None = None, saved_
         unit = _human_unit(str(metric.get("unit", "")))
         overview += (
             '<div class="highlight">'
-            f'<dt>{escape(label)}<span class="metric-label-ru" lang="ru">' 
+            f'<dt>{escape(label)}<span class="metric-label-ru" lang="ru">'
             f'{escape(METRIC_LABELS_RU[metric_id])}</span></dt>'
             f'<dd>{escape(value)} <span class="highlight-unit">{escape(unit) if value != "Unavailable" else ""}</span></dd>'
             '</div>'

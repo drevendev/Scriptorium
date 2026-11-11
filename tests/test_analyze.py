@@ -9,6 +9,7 @@ import tempfile
 import unittest
 
 from scriptorium.analyze import build_local_analysis, main, render_html, render_markdown
+from scriptorium.metric_labels import METRIC_LABELS, METRIC_LABELS_RU
 
 
 SOURCE = "Кот, кот.\n— Да? — сказал он. — Нет."
@@ -60,6 +61,37 @@ class LocalAnalysisTests(unittest.TestCase):
         self.assertIn("characters / sentence", html)
         self.assertNotIn(SOURCE, html)
 
+
+
+    def test_html_shows_all_29_source_bound_russian_labels_with_english_and_ids(self):
+        self.assertEqual(set(METRIC_LABELS_RU), set(METRIC_LABELS))
+        artifact = build_local_analysis(SOURCE.encode("utf-8"))
+        html = render_html(artifact, title="Русский <отчёт>")
+        self.assertIn("<html lang=\"en\">", html)
+        self.assertIn("Русский &lt;отчёт&gt;", html)
+        for metric_id, russian_label in METRIC_LABELS_RU.items():
+            with self.subTest(metric_id=metric_id):
+                self.assertIn(
+                    f'<span class="metric-label">{METRIC_LABELS[metric_id]}</span>'
+                    f'<span class="metric-label-ru" lang="ru">{russian_label}</span>'
+                    f'<code class="metric-id">{metric_id}</code>',
+                    html,
+                )
+                self.assertIn(
+                    f'{METRIC_LABELS[metric_id]}, {russian_label}, metric ID {metric_id}',
+                    html,
+                )
+        self.assertIn('lang="ru">Запятые</span>', html)
+        self.assertIn('lang="ru">Доля диалогов</span>', html)
+        self.assertNotIn(SOURCE, html)
+        self.assertNotIn("<script", html)
+
+    def test_html_bilingual_labels_do_not_bypass_metric_contract(self):
+        artifact = build_local_analysis(SOURCE.encode("utf-8"))
+        altered = copy.deepcopy(artifact)
+        altered["metrics"]["fantlab.general.words"]["compatibility_status"] = "extension"
+        with self.assertRaisesRegex(ValueError, "registered metric contract mismatch"):
+            render_html(altered)
 
     def test_dialogue_share_chart_is_fixed_scale_and_source_bound(self):
         original = build_local_analysis(SOURCE.encode("utf-8"))

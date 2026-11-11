@@ -9,8 +9,13 @@ python -m scriptorium.analyze manuscript.txt --format html --title "My manuscrip
 ```
 
 JSON is the default; omitting `--output` writes the selected format to standard output.
-The HTML file is self-contained and can be opened offline. Its tables include units,
-compatibility labels, raw punctuation counts and keyboard-accessible scrolling regions.
+The HTML file is self-contained and can be opened offline. Its table rows, punctuation
+chart and headline figures display English and Russian labels for the 29 registered
+metrics, using the same translations as the public Reader and `scriptorium metrics
+--lang ru`. The page retains English as its primary document language, marks Russian
+text with `lang="ru"`, and preserves exact metric IDs, canonical units, evidence/status,
+raw punctuation counts and keyboard-accessible scrolling regions. This is a display
+translation only; it does not localize the scientific contract or prove FantLab parity.
 
 ## Reproducibility and scientific limits
 

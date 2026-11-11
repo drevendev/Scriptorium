@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 490
+STATE_REVISION: 491
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-11
-LAST_RESULT: #501 confirmed merged at 695e9d71ad87cc46a2a70b7ff329d948f7dd98e6. Proposed Russian CLI metric descriptions aligned with the already reviewed public glossary; later independent acceptance required.
+LAST_RESULT: #502 confirmed merged at d2744e1464dc6d93c4775822833ce1cd727cec17. Proposed bilingual labels for private HTML reports; later independent acceptance required.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CLI-METRIC-CATALOG-RU-V1
-ISSUE: #283 — offline Russian comprehension of registered metric definitions (do not close)
+UNIT_ID: SCRIP-LOCAL-HTML-BILINGUAL-METRIC-LABELS-V1
+ISSUE: #283 — bilingual local report comprehension (do not close)
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-cli-russian-metric-catalog-20261111
-BASE: 695e9d71ad87cc46a2a70b7ff329d948f7dd98e6
+BRANCH: scrip-local-html-bilingual-metrics-20261111
+BASE: d2744e1464dc6d93c4775822833ce1cd727cec17
 
-ACCEPTANCE: `scriptorium metrics --lang ru` prints Russian human labels for all 29 definitions, matching the reviewed public `metrics.html` glossary. Metric IDs/units, evidence/status, dictionary gates and default English text/JSON remain unchanged; opted-in Russian JSON has `label_language=ru`. Positive/negative regressions, exact-head CI, installed-wheel smoke and later independent review are required. No metric calculations or book-text changes; M2 0/5, M3 open.
+ACCEPTANCE: Private standalone HTML reports show all 29 registered English/Russian labels in exact metric rows, with language-tagged translations, accessible bilingual row names, four translated overview figures and translated punctuation captions. Definitions come from the shared reviewed glossary; no private source, units, evidence/status or JSON/CSV/calculation changes. Negative contract regression, exact-head CI and later independent acceptance required. Browser visual review remains VISUAL_NOT_VERIFIED. M2 0/5, M3 open.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: a working, accessible Reader showing real-book comparisons and trustw
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Russian offline metric guide | Match 29 CLI labels to the reviewed Russian glossary while preserving machine contract; later PR acceptance | Merged #501 catalog and #468 glossary |
+| P1 | #283 bilingual local HTML reports | Show shared 29 Russian/English labels with accessible language tags in private HTML; preserve canonical metric fields | Merged #502 CLI labels and #468 glossary |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
 | P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; separate generated Actions build is not the published root |

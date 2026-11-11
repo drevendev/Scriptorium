@@ -313,3 +313,76 @@ def render_markdown(result: Mapping[str, object]) -> str:
         "",
     ]
     return "\n".join(lines)
+
+def render_csv(result: Mapping[str, object]) -> str:
+    """Reproducible six-fold source-bound CSV, not classifier accuracy."""
+    import csv
+    from io import StringIO
+
+    boundary = result.get("scientific_boundary") if isinstance(result, dict) else None
+    summary = result.get("summary") if isinstance(result, dict) else None
+    if (not isinstance(result, dict)
+            or result.get("schema_version") != EXTENDED_VERSION
+            or result.get("source_preview_version") != source.EXTENDED_VERSION
+            or not isinstance(boundary, dict)
+            or boundary.get("class") != "exploratory_six_work_three_author_within_sample_stress_test"
+            or boundary.get("m3_accepted") is not False
+            or boundary.get("m2_source_matched") != 0
+            or boundary.get("independent_external_validation") is not False
+            or boundary.get("no_fantlab_parity_claim") is not True
+            or boundary.get("no_source_text_committed") is not True
+            or not isinstance(result.get("method"), dict)
+            or result["method"].get("distance_is_not_probability") is not True
+            or not isinstance(result.get("source_snapshot_git_blob_sha1"), str)
+            or not re.fullmatch(r"[a-f0-9]{40}", result["source_snapshot_git_blob_sha1"])):
+        raise ValueError("unverified six-fold CSV scientific boundary")
+    folds = result.get("folds")
+    expected_keys = ("waves", "road", "anna", "resurrection", "karamazov", "humiliated")
+    author_ids = ("grin", "tolstoy", "dostoevsky")
+    if (not isinstance(folds, list) or len(folds) != 6
+            or [f.get("held_out_work_key") if isinstance(f, dict) else None for f in folds]
+               != list(expected_keys)
+            or not isinstance(summary, dict)
+            or any(type(summary.get(k)) is not int or summary[k] < 0
+                   for k in ("total_folds", "nearer_to_labelled_author",
+                             "nearer_to_other_author", "ties"))
+            or summary["total_folds"] != 6):
+        raise ValueError("incomplete six-fold CSV evidence")
+    stream = StringIO(newline="")
+    writer = csv.writer(stream, lineterminator="\n")
+    writer.writerow((
+        "schema_version", "source_snapshot_git_blob_sha1", "held_out_work_key",
+        "held_out_work_title", "known_author_id", "distance_to_grin",
+        "distance_to_tolstoy", "distance_to_dostoevsky", "nearest_author_id",
+        "nearest_author_outcome", "distance_unit", "evidence_scope",
+    ))
+    outcomes = {"same": 0, "other": 0, "tie": 0}
+    for fold in folds:
+        known, nearest = fold.get("known_author_id"), fold.get("nearest_author_id")
+        title, distances = fold.get("held_out_work_title"), fold.get("relative_distances")
+        if (known not in author_ids or nearest not in (*author_ids, None)
+                or not isinstance(title, str) or not title.strip()
+                or re.match(r"\s*[=+@-]", title)
+                or any(char in title for char in ("\r", "\n", "\t"))
+                or not isinstance(distances, dict) or set(distances) != set(author_ids)):
+            raise ValueError("invalid six-fold CSV row")
+        values = [_finite(distances[aid]) for aid in author_ids]
+        if any(v > 2 or round(v, 6) != v for v in values):
+            raise ValueError("invalid rounded relative distance")
+        outcome = "tie" if nearest is None else ("same" if nearest == known else "other")
+        if fold.get("nearer_to_labelled_author") is not (
+            None if outcome == "tie" else outcome == "same"
+        ):
+            raise ValueError("contradictory six-fold CSV outcome")
+        outcomes[outcome] += 1
+        writer.writerow((
+            EXTENDED_VERSION, result["source_snapshot_git_blob_sha1"],
+            fold["held_out_work_key"], title, known,
+            *(f"{v:.6f}" for v in values), nearest or "", outcome,
+            "dimensionless", "in_sample_diagnostic",
+        ))
+    if (outcomes["same"] != summary["nearer_to_labelled_author"]
+            or outcomes["other"] != summary["nearer_to_other_author"]
+            or outcomes["tie"] != summary["ties"]):
+        raise ValueError("six-fold CSV summary contradicts rows")
+    return stream.getvalue()

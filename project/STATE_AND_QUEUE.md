@@ -1,22 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 482
+STATE_REVISION: 483
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-11
-LAST_RESULT: #493 merged as 8e1f05a4f33f134767808c4a236e0ef223507a96 (issue #492 closed); #494 adds a source-bound six-fold, three-author public negative-result section (PR_CREATED, not merged).
+LAST_RESULT: #494 merged as 43feb0d3dd25c5484651de94d507f46bfa0b5853; Reader six-fold evidence in master. Reproducible source-bound CSV download is a new PR candidate, later-run CI and acceptance pending.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-THREE-AUTHOR-HOLDOUT
+UNIT_ID: SCRIP-READER-SIXFOLD-CSV
 ISSUE: #283 — incremental Reader scientific interpretability (do not close)
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED; exact-head CI pending
-PR: #494
-BRANCH: scrip-voice-three-author-reader-20261111
-BASE: 8e1f05a4f33f134767808c4a236e0ef223507a96
+PR: native GitHub PR for source-bound six-fold CSV export
+BRANCH: scrip-voice-sixfold-csv-20261111
+BASE: 43feb0d3dd25c5484651de94d507f46bfa0b5853
 
-ACCEPTANCE: Public static voice Reader shows six exact v2 held-out book rows, three relative distances with units and known/nearest author, 2/6 correct/4/6 other, explicit source links and a pinned source snapshot Git blob. Keep the original four-book 1/4 and ablation unchanged. Strong M2 0/5, M3 open and no classifier/parity claim. New positive/negative tests reconstruct v2 directly from frozen evidence; later fresh CI/merge and browser/mobile validation remain separate.
-Verification: source-free JS recomputation yielded six distinct fold rows and 2/6; Python exact-head GitHub CI NOT_RUN at queue commit. No live site change yet.
+ACCEPTANCE: Reader offers six-fold source-pinned downloadable CSV with three dimensionless distances, known/nearest author and explicit exploratory scope. CLI `scriptorium voice --include-dostoevsky --holdout --format csv` reproduces exact committed bytes. Reject forged summaries, scientific boundaries and spreadsheet formula injection; CI packages exact branch-root preview CSV. Preserve v1 output, M2 0/5 and M3 open. Later fresh CI/acceptance/merge required; live/browser separately.
+Verification: six pinned static HTML rows checked before PR; full local tests and browser visual inspection NOT_RUN; exact-head GitHub CI pending.
 
 ## Next user-visible milestone and compact queue
 
@@ -24,7 +24,7 @@ Milestone: credible, reproducible real-book descriptive/author comparisons, foll
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #494 six-book public author-stress-test evidence | Pinned six-fold table, source identity, accessible no-JS route, exact-head CI and later acceptance | Existing v2 CLI + 11-work source-free snapshot; browser visual check separately |
+| P1 | Reproducible six-fold CSV download and CLI export | Six CSV rows exactly reproduce pinned evidence, static Reader download, positive/negative tests and deployment staging | Merged #494 + pinned source-free data; later CI/merge |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
 | P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | Deployed HTTP readback, desktop/mobile screenshots and verified controls | Browser/deploy access; independent code work permitted |

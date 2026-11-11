@@ -8,6 +8,9 @@ from __future__ import annotations
 from copy import deepcopy
 from pathlib import Path
 import json
+import csv
+from io import StringIO
+from contextlib import redirect_stdout, redirect_stderr
 import unittest
 
 from scriptorium import voice_holdout, voice_profile
@@ -98,6 +101,67 @@ class ThreeAuthorReaderTests(unittest.TestCase):
         tampered["scientific_boundary"]["m3_accepted"] = True
         with self.assertRaises(ValueError):
             voice_holdout.build_holdout(tampered)
+
+
+    def test_downloadable_csv_matches_exact_folds_and_cli(self):
+        from scriptorium import cli
+        content = (ROOT / "voice/holdout-three.csv").read_text(encoding="utf-8")
+        self.assertEqual(content, voice_holdout.render_csv(self.report))
+        rows = list(csv.DictReader(StringIO(content)))
+        self.assertEqual(len(rows), 6)
+        self.assertEqual([row["held_out_work_key"] for row in rows],
+                         ["waves", "road", "anna", "resurrection", "karamazov", "humiliated"])
+        for row, fold in zip(rows, self.report["folds"]):
+            with self.subTest(work=row["held_out_work_key"]):
+                self.assertEqual(row["schema_version"], voice_holdout.EXTENDED_VERSION)
+                self.assertEqual(row["source_snapshot_git_blob_sha1"],
+                                 self.report["source_snapshot_git_blob_sha1"])
+                self.assertEqual(row["distance_unit"], "dimensionless")
+                self.assertEqual(row["evidence_scope"], "in_sample_diagnostic")
+                self.assertEqual(row["held_out_work_title"], fold["held_out_work_title"])
+                for author_id in AUTHORS:
+                    self.assertEqual(row["distance_to_" + author_id],
+                                     f'{fold["relative_distances"][author_id]:.6f}')
+        self.assertEqual(sum(row["nearest_author_outcome"] == "same" for row in rows), 2)
+        self.assertEqual(sum(row["nearest_author_outcome"] == "other" for row in rows), 4)
+        self.assertIn('href="holdout-three.csv"', self.html)
+        workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
+        self.assertIn("cp voice/holdout-three.csv build/branch-root-preview/voice/holdout-three.csv",
+                      workflow)
+        self.assertIn("cmp voice/holdout-three.csv build/branch-root-preview/voice/holdout-three.csv",
+                      workflow)
+        with redirect_stdout(output := StringIO()):
+            self.assertEqual(cli.main(["voice", "--include-dostoevsky", "--holdout",
+                                       "--format", "csv"]), 0)
+        self.assertEqual(output.getvalue(), content)
+
+    def test_csv_rejects_misleading_or_unsafe_artifacts(self):
+        old = voice_profile.build_preview(
+            self.snapshot, source_blob_sha1=self.report["source_snapshot_git_blob_sha1"])
+        with self.assertRaisesRegex(ValueError, "CSV scientific boundary"):
+            voice_holdout.render_csv(voice_holdout.build_holdout(old))
+        for field, value in (("m3_accepted", True), ("independent_external_validation", True)):
+            broken = deepcopy(self.report)
+            broken["scientific_boundary"][field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                voice_holdout.render_csv(broken)
+        broken = deepcopy(self.report)
+        broken["folds"][0]["nearer_to_labelled_author"] = True
+        with self.assertRaisesRegex(ValueError, "contradictory"):
+            voice_holdout.render_csv(broken)
+        broken = deepcopy(self.report)
+        broken["folds"][0]["held_out_work_title"] = "=HYPERLINK(1)"
+        with self.assertRaisesRegex(ValueError, "invalid six-fold CSV row"):
+            voice_holdout.render_csv(broken)
+        broken = deepcopy(self.report)
+        broken["summary"]["nearer_to_labelled_author"] += 1
+        with self.assertRaisesRegex(ValueError, "summary contradicts"):
+            voice_holdout.render_csv(broken)
+        from scriptorium import cli
+        with redirect_stderr(stderr := StringIO()), self.assertRaises(SystemExit) as exc:
+            cli.main(["voice", "--format", "csv"])
+        self.assertEqual(exc.exception.code, 2)
+        self.assertIn("CSV export requires", stderr.getvalue())
 
 
 if __name__ == "__main__":

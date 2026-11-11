@@ -123,6 +123,7 @@ def render_html(artifact: dict[str, object], *, title: str | None = None, saved_
             '</div>'
         )
     overview += '</dl></section>'
+    dialogue_chart = _render_dialogue_chart(metrics)
     punctuation_chart = _render_punctuation_chart(metrics)
     included = {metric_id for _, rows in groups for metric_id, _ in rows}
     other = [(metric_id, _mapping(metrics[metric_id], metric_id))
@@ -182,6 +183,14 @@ h1, h2 {{ line-height: 1.15; }}
 .highlight dt {{ font: 600 .88rem/1.4 system-ui, sans-serif; }}
 .highlight dd {{ margin: .45rem 0 0; font: 700 clamp(1.25rem, 3vw, 2rem)/1.2 system-ui, sans-serif; overflow-wrap: anywhere; }}
 .highlight-unit {{ font: 400 .75rem/1.35 system-ui, sans-serif; }}
+.dialogue-figure {{ border-block: 1px solid color-mix(in srgb, CanvasText 22%, Canvas); padding-block: 1rem 1.5rem; margin-block-end: 1.5rem; }}
+.dialogue-figure > p {{ max-width: 74ch; }}
+.dialogue-track {{ display: block; width: min(100%, 40rem); height: 1.1rem; background: color-mix(in srgb, CanvasText 12%, Canvas); border: 1px solid currentColor; border-radius: .4rem; overflow: hidden; }}
+.dialogue-fill {{ display: block; height: 100%; background: currentColor; }}
+.dialogue-fill[data-nonzero="true"] {{ min-width: 2px; }}
+.dialogue-value, .dialogue-missing {{ font: .9rem/1.5 system-ui, sans-serif; }}
+@media (forced-colors: active) {{ .dialogue-fill {{ background: Highlight; }} }}
+@media print {{ .dialogue-fill {{ print-color-adjust: exact; }} }}
 .punctuation-figure {{ border-block: 1px solid color-mix(in srgb, CanvasText 22%, Canvas); padding-block: 1rem 1.5rem; margin-block-end: 1.5rem; }}
 .punctuation-figure > p {{ max-width: 74ch; }}
 .punctuation-chart {{ list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: .7rem; }}
@@ -214,6 +223,7 @@ code {{ overflow-wrap: anywhere; }}
 <p class="badge">{escape(threshold_state)}</p>
 {saved_note}
 {overview}
+{dialogue_chart}
 {punctuation_chart}
 <div class="meta">
 <p><strong>Raw SHA-256:</strong> <code>{escape(str(source.get('raw_sha256')))}</code></p>
@@ -516,6 +526,49 @@ def _validate_html_artifact(
             raise ValueError("local HTML raw count must be nonnegative integer or null")
     if source["normalized_character_count"] != metrics["fantlab.general.characters"]["value"]:
         raise ValueError("local HTML character count conflicts with metric row")
+
+
+
+def _render_dialogue_chart(metrics: dict[str, object]) -> str:
+    """Show an honest fixed 0–100% dialogue share for a private local report.
+
+    This is an inferred dialogue-character rate over non-whitespace characters,
+    not a share of sentences, a quality score or a FantLab parity claim.
+    """
+    metric_id = "fantlab.dialogue.share_percent"
+    row = _mapping(metrics.get(metric_id), metric_id)
+    if row.get("unit") != "percent":
+        raise ValueError("dialogue share chart requires a percent metric")
+    raw = row.get("value")
+    if raw is None:
+        display = (
+            '<p class="dialogue-missing" role="status">Dialogue share unavailable — '
+            'not zero. No percentage bar is shown.</p>'
+        )
+    else:
+        if type(raw) not in (int, float, Decimal):
+            raise ValueError("dialogue share must be numeric or unavailable")
+        share = Decimal(str(raw))
+        if not share.is_finite() or not Decimal(0) <= share <= Decimal(100):
+            raise ValueError("dialogue share must be a finite percentage from 0 to 100")
+        visible_tick = ' data-nonzero="true"' if share > 0 else ""
+        display = (
+            '<div class="dialogue-track" aria-hidden="true">'
+            f'<span class="dialogue-fill"{visible_tick} '
+            f'style="width: {share:.2f}%"></span></div>'
+            f'<p class="dialogue-value"><strong>{escape(_format_value(raw))}%</strong> '
+            'of non-whitespace characters identified as dialogue. '
+            'The unfilled track includes everything not identified as dialogue; '
+            'it is not necessarily narration.</p>'
+        )
+    return (
+        '<section class="dialogue-figure" aria-labelledby="dialogue-chart-heading">'
+        '<h2 id="dialogue-chart-heading">Dialogue share</h2>'
+        '<p>The track uses an absolute 0–100% scale, not the longest book or '
+        'the longest bar as a reference. Dialogue detection is an inferred '
+        'Scriptorium segmentation; this is not a FantLab parity or quality score.</p>'
+        f'{display}</section>'
+    )
 
 
 def _render_punctuation_chart(metrics: dict[str, object]) -> str:

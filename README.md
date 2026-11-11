@@ -80,6 +80,8 @@ cat manuscript.txt | scriptorium analyze - --format html --output report.html
 
 Only the explicit `-` reads a pipe/redirect, not an interactive terminal. Stdin is limited to 32 MiB, must be UTF-8 and never becomes a corpus upload. The derived report has no source prose; `--output` refuses to overwrite existing output. Avoid piping private results to external services. The analyzer also supports source-free Markdown/CSV, unencrypted EPUB and local pair comparison. **[Commands and examples ↓](#try-your-own-text)** · [EPUB security and limits](docs/PRIVATE_EPUB.md) · [Offline Reader preview](docs/READER_PREVIEW.md).
 
+**Private HTML dialogue chart:** each locally generated HTML report now includes a source-bound, no-JavaScript 0–100% dialogue-character bar alongside its exact numeric table and punctuation chart. The denominator is **non-whitespace characters**, not sentences; the unfilled region is not necessarily narration. Missing values say unavailable rather than drawing a zero bar, and short-excerpt and FantLab-parity caveats remain visible. The metric engine, JSON/CSV contracts and input privacy are unchanged.
+
 ### What the numbers do — and do not — mean
 
 Measured counts and rates are **inferred Scriptorium metrics**, not a verified reimplementation of FantLab's hidden algorithms. The original input editions used by FantLab have not been identified, morphology still has documented unknowns, and **M2 parity remains 0/5**. `NOT_RUN` means unavailable, not zero. Short excerpts can be analyzed privately but do not qualify for the ≥300,000-character parity/author-profile corpus. Never assume web availability gives reuse rights; the public Reader stores derived values and provenance, **not book prose**.

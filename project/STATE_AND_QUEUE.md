@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 489
+STATE_REVISION: 490
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-11
-LAST_RESULT: #500 confirmed merged at 738695847c26e304d65568913e31f0b6d8935ed3. Proposed installed offline metric catalogue as an independent local-reader usability slice; CI and later review are separate.
+LAST_RESULT: #501 confirmed merged at 695e9d71ad87cc46a2a70b7ff329d948f7dd98e6. Proposed Russian CLI metric descriptions aligned with the already reviewed public glossary; later independent acceptance required.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CLI-METRIC-CATALOG-V1
-ISSUE: #283 — readable, truthful metric definitions (do not close)
+UNIT_ID: SCRIP-CLI-METRIC-CATALOG-RU-V1
+ISSUE: #283 — offline Russian comprehension of registered metric definitions (do not close)
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-cli-metric-catalog-20261111
-BASE: 738695847c26e304d65568913e31f0b6d8935ed3
+BRANCH: scrip-cli-russian-metric-catalog-20261111
+BASE: 695e9d71ad87cc46a2a70b7ff329d948f7dd98e6
 
-ACCEPTANCE: The installed `scriptorium metrics [metric-id]` command lists all 29 actual registered engine definitions with canonical ID, human label, unit, definition evidence and inference/extension status in readable text or source-free JSON; the five dictionary-dependent rows are marked. Reject unknown IDs without leaking caller-controlled input; create-only output; no scientific computation, source ingestion, dependency change or parity claim. Positive and negative regressions, installed-wheel smoke, exact-head CI and later independent review required. M2 0/5 and M3 open.
+ACCEPTANCE: `scriptorium metrics --lang ru` prints Russian human labels for all 29 definitions, matching the reviewed public `metrics.html` glossary. Metric IDs/units, evidence/status, dictionary gates and default English text/JSON remain unchanged; opted-in Russian JSON has `label_language=ru`. Positive/negative regressions, exact-head CI, installed-wheel smoke and later independent review are required. No metric calculations or book-text changes; M2 0/5, M3 open.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: a working, accessible Reader showing real-book comparisons and trustw
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 offline CLI metric catalogue | Source-free text/JSON descriptions of all 29 registered units/evidence, exact-ID lookup, safe file output; later PR acceptance | Existing engine definitions and labels |
+| P1 | #283 Russian offline metric guide | Match 29 CLI labels to the reviewed Russian glossary while preserving machine contract; later PR acceptance | Merged #501 catalog and #468 glossary |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
 | P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; separate generated Actions build is not the published root |

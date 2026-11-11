@@ -29,3 +29,37 @@ METRIC_LABELS: Final = {
            "colon": "Colons", "semicolon": "Semicolons",
        }.items()},
 }
+
+# Human-facing Russian labels mirror the reviewed branch-root metrics.html glossary.
+# Keep machine identifiers and canonical analysis contracts unchanged.
+METRIC_LABELS_RU: Final = {
+    "fantlab.general.characters": "Символы с пробелами",
+    "fantlab.general.words": "Слова",
+    "scriptorium.general.sentences": "Предложения Scriptorium",
+    "fantlab.general.mean_word_length_chars": "Средняя длина слова",
+    "fantlab.general.mean_sentence_length_chars": "Средняя длина предложения",
+    "fantlab.dialogue.mean_narration_sentence_length_chars": "Авторская фраза",
+    "fantlab.dialogue.mean_dialogue_sentence_length_chars": "Длина реплики",
+    "fantlab.dialogue.share_percent": "Доля диалогов",
+    "fantlab.dialogue.author_text_inside_dialogue_percent": "Авторские ремарки внутри диалогов",
+    "fantlab.vocabulary.unique_words": "Уникальные словоформы",
+    "fantlab.vocabulary.active_dictionary": "Словарные формы",
+    "fantlab.vocabulary.active_nondictionary": "Внесловарные формы",
+    "fantlab.vocabulary.uasz_3000": "УАСЗ · окно 3 000",
+    "fantlab.vocabulary.uasz_10000": "УАСЗ · окно 10 000",
+    "fantlab.vocabulary.uasz_100000": "УАСЗ · окно 100 000",
+    "fantlab.punctuation.comma.per_1000_words": "Запятые",
+    "fantlab.punctuation.period.per_1000_words": "Точки",
+    "fantlab.punctuation.dash.per_1000_words": "Тире и дефисы",
+    "fantlab.punctuation.exclamation.per_1000_words": "Восклицания",
+    "fantlab.punctuation.question.per_1000_words": "Вопросы",
+    "fantlab.punctuation.ellipsis.per_1000_words": "Многоточия",
+    "fantlab.punctuation.exclamation_ellipsis.per_1000_words": "Восклицание + многоточие",
+    "fantlab.punctuation.question_ellipsis.per_1000_words": "Вопрос + многоточие",
+    "fantlab.punctuation.triple_exclamation.per_1000_words": "Тройное восклицание",
+    "fantlab.punctuation.question_exclamation.per_1000_words": "Вопрос + восклицание",
+    "fantlab.punctuation.quote.per_1000_words": "Кавычки",
+    "fantlab.punctuation.parentheses.per_1000_words": "Скобки",
+    "fantlab.punctuation.colon.per_1000_words": "Двоеточия",
+    "fantlab.punctuation.semicolon.per_1000_words": "Точки с запятой",
+}

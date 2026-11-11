@@ -48,7 +48,14 @@ without opening a book or sending data to a service, use the installed CLI:
 scriptorium metrics
 scriptorium metrics fantlab.dialogue.share_percent
 scriptorium metrics --format json --output metric-contract.json
+scriptorium metrics --lang ru
+scriptorium metrics fantlab.dialogue.share_percent --lang ru --format json
 ```
+
+Russian `--lang ru` labels match the reviewed public Reader glossary while preserving
+the canonical metric IDs, units, evidence/status flags and dictionary requirements.
+Opted-in Russian JSON declares `label_language: "ru"`; default English text and JSON
+remain unchanged. This localizes presentation, not scientific evidence or calculations.
 
 The machine-readable `scriptorium-metric-catalog-v1` view lists all 29
 registered metric IDs in sorted order and marks the five rows that need

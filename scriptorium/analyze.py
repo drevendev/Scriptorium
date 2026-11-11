@@ -659,14 +659,11 @@ def _render_metric_group(name: str, rows: list[tuple[str, dict[str, object]]]) -
             f'<span class="metric-label-ru" lang="ru">{escape(russian_label)}</span>'
             if russian_label is not None else ""
         )
-        accessible_label = (
-            human_label + (", " + russian_label if russian_label is not None else "")
-            + ", metric ID " + metric_id
-        )
+        # Native header text keeps the nested Russian lang="ru" available
+        # to assistive technology. aria-label would flatten language boundaries.
         body.append(
             "<tr>"
-            f'<th scope="row" data-label="{escape(human_label, quote=True)}" '
-            f'aria-label="{escape(accessible_label, quote=True)}">'
+            f'<th scope="row" data-label="{escape(human_label, quote=True)}">'
             f'<span class="metric-label">{escape(human_label)}</span>{russian_html}'
             f'<code class="metric-id">{escape(metric_id)}</code></th>'
             f"<td>{escape(_format_value(value))}</td>"

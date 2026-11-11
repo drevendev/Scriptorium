@@ -20,12 +20,14 @@ class OfflineReadableMetricsTests(unittest.TestCase):
             with self.subTest(metric=metric_id):
                 self.assertIn(f'data-label="{label}"', page)
                 self.assertIn(f'<span class="metric-label">{label}</span>', page)
-                self.assertIn(f'aria-label="{label}, {METRIC_LABELS_RU[metric_id]}, metric ID {metric_id}"', page)
+                self.assertIn(f'<th scope="row" data-label="{label}">', page)
                 self.assertIn(
                     f'<span class="metric-label-ru" lang="ru">{METRIC_LABELS_RU[metric_id]}</span>',
                     page,
                 )
                 self.assertIn(f'<code class="metric-id">{metric_id}</code>', page)
+        self.assertEqual(page.count('<th scope="row" data-label='), 29)
+        self.assertNotRegex(page, r'<th scope="row"[^>]*aria-(?:label|labelledby)=')
 
     def test_names_are_readable_without_css_or_javascript(self):
         page = render_html(self.artifact)

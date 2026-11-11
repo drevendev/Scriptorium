@@ -15,7 +15,11 @@ metrics, using the same translations as the public Reader and the offline
 `scriptorium metrics --lang ru` command. The page retains English as its
 primary document language and marks Russian
 text with `lang="ru"`, and preserves exact metric IDs, canonical units, evidence/status,
-raw punctuation counts and keyboard-accessible scrolling regions. This is a display
+raw punctuation counts and keyboard-accessible scrolling regions. The metric row headers
+use native `<th scope="row">` contents rather than `aria-label` overrides, so the nested
+Russian language spans remain available to assistive technology instead of being
+flattened to the English page language. Automated markup checks do not replace
+screen-reader pronunciation testing, which remains unverified. This is a display
 translation only; it does not localize the scientific contract or prove FantLab parity.
 
 ## Reproducibility and scientific limits

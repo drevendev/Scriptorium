@@ -1,6 +1,7 @@
 import contextlib
 import copy
 from decimal import Decimal
+from html import escape
 from hashlib import sha256
 import io
 import json
@@ -77,10 +78,17 @@ class LocalAnalysisTests(unittest.TestCase):
                     f'<code class="metric-id">{metric_id}</code>',
                     html,
                 )
+                # The table header must expose nested language-tagged text,
+                # not replace it with a flattened aria-label.
                 self.assertIn(
-                    f'{METRIC_LABELS[metric_id]}, {russian_label}, metric ID {metric_id}',
+                    f'<th scope="row" data-label="{escape(METRIC_LABELS[metric_id], quote=True)}">'
+                    f'<span class="metric-label">{escape(METRIC_LABELS[metric_id])}</span>'
+                    f'<span class="metric-label-ru" lang="ru">{escape(russian_label)}</span>'
+                    f'<code class="metric-id">{escape(metric_id)}</code></th>',
                     html,
                 )
+        self.assertEqual(html.count('<th scope="row" data-label='), 29)
+        self.assertNotRegex(html, r'<th scope="row"[^>]*aria-(?:label|labelledby)=')
         self.assertIn('lang="ru">Запятые</span>', html)
         self.assertIn('lang="ru">Доля диалогов</span>', html)
         self.assertNotIn(SOURCE, html)

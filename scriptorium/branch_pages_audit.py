@@ -40,9 +40,19 @@ class _Document(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.identifiers: set[str] = set()
         self.duplicates: set[str] = set()
+        self.duplicate_attributes: set[str] = set()
         self.references: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        # Browsers retain the FIRST duplicate attribute; dict(attrs) keeps the
+        # LAST. Without this guard a broken/unsafe first href could be hidden
+        # from the offline audit by appending a valid second href.
+        seen: set[str] = set()
+        for name, _ in attrs:
+            if name in {"href", "src", "id"}:
+                if name in seen:
+                    self.duplicate_attributes.add(name)
+                seen.add(name)
         attr = dict(attrs)
         identifier = attr.get("id")
         if identifier:
@@ -82,6 +92,10 @@ def audit_site(
             parser = _Document()
             parser.feed(markup)
             parser.close()
+            if parser.duplicate_attributes:
+                raise ReaderLinkError(
+                    f"duplicate audited HTML attributes in {path}: {sorted(parser.duplicate_attributes)}"
+                )
             if parser.duplicates:
                 raise ReaderLinkError(f"duplicate fragment IDs in {path}: {sorted(parser.duplicates)}")
             documents[path] = parser

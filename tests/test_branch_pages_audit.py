@@ -56,6 +56,31 @@ class BranchPagesAuditTests(unittest.TestCase):
         with self.assertRaisesRegex(ReaderLinkError, "duplicate fragment IDs"):
             self._run('<h2 id="books"></h2><h3 id="books"></h3>')
 
+    def test_duplicate_href_cannot_hide_broken_browser_first_link(self):
+        # HTML browsers keep the first occurrence; dict(attrs) keeps the last.
+        with self.assertRaisesRegex(ReaderLinkError, "duplicate audited HTML attributes"):
+            self._run(
+                '<a href="missing.csv" href="present.csv">Broken</a>',
+                files=("present.csv",),
+            )
+
+    def test_duplicate_src_cannot_hide_unsafe_browser_first_source(self):
+        with self.assertRaisesRegex(ReaderLinkError, "duplicate audited HTML attributes"):
+            self._run(
+                '<img src="../private.svg" src="safe.svg" alt="Image">',
+                files=("safe.svg",),
+            )
+
+    def test_duplicate_id_is_rejected_before_fragment_resolution(self):
+        with self.assertRaisesRegex(ReaderLinkError, "duplicate audited HTML attributes"):
+            self._run('<section id="missing" id="present"></section><a href="#present">Go</a>')
+
+    def test_distinct_link_id_attributes_remain_valid(self):
+        self.assertEqual(
+            self._run('<a id="next" href="#next">Go</a>'),
+            (1, 1),
+        )
+
     def test_javascript_url_fails(self):
         with self.assertRaisesRegex(ReaderLinkError, "unsafe Reader URL"):
             self._run('<a href="javascript:alert(1)">Unsafe</a>')

@@ -1,29 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 485
+STATE_REVISION: 486
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-11
-LAST_RESULT: #496 merged at 7344a32e3ad14c79b1b0bdcb0f5e216aa897bee4 (repository root Reader link closure). New source-checked 3×3 nearest-profile matrix PR candidate under #283; live browser check still UNVERIFIED.
+LAST_RESULT: #497 merged at 316634760a0001ba5c3e643517027e31192ea17c. New #285 root Reader link-audit correctness fix proposed; live browser acceptance remains UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-TRIAD-NEAREST-MATRIX
-ISSUE: #283 — visual, accessible Reader comparisons (do not close)
+UNIT_ID: SCRIP-SITE-013-DUPLICATE-ATTRIBUTE-CLOSURE
+ISSUE: #285 — published root Reader integrity (do not close)
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-reader-triad-nearest-matrix-20261111
-BASE: 7344a32e3ad14c79b1b0bdcb0f5e216aa897bee4
+BRANCH: scrip-pages-duplicate-html-attrs-20261111
+BASE: 316634760a0001ba5c3e643517027e31192ea17c
 
-ACCEPTANCE: Show an accessible 3×3 known-author vs nearest-profile matrix from the six frozen source-backed folds. Each count independently recomputed in Python regression tests, negative mutation detected, fixed denominator of two books per row, static table and counts readable without JavaScript; link to exact fold evidence. No classifier-accuracy or FantLab-parity claims.
-Verification: source-reconstruction test added; exact-head CI pending, local Python execution NOT_RUN, desktop/mobile visual and live HTTP UNVERIFIED. M2 0/5 and M3 open.
+ACCEPTANCE: Reject duplicate href/src/id attributes in branch-published HTML before converting attribute tuples to a dict: browser HTML parsing retains the first value, but dict(attrs) hides it in favor of the last. Tests must fail on a broken first href, unsafe first src and mis-targeted first id, while normal distinct id+href works. Offline audit is not live/visual verification.
+Verification: exact-head CI pending, local full Python suite NOT_RUN, desktop/mobile visual and live HTTP UNVERIFIED. M2 0/5 and M3 open.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: credible, reproducible real-book descriptive/author comparisons, followed by independently measured rights-cleared editions; do not relax FantLab parity.
+Milestone: a working, accessible Reader showing real-book comparisons and trustworthy downloadable evidence, followed by independently measured rights-cleared editions; do not relax FantLab parity.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 visual nearest-profile matrix in the six-book Reader | Nine source-recomputed counts with chart/table accessibility and failure fixture | Fresh PR checks and later independent acceptance |
+| P1 | #285 root Reader duplicate-attribute audit correctness | Reject browser-first href/src/id bypass; tests cover negative and valid cases | Fresh CI and later independent acceptance |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
 | P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; separate generated Actions build is not the published root |

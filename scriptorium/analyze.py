@@ -183,14 +183,14 @@ h1, h2 {{ line-height: 1.15; }}
 .highlight dt {{ font: 600 .88rem/1.4 system-ui, sans-serif; }}
 .highlight dd {{ margin: .45rem 0 0; font: 700 clamp(1.25rem, 3vw, 2rem)/1.2 system-ui, sans-serif; overflow-wrap: anywhere; }}
 .highlight-unit {{ font: 400 .75rem/1.35 system-ui, sans-serif; }}
-.dialogue-figure { border-block: 1px solid color-mix(in srgb, CanvasText 22%, Canvas); padding-block: 1rem 1.5rem; margin-block-end: 1.5rem; }
-.dialogue-figure > p { max-width: 74ch; }
-.dialogue-track { display: block; width: min(100%, 40rem); height: 1.1rem; background: color-mix(in srgb, CanvasText 12%, Canvas); border: 1px solid currentColor; border-radius: .4rem; overflow: hidden; }
-.dialogue-fill { display: block; height: 100%; background: currentColor; }
-.dialogue-fill[data-nonzero="true"] { min-width: 2px; }
-.dialogue-value, .dialogue-missing { font: .9rem/1.5 system-ui, sans-serif; }
-@media (forced-colors: active) { .dialogue-fill { background: Highlight; } }
-@media print { .dialogue-fill { print-color-adjust: exact; } }
+.dialogue-figure {{ border-block: 1px solid color-mix(in srgb, CanvasText 22%, Canvas); padding-block: 1rem 1.5rem; margin-block-end: 1.5rem; }}
+.dialogue-figure > p {{ max-width: 74ch; }}
+.dialogue-track {{ display: block; width: min(100%, 40rem); height: 1.1rem; background: color-mix(in srgb, CanvasText 12%, Canvas); border: 1px solid currentColor; border-radius: .4rem; overflow: hidden; }}
+.dialogue-fill {{ display: block; height: 100%; background: currentColor; }}
+.dialogue-fill[data-nonzero="true"] {{ min-width: 2px; }}
+.dialogue-value, .dialogue-missing {{ font: .9rem/1.5 system-ui, sans-serif; }}
+@media (forced-colors: active) {{ .dialogue-fill {{ background: Highlight; }} }}
+@media print {{ .dialogue-fill {{ print-color-adjust: exact; }} }}
 .punctuation-figure {{ border-block: 1px solid color-mix(in srgb, CanvasText 22%, Canvas); padding-block: 1rem 1.5rem; margin-block-end: 1.5rem; }}
 .punctuation-figure > p {{ max-width: 74ch; }}
 .punctuation-chart {{ list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: .7rem; }}

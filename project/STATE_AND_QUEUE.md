@@ -1,22 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 483
+STATE_REVISION: 484
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-11
-LAST_RESULT: #494 merged as 43feb0d3dd25c5484651de94d507f46bfa0b5853; Reader six-fold evidence in master. Reproducible source-bound CSV download is a new PR candidate, later-run CI and acceptance pending.
+LAST_RESULT: #495 merged in master as 5659544c917fa12ed573f60bee7075e4aa2d635d. Root branch Pages Reader/voice and CSV require an executable link-closure gate; focused CI and regression PR candidate.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-SIXFOLD-CSV
-ISSUE: #283 — incremental Reader scientific interpretability (do not close)
-STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED; exact-head CI pending
-PR: native GitHub PR for source-bound six-fold CSV export
-BRANCH: scrip-voice-sixfold-csv-20261111
-BASE: 43feb0d3dd25c5484651de94d507f46bfa0b5853
+UNIT_ID: SCRIP-BRANCH-PAGES-ROOT-LINKS
+ISSUE: #285 — branch Pages publication acceptance (do not close)
+STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
+BRANCH: scrip-pages-root-link-audit-20261111
+BASE: 5659544c917fa12ed573f60bee7075e4aa2d635d
 
-ACCEPTANCE: Reader offers six-fold source-pinned downloadable CSV with three dimensionless distances, known/nearest author and explicit exploratory scope. CLI `scriptorium voice --include-dostoevsky --holdout --format csv` reproduces exact committed bytes. Reject forged summaries, scientific boundaries and spreadsheet formula injection; CI packages exact branch-root preview CSV. Preserve v1 output, M2 0/5 and M3 open. Later fresh CI/acceptance/merge required; live/browser separately.
-Verification: six pinned static HTML rows checked before PR; full local tests and browser visual inspection NOT_RUN; exact-head GitHub CI pending.
+ACCEPTANCE: Python offline QA checks all five actual branch-published Reader HTML routes, local links, same-site fragments, pinned downloadable CSV/JSON/CSS/JS, nested voice paths and unsafe/traversal paths. Positive and negative regressions run in canonical tests and exact-branch Pages CI. Branch master/(root) publisher stays unchanged; generated build/site is a separate Actions artifact, not proof of live root. Live HTTP and visual acceptance remain UNVERIFIED.
+Verification: source-level root link inspection and new negative fixtures; full exact-head CI pending, local Python execution NOT_RUN. Scientific M2/M3 gates unchanged.
 
 ## Next user-visible milestone and compact queue
 
@@ -24,10 +23,10 @@ Milestone: credible, reproducible real-book descriptive/author comparisons, foll
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Reproducible six-fold CSV download and CLI export | Six CSV rows exactly reproduce pinned evidence, static Reader download, positive/negative tests and deployment staging | Merged #494 + pinned source-free data; later CI/merge |
+| P1 | #285 branch Pages Reader route/download closure | All actual root Reader links, deep links, CSV/JSON and fragments checked by CI; no mistaken Actions-artifact deployment claim | PR acceptance and branch Pages live HTTP still separate |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
-| P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | Deployed HTTP readback, desktop/mobile screenshots and verified controls | Browser/deploy access; independent code work permitted |
+| P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls | Live browser access; separate generated Actions build is not the published root |
 | P5 | #284 source-code licence and attribution | Actual rights inventory and owner-granted licence | No implied public licence or invented grant |
 
 ## Retained scientific and operational boundaries

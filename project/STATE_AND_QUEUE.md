@@ -1,22 +1,22 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 481
+STATE_REVISION: 482
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-11
-LAST_RESULT: #491 merged as 259f4e1707fb35d4eb5281d790bea95b96d17928 (issue #490 closed); #492 source-bound aggregate-consistency defect claimed in PR #493 (not merged).
+LAST_RESULT: #493 merged as 8e1f05a4f33f134767808c4a236e0ef223507a96 (issue #492 closed); #494 adds a source-bound six-fold, three-author public negative-result section (PR_CREATED, not merged).
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-VOICE-HOLDOUT-AGGREGATE-INTEGRITY
-ISSUE: #492 — reject inconsistent imported four-/six-book author-preview aggregates
-STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED; hosted CI pending
-PR: #493
-BRANCH: scrip-voice-holdout-aggregate-guard-20261111
-BASE: 259f4e1707fb35d4eb5281d790bea95b96d17928
+UNIT_ID: SCRIP-READER-THREE-AUTHOR-HOLDOUT
+ISSUE: #283 — incremental Reader scientific interpretability (do not close)
+STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED; exact-head CI pending
+PR: #494
+BRANCH: scrip-voice-three-author-reader-20261111
+BASE: 8e1f05a4f33f134767808c4a236e0ef223507a96
 
-ACCEPTANCE: Verify exact v1/v2 word-weight totals, eight weighted means/population SDs rounded to 6 decimals and declared metric profiles before computing holdout. Missing, Boolean, nonfinite, negative or drifted aggregate values must fail closed. Retain source SHA, feature units, the original four-fold 1/4 and six-fold 2/6 outcomes, and M2 0/5 / M3 open. This is internal consistency, not source authentication.
-Verification: positive v1/v2 and 18 adversarial tests authored; exact-head CI NOT_RUN at queue write. Later fresh review/merge only.
+ACCEPTANCE: Public static voice Reader shows six exact v2 held-out book rows, three relative distances with units and known/nearest author, 2/6 correct/4/6 other, explicit source links and a pinned source snapshot Git blob. Keep the original four-book 1/4 and ablation unchanged. Strong M2 0/5, M3 open and no classifier/parity claim. New positive/negative tests reconstruct v2 directly from frozen evidence; later fresh CI/merge and browser/mobile validation remain separate.
+Verification: source-free JS recomputation yielded six distinct fold rows and 2/6; Python exact-head GitHub CI NOT_RUN at queue commit. No live site change yet.
 
 ## Next user-visible milestone and compact queue
 
@@ -24,7 +24,7 @@ Milestone: credible, reproducible real-book descriptive/author comparisons, foll
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #493 reject drifted holdout aggregates | V1/v2 consistency rejection, complete exact-head CI and later-run acceptance | Frozen six-edition source-free snapshot; no source download |
+| P1 | #494 six-book public author-stress-test evidence | Pinned six-fold table, source identity, accessible no-JS route, exact-head CI and later acceptance | Existing v2 CLI + 11-work source-free snapshot; browser visual check separately |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
 | P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | Deployed HTTP readback, desktop/mobile screenshots and verified controls | Browser/deploy access; independent code work permitted |

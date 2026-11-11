@@ -69,6 +69,45 @@ class MetricCatalogTests(unittest.TestCase):
             self.assertEqual(target.read_bytes(), original)
             self.assertNotIn(temporary, error.getvalue())
 
+    def test_russian_labels_match_published_glossary_without_metric_drift(self):
+        english = metric_catalog.build_catalog()
+        russian = metric_catalog.build_catalog(language="ru")
+        self.assertEqual(russian["label_language"], "ru")
+        self.assertNotIn("label_language", english)
+        self.assertEqual(len(russian["metrics"]), 29)
+        glossary = (Path(__file__).resolve().parent.parent / "metrics.html").read_text(
+            encoding="utf-8"
+        )
+        for en, ru in zip(english["metrics"], russian["metrics"], strict=True):
+            self.assertEqual(en["id"], ru["id"])
+            for field in ("unit", "definition_evidence", "compatibility_status",
+                          "dictionary_required"):
+                self.assertEqual(en[field], ru[field])
+            self.assertIn(f'{ru["label"]}<code>{ru["id"]}</code>', glossary)
+        self.assertEqual(
+            russian["scientific_claim"], "DEFINITIONS_ONLY_NOT_FANTLAB_PARITY"
+        )
+
+    def test_russian_cli_text_json_and_invalid_locale(self):
+        for fmt in ("text", "json"):
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                self.assertEqual(
+                    cli.main(["metrics", "fantlab.dialogue.share_percent",
+                              "--lang", "ru", "--format", fmt]), 0
+                )
+            rendered = output.getvalue()
+            self.assertIn("Доля диалогов", rendered)
+            if fmt == "text":
+                self.assertIn("не подтверждают совпадение с FantLab", rendered)
+                self.assertIn("[percent]", rendered)
+            else:
+                catalog = json.loads(rendered)
+                self.assertEqual(catalog["label_language"], "ru")
+                self.assertEqual(catalog["metrics"][0]["unit"], "percent")
+        with self.assertRaisesRegex(ValueError, "language"):
+            metric_catalog.build_catalog(language="xx")
+
 
 if __name__ == "__main__":
     unittest.main()

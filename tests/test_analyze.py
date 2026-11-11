@@ -98,7 +98,9 @@ class LocalAnalysisTests(unittest.TestCase):
                     render_html(altered)
         wrong_unit = copy.deepcopy(original)
         wrong_unit["metrics"][metric_id]["unit"] = "characters"
-        with self.assertRaisesRegex(ValueError, "requires a percent"):
+        # Unit mismatch is rejected by the shared registered metric contract,
+        # before chart-specific rendering can label a false percentage.
+        with self.assertRaisesRegex(ValueError, "registered metric contract mismatch"):
             render_html(wrong_unit)
 
     def test_punctuation_chart_is_source_bound_exact_and_accessible(self):

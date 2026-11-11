@@ -1,21 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 484
+STATE_REVISION: 485
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-11
-LAST_RESULT: #495 merged in master as 5659544c917fa12ed573f60bee7075e4aa2d635d. Root branch Pages Reader/voice and CSV require an executable link-closure gate; focused CI and regression PR candidate.
+LAST_RESULT: #496 merged at 7344a32e3ad14c79b1b0bdcb0f5e216aa897bee4 (repository root Reader link closure). New source-checked 3×3 nearest-profile matrix PR candidate under #283; live browser check still UNVERIFIED.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-BRANCH-PAGES-ROOT-LINKS
-ISSUE: #285 — branch Pages publication acceptance (do not close)
+UNIT_ID: SCRIP-READER-TRIAD-NEAREST-MATRIX
+ISSUE: #283 — visual, accessible Reader comparisons (do not close)
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-pages-root-link-audit-20261111
-BASE: 5659544c917fa12ed573f60bee7075e4aa2d635d
+BRANCH: scrip-reader-triad-nearest-matrix-20261111
+BASE: 7344a32e3ad14c79b1b0bdcb0f5e216aa897bee4
 
-ACCEPTANCE: Python offline QA checks all five actual branch-published Reader HTML routes, local links, same-site fragments, pinned downloadable CSV/JSON/CSS/JS, nested voice paths and unsafe/traversal paths. Positive and negative regressions run in canonical tests and exact-branch Pages CI. Branch master/(root) publisher stays unchanged; generated build/site is a separate Actions artifact, not proof of live root. Live HTTP and visual acceptance remain UNVERIFIED.
-Verification: source-level root link inspection and new negative fixtures; full exact-head CI pending, local Python execution NOT_RUN. Scientific M2/M3 gates unchanged.
+ACCEPTANCE: Show an accessible 3×3 known-author vs nearest-profile matrix from the six frozen source-backed folds. Each count independently recomputed in Python regression tests, negative mutation detected, fixed denominator of two books per row, static table and counts readable without JavaScript; link to exact fold evidence. No classifier-accuracy or FantLab-parity claims.
+Verification: source-reconstruction test added; exact-head CI pending, local Python execution NOT_RUN, desktop/mobile visual and live HTTP UNVERIFIED. M2 0/5 and M3 open.
 
 ## Next user-visible milestone and compact queue
 
@@ -23,10 +23,10 @@ Milestone: credible, reproducible real-book descriptive/author comparisons, foll
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #285 branch Pages Reader route/download closure | All actual root Reader links, deep links, CSV/JSON and fragments checked by CI; no mistaken Actions-artifact deployment claim | PR acceptance and branch Pages live HTTP still separate |
+| P1 | #283 visual nearest-profile matrix in the six-book Reader | Nine source-recomputed counts with chart/table accessibility and failure fixture | Fresh PR checks and later independent acceptance |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
-| P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls | Live browser access; separate generated Actions build is not the published root |
+| P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; separate generated Actions build is not the published root |
 | P5 | #284 source-code licence and attribution | Actual rights inventory and owner-granted licence | No implied public licence or invented grant |
 
 ## Retained scientific and operational boundaries

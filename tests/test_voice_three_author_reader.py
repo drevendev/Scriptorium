@@ -12,6 +12,8 @@ import csv
 from io import StringIO
 from contextlib import redirect_stdout, redirect_stderr
 import unittest
+import re
+from collections import Counter
 
 from scriptorium import voice_holdout, voice_profile
 
@@ -66,6 +68,49 @@ class ThreeAuthorReaderTests(unittest.TestCase):
                     row,
                 )
                 self.assertIn("✓ Свой" if fold["nearer_to_labelled_author"] else "× Другой", row)
+
+
+    def _check_matrix_counts(self, markup):
+        cells = re.findall(
+            r'data-triad-matrix="(grin|tolstoy|dostoevsky):(grin|tolstoy|dostoevsky)" data-count="([0-9]+)"',
+            markup,
+        )
+        self.assertEqual(len(cells), 9, "all nine matrix cells must be explicit")
+        measured = {(known, nearest): int(count) for known, nearest, count in cells}
+        self.assertEqual(len(measured), 9, "duplicate or missing author pair")
+        expected = Counter(
+            (fold["known_author_id"], fold["nearest_author_id"])
+            for fold in self.report["folds"]
+        )
+        self.assertEqual(
+            measured,
+            {(a, b): expected[(a, b)] for a in AUTHORS for b in AUTHORS},
+        )
+        for author in AUTHORS:
+            self.assertEqual(sum(measured[(author, b)] for b in AUTHORS), 2)
+        self.assertEqual(sum(measured[(a, a)] for a in AUTHORS), 2)
+
+    def test_nearest_profile_matrix_is_source_bound_and_accessible(self):
+        self._check_matrix_counts(self.html)
+        self.assertIn('id="triad-matrix-title"', self.html)
+        self.assertIn('href="#holdout-three-data"', self.html)
+        self.assertIn('id="holdout-three-data" class="scroll-table triad-table"', self.html)
+        self.assertIn('aria-label="Матрица ближайших авторских профилей', self.html)
+        self.assertIn('сколько из двух книг', self.html)
+        self.assertIn('не точность классификатора', self.html)
+        self.assertIn('aria-hidden="true"><span class="matrix-fill', self.html)
+        self.assertIn('@media(forced-colors:active)', self.html)
+        self.assertNotIn('<script', self.html)
+
+    def test_matrix_mutation_is_detected(self):
+        wrong = self.html.replace(
+            'data-triad-matrix="grin:tolstoy" data-count="1"',
+            'data-triad-matrix="grin:tolstoy" data-count="2"',
+            1,
+        )
+        self.assertNotEqual(wrong, self.html)
+        with self.assertRaises(AssertionError):
+            self._check_matrix_counts(wrong)
 
     def test_accessibility_navigation_methods_and_scientific_boundary(self):
         h = self.html

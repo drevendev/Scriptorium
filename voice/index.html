@@ -121,6 +121,21 @@
 @media(forced-colors:active){.triad-table td[data-outcome]{color:CanvasText}}
 @media print{.triad-facts li{break-inside:avoid;background:#fff}.triad-table{overflow:visible}.triad-table table{min-width:0;font-size:9pt}}
 
+
+/* Fixed two-book denominator per known author; bar lengths are counts, never confidence. */
+.triad-matrix table{min-width:680px}
+.triad-matrix th,.triad-matrix td{vertical-align:middle}
+.triad-matrix td{min-width:126px}
+.triad-matrix td[data-diagonal="true"]{background:var(--wash)}
+.matrix-cell{display:grid;gap:.45rem;font-variant-numeric:tabular-nums}
+.matrix-cell strong{font-weight:750}
+.matrix-meter{display:block;width:100%;height:.9rem;border:1px solid var(--line);background:var(--wash);border-radius:.35rem;overflow:hidden}
+.matrix-fill{display:block;height:100%;border-radius:.28rem}
+.matrix-fill.same{background:#266c56}
+.matrix-fill.other{background:#9b662b}
+.triad-matrix-note{margin:1rem 0 1.6rem}
+@media(forced-colors:active){.matrix-fill{background:Highlight!important}.triad-matrix td[data-diagonal="true"]{outline:1px solid CanvasText}}
+@media print{.triad-matrix{overflow:visible}.triad-matrix table{min-width:0;font-size:9pt}.matrix-fill{print-color-adjust:exact}}
 </style>
 </head>
 <body>
@@ -225,7 +240,17 @@
 <li><strong>0</strong><span>ничейных исходов</span></li>
 </ul>
 <p>Каждый раз проверяемая книга <strong>исключается из всех трёх обучающих центров</strong>: остаётся одна книга своего автора и по две другого. Центры взвешены по количеству слов. Расстояние для каждого признака: <strong>2 × |значение − центр| / (значение + центр)</strong> (оба нуля → 0); итог — среднее восьми значений с равными весами. <strong>Меньше — ближе, но не вероятность и не точность классификации.</strong> Все значения безразмерны, до шести знаков после запятой.</p>
-<div class="scroll-table triad-table" role="region" tabindex="0" aria-label="Шесть исключённых книг: расстояния до Грина, Толстого и Достоевского">
+<h3 id="triad-matrix-title">Куда оказались ближе шесть книг?</h3>
+<p>Строки — известный автор книги; столбцы — автор ближайшего профиля. Число в клетке — <strong>сколько из двух книг</strong> этой строки оказалось ближе к указанному профилю. По диагонали — совпадения, вне диагонали — расхождения. Полосы имеют общую шкалу от 0 до 2 книг, не показывают вероятность или качество автора.</p>
+<div class="scroll-table triad-matrix" tabindex="0" role="region" aria-label="Матрица ближайших авторских профилей для шести исключённых книг">
+<table><caption>Эксперимент с исключением книги · известный автор × ближайший профиль · число книг из 2 в каждой строке · внутренняя диагностика, не точность классификатора</caption>
+<thead><tr><th scope="col">Известный автор ↓ / ближайший профиль →</th><th scope="col">Грин</th><th scope="col">Толстой</th><th scope="col">Достоевский</th></tr></thead><tbody>
+<tr><th scope="row">Грин</th><td data-triad-matrix="grin:grin" data-count="0" data-diagonal="true"><span class="matrix-cell"><strong>0 из 2</strong><span class="matrix-meter" aria-hidden="true"><span class="matrix-fill same" style="width:0%"></span></span></span></td><td data-triad-matrix="grin:tolstoy" data-count="1"><span class="matrix-cell"><strong>1 из 2</strong><span class="matrix-meter" aria-hidden="true"><span class="matrix-fill other" style="width:50%"></span></span></span></td><td data-triad-matrix="grin:dostoevsky" data-count="1"><span class="matrix-cell"><strong>1 из 2</strong><span class="matrix-meter" aria-hidden="true"><span class="matrix-fill other" style="width:50%"></span></span></span></td></tr>
+<tr><th scope="row">Толстой</th><td data-triad-matrix="tolstoy:grin" data-count="1"><span class="matrix-cell"><strong>1 из 2</strong><span class="matrix-meter" aria-hidden="true"><span class="matrix-fill other" style="width:50%"></span></span></span></td><td data-triad-matrix="tolstoy:tolstoy" data-count="1" data-diagonal="true"><span class="matrix-cell"><strong>1 из 2</strong><span class="matrix-meter" aria-hidden="true"><span class="matrix-fill same" style="width:50%"></span></span></span></td><td data-triad-matrix="tolstoy:dostoevsky" data-count="0"><span class="matrix-cell"><strong>0 из 2</strong><span class="matrix-meter" aria-hidden="true"><span class="matrix-fill other" style="width:0%"></span></span></span></td></tr>
+<tr><th scope="row">Достоевский</th><td data-triad-matrix="dostoevsky:grin" data-count="1"><span class="matrix-cell"><strong>1 из 2</strong><span class="matrix-meter" aria-hidden="true"><span class="matrix-fill other" style="width:50%"></span></span></span></td><td data-triad-matrix="dostoevsky:tolstoy" data-count="0"><span class="matrix-cell"><strong>0 из 2</strong><span class="matrix-meter" aria-hidden="true"><span class="matrix-fill other" style="width:0%"></span></span></span></td><td data-triad-matrix="dostoevsky:dostoevsky" data-count="1" data-diagonal="true"><span class="matrix-cell"><strong>1 из 2</strong><span class="matrix-meter" aria-hidden="true"><span class="matrix-fill same" style="width:50%"></span></span></span></td></tr>
+</tbody></table></div>
+<p class="triad-matrix-note">Ни одна из двух книг Грина не оказалась ближе к профилю самого Грина. У Толстого и Достоевского — по одному совпадению. <a href="#holdout-three-data">Числовые расстояния для каждой книги — ниже</a>.</p>
+<div id="holdout-three-data" class="scroll-table triad-table" role="region" tabindex="0" aria-label="Шесть исключённых книг: расстояния до Грина, Толстого и Достоевского">
 <table><caption>Три автора · 6 закреплённых измеренных редакций · 8 признаков · расстояние, без единиц; меньше = ближе</caption><thead><tr><th scope="col">Исключённая книга · исходные измерения</th><th scope="col">Известный автор</th><th scope="col">До Грина</th><th scope="col">До Толстого</th><th scope="col">До Достоевского</th><th scope="col">Ближе к</th><th scope="col">Итог</th></tr></thead><tbody>
 <tr data-three-holdout-key="waves"><th scope="row"><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json">Бегущая по волнам</a></th><td>Грин</td><td>0.224762</td><td>0.115350</td><td>0.193246</td><td>Толстой</td><td data-outcome="other">× Другой</td></tr>
 <tr data-three-holdout-key="road"><th scope="row"><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-road-nowhere-ru.retained.json">Дорога в никуда</a></th><td>Грин</td><td>0.224762</td><td>0.204390</td><td>0.202832</td><td>Достоевский</td><td data-outcome="other">× Другой</td></tr>

@@ -17,7 +17,7 @@ import tempfile
 from pathlib import Path
 from typing import Final, Iterable
 
-from .metrics import METRIC_CONTRACT_ID, analyze_deterministic_metrics
+from .metrics import METRIC_CONTRACT_ID, METRIC_DEFINITIONS, analyze_deterministic_metrics
 from .metric_labels import METRIC_LABELS
 from .csv_safety import safe_csv_text
 
@@ -520,6 +520,15 @@ def _validate_html_artifact(
                 or type(row.get("definition_evidence")) is not str
                 or not row["definition_evidence"].strip()):
             raise ValueError("local HTML metric unit/evidence missing")
+        # Imported source-free JSON can contain plausible but false unit or
+        # methodology declarations. Preserve engine-defined units/evidence for
+        # every registered row before rendering values, chart labels or tables.
+        # Unknown Scriptorium extension rows stay explicitly labeled extensions.
+        expected = METRIC_DEFINITIONS.get(metric_id)
+        if expected is not None and (
+            row["unit"], row["definition_evidence"], row["compatibility_status"]
+        ) != expected:
+            raise ValueError(f"local HTML registered metric contract mismatch: {metric_id}")
         _format_value(row.get("value"))
         raw_count = row.get("raw_count")
         if raw_count is not None and (type(raw_count) is not int or raw_count < 0):

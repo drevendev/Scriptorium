@@ -72,7 +72,7 @@ python -m pip install .
 scriptorium analyze manuscript.txt --format html --output report.html
 ```
 
-Open `report.html` locally; use `--output analysis.json` for a reproducible JSON result. For private text on stdin (without creating a manuscript file):
+Open `report.html` locally; use `--output analysis.json` for a reproducible JSON result. The standalone HTML renderer rejects saved JSON rows that relabel any of its 29 registered metrics' units or definition evidence (for example, punctuation rates mislabelled as percentages); this checks internal declarations, **not** the authenticity of source hashes or FantLab parity. For private text on stdin (without creating a manuscript file):
 
 ```bash
 cat manuscript.txt | scriptorium analyze - --format html --output report.html

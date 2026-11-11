@@ -105,18 +105,34 @@
 @media(forced-colors:active){.sensitivity-fill{background:Highlight!important}}
 @media print{.sensitivity-key{grid-template-columns:repeat(2,minmax(0,1fr))}.sensitivity-key li{break-inside:avoid;background:#fff}.sensitivity-highlight{background:#fff}}
 
+
+/* A separate v2 stress-test: tabular numbers remain visible without scripting. */
+.triad-lede{max-width:80ch}
+.triad-facts{display:flex;gap:.85rem;flex-wrap:wrap;list-style:none;padding:0;margin:1.5rem 0}
+.triad-facts li{flex:1 1 170px;min-width:0;padding:1.2rem;border:1px solid var(--line);border-radius:.7rem;background:var(--surface)}
+.triad-facts strong{display:block;font:500 clamp(1.8rem,3vw,2.6rem)/1.2 Georgia,serif;font-variant-numeric:tabular-nums}
+.triad-facts span{display:block;color:var(--subtle);line-height:1.5;margin-top:.4rem}
+.triad-table table{min-width:900px}
+.triad-table td{font-variant-numeric:tabular-nums}
+.triad-table td[data-outcome="same"]{font-weight:750;color:#235c43}
+.triad-table td[data-outcome="other"]{font-weight:750;color:#834021}
+.triad-table tbody tr:focus-within{outline:2px solid var(--green-deep);outline-offset:-2px}
+@media(max-width:720px){.triad-facts li{flex-basis:100%}}
+@media(forced-colors:active){.triad-table td[data-outcome]{color:CanvasText}}
+@media print{.triad-facts li{break-inside:avoid;background:#fff}.triad-table{overflow:visible}.triad-table table{min-width:0;font-size:9pt}}
+
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Перейти к содержанию</a>
-<header class="site-top"><a class="brand" href="../"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a><nav aria-label="Навигация"><a href="../#books">Библиотека</a><a href="../#pairs">Сравнение книг</a><a href="#data">Сводка</a><a href="#works">По книгам</a><a href="#ranges">Диапазоны</a><a href="#holdout">Проверка</a><a href="#sensitivity">Чувствительность</a><a href="#sources">Источники</a></nav></header>
+<header class="site-top"><a class="brand" href="../"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a><nav aria-label="Навигация"><a href="../#books">Библиотека</a><a href="../#pairs">Сравнение книг</a><a href="#data">Сводка</a><a href="#works">По книгам</a><a href="#ranges">Диапазоны</a><a href="#holdout">Проверка</a><a href="#holdout-three">Три автора</a><a href="#sensitivity">Чувствительность</a><a href="#sources">Источники</a></nav></header>
 <main class="voice-wrap" id="main">
 <section class="voice-hero" aria-labelledby="hero-title">
 <p class="eyebrow">ЭКСПЕРИМЕНТАЛЬНАЯ МАСТЕРСКАЯ · РУССКИЙ КОРПУС</p>
 <h1 id="hero-title">Один язык.<br><em>Два авторских ритма.</em></h1>
 <p class="voice-lede">Чем отличаются предложения, диалоги и знаки препинания у Александра Грина и Льва Толстого? Здесь — только результаты анализа настоящих книг, а не оценки «хорошего стиля» или тексты, придуманные нейросетью.</p>
 <div class="voice-meta"><span>2 автора</span><span>4 полных произведения</span><span>8 сравнимых показателей</span><span>0 заявлений о паритете с FantLab</span></div>
-<div class="voice-actions"><a href="#charts">Смотреть диаграммы ↘</a><a href="#data">Читать сводку ↘</a><a href="#works">Проверить по книгам ↘</a><a href="#ranges">Оценить разброс ↘</a><a href="#holdout">Проверить устойчивость ↘</a><a href="#sensitivity">Проверить влияние признаков ↘</a><a href="../assets/voice-preview.json">Исходные производные данные JSON ↗</a></div>
+<div class="voice-actions"><a href="#charts">Смотреть диаграммы ↘</a><a href="#data">Читать сводку ↘</a><a href="#works">Проверить по книгам ↘</a><a href="#ranges">Оценить разброс ↘</a><a href="#holdout">Проверить устойчивость ↘</a><a href="#holdout-three">Проверить на трёх авторах ↘</a><a href="#sensitivity">Проверить влияние признаков ↘</a><a href="../assets/voice-preview.json">Исходные производные данные JSON ↗</a></div>
 <div class="voice-note" role="note"><strong>Предварительный описательный срез, не подтверждённый авторский профиль.</strong> Всего две книги каждого автора; результаты зависят от выбранных редакций. Внутренняя стресс-проверка на четырёх книгах дала только 1/4 совпадений; независимой внешней проверки и доверительных интервалов нет. Соответствие методике FantLab не доказано. <b>M2: 0/5 · M3: открыт.</b></div>
 </section>
 <section class="voice-section" id="charts" aria-labelledby="charts-title"><p class="eyebrow">01 / НАГЛЯДНО</p><h2 id="charts-title">Как звучит проза — в измерениях.</h2>
@@ -197,6 +213,29 @@
 </tbody></table></div>
 <p><strong>Ограничения:</strong> это внутривыборочная стресс-проверка четырёх заранее выбранных произведений, <strong>не независимая внешняя валидация</strong>, не доказанный «отпечаток автора», не доверительный интервал и не воспроизведение FantLab. Равные веса признаков не подбирались на независимой выборке; смена книг, редакций и весов может изменить результаты. Статус M3 не принят.</p>
 <p>Воспроизвести без сети из установленного wheel: <code>scriptorium voice --holdout --format markdown</code> (или <code>--format json</code>). Данные и редакции: <a href="../assets/voice-preview.json">закреплённый JSON измерений</a>; алгоритм: <a href="https://github.com/drevendev/Scriptorium/blob/master/scriptorium/voice_holdout.py">Python и тесты</a>. Git blob исходного реестра: <code>a84986fd72ad616006b8ce179d1653e5ecf13729</code>. Художественный текст на страницу не копируется.</p>
+</section>
+
+<section class="voice-section" id="holdout-three" aria-labelledby="holdout-three-title">
+<p class="eyebrow">05А / СТРЕСС-ПРОВЕРКА · ТРИ АВТОРА</p>
+<h2 id="holdout-three-title">А если добавить Достоевского?</h2>
+<p class="triad-lede">В отдельном <strong>шестикнижном</strong> эксперименте те же восемь показателей сопоставляют Грина, Толстого и Достоевского. Каждый из шести полных русских оригиналов заранее закреплён за известным автором; две книги на автора. Результат показывает слабость текущего подхода, а не способность определять авторство.</p>
+<ul class="triad-facts" aria-label="Результат шести исключений книги">
+<li><strong>2 из 6</strong><span>ближе к собственному автору</span></li>
+<li><strong>4 из 6</strong><span>ближе к другому автору</span></li>
+<li><strong>0</strong><span>ничейных исходов</span></li>
+</ul>
+<p>Каждый раз проверяемая книга <strong>исключается из всех трёх обучающих центров</strong>: остаётся одна книга своего автора и по две другого. Центры взвешены по количеству слов. Расстояние для каждого признака: <strong>2 × |значение − центр| / (значение + центр)</strong> (оба нуля → 0); итог — среднее восьми значений с равными весами. <strong>Меньше — ближе, но не вероятность и не точность классификации.</strong> Все значения безразмерны, до шести знаков после запятой.</p>
+<div class="scroll-table triad-table" role="region" tabindex="0" aria-label="Шесть исключённых книг: расстояния до Грина, Толстого и Достоевского">
+<table><caption>Три автора · 6 закреплённых измеренных редакций · 8 признаков · расстояние, без единиц; меньше = ближе</caption><thead><tr><th scope="col">Исключённая книга · исходные измерения</th><th scope="col">Известный автор</th><th scope="col">До Грина</th><th scope="col">До Толстого</th><th scope="col">До Достоевского</th><th scope="col">Ближе к</th><th scope="col">Итог</th></tr></thead><tbody>
+<tr data-three-holdout-key="waves"><th scope="row"><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-running-on-waves-ru.json">Бегущая по волнам</a></th><td>Грин</td><td>0.224762</td><td>0.115350</td><td>0.193246</td><td>Толстой</td><td data-outcome="other">× Другой</td></tr>
+<tr data-three-holdout-key="road"><th scope="row"><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/grin-road-nowhere-ru.retained.json">Дорога в никуда</a></th><td>Грин</td><td>0.224762</td><td>0.204390</td><td>0.202832</td><td>Достоевский</td><td data-outcome="other">× Другой</td></tr>
+<tr data-three-holdout-key="anna"><th scope="row"><a href="https://github.com/drevendev/Scriptorium/blob/master/benchmarks/fantlab/work270306-wikisource-diagnostic.json">Анна Каренина</a></th><td>Толстой</td><td>0.107464</td><td>0.181683</td><td>0.161290</td><td>Грин</td><td data-outcome="other">× Другой</td></tr>
+<tr data-three-holdout-key="resurrection"><th scope="row"><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/tolstoy-resurrection-ru.retained.json">Воскресение</a></th><td>Толстой</td><td>0.212003</td><td>0.181683</td><td>0.294648</td><td>Толстой</td><td data-outcome="same">✓ Свой</td></tr>
+<tr data-three-holdout-key="karamazov"><th scope="row"><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/dostoevsky-brothers-karamazov-ru.json">Братья Карамазовы</a></th><td>Достоевский</td><td>0.209207</td><td>0.220770</td><td>0.262534</td><td>Грин</td><td data-outcome="other">× Другой</td></tr>
+<tr data-three-holdout-key="humiliated"><th scope="row"><a href="https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/dostoevsky-humiliated-and-insulted-ru.retained.json">Униженные и оскорбленные</a></th><td>Достоевский</td><td>0.302948</td><td>0.355076</td><td>0.262534</td><td>Достоевский</td><td data-outcome="same">✓ Свой</td></tr>
+</tbody></table></div>
+<div class="voice-note" role="note"><strong>Отрицательная проверка, а не доказанный авторский отпечаток.</strong> Это внутренняя проверка шести заранее выбранных книг, <strong>не независимая внешняя валидация</strong>, не доверительный интервал, не мера уверенности и не паритет с FantLab. На собственном авторе остаётся только одна обучающая книга. Подбор признаков по этим же шести произведениям создал бы утечку информации. <b>M2: 0/5 · M3: открыт.</b></div>
+<p>Повторить без загрузки текста и без сети: <code>scriptorium voice --include-dostoevsky --holdout --format markdown</code> (или <code>--format json</code>). Алгоритм и проверки: <a href="https://github.com/drevendev/Scriptorium/blob/master/scriptorium/voice_holdout.py">версионированный Python</a>. Исходные <a href="../assets/evidence-snapshot.json">измерения шести редакций</a> связаны с SHA-256 в каждой записи; Git blob снимка: <code>a84986fd72ad616006b8ce179d1653e5ecf13729</code>. Страница содержит только производные числовые результаты, никаких текстов произведений. Прежний четырёхкнижный эксперимент выше и его вывод 1/4 остаются без изменений.</p>
 </section>
 <section class="voice-section" id="sensitivity" aria-labelledby="sensitivity-title">
 <p class="eyebrow">06 / ЧУВСТВИТЕЛЬНОСТЬ К ПРИЗНАКАМ</p><h2 id="sensitivity-title">А если убрать один показатель?</h2>

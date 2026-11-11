@@ -139,7 +139,14 @@ class AuthorRhythmPreviewTests(unittest.TestCase):
         self.assertIn("независимой внешней проверки и доверительных интервалов нет", html)
         self.assertNotIn('<script', html)
         self.assertEqual(html.count('class="metric-card"'), 4)
-        self.assertEqual(html.count('<tr><th scope="row">'), 16)
+        # Two legacy eight-metric tables must stay complete; later evidence tables
+        # elsewhere on the page must not invalidate the original preview contract.
+        for section_id in ("data", "works"):
+            with self.subTest(section=section_id):
+                marker = f'<section class="voice-section" id="{section_id}"'
+                self.assertEqual(html.count(marker), 1)
+                section = html.split(marker, 1)[1].split("</section>", 1)[0]
+                self.assertEqual(section.count('<tr><th scope="row">'), 8)
         self.assertIn('id="works" aria-labelledby="works-title"', html)
         self.assertIn('scope="colgroup"', html)
         for idx, metric in enumerate(self.retained["authors"][0]["metrics"]):

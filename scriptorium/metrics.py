@@ -93,6 +93,19 @@ _METRIC_DEFINITIONS: Final = {
     ),
 }
 
+# Presentation and imported-report validation share the extraction contract.
+# Only currently registered metrics are listed; independently versioned future
+# Scriptorium extensions are handled separately by the local HTML renderer.
+METRIC_DEFINITIONS: Final = {
+    **_METRIC_DEFINITIONS,
+    **{
+        f"fantlab.punctuation.{key}.per_1000_words": (
+            "occurrences/1000_words", "public_surface", "inferred"
+        )
+        for key in PUNCTUATION_KEYS
+    },
+}
+
 _MULTI_PUNCTUATION: Final = (
     ("question_ellipsis", "?.."),
     ("question_ellipsis", "?…"),
@@ -216,11 +229,13 @@ def analyze_deterministic_metrics(
 
     counts = punctuation_counts(normalized)
     for key in PUNCTUATION_KEYS:
-        metrics[f"fantlab.punctuation.{key}.per_1000_words"] = {
+        metric_id = f"fantlab.punctuation.{key}.per_1000_words"
+        unit, definition_evidence, compatibility_status = METRIC_DEFINITIONS[metric_id]
+        metrics[metric_id] = {
             "value": _per_1000(counts[key], word_count),
-            "unit": "occurrences/1000_words",
-            "definition_evidence": "public_surface",
-            "compatibility_status": "inferred",
+            "unit": unit,
+            "definition_evidence": definition_evidence,
+            "compatibility_status": compatibility_status,
             "raw_count": counts[key],
         }
 
@@ -304,7 +319,7 @@ def _non_whitespace_count(text: str) -> int:
 
 
 def _metric(value: int | float | None, metric_id: str) -> dict[str, object]:
-    unit, definition_evidence, compatibility_status = _METRIC_DEFINITIONS[metric_id]
+    unit, definition_evidence, compatibility_status = METRIC_DEFINITIONS[metric_id]
     return {
         "value": value,
         "unit": unit,

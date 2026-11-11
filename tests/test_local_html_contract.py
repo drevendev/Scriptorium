@@ -6,6 +6,7 @@ from decimal import Decimal
 import unittest
 
 from scriptorium.analyze import build_local_analysis, render_html
+from scriptorium.metrics import METRIC_DEFINITIONS
 
 TEXT = "Вечерний ветер. — Привет! — сказал герой."
 
@@ -111,6 +112,37 @@ class LocalHtmlEvidenceContractTests(unittest.TestCase):
                 mutate(artifact)
                 with self.assertRaises(ValueError):
                     render_html(artifact)
+
+    def test_registered_metric_units_and_evidence_cannot_be_relabelled(self):
+        self.assertEqual(set(METRIC_DEFINITIONS), set(self.artifact["metrics"]))
+        for metric_id, expected in METRIC_DEFINITIONS.items():
+            with self.subTest(registered_metric=metric_id):
+                row = self.artifact["metrics"][metric_id]
+                self.assertEqual(
+                    (row["unit"], row["definition_evidence"], row["compatibility_status"]),
+                    expected,
+                )
+        # Nonempty, plausible-looking declarations previously passed and could
+        # cause the report to present counts as percentages or false evidence.
+        drift = (
+            ("fantlab.general.words", "unit", "percent"),
+            ("scriptorium.general.sentences", "unit", "words"),
+            ("fantlab.vocabulary.unique_words", "definition_evidence", "public_surface"),
+            ("fantlab.dialogue.author_text_inside_dialogue_percent", "unit", "characters"),
+            ("fantlab.punctuation.comma.per_1000_words", "unit", "percent"),
+            ("fantlab.punctuation.dash.per_1000_words", "definition_evidence", "scriptorium_extension"),
+        )
+        for metric_id, key, replacement in drift:
+            with self.subTest(metric=metric_id, field=key):
+                artifact = copy.deepcopy(self.artifact)
+                artifact["metrics"][metric_id][key] = replacement
+                with self.assertRaisesRegex(ValueError, "registered metric contract mismatch"):
+                    render_html(artifact)
+        # An unavailable value still has a defined unit; null is not a bypass.
+        empty = build_local_analysis(b"")
+        empty["metrics"]["fantlab.punctuation.comma.per_1000_words"]["unit"] = "percent"
+        with self.assertRaisesRegex(ValueError, "registered metric contract mismatch"):
+            render_html(empty)
 
     def test_invalid_dictionary_provenance_fails_closed(self):
         original = build_local_analysis(

@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 487
+STATE_REVISION: 488
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-11
-LAST_RESULT: #498 merged at 8ca7d46b0203539aa03aef673b689199b74a3664. Proposed source-bound fixed-scale dialogue chart for private HTML report; live browser acceptance remains UNVERIFIED.
+LAST_RESULT: #499 merged at 856e0606fa814ebfa2438888c931e3490dab1f20. Proposed strict registered-unit/evidence validation for local HTML reports; exact-head PR CI and later review pending.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-LOCAL-HTML-DIALOGUE-SHARE
-ISSUE: #283 — reader-first local analysis experience (do not close)
+UNIT_ID: SCRIP-LOCAL-HTML-REGISTERED-CONTRACT
+ISSUE: #283 — truthful local analysis presentation (do not close)
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-local-dialogue-share-html-20261111
-BASE: 8ca7d46b0203539aa03aef673b689199b74a3664
+BRANCH: scrip-html-registered-metric-contract-20261111
+BASE: 856e0606fa814ebfa2438888c931e3490dab1f20
 
-ACCEPTANCE: The local standalone HTML report shows a no-JavaScript dialogue character share on a fixed 0–100% scale, labels the non-whitespace-character denominator and inference status, preserves numeric table/unknown states, and rejects malformed percentages. Positive 0/100/fractional/tiny and negative unavailable/out-of-range/nonfinite/wrong-unit regressions. No schema or source-text change. Exact-head CI and later independent review required; visual/browser acceptance remains UNVERIFIED. M2 0/5 and M3 open.
+ACCEPTANCE: Imported/saved local HTML reports reject any changed unit or definition-evidence declaration for all 29 registered engine metrics, including unavailable rows and punctuation rates. Valid short/empty/dictionary-backed artifacts, deterministic render, source-free outputs, and explicitly labelled future Scriptorium extensions remain supported. Positive contract matching and negative unit/evidence tampering regressions; no formulas, JSON/CSV schema, corpus or FantLab parity changes. Exact-head CI and later independent review required; visual/browser acceptance remains UNVERIFIED. M2 0/5 and M3 open.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: a working, accessible Reader showing real-book comparisons and trustw
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 source-bound local HTML dialogue-share visualization | Exact 0–100% scale, denominator/unknown labels, negative tests; later PR acceptance | Existing inferred metric; no new corpus text |
+| P1 | #283 strict registered-unit/evidence integrity for local HTML | 29 engine declarations cross-checked; tampered imported units/evidence rejected; later PR acceptance | Existing deterministic metrics and local renderer |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
 | P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; separate generated Actions build is not the published root |

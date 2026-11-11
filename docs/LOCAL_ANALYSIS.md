@@ -38,6 +38,28 @@ proof of representativeness, an author profile or FantLab parity. FantLab-shaped
 remain inferred; Scriptorium-only rows remain extensions. No morphology backend is
 silently instantiated.
 
+## Inspect the installed metric definitions offline
+
+The local report uses the same registered definitions as the deterministic engine.
+To see the exact ID, unit, evidence class and compatibility label behind any row
+without opening a book or sending data to a service, use the installed CLI:
+
+```bash
+scriptorium metrics
+scriptorium metrics fantlab.dialogue.share_percent
+scriptorium metrics --format json --output metric-contract.json
+```
+
+The machine-readable `scriptorium-metric-catalog-v1` view lists all 29
+registered metric IDs in sorted order and marks the five rows that need
+an explicitly supplied dictionary. Its scientific claim is
+`DEFINITIONS_ONLY_NOT_FANTLAB_PARITY`: an inferred FantLab-shaped
+declaration is not evidence of reproduction, and the one Scriptorium
+extension is not an undocumented FantLab feature. The command
+performs no manuscript analysis, network access, or registry updates.
+Output files are create-only and never silently replaced. Unknown
+metric IDs fail without echoing caller-controlled input.
+
 ## Optional external dictionary
 
 Supply a UTF-8 file with one lexeme per line and a non-empty profile together:

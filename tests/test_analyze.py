@@ -60,6 +60,47 @@ class LocalAnalysisTests(unittest.TestCase):
         self.assertIn("characters / sentence", html)
         self.assertNotIn(SOURCE, html)
 
+
+    def test_dialogue_share_chart_is_fixed_scale_and_source_bound(self):
+        original = build_local_analysis(SOURCE.encode("utf-8"))
+        self.assertIn('id="dialogue-chart-heading"', render_html(original))
+        metric_id = "fantlab.dialogue.share_percent"
+        for share in (0, 23.25, 100, Decimal("0.000001")):
+            with self.subTest(share=share):
+                artifact = copy.deepcopy(original)
+                artifact["metrics"][metric_id]["value"] = share
+                html = render_html(artifact)
+                chart = html.split('id="dialogue-chart-heading"', 1)[1].split("</section>", 1)[0]
+                self.assertIn(f'width: {Decimal(str(share)):.2f}%', chart)
+                self.assertIn(f'<strong>{share}%</strong>', chart)
+                self.assertIn("absolute 0–100% scale", chart)
+                self.assertIn("not necessarily narration", chart)
+                if share > 0:
+                    self.assertIn('data-nonzero="true"', chart)
+                else:
+                    self.assertNotIn('data-nonzero="true"', chart)
+                self.assertNotIn("<script", html)
+
+    def test_dialogue_share_chart_unavailable_and_bad_input(self):
+        original = build_local_analysis(SOURCE.encode("utf-8"))
+        metric_id = "fantlab.dialogue.share_percent"
+        absent = copy.deepcopy(original)
+        absent["metrics"][metric_id]["value"] = None
+        html = render_html(absent)
+        chart = html.split('id="dialogue-chart-heading"', 1)[1].split("</section>", 1)[0]
+        self.assertIn("Dialogue share unavailable — not zero", chart)
+        self.assertNotIn('class="dialogue-fill"', chart)
+        for share in (-0.01, 100.01, True, float("nan"), float("inf"), "25"):
+            with self.subTest(share=share):
+                altered = copy.deepcopy(original)
+                altered["metrics"][metric_id]["value"] = share
+                with self.assertRaises(ValueError):
+                    render_html(altered)
+        wrong_unit = copy.deepcopy(original)
+        wrong_unit["metrics"][metric_id]["unit"] = "characters"
+        with self.assertRaisesRegex(ValueError, "requires a percent"):
+            render_html(wrong_unit)
+
     def test_punctuation_chart_is_source_bound_exact_and_accessible(self):
         artifact = build_local_analysis(SOURCE.encode("utf-8"))
         html = render_html(artifact)

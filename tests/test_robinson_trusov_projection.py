@@ -81,7 +81,7 @@ class TrusovProjectionTests(unittest.TestCase):
     def test_var_same_line_boundary_recognizes_all_newline_conventions(self):
         # Separate CR-only historical lines must not masquerade as one
         # line containing multiple templates; inline and comment guards stay.
-        for ending in ("\\n", "\\r\\n", "\\r"):
+        for ending in ("\n", "\r\n", "\r"):
             with self.subTest(ending=repr(ending)):
                 page = ("{{ВАР|мѣсто|место}}" + ending +
                         "{{ВАР|дѣло|дело}}" + ending)

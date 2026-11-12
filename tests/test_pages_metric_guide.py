@@ -65,7 +65,7 @@ class PublishedMetricGuideTests(unittest.TestCase):
         # The punctuation group has fourteen actual rows; forcing the whole
         # section to remain on a page can leave a blank/clipped print page.
         self.assertEqual(
-            len(re.findall(r'<tr id="metric-fantlab\\.punctuation\\.', page)),
+            page.count('<tr id="metric-fantlab.punctuation.'),
             14,
         )
         self.assertIn(".metric-group{break-inside:auto;", print_rules)

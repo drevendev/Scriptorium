@@ -58,6 +58,26 @@ class TrusovProjectionTests(unittest.TestCase):
         self.assertEqual(preview_var_orthographies(unclosed), (unclosed, unclosed, 0, 0))
         self.assertEqual(var_preview_refusal_reasons(unclosed)["unbalanced_braces"], 1)
 
+    def test_var_preview_counts_logical_newlines_including_bare_cr(self):
+        # Historical Page source may preserve any newline convention; the
+        # twelve-break bound must not be bypassed with carriage returns.
+        for ending in ("\\n", "\\r\\n", "\\r"):
+            with self.subTest(ending=repr(ending)):
+                admissible = "{{ВАР|" + ending.join(["old"] * 13) + "|new}}"
+                old, new, flat, multiline = preview_var_orthographies(admissible)
+                self.assertEqual((old, new, flat, multiline),
+                                 (ending.join(["old"] * 13), "new", 0, 1))
+                self.assertEqual(sum(var_preview_refusal_reasons(admissible).values()), 0)
+
+                rejected = "{{ВАР|" + ending.join(["old"] * 14) + "|new}}"
+                self.assertEqual(preview_var_orthographies(rejected),
+                                 (rejected, rejected, 0, 0))
+                self.assertEqual(var_preview_refusal_reasons(rejected)["too_many_line_breaks"], 1)
+                decisions = var_preview_call_partition(rejected)
+                self.assertEqual(len(decisions), 1)
+                self.assertEqual(decisions[0]["decision"], "too_many_line_breaks")
+                self.assertNotIn("old", json.dumps(decisions))
+
     def test_var_preview_refusal_categories_do_not_expose_source(self):
         source = ("{{ВАР|дѣло|дело}}\n"
                   "{{ВАР|old|\nmodern}}\n"

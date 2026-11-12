@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 498
+STATE_REVISION: 499
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-12
-LAST_RESULT: #509 native MERGED at d9a83671c57bdc3d71e8e04704b767036aba8bd6. Browser screenshot/print acceptance remains open; new independent PR adds executable Chromium checks.
+LAST_RESULT: #510 native MERGED at e14e622efe4f54f7e6c6c48d14652a1b52d84ac2. Inspected 16-page Chromium A4 evidence: page 1 had only hero copy, while the tall evidence panel was forced to page 2; scoped print-flow fix authored for later acceptance.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-REAL-BROWSER-ACCEPTANCE-V1
-ISSUES: #283 visual, mobile, print, keyboard acceptance and #285 publication distinction; neither is closed by branch-preview checks alone
+UNIT_ID: SCRIP-SITE-012-A4-PRINT-FLOW-V1
+ISSUE: #283 Reader print usability; #285 live publication verification remains separate
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-reader-browser-acceptance-20261112
-BASE: d9a83671c57bdc3d71e8e04704b767036aba8bd6
+BRANCH: scrip-reader-a4-print-flow-20261112
+BASE: e14e622efe4f54f7e6c6c48d14652a1b52d84ac2
 
-ACCEPTANCE: Existing Pages CI stages the actual branch-root Reader and runs pinned real Chromium browser acceptance at desktop 1440x900 and mobile 390x844. Check loaded/verified 11-work snapshot, 7/9 paired observations with missing sides, chart selection, keyboard skip, 29 glossary targets, author-preview page and CSV, mobile overflow, and generate actual A4 print PDF + screenshots. Upload seven-day source-free evidence artifact even on failed acceptance. Browser screenshots require human inspection; branch-preview test != live-route verification. No owner/admin/Page deployment interlocks changed, no manuscript text. Exact-head CI then later independent acceptance/merge.
+ACCEPTANCE: Real Chromium A4 PDF from merged #510 exposes a near-empty first sheet because `.hero-visual` is forced `break-inside:avoid` although it exceeds a page. Let the evidence panel fragment, keep individual chart observations intact, preserve the exact numeric table, and assert print computed styles in existing Chromium acceptance. Require fresh exact-head CI, visual inspection of the new PDF and later-run merge; browser-preview proof is not live Pages verification.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: a working, accessible Reader showing real-book comparisons and trustw
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283/#285 real branch-root browser acceptance | Execute desktop/mobile Chromium, pair/keyboard/glossary controls, screenshot/PDF artifacts; later exact-head CI review. Live URL remains separate. | Browser download in CI; live website and human screenshot inspection not proven by a local branch preview |
+| P1 | #283 A4 Reader print-flow regression | Remove page-spanning `break-inside:avoid` from evidence panel, print complete chart rows and exact table; exercise real Chromium PDF/print styles and inspect new artifact | Later exact-head CI and next-run independent acceptance |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
 | P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; static tests are not visual proof |

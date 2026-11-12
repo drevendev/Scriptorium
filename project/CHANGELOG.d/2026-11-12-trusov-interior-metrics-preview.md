@@ -1,0 +1,7 @@
+# 2026-11-12 — Trusov 1775 source-bound interior metrics (PR candidate)
+
+- Reuse the *same* exact-identity 150-Page MediaWiki replay (pinned oldid, title, SHA-1) and validated projection to measure an intentionally incomplete 145-Page interior, Pages **3–147**, with the existing deterministic 29-field analyzer. Never fetch the source twice in CI or write transient prose.
+- New source-free record includes all 29 unit/evidence/status rows, projected and normalized SHA-256, exact Page-revision-list SHA-256, count including spaces, and explicit missing dictionary fields.
+- The original Page **2** contains two unresolved parser/dynamic invocations; Pages **148–151** contain four VAR invocations (the latest pinned v4 CI accepted **zero** branch previews, with three over the logical line-break limit and one unsupported shape). The interior sample excludes both boundaries and is not a full text, author profile, admitted corpus entry or fair Trusov-vs-Shishmareva comparison.
+- Synthetic one-LF Page joins and plain heading/nop handling remain *inferred*, without proof of historical ProofreadPage rendition or printed edition equivalence. The exact FantLab input is UNKNOWN and M2 remains 0/5.
+- Add positive/negative checks for source drift, unknown template/HTML/link markup, 145-Page selection, deterministic source-free JSON and gating. CI captures this optional artifact from the existing Page fetch; keep the last published Reader unchanged.

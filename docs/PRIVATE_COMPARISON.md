@@ -71,8 +71,19 @@ observed rate per 1,000 words, **not** percent of the text or a FantLab score;
 tiny nonzero rates retain a visible tick. Each pair retains exact left/right
 readings and a signed right-minus-left difference. Missing rates and mismatched
 methods display a notice instead of a misleading bar (neither means zero).
-The full 29-row table is preserved for keyboard, print and exact-value use; the
-bars work without JavaScript. Existing outputs are never overwritten. Shell
+The full semantic 29-row table is preserved for keyboard and exact-value use
+on screen. **In the installed CLI's standalone HTML comparison**, printing
+turns every row into a labelled two-column card: the metric, both original
+values, unit, exact right-minus-left difference and difference unit, comparison
+status, compatibility and definition evidence. This avoids clipping the
+screen-only 50rem table on ordinary A4/Letter paper without hiding missing
+values or true measured zeros. The on-screen horizontally scrollable table,
+source hashes, source-free content and JSON/CSV/Markdown exports are unchanged.
+The bars and printable labels work without JavaScript. Structural unit tests
+cover the exact nine-column/eight-label contract; a real canonical-route
+A4 print/PDF and assistive-technology check is still VISUAL_NOT_VERIFIED.
+This is distinct from the static site's browser-only Comparison Desk print
+cards (PR #297). Existing outputs are never overwritten. Shell
 redirection is not create-only; prefer `--output`.
 
 ## Interpretation

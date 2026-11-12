@@ -1145,6 +1145,10 @@
     }
     const rows=sharedPairRows(a,b);
     const coverage=pairCoverageRows(a,b);
+    // Missingness is counted independently for each edition; a true zero is measured.
+    // Counts may overlap if the same field is unavailable on both sides.
+    const missingLeft=coverage.filter(row=>row.left===null).length;
+    const missingRight=coverage.filter(row=>row.right===null).length;
     const fragment=document.createDocumentFragment();
     for (const m of coverage) {
       if (pairOnlyShared.checked && (m.left===null || m.right===null)) continue;
@@ -1167,7 +1171,8 @@
     pairMarkdownButton.disabled=rows.length===0;
     el("pair-caption").textContent=a.display_title+" → "+b.display_title+" · правая минус левая";
     el("pair-status").textContent=rows.length+" из "+pairedIds.length+
-      " показателей измерены в обеих книгах; "+
+      " показателей измерены в обеих книгах; отсутствуют значения: слева "+
+      missingLeft+", справа "+missingRight+" (поля могут отсутствовать с обеих сторон); "+
       (pairOnlyShared.checked ? "неполные строки скрыты только в таблице. " :
         "остальные отмечены «нет данных». ")+
       (a.translator||b.translator?"Одна из версий — русский перевод. ":"")+

@@ -107,6 +107,7 @@ assert.ok(rendered.every(row=>row.children[0].children[0]?.href===
 assert.equal(rendered.filter(row=>row.children[2].textContent==="нет данных").length,2);
 assert.equal(rendered.filter(row=>row.children[3].textContent==="— (нет совместного измерения)").length,2);
 assert.match(slots["pair-status"].textContent,/7 из 9/);
+assert.match(slots["pair-status"].textContent,/отсутствуют значения: слева 0, справа 2/);
 assert.match(slots["paired-graphic"].children[0].children[0].textContent,/недоступна/);
 assert.equal(slots["paired-graphic"].children[0].children.some(x=>x.className==="pair-delta"),false,
   "Unavailable metric must not create an invented delta");
@@ -133,6 +134,8 @@ try {
     row.children[0].children[0].textContent==="fantlab.dialogue.share_percent");
   assert.equal(zeroRow.children[2].textContent,"0");
   assert.equal(zeroRow.children[3].textContent,"-34.975");
+  assert.match(slots["pair-status"].textContent,/отсутствуют значения: слева 0, справа 2/,
+    "Measured zero is not a missing observation");
 } finally { trueZero.actual=savedZero; }
 slots["pair-only-shared"].checked=false;
 updatePair();
@@ -148,6 +151,7 @@ updatePair();
 assert.equal(slots["pair-rows"].children[0].children.length,9);
 assert.equal(slots["paired-graphic"].children[0].children.filter(x=>x.className==="pair-row").length,2);
 assert.match(slots["pair-status"].textContent,/9 из 9/);
+assert.match(slots["pair-status"].textContent,/отсутствуют значения: слева 0, справа 0/);
 pairMetric.value="fantlab.dialogue.share_percent";
 updatePair();
 const delta=()=>slots["paired-graphic"].children[0].children.find(x=>x.className==="pair-delta")?.textContent;
@@ -178,4 +182,23 @@ try {
 } finally {
   rightMetric.actual=savedRightValue;
 }
-console.log("Reader pair coverage: complete/partial, missing/nonfinite, zero, DOM and chart PASS");
+// Missing counts are per side, not the number of distinct absent metric IDs.
+// The same field missing from both editions must contribute once to each count.
+const missingId="fantlab.dialogue.share_percent";
+const leftMissingRow=lookup(anna,missingId),rightMissingRow=lookup(karamazov,missingId);
+const oldLeft=leftMissingRow.actual,oldRight=rightMissingRow.actual;
+try {
+  leftMissingRow.actual=null;
+  rightMissingRow.actual=null;
+  leftSelect.value="anna";rightSelect.value="karamazov";
+  updatePair();
+  assert.match(slots["pair-status"].textContent,/8 из 9/);
+  assert.match(slots["pair-status"].textContent,/отсутствуют значения: слева 1, справа 1/);
+  assert.equal(slots["pair-rows"].children[0].children.find(row=>
+    row.children[0].children[0].textContent===missingId).children[3].textContent,
+    "— (нет совместного измерения)");
+} finally {
+  leftMissingRow.actual=oldLeft;
+  rightMissingRow.actual=oldRight;
+}
+console.log("Reader pair coverage: complete/partial, per-side missingness, zero, DOM and chart PASS");

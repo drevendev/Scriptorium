@@ -119,7 +119,8 @@ class PagesWorkflowContractTests(unittest.TestCase):
         self.assertIn(
             "  build:\n"
             "    name: Verify and build static site\n"
-            "    runs-on: ubuntu-latest\n"
+            "    # Playwright Chromium requires supported Ubuntu 24.04 runner.\n"
+            "    runs-on: ubuntu-24.04\n"
             "    permissions:\n"
             "      contents: read\n",
             self.workflow,

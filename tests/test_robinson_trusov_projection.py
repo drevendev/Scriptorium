@@ -61,7 +61,7 @@ class TrusovProjectionTests(unittest.TestCase):
     def test_var_preview_counts_logical_newlines_including_bare_cr(self):
         # Historical Page source may preserve any newline convention; the
         # twelve-break bound must not be bypassed with carriage returns.
-        for ending in ("\\n", "\\r\\n", "\\r"):
+        for ending in ("\n", "\r\n", "\r"):
             with self.subTest(ending=repr(ending)):
                 admissible = "{{ВАР|" + ending.join(["old"] * 13) + "|new}}"
                 old, new, flat, multiline = preview_var_orthographies(admissible)

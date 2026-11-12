@@ -132,7 +132,7 @@ try {
   const zeroRow=slots["pair-rows"].children[0].children.find(row=>
     row.children[0].children[0].textContent==="fantlab.dialogue.share_percent");
   assert.equal(zeroRow.children[2].textContent,"0");
-  assert.equal(zeroRow.children[3].textContent,"−34.975");
+  assert.equal(zeroRow.children[3].textContent,"-34.975");
 } finally { trueZero.actual=savedZero; }
 slots["pair-only-shared"].checked=false;
 updatePair();

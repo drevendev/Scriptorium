@@ -49,7 +49,7 @@ const document={
   createElement:tag=>new Node(tag),
   createDocumentFragment:()=>new Node("#fragment")
 };
-const slots=Object.fromEntries(["pair-rows","paired-graphic","pair-status","pair-caption"]
+const slots=Object.fromEntries(["pair-rows","paired-graphic","pair-status","pair-caption","pair-only-shared"]
   .map(id=>[id,new Node(id)]));
 const el=id=>{assert.ok(Object.hasOwn(slots,id));return slots[id];};
 const insertText=(parent,tag,value,cls)=>{
@@ -93,11 +93,11 @@ assert(viewStart>=0&&viewEnd>viewStart,"Shipped comparison renderer missing");
 const updatePair=new Function(
   "getBook","updatePairEditionContext","sharedPairRows","pairCoverageRows",
   "document","el","insertText","unit","label","pretty","exact","pairedIds",
-  "pairMetric","pairExportButton","pairCsvButton","pairMarkdownButton","leftSelect","rightSelect",
+  "pairMetric","pairOnlyShared","pairExportButton","pairCsvButton","pairMarkdownButton","leftSelect","rightSelect",
   "pairDeltaDescription","pairTableDeltaText","appendMetricDefinition",
   source.slice(viewStart,viewEnd)+"\nreturn updatePair;"
 )(getBook,()=>{},sharedPairRows,pairCoverageRows,document,el,insertText,
-  unit,label,pretty,exact,pairedIds,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,leftSelect,rightSelect,pairDeltaDescription,pairTableDeltaText,appendMetricDefinition);
+  unit,label,pretty,exact,pairedIds,pairMetric,slots["pair-only-shared"],pairExportButton,pairCsvButton,pairMarkdownButton,leftSelect,rightSelect,pairDeltaDescription,pairTableDeltaText,appendMetricDefinition);
 updatePair();
 const rendered=slots["pair-rows"].children[0].children;
 assert.equal(rendered.length,9);
@@ -113,6 +113,32 @@ assert.equal(slots["paired-graphic"].children[0].children.some(x=>x.className===
 assert.equal(pairExportButton.disabled,false);
 assert.equal(pairCsvButton.disabled,false);
 assert.equal(pairMarkdownButton.disabled,false);
+// Actual checkbox filters only unavailable table rows; exports keep their measured data.
+slots["pair-only-shared"].checked=true;
+updatePair();
+assert.equal(slots["pair-rows"].children[0].children.length,7);
+assert.ok(slots["pair-rows"].children[0].children.every(row=>
+  row.children[2].textContent!=="нет данных"));
+assert.match(slots["pair-status"].textContent,/неполные строки скрыты только в таблице/);
+assert.equal(pairExportButton.disabled,false);
+assert.equal(pairCsvButton.disabled,false);
+assert.equal(pairMarkdownButton.disabled,false);
+// A real measured zero is still a shared observation and must remain visible.
+const trueZero=lookup(beketova,"fantlab.dialogue.share_percent");
+const savedZero=trueZero.actual;
+try {
+  trueZero.actual=0;
+  updatePair();
+  const zeroRow=slots["pair-rows"].children[0].children.find(row=>
+    row.children[0].children[0].textContent==="fantlab.dialogue.share_percent");
+  assert.equal(zeroRow.children[2].textContent,"0");
+  assert.equal(zeroRow.children[3].textContent,"-34.975");
+} finally { trueZero.actual=savedZero; }
+slots["pair-only-shared"].checked=false;
+updatePair();
+assert.equal(slots["pair-rows"].children[0].children.length,9);
+assert.equal(slots["pair-rows"].children[0].children.filter(row=>
+  row.children[2].textContent==="нет данных").length,2);
 pairMetric.value="fantlab.general.mean_word_length_chars";
 updatePair();
 assert.equal(slots["paired-graphic"].children[0].children.filter(x=>x.className==="pair-row").length,2);

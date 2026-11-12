@@ -60,6 +60,7 @@
   const leftSelect = el("pair-left");
   const rightSelect = el("pair-right");
   const pairMetric = el("pair-metric");
+  const pairOnlyShared = el("pair-only-shared");
   const pairSwapButton = el("pair-swap");
   const pairCopyButton = el("copy-pair-link");
   const pairExportButton = el("pair-export");
@@ -1146,6 +1147,7 @@
     const coverage=pairCoverageRows(a,b);
     const fragment=document.createDocumentFragment();
     for (const m of coverage) {
+      if (pairOnlyShared.checked && (m.left===null || m.right===null)) continue;
       const tr=document.createElement("tr");
       const th=insertText(tr,"th","");
       th.scope="row";
@@ -1165,7 +1167,9 @@
     pairMarkdownButton.disabled=rows.length===0;
     el("pair-caption").textContent=a.display_title+" → "+b.display_title+" · правая минус левая";
     el("pair-status").textContent=rows.length+" из "+pairedIds.length+
-      " показателей измерены в обеих книгах; остальные отмечены «нет данных». "+
+      " показателей измерены в обеих книгах; "+
+      (pairOnlyShared.checked ? "неполные строки скрыты только в таблице. " :
+        "остальные отмечены «нет данных». ")+
       (a.translator||b.translator?"Одна из версий — русский перевод. ":"")+
       "Описательная диагностика, не FantLab parity.";
     const id=pairMetric.value;
@@ -1497,7 +1501,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogOrigin,catalogSearch,catalogOrder,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,...chartButtons];
+      const inputs=[catalogFilter,catalogOrigin,catalogSearch,catalogOrder,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -1522,6 +1526,7 @@
       restoreCatalogFromUrl();
       sortCatalog();
       el("catalog-tools").hidden=false;
+      el("pair-view-controls").hidden=false;
       one.addEventListener("change",()=>selectBook(one.value,true));
       window.addEventListener("popstate",()=>{
         restoreCatalogFromUrl();
@@ -1542,6 +1547,7 @@
       leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
+      pairOnlyShared.addEventListener("change",updatePair);
       pairSwapButton.addEventListener("click",swapPair);
       pairCopyButton.hidden=false;
       pairCopyButton.addEventListener("click",copyPairShareUrl);

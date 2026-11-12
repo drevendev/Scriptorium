@@ -24,7 +24,18 @@
 .metric-group tr:target{outline:3px solid var(--focus);outline-offset:-3px}
 .guide-end{margin-bottom:3rem;padding:1.5rem;border-top:2px solid var(--line)}
 .guide-end p{max-width:77ch}
-@media print{.guide-links,.site-top nav{display:none!important}.metric-group{break-inside:avoid}.metric-group table{min-width:0;font-size:.8rem}}
+/* Let the 14-row punctuation glossary span pages without truncation.
+   Keep column headings on continuation pages and individual metric rows intact. */
+@media print{
+ .guide-links,.site-top nav{display:none!important}
+ .metric-group{break-inside:auto;margin:1.25rem 0 2rem}
+ /* Override the higher-specificity screen scroll container: print needs page fragmentation. */
+ .metric-group .table-region{overflow:visible}
+ .metric-group table{min-width:0;width:100%;font-size:9pt;table-layout:auto}
+ .metric-group thead{display:table-header-group}
+ .metric-group tr{break-inside:avoid;page-break-inside:avoid}
+ .metric-group th,.metric-group td{overflow-wrap:anywhere;padding:.35rem .45rem}
+}
 </style></head><body>
 <nav class="skip-links" aria-label="Быстрый переход"><a class="skip-link" href="#main">К содержанию</a><a class="skip-link" href="#general">К определениям</a></nav>
 <header class="site-top"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a><nav aria-label="Основная навигация"><a href="./#books">Книги</a><a href="./#pairs">Сравнить</a><a href="./#measurements">Измерения</a><a href="./#method">Метод</a></nav></header>

@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 501
+STATE_REVISION: 502
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-12
-LAST_RESULT: #513 native MERGED at 359b2381def5777d050d0539c5311d7c7802787b; #285 closed after GitHub-hosted exact-byte/Chromium LIVE_VERIFIED at this master (runs 43274480335 and 43274481129). The independent public-browser environment could not resolve the host.
-LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
+LAST_RESULT: #514 native MERGED at 604eafe76401f21283f33fdb954d8359b526f8a0; #513 live byte/Chromium verification accepted before it. New #511 interior-metrics candidate prepares a *partial* 145-Page source-bound diagnostic, not a measured twelfth edition.
+LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; Trusov source-bound projected Page diagnostics only; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-TRUSOV-VAR-CR-BREAK-BOUND-V4
-ISSUE: #511 measured Trusov translation; narrow historical-Page projection correctness slice, NOT the literary body
+UNIT_ID: SCRIP-CORPUS-TRUSOV-INTERIOR-29-METRICS-V1
+ISSUE: #511 measured Trusov translation, explicitly limited safe interior diagnostic
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-trusov-var-line-break-bounds-20261112
-BASE: 359b2381def5777d050d0539c5311d7c7802787b
+BRANCH: scrip-trusov-interior-metrics-20261112
+BASE: 604eafe76401f21283f33fdb954d8359b526f8a0
 
-ACCEPTANCE: Reject a VAR candidate exceeding twelve logical line breaks regardless of LF, CRLF, or bare CR. CRLF counts as one break; a call with twelve breaks remains a source-free *inferred* preview. Positive/negative regression tests, unchanged pinned-150-page source identities, exact-head CI and a later-run review are required before merge. This closes a bounded historical newline semantics bug, NOT #511's body-only extraction/measurement, Page joining or FantLab parity.
+ACCEPTANCE: Reuse a single 150-frozen-oldid verified Page fetch to measure the 145 interior Pages 3–147 that contain no unresolved template calls. Reject any unknown markup or identity drift, preserve one-LF projected join as INFERRED only, emit source-free all-29-field diagnostic and positive/negative tests. Keep opening Page 2 and all four VAR-bearing tail Pages 148–151 excluded; this intentionally truncates narrative coverage and must never be admitted as a full body, calibrated work or translation pair. Exact-head CI, pinned Page fetch and later-run code/evidence review required before merge.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: measure the rights-cleared 1775 Trusov literary body to expose an honestly qualified historical-vs-modern Russian translation comparison; preserve the already live, functional Reader.
+Milestone: first evidence-labelled historical Russian Trusov metric preview, then a genuinely full 1775 literary-body extraction and honest translation comparison; preserve the live Reader.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept/fix historical VAR logical-line-break bound in #511 slice | Exact-head tests, pinned Page-source workflow and later-run qualifying merge | Provider access for actual 150-Page capture; no dependence for local unit regressions |
-| P2 | #511 body-only historical Trusov extraction and 29-field analysis | Independent section/volume boundary evidence; rights + hashes; >=300k character body; derived no-prose metrics; comparison caveats | Historical template/VAR/transclusion and Page joins; never infer body from Page graph |
-| P3 | #282 pinned AOT N collision diagnostic | Native noun/cardinal evidence, exact toolchain and bounded POS deltas | Native pylem dictionary; FantLab exact input still unknown |
-| P4 | #283 Reader accessibility / presentation issues | Actual browser-visible defect + regression; maintain live acceptance | Existing real Chromium screenshots and root Reader |
-| P5 | A different legally licensed >=300k edition, then #284 release attribution | Source hash, measured metrics and legal/edition facts; #284 still needs owner license grant | Independent full-text body and rights; no code-license presumption |
+| P1 | Review new #511 145-Page interior diagnostic | Exact-head tests and pinned 150-Page CI; source-free 29 rows, proven excerpt-only gates; later-run qualifying merge | Historical Page API for CI; no duplicate fetch |
+| P2 | #511 complete Trusov body and 29-field Shishmareva comparison | Independently inspect opening and ending, resolve Page2 parser and Pages148–151 VAR rendering, verify rights/body >=300k, hashes, alignment; only then full comparison | Historical template binding, Page join/render identity |
+| P3 | #282 pinned AOT N collision diagnostic | Exact native noun/cardinal evidence, toolchain and bounded POS deltas | Native pylem dictionary; FantLab exact input still unknown |
+| P4 | #283 Reader accessibility / visual issues | Browser-observed defect, regression and reader-first results | Existing real Chromium proof |
+| P5 | Separate rights-cleared >=300k edition, then #284 attribution guidance | Source-bound measured metrics, rights, provenance; no new code-license presumption | Independent whole-work identity/rights; owner grant for #284 |
 
 ## Retained scientific and operational boundaries
 

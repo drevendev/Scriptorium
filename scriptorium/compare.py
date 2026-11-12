@@ -669,7 +669,32 @@ small{display:block;font-size:.75rem;font-weight:400;color:#4f635a}details summa
 .pair-difference{font-weight:600;margin:.7rem 0 0}
 @media(max-width:680px){.cards{grid-template-columns:1fr}}
 @media(prefers-color-scheme:dark){body{background:#172721;color:#f2f0e5}.card,.punctuation-pair,.scroll,.interpretation{background:#20332d;border-color:#57746a}small{color:#c5d6c9}.notice{background:#29473f}.punctuation-comparison{border-color:#57746a}.pair-track{background:#425c51}.pair-left{background:#8bd2bd}.pair-right{background:#e6b184}}
-@media print{body{background:#fff;color:#111}.punctuation-pair{break-inside:avoid}.pair-fill{print-color-adjust:exact}.skip{display:none}}
+@media print{
+body{background:#fff;color:#111}
+.punctuation-pair{break-inside:avoid}
+.pair-fill{print-color-adjust:exact}
+.skip{display:none}
+/* Keep the on-screen semantic table, but print all nine columns as labelled cards.
+   The 50rem screen min-width would otherwise clip ordinary A4/Letter pages. */
+.scroll{overflow:visible;border:0}
+table,tbody{display:block;width:100%;min-width:0}
+thead{display:none}
+tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.15rem .75rem;
+  border:1px solid #777;padding:.45rem .7rem;margin:.65rem 0;
+  break-inside:avoid;page-break-inside:avoid}
+tbody th[scope='row']{grid-column:1 / -1;display:block;min-width:0;
+  overflow-wrap:anywhere;border-bottom:1px solid #777;padding:.35rem 0}
+tbody td{display:block;min-width:0;padding:.25rem 0;overflow-wrap:anywhere;font-size:.84rem}
+tbody td::before{display:block;font:700 .7rem/1.35 system-ui,sans-serif}
+tbody td:nth-of-type(1)::before{content:"Left"}
+tbody td:nth-of-type(2)::before{content:"Right"}
+tbody td:nth-of-type(3)::before{content:"Unit"}
+tbody td:nth-of-type(4)::before{content:"Difference"}
+tbody td:nth-of-type(5)::before{content:"Difference unit"}
+tbody td:nth-of-type(6)::before{content:"Status"}
+tbody td:nth-of-type(7)::before{content:"Compatibility"}
+tbody td:nth-of-type(8)::before{content:"Definition evidence"}
+}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}"""
     return ("<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>" +
             "<title>" + name + " · Scriptorium</title><style>" + css + "</style></head><body>" +

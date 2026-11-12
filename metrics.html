@@ -29,6 +29,8 @@
 @media print{
  .guide-links,.site-top nav{display:none!important}
  .metric-group{break-inside:auto;margin:1.25rem 0 2rem}
+ /* Override the higher-specificity screen scroll container: print needs page fragmentation. */
+ .metric-group .table-region{overflow:visible}
  .metric-group table{min-width:0;width:100%;font-size:9pt;table-layout:auto}
  .metric-group thead{display:table-header-group}
  .metric-group tr{break-inside:avoid;page-break-inside:avoid}

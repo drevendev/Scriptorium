@@ -186,7 +186,13 @@ footer a { color:#ffdaa3; }
  body,main { background:#fff !important; color:#000 !important; }
  .site-top nav,.hero-actions,.controls,.evidence-actions,.skip-link { display:none !important; }
  .hero,.facts,.book-grid,.method-grid { display:block; }
- .hero-visual,.terminal,.book,.book-next,.method-grid article { color:#000 !important; background:#fff !important; box-shadow:none !important; break-inside:avoid; border:1px solid #555; margin:.6rem 0; }
+ .hero-visual,.terminal,.book,.book-next,.method-grid article { color:#000 !important; background:#fff !important; box-shadow:none !important; border:1px solid #555; margin:.6rem 0; }
+ .terminal,.book,.book-next,.method-grid article { break-inside:avoid; }
+ /* The evidence panel is taller than A4: paginate it rather than leaving an empty cover. */
+ .hero-visual { break-inside:auto; page-break-inside:auto; }
+ /* Break between complete observations, never through a metric label/bar/value. */
+ .chart-series { display:block; }
+ .chart-series .chart-row { break-inside:avoid; page-break-inside:avoid; margin:.65rem 0; }
  .hero-visual h2,.hero-visual p,.chart-row>span,.chart-row strong,.hero-visual .eyebrow,.chart-unit,.terminal h2,.terminal p,.terminal code { color:#000 !important; }
  .bar-track { border:1px solid #555; }
  .table-region { overflow:visible; }

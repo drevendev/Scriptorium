@@ -15,6 +15,7 @@ class _GuideParser(HTMLParser):
     def __init__(self):
         super().__init__()
         self.metric_rows = []
+        self.metric_focus_targets = []
         self.ids = set()
         self.links = []
         self.language = False
@@ -30,6 +31,7 @@ class _GuideParser(HTMLParser):
             self.ids.add(attrs["id"])
         if tag == "tr" and attrs.get("id", "").startswith("metric-"):
             self.metric_rows.append(attrs["id"].removeprefix("metric-"))
+            self.metric_focus_targets.append((attrs["id"], attrs.get("tabindex")))
         if tag == "a":
             self.links.append(attrs.get("href", ""))
 
@@ -57,6 +59,32 @@ class PublishedMetricGuideTests(unittest.TestCase):
         self.assertIn("Расширение Scriptorium", page)
         self.assertNotIn("<script", page.lower())
         self.assertTrue(all(h and not h.startswith(("javascript:", "data:")) for h in parser.links))
+
+    def test_metric_deep_links_land_on_focusable_rows_without_tab_stops(self):
+        """Each no-JS fragment can receive focus but is not a new Tab stop."""
+        page = (ROOT / "metrics.html").read_text(encoding="utf-8")
+        parser = _GuideParser()
+        parser.feed(page)
+        self.assertEqual(len(parser.metric_focus_targets), 29)
+        self.assertEqual(
+            {target for target, _ in parser.metric_focus_targets},
+            {"metric-" + metric for metric in METRIC_LABELS},
+        )
+        self.assertTrue(all(mode == "-1" for _, mode in parser.metric_focus_targets))
+        # Negative regression: changing a single row to tabindex=0 adds a Tab stop.
+        broken = _GuideParser()
+        first_row = parser.metric_focus_targets[0][0]
+        broken.feed(page.replace(
+            f'<tr id="{first_row}" tabindex="-1">',
+            f'<tr id="{first_row}" tabindex="0">',
+            1,
+        ))
+        self.assertFalse(all(mode == "-1" for _, mode in broken.metric_focus_targets))
+        styles = page.split("<style>", 1)[1].split("</style>", 1)[0]
+        self.assertIn(".metric-group tr:target{outline:3px solid var(--focus);", styles)
+        self.assertIn("scroll-margin-block-start:1rem", styles)
+        self.assertIn(".metric-group tr:target{outline-color:Highlight}", styles)
+        self.assertNotIn("<script", page.lower())
 
     def test_long_glossary_print_tables_can_span_pages(self):
         page = (ROOT / "metrics.html").read_text(encoding="utf-8")

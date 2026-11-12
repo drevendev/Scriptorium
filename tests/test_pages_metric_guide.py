@@ -73,7 +73,12 @@ class PublishedMetricGuideTests(unittest.TestCase):
         self.assertTrue(all(mode == "-1" for _, mode in parser.metric_focus_targets))
         # Negative regression: changing a single row to tabindex=0 adds a Tab stop.
         broken = _GuideParser()
-        broken.feed(page.replace('tabindex="-1"', 'tabindex="0"', 1))
+        first_row = parser.metric_focus_targets[0][0]
+        broken.feed(page.replace(
+            f'<tr id="{first_row}" tabindex="-1">',
+            f'<tr id="{first_row}" tabindex="0">',
+            1,
+        ))
         self.assertFalse(all(mode == "-1" for _, mode in broken.metric_focus_targets))
         styles = page.split("<style>", 1)[1].split("</style>", 1)[0]
         self.assertIn(".metric-group tr:target{outline:3px solid var(--focus);", styles)

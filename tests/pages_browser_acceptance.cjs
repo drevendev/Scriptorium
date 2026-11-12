@@ -83,6 +83,18 @@ async function main() {
 
     // An actual print PDF exercises print CSS (distinct from a visual review).
     await desktop.emulateMedia({ media: "print" });
+    const printLayout = await desktop.evaluate(() => ({
+      heroBreak: getComputedStyle(document.querySelector(".hero-visual")).breakInside,
+      chartLayout: getComputedStyle(document.querySelector("#chart-series")).display,
+      rowsIntact: [...document.querySelectorAll("#chart-series .chart-row")]
+        .every(row => getComputedStyle(row).breakInside === "avoid"),
+      exactTable: getComputedStyle(document.querySelector(".chart-table")).display,
+    }));
+    assert.equal(printLayout.heroBreak, "auto",
+      "Tall evidence panel must paginate, not leave an almost empty first A4 page");
+    assert.equal(printLayout.chartLayout, "block", "Print chart must allow row-level pagination");
+    assert.equal(printLayout.rowsIntact, true, "Printed book observations must not split");
+    assert.equal(printLayout.exactTable, "block", "Keep the exact-value table on paper");
     const pdf = await desktop.pdf({ path: path.join(output, "reader-a4.pdf"),
       format: "A4", printBackground: true });
     assert.ok(pdf.length > 2000, "Real Chromium A4 output must not be empty");

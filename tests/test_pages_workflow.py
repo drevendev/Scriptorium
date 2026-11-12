@@ -55,11 +55,11 @@ class PagesWorkflowContractTests(unittest.TestCase):
             for line in self.workflow.splitlines()
             if line.strip().startswith("uses:")
         ]
-        # Two distinct source-free QA artifacts intentionally use the same pinned
+        # Three distinct source-free QA artifacts intentionally use the same pinned
         # upload action; verify invocations without weakening SHA validation.
-        self.assertEqual(len(uses_lines), 7)
+        self.assertEqual(len(uses_lines), 8)
         self.assertEqual(
-            sum("actions/upload-artifact@" in action for action in uses_lines), 2,
+            sum("actions/upload-artifact@" in action for action in uses_lines), 3,
         )
         for line in uses_lines:
             self.assertRegex(
@@ -201,17 +201,36 @@ class PagesWorkflowContractTests(unittest.TestCase):
             self.workflow,
         )
 
-    def test_only_disposable_site_tree_is_uploaded(self) -> None:
-        upload_step = re.search(
-            r"- name: Upload GitHub Pages artifact\n(?P<body>(?:\s{8,}.*\n?)+?)\n  deploy:",
-            self.workflow,
+    def test_live_readback_is_master_only_and_never_acts_as_deployment(self) -> None:
+        """Live HTTP/browser evidence is not a public artifact publisher."""
+        build_job = self.workflow.split("\n  build:\n", 1)[1].split("\n  deploy:\n", 1)[0]
+        self.assertIn("run: node tests/pages_live_byte_guard.cjs", build_job)
+        live_step = build_job.split(
+            "      - name: Probe exact live branch Pages in Chromium\n", 1
+        )[1].split("\n      - name:", 1)[0]
+        self.assertIn(
+            "if: github.event_name == 'push' && github.ref == 'refs/heads/master'",
+            live_step,
         )
-        self.assertIsNotNone(upload_step)
-        body = upload_step.group("body")
-        self.assertIn("path: build/site", body)
-        self.assertNotIn("path: .", body)
-        self.assertNotIn("showcase/", body)
-        self.assertNotIn("site/", body)
+        self.assertIn("continue-on-error: true", live_step)
+        self.assertIn(
+            "run: node tests/pages_browser_acceptance.cjs --live-only", live_step,
+        )
+        self.assertIn("name: scriptorium-live-pages-readback", build_job)
+        self.assertIn("path: build/reader-live-readback", build_job)
+        self.assertNotIn("pages: write", build_job)
+        self.assertNotIn("id-token: write", build_job)
+
+    def test_only_disposable_site_tree_is_uploaded(self) -> None:
+        # Isolate exactly the Pages publisher, not later QA artifact steps.
+        segment = self.workflow.split(
+            "      - name: Upload GitHub Pages artifact\n", 1
+        )[1].split("\n      - name:", 1)[0]
+        self.assertIn("uses: actions/upload-pages-artifact@", segment)
+        self.assertIn("path: build/site", segment)
+        self.assertNotIn("path: .", segment)
+        self.assertNotIn("showcase/", segment)
+        self.assertNotIn("site/", segment)
 
 
 if __name__ == "__main__":

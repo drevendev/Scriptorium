@@ -116,15 +116,13 @@ class PagesWorkflowContractTests(unittest.TestCase):
 
     def test_build_is_read_only_and_uses_canonical_renderer(self) -> None:
         self.assertIn("permissions:\n  contents: read\n", self.workflow)
-        self.assertIn(
-            "  build:\n"
-            "    name: Verify and build static site\n"
-            "    # Playwright Chromium requires supported Ubuntu 24.04 runner.\n"
-            "    runs-on: ubuntu-24.04\n"
-            "    permissions:\n"
-            "      contents: read\n",
-            self.workflow,
-        )
+        # Require the browser-compatible runner in the *build* job without
+        # coupling the contract to non-semantic YAML comment wording.
+        build_job = self.workflow.split("\n  build:\n", 1)[1].split("\n  deploy:\n", 1)[0]
+        self.assertIn("name: Verify and build static site", build_job)
+        self.assertRegex(build_job, r"(?m)^    runs-on: ubuntu-24\\.04$")
+        self.assertNotIn("runs-on: ubuntu-latest", build_job)
+        self.assertIn("permissions:\n      contents: read\n", build_job)
         self.assertIn("persist-credentials: false", self.workflow)
         self.assertIn('python-version: "3.13"', self.workflow)
         self.assertIn("python -m unittest discover -s tests -v", self.workflow)

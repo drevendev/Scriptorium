@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 495
+STATE_REVISION: 496
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-12
-LAST_RESULT: #506 confirmed merged at da396356d9919fd130248641178fdf37aec21196. Prepare verified pair-table common-measurement filter under #283; later acceptance required.
+LAST_RESULT: #507 confirmed merged at 5f98dc76ac1db0db09bceb0cbe0b207d7acd0c72. Prepare per-edition missing observation counts for the paired Reader; later acceptance required.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-PAIR-COMMON-V1
-ISSUE: #283 — interactive pair-table shared-measurement filter (do not close)
+UNIT_ID: SCRIP-SITE-012-PAIR-SIDE-COVERAGE-V1
+ISSUE: #283 — per-edition missing counts in interactive pair-table status (do not close)
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-reader-pair-common-only-20261112
-BASE: da396356d9919fd130248641178fdf37aec21196
+BRANCH: scrip-reader-pair-side-coverage-20261112
+BASE: 5f98dc76ac1db0db09bceb0cbe0b207d7acd0c72
 
-ACCEPTANCE: Checkbox hidden/disabled without verified JSON; after verification a keyboard-operable checkbox hides pair-table rows missing either observation, retains true measured zero, and leaves nine-field static fallback and JSON/CSV/Markdown data semantics unchanged. Pair share links intentionally omit this local view-only state. Positive/negative shipped-JS tests, exact-head CI and later independent review required. Browser desktop/mobile VISUAL_NOT_VERIFIED. M2 0/5, M3 open.
+ACCEPTANCE: On verified JSON, paired status counts unavailable observations independently for each edition (including overlap for a field absent on both sides), never treating true measured zero as missing. Existing nine-field no-JS fallback, shared-only toggle, chart, provenance and JSON/CSV/Markdown exports remain unchanged. Shipped-JS positive/negative tests, exact-head CI and later independent review required. Browser desktop/mobile VISUAL_NOT_VERIFIED. M2 0/5, M3 open.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: a working, accessible Reader showing real-book comparisons and trustw
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 shared-only view for Reader pair metrics | Verified checkbox filters only missing rows (true zero retained); static fallback and scientific exports unchanged; later CI acceptance | Existing nine-field pair coverage and measured snapshot; #506 merged |
+| P1 | #283 per-edition missingness for Reader pair metrics | Verified pair status shows separate left/right missing counts, including overlap, never counts true zero as absent; no export/fallback drift; later CI acceptance | Existing nine-field pair coverage and measured snapshot; #507 merged |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
 | P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; separate generated Actions build is not the published root |

@@ -10,6 +10,8 @@ on:
       - "tests/test_robinson_trusov_template_shapes.py"
       - "scriptorium/robinson_trusov_projection.py"
       - "tests/test_robinson_trusov_projection.py"
+      - "scriptorium/robinson_trusov_interior.py"
+      - "tests/test_robinson_trusov_interior.py"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json"
@@ -39,6 +41,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_robinson_trusov_content.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_template_shapes.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_projection.py' -v
+          python -m unittest discover -s tests -p 'test_robinson_trusov_interior.py' -v
       - name: Capture pinned Page contents with bounded MediaWiki requests
         run: |
           mkdir -p build/repro
@@ -47,7 +50,8 @@ jobs:
             --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
             --preflight-output build/repro/trusov-1775.content-preflight.json \
             --shapes-output build/repro/trusov-1775.template-shapes.json \
-            --output build/repro/trusov-1775.projection.json
+            --output build/repro/trusov-1775.projection.json \
+            --interior-output build/repro/trusov-1775.interior-metrics.json
       - name: Validate source-free output and preserve unknown scientific gates
         run: |
           python - <<'PY'
@@ -106,6 +110,25 @@ jobs:
           assert len(projection["joined_modern_var_preview_sha256"]) == 64
           assert projection["literary_body_sha256"] is None
           assert projection["historical_render_equivalence_proven"] is False
+          from scriptorium.robinson_trusov_interior import SCHEMA as INTERIOR_SCHEMA
+          interior=json.loads(Path("build/repro/trusov-1775.interior-metrics.json").read_text(encoding="utf-8"))
+          assert interior["schema_version"] == INTERIOR_SCHEMA
+          assert interior["page_interval"]["count"] == 145
+          assert interior["page_interval"]["excluded_pages"] == [2,148,149,150,151]
+          assert interior["page_interval"]["opening_truncated"] is True
+          assert interior["page_interval"]["ending_truncated"] is True
+          assert interior["source_page_graph_sha256"] == projection["source_page_graph_sha256"]
+          assert len(interior["metric_rows"]) == 29
+          assert interior["numeric_metric_count"] + interior["unavailable_metric_count"] == 29
+          assert all(row["fantlab_display"] is None for row in interior["metric_rows"])
+          assert interior["gates"]["m2_parity_admissible"] is False
+          assert interior["gates"]["corpus_admitted_for_calibration"] is False
+          assert interior["gates"]["full_literary_body"] == "NOT_RUN"
+          assert interior["gates"]["page_join_historical_identity"] == "UNKNOWN"
+          assert interior["join"]["projected_page_join_seams"] == 144
+          print("Trusov 145-Page inferred interior 29-metric diagnostic",
+                interior["numeric_metric_count"], "numeric, status",
+                interior["status"], "corpus NOT_ADMITTED; M2 0/5")
           print("Pinned preflight, shapes, template projection and synthetic Page join PASS; literary body NOT_RUN")
           PY
       - name: Upload only derived diagnostic identities
@@ -116,5 +139,6 @@ jobs:
             build/repro/trusov-1775.content-preflight.json
             build/repro/trusov-1775.template-shapes.json
             build/repro/trusov-1775.projection.json
+            build/repro/trusov-1775.interior-metrics.json
           if-no-files-found: error
           retention-days: 7

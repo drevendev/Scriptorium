@@ -55,7 +55,12 @@ class PagesWorkflowContractTests(unittest.TestCase):
             for line in self.workflow.splitlines()
             if line.strip().startswith("uses:")
         ]
-        self.assertEqual(len(uses_lines), 6)
+        # Two distinct source-free QA artifacts intentionally use the same pinned
+        # upload action; verify invocations without weakening SHA validation.
+        self.assertEqual(len(uses_lines), 7)
+        self.assertEqual(
+            sum("actions/upload-artifact@" in action for action in uses_lines), 2,
+        )
         for line in uses_lines:
             self.assertRegex(
                 line,
@@ -71,6 +76,23 @@ class PagesWorkflowContractTests(unittest.TestCase):
             "actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1",
         }
         self.assertEqual({line.removeprefix("uses: ") for line in uses_lines}, expected)
+
+    def test_real_browser_acceptance_is_staged_before_pages_artifact(self) -> None:
+        # A failing interactive browser run must fail the build before publish.
+        stages = (
+            "name: scriptorium-branch-root-preview",
+            "npm install --no-save --no-package-lock --ignore-scripts playwright@1.56.1",
+            "npx playwright install --with-deps chromium",
+            "node tests/pages_browser_acceptance.cjs",
+            "name: scriptorium-browser-acceptance",
+            "name: Upload GitHub Pages artifact",
+        )
+        positions = [self.workflow.index(stage) for stage in stages]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("path: build/reader-browser-acceptance", self.workflow)
+        self.assertIn("if: always()", self.workflow)
+        self.assertIn("retention-days: 7", self.workflow)
+        self.assertTrue((ROOT / "tests/pages_browser_acceptance.cjs").is_file())
 
     def test_supported_publication_roots_trigger_pr_and_master_builds(self) -> None:
         required = {f"{root}/**" for root in _ALLOWED_ARTIFACT_ROOTS}

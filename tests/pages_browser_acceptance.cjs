@@ -41,7 +41,7 @@ function staticServer() {
   });
 }
 
-async function inspectHome(page, origin, tag) {
+async function inspectHome(page, origin, tag, evidenceDir = output) {
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
   const response = await page.goto(origin + "/", { waitUntil: "networkidle" });
@@ -63,12 +63,92 @@ async function inspectHome(page, origin, tag) {
   await page.locator('[data-chart="fantlab.punctuation.question.per_1000_words"]').click();
   assert.equal(await page.locator('[data-chart="fantlab.punctuation.question.per_1000_words"]')
     .getAttribute("aria-pressed"), "true");
-  await page.screenshot({ path: path.join(output, tag + "-reader.png"),
+  await page.screenshot({ path: path.join(evidenceDir, tag + "-reader.png"),
     fullPage: true, animations: "disabled" });
   assert.deepEqual(errors, [], tag + ": browser JavaScript errors");
 }
 
+
+async function inspectLive() {
+  const { BASE, verifyLiveBytes } = require("./pages_live_byte_guard.cjs");
+  const evidenceDir = path.resolve(__dirname, "../build/reader-live-readback");
+  const repoRoot = path.resolve(__dirname, "..");
+  const revision = process.env.GITHUB_SHA || "unversioned";
+  fs.mkdirSync(evidenceDir, { recursive: true });
+  let browser;
+  try {
+    browser = await chromium.launch({ headless: true });
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    let receipt;
+    let lastError;
+    // GitHub-managed branch Pages can lag the master push; never accept stale bytes.
+    for (let attempt = 1; attempt <= 8; attempt++) {
+      try {
+        receipt = await verifyLiveBytes(context.request, repoRoot, BASE, revision);
+        break;
+      } catch (error) {
+        lastError = error;
+        console.log("LIVE_NOT_VERIFIED attempt " + attempt + "/8: " + error.message);
+        if (attempt < 8) await new Promise(resolve => setTimeout(resolve, 15000));
+      }
+    }
+    if (!receipt) throw lastError;
+    const origin = BASE.slice(0, -1);
+    const desktop = await context.newPage();
+    await inspectHome(desktop, origin, "live-desktop", evidenceDir);
+    await desktop.emulateMedia({ media: "print" });
+    assert.equal(await desktop.locator(".hero-visual").evaluate(element =>
+      getComputedStyle(element).breakInside), "auto");
+    const pdf = await desktop.pdf({ path: path.join(evidenceDir, "live-reader-a4.pdf"),
+      format: "A4", printBackground: true });
+    assert.ok(pdf.length > 2000);
+
+    const mobile = await browser.newPage({ viewport: { width: 390, height: 844 },
+      deviceScaleFactor: 1, isMobile: true, hasTouch: true });
+    await inspectHome(mobile, origin, "live-mobile", evidenceDir);
+    const width = await mobile.evaluate(() => ({ page: document.documentElement.scrollWidth,
+      viewport: window.innerWidth }));
+    assert.ok(width.page <= width.viewport + 2, "Live mobile horizontal overflow");
+
+    const keyboard = await context.newPage();
+    await keyboard.goto(origin + "/", { waitUntil: "networkidle" });
+    await keyboard.keyboard.press("Tab");
+    assert.equal(await keyboard.evaluate(() =>
+      document.activeElement?.classList.contains("skip-link")), true);
+    const glossary = await context.newPage();
+    const glossaryResponse = await glossary.goto(origin + "/metrics.html" +
+      "#metric-fantlab.dialogue.share_percent", { waitUntil: "networkidle" });
+    assert.equal(glossaryResponse.status(), 200);
+    assert.equal(await glossary.locator('tr[id^="metric-"]').count(), 29);
+    await glossary.screenshot({ path: path.join(evidenceDir, "live-metric-glossary.png"),
+      fullPage: true, animations: "disabled" });
+    const voice = await context.newPage();
+    assert.equal((await voice.goto(origin + "/voice/", { waitUntil: "networkidle" })).status(), 200);
+    assert.ok(await voice.locator("table").count() > 0);
+    const csv = await context.request.get(origin + "/voice/holdout-three.csv");
+    assert.equal(csv.status(), 200);
+    assert.match(await csv.text(), /DIAGNOSTIC_ONLY|diagnostic_only|2\/6|Dostoevsky|Достоевск/i);
+
+    // A successful UI test against a moving deployment is not an exact-master claim.
+    receipt = await verifyLiveBytes(context.request, repoRoot, BASE, revision);
+    fs.writeFileSync(path.join(evidenceDir, "status.json"), JSON.stringify({
+      status: "LIVE_VERIFIED", checkout_sha: revision, exact_routes: receipt,
+      checks: "desktop/mobile/keyboard/glossary/voice/CSV/A4",
+    }, null, 2) + "\n");
+    console.log("LIVE_VERIFIED: exact master bytes on " + receipt.length +
+      " public routes; real desktop/mobile/keyboard/print acceptance. SHA=" + revision);
+  } catch (error) {
+    fs.writeFileSync(path.join(evidenceDir, "status.json"), JSON.stringify({
+      status: "LIVE_NOT_VERIFIED", checkout_sha: revision, error: String(error.message),
+    }, null, 2) + "\n");
+    throw error;
+  } finally {
+    if (browser) await browser.close();
+  }
+}
+
 async function main() {
+  if (process.argv.includes("--live-only")) { await inspectLive(); return; }
   assert.ok(fs.existsSync(path.join(root, "index.html")), "Stage exact branch-root Reader first");
   assert.ok(fs.existsSync(path.join(root, "assets/evidence-snapshot.json")));
   fs.mkdirSync(output, { recursive: true });

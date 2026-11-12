@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 496
+STATE_REVISION: 497
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-12
-LAST_RESULT: #507 confirmed merged at 5f98dc76ac1db0db09bceb0cbe0b207d7acd0c72. Prepare per-edition missing observation counts for the paired Reader; later acceptance required.
+LAST_RESULT: #508 native MERGED at fd14fb26e43d48959fe66940a983bd844f7c5bf5. Author standalone CLI HTML comparison print cards for independent acceptance; browser Desk cards already exist in #297.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open; no new corpus measurements.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-PAIR-SIDE-COVERAGE-V1
-ISSUE: #283 — per-edition missing counts in interactive pair-table status (do not close)
+UNIT_ID: SCRIP-SITE-012-LOCAL-REPORT-PRINT-CARDS-V1
+ISSUE: #283 — separate print usability of the installed CLI's local comparison HTML; do not close broader acceptance
 STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-reader-pair-side-coverage-20261112
-BASE: 5f98dc76ac1db0db09bceb0cbe0b207d7acd0c72
+BRANCH: scrip-local-comparison-print-cards-20261112
+BASE: fd14fb26e43d48959fe66940a983bd844f7c5bf5
 
-ACCEPTANCE: On verified JSON, paired status counts unavailable observations independently for each edition (including overlap for a field absent on both sides), never treating true measured zero as missing. Existing nine-field no-JS fallback, shared-only toggle, chart, provenance and JSON/CSV/Markdown exports remain unchanged. Shipped-JS positive/negative tests, exact-head CI and later independent review required. Browser desktop/mobile VISUAL_NOT_VERIFIED. M2 0/5, M3 open.
+ACCEPTANCE: Installed CLI's private compare HTML prints all nine on-screen column headings/eight per-row values as individually labelled two-column cards, without clipping its 50rem screen table. All 29 rows, true zeros, missing states, source-free evidence and JSON/CSV/Markdown remain unchanged. New Python structural positive/negative regressions; exact-head CI and later independent review mandatory. Real A4 print and mobile VISUAL_NOT_VERIFIED. M2 0/5, M3 open.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,10 +22,10 @@ Milestone: a working, accessible Reader showing real-book comparisons and trustw
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 per-edition missingness for Reader pair metrics | Verified pair status shows separate left/right missing counts, including overlap, never counts true zero as absent; no export/fallback drift; later CI acceptance | Existing nine-field pair coverage and measured snapshot; #507 merged |
+| P1 | #283 standalone CLI comparison print | All 29 source-free metrics print as complete labelled cards, preserving zeros and missingness; independent exact-head CI review/qualifying merge | Browser Desk print #297 is already merged; distinct Python CLI report path |
 | P2 | Additional >=300k independent edition(s) | Rights, source/translation/edition hash, reproducible full-text analysis, held-out source-free measurement | Legally reusable source/body; never publish unlicensed prose |
 | P3 | #282 AOT N collision and field-by-field FantLab diagnostic | Native pinned evidence, explicit unresolved POS bounds and per-metric deltas | Unknown FantLab input edition; M2 gate unchanged |
-| P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; separate generated Actions build is not the published root |
+| P4 | #285 live Reader / #283 mobile, keyboard, print acceptance | GitHub-managed master/root deployment readback, desktop/mobile screenshots and verified controls; offline root link closure shipped by #496 | Live browser access; static tests are not visual proof |
 | P5 | #284 source-code licence and attribution | Actual rights inventory and owner-granted licence | No implied public licence or invented grant |
 
 ## Retained scientific and operational boundaries

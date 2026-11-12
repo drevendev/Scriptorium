@@ -6,9 +6,14 @@ const root=path.resolve(__dirname,"..");
 const guide=fs.readFileSync(path.join(root,"metrics.html"),"utf8");
 const source=fs.readFileSync(path.join(root,"assets/pages-reader.js"),"utf8");
 const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
-const ids=[...guide.matchAll(/<tr id="metric-([^"]+)">/g)].map(m=>m[1]);
+const targets=[...guide.matchAll(/<tr\b[^>]*\bid="metric-([^"]+)"[^>]*>/g)];
+const ids=targets.map(m=>m[1]);
 assert.equal(ids.length,29,"Exactly 29 individual definitions");
 assert.equal(new Set(ids).size,29,"No duplicate definition targets");
+for(const target of targets){
+  assert.match(target[0],/\btabindex="-1"(?:\s|>)/,
+    "Each metric definition must accept fragment focus without an extra Tab stop");
+}
 const found=source.match(/  function appendMetricDefinition\(parent,id,shown=label\(id\)\) \{[\s\S]*?\n  \}/);
 assert.ok(found,"Actual Reader helper must exist");
 assert.doesNotMatch(found[0],/innerHTML|outerHTML|document\.write/);

@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 502
+STATE_REVISION: 503
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-12
-LAST_RESULT: #514 native MERGED at 604eafe76401f21283f33fdb954d8359b526f8a0; PR #515 created with 145-Page source-bound 29-field excerpt; pinned exact-source CI 43316500125 measured 303,882 projected characters, 22 numeric and 7 unavailable fields. This is NOT a twelfth complete measured edition.
+LAST_COMMITTED_RUN_AT: 2026-11-13
+LAST_RESULT: #515 confirmed MERGED at b8004dca6eb2d18a3627928186135b3f47be43bd; preparing bounded v5 CR-only VAR same-line correction with strict regressions; exact-head CI NOT_RUN at authoring.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-TRUSOV-INTERIOR-29-METRICS-V1
-ISSUE: #511 measured Trusov translation, explicitly limited safe interior diagnostic
-STATUS: PR_CREATED; LATER_RUN_ACCEPTANCE_REQUIRED
-BRANCH: scrip-trusov-interior-metrics-20261112
-BASE: 604eafe76401f21283f33fdb954d8359b526f8a0
+UNIT_ID: SCRIP-TEXT-TRUSOV-VAR-CR-LINE-ISOLATION-V5
+ISSUE: #511 Trusov historical Page interpretation (scoped parser correctness)
+STATUS: BRANCH_COMMITTED; PR and later-run acceptance required
+BRANCH: scrip-trusov-var-cr-line-context-20261113
+BASE: b8004dca6eb2d18a3627928186135b3f47be43bd
 
-ACCEPTANCE: Reuse a single 150-frozen-oldid verified Page fetch to measure the 145 interior Pages 3–147 that contain no unresolved template calls. Reject any unknown markup or identity drift, preserve one-LF projected join as INFERRED only, emit source-free all-29-field diagnostic and positive/negative tests. Keep opening Page 2 and all four VAR-bearing tail Pages 148–151 excluded; this intentionally truncates narrative coverage and must never be admitted as a full body, calibrated work or translation pair. Exact-head CI, pinned Page fetch and later-run code/evidence review required before merge.
+ACCEPTANCE: Preview classification isolates each VAR context on LF, CRLF and bare-CR lines; separate flat calls preview independently, but same-line nested/template and enclosing comment calls still fail closed. Version the inferred preview v5, preserve source-free identities, and pass exact-head Python plus pinned 150-Page source CI. Do not declare historical rendering or full-body translation extraction.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: first evidence-labelled historical Russian Trusov metric preview, the
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Review new #511 145-Page interior diagnostic | Exact-head tests and pinned 150-Page CI; source-free 29 rows, proven excerpt-only gates; later-run qualifying merge | Historical Page API for CI; no duplicate fetch |
+| P1 | Accept v5 CR/LF-aware VAR line isolation | Exact-head syntax, positive/negative regressions and pinned 150-Page CI; later-run review/merge only | Source-bound historical Pages; no independent second fetch |
 | P2 | #511 complete Trusov body and 29-field Shishmareva comparison | Independently inspect opening and ending, resolve Page2 parser and Pages148–151 VAR rendering, verify rights/body >=300k, hashes, alignment; only then full comparison | Historical template binding, Page join/render identity |
 | P3 | #282 pinned AOT N collision diagnostic | Exact native noun/cardinal evidence, toolchain and bounded POS deltas | Native pylem dictionary; FantLab exact input still unknown |
 | P4 | #283 Reader accessibility / visual issues | Browser-observed defect, regression and reader-first results | Existing real Chromium proof |

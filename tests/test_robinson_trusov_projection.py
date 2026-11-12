@@ -78,6 +78,35 @@ class TrusovProjectionTests(unittest.TestCase):
                 self.assertEqual(decisions[0]["decision"], "too_many_line_breaks")
                 self.assertNotIn("old", json.dumps(decisions))
 
+    def test_var_same_line_boundary_recognizes_all_newline_conventions(self):
+        # Separate CR-only historical lines must not masquerade as one
+        # line containing multiple templates; inline and comment guards stay.
+        for ending in ("\\n", "\\r\\n", "\\r"):
+            with self.subTest(ending=repr(ending)):
+                page = ("{{ВАР|мѣсто|место}}" + ending +
+                        "{{ВАР|дѣло|дело}}" + ending)
+                self.assertEqual(
+                    preview_var_orthographies(page),
+                    ("мѣсто" + ending + "дѣло" + ending,
+                     "место" + ending + "дело" + ending, 2, 0),
+                )
+                self.assertEqual(
+                    [row["decision"] for row in var_preview_call_partition(page)],
+                    ["flat_preview", "flat_preview"],
+                )
+                inline = "{{ВАР|old|new}} {{nop}}" + ending
+                self.assertEqual(preview_var_orthographies(inline),
+                                 (inline, inline, 0, 0))
+                self.assertEqual(
+                    var_preview_refusal_reasons(inline)["multiple_templates_on_line"], 1
+                )
+                hidden = "<!--" + ending + "{{ВАР|old|new}}" + ending + "-->"
+                self.assertEqual(preview_var_orthographies(hidden),
+                                 (hidden, hidden, 0, 0))
+                self.assertEqual(
+                    var_preview_refusal_reasons(hidden)["multiple_templates_on_line"], 1
+                )
+
     def test_var_preview_refusal_categories_do_not_expose_source(self):
         source = ("{{ВАР|дѣло|дело}}\n"
                   "{{ВАР|old|\nmodern}}\n"

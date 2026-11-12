@@ -47,7 +47,8 @@ concurrency:
 jobs:
   build:
     name: Verify and build static site
-    runs-on: ubuntu-latest
+    # Playwright 1.56.1 does not support the new ubuntu-26.04 runner image.
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:

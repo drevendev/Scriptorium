@@ -21,7 +21,7 @@ HEADERS = [
 
 def print_labels(css: str) -> list[tuple[str, str]]:
     return re.findall(
-        r'tbody td:nth-of-type\\((\\d+)\\)::before\\{content:"([^"]+)"\\}', css
+        r'tbody td:nth-of-type\((\d+)\)::before\{content:"([^"]+)"\}', css
     )
 
 
@@ -67,7 +67,7 @@ class LocalComparisonPrintTests(unittest.TestCase):
         ):
             with self.subTest(rule=rule):
                 self.assertIn(rule, print_css)
-        self.assertNotRegex(print_css, r"tbody (?:tr|th|td)\\{display:none")
+        self.assertNotRegex(print_css, r"tbody (?:tr|th|td)\{display:none")
 
     def test_screen_privacy_zero_and_missing_values_unchanged(self):
         page = self.page

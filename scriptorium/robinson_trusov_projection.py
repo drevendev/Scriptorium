@@ -19,7 +19,7 @@ from .robinson_trusov_template_shapes import capture_shapes, invocation_shapes, 
 from .single_page_revision import _api_query
 
 SCHEMA = "scriptorium-trusov-standalone-projection-v4"
-VAR_PREVIEW_PROFILE = "bounded_flat_and_multiline_VAR_orthography_branch_only_inferred_v3"
+VAR_PREVIEW_PROFILE = "bounded_flat_and_multiline_VAR_orthography_branch_only_inferred_v4"
 VAR_CALL = re.compile(r"\{\{ВАР\|([^{}|]*)\|([^{}|]*)\}\}")
 VAR_START = re.compile(r"(?<!\{)\{\{\s*ВАР(?=\s*[|}])")
 VAR_REFUSAL_KEYS = (
@@ -123,7 +123,10 @@ def _var_preview_partition(
         if len(literal) > 4096:
             refuse("call_too_large", literal)
             continue
-        if multiline and literal.count("\n") > 12:
+        # Historical Page inputs can retain LF, CRLF or bare CR. Count logical
+        # breaks, not only LF; CRLF must consume one unit, not two.
+        line_breaks = literal.count("\n") + literal.count("\r") - literal.count("\r\n")
+        if multiline and line_breaks > 12:
             refuse("too_many_line_breaks", literal)
             continue
         if "{{" in literal[2:] or "}}" in literal[:-2]:

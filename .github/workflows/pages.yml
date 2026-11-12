@@ -136,6 +136,27 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+      # This exercises the exact branch-root Reader, not the separate build/site
+      # artifact and not the deployed public URL. Keep external manuscripts out.
+      - name: Install pinned Chromium acceptance runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Exercise Reader on desktop, mobile, keyboard and A4
+        run: node tests/pages_browser_acceptance.cjs
+
+      - name: Archive actual Chromium screenshots and print PDF
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-browser-acceptance
+          path: build/reader-browser-acceptance
+          if-no-files-found: warn
+          retention-days: 7
+
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

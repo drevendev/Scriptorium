@@ -3,8 +3,8 @@
 STATE_REVISION: 502
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-12
-LAST_RESULT: #514 native MERGED at 604eafe76401f21283f33fdb954d8359b526f8a0; #513 live byte/Chromium verification accepted before it. New #511 interior-metrics candidate prepares a *partial* 145-Page source-bound diagnostic, not a measured twelfth edition.
-LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; Trusov source-bound projected Page diagnostics only; FantLab analyzer-input identity UNKNOWN; M2 0/5; M3 open.
+LAST_RESULT: #514 native MERGED at 604eafe76401f21283f33fdb954d8359b526f8a0; PR #515 created with 145-Page source-bound 29-field excerpt; pinned exact-source CI 43316500125 measured 303,882 projected characters, 22 numeric and 7 unavailable fields. This is NOT a twelfth complete measured edition.
+LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 

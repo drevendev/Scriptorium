@@ -69,6 +69,9 @@ class PublishedMetricGuideTests(unittest.TestCase):
             14,
         )
         self.assertIn(".metric-group{break-inside:auto;", print_rules)
+        # Screen scrolling is useful, but its higher specificity would clip printed rows.
+        self.assertIn(".metric-group .table-region{overflow-x:auto;", styles.split("@media print", 1)[0])
+        self.assertIn(".metric-group .table-region{overflow:visible}", print_rules)
         self.assertNotIn(".metric-group{break-inside:avoid}", print_rules)
         self.assertIn(".metric-group thead{display:table-header-group}", print_rules)
         self.assertIn(".metric-group tr{break-inside:avoid;page-break-inside:avoid}", print_rules)

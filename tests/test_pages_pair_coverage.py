@@ -16,10 +16,17 @@ class PairCoverageTests(unittest.TestCase):
         ):
             self.assertIn('value="'+metric_id+'"',html)
         self.assertIn("«нет данных» — не ноль",html)
+        self.assertIn('id="pair-view-controls" hidden',html)
+        self.assertIn('id="pair-only-shared" type="checkbox" disabled',html)
+        self.assertEqual(html.count('data-static-metric='),9,
+                         "No-script comparison must keep all nine exact rows")
         self.assertIn("JSON/CSV содержат только измерения обеих книг",html)
         self.assertIn("function pairCoverageRows(a,b)",js)
         self.assertIn("const coverage=pairCoverageRows(a,b);",js)
         self.assertIn("for (const m of coverage)",js)
+        self.assertIn("pairOnlyShared.checked && (m.left===null || m.right===null)",js)
+        self.assertIn('pairOnlyShared.addEventListener("change",updatePair)',js)
+        self.assertIn('el("pair-view-controls").hidden=false;',js)
         self.assertIn('m.right===null?"нет данных":exact(m.right)',js)
         self.assertIn('const d=comparable?m.right-m.left:null;',js)
         self.assertIn('const rows=sharedPairRows(a,b);',js)
@@ -27,6 +34,8 @@ class PairCoverageTests(unittest.TestCase):
         self.assertIn("function pairDeltaDescription(row)",js)
         css=(ROOT/"assets/pages-reader.css").read_text(encoding="utf-8")
         self.assertIn(".pair-delta {",css)
+        self.assertIn(".pair-view-controls[hidden] { display:none !important; }",css)
+        self.assertIn("@media print { .pair-view-controls { display:none !important; } }",css)
         self.assertNotIn("innerHTML",js)
 
     @unittest.skipUnless(shutil.which("node"),"Node unavailable: structural tests still run")

@@ -222,6 +222,16 @@ footer a { color:#ffdaa3; }
 .book-research h3 { color:#3a5147; }
 .book-research a { color:var(--green-deep); }
 .comparison-panel { margin-bottom:3.5rem; }
+/* Interactive coverage view never promotes unavailable values to numeric zero. */
+.pair-view-controls { display:flex; flex-wrap:wrap; align-items:center; gap:.45rem 1.1rem;
+  padding:.7rem 1rem; margin:1rem 0 .4rem; border:1px solid var(--line);
+  border-radius:6px; background:var(--wash); }
+.pair-view-controls[hidden] { display:none !important; }
+.pair-view-controls label { display:inline-flex; align-items:center; gap:.65rem; min-height:44px;
+  color:var(--green-deep); font-size:.9rem; font-weight:700; cursor:pointer; }
+.pair-view-controls input { width:1.15rem; height:1.15rem; flex:none; accent-color:var(--green); }
+.pair-view-controls p { flex:1 1 19rem; margin:0; color:var(--subtle); font-size:.76rem; line-height:1.5; }
+@media print { .pair-view-controls { display:none !important; } }
 
 .pair-starters { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.65rem; margin:1rem 0 1.3rem; }
 .pair-starters-heading,.pair-starters-note { grid-column:1/-1; margin:0; }

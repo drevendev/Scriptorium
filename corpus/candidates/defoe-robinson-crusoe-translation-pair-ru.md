@@ -15,6 +15,19 @@ The [Wikisource list of translations](https://ru.wikisource.org/w/index.php?oldi
 
 **Rights limit:** The cited Wikisource pages make the described public-domain claims and indicate CC BY-SA terms for contributed site material. This is source evidence, not independent legal advice or a license for later edited modern editions. No full literary text may be committed to GitHub or Pages.
 
+## 1775 interior-only 29-metric diagnostic (PR candidate)
+
+The latest exact-oldid [Trusov Page CI](https://github.com/drevendev/Scriptorium/actions/runs/43295838695) recorded 150 pinned Page inputs. The accepted projection resolves 30 plain headings and 28 nop calls, but still leaves two parser/dynamic calls on **Page 2** and four historical ВАР calls on **Pages 148–151**. The four ВАР previews were **not accepted** (three exceed the 12-logical-line-break guard and one has an unsupported shape). These are source-free observations, not an edition rendering.
+
+A bounded analyzer preview now selects **only Pages 3–147** (145 interior Pages), rejects unrendered template/link/HTML markup and computes all 29 deterministic metrics over transient projected text using an explicitly **inferred synthetic LF join**. CI reuses the existing 150-Page fetch *once* and byte-independent rechecks the [retained 29-field source-free JSON](diagnostics/defoe-robinson-crusoe-trusov-1775-ru.interior-measured.json) against its short-lived Actions artifact. Successful exact-head [pinned CI #43316500125](https://github.com/drevendev/Scriptorium/actions/runs/43316500125) measured **303,882 projected/normalized characters including spaces**, 48,244 words, 1,598 sentences and **22 numeric / 7 unavailable** metrics. The count is *only* for the incomplete interior sample and cannot establish corpus admission. Standalone replay uses:
+
+    python -m scriptorium.robinson_trusov_interior \
+      --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+      --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
+      --output build/repro/trusov-1775.interior-metrics.json
+
+**Never label these numbers as a twelfth measured book.** The narrative starts on Page 2; the excluded tail also contains narrative. An interior excerpt—even if it exceeds 300,000 characters—is neither full-body coverage nor established historical Page rendering and is not aligned to Shishmareva's complete narrative. Corpus admission, author profiles, fair translation comparison and FantLab parity remain closed (M2 0/5). No source prose goes to the repo, Pages, logs or CI artifacts.
+
 ## Required executable checks before catalogue admission
 
 1. Obtain **exact revision** bytes via an allowed MediaWiki source endpoint, recording provider SHA-1 when available, byte length, raw SHA-256 and tool versions. A rendered browser excerpt is not a source hash.

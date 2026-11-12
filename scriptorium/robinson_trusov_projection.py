@@ -247,7 +247,8 @@ def project_page(candidate: str) -> tuple[str, int, int, int, int]:
 def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
                        query: Callable[..., dict] = _api_query, delay: float = 0.75,
                        preflight_output: dict | None = None,
-                       shapes_output: dict | None = None) -> dict:
+                       shapes_output: dict | None = None,
+                       page_observer: Callable[[dict, str, int, int], None] | None = None) -> dict:
     """Reuse one exact-identity fetch for original preflight, shapes and probe."""
     pages: list[dict] = []
     joined = ProjectedPageJoin()
@@ -277,6 +278,10 @@ def capture_projection(graph: Mapping[str, object], graph_sha256: str, *,
             "unresolved_invocations": unresolved,
             "unclassified_openers": residual,
         })
+        # An optional transient consumer may measure selected Pages in the
+        # same verified fetch. Never persist prose or weaken the final audit.
+        if page_observer is not None:
+            page_observer(identity, projected, unresolved, residual)
 
     preflight: dict = {}
     shapes = capture_shapes(graph, graph_sha256, query=query, delay=delay,
@@ -460,21 +465,42 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--preflight-output", required=True, type=Path)
     parser.add_argument("--shapes-output", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--interior-output", type=Path,
+                        help="Optional source-free 29-metric incomplete interior sample")
     parser.add_argument("--delay", type=float, default=0.75)
     args = parser.parse_args(argv)
-    outs = (args.output, args.preflight_output, args.shapes_output)
+    outs = (args.output, args.preflight_output, args.shapes_output) + (
+        (args.interior_output,) if args.interior_output else ()
+    )
     if len({x.resolve() for x in outs}) != len(outs) or any(
             x.exists() or x.resolve() in (args.graph.resolve(), args.receipt.resolve()) for x in outs):
         parser.error("outputs must be distinct, new, and outside frozen inputs")
     graph = verify_frozen_graph(args.graph, args.receipt)
     preflight, shapes = {}, {}
-    report = capture_projection(graph, sha256(args.graph.read_bytes()).hexdigest(),
-                                delay=args.delay, preflight_output=preflight, shapes_output=shapes)
-    for output, data in ((args.preflight_output, preflight), (args.shapes_output, shapes), (args.output, report)):
+    interior = None
+    collector = None
+    if args.interior_output is not None:
+        from .robinson_trusov_interior import InteriorCollector
+        collector = InteriorCollector()
+    graph_sha256 = sha256(args.graph.read_bytes()).hexdigest()
+    report = capture_projection(graph, graph_sha256, delay=args.delay,
+                                preflight_output=preflight, shapes_output=shapes,
+                                page_observer=collector.observe if collector else None)
+    if collector is not None:
+        interior = collector.build(graph, graph_sha256, report)
+    outputs = [(args.preflight_output, preflight), (args.shapes_output, shapes),
+               (args.output, report)]
+    if args.interior_output is not None:
+        outputs.append((args.interior_output, interior))
+    for output, data in outputs:
         output.parent.mkdir(parents=True, exist_ok=True)
         with output.open("x", encoding="utf-8") as writer:
             json.dump(data, writer, sort_keys=True, indent=2, ensure_ascii=False)
             writer.write("\n")
+    if interior is not None:
+        print("Inferred Trusov Pages 3-147 interior: "
+              f"{interior['numeric_metric_count']}/29 numeric metrics, "
+              "source-free; not full body or parity")
     print(f"Pinned Trusov 150-page provisional projection: {report['handled_nop']} nop, "
           f"{report['handled_heading']} plain heading, {report['unresolved_invocations']} "
           f"unresolved; {report['flat_var_preview_count']} VAR branch previews "

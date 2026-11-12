@@ -1,0 +1,293 @@
+{
+  "schema_version": "scriptorium-trusov-interior-measurement-v1",
+  "version": "inferred_projected_Page_3_to_147_excerpt_v1",
+  "candidate_id": "defoe-robinson-trusov-1775-vol1-ru",
+  "carrier_revision_id": 5041937,
+  "status": "INCOMPLETE_INTERIOR_EXCERPT_NOT_CORPUS_OR_PARITY",
+  "source_page_graph_sha256": "d2104ad33fc15ddb8479c13b9fdbe0abf94f8418e76c02261a803b79130ebaa4",
+  "source_revision_list_sha256": "5edd323c9557c248fb9749163dd6a9265ad6a72f507cf0ea4543b14478296549",
+  "page_interval": {
+    "from": 3,
+    "to": 147,
+    "count": 145,
+    "excluded_pages": [
+      2,
+      148,
+      149,
+      150,
+      151
+    ],
+    "opening_truncated": true,
+    "ending_truncated": true
+  },
+  "join": {
+    "projected_page_join_profile": "one_LF_between_projected_Page_inputs_diagnostic_only",
+    "joined_projected_wikitext_sha256": "e8e6b6f9d583e5b70c9b05b54aa4f441acc34aaa03a4da6e9011d512680c3eeb",
+    "joined_projected_wikitext_characters_including_spaces": 303882,
+    "projected_page_join_seams": 144,
+    "alphabetic_page_edge_seams": 57
+  },
+  "normalized_sha256": "e8e6b6f9d583e5b70c9b05b54aa4f441acc34aaa03a4da6e9011d512680c3eeb",
+  "normalized_characters_including_spaces": 303882,
+  "scriptorium": {
+    "schema_version": "scriptorium-deterministic-metrics-v4",
+    "metric_contract_id": "fantlab-2022-v1",
+    "profiles": {
+      "dialogue": "scriptorium-dialogue-v1",
+      "metrics": "scriptorium-metrics-v4",
+      "normalization": "scriptorium-text-v1",
+      "punctuation": "scriptorium-punctuation-v2",
+      "vocabulary": "scriptorium-vocabulary-v1"
+    },
+    "vocabulary_dictionary_dependency": null
+  },
+  "metric_rows": [
+    {
+      "metric_id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+      "actual": null,
+      "unit": "percent",
+      "compatibility_status": "inferred",
+      "result": "UNAVAILABLE_NO_OBSERVATIONS",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+      "actual": null,
+      "unit": "characters/sentence",
+      "compatibility_status": "inferred",
+      "result": "UNAVAILABLE_NO_OBSERVATIONS",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.dialogue.mean_narration_sentence_length_chars",
+      "actual": 174.82434782608695,
+      "unit": "characters/sentence",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.dialogue.share_percent",
+      "actual": 0,
+      "unit": "percent",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.general.characters",
+      "actual": 303882,
+      "unit": "characters",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.general.mean_sentence_length_chars",
+      "actual": 188.80788485607007,
+      "unit": "characters/sentence",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.general.mean_word_length_chars",
+      "actual": 5.119994196169472,
+      "unit": "characters/word",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.general.words",
+      "actual": 48244,
+      "unit": "words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.colon.per_1000_words",
+      "actual": 3.5652101815769837,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.comma.per_1000_words",
+      "actual": 113.13323936655335,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.dash.per_1000_words",
+      "actual": 0.8498466130503275,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.ellipsis.per_1000_words",
+      "actual": 0.020727966171959208,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.exclamation.per_1000_words",
+      "actual": 1.0156703424260012,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+      "actual": 0,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.parentheses.per_1000_words",
+      "actual": 0.041455932343918415,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.period.per_1000_words",
+      "actual": 30.698117900671587,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.question.per_1000_words",
+      "actual": 1.5338694967249813,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.question_ellipsis.per_1000_words",
+      "actual": 0,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.question_exclamation.per_1000_words",
+      "actual": 0,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.quote.per_1000_words",
+      "actual": 1.0571262747699195,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.semicolon.per_1000_words",
+      "actual": 13.410994113257606,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.punctuation.triple_exclamation.per_1000_words",
+      "actual": 0,
+      "unit": "occurrences/1000_words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.vocabulary.active_dictionary",
+      "actual": null,
+      "unit": "words",
+      "compatibility_status": "inferred",
+      "result": "NOT_RUN_DICTIONARY_UNBOUND",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.vocabulary.active_nondictionary",
+      "actual": null,
+      "unit": "words",
+      "compatibility_status": "inferred",
+      "result": "NOT_RUN_DICTIONARY_UNBOUND",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.vocabulary.uasz_10000",
+      "actual": null,
+      "unit": "unique_dictionary_words/window",
+      "compatibility_status": "inferred",
+      "result": "NOT_RUN_DICTIONARY_UNBOUND",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.vocabulary.uasz_100000",
+      "actual": null,
+      "unit": "unique_dictionary_words/window",
+      "compatibility_status": "inferred",
+      "result": "NOT_RUN_DICTIONARY_UNBOUND",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.vocabulary.uasz_3000",
+      "actual": null,
+      "unit": "unique_dictionary_words/window",
+      "compatibility_status": "inferred",
+      "result": "NOT_RUN_DICTIONARY_UNBOUND",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "fantlab.vocabulary.unique_words",
+      "actual": 10053,
+      "unit": "words",
+      "compatibility_status": "inferred",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    },
+    {
+      "metric_id": "scriptorium.general.sentences",
+      "actual": 1598,
+      "unit": "sentences",
+      "compatibility_status": "extension",
+      "result": "MEASURED_INTERIOR_EXCERPT_ONLY",
+      "fantlab_display": null
+    }
+  ],
+  "numeric_metric_count": 22,
+  "unavailable_metric_count": 7,
+  "gates": {
+    "pinned_150_page_source_replay": true,
+    "full_literary_body": "NOT_RUN",
+    "historical_proofreadpage_rendering": "NOT_VERIFIED",
+    "page_join_historical_identity": "UNKNOWN",
+    "aligned_translation_coverage": "NOT_RUN",
+    "print_edition_collation": "NOT_RUN",
+    "fantlab_analyzer_input_identity": "UNKNOWN",
+    "corpus_admitted_for_calibration": false,
+    "author_profile_admissible": false,
+    "m2_parity_admissible": false,
+    "source_text_committed": false
+  }
+}

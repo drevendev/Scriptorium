@@ -58,6 +58,23 @@ class PublishedMetricGuideTests(unittest.TestCase):
         self.assertNotIn("<script", page.lower())
         self.assertTrue(all(h and not h.startswith(("javascript:", "data:")) for h in parser.links))
 
+    def test_long_glossary_print_tables_can_span_pages(self):
+        page = (ROOT / "metrics.html").read_text(encoding="utf-8")
+        styles = page.split("<style>", 1)[1].split("</style>", 1)[0]
+        print_rules = styles.split("@media print", 1)[1]
+        # The punctuation group has fourteen actual rows; forcing the whole
+        # section to remain on a page can leave a blank/clipped print page.
+        self.assertEqual(
+            len(re.findall(r'<tr id="metric-fantlab\\.punctuation\\.', page)),
+            14,
+        )
+        self.assertIn(".metric-group{break-inside:auto;", print_rules)
+        self.assertNotIn(".metric-group{break-inside:avoid}", print_rules)
+        self.assertIn(".metric-group thead{display:table-header-group}", print_rules)
+        self.assertIn(".metric-group tr{break-inside:avoid;page-break-inside:avoid}", print_rules)
+        self.assertIn(".metric-group table{min-width:0;width:100%;font-size:9pt;", print_rules)
+        self.assertIn(".metric-group th,.metric-group td{overflow-wrap:anywhere;", print_rules)
+
     def test_real_reader_has_accessible_guide_entry_points(self):
         reader = (ROOT / "index.html").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")

@@ -120,7 +120,7 @@ class PagesWorkflowContractTests(unittest.TestCase):
         # coupling the contract to non-semantic YAML comment wording.
         build_job = self.workflow.split("\n  build:\n", 1)[1].split("\n  deploy:\n", 1)[0]
         self.assertIn("name: Verify and build static site", build_job)
-        self.assertRegex(build_job, r"(?m)^    runs-on: ubuntu-24\\.04$")
+        self.assertRegex(build_job, r"(?m)^    runs-on: ubuntu-24\.04$")
         self.assertNotIn("runs-on: ubuntu-latest", build_job)
         self.assertIn("permissions:\n      contents: read\n", build_job)
         self.assertIn("persist-credentials: false", self.workflow)

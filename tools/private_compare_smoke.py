@@ -60,7 +60,7 @@ def main() -> None:
         result = json.loads(values['json'])
         assert result == expected and len(result['metrics']) == 29
         csv_rows = list(csv.DictReader(io.StringIO(values['csv'])))
-        assert len(csv_rows) == 29 and values['html'].count("scope='row'") == 29
+        assert len(csv_rows) == 29 and values['html'].count("<th scope='row'>") == 29
         markdown = values['markdown']
         assert markdown.count('M2 0/5') == 1
         assert a['source']['raw_sha256'] in markdown and b['source']['raw_sha256'] in markdown

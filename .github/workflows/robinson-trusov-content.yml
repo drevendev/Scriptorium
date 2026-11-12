@@ -13,6 +13,7 @@ on:
       - "scriptorium/robinson_trusov_interior.py"
       - "tests/test_robinson_trusov_interior.py"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json"
+      - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.interior-measured.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json"
@@ -113,6 +114,8 @@ jobs:
           from scriptorium.robinson_trusov_interior import SCHEMA as INTERIOR_SCHEMA
           interior=json.loads(Path("build/repro/trusov-1775.interior-metrics.json").read_text(encoding="utf-8"))
           assert interior["schema_version"] == INTERIOR_SCHEMA
+          retained=json.loads(Path("corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.interior-measured.json").read_text(encoding="utf-8"))
+          assert interior == retained, "source-free pinned interior measurements changed"
           assert interior["page_interval"]["count"] == 145
           assert interior["page_interval"]["excluded_pages"] == [2,148,149,150,151]
           assert interior["page_interval"]["opening_truncated"] is True

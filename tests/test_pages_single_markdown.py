@@ -31,12 +31,14 @@ class ReaderBookMarkdownTests(unittest.TestCase):
             "function exportSelectedMarkdown()",
             "verify(data);",
             'singleMarkdownButton.addEventListener("click",exportSelectedMarkdown)',
-            'catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect',
             'scientific_claim:"DIAGNOSTIC_ONLY"',
             'fantlab_input_identity:"UNKNOWN",m2_source_matched:0',
         ):
             with self.subTest(fragment=fragment):
                 self.assertIn(fragment, js)
+        # Loading must enable the export even when unrelated catalogue controls change.
+        self.assertRegex(js, r"const inputs=\[[^\]]*\bsingleMarkdownButton\b[^\]]*\];")
+        self.assertIn("for(const input of inputs)input.disabled=false;", js)
         self.assertNotIn("innerHTML", js)
         self.assertNotIn("sendBeacon", js)
 

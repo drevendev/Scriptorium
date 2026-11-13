@@ -10,8 +10,15 @@ const cards0=[...html.matchAll(/<article class="book(?: book-research)?" data-st
 assert.equal(cards0.length,13);
 assert.deepEqual(cards0.map(m=>m[2]),data.books.map(b=>b.key));
 const cards=cards0.map(m=>({dataset:{status:m[1],catalogKey:m[2]},hidden:false}));
+const domOrder=[...cards];
+const catalogGrid={appendChild(card){
+  const previous=domOrder.indexOf(card);
+  assert.notEqual(previous,-1,"Cannot reorder a foreign catalogue card");
+  domOrder.splice(previous,1);
+  domOrder.push(card);
+}};
 const filter={value:"all"},origin={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
-const empty={hidden:true};
+const empty={hidden:true},sortStatus={textContent:""};
 const share={hidden:false,href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
 }};
@@ -21,10 +28,15 @@ const browser={location,history:{replaceState(_state,_title,url){
 }}};
 const s=js.indexOf("  function updateCatalog() {"),e=js.indexOf("  function updateSingle() {",s);
 assert.ok(s>=0&&e>s);
-const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog};";
-const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogSearch","catalogOrder","el","window",code)(
-  d,cards,filter,origin,search,order,id=>id==="share-catalog"?share:id==="catalog-empty"?empty:status,browser);
-const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog}=make(data);
+const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog,sortCatalog};";
+const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogSearch","catalogOrder",
+  "catalogGrid","lookup","isNumeric","el","window",code)(
+  d,cards,filter,origin,search,order,catalogGrid,
+  (book,id)=>book.metrics.find(m=>m.id===id),
+  value=>typeof value==="number"&&Number.isFinite(value),
+  id=>id==="share-catalog"?share:id==="catalog-empty"?empty:
+    id==="catalog-sort-status"?sortStatus:status,browser);
+const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog,sortCatalog}=make(data);
 for(const [mode,keys,measured,pending] of [
  ["all",data.books.map(b=>b.key),11,2],
  ["measured",["anna","waves","silver","karamazov","hyperboloid","beketova","resurrection","road","oblomov","humiliated","shishmareva"],11,0],
@@ -109,11 +121,19 @@ location.search="?catalog=pending&q="+encodeURIComponent("Бекетова");
 restore();assert.equal(cards.filter(c=>!c.hidden).length,0);
 assert.match(status.textContent,/Книг не найдено/);
 assert.equal(empty.hidden,false);
-location.href="https://drevendev.github.io/Scriptorium/?left=anna&right=beketova&catalog=pending&q=%D0%91%D0%B5%D0%BA%D0%B5%D1%82%D0%BE%D0%B2%D0%B0#books";
+location.href="https://drevendev.github.io/Scriptorium/?left=anna&right=beketova&catalog=pending&catalog_order=length&q=%D0%91%D0%B5%D0%BA%D0%B5%D1%82%D0%BE%D0%B2%D0%B0#books";
 location.search=new URL(location.href).search;
 restore();assert.equal(empty.hidden,false);
+assert.equal(order.value,"length");
+sortCatalog();
+assert.notDeepEqual(domOrder.map(c=>c.dataset.catalogKey),data.books.map(b=>b.key),
+  "Reproduce filtered, ranked DOM order before resetting");
 resetCatalog();
 assert.equal(empty.hidden,true);
+assert.equal(order.value,"catalog","Reset must restore the visible sort control");
+assert.deepEqual(domOrder.map(c=>c.dataset.catalogKey),data.books.map(b=>b.key),
+  "Reset must restore actual DOM/keyboard order, not just the sort label");
+assert.match(sortStatus.textContent,/Исходный порядок каталога/);
 assert.equal(search.value,"");assert.equal(filter.value,"all");assert.equal(origin.value,"all");
 assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(search.focused,true);
@@ -121,6 +141,8 @@ const clean=new URL(location.href);
 assert.equal(clean.searchParams.has("catalog"),false);
 assert.equal(clean.searchParams.has("q"),false);
 assert.equal(clean.searchParams.has("original"),false);
+assert.equal(clean.searchParams.has("catalog_order"),false,
+  "Reset must not leave a stale sorted catalogue permalink");
 assert.equal(clean.searchParams.get("left"),"anna");
 assert.equal(clean.searchParams.get("right"),"beketova");
 location.search="?catalog=__proto__&original=__proto__&q="+encodeURIComponent("Толстой")+"&catalog_order=__proto__";
@@ -145,6 +167,8 @@ assert.match(html,/id="catalog-empty" class="catalog-empty" hidden/);
 assert.match(html,/id="catalog-reset" type="button" disabled/);
 assert.match(html,/Показано 13 из 13 книг/);
 assert.match(js,/catalogReset.addEventListener\("click",resetCatalog\)/);
+assert.match(js,/catalogOrder.value="catalog";/);
+assert.match(js,/url.searchParams.delete\("catalog_order"\)/);
 assert.match(css,/\.catalog-empty\[hidden\]\s*\{\s*display:none\s*!important/);
 assert.match(html,/id="catalog-filter" disabled/);
 assert.match(html,/id="catalog-origin" aria-describedby="catalog-origin-help" disabled/);

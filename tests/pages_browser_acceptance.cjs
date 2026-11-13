@@ -87,6 +87,32 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   await page.locator('[data-chart="fantlab.punctuation.question.per_1000_words"]').click();
   assert.equal(await page.locator('[data-chart="fantlab.punctuation.question.per_1000_words"]')
     .getAttribute("aria-pressed"), "true");
+  // Real browser: a deep-linked ranked catalogue with zero results must
+  // reset the actual DOM/keyboard sequence and retain unrelated pair links.
+  const query = new URLSearchParams({
+    left: "anna", right: "beketova", catalog: "pending",
+    catalog_order: "length", q: "Бекетова",
+  });
+  await page.goto(origin + "/?" + query + "#books", { waitUntil: "networkidle" });
+  await page.waitForFunction(() => !document.querySelector("#catalog-reset").disabled,
+    null, { timeout: 20000 });
+  assert.equal(await page.locator("#catalog-order").inputValue(), "length");
+  assert.equal(await page.locator("#books .book:visible").count(), 0);
+  await page.locator("#catalog-reset").click();
+  assert.equal(await page.locator("#catalog-order").inputValue(), "catalog");
+  assert.equal(await page.locator("#books .book:visible").count(), 13);
+  const sourceOrder = [
+    "anna", "waves", "silver", "karamazov", "hyperboloid", "beketova",
+    "resurrection", "road", "oblomov", "humiliated", "shishmareva", "petersburg", "darwin"
+  ];
+  assert.deepEqual(await page.locator("#books .book").evaluateAll(cards =>
+    cards.map(card => card.dataset.catalogKey)), sourceOrder,
+    tag + ": reset must restore DOM and keyboard order");
+  const cleaned = new URL(page.url());
+  for (const key of ["catalog", "original", "q", "catalog_order"])
+    assert.equal(cleaned.searchParams.has(key), false, tag + ": stale catalogue " + key);
+  assert.equal(cleaned.searchParams.get("left"), "anna");
+  assert.equal(cleaned.searchParams.get("right"), "beketova");
   await page.screenshot({ path: path.join(evidenceDir, tag + "-reader.png"),
     fullPage: true, animations: "disabled" });
   assert.deepEqual(errors, [], tag + ": browser JavaScript errors");

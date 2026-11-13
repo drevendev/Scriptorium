@@ -41,6 +41,8 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn('el("catalog-empty").hidden=shown!==0;',js)
         self.assertIn('url.searchParams.delete("catalog")',js)
         self.assertIn('url.searchParams.delete("q")',js)
+        self.assertIn('url.searchParams.delete("catalog_order")',js)
+        self.assertIn('catalogOrder.value="catalog";',js)
         self.assertIn(".catalog-empty[hidden] { display:none !important; }",css)
         self.assertIn('book.translator?.name||""',js)
         self.assertIn('terms.every(term=>text.includes(term))',js)

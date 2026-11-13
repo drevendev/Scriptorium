@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 509
+STATE_REVISION: 510
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-13
-LAST_RESULT: #521 confirmed merged at dd8a5c0d7afb7b3a9b4ed08d8385af7b2b9e0dff; the catalogue zero-result reset is in master. This candidate adds an accessible reset even when some cards remain visible. No new Pages publication is claimed.
+LAST_RESULT: #522 confirmed MERGED at 8236230cd9d95c888348a475763699e697297e8e. Preparing one source-bound evidence-integrity fix: reject tampered baseline metric rows before computing Trusov 145-Page seam sensitivity. PR CI and later-run acceptance pending.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-CATALOG-CLEAR-V1
-ISSUE: #283 Reader keyboard/mobile/visual acceptance
-STATUS: PR_CANDIDATE; later exact-head CI/review acceptance required
-BRANCH: scrip-reader-catalog-clear-20261113
-BASE: dd8a5c0d7afb7b3a9b4ed08d8385af7b2b9e0dff
+UNIT_ID: SCRIP-REPRO-TRUSOV-SEAM-BASELINE-REPLAY-V1
+ISSUE: #511 Trusov source-free measured-excerpt evidence integrity
+STATUS: BRANCH_COMMITTED; PR and exact-head CI/later-run acceptance required
+BRANCH: scrip-trusov-seam-baseline-replay-20261113
+BASE: 8236230cd9d95c888348a475763699e697297e8e
 
-ACCEPTANCE: Provide a 44px-or-larger all-filter reset in the verified catalogue controls even when a filtered list has results. Reuse the existing reset logic, restore 13 cards and source DOM order, retain pair links, clear only catalogue query keys and focus search. Assert nonempty intersection on real Reader data in desktop/mobile browser and preserve the no-JS fallback. Independent later-run acceptance/merge.
+ACCEPTANCE: On the same 145-Page transient one-LF text, recompute all 29 deterministic baseline rows before using them as signed-delta origins. Reject altered numeric/null values, registered units/statuses and totals despite unchanged text hashes. Keep source-free diagnostics, 11 measured editions, full historical body NOT_RUN and M2 0/5 unchanged.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: keep the verified 11-book Reader accessible with honest empty-state r
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 add nonempty catalogue all-filter reset | New control clears search/status/origin/sort, restores 13 cards and keyboard order, focuses search, preserves unrelated pair URL keys | Exact PR-head browser CI, later-run acceptance/merge |
+| P1 | #511 reject corrupted Trusov seam-sensitivity baseline | Recompute 29 prior rows from same transient text; fail closed on altered counts/nulls/units/status before emitting deltas | Existing 145-Page inference; later-run exact-head CI/merge |
 | P2 | #511 complete Trusov body and 29-field Shishmareva comparison | Independently inspect opening and ending, resolve Page2 parser and Pages148–151 VAR rendering, verify rights/body >=300k, hashes, alignment; only then full comparison | Historical template binding, Page join/render identity |
 | P3 | #282 pinned AOT N collision diagnostic | Exact native noun/cardinal evidence, toolchain and bounded POS deltas | Native pylem dictionary; FantLab exact input still unknown |
 | P4 | #283 Reader accessibility / visual issues | Browser-observed defect, regression and reader-first results | Existing real Chromium proof |

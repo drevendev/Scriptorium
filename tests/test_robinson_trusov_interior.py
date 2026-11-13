@@ -139,6 +139,31 @@ class TrusovInteriorTests(unittest.TestCase):
         modified["normalized_sha256"] = "0" * 64
         with self.assertRaisesRegex(ValueError, "baseline/source identity"):
             collector.seam_sensitivity(modified)
+        # Source hashes alone do not authenticate a supplied metric row.
+        # Tampering must fail before the signed alternate deltas are emitted.
+        modified = copy.deepcopy(baseline)
+        char_row = next(row for row in modified["metric_rows"]
+                        if row["metric_id"] == "fantlab.general.characters")
+        char_row["actual"] += 1
+        with self.assertRaisesRegex(ValueError, "baseline metric drift"):
+            collector.seam_sensitivity(modified)
+        modified = copy.deepcopy(baseline)
+        dictionary_row = next(row for row in modified["metric_rows"]
+                              if row["metric_id"] == "fantlab.vocabulary.active_dictionary")
+        self.assertIsNone(dictionary_row["actual"])
+        dictionary_row["actual"] = 0
+        with self.assertRaisesRegex(ValueError, "baseline metric drift"):
+            collector.seam_sensitivity(modified)
+        modified = copy.deepcopy(baseline)
+        modified["metric_rows"][0]["result"] = "MEASURED_INTERIOR_EXCERPT_ONLY"
+        # Either changed or unchanged based on the first row; force corruption.
+        modified["metric_rows"][0]["unit"] = "fabricated_unit"
+        with self.assertRaisesRegex(ValueError, "baseline metric drift"):
+            collector.seam_sensitivity(modified)
+        modified = copy.deepcopy(baseline)
+        modified["numeric_metric_count"] += 1
+        with self.assertRaisesRegex(ValueError, "baseline metric replay mismatch"):
+            collector.seam_sensitivity(modified)
         modified = copy.deepcopy(baseline)
         modified["gates"]["corpus_admitted_for_calibration"] = True
         with self.assertRaisesRegex(ValueError, "verified incomplete interior"):

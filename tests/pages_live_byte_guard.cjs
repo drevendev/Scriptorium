@@ -59,7 +59,7 @@ async function selfTest() {
     // Protect the new researcher download as well as the HTML entry point.
     // A stale or missing CSV is a failed live release, not a usable export.
     const csvPath = "assets/trusov-1775-interior-metrics.csv";
-    const csvBytes = "metric_id,actual\\nfantlab.general.characters,303882\\n";
+    const csvBytes = "metric_id,actual\nfantlab.general.characters,303882\n";
     fs.mkdirSync(path.join(root, "assets"));
     fs.writeFileSync(path.join(root, csvPath), csvBytes);
     const csvResponse = bytes => ({

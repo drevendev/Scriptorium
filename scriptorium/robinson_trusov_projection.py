@@ -18,8 +18,8 @@ from .robinson_trusov_pages import verify_frozen_graph
 from .robinson_trusov_template_shapes import capture_shapes, invocation_shapes, validate_shapes
 from .single_page_revision import _api_query
 
-SCHEMA = "scriptorium-trusov-standalone-projection-v4"
-VAR_PREVIEW_PROFILE = "bounded_flat_and_multiline_VAR_orthography_branch_only_inferred_v4"
+SCHEMA = "scriptorium-trusov-standalone-projection-v5"
+VAR_PREVIEW_PROFILE = "bounded_flat_and_multiline_VAR_orthography_branch_only_inferred_v5"
 VAR_CALL = re.compile(r"\{\{ВАР\|([^{}|]*)\|([^{}|]*)\}\}")
 VAR_START = re.compile(r"(?<!\{)\{\{\s*ВАР(?=\s*[|}])")
 VAR_REFUSAL_KEYS = (
@@ -142,9 +142,13 @@ def _var_preview_partition(
                 refuse("unsupported_shape", literal)
             continue
 
-        line_start = projected.rfind("\n", 0, start) + 1
-        line_break = projected.find("\n", end)
-        line_end = len(projected) if line_break < 0 else line_break
+        # Same-line isolation must recognize bare CR as well as LF/CRLF.
+        # Otherwise separate CR-delimited templates falsely contaminate one
+        # another and are all classified as unsafe "multiple templates".
+        line_start = max(projected.rfind("\n", 0, start),
+                         projected.rfind("\r", 0, start)) + 1
+        following = (projected.find("\n", end), projected.find("\r", end))
+        line_end = min((pos for pos in following if pos >= 0), default=len(projected))
         context = projected[line_start:line_end]
         outside = projected[line_start:start] + projected[end:line_end]
         if (_enclosed_in_outer_markup(projected, start) or

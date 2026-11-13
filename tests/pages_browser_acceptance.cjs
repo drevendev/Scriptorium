@@ -54,6 +54,18 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   const excerpt = page.locator("#trusov-excerpt");
   assert.equal(await excerpt.getAttribute("data-coverage"), "incomplete");
   assert.equal(await excerpt.locator("tbody tr").count(), 8);
+  // The excerpt's visible download must work on the real staged AND public
+  // Reader; a valid panel with a broken CSV route is not functional delivery.
+  const excerptExport = excerpt.locator('a[download][href="./assets/trusov-1775-interior-metrics.csv"]');
+  assert.equal(await excerptExport.count(), 1, tag + ": source-bound CSV download link");
+  const csvResponse = await page.context().request.get(
+    origin + "/assets/trusov-1775-interior-metrics.csv");
+  assert.equal(csvResponse.status(), 200, tag + ": Trusov CSV route");
+  const csvLines = (await csvResponse.text()).trimEnd().split("\\n");
+  assert.equal(csvLines.length, 30, tag + ": header plus 29 metrics");
+  assert.match(csvLines[0], /^metric_id,actual,unit,/);
+  assert.ok(csvLines.some(line => line.startsWith("fantlab.general.characters,303882,")));
+  assert.ok(csvLines.some(line => line.startsWith("fantlab.vocabulary.active_dictionary,,")));
   assert.match(await excerpt.innerText(), /303 882/);
   assert.match(await excerpt.innerText(), /не полный перевод/);
   assert.match(await excerpt.innerText(), /M2: 0\/5/);

@@ -178,6 +178,48 @@ class InteriorCollector:
                 or len({r["metric_id"] for r in rows}) != 29):
             raise ValueError("invalid 29-field baseline")
         reference = {r["metric_id"]: r for r in rows}
+        # The Page/hash checks above bind source bytes, not the numeric claims
+        # in a supplied baseline report. Recompute the exact one-LF metrics
+        # before calculating signed deltas; otherwise a modified prior value
+        # silently makes the derived sensitivity report scientifically false.
+        replay = analyze_deterministic_metrics(original)
+        observed = replay.get("metrics")
+        expected_profile = {
+            "schema_version": SCHEMA_VERSION,
+            "metric_contract_id": METRIC_CONTRACT_ID,
+            "profiles": replay.get("profiles"),
+            "vocabulary_dictionary_dependency": None,
+        }
+        if (replay.get("schema_version") != SCHEMA_VERSION
+                or replay.get("metric_contract_id") != METRIC_CONTRACT_ID
+                or replay.get("normalized_sha256") != baseline["normalized_sha256"]
+                or replay.get("dependencies", {}).get("vocabulary_dictionary") is not None
+                or not isinstance(observed, dict) or set(observed) != set(reference)
+                or baseline.get("scriptorium") != expected_profile
+                or baseline.get("normalized_characters_including_spaces")
+                != len(normalize_text(original))
+                or baseline.get("numeric_metric_count")
+                != sum(metric["value"] is not None for metric in observed.values())
+                or baseline.get("unavailable_metric_count")
+                != sum(metric["value"] is None for metric in observed.values())):
+            raise ValueError("join sensitivity baseline metric replay mismatch")
+        for metric_id, previous in reference.items():
+            measured = observed[metric_id]
+            value = measured["value"]
+            expected_result = (
+                "NOT_RUN_DICTIONARY_UNBOUND" if metric_id in _UNBOUND
+                else "UNAVAILABLE_NO_OBSERVATIONS" if value is None
+                else "MEASURED_INTERIOR_EXCERPT_ONLY"
+            )
+            if (set(previous) != {"metric_id", "actual", "unit",
+                                  "compatibility_status", "result", "fantlab_display"}
+                    or type(previous["actual"]) is not type(value)
+                    or previous["actual"] != value
+                    or previous["unit"] != measured["unit"]
+                    or previous["compatibility_status"] != measured["compatibility_status"]
+                    or previous["result"] != expected_result
+                    or previous["fantlab_display"] is not None):
+                raise ValueError(f"join sensitivity baseline metric drift: {metric_id}")
         variants = []
         for profile, separator in (("direct_concatenation_stress_test", ""),
                                    ("two_LF_paragraph_stress_test", "\n\n")):

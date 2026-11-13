@@ -58,6 +58,11 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   // Reader; a valid panel with a broken CSV route is not functional delivery.
   const excerptExport = excerpt.locator('a[download][href="./assets/trusov-1775-interior-metrics.csv"]');
   assert.equal(await excerptExport.count(), 1, tag + ": source-bound CSV download link");
+  const downloadReady = page.waitForEvent("download");
+  await excerptExport.click();
+  const downloaded = await downloadReady;
+  assert.equal(downloaded.suggestedFilename(), "trusov-1775-interior-metrics.csv",
+    tag + ": actual CSV download action");
   const csvResponse = await page.context().request.get(
     origin + "/assets/trusov-1775-interior-metrics.csv");
   assert.equal(csvResponse.status(), 200, tag + ": Trusov CSV route");

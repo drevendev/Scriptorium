@@ -72,6 +72,44 @@ class TrusovContentTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "empty"):
             transclusion_input("<noinclude>no transclusion</noinclude>")
 
+    def test_comment_embedded_tags_are_not_transclusion_directives(self):
+        # A Page comment can show literal inclusion markup as documentation.
+        # Neither that example nor a mismatched tag inside a comment may
+        # alter the outer tag stack or change the source-bound digest.
+        for ending in ("\n", "\r\n", "\r"):
+            with self.subTest(ending=repr(ending)):
+                original = ("before<!--" + ending +
+                            "<noinclude>literal</noinclude>" + ending +
+                            "-->after")
+                self.assertEqual(transclusion_input(original), original)
+        self.assertEqual(
+            transclusion_input("<!-- <includeonly> -->BODY"),
+            "<!-- <includeonly> -->BODY",
+        )
+        self.assertEqual(
+            transclusion_input("<!-- <onlyinclude> -->BODY"),
+            "<!-- <onlyinclude> -->BODY",
+        )
+        self.assertEqual(
+            transclusion_input("<noinclude><!-- </noinclude> -->HEADER"
+                               "</noinclude>BODY"),
+            "BODY",
+        )
+        self.assertEqual(
+            transclusion_input("<!-- <noinclude> -->A"
+                               "<noinclude>EXCLUDED</noinclude>"
+                               "<includeonly>B</includeonly>"),
+            "<!-- <noinclude> -->AB",
+        )
+
+    def test_unclosed_or_nested_html_comments_fail_closed(self):
+        for source in ("BODY<!-- <noinclude>bad",
+                       "<noinclude>ok</noinclude><!-- unterminated",
+                       "<!-- outer <!-- nested -->BODY"):
+            with self.subTest(source=source), self.assertRaisesRegex(
+                    ValueError, "Page HTML comment"):
+                transclusion_input(source)
+
     def test_proofread_page_content_model_is_supported(self):
         graph, digest = fixture()
         def proofread_model(page):

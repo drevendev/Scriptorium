@@ -52,7 +52,8 @@ jobs:
             --preflight-output build/repro/trusov-1775.content-preflight.json \
             --shapes-output build/repro/trusov-1775.template-shapes.json \
             --output build/repro/trusov-1775.projection.json \
-            --interior-output build/repro/trusov-1775.interior-metrics.json
+            --interior-output build/repro/trusov-1775.interior-metrics.json \
+            --seam-output build/repro/trusov-1775.seam-sensitivity.json
       - name: Validate source-free output and preserve unknown scientific gates
         run: |
           python - <<'PY'
@@ -129,6 +130,20 @@ jobs:
           assert interior["gates"]["full_literary_body"] == "NOT_RUN"
           assert interior["gates"]["page_join_historical_identity"] == "UNKNOWN"
           assert interior["join"]["projected_page_join_seams"] == 144
+          from scriptorium.robinson_trusov_interior import SEAM_SCHEMA
+          seam=json.loads(Path("build/repro/trusov-1775.seam-sensitivity.json").read_text(encoding="utf-8"))
+          assert seam["schema_version"] == SEAM_SCHEMA
+          assert seam["scope"] == "SYNTHETIC_PAGE_JOIN_SENSITIVITY_ONLY"
+          assert seam["baseline_normalized_sha256"] == interior["normalized_sha256"]
+          assert seam["source_page_graph_sha256"] == interior["source_page_graph_sha256"]
+          assert seam["source_revision_list_sha256"] == interior["source_revision_list_sha256"]
+          assert seam["baseline_numeric_metrics"] == interior["numeric_metric_count"]
+          assert all(seam[key] is False for key in ("historical_page_join_verified", "complete_literary_body", "corpus_admitted", "m2_parity_admissible", "source_text_committed"))
+          assert [v["join_profile"] for v in seam["alternatives"]] == ["direct_concatenation_stress_test", "two_LF_paragraph_stress_test"]
+          assert all(len(v["metrics"]) == 29 for v in seam["alternatives"])
+          assert [v["normalized_characters_including_spaces"] for v in seam["alternatives"]] == [interior["normalized_characters_including_spaces"]-144, interior["normalized_characters_including_spaces"]+144]
+          assert all(v["changed_numeric_metrics"] == sum(r["status"] == "CHANGED" for r in v["metrics"]) for v in seam["alternatives"])
+          print("Trusov Page-join sensitivity:", [(v["join_profile"],v["changed_numeric_metrics"]) for v in seam["alternatives"]], "historical join NOT_VERIFIED")
           print("Trusov 145-Page inferred interior 29-metric diagnostic",
                 interior["numeric_metric_count"], "numeric, status",
                 interior["status"], "corpus NOT_ADMITTED; M2 0/5")
@@ -143,5 +158,6 @@ jobs:
             build/repro/trusov-1775.template-shapes.json
             build/repro/trusov-1775.projection.json
             build/repro/trusov-1775.interior-metrics.json
+            build/repro/trusov-1775.seam-sensitivity.json
           if-no-files-found: error
           retention-days: 7

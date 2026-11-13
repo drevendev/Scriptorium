@@ -4,7 +4,8 @@ import json
 import unittest
 
 from test_robinson_trusov_content import fixture, mock_query, PRIVATE_SOURCE
-from scriptorium.robinson_trusov_interior import measure_interior, FIRST, LAST
+from scriptorium.robinson_trusov_interior import measure_interior, InteriorCollector, SEAM_SCHEMA, FIRST, LAST
+from scriptorium.robinson_trusov_projection import capture_projection
 
 
 class TrusovInteriorTests(unittest.TestCase):
@@ -82,6 +83,70 @@ class TrusovInteriorTests(unittest.TestCase):
         changed["selection"]["to"] = 150
         with self.assertRaises(ValueError):
             measure_interior(changed, sha, query=mock_query(changed, self.fake_source))
+
+
+    def test_join_sensitivity_is_source_free_and_gated(self):
+        graph, sha = fixture()
+        collector = InteriorCollector()
+        projection = capture_projection(graph, sha, query=mock_query(graph, self.fake_source),
+                                        page_observer=collector.observe)
+        baseline = collector.build(graph, sha, projection)
+        report = collector.seam_sensitivity(baseline)
+        repeated = collector.seam_sensitivity(baseline)
+        self.assertEqual(report, repeated)
+        self.assertEqual(report["schema_version"], SEAM_SCHEMA)
+        self.assertEqual(report["baseline_normalized_sha256"], baseline["normalized_sha256"])
+        self.assertEqual(report["source_page_graph_sha256"], sha)
+        self.assertEqual(report["baseline_numeric_metrics"], baseline["numeric_metric_count"])
+        self.assertEqual(report["scope"], "SYNTHETIC_PAGE_JOIN_SENSITIVITY_ONLY")
+        for gate in ("historical_page_join_verified", "complete_literary_body",
+                     "corpus_admitted", "m2_parity_admissible", "source_text_committed"):
+            self.assertIs(report[gate], False)
+        self.assertEqual(
+            [v["join_profile"] for v in report["alternatives"]],
+            ["direct_concatenation_stress_test", "two_LF_paragraph_stress_test"],
+        )
+        self.assertEqual(
+            [v["normalized_characters_including_spaces"] for v in report["alternatives"]],
+            [baseline["normalized_characters_including_spaces"] - 144,
+             baseline["normalized_characters_including_spaces"] + 144],
+        )
+        reference = {r["metric_id"]: r for r in baseline["metric_rows"]}
+        for variant in report["alternatives"]:
+            self.assertEqual(len(variant["metrics"]), 29)
+            self.assertEqual(
+                variant["changed_numeric_metrics"],
+                sum(r["status"] == "CHANGED" for r in variant["metrics"]),
+            )
+            for row in variant["metrics"]:
+                before = reference[row["metric_id"]]["actual"]
+                after = row["alternate_value"]
+                expected = after - before if before is not None and after is not None else None
+                self.assertEqual(row["delta_from_one_LF"], expected)
+                self.assertEqual(row["unit"], reference[row["metric_id"]]["unit"])
+        serialized = json.dumps(report, sort_keys=True, ensure_ascii=False)
+        self.assertNotIn(PRIVATE_SOURCE, serialized)
+        self.assertNotIn("Предложение!", serialized)
+        self.assertEqual(len(baseline["metric_rows"]), 29)  # original artifact unchanged
+
+    def test_join_sensitivity_rejects_wrong_baseline_or_incomplete_pages(self):
+        graph, sha = fixture()
+        collector = InteriorCollector()
+        projection = capture_projection(graph, sha, query=mock_query(graph, self.fake_source),
+                                        page_observer=collector.observe)
+        baseline = collector.build(graph, sha, projection)
+        modified = copy.deepcopy(baseline)
+        modified["normalized_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "baseline/source identity"):
+            collector.seam_sensitivity(modified)
+        modified = copy.deepcopy(baseline)
+        modified["gates"]["corpus_admitted_for_calibration"] = True
+        with self.assertRaisesRegex(ValueError, "verified incomplete interior"):
+            collector.seam_sensitivity(modified)
+        collector.selected.pop(42)
+        with self.assertRaisesRegex(ValueError, "verified incomplete interior"):
+            collector.seam_sensitivity(baseline)
+
 
 
 if __name__ == "__main__":

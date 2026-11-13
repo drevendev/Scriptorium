@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 503
+STATE_REVISION: 504
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-13
-LAST_RESULT: #515 confirmed MERGED at b8004dca6eb2d18a3627928186135b3f47be43bd; preparing bounded v5 CR-only VAR same-line correction with strict regressions; exact-head CI NOT_RUN at authoring.
+LAST_RESULT: #516 confirmed MERGED at 0675a1dd669ea640c317e0f01c757a1d3b727927; prepare independently testable, source-free 145-Page synthetic-join sensitivity for existing inferred historical excerpt; exact-head CI pending.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TEXT-TRUSOV-VAR-CR-LINE-ISOLATION-V5
-ISSUE: #511 Trusov historical Page interpretation (scoped parser correctness)
+UNIT_ID: SCRIP-REPRO-TRUSOV-PAGE-JOIN-SENSITIVITY-V1
+ISSUE: #511 Trusov historical Page-join uncertainty (source-free independent diagnostic)
 STATUS: BRANCH_COMMITTED; PR and later-run acceptance required
-BRANCH: scrip-trusov-var-cr-line-context-20261113
-BASE: b8004dca6eb2d18a3627928186135b3f47be43bd
+BRANCH: scrip-trusov-page-seam-sensitivity-20261113
+BASE: 0675a1dd669ea640c317e0f01c757a1d3b727927
 
-ACCEPTANCE: Preview classification isolates each VAR context on LF, CRLF and bare-CR lines; separate flat calls preview independently, but same-line nested/template and enclosing comment calls still fail closed. Version the inferred preview v5, preserve source-free identities, and pass exact-head Python plus pinned 150-Page source CI. Do not declare historical rendering or full-body translation extraction.
+ACCEPTANCE: Reuse the one pinned 150-Page replay and already verified 145-Page interior without a second fetch; compare source-free 29-field metrics for zero and two synthetic LF Page separators against the retained one-LF baseline. Reject stale baseline or incomplete selection, test positive/negative cases, preserve source-free artifacts, and keep historical Page rendering, full literary body and M2 parity explicitly unverified. Independent later-run exact-head CI/review required before merge.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: first evidence-labelled historical Russian Trusov metric preview, the
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Accept v5 CR/LF-aware VAR line isolation | Exact-head syntax, positive/negative regressions and pinned 150-Page CI; later-run review/merge only | Source-bound historical Pages; no independent second fetch |
+| P1 | Accept/source-verify #511 synthetic Page-join sensitivity | Complete 29-field source-free deltas on one pinned Page fetch, strict scientific unknown gates and later-run review/merge | Existing interior metrics; no additional source download |
 | P2 | #511 complete Trusov body and 29-field Shishmareva comparison | Independently inspect opening and ending, resolve Page2 parser and Pages148–151 VAR rendering, verify rights/body >=300k, hashes, alignment; only then full comparison | Historical template binding, Page join/render identity |
 | P3 | #282 pinned AOT N collision diagnostic | Exact native noun/cardinal evidence, toolchain and bounded POS deltas | Native pylem dictionary; FantLab exact input still unknown |
 | P4 | #283 Reader accessibility / visual issues | Browser-observed defect, regression and reader-first results | Existing real Chromium proof |

@@ -28,6 +28,25 @@ A bounded analyzer preview now selects **only Pages 3–147** (145 interior Page
 
 **Never label these numbers as a twelfth measured book.** The narrative starts on Page 2; the excluded tail also contains narrative. An interior excerpt—even if it exceeds 300,000 characters—is neither full-body coverage nor established historical Page rendering and is not aligned to Shishmareva's complete narrative. Corpus admission, author profiles, fair translation comparison and FantLab parity remain closed (M2 0/5). No source prose goes to the repo, Pages, logs or CI artifacts.
 
+## Synthetic Page-seam sensitivity (diagnostic, PR candidate)
+
+The **145-Page interior excerpt is not a complete Trusov translation**. Its deterministic
+29-field measurement uses an unverified one-LF separator between the 145 pinned
+Page inputs. A reproducible, source-free stress test now measures the *same transient
+interior bytes* under direct concatenation and two-LF paragraph separation, without
+fetching the 150 frozen revisions a second time. Per-metric alternate values and
+signed deltas show which observations depend on this purely syntactic choice;
+unavailable dictionary/POS fields remain explicitly unavailable.
+
+The test uses two **deliberately extreme hypotheses**, **not** reconstructed
+ProofreadPage joins, a historical renderer, or confidence bounds. It cannot
+recover split words, settle the 57 alphabetic-edge seams, determine the opening
+or ending narrative, or establish matching translator coverage. Only hashes,
+metric values and caveats leave memory, with no prose in artifacts. Use
+`--interior-output ... --seam-output ...` in the existing pinned projection
+CLI; the published baseline measurement JSON remains unchanged. The live
+Reader, admission (11 complete editions) and M2 (0/5) are unaffected.
+
 ## Required executable checks before catalogue admission
 
 1. Obtain **exact revision** bytes via an allowed MediaWiki source endpoint, recording provider SHA-1 when available, byte length, raw SHA-256 and tool versions. A rendered browser excerpt is not a source hash.

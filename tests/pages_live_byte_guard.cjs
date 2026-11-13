@@ -13,6 +13,7 @@ const PUBLISHED = Object.freeze([
   "assets/pages-reader.js",
   "assets/evidence-snapshot.json",
   "assets/scriptorium-ru-measured-metrics.csv",
+  "assets/trusov-1775-interior-metrics.csv",
   "voice/index.html",
   "voice/holdout-three.csv",
 ]);
@@ -55,6 +56,25 @@ async function selfTest() {
     assert.equal(found.length, 1);
     assert.equal(found[0].sha256, digest(Buffer.from("exact published Reader")));
     await assert.rejects(verifyLiveBytes(fake("old Reader"), ...args), /published bytes differ/);
+    // Protect the new researcher download as well as the HTML entry point.
+    // A stale or missing CSV is a failed live release, not a usable export.
+    const csvPath = "assets/trusov-1775-interior-metrics.csv";
+    const csvBytes = "metric_id,actual\\nfantlab.general.characters,303882\\n";
+    fs.mkdirSync(path.join(root, "assets"));
+    fs.writeFileSync(path.join(root, csvPath), csvBytes);
+    const csvResponse = bytes => ({
+      get: async url => ({
+        status: () => 200, url: () => url,
+        body: async () => Buffer.from(url.includes(csvPath) ? bytes : "exact published Reader"),
+      }),
+    });
+    const csvArgs = [root, BASE, "test", ["index.html", csvPath]];
+    const matched = await verifyLiveBytes(csvResponse(csvBytes), ...csvArgs);
+    assert.deepEqual(matched.map(row => row.path), ["index.html", csvPath]);
+    await assert.rejects(
+      verifyLiveBytes(csvResponse(csvBytes + "stale"), ...csvArgs),
+      /trusov-1775-interior-metrics.csv: published bytes differ/,
+    );
     await assert.rejects(verifyLiveBytes(fake("", 404), ...args), /HTTP 404/);
     await assert.rejects(verifyLiveBytes(fake("exact published Reader", 200,
       "https://example.com/"), ...args), /redirect target/);

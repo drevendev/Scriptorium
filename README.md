@@ -8,6 +8,8 @@
 
 **Look up metrics offline (English or Russian):** `scriptorium metrics --lang ru` shows the same 29 definitions with Russian labels matching the public glossary; canonical units, IDs and scientific status stay unchanged. The installed `scriptorium metrics` command lists all 29 engine-defined IDs, units, evidence labels and dictionary requirements, while `scriptorium metrics fantlab.dialogue.share_percent --format json` inspects a single definition without opening or uploading a manuscript. See [local analysis and the metric catalog](docs/LOCAL_ANALYSIS.md). These are **inferred/extension definitions, not FantLab parity**.
 
+**Historical translation research preview:** the 1775 Yakov Trusov *Robinson Crusoe* has a reproducible **incomplete** Pages 3–147 diagnostic: 303,882 characters including spaces, 22 numeric metrics and seven unavailable values, each source-bound to 145 pinned Page revisions. [Inspect the Russian-language measured excerpt in Reader](https://drevendev.github.io/Scriptorium/#trusov-excerpt) or [the source-free 29-metric receipt](https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.interior-measured.json). Opening Page 2 and final Pages 148–151 are excluded; the synthetic page join and historical rendering are not verified. This is **not** a twelfth complete edition, translation comparison, author profile or FantLab parity (M2 0/5).
+
 ### What works now
 
 | In the `master` Reader | Verified source-backed scope |

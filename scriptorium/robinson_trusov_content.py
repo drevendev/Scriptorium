@@ -15,7 +15,9 @@ from .robinson_trusov_pages import WORK_ID, validate, verify_frozen_graph
 from .single_page_revision import _api_query
 
 SCHEMA = "scriptorium-robinson-trusov-page-content-preflight-v1"
-_INCLUSION_MARKUP_TOKEN = re.compile(\n    r"<!--|-->|<(/?)(noinclude|includeonly|onlyinclude)\\b([^>]*)>", re.I\n)
+_INCLUSION_MARKUP_TOKEN = re.compile(
+    r"<!--|-->|<(/?)(noinclude|includeonly|onlyinclude)\b([^>]*)>", re.I
+)
 _HTML = re.compile(r"<[a-zA-Z/][^>]*>")
 _HEX = re.compile(r"[a-f0-9]{64}\Z")
 

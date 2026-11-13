@@ -398,20 +398,23 @@
     }
   }
 
-  // An explicit empty-state reset preserves unrelated work/comparison links.
+  // A full empty-state reset restores DOM/keyboard order while preserving unrelated pair links.
   function resetCatalog() {
     catalogFilter.value="all";
     catalogOrigin.value="all";
     catalogSearch.value="";
+    catalogOrder.value="catalog";
     try {
       const url=new URL(window.location.href);
       url.searchParams.delete("catalog");
       url.searchParams.delete("original");
       url.searchParams.delete("q");
+      url.searchParams.delete("catalog_order");
       window.history.replaceState(null,"",url);
     } catch (_) {
       // Local file previews can disallow history changes; reset still works.
     }
+    sortCatalog();
     updateCatalog();
     catalogSearch.focus();
   }

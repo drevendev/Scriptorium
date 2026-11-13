@@ -198,7 +198,7 @@ class TrusovProjectionTests(unittest.TestCase):
     def test_standalone_projection_refuses_enclosing_markup_not_literal_lines(self):
         # A standalone-looking invocation inside a multiline comment, wikilink
         # or outer template must remain unresolved, even on CR-only Pages.
-        for ending in ("\\n", "\\r\\n", "\\r"):
+        for ending in ("\n", "\r\n", "\r"):
             with self.subTest(ending=repr(ending)):
                 comment = ("<!--" + ending + "{{nop}}" + ending +
                            "{{heading|4|Hidden}}" + ending + "-->" + ending +

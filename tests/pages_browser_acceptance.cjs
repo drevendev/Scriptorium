@@ -113,6 +113,28 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
     assert.equal(cleaned.searchParams.has(key), false, tag + ": stale catalogue " + key);
   assert.equal(cleaned.searchParams.get("left"), "anna");
   assert.equal(cleaned.searchParams.get("right"), "beketova");
+  // Nonempty intersections also need an immediate, keyboard-accessible all-filter reset.
+  const activeQuery = new URLSearchParams({
+    left: "anna", right: "beketova", catalog: "measured",
+    original: "en", catalog_order: "title", q: "Дефо",
+  });
+  await page.goto(origin + "/?" + activeQuery + "#books", { waitUntil: "networkidle" });
+  await page.waitForFunction(() => !document.querySelector("#catalog-clear").disabled,
+    null, { timeout: 20000 });
+  assert.equal(await page.locator("#books .book:visible").count(), 1,
+    tag + ": nonempty combined facets must narrow to one measured translation");
+  await page.locator("#catalog-clear").click();
+  assert.equal(await page.locator("#books .book:visible").count(), 13);
+  assert.equal(await page.locator("#catalog-order").inputValue(), "catalog");
+  assert.deepEqual(await page.locator("#books .book").evaluateAll(cards =>
+    cards.map(card => card.dataset.catalogKey)), sourceOrder);
+  assert.equal(await page.locator("#catalog-search").evaluate(el => el===document.activeElement),
+    true, tag + ": focus must move to search after clear");
+  const afterClear=new URL(page.url());
+  for(const key of ["catalog","original","q","catalog_order"])
+    assert.equal(afterClear.searchParams.has(key),false,tag + ": clear must remove " + key);
+  assert.equal(afterClear.searchParams.get("left"),"anna");
+  assert.equal(afterClear.searchParams.get("right"),"beketova");
   await page.screenshot({ path: path.join(evidenceDir, tag + "-reader.png"),
     fullPage: true, animations: "disabled" });
   assert.deepEqual(errors, [], tag + ": browser JavaScript errors");

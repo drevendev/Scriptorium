@@ -51,6 +51,7 @@
   const catalogOrder = el("catalog-order");
   const catalogGrid = document.querySelector("#books .book-grid");
   const catalogReset = el("catalog-reset");
+  const catalogClear = el("catalog-clear");
   const one = el("choose-book");
   const search = el("search-metric");
   const status = el("table-status");
@@ -1509,7 +1510,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogOrigin,catalogSearch,catalogOrder,catalogReset,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,...chartButtons];
+      const inputs=[catalogFilter,catalogOrigin,catalogSearch,catalogOrder,catalogReset,catalogClear,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -1531,6 +1532,7 @@
       catalogSearch.addEventListener("input",updateCatalog);
       catalogOrder.addEventListener("change",()=>{sortCatalog();updateCatalog();});
       catalogReset.addEventListener("click",resetCatalog);
+      catalogClear.addEventListener("click",resetCatalog);
       restoreCatalogFromUrl();
       sortCatalog();
       el("catalog-tools").hidden=false;

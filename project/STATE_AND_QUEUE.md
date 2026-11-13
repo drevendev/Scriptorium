@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 508
+STATE_REVISION: 509
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-13
-LAST_RESULT: #520 confirmed merged at b4c28d6303751f75d81c5a12d5d5200597414615. The ninth live Pages exact-byte Trusov CSV route was checked in the completed release readback (PR #520); no new Pages publication is claimed for #521.
+LAST_RESULT: #521 confirmed merged at dd8a5c0d7afb7b3a9b4ed08d8385af7b2b9e0dff; the catalogue zero-result reset is in master. This candidate adds an accessible reset even when some cards remain visible. No new Pages publication is claimed.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-CATALOG-RESET-ORDER-V1
+UNIT_ID: SCRIP-SITE-012-CATALOG-CLEAR-V1
 ISSUE: #283 Reader keyboard/mobile/visual acceptance
-STATUS: PR_CREATED #521; later exact-head CI/review acceptance required
-BRANCH: scrip-reader-catalog-reset-order-20261113
-BASE: b4c28d6303751f75d81c5a12d5d5200597414615
+STATUS: PR_CANDIDATE; later exact-head CI/review acceptance required
+BRANCH: scrip-reader-catalog-clear-20261113
+BASE: dd8a5c0d7afb7b3a9b4ed08d8385af7b2b9e0dff
 
-ACCEPTANCE: When the catalogue is sorted, filtered to zero results and reset, restore all 13 edition cards in original DOM/keyboard order (not just selector text); remove catalogue-only URL keys including catalog_order while retaining unrelated pair links. Test with real frozen Reader data, verify CI/browser behavior, then independently accept/merge.
+ACCEPTANCE: Provide a 44px-or-larger all-filter reset in the verified catalogue controls even when a filtered list has results. Reuse the existing reset logic, restore 13 cards and source DOM order, retain pair links, clear only catalogue query keys and focus search. Assert nonempty intersection on real Reader data in desktop/mobile browser and preserve the no-JS fallback. Independent later-run acceptance/merge.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: keep the verified 11-book Reader accessible with honest empty-state r
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #521 complete catalogue reset and keyboard-order acceptance | Verify ranked zero-result reset restores all 13 cards in source DOM order, clears stale catalog_order URL state, retains unrelated pair links | Exact PR-head checks, later-run acceptance/merge; no same-run self-merge |
+| P1 | #283 add nonempty catalogue all-filter reset | New control clears search/status/origin/sort, restores 13 cards and keyboard order, focuses search, preserves unrelated pair URL keys | Exact PR-head browser CI, later-run acceptance/merge |
 | P2 | #511 complete Trusov body and 29-field Shishmareva comparison | Independently inspect opening and ending, resolve Page2 parser and Pages148–151 VAR rendering, verify rights/body >=300k, hashes, alignment; only then full comparison | Historical template binding, Page join/render identity |
 | P3 | #282 pinned AOT N collision diagnostic | Exact native noun/cardinal evidence, toolchain and bounded POS deltas | Native pylem dictionary; FantLab exact input still unknown |
 | P4 | #283 Reader accessibility / visual issues | Browser-observed defect, regression and reader-first results | Existing real Chromium proof |

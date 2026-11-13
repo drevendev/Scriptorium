@@ -61,7 +61,7 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   const csvResponse = await page.context().request.get(
     origin + "/assets/trusov-1775-interior-metrics.csv");
   assert.equal(csvResponse.status(), 200, tag + ": Trusov CSV route");
-  const csvLines = (await csvResponse.text()).trimEnd().split("\\n");
+  const csvLines = (await csvResponse.text()).trimEnd().split("\n");
   assert.equal(csvLines.length, 30, tag + ": header plus 29 metrics");
   assert.match(csvLines[0], /^metric_id,actual,unit,/);
   assert.ok(csvLines.some(line => line.startsWith("fantlab.general.characters,303882,")));

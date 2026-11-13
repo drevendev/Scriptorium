@@ -195,6 +195,39 @@ class TrusovProjectionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "empty or non-text"):
             ProjectedPageJoin().add(projected)
 
+    def test_standalone_projection_refuses_enclosing_markup_not_literal_lines(self):
+        # A standalone-looking invocation inside a multiline comment, wikilink
+        # or outer template must remain unresolved, even on CR-only Pages.
+        for ending in ("\\n", "\\r\\n", "\\r"):
+            with self.subTest(ending=repr(ending)):
+                comment = ("<!--" + ending + "{{nop}}" + ending +
+                           "{{heading|4|Hidden}}" + ending + "-->" + ending +
+                           "{{nop}}" + ending + "{{heading|4|Visible}}" + ending)
+                expected = ("<!--" + ending + "{{nop}}" + ending +
+                            "{{heading|4|Hidden}}" + ending + "-->" + ending +
+                            ending + "Visible" + ending)
+                self.assertEqual(project_page(comment),
+                                 (expected, 1, 1, 2, 0))
+
+                wikilink = ("[[Link|" + ending + "{{heading|4|Hidden}}" +
+                            ending + "]]" + ending +
+                            "{{heading|4|Visible}}" + ending)
+                expected_link = ("[[Link|" + ending + "{{heading|4|Hidden}}" +
+                                 ending + "]]" + ending + "Visible" + ending)
+                self.assertEqual(project_page(wikilink),
+                                 (expected_link, 0, 1, 1, 0))
+
+                enclosing_template = ("{{outer|" + ending + "{{nop}}" +
+                                      ending + "}}" + ending + "{{nop}}" + ending)
+                expected_outer = ("{{outer|" + ending + "{{nop}}" +
+                                  ending + "}}" + ending + ending)
+                self.assertEqual(project_page(enclosing_template),
+                                 (expected_outer, 1, 0, 2, 0))
+
+                unclosed_comment = "<!--" + ending + "{{nop}}" + ending
+                self.assertEqual(project_page(unclosed_comment),
+                                 (unclosed_comment, 0, 0, 1, 0))
+
     def test_plain_standalone_templates_only_and_no_prose_output(self):
         source = "PRIVATE TEXT\n{{nop}}\n{{heading|4|ГЛАВА I}}\nAFTER\n"
         projected, nop, heading, unresolved, residual = project_page(source)

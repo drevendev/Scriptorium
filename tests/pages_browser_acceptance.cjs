@@ -51,6 +51,13 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
     null, { timeout: 20000 });
   assert.match(await page.locator("#table-status").innerText(), /M2 0\/5/);
   assert.equal(await page.locator("#choose-book option").count(), 11);
+  const excerpt = page.locator("#trusov-excerpt");
+  assert.equal(await excerpt.getAttribute("data-coverage"), "incomplete");
+  assert.equal(await excerpt.locator("tbody tr").count(), 8);
+  assert.match(await excerpt.innerText(), /303 882/);
+  assert.match(await excerpt.innerText(), /не полный перевод/);
+  assert.match(await excerpt.innerText(), /M2: 0\/5/);
+  assert.equal(await page.locator('[data-translation-witness="trusov"]').getAttribute("data-analysis-status"), "unmeasured");
   await page.locator("#choose-book").selectOption("shishmareva");
   assert.match(await page.locator("#table-caption").innerText(), /Робинзон/);
   await page.locator("#choose-book").selectOption("anna");

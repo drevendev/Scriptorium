@@ -94,7 +94,7 @@ def render_html(artifact: dict[str, object], *, title: str | None = None, saved_
     metrics = _mapping(artifact.get("metrics"), "metrics")
     if source.get("source_text_embedded") is not False:
         raise ValueError("local analysis must not embed source text")
-    _validate_html_artifact(artifact, source, analyzer, representativeness, metrics)
+    _validate_local_artifact(artifact, source, analyzer, representativeness, metrics)
 
     display_title = _nonempty_text(title) if title is not None else "Scriptorium local analysis"
     groups = (
@@ -274,6 +274,7 @@ def render_markdown(artifact: dict[str, object], *, title: str | None = None) ->
     metrics = _mapping(artifact.get("metrics"), "metrics")
     if set(metrics) != set(METRIC_LABELS):
         raise ValueError("local Markdown requires all 29 current metrics")
+    _validate_local_artifact(artifact, source, analyzer, representativeness, metrics)
 
     def required(value: object, label: str) -> str:
         if not isinstance(value, str) or not value.strip():
@@ -388,6 +389,8 @@ def render_csv(artifact: dict[str, object]) -> str:
     metrics = _mapping(artifact.get("metrics"), "metrics")
     if set(metrics) != set(METRIC_LABELS):
         raise ValueError("local-analysis-csv-v1 requires all 29 current metrics")
+    representativeness = _mapping(artifact.get("representativeness"), "representativeness")
+    _validate_local_artifact(artifact, source, analyzer, representativeness, metrics)
     dictionary = dependencies.get("vocabulary_dictionary")
     if dictionary is not None:
         dictionary = _mapping(dictionary, "analyzer.dependencies.vocabulary_dictionary")
@@ -456,14 +459,14 @@ def _csv_text(value: object) -> str:
         raise ValueError("metric identity field must be text or null")
     return safe_csv_text(value)
 
-def _validate_html_artifact(
+def _validate_local_artifact(
     artifact: dict[str, object],
     source: dict[str, object],
     analyzer: dict[str, object],
     representativeness: dict[str, object],
     metrics: dict[str, object],
 ) -> None:
-    """Fail closed on a partial or contradictory local HTML report contract.
+    """Fail closed on contradictory HTML, Markdown and CSV report contracts.
 
     This checks source-free metadata consistency, NOT whether a caller's digest
     actually identifies the original manuscript or FantLab's input.

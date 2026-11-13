@@ -37,6 +37,15 @@ labelled Scriptorium extension fields remain visible under **Other**; no added f
 silently becomes a FantLab-compatible result. This checks the artifact's internal consistency; it cannot prove a
 caller's hashes came from a particular manuscript or establish FantLab parity.
 
+**Offline CSV and Markdown exports use the same registered evidence validator** as
+HTML: metric IDs, units and evidence classes, SHA-256 shapes, source counts,
+300,000-character threshold, analyzer profiles and dictionary provenance must agree.
+Malformed or relabelled declarations are rejected rather than published as
+plausible-looking data. This validation does **not** replay an imported JSON
+against the manuscript: use `scriptorium verify` with the original local input for
+independent source-bound checking. Unknown metric values remain unavailable,
+not zero.
+
 Inputs must be UTF-8. CRLF/CR and Unicode composition use the existing normalization
 profile. Empty inputs are supported: counts may be zero, but undefined means or rates
 remain null. A null vocabulary metric can also mean a missing dictionary or an incomplete

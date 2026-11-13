@@ -15,7 +15,7 @@ from .robinson_trusov_pages import WORK_ID, validate, verify_frozen_graph
 from .single_page_revision import _api_query
 
 SCHEMA = "scriptorium-robinson-trusov-page-content-preflight-v1"
-_TAG = re.compile(r"<(/?)(noinclude|includeonly|onlyinclude)\b([^>]*)>", re.I)
+_INCLUSION_MARKUP_TOKEN = re.compile(\n    r"<!--|-->|<(/?)(noinclude|includeonly|onlyinclude)\\b([^>]*)>", re.I\n)
 _HTML = re.compile(r"<[a-zA-Z/][^>]*>")
 _HEX = re.compile(r"[a-f0-9]{64}\Z")
 
@@ -23,7 +23,21 @@ _HEX = re.compile(r"[a-f0-9]{64}\Z")
 def transclusion_input(wikitext: str) -> str:
     """Remove explicit noinclude and unwrap includeonly; keep all other markup."""
     out, stack, offset = [], [], 0
-    for tag in _TAG.finditer(wikitext):
+    in_comment = False
+    # Inclusion-looking tags inside HTML comments are literal wikitext,
+    # not ProofreadPage transclusion directives. Keep comments unchanged.
+    for tag in _INCLUSION_MARKUP_TOKEN.finditer(wikitext):
+        token = tag.group(0)
+        if token == "<!--":
+            if in_comment:
+                raise ValueError("nested Page HTML comment")
+            in_comment = True
+            continue
+        if token == "-->":
+            in_comment = False
+            continue
+        if in_comment:
+            continue
         if "noinclude" not in stack:
             out.append(wikitext[offset:tag.start()])
         closing, name, attrs = tag.groups()
@@ -37,6 +51,8 @@ def transclusion_input(wikitext: str) -> str:
         else:
             stack.append(name)
         offset = tag.end()
+    if in_comment:
+        raise ValueError("unclosed Page HTML comment")
     if stack:
         raise ValueError("unclosed Page inclusion tags")
     out.append(wikitext[offset:])

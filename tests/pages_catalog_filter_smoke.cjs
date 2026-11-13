@@ -165,6 +165,10 @@ assert.throws(()=>make(tampered).updateCatalog(),/Нет проверенног�
 assert.match(html,/id="catalog-tools" hidden/);
 assert.match(html,/id="catalog-empty" class="catalog-empty" hidden/);
 assert.match(html,/id="catalog-reset" type="button" disabled/);
+assert.match(html,/id="catalog-clear" class="catalog-clear" type="button" disabled/);
+assert.match(js,/catalogClear.addEventListener\("click",resetCatalog\)/);
+assert.match(js,/catalogReset,catalogClear,one,search,out/);
+assert.match(css,/\.catalog-tools \.catalog-clear \{ min-height:44px/);
 assert.match(html,/Показано 13 из 13 книг/);
 assert.match(js,/catalogReset.addEventListener\("click",resetCatalog\)/);
 assert.match(js,/catalogOrder.value="catalog";/);

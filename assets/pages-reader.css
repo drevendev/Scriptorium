@@ -389,11 +389,16 @@ footer a { color:#ffdaa3; }
   padding:.55rem .7rem; border:2px solid var(--green); border-radius:5px;
   background:var(--surface); color:var(--ink); }
 .catalog-tools input { flex:1 1 15rem; max-width:28rem; }
+.catalog-tools .catalog-clear { min-height:44px; padding:.55rem .85rem; border:1px solid var(--green);
+  border-radius:5px; background:var(--surface); color:var(--green-deep); font-weight:750; }
+.catalog-tools .catalog-clear:hover:not(:disabled) { background:#dbeae0; }
+.catalog-tools .catalog-clear:disabled { opacity:.65; }
 .catalog-tools p { flex-basis:100%; margin:0; font-size:.8rem; color:var(--subtle); }
 .catalog-tools .catalog-share a { display:inline-flex; align-items:center; min-height:44px; font-weight:750; }
 .catalog-tools .catalog-share a[hidden] { display:none; }
 .catalog-tools[hidden],.book[hidden] { display:none !important; }
-@media (max-width:490px) { .catalog-tools select,.catalog-tools input { width:100%; max-width:none; } }
+@media (max-width:490px) { .catalog-tools select,.catalog-tools input { width:100%; max-width:none; }
+  .catalog-tools .catalog-clear { width:100%; } }
 @media print { .catalog-tools { display:none !important; } }
 
 /* Empty-state recovery is visible only after verified catalogue filtering. */

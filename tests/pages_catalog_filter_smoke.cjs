@@ -28,7 +28,7 @@ const browser={location,history:{replaceState(_state,_title,url){
 }}};
 const s=js.indexOf("  function updateCatalog() {"),e=js.indexOf("  function updateSingle() {",s);
 assert.ok(s>=0&&e>s);
-const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog};";
+const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog,sortCatalog};";
 const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogSearch","catalogOrder",
   "catalogGrid","lookup","isNumeric","el","window",code)(
   d,cards,filter,origin,search,order,catalogGrid,

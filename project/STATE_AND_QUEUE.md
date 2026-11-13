@@ -10,7 +10,7 @@ LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a 
 
 UNIT_ID: SCRIP-SITE-TRUSOV-LIVE-CSV-QA-V1
 ISSUE: #511 Trusov incomplete preview / published CSV live-readback acceptance
-STATUS: BRANCH_COMMITTED; new PR and later-run acceptance required
+STATUS: PR_CREATED #520; exact-head CI and later-run acceptance/merge required
 BRANCH: scrip-trusov-live-csv-readback-20261113
 BASE: 55cadad26c622b0921e0b46d6f1ce693e8600af3
 

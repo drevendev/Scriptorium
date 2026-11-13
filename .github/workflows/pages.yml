@@ -114,6 +114,7 @@ jobs:
           cp assets/pages-reader.js build/branch-root-preview/assets/pages-reader.js
           cp assets/evidence-snapshot.json build/branch-root-preview/assets/evidence-snapshot.json
           cp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
+          cp assets/trusov-1775-interior-metrics.csv build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           cp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
           cp voice/index.html build/branch-root-preview/voice/index.html
           cp voice/holdout-three.csv build/branch-root-preview/voice/holdout-three.csv
@@ -122,10 +123,12 @@ jobs:
           test -s build/branch-root-preview/metrics.html
           test -s build/branch-root-preview/assets/evidence-snapshot.json
           test -s build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
+          test -s build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           test -s build/branch-root-preview/assets/voice-preview.json
           test -s build/branch-root-preview/voice/index.html
           test -s build/branch-root-preview/voice/holdout-three.csv
           cmp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
+          cmp assets/trusov-1775-interior-metrics.csv build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           cmp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
           cmp metrics.html build/branch-root-preview/metrics.html
           cmp voice/index.html build/branch-root-preview/voice/index.html

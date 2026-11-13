@@ -10,6 +10,8 @@
 
 **Historical translation research preview:** the 1775 Yakov Trusov *Robinson Crusoe* has a reproducible **incomplete** Pages 3–147 diagnostic: 303,882 characters including spaces, 22 numeric metrics and seven unavailable values, each source-bound to 145 pinned Page revisions. [Inspect the Russian-language measured excerpt in Reader](https://drevendev.github.io/Scriptorium/#trusov-excerpt) or [the source-free 29-metric receipt](https://github.com/drevendev/Scriptorium/blob/master/corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.interior-measured.json) or [download the 29-field source-free CSV](https://drevendev.github.io/Scriptorium/assets/trusov-1775-interior-metrics.csv). Opening Page 2 and final Pages 148–151 are excluded; the synthetic page join and historical rendering are not verified. This is **not** a twelfth complete edition, translation comparison, author profile or FantLab parity (M2 0/5).
 
+**Map a private editor's token highlights back to original Unicode positions:** the optional [Python source-span API](docs/LOCAL_ANALYSIS.md#optional-original-coordinate-spans-local-python-api) translates normalized token/sentence offsets into conservative source code-point ranges, marking canonical reordering ambiguous rather than asserting an exact inverse. Existing analysis and Reader results do not change.
+
 ### What works now
 
 | In the `master` Reader | Verified source-backed scope |

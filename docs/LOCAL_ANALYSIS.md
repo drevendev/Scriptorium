@@ -117,6 +117,42 @@ Handled write failures remove temporary files and leave previous output untouche
 process/OS crash may leave a hidden `.scriptorium-*.tmp` derived-report file. On POSIX,
 new reports have mode 0600. Parent directories are created as needed.
 
+## Optional original-coordinate spans (local Python API)
+
+The deterministic text profile returns **normalized** half-open token/sentence offsets.
+When a local annotator needs to highlight the original manuscript, use the separate,
+opt-in `scriptorium-source-spans-v1` API. It does not change the installed CLI, metrics,
+source hashes, segmentation profiles, default reports, Pages or FantLab claims.
+
+```python
+from scriptorium.text import word_tokens
+from scriptorium.source_spans import normalize_with_provenance
+
+original = "A\r\ne\u0301"
+p = normalize_with_provenance(original)
+assert p.normalized == "A\né"
+assert [(w.text, w.start, w.end) for w in word_tokens(original)] == [
+    ("A", 0, 1), ("é", 2, 3)]
+assert [(p.original_span(i, i + 1).start, p.original_span(i, i + 1).end)
+        for i in range(3)] == [(0, 1), (1, 3), (3, 5)]
+```
+
+All offsets are Python **Unicode code-point** indices, not UTF-8 bytes or
+JavaScript UTF-16 units. `original_span(start, end)` returns an `OriginalSpan`
+with conservative source bounds and `exact: bool`. NFC composition and CRLF
+can merge source code points; reordering of combining marks can make a
+normalized interior span impossible to invert exactly. In that case the
+bounds cover all contributing original code points but `exact` is **false**:
+never treat such a slice as an exact quotation. The zero-length query is
+deliberately rejected rather than inventing an ambiguous interior boundary.
+
+Construction holds the original manuscript plus O(number of input + output
+code points) alignment data in memory, with temporary decomposed units;
+it is **not** enabled automatically for whole-book analysis or report export.
+No source content is persisted, uploaded, logged, or added to the corpus by
+this API. Run `python -m unittest discover -s tests -p 'test_source_spans.py' -v`
+to exercise original-coordinate consumer, CRLF/CR, NFC, canonical reordering,
+Hangul Jamo, empty input and invalid span cases.
 ## Library and checks
 
 ```python

@@ -129,6 +129,7 @@ class TranslationReadinessTests(unittest.TestCase):
         assert ".translation-excerpt .table-region:focus-visible" in css
         assert "@media (max-width:560px)" in css
         assert "@media print { .translation-excerpt" in css
+        assert ".translation-readiness { background:white; color:black; break-inside:auto; }" in css
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         assert "303,882 characters including spaces" in readme
         assert "/#trusov-excerpt" in readme

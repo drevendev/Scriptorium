@@ -215,12 +215,27 @@ def project_page(candidate: str) -> tuple[str, int, int, int, int]:
     calls, residual = invocation_shapes(candidate)
     out: list[str] = []
     handled_nop = handled_heading = 0
+    offset = 0
     for line in candidate.splitlines(keepends=True):
+        line_start = offset
+        offset += len(line)
         value = line.strip()
         # An entire standalone line must be one flat, exact double-brace call.
         if not (value.startswith("{{") and value.endswith("}}") and
                 not value.startswith("{{{") and "{{" not in value[2:] and
                 "}}" not in value[:-2]):
+            out.append(line)
+            continue
+        # A template occupying a physical line is not necessarily live markup:
+        # it may sit inside a multiline comment, wikilink or outer template.
+        # The VAR probe already uses the conservative enclosing-context guard.
+        # If the prior context is malformed, retain source rather than guess.
+        call_start = line_start + len(line) - len(line.lstrip())
+        try:
+            enclosed = _enclosed_in_outer_markup(candidate, call_start)
+        except ValueError:
+            enclosed = True
+        if enclosed:
             out.append(line)
             continue
         fields = value[2:-2].split("|")

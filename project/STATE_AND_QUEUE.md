@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 512
+STATE_REVISION: 513
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-13
-LAST_RESULT: #525 merged at b96a0a714e3657c57d0b37add17341248535873b; #526 source-span provenance implemented on focused branch, later-run CI and acceptance pending.
+LAST_RESULT: #527 merged at 09c1bee0ecb29a8c5e969c1b7b5c85a86f71f8d7; #511 standalone-template context guard implemented on focused branch, exact-head CI and later-run acceptance pending.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TEXT-SOURCE-SPANS-V1
-ISSUE: #526 optional normalized-to-original code-point span mapping
+UNIT_ID: SCRIP-TRUSOV-STANDALONE-CONTEXT-GUARD
+ISSUE: #511 pinned Trusov Page projection context correctness
 STATUS: BRANCH_COMMITTED; exact-head CI and independent later-run acceptance required
-BRANCH: scrip-source-spans-20261113
-BASE: b96a0a714e3657c57d0b37add17341248535873b
+BRANCH: scrip-trusov-standalone-context-20261113
+BASE: 09c1bee0ecb29a8c5e969c1b7b5c85a86f71f8d7
 
-ACCEPTANCE: Opt-in local Python API maps normalized token/sentence ranges back to original coordinates; CRLF/NFC/Hangul and reordering cases are tested, ambiguous inverse mappings are explicitly marked, and default text-v1 metrics, Reader, corpus and reports are unchanged.
+ACCEPTANCE: Standalone-looking nop/heading inside multiline comments, wikilinks or enclosing templates stays unresolved, while true standalone calls still project across LF/CRLF/CR. No source text or parity claim; prior frozen diagnostics must pass exact-head replay.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: reliable offline analysis and 11-book Reader with source-bound, human
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #526 optional original-coordinate span API | Local consumer and regression suite for Unicode provenance; independent CI/merge | Focused branch and later-run acceptance |
+| P1 | #511 pinned Page context guard | Reject hidden/enclosed standalone-template projection; test LF/CRLF/CR and replay source-free pinned evidence | Focused branch and later-run acceptance |
 | P2 | #511 full Trusov body and two-translation comparison | Inspect opening/tail, resolve Page2 parser and Pages148–151 VAR, historically defensible page joins, verify rights/coverage/hashes before 29-metric comparison | Exact Page rendering/edition identity |
 | P3 | #282 pinned AOT noun/cardinal N diagnostic | Measured native noun/cardinal samples and POS/bigram deltas; separately label uncertainty | Native pinned pylem dictionary; FantLab input still unknown |
 | P4 | #283 Reader accessibility / visual issues | Real browser-observed defect, desktop/mobile/keyboard regression and reader-first results | Site build and visual execution |

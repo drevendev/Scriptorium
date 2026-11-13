@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 513
+STATE_REVISION: 514
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-13
-LAST_RESULT: #527 merged at 09c1bee0ecb29a8c5e969c1b7b5c85a86f71f8d7; #511 standalone-template context guard implemented on focused branch, exact-head CI and later-run acceptance pending.
+LAST_COMMITTED_RUN_AT: 2026-11-14
+LAST_RESULT: #528 merged at b10ffc8a2c3733b5a651a694155209d2c6f6120a; #511 HTML-comment inclusion guard implemented on focused branch, exact-head CI and later-run acceptance pending.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-STANDALONE-CONTEXT-GUARD
-ISSUE: #511 pinned Trusov Page projection context correctness
+UNIT_ID: SCRIP-TRUSOV-COMMENT-INCLUSION-GUARD
+ISSUE: #511 pinned Trusov Page inclusion preprocessing integrity
 STATUS: BRANCH_COMMITTED; exact-head CI and independent later-run acceptance required
-BRANCH: scrip-trusov-standalone-context-20261113
-BASE: 09c1bee0ecb29a8c5e969c1b7b5c85a86f71f8d7
+BRANCH: scrip-trusov-comment-safe-transclusion-20261114
+BASE: b10ffc8a2c3733b5a651a694155209d2c6f6120a
 
-ACCEPTANCE: Standalone-looking nop/heading inside multiline comments, wikilinks or enclosing templates stays unresolved, while true standalone calls still project across LF/CRLF/CR. No source text or parity claim; prior frozen diagnostics must pass exact-head replay.
+ACCEPTANCE: Literal noinclude/includeonly/onlyinclude inside a balanced HTML comment must not change Page transclusion bytes or stack; genuine outside tags keep their prior behavior. Malformed/unclosed comment input fails closed. Positive/negative CR/LF tests, pinned 150-Page replay and later independent acceptance required; no body or parity claim.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: reliable offline analysis and 11-book Reader with source-bound, human
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 pinned Page context guard | Reject hidden/enclosed standalone-template projection; test LF/CRLF/CR and replay source-free pinned evidence | Focused branch and later-run acceptance |
+| P1 | #511 inclusion markup inside HTML comments | Preserve comment-literal source markup; fail closed on malformed comments; exact-head regression and pinned replay | Focused branch and later-run acceptance |
 | P2 | #511 full Trusov body and two-translation comparison | Inspect opening/tail, resolve Page2 parser and Pages148–151 VAR, historically defensible page joins, verify rights/coverage/hashes before 29-metric comparison | Exact Page rendering/edition identity |
 | P3 | #282 pinned AOT noun/cardinal N diagnostic | Measured native noun/cardinal samples and POS/bigram deltas; separately label uncertainty | Native pinned pylem dictionary; FantLab input still unknown |
 | P4 | #283 Reader accessibility / visual issues | Real browser-observed defect, desktop/mobile/keyboard regression and reader-first results | Site build and visual execution |

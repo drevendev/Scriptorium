@@ -471,17 +471,22 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--interior-output", type=Path,
                         help="Optional source-free 29-metric incomplete interior sample")
+    parser.add_argument("--seam-output", type=Path,
+                        help="Optional source-free join-sensitivity experiment (requires --interior-output)")
     parser.add_argument("--delay", type=float, default=0.75)
     args = parser.parse_args(argv)
+    if args.seam_output is not None and args.interior_output is None:
+        parser.error("--seam-output requires --interior-output")
     outs = (args.output, args.preflight_output, args.shapes_output) + (
         (args.interior_output,) if args.interior_output else ()
-    )
+    ) + ((args.seam_output,) if args.seam_output else ())
     if len({x.resolve() for x in outs}) != len(outs) or any(
             x.exists() or x.resolve() in (args.graph.resolve(), args.receipt.resolve()) for x in outs):
         parser.error("outputs must be distinct, new, and outside frozen inputs")
     graph = verify_frozen_graph(args.graph, args.receipt)
     preflight, shapes = {}, {}
     interior = None
+    seam = None
     collector = None
     if args.interior_output is not None:
         from .robinson_trusov_interior import InteriorCollector
@@ -492,15 +497,23 @@ def main(argv: Sequence[str] | None = None) -> int:
                                 page_observer=collector.observe if collector else None)
     if collector is not None:
         interior = collector.build(graph, graph_sha256, report)
+        if args.seam_output is not None:
+            seam = collector.seam_sensitivity(interior)
     outputs = [(args.preflight_output, preflight), (args.shapes_output, shapes),
                (args.output, report)]
     if args.interior_output is not None:
         outputs.append((args.interior_output, interior))
+    if args.seam_output is not None:
+        outputs.append((args.seam_output, seam))
     for output, data in outputs:
         output.parent.mkdir(parents=True, exist_ok=True)
         with output.open("x", encoding="utf-8") as writer:
             json.dump(data, writer, sort_keys=True, indent=2, ensure_ascii=False)
             writer.write("\n")
+    if seam is not None:
+        print("Trusov synthetic Page join sensitivity: "
+              + ", ".join(f"{v['join_profile']}={v['changed_numeric_metrics']}/29 changed"
+                          for v in seam["alternatives"]) + "; historical join UNKNOWN")
     if interior is not None:
         print("Inferred Trusov Pages 3-147 interior: "
               f"{interior['numeric_metric_count']}/29 numeric metrics, "

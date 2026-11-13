@@ -310,7 +310,7 @@ footer a { color:#ffdaa3; }
 .translation-readiness a { display:inline-flex; align-items:center; min-height:44px; font-weight:750; }
 .translation-readiness a:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
 .translation-readiness-note { font-size:.91rem; }
-@media print { .translation-readiness { background:white; color:black; break-inside:avoid; } .translation-readiness table { min-width:0; } }
+@media print { .translation-readiness { background:white; color:black; break-inside:auto; } .translation-readiness table { min-width:0; } .translation-readiness tr { break-inside:avoid; } }
 .language-boundary { margin-top:1rem; padding:1rem 1.35rem; background:var(--pale-gold);
   border-left:5px solid var(--gold); border-radius:4px; }
 .language-boundary h3 { font-size:1.2rem; margin:.2rem 0; }

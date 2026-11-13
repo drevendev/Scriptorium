@@ -76,7 +76,7 @@ class TrusovContentTests(unittest.TestCase):
         # A Page comment can show literal inclusion markup as documentation.
         # Neither that example nor a mismatched tag inside a comment may
         # alter the outer tag stack or change the source-bound digest.
-        for ending in ("\\n", "\\r\\n", "\\r"):
+        for ending in ("\n", "\r\n", "\r"):
             with self.subTest(ending=repr(ending)):
                 original = ("before<!--" + ending +
                             "<noinclude>literal</noinclude>" + ending +

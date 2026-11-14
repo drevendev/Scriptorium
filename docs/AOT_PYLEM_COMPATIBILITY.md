@@ -233,8 +233,12 @@ tokens, POS-pair counts **per 1,000 total word tokens**, and sentence-position
 percentage of **all sentences**. Markdown and CSV expose both original integer
 bounds and these calculated rates; CSV also retains the looser independent-edge
 upper bound so it cannot be confused with the exact per-cell conditional maximum.
-The JSON CLI schema is `scriptorium-native-n-cli-evidence-v2` and the new
-derivation is `scriptorium-native-n-conditional-units-v1`. Six-digit CSV/Markdown
+The JSON CLI schema is `scriptorium-native-n-cli-evidence-v3` and the
+derivation is `scriptorium-native-n-conditional-units-v2`. The same pinned
+fixture now reports N-only shares of each *annotated* three-token lexical
+control group (100% nouns, 66.666667% cardinals, 0% unrelated controls) in
+JSON, CSV and Markdown. These tiny, curated groups are not a classifier,
+representative corpus sample, or evidence of recovered AOT enum identity. Six-digit CSV/Markdown
 decimal display is Scriptorium presentation precision, **not** FantLab rounding.
 The N-mixed rows stay excluded and the endpoints of different cells are not
 jointly attainable. All records remain source-free; production POS mapping,

@@ -23,7 +23,7 @@ class NativeNRetainedCliTests(unittest.TestCase):
 
     def test_exact_native_witness_never_claims_m2_or_recovers_n(self):
         data = json.loads(self.invoke("--format", "json"))
-        self.assertEqual(data["schema_version"], "scriptorium-native-n-cli-evidence-v2")
+        self.assertEqual(data["schema_version"], "scriptorium-native-n-cli-evidence-v3")
         self.assertEqual(data["m2_source_matched_progress"], "0/5")
         self.assertEqual(data["measurement"], "retained_native_pylem_0.0.18_not_rerun")
         self.assertEqual(data["witness"]["evidence"]["pylem_version"], "0.0.18")
@@ -44,6 +44,12 @@ class NativeNRetainedCliTests(unittest.TestCase):
         self.assertEqual(units["denominators"], {
             "word_tokens": 269358, "all_sentences": 21228,
             "conditionally_defined_tokens": 172635,
+        })
+        self.assertEqual(units["schema_version"], "scriptorium-native-n-conditional-units-v2")
+        self.assertEqual(units["native_control_n_only_percent_of_annotated_examples"], {
+            "noun_examples": 100.0,
+            "cardinal_examples": 200 / 3,
+            "other_pos_controls": 0.0,
         })
         self.assertAlmostEqual(units["bucket_percent_of_conditional_defined"]["noun"][1],
                                55081 * 100 / 172635)
@@ -68,8 +74,16 @@ class NativeNRetainedCliTests(unittest.TestCase):
             markdown,
         )
         self.assertIn("NOT FantLab rounding", markdown)
+        self.assertIn("not classifier accuracy or corpus rates", markdown)
+        self.assertIn("| cardinal_examples | 2 | 3 | 66.666667% |", markdown)
         rows = list(csv.DictReader(io.StringIO(self.invoke("--format", "csv"))))
-        self.assertEqual(len(rows), 22)
+        self.assertEqual(len(rows), 25)
+        cardinal_rate = next(row for row in rows if row["category"] == "native_control_rate"
+                             and row["measure"] == "cardinal_examples_n_only_percent")
+        self.assertEqual(cardinal_rate["observed"], "66.666667")
+        self.assertEqual(cardinal_rate["unit"], "percent_of_annotated_examples")
+        self.assertEqual(cardinal_rate["evidence_status"], "DERIVED_NATIVE")
+        self.assertEqual(cardinal_rate["conditional_max"], "")
         pair = next(row for row in rows if row["category"] == "bigram"
                     and row["measure"] == "noun->cardinal")
         self.assertEqual((pair["observed"], pair["conditional_min"],

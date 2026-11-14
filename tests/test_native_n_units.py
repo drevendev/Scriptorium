@@ -13,6 +13,11 @@ class NativeNUnitTests(unittest.TestCase):
             "bigram_bounds": [{"first": "noun", "second": "cardinal",
                                "min": 1, "max": 5, "independent_edge_upper": 7}],
             "sentence_position_bounds": [{"position": 1, "min": 2, "max": 5}],
+            "native_controls": {
+                "noun_examples": {"token_count": 3, "n_only": 3},
+                "cardinal_examples": {"token_count": 3, "n_only": 2},
+                "other_pos_controls": {"token_count": 3, "n_only": 0},
+            },
         }
 
     def test_denominators_and_conditional_intervals(self):
@@ -29,6 +34,12 @@ class NativeNUnitTests(unittest.TestCase):
             {"position": 1, "min": 10.0, "max": 25.0},
         ])
         self.assertIn("not_observed", result["status"])
+        self.assertEqual(result["schema_version"], "scriptorium-native-n-conditional-units-v2")
+        self.assertEqual(result["native_control_n_only_percent_of_annotated_examples"], {
+            "noun_examples": 100.0,
+            "cardinal_examples": 200 / 3,
+            "other_pos_controls": 0.0,
+        })
 
     def test_invalid_denominators_fail_closed(self):
         for key, value in (("word_count", 0), ("word_count", True),
@@ -46,6 +57,22 @@ class NativeNUnitTests(unittest.TestCase):
             witness["bigram_bounds"][0]["max"] = value
             with self.subTest(value=value), self.assertRaises(ValueError):
                 normalized_n_bounds(witness)
+
+    def test_small_native_controls_are_not_false_precision_or_accuracy(self):
+        example = self.example()
+        example["native_controls"]["noun_examples"] = {"token_count": 0, "n_only": 0}
+        self.assertIsNone(normalized_n_bounds(example)[
+            "native_control_n_only_percent_of_annotated_examples"]["noun_examples"])
+        for tested, observed in ((True, 1), (3, True), (-1, 0), (2, 3), (2.0, 1), (1, -1)):
+            example = self.example()
+            example["native_controls"]["noun_examples"] = {
+                "token_count": tested, "n_only": observed}
+            with self.subTest(tested=tested, observed=observed), self.assertRaises(ValueError):
+                normalized_n_bounds(example)
+        example = self.example()
+        del example["native_controls"]["other_pos_controls"]
+        with self.assertRaises(ValueError):
+            normalized_n_bounds(example)
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ native morphology run, a token disambiguator or FantLab rounding/parity evidence
 """
 from __future__ import annotations
 
-SCHEMA_VERSION = "scriptorium-native-n-conditional-units-v1"
+SCHEMA_VERSION = "scriptorium-native-n-conditional-units-v2"
 
 
 def _scale(value: object, denominator: object, multiplier: int) -> float:
@@ -13,6 +13,18 @@ def _scale(value: object, denominator: object, multiplier: int) -> float:
             or denominator <= 0):
         raise ValueError("invalid conditional N rate count or denominator")
     return value * multiplier / denominator
+
+
+
+def _native_control_rate(group: object) -> float | None:
+    """N-only share of an annotated native fixture group, not classifier accuracy."""
+    if not isinstance(group, dict) or set(group) != {"token_count", "n_only"}:
+        raise ValueError("invalid native N control group")
+    tested, observed = group["token_count"], group["n_only"]
+    if (type(tested) is not int or type(observed) is not int
+            or tested < 0 or not 0 <= observed <= tested):
+        raise ValueError("invalid native N control counts")
+    return _scale(observed, tested, 100) if tested else None
 
 
 def normalized_n_bounds(witness: dict[str, object]) -> dict[str, object]:
@@ -24,6 +36,10 @@ def normalized_n_bounds(witness: dict[str, object]) -> dict[str, object]:
     buckets = witness["bucket_bounds"]
     pairs = witness["bigram_bounds"]
     positions = witness["sentence_position_bounds"]
+    controls = witness["native_controls"]
+    if not isinstance(controls, dict) or set(controls) != {
+            "noun_examples", "cardinal_examples", "other_pos_controls"}:
+        raise ValueError("invalid native N lexical controls")
     return {
         "schema_version": SCHEMA_VERSION,
         "status": "conditional_n_only_not_observed_pos_or_fantlab_parity",
@@ -54,4 +70,7 @@ def normalized_n_bounds(witness: dict[str, object]) -> dict[str, object]:
             }
             for row in positions
         ],
+        "native_control_n_only_percent_of_annotated_examples": {
+            name: _native_control_rate(group) for name, group in controls.items()
+        },
     }

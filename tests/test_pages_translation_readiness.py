@@ -104,6 +104,40 @@ def check_excerpt(html: str, sample: dict) -> None:
     assert "data-catalog-key=\"trusov\"" not in html
 
 
+
+def check_source_coverage(html: str, graph: dict, sample: dict) -> None:
+    """Compare visible disclosure to frozen Page identities and the measured interval."""
+    assert html.count('id="trusov-coverage"') == 1
+    assert '<details id="trusov-coverage"' in html
+    assert '145 из 150 закреплённых страниц' in html
+    assert 'доля страниц по счёту, не доля полного текста по символам' in html
+    rows = re.findall(
+        r'<tr data-trusov-range="([^"]+)" data-page-first="(\d+)" '
+        r'data-page-last="(\d+)" data-page-count="(\d+)" '
+        r'data-coverage-status="([^"]+)">',
+        html,
+    )
+    # No fabricated body coverage: exactly 145 interior Pages, five excluded edges.
+    expected = [
+        ("opening", 2, 2, 1, "not-run"),
+        ("interior", sample["page_interval"]["from"], sample["page_interval"]["to"],
+         sample["page_interval"]["count"], "incomplete-excerpt"),
+        ("ending", 148, 151, 4, "not-run"),
+    ]
+    assert [(role, int(first), int(last), int(count), status)
+            for role, first, last, count, status in rows] == expected
+    assert sum(int(row[3]) for row in rows) == len(graph["pages"]) == 150
+    assert [p["page_sequence"] for p in graph["pages"]] == list(range(2, 152))
+    assert sample["page_interval"]["excluded_pages"] == [2, 148, 149, 150, 151]
+    assert sample["gates"]["full_literary_body"] == "NOT_RUN"
+    assert sample["gates"]["m2_parity_admissible"] is False
+    assert sample["gates"]["source_text_committed"] is False
+    assert 'id="trusov-coverage-scroll-help"' in html
+    assert 'aria-label="Охват исторических страниц Трусова"' in html
+    assert "процент покрытия сюжета" in html
+    assert 'data-catalog-key="trusov"' not in html
+
+
 class TranslationReadinessTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -145,6 +179,26 @@ class TranslationReadinessTests(unittest.TestCase):
         ):
             with self.subTest(altered=altered[:75]), self.assertRaises(AssertionError):
                 check_excerpt(altered, self.excerpt)
+
+    def test_source_coverage_disclosure_has_real_page_boundaries(self):
+        check_source_coverage(self.html, self.trusov, self.excerpt)
+        css = (ROOT / "assets/pages-reader.css").read_text(encoding="utf-8")
+        self.assertIn(".trusov-coverage summary:focus-visible", css)
+        self.assertIn(".trusov-coverage .table-region", css)
+        self.assertIn("@media print { .trusov-coverage", css)
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("/#trusov-coverage", readme)
+
+    def test_source_coverage_refuses_fake_admission_or_range(self):
+        check_source_coverage(self.html, self.trusov, self.excerpt)
+        for old, new in (
+            ('data-page-count="145"', 'data-page-count="150"'),
+            ('data-page-first="3"', 'data-page-first="2"'),
+            ('data-coverage-status="not-run"', 'data-coverage-status="complete"'),
+            ('145 из 150 закреплённых страниц', '150 из 150 закреплённых страниц'),
+        ):
+            with self.subTest(change=new), self.assertRaises(AssertionError):
+                check_source_coverage(self.html.replace(old, new, 1), self.trusov, self.excerpt)
 
     def test_tampered_counts_and_false_second_measurement_fail(self):
         for old, new in (

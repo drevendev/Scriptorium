@@ -44,6 +44,30 @@ const rows=records.slice(1).map(parse);
 for(const row of rows)assert.equal(row.length,headers.length);
 const column=name=>headers.indexOf(name);
 const index=Object.fromEntries(headers.map((name,i)=>[name,i]));
+
+// Every vocabulary unit must match the installed Russian metric catalogue:
+// word-form totals are not UASZ window measurements.
+const vocabularyUnits=new Map([
+  ["fantlab.vocabulary.unique_words","слова"],
+  ["fantlab.vocabulary.active_dictionary","слова"],
+  ["fantlab.vocabulary.active_nondictionary","слова"],
+  ["fantlab.vocabulary.uasz_3000","уникальные словарные формы на окно"],
+  ["fantlab.vocabulary.uasz_10000","уникальные словарные формы на окно"],
+  ["fantlab.vocabulary.uasz_100000","уникальные словарные формы на окно"],
+]);
+let vocabularyRows=0;
+for(const row of rows){
+  if(vocabularyUnits.has(row[index.metric_id])){
+    assert.equal(row[index.unit],vocabularyUnits.get(row[index.metric_id]),
+      "Incorrect vocabulary unit: "+row[index.metric_id]);
+    vocabularyRows++;
+  }
+}
+const expectedVocabularyRows=catalog.books.filter(b=>b.text_status==="measured")
+  .flatMap(b=>b.metrics).filter(m=>vocabularyUnits.has(m.id)).length;
+assert.equal(vocabularyRows,expectedVocabularyRows);
+assert.ok(!csv.includes('"словоформы / окно, по профилю"'));
+
 assert.ok(Object.values(index).every(Number.isInteger));
 assert.equal(rows.filter(r=>r[index.actual]!=="").length,249);
 assert.equal(rows.filter(r=>r[index.actual]==="").length,49);

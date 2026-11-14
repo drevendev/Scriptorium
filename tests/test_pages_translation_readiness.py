@@ -112,8 +112,8 @@ def check_source_coverage(html: str, graph: dict, sample: dict) -> None:
     assert '145 из 150 закреплённых страниц' in html
     assert 'доля страниц по счёту, не доля полного текста по символам' in html
     rows = re.findall(
-        r'<tr data-trusov-range="([^"]+)" data-page-first="(\\d+)" '
-        r'data-page-last="(\\d+)" data-page-count="(\\d+)" '
+        r'<tr data-trusov-range="([^"]+)" data-page-first="(\d+)" '
+        r'data-page-last="(\d+)" data-page-count="(\d+)" '
         r'data-coverage-status="([^"]+)">',
         html,
     )

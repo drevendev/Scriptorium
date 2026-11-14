@@ -294,7 +294,13 @@
     if (id === "scriptorium.general.sentences") return "предложения";
     if (id === "fantlab.general.characters") return "символы с пробелами";
     if (id === "fantlab.general.words") return "слова";
-    if (id.startsWith("fantlab.vocabulary.")) return "словоформы / окно, по профилю";
+    if (["fantlab.vocabulary.unique_words",
+         "fantlab.vocabulary.active_dictionary",
+         "fantlab.vocabulary.active_nondictionary"].includes(id)) return "слова";
+    if (["fantlab.vocabulary.uasz_3000",
+         "fantlab.vocabulary.uasz_10000",
+         "fantlab.vocabulary.uasz_100000"].includes(id))
+      return "уникальные словарные формы на окно";
     if (id.includes(".punctuation.")) return "на 1000 слов";
     if (id.endsWith("_percent")) return "%";
     return "кандидатные единицы";

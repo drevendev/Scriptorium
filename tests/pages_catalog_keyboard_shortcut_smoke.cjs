@@ -9,7 +9,7 @@ const end=js.indexOf("  function safeCatalogQuery(raw) {",begin);
 assert.ok(begin>=0 && end>begin,"Run the actual Reader shortcut function");
 assert.match(js.slice(js.indexOf("async function initialize()")),/verify\(incoming\); data=incoming;[\s\S]*document\.addEventListener\("keydown",handleCatalogSearchKeys\);/);
 assert.match(html,/id="catalog-search"[^>]*aria-describedby="catalog-shortcut-help" disabled/);
-assert.match(html,/id="catalog-shortcut-help"[^>]*>Нажмите <kbd>\/</kbd>/);
+assert.match(html,/id="catalog-shortcut-help"[^>]*>Нажмите <kbd>\/<\/kbd>/);
 assert.doesNotMatch(js.slice(begin,end),/fetch\(|localStorage|sendBeacon|innerHTML/);
 let focuses=0, updates=0;
 const search={disabled:false,value:"",focus(){focuses++;},closest(){return this;}};

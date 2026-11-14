@@ -20,6 +20,8 @@
 
 ### What works now
 
+**Reader data state:** the first-screen chart explains when interactive controls are ready, still awaiting verification, or unavailable. When the pinned JSON cannot be loaded or verified (and without JavaScript), the source-backed static chart, exact-value table and direct evidence links remain available; disabled controls never imply that data were successfully loaded.
+
 | In the `master` Reader | Verified source-backed scope |
 | --- | --- |
 | **11 measured Russian-language editions** | 13 catalogue cards; 2 research leads are explicitly **not analyzed** |

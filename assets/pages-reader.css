@@ -49,6 +49,12 @@ main { max-width:1300px; margin:0 auto; padding:0 clamp(1rem,3vw,2.5rem) 4rem; }
 .hero-visual h2 { margin:.2rem 0 .7rem; font-size:clamp(1.7rem,2.6vw,2.6rem); font-weight:500; }
 .hero-visual .eyebrow { color:#e8d0a9; }
 .visual-heading p:not(.eyebrow) { color:#dae9dd; font-size:.89rem; line-height:1.7; margin:0 0 1.2rem; }
+.reader-data-status { margin:.4rem 0 1rem; padding:.7rem .85rem; font-size:.81rem;
+  line-height:1.6; color:#f4f4e8; background:rgba(244,207,153,.08);
+  border-left:3px solid #f4cf99; border-radius:3px; }
+.reader-data-status[data-state="ready"] { border-color:#7ac4a8; }
+.reader-data-status[data-state="unavailable"] { background:rgba(244,207,153,.16); }
+@media print { .reader-data-status { display:none !important; } }
 .chart-switch { display:flex; gap:.35rem; flex-wrap:wrap; border-bottom:1px solid #527469; padding:0 0 1rem; }
 .chart-switch button { border:1px solid #809e90; border-radius:4px; padding:.45rem .6rem; min-height:44px; background:transparent; color:#e3efe9; font-size:.73rem; font-weight:650; }
 .chart-switch button[aria-pressed="true"] { background:#f4cf99; color:#243b2e; border-color:#f4cf99; }

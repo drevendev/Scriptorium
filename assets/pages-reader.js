@@ -57,6 +57,7 @@
   const one = el("choose-book");
   const search = el("search-metric");
   const status = el("table-status");
+  const readerDataStatus = el("reader-data-status");
   const body = el("measurement-rows");
   const out = el("export-button");
   const singleMarkdownButton = el("export-markdown-button");
@@ -1682,7 +1683,11 @@
       selectPair(left,right);
       selectBook(bookFromUrl());
       installCatalogComparisonActions();
+      readerDataStatus.dataset.state="ready";
+      readerDataStatus.textContent="Данные 11 измеренных редакций проверены. Переключатели графика, поиск и сравнения доступны.";
     } catch (_) {
+      readerDataStatus.dataset.state="unavailable";
+      readerDataStatus.textContent="Интерактивные данные недоступны или не прошли проверку. Переключатели выключены; статический график и точная таблица ниже остаются доступны.";
       status.textContent="Интерактивные данные недоступны. Откройте источник через ссылку на карточке книги; никаких выдуманных значений не подставлено.";
       el("pair-status").textContent="Сравнение недоступно без проверенного JSON. Статическая таблица остаётся для чтения.";
       // Static fallback charts and tables remain visible.

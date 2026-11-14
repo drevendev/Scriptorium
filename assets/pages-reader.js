@@ -53,6 +53,7 @@
   const catalogReset = el("catalog-reset");
   const catalogClear = el("catalog-clear");
   const catalogCopyButton = el("copy-catalog-link");
+  const catalogCsvButton = el("catalog-export-csv");
   const one = el("choose-book");
   const search = el("search-metric");
   const status = el("table-status");
@@ -388,6 +389,7 @@
       }
     }
     el("catalog-empty").hidden=shown!==0;
+    el("catalog-export-csv").disabled=measured===0;
     el("catalog-filter-status").textContent=shown
       ? "Показано "+shown+" из "+catalogCards.length+" книг: "+
         measured+" измерено, "+pending+" в подготовке. Переводы — отдельные редакции."
@@ -1047,8 +1049,20 @@
   // Export every verified observed/unavailable field without admitting pending works.
   // UNKNOWN is an empty numeric cell with an explicit status, never the number zero.
   // CSV never implies FantLab source/algorithm parity and contains no source text.
-  function serializeLibraryCsv(doc) {
+  function serializeLibraryCsv(doc, orderedKeys=null) {
     verify(doc);
+    const measuredBooks=doc.books.filter(book=>book.text_status==="measured");
+    let selectedBooks=measuredBooks;
+    if (orderedKeys!==null) {
+      if (!Array.isArray(orderedKeys) || orderedKeys.length===0 ||
+          new Set(orderedKeys).size!==orderedKeys.length)
+        throw Error("CSV: некорректный выбор книг");
+      selectedBooks=orderedKeys.map(key=>{
+        const book=measuredBooks.find(item=>item.key===key);
+        if (!book) throw Error("CSV: книга не измерена или отсутствует");
+        return book;
+      });
+    }
     const headers=[
       "export_schema","scientific_claim","fantlab_input_identity","m2_source_matched",
       "book_key","candidate_id","title","author","original_language","analysis_language",
@@ -1059,8 +1073,7 @@
       "reference_status","metric_kind","comparison_class"
     ];
     const lines=[];
-    for (const book of doc.books) {
-      if (book.text_status!=="measured") continue;
+    for (const book of selectedBooks) {
       for (const metric of book.metrics) {
         const fields=[
           "scriptorium-ru-metric-catalog-csv-v1","DIAGNOSTIC_ONLY","UNKNOWN",0,
@@ -1080,16 +1093,29 @@
         lines.push(fields.map(csvText).join(","));
       }
     }
-    if (lines.length!==doc.counts.metrics_total) throw Error("Неполная таблица измерений");
+    const expected=orderedKeys===null?doc.counts.metrics_total:
+      selectedBooks.reduce((total,book)=>total+book.metrics.length,0);
+    if (lines.length!==expected) throw Error("Неполная таблица измерений");
     return "\uFEFF"+[headers.join(","),...lines].join("\r\n")+"\r\n";
   }
   function exportLibraryCsv() {
-    const payload=serializeLibraryCsv(data);
+    downloadLibraryCsv(serializeLibraryCsv(data),"scriptorium-ru-measured-metrics.csv");
+  }
+  // The DOM order is the keyboard order after sorting. Pending cards never
+  // contribute rows, and unverified snapshots cannot be exported.
+  function exportCatalogCsv() {
+    const orderedKeys=[...catalogGrid.children]
+      .filter(card=>!card.hidden && card.dataset.status==="measured")
+      .map(card=>card.dataset.catalogKey);
+    downloadLibraryCsv(serializeLibraryCsv(data,orderedKeys),
+      "scriptorium-ru-filtered-metrics.csv");
+  }
+  function downloadLibraryCsv(payload,filename) {
     const blob=new Blob([payload],{type:"text/csv;charset=utf-8"});
     const url=URL.createObjectURL(blob);
     const link=document.createElement("a");
     link.href=url;
-    link.download="scriptorium-ru-measured-metrics.csv";
+    link.download=filename;
     document.body.appendChild(link);link.click();link.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
@@ -1589,7 +1615,7 @@
       if (!res.ok) throw Error("HTTP "+res.status);
       const incoming=await res.json();
       verify(incoming); data=incoming;
-      const inputs=[catalogFilter,catalogOrigin,catalogSearch,catalogOrder,catalogReset,catalogClear,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,...chartButtons];
+      const inputs=[catalogFilter,catalogOrigin,catalogSearch,catalogOrder,catalogReset,catalogClear,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,catalogCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -1636,6 +1662,7 @@
       pairCsvButton.addEventListener("click",exportPairCsv);
       pairMarkdownButton.addEventListener("click",exportPairMarkdown);
        libraryCsvButton.addEventListener("click",exportLibraryCsv);
+      catalogCsvButton.addEventListener("click",exportCatalogCsv);
       leftSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       rightSelect.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));
       pairMetric.addEventListener("change",()=>selectPair(leftSelect.value,rightSelect.value,true));

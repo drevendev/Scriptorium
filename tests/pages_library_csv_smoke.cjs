@@ -8,7 +8,8 @@ const source=fs.readFileSync(path.join(root,"assets/pages-reader.js"),"utf8");
 const catalog=JSON.parse(fs.readFileSync(path.join(root,"assets/evidence-snapshot.json"),"utf8"));
 const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
 const cards=[...html.matchAll(/<article class="book(?: book-research)?" data-status="(measured|pending)" data-catalog-key="([a-z]+)">/g)]
-  .map(match=>({dataset:{status:match[1],catalogKey:match[2]}}));
+  .map(match=>({dataset:{status:match[1],catalogKey:match[2]},hidden:false}));
+const catalogGrid={children:[...cards]};
 assert.equal(cards.length,13);
 const section=(first,last)=>{
   const start=source.indexOf(first),end=source.indexOf(last,start);
@@ -22,13 +23,13 @@ const doc={createElement(tag){assert.equal(tag,"a");return {
   set href(v){assert.equal(v,"blob:catalog");},
   set download(v){filename=v;},click(){clicks++;},remove(){}
 };},body:{appendChild(){}}};
-const run=new Function("metrics","catalogCards","data","URL","document","setTimeout",
+const run=new Function("metrics","catalogCards","catalogGrid","data","URL","document","setTimeout",
   section("  function isNumeric(x) {","  function getBook(key) {")+
   section("  function unit(id) {","  function insertText(")+
   section("  function csvText(value) {","  function serializePairCsv(report) {")+
-  section("  function serializeLibraryCsv(doc) {","  function updatePair() {")+
-  "return {verify,serializeLibraryCsv,exportLibraryCsv,csvText};"
-)(metricMap,cards,catalog,browserUrl,doc,()=>{});
+  section("  function serializeLibraryCsv(doc, orderedKeys=null) {","  function updatePair() {")+
+  "return {verify,serializeLibraryCsv,exportLibraryCsv,exportCatalogCsv,csvText};"
+)(metricMap,cards,catalogGrid,catalog,browserUrl,doc,()=>{});
 const csv=run.serializeLibraryCsv(catalog);
 assert.equal(fs.readFileSync(path.join(root,"assets/scriptorium-ru-measured-metrics.csv"),"utf8"),csv,
   "committed no-JavaScript CSV must exactly match the validated browser serializer");
@@ -44,6 +45,19 @@ const rows=records.slice(1).map(parse);
 for(const row of rows)assert.equal(row.length,headers.length);
 const column=name=>headers.indexOf(name);
 const index=Object.fromEntries(headers.map((name,i)=>[name,i]));
+const selected=run.serializeLibraryCsv(catalog,["shishmareva","beketova"]);
+const selectedRows=selected.slice(1).trimEnd().split("\r\n").slice(1).map(parse);
+assert.equal(selectedRows.length,40,"29 Shishmareva rows and 11 Beketova rows, including unavailable metrics");
+assert.deepEqual([...new Set(selectedRows.map(row=>row[index.book_key]))],
+  ["shishmareva","beketova"],"Subset order follows the visible catalogue");
+assert.ok(selectedRows.every(row=>row[index.scientific_claim]==="DIAGNOSTIC_ONLY" &&
+  row[index.m2_source_matched]==="0" && /^[a-f0-9]{64}$/.test(row[index.source_sha256])));
+assert.equal(selectedRows.filter(row=>row[index.actual]==="").length,5,"Preserve NOT_RUN as empty actual, not zero");
+assert.throws(()=>run.serializeLibraryCsv(catalog,[]),/некорректный выбор/);
+assert.throws(()=>run.serializeLibraryCsv(catalog,["shishmareva","shishmareva"]),/некорректный выбор/);
+assert.throws(()=>run.serializeLibraryCsv(catalog,["darwin"]),/не измерена/);
+assert.throws(()=>run.serializeLibraryCsv(catalog,["unknown"]),/не измерена/);
+
 
 // Every vocabulary unit must match the installed Russian metric catalogue:
 // word-form totals are not UASZ window measurements.
@@ -131,5 +145,16 @@ assert.throws(()=>run.serializeLibraryCsv(altered),/научный статус/
   assert.equal(await downloaded.text(),csv.replace(/^\uFEFF/,""));
   const bytes=new Uint8Array(await downloaded.arrayBuffer());
   assert.deepEqual([...bytes.slice(0,3)],[0xef,0xbb,0xbf]);
-  console.log("Full Reader catalogue CSV: 298 source-bound rows / 249 numeric / 49 status-only, safe download PASS");
+  catalogGrid.children=[cards.find(card=>card.dataset.catalogKey==="shishmareva"),
+    cards.find(card=>card.dataset.catalogKey==="beketova")];
+  run.exportCatalogCsv();
+  assert.equal(clicks,2);
+  assert.equal(filename,"scriptorium-ru-filtered-metrics.csv");
+  assert.equal(await downloaded.text(),selected.replace(/^\uFEFF/,""));
+  const filteredBytes=new Uint8Array(await downloaded.arrayBuffer());
+  assert.deepEqual([...filteredBytes.slice(0,3)],[0xef,0xbb,0xbf]);
+  catalogGrid.children=[cards.find(card=>card.dataset.catalogKey==="darwin")];
+  assert.throws(()=>run.exportCatalogCsv(),/некорректный выбор/);
+  assert.equal(clicks,2,"No download for a pending-only filter");
+  console.log("Reader full and filtered catalogue CSV: source-verified rows, visible order, status-only and unsafe negatives PASS");
 })().catch(error=>{console.error(error);process.exitCode=1;});

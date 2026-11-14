@@ -1,33 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 522
+STATE_REVISION: 523
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-14
-LAST_RESULT: #536 confirmed merged at fd959b433a974708c16210cb3a74a342fff79b6f; public native-N lexical control rate table prepared for later acceptance.
+LAST_RESULT: #537 merged at d7433db0305ce1994ac2eb0b4204f93d06c0cf97; Reader filtered-catalogue CSV prepared for later acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-009-NATIVE-CONTROL-READER-RATES
-ISSUE: #282 Pinned AOT/pylem noun/cardinal ambiguity, public reader evidence
-STATUS: BRANCH_COMMITTED; exact-head CI and later-run independent acceptance required
-BRANCH: scrip-native-n-reader-controls-20261114
-BASE: fd959b433a974708c16210cb3a74a342fff79b6f
+UNIT_ID: SCRIP-SITE-012-FILTERED-CATALOGUE-CSV
+ISSUE: #283 Public Reader: export filtered, source-verified metrics
+STATUS: BRANCH_COMMITTED; exact-head CI and later independent acceptance required
+BRANCH: scrip-catalog-filtered-csv-20261114
+BASE: d7433db0305ce1994ac2eb0b4204f93d06c0cf97
 
-ACCEPTANCE: Public no-JavaScript N-uncertainty page shows pinned native N-only control rates with explicit three-example denominators, honest scientific caveats and source-derived drift/tamper regressions. Do not claim native rerun, classifier accuracy, production POS changes or FantLab parity.
-
+ACCEPTANCE: A Reader user can filter/search/sort 13 catalogue cards and download only visible measured editions in that keyboard/DOM order, preserving source-bound metrics, statuses, translators, hashes and scientific caveats. Pending-only filters disable export, no-JS full CSV remains byte-identical and negative tests reject forged/duplicate/unknown selections.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: maintain source-true, reader-visible measured excerpts while establishing a complete Trusov literary body for a genuine paired translation comparison; continue independent analyzer/Reader delivery when the source boundary remains blocked.
+Milestone: independently accept the filtered, evidence-safe Reader CSV; then deliver a complete Trusov literary body for an honest paired translation comparison when source boundaries permit.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 public N-only lexical-control rate table | Exact pinned values, labeled 3-example denominators, tamper-negative Reader tests | Focused PR, exact-head CI and later acceptance |
+| P1 | #283 filtered catalogue CSV | Source-true measured-only rows, visible order, no-JS fallback and negative tests | CI and later independent PR acceptance |
 | P2 | #511 complete Trusov text and paired comparison | Resolve Pages 2/148–151, verify body/rights/hashes/threshold and metrics | Historical rendering/edition evidence |
-| P3 | #282 native AOT noun/cardinal N discrimination | Investigate remaining POS/bigram uncertainty without inventing FantLab rules | Pinned runtime and legal samples |
+| P3 | #282 native AOT noun/cardinal N discrimination | Quantify remaining POS/bigram uncertainty with measured lexical examples | Pinned runtime and legal samples |
 | P4 | #283 Reader accessibility and live verification | Inspect desktop/mobile/keyboard/print and fix a reproducible defect | Browser and deployment evidence |
-| P5 | Rights-cleared >=300k new edition and #284 attribution | Source-bound analysis and reader results with distinct rights evidence | Whole-work rights and source identity |
+| P5 | Rights-cleared >=300k new edition and #284 attribution | Source-bound analysis with distinct rights evidence | Whole-work rights and source identity |
 
 ## Retained scientific and operational boundaries
 

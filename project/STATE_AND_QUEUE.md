@@ -1,20 +1,21 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 517
+STATE_REVISION: 518
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-14
-LAST_RESULT: #531 merged at a59ac87f88f4f7ad58554645e8d2e22bc7054ac6; implement Reader keyboard search navigation on a focused #283 branch.
+LAST_RESULT: #532 confirmed merged at 25d7ef7e8cde942d4afa8965e165399322b16cad; correcting mislabeled vocabulary units in public Reader/CSV.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-KEYBOARD-SEARCH
-ISSUE: #283 Reader keyboard navigation
-STATUS: BRANCH_COMMITTED; exact-head Node/Chromium CI and later-run acceptance required
-BRANCH: scrip-reader-keyboard-search-20261114
-BASE: a59ac87f88f4f7ad58554645e8d2e22bc7054ac6
+UNIT_ID: SCRIP-READER-VOCAB-UNITS
+ISSUE: #283 Reader scientific labels / source-free catalogue export
+STATUS: BRANCH_COMMITTED; exact-head Node/Python/Pages CI and later-run acceptance required
+BRANCH: scrip-reader-vocabulary-unit-correction-20261114
+BASE: 25d7ef7e8cde942d4afa8965e165399322b16cad
 
-ACCEPTANCE: After validated source-free JSON loads, unmodified `/` from a non-editable target focuses catalogue search; `Escape` with a nonempty focused query clears only that query and refreshes the status. Never intercept typing inside other inputs, textareas, selects or contenteditable regions; never steal modifier/IME keys. Keep 13 static source-evidence cards visible when JS/validation is unavailable. Exercise real staged desktop/mobile Chromium and negative Node regressions.
+ACCEPTANCE: All six vocabulary field IDs in the interactive measured-work table and 298-field static/dynamic catalogue CSV use the installed catalogue's distinct word-form count vs UASZ-window units. Preserve 249 numeric / 49 explicitly unavailable observations, source hashes and all scientific gates. Node replay must byte-match static CSV; no full book text.
+
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +23,7 @@ Milestone: maintain source-true, reader-visible measured excerpts while establis
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 keyboard access to catalogue search | Slash/Escape work with verified JSON on desktop/mobile, editable/IME negatives, static fallback intact | Focused PR and exact-head CI |
+| P1 | #283 vocabulary unit correction in Reader/CSV | Six vocabulary fields show canonical words vs unique dictionary forms/window; exact static/dynamic CSV replay and negative status preservation | Focused PR and exact-head CI |
 | P2 | #511 complete Trusov text and paired comparison | Resolve Page 2 / Pages 148–151 and historical joins, independently verify rights, full-body boundaries, hashes, threshold and metrics | Real MediaWiki historical rendering/edition evidence |
 | P3 | #283 Reader accessibility and catalogue use | Fix a real desktop/mobile/keyboard issue with browser regression and live verification when available | Actual browser, deployment evidence |
 | P4 | #282 AOT noun/cardinal N discrimination | Native pinned samples and POS/bigram deltas with unresolved status retained if unproved | Native pinned pylem dictionary |

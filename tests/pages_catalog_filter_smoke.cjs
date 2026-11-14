@@ -21,22 +21,27 @@ const filter={value:"all"},origin={value:"all"},order={value:"catalog"},search={
 const empty={hidden:true},sortStatus={textContent:""};
 const share={hidden:false,href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
-}};
+},getAttribute(name){assert.equal(name,"href");return this.href||null;}};
+const copyButton={disabled:true,hidden:true}, feedback={textContent:""}, copied=[];
 const location={search:"",href:"https://drevendev.github.io/Scriptorium/"};
-const browser={location,history:{replaceState(_state,_title,url){
+const browser={location,isSecureContext:true,navigator:{clipboard:{
+  async writeText(url){copied.push(url);}
+}},history:{replaceState(_state,_title,url){
   location.href=String(url);location.search=new URL(location.href).search;
 }}};
-const s=js.indexOf("  function updateCatalog() {"),e=js.indexOf("  function updateSingle() {",s);
+const s=js.indexOf("  let catalogCopyAttempt=0;"),e=js.indexOf("  function updateSingle() {",s);
 assert.ok(s>=0&&e>s);
-const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog,sortCatalog};";
+const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog,sortCatalog,verifiedCatalogShareUrl,copyCatalogShareUrl};";
 const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogSearch","catalogOrder",
-  "catalogGrid","lookup","isNumeric","el","window",code)(
+  "catalogGrid","lookup","isNumeric","el","window","catalogCopyButton",code)(
   d,cards,filter,origin,search,order,catalogGrid,
   (book,id)=>book.metrics.find(m=>m.id===id),
   value=>typeof value==="number"&&Number.isFinite(value),
   id=>id==="share-catalog"?share:id==="catalog-empty"?empty:
-    id==="catalog-sort-status"?sortStatus:status,browser);
-const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog,sortCatalog}=make(data);
+    id==="catalog-sort-status"?sortStatus:id==="copy-catalog-feedback"?feedback:status,
+  browser,copyButton);
+const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog,sortCatalog,
+  verifiedCatalogShareUrl,copyCatalogShareUrl}=make(data);
 for(const [mode,keys,measured,pending] of [
  ["all",data.books.map(b=>b.key),11,2],
  ["measured",["anna","waves","silver","karamazov","hyperboloid","beketova","resurrection","road","oblomov","humiliated","shishmareva"],11,0],
@@ -199,4 +204,42 @@ assert.match(js,/verify\(incoming\); data=incoming/);
 assert.match(js,/el\("catalog-tools"\)\.hidden=false/);
 assert.match(css,/\.catalog-tools\[hidden\],\.book\[hidden\]\s*\{\s*display:none\s*!important/);
 assert.match(css,/@media print\s*\{\s*\.catalog-tools\s*\{\s*display:none/);
-console.log("Verified catalogue filters, zero-result recovery, safe reset URLs, invalid inputs and no-JS fallback: PASS");
+assert.match(html,/id="copy-catalog-link" hidden disabled/);
+assert.match(html,/id="copy-catalog-feedback"[^>]*role="status" aria-live="polite"/);
+assert.match(css,/\.catalog-tools \.catalog-share button \{ min-height:44px/);
+assert.match(js,/catalogCopyButton.addEventListener\("click",copyCatalogShareUrl\)/);
+(async()=>{
+  search.value="Шишмарёва";filter.value="translated";origin.value="all";order.value="title";run();
+  const expected=new URL(share.href,location.href).href;
+  assert.equal(copyButton.disabled,false);
+  assert.equal(verifiedCatalogShareUrl(),expected);
+  await copyCatalogShareUrl();
+  assert.equal(copied.at(-1),expected);
+  assert.match(feedback.textContent,/скопирована/);
+  const copiedCount=copied.length;
+  share.href="https://external.example/unsafe";
+  assert.equal(verifiedCatalogShareUrl(),null);
+  await copyCatalogShareUrl();
+  assert.equal(copied.length,copiedCount);
+  assert.match(feedback.textContent,/Нет проверенной ссылки/);
+  run();
+  browser.isSecureContext=false;
+  await copyCatalogShareUrl();
+  assert.equal(copied.length,copiedCount);
+  assert.match(feedback.textContent,/недоступно/);
+  browser.isSecureContext=true;
+  browser.navigator.clipboard.writeText=async()=>{throw Error("denied");};
+  await copyCatalogShareUrl();
+  assert.match(feedback.textContent,/Не удалось/);
+  let resolveWrite;
+  browser.navigator.clipboard.writeText=()=>new Promise(resolve=>{resolveWrite=resolve;});
+  const pendingCopy=copyCatalogShareUrl();
+  search.value="Верн";run();
+  resolveWrite();
+  await pendingCopy;
+  assert.equal(feedback.textContent,"");
+  search.value="Верн\u202e";run();
+  assert.equal(copyButton.disabled,true);
+  assert.equal(verifiedCatalogShareUrl(),null);
+  console.log("Verified catalogue filters, reset, safe clipboard success/denial, stale results and no-JS fallback: PASS");
+})().catch(error=>{console.error(error);process.exitCode=1;});

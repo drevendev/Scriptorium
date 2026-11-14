@@ -27,7 +27,7 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn('id="catalog-search" type="search" autocomplete="off"',html)
         self.assertIn('aria-describedby="catalog-shortcut-help"',html)
         self.assertIn('Нажмите <kbd>/</kbd>',html)
-        self.assertIn('placeholder="Например, Верн Бекетова" disabled',html)
+        self.assertIn('placeholder="Например, Верн Бекетова" aria-describedby="catalog-shortcut-help" disabled',html)
         self.assertIn('maxlength="120"',html)
         self.assertIn('id="share-catalog" href="?catalog=all#books"',html)
         self.assertIn('id="catalog-filter-status" role="status" aria-live="polite"',html)

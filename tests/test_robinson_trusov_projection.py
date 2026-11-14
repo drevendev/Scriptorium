@@ -11,6 +11,46 @@ from scriptorium.robinson_trusov_projection import (
 
 
 class TrusovProjectionTests(unittest.TestCase):
+    def test_literal_nowiki_pre_regions_never_project_or_preview_templates(self):
+        # MediaWiki XML-style nowiki/pre strip blocks render brace markup
+        # literally. A stand-alone-looking call inside one is not active.
+        for name in ("nowiki", "pre"):
+            with self.subTest(tag=name):
+                source = (f"<{name}>\n{{{{nop}}}}\n"
+                          "{{heading|h|Hidden}}\n"
+                          "{{ВАР|old|new}}\n"
+                          f"</{name}>\n{{{{nop}}}}\n"
+                          "{{ВАР|мѣсто|место}}\n")
+                projected = project_page(source)[0]
+                self.assertEqual(
+                    projected, source.replace(f"</{name}>\n{{{{nop}}}}",
+                                              f"</{name}>\n"),
+                )
+                self.assertIn("{{nop}}\n{{heading|h|Hidden}}", projected)
+                old, modern, flat, multiline = preview_var_orthographies(source)
+                self.assertEqual((flat, multiline), (1, 0))
+                self.assertIn("{{ВАР|old|new}}", old)
+                self.assertIn("{{ВАР|old|new}}", modern)
+                self.assertIn("мѣсто\n", old)
+                self.assertIn("место\n", modern)
+                self.assertEqual(
+                    var_preview_refusal_reasons(source)["multiple_templates_on_line"], 1,
+                )
+
+    def test_protected_tag_comment_self_closing_and_unclosed_boundaries(self):
+        # Literal examples inside comments must not poison later live calls.
+        commented = "<!-- <nowiki> -->\n{{nop}}\n"
+        self.assertEqual(project_page(commented)[0], "<!-- <nowiki> -->\n\n")
+        self.assertEqual(project_page("<nowiki />\n{{nop}}\n")[0],
+                         "<nowiki />\n\n")
+        # An open literal region or a stray close tag is ambiguous: retain it.
+        for prefix in ("<nowiki>", "<pre class='listing'>", "</pre>"):
+            with self.subTest(prefix=prefix):
+                source = prefix + "\n{{nop}}\n{{ВАР|old|new}}\n"
+                self.assertEqual(project_page(source)[0], source)
+                self.assertEqual(preview_var_orthographies(source),
+                                 (source, source, 0, 0))
+
     def test_var_orthography_previews_are_opt_in_and_distinct(self):
         source = "Начало {{ВАР|мѣсто|место}} продолжение\n"
         old, new, flat, multiline = preview_var_orthographies(source)

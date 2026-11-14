@@ -29,6 +29,10 @@ VAR_REFUSAL_KEYS = (
 )
 HEX = re.compile(r"[a-f0-9]{64}\Z")
 STYLE = re.compile(r"[A-Za-z0-9.% -]{1,20}\Z")
+# MediaWiki strip blocks keep literal brace calls inert even on a full line.
+# This is a conservative syntactic guard, not historical render equivalence.
+PROTECTED_LITERAL_TAG = re.compile(r"<\s*(/?)\s*(nowiki|pre)\b([^>]*)>", re.IGNORECASE)
+
 
 
 class ProjectedPageJoin:
@@ -77,6 +81,24 @@ def _enclosed_in_outer_markup(projected: str, start: int) -> bool:
     """Fail closed on multiline comments, links or enclosing brace groups."""
     if (projected.rfind("<!--", 0, start) > projected.rfind("-->", 0, start) or
             projected.rfind("[[", 0, start) > projected.rfind("]]", 0, start)):
+        return True
+    # A literal XML-style block can contain a stand-alone-looking template
+    # line without activating that template. Ignore faux tags in comments.
+    # Malformed/mismatched tags also fail closed; do not reconstruct wikitext.
+    protected: list[str] = []
+    for tag in PROTECTED_LITERAL_TAG.finditer(projected, 0, start):
+        if (projected.rfind("<!--", 0, tag.start()) >
+                projected.rfind("-->", 0, tag.start())):
+            continue
+        name = tag.group(2).lower()
+        remainder = tag.group(3).strip()
+        if tag.group(1):
+            if remainder or not protected or protected[-1] != name:
+                return True
+            protected.pop()
+        elif not remainder.endswith("/"):
+            protected.append(name)
+    if protected:
         return True
     cursor = 0
     while True:

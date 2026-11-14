@@ -18,6 +18,8 @@ class NativeNPublicationTests(unittest.TestCase):
         doc = record()
         result = validate_n_summary(doc)
         self.assertAlmostEqual(result["n_only_percent_of_words"], 20.448993532770512)
+        self.assertAlmostEqual(result["n_mixed_excluded_percent_of_words"], 19670 * 100 / 269358)
+        self.assertAlmostEqual(result["n_candidate_percent_of_words"], 74751 * 100 / 269358)
         self.assertEqual(doc["counts"]["n_only"], 55081)
         self.assertEqual(doc["bigram_bounds"][1]["max"], 8402)
         self.assertEqual(doc["native_controls"]["cardinal_examples"]["n_only"], 2)
@@ -33,6 +35,20 @@ class NativeNPublicationTests(unittest.TestCase):
         self.assertIn("M2: 0/5", html)
         self.assertNotIn("normalized_text", json.dumps(doc))
         self.assertNotIn("Анна была", json.dumps(doc))
+
+    def test_native_n_exclusion_context_is_source_bound(self):
+        doc = record()
+        rates = validate_n_summary(doc)
+        counts = doc["counts"]
+        self.assertEqual(counts["n_only"] + counts["n_mixed_excluded"], 74751)
+        html = (ROOT / "n-uncertainty.html").read_text(encoding="utf-8")
+        mixed = f'{rates["n_mixed_excluded_percent_of_words"]:.2f}'.replace(".", ",")
+        any_n = f'{rates["n_candidate_percent_of_words"]:.2f}'.replace(".", ",")
+        self.assertIn(f"({mixed}% всех словоформ)", html)
+        self.assertIn(f"74 751 токен ({any_n}%)", html)
+        self.assertIn("Группы не пересекаются", html)
+        self.assertIn("Смешанные случаи не включены", html)
+        self.assertNotIn(f"74 751 токен ({any_n}%)", html.replace(any_n + "%", "27,76%", 1))
 
     def test_frozen_native_record_matches_independent_expected_values(self):
         """Detect self-consistent but false edits to the frozen published numbers."""

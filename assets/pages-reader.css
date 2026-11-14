@@ -458,3 +458,13 @@ footer a { color:#ffdaa3; }
 .translation-excerpt-warning code { overflow-wrap:anywhere; font-size:.8rem; }
 @media (max-width:560px) { .translation-excerpt-facts { grid-template-columns:1fr; } }
 @media print { .translation-excerpt { background:#fff !important; color:#000 !important; } .translation-excerpt table { min-width:0; } .translation-excerpt tr { break-inside:avoid; } .translation-excerpt-facts div,.translation-excerpt-warning { background:#fff !important; color:#000 !important; } }
+
+/* Native, no-JS source coverage disclosure for the incomplete Trusov sample. */
+.trusov-coverage { margin:1rem 0 1.25rem; padding:.65rem 1rem 1rem; background:var(--wash); border:1px solid var(--line); border-radius:8px; }
+.trusov-coverage summary { cursor:pointer; min-height:44px; padding:.75rem 0; font-weight:750; line-height:1.5; }
+.trusov-coverage summary:focus-visible,.trusov-coverage .table-region:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+.trusov-coverage p { max-width:82ch; line-height:1.6; }
+.trusov-coverage .table-region { max-width:100%; overflow-x:auto; }
+.trusov-coverage table { width:100%; min-width:610px; }
+.trusov-coverage th,.trusov-coverage td { text-align:left; vertical-align:top; }
+@media print { .trusov-coverage { background:#fff !important; color:#000 !important; break-inside:auto; } .trusov-coverage > :not(summary) { display:block !important; } .trusov-coverage table { min-width:0; } .trusov-coverage tr { break-inside:avoid; } }

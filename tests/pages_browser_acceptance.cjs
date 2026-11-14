@@ -53,7 +53,31 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#choose-book option").count(), 11);
   const excerpt = page.locator("#trusov-excerpt");
   assert.equal(await excerpt.getAttribute("data-coverage"), "incomplete");
-  assert.equal(await excerpt.locator("tbody tr").count(), 8);
+  // The historical coverage disclosure embeds a separate three-row table:
+  // count only metric rows, not all nested table descendants.
+  assert.equal(await excerpt.locator('tr[data-excerpt-metric]').count(), 8);
+  const coverage = page.locator("#trusov-coverage");
+  assert.equal(await coverage.count(), 1, tag + ": historical Page coverage disclosure");
+  assert.equal(await coverage.evaluate(node => node.open), false);
+  // Native details must be operable by keyboard on both desktop and mobile.
+  await coverage.locator("summary").focus();
+  await page.keyboard.press("Enter");
+  assert.equal(await coverage.evaluate(node => node.open), true,
+    tag + ": keyboard opens no-JS Page coverage details");
+  assert.deepEqual(await coverage.locator("tbody tr[data-trusov-range]").evaluateAll(rows =>
+    rows.map(row => [
+      row.dataset.trusovRange, Number(row.dataset.pageFirst),
+      Number(row.dataset.pageLast), Number(row.dataset.pageCount),
+      row.dataset.coverageStatus,
+    ])), [
+      ["opening", 2, 2, 1, "not-run"],
+      ["interior", 3, 147, 145, "incomplete-excerpt"],
+      ["ending", 148, 151, 4, "not-run"],
+    ], tag + ": historical Page intervals and evidence statuses");
+  assert.match(await coverage.innerText(), /не доля полного текста по символам/);
+  assert.equal(await coverage.locator('a[href$=".page-graph.json"]').count(), 1);
+  await coverage.screenshot({ path: path.join(evidenceDir, tag + "-trusov-coverage.png"),
+    animations: "disabled" });
   // The excerpt's visible download must work on the real staged AND public
   // Reader; a valid panel with a broken CSV route is not functional delivery.
   const excerptExport = excerpt.locator('a[download][href="./assets/trusov-1775-interior-metrics.csv"]');

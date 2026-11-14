@@ -49,6 +49,9 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.match(await page.title(), /Scriptorium/);
   await page.waitForFunction(() => !document.querySelector("#export-button").disabled,
     null, { timeout: 20000 });
+  assert.equal(await page.locator("#reader-data-status").getAttribute("data-state"),
+    "ready", tag + ": verified snapshot enables controls");
+  assert.match(await page.locator("#reader-data-status").innerText(), /11 измеренных редакций/);
   // Exercise the real slash-to-search and Escape-to-clear flow on both viewports.
   await page.locator("#hero-title").click();
   await page.keyboard.press("/");
@@ -290,6 +293,31 @@ async function main() {
     const desktop = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     await inspectHome(desktop, origin, "desktop");
 
+    // A failed source-bound snapshot must explain why controls are disabled
+    // while preserving the already rendered no-JS evidence and table.
+    const unavailable = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await unavailable.route("**/assets/evidence-snapshot.json",
+      route => route.fulfill({ status: 503, contentType: "application/json", body: "{}" }));
+    await unavailable.goto(origin + "/", { waitUntil: "networkidle" });
+    assert.equal(await unavailable.locator("#reader-data-status").getAttribute("data-state"),
+      "unavailable", "network failure must be disclosed near the chart");
+    assert.match(await unavailable.locator("#reader-data-status").innerText(), /не прошли проверку/);
+    assert.equal(await unavailable.locator('[data-chart="fantlab.dialogue.share_percent"]').isDisabled(), true);
+    assert.equal(await unavailable.locator("#books .book").count(), 13,
+      "Source links remain when interactive JSON fails");
+    assert.equal(await unavailable.locator("#chart-table-rows tr").count(), 11,
+      "Exact static chart observations remain on network failure");
+    await unavailable.screenshot({ path: path.join(output, "reader-data-unavailable.png"),
+      animations: "disabled" });
+    const noJsContext = await browser.newContext({ javaScriptEnabled: false });
+    const noJs = await noJsContext.newPage();
+    await noJs.goto(origin + "/", { waitUntil: "networkidle" });
+    assert.equal(await noJs.locator("#reader-data-status").getAttribute("data-state"),
+      "static", "No-JS fallback must not claim validation");
+    assert.match(await noJs.locator("#reader-data-status").innerText(), /таблица доступны сразу/);
+    assert.equal(await noJs.locator("#chart-table-rows tr").count(), 11);
+    assert.equal(await noJs.locator('[data-chart="fantlab.dialogue.share_percent"]').isDisabled(), true);
+    await noJsContext.close();
     // An actual print PDF exercises print CSS (distinct from a visual review).
     await desktop.emulateMedia({ media: "print" });
     const printLayout = await desktop.evaluate(() => ({

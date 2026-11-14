@@ -78,12 +78,12 @@
 </tbody></table></div>
 <p class="n-meta">Шесть знаков после запятой — формат отображения, а не правило точности FantLab.</p></section>
 <section class="n-panel" aria-labelledby="n-controls"><h2 id="n-controls">Проверка нативными примерами</h2>
-<p>На закреплённом pylem проверены три лексических набора по три слова. Названия групп — человеческая аннотация примеров, а <strong>не</strong> восстановленная часть речи из AOT.</p>
-<div class="n-table" role="region" tabindex="0" aria-label="Нативные контрольные группы"><table><caption>Сколько отдельных словоформ получили только N в pylem 0.0.18</caption>
-<thead><tr><th scope="col">Примеры</th><th scope="col">N-only</th><th scope="col">Всего</th></tr></thead><tbody>
-<tr><th scope="row">Примеры существительных</th><td>3</td><td>3</td></tr>
-<tr><th scope="row">Примеры числительных</th><td>2</td><td>3</td></tr>
-<tr><th scope="row">Контроль других частей речи</th><td>0</td><td>3</td></tr></tbody></table></div></section>
+<p>На закреплённом pylem проверены три лексических набора по три слова. Названия групп — человеческая аннотация примеров, а <strong>не</strong> восстановленная часть речи из AOT. Доля N-only вычислена только внутри каждой группы: это не точность классификатора и не частота по всей книге.</p>
+<div class="n-table" role="region" tabindex="0" aria-label="Нативные контрольные группы"><table id="n-native-controls-table"><caption>N-only среди размеченных примеров pylem 0.0.18; доля от размера каждой группы, округление до 0,1 процентного пункта (не FantLab)</caption>
+<thead><tr><th scope="col">Примеры</th><th scope="col">N-only</th><th scope="col">Всего</th><th scope="col">Доля N-only в группе</th></tr></thead><tbody>
+<tr data-native-control="noun_examples"><th scope="row">Примеры существительных</th><td>3</td><td>3</td><td>100%</td></tr>
+<tr data-native-control="cardinal_examples"><th scope="row">Примеры числительных</th><td>2</td><td>3</td><td>66,7%</td></tr>
+<tr data-native-control="other_pos_controls"><th scope="row">Контроль других частей речи</th><td>0</td><td>3</td><td>0%</td></tr></tbody></table></div></section>
 <div class="n-alert"><strong>Статус: DIAGNOSTIC_ONLY · M2: 0/5.</strong> Эти условные границы не являются вероятностями, оценкой правильности разбора или воспроизведением FantLab. Точная редакция входа FantLab, словарь и выбор омонимов неизвестны. Смешанные N с другими тегами не перераспределялись.</div>
 <section class="n-panel" aria-labelledby="n-evidence"><h2 id="n-evidence">Как повторить и проверить</h2>
 <p>Измерение произведено исходным закреплённым Python 3.9 / AOT-пакетом <code>pylem==0.0.18</code>, а расчёт границ — версионированным кодом Scriptorium. GitHub Actions сохранил исходный source-free JSON; контрольные суммы связывают его с точным входом и нативным результатом.</p>

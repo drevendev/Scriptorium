@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 516
+STATE_REVISION: 517
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-14
-LAST_RESULT: #530 merged at 63d60ee8aba3dc19e9bd053496cd1137a9e7cc95; repairing literal nowiki/pre handling in the historical Trusov projection on a focused branch.
+LAST_RESULT: #531 merged at a59ac87f88f4f7ad58554645e8d2e22bc7054ac6; implement Reader keyboard search navigation on a focused #283 branch.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-PROTECTED-LITERAL-TAGS
-ISSUE: #511 historical Page projection correctness
-STATUS: BRANCH_COMMITTED; exact-head tests and later-run acceptance required
-BRANCH: scrip-trusov-literal-tag-guard-20261114
-BASE: 63d60ee8aba3dc19e9bd053496cd1137a9e7cc95
+UNIT_ID: SCRIP-READER-KEYBOARD-SEARCH
+ISSUE: #283 Reader keyboard navigation
+STATUS: BRANCH_COMMITTED; exact-head Node/Chromium CI and later-run acceptance required
+BRANCH: scrip-reader-keyboard-search-20261114
+BASE: a59ac87f88f4f7ad58554645e8d2e22bc7054ac6
 
-ACCEPTANCE: Page `{{nop}}` / `{{heading}}` and diagnostic `{{ВАР}}` inside literal MediaWiki `<nowiki>` or `<pre>` regions remain inert. Real calls after well-formed closing tags still work; comments with fake tags, self-closing tags, unbalanced tags and malformed closing tags have positive/negative regressions. Preserve the pinned 145-Page diagnostic and M2 0/5, never claim historical rendering or a complete translated body.
+ACCEPTANCE: After validated source-free JSON loads, unmodified `/` from a non-editable target focuses catalogue search; `Escape` with a nonempty focused query clears only that query and refreshes the status. Never intercept typing inside other inputs, textareas, selects or contenteditable regions; never steal modifier/IME keys. Keep 13 static source-evidence cards visible when JS/validation is unavailable. Exercise real staged desktop/mobile Chromium and negative Node regressions.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: maintain source-true, reader-visible measured excerpts while establis
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 protected literal-tag projection guard | Exact-head Python and pinned 150-Page preflight CI, source-free diagnostics unchanged; independent later-run PR review | Focused branch and CI |
+| P1 | #283 keyboard access to catalogue search | Slash/Escape work with verified JSON on desktop/mobile, editable/IME negatives, static fallback intact | Focused PR and exact-head CI |
 | P2 | #511 complete Trusov text and paired comparison | Resolve Page 2 / Pages 148–151 and historical joins, independently verify rights, full-body boundaries, hashes, threshold and metrics | Real MediaWiki historical rendering/edition evidence |
 | P3 | #283 Reader accessibility and catalogue use | Fix a real desktop/mobile/keyboard issue with browser regression and live verification when available | Actual browser, deployment evidence |
 | P4 | #282 AOT noun/cardinal N discrimination | Native pinned samples and POS/bigram deltas with unresolved status retained if unproved | Native pinned pylem dictionary |

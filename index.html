@@ -96,7 +96,8 @@
 <option value="length">Объём текста (символы с пробелами): по убыванию</option>
 </select>
 <label for="catalog-search">Найти книгу, автора или переводчика</label>
-<input id="catalog-search" type="search" autocomplete="off" maxlength="120" placeholder="Например, Верн Бекетова" disabled>
+<input id="catalog-search" type="search" autocomplete="off" maxlength="120" placeholder="Например, Верн Бекетова" aria-describedby="catalog-shortcut-help" disabled>
+<p id="catalog-shortcut-help" class="catalog-shortcut-help">Нажмите <kbd>/</kbd> вне полей ввода, чтобы перейти к поиску. <kbd>Esc</kbd> очищает только запрос.</p>
 <button id="catalog-clear" class="catalog-clear" type="button" disabled>Сбросить фильтры и сортировку</button>
 <p id="catalog-filter-status" role="status" aria-live="polite">Показано 13 из 13 книг.</p>
 <p id="catalog-sort-status" role="status" aria-live="polite">Порядок каталога. Сортировка меняет порядок чтения с клавиатуры; ссылки на поиск сохраняют выбранный порядок.</p>

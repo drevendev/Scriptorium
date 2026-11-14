@@ -385,6 +385,8 @@ footer a { color:#ffdaa3; }
   padding:1rem 1.1rem; margin:1.1rem 0 1.3rem; border:1px solid var(--line);
   border-radius:8px; background:var(--wash); }
 .catalog-tools label { font-weight:750; font-size:.85rem; }
+.catalog-shortcut-help { flex:1 1 100%; margin:-.35rem 0 0; color:var(--subtle); font-size:.79rem; line-height:1.5; }
+.catalog-shortcut-help kbd { display:inline-block; min-width:1.6em; padding:0 .3em; text-align:center; border:1px solid var(--line); border-radius:3px; background:var(--surface); color:var(--ink); font:700 .9em/1.5 monospace; }
 .catalog-tools select,.catalog-tools input { min-height:44px; min-width:min(100%,15rem);
   padding:.55rem .7rem; border:2px solid var(--green); border-radius:5px;
   background:var(--surface); color:var(--ink); }

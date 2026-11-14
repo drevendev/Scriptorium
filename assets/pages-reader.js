@@ -420,6 +420,25 @@
     catalogSearch.focus();
   }
 
+  // Keyboard navigation is enabled only after the source-free snapshot validates.
+  // Never hijack typing, IME composition, modifier shortcuts or disabled controls.
+  function handleCatalogSearchKeys(event) {
+    if (catalogSearch.disabled || event.defaultPrevented || event.isComposing ||
+        event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return;
+    if (event.key === "Escape" && event.target === catalogSearch && catalogSearch.value) {
+      event.preventDefault();
+      catalogSearch.value="";
+      updateCatalog();
+      return;
+    }
+    if (event.key !== "/") return;
+    const target=event.target;
+    if (target && typeof target.closest === "function" &&
+        target.closest("input, textarea, select, [contenteditable]")) return;
+    event.preventDefault();
+    catalogSearch.focus();
+  }
+
   function safeCatalogQuery(raw) {
     return typeof raw==="string" && raw.length<=120 &&
       !/[\u0000-\u001f\u007f]/u.test(raw);
@@ -1536,6 +1555,7 @@
       restoreCatalogFromUrl();
       sortCatalog();
       el("catalog-tools").hidden=false;
+      document.addEventListener("keydown",handleCatalogSearchKeys);
       el("pair-view-controls").hidden=false;
       one.addEventListener("change",()=>selectBook(one.value,true));
       window.addEventListener("popstate",()=>{

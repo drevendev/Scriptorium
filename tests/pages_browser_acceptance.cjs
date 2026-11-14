@@ -63,6 +63,25 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#catalog-search").inputValue(), "",
     tag + ": Escape clears only catalogue query");
   assert.match(await page.locator("#catalog-filter-status").innerText(), /13 из 13/);
+  // Exercise the shipped handler with a deterministic browser clipboard spy.
+  await page.locator("#catalog-filter").selectOption("translated");
+  await page.locator("#catalog-search").fill("Шишмарёва");
+  await page.evaluate(() => {
+    Object.defineProperty(navigator,"clipboard",{configurable:true,value:{
+      writeText:async url=>{window.__scriptoriumCatalogCopied=url;}
+    }});
+  });
+  assert.equal(await page.locator("#copy-catalog-link").isEnabled(),true);
+  await page.locator("#copy-catalog-link").click();
+  const copiedCatalog=await page.evaluate(()=>window.__scriptoriumCatalogCopied);
+  assert.match(copiedCatalog,/catalog=translated/);
+  assert.match(copiedCatalog,/#books$/);
+  assert.equal(new URL(copiedCatalog).searchParams.get("q"),"Шишмарёва");
+  assert.match(await page.locator("#copy-catalog-feedback").innerText(),/скопирована/);
+  await page.locator("#catalog-search").fill("Верн");
+  assert.equal(await page.locator("#copy-catalog-feedback").innerText(),"");
+  await page.locator("#catalog-clear").click();
+  assert.match(await page.locator("#catalog-filter-status").innerText(), /13 из 13/);
   assert.match(await page.locator("#table-status").innerText(), /M2 0\/5/);
   assert.equal(await page.locator("#choose-book option").count(), 11);
   const excerpt = page.locator("#trusov-excerpt");

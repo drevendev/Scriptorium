@@ -398,6 +398,13 @@ footer a { color:#ffdaa3; }
 .catalog-tools p { flex-basis:100%; margin:0; font-size:.8rem; color:var(--subtle); }
 .catalog-tools .catalog-share a { display:inline-flex; align-items:center; min-height:44px; font-weight:750; }
 .catalog-tools .catalog-share a[hidden] { display:none; }
+.catalog-tools .catalog-share button { min-height:44px; margin:.25rem .4rem; padding:.45rem .75rem;
+  border:2px solid var(--green); border-radius:5px; background:var(--surface);
+  color:var(--green-deep); font-weight:750; }
+.catalog-tools .catalog-share button[hidden] { display:none !important; }
+.catalog-tools .catalog-share button:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+.catalog-tools .catalog-share button:disabled { opacity:.65; }
+.catalog-tools .catalog-share .copy-feedback { display:inline-block; color:var(--green-deep); font-weight:650; }
 .catalog-tools[hidden],.book[hidden] { display:none !important; }
 @media (max-width:490px) { .catalog-tools select,.catalog-tools input { width:100%; max-width:none; }
   .catalog-tools .catalog-clear { width:100%; } }

@@ -52,6 +52,7 @@
   const catalogGrid = document.querySelector("#books .book-grid");
   const catalogReset = el("catalog-reset");
   const catalogClear = el("catalog-clear");
+  const catalogCopyButton = el("copy-catalog-link");
   const one = el("choose-book");
   const search = el("search-metric");
   const status = el("table-status");
@@ -351,7 +352,10 @@
   }
   // Presentation-only filtering; never promote research leads to measured books.
   // Static provenance links remain visible when JS or verified data is unavailable.
+  let catalogCopyAttempt=0;
   function updateCatalog() {
+    catalogCopyAttempt++;
+    el("copy-catalog-feedback").textContent="";
     const mode=["all","measured","pending","translated"].includes(catalogFilter.value)
       ? catalogFilter.value : "all";
     const origin=["all","ru","en","fr"].includes(catalogOrigin.value)
@@ -392,17 +396,22 @@
     const raw=catalogSearch.value.trim();
     const share=el("share-catalog");
     share.hidden=!safeCatalogQuery(raw);
+    catalogCopyButton.disabled=share.hidden;
     if (!share.hidden) {
       const order=["catalog","title","dialogue","length"].includes(catalogOrder.value)
         ? catalogOrder.value : "catalog";
-      share.href="?catalog="+encodeURIComponent(mode)+
-        (origin==="all"?"":"&original="+encodeURIComponent(origin))+
-        (raw?"&q="+encodeURIComponent(raw):"")+
-        (order==="catalog"?"":"&catalog_order="+encodeURIComponent(order))+"#books";
+      share.href=catalogShareHref(mode,origin,raw,order);
       share.textContent=raw ? "Ссылка на этот поиск ↗" : "Ссылка на выбранный список ↗";
     } else {
       share.removeAttribute("href");
     }
+  }
+
+  function catalogShareHref(mode,origin,raw,order) {
+    return "?catalog="+encodeURIComponent(mode)+
+      (origin==="all"?"":"&original="+encodeURIComponent(origin))+
+      (raw?"&q="+encodeURIComponent(raw):"")+
+      (order==="catalog"?"":"&catalog_order="+encodeURIComponent(order))+"#books";
   }
 
   // A full empty-state reset restores DOM/keyboard order while preserving unrelated pair links.
@@ -523,6 +532,49 @@
       " Порядок клавиатуры совпадает с экранным; ссылка на поиск сохраняет выбранную сортировку.";
   }
 
+  // Copy only the currently validated same-page catalogue link, never a
+  // changed/foreign anchor or a stale asynchronous clipboard result.
+  function verifiedCatalogShareUrl() {
+    const anchor=el("share-catalog"), href=anchor?.getAttribute("href");
+    const raw=catalogSearch.value.trim();
+    if (anchor?.hidden || typeof href!=="string" || !href.startsWith("?catalog=") ||
+        !safeCatalogQuery(raw)) return null;
+    const mode=["all","measured","pending","translated"].includes(catalogFilter.value)
+      ?catalogFilter.value:"all";
+    const origin=["all","ru","en","fr"].includes(catalogOrigin.value)
+      ?catalogOrigin.value:"all";
+    const order=["catalog","title","dialogue","length"].includes(catalogOrder.value)
+      ?catalogOrder.value:"catalog";
+    if (href!==catalogShareHref(mode,origin,raw,order)) return null;
+    try {
+      const page=new URL(window.location.href), target=new URL(href,page);
+      return target.origin===page.origin && target.pathname===page.pathname &&
+        target.hash==="#books" ? target.href : null;
+    } catch (_) { return null; }
+  }
+
+  async function copyCatalogShareUrl() {
+    if (catalogCopyButton.disabled) return;
+    const sequence=++catalogCopyAttempt;
+    const feedback=el("copy-catalog-feedback"), link=verifiedCatalogShareUrl();
+    feedback.textContent="";
+    if (!link) {
+      feedback.textContent="Нет проверенной ссылки для копирования.";
+      return;
+    }
+    if (!window.isSecureContext || typeof window.navigator?.clipboard?.writeText!=="function") {
+      feedback.textContent="Копирование недоступно. Откройте ссылку рядом и скопируйте адрес.";
+      return;
+    }
+    try {
+      await window.navigator.clipboard.writeText(link);
+      if (sequence!==catalogCopyAttempt || verifiedCatalogShareUrl()!==link) return;
+      feedback.textContent="Ссылка на библиотеку скопирована.";
+    } catch (_) {
+      if (sequence!==catalogCopyAttempt || verifiedCatalogShareUrl()!==link) return;
+      feedback.textContent="Не удалось скопировать. Откройте ссылку рядом и скопируйте адрес.";
+    }
+  }
 
   // Reader extension v1: a relative, source-free numeric neighborhood, NOT
   // an authorship classifier, literary-quality score, or FantLab parity.
@@ -1563,6 +1615,8 @@
       restoreCatalogFromUrl();
       sortCatalog();
       el("catalog-tools").hidden=false;
+      catalogCopyButton.hidden=false;
+      catalogCopyButton.addEventListener("click",copyCatalogShareUrl);
       document.addEventListener("keydown",handleCatalogSearchKeys);
       el("pair-view-controls").hidden=false;
       one.addEventListener("change",()=>selectBook(one.value,true));

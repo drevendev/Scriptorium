@@ -18,7 +18,7 @@ from .frozen_diagnostic_report import _unique_keys
 from .n_uncertainty_publication import validate_n_summary
 from .native_n_units import normalized_n_bounds
 
-SCHEMA = "scriptorium-native-n-cli-evidence-v2"
+SCHEMA = "scriptorium-native-n-cli-evidence-v3"
 RETAINED_PATH = Path("assets/n-uncertainty-anna.json")
 MAX_EVIDENCE_BYTES = 64 * 1024
 # Exact reviewed git blob for the retained AOT/pylem witness; prevents plausible
@@ -109,6 +109,11 @@ def render_native_n_report(report: dict[str, object], kind: str) -> str:
         for name, group in witness["native_controls"].items():
             row("native_control", name + "_n_only", group["n_only"],
                 unit="of " + str(group["token_count"]) + " annotated examples")
+            rate = units["native_control_n_only_percent_of_annotated_examples"][name]
+            row("native_control_rate", name + "_n_only_percent",
+                f"{rate:.6f}" if rate is not None else "",
+                unit="percent_of_annotated_examples",
+                status="DERIVED_NATIVE" if rate is not None else "NOT_RUN")
         return stream.getvalue()
     if kind != "markdown":
         raise ValueError("invalid native N evidence format")
@@ -140,10 +145,12 @@ def render_native_n_report(report: dict[str, object], kind: str) -> str:
     for position, scaled in zip(witness["sentence_position_bounds"], units["sentence_position_percent_of_all_sentences"]):
         lines.append(f"| {position['position']} | {position['min']} | {position['max']} | {scaled['min']:.6f} | {scaled['max']:.6f} |")
     lines += ["", "## Pinned native controls", "",
-              "These role labels annotate test examples, not inferred grammatical classes.", "",
-              "| Annotation | N-only | Tested |", "| --- | ---: | ---: |"]
+              "Tiny curated fixture: role labels annotate examples, not inferred grammatical classes; these percentages are not classifier accuracy or corpus rates.", "",
+              "| Annotation | N-only | Tested | N-only % of annotated examples |", "| --- | ---: | ---: | ---: |"]
     for name, group in witness["native_controls"].items():
-        lines.append(f"| {name} | {group['n_only']} | {group['token_count']} |")
+        rate = units["native_control_n_only_percent_of_annotated_examples"][name]
+        display = f"{rate:.6f}%" if rate is not None else "NOT_RUN"
+        lines.append(f"| {name} | {group['n_only']} | {group['token_count']} | {display} |")
     lines += ["", f"Native CI witness: {evidence['workflow_url']}",
               f"Pinned runtime-analysis SHA-256: {evidence['runtime_analysis_sha256']}", "",
               "**Diagnostic only:** no FantLab parity; no production POS remapping; no source text included.", ""]

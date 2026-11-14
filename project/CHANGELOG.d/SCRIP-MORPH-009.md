@@ -17,3 +17,12 @@
   verify minimum and maximum against exhaustive short assignments and native CI.
 - Native tags, text hashes, production POS mapping, unresolved categories and M2 0/5
   remain unchanged. This does not recover true noun/cardinal labels.
+
+## 2026-11-14 — Annotated native-control rates (PR candidate)
+
+- Format the existing pinned 3-token lexical contrast control counts as explicit N-only
+  percentages in offline Markdown, JSON and CSV, using each annotation-group size as
+  denominator. A zero-sized control yields NOT_RUN rather than a false zero percent.
+- Preserve immutable native witness bytes and versioned artifact semantics; lexical
+  annotations are not recovered AOT grammatical classes or classifier accuracy.
+- No native rerun, source-text publication, production POS change or FantLab parity.

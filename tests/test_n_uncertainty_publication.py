@@ -111,7 +111,23 @@ class NativeNPublicationTests(unittest.TestCase):
                        f'<td>{format_int(position["min"])}</td><td>{format_int(position["max"])}</td>'
                        f'<td>{format_ru(scaled["max"])}%</td></tr>')
                 self.assertIn(row, markup)
-            for table_id in ("n-buckets-table", "n-bigram-table", "n-position-table"):
+            control_labels = {
+                "noun_examples": "Примеры существительных",
+                "cardinal_examples": "Примеры числительных",
+                "other_pos_controls": "Контроль других частей речи",
+            }
+            for name, group in doc["native_controls"].items():
+                rate = units["native_control_n_only_percent_of_annotated_examples"][name]
+                display = (f"{rate:.1f}".rstrip("0").rstrip(".").replace(".", ",") + "%"
+                           if rate is not None else "NOT_RUN")
+                row = (f'<tr data-native-control="{name}"><th scope="row">'
+                       f'{control_labels[name]}</th>'
+                       f'<td>{format_int(group["n_only"])}</td>'
+                       f'<td>{format_int(group["token_count"])}</td>'
+                       f'<td>{display}</td></tr>')
+                self.assertIn(row, markup)
+            for table_id in ("n-buckets-table", "n-bigram-table", "n-position-table",
+                             "n-native-controls-table"):
                 self.assertIn(f'id="{table_id}"', markup)
             self.assertIn("M2: 0/5", markup)
             self.assertIn("не правило округления FantLab", markup)
@@ -121,6 +137,10 @@ class NativeNPublicationTests(unittest.TestCase):
         self.assertNotEqual(changed, html)
         with self.assertRaises(AssertionError):
             assert_rows(changed)
+        changed_control = html.replace("66,7%", "66,8%", 1)
+        self.assertNotEqual(changed_control, html)
+        with self.assertRaises(AssertionError):
+            assert_rows(changed_control)
 
     def test_tampering_counts_identity_or_parity_fails_closed(self):
         for path, value in [

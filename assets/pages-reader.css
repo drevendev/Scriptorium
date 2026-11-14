@@ -368,6 +368,9 @@ footer a { color:#ffdaa3; }
 /* Print the chart's exact-value table rather than relying on bar colors. */
 @media print {
  .chart-table { display:block; background:#fff !important; color:#000 !important; }
+ /* A closed details element hides its contents via the UA details-content pseudo-element.
+    Displaying the outer details box alone does not print the exact-value rows. */
+ .chart-table::details-content { content-visibility:visible !important; }
  .chart-table summary { display:none; }
  .chart-table .table-region { overflow:visible; border:0; }
  .chart-table table { width:100%; min-width:0; table-layout:fixed; color:#000 !important; font-size:9pt; }

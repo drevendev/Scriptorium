@@ -56,7 +56,13 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn(".catalog-tools select,.catalog-tools input",css)
         self.assertIn('restoreCatalogFromUrl();\n      sortCatalog();\n      el("catalog-tools").hidden=false;',js)
         self.assertIn('window.addEventListener("popstate",()=>{\n        restoreCatalogFromUrl();',js)
-        self.assertIn('share.href="?catalog="',js)
+        # Canonical URL building is shared by the visible link and the
+        # verified clipboard action; preserve all four allow-listed facets.
+        self.assertIn('share.href=catalogShareHref(mode,origin,raw,order);',js)
+        self.assertIn('function catalogShareHref(mode,origin,raw,order)',js)
+        self.assertIn('return "?catalog="+encodeURIComponent(mode)+',js)
+        self.assertIn('copyCatalogShareUrl',js)
+        self.assertIn('verifiedCatalogShareUrl',js)
         self.assertIn('safeCatalogQuery(raw)',js)
         self.assertNotIn("innerHTML",js)
 

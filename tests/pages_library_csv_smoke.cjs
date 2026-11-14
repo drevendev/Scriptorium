@@ -27,7 +27,7 @@ const run=new Function("metrics","catalogCards","catalogGrid","data","URL","docu
   section("  function isNumeric(x) {","  function getBook(key) {")+
   section("  function unit(id) {","  function insertText(")+
   section("  function csvText(value) {","  function serializePairCsv(report) {")+
-  section("  function serializeLibraryCsv(doc) {","  function updatePair() {")+
+  section("  function serializeLibraryCsv(doc, orderedKeys=null) {","  function updatePair() {")+
   "return {verify,serializeLibraryCsv,exportLibraryCsv,exportCatalogCsv,csvText};"
 )(metricMap,cards,catalogGrid,catalog,browserUrl,doc,()=>{});
 const csv=run.serializeLibraryCsv(catalog);
@@ -150,7 +150,9 @@ assert.throws(()=>run.serializeLibraryCsv(altered),/научный статус/
   run.exportCatalogCsv();
   assert.equal(clicks,2);
   assert.equal(filename,"scriptorium-ru-filtered-metrics.csv");
-  assert.equal(await downloaded.text(),selected);
+  assert.equal(await downloaded.text(),selected.replace(/^\uFEFF/,""));
+  const filteredBytes=new Uint8Array(await downloaded.arrayBuffer());
+  assert.deepEqual([...filteredBytes.slice(0,3)],[0xef,0xbb,0xbf]);
   catalogGrid.children=[cards.find(card=>card.dataset.catalogKey==="darwin")];
   assert.throws(()=>run.exportCatalogCsv(),/некорректный выбор/);
   assert.equal(clicks,2,"No download for a pending-only filter");

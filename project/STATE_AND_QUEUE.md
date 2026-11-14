@@ -1,30 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 525
+STATE_REVISION: 526
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-14
-LAST_RESULT: #539 merged at 100d4c687a2efbeaa5140c977b4480b01cf435ad; Reader verification-status affordance prepared as a focused #283 PR.
+LAST_COMMITTED_RUN_AT: 2026-11-15
+LAST_RESULT: #540 merged at 8a89345fc2d125ffa289a3a4c4fb734b52ea4743; fix closed chart disclosure missing from print/PDF in a focused #283 PR.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-READER-DATA-STATE
-ISSUE: #283 First-screen Reader loading / verification / failure feedback
-STATUS: BRANCH_PREPARED; exact-head CI, actual desktop/mobile browser and later-run acceptance required
-BRANCH: scrip-reader-data-status-20261114
-BASE: 100d4c687a2efbeaa5140c977b4480b01cf435ad
+UNIT_ID: SCRIP-SITE-012-PRINT-CLOSED-DETAILS
+ISSUE: #283 Print/PDF visibility of the chart's exact-value table
+STATUS: BRANCH_PREPARED; exact-head Chromium/Pages CI and later-run independent acceptance required
+BRANCH: scrip-reader-print-exact-details-20261115
+BASE: 8a89345fc2d125ffa289a3a4c4fb734b52ea4743
 
-ACCEPTANCE: A first-screen accessible live region distinguishes static (no-JS/awaiting), verified-ready and unavailable/failed snapshot states. Interactivity enables only after validation; initial chart, exact-value table and direct source links remain intact. Positive, missing-JSON and no-JS Chromium tests cover the actual branch-root Reader.
+ACCEPTANCE: When the chart disclosure is collapsed on screen, its exact-value rows must still be rendered in A4 print/PDF for JavaScript and no-JavaScript readers. Printing must not mutate the disclosure's interactive screen state. Preserve row pagination, metric labels and missing values; verify with real Chromium branch-root acceptance.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make the published Reader demonstrably understandable and resilient when verified data are unavailable; then deliver a full Trusov body and honest matched-translation comparison only after source boundaries pass.
+Milestone: complete Reader print/PDF exact-value accessibility and prove it in a real browser; then deliver a full Trusov body and honest matched-translation comparison only after source boundaries pass.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Reader verification and failure state | First-screen ready/unavailable/no-JS disclosure and actual browser tests | CI and later independent PR acceptance |
+| P1 | #283 Reader print/PDF exact-value table | Closed on-screen chart details still prints 11 measured rows; no-JS + A4 Chromium proof | Exact-head CI and later-run acceptance |
 | P2 | #511 complete Trusov body and paired comparison | Resolve Pages 2/148–151, verify rights, whole-body hashes, metric profiles and threshold | Historical rendering/edition evidence |
-| P3 | #283 Reader desktop/mobile/keyboard/print acceptance | Real build, actual interaction and accessible source-free display | Browser/Pages access evidence |
+| P3 | #283 Reader remaining desktop/mobile/keyboard accessibility | Real build and accessible focus, contrast, source-free display | Browser/Pages access evidence |
 | P4 | #282 AOT noun/cardinal discriminator experiment | Evidence-backed lexical/POS choice without changing compatibility silently | Pinned native runtime and verified legal samples |
 | P5 | Rights-cleared new >=300k edition and #284 attribution | New independent verified derived analysis and explicit rights | Rights and edition identity |
 

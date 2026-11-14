@@ -49,6 +49,20 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.match(await page.title(), /Scriptorium/);
   await page.waitForFunction(() => !document.querySelector("#export-button").disabled,
     null, { timeout: 20000 });
+  // Exercise the real slash-to-search and Escape-to-clear flow on both viewports.
+  await page.locator("#hero-title").click();
+  await page.keyboard.press("/");
+  assert.equal(await page.locator("#catalog-search").evaluate(node =>
+    node === document.activeElement), true, tag + ": slash focuses catalogue search");
+  await page.locator("#catalog-search").fill("Дефо");
+  assert.match(await page.locator("#catalog-filter-status").innerText(), /1 из 13/);
+  await page.keyboard.press("/");
+  assert.equal(await page.locator("#catalog-search").inputValue(), "Дефо/",
+    tag + ": typing slash inside search is not hijacked");
+  await page.keyboard.press("Escape");
+  assert.equal(await page.locator("#catalog-search").inputValue(), "",
+    tag + ": Escape clears only catalogue query");
+  assert.match(await page.locator("#catalog-filter-status").innerText(), /13 из 13/);
   assert.match(await page.locator("#table-status").innerText(), /M2 0\/5/);
   assert.equal(await page.locator("#choose-book option").count(), 11);
   const excerpt = page.locator("#trusov-excerpt");

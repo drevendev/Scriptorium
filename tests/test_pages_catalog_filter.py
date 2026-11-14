@@ -25,7 +25,9 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn('id="catalog-order" disabled',html)
         self.assertIn('id="catalog-sort-status" role="status" aria-live="polite"',html)
         self.assertIn('id="catalog-search" type="search" autocomplete="off"',html)
-        self.assertIn('placeholder="Например, Верн Бекетова" disabled',html)
+        self.assertIn('aria-describedby="catalog-shortcut-help"',html)
+        self.assertIn('Нажмите <kbd>/</kbd>',html)
+        self.assertIn('placeholder="Например, Верн Бекетова" aria-describedby="catalog-shortcut-help" disabled',html)
         self.assertIn('maxlength="120"',html)
         self.assertIn('id="share-catalog" href="?catalog=all#books"',html)
         self.assertIn('id="catalog-filter-status" role="status" aria-live="polite"',html)
@@ -35,6 +37,8 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn("@media print { .catalog-tools { display:none !important; } }",css)
         js=(ROOT/"assets/pages-reader.js").read_text(encoding="utf-8")
         self.assertIn("installCatalogComparisonActions();",js)
+        self.assertIn('document.addEventListener("keydown",handleCatalogSearchKeys);',js)
+        self.assertIn('target.closest("input, textarea, select, [contenteditable]")',js)
         self.assertIn("doc.books.some(book=>{",js)
         self.assertIn('catalogSearch.addEventListener("input",updateCatalog)',js)
         self.assertIn('catalogOrder.addEventListener("change",()=>{sortCatalog();updateCatalog();})',js)
@@ -61,7 +65,8 @@ class CatalogueFilterTests(unittest.TestCase):
         for command in (["node","--check",str(ROOT/"assets/pages-reader.js")],
                         ["node",str(ROOT/"tests/pages_catalog_filter_smoke.cjs")],
                         ["node",str(ROOT/"tests/pages_catalog_sort_smoke.cjs")],
-                        ["node",str(ROOT/"tests/pages_catalog_compare_smoke.cjs")]):
+                        ["node",str(ROOT/"tests/pages_catalog_compare_smoke.cjs")],
+                        ["node",str(ROOT/"tests/pages_catalog_keyboard_shortcut_smoke.cjs")]):
             result=subprocess.run(command,cwd=ROOT,text=True,capture_output=True,check=False)
             self.assertEqual(result.returncode,0,result.stdout+"\n"+result.stderr)
 

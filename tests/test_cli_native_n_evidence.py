@@ -23,10 +23,14 @@ class NativeNRetainedCliTests(unittest.TestCase):
 
     def test_exact_native_witness_never_claims_m2_or_recovers_n(self):
         data = json.loads(self.invoke("--format", "json"))
-        self.assertEqual(data["schema_version"], "scriptorium-native-n-cli-evidence-v3")
+        self.assertEqual(data["schema_version"], "scriptorium-native-n-cli-evidence-v4")
         self.assertEqual(data["m2_source_matched_progress"], "0/5")
         self.assertEqual(data["measurement"], "retained_native_pylem_0.0.18_not_rerun")
         self.assertEqual(data["witness"]["evidence"]["pylem_version"], "0.0.18")
+        self.assertAlmostEqual(data["rates"]["n_mixed_excluded_percent_of_words"],
+                               19670 * 100 / 269358)
+        self.assertAlmostEqual(data["rates"]["n_candidate_percent_of_words"],
+                               74751 * 100 / 269358)
         self.assertEqual(data["witness"]["counts"], {
             "word_count": 269358, "sentence_count": 21228,
             "baseline_defined": 117554, "n_only": 55081,
@@ -62,6 +66,9 @@ class NativeNRetainedCliTests(unittest.TestCase):
     def test_markdown_and_csv_preserve_conditional_not_observed(self):
         markdown = self.invoke()
         self.assertIn("N-mixed tokens stay excluded", markdown)
+        self.assertIn("Excluded N-mixed: **19670 (7.30% of words)**", markdown)
+        self.assertIn("Any N candidate: **74751 (27.75% of words)**", markdown)
+        self.assertIn("mixed rows remain unassigned", markdown)
         self.assertIn("8402", markdown)
         self.assertIn("40825478901", markdown)
         self.assertIn("M2: 0/5", markdown)
@@ -77,7 +84,15 @@ class NativeNRetainedCliTests(unittest.TestCase):
         self.assertIn("not classifier accuracy or corpus rates", markdown)
         self.assertIn("| cardinal_examples | 2 | 3 | 66.666667% |", markdown)
         rows = list(csv.DictReader(io.StringIO(self.invoke("--format", "csv"))))
-        self.assertEqual(len(rows), 25)
+        self.assertEqual(len(rows), 27)
+        derived_rates = {row["measure"]: row for row in rows if row["category"] == "rate"}
+        self.assertEqual(derived_rates["n_mixed_excluded_percent_of_words"]["observed"],
+                         f"{19670 * 100 / 269358:.6f}")
+        self.assertEqual(derived_rates["n_candidate_percent_of_words"]["observed"],
+                         f"{74751 * 100 / 269358:.6f}")
+        self.assertTrue(all(derived_rates[k]["evidence_status"] == "DERIVED_NATIVE"
+                            for k in ("n_mixed_excluded_percent_of_words",
+                                      "n_candidate_percent_of_words")))
         cardinal_rate = next(row for row in rows if row["category"] == "native_control_rate"
                              and row["measure"] == "cardinal_examples_n_only_percent")
         self.assertEqual(cardinal_rate["observed"], "66.666667")

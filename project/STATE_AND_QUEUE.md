@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 523
+STATE_REVISION: 524
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-14
-LAST_RESULT: #537 merged at d7433db0305ce1994ac2eb0b4204f93d06c0cf97; Reader filtered-catalogue CSV prepared for later acceptance.
-LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus a separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
+LAST_RESULT: #538 merged at 193d61ff8a2aefa9e8c703a4f99e2fbf5755f683; N-mixed exclusion visibility prepared for independent PR acceptance.
+LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-FILTERED-CATALOGUE-CSV
-ISSUE: #283 Public Reader: export filtered, source-verified metrics
-STATUS: BRANCH_COMMITTED; exact-head CI and later independent acceptance required
-BRANCH: scrip-catalog-filtered-csv-20261114
-BASE: d7433db0305ce1994ac2eb0b4204f93d06c0cf97
+UNIT_ID: SCRIP-MORPH-009-N-MIXED-CONTEXT
+ISSUE: #282 Native AOT N-only versus N-mixed visibility
+STATUS: BRANCH_COMMITTED; independent exact-head CI, site build and later acceptance required
+BRANCH: scrip-native-n-mixed-context-20261114
+BASE: 193d61ff8a2aefa9e8c703a4f99e2fbf5755f683
 
-ACCEPTANCE: A Reader user can filter/search/sort 13 catalogue cards and download only visible measured editions in that keyboard/DOM order, preserving source-bound metrics, statuses, translators, hashes and scientific caveats. Pending-only filters disable export, no-JS full CSV remains byte-identical and negative tests reject forged/duplicate/unknown selections.
+ACCEPTANCE: Retained verified native evidence now distinguishes N-only (55,081; 20.45%), excluded N-mixed (19,670; 7.30%) and disjoint any-N tokens (74,751; 27.75%) in the CLI JSON/CSV/Markdown and static Reader. Unit tests bind displayed rates to pinned counts and preserve no-parity/no-source-text claims. No production POS change.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: independently accept the filtered, evidence-safe Reader CSV; then deliver a complete Trusov literary body for an honest paired translation comparison when source boundaries permit.
+Milestone: make native N uncertainty transparent on the public Reader; then deliver a full Trusov body and honest matched-translation comparison only after source boundaries pass.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 filtered catalogue CSV | Source-true measured-only rows, visible order, no-JS fallback and negative tests | CI and later independent PR acceptance |
-| P2 | #511 complete Trusov text and paired comparison | Resolve Pages 2/148–151, verify body/rights/hashes/threshold and metrics | Historical rendering/edition evidence |
-| P3 | #282 native AOT noun/cardinal N discrimination | Quantify remaining POS/bigram uncertainty with measured lexical examples | Pinned runtime and legal samples |
-| P4 | #283 Reader accessibility and live verification | Inspect desktop/mobile/keyboard/print and fix a reproducible defect | Browser and deployment evidence |
-| P5 | Rights-cleared >=300k new edition and #284 attribution | Source-bound analysis with distinct rights evidence | Whole-work rights and source identity |
+| P1 | #282 native N-mixed exclusion context | Same pinned counts and derived rates in CLI + Reader, positive/negative tests | CI and later independent PR acceptance |
+| P2 | #511 complete Trusov body and paired comparison | Resolve Pages 2/148–151, verify rights, whole-body hashes, metric profiles and threshold | Historical rendering/edition evidence |
+| P3 | #283 Reader desktop/mobile/keyboard/print acceptance | Real build, actual interaction and accessible source-free display | Browser/Pages access evidence |
+| P4 | #282 AOT noun/cardinal discriminator experiment | Evidence-backed lexical/POS choice without changing compatibility silently | Pinned native runtime and verified legal samples |
+| P5 | Rights-cleared new >=300k edition and #284 attribution | New independent verified derived analysis and explicit rights | Rights and edition identity |
 
 ## Retained scientific and operational boundaries
 

@@ -120,4 +120,6 @@ def validate_n_summary(doc: object) -> dict[str, float]:
             or boundary["production_pos_mapping_changed"] is not False):
         raise ValueError("native N scientific interpretation weakened")
     return {"n_only_percent_of_words": n["n_only"] * 100 / n["word_count"],
+            "n_mixed_excluded_percent_of_words": n["n_mixed_excluded"] * 100 / n["word_count"],
+            "n_candidate_percent_of_words": (n["n_only"] + n["n_mixed_excluded"]) * 100 / n["word_count"],
             "conditional_noun_or_cardinal_percent_of_defined": n["n_only"] * 100 / n["conditional_defined"]}

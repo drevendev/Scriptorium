@@ -18,7 +18,7 @@ from .frozen_diagnostic_report import _unique_keys
 from .n_uncertainty_publication import validate_n_summary
 from .native_n_units import normalized_n_bounds
 
-SCHEMA = "scriptorium-native-n-cli-evidence-v3"
+SCHEMA = "scriptorium-native-n-cli-evidence-v4"
 RETAINED_PATH = Path("assets/n-uncertainty-anna.json")
 MAX_EVIDENCE_BYTES = 64 * 1024
 # Exact reviewed git blob for the retained AOT/pylem witness; prevents plausible
@@ -82,6 +82,10 @@ def render_native_n_report(report: dict[str, object], kind: str) -> str:
                 unit="sentences" if key == "sentence_count" else "word tokens",
                 status="DERIVED_CONDITIONAL" if key == "conditional_defined" else "OBSERVED_NATIVE")
         row("rate", "n_only_percent_of_words", f"{rates['n_only_percent_of_words']:.6f}", unit="percent", status="DERIVED_NATIVE")
+        row("rate", "n_mixed_excluded_percent_of_words",
+            f"{rates['n_mixed_excluded_percent_of_words']:.6f}", unit="percent", status="DERIVED_NATIVE")
+        row("rate", "n_candidate_percent_of_words",
+            f"{rates['n_candidate_percent_of_words']:.6f}", unit="percent", status="DERIVED_NATIVE")
         row("rate", "conditional_noun_or_cardinal_percent_of_defined",
             f"{rates['conditional_noun_or_cardinal_percent_of_defined']:.6f}", unit="percent", status="DERIVED_CONDITIONAL")
         for bucket, bounds in witness["bucket_bounds"].items():
@@ -127,6 +131,10 @@ def render_native_n_report(report: dict[str, object], kind: str) -> str:
                 "n_mixed_excluded", "conditional_defined"):
         lines.append(f"| {key} | {counts[key]} |")
     lines += ["", f"N-only tokens: **{rates['n_only_percent_of_words']:.2f}% of words**. N-mixed tokens stay excluded.", "",
+              f"Excluded N-mixed: **{counts['n_mixed_excluded']} ({rates['n_mixed_excluded_percent_of_words']:.2f}% of words)**. "
+              f"Any N candidate: **{counts['n_only'] + counts['n_mixed_excluded']} "
+              f"({rates['n_candidate_percent_of_words']:.2f}% of words)**. "
+              "These disjoint counts are not observed noun/cardinal frequencies; mixed rows remain unassigned.", "",
               "## Conditional noun/cardinal envelopes", "",
               "Only N-only tokens are hypothetically assigned. Each cell is bounded separately; endpoints cannot be combined into one claimed analysis.",
               "Rates use word tokens / all sentences / conditionally defined tokens as explicitly labeled. Six decimals are presentation precision only, NOT FantLab rounding.", "",

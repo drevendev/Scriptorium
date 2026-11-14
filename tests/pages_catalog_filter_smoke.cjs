@@ -159,6 +159,17 @@ search.value="<img src=x>";filter.value="all";run();
 assert.ok(!share.href.includes("<img"));assert.ok(share.href.includes("%3Cimg"));
 search.value="x".repeat(121);run();assert.equal(share.hidden,true);
 assert.equal(share.href,"");
+// Invisible bidi format controls must not become spoofable public share links.
+for(const query of ["Верн\u202eРачинский","Верн\u2066Рачинский","Верн\u0085Рачинский","\u061cДефо"]){
+ search.value=query;run();assert.equal(share.hidden,true,"unsafe bidi/control query");
+ assert.equal(share.href,"","unsafe query must remove the old share href");
+}
+location.search="?catalog=measured&q="+encodeURIComponent("Верн\u202eРачинский");
+restore();assert.equal(search.value,"","unsafe shared query must fail closed");
+assert.equal(cards.filter(c=>!c.hidden).length,11,"facets remain valid");
+search.value="Шишмарёва";filter.value="translated";run();
+assert.equal(share.hidden,false,"normal Cyrillic remains shareable");
+assert.ok(share.href.includes(encodeURIComponent("Шишмарёва")));
 search.value="";filter.value="all";run();
 const tampered=structuredClone(data);tampered.books=tampered.books.filter(b=>b.key!=="darwin");
 assert.throws(()=>make(tampered).updateCatalog(),/Нет проверенного источника/);

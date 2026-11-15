@@ -20,6 +20,8 @@
 
 ### What works now
 
+**Visible keyboard focus:** the catalogue search and exact-value chart table use a shared focus indicator calibrated for at least 3:1 contrast against both the light catalogue surface and dark chart. Desktop/mobile Chromium acceptance checks the keyboard path and computed focus-ring contrast; this is a presentation/accessibility fix, not a metric or parity change.
+
 **Reader data state:** the first-screen chart explains when interactive controls are ready, still awaiting verification, or unavailable. When the pinned JSON cannot be loaded or verified (and without JavaScript), the source-backed static chart, exact-value table and direct evidence links remain available; disabled controls never imply that data were successfully loaded. Printing the Reader reveals the chart's exact-value rows even if the on-screen disclosure is collapsed; screen behavior remains unchanged. The dark chart's alternating table rows now keep light-on-dark contrast on screen and switch to readable dark-on-light when printed.
 
 | In the `master` Reader | Verified source-backed scope |

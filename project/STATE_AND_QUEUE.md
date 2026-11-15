@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 533
+STATE_REVISION: 534
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-15
-LAST_RESULT: #547 merged at b9516529b09196d59f2ecb5040ac1af9ddde24a0; #511 bounded long plain VAR preview candidate in progress.
+LAST_RESULT: #548 merged at a9c1d6f1252270af872bf0e13b37c75da9dd7439; #283 gallery search parity with Reader selected as independent user-facing slice.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-TRUSOV-LONG-PLAIN-VAR-PREVIEW
-ISSUE: #511 1775 Trusov source-bound actionable blockers
-STATUS: PR_CANDIDATE; exact-head CI and later-run acceptance required
-BRANCH: scrip-trusov-long-plain-var-preview-20261115
-BASE: b9516529b09196d59f2ecb5040ac1af9ddde24a0
+UNIT_ID: SCRIP-SITE-GALLERY-UNORDERED-SEARCH
+ISSUE: #283 — evidence gallery search and keyboard/mobile acceptance
+STATUS: PR_CANDIDATE; later-run independent review and exact-head CI required
+BRANCH: scrip-site-gallery-multi-term-search-20261115
+BASE: a9c1d6f1252270af872bf0e13b37c75da9dd7439
 
-ACCEPTANCE: In a new v6 *preview-only* profile, accept plain two-branch VAR calls with up to 64 logical LF/CRLF/CR breaks under the unchanged 4,096-character call/2,048-character branch bounds, refuse 65 breaks and unsafe markup, keep all unresolved Page metrics blocked. Revalidate pinned 150 oldids/source-free partition in CI; retain historical-rendering, rights, identity and M2 gates. Independent later-run acceptance before merge.
+ACCEPTANCE: The source-free evidence gallery must match title/author query terms in any order, ignoring repeated whitespace and `ё/е`, without searching evidence warnings or prose. Type facets, empty feedback, clear/reset and no-JavaScript cards remain correct. Run actual shipped JavaScript in a Node DOM harness, build Pages and check live desktop/mobile where available. This is presentation only; no metric/parity/source claims change.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make full Trusov measurement mechanically fail closed on every unresolved historical Page; complete the second Russian Robinson translation only when rendering, narrative bounds, legal reuse and source identity are independently established.
+Milestone: make public evidence discoverable and inspectable while the unresolved historical Trusov Page renderer remains gated; only ship the two-translation comparison after its legal/source/body gates pass.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 broaden *preview only* of long plain VAR branches | Versioned 64-break bound with positive/negative tests, real 150-oldid replay, no full metrics | Exact-head CI and later-run acceptance |
-| P2 | #511 historical body and paired translation | Resolve Pages 2/148–151, verify historical rendering, legal reuse, body hashes and comparison | Specific unresolved parser/VAR/source evidence |
-| P3 | #283 remaining Reader mobile/keyboard acceptance | Actual built Reader keyboard/touch/focus/print and live-route checks | Browser evidence; no fake deployment claims |
+| P1 | #283 unordered multi-term evidence gallery search | Real JS behavioral regression, site build, later independent acceptance | Exact-head CI |
+| P2 | #511 historical Trusov full-body and paired translation | Resolve Pages 2/148–151, verify historical rendering, legal reuse and body hashes | Concrete parser/VAR/source evidence, not preview thresholds |
+| P3 | #283 Reader mobile, keyboard, print checks | Actual built Reader desktop/mobile and publicly verified interactions | Browser available; preserve no-JS fallback |
 | P4 | #282 AOT noun/cardinal experiment | Measured ambiguous lexical/POS choices with pinned native AOT | Pinned runtime and rights-cleared samples |
-| P5 | Rights-cleared >=300k edition and #284 attribution | New independently measured edition with explicit rights provenance | Permissions, print/source identity |
+| P5 | Rights-cleared >=300k edition and #284 attribution | New independently measured edition with explicit rights provenance | Source/license and edition identity |
 
 ## Retained scientific and operational boundaries
 

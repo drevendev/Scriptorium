@@ -84,6 +84,7 @@ class PagesWorkflowContractTests(unittest.TestCase):
             "npm install --no-save --no-package-lock --ignore-scripts playwright@1.56.1",
             "npx playwright install --with-deps chromium",
             "node tests/pages_browser_acceptance.cjs",
+            "node tests/pages_gallery_browser_acceptance.cjs",
             "name: scriptorium-browser-acceptance",
             "name: Upload GitHub Pages artifact",
         )
@@ -93,6 +94,7 @@ class PagesWorkflowContractTests(unittest.TestCase):
         self.assertIn("if: always()", self.workflow)
         self.assertIn("retention-days: 7", self.workflow)
         self.assertTrue((ROOT / "tests/pages_browser_acceptance.cjs").is_file())
+        self.assertTrue((ROOT / "tests/pages_gallery_browser_acceptance.cjs").is_file())
 
     def test_supported_publication_roots_trigger_pr_and_master_builds(self) -> None:
         required = {f"{root}/**" for root in _ALLOWED_ARTIFACT_ROOTS}

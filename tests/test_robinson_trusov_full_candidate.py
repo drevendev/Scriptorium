@@ -89,6 +89,31 @@ class TrusovFullCandidateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "identity drift"):
             measure_full_candidate(graph, digest, query=mock_query(graph, bad_sha))
 
+    def test_all_safe_join_rejects_forged_aggregate_receipt(self):
+        # Even when all 150 individual Page digests are correct, a forged
+        # aggregate join digest, count, seam count or policy must fail closed.
+        graph, digest = fixture()
+        collector = FullCandidateCollector()
+        projection = capture_projection(
+            graph, digest, query=mock_query(graph, self.safe_page),
+            page_observer=collector.observe)
+        self.assertEqual(collector.build(graph, digest, projection)["status"], READY)
+        corruptions = {
+            "joined_projected_wikitext_sha256": "0" * 64,
+            "joined_projected_wikitext_characters_including_spaces":
+                projection["joined_projected_wikitext_characters_including_spaces"] + 1,
+            "projected_page_join_seams": 150,
+            "alphabetic_page_edge_seams":
+                projection["alphabetic_page_edge_seams"] + 1,
+            "projected_page_join_profile": "different_join_policy",
+        }
+        for key, fake in corruptions.items():
+            with self.subTest(field=key):
+                altered = copy.deepcopy(projection)
+                altered[key] = fake
+                with self.assertRaisesRegex(ValueError, "projection receipt drift"):
+                    collector.build(graph, digest, altered)
+
     def test_observation_coverage_and_projection_tampering_do_not_measure(self):
         graph, digest = fixture()
         collector = FullCandidateCollector()

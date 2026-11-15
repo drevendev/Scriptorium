@@ -58,7 +58,7 @@ class GalleryFilterContractTests(unittest.TestCase):
     @unittest.skipUnless(shutil.which("node"), "Node unavailable; static contract checks still run")
     def test_real_filter_js_matches_unordered_terms_without_text_leak(self):
         # Execute the shipped JS, not a Python imitation of its matching rules.
-        script = "const source = " + json.dumps(FILTER_JS) + ";\\n"
+        script = "const source = " + json.dumps(FILTER_JS) + ";\n"
         script += r"""
 const vm = require("node:vm"), assert = require("node:assert/strict");
 function card(title, author, kind) {

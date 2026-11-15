@@ -1,8 +1,9 @@
+/* The shared focus ring must contrast with both parchment controls and the ink chart. */
 :root {
   color-scheme: light;
   --paper:#f6f1e7; --surface:#fffdf8; --ink:#152d27; --subtle:#4e6359;
   --line:#91a79d; --green:#265b4b; --green-deep:#163c32; --gold:#bd8646;
-  --wash:#e9efe7; --focus:#cb7634; --ivory:#fef5e5;
+  --wash:#e9efe7; --focus:#bd722e; --ivory:#fef5e5;
 }
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; }

@@ -155,6 +155,9 @@ jobs:
       - name: Exercise Reader on desktop, mobile, keyboard and A4
         run: node tests/pages_browser_acceptance.cjs
 
+      - name: Exercise generated evidence gallery in real Chromium
+        run: node tests/pages_gallery_browser_acceptance.cjs
+
       - name: Archive actual Chromium screenshots and print PDF
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

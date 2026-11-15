@@ -68,6 +68,67 @@ class TrusovFullCandidateTests(unittest.TestCase):
         self.assertFalse(report["gates"]["author_profile_admissible"])
         self.assertNotIn(PRIVATE_SOURCE, json.dumps(report, ensure_ascii=False))
         self.assertNotIn("до", json.dumps(report, ensure_ascii=False))
+        # A branch preview is not a verified historic rendering.
+        self.assertEqual(report["blocked_pages"][0]["unresolved_non_var_invocations"], 1)
+        self.assertEqual(report["blocked_pages"][0]["var_preview_only_invocations"], 0)
+        for page in report["blocked_pages"][1:]:
+            self.assertEqual(page["unresolved_non_var_invocations"], 0)
+            self.assertEqual(page["var_preview_only_invocations"], 1)
+            self.assertEqual(page["var_preview_refusals"], {})
+
+    def test_blocked_page_reasons_distinguish_limits_and_unsupported_shapes(self):
+        graph, digest = fixture()
+
+        def different_call_forms(page):
+            self.safe_page(page)
+            number = int(page["title"].rsplit("/", 1)[-1])
+            if number == 2:
+                call = "{{#if:condition|left|right}}"
+            elif number == 148:
+                call = "{{ВАР|" + "\n".join(["old"] * 14) + "|new}}"
+            elif number == 151:
+                call = "{{ВАР|old|new|extra}}"
+            elif number in (149, 150):
+                call = "{{ВАР|old|new}}"
+            else:
+                return
+            page["revisions"][0]["slots"]["main"]["content"] = (
+                call + PRIVATE_SOURCE
+            )
+
+        report = measure_full_candidate(
+            graph, digest, query=mock_query(graph, different_call_forms))
+        self.assertEqual(report["status"], BLOCKED)
+        pages = {row["page_sequence"]: row for row in report["blocked_pages"]}
+        self.assertEqual(set(pages), {2, 148, 149, 150, 151})
+        self.assertEqual(pages[2]["unresolved_non_var_invocations"], 1)
+        self.assertEqual(pages[148]["var_preview_refusals"],
+                         {"too_many_line_breaks": 1})
+        self.assertEqual(pages[151]["var_preview_refusals"],
+                         {"extra_arguments": 1})
+        self.assertEqual(pages[149]["var_preview_only_invocations"], 1)
+        self.assertEqual(pages[150]["var_preview_only_invocations"], 1)
+        self.assertIsNone(report["metric_rows"])
+        self.assertNotIn(PRIVATE_SOURCE, json.dumps(report, ensure_ascii=False))
+
+    def test_blocked_projection_classification_tamper_fails_closed(self):
+        graph, digest = fixture()
+        collector = FullCandidateCollector()
+        projection = capture_projection(
+            graph, digest, query=mock_query(graph, self.blocked_edges),
+            page_observer=collector.observe)
+        corrupted = copy.deepcopy(projection)
+        blocked = next(row for row in corrupted["pages"]
+                       if row["page_sequence"] == 148)
+        blocked["flat_var_preview_count"] += 2
+        with self.assertRaisesRegex(ValueError, "VAR classification drift"):
+            collector.build(graph, digest, corrupted)
+        corrupted = copy.deepcopy(projection)
+        blocked = next(row for row in corrupted["pages"]
+                       if row["page_sequence"] == 148)
+        blocked["var_preview_refusal_reasons"]["extra_arguments"] = -1
+        with self.assertRaisesRegex(ValueError, "invalid VAR classification"):
+            collector.build(graph, digest, corrupted)
 
     def test_malformed_markup_and_tampered_identity_fail_closed(self):
         graph, digest = fixture()

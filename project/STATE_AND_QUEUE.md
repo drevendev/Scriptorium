@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 531
+STATE_REVISION: 532
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-15
-LAST_RESULT: #545 merged at 837da32dee841639a849bfd657266e89681d094a; #511 aggregate join-receipt integrity fix under review.
+LAST_RESULT: #546 merged at 3deba83c86137e13461fb7362a5d8b175e6a7257; #511 source-free Page blocker classification PR in progress.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-TRUSOV-JOIN-RECEIPT-INTEGRITY
-ISSUE: #511 1775 Trusov source-bound full-candidate projection integrity
-STATUS: PR_CANDIDATE; exact-head Python and pinned 150-oldid CI, later-run acceptance required
-BRANCH: scrip-trusov-join-receipt-integrity-20261115
-BASE: 837da32dee841639a849bfd657266e89681d094a
+UNIT_ID: SCRIP-CORPUS-TRUSOV-BLOCKED-PAGE-REASONS
+ISSUE: #511 1775 Trusov source-bound actionable blockers
+STATUS: PR_CANDIDATE; exact-head CI and later-run acceptance required
+BRANCH: scrip-trusov-blocker-reasons-20261115
+BASE: 3deba83c86137e13461fb7362a5d8b175e6a7257
 
-ACCEPTANCE: Even with 150 valid individual Page hashes, synthetic full-candidate metrics require the rebuilt LF join digest, character count, seam counters and profile to equal the pinned projection receipt. Forged aggregate values fail closed in regression tests; real Pages 2 and 148–151 remain blocked. No new historical body, rights or FantLab claim. Verify exact-head CI and later-run acceptance.
+ACCEPTANCE: The existing one-fetch 150-Page projected candidate report identifies which blocked Pages involve non-VAR calls, bounded VAR preview-only calls and specific VAR refusal categories. Assert five Page identities and no literary prose or false whole-book metrics; tampered refusal counts fail closed. Keep M2/rights/rendering gates unchanged; verify exact-head CI before later-run merge.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: make full Trusov measurement mechanically fail closed on every unreso
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 full-candidate join receipt integrity | Synthetic all-safe 150-Page metrics reject forged aggregate join/hash/count/seams/profile | Exact-head CI, later-run acceptance |
+| P1 | #511 classify blocked historical Pages | Source-free per-Page VAR refusal / preview / non-VAR reasons; no false complete metrics | Exact-head CI and later-run acceptance |
 | P2 | #511 historical body and paired translation | Resolve Pages 2/148–151, verify historical rendering, legal reuse, body hashes and comparison | Specific unresolved parser/VAR/source evidence |
 | P3 | #283 remaining Reader mobile/keyboard acceptance | Actual built Reader keyboard/touch/focus/print and live-route checks | Browser evidence; no fake deployment claims |
 | P4 | #282 AOT noun/cardinal experiment | Measured ambiguous lexical/POS choices with pinned native AOT | Pinned runtime and rights-cleared samples |

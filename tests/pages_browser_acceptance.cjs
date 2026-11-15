@@ -320,14 +320,14 @@ async function main() {
     // The closed exact-value disclosure must also print with JavaScript disabled.
     await noJs.locator(".chart-table").evaluate(node => { node.open = false; });
     await noJs.emulateMedia({ media: "print" });
-    assert.equal(await noJs.locator("#chart-table-rows tr:first-child td").evaluate(node =>
+    assert.equal(await noJs.locator("#chart-table-rows tr:first-child td:first-child").evaluate(node =>
       node.checkVisibility() && node.getBoundingClientRect().width > 0), true,
     "No-JS print must reveal exact-value rows while the details stays closed");
     await noJs.emulateMedia({ media: "screen" });
     await noJsContext.close();
     // Printing must expose the exact-value table even when the on-screen details is closed.
     await desktop.locator(".chart-table").evaluate(node => { node.open = false; });
-    assert.equal(await desktop.locator("#chart-table-rows tr:first-child td")
+    assert.equal(await desktop.locator("#chart-table-rows tr:first-child td:first-child")
       .evaluate(node => node.checkVisibility()), false,
     "Closed disclosure must remain collapsed on screen");
     // An actual print PDF exercises print CSS (distinct from a visual review).
@@ -354,7 +354,7 @@ async function main() {
       format: "A4", printBackground: true });
     assert.ok(pdf.length > 2000, "Real Chromium A4 output must not be empty");
     await desktop.emulateMedia({ media: "screen" });
-    assert.equal(await desktop.locator("#chart-table-rows tr:first-child td")
+    assert.equal(await desktop.locator("#chart-table-rows tr:first-child td:first-child")
       .evaluate(node => node.checkVisibility()), false,
     "Screen disclosure must remain collapsed after print mode");
 

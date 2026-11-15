@@ -12,6 +12,8 @@ on:
       - "tests/test_robinson_trusov_projection.py"
       - "scriptorium/robinson_trusov_interior.py"
       - "tests/test_robinson_trusov_interior.py"
+      - "scriptorium/robinson_trusov_full_candidate.py"
+      - "tests/test_robinson_trusov_full_candidate.py"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.interior-measured.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
@@ -43,6 +45,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_robinson_trusov_template_shapes.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_projection.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_interior.py' -v
+          python -m unittest discover -s tests -p 'test_robinson_trusov_full_candidate.py' -v
       - name: Capture pinned Page contents with bounded MediaWiki requests
         run: |
           mkdir -p build/repro
@@ -53,7 +56,8 @@ jobs:
             --shapes-output build/repro/trusov-1775.template-shapes.json \
             --output build/repro/trusov-1775.projection.json \
             --interior-output build/repro/trusov-1775.interior-metrics.json \
-            --seam-output build/repro/trusov-1775.seam-sensitivity.json
+            --seam-output build/repro/trusov-1775.seam-sensitivity.json \
+            --full-candidate-output build/repro/trusov-1775.full-projection-candidate.json
       - name: Validate source-free output and preserve unknown scientific gates
         run: |
           python - <<'PY'
@@ -147,6 +151,23 @@ jobs:
           print("Trusov 145-Page inferred interior 29-metric diagnostic",
                 interior["numeric_metric_count"], "numeric, status",
                 interior["status"], "corpus NOT_ADMITTED; M2 0/5")
+          # A full-candidate analyzer is executable but MUST refuse the five
+          # unresolved boundary Pages in the real pinned historical source.
+          from scriptorium.robinson_trusov_full_candidate import SCHEMA as FULL_SCHEMA, BLOCKED
+          candidate=json.loads(Path("build/repro/trusov-1775.full-projection-candidate.json").read_text(encoding="utf-8"))
+          assert candidate["schema_version"] == FULL_SCHEMA
+          assert candidate["source_page_graph_sha256"] == interior["source_page_graph_sha256"]
+          assert candidate["status"] == BLOCKED
+          assert [row["page_sequence"] for row in candidate["blocked_pages"]] == [2,148,149,150,151]
+          assert candidate["metric_rows"] is None
+          assert candidate["normalized_sha256"] is None
+          assert candidate["normalized_characters_including_spaces"] is None
+          assert candidate["numeric_metric_count"] is None
+          assert candidate["gates"]["full_literary_body"] == "NOT_VERIFIED"
+          assert candidate["gates"]["m2_parity_admissible"] is False
+          assert candidate["gates"]["corpus_admitted_for_calibration"] is False
+          assert candidate["gates"]["source_text_committed"] is False
+          print("Trusov 150-Page full candidate: BLOCKED on 2/148-151; no metrics or prose published")
           print("Pinned preflight, shapes, template projection and synthetic Page join PASS; literary body NOT_RUN")
           PY
       - name: Upload only derived diagnostic identities
@@ -159,5 +180,6 @@ jobs:
             build/repro/trusov-1775.projection.json
             build/repro/trusov-1775.interior-metrics.json
             build/repro/trusov-1775.seam-sensitivity.json
+            build/repro/trusov-1775.full-projection-candidate.json
           if-no-files-found: error
           retention-days: 7

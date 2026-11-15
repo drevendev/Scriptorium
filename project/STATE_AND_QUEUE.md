@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 527
+STATE_REVISION: 528
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-15
-LAST_RESULT: #541 merged at d94221bd06479d01b0abb330b0bf5066247ee659; fix unreadable pale-striped exact-value chart rows under #283.
+LAST_RESULT: #542 merged at cd2e467af78549caff17851666ebfd957c945564; fix a measured sub-3:1 keyboard focus-ring contrast gap under #283.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-CHART-STRIPE-CONTRAST
-ISSUE: #283 Numeric chart-table screen and A4 contrast
-STATUS: BRANCH_PREPARED; exact-head Chromium/Pages CI, screenshot review and later-run acceptance required
-BRANCH: scrip-reader-chart-table-contrast-20261115
-BASE: d94221bd06479d01b0abb330b0bf5066247ee659
+UNIT_ID: SCRIP-SITE-013-FOCUS-RING-CONTRAST
+ISSUE: #283 Keyboard focus indicator on light/dark Reader surfaces
+STATUS: BRANCH_PREPARED; exact-head Chromium/Pages CI and later-run acceptance required
+BRANCH: scrip-reader-focus-ring-contrast-20261115
+BASE: cd2e467af78549caff17851666ebfd957c945564
 
-ACCEPTANCE: The dark exact-value chart table's light-on-pale alternating rows must meet at least 4.5:1 text contrast in real Chromium on desktop/mobile and no-JS; print retains dark-on-light text contrast. The numeric data, folded disclosure behavior, source-bound fallback and A4 row visibility remain unchanged.
+ACCEPTANCE: Keyboard Tab into the dark chart table and `/` to catalogue search both expose solid >=3px focus rings with >=3:1 contrast against their real computed backgrounds in desktop/mobile Chromium. No interactive behavior, metrics, corpus or parity status changes.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: finish Reader numeric-table contrast in real Chromium while preserving print accessibility; then deliver a full Trusov body and honest paired-translation comparison only after verified source boundaries pass.
+Milestone: finish Reader keyboard focus contrast on light/dark surfaces without regressing the printed numeric table; then deliver a full Trusov body and honest paired-translation comparison only after verified source boundaries pass.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Reader chart-table AA contrast | Every dark striped chart row reaches 4.5:1; A4 print stays readable and accessible without JS | Exact-head Chromium/Pages and later-run acceptance |
+| P1 | #283 Reader keyboard focus contrast | Real Tab/shortcut focus rings clear 3:1 against both computed backgrounds on desktop/mobile | Exact-head Chromium/Pages and later-run acceptance |
 | P2 | #511 complete Trusov body and paired comparison | Resolve Pages 2/148–151, verify rights, whole-body hashes, metric profiles and threshold | Historical rendering/edition evidence |
 | P3 | #283 Reader remaining desktop/mobile/keyboard accessibility | Real build and accessible focus, contrast, source-free display | Browser/Pages access evidence |
 | P4 | #282 AOT noun/cardinal discriminator experiment | Evidence-backed lexical/POS choice without changing compatibility silently | Pinned native runtime and verified legal samples |

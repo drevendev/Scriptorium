@@ -22,7 +22,7 @@ def evidence_kind(item: Mapping[str, Any]) -> str:
 
 FILTER_CONTROLS = """<section id="evidence-filters" class="evidence-filters" aria-label="Find evidence" hidden>
 <div class="filter-fields"><label for="filter-query">Search works and authors
-<input id="filter-query" type="search" autocomplete="off" placeholder="e.g. Tolstoy or Grin" aria-controls="works"></label>
+<input id="filter-query" type="search" autocomplete="off" placeholder="e.g. Grin waves (any order)" aria-controls="works"></label>
 <label for="filter-kind">Evidence type
 <select id="filter-kind" aria-controls="works"><option value="all">All evidence</option>
 <option value="full_work">Full-work measurements &amp; comparisons</option>
@@ -82,18 +82,18 @@ FILTER_JS = r"""/* No uploads, network requests, cookies, tracking or stored que
       };
     });
     function refresh() {
-      const query = searchKey(input.value.trim());
+      const terms = searchKey(input.value.trim()).split(/\s+/u).filter(Boolean);
       const chosen = kind.value;
       let visible = 0;
       inventory.forEach(({card, titleKnown, key}) => {
-        const match = (!query || !titleKnown || key.includes(query)) &&
+        const match = (!terms.length || !titleKnown || terms.every(term => key.includes(term))) &&
           (chosen === 'all' || card.dataset.evidenceKind === chosen);
         card.hidden = !match;
         if (match) visible++;
       });
       status.textContent = `${visible} of ${cards.length} evidence pages shown`;
       empty.hidden = visible !== 0;
-      reset.disabled = query === '' && chosen === 'all';
+      reset.disabled = terms.length === 0 && chosen === 'all';
     }
     input.addEventListener('input', refresh);
     kind.addEventListener('change', refresh);

@@ -58,6 +58,7 @@
   const search = el("search-metric");
   const status = el("table-status");
   const readerDataStatus = el("reader-data-status");
+  const retryDataButton = el("retry-reader-data");
   const body = el("measurement-rows");
   const out = el("export-button");
   const singleMarkdownButton = el("export-markdown-button");
@@ -1610,12 +1611,32 @@
     }
   }
 
+  let loadingSnapshot = false;
+  let controlsInitialized = false;
   async function initialize() {
+    if (loadingSnapshot || controlsInitialized) return;
+    loadingSnapshot = true;
+    retryDataButton.hidden = true;
+    readerDataStatus.dataset.state="loading";
+    readerDataStatus.textContent="Проверяем измерения. Статическая диаграмма и точная таблица доступны.";
+    let incoming;
     try {
       const res=await fetch(file,{cache:"no-store",credentials:"omit"});
       if (!res.ok) throw Error("HTTP "+res.status);
-      const incoming=await res.json();
-      verify(incoming); data=incoming;
+      incoming=await res.json();
+      verify(incoming);
+    } catch (_) {
+      readerDataStatus.dataset.state="unavailable";
+      readerDataStatus.textContent="Интерактивные данные недоступны или не прошли проверку. Переключатели выключены; статический график и точная таблица ниже остаются доступны.";
+      status.textContent="Интерактивные данные недоступны. Откройте источник через ссылку на карточке книги; никаких выдуманных значений не подставлено.";
+      el("pair-status").textContent="Сравнение недоступно без проверенного JSON. Статическая таблица остаётся для чтения.";
+      retryDataButton.hidden=false;
+      loadingSnapshot=false;
+      return;
+    }
+    // Install handlers once, and only after the entire pinned snapshot validates.
+    // An activation error is a real JS bug, never a reason to bind duplicate handlers.
+    data=incoming;
       const inputs=[catalogFilter,catalogOrigin,catalogSearch,catalogOrder,catalogReset,catalogClear,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,catalogCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
@@ -1685,13 +1706,9 @@
       installCatalogComparisonActions();
       readerDataStatus.dataset.state="ready";
       readerDataStatus.textContent="Данные 11 измеренных редакций проверены. Переключатели графика, поиск и сравнения доступны.";
-    } catch (_) {
-      readerDataStatus.dataset.state="unavailable";
-      readerDataStatus.textContent="Интерактивные данные недоступны или не прошли проверку. Переключатели выключены; статический график и точная таблица ниже остаются доступны.";
-      status.textContent="Интерактивные данные недоступны. Откройте источник через ссылку на карточке книги; никаких выдуманных значений не подставлено.";
-      el("pair-status").textContent="Сравнение недоступно без проверенного JSON. Статическая таблица остаётся для чтения.";
-      // Static fallback charts and tables remain visible.
-    }
+    controlsInitialized = true;
+    loadingSnapshot = false;
   }
+  retryDataButton.addEventListener("click", initialize);
   initialize();
 })();

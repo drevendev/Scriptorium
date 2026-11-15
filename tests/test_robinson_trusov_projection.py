@@ -90,7 +90,14 @@ class TrusovProjectionTests(unittest.TestCase):
         ))
 
     def test_var_preview_bounded_multiline_refusal(self):
-        source = "{{ВАР|" + "\n".join(["text"] * 14) + "|modern}}\n"
+        # 13 line breaks are safe only for a bounded *preview*: the call
+        # remains unexpanded by project_page and cannot enter full metrics.
+        preview = "{{ВАР|" + "\n".join(["text"] * 14) + "|modern}}\n"
+        self.assertEqual(preview_var_orthographies(preview), (
+            "\n".join(["text"] * 14) + "\n", "modern\n", 0, 1))
+        self.assertEqual(sum(var_preview_refusal_reasons(preview).values()), 0)
+        self.assertEqual(project_page(preview)[0], preview)
+        source = "{{ВАР|" + "\n".join(["text"] * 66) + "|modern}}\n"
         old, new, flat, multiline = preview_var_orthographies(source)
         self.assertEqual((old, new, flat, multiline), (source, source, 0, 0))
         self.assertEqual(var_preview_refusal_reasons(source)["too_many_line_breaks"], 1)
@@ -100,16 +107,16 @@ class TrusovProjectionTests(unittest.TestCase):
 
     def test_var_preview_counts_logical_newlines_including_bare_cr(self):
         # Historical Page source may preserve any newline convention; the
-        # twelve-break bound must not be bypassed with carriage returns.
+        # sixty-four-break bound must not be bypassed with carriage returns.
         for ending in ("\n", "\r\n", "\r"):
             with self.subTest(ending=repr(ending)):
-                admissible = "{{ВАР|" + ending.join(["old"] * 13) + "|new}}"
+                admissible = "{{ВАР|" + ending.join(["old"] * 65) + "|new}}"
                 old, new, flat, multiline = preview_var_orthographies(admissible)
                 self.assertEqual((old, new, flat, multiline),
                                  (ending.join(["old"] * 13), "new", 0, 1))
                 self.assertEqual(sum(var_preview_refusal_reasons(admissible).values()), 0)
 
-                rejected = "{{ВАР|" + ending.join(["old"] * 14) + "|new}}"
+                rejected = "{{ВАР|" + ending.join(["old"] * 66) + "|new}}"
                 self.assertEqual(preview_var_orthographies(rejected),
                                  (rejected, rejected, 0, 0))
                 self.assertEqual(var_preview_refusal_reasons(rejected)["too_many_line_breaks"], 1)
@@ -154,7 +161,7 @@ class TrusovProjectionTests(unittest.TestCase):
                   "{{other|{{ВАР|a|b}}}}\n"
                   "{{ ВАР|old|new}}\n"
                   "{{ВАР|old|new|third}}\n"
-                  "{{ВАР|" + "\n".join(["text"] * 14) + "|modern}}\n")
+                  "{{ВАР|" + "\n".join(["text"] * 66) + "|modern}}\n")
         old, new, flat, multiline = preview_var_orthographies(source)
         refusals = var_preview_refusal_reasons(source)
         self.assertEqual((flat, multiline), (1, 1))
@@ -169,7 +176,7 @@ class TrusovProjectionTests(unittest.TestCase):
 
     def test_refusal_diagnostics_partition_distinct_limits_and_nested_calls(self):
         source = ("{{ВАР|" + "x" * 4097 + "|new}}\n"
-                  "{{ВАР|" + "\n".join(["old"] * 14) + "|new}}\n"
+                  "{{ВАР|" + "\n".join(["old"] * 66) + "|new}}\n"
                   "{{ВАР|old{{nested}}|new}}\n"
                   "{{ВАР|a|b|c}}\n")
         reasons = var_preview_refusal_reasons(source)

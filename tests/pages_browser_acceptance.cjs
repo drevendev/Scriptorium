@@ -45,6 +45,49 @@ async function checkChartStripeContrast(page, label) {
   await details.evaluate((node, open) => { node.open = open; }, wasOpen);
 }
 
+// Test actual keyboard focus rings against the surface underneath their outline.
+async function checkKeyboardFocusContrast(page, label) {
+  const chart = page.locator(".chart-table");
+  const wasOpen = await chart.evaluate(node => node.open);
+  await chart.evaluate(node => { node.open = true; });
+  await chart.locator("summary").focus();
+  await page.keyboard.press("Tab");
+  const dark = await page.locator(".chart-table .table-region").evaluate(node => {
+    const ring = getComputedStyle(node);
+    return {
+      focused: node === document.activeElement,
+      style: ring.outlineStyle, pixels: parseFloat(ring.outlineWidth),
+      ring: ring.outlineColor,
+      surface: getComputedStyle(node.closest(".hero-visual")).backgroundColor,
+    };
+  });
+  assert.equal(dark.focused, true, label + ": Tab reaches the dark chart table");
+  assert.equal(dark.style, "solid", label + ": dark focus ring is visible");
+  assert.ok(dark.pixels >= 3, label + ": dark focus ring thickness");
+  assert.ok(contrastRatio(dark.ring, dark.surface) >= 3,
+    label + ": dark focus ring must reach 3:1, got " +
+    contrastRatio(dark.ring, dark.surface).toFixed(2));
+  await chart.evaluate((node, open) => { node.open = open; }, wasOpen);
+
+  await page.locator("#hero-title").click();
+  await page.keyboard.press("/");
+  const light = await page.locator("#catalog-search").evaluate(node => {
+    const ring = getComputedStyle(node);
+    return {
+      focused: node === document.activeElement,
+      style: ring.outlineStyle, pixels: parseFloat(ring.outlineWidth),
+      ring: ring.outlineColor,
+      surface: getComputedStyle(node.closest(".catalog-tools")).backgroundColor,
+    };
+  });
+  assert.equal(light.focused, true, label + ": shortcut focuses catalogue search");
+  assert.equal(light.style, "solid", label + ": light focus ring is visible");
+  assert.ok(light.pixels >= 3, label + ": light focus ring thickness");
+  assert.ok(contrastRatio(light.ring, light.surface) >= 3,
+    label + ": light focus ring must reach 3:1, got " +
+    contrastRatio(light.ring, light.surface).toFixed(2));
+}
+
 function staticServer() {
   return http.createServer((req, res) => {
     try {
@@ -82,6 +125,7 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
     "ready", tag + ": verified snapshot enables controls");
   assert.match(await page.locator("#reader-data-status").innerText(), /11 измеренных редакций/);
   await checkChartStripeContrast(page, tag + " screen");
+  await checkKeyboardFocusContrast(page, tag + " keyboard");
   // Exercise the real slash-to-search and Escape-to-clear flow on both viewports.
   await page.locator("#hero-title").click();
   await page.keyboard.press("/");

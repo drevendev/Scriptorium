@@ -370,8 +370,17 @@ async function main() {
     // A failed source-bound snapshot must explain why controls are disabled
     // while preserving the already rendered no-JS evidence and table.
     const unavailable = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-    await unavailable.route("**/assets/evidence-snapshot.json",
-      route => route.fulfill({ status: 503, contentType: "application/json", body: "{}" }));
+    let snapshotAttempts = 0;
+    await unavailable.route("**/assets/evidence-snapshot.json", route => {
+      snapshotAttempts++;
+      if (snapshotAttempts === 1) return route.fulfill({
+        status: 503, contentType: "application/json", body: "{}",
+      });
+      if (snapshotAttempts === 2) return route.fulfill({
+        status: 200, contentType: "application/json", body: '{"schema":"invalid"}',
+      });
+      return route.continue();
+    });
     await unavailable.goto(origin + "/", { waitUntil: "networkidle" });
     assert.equal(await unavailable.locator("#reader-data-status").getAttribute("data-state"),
       "unavailable", "network failure must be disclosed near the chart");
@@ -383,6 +392,32 @@ async function main() {
       "Exact static chart observations remain on network failure");
     await unavailable.screenshot({ path: path.join(output, "reader-data-unavailable.png"),
       animations: "disabled" });
+    const retry = unavailable.locator("#retry-reader-data");
+    assert.equal(await retry.isVisible(), true, "Retry is available only after failed validation");
+    await retry.click();
+    await unavailable.waitForFunction(() =>
+      document.querySelector("#reader-data-status").dataset.state === "unavailable" &&
+      !document.querySelector("#retry-reader-data").hidden);
+    assert.equal(snapshotAttempts, 2, "Second request exercised invalid source data");
+    assert.equal(await unavailable.locator('[data-chart="fantlab.dialogue.share_percent"]').isDisabled(),
+      true, "Invalid JSON must never unlock interactive controls");
+    assert.equal(await unavailable.locator("#chart-table-rows tr").count(), 11,
+      "Static source-backed table survives repeated validation failures");
+    await retry.click();
+    await unavailable.waitForFunction(() =>
+      document.querySelector("#reader-data-status").dataset.state === "ready", null,
+      { timeout: 20000 });
+    assert.equal(snapshotAttempts, 3, "Recovery must fetch the pinned snapshot again");
+    assert.equal(await retry.isHidden(), true, "Successful validation hides retry");
+    assert.equal(await unavailable.locator('[data-chart="fantlab.dialogue.share_percent"]').isEnabled(),
+      true, "Recovered snapshot unlocks verified charts");
+    assert.equal(await unavailable.locator("#choose-book option").count(), 11,
+      "Recovered snapshot enables exactly the measured editions");
+    await unavailable.locator("#catalog-search").fill("Шишмарёва");
+    assert.match(await unavailable.locator("#catalog-filter-status").innerText(), /1 из 13/,
+      "Recovered catalogue search works without a page reload");
+    await unavailable.screenshot({ path: path.join(output, "reader-data-recovered.png"),
+      animations: "disabled" });
     const noJsContext = await browser.newContext({ javaScriptEnabled: false });
     const noJs = await noJsContext.newPage();
     await noJs.goto(origin + "/", { waitUntil: "networkidle" });
@@ -390,6 +425,8 @@ async function main() {
       "static", "No-JS fallback must not claim validation");
     assert.match(await noJs.locator("#reader-data-status").innerText(), /таблица доступны сразу/);
     assert.equal(await noJs.locator("#chart-table-rows tr").count(), 11);
+    assert.equal(await noJs.locator("#retry-reader-data").isHidden(), true,
+      "No-JavaScript Reader must not show an inert retry control");
     await checkChartStripeContrast(noJs, "no-JS screen");
     assert.equal(await noJs.locator('[data-chart="fantlab.dialogue.share_percent"]').isDisabled(), true);
     // The closed exact-value disclosure must also print with JavaScript disabled.

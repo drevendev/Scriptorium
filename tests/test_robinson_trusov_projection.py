@@ -113,7 +113,7 @@ class TrusovProjectionTests(unittest.TestCase):
                 admissible = "{{ВАР|" + ending.join(["old"] * 65) + "|new}}"
                 old, new, flat, multiline = preview_var_orthographies(admissible)
                 self.assertEqual((old, new, flat, multiline),
-                                 (ending.join(["old"] * 13), "new", 0, 1))
+                                 (ending.join(["old"] * 65), "new", 0, 1))
                 self.assertEqual(sum(var_preview_refusal_reasons(admissible).values()), 0)
 
                 rejected = "{{ВАР|" + ending.join(["old"] * 66) + "|new}}"

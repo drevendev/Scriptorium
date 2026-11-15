@@ -15,7 +15,7 @@ from typing import Callable, Mapping
 from .metrics import METRIC_CONTRACT_ID, SCHEMA_VERSION, analyze_deterministic_metrics
 from .robinson_trusov_interior import _UNBOUND, _UNRENDERED_MARKUP
 from .robinson_trusov_pages import WORK_ID
-from .robinson_trusov_projection import ProjectedPageJoin, capture_projection
+from .robinson_trusov_projection import VAR_REFUSAL_KEYS, ProjectedPageJoin, capture_projection
 from .text import normalize_text
 
 SCHEMA = "scriptorium-trusov-150-page-projected-candidate-v1"
@@ -69,6 +69,7 @@ class FullCandidateCollector:
         if set(expected) != set(PAGE_NUMBERS) or set(observed) != set(PAGE_NUMBERS):
             raise ValueError("incomplete/duplicate frozen Page identities")
         identities: list[list[object]] = []
+        blocker_details: list[dict] = []
         for n in PAGE_NUMBERS:
             frozen, actual = expected[n], observed[n]
             if (frozen["revision_id"] != actual["revision_id"]
@@ -81,6 +82,31 @@ class FullCandidateCollector:
                         or b["unresolved_invocations"] != actual["unresolved_invocations"]
                         or b["unclassified_openers"] != actual["unclassified_openers"]):
                     raise ValueError(f"blocked Page {n} count drift")
+                # The verified projection already partitions each historical
+                # VAR invocation. Surface those source-free decisions at the
+                # exact blocked Page, without treating any preview as rendering.
+                reasons = actual["var_preview_refusal_reasons"]
+                flat, multiline = (actual["flat_var_preview_count"],
+                                   actual["multiline_var_preview_count"])
+                if (not isinstance(reasons, dict)
+                        or set(reasons) != set(VAR_REFUSAL_KEYS)
+                        or any(type(v) is not int or v < 0 for v in reasons.values())
+                        or type(flat) is not int or flat < 0
+                        or type(multiline) is not int or multiline < 0):
+                    raise ValueError(f"blocked Page {n} invalid VAR classification")
+                preview_only = flat + multiline
+                all_var = preview_only + sum(reasons.values())
+                if all_var > b["unresolved_invocations"]:
+                    raise ValueError(f"blocked Page {n} VAR classification drift")
+                blocker_details.append({
+                    **b,
+                    "unresolved_non_var_invocations":
+                        b["unresolved_invocations"] - all_var,
+                    "var_preview_only_invocations": preview_only,
+                    "var_preview_refusals": {
+                        key: reasons[key] for key in VAR_REFUSAL_KEYS if reasons[key]
+                    },
+                })
             else:
                 identity, text = self.safe[n]
                 if (identity["revision_id"] != actual["revision_id"]
@@ -102,7 +128,7 @@ class FullCandidateCollector:
             ).hexdigest(),
             "page_interval": {"from": 2, "to": 151, "count": 150},
             "status": BLOCKED if self.blocked else READY,
-            "blocked_pages": [self.blocked[n] for n in sorted(self.blocked)],
+            "blocked_pages": blocker_details,
             "projected_join": None,
             "normalized_sha256": None,
             "normalized_characters_including_spaces": None,

@@ -22,12 +22,13 @@ def evidence_kind(item: Mapping[str, Any]) -> str:
 
 FILTER_CONTROLS = """<section id="evidence-filters" class="evidence-filters" aria-label="Find evidence" hidden>
 <div class="filter-fields"><label for="filter-query">Search works and authors
-<input id="filter-query" type="search" autocomplete="off" placeholder="e.g. Grin waves (any order)" aria-controls="works"></label>
+<input id="filter-query" type="search" autocomplete="off" placeholder="e.g. Grin waves (any order)" aria-controls="works" aria-keyshortcuts="/" aria-describedby="filter-shortcut-help"></label>
 <label for="filter-kind">Evidence type
 <select id="filter-kind" aria-controls="works"><option value="all">All evidence</option>
 <option value="full_work">Full-work measurements &amp; comparisons</option>
 <option value="excerpt">Illustrative excerpts</option><option value="provenance">Provenance-only pages</option></select></label>
 <button type="button" id="filter-reset">Clear filters</button></div>
+<p id="filter-shortcut-help" class="filter-shortcut-help">Press / to focus search; Escape clears the search query without changing evidence type.</p>
 <p id="filter-count" class="filter-count" role="status" aria-live="polite" aria-atomic="true"></p>
 <p id="filter-empty" class="empty-state" hidden>No evidence pages match these filters. Clear the filters to see everything.</p>
 </section>"""
@@ -48,7 +49,8 @@ FILTER_CSS = """
 .filter-fields button:disabled { cursor: default; opacity: .65; }
 .filter-fields input:focus-visible, .filter-fields select:focus-visible,
 .filter-fields button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-.filter-count { margin: .8rem 0 0; font: .91rem/1.55 system-ui,sans-serif; color: var(--muted); }
+.filter-shortcut-help { margin: .75rem 0 0; color: var(--muted); font: .88rem/1.5 system-ui,sans-serif; }
+.filter-count { margin: .35rem 0 0; font: .91rem/1.55 system-ui,sans-serif; color: var(--muted); }
 .empty-state { background: var(--surface); padding: 1rem; margin-top: 1rem; }
 @media(max-width:650px) { .filter-fields button { width: 100%; } }
 """
@@ -102,6 +104,22 @@ FILTER_JS = r"""/* No uploads, network requests, cookies, tracking or stored que
       kind.value = 'all';
       refresh();
       input.focus();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.defaultPrevented || event.isComposing || event.keyCode === 229 ||
+          event.altKey || event.ctrlKey || event.metaKey || input.disabled) return;
+      const target = event.target;
+      if (event.key === 'Escape' && target === input && input.value) {
+        event.preventDefault();
+        input.value = '';
+        refresh();  // Preserve the selected evidence type; Clear filters resets both.
+      } else if (event.key === '/') {
+        const tag = target && String(target.tagName || '').toUpperCase();
+        if (target && (target.isContentEditable ||
+            ['INPUT', 'TEXTAREA', 'SELECT'].includes(tag))) return;
+        event.preventDefault();
+        input.focus();
+      }
     });
     panel.hidden = false;
     refresh();

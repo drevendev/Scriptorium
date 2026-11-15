@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 534
+STATE_REVISION: 535
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-15
-LAST_RESULT: #548 merged at a9c1d6f1252270af872bf0e13b37c75da9dd7439; #283 gallery search parity with Reader selected as independent user-facing slice.
+LAST_RESULT: #549 merged at 10c9553a036ff0ded76aafe94e1ff224f5b23cd7; #283 keyboard-first evidence gallery selected as independent public UX slice.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-GALLERY-UNORDERED-SEARCH
-ISSUE: #283 — evidence gallery search and keyboard/mobile acceptance
+UNIT_ID: SCRIP-SITE-GALLERY-KEYBOARD-SEARCH
+ISSUE: #283 — accessible evidence gallery search and keyboard/mobile acceptance
 STATUS: PR_CANDIDATE; later-run independent review and exact-head CI required
-BRANCH: scrip-site-gallery-multi-term-search-20261115
-BASE: a9c1d6f1252270af872bf0e13b37c75da9dd7439
+BRANCH: scrip-site-gallery-keyboard-search-20261115
+BASE: 10c9553a036ff0ded76aafe94e1ff224f5b23cd7
 
-ACCEPTANCE: The source-free evidence gallery must match title/author query terms in any order, ignoring repeated whitespace and `ё/е`, without searching evidence warnings or prose. Type facets, empty feedback, clear/reset and no-JavaScript cards remain correct. Run actual shipped JavaScript in a Node DOM harness, build Pages and check live desktop/mobile where available. This is presentation only; no metric/parity/source claims change.
+ACCEPTANCE: The source-free evidence gallery supports an accessible / search-focus shortcut without stealing text input, modifier chords or IME composition; Escape clears only the search query while retaining evidence type; the existing Clear filters button resets both. The hint is visible and aria-described, no-JavaScript cards stay usable, and shipped JS is exercised through a Node DOM harness. Build Pages and check actual browser desktop/mobile when available. No metric/source/privacy claims change.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: make public evidence discoverable and inspectable while the unresolve
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 unordered multi-term evidence gallery search | Real JS behavioral regression, site build, later independent acceptance | Exact-head CI |
+| P1 | #283 accessible keyboard-first evidence gallery | Real JS shortcut/Escape regressions, Pages build, later acceptance | Exact-head CI, no same-run merge |
 | P2 | #511 historical Trusov full-body and paired translation | Resolve Pages 2/148–151, verify historical rendering, legal reuse and body hashes | Concrete parser/VAR/source evidence, not preview thresholds |
 | P3 | #283 Reader mobile, keyboard, print checks | Actual built Reader desktop/mobile and publicly verified interactions | Browser available; preserve no-JS fallback |
 | P4 | #282 AOT noun/cardinal experiment | Measured ambiguous lexical/POS choices with pinned native AOT | Pinned runtime and rights-cleared samples |

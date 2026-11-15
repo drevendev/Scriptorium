@@ -19,7 +19,11 @@ from .robinson_trusov_template_shapes import capture_shapes, invocation_shapes, 
 from .single_page_revision import _api_query
 
 SCHEMA = "scriptorium-trusov-standalone-projection-v5"
-VAR_PREVIEW_PROFILE = "bounded_flat_and_multiline_VAR_orthography_branch_only_inferred_v5"
+VAR_PREVIEW_PROFILE = "bounded_flat_and_multiline_VAR_orthography_branch_only_inferred_v6"
+# A preview is never a historical template expansion. The 4,096-character call
+# and 2,048-character branch caps still bound long plain-line variants; this
+# cap limits logical CR/LF breaks, not paragraph count in a literary body.
+MAX_VAR_PREVIEW_LINE_BREAKS = 64
 VAR_CALL = re.compile(r"\{\{ВАР\|([^{}|]*)\|([^{}|]*)\}\}")
 VAR_START = re.compile(r"(?<!\{)\{\{\s*ВАР(?=\s*[|}])")
 VAR_REFUSAL_KEYS = (
@@ -148,7 +152,7 @@ def _var_preview_partition(
         # Historical Page inputs can retain LF, CRLF or bare CR. Count logical
         # breaks, not only LF; CRLF must consume one unit, not two.
         line_breaks = literal.count("\n") + literal.count("\r") - literal.count("\r\n")
-        if multiline and line_breaks > 12:
+        if multiline and line_breaks > MAX_VAR_PREVIEW_LINE_BREAKS:
             refuse("too_many_line_breaks", literal)
             continue
         if "{{" in literal[2:] or "}}" in literal[:-2]:

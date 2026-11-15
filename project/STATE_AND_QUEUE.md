@@ -2,7 +2,7 @@
 
 STATE_REVISION: 536
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-15
+LAST_COMMITTED_RUN_AT: 2026-11-16
 LAST_RESULT: #550 merged at 6ac87e7df1414b1b6fc6cfacad99bae87cd1b8c0; #283 generated-gallery desktop/mobile browser acceptance selected as independent user-experience verification.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 

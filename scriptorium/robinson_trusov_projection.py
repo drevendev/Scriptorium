@@ -510,13 +510,17 @@ def main(argv: Sequence[str] | None = None) -> int:
                         help="Optional source-free 29-metric incomplete interior sample")
     parser.add_argument("--seam-output", type=Path,
                         help="Optional source-free join-sensitivity experiment (requires --interior-output)")
+    parser.add_argument("--full-candidate-output", type=Path,
+                        help="Fail-closed 150-Page projected metrics or explicit source-free blockers")
     parser.add_argument("--delay", type=float, default=0.75)
     args = parser.parse_args(argv)
     if args.seam_output is not None and args.interior_output is None:
         parser.error("--seam-output requires --interior-output")
     outs = (args.output, args.preflight_output, args.shapes_output) + (
         (args.interior_output,) if args.interior_output else ()
-    ) + ((args.seam_output,) if args.seam_output else ())
+    ) + ((args.seam_output,) if args.seam_output else ()) + (
+        (args.full_candidate_output,) if args.full_candidate_output else ()
+    )
     if len({x.resolve() for x in outs}) != len(outs) or any(
             x.exists() or x.resolve() in (args.graph.resolve(), args.receipt.resolve()) for x in outs):
         parser.error("outputs must be distinct, new, and outside frozen inputs")
@@ -525,13 +529,25 @@ def main(argv: Sequence[str] | None = None) -> int:
     interior = None
     seam = None
     collector = None
+    full_collector = None
     if args.interior_output is not None:
         from .robinson_trusov_interior import InteriorCollector
         collector = InteriorCollector()
+    if args.full_candidate_output is not None:
+        from .robinson_trusov_full_candidate import FullCandidateCollector
+        full_collector = FullCandidateCollector()
+
+    def transient_observer(identity: dict, projected: str, unresolved: int, residual: int) -> None:
+        if collector is not None:
+            collector.observe(identity, projected, unresolved, residual)
+        if full_collector is not None:
+            full_collector.observe(identity, projected, unresolved, residual)
+
     graph_sha256 = sha256(args.graph.read_bytes()).hexdigest()
     report = capture_projection(graph, graph_sha256, delay=args.delay,
                                 preflight_output=preflight, shapes_output=shapes,
-                                page_observer=collector.observe if collector else None)
+                                page_observer=transient_observer if
+                                collector is not None or full_collector is not None else None)
     if collector is not None:
         interior = collector.build(graph, graph_sha256, report)
         if args.seam_output is not None:
@@ -542,11 +558,20 @@ def main(argv: Sequence[str] | None = None) -> int:
         outputs.append((args.interior_output, interior))
     if args.seam_output is not None:
         outputs.append((args.seam_output, seam))
+    if full_collector is not None:
+        full_candidate = full_collector.build(graph, graph_sha256, report)
+        outputs.append((args.full_candidate_output, full_candidate))
     for output, data in outputs:
         output.parent.mkdir(parents=True, exist_ok=True)
         with output.open("x", encoding="utf-8") as writer:
             json.dump(data, writer, sort_keys=True, indent=2, ensure_ascii=False)
             writer.write("\n")
+    if full_collector is not None:
+        print("Trusov full 150-Page projected candidate: "
+              f"{full_candidate['status']}; "
+              f"{len(full_candidate['blocked_pages'])} blocked pages, "
+              f"numeric metrics={full_candidate['numeric_metric_count']}; "
+              "historical body/rights/parity NOT_VERIFIED")
     if seam is not None:
         print("Trusov synthetic Page join sensitivity: "
               + ", ".join(f"{v['join_profile']}={v['changed_numeric_metrics']}/29 changed"

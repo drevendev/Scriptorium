@@ -139,6 +139,11 @@ class FullCandidateCollector:
                 or sha256(joined_text.encode("utf-8")).hexdigest()
                    != join_info["joined_projected_wikitext_sha256"]):
             raise ValueError("150-Page projected join identity drift")
+        # The per-Page digests alone do not authenticate the aggregate receipt:
+        # bind this reconstructed LF join to the independently validated
+        # 150-Page projection, including seam counters and join policy.
+        if any(projection.get(key) != value for key, value in join_info.items()):
+            raise ValueError("150-Page projected join versus projection receipt drift")
         normalized = normalize_text(joined_text)
         analyzed = analyze_deterministic_metrics(joined_text)
         fields = analyzed.get("metrics")

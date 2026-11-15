@@ -42,6 +42,10 @@ class GalleryFilterContractTests(unittest.TestCase):
                      "No evidence pages match", "Clear filters"):
             with self.subTest(term=term):
                 self.assertIn(term, FILTER_CONTROLS)
+        self.assertIn('aria-keyshortcuts="/" ', FILTER_CONTROLS)
+        self.assertIn('aria-describedby="filter-shortcut-help"', FILTER_CONTROLS)
+        self.assertIn("Escape clears the search query without changing evidence type", FILTER_CONTROLS)
+        self.assertIn(".filter-shortcut-help", FILTER_CSS)
         self.assertIn("min-height: 44px", FILTER_CSS)
         self.assertIn(":focus-visible", FILTER_CSS)
 
@@ -87,9 +91,31 @@ const nodes = {
   "filter-reset": reset, "filter-count": status, "filter-empty": empty,
   "works": {querySelectorAll() {return cards;}}
 };
-const document = {readyState: "complete", getElementById(id) {return nodes[id];}};
+const keyHandlers = {};
+input.tagName = "INPUT"; kind.tagName = "SELECT";
+const document = {
+  readyState: "complete", getElementById(id) {return nodes[id];},
+  addEventListener(type, handler) {keyHandlers[type] = handler;}
+};
+function keydown(key, target, extra = {}) {
+  let prevented = false;
+  keyHandlers.keydown({
+    key, target, preventDefault() {prevented = true;}, ...extra
+  });
+  return prevented;
+}
 vm.runInNewContext(source, {document});
 assert.equal(panel.hidden, false);
+assert.equal(keydown("/", {tagName: "MAIN"}), true);
+assert.equal(input.focused, true);
+input.focused = false;
+assert.equal(keydown("/", input), false); // Native slash typing remains possible.
+assert.equal(keydown("/", {tagName: "TEXTAREA"}), false);
+assert.equal(keydown("/", {isContentEditable: true, tagName: "SPAN"}), false);
+assert.equal(keydown("/", {tagName: "MAIN"}, {ctrlKey: true}), false);
+assert.equal(keydown("/", {tagName: "MAIN"}, {isComposing: true}), false);
+assert.equal(keydown("/", {tagName: "MAIN"}, {defaultPrevented: true}), false);
+assert.equal(input.focused, false);
 function query(value) {input.value = value; input.listeners.input();}
 query("Грин волнам"); assert.deepEqual(cards.map(c=>!c.hidden), [true,false,false]);
 query("волнам   Грин"); assert.deepEqual(cards.map(c=>!c.hidden), [true,false,false]);
@@ -98,6 +124,12 @@ query("ежик семен"); assert.deepEqual(cards.map(c=>!c.hidden), [false,f
 query("Грин Шолохов"); assert.equal(cards.filter(c=>!c.hidden).length, 0);
 assert.equal(empty.hidden, false);
 assert.match(status.textContent, /0 of 3/);
+query("Грин"); kind.value = "full_work"; kind.listeners.change();
+assert.equal(keydown("Escape", input), true);
+assert.equal(input.value, "");
+assert.equal(kind.value, "full_work");
+assert.deepEqual(cards.map(c=>!c.hidden), [true,true,false]);
+assert.equal(keydown("Escape", input), false); // Empty query: preserve native Escape.
 query("Грин"); kind.value = "excerpt"; kind.listeners.change();
 assert.equal(cards.filter(c=>!c.hidden).length, 0);
 reset.listeners.click();
@@ -105,7 +137,7 @@ assert.equal(input.value, ""); assert.equal(kind.value, "all");
 assert.equal(reset.disabled, true); assert.equal(input.focused, true);
 assert.equal(cards.filter(c=>!c.hidden).length, 3);
 assert.equal(empty.hidden, true);
-console.log("Gallery unordered multi-term, Cyrillic normalization, facets and reset PASS");
+console.log("Gallery multi-term matching, privacy, keyboard focus/Escape and facets PASS");
 """
         result = subprocess.run(["node", "-"], input=script, text=True,
                                 capture_output=True, check=False)

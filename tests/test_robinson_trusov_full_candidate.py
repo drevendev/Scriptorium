@@ -85,7 +85,7 @@ class TrusovFullCandidateTests(unittest.TestCase):
             if number == 2:
                 call = "{{#if:condition|left|right}}"
             elif number == 148:
-                call = "{{ВАР|" + "\n".join(["old"] * 14) + "|new}}"
+                call = "{{ВАР|" + "\n".join(["old"] * 66) + "|new}}"
             elif number == 151:
                 call = "{{ВАР|old|new|extra}}"
             elif number in (149, 150):
@@ -109,6 +109,27 @@ class TrusovFullCandidateTests(unittest.TestCase):
         self.assertEqual(pages[149]["var_preview_only_invocations"], 1)
         self.assertEqual(pages[150]["var_preview_only_invocations"], 1)
         self.assertIsNone(report["metric_rows"])
+        self.assertNotIn(PRIVATE_SOURCE, json.dumps(report, ensure_ascii=False))
+
+    def test_long_plain_var_preview_remains_blocked_full_candidate(self):
+        graph, digest = fixture()
+
+        def long_plain_variant(page):
+            self.safe_page(page)
+            if page["title"].endswith("/148"):
+                page["revisions"][0]["slots"]["main"]["content"] = (
+                    "{{ВАР|" + "\n".join(["old"] * 14) + "|new}}" + PRIVATE_SOURCE
+                )
+
+        report = measure_full_candidate(
+            graph, digest, query=mock_query(graph, long_plain_variant))
+        self.assertEqual(report["status"], BLOCKED)
+        self.assertEqual([p["page_sequence"] for p in report["blocked_pages"]], [148])
+        self.assertEqual(report["blocked_pages"][0]["var_preview_only_invocations"], 1)
+        self.assertEqual(report["blocked_pages"][0]["var_preview_refusals"], {})
+        self.assertIsNone(report["metric_rows"])
+        self.assertIsNone(report["normalized_sha256"])
+        self.assertFalse(report["gates"]["corpus_admitted_for_calibration"])
         self.assertNotIn(PRIVATE_SOURCE, json.dumps(report, ensure_ascii=False))
 
     def test_blocked_projection_classification_tamper_fails_closed(self):

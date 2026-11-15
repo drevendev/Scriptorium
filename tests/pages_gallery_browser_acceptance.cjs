@@ -61,6 +61,7 @@ async function inspect(page, origin, label) {
   assert.equal(await page.locator("#works article.card:visible").count(), 0);
   assert.equal(await page.locator("#filter-empty").isVisible(), true);
   assert.match(await page.locator("#filter-count").innerText(), /^0 of /);
+  await input.focus();
   await page.keyboard.press("Escape");
   assert.equal(await input.inputValue(), "", label + ": Escape clears focused query");
   assert.equal(await kind.inputValue(), "excerpt", label + ": Escape keeps facet");

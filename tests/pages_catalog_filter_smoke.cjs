@@ -200,7 +200,15 @@ assert.match(html,/id="share-catalog" href="\?catalog=all#books"/);
 assert.match(js,/catalogSearch.addEventListener\("input",updateCatalog\)/);
 assert.match(js,/catalogOrder.addEventListener\("change",\(\)=>\{sortCatalog\(\);updateCatalog\(\);\}\)/);
 assert.match(js,/restoreCatalogFromUrl\(\);\s*sortCatalog\(\);\s*restoreChartFromUrl\(\)/);
-assert.match(js,/verify\(incoming\); data=incoming/);
+const initializeSource=js.slice(js.indexOf("async function initialize() {"));
+  const verificationIndex=initializeSource.indexOf("verify(incoming);");
+  const assignmentIndex=initializeSource.indexOf("data=incoming;");
+  const enableIndex=initializeSource.indexOf("for(const input of inputs)input.disabled=false;");
+  assert.ok(verificationIndex>=0 && assignmentIndex>verificationIndex &&
+    enableIndex>assignmentIndex,"snapshot must validate before assigning and enabling controls");
+  assert.match(initializeSource.slice(verificationIndex,assignmentIndex),
+    /catch\s*\(_\)\s*\{[\s\S]*\breturn;\s*\}/,
+    "failed verification must exit before snapshot activation");
 assert.match(js,/el\("catalog-tools"\)\.hidden=false/);
 assert.match(css,/\.catalog-tools\[hidden\],\.book\[hidden\]\s*\{\s*display:none\s*!important/);
 assert.match(css,/@media print\s*\{\s*\.catalog-tools\s*\{\s*display:none/);

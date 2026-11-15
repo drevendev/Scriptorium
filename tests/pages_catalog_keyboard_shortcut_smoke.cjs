@@ -7,7 +7,15 @@ const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
 const begin=js.indexOf("  function handleCatalogSearchKeys(event) {");
 const end=js.indexOf("  function safeCatalogQuery(raw) {",begin);
 assert.ok(begin>=0 && end>begin,"Run the actual Reader shortcut function");
-assert.match(js.slice(js.indexOf("async function initialize()")),/verify\(incoming\); data=incoming;[\s\S]*document\.addEventListener\("keydown",handleCatalogSearchKeys\);/);
+const activation=js.slice(js.indexOf("async function initialize()"));
+const verifiedAt=activation.indexOf("verify(incoming);");
+const assignedAt=activation.indexOf("data=incoming;");
+const shortcutBoundAt=activation.indexOf('document.addEventListener("keydown",handleCatalogSearchKeys);');
+assert.ok(verifiedAt>=0 && assignedAt>verifiedAt && shortcutBoundAt>assignedAt,
+  "Keyboard shortcut binds only after successful snapshot verification");
+assert.match(activation.slice(verifiedAt,assignedAt),
+  /catch\s*\(_\)\s*\{[\s\S]*\breturn;\s*\}/,
+  "Failed snapshot verification must exit before binding shortcuts");
 assert.match(html,/id="catalog-search"[^>]*aria-describedby="catalog-shortcut-help" disabled/);
 assert.match(html,/id="catalog-shortcut-help"[^>]*>Нажмите <kbd>\/<\/kbd>/);
 assert.doesNotMatch(js.slice(begin,end),/fetch\(|localStorage|sendBeacon|innerHTML/);

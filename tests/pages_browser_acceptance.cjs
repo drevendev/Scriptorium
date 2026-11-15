@@ -317,7 +317,19 @@ async function main() {
     assert.match(await noJs.locator("#reader-data-status").innerText(), /таблица доступны сразу/);
     assert.equal(await noJs.locator("#chart-table-rows tr").count(), 11);
     assert.equal(await noJs.locator('[data-chart="fantlab.dialogue.share_percent"]').isDisabled(), true);
+    // The closed exact-value disclosure must also print with JavaScript disabled.
+    await noJs.locator(".chart-table").evaluate(node => { node.open = false; });
+    await noJs.emulateMedia({ media: "print" });
+    assert.equal(await noJs.locator("#chart-table-rows tr:first-child td:nth-child(2)").evaluate(node =>
+      node.checkVisibility() && node.getBoundingClientRect().width > 0), true,
+    "No-JS print must reveal exact-value rows while the details stays closed");
+    await noJs.emulateMedia({ media: "screen" });
     await noJsContext.close();
+    // Printing must expose the exact-value table even when the on-screen details is closed.
+    await desktop.locator(".chart-table").evaluate(node => { node.open = false; });
+    assert.equal(await desktop.locator("#chart-table-rows tr:first-child td:nth-child(2)")
+      .evaluate(node => node.checkVisibility()), false,
+    "Closed disclosure must remain collapsed on screen");
     // An actual print PDF exercises print CSS (distinct from a visual review).
     await desktop.emulateMedia({ media: "print" });
     const printLayout = await desktop.evaluate(() => ({
@@ -326,16 +338,25 @@ async function main() {
       rowsIntact: [...document.querySelectorAll("#chart-series .chart-row")]
         .every(row => getComputedStyle(row).breakInside === "avoid"),
       exactTable: getComputedStyle(document.querySelector(".chart-table")).display,
+      exactRowsRendered: [...document.querySelectorAll("#chart-table-rows tr")]
+        .every(row => row.checkVisibility() && row.getBoundingClientRect().width > 0),
+      disclosureClosed: !document.querySelector(".chart-table").open,
     }));
     assert.equal(printLayout.heroBreak, "auto",
       "Tall evidence panel must paginate, not leave an almost empty first A4 page");
     assert.equal(printLayout.chartLayout, "block", "Print chart must allow row-level pagination");
     assert.equal(printLayout.rowsIntact, true, "Printed book observations must not split");
     assert.equal(printLayout.exactTable, "block", "Keep the exact-value table on paper");
+    assert.equal(printLayout.disclosureClosed, true, "Print must not mutate details state");
+    assert.equal(printLayout.exactRowsRendered, true,
+      "Printed exact-value rows must be laid out, not hidden in closed details");
     const pdf = await desktop.pdf({ path: path.join(output, "reader-a4.pdf"),
       format: "A4", printBackground: true });
     assert.ok(pdf.length > 2000, "Real Chromium A4 output must not be empty");
     await desktop.emulateMedia({ media: "screen" });
+    assert.equal(await desktop.locator("#chart-table-rows tr:first-child td:nth-child(2)")
+      .evaluate(node => node.checkVisibility()), false,
+    "Screen disclosure must remain collapsed after print mode");
 
     const mobile = await browser.newPage({
       viewport: { width: 390, height: 844 }, deviceScaleFactor: 1,

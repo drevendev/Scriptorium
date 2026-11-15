@@ -1,4 +1,7 @@
 """Unit and privacy regressions for the #283 evidence-gallery filters."""
+import json
+import shutil
+import subprocess
 import unittest
 
 from scriptorium.site_gallery_filter import (
@@ -50,6 +53,63 @@ class GalleryFilterContractTests(unittest.TestCase):
         self.assertIn("toLocaleLowerCase('ru-RU')", FILTER_JS)
         self.assertIn("replace(/ё/g, 'е')", FILTER_JS)
         self.assertIn("!titleKnown", FILTER_JS)
+        self.assertIn("terms.every(term => key.includes(term))", FILTER_JS)
+
+    @unittest.skipUnless(shutil.which("node"), "Node unavailable; static contract checks still run")
+    def test_real_filter_js_matches_unordered_terms_without_text_leak(self):
+        # Execute the shipped JS, not a Python imitation of its matching rules.
+        script = "const source = " + json.dumps(FILTER_JS) + ";\\n"
+        script += r"""
+const vm = require("node:vm"), assert = require("node:assert/strict");
+function card(title, author, kind) {
+  return {
+    hidden: false, dataset: {evidenceKind: kind},
+    querySelector(selector) {
+      if (selector === "h2") return {textContent: title};
+      if (selector === "h2 + p") return {textContent: author};
+      return null;
+    }
+  };
+}
+function control(value = "") {
+  return {value, listeners: {}, addEventListener(type, cb) {this.listeners[type] = cb;}};
+}
+const cards = [
+  card("Бегущая по волнам", "Александр Грин", "full_work"),
+  card("Тихий Дон", "Михаил Шолохов", "full_work"),
+  card("Ёжик в тумане", "Семён", "excerpt")
+];
+const panel = {hidden: true}, input = control(), kind = control("all");
+const reset = control(), status = {textContent: ""}, empty = {hidden: true};
+reset.disabled = true; input.focus = () => {input.focused = true;};
+const nodes = {
+  "evidence-filters": panel, "filter-query": input, "filter-kind": kind,
+  "filter-reset": reset, "filter-count": status, "filter-empty": empty,
+  "works": {querySelectorAll() {return cards;}}
+};
+const document = {readyState: "complete", getElementById(id) {return nodes[id];}};
+vm.runInNewContext(source, {document});
+assert.equal(panel.hidden, false);
+function query(value) {input.value = value; input.listeners.input();}
+query("Грин волнам"); assert.deepEqual(cards.map(c=>!c.hidden), [true,false,false]);
+query("волнам   Грин"); assert.deepEqual(cards.map(c=>!c.hidden), [true,false,false]);
+query("Ёжик Семён"); assert.deepEqual(cards.map(c=>!c.hidden), [false,false,true]);
+query("ежик семен"); assert.deepEqual(cards.map(c=>!c.hidden), [false,false,true]);
+query("Грин Шолохов"); assert.equal(cards.filter(c=>!c.hidden).length, 0);
+assert.equal(empty.hidden, false);
+assert.match(status.textContent, /0 of 3/);
+query("Грин"); kind.value = "excerpt"; kind.listeners.change();
+assert.equal(cards.filter(c=>!c.hidden).length, 0);
+reset.listeners.click();
+assert.equal(input.value, ""); assert.equal(kind.value, "all");
+assert.equal(reset.disabled, true); assert.equal(input.focused, true);
+assert.equal(cards.filter(c=>!c.hidden).length, 3);
+assert.equal(empty.hidden, true);
+console.log("Gallery unordered multi-term, Cyrillic normalization, facets and reset PASS");
+"""
+        result = subprocess.run(["node", "-"], input=script, text=True,
+                                capture_output=True, check=False)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_never_uploads_or_tracks_queries(self):
         forbidden = ("fetch(", "XMLHttpRequest", "sendBeacon", "localStorage",

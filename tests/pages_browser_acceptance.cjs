@@ -16,6 +16,35 @@ const types = {
   ".csv": "text/csv; charset=utf-8",
 };
 
+function contrastRatio(foreground, background) {
+  function luminance(color) {
+    const parts = color.match(/\d+(?:\.\d+)?/g);
+    assert.ok(parts && parts.length >= 3, "Expected computed RGB color");
+    const [r, g, b] = parts.slice(0, 3).map(Number).map(value => {
+      const x = value / 255;
+      return x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126*r + 0.7152*g + 0.0722*b;
+  }
+  const a = luminance(foreground), b = luminance(background);
+  return (Math.max(a,b) + 0.05) / (Math.min(a,b) + 0.05);
+}
+
+async function checkChartStripeContrast(page, label) {
+  const details = page.locator(".chart-table");
+  const wasOpen = await details.evaluate(node => node.open);
+  await details.evaluate(node => { node.open = true; });
+  const row = await page.locator("#chart-table-rows tr:nth-child(2)").evaluate(node => ({
+    background: getComputedStyle(node).backgroundColor,
+    foregrounds: [...node.cells].map(cell => getComputedStyle(cell).color),
+  }));
+  for (const foreground of row.foregrounds)
+    assert.ok(contrastRatio(foreground, row.background) >= 4.5,
+      label + ": chart striped table text must meet 4.5:1; got " +
+      contrastRatio(foreground, row.background).toFixed(2));
+  await details.evaluate((node, open) => { node.open = open; }, wasOpen);
+}
+
 function staticServer() {
   return http.createServer((req, res) => {
     try {
@@ -52,6 +81,7 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#reader-data-status").getAttribute("data-state"),
     "ready", tag + ": verified snapshot enables controls");
   assert.match(await page.locator("#reader-data-status").innerText(), /11 измеренных редакций/);
+  await checkChartStripeContrast(page, tag + " screen");
   // Exercise the real slash-to-search and Escape-to-clear flow on both viewports.
   await page.locator("#hero-title").click();
   await page.keyboard.press("/");
@@ -316,6 +346,7 @@ async function main() {
       "static", "No-JS fallback must not claim validation");
     assert.match(await noJs.locator("#reader-data-status").innerText(), /таблица доступны сразу/);
     assert.equal(await noJs.locator("#chart-table-rows tr").count(), 11);
+    await checkChartStripeContrast(noJs, "no-JS screen");
     assert.equal(await noJs.locator('[data-chart="fantlab.dialogue.share_percent"]').isDisabled(), true);
     // The closed exact-value disclosure must also print with JavaScript disabled.
     await noJs.locator(".chart-table").evaluate(node => { node.open = false; });
@@ -350,6 +381,7 @@ async function main() {
     assert.equal(printLayout.disclosureClosed, true, "Print must not mutate details state");
     assert.equal(printLayout.exactRowsRendered, true,
       "Printed exact-value rows must be laid out, not hidden in closed details");
+    await checkChartStripeContrast(desktop, "A4 print");
     const pdf = await desktop.pdf({ path: path.join(output, "reader-a4.pdf"),
       format: "A4", printBackground: true });
     assert.ok(pdf.length > 2000, "Real Chromium A4 output must not be empty");

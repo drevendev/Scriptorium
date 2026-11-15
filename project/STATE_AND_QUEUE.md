@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 526
+STATE_REVISION: 527
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-15
-LAST_RESULT: #540 merged at 8a89345fc2d125ffa289a3a4c4fb734b52ea4743; fix closed chart disclosure missing from print/PDF in a focused #283 PR.
+LAST_RESULT: #541 merged at d94221bd06479d01b0abb330b0bf5066247ee659; fix unreadable pale-striped exact-value chart rows under #283.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-012-PRINT-CLOSED-DETAILS
-ISSUE: #283 Print/PDF visibility of the chart's exact-value table
-STATUS: BRANCH_PREPARED; exact-head Chromium/Pages CI and later-run independent acceptance required
-BRANCH: scrip-reader-print-exact-details-20261115
-BASE: 8a89345fc2d125ffa289a3a4c4fb734b52ea4743
+UNIT_ID: SCRIP-SITE-012-CHART-STRIPE-CONTRAST
+ISSUE: #283 Numeric chart-table screen and A4 contrast
+STATUS: BRANCH_PREPARED; exact-head Chromium/Pages CI, screenshot review and later-run acceptance required
+BRANCH: scrip-reader-chart-table-contrast-20261115
+BASE: d94221bd06479d01b0abb330b0bf5066247ee659
 
-ACCEPTANCE: When the chart disclosure is collapsed on screen, its exact-value rows must still be rendered in A4 print/PDF for JavaScript and no-JavaScript readers. Printing must not mutate the disclosure's interactive screen state. Preserve row pagination, metric labels and missing values; verify with real Chromium branch-root acceptance.
+ACCEPTANCE: The dark exact-value chart table's light-on-pale alternating rows must meet at least 4.5:1 text contrast in real Chromium on desktop/mobile and no-JS; print retains dark-on-light text contrast. The numeric data, folded disclosure behavior, source-bound fallback and A4 row visibility remain unchanged.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: complete Reader print/PDF exact-value accessibility and prove it in a real browser; then deliver a full Trusov body and honest matched-translation comparison only after source boundaries pass.
+Milestone: finish Reader numeric-table contrast in real Chromium while preserving print accessibility; then deliver a full Trusov body and honest paired-translation comparison only after verified source boundaries pass.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Reader print/PDF exact-value table | Closed on-screen chart details still prints 11 measured rows; no-JS + A4 Chromium proof | Exact-head CI and later-run acceptance |
+| P1 | #283 Reader chart-table AA contrast | Every dark striped chart row reaches 4.5:1; A4 print stays readable and accessible without JS | Exact-head Chromium/Pages and later-run acceptance |
 | P2 | #511 complete Trusov body and paired comparison | Resolve Pages 2/148–151, verify rights, whole-body hashes, metric profiles and threshold | Historical rendering/edition evidence |
 | P3 | #283 Reader remaining desktop/mobile/keyboard accessibility | Real build and accessible focus, contrast, source-free display | Browser/Pages access evidence |
 | P4 | #282 AOT noun/cardinal discriminator experiment | Evidence-backed lexical/POS choice without changing compatibility silently | Pinned native runtime and verified legal samples |

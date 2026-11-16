@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 535
+STATE_REVISION: 536
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-15
-LAST_RESULT: #549 merged at 10c9553a036ff0ded76aafe94e1ff224f5b23cd7; #283 keyboard-first evidence gallery selected as independent public UX slice.
+LAST_COMMITTED_RUN_AT: 2026-11-16
+LAST_RESULT: #550 merged at 6ac87e7df1414b1b6fc6cfacad99bae87cd1b8c0; #283 generated-gallery desktop/mobile browser acceptance selected as independent user-experience verification.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-GALLERY-KEYBOARD-SEARCH
-ISSUE: #283 — accessible evidence gallery search and keyboard/mobile acceptance
+UNIT_ID: SCRIP-SITE-GALLERY-BROWSER-ACCEPTANCE
+ISSUE: #283 — generated evidence gallery desktop/mobile, keyboard, no-JS and real-route acceptance
 STATUS: PR_CANDIDATE; later-run independent review and exact-head CI required
-BRANCH: scrip-site-gallery-keyboard-search-20261115
-BASE: 10c9553a036ff0ded76aafe94e1ff224f5b23cd7
+BRANCH: scrip-site-gallery-chromium-acceptance-20261116
+BASE: 6ac87e7df1414b1b6fc6cfacad99bae87cd1b8c0
 
-ACCEPTANCE: The source-free evidence gallery supports an accessible / search-focus shortcut without stealing text input, modifier chords or IME composition; Escape clears only the search query while retaining evidence type; the existing Clear filters button resets both. The hint is visible and aria-described, no-JavaScript cards stay usable, and shipped JS is exercised through a Node DOM harness. Build Pages and check actual browser desktop/mobile when available. No metric/source/privacy claims change.
+ACCEPTANCE: The actual canonical build/site gallery is served locally to Chromium at 1440px desktop and 390px mobile, rather than a mocked DOM or a Reader-only route. Verify unordered Cyrillic search, real measured-work navigation, intersection/empty state, slash focus, Escape preserving facet, reset/focus, no-JS card fallback, no horizontal overflow and uncaught errors. Archive desktop/mobile screenshots alongside Reader acceptance and fail Pages build before artifact upload if the gallery breaks. Full visual screenshot review and live deployment are independent later checks; no metric/source/privacy claims change.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: make public evidence discoverable and inspectable while the unresolve
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 accessible keyboard-first evidence gallery | Real JS shortcut/Escape regressions, Pages build, later acceptance | Exact-head CI, no same-run merge |
+| P1 | #283 canonical gallery desktop/mobile Chromium acceptance | Actual built HTML/JS navigation, filters, keyboard/no-JS, screenshots, later review | Exact-head CI, no same-run merge |
 | P2 | #511 historical Trusov full-body and paired translation | Resolve Pages 2/148–151, verify historical rendering, legal reuse and body hashes | Concrete parser/VAR/source evidence, not preview thresholds |
 | P3 | #283 Reader mobile, keyboard, print checks | Actual built Reader desktop/mobile and publicly verified interactions | Browser available; preserve no-JS fallback |
 | P4 | #282 AOT noun/cardinal experiment | Measured ambiguous lexical/POS choices with pinned native AOT | Pinned runtime and rights-cleared samples |

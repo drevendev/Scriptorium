@@ -11,7 +11,9 @@ from typing import Any
 def evidence_kind(item: Mapping[str, Any]) -> str:
     """Classify presentation modes, not scientific evidence status."""
     mode = item.get("render_mode")
-    if mode in {"frozen_diagnostic", "hyperboloid_diagnostic", "beketova_diagnostic", "comparison"}:
+    if mode == "comparison":
+        return "comparison"
+    if mode in {"frozen_diagnostic", "hyperboloid_diagnostic", "beketova_diagnostic"}:
         return "full_work"
     if mode == "provenance":
         return "provenance"
@@ -25,7 +27,7 @@ FILTER_CONTROLS = """<section id="evidence-filters" class="evidence-filters" ari
 <input id="filter-query" type="search" autocomplete="off" placeholder="e.g. Grin volnam / Грин волнам" aria-controls="works" aria-keyshortcuts="/" aria-describedby="filter-shortcut-help"></label>
 <label for="filter-kind">Evidence type
 <select id="filter-kind" aria-controls="works"><option value="all">All evidence</option>
-<option value="full_work">Full-work measurements &amp; comparisons</option>
+<option value="full_work">Measured full works</option><option value="comparison">Comparisons</option>
 <option value="excerpt">Illustrative excerpts</option><option value="provenance">Provenance-only pages</option></select></label>
 <button type="button" id="filter-reset">Clear filters</button></div>
 <p id="filter-shortcut-help" class="filter-shortcut-help">Press / to focus search. Search Russian names in Cyrillic or Latin transliteration; Escape clears only the query.</p>

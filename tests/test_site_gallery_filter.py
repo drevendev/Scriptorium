@@ -44,7 +44,7 @@ class GalleryFilterContractTests(unittest.TestCase):
                 self.assertIn(term, FILTER_CONTROLS)
         self.assertIn('aria-keyshortcuts="/" ', FILTER_CONTROLS)
         self.assertIn('aria-describedby="filter-shortcut-help"', FILTER_CONTROLS)
-        self.assertIn("Escape clears the search query without changing evidence type", FILTER_CONTROLS)
+        self.assertIn("Escape clears only the query", FILTER_CONTROLS)
         self.assertIn(".filter-shortcut-help", FILTER_CSS)
         self.assertIn("min-height: 44px", FILTER_CSS)
         self.assertIn(":focus-visible", FILTER_CSS)
@@ -57,7 +57,10 @@ class GalleryFilterContractTests(unittest.TestCase):
         self.assertIn("toLocaleLowerCase('ru-RU')", FILTER_JS)
         self.assertIn("replace(/ё/g, 'е')", FILTER_JS)
         self.assertIn("!titleKnown", FILTER_JS)
-        self.assertIn("terms.every(term => key.includes(term))", FILTER_JS)
+        self.assertIn("terms.every(term => key.includes(term)", FILTER_JS)
+        self.assertIn("latinKey(label, 'yo')", FILTER_JS)
+        self.assertIn("latinKey(label, 'e')", FILTER_JS)
+        self.assertIn("card.querySelector('h2 + p')", FILTER_JS)
 
     @unittest.skipUnless(shutil.which("node"), "Node unavailable; static contract checks still run")
     def test_real_filter_js_matches_unordered_terms_without_text_leak(self):
@@ -119,9 +122,17 @@ assert.equal(input.focused, false);
 function query(value) {input.value = value; input.listeners.input();}
 query("Грин волнам"); assert.deepEqual(cards.map(c=>!c.hidden), [true,false,false]);
 query("волнам   Грин"); assert.deepEqual(cards.map(c=>!c.hidden), [true,false,false]);
+query("Grin volnam"); assert.deepEqual(cards.map(c=>!c.hidden), [true,false,false]);
+query("VOLNAM grin"); assert.deepEqual(cards.map(c=>!c.hidden), [true,false,false]);
+query("Грин volnam"); assert.deepEqual(cards.map(c=>!c.hidden), [true,false,false]);
+query("Sholokhov"); assert.deepEqual(cards.map(c=>!c.hidden), [false,true,false]);
 query("Ёжик Семён"); assert.deepEqual(cards.map(c=>!c.hidden), [false,false,true]);
 query("ежик семен"); assert.deepEqual(cards.map(c=>!c.hidden), [false,false,true]);
+query("yozhik"); assert.deepEqual(cards.map(c=>!c.hidden), [false,false,true]);
+query("ezhik"); assert.deepEqual(cards.map(c=>!c.hidden), [false,false,true]);
 query("Грин Шолохов"); assert.equal(cards.filter(c=>!c.hidden).length, 0);
+query("Grin Sholokhov"); assert.equal(cards.filter(c=>!c.hidden).length, 0);
+query("Grin ocean"); assert.equal(cards.filter(c=>!c.hidden).length, 0); // No translation or fuzzy matching.
 assert.equal(empty.hidden, false);
 assert.match(status.textContent, /0 of 3/);
 query("Грин"); kind.value = "full_work"; kind.listeners.change();
@@ -137,7 +148,7 @@ assert.equal(input.value, ""); assert.equal(kind.value, "all");
 assert.equal(reset.disabled, true); assert.equal(input.focused, true);
 assert.equal(cards.filter(c=>!c.hidden).length, 3);
 assert.equal(empty.hidden, true);
-console.log("Gallery multi-term matching, privacy, keyboard focus/Escape and facets PASS");
+console.log("Gallery Cyrillic/Romanized title/author matching, privacy, keyboard and facets PASS");
 """
         result = subprocess.run(["node", "-"], input=script, text=True,
                                 capture_output=True, check=False)

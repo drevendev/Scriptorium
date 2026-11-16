@@ -6,6 +6,8 @@
 
 **[How to read the 29 metrics →](https://drevendev.github.io/Scriptorium/metrics.html)** — Russian-language, no-JavaScript guide to current inferred formulas, exact units, dictionary requirements, punctuation edge cases and FantLab definition evidence. Each metric name in the interactive single-book and paired tables links to its exact definition; the full guide is also available without JavaScript. Every field remains **inferred** (or an explicitly labeled Scriptorium extension), not source-matched parity.
 
+**Evidence gallery search:** use Cyrillic or familiar Latin transliteration of Russian book and author names (for example, `Гарина Гиперболоид` or `Giperboloid Garina`); mixed-script and unordered terms work locally, without uploads or fuzzy translation. Results remain filtered by actual source-backed catalogue metadata; this is navigation only, not an evidence or parity score.
+
 **Reader catalogue CSV:** filter, search and sort the public catalogue, then choose **«Скачать метрики показанных книг (CSV)»**. The download contains only measured editions in the current visible order, with source hashes and evidence labels. Unmeasured research leads yield no CSV rows; the original 298-row offline CSV remains available unchanged.
 
 **Vocabulary measurements in Reader/CSV:** unique, dictionary and out-of-dictionary word-form totals use **words**; UASZ-3,000/10,000/100,000 uses **unique dictionary forms per window**. They are different units, not interchangeable counts or rates. Missing dictionary-dependent observations stay unavailable, never zero. The unit names follow the installed 29-metric catalogue; neither label implies FantLab parity.

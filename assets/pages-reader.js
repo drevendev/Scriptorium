@@ -710,7 +710,7 @@
     if (!conf) throw Error("Показатель диаграммы не разрешён");
     const rows=data.books.filter(b=>b.text_status==="measured").map((b,ordinal)=>{
       const item=lookup(b,currentChart);
-      return {title:b.display_title,value:item&&isNumeric(item.actual)?item.actual:null,ordinal};
+      return {title:b.display_title,evidenceUrl:b.evidence_url,value:item&&isNumeric(item.actual)?item.actual:null,ordinal};
     });
     // Presentation-only ordering; ties stay in catalog order and unknown is not zero.
     if (sortChart) rows.sort((a,b)=>{
@@ -748,7 +748,11 @@
                  pretty(row.value,conf[2])+(conf[1]==="%"?"%":""));
       nodes.appendChild(container);
       const tableRow=document.createElement("tr");
-      insertText(tableRow,"th",row.title).scope="row";
+      const titleCell=insertText(tableRow,"th","");
+      titleCell.scope="row";
+      const sourceLink=insertText(titleCell,"a",row.title);
+      sourceLink.href=row.evidenceUrl;
+      sourceLink.setAttribute("aria-label","Свидетельство: "+row.title);
       insertText(tableRow,"td",row.value===null?"нет данных":exact(row.value));
       insertText(tableRow,"td",conf[1]);
       tableNodes.appendChild(tableRow);

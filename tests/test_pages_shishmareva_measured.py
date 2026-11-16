@@ -81,7 +81,10 @@ class ShishmarevaReaderTests(unittest.TestCase):
         csv = (ROOT / "assets/scriptorium-ru-measured-metrics.csv").read_text(encoding="utf-8-sig")
         self.assertIn('data-status="measured" data-catalog-key="shishmareva"', html)
         self.assertIn('data-book="shishmareva"', html)
-        self.assertIn('<tr><th scope="row">Робинзон Крузо · Шишмарёва</th><td>0.2405145502922629</td><td>%</td></tr>', html)
+        self.assertIn(
+            f'<tr><th scope="row"><a href="{self.book["evidence_url"]}" '
+            f'aria-label="Свидетельство: Робинзон Крузо · Шишмарёва">Робинзон Крузо · Шишмарёва</a></th>'
+            f'<td>0.2405145502922629</td><td>%</td></tr>', html)
         self.assertIn("Мария Шишмарёва", html)
         self.assertIn("Скачать все 298 полей (CSV)", html)
         self.assertEqual(self.catalog["counts"], {

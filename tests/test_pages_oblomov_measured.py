@@ -55,7 +55,10 @@ class OblomovReaderTests(unittest.TestCase):
         html=(ROOT/"index.html").read_text(encoding="utf-8")
         self.assertIn('data-status="measured" data-catalog-key="oblomov"',html)
         self.assertIn('data-book="oblomov"',html)
-        self.assertIn('<tr><th scope="row">Обломов</th><td>41.849119265457624</td><td>%</td></tr>',html)
+        self.assertIn(
+            f'<tr><th scope="row"><a href="{self.book["evidence_url"]}" '
+            f'aria-label="Свидетельство: Обломов">Обломов</a></th>'
+            f'<td>41.849119265457624</td><td>%</td></tr>', html)
         self.assertEqual(self.catalog["counts"]["metrics_total"],298)
         self.assertEqual(self.catalog["counts"]["numeric_total"],249)
         self.assertEqual(self.catalog["counts"]["unavailable_total"],49)

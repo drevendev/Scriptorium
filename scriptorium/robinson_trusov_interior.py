@@ -21,7 +21,7 @@ from .robinson_trusov_projection import ProjectedPageJoin, capture_projection
 from .text import normalize_text
 
 SCHEMA = "scriptorium-trusov-interior-measurement-v1"
-SEAM_SCHEMA = "scriptorium-trusov-page-join-sensitivity-v1"
+SEAM_SCHEMA = "scriptorium-trusov-page-join-sensitivity-v2"
 PROFILE = "inferred_projected_Page_3_to_147_excerpt_v1"
 FIRST, LAST = 3, 147
 EXCLUDED = [2, 148, 149, 150, 151]
@@ -150,9 +150,11 @@ class InteriorCollector:
     def seam_sensitivity(self, baseline: Mapping[str, object]) -> dict[str, object]:
         """Compare synthetic Page separators against the frozen one-LF excerpt.
 
-        This is *not* an alternative historical transcription. It tests how
-        much of the reported 29-field signal depends on one unverified join
-        convention, without persisting or returning any Page prose.
+        This is *not* an alternative historical transcription. In addition to
+        stress extremes, test a single ASCII space: MediaWiki documents it as
+        the default ProofreadPage separator, but the site's 2023 configuration
+        and historical hyphenation/transclusion behavior are NOT verified.
+        Only source-free 29-field deltas leave transient memory.
         """
         sequence = list(range(FIRST, LAST + 1))
         if (set(self.selected) != set(sequence)
@@ -222,6 +224,7 @@ class InteriorCollector:
                 raise ValueError(f"join sensitivity baseline metric drift: {metric_id}")
         variants = []
         for profile, separator in (("direct_concatenation_stress_test", ""),
+                                   ("one_space_ProofreadPage_default_hypothesis", " "),
                                    ("two_LF_paragraph_stress_test", "\n\n")):
             text = separator.join(chunks)
             normalized = normalize_text(text)

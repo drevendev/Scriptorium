@@ -143,9 +143,9 @@ jobs:
           assert seam["source_revision_list_sha256"] == interior["source_revision_list_sha256"]
           assert seam["baseline_numeric_metrics"] == interior["numeric_metric_count"]
           assert all(seam[key] is False for key in ("historical_page_join_verified", "complete_literary_body", "corpus_admitted", "m2_parity_admissible", "source_text_committed"))
-          assert [v["join_profile"] for v in seam["alternatives"]] == ["direct_concatenation_stress_test", "two_LF_paragraph_stress_test"]
+          assert [v["join_profile"] for v in seam["alternatives"]] == ["direct_concatenation_stress_test", "one_space_ProofreadPage_default_hypothesis", "two_LF_paragraph_stress_test"]
           assert all(len(v["metrics"]) == 29 for v in seam["alternatives"])
-          assert [v["normalized_characters_including_spaces"] for v in seam["alternatives"]] == [interior["normalized_characters_including_spaces"]-144, interior["normalized_characters_including_spaces"]+144]
+          assert [v["normalized_characters_including_spaces"] for v in seam["alternatives"]] == [interior["normalized_characters_including_spaces"]-144, interior["normalized_characters_including_spaces"], interior["normalized_characters_including_spaces"]+144]
           assert all(v["changed_numeric_metrics"] == sum(r["status"] == "CHANGED" for r in v["metrics"]) for v in seam["alternatives"])
           print("Trusov Page-join sensitivity:", [(v["join_profile"],v["changed_numeric_metrics"]) for v in seam["alternatives"]], "historical join NOT_VERIFIED")
           print("Trusov 145-Page inferred interior 29-metric diagnostic",

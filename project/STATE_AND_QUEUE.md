@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 536
+STATE_REVISION: 537
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-16
-LAST_RESULT: #550 merged at 6ac87e7df1414b1b6fc6cfacad99bae87cd1b8c0; #283 generated-gallery desktop/mobile browser acceptance selected as independent user-experience verification.
+LAST_RESULT: #551 merged at 95ca0dfb8f13582b0a5d4bd69d4912a37c63323f; #511 source-free one-space ProofreadPage seam sensitivity selected as an executable translation-evidence experiment.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-GALLERY-BROWSER-ACCEPTANCE
-ISSUE: #283 — generated evidence gallery desktop/mobile, keyboard, no-JS and real-route acceptance
-STATUS: PR_CANDIDATE; later-run independent review and exact-head CI required
-BRANCH: scrip-site-gallery-chromium-acceptance-20261116
-BASE: 6ac87e7df1414b1b6fc6cfacad99bae87cd1b8c0
+UNIT_ID: SCRIP-TRUSOV-ONE-SPACE-SEAM-SENSITIVITY
+ISSUE: #511 — verify the effect of the documented ProofreadPage default page separator on source-bound Trusov excerpt metrics
+STATUS: PR_CANDIDATE; later-run exact-head CI and independent acceptance required
+BRANCH: scrip-trusov-one-space-seam-20261116
+BASE: 95ca0dfb8f13582b0a5d4bd69d4912a37c63323f
 
-ACCEPTANCE: The actual canonical build/site gallery is served locally to Chromium at 1440px desktop and 390px mobile, rather than a mocked DOM or a Reader-only route. Verify unordered Cyrillic search, real measured-work navigation, intersection/empty state, slash focus, Escape preserving facet, reset/focus, no-JS card fallback, no horizontal overflow and uncaught errors. Archive desktop/mobile screenshots alongside Reader acceptance and fail Pages build before artifact upload if the gallery breaks. Full visual screenshot review and live deployment are independent later checks; no metric/source/privacy claims change.
+ACCEPTANCE: Add the documented default one-space Page-seam hypothesis to the already frozen 145-Page Trusov sensitivity experiment, with 29 source-free metric values/signed deltas, deterministic source and baseline replay, negative drift tests, and versioned schema. Run once on the pinned 150-oldid workflow without a second network request or persisting prose. Do NOT infer historical 2023 site configuration, split-word repair, complete body coverage, translation equivalence or FantLab parity from this hypothesis.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make public evidence discoverable and inspectable while the unresolved historical Trusov Page renderer remains gated; only ship the two-translation comparison after its legal/source/body gates pass.
+Milestone: establish a trustworthy historical Trusov translation body and then a legally supportable Trusov/Shishmareva comparison, while shipping independently useful Reader evidence.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 canonical gallery desktop/mobile Chromium acceptance | Actual built HTML/JS navigation, filters, keyboard/no-JS, screenshots, later review | Exact-head CI, no same-run merge |
-| P2 | #511 historical Trusov full-body and paired translation | Resolve Pages 2/148–151, verify historical rendering, legal reuse and body hashes | Concrete parser/VAR/source evidence, not preview thresholds |
-| P3 | #283 Reader mobile, keyboard, print checks | Actual built Reader desktop/mobile and publicly verified interactions | Browser available; preserve no-JS fallback |
-| P4 | #282 AOT noun/cardinal experiment | Measured ambiguous lexical/POS choices with pinned native AOT | Pinned runtime and rights-cleared samples |
-| P5 | Rights-cleared >=300k edition and #284 attribution | New independently measured edition with explicit rights provenance | Source/license and edition identity |
+| P1 | #511 one-space ProofreadPage default seam sensitivity | Source-free 29-field alternate and exact-head replay; preserve old LF baseline | Historical separator default is documented; 2023 setting still unknown |
+| P2 | #511 recover real Page 2/148–151 template and section rendering | Reproduce verified whole body/rights/coverage before admission | Exact frozen source/template semantics; existing previews never count as rendering |
+| P3 | #283 Reader/gallery visual and interaction refinements | Actual built desktop/mobile, keyboard, no-JS and print evidence | Reuse merged browser gate |
+| P4 | #282 AOT noun/cardinal experiment | Versioned native N-ambiguity evidence; no invented direct mapping | Pinned AOT runtime |
+| P5 | #284 source-code license and new rights-cleared >=300k work | Explicit repository rights and independent measured edition | Rights/edition evidence |
 
 ## Retained scientific and operational boundaries
 

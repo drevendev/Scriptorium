@@ -13,7 +13,7 @@ class GalleryFilterContractTests(unittest.TestCase):
     def test_mode_classification_is_presentation_only(self):
         cases = {
             "frozen_diagnostic": "full_work",
-            "comparison": "full_work",
+            "comparison": "comparison",
             "provenance": "provenance",
         }
         for mode, expected in cases.items():
@@ -43,6 +43,8 @@ class GalleryFilterContractTests(unittest.TestCase):
             with self.subTest(term=term):
                 self.assertIn(term, FILTER_CONTROLS)
         self.assertIn('aria-keyshortcuts="/" ', FILTER_CONTROLS)
+        self.assertIn('<option value="comparison">Comparisons</option>', FILTER_CONTROLS)
+        self.assertIn('<option value="full_work">Measured full works</option>', FILTER_CONTROLS)
         self.assertIn('aria-describedby="filter-shortcut-help"', FILTER_CONTROLS)
         self.assertIn("Escape clears only the query", FILTER_CONTROLS)
         self.assertIn(".filter-shortcut-help", FILTER_CSS)

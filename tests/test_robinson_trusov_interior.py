@@ -104,13 +104,20 @@ class TrusovInteriorTests(unittest.TestCase):
             self.assertIs(report[gate], False)
         self.assertEqual(
             [v["join_profile"] for v in report["alternatives"]],
-            ["direct_concatenation_stress_test", "two_LF_paragraph_stress_test"],
+            ["direct_concatenation_stress_test",
+             "one_space_ProofreadPage_default_hypothesis",
+             "two_LF_paragraph_stress_test"],
         )
         self.assertEqual(
             [v["normalized_characters_including_spaces"] for v in report["alternatives"]],
             [baseline["normalized_characters_including_spaces"] - 144,
+             baseline["normalized_characters_including_spaces"],
              baseline["normalized_characters_including_spaces"] + 144],
         )
+        space = report["alternatives"][1]
+        self.assertNotEqual(space["joined_sha256"],
+                            baseline["join"]["joined_projected_wikitext_sha256"])
+        self.assertNotEqual(space["normalized_sha256"], baseline["normalized_sha256"])
         reference = {r["metric_id"]: r for r in baseline["metric_rows"]}
         for variant in report["alternatives"]:
             self.assertEqual(len(variant["metrics"]), 29)

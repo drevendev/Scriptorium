@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 537
+STATE_REVISION: 538
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-16
-LAST_RESULT: #551 merged at 95ca0dfb8f13582b0a5d4bd69d4912a37c63323f; #511 source-free one-space ProofreadPage seam sensitivity selected as an executable translation-evidence experiment.
-LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads plus separate 145-Page Trusov **incomplete** projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN; M3 open.
+LAST_RESULT: #552 natively merged at 6a153f0febf8fd2b1e9e923dd26bef2125bb7d0b; #283 source-backed evidence gallery Latin-keyboard discovery selected independently of unresolved historical Trusov rendering.
+LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and a separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-ONE-SPACE-SEAM-SENSITIVITY
-ISSUE: #511 — verify the effect of the documented ProofreadPage default page separator on source-bound Trusov excerpt metrics
-STATUS: PR_CANDIDATE; later-run exact-head CI and independent acceptance required
-BRANCH: scrip-trusov-one-space-seam-20261116
-BASE: 95ca0dfb8f13582b0a5d4bd69d4912a37c63323f
+UNIT_ID: SCRIP-SITE-GALLERY-ROMANIZED-TITLE-SEARCH
+ISSUE: #283 — find real gallery titles/authors without a Cyrillic keyboard
+STATUS: PR_CANDIDATE; exact-head CI/browser and later-run independent acceptance required
+BRANCH: scrip-gallery-latin-transliteration-20261116
+BASE: 6a153f0febf8fd2b1e9e923dd26bef2125bb7d0b
 
-ACCEPTANCE: Add the documented default one-space Page-seam hypothesis to the already frozen 145-Page Trusov sensitivity experiment, with 29 source-free metric values/signed deltas, deterministic source and baseline replay, negative drift tests, and versioned schema. Run once on the pinned 150-oldid workflow without a second network request or persisting prose. Do NOT infer historical 2023 site configuration, split-word repair, complete body coverage, translation equivalence or FantLab parity from this hypothesis.
+ACCEPTANCE: Search visible source-backed Russian book titles and author labels using Cyrillic, conventional Latin transliteration or mixed unordered words; distinguish ё->yo/e; reject unrelated English translations/fuzzy matches. Preserve evidence facets, no-JS cards, 44px controls, keyboard focus, no requests/storage, measured-work links and scientific labels. Exercise shipped JS in Node and canonical generated Pages gallery in desktop/mobile Chromium. This navigational alias never changes metrics, provenance or text.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: establish a trustworthy historical Trusov translation body and then a legally supportable Trusov/Shishmareva comparison, while shipping independently useful Reader evidence.
+Milestone: enable accurate, discoverable measured-book reading and a legally supportable Trusov/Shishmareva comparison when historical source coverage can be proven.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 one-space ProofreadPage default seam sensitivity | Source-free 29-field alternate and exact-head replay; preserve old LF baseline | Historical separator default is documented; 2023 setting still unknown |
-| P2 | #511 recover real Page 2/148–151 template and section rendering | Reproduce verified whole body/rights/coverage before admission | Exact frozen source/template semantics; existing previews never count as rendering |
-| P3 | #283 Reader/gallery visual and interaction refinements | Actual built desktop/mobile, keyboard, no-JS and print evidence | Reuse merged browser gate |
-| P4 | #282 AOT noun/cardinal experiment | Versioned native N-ambiguity evidence; no invented direct mapping | Pinned AOT runtime |
-| P5 | #284 source-code license and new rights-cleared >=300k work | Explicit repository rights and independent measured edition | Rights/edition evidence |
+| P1 | #283 Romanized/mixed-script evidence-gallery search | Built real cards, Node positive/negative regressions, Chromium desktop/mobile, no-JS fallback | Existing #551 browser acceptance gate |
+| P2 | #511 recover actual Page 2/148–151 rendering | Verified whole translation body/rights/coverage, not another seam hypothesis | Exact 2023 template/transclusion semantics and frozen oldids still unresolved |
+| P3 | #282 AOT noun/cardinal experiment | Native versioned ambiguity evidence, no guessed POS mapping | Pinned AOT runtime |
+| P4 | #284 independent rights-cleared >=300k new edition | Concrete explicit reuse permission and independently measured source | Legal/edition proof |
+| P5 | #283 Reader print/keyboard/accessibility follow-up | Real built desktop/mobile and no-JS evidence | Deduplicate against merged checks before selecting |
 
 ## Retained scientific and operational boundaries
 

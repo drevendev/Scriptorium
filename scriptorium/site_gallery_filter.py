@@ -22,13 +22,13 @@ def evidence_kind(item: Mapping[str, Any]) -> str:
 
 FILTER_CONTROLS = """<section id="evidence-filters" class="evidence-filters" aria-label="Find evidence" hidden>
 <div class="filter-fields"><label for="filter-query">Search works and authors
-<input id="filter-query" type="search" autocomplete="off" placeholder="e.g. Grin waves (any order)" aria-controls="works" aria-keyshortcuts="/" aria-describedby="filter-shortcut-help"></label>
+<input id="filter-query" type="search" autocomplete="off" placeholder="e.g. Grin volnam / Грин волнам" aria-controls="works" aria-keyshortcuts="/" aria-describedby="filter-shortcut-help"></label>
 <label for="filter-kind">Evidence type
 <select id="filter-kind" aria-controls="works"><option value="all">All evidence</option>
 <option value="full_work">Full-work measurements &amp; comparisons</option>
 <option value="excerpt">Illustrative excerpts</option><option value="provenance">Provenance-only pages</option></select></label>
 <button type="button" id="filter-reset">Clear filters</button></div>
-<p id="filter-shortcut-help" class="filter-shortcut-help">Press / to focus search; Escape clears the search query without changing evidence type.</p>
+<p id="filter-shortcut-help" class="filter-shortcut-help">Press / to focus search. Search Russian names in Cyrillic or Latin transliteration; Escape clears only the query.</p>
 <p id="filter-count" class="filter-count" role="status" aria-live="polite" aria-atomic="true"></p>
 <p id="filter-empty" class="empty-state" hidden>No evidence pages match these filters. Clear the filters to see everything.</p>
 </section>"""
@@ -74,21 +74,39 @@ FILTER_JS = r"""/* No uploads, network requests, cookies, tracking or stored que
     function searchKey(value) {
       return String(value || '').normalize('NFC').toLocaleLowerCase('ru-RU').replace(/ё/g, 'е');
     }
+    // Search-only Romanized aliases for readers without a Cyrillic keyboard.
+    // Conventional, intentionally bounded letter mapping; NOT translation,
+    // fuzzy matching, a new metadata field, or an analysis of book contents.
+    const letters = {
+      а:'a', б:'b', в:'v', г:'g', д:'d', е:'e', ж:'zh', з:'z',
+      и:'i', й:'y', к:'k', л:'l', м:'m', н:'n', о:'o', п:'p',
+      р:'r', с:'s', т:'t', у:'u', ф:'f', х:'kh', ц:'ts',
+      ч:'ch', ш:'sh', щ:'shch', ъ:'', ы:'y', ь:'',
+      э:'e', ю:'yu', я:'ya',
+    };
+    function latinKey(value, yo) {
+      return String(value || '').normalize('NFC').toLocaleLowerCase('ru-RU')
+        .replace(/[а-яё]/gu, letter => letter === 'ё' ? yo : letters[letter]);
+    }
     const inventory = cards.map(card => {
       const heading = card.querySelector('h2');
       const byline = card.querySelector('h2 + p');
+      const label = `${heading ? heading.textContent : ''} ${byline ? byline.textContent : ''}`;
       return {
         card,
         titleKnown: Boolean(heading && heading.textContent.trim()),
-        key: searchKey(`${heading ? heading.textContent : ''} ${byline ? byline.textContent : ''}`),
+        key: searchKey(label),
+        latinYo: latinKey(label, 'yo'),
+        latinE: latinKey(label, 'e'),
       };
     });
     function refresh() {
       const terms = searchKey(input.value.trim()).split(/\s+/u).filter(Boolean);
       const chosen = kind.value;
       let visible = 0;
-      inventory.forEach(({card, titleKnown, key}) => {
-        const match = (!terms.length || !titleKnown || terms.every(term => key.includes(term))) &&
+      inventory.forEach(({card, titleKnown, key, latinYo, latinE}) => {
+        const match = (!terms.length || !titleKnown ||
+          terms.every(term => key.includes(term) || latinYo.includes(term) || latinE.includes(term))) &&
           (chosen === 'all' || card.dataset.evidenceKind === chosen);
         card.hidden = !match;
         if (match) visible++;

@@ -57,6 +57,12 @@ async function inspect(page, origin, label) {
     label + ": exact measured-work search");
   await input.fill("гиперболоид   гарина");
   assert.deepEqual(await visibleLinks(), selected, label + ": unordered Russian terms");
+  await input.fill("Giperboloid Garina");
+  assert.deepEqual(await visibleLinks(), selected,
+    label + ": Romanized title/author search on built work");
+  await input.fill("Garina Гиперболоид");
+  assert.deepEqual(await visibleLinks(), selected,
+    label + ": mixed Cyrillic/Latin search on built work");
   await kind.selectOption("excerpt");
   assert.equal(await page.locator("#works article.card:visible").count(), 0);
   assert.equal(await page.locator("#filter-empty").isVisible(), true);
@@ -124,7 +130,7 @@ async function main() {
     assert.ok(await noJs.locator("#works article.card:visible").count() >= 6,
       "No-JS retains actual source-backed evidence cards and links");
     await noJsContext.close();
-    console.log("Generated-gallery Chromium PASS: desktop/mobile, unordered Cyrillic, " +
+    console.log("Generated-gallery Chromium PASS: desktop/mobile, Cyrillic/Latin search, " +
       "facets, keyboard, focus, reset, linked work and no-JS fallback.");
     console.log("Staged build/site only; NOT live Pages verification.");
   } finally {

@@ -67,7 +67,10 @@ class HumiliatedReaderTests(unittest.TestCase):
         html=(ROOT/"index.html").read_text(encoding="utf-8")
         self.assertIn('data-status="measured" data-catalog-key="humiliated"',html)
         self.assertIn('data-book="humiliated"',html)
-        self.assertIn('<tr><th scope="row">Униженные и оскорбленные</th><td>56.66327827623132</td><td>%</td></tr>',html)
+        self.assertIn(
+            f'<tr><th scope="row"><a href="{self.book["evidence_url"]}" '
+            f'aria-label="Свидетельство: Униженные и оскорбленные">Униженные и оскорбленные</a></th>'
+            f'<td>56.66327827623132</td><td>%</td></tr>', html)
         self.assertIn("Скачать все 298 полей (CSV)",html)
         self.assertEqual(self.catalog["counts"],{
           "work_count":13,"measured_works":11,"awaiting_measurement":2,

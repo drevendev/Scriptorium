@@ -85,6 +85,18 @@ async function inspect(page, origin, label) {
   assert.equal(await page.locator("#works article.card:visible").count(), total);
   assert.equal(await page.locator("#filter-reset").isDisabled(), true);
   assert.equal(await input.evaluate(node => node === document.activeElement), true);
+  // A comparison is evidence-backed, but must not appear as a measured book.
+  await kind.selectOption("comparison");
+  const comparisons = page.locator('#works article.card[data-evidence-kind="comparison"]:visible');
+  assert.ok(await comparisons.count() >= 1, label + ": comparisons are discoverable");
+  assert.equal(await page.locator('#works article.card[data-evidence-kind="full_work"]:visible').count(), 0,
+    label + ": comparisons are not classified as measured books");
+  await kind.selectOption("full_work");
+  assert.ok(await page.locator('#works article.card[data-evidence-kind="full_work"]:visible').count() >= 1,
+    label + ": measured books are discoverable");
+  assert.equal(await comparisons.count(), 0, label + ": measured-book facet excludes comparisons");
+  await kind.selectOption("all");
+  assert.equal(await page.locator("#works article.card:visible").count(), total);
   await page.locator("#filter-count").click();
   await page.keyboard.press("/");
   const ring = await input.evaluate(node => ({

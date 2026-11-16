@@ -66,16 +66,18 @@ class ExpandedChartTests(unittest.TestCase):
 
         html = (ROOT / "index.html").read_text(encoding="utf-8")
         fallback = html.split('<tbody id="chart-table-rows">', 1)[1].split('</tbody>', 1)[0]
-        pattern = r'<tr><th scope="row">([^<]+)</th><td>([^<]+)</td><td>%</td></tr>'
+        pattern = (r'<tr><th scope="row"><a href="([^"]+)" aria-label="Свидетельство: ([^"]+)">'
+                   r'([^<]+)</a></th><td>([^<]+)</td><td>%</td></tr>')
         rows = re.findall(pattern, fallback)
         data = json.loads((ROOT / "assets/evidence-snapshot.json").read_text(encoding="utf-8"))
         measured = [b for b in data["books"] if b["text_status"] == "measured"]
-        expected = [(b["display_title"], str(next(m["actual"] for m in b["metrics"]
-                        if m["id"] == "fantlab.dialogue.share_percent"))) for b in measured]
+        expected = [(b["evidence_url"], b["display_title"], b["display_title"],
+                     str(next(m["actual"] for m in b["metrics"]
+                         if m["id"] == "fantlab.dialogue.share_percent"))) for b in measured]
         self.assertEqual(len(rows), 11)
         self.assertEqual(rows, expected)
         self.assertNotEqual(re.findall(pattern, fallback.replace(
-            f"<td>{expected[0][1]}</td>", "<td>34,97</td>", 1)), expected)
+            f"<td>{expected[0][3]}</td>", "<td>34,97</td>", 1)), expected)
 
     def test_no_js_chart_summary_is_source_derived(self):
         """The baseline median/range cannot drift away from pinned book values."""

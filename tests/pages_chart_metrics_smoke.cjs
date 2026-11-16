@@ -31,7 +31,10 @@ for(const id of ids){
   assert.ok(elements["chart-table-caption"].textContent.includes("из 11"),id);
   for(let i=0;i<11;i++){
     assert.equal(tab[i].children[0].tag,"th",id);
-    assert.equal(tab[i].children[0].textContent,measured[i].display_title,id);
+    assert.equal(tab[i].children[0].children[0].tag,"a",id);
+    assert.equal(tab[i].children[0].children[0].textContent,measured[i].display_title,id);
+    assert.equal(tab[i].children[0].children[0].href,measured[i].evidence_url,id);
+    assert.equal(tab[i].children[0].children[0].attrs["aria-label"],"Свидетельство: "+measured[i].display_title,id);
     assert.equal(tab[i].children[2].textContent,metrics[id][1],id);
     const field=measured[i].metrics.find(m=>m.id===id);
     assert.equal(tab[i].children[1].textContent,field&&Number.isFinite(field.actual)?String(field.actual):"нет данных",id);
@@ -96,7 +99,7 @@ render("fantlab.dialogue.share_percent",catalog,false);
 render("fantlab.dialogue.share_percent",catalog,true);
 const ranked=measured.map((b,i)=>({title:b.display_title,value:b.metrics.find(m=>m.id==="fantlab.dialogue.share_percent").actual,i})).sort((a,b)=>b.value-a.value||a.i-b.i);
 assert.deepEqual(elements["chart-series"].children.map(r=>r.children[0].textContent),ranked.map(r=>r.title));
-assert.deepEqual(elements["chart-table-rows"].children.map(r=>r.children[0].textContent),ranked.map(r=>r.title));
+assert.deepEqual(elements["chart-table-rows"].children.map(r=>r.children[0].children[0].textContent),ranked.map(r=>r.title));
 assert.equal(chartSortButton.attrs["aria-pressed"],"true");
 render("fantlab.dialogue.mean_dialogue_sentence_length_chars",catalog,true);
 assert.equal(elements["chart-series"].children.at(-1).children[0].textContent,"Дети капитана Гранта");

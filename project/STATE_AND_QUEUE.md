@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 545
+STATE_REVISION: 546
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-17
-LAST_RESULT: #559 merged as 6d47f4af5172c544bad64e641d108a0f21990075; pinned native survey confirmed 3/3 clean controls in each unrelated role, while v2 remained FALSE; independent v3 qualification PR prepared for later acceptance.
+LAST_RESULT: #560 merged as 3310589a70f6860fcb8835d50e93cdc14ce92cdd; pinned native v3 qualified clean unrelated-role controls while original v2 remained FALSE; Reader survey PR #561 awaits exact-head acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and a separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-009-INDEPENDENT-CONTROLS-V3
-ISSUE: #282 — qualify observed N-only lexical roles against independently clean native controls
-STATUS: PR_CANDIDATE; later exact-head full Python and pinned native CI acceptance required
-BRANCH: scrip-morph-009-controlled-v3-20261117
-BASE: 6d47f4af5172c544bad64e641d108a0f21990075
+UNIT_ID: SCRIP-MORPH-010-NATIVE-READER-EVIDENCE
+ISSUE: #282 / #283 — source-backed native N controls in the public Reader
+STATUS: PR_OPEN; conflict reconciled into branch; exact-head CI/desktop/mobile/no-JS/browser acceptance pending
+BRANCH: scrip-morph-n-survey-reader-20261117
+BASE: 3310589a70f6860fcb8835d50e93cdc14ce92cdd
 
-ACCEPTANCE: Separate versioned v3 verdict requires N-only observations in curated noun/cardinal examples and >=2 of 3 N-free expected-tag-positive controls per adjective/adverb/verb group. Reject missing/contradictory evidence and all-N backends. Preserve strict v2 FALSE, unresolved source POS, unchanged production mapping and M2 0/5.
+ACCEPTANCE: Public source-free 9/9 pinned native survey with SHA-256 manifest, explicit original 1/3 N-present vs 0/3 N-only, separate verified v3, original strict v2 FALSE, no noun/cardinal assignment and M2 0/5. Rebuild and inspect real desktop/mobile/print route; merge only on later accepted fresh exact-head CI.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,11 +22,11 @@ Milestone: enable accurate, discoverable measured-book reading and a legally sup
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 independently controlled N-only v3 observation | Exact native v3 receipt, >=2 clean controls per unrelated role, fail-closed regressions, unchanged v2 | Pinned survey 9/9; acceptance must be later-run |
-| P2 | #511 recover actual Page 2/148–151 rendering | Verified whole translation body/rights/coverage, not another seam hypothesis | Exact 2023 template/transclusion semantics and frozen oldids still unresolved |
-| P3 | #283 residual Reader keyboard/accessibility follow-up | Real desktop/mobile and no-JS evidence | Deduplicate against recent merged work |
-| P4 | #284 independent rights-cleared >=300k new edition | Concrete explicit reuse permission and independently measured source | Legal/edition proof |
-| P5 | #282 native role interpretation and frozen-work bounds | Explain v3 conditional evidence alongside source-bound N-only 55,081 / N-mixed 19,670 without recovering noun/cardinal | Require accepted v3 native evidence and unchanged input hashes |
+| P1 | #282 / #283 publish pinned native N evidence (PR #561) | 9/9 native controls, strict-v2 caveat, independent v3, source links, full exact-head Python + Chromium/Pages | PR CI and independent later-run review |
+| P2 | #562 versioned distinctive-word comparison | Reproducible legal-edition-pinned descriptive result without copyrighted word leakage | Validate existing metrics/data contract and privacy |
+| P3 | #563 provenance-safe work tags | Explicit tag authority, versioned taxonomy and reader filtering without invented labels | Admitted edition metadata and rights |
+| P4 | #283 mobile/keyboard Reader polish | Actual desktop/mobile/no-JS/print acceptance of user-visible flow | Deduplicate against merged recent checks |
+| P5 | #511 historical Trusov Page 2/148–151 body | Verify complete body with rights and historical transclusion evidence before measuring | Unresolved 2023 historical template/EOF |
 
 ## Retained scientific and operational boundaries
 

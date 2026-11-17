@@ -371,6 +371,98 @@ async function inspectLive() {
   }
 }
 
+// The no-JavaScript native N page must be a real accessible route, on mobile
+// and desktop, and must print the backed 9/9 control slate without false parity.
+async function checkNativeNPage(browser, origin) {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  try {
+    for (const [tag, width, height] of [
+      ["desktop", 1440, 900], ["mobile", 390, 844]
+    ]) {
+      const page = await context.newPage();
+      await page.setViewportSize({ width, height });
+      const response = await page.goto(origin + "/n-uncertainty.html", {
+        waitUntil: "networkidle",
+      });
+      assert.equal(response.status(), 200, tag + ": N-evidence page HTTP");
+      assert.match(await page.title(), /Scriptorium/);
+      const rows = page.locator("#n-native-control-survey-table tr[data-survey-role]");
+      assert.equal(await rows.count(), 3, tag + ": exactly three native groups");
+      const cells = await rows.evaluateAll(elements => elements.map(row => [
+        row.dataset.surveyRole,
+        ...[...row.cells].slice(1).map(cell => cell.textContent.trim())
+      ]));
+      assert.deepEqual(cells, [
+        ["adjectives", "3", "3", "0"],
+        ["adverbs", "3", "3", "0"],
+        ["verbs", "3", "3", "0"],
+      ], tag + ": pinned source-free 9/9 survey");
+      const original = page.locator(
+        '#n-native-controls-table tr[data-native-control="other_pos_controls"]'
+      );
+      assert.equal(await original.locator("td").first().innerText(), "0",
+        tag + ": retained N-only control");
+      const originalNote = await page.locator(
+        '.n-panel[aria-labelledby="n-controls"]'
+      ).innerText();
+      assert.match(originalNote, /один из трёх/);
+      assert.match(originalNote, /INCONCLUSIVE/);
+      const surveyText = await page.locator(
+        '.n-panel[aria-labelledby="n-survey"]'
+      ).innerText();
+      assert.match(surveyText, /M2: 0\/5/);
+      assert.equal(await page.locator(
+        '.n-panel[aria-labelledby="n-survey"] a[href*="actions/runs/44068624527"]'
+      ).count(), 1, tag + ": native CI provenance link");
+      const witness = await page.request.get(origin + "/assets/n-uncertainty-anna.json");
+      assert.equal(witness.status(), 200, tag + ": exact frozen witness exists");
+      assert.equal((await witness.json()).m2_parity_admissible, false);
+      // The skip link is visually hidden until keyboard focus, not permanently
+      // exposed above the masthead on small screens.
+      const skip = page.locator(".skip-links .skip-link");
+      assert.equal(await skip.count(), 1, tag + ": accessible skip navigation");
+      await skip.focus();
+      assert.ok((await skip.boundingBox()).y >= -1,
+        tag + ": keyboard focused skip link becomes visible");
+      await skip.evaluate(node => node.blur());
+      const dims = await page.evaluate(() => ({
+        page: document.documentElement.scrollWidth, viewport: innerWidth,
+      }));
+      assert.ok(dims.page <= dims.viewport + 2,
+        tag + ": no horizontal page overflow " + JSON.stringify(dims));
+      if (tag === "mobile") {
+        const lastNumber = await rows.last().locator("td").last().boundingBox();
+        assert.ok(lastNumber && lastNumber.x + lastNumber.width <= width + 2,
+          "Mobile N survey must show all four columns without horizontal clipping");
+      }
+      // Capture the natural non-focused view; test focus separately afterward.
+      await page.screenshot({
+        path: path.join(output, "native-n-evidence-" + tag + ".png"),
+        fullPage: true, animations: "disabled",
+      });
+      const table = page.locator('.n-panel[aria-labelledby="n-survey"] .n-table');
+      await table.focus();
+      assert.equal(await table.evaluate(node => node === document.activeElement),
+        true, tag + ": keyboard-scrollable table region");
+      if (tag === "desktop") {
+        await page.emulateMedia({ media: "print" });
+        assert.equal(await rows.evaluateAll(elements => elements.every(
+          row => row.checkVisibility() && row.getBoundingClientRect().width > 0)),
+        true, "A4 preserves all native evidence rows");
+        const pdf = await page.pdf({
+          path: path.join(output, "native-n-evidence-a4.pdf"),
+          format: "A4", printBackground: true,
+        });
+        assert.ok(pdf.length > 2000, "N evidence A4 output cannot be blank");
+        await page.emulateMedia({ media: "screen" });
+      }
+      await page.close();
+    }
+  } finally {
+    await context.close();
+  }
+}
+
 async function main() {
   if (process.argv.includes("--live-only")) { await inspectLive(); return; }
   assert.ok(fs.existsSync(path.join(root, "index.html")), "Stage exact branch-root Reader first");
@@ -384,6 +476,7 @@ async function main() {
     browser = await chromium.launch({ headless: true });
     const desktop = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     await inspectHome(desktop, origin, "desktop");
+    await checkNativeNPage(browser, origin);
 
     // A failed source-bound snapshot must explain why controls are disabled
     // while preserving the already rendered no-JS evidence and table.

@@ -295,11 +295,19 @@ all-roles-covered diagnostic; **no words from books**. This is an exploratory
 selection experiment, not a change to the original three v2 controls, its
 strict negative gate, production mapping, frozen Anna impact bounds, or M2.
 Survey success alone cannot establish the source AOT POS enum or FantLab
-homonym policy. The pinned native [PR #559 run](https://github.com/drevendev/Scriptorium/actions/runs/44068624527)
-reported **3/3 usable controls in each group**, with the original strict v2
-observation still false. Source words remain excluded from the receipt.
+homonym policy. The [2026-11-17 pinned native run #44068624527](https://github.com/drevendev/Scriptorium/actions/runs/44068624527)
+**confirmed 3/3 usable** in each group (nine total), with the expected
+runtime POS and zero N candidates. One adverb had both `ADV` and
+`ADJ_SHORT` without N; usable does not mean unambiguous.
+The survey input-manifest SHA-256 is
+`da56ada4e9861baf81921c61ddc7b082fae26e727c1a647e39beffee9dbf484b`.
+The original unrelated v2 group still has 0/3 **N-only** but 1/3
+**N-present** (`A, N` for `красный`); its strict
+`controlled_cross_role_n_collision_observed` remains **false/INCONCLUSIVE**.
+This separate survey cannot establish AOT source POS enums, production
+noun/cardinal assignments or FantLab parity.
 
-### Independent v3 contrast (PR candidate)
+### Independent v3 contrast (verified in #560)
 
 The distinct `scriptorium-aot-n-independent-controls-v3` diagnostic uses the
 **same** pinned native sample and its independently observed negative-control
@@ -312,14 +320,13 @@ verdict and a separately labelled v3 controlled observation. The v2 result
 remains false because `красный` returned `A, N`; v3 does **not** rewrite
 those original controls or cherry-pick a v2 result.
 
-Positive v3 evidence would only establish that this pinned runtime returns
+The [successful pinned native v3 run #44093423449](https://github.com/drevendev/Scriptorium/actions/runs/44093423449) separately qualifies the v3 observation with 3/3 usable controls in each unrelated role. This only establishes that this pinned runtime returns
 indistinguishable `N` strings for selected lexemes annotated as different
 lexical roles while unrelated controls show distinct native tags. It still
 **cannot reconstruct AOT source POS enums, noun/cardinal assignments,
 FantLab's dictionary or its homonym decisions**. Frozen full-book conditional
 bounds remain separate, and production mapping, M1/M2 acceptance and corpus
-status remain unchanged. Native CI acceptance is required before promoting
-this PR candidate's observation to a verified outcome.
+status remain unchanged. Native CI for #560 passed on 2026-11-17; this verifies the bounded native observation, not source AOT POS enums or FantLab parity.
 
 ## Primary sources
 

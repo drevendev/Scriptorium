@@ -27,13 +27,17 @@
 .n-meta code{overflow-wrap:anywhere}.n-actions{display:flex;flex-wrap:wrap;gap:1rem}
 .n-actions a{display:inline-flex;align-items:center;min-height:44px;font-weight:700}
 .n-table:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
-@media(max-width:650px){.n-stats{grid-template-columns:1fr}.n-page{padding:2rem 0 3rem}}
+@media(max-width:650px){.n-stats{grid-template-columns:1fr}.n-page{padding:2rem 0 3rem}
+ #n-native-control-survey-table{min-width:0;table-layout:fixed;font-size:.73rem}
+ #n-native-control-survey-table th:first-child{width:38%}
+ #n-native-control-survey-table th,#n-native-control-survey-table td{padding:.5rem .28rem;overflow-wrap:anywhere}
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media(forced-colors:active){.n-track{border:1px solid CanvasText}.n-track>span{background:Highlight}}
 @media print{.n-hero,.n-panel,.n-stat,.n-table{background:white!important;color:black!important;box-shadow:none}.n-hero a{color:black}.n-track{display:none}.n-panel,.n-stat{break-inside:avoid}}
 </style>
 </head><body>
-<a class="skip-link" href="#main">Перейти к данным</a>
+<nav class="skip-links" aria-label="Быстрый переход"><a class="skip-link" href="#main">Перейти к данным</a></nav>
 <header class="site-top"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a>
 <nav aria-label="Навигация"><a href="./#books">Библиотека</a><a href="./#pairs">Сравнения</a><a href="./#method">Методология</a></nav></header>
 <main id="main"><div class="n-page">
@@ -84,7 +88,20 @@
 <thead><tr><th scope="col">Примеры</th><th scope="col">N-only</th><th scope="col">Всего</th><th scope="col">Доля N-only в группе</th></tr></thead><tbody>
 <tr data-native-control="noun_examples"><th scope="row">Примеры существительных</th><td>3</td><td>3</td><td>100%</td></tr>
 <tr data-native-control="cardinal_examples"><th scope="row">Примеры числительных</th><td>2</td><td>3</td><td>66,7%</td></tr>
-<tr data-native-control="other_pos_controls"><th scope="row">Контроль других частей речи</th><td>0</td><td>3</td><td>0%</td></tr></tbody></table></div></section>
+<tr data-native-control="other_pos_controls"><th scope="row">Контроль других частей речи</th><td>0</td><td>3</td><td>0%</td></tr></tbody></table></div>
+<p class="n-meta"><strong>Важное различие:</strong> «N-only: 0/3» в третьей группе означает лишь отсутствие разборов, состоящих <em>только</em> из N. В действительности один из трёх контрольных примеров получил одновременно <code>A</code> и <code>N</code>. Поэтому строгий контроль <code>scriptorium-aot-n-contrast-v2</code> остаётся <strong>INCONCLUSIVE</strong>: <code>controlled_cross_role_n_collision_observed=false</code>.</p></section>
+<section class="n-panel" aria-labelledby="n-survey"><h2 id="n-survey">Новые контрольные слова: без N</h2>
+<p>В отдельном запуске 17 ноября 2026 года закреплённый <code>pylem==0.0.18</code> (Python 3.9) проверил девять дополнительных лексических примеров, а не книжный текст. Пример засчитывался только при непустом разборе с ожидаемым тегом и <strong>без любого кандидата N</strong>. Это наблюдение маленькой подобранной выборки, не точность классификатора и не частота в корпусе.</p>
+<div class="n-table" role="region" tabindex="0" aria-label="Дополнительные контрольные группы без N"><table id="n-native-control-survey-table"><caption>Независимый native survey v1 · подходящие контроли из трёх; без N в каждом пригодном разборе</caption>
+<thead><tr><th scope="col">Группа и ожидаемый тег</th><th scope="col">Проверено</th><th scope="col">Пригодно</th><th scope="col">С кандидатом N</th></tr></thead><tbody>
+<tr data-survey-role="adjectives"><th scope="row">Прилагательные · A</th><td>3</td><td>3</td><td>0</td></tr>
+<tr data-survey-role="adverbs"><th scope="row">Наречия · ADV</th><td>3</td><td>3</td><td>0</td></tr>
+<tr data-survey-role="verbs"><th scope="row">Глаголы · V</th><td>3</td><td>3</td><td>0</td></tr>
+</tbody></table></div>
+<p>Все девять контролей удовлетворили критерию; у одного наречия помимо <code>ADV</code> присутствует <code>ADJ_SHORT</code>, но нет N. Этот результат <strong>не изменяет</strong> исходную проверку v2, производственный POS mapping, условные границы на «Анне Карениной» или статус FantLab M2: 0/5. Положительный survey не разрешает омонимию существительного и числительного.</p>
+<p class="n-meta"><strong>Отдельно проверенный v3:</strong> <code>scriptorium-aot-n-independent-controls-v3</code> квалифицирует N-only наблюдение на подобранных лексических примерах с независимыми контролями (3/3 в каждой из трёх групп). <a href="https://github.com/drevendev/Scriptorium/actions/runs/44093423449">Native CI #560 ↗</a>. Это не меняет исходный отрицательный v2 и не определяет исходные категории AOT или морфологию FantLab.</p>
+<p class="n-meta">Источник: <a href="https://github.com/drevendev/Scriptorium/actions/runs/44068624527">native CI, успешный запуск #559 ↗</a> · <code>scriptorium-aot-n-control-survey-v1</code> · SHA-256 манифеста девяти контролей: <code>da56ada4e9861baf81921c61ddc7b082fae26e727c1a647e39beffee9dbf484b</code>. JSON-артефакт CI хранится ограниченное время; <a href="https://github.com/drevendev/Scriptorium/blob/master/tools/pylem_runtime_probe.py">код и неизменяемые хеши входа ↗</a> остаются доступны. Художественные тексты и исходные слова в таблице не публикуются.</p>
+</section>
 <div class="n-alert"><strong>Статус: DIAGNOSTIC_ONLY · M2: 0/5.</strong> Эти условные границы не являются вероятностями, оценкой правильности разбора или воспроизведением FantLab. Точная редакция входа FantLab, словарь и выбор омонимов неизвестны. Смешанные N с другими тегами не перераспределялись.</div>
 <section class="n-panel" aria-labelledby="n-evidence"><h2 id="n-evidence">Как повторить и проверить</h2>
 <p>Измерение произведено исходным закреплённым Python 3.9 / AOT-пакетом <code>pylem==0.0.18</code>, а расчёт границ — версионированным кодом Scriptorium. GitHub Actions сохранил исходный source-free JSON; контрольные суммы связывают его с точным входом и нативным результатом.</p>

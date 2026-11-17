@@ -97,6 +97,24 @@ for(const [q,mode,keys] of [
 search.value="";filter.value="all";run();
 assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(share.href,"?catalog=all#books");
+// Coverage sorting uses verified observed metric counts, not a guessed quality score.
+order.value="coverage";run();sortCatalog();
+const expectedCoverage=[...data.books].map((book,i)=>({book,i})).sort((a,b)=>{
+  const x=a.book.text_status==="measured"?a.book.measured:null;
+  const y=b.book.text_status==="measured"?b.book.measured:null;
+  if(x===null)return y===null?a.i-b.i:1;
+  if(y===null)return -1;
+  return y-x||a.i-b.i;
+}).map(x=>x.book.key);
+assert.deepEqual(domOrder.map(card=>card.dataset.catalogKey),expectedCoverage);
+assert.deepEqual(expectedCoverage.slice(-2),["petersburg","darwin"]);
+assert.match(sortStatus.textContent,/числу измеренных полей/);
+assert.equal(share.href,"?catalog=all&catalog_order=coverage#books");
+location.search="?catalog=measured&catalog_order=coverage";restore();sortCatalog();
+assert.equal(order.value,"coverage");
+assert.equal(cards.filter(card=>!card.hidden).length,11);
+assert.equal(share.href,"?catalog=measured&catalog_order=coverage#books");
+order.value="catalog";filter.value="all";location.search="";sortCatalog();run();
 order.value="dialogue";run();
 assert.equal(share.href,"?catalog=all&catalog_order=dialogue#books");
 origin.value="fr";filter.value="translated";search.value="Верн";run();

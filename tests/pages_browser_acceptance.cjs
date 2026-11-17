@@ -131,6 +131,17 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#reader-data-status").getAttribute("data-state"),
     "ready", tag + ": verified snapshot enables controls");
   assert.match(await page.locator("#reader-data-status").innerText(), /11 измеренных редакций/);
+  // The actual Reader table, not a reimplemented filter: unordered words,
+  // honest zero-result feedback, and restoration of all frozen Anna rows.
+  const metricSearch=page.locator("#search-metric");
+  await metricSearch.fill("1000   ЗАПЯТЫЕ");
+  assert.equal(await page.locator("#measurement-rows tr").count(),1,tag+": metric multi-term result");
+  assert.match(await page.locator("#measurement-rows tr").innerText(),
+    /fantlab\.punctuation\.comma\.per_1000_words/);
+  await metricSearch.fill("запятые несуществующее");
+  assert.match(await page.locator("#measurement-rows").innerText(),/Ничего не найдено/);
+  await metricSearch.fill("");
+  assert.equal(await page.locator("#measurement-rows tr").count(),28,tag+": metric clear");
   await checkChartStripeContrast(page, tag + " screen");
   await checkKeyboardFocusContrast(page, tag + " keyboard");
   // Exercise the real slash-to-search and Escape-to-clear flow on both viewports.

@@ -3,7 +3,8 @@ import json
 import unittest
 from types import SimpleNamespace
 
-from tools.pylem_runtime_probe import N_CONTRAST_GROUPS, build_n_contrast
+from tools.pylem_runtime_probe import (N_CONTRAST_GROUPS, N_NEGATIVE_CONTROL_SURVEY,
+                                       build_n_contrast, build_n_control_survey)
 
 
 class _Holder:
@@ -81,6 +82,61 @@ class NativeNContrastTests(unittest.TestCase):
                 self.assertTrue(result["observed_n_only_across_noun_and_cardinal_examples"])
                 self.assertFalse(result["negative_controls_non_n_observed"])
                 self.assertFalse(result["controlled_cross_role_n_collision_observed"])
+
+
+    def test_supplemental_survey_positive_and_source_free(self):
+        mapping = {token: (expected,) for _, expected, tokens
+                   in N_NEGATIVE_CONTROL_SURVEY for token in tokens}
+        first = build_n_control_survey(_Holder(mapping))
+        self.assertEqual(first["schema_version"],
+                         "scriptorium-aot-n-control-survey-v1")
+        self.assertTrue(first["all_roles_have_usable_control"])
+        self.assertFalse(first["qualifies_v2_n_collision"])
+        self.assertFalse(first["source_text_included"])
+        self.assertEqual(first, build_n_control_survey(_Holder(mapping)))
+        self.assertEqual([group["usable_count"] for group
+                          in first["groups"].values()], [3, 3, 3])
+        self.assertEqual([group["expected_runtime_pos"] for group
+                          in first["groups"].values()], ["A", "ADV", "V"])
+        serialized = json.dumps(first, ensure_ascii=False)
+        for token in mapping:
+            self.assertNotIn(token, serialized)
+
+    def test_supplemental_survey_missing_n_and_wrong_tag_fail_closed(self):
+        mapping = {token: (expected,) for _, expected, tokens
+                   in N_NEGATIVE_CONTROL_SURVEY for token in tokens}
+        for token in N_NEGATIVE_CONTROL_SURVEY[0][2]:
+            mapping[token] = ()
+        for token in N_NEGATIVE_CONTROL_SURVEY[1][2]:
+            mapping[token] = ("N", "ADV")
+        for token in N_NEGATIVE_CONTROL_SURVEY[2][2]:
+            mapping[token] = ("A",)
+        survey = build_n_control_survey(_Holder(mapping))
+        self.assertFalse(survey["all_roles_have_usable_control"])
+        self.assertEqual([group["usable_count"] for group
+                          in survey["groups"].values()], [0, 0, 0])
+        self.assertEqual([row["status"] for group in survey["groups"].values()
+                          for row in group["tokens"]],
+                         ["no_analysis"] * 3 + ["n_present"] * 3
+                         + ["expected_tag_absent"] * 3)
+        for bad in ("", None, 123):
+            with self.subTest(bad=bad):
+                with self.assertRaisesRegex(RuntimeError, "blank/non-string"):
+                    build_n_control_survey(_Holder({"красивый": (bad,)}))
+
+    def test_supplemental_survey_cannot_override_v2_failed_controls(self):
+        mapping = {token: (expected,) for _, expected, tokens
+                   in N_NEGATIVE_CONTROL_SURVEY for token in tokens}
+        mapping.update({word: ("N",) for _, words in N_CONTRAST_GROUPS
+                        for word in words})
+        mapping.update({"красный": ("A", "N"),
+                        "быстро": ("ADV",), "бежит": ("V",)})
+        survey = build_n_control_survey(_Holder(mapping))
+        strict = build_n_contrast(_Holder(mapping))
+        self.assertTrue(survey["all_roles_have_usable_control"])
+        self.assertFalse(survey["qualifies_v2_n_collision"])
+        self.assertFalse(strict["negative_controls_non_n_observed"])
+        self.assertFalse(strict["controlled_cross_role_n_collision_observed"])
 
     def test_replay_is_deterministic_and_hashes_are_valid(self):
         import re

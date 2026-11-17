@@ -178,6 +178,8 @@ class NativeNPublicationTests(unittest.TestCase):
         self.assertIn('#n-native-control-survey-table{min-width:0', markup)
         self.assertIn("https://github.com/drevendev/Scriptorium/actions/runs/44068624527", markup)
         self.assertIn("scriptorium-aot-n-control-survey-v1", markup)
+        self.assertIn("scriptorium-aot-n-independent-controls-v3", markup)
+        self.assertIn("actions/runs/44093423449", markup)
         self.assertIn("controlled_cross_role_n_collision_observed=false", markup)
         self.assertIn("INCONCLUSIVE", markup)
         self.assertIn("N-only: 0/3", markup)

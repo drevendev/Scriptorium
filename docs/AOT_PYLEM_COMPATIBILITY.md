@@ -276,7 +276,7 @@ source-free receipt is an ephemeral CI artifact, not a literary corpus
 entry or an M2 parity benchmark. Frozen full-work N-only bounds
 remain a separate independently versioned diagnostic.
 
-## Supplemental negative-control survey (candidate; #282)
+## Supplemental negative-control survey (native measured; #282)
 
 The pinned v2 native run [44050332584](https://github.com/drevendev/Scriptorium/actions/runs/44050332584)
 observed `N` in the original adjective control `красный` (`A, N`),
@@ -306,6 +306,27 @@ The original unrelated v2 group still has 0/3 **N-only** but 1/3
 `controlled_cross_role_n_collision_observed` remains **false/INCONCLUSIVE**.
 This separate survey cannot establish AOT source POS enums, production
 noun/cardinal assignments or FantLab parity.
+
+### Independent v3 contrast (verified in #560)
+
+The distinct `scriptorium-aot-n-independent-controls-v3` diagnostic uses the
+**same** pinned native sample and its independently observed negative-control
+survey. It requires N-only evidence from both annotated noun and cardinal
+lexical groups **and at least two N-free, expected-tag-positive controls out
+of three** for each unrelated role (adjectives, adverbs and verbs). Fewer
+controls, missing positive evidence, an all-N backend or inconsistent survey
+rows fail closed. It records exact per-group coverage, the historical v2
+verdict and a separately labelled v3 controlled observation. The v2 result
+remains false because `красный` returned `A, N`; v3 does **not** rewrite
+those original controls or cherry-pick a v2 result.
+
+The [successful pinned native v3 run #44093423449](https://github.com/drevendev/Scriptorium/actions/runs/44093423449) separately qualifies the v3 observation with 3/3 usable controls in each unrelated role. This only establishes that this pinned runtime returns
+indistinguishable `N` strings for selected lexemes annotated as different
+lexical roles while unrelated controls show distinct native tags. It still
+**cannot reconstruct AOT source POS enums, noun/cardinal assignments,
+FantLab's dictionary or its homonym decisions**. Frozen full-book conditional
+bounds remain separate, and production mapping, M1/M2 acceptance and corpus
+status remain unchanged. Native CI for #560 passed on 2026-11-17; this verifies the bounded native observation, not source AOT POS enums or FantLab parity.
 
 ## Primary sources
 

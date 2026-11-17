@@ -142,6 +142,166 @@ def build_n_control_survey(holder):
     }
 
 
+
+
+def _validate_v3_source_receipts(contrast, survey):
+    """Require the claimed N evidence to agree with pinned native source-free rows."""
+    if (not isinstance(contrast, dict) or not isinstance(survey, dict)
+            or contrast.get("source_text_included") is not False
+            or survey.get("source_text_included") is not False
+            or contrast.get("m2_parity_admissible") is not False
+            or contrast.get("production_pos_mapping_changed") is not False
+            or survey.get("qualifies_v2_n_collision") is not False):
+        raise ValueError("v3 inputs violate source-free/scientific boundaries")
+
+    expected_contrast_manifest = _sha256_text(chr(10).join(
+        role + ":" + _sha256_text(token)
+        for role, tokens in N_CONTRAST_GROUPS for token in tokens
+    ))
+    expected_survey_manifest = _sha256_text(chr(10).join(
+        role + ":" + tag + ":" + _sha256_text(token)
+        for role, tag, tokens in N_NEGATIVE_CONTROL_SURVEY for token in tokens
+    ))
+    if (contrast.get("token_manifest_sha256") != expected_contrast_manifest
+            or survey.get("token_manifest_sha256") != expected_survey_manifest):
+        raise ValueError("v3 input lexical manifest differs from pinned sample")
+
+    source_groups = contrast.get("groups")
+    if not isinstance(source_groups, dict) or set(source_groups) != {
+        role for role, _ in N_CONTRAST_GROUPS
+    }:
+        raise ValueError("v3 input N contrast groups missing or extra")
+
+    counts = {}
+    for role, tokens in N_CONTRAST_GROUPS:
+        group = source_groups[role]
+        if not isinstance(group, dict) or type(group.get("token_count")) is not int:
+            raise ValueError("invalid N contrast group")
+        rows = group.get("tokens")
+        if group["token_count"] != len(tokens) or not isinstance(rows, list) or len(rows) != len(tokens):
+            raise ValueError("incomplete N contrast group")
+        n_only_count = n_present_count = 0
+        for token, row in zip(tokens, rows):
+            if not isinstance(row, dict) or set(row) != {
+                "token_sha256", "candidate_count", "runtime_pos", "n_only", "n_present"
+            }:
+                raise ValueError("invalid N contrast row")
+            labels = row["runtime_pos"]
+            if (not isinstance(labels, list)
+                    or not all(type(tag) is str and tag.strip() for tag in labels)
+                    or type(row["candidate_count"]) is not int
+                    or row["candidate_count"] != len(labels)
+                    or row["token_sha256"] != _sha256_text(token)):
+                raise ValueError("invalid N contrast native analysis")
+            n_only = bool(labels) and set(labels) == {"N"}
+            n_present = "N" in labels
+            if row["n_only"] is not n_only or row["n_present"] is not n_present:
+                raise ValueError("contradictory N contrast row")
+            n_only_count += n_only
+            n_present_count += n_present
+        if (type(group.get("n_only_count")) is not int
+                or type(group.get("n_present_count")) is not int
+                or group["n_only_count"] != n_only_count
+                or group["n_present_count"] != n_present_count):
+            raise ValueError("contradictory N contrast counts")
+        counts[role] = n_only_count
+
+    positives = counts["noun_examples"] > 0 and counts["cardinal_examples"] > 0
+    clean_old_controls = all(
+        row["candidate_count"] > 0 and not row["n_present"]
+        for row in source_groups["other_pos_controls"]["tokens"]
+    )
+    if (contrast.get("observed_n_only_across_noun_and_cardinal_examples") is not positives
+            or contrast.get("negative_controls_non_n_observed") is not clean_old_controls
+            or contrast.get("controlled_cross_role_n_collision_observed")
+                is not (positives and clean_old_controls)):
+        raise ValueError("v3 N contrast verdict contradicts native rows")
+
+    survey_groups = survey.get("groups")
+    if not isinstance(survey_groups, dict):
+        raise ValueError("invalid N survey groups")
+    role_coverage = []
+    for role, expected, tokens in N_NEGATIVE_CONTROL_SURVEY:
+        group = survey_groups.get(role)
+        if not isinstance(group, dict):
+            raise ValueError("missing native survey group")
+        rows = group.get("tokens")
+        if not isinstance(rows, list) or len(rows) != len(tokens):
+            raise ValueError("incomplete native survey")
+        for token, row in zip(tokens, rows):
+            if (not isinstance(row, dict) or set(row) != {
+                    "token_sha256", "candidate_count", "runtime_pos", "status"
+                } or row.get("token_sha256") != _sha256_text(token)):
+                raise ValueError("v3 survey token identity mismatch")
+        role_coverage.append(group.get("usable_count", 0) > 0)
+    if survey.get("all_roles_have_usable_control") is not all(role_coverage):
+        raise ValueError("v3 survey coverage flag contradicts groups")
+
+
+def build_n_contrast_v3(contrast, survey):
+    """Independently qualify curated N-only observations; never alter v2."""
+    _validate_v3_source_receipts(contrast, survey)
+    if (contrast.get("schema_version") != "scriptorium-aot-n-contrast-v2"
+            or survey.get("schema_version") != "scriptorium-aot-n-control-survey-v1"):
+        raise ValueError("unknown native N contrast/survey schema")
+    positive = contrast.get("observed_n_only_across_noun_and_cardinal_examples")
+    strict_v2 = contrast.get("controlled_cross_role_n_collision_observed")
+    if type(positive) is not bool or type(strict_v2) is not bool:
+        raise ValueError("invalid native N contrast verdict")
+    groups = survey.get("groups")
+    if not isinstance(groups, dict) or set(groups) != {"adjectives", "adverbs", "verbs"}:
+        raise ValueError("missing/extra native negative-control groups")
+    coverage = {}
+    for role, expected in (("adjectives", "A"), ("adverbs", "ADV"), ("verbs", "V")):
+        group = groups[role]
+        if not isinstance(group, dict) or group.get("expected_runtime_pos") != expected:
+            raise ValueError("native control role/tag mismatch")
+        rows = group.get("tokens")
+        if not isinstance(rows, list) or len(rows) != 3 or group.get("token_count") != 3:
+            raise ValueError("native control slate is incomplete")
+        usable = 0
+        for row in rows:
+            if not isinstance(row, dict):
+                raise ValueError("invalid native control row")
+            labels = row.get("runtime_pos")
+            if (not isinstance(labels, list)
+                    or not all(isinstance(tag, str) and tag.strip() for tag in labels)
+                    or row.get("candidate_count") != len(labels)):
+                raise ValueError("invalid native control analysis")
+            status = ("no_analysis" if not labels else
+                      "n_present" if "N" in labels else
+                      "expected_tag_absent" if expected not in labels else "usable")
+            if row.get("status") != status:
+                raise ValueError("native control status does not match actual tags")
+            usable += status == "usable"
+        if group.get("usable_count") != usable:
+            raise ValueError("native control usable count mismatch")
+        coverage[role] = {
+            "usable_controls": usable,
+            "required_controls": 2,
+            "qualified": usable >= 2,
+        }
+    controls_qualified = all(group["qualified"] for group in coverage.values())
+    return {
+        "schema_version": "scriptorium-aot-n-independent-controls-v3",
+        "source_text_included": False,
+        "positive_n_only_fixture_observed": positive,
+        "independent_negative_controls_qualified": controls_qualified,
+        "negative_control_coverage": coverage,
+        "independently_controlled_n_only_observed": positive and controls_qualified,
+        "historical_v2_controlled_verdict_unchanged": strict_v2,
+        "noun_cardinal_source_pos": "unresolved",
+        "fantlab_dictionary_equivalence": "unknown",
+        "fantlab_homonym_selection": "unresolved",
+        "production_pos_mapping_changed": False,
+        "m2_parity_admissible": False,
+        "interpretation": (
+            "Curated lexical N-only observation, not recovered source POS identity "
+            "or FantLab homonym selection. Requires two clean controls per unrelated role."
+        ),
+    }
+
+
 def build_receipt():
     try:
         installed = version("pylem")
@@ -170,6 +330,8 @@ def build_receipt():
     fixture_identity = "\n".join(
         "%d:%s" % (ordinal, _sha256_text(token)) for ordinal, token in enumerate(TOKENS)
     )
+    contrast = build_n_contrast(holder)
+    survey = build_n_control_survey(holder)
     return {
         "schema_version": SCHEMA_VERSION,
         "provider": {
@@ -189,8 +351,9 @@ def build_receipt():
             "observed_runtime_pos": sorted(observed),
             "source_text_included": False,
         },
-        "n_contrast": build_n_contrast(holder),
-        "n_control_survey": build_n_control_survey(holder),
+        "n_contrast": contrast,
+        "n_control_survey": survey,
+        "n_contrast_v3": build_n_contrast_v3(contrast, survey),
         "epistemic_boundary": {
             "fantlab_dictionary_equivalence": "unknown",
             "homonym_selection_policy": "unresolved",

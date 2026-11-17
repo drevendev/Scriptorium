@@ -182,6 +182,35 @@ jobs:
               "all_roles_have_usable_control": survey["all_roles_have_usable_control"],
               "qualifies_v2_n_collision": False,
           }, sort_keys=True))
+          v3 = receipt["n_contrast_v3"]
+          assert v3["schema_version"] == "scriptorium-aot-n-independent-controls-v3"
+          assert v3["source_text_included"] is False
+          assert v3["historical_v2_controlled_verdict_unchanged"] == contrast["controlled_cross_role_n_collision_observed"]
+          assert v3["positive_n_only_fixture_observed"] == contrast["observed_n_only_across_noun_and_cardinal_examples"]
+          for role in ("adjectives", "adverbs", "verbs"):
+              coverage = v3["negative_control_coverage"][role]
+              assert coverage["usable_controls"] == survey["groups"][role]["usable_count"]
+              assert coverage["required_controls"] == 2
+              assert coverage["qualified"] == (coverage["usable_controls"] >= 2)
+          qualified = all(group["qualified"] for group in v3["negative_control_coverage"].values())
+          assert v3["independent_negative_controls_qualified"] == qualified
+          assert v3["independently_controlled_n_only_observed"] == (
+              contrast["observed_n_only_across_noun_and_cardinal_examples"] and qualified
+          )
+          # Pinned historical observation: nine clean new controls, v2 remains false.
+          assert v3["independently_controlled_n_only_observed"] is True
+          assert v3["historical_v2_controlled_verdict_unchanged"] is False
+          assert v3["noun_cardinal_source_pos"] == "unresolved"
+          assert v3["fantlab_homonym_selection"] == "unresolved"
+          assert v3["production_pos_mapping_changed"] is False
+          assert v3["m2_parity_admissible"] is False
+          print(json.dumps({
+              "independently_controlled_n_profile": v3["schema_version"],
+              "control_coverage": v3["negative_control_coverage"],
+              "independently_controlled_n_only_observed": v3["independently_controlled_n_only_observed"],
+              "historical_v2_verdict_unchanged": v3["historical_v2_controlled_verdict_unchanged"],
+              "m2_parity_admissible": False,
+          }, sort_keys=True))
           assert receipt["epistemic_boundary"]["fantlab_dictionary_equivalence"] == "unknown"
           assert receipt["epistemic_boundary"]["m2_parity_admissible"] is False
           print(json.dumps(receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")))

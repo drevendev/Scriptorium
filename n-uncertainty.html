@@ -27,13 +27,17 @@
 .n-meta code{overflow-wrap:anywhere}.n-actions{display:flex;flex-wrap:wrap;gap:1rem}
 .n-actions a{display:inline-flex;align-items:center;min-height:44px;font-weight:700}
 .n-table:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
-@media(max-width:650px){.n-stats{grid-template-columns:1fr}.n-page{padding:2rem 0 3rem}}
+@media(max-width:650px){.n-stats{grid-template-columns:1fr}.n-page{padding:2rem 0 3rem}
+ #n-native-control-survey-table{min-width:0;table-layout:fixed;font-size:.73rem}
+ #n-native-control-survey-table th:first-child{width:38%}
+ #n-native-control-survey-table th,#n-native-control-survey-table td{padding:.5rem .28rem;overflow-wrap:anywhere}
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media(forced-colors:active){.n-track{border:1px solid CanvasText}.n-track>span{background:Highlight}}
 @media print{.n-hero,.n-panel,.n-stat,.n-table{background:white!important;color:black!important;box-shadow:none}.n-hero a{color:black}.n-track{display:none}.n-panel,.n-stat{break-inside:avoid}}
 </style>
 </head><body>
-<a class="skip-link" href="#main">Перейти к данным</a>
+<nav class="skip-links" aria-label="Быстрый переход"><a class="skip-link" href="#main">Перейти к данным</a></nav>
 <header class="site-top"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a>
 <nav aria-label="Навигация"><a href="./#books">Библиотека</a><a href="./#pairs">Сравнения</a><a href="./#method">Методология</a></nav></header>
 <main id="main"><div class="n-page">

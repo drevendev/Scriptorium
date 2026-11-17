@@ -174,6 +174,8 @@ class NativeNPublicationTests(unittest.TestCase):
         )
         markup = (ROOT / "n-uncertainty.html").read_text(encoding="utf-8")
         self.assertIn('id="n-native-control-survey-table"', markup)
+        self.assertIn('class="skip-links" aria-label="Быстрый переход"', markup)
+        self.assertIn('#n-native-control-survey-table{min-width:0', markup)
         self.assertIn("https://github.com/drevendev/Scriptorium/actions/runs/44068624527", markup)
         self.assertIn("scriptorium-aot-n-control-survey-v1", markup)
         self.assertIn("controlled_cross_role_n_collision_observed=false", markup)

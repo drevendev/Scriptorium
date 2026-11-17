@@ -417,19 +417,33 @@ async function checkNativeNPage(browser, origin) {
       const witness = await page.request.get(origin + "/assets/n-uncertainty-anna.json");
       assert.equal(witness.status(), 200, tag + ": exact frozen witness exists");
       assert.equal((await witness.json()).m2_parity_admissible, false);
+      // The skip link is visually hidden until keyboard focus, not permanently
+      // exposed above the masthead on small screens.
+      const skip = page.locator(".skip-links .skip-link");
+      assert.equal(await skip.count(), 1, tag + ": accessible skip navigation");
+      await skip.focus();
+      assert.ok((await skip.boundingBox()).y >= -1,
+        tag + ": keyboard focused skip link becomes visible");
+      await skip.evaluate(node => node.blur());
       const dims = await page.evaluate(() => ({
         page: document.documentElement.scrollWidth, viewport: innerWidth,
       }));
       assert.ok(dims.page <= dims.viewport + 2,
         tag + ": no horizontal page overflow " + JSON.stringify(dims));
-      const table = page.locator('.n-panel[aria-labelledby="n-survey"] .n-table');
-      await table.focus();
-      assert.equal(await table.evaluate(node => node === document.activeElement),
-        true, tag + ": keyboard-scrollable table region");
+      if (tag === "mobile") {
+        const lastNumber = await rows.last().locator("td").last().boundingBox();
+        assert.ok(lastNumber && lastNumber.x + lastNumber.width <= width + 2,
+          "Mobile N survey must show all four columns without horizontal clipping");
+      }
+      // Capture the natural non-focused view; test focus separately afterward.
       await page.screenshot({
         path: path.join(output, "native-n-evidence-" + tag + ".png"),
         fullPage: true, animations: "disabled",
       });
+      const table = page.locator('.n-panel[aria-labelledby="n-survey"] .n-table');
+      await table.focus();
+      assert.equal(await table.evaluate(node => node === document.activeElement),
+        true, tag + ": keyboard-scrollable table region");
       if (tag === "desktop") {
         await page.emulateMedia({ media: "print" });
         assert.equal(await rows.evaluateAll(elements => elements.every(

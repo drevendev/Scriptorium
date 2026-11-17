@@ -25,6 +25,15 @@ N_CONTRAST_GROUPS = (
 )
 
 
+
+# Additional independently measured candidates, NOT a replacement for the strict
+# v2 three-token unrelated controls. Native tags and token hashes only leave CI.
+N_NEGATIVE_CONTROL_SURVEY = (
+    ("adjectives", "A", ("красивый", "прекрасный", "огромный")),
+    ("adverbs", "ADV", ("вчера", "внезапно", "совсем")),
+    ("verbs", "V", ("говорит", "читает", "пишет")),
+)
+
 def _runtime_candidates(holder, token):
     candidates = []
     for analysis in holder.lemmatize(token):
@@ -86,6 +95,53 @@ def build_n_contrast(holder):
     }
 
 
+
+def build_n_control_survey(holder):
+    """Measure independent negative-control candidates without relaxing v2."""
+    groups = {}
+    manifest = []
+    for role, expected_tag, tokens in N_NEGATIVE_CONTROL_SURVEY:
+        rows = []
+        for token in tokens:
+            labels = _runtime_candidates(holder, token)
+            if not labels:
+                status = "no_analysis"
+            elif "N" in labels:
+                status = "n_present"
+            elif expected_tag not in labels:
+                status = "expected_tag_absent"
+            else:
+                status = "usable"
+            digest = _sha256_text(token)
+            rows.append({
+                "token_sha256": digest,
+                "candidate_count": len(labels),
+                "runtime_pos": labels,
+                "status": status,
+            })
+            manifest.append(role + ":" + expected_tag + ":" + digest)
+        groups[role] = {
+            "expected_runtime_pos": expected_tag,
+            "token_count": len(rows),
+            "usable_count": sum(row["status"] == "usable" for row in rows),
+            "tokens": rows,
+        }
+    return {
+        "schema_version": "scriptorium-aot-n-control-survey-v1",
+        "source_text_included": False,
+        "token_manifest_sha256": _sha256_text("\n".join(manifest)),
+        "groups": groups,
+        "all_roles_have_usable_control": all(
+            group["usable_count"] > 0 for group in groups.values()
+        ),
+        "qualifies_v2_n_collision": False,
+        "interpretation": (
+            "Curated negative-control survey only; does not change the strict v2 "
+            "N-collision verdict or resolve FantLab POS."
+        ),
+    }
+
+
 def build_receipt():
     try:
         installed = version("pylem")
@@ -134,6 +190,7 @@ def build_receipt():
             "source_text_included": False,
         },
         "n_contrast": build_n_contrast(holder),
+        "n_control_survey": build_n_control_survey(holder),
         "epistemic_boundary": {
             "fantlab_dictionary_equivalence": "unknown",
             "homonym_selection_policy": "unresolved",

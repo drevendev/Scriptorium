@@ -154,6 +154,34 @@ jobs:
               "m2_parity_admissible": False,
           }, sort_keys=True))
 
+          survey = receipt["n_control_survey"]
+          assert survey["schema_version"] == "scriptorium-aot-n-control-survey-v1"
+          assert survey["source_text_included"] is False
+          assert survey["qualifies_v2_n_collision"] is False
+          assert set(survey["groups"]) == {"adjectives", "adverbs", "verbs"}
+          for role, expected in (("adjectives", "A"), ("adverbs", "ADV"), ("verbs", "V")):
+              group = survey["groups"][role]
+              assert group["expected_runtime_pos"] == expected
+              assert group["token_count"] == len(group["tokens"]) == 3
+              assert group["usable_count"] == sum(row["status"] == "usable" for row in group["tokens"])
+              for row in group["tokens"]:
+                  assert len(row["token_sha256"]) == 64
+                  assert row["candidate_count"] == len(row["runtime_pos"])
+                  expected_status = ("no_analysis" if not row["runtime_pos"]
+                      else "n_present" if "N" in row["runtime_pos"]
+                      else "expected_tag_absent" if expected not in row["runtime_pos"]
+                      else "usable")
+                  assert row["status"] == expected_status
+          assert survey["all_roles_have_usable_control"] == all(
+              group["usable_count"] > 0 for group in survey["groups"].values()
+          )
+          print(json.dumps({
+              "supplemental_n_control_survey": survey["schema_version"],
+              "usable_counts": {name: group["usable_count"]
+                  for name, group in survey["groups"].items()},
+              "all_roles_have_usable_control": survey["all_roles_have_usable_control"],
+              "qualifies_v2_n_collision": False,
+          }, sort_keys=True))
           assert receipt["epistemic_boundary"]["fantlab_dictionary_equivalence"] == "unknown"
           assert receipt["epistemic_boundary"]["m2_parity_admissible"] is False
           print(json.dumps(receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")))

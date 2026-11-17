@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 543
+STATE_REVISION: 544
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-17
-LAST_RESULT: #557 confirmed merged at 6af0b3b0c5cf54d0b508f273fb2f2a5256255994; #282 native N-control quality gate authored for later acceptance.
+LAST_RESULT: #558 merged as e32238e1f8ae1b0d27b753e3ee5683c91421e630; pinned native v2 contrast returned FALSE because adjective control also has N; supplemental control-slate PR prepared for later native acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and a separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-009-NEGATIVE-CONTROL
-ISSUE: #282 — separate N-only cross-role observations from uninformative all-N providers
-STATUS: PR_CANDIDATE; exact-head full Python and pinned native CI acceptance required
-BRANCH: scrip-morph-009-negative-control-20261117
-BASE: 6af0b3b0c5cf54d0b508f273fb2f2a5256255994
+UNIT_ID: SCRIP-MORPH-009-CONTROL-SLATE
+ISSUE: #282 — independently measure additional non-N native control candidates
+STATUS: PR_CANDIDATE; full Python and pinned native CI acceptance required
+BRANCH: scrip-morph-009-control-slate-20261117
+BASE: e32238e1f8ae1b0d27b753e3ee5683c91421e630
 
-ACCEPTANCE: Raw N-only cross-role observation is reported separately from control-qualified evidence; all three unrelated controls must have nonempty N-free native analyses. All-N and no-analysis counterexamples are inconclusive. No compatibility mapping or parity gate change.
+ACCEPTANCE: Hash-only receipt records actual native tags and usable/failed reason for 3 adjective, 3 adverb, 3 verb candidates; each usable control must have a nonempty expected tag and zero N analyses. Test fail-closed cases. Keep strict v2 N collision verdict unchanged, even if the new survey finds clean alternatives. No production mapping or parity claim.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,11 +22,11 @@ Milestone: enable accurate, discoverable measured-book reading and a legally sup
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 control-qualified native N contrast | Native source-free receipt rejects all-N and no-analysis negative controls; pinned CI passes | #557 print fix already merged |
+| P1 | #282 supplemental native N control slate | 9 hashed candidate observations, explicit missing/N/wrong-tag reasons, independent native CI | v2 gate remains false; pinned pylem |
 | P2 | #511 recover actual Page 2/148–151 rendering | Verified whole translation body/rights/coverage, not another seam hypothesis | Exact 2023 template/transclusion semantics and frozen oldids still unresolved |
 | P3 | #283 residual Reader keyboard/accessibility follow-up | Real desktop/mobile and no-JS evidence | Deduplicate against recent merged work |
 | P4 | #284 independent rights-cleared >=300k new edition | Concrete explicit reuse permission and independently measured source | Legal/edition proof |
-| P5 | #282 next native ambiguity experiment | Broaden independently measured N evidence after controls pass | Pinned AOT runtime and accepted v2 receipt |
+| P5 | #282 native N role interpretation | Evaluate any independently clean control slate and frozen-work rate bounds without guessing noun/cardinal | Actual pinned native survey evidence and source identity |
 
 ## Retained scientific and operational boundaries
 

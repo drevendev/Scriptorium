@@ -276,6 +276,28 @@ source-free receipt is an ephemeral CI artifact, not a literary corpus
 entry or an M2 parity benchmark. Frozen full-work N-only bounds
 remain a separate independently versioned diagnostic.
 
+## Supplemental negative-control survey (candidate; #282)
+
+The pinned v2 native run [44050332584](https://github.com/drevendev/Scriptorium/actions/runs/44050332584)
+observed `N` in the original adjective control `красный` (`A, N`),
+so its **control-qualified collision verdict remains false**, despite raw
+N-only noun/cardinal observations. This does not imply the backend is defective:
+a curated adjective can have additional native analyses.
+
+The separate `scriptorium-aot-n-control-survey-v1` experiment asks the same
+native `pylem==0.0.18` executable to test three candidate lexical controls
+each for adjectives (`A`), adverbs (`ADV`) and verbs (`V`). An individual
+candidate counts as usable only when it receives a nonempty analysis with its
+expected native tag and **no** `N` candidate. Missing analyses, an `N`
+homonym, and absent expected tags are separately recorded. The source-free
+receipt contains token hashes, actual runtime tags, group counts and the
+all-roles-covered diagnostic; **no words from books**. This is an exploratory
+selection experiment, not a change to the original three v2 controls, its
+strict negative gate, production mapping, frozen Anna impact bounds, or M2.
+Survey success alone cannot establish the source AOT POS enum or FantLab
+homonym policy. CI must supply actual native observations before selecting
+any future replacement control.
+
 ## Primary sources
 
 - https://pypi.org/project/pylem/

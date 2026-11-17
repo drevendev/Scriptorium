@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 546
+STATE_REVISION: 547
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-17
-LAST_RESULT: #560 merged as 3310589a70f6860fcb8835d50e93cdc14ce92cdd; pinned native v3 qualified clean unrelated-role controls while original v2 remained FALSE; Reader survey PR #561 awaits exact-head acceptance.
-LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and a separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
+LAST_RESULT: #561 merged as 8a5637b099989c175934d128e98f78c96cc16df4; Pages deployment check successful, direct live URL not verified. New #562 local lexical-aggregate extension proposed for independent later-run acceptance.
+LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-010-NATIVE-READER-EVIDENCE
-ISSUE: #282 / #283 — source-backed native N controls in the public Reader
-STATUS: PR_OPEN; conflict reconciled into branch; exact-head CI/desktop/mobile/no-JS/browser acceptance pending
-BRANCH: scrip-morph-n-survey-reader-20261117
-BASE: 3310589a70f6860fcb8835d50e93cdc14ce92cdd
+UNIT_ID: SCRIP-METRIC-LEXICAL-AGGREGATE-V1
+ISSUE: #562 — private reproducible source-free aggregate lexical contrast
+STATUS: PR_CANDIDATE; CLI/library, regressions and method written on dedicated branch; exact-head CI and later-run acceptance pending
+BRANCH: scrip-metric-lexical-aggregate-20261117
+BASE: 8a5637b099989c175934d128e98f78c96cc16df4
 
-ACCEPTANCE: Public source-free 9/9 pinned native survey with SHA-256 manifest, explicit original 1/3 N-present vs 0/3 N-only, separate verified v3, original strict v2 FALSE, no noun/cardinal assignment and M2 0/5. Rebuild and inspect real desktop/mobile/print route; merge only on later accepted fresh exact-head CI.
+ACCEPTANCE: Two bounded local UTF-8 texts to versioned aggregate JSON/Markdown with no lexemes/rare-word hashes/source text, deterministic relative-frequency dominance and JS divergence; nonrepresentative/empty/lineage/language/mismatch states, unknown legal provenance and explicit no-publication gate. Positive/negative tests and full native checks must pass. This is independent M4 exploratory capability, not a corpus release, new Pages dataset or FantLab M2 parity.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: enable accurate, discoverable measured-book reading and a legally supportable Trusov/Shishmareva comparison when historical source coverage can be proven.
+Milestone: complete offline private lexical comparison with scientific limits, then publish only independently rights-cleared measured evidence and keep the existing Reader usable.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 / #283 publish pinned native N evidence (PR #561) | 9/9 native controls, strict-v2 caveat, independent v3, source links, full exact-head Python + Chromium/Pages | PR CI and independent later-run review |
-| P2 | #562 versioned distinctive-word comparison | Reproducible legal-edition-pinned descriptive result without copyrighted word leakage | Validate existing metrics/data contract and privacy |
-| P3 | #563 provenance-safe work tags | Explicit tag authority, versioned taxonomy and reader filtering without invented labels | Admitted edition metadata and rights |
-| P4 | #283 mobile/keyboard Reader polish | Actual desktop/mobile/no-JS/print acceptance of user-visible flow | Deduplicate against merged recent checks |
-| P5 | #511 historical Trusov Page 2/148–151 body | Verify complete body with rights and historical transclusion evidence before measuring | Unresolved 2023 historical template/EOF |
+| P1 | #562 private lexical aggregate PR | Exact-head Python/CLI regression and later review; no text disclosure, no false corpus claim | PR checks; legal/source proof for future public work |
+| P2 | #563 provenance-safe work tags | Evidence-backed tag taxonomy and measured-edition aggregation without invented labels | Source/rights validation |
+| P3 | #283 Reader mobile/keyboard polish | Built Pages + genuine desktop/mobile/no-JS/print evidence | Deduplicate existing tests |
+| P4 | #511 Trusov translation pair | Complete historically verified body before measuring and pairing | Unresolved historical Page 2/148–151 semantics |
+| P5 | #282 AOT noun/cardinal ambiguity | Proven source-bound impact and explicit unknowns without fabricated true POS | Existing pinned diagnostic only; choose new executable evidence |
 
 ## Retained scientific and operational boundaries
 

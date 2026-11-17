@@ -24,6 +24,8 @@
 
 **Map a private editor's token highlights back to original Unicode positions:** the optional [Python source-span API](docs/LOCAL_ANALYSIS.md#optional-original-coordinate-spans-local-python-api) translates normalized token/sentence offsets into conservative source code-point ranges, marking canonical reordering ambiguous rather than asserting an exact inverse. Existing analysis and Reader results do not change.
 
+**New local lexical contrast (extension preview):** `scriptorium distinctives left.txt right.txt --left-edition edition-A --right-edition edition-B --format markdown` reports only aggregate differences in normalized surface-form frequencies and a Jensen–Shannon divergence. No manuscript text, distinctive words, per-word hashes or raw source strings are emitted. This is for **private offline exploration**, not a real-work Pages comparison yet; metadata and rights are not independently verified and corpus admission remains blocked even above 300,000 characters. Empty, language/translation-lineage mismatches and short-text limitations are explicit. [Full algorithm, examples and privacy rules](docs/LEXICAL_CONTRAST.md). **M2 stays 0/5.**
+
 ### What works now
 
 **Visible keyboard focus:** the catalogue search and exact-value chart table use a shared focus indicator calibrated for at least 3:1 contrast against both the light catalogue surface and dark chart. Desktop/mobile Chromium acceptance checks the keyboard path and computed focus-ring contrast; this is a presentation/accessibility fix, not a metric or parity change.

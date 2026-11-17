@@ -57,3 +57,29 @@ assert.match(html,/Анна Каренина · полный реестр: 28 п
 assert.match(html,/M2: 0\/5/);
 assert.match(html,/id="measurement-rows"/);
 console.log("No-script Anna table: 28 pinned values, labels, deltas, explicit missingness PASS");
+
+/* Real edition metadata: unordered queries must not touch the literary text. */
+const start=js.indexOf("  // Match only measured metric metadata, never manuscript text.");
+const end=js.indexOf("  function updateSingle() {",start);
+assert.ok(start>=0 && end>start,"Shipped Reader metric matcher is present");
+const metricMatchesQuery=new Function("label","unit",
+  js.slice(start,end)+"return metricMatchesQuery;")(label,unit);
+const findMetricIds=query=>book.metrics.filter(row=>metricMatchesQuery(row,query))
+  .map(row=>row.id);
+assert.deepEqual(findMetricIds("1000   ЗАПЯТЫЕ"),
+  ["fantlab.punctuation.comma.per_1000_words"]);
+assert.deepEqual(findMetricIds("ЗАПЯТЫЕ 1000"),
+  findMetricIds("1000   ЗАПЯТЫЕ"),"Metric word order should not matter");
+assert.deepEqual(findMetricIds("словоформы уникальные"),
+  ["fantlab.vocabulary.unique_words"]);
+assert.deepEqual(findMetricIds("ДЛИНА СЛОВА"),
+  ["fantlab.general.mean_word_length_chars"]);
+assert.equal(findMetricIds("запятые несуществующее").length,0);
+assert.equal(findMetricIds("анна каренина").length,0,
+  "Book title/manuscript text is not metric metadata");
+assert.equal(findMetricIds("  ").length,book.metrics.length);
+const yoMatcher=new Function("label","unit",js.slice(start,end)+
+  "return metricMatchesQuery;")(()=>"Ёмкость речи",()=>"слова");
+assert.equal(yoMatcher({id:"scriptorium.test"},"емкость"),true);
+assert.equal(yoMatcher({id:"scriptorium.test"},"ЁМКОСТЬ"),true);
+console.log("Root Reader metric search: unordered labels/IDs/units, ё/е, no-match PASS");

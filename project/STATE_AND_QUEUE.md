@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 540
+STATE_REVISION: 541
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-16
-LAST_RESULT: #554 natively merged at 57a67d13a080b080b3c4c4b8728ae713c1ad1e1e; #283 evidence-linked chart table candidate authored on a focused branch.
+LAST_COMMITTED_RUN_AT: 2026-11-17
+LAST_RESULT: #555 merged at 9b8378ad5139b8de8ed273a2a4ab81456055f8a1; #283 workbench metric-search improvement authored for independent acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and a separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-CHART-SOURCE-LINKS
-ISSUE: #283 — link exact values to their measured source evidence
-STATUS: PR_CANDIDATE; independent exact-head CI and Chromium acceptance required
-BRANCH: scrip-chart-table-source-links-20261116
-BASE: 57a67d13a080b080b3c4c4b8728ae713c1ad1e1e
+UNIT_ID: SCRIP-SITE-METRIC-TERM-SEARCH
+ISSUE: #283 — make the single-book metric search consistent with catalogue search
+STATUS: PR_CANDIDATE; exact-head CI, built Pages and Chromium acceptance required
+BRANCH: scrip-reader-metric-search-terms-20261117
+BASE: 9b8378ad5139b8de8ed273a2a4ab81456055f8a1
 
-ACCEPTANCE: Each exact-value row links to the same validated GitHub source evidence as its measured-book card, both with JavaScript and as a no-JS fallback. Source links have legible dark-chart focus/contrast and dark-on-white print contrast. Browser and Node regressions prove identity for all 11 measured editions; no metric, licensing, corpus or FantLab parity changes.
+ACCEPTANCE: After validated Reader JSON, one-book metric search matches all space-separated label/ID/unit words independent of order or case, equates Russian ё/е, and preserves honest no-match/clear states. The source-backed no-JavaScript table, values, status, profiles, hashes and M2=0/5 stay unchanged. Node and actual desktop/mobile Chromium regressions cover the flow.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,11 +22,11 @@ Milestone: enable accurate, discoverable measured-book reading and a legally sup
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 link exact chart rows to corresponding work evidence | Table and catalogue share validated evidence URL for each measured edition in JS/no-JS; focus and print are legible | #542/#543 already fixed the previous zebra/focus contrast defects |
+| P1 | #283 multi-term one-book metric search | Unordered Russian metric label/ID/unit matching, ё/е, empty/clear in real Reader | #555 evidence-linked exact chart rows already merged |
 | P2 | #511 recover actual Page 2/148–151 rendering | Verified whole translation body/rights/coverage, not another seam hypothesis | Exact 2023 template/transclusion semantics and frozen oldids still unresolved |
 | P3 | #282 AOT noun/cardinal experiment | Native versioned ambiguity evidence, no guessed POS mapping | Pinned AOT runtime |
 | P4 | #284 independent rights-cleared >=300k new edition | Concrete explicit reuse permission and independently measured source | Legal/edition proof |
-| P5 | #283 Reader print/keyboard/accessibility follow-up | Real built desktop/mobile and no-JS evidence | Deduplicate against merged checks before selecting |
+| P5 | #283 remaining Reader print/keyboard/accessibility follow-up | Real built desktop/mobile and no-JS evidence | Deduplicate against #542/#543/#555 and current Chromium tests |
 
 ## Retained scientific and operational boundaries
 

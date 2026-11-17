@@ -447,13 +447,29 @@ async function main() {
       "No-JavaScript Reader must not show an inert retry control");
     await checkChartStripeContrast(noJs, "no-JS screen");
     assert.equal(await noJs.locator('[data-chart="fantlab.dialogue.share_percent"]').isDisabled(), true);
+    // The Trusov source-coverage disclosure must print all three pinned Page
+    // ranges with JavaScript disabled, without opening it on screen.
+    const trusovCoverage = noJs.locator("#trusov-coverage");
+    await trusovCoverage.evaluate(node => { node.open = false; });
+    const trusovEnding = trusovCoverage.locator('tr[data-trusov-range="ending"]');
+    assert.equal(await trusovEnding.evaluate(node => node.checkVisibility()), false,
+      "Closed Trusov coverage must stay collapsed on screen");
     // The closed exact-value disclosure must also print with JavaScript disabled.
     await noJs.locator(".chart-table").evaluate(node => { node.open = false; });
     await noJs.emulateMedia({ media: "print" });
     assert.equal(await noJs.locator("#chart-table-rows tr:first-child td:nth-child(2)").evaluate(node =>
       node.checkVisibility() && node.getBoundingClientRect().width > 0), true,
     "No-JS print must reveal exact-value rows while the details stays closed");
+    assert.equal(await trusovEnding.evaluate(node =>
+      node.checkVisibility() && node.getBoundingClientRect().width > 0), true,
+      "No-JS print must reveal the excluded ending Page range, not hide closed details");
+    assert.equal(await trusovCoverage.locator('tbody tr[data-trusov-range]').count(), 3,
+      "Printed coverage must retain both excluded edges and the incomplete interior");
+    assert.equal(await trusovCoverage.evaluate(node => node.open), false,
+      "Printing must not mutate the closed Trusov disclosure");
     await noJs.emulateMedia({ media: "screen" });
+    assert.equal(await trusovEnding.evaluate(node => node.checkVisibility()), false,
+      "Screen mode must restore collapsed Trusov disclosure");
     await noJsContext.close();
     // Printing must expose the exact-value table even when the on-screen details is closed.
     await desktop.locator(".chart-table").evaluate(node => { node.open = false; });

@@ -6,7 +6,7 @@ LAST_COMMITTED_RUN_AT: 2026-11-17
 LAST_RESULT: #560 merged as 3310589a70f6860fcb8835d50e93cdc14ce92cdd; pinned native v3 qualified clean unrelated-role controls while original v2 remained FALSE; Reader survey PR #561 awaits exact-head acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and a separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
-## Current delivery## Current delivery and acceptance
+## Current delivery and acceptance
 
 UNIT_ID: SCRIP-MORPH-010-NATIVE-READER-EVIDENCE
 ISSUE: #282 / #283 — source-backed native N controls in the public Reader
@@ -16,7 +16,7 @@ BASE: 3310589a70f6860fcb8835d50e93cdc14ce92cdd
 
 ACCEPTANCE: Public source-free 9/9 pinned native survey with SHA-256 manifest, explicit original 1/3 N-present vs 0/3 N-only, separate verified v3, original strict v2 FALSE, no noun/cardinal assignment and M2 0/5. Rebuild and inspect real desktop/mobile/print route; merge only on later accepted fresh exact-head CI.
 
-e milestone and compact queue
+## Next user-visible milestone and compact queue
 
 Milestone: enable accurate, discoverable measured-book reading and a legally supportable Trusov/Shishmareva comparison when historical source coverage can be proven.
 

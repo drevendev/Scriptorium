@@ -142,6 +142,70 @@ def build_n_control_survey(holder):
     }
 
 
+
+def build_n_contrast_v3(contrast, survey):
+    """Independently qualify curated N-only observations; never alter v2."""
+    if (contrast.get("schema_version") != "scriptorium-aot-n-contrast-v2"
+            or survey.get("schema_version") != "scriptorium-aot-n-control-survey-v1"):
+        raise ValueError("unknown native N contrast/survey schema")
+    positive = contrast.get("observed_n_only_across_noun_and_cardinal_examples")
+    strict_v2 = contrast.get("controlled_cross_role_n_collision_observed")
+    if type(positive) is not bool or type(strict_v2) is not bool:
+        raise ValueError("invalid native N contrast verdict")
+    groups = survey.get("groups")
+    if not isinstance(groups, dict) or set(groups) != {"adjectives", "adverbs", "verbs"}:
+        raise ValueError("missing/extra native negative-control groups")
+    coverage = {}
+    for role, expected in (("adjectives", "A"), ("adverbs", "ADV"), ("verbs", "V")):
+        group = groups[role]
+        if not isinstance(group, dict) or group.get("expected_runtime_pos") != expected:
+            raise ValueError("native control role/tag mismatch")
+        rows = group.get("tokens")
+        if not isinstance(rows, list) or len(rows) != 3 or group.get("token_count") != 3:
+            raise ValueError("native control slate is incomplete")
+        usable = 0
+        for row in rows:
+            if not isinstance(row, dict):
+                raise ValueError("invalid native control row")
+            labels = row.get("runtime_pos")
+            if (not isinstance(labels, list)
+                    or not all(isinstance(tag, str) and tag.strip() for tag in labels)
+                    or row.get("candidate_count") != len(labels)):
+                raise ValueError("invalid native control analysis")
+            status = ("no_analysis" if not labels else
+                      "n_present" if "N" in labels else
+                      "expected_tag_absent" if expected not in labels else "usable")
+            if row.get("status") != status:
+                raise ValueError("native control status does not match actual tags")
+            usable += status == "usable"
+        if group.get("usable_count") != usable:
+            raise ValueError("native control usable count mismatch")
+        coverage[role] = {
+            "usable_controls": usable,
+            "required_controls": 2,
+            "qualified": usable >= 2,
+        }
+    controls_qualified = all(group["qualified"] for group in coverage.values())
+    return {
+        "schema_version": "scriptorium-aot-n-independent-controls-v3",
+        "source_text_included": False,
+        "positive_n_only_fixture_observed": positive,
+        "independent_negative_controls_qualified": controls_qualified,
+        "negative_control_coverage": coverage,
+        "independently_controlled_n_only_observed": positive and controls_qualified,
+        "historical_v2_controlled_verdict_unchanged": strict_v2,
+        "noun_cardinal_source_pos": "unresolved",
+        "fantlab_dictionary_equivalence": "unknown",
+        "fantlab_homonym_selection": "unresolved",
+        "production_pos_mapping_changed": False,
+        "m2_parity_admissible": False,
+        "interpretation": (
+            "Curated lexical N-only observation, not recovered source POS identity "
+            "or FantLab homonym selection. Requires two clean controls per unrelated role."
+        ),
+    }
+
+
 def build_receipt():
     try:
         installed = version("pylem")
@@ -170,6 +234,8 @@ def build_receipt():
     fixture_identity = "\n".join(
         "%d:%s" % (ordinal, _sha256_text(token)) for ordinal, token in enumerate(TOKENS)
     )
+    contrast = build_n_contrast(holder)
+    survey = build_n_control_survey(holder)
     return {
         "schema_version": SCHEMA_VERSION,
         "provider": {
@@ -189,8 +255,9 @@ def build_receipt():
             "observed_runtime_pos": sorted(observed),
             "source_text_included": False,
         },
-        "n_contrast": build_n_contrast(holder),
-        "n_control_survey": build_n_control_survey(holder),
+        "n_contrast": contrast,
+        "n_control_survey": survey,
+        "n_contrast_v3": build_n_contrast_v3(contrast, survey),
         "epistemic_boundary": {
             "fantlab_dictionary_equivalence": "unknown",
             "homonym_selection_policy": "unresolved",

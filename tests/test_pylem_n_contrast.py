@@ -217,6 +217,39 @@ class NativeNContrastTests(unittest.TestCase):
             build_n_contrast_v3({"schema_version": "unexpected"}, survey)
 
 
+    def test_v3_rejects_fabricated_positive_or_wrong_source_identity(self):
+        import copy
+        holder = _Holder(self._v3_mapping())
+        contrast = build_n_contrast(holder)
+        survey = build_n_control_survey(holder)
+        for mutation in (
+            lambda x: x.update(observed_n_only_across_noun_and_cardinal_examples=False),
+            lambda x: x.update(controlled_cross_role_n_collision_observed=True),
+            lambda x: x["groups"]["noun_examples"].update(n_only_count=0),
+            lambda x: x["groups"]["other_pos_controls"]["tokens"][0].update(n_present=False),
+            lambda x: x["groups"]["cardinal_examples"]["tokens"][0].update(
+                token_sha256="0" * 64),
+            lambda x: x.update(token_manifest_sha256="0" * 64),
+            lambda x: x.update(source_text_included=True),
+            lambda x: x.update(m2_parity_admissible=True),
+        ):
+            broken = copy.deepcopy(contrast)
+            mutation(broken)
+            with self.assertRaises(ValueError):
+                build_n_contrast_v3(broken, survey)
+
+        for mutation in (
+            lambda x: x.update(source_text_included=True),
+            lambda x: x.update(qualifies_v2_n_collision=True),
+            lambda x: x.update(token_manifest_sha256="0" * 64),
+            lambda x: x["groups"]["verbs"]["tokens"][0].update(token_sha256="0" * 64),
+            lambda x: x.update(all_roles_have_usable_control=False),
+        ):
+            broken = copy.deepcopy(survey)
+            mutation(broken)
+            with self.assertRaises(ValueError):
+                build_n_contrast_v3(contrast, broken)
+
     def test_replay_is_deterministic_and_hashes_are_valid(self):
         import re
         tags = {word: ("N",) for _, words in N_CONTRAST_GROUPS for word in words}

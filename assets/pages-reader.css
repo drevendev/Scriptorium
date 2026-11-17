@@ -500,4 +500,7 @@ footer a { color:#ffdaa3; }
 .trusov-coverage .table-region { max-width:100%; overflow-x:auto; }
 .trusov-coverage table { width:100%; min-width:610px; }
 .trusov-coverage th,.trusov-coverage td { text-align:left; vertical-align:top; }
-@media print { .trusov-coverage { background:#fff !important; color:#000 !important; break-inside:auto; } .trusov-coverage > :not(summary) { display:block !important; } .trusov-coverage table { min-width:0; } .trusov-coverage tr { break-inside:avoid; } }
+@media print { .trusov-coverage { background:#fff !important; color:#000 !important; break-inside:auto; } /* A closed details element suppresses ::details-content even if descendants display:block.
+    Keep the pinned coverage/evidence table in A4 output with JavaScript disabled. */
+ .trusov-coverage::details-content { content-visibility:visible !important; }
+ .trusov-coverage > :not(summary) { display:block !important; } .trusov-coverage table { min-width:0; } .trusov-coverage tr { break-inside:avoid; } }

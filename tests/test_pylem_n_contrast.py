@@ -4,7 +4,8 @@ import unittest
 from types import SimpleNamespace
 
 from tools.pylem_runtime_probe import (N_CONTRAST_GROUPS, N_NEGATIVE_CONTROL_SURVEY,
-                                       build_n_contrast, build_n_control_survey)
+                                       build_n_contrast, build_n_control_survey,
+                                       build_n_contrast_v3)
 
 
 class _Holder:
@@ -137,6 +138,84 @@ class NativeNContrastTests(unittest.TestCase):
         self.assertFalse(survey["qualifies_v2_n_collision"])
         self.assertFalse(strict["negative_controls_non_n_observed"])
         self.assertFalse(strict["controlled_cross_role_n_collision_observed"])
+
+
+    def _v3_mapping(self):
+        mapping = {word: ("N",) for _, words in N_CONTRAST_GROUPS
+                   for word in words}
+        mapping.update({"красный": ("A", "N"), "быстро": ("ADV",),
+                        "бежит": ("V",)})
+        mapping.update({word: (expected,) for _, expected, words
+                        in N_NEGATIVE_CONTROL_SURVEY for word in words})
+        return mapping
+
+    def test_v3_independent_controls_qualify_without_changing_v2(self):
+        holder = _Holder(self._v3_mapping())
+        contrast = build_n_contrast(holder)
+        survey = build_n_control_survey(holder)
+        v3 = build_n_contrast_v3(contrast, survey)
+        self.assertFalse(contrast["controlled_cross_role_n_collision_observed"])
+        self.assertTrue(v3["independently_controlled_n_only_observed"])
+        self.assertFalse(v3["historical_v2_controlled_verdict_unchanged"])
+        self.assertEqual(v3["schema_version"], "scriptorium-aot-n-independent-controls-v3")
+        self.assertEqual([x["usable_controls"] for x in
+                          v3["negative_control_coverage"].values()], [3, 3, 3])
+        self.assertEqual([x["required_controls"] for x in
+                          v3["negative_control_coverage"].values()], [2, 2, 2])
+        self.assertFalse(v3["source_text_included"])
+        self.assertFalse(v3["production_pos_mapping_changed"])
+        self.assertFalse(v3["m2_parity_admissible"])
+        self.assertEqual(v3, build_n_contrast_v3(contrast, survey))
+        serialized = json.dumps(v3, ensure_ascii=False)
+        for word in self._v3_mapping():
+            self.assertNotIn(word, serialized)
+
+    def test_v3_fails_closed_for_all_n_missing_or_insufficient_controls(self):
+        mapping = self._v3_mapping()
+        for _, _, words in N_NEGATIVE_CONTROL_SURVEY:
+            for word in words[:2]:
+                mapping[word] = ()
+        contrast = build_n_contrast(_Holder(mapping))
+        survey = build_n_control_survey(_Holder(mapping))
+        v3 = build_n_contrast_v3(contrast, survey)
+        self.assertTrue(v3["positive_n_only_fixture_observed"])
+        self.assertFalse(v3["independent_negative_controls_qualified"])
+        self.assertFalse(v3["independently_controlled_n_only_observed"])
+
+        all_n = {word: ("N",) for _, words in N_CONTRAST_GROUPS for word in words}
+        all_n.update({word: ("N",) for _, _, words in N_NEGATIVE_CONTROL_SURVEY
+                      for word in words})
+        v3 = build_n_contrast_v3(build_n_contrast(_Holder(all_n)),
+                                 build_n_control_survey(_Holder(all_n)))
+        self.assertFalse(v3["independently_controlled_n_only_observed"])
+
+        missing_positive = self._v3_mapping()
+        for word in N_CONTRAST_GROUPS[1][1]:
+            missing_positive[word] = ("ADV",)
+        v3 = build_n_contrast_v3(build_n_contrast(_Holder(missing_positive)),
+                                 build_n_control_survey(_Holder(missing_positive)))
+        self.assertTrue(v3["independent_negative_controls_qualified"])
+        self.assertFalse(v3["independently_controlled_n_only_observed"])
+
+    def test_v3_rejects_contradictory_or_incomplete_survey(self):
+        import copy
+        holder = _Holder(self._v3_mapping())
+        contrast = build_n_contrast(holder)
+        survey = build_n_control_survey(holder)
+        for edit in (
+            lambda x: x["groups"]["adjectives"]["tokens"].pop(),
+            lambda x: x["groups"]["verbs"].update(usable_count=0),
+            lambda x: x["groups"]["adverbs"]["tokens"][0].update(
+                runtime_pos=["N"], candidate_count=1),
+            lambda x: x["groups"]["adjectives"].update(expected_runtime_pos="N"),
+        ):
+            broken = copy.deepcopy(survey)
+            edit(broken)
+            with self.assertRaises(ValueError):
+                build_n_contrast_v3(contrast, broken)
+        with self.assertRaises(ValueError):
+            build_n_contrast_v3({"schema_version": "unexpected"}, survey)
+
 
     def test_replay_is_deterministic_and_hashes_are_valid(self):
         import re

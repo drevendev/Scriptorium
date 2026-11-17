@@ -648,12 +648,19 @@
       : "Подбор недоступен: нужны две разные редакции с тремя совместимыми измерениями и ненулевым разбросом.";
   }
 
+  // Match only measured metric metadata, never manuscript text.
+  // Words are order-independent, and Russian ё/е spelling is equivalent.
+  function metricMatchesQuery(metric, query) {
+    const fold=value=>value.toLocaleLowerCase("ru").replace(/ё/g,"е");
+    const terms=fold(query).trim().split(/\s+/u).filter(Boolean);
+    const haystack=fold(metric.id+" "+label(metric.id)+" "+unit(metric.id));
+    return terms.every(term=>haystack.includes(term));
+  }
+
   function updateSingle() {
     const book=getBook(currentBook);
     if (!book) return;
-    const q=search.value.trim().toLocaleLowerCase("ru");
-    const selected=book.metrics.filter(m=>!q||(
-      m.id+" "+label(m.id)+" "+unit(m.id)).toLocaleLowerCase("ru").includes(q));
+    const selected=book.metrics.filter(m=>metricMatchesQuery(m,search.value));
     const nodes=document.createDocumentFragment();
     for (const m of selected) nodes.appendChild(makeTableRow(m));
     if (!selected.length) {

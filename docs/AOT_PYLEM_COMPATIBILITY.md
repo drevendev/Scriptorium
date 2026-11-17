@@ -259,6 +259,14 @@ is present or is the *only* reported tag. Native CI records per-role
 counts and whether N-only labels occur in both curated noun/cardinal
 groups. The original three-token smoke contract is unchanged.
 
+The v2 native control receipt additionally reports whether **every unrelated
+negative-control token received at least one native analysis with no `N`
+candidate**. The cross-role N-only observation is control-qualified only when
+these negatives pass. A provider returning `N` for everything, or returning
+no analyses for a negative control, is inconclusive rather than positive
+collision evidence. The raw observation remains separately available. This
+is not an accuracy score or a recovered noun/cardinal mapping.
+
 This is a **measured capability/ambiguity diagnostic**, not a recovered
 AOT enum or a word-level homonym choice. The lexical role labels are
 curated *test expectations*, not native ground truth; native analyses

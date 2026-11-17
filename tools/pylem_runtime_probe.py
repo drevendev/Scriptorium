@@ -58,14 +58,25 @@ def build_n_contrast(holder):
             "n_present_count": sum(row["n_present"] for row in rows),
             "tokens": rows,
         }
+    # An all-N backend would otherwise look like a cross-role collision.
+    # Empty analyses are not successful negative controls.
+    negative_controls_non_n_observed = all(
+        row["candidate_count"] > 0 and not row["n_present"]
+        for row in groups["other_pos_controls"]["tokens"]
+    )
+    cross_role_n_only = (
+        groups["noun_examples"]["n_only_count"] > 0
+        and groups["cardinal_examples"]["n_only_count"] > 0
+    )
     return {
-        "schema_version": "scriptorium-aot-n-contrast-v1",
+        "schema_version": "scriptorium-aot-n-contrast-v2",
         "source_text_included": False,
         "token_manifest_sha256": _sha256_text("\n".join(manifest)),
         "groups": groups,
-        "observed_n_only_across_noun_and_cardinal_examples": (
-            groups["noun_examples"]["n_only_count"] > 0
-            and groups["cardinal_examples"]["n_only_count"] > 0
+        "observed_n_only_across_noun_and_cardinal_examples": cross_role_n_only,
+        "negative_controls_non_n_observed": negative_controls_non_n_observed,
+        "controlled_cross_role_n_collision_observed": (
+            cross_role_n_only and negative_controls_non_n_observed
         ),
         "interpretation": "Fixture lexical roles are annotations, not recovered AOT POS enums.",
         "fantlab_dictionary_equivalence": "unknown",

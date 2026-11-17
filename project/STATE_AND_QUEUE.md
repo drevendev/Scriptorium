@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 542
+STATE_REVISION: 543
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-17
-LAST_RESULT: #556 merged at d9c5182defa5fc7a7a6cb0d4a73d8c597c7f60a9; #283 no-JS print coverage fix authored for later Chromium acceptance.
+LAST_RESULT: #557 confirmed merged at 6af0b3b0c5cf54d0b508f273fb2f2a5256255994; #282 native N-control quality gate authored for later acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and a separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-TRUSOV-COVERAGE-PRINT
-ISSUE: #283 — preserve excluded historical source Pages in A4 print with JavaScript disabled
-STATUS: PR_CANDIDATE; exact-head CI, canonical build and real Chromium no-JS print acceptance required
-BRANCH: scrip-trusov-print-coverage-20261117
-BASE: d9c5182defa5fc7a7a6cb0d4a73d8c597c7f60a9
+UNIT_ID: SCRIP-MORPH-009-NEGATIVE-CONTROL
+ISSUE: #282 — separate N-only cross-role observations from uninformative all-N providers
+STATUS: PR_CANDIDATE; exact-head full Python and pinned native CI acceptance required
+BRANCH: scrip-morph-009-negative-control-20261117
+BASE: 6af0b3b0c5cf54d0b508f273fb2f2a5256255994
 
-ACCEPTANCE: Closed native Trusov Page-coverage details remain collapsed on screen, but all three source-bound Page ranges (including excluded opening/ending) are rendered when printing without JavaScript; print mode does not mutate the disclosure. Static coverage identity and M2 0/5 stay unchanged.
+ACCEPTANCE: Raw N-only cross-role observation is reported separately from control-qualified evidence; all three unrelated controls must have nonempty N-free native analyses. All-N and no-analysis counterexamples are inconclusive. No compatibility mapping or parity gate change.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,11 +22,11 @@ Milestone: enable accurate, discoverable measured-book reading and a legally sup
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 no-JS Trusov evidence print coverage | Closed details reveal excluded historical Page boundaries only for print, and restore screen collapse | #556 metric search already merged |
+| P1 | #282 control-qualified native N contrast | Native source-free receipt rejects all-N and no-analysis negative controls; pinned CI passes | #557 print fix already merged |
 | P2 | #511 recover actual Page 2/148–151 rendering | Verified whole translation body/rights/coverage, not another seam hypothesis | Exact 2023 template/transclusion semantics and frozen oldids still unresolved |
-| P3 | #282 AOT noun/cardinal experiment | Native versioned ambiguity evidence, no guessed POS mapping | Pinned AOT runtime |
+| P3 | #283 residual Reader keyboard/accessibility follow-up | Real desktop/mobile and no-JS evidence | Deduplicate against recent merged work |
 | P4 | #284 independent rights-cleared >=300k new edition | Concrete explicit reuse permission and independently measured source | Legal/edition proof |
-| P5 | #283 residual Reader keyboard/accessibility follow-up | Real desktop/mobile and no-JS evidence | Deduplicate against #542/#543/#555/#556 and current Chromium tests |
+| P5 | #282 next native ambiguity experiment | Broaden independently measured N evidence after controls pass | Pinned AOT runtime and accepted v2 receipt |
 
 ## Retained scientific and operational boundaries
 

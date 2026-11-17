@@ -122,7 +122,7 @@ jobs:
           assert receipt["fixture"]["source_text_included"] is False
           assert receipt["fixture"]["token_count"] == 3
           contrast = receipt["n_contrast"]
-          assert contrast["schema_version"] == "scriptorium-aot-n-contrast-v1"
+          assert contrast["schema_version"] == "scriptorium-aot-n-contrast-v2"
           assert contrast["source_text_included"] is False
           assert contrast["fantlab_dictionary_equivalence"] == "unknown"
           assert contrast["fantlab_homonym_selection"] == "unresolved"
@@ -138,11 +138,19 @@ jobs:
                   assert row["candidate_count"] == len(row["runtime_pos"])
                   assert row["n_only"] == (bool(row["runtime_pos"]) and set(row["runtime_pos"]) == {"N"})
           assert isinstance(contrast["observed_n_only_across_noun_and_cardinal_examples"], bool)
+          clean_negatives = all(row["candidate_count"] > 0 and not row["n_present"]
+              for row in contrast["groups"]["other_pos_controls"]["tokens"])
+          assert contrast["negative_controls_non_n_observed"] == clean_negatives
+          assert contrast["controlled_cross_role_n_collision_observed"] == (
+              contrast["observed_n_only_across_noun_and_cardinal_examples"] and clean_negatives
+          )
           print(json.dumps({
               "n_contrast_profile": contrast["schema_version"],
               "n_only_by_fixture_role": {name: group["n_only_count"]
                   for name, group in contrast["groups"].items()},
               "observed_cross_role_n_only": contrast["observed_n_only_across_noun_and_cardinal_examples"],
+              "negative_controls_non_n_observed": contrast["negative_controls_non_n_observed"],
+              "controlled_cross_role_n_collision_observed": contrast["controlled_cross_role_n_collision_observed"],
               "m2_parity_admissible": False,
           }, sort_keys=True))
 

@@ -23,8 +23,10 @@ class NativeNContrastTests(unittest.TestCase):
             "красный": ("A",), "быстро": ("ADV",), "бежит": ("V",),
         }
         result = build_n_contrast(_Holder(mapping))
-        self.assertEqual(result["schema_version"], "scriptorium-aot-n-contrast-v1")
+        self.assertEqual(result["schema_version"], "scriptorium-aot-n-contrast-v2")
         self.assertTrue(result["observed_n_only_across_noun_and_cardinal_examples"])
+        self.assertTrue(result["negative_controls_non_n_observed"])
+        self.assertTrue(result["controlled_cross_role_n_collision_observed"])
         groups = result["groups"]
         self.assertEqual([name for name, _ in N_CONTRAST_GROUPS], list(groups))
         self.assertEqual((groups["noun_examples"]["n_only_count"],
@@ -47,6 +49,8 @@ class NativeNContrastTests(unittest.TestCase):
         mapping = {word: ("A",) for _, words in N_CONTRAST_GROUPS for word in words}
         result = build_n_contrast(_Holder(mapping))
         self.assertFalse(result["observed_n_only_across_noun_and_cardinal_examples"])
+        self.assertTrue(result["negative_controls_non_n_observed"])
+        self.assertFalse(result["controlled_cross_role_n_collision_observed"])
         self.assertTrue(all(group["n_only_count"] == 0
                             for group in result["groups"].values()))
         self.assertEqual(sum(group["token_count"]
@@ -60,6 +64,23 @@ class NativeNContrastTests(unittest.TestCase):
             with self.subTest(bad=bad):
                 with self.assertRaisesRegex(RuntimeError, "blank/non-string"):
                     build_n_contrast(_Holder({"дом": (bad,)}))
+
+    def test_all_n_or_missing_negative_analysis_is_inconclusive(self):
+        all_n = {word: ("N",) for _, words in N_CONTRAST_GROUPS for word in words}
+        receipt = build_n_contrast(_Holder(all_n))
+        self.assertTrue(receipt["observed_n_only_across_noun_and_cardinal_examples"])
+        self.assertFalse(receipt["negative_controls_non_n_observed"])
+        self.assertFalse(receipt["controlled_cross_role_n_collision_observed"])
+        for negative in (("N",), (), ("N", "A")):
+            with self.subTest(negative=negative):
+                mapping = {word: ("N",) for _, words in N_CONTRAST_GROUPS for word in words}
+                for word in N_CONTRAST_GROUPS[2][1]:
+                    mapping[word] = ("A",)
+                mapping["красный"] = negative
+                result = build_n_contrast(_Holder(mapping))
+                self.assertTrue(result["observed_n_only_across_noun_and_cardinal_examples"])
+                self.assertFalse(result["negative_controls_non_n_observed"])
+                self.assertFalse(result["controlled_cross_role_n_collision_observed"])
 
     def test_replay_is_deterministic_and_hashes_are_valid(self):
         import re

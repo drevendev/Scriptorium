@@ -287,6 +287,29 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
     assert.equal(afterClear.searchParams.has(key),false,tag + ": clear must remove " + key);
   assert.equal(afterClear.searchParams.get("left"),"anna");
   assert.equal(afterClear.searchParams.get("right"),"beketova");
+  // Real desktop/mobile browser: metric-coverage order, deep link and reset.
+  await page.locator("#catalog-order").selectOption("coverage");
+  const coverageOrder = await page.locator("#books .book").evaluateAll(cards =>
+    cards.map(card => card.dataset.catalogKey));
+  assert.deepEqual(coverageOrder.slice(0,8), [
+    "silver","karamazov","hyperboloid","resurrection",
+    "road","oblomov","humiliated","shishmareva"
+  ], tag + ": measured-field order is stable");
+  assert.deepEqual(coverageOrder.slice(-2), ["petersburg","darwin"],
+    tag + ": unmeasured leads remain last");
+  assert.match(await page.locator("#catalog-sort-status").innerText(), /числу измеренных полей/);
+  const coverageHref = await page.locator("#share-catalog").getAttribute("href");
+  assert.match(coverageHref, /catalog_order=coverage/);
+  await page.goto(origin + "/" + coverageHref, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => !document.querySelector("#catalog-order").disabled,
+    null, { timeout: 20000 });
+  assert.equal(await page.locator("#catalog-order").inputValue(), "coverage");
+  assert.deepEqual(await page.locator("#books .book").evaluateAll(cards =>
+    cards.map(card => card.dataset.catalogKey)), coverageOrder);
+  await page.locator("#catalog-clear").click();
+  assert.equal(await page.locator("#catalog-order").inputValue(), "catalog");
+  assert.deepEqual(await page.locator("#books .book").evaluateAll(cards =>
+    cards.map(card => card.dataset.catalogKey)), sourceOrder);
   await page.screenshot({ path: path.join(evidenceDir, tag + "-reader.png"),
     fullPage: true, animations: "disabled" });
   assert.deepEqual(errors, [], tag + ": browser JavaScript errors");

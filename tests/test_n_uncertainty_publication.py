@@ -158,6 +158,47 @@ class NativeNPublicationTests(unittest.TestCase):
         with self.assertRaises(AssertionError):
             assert_rows(changed_control)
 
+    def test_native_control_survey_publication_and_strict_v2_boundary(self):
+        """Published observations must remain separate from strict v2 evidence."""
+        from hashlib import sha256
+        from tools.pylem_runtime_probe import N_NEGATIVE_CONTROL_SURVEY
+
+        manifest = chr(10).join(
+            role + ":" + expected + ":" + sha256(token.encode("utf-8")).hexdigest()
+            for role, expected, tokens in N_NEGATIVE_CONTROL_SURVEY
+            for token in tokens
+        )
+        self.assertEqual(
+            sha256(manifest.encode("utf-8")).hexdigest(),
+            "da56ada4e9861baf81921c61ddc7b082fae26e727c1a647e39beffee9dbf484b",
+        )
+        markup = (ROOT / "n-uncertainty.html").read_text(encoding="utf-8")
+        self.assertIn('id="n-native-control-survey-table"', markup)
+        self.assertIn("https://github.com/drevendev/Scriptorium/actions/runs/44068624527", markup)
+        self.assertIn("scriptorium-aot-n-control-survey-v1", markup)
+        self.assertIn("controlled_cross_role_n_collision_observed=false", markup)
+        self.assertIn("INCONCLUSIVE", markup)
+        self.assertIn("N-only: 0/3", markup)
+        self.assertIn("A</code> и <code>N", markup)
+        self.assertIn("не точность классификатора", markup)
+        for role, expected, tokens in N_NEGATIVE_CONTROL_SURVEY:
+            self.assertEqual(len(tokens), 3)
+            label = {"adjectives": "Прилагательные", "adverbs": "Наречия",
+                     "verbs": "Глаголы"}[role]
+            row = ('<tr data-survey-role="' + role + '"><th scope="row">'
+                   + label + ' · ' + expected
+                   + '</th><td>3</td><td>3</td><td>0</td></tr>')
+            self.assertIn(row, markup)
+        self.assertEqual(markup.count('data-survey-role="'), 3)
+
+    def test_native_control_survey_fails_closed_on_fabricated_count(self):
+        markup = (ROOT / "n-uncertainty.html").read_text(encoding="utf-8")
+        exact = '<tr data-survey-role="adjectives"><th scope="row">Прилагательные · A</th><td>3</td><td>3</td><td>0</td></tr>'
+        self.assertEqual(markup.count(exact), 1)
+        tampered = markup.replace(exact, exact.replace('<td>3</td><td>0</td>', '<td>2</td><td>1</td>'))
+        self.assertNotIn(exact, tampered)
+        self.assertIn(exact, markup)
+
     def test_tampering_counts_identity_or_parity_fails_closed(self):
         for path, value in [
             (("counts", "conditional_defined"), 172636),

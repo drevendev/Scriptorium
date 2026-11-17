@@ -5,6 +5,7 @@ on:
     paths:
       - "index.html"
       - "word-density.html"
+      - "n-uncertainty.html"
       - "metrics.html"
       - "assets/**"
       - "voice/**"
@@ -23,6 +24,7 @@ on:
     paths:
       - "index.html"
       - "word-density.html"
+      - "n-uncertainty.html"
       - "metrics.html"
       - "assets/**"
       - "voice/**"

@@ -295,8 +295,17 @@ all-roles-covered diagnostic; **no words from books**. This is an exploratory
 selection experiment, not a change to the original three v2 controls, its
 strict negative gate, production mapping, frozen Anna impact bounds, or M2.
 Survey success alone cannot establish the source AOT POS enum or FantLab
-homonym policy. CI must supply actual native observations before selecting
-any future replacement control.
+homonym policy. The [2026-11-17 pinned native run #44068624527](https://github.com/drevendev/Scriptorium/actions/runs/44068624527)
+**confirmed 3/3 usable** in each group (nine total), with the expected
+runtime POS and zero N candidates. One adverb had both `ADV` and
+`ADJ_SHORT` without N; usable does not mean unambiguous.
+The survey input-manifest SHA-256 is
+`da56ada4e9861baf81921c61ddc7b082fae26e727c1a647e39beffee9dbf484b`.
+The original unrelated v2 group still has 0/3 **N-only** but 1/3
+**N-present** (`A, N` for `красный`); its strict
+`controlled_cross_role_n_collision_observed` remains **false/INCONCLUSIVE**.
+This separate survey cannot establish AOT source POS enums, production
+noun/cardinal assignments or FantLab parity.
 
 ## Primary sources
 

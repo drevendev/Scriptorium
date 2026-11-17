@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 544
+STATE_REVISION: 545
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-17
-LAST_RESULT: #558 merged as e32238e1f8ae1b0d27b753e3ee5683c91421e630; pinned native v2 contrast returned FALSE because adjective control also has N; supplemental control-slate PR prepared for later native acceptance.
+LAST_RESULT: #559 merged as 6d47f4af5172c544bad64e641d108a0f21990075; pinned native survey confirmed 3/3 clean controls in each unrelated role, while v2 remained FALSE; independent v3 qualification PR prepared for later acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and a separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-009-CONTROL-SLATE
-ISSUE: #282 — independently measure additional non-N native control candidates
-STATUS: PR_CANDIDATE; full Python and pinned native CI acceptance required
-BRANCH: scrip-morph-009-control-slate-20261117
-BASE: e32238e1f8ae1b0d27b753e3ee5683c91421e630
+UNIT_ID: SCRIP-MORPH-009-INDEPENDENT-CONTROLS-V3
+ISSUE: #282 — qualify observed N-only lexical roles against independently clean native controls
+STATUS: PR_CANDIDATE; later exact-head full Python and pinned native CI acceptance required
+BRANCH: scrip-morph-009-controlled-v3-20261117
+BASE: 6d47f4af5172c544bad64e641d108a0f21990075
 
-ACCEPTANCE: Hash-only receipt records actual native tags and usable/failed reason for 3 adjective, 3 adverb, 3 verb candidates; each usable control must have a nonempty expected tag and zero N analyses. Test fail-closed cases. Keep strict v2 N collision verdict unchanged, even if the new survey finds clean alternatives. No production mapping or parity claim.
+ACCEPTANCE: Separate versioned v3 verdict requires N-only observations in curated noun/cardinal examples and >=2 of 3 N-free expected-tag-positive controls per adjective/adverb/verb group. Reject missing/contradictory evidence and all-N backends. Preserve strict v2 FALSE, unresolved source POS, unchanged production mapping and M2 0/5.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,11 +22,11 @@ Milestone: enable accurate, discoverable measured-book reading and a legally sup
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 supplemental native N control slate | 9 hashed candidate observations, explicit missing/N/wrong-tag reasons, independent native CI | v2 gate remains false; pinned pylem |
+| P1 | #282 independently controlled N-only v3 observation | Exact native v3 receipt, >=2 clean controls per unrelated role, fail-closed regressions, unchanged v2 | Pinned survey 9/9; acceptance must be later-run |
 | P2 | #511 recover actual Page 2/148–151 rendering | Verified whole translation body/rights/coverage, not another seam hypothesis | Exact 2023 template/transclusion semantics and frozen oldids still unresolved |
 | P3 | #283 residual Reader keyboard/accessibility follow-up | Real desktop/mobile and no-JS evidence | Deduplicate against recent merged work |
 | P4 | #284 independent rights-cleared >=300k new edition | Concrete explicit reuse permission and independently measured source | Legal/edition proof |
-| P5 | #282 native N role interpretation | Evaluate any independently clean control slate and frozen-work rate bounds without guessing noun/cardinal | Actual pinned native survey evidence and source identity |
+| P5 | #282 native role interpretation and frozen-work bounds | Explain v3 conditional evidence alongside source-bound N-only 55,081 / N-mixed 19,670 without recovering noun/cardinal | Require accepted v3 native evidence and unchanged input hashes |
 
 ## Retained scientific and operational boundaries
 

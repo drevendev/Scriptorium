@@ -42,6 +42,13 @@ async function checkChartStripeContrast(page, label) {
     assert.ok(contrastRatio(foreground, row.background) >= 4.5,
       label + ": chart striped table text must meet 4.5:1; got " +
       contrastRatio(foreground, row.background).toFixed(2));
+  const evidenceLinks = await page.locator("#chart-table-rows th a").evaluateAll(links =>
+    links.map(link => link.getAttribute("href")));
+  const bookEvidence = await page.locator("#books .book[data-status='measured'] a[data-book]").evaluateAll(links =>
+    links.map(link => link.getAttribute("href")));
+  assert.equal(evidenceLinks.length, 11, label + ": chart evidence links for all measured editions");
+  assert.deepEqual([...evidenceLinks].sort(), [...bookEvidence].sort(),
+    label + ": chart and catalogue must use identical source-backed evidence URLs");
   await details.evaluate((node, open) => { node.open = open; }, wasOpen);
 }
 

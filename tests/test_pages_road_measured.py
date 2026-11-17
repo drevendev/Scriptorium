@@ -80,7 +80,10 @@ class RoadEighthReaderTests(unittest.TestCase):
         html = (ROOT / "index.html").read_text(encoding="utf-8")
         self.assertIn('data-status="measured" data-catalog-key="road"', html)
         self.assertIn('data-book="road"', html)
-        self.assertIn('Дорога в никуда</th><td>45.31181857828172</td><td>%</td>', html)
+        self.assertIn(
+            f'<tr><th scope="row"><a href="{self.book["evidence_url"]}" '
+            f'aria-label="Свидетельство: Дорога в никуда">Дорога в никуда</a></th>'
+            f'<td>45.31181857828172</td><td>%</td></tr>', html)
         self.assertIn("не редакция «Правды» 1965 года", html)
 
     def test_tampering_with_source_hash_reference_or_parity_rejected(self):

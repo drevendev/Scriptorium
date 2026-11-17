@@ -88,6 +88,9 @@ main { max-width:1300px; margin:0 auto; padding:0 clamp(1rem,3vw,2.5rem) 4rem; }
 /* Shared light zebra stripes are illegible under the chart table's light text. */
 .chart-table tbody tr:nth-child(even) { background:#20473c; }
 .chart-table td:nth-child(2) { white-space:nowrap; }
+/* A measured chart title is a readable keyboard link to its source evidence. */
+.chart-table tbody th a { color:#f4cf99; text-decoration:underline; text-underline-offset:.18em; }
+.chart-table tbody th a:focus-visible { outline:3px solid #f4cf99; outline-offset:2px; }
 @media (max-width:490px) { .chart-table table { min-width:440px; } }
 .chart-share { margin:-.3rem 0 1rem; color:#e3efe9; font-size:.8rem; line-height:1.5; }
 .chart-share a { display:inline-flex; align-items:center; min-height:44px; color:#f4cf99; font-weight:750; }
@@ -385,6 +388,7 @@ footer a { color:#ffdaa3; }
  .chart-table .table-region { overflow:visible; border:0; }
  .chart-table table { width:100%; min-width:0; table-layout:fixed; color:#000 !important; font-size:9pt; }
  .chart-table caption,.chart-table th,.chart-table td { color:#000 !important; border-color:#555 !important; }
+ .chart-table tbody th a { color:#000 !important; text-decoration:underline; }
  .chart-table tbody tr:nth-child(even) { background:#f4f8f3 !important; }
  .chart-table th:first-child { width:42%; }
  .chart-table td:nth-child(2) { white-space:normal; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }

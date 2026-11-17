@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 547
+STATE_REVISION: 548
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-17
-LAST_RESULT: #561 merged as 8a5637b099989c175934d128e98f78c96cc16df4; Pages deployment check successful, direct live URL not verified. New #562 local lexical-aggregate extension proposed for independent later-run acceptance.
+LAST_RESULT: #564 merged as e2cc45da64162c7fbbff1d118e06bbda633b7e30; private lexical contrast shipped. #563 tag-aggregation implementation staged for later-run acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-METRIC-LEXICAL-AGGREGATE-V1
-ISSUE: #562 — private reproducible source-free aggregate lexical contrast
-STATUS: PR_CANDIDATE; CLI/library, regressions and method written on dedicated branch; exact-head CI and later-run acceptance pending
-BRANCH: scrip-metric-lexical-aggregate-20261117
-BASE: 8a5637b099989c175934d128e98f78c96cc16df4
+UNIT_ID: SCRIP-TAG-CURATED-PROFILES-V1
+ISSUE: #563 — private source-free, provenance-checked tag profile preview
+STATUS: PR_CANDIDATE; exact-head CI and independent later-run review required; no publication
+BRANCH: scrip-tag-curated-profiles-20261117
+BASE: e2cc45da64162c7fbbff1d118e06bbda633b7e30
 
-ACCEPTANCE: Two bounded local UTF-8 texts to versioned aggregate JSON/Markdown with no lexemes/rare-word hashes/source text, deterministic relative-frequency dominance and JS divergence; nonrepresentative/empty/lineage/language/mismatch states, unknown legal provenance and explicit no-publication gate. Positive/negative tests and full native checks must pass. This is independent M4 exploratory capability, not a corpus release, new Pages dataset or FantLab M2 parity.
+ACCEPTANCE: Offline tagged-edition JSON -> versioned per-tag observed metric distributions without source text; strict source/translation/profile/rights assertions, >=300k chars, confirmed human/source authority, no inference promotion, missing/empty/single-work semantics, reproducible snapshot hash, public_release_ready=false. Positive/negative regressions and exact-head CI must pass before later merge. No real tag labels are invented.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: complete offline private lexical comparison with scientific limits, then publish only independently rights-cleared measured evidence and keep the existing Reader usable.
+Milestone: accept the private provenance-safe tag aggregator; then curate genuinely rights-cleared work tags and publish only validated reader-facing filters/tables.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 private lexical aggregate PR | Exact-head Python/CLI regression and later review; no text disclosure, no false corpus claim | PR checks; legal/source proof for future public work |
-| P2 | #563 provenance-safe work tags | Evidence-backed tag taxonomy and measured-edition aggregation without invented labels | Source/rights validation |
-| P3 | #283 Reader mobile/keyboard polish | Built Pages + genuine desktop/mobile/no-JS/print evidence | Deduplicate existing tests |
-| P4 | #511 Trusov translation pair | Complete historically verified body before measuring and pairing | Unresolved historical Page 2/148–151 semantics |
-| P5 | #282 AOT noun/cardinal ambiguity | Proven source-bound impact and explicit unknowns without fabricated true POS | Existing pinned diagnostic only; choose new executable evidence |
+| P1 | #563 private tag-profile PR | Exact-head Python/CLI + safety regressions, independent later review | CI; real curated evidence for later publication |
+| P2 | #562 rights-cleared lexical comparison in Reader | Verified real-work source-free aggregate comparison, no fabricated word scores | New independent source and rights clearance |
+| P3 | #283 Reader mobile/keyboard polish | Built Pages and desktop/mobile/no-JS/print acceptance | Deduplicate existing tests |
+| P4 | #511 Trusov translation pair | Complete source-verified body before profile pairing | Unresolved historical Page 2/148–151 semantics |
+| P5 | #282 AOT noun/cardinal ambiguity | Independent source-bound POS evidence, no fabricated true POS | New executable diagnostic evidence |
 
 ## Retained scientific and operational boundaries
 

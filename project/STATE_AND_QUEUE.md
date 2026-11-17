@@ -1,30 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 548
+STATE_REVISION: 549
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-17
-LAST_RESULT: #564 merged as e2cc45da64162c7fbbff1d118e06bbda633b7e30; private lexical contrast shipped. #563 tag-aggregation implementation staged for later-run acceptance.
+LAST_RESULT: #565 merged as 6f247eac64c1816621f86a16e0a4898a16d6ec4e; private tag profiles shipped. #283 measured-field coverage sort proposed for later-run acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TAG-CURATED-PROFILES-V1
-ISSUE: #563 — private source-free, provenance-checked tag profile preview
-STATUS: PR_CANDIDATE; exact-head CI and independent later-run review required; no publication
-BRANCH: scrip-tag-curated-profiles-20261117
-BASE: e2cc45da64162c7fbbff1d118e06bbda633b7e30
+UNIT_ID: SCRIP-SITE-COVERAGE-SORT-V1
+ISSUE: #283 — reader catalogue ordering by count of measured fields
+STATUS: PR_CANDIDATE; exact-head CI, real Chromium desktop/mobile/keyboard and later-run acceptance required; no publication
+BRANCH: scrip-reader-measured-coverage-20261117
+BASE: 6f247eac64c1816621f86a16e0a4898a16d6ec4e
 
-ACCEPTANCE: Offline tagged-edition JSON -> versioned per-tag observed metric distributions without source text; strict source/translation/profile/rights assertions, >=300k chars, confirmed human/source authority, no inference promotion, missing/empty/single-work semantics, reproducible snapshot hash, public_release_ready=false. Positive/negative regressions and exact-head CI must pass before later merge. No real tag labels are invented.
+ACCEPTANCE: source-backed 11 measured / 2 pending cards order by actual observed-field counts, stable equal-score tie order, missing last, shareable allow-listed URL, keyboard DOM order and reset, same no-JS default; explicit no-FantLab-parity interpretation. Positive/negative Node and real browser regression checks.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: accept the private provenance-safe tag aggregator; then curate genuinely rights-cleared work tags and publish only validated reader-facing filters/tables.
+Milestone: make source-backed Reader metrics coverage discoverable with shareable sort links; independently accept after full CI and browser checks.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #563 private tag-profile PR | Exact-head Python/CLI + safety regressions, independent later review | CI; real curated evidence for later publication |
-| P2 | #562 rights-cleared lexical comparison in Reader | Verified real-work source-free aggregate comparison, no fabricated word scores | New independent source and rights clearance |
-| P3 | #283 Reader mobile/keyboard polish | Built Pages and desktop/mobile/no-JS/print acceptance | Deduplicate existing tests |
+| P1 | #283 Reader coverage sort PR | Exact-head CI; keyboard/mobile, URL, no-JS and printed fallback checks | Later-run independent acceptance |
+| P2 | #563 public tag profiles | Real verified curator/rights evidence; no synthetic public tags | New genuine source attestations |
+| P3 | #562 rights-cleared lexical comparison in Reader | Verified real-work source-free aggregate comparison, no fabricated word scores | New independent source and rights clearance |
 | P4 | #511 Trusov translation pair | Complete source-verified body before profile pairing | Unresolved historical Page 2/148–151 semantics |
 | P5 | #282 AOT noun/cardinal ambiguity | Independent source-bound POS evidence, no fabricated true POS | New executable diagnostic evidence |
 

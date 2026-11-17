@@ -402,7 +402,7 @@
     share.hidden=!safeCatalogQuery(raw);
     catalogCopyButton.disabled=share.hidden;
     if (!share.hidden) {
-      const order=["catalog","title","dialogue","length","coverage"].includes(catalogOrder.value)
+      const order=["catalog","title","author","dialogue","length","coverage"].includes(catalogOrder.value)
         ? catalogOrder.value : "catalog";
       share.href=catalogShareHref(mode,origin,raw,order);
       share.textContent=raw ? "Ссылка на этот поиск ↗" : "Ссылка на выбранный список ↗";
@@ -476,7 +476,7 @@
       ? requestedOrigin : "all";
     const raw=params.get("q")||"";
     const requestedOrder=params.get("catalog_order");
-    const order=["title","dialogue","length","coverage"].includes(requestedOrder)
+    const order=["title","author","dialogue","length","coverage"].includes(requestedOrder)
       ? requestedOrder : "catalog";
     return {mode,origin,query:safeCatalogQuery(raw)?raw:"",order};
   }
@@ -493,7 +493,7 @@
   // and screen-reader traversal must match the visible catalogue sequence.
   // The default, no-JS catalogue stays in source order.
   function sortCatalog() {
-    const selected=["catalog","title","dialogue","length","coverage"].includes(catalogOrder.value)
+    const selected=["catalog","title","author","dialogue","length","coverage"].includes(catalogOrder.value)
       ? catalogOrder.value : "catalog";
     if (catalogOrder.value!==selected) catalogOrder.value=selected;
     const collator=new Intl.Collator("ru",{sensitivity:"base",numeric:true});
@@ -506,7 +506,7 @@
         ? lookup(book,"fantlab.dialogue.share_percent") : null;
       const lengthField=book.text_status==="measured"
         ? lookup(book,"fantlab.general.characters") : null;
-      return {card,ordinal,title:book.display_title,
+      return {card,ordinal,title:book.display_title,author:book.display_author,
         coverage:book.text_status==="measured" && Number.isSafeInteger(book.measured) && book.measured>=0
           ? book.measured : null,
         dialogue:book.text_status==="measured"&&field&&isNumeric(field.actual)
@@ -517,6 +517,8 @@
     });
     if (selected==="title") entries.sort((a,b)=>
       collator.compare(a.title,b.title)||a.ordinal-b.ordinal);
+    if (selected==="author") entries.sort((a,b)=>
+      collator.compare(a.author,b.author)||collator.compare(a.title,b.title)||a.ordinal-b.ordinal);
     if (selected==="dialogue") entries.sort((a,b)=>{
       if (a.dialogue===null) return b.dialogue===null?a.ordinal-b.ordinal:1;
       if (b.dialogue===null) return -1;
@@ -536,6 +538,7 @@
     const descriptions={
       catalog:"Исходный порядок каталога.",
       title:"Книги упорядочены по русским названиям.",
+      author:"По имени автора в проверенном каталоге, затем по названию книги. Переводы остаются отдельными редакциями; это навигация, не оценка языка.",
       dialogue:"По доле диалогов в измеренных текстах, от большей к меньшей; без измерений — в конце. Ноль не означает отсутствие данных.",
       length:"По измеренному объёму нормализованного текста в символах с пробелами, от большего к меньшему; без измерений — в конце. Ноль не означает отсутствие данных.",
       coverage:"По числу измеренных полей, от большего к меньшему; без измерений — в конце. Разные редакции имеют разные наборы полей: это не процент полноты, оценка качества или паритет с FantLab."
@@ -555,7 +558,7 @@
       ?catalogFilter.value:"all";
     const origin=["all","ru","en","fr"].includes(catalogOrigin.value)
       ?catalogOrigin.value:"all";
-    const order=["catalog","title","dialogue","length","coverage"].includes(catalogOrder.value)
+    const order=["catalog","title","author","dialogue","length","coverage"].includes(catalogOrder.value)
       ?catalogOrder.value:"catalog";
     if (href!==catalogShareHref(mode,origin,raw,order)) return null;
     try {

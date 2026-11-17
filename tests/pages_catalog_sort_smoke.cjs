@@ -41,6 +41,16 @@ const sortedTitles=catalog.books.map((book,index)=>({book,index}))
   .map(x=>x.book.key);
 assert.deepEqual(h.order(),sortedTitles);
 assert.match(h.status.textContent,/клавиатуры/);
+h.selection.value="author";h.sorter();
+const expectedAuthors=catalog.books.map((book,index)=>({book,index}))
+  .sort((a,b)=>collator.compare(a.book.display_author,b.book.display_author)||
+    collator.compare(a.book.display_title,b.book.display_title)||a.index-b.index)
+  .map(x=>x.book.key);
+assert.deepEqual(h.order(),expectedAuthors,
+  "Group editions by real author; use title within each author group");
+assert.equal(h.order().indexOf("silver"),h.order().indexOf("petersburg")+1,
+  "Pending edition may appear beside a measured book of the same author");
+assert.match(h.status.textContent,/По имени автора/);
 h.selection.value="dialogue";h.sorter();
 const expected=catalog.books.map((book,index)=>({
   book,index,value:book.text_status==="measured"
@@ -86,6 +96,7 @@ const l=harness(lengthSynthetic);l.selection.value="length";l.sorter();
 assert.deepEqual(l.order().slice(-4),["anna","shishmareva","petersburg","darwin"],
   "A real numeric zero sorts before missing length and unmeasured leads");
 assert.match(html,/<select id="catalog-order" disabled>[\s\S]*?value="length"/);
+assert.match(html,/<select id="catalog-order" disabled>[\s\S]*?value="author"/);
 assert.match(html,/<select id="catalog-order" disabled>[\s\S]*?value="dialogue"/);
 assert.match(html,/id="catalog-sort-status" role="status" aria-live="polite"/);
 assert.match(source,/catalogOrder.addEventListener\("change",\(\)=>\{sortCatalog\(\);updateCatalog\(\);\}\)/);

@@ -114,6 +114,12 @@ location.search="?catalog=measured&catalog_order=coverage";restore();sortCatalog
 assert.equal(order.value,"coverage");
 assert.equal(cards.filter(card=>!card.hidden).length,11);
 assert.equal(share.href,"?catalog=measured&catalog_order=coverage#books");
+order.value="author";run();sortCatalog();
+assert.equal(share.href,"?catalog=measured&catalog_order=author#books");
+location.search="?catalog=measured&catalog_order=author";restore();sortCatalog();
+assert.equal(order.value,"author");
+assert.equal(cards.filter(c=>!c.hidden).length,11);
+assert.match(sortStatus.textContent,/По имени автора/);
 order.value="catalog";filter.value="all";location.search="";sortCatalog();run();
 order.value="dialogue";run();
 assert.equal(share.href,"?catalog=all&catalog_order=dialogue#books");

@@ -310,6 +310,24 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#catalog-order").inputValue(), "catalog");
   assert.deepEqual(await page.locator("#books .book").evaluateAll(cards =>
     cards.map(card => card.dataset.catalogKey)), sourceOrder);
+  // A real author-first view groups source-backed names without upgrading pending leads.
+  await page.locator("#catalog-order").selectOption("author");
+  const authorOrder = await page.locator("#books .book").evaluateAll(cards =>
+    cards.map(card => card.dataset.catalogKey));
+  assert.deepEqual(authorOrder, ["waves","road","hyperboloid","petersburg","silver","shishmareva","beketova","oblomov","anna","resurrection","karamazov","humiliated","darwin"],
+    tag + ": author grouping follows source-backed Russian names and titles");
+  assert.match(await page.locator("#catalog-sort-status").innerText(), /По имени автора/);
+  const authorHref=await page.locator("#share-catalog").getAttribute("href");
+  assert.match(authorHref,/catalog_order=author/);
+  await page.goto(origin + "/" + authorHref, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => !document.querySelector("#catalog-order").disabled,
+    null, { timeout: 20000 });
+  assert.equal(await page.locator("#catalog-order").inputValue(),"author");
+  assert.deepEqual(await page.locator("#books .book").evaluateAll(cards =>
+    cards.map(card=>card.dataset.catalogKey)), authorOrder);
+  await page.locator("#catalog-clear").click();
+  assert.deepEqual(await page.locator("#books .book").evaluateAll(cards =>
+    cards.map(card=>card.dataset.catalogKey)), sourceOrder);
   await page.screenshot({ path: path.join(evidenceDir, tag + "-reader.png"),
     fullPage: true, animations: "disabled" });
   assert.deepEqual(errors, [], tag + ": browser JavaScript errors");

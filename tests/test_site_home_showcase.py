@@ -85,6 +85,42 @@ class HomeShowcaseTests(unittest.TestCase):
         self.assertNotIn("fetch(", result)
 
 
+    def test_ink_demo_table_does_not_inherit_pale_table_stripes(self):
+        # The 2026-11-18 mobile browser screenshot had ivory text on pale
+        # global thead/even-row fills. Keep the override on both selectors.
+        import re
+
+        screen_css = HOME_CSS.split("@media print {", 1)[0]
+        self.assertRegex(
+            screen_css,
+            r"\.demo-panel thead,\s*\.demo-panel tbody tr:nth-child\(even\)"
+            r"\s*\{\s*background:\s*transparent;\s*\}",
+        )
+        self.assertRegex(
+            screen_css,
+            r"\.demo-panel th, \.demo-panel td\s*\{[^{}]*color:#fff6e5;",
+        )
+        self.assertIn(".demo-panel { min-width:0; color:#fcf5e5; background:#17382f;", HOME_CSS)
+
+        def luminance(rgb):
+            channels = [int(rgb[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+            linear = [x / 12.92 if x <= 0.04045 else ((x + 0.055) / 1.055) ** 2.4
+                      for x in channels]
+            return sum(x * w for x, w in zip(linear, (0.2126, 0.7152, 0.0722)))
+
+        def contrast(fg, bg):
+            low, high = sorted((luminance(fg), luminance(bg)))
+            return (high + 0.05) / (low + 0.05)
+
+        # Positive: pale numbers on dark ink exceed AAA for normal-size text.
+        # Negative: the inherited pale header/stripe is below AA.
+        self.assertGreaterEqual(contrast("#fff6e5", "#17382f"), 7)
+        self.assertLess(contrast("#fff6e5", "#f2ebdc"), 4.5)
+        # Print inherits the panel's white paper and explicit black foreground.
+        print_css = HOME_CSS.split("@media print {", 1)[1]
+        self.assertIn(".demo-panel { box-shadow:none; color:#000; background:#fff;", print_css)
+        self.assertIn(".demo-metric h3, .demo-unit, .demo-panel th, .demo-panel td { color:#000; }", print_css)
+
     def test_mobile_scroll_hint_and_print_text_legibility(self):
         result = render_demo([comparison_entry()])
         parsed = RecordedHTML(result)

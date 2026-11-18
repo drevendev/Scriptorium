@@ -376,6 +376,7 @@
     // Match only the validated metadata; neither text nor queries leave the browser.
     const terms=query ? query.split(/\s+/u) : [];
     let shown=0, measured=0, pending=0;
+    const matchingMeasured=[];
     for (const card of catalogCards) {
       const book=data.books.find(b=>b.key===card.dataset.catalogKey);
       if (!book) throw Error("Нет проверенного источника для карточки");
@@ -395,7 +396,7 @@
       card.hidden=!visible;
       if (visible) {
         shown++;
-        if (isMeasured) measured++; else pending++;
+        if (isMeasured) { measured++; matchingMeasured.push(book); } else pending++;
       }
     }
     el("catalog-empty").hidden=shown!==0;
@@ -404,6 +405,30 @@
       ? "Показано "+shown+" из "+catalogCards.length+" книг: "+
         measured+" измерено, "+pending+" в подготовке. Переводы — отдельные редакции."
       : "Книг не найдено. Очистите поиск или измените фильтр.";
+    // Offer a real comparison only for exactly two visible, measured, distinct
+    // editions with compatible profiles and an observed shared starting metric.
+    // A pending source is never promoted to an analyzed book by a filter.
+    const pairPrompt=el("catalog-pair-prompt"), pairLink=el("catalog-pair-link");
+    const pairProfiles=["metrics","normalization","dialogue","vocabulary","punctuation"];
+    const pairReady=shown===2 && matchingMeasured.length===2 &&
+      matchingMeasured[0].key!==matchingMeasured[1].key &&
+      pairProfiles.every(key=>typeof matchingMeasured[0].profiles?.[key]==="string" &&
+        matchingMeasured[0].profiles[key]===matchingMeasured[1].profiles?.[key]) &&
+      matchingMeasured.every(book=>{
+        const metric=lookup(book,"fantlab.dialogue.share_percent");
+        return metric?.status==="measured" && isNumeric(metric.actual);
+      });
+    pairPrompt.hidden=!pairReady;
+    if (pairReady) {
+      const [left,right]=matchingMeasured;
+      pairLink.href="?left="+encodeURIComponent(left.key)+
+        "&right="+encodeURIComponent(right.key)+
+        "&pair_metric=fantlab.dialogue.share_percent#pairs";
+      pairLink.textContent="Сравнить «"+left.display_title+"» и «"+right.display_title+"» ↗";
+    } else {
+      pairLink.removeAttribute("href");
+      pairLink.textContent="Сравнить выбранные книги";
+    }
     // A share link is explicit: typing never changes history or sends a query.
     const raw=catalogSearch.value.trim();
     const share=el("share-catalog");

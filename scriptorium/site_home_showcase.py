@@ -304,6 +304,9 @@ HOME_CSS = """
   margin:.25rem 0 .55rem; }
 .demo-scroll { overflow:auto; max-width:100%; }
 .demo-panel table { min-width:30rem; font:400 .76rem/1.5 system-ui,sans-serif; }
+/* The shared pale table header and alternating-row fills must not wash out ivory text
+   inside the dark demo panel. Transparent cells also inherit white paper in print. */
+.demo-panel thead, .demo-panel tbody tr:nth-child(even) { background:transparent; }
 .demo-panel th, .demo-panel td { border-bottom:1px solid #547369; color:#fff6e5; padding:.5rem .35rem; }
 .demo-panel table caption { font-size:.75rem; font-weight:400; color:#e6e9da; }
 .demo-open { display:inline-block; padding:.75rem 0; min-height:44px;

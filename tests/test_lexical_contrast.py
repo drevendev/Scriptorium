@@ -134,6 +134,37 @@ class LexicalContrastTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             contrast("кот", "пёс", translation_pair="yes")
 
+    def test_private_html_report_escapes_metadata_and_never_embeds_source_words(self):
+        result = contrast("кот " * 8 + "пёс " * 2, "пёс " * 9 + "кот",
+                          left_translator="<script>alert(1)</script>")
+        html = render_lexical_contrast(result, "html")
+        self.assertIn("<!doctype html>", html)
+        self.assertIn('lang="en"', html)
+        self.assertIn("Content-Security-Policy", html)
+        self.assertIn('scope="col"', html)
+        self.assertIn("Jensen–Shannon divergence", html)
+        self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", html)
+        self.assertNotIn("<script>", html)
+        self.assertNotIn("кот", html)
+        self.assertNotIn("пёс", html)
+        self.assertIn("nonrepresentative private preview", html)
+        self.assertIn("NOT_VERIFIED", html)
+        self.assertIn("False", html)
+        self.assertNotIn("http://", html)
+        self.assertNotIn("https://", html)
+
+        unavailable = contrast("кот", "...")
+        missing = render_lexical_contrast(unavailable, "html")
+        self.assertIn("NOT_RUN_EMPTY", missing)
+        self.assertIn("NOT_RUN / INCOMPARABLE", missing)
+        self.assertNotIn("0</td><td>bits", missing)
+        unbalanced = contrast("кот " * 5, "пёс " * 50)
+        self.assertIn("lengths differ by at least 2", render_lexical_contrast(unbalanced, "html"))
+        with self.assertRaises(ValueError):
+            render_lexical_contrast({"schema_version": "wrong"}, "html")
+        with self.assertRaises(ValueError):
+            render_lexical_contrast({**result, "aggregate": {}}, "html")
+
     def test_cli_local_json_markdown_and_no_overwrite(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -155,6 +186,17 @@ class LexicalContrastTests(unittest.TestCase):
                 self.assertEqual(cli.main(args[:-2] + ["--format", "markdown"]), 0)
             self.assertIn("Jensen–Shannon", stdout.getvalue())
             self.assertIn("not FantLab parity", stdout.getvalue())
+            html_path = root / "private-contrast.html"
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(cli.main(args[:-2] + ["--format", "html",
+                                                      "--output", str(html_path)]), 0)
+            html = html_path.read_text(encoding="utf-8")
+            self.assertIn("<!doctype html>", html)
+            self.assertIn("COMPARABLE", html)
+            self.assertNotIn("кот", html)
+            with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                cli.main(args[:-2] + ["--format", "html", "--output", str(html_path)])
+
 
 
 if __name__ == "__main__":

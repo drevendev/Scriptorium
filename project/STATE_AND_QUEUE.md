@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 559
+STATE_REVISION: 560
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-18
-LAST_RESULT: #575 merged at 81aa1636e5318d5b506a861c74e358fe524e085f; visible Reader pair ordering verified in native PR, live Pages readback still UNKNOWN.
+LAST_RESULT: #576 merged at 309fb46c2836c5a92268e7bf853f84447e678f9a. Archived Chromium mobile gallery screenshot from successful Pages run 44363698775 exposed ivory exact-table text on inherited pale header/even-row fills; CSS fix proposed, live Pages still UNKNOWN.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-LEXICAL-CONTRAST-CSV-001
-ISSUE: #562 — private source-free lexical aggregate CSV export
-STATUS: PR_CANDIDATE; later-run exact-head tests/checks and review required
-BRANCH: scrip-lexical-contrast-csv-20261118
-BASE: 81aa1636e5318d5b506a861c74e358fe524e085f
+UNIT_ID: SCRIP-SITE-DEMO-TABLE-CONTRAST-001
+ISSUE: #283 — real-gallery exact-value table contrast
+STATUS: PR_CANDIDATE; later-run independent exact-head CI, generated-site browser and screenshot acceptance required
+BRANCH: scrip-site-demo-table-contrast-20261118
+BASE: 309fb46c2836c5a92268e7bf853f84447e678f9a
 
-ACCEPTANCE: Installed distinctives CLI emits deterministic four-column source-free CSV with explicit units, input hashes, method/profile evidence and NOT_RUN versus measured zero. Neutralize formula-like untrusted labels; preserve existing JSON/Markdown/HTML and create-only output. Positive/negative CLI tests and exact-head CI required before merge. Publication rights remain unverified; no public corpus promotion or FantLab parity.
+ACCEPTANCE: The actual mobile and desktop Pages gallery has legible exact-value headers and alternating rows. Specific local CSS overrides the shared light table header/stripe backgrounds inside the dark demo panel without weakening site-wide themes or print contrast. Positive/negative CSS luminance regression, deterministic site rebuild and Chromium screenshot comparison on the exact PR head are required. Existing source-free numbers and M2 claims unchanged.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: source-backed, accessible Reader comparisons plus reproducible rights-safe local lexical exports; public lexical/tag views only after independently verified rights.
+Milestone: make the actual evidence gallery visually accessible while preserving reader-first source-backed comparisons and rights-safe offline exports.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 private lexical CSV | Source-free fixed-unit CSV, formula-safe identities, NOT_RUN, CLI regressions | Later-run exact-head CI/review |
-| P2 | #283 Reader visual acceptance | Real desktop/mobile/keyboard/print evidence on built site | Browser/screenshot access |
+| P1 | #283 fix dark-panel table contrast | Pale table text remains legible against ink on desktop/mobile; white-paper print works | Later-run CI + screenshot inspection |
+| P2 | #283 wider Reader visual acceptance | Inspect real desktop/mobile/keyboard/print evidence on exact built site | Browser artifact inspection; live readback separate |
 | P3 | #562 public lexical comparison | Rights-reviewed edition-pinned source-free evidence | Edition-specific publication rights |
 | P4 | #563 evidenced tag profiles | Curated source identity, validated tag groups | Curator/source rights |
-| P5 | #511 Trusov translation pair / #282 AOT diagnostics | Complete source-verified second translation or new independent N consequence | Historical Pages / FantLab policy |
+| P5 | #511 Trusov translation pair / #282 AOT diagnostics | Independently complete verified translation or new N consequence | Historical Pages / FantLab policy |
 
 ## Retained scientific and operational boundaries
 

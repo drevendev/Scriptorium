@@ -187,6 +187,9 @@ def render_lexical_contrast(report: dict[str, object], kind: str = "json") -> st
     if kind == "json":
         return json.dumps(report, ensure_ascii=False, sort_keys=True,
                           indent=2, allow_nan=False) + "\n"
+    if kind == "csv":
+        from .lexical_contrast_csv import render_lexical_contrast_csv
+        return render_lexical_contrast_csv(report)
     if kind == "html":
         from .lexical_contrast_html import render_lexical_contrast_html
         return render_lexical_contrast_html(report)
@@ -233,7 +236,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--left-language", default="ru")
     parser.add_argument("--right-language", default="ru")
     parser.add_argument("--translation-pair", action="store_true")
-    parser.add_argument("--format", choices=("json", "markdown", "html"), default="json")
+    parser.add_argument("--format", choices=("json", "markdown", "html", "csv"), default="json")
     parser.add_argument("--output", type=Path, help="New local output file; never overwrite")
     args = parser.parse_args(argv)
     try:

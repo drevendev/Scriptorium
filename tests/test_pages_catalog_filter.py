@@ -66,7 +66,9 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn('book.translator?.name||""',js)
         self.assertIn('terms.every(term=>text.includes(term))',js)
         self.assertIn(".catalog-tools select,.catalog-tools input",css)
-        self.assertIn('restoreCatalogFromUrl();\n      sortCatalog();\n      el("catalog-tools").hidden=false;',js)
+        restore=js.split("  function restoreCatalogFromUrl() {",1)[1].split("\n  }",1)[0]
+        self.assertRegex(restore,r"sortCatalog\(\);\s*updateCatalog\(\);")
+        self.assertIn('restoreCatalogFromUrl();\n      el("catalog-tools").hidden=false;',js)
         self.assertIn('window.addEventListener("popstate",()=>{\n        restoreCatalogFromUrl();',js)
         # Canonical URL building is shared by the visible link and the
         # verified clipboard action; preserve all five allow-listed facets.

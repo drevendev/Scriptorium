@@ -15,7 +15,17 @@ scriptorium distinctives left.txt right.txt \
   --format json --output private-contrast.json
 ```
 
-The second invocation **creates a new** private artifact; it refuses overwriting an existing file. There is no `--publish` option. Names supplied on the command line are **unverified claims**. Filenames and manuscript content do not appear in the output. Files have the same bounded regular-file and UTF-8 restrictions as local analysis.
+To produce a **readable standalone local HTML report** (no scripts, remote fonts, images, network calls or source words):
+
+```console
+scriptorium distinctives left.txt right.txt \
+  --left-edition edition-A --right-edition edition-B \
+  --format html --output private-contrast.html
+```
+
+The HTML has accessible labelled tables for numerical aggregates and declared edition identities, mobile horizontal scrolling, print styling and a restrictive Content Security Policy. All user-provided edition/translator metadata are escaped; the result explicitly distinguishes unavailable aggregates from measured zero and shows short/unequal-length warnings. The HTML is **private** and must not be published on Pages without independent source/rights review. It contains normalized SHA-256 digests of complete inputs for local replay, but no form-level hashes or manuscript words.
+
+Both `--output` examples **create new** private artifacts; existing files are never overwritten. There is no `--publish` option. Names supplied on the command line are **unverified claims**. Filenames and manuscript content do not appear in the output. Files have the same bounded regular-file and UTF-8 restrictions as local analysis.
 
 For a translation-pair hypothesis, explicitly declare the distinct editions and their common original:
 

@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 552
+STATE_REVISION: 553
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-18
-LAST_RESULT: #568 merged as 993416361bce4f690c1155c4e750d94bf449d06a; author facet and three push workflows passed. New contextual two-edition comparison is a PR candidate, not in master.
+LAST_RESULT: #569 merged as ac2aa2ae4a63c863049bfd84e0a2595e64d9a5dc; master Pages workflow 44233480695 succeeded. Private lexical HTML is a new PR candidate only.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-CATALOG-PAIR-CTA-V1
-ISSUE: #283 — source-bound comparison action for exactly two filtered, measured Reader editions
-STATUS: PR_CANDIDATE; exact-head CI, browser acceptance and later independent review required
-BRANCH: scrip-reader-context-pair-20261118
-BASE: 993416361bce4f690c1155c4e750d94bf449d06a
+UNIT_ID: SCRIP-METRIC-LEXICAL-HTML-V1
+ISSUE: #562 — accessible, source-free offline HTML report for existing lexical aggregate contrast
+STATUS: PR_CANDIDATE; exact-head CI and later independent acceptance required; no public corpus publication
+BRANCH: scrip-lexical-contrast-html-20261118
+BASE: ac2aa2ae4a63c863049bfd84e0a2595e64d9a5dc
 
-ACCEPTANCE: show one contextual pair action only for exactly two measured editions with compatible profiles and shared observed dialogue metric; link to functioning existing pair controls with exact keys; hide for pending, one/three/zero results, missing/incompatible metric/profile and failed snapshot validation. Preserve static no-JS links, safe textContent, desktop/mobile focus and no parity claims.
+ACCEPTANCE: `scriptorium distinctives ... --format html --output private-contrast.html` uses the existing versioned aggregate builder. Render two responsive/printable labelled tables with escaped user-declared identities and precise units; show NOT_RUN, 300k and length-imbalance limitations; contain no manuscript words, script, external assets, or public-release claim. New-file output remains non-overwriting. Preserve JSON/Markdown and exact source-free numbers. Run Python positive/negative CLI regressions plus exact-head CI; browser screenshots if execution available, else VISUAL_NOT_VERIFIED.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: from verified Reader filters, immediately compare the actual two selected measured editions with transparent scientific limitations.
+Milestone: make an executable **offline** measured lexical contrast readable and printable without claiming public rights or changing FantLab fields; keep the published Reader responsive and evidence-first.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 contextual pair link | Exact-head Node/Chromium + safe missingness and live deployment | Later-run independent acceptance |
-| P2 | #563 public tag profiles | Real verified curator/rights evidence; no synthetic public tags | New genuine source attestations |
-| P3 | #562 rights-cleared lexical comparison in Reader | Verified real-work source-free aggregate comparison | New independent source and rights clearance |
-| P4 | #511 Trusov translation pair | Complete source-verified body before profile pairing | Historical Page 2/148–151 semantics |
-| P5 | #282 AOT noun/cardinal ambiguity | Independent source-bound POS evidence | New executable diagnostic evidence |
+| P1 | #562 private lexical HTML | Later-run exact-head review/tests and eligible merge; local HTML privacy and keyboard/print acceptance | Current candidate PR |
+| P2 | #283 Reader visual/accessibility slice | Real site desktop/mobile/keyboard or structural fallback; no stale controls or hidden data | Independent of source-rights bottlenecks |
+| P3 | #282 AOT noun/cardinal ambiguity controls | One source-bound measured diagnostic with native pylem pin, no guessed POS | Native runtime/evidence if available |
+| P4 | #563 public tag profile | A real attested source/curator + rights evidence; never generate labels | Independent provenance/rights review |
+| P5 | #511 Trusov translation comparison | Full verified source body before any paired edition chart | Historical Page 2/148–151 semantics |
 
 ## Retained scientific and operational boundaries
 

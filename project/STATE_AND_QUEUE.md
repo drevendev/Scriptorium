@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 557
+STATE_REVISION: 558
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-18
-LAST_RESULT: #573 merged at 408531ac4da68da111bda014f582c80f87c651c5; separate full-work native Resurrection N control prepared as a PR candidate.
+LAST_RESULT: #574 merged at 9a082f42ba9ac5ce9bd97a4f54c59ffa9cec70ba; full-work Resurrection native N diagnostics accepted, FantLab input identity still UNKNOWN.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-N-RESURRECTION
-ISSUE: #282 — independent frozen full-work AOT noun/cardinal N control
-STATUS: PR_CANDIDATE; exact-head CI/provider observation and later-run acceptance required
-BRANCH: scrip-resurrection-native-n-20261118
-BASE: 408531ac4da68da111bda014f582c80f87c651c5
+UNIT_ID: SCRIP-READER-SORTED-CONTEXT-PAIR
+ISSUE: #283 — contextual two-book comparison follows the sorted Reader catalogue
+STATUS: PR_CANDIDATE; later-run exact-head CI and browser acceptance required
+BRANCH: scrip-reader-sorted-context-pair-20261118
+BASE: 9a082f42ba9ac5ce9bd97a4f54c59ffa9cec70ba
 
-ACCEPTANCE: Replay the 129-chapter public-domain Resurrection with its pinned revision and extraction contract. Verify normalized SHA-256 2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0 before isolated Python 3.9 pylem==0.0.18. Produce only source-free N-only/N-mixed counts, conditional POS/bigram/sentence-position envelopes and runtime hashes. Positive and corrupt-identity regression tests and exact-head native CI required. No production remapping.
+ACCEPTANCE: For exactly two verified measured editions, produce the same left/right pair order readers see after sorting. Preserve signed right-minus-left metrics when reopening shareable sorted catalog URLs, keep pending/incompatible editions disabled, and test source-order, length-order, URL restoration, desktop/mobile interactions and no-JS fallback. Scientific claims and source hashes unchanged.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: independent full-work AOT uncertainty over two pinned works, then source-free rights-reviewed Reader comparisons.
+Milestone: source-backed, accessible Reader comparison with reliable sorting and public rights-reviewed source-free extensions.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 independent Resurrection native N witness | Exact source hash, pinned provider, source-free CI artifact | Candidate PR; network/pylem |
-| P2 | #562 public lexical comparison | Versioned source-free evidence, labels and methodological bounds | Rights review |
-| P3 | #563 evidenced tag profiles | Provenance-safe curation and edition-specific results | Curator/source rights |
-| P4 | #283 Reader mobile/keyboard follow-up | Real catalogue interactions and browser acceptance | Fresh site evidence |
+| P1 | #283 sorted contextual Reader comparison | Matching visible/linked left/right direction; Node/Chromium PASS | Exact-head CI, later acceptance |
+| P2 | #562 public lexical comparison | Rights-reviewed source-free evidence and methodology | Edition-specific publication rights |
+| P3 | #563 evidenced tag profiles | Curated source identity, validated tag groups | Curator/source rights |
+| P4 | #282 AOT N resolution beyond two native witnesses | New quantitative consequence, not repeated known experiment | FantLab unpublished policy |
 | P5 | #511 Trusov translation pair | Frozen complete body and measured second translation | Historical Pages |
 
 ## Retained scientific and operational boundaries

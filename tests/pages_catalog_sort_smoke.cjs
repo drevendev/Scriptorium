@@ -100,6 +100,11 @@ assert.match(html,/<select id="catalog-order" disabled>[\s\S]*?value="author"/);
 assert.match(html,/<select id="catalog-order" disabled>[\s\S]*?value="dialogue"/);
 assert.match(html,/id="catalog-sort-status" role="status" aria-live="polite"/);
 assert.match(source,/catalogOrder.addEventListener\("change",\(\)=>\{sortCatalog\(\);updateCatalog\(\);\}\)/);
-assert.match(source,/sortCatalog\(\);\n      el\("catalog-tools"\)\.hidden=false;/);
+const restoreSource=source.slice(
+  source.indexOf("  function restoreCatalogFromUrl() {"),
+  source.indexOf("  function sortCatalog() {"));
+assert.match(restoreSource,/sortCatalog\(\);\s*updateCatalog\(\);/,
+  "Restored sort order must precede contextual comparison");
+assert.match(source,/restoreCatalogFromUrl\(\);\n      el\("catalog-tools"\)\.hidden=false;/);
 assert.doesNotMatch(source,/innerHTML/);
 console.log("Real catalogue title/metric DOM sorting, zero, unknown, no-JS and keyboard order: PASS");

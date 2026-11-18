@@ -107,8 +107,13 @@ const routeStart=source.indexOf("  function bookFromUrl() {");
 const routeEnd=source.indexOf("  function updateChart() {",routeStart);
 const initStart=source.indexOf("  async function initialize() {");
 assert.ok(sortStart>=0 && sortStart<begin && routeStart>end && routeEnd>routeStart && initStart>routeEnd);
+const restoreStart=source.indexOf("  function restoreCatalogFromUrl() {");
+assert.ok(restoreStart>=0 && restoreStart<sortStart);
+assert.match(source.slice(restoreStart,sortStart),
+  /sortCatalog\(\);\s*updateCatalog\(\);/,
+  "Catalog restoration sorts DOM before contextual comparison");
 assert.match(source.slice(initStart),
-  /restoreCatalogFromUrl\(\);\s*sortCatalog\(\);[\s\S]*?selectBook\(bookFromUrl\(\)\);/,
+  /restoreCatalogFromUrl\(\);[\s\S]*?selectBook\(bookFromUrl\(\)\);/,
   "The integration exercises the real initialization order");
 const cardOrder=[...realCards];
 const catalogGrid={appendChild(card){

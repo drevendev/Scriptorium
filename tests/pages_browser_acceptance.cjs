@@ -356,6 +356,24 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#books .book:visible").count(),13);
   assert.equal(await page.locator("#catalog-pair-prompt").isVisible(),false,
     tag + ": full catalogue must not invent a comparison shortcut");
+  // Real desktop/mobile: contextual comparison follows a sorted two-book
+  // source-backed catalogue and survives restoration from its shared URL.
+  await page.locator("#catalog-author").selectOption("Александр Грин");
+  await page.locator("#catalog-order").selectOption("length");
+  const sortedGrin=["road","waves"];
+  assert.deepEqual(await page.locator("#books .book:visible").evaluateAll(cards =>
+    cards.map(card=>card.dataset.catalogKey)),sortedGrin);
+  assert.equal(await page.locator("#catalog-pair-link").getAttribute("href"),
+    "?left=road&right=waves&pair_metric=fantlab.dialogue.share_percent#pairs");
+  const grinListUrl=await page.locator("#share-catalog").getAttribute("href");
+  await page.goto(origin + "/" + grinListUrl,{waitUntil:"networkidle"});
+  await page.waitForFunction(() => !document.querySelector("#catalog-order").disabled,
+    null,{timeout:20000});
+  assert.deepEqual(await page.locator("#books .book:visible").evaluateAll(cards =>
+    cards.map(card=>card.dataset.catalogKey)),sortedGrin);
+  assert.equal(await page.locator("#catalog-pair-link").getAttribute("href"),
+    "?left=road&right=waves&pair_metric=fantlab.dialogue.share_percent#pairs");
+  await page.locator("#catalog-clear").click();
   await page.locator("#catalog-author").selectOption("Лев Толстой");
   assert.equal(await page.locator("#catalog-pair-prompt").isVisible(),true,
     tag + ": two source-verified measured editions enable a comparison");

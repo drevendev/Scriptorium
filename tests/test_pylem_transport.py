@@ -3,6 +3,7 @@ from hashlib import sha256
 import json
 import runpy
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from scriptorium.pylem_transport import (
@@ -12,6 +13,7 @@ from scriptorium.pylem_transport import (
     build_frozen_pos_diagnostic,
     build_sidecar_request,
     consume_sidecar_response,
+    prepare_frozen_request,
 )
 from scriptorium.pylem_provider import PYLEM_RUNTIME_PROFILE
 from scriptorium.text import NORMALIZATION_PROFILE
@@ -44,6 +46,28 @@ class PylemTransportTests(unittest.TestCase):
                 "normalized_sha256": request["normalized_sha256"],
             },
         }
+
+    def test_resurrection_dispatch_is_source_bound_and_anna_route_unchanged(self):
+        body = "Красный дом спит."
+        expected = build_sidecar_request(body)
+        resurrection = self._manifest(expected, candidate_id="tolstoy-resurrection-ru")
+        with (patch("scriptorium.pylem_transport.replay_resurrection_text", return_value=body) as replay,
+              patch("scriptorium.pylem_transport.replay_packed_manifest",
+                    side_effect=AssertionError("wrong extractor"))):
+            self.assertEqual(prepare_frozen_request(resurrection), expected)
+            replay.assert_called_once_with(resurrection)
+
+        resurrection["composite_identity"]["normalized_sha256"] = "0" * 64
+        with (patch("scriptorium.pylem_transport.replay_resurrection_text", return_value=body),
+              self.assertRaisesRegex(ValueError, "frozen manifest identity")):
+            prepare_frozen_request(resurrection)
+
+        anna = self._manifest(expected, candidate_id="tolstoy-anna-karenina-ru")
+        with (patch("scriptorium.pylem_transport.replay_resurrection_text",
+                    side_effect=AssertionError("wrong extractor")),
+              patch("scriptorium.pylem_transport.replay_packed_manifest", return_value=body) as replay):
+            self.assertEqual(prepare_frozen_request(anna), expected)
+            replay.assert_called_once_with(anna)
 
     def test_round_trip_preserves_conservative_resolution(self):
         request = build_sidecar_request("Красный дом спит.")

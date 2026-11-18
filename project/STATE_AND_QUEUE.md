@@ -1,35 +1,35 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 556
+STATE_REVISION: 557
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-18
-LAST_RESULT: #572 merged at 7617c3f1bb4f69eda502ab3b304208f652541009; retained native N HTML reporting accepted, local source-free receipt output protection is a new PR candidate.
+LAST_RESULT: #573 merged at 408531ac4da68da111bda014f582c80f87c651c5; separate full-work native Resurrection N control prepared as a PR candidate.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-N-CREATE-ONLY
-ISSUE: #282 — preserve immutable local N-only evidence receipts
-STATUS: PR_CANDIDATE; exact-head CI and independent later-run acceptance required
-BRANCH: scrip-native-n-create-only-20261118
-BASE: 7617c3f1bb4f69eda502ab3b304208f652541009
+UNIT_ID: SCRIP-MORPH-N-RESURRECTION
+ISSUE: #282 — independent frozen full-work AOT noun/cardinal N control
+STATUS: PR_CANDIDATE; exact-head CI/provider observation and later-run acceptance required
+BRANCH: scrip-resurrection-native-n-20261118
+BASE: 408531ac4da68da111bda014f582c80f87c651c5
 
-ACCEPTANCE: Frozen pylem N diagnostic CLI writes a complete new source-free JSON receipt atomically; repeat invocation, input-path collision and symlink destination fail without replacing any data or exposing local paths. Existing native fixture output remains semantically identical. Positive and negative regression tests pass. No new native measurement or production remapping.
+ACCEPTANCE: Replay the 129-chapter public-domain Resurrection with its pinned revision and extraction contract. Verify normalized SHA-256 2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0 before isolated Python 3.9 pylem==0.0.18. Produce only source-free N-only/N-mixed counts, conditional POS/bigram/sentence-position envelopes and runtime hashes. Positive and corrupt-identity regression tests and exact-head native CI required. No production remapping.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: safe reproducible local AOT N diagnostics and further independent pinned-provider measurements, with Reader's real-book navigation already published.
+Milestone: independent full-work AOT uncertainty over two pinned works, then source-free rights-reviewed Reader comparisons.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 create-only N diagnostic receipt | Atomic output, existing/input/symlink protection, regressions and exact-head CI | Candidate PR |
-| P2 | #282 additional source-bound native AOT controls | At least one independently frozen full-work run with hash/version and N-mixed limits | Pinned Python 3.9 provider / legal frozen source |
-| P3 | #562 rights-reviewed lexical public contrast | Real source-free comparison artifact and explicit edition/provenance bounds | Rights review |
-| P4 | #563 published tag profile | Evidence-backed curation and edition/translation identities | Curator rights |
-| P5 | #511 Trusov translation pair | Entire source body and complete measured second translation | Historical Pages |
+| P1 | #282 independent Resurrection native N witness | Exact source hash, pinned provider, source-free CI artifact | Candidate PR; network/pylem |
+| P2 | #562 public lexical comparison | Versioned source-free evidence, labels and methodological bounds | Rights review |
+| P3 | #563 evidenced tag profiles | Provenance-safe curation and edition-specific results | Curator/source rights |
+| P4 | #283 Reader mobile/keyboard follow-up | Real catalogue interactions and browser acceptance | Fresh site evidence |
+| P5 | #511 Trusov translation pair | Frozen complete body and measured second translation | Historical Pages |
 
 ## Retained scientific and operational boundaries
 
-M0 closed; M1 open; M2 0/5; M3/M4/M5 open. Eleven measured editions; two research leads. Original four-book rhythm 1/4 holdout and ablation remain exploratory source-bound extensions; new six-book 2/6 is also within-sample, NOT external validation. Calibration/author/parity works require >=300,000 characters INCLUDING spaces and explicit reuse rights. No published manuscripts. Translation identities remain separate. AOT/pylem==0.0.18 noun/cardinal runtime N collision remains unresolved. Source-unmatched numeric similarity is DIAGNOSTIC, not parity; UNKNOWN is not zero, NOT_RUN is not PASS.
+M0 closed; M1 open; M2 0/5; M3/M4/M5 open. Eleven measured editions; two research leads. Four-book holdout/ablation and six-book within-sample tests remain exploratory, NOT external validation. Calibration/author/parity works require >=300,000 characters INCLUDING spaces and explicit reuse rights. No published manuscripts; translations keep separate identities. The AOT/pylem==0.0.18 noun/cardinal runtime N collision is unresolved. Source-unmatched resemblance is DIAGNOSTIC, not parity; UNKNOWN is not zero, NOT_RUN is not PASS.
 
-#284 rights grant, Trusov historical EOF #436 and #265 branch protection/cleanup remain scoped, not global prerequisites. Do not mutate perpetual hourly scheduler. Earlier Drive leads deduplicated: Compare003 already in compare.py (#279), POS distributions tracked through #287, CORPUS-087 reconciled to #422; distinct schema-publication lead #479 closed via #481, not recreated.
+#284 rights, historical Trusov EOF #436 and #265 branch controls remain scoped. Do not mutate hourly scheduler. Existing deduplicated Drive leads: Compare003 in compare.py (#279), POS distributions via #287, CORPUS-087 via #422; distinct publication schema #479 closed by #481.

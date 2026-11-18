@@ -9,6 +9,7 @@ from scriptorium.resurrection_freeze import (
     expected_chapters,
     extract_resurrection_body,
     replay_manifest,
+    replay_manifest_text,
 )
 
 
@@ -113,6 +114,26 @@ __NOEDITSECTION__
         self.assertEqual(receipt["fantlab_source_edition_match"], "unknown")
         self.assertIs(receipt["m2_parity_admissible"], False)
         self.assertEqual(receipt["composite_identity"], manifest["composite_identity"])
+
+    def test_ephemeral_full_work_input_requires_complete_frozen_identity(self):
+        records = self._synthetic_records()
+        manifest = build_manifest(fetcher=lambda chapters: records)
+        wikitext = {title: record["wikitext"] for title, record in records.items()}
+        text = replay_manifest_text(manifest, fetcher=lambda identities: wikitext)
+        self.assertEqual(sha256(text.encode("utf-8")).hexdigest(),
+                         manifest["composite_identity"]["raw_sha256"])
+        self.assertEqual(len(text), manifest["composite_identity"]["character_count_including_spaces"])
+        self.assertEqual(len(text.split("\n\n")), 129)
+
+        missing = dict(wikitext)
+        missing.pop(next(iter(missing)))
+        with self.assertRaisesRegex(ValueError, "inventory mismatch"):
+            replay_manifest_text(manifest, fetcher=lambda identities: missing)
+
+        changed = copy.deepcopy(manifest)
+        changed["composite_identity"]["raw_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "raw_sha256"):
+            replay_manifest_text(changed, fetcher=lambda identities: wikitext)
 
     def test_replay_fails_closed_on_source_and_composite_contract_drift(self):
         records = self._synthetic_records()

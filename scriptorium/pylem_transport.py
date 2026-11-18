@@ -12,6 +12,7 @@ from .morphology_diagnostic import build_fantlab_pos_accounting, decompose_runti
 from .pylem_provider import KNOWN_RUNTIME_POS, PYLEM_RUNTIME_PROFILE, PYLEM_VERSION
 from .text import NORMALIZATION_PROFILE, normalize_text, word_tokens
 from .wikisource_replay import replay_packed_manifest
+from .resurrection_freeze import CANDIDATE_ID as RESURRECTION_ID, replay_manifest_text as replay_resurrection_text
 
 REQUEST_SCHEMA = "scriptorium-pylem-sidecar-request-v1"
 RESPONSE_SCHEMA = "scriptorium-pylem-sidecar-response-v1"
@@ -239,7 +240,13 @@ def build_frozen_pos_diagnostic(
 
 
 def prepare_frozen_request(manifest: Mapping[str, object]) -> dict[str, object]:
-    request = build_sidecar_request(replay_packed_manifest(manifest))
+    # Resurrection has a separate versioned extractor for plain/multi-div chapters.
+    # Reusing the Anna packed-manifest decoder would destroy source identity.
+    if manifest.get("candidate_id") == RESURRECTION_ID:
+        body = replay_resurrection_text(manifest)
+    else:
+        body = replay_packed_manifest(manifest)
+    request = build_sidecar_request(body)
     _bind_frozen_manifest_identity(request, manifest)
     return request
 

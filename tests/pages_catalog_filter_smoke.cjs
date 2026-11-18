@@ -146,6 +146,29 @@ for(const [q,mode,keys] of [
 search.value="";filter.value="all";run();
 assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(share.href,"?catalog=all#books");
+// A contextual two-book link must preserve the reader's actual visible order,
+// including a deep-linked sort; the signed delta is right minus left.
+author.value="Александр Грин";origin.value="all";filter.value="all";
+search.value="";order.value="length";sortCatalog();run();
+assert.deepEqual(domOrder.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),
+  ["road","waves"]);
+assert.equal(pairPrompt.hidden,false);
+assert.equal(pairLink.href,
+  "?left=road&right=waves&pair_metric=fantlab.dialogue.share_percent#pairs");
+assert.match(pairLink.textContent,/Дорога в никуда.*Бегущая по волнам/);
+order.value="catalog";sortCatalog();run();
+assert.equal(pairLink.href,
+  "?left=waves&right=road&pair_metric=fantlab.dialogue.share_percent#pairs");
+location.search="?catalog=all&author="+encodeURIComponent("Александр Грин")+
+  "&catalog_order=length";
+restore();
+assert.equal(order.value,"length");
+assert.deepEqual(domOrder.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),
+  ["road","waves"]);
+assert.equal(pairLink.href,
+  "?left=road&right=waves&pair_metric=fantlab.dialogue.share_percent#pairs");
+author.value="all";order.value="catalog";location.search="";
+sortCatalog();run();
 // Explicit focus jump follows real filtered/sorted DOM; zero matches disable it.
 author.value="Лев Толстой";order.value="author";sortCatalog();run();
 assert.equal(jump.hidden,false);assert.equal(jump.disabled,false);
@@ -291,7 +314,7 @@ assert.match(html,/id="catalog-search"[^>]*maxlength="120"/);
 assert.match(html,/id="share-catalog" href="\?catalog=all#books"/);
 assert.match(js,/catalogSearch.addEventListener\("input",updateCatalog\)/);
 assert.match(js,/catalogOrder.addEventListener\("change",\(\)=>\{sortCatalog\(\);updateCatalog\(\);\}\)/);
-assert.match(js,/restoreCatalogFromUrl\(\);\s*sortCatalog\(\);\s*restoreChartFromUrl\(\)/);
+assert.match(js,/restoreCatalogFromUrl\(\);\s*restoreChartFromUrl\(\)/);
 const initializeSource=js.slice(js.indexOf("async function initialize() {"));
   const verificationIndex=initializeSource.indexOf("verify(incoming);");
   const assignmentIndex=initializeSource.indexOf("data=incoming;");

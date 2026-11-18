@@ -224,6 +224,12 @@ decisions, or M2 parity. Provider sdist, runtime candidate SHA, frozen
 normalized source hash and commit are recorded; text and token rows are
 never uploaded. The production POS mapping and M2 0/5 are unchanged.
 
+The frozen-work N-only diagnostic CLI now uses the same atomic **create-only**
+report writer as local analysis: existing reports, sidecar request/response inputs,
+and symlink targets cannot be overwritten by a repeat run. On a collision the
+command exits with a path-free error and requires a new destination. This changes
+receipt safety only, not native measurements, uncertainty bounds or POS mapping.
+
 ## Source-free N sensitivity in readable FantLab-shaped units
 
 `scriptorium n-evidence --root . --format html --output native-n.html` also renders the exact retained native witness as a local, self-contained, no-JavaScript HTML report, with accessible tables and print styles. It uses the same source-free observed counts, per-cell conditional bounds and explicitly labelled denominators as Markdown/CSV. The HTML renderer does **not** execute pylem or claim a new measurement, source-matched FantLab parity or recovered noun/cardinal tags. Its create-only output avoids overwriting an earlier report.

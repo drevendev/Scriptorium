@@ -261,7 +261,7 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
     cards.map(card => card.dataset.catalogKey)), sourceOrder,
     tag + ": reset must restore DOM and keyboard order");
   const cleaned = new URL(page.url());
-  for (const key of ["catalog", "original", "q", "catalog_order"])
+  for (const key of ["catalog", "original", "author", "q", "catalog_order"])
     assert.equal(cleaned.searchParams.has(key), false, tag + ": stale catalogue " + key);
   assert.equal(cleaned.searchParams.get("left"), "anna");
   assert.equal(cleaned.searchParams.get("right"), "beketova");
@@ -328,6 +328,21 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   await page.locator("#catalog-clear").click();
   assert.deepEqual(await page.locator("#books .book").evaluateAll(cards =>
     cards.map(card=>card.dataset.catalogKey)), sourceOrder);
+  // A source-derived author facet retains a pending edition without counting it as analyzed.
+  await page.locator("#catalog-author").selectOption("Андрей Белый");
+  assert.deepEqual(await page.locator("#books .book:visible").evaluateAll(cards =>
+    cards.map(card=>card.dataset.catalogKey)), ["silver","petersburg"]);
+  assert.match(await page.locator("#catalog-filter-status").innerText(), /1 измерено, 1 в подготовке/);
+  const authorFacetHref=await page.locator("#share-catalog").getAttribute("href");
+  assert.equal(new URL(authorFacetHref,origin).searchParams.get("author"),"Андрей Белый");
+  await page.goto(origin + "/" + authorFacetHref,{waitUntil:"networkidle"});
+  await page.waitForFunction(() => !document.querySelector("#catalog-author").disabled,
+    null,{timeout:20000});
+  assert.equal(await page.locator("#catalog-author").inputValue(),"Андрей Белый");
+  assert.equal(await page.locator("#books .book:visible").count(),2);
+  await page.locator("#catalog-clear").click();
+  assert.equal(await page.locator("#catalog-author").inputValue(),"all");
+  assert.equal(await page.locator("#books .book:visible").count(),13);
   await page.screenshot({ path: path.join(evidenceDir, tag + "-reader.png"),
     fullPage: true, animations: "disabled" });
   assert.deepEqual(errors, [], tag + ": browser JavaScript errors");

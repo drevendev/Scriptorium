@@ -17,7 +17,7 @@ const catalogGrid={appendChild(card){
   domOrder.splice(previous,1);
   domOrder.push(card);
 }};
-const filter={value:"all"},origin={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
+const filter={value:"all"},origin={value:"all"},author={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
 const empty={hidden:true},sortStatus={textContent:""};
 const share={hidden:false,href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
@@ -32,9 +32,9 @@ const browser={location,isSecureContext:true,navigator:{clipboard:{
 const s=js.indexOf("  let catalogCopyAttempt=0;"),e=js.indexOf("  function updateSingle() {",s);
 assert.ok(s>=0&&e>s);
 const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog,sortCatalog,verifiedCatalogShareUrl,copyCatalogShareUrl};";
-const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogSearch","catalogOrder",
+const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogAuthor","catalogSearch","catalogOrder",
   "catalogGrid","lookup","isNumeric","el","window","catalogCopyButton",code)(
-  d,cards,filter,origin,search,order,catalogGrid,
+  d,cards,filter,origin,author,search,order,catalogGrid,
   (book,id)=>book.metrics.find(m=>m.id===id),
   value=>typeof value==="number"&&Number.isFinite(value),
   id=>id==="share-catalog"?share:id==="catalog-empty"?empty:
@@ -65,6 +65,27 @@ for(const [language,keys,measured,pending] of [
  assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),keys,language);
  assert.match(status.textContent,new RegExp(measured+" измерено, "+pending+" в подготовке"));
 }
+// Authorship facet uses exact checked names; names are NOT inferred from tokens.
+for(const [name,keys,measured,pending] of [
+  ["Лев Толстой",["anna","resurrection"],2,0],
+  ["Андрей Белый",["silver","petersburg"],1,1],
+  ["Алексей Толстой",["hyperboloid"],1,0],
+  ["Жюль Верн",["beketova"],1,0]
+]){
+  author.value=name;origin.value="all";filter.value="all";search.value="";run();
+  assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),keys,name);
+  assert.match(status.textContent,new RegExp(measured+" измерено, "+pending+" в подготовке"));
+  assert.equal(share.href,"?catalog=all&author="+encodeURIComponent(name)+"#books");
+}
+author.value="Андрей Белый";origin.value="ru";filter.value="measured";run();
+assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),["silver"]);
+location.search="?catalog=all&author="+encodeURIComponent("Андрей Белый");
+restore();assert.equal(author.value,"Андрей Белый");
+assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),["silver","petersburg"]);
+location.search="?catalog=all&author="+encodeURIComponent("Неизвестный автор");
+restore();assert.equal(author.value,"all");
+assert.equal(cards.filter(c=>!c.hidden).length,13);
+author.value="all";location.search="";
 origin.value="en";filter.value="measured";search.value="Дефо";run();
 assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),["shishmareva"]);
 origin.value="fr";filter.value="pending";search.value="";run();
@@ -163,13 +184,14 @@ assert.equal(order.value,"catalog","Reset must restore the visible sort control"
 assert.deepEqual(domOrder.map(c=>c.dataset.catalogKey),data.books.map(b=>b.key),
   "Reset must restore actual DOM/keyboard order, not just the sort label");
 assert.match(sortStatus.textContent,/Исходный порядок каталога/);
-assert.equal(search.value,"");assert.equal(filter.value,"all");assert.equal(origin.value,"all");
+assert.equal(search.value,"");assert.equal(filter.value,"all");assert.equal(origin.value,"all");assert.equal(author.value,"all");
 assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(search.focused,true);
 const clean=new URL(location.href);
 assert.equal(clean.searchParams.has("catalog"),false);
 assert.equal(clean.searchParams.has("q"),false);
 assert.equal(clean.searchParams.has("original"),false);
+assert.equal(clean.searchParams.has("author"),false);
 assert.equal(clean.searchParams.has("catalog_order"),false,
   "Reset must not leave a stale sorted catalogue permalink");
 assert.equal(clean.searchParams.get("left"),"anna");
@@ -217,6 +239,9 @@ assert.match(css,/\.catalog-empty\[hidden\]\s*\{\s*display:none\s*!important/);
 assert.match(html,/id="catalog-filter" disabled/);
 assert.match(html,/id="catalog-origin" aria-describedby="catalog-origin-help" disabled/);
 assert.match(html,/id="catalog-origin-help"/);
+assert.match(html,/id="catalog-author" aria-describedby="catalog-author-help" disabled/);
+assert.match(js,/catalogAuthor.addEventListener\("change",updateCatalog\)/);
+assert.match(js,/option\.textContent=name\+" \("/);
 assert.match(js,/catalogOrigin.addEventListener\("change",updateCatalog\)/);
 assert.match(html,/id="catalog-search" type="search" autocomplete="off"[^>]*disabled/);
 assert.match(html,/id="catalog-search"[^>]*maxlength="120"/);

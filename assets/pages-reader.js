@@ -47,6 +47,7 @@
   const catalogCards = [...document.querySelectorAll("#books .book[data-catalog-key]")];
   const catalogFilter = el("catalog-filter");
   const catalogOrigin = el("catalog-origin");
+  const catalogAuthor = el("catalog-author");
   const catalogSearch = el("catalog-search");
   const catalogOrder = el("catalog-order");
   const catalogGrid = document.querySelector("#books .book-grid");
@@ -356,6 +357,11 @@
   // Presentation-only filtering; never promote research leads to measured books.
   // Static provenance links remain visible when JS or verified data is unavailable.
   let catalogCopyAttempt=0;
+  // Only permit exact source-verified author names; an arbitrary URL cannot invent a facet.
+  function allowedCatalogAuthor(value) {
+    return value==="all" || (typeof value==="string" && safeCatalogQuery(value) &&
+      data.books.some(book=>book.display_author===value));
+  }
   function updateCatalog() {
     catalogCopyAttempt++;
     el("copy-catalog-feedback").textContent="";
@@ -363,6 +369,7 @@
       ? catalogFilter.value : "all";
     const origin=["all","ru","en","fr"].includes(catalogOrigin.value)
       ? catalogOrigin.value : "all";
+    const author=allowedCatalogAuthor(catalogAuthor.value) ? catalogAuthor.value : "all";
     const query=catalogSearch.value.normalize("NFKC").toLocaleLowerCase("ru")
       .replace(/ё/g,"е").trim();
     // Allow a reader to find a translation by author AND translator in any order.
@@ -383,6 +390,7 @@
         (mode==="translated" && isTranslation);
       const visible=modeMatches &&
         (origin==="all" || book.original_language===origin) &&
+        (author==="all" || book.display_author===author) &&
         terms.every(term=>text.includes(term));
       card.hidden=!visible;
       if (visible) {
@@ -404,16 +412,17 @@
     if (!share.hidden) {
       const order=["catalog","title","author","dialogue","length","coverage"].includes(catalogOrder.value)
         ? catalogOrder.value : "catalog";
-      share.href=catalogShareHref(mode,origin,raw,order);
+      share.href=catalogShareHref(mode,origin,raw,order,author);
       share.textContent=raw ? "Ссылка на этот поиск ↗" : "Ссылка на выбранный список ↗";
     } else {
       share.removeAttribute("href");
     }
   }
 
-  function catalogShareHref(mode,origin,raw,order) {
+  function catalogShareHref(mode,origin,raw,order,author="all") {
     return "?catalog="+encodeURIComponent(mode)+
       (origin==="all"?"":"&original="+encodeURIComponent(origin))+
+      (author==="all"?"":"&author="+encodeURIComponent(author))+
       (raw?"&q="+encodeURIComponent(raw):"")+
       (order==="catalog"?"":"&catalog_order="+encodeURIComponent(order))+"#books";
   }
@@ -422,12 +431,14 @@
   function resetCatalog() {
     catalogFilter.value="all";
     catalogOrigin.value="all";
+    catalogAuthor.value="all";
     catalogSearch.value="";
     catalogOrder.value="catalog";
     try {
       const url=new URL(window.location.href);
       url.searchParams.delete("catalog");
       url.searchParams.delete("original");
+      url.searchParams.delete("author");
       url.searchParams.delete("q");
       url.searchParams.delete("catalog_order");
       window.history.replaceState(null,"",url);
@@ -474,16 +485,19 @@
     const requestedOrigin=params.get("original");
     const origin=["ru","en","fr"].includes(requestedOrigin)
       ? requestedOrigin : "all";
+    const requestedAuthor=params.get("author");
+    const author=allowedCatalogAuthor(requestedAuthor) ? requestedAuthor : "all";
     const raw=params.get("q")||"";
     const requestedOrder=params.get("catalog_order");
     const order=["title","author","dialogue","length","coverage"].includes(requestedOrder)
       ? requestedOrder : "catalog";
-    return {mode,origin,query:safeCatalogQuery(raw)?raw:"",order};
+    return {mode,origin,author,query:safeCatalogQuery(raw)?raw:"",order};
   }
   function restoreCatalogFromUrl() {
     const state=catalogFromUrl();
     catalogFilter.value=state.mode;
     catalogOrigin.value=state.origin;
+    catalogAuthor.value=state.author;
     catalogSearch.value=state.query;
     catalogOrder.value=state.order;
     updateCatalog();
@@ -558,9 +572,10 @@
       ?catalogFilter.value:"all";
     const origin=["all","ru","en","fr"].includes(catalogOrigin.value)
       ?catalogOrigin.value:"all";
+    const author=allowedCatalogAuthor(catalogAuthor.value)?catalogAuthor.value:"all";
     const order=["catalog","title","author","dialogue","length","coverage"].includes(catalogOrder.value)
       ?catalogOrder.value:"catalog";
-    if (href!==catalogShareHref(mode,origin,raw,order)) return null;
+    if (href!==catalogShareHref(mode,origin,raw,order,author)) return null;
     try {
       const page=new URL(window.location.href), target=new URL(href,page);
       return target.origin===page.origin && target.pathname===page.pathname &&
@@ -1659,7 +1674,16 @@
     // Install handlers once, and only after the entire pinned snapshot validates.
     // An activation error is a real JS bug, never a reason to bind duplicate handlers.
     data=incoming;
-      const inputs=[catalogFilter,catalogOrigin,catalogSearch,catalogOrder,catalogReset,catalogClear,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,catalogCsvButton,...chartButtons];
+      // Build navigation choices from validated edition metadata, never a static guess.
+      const authorNames=[...new Set(data.books.map(book=>book.display_author))]
+        .sort(new Intl.Collator("ru",{sensitivity:"base",numeric:true}).compare);
+      for (const name of authorNames) {
+        const option=document.createElement("option");
+        option.value=name;
+        option.textContent=name+" ("+data.books.filter(book=>book.display_author===name).length+")";
+        catalogAuthor.appendChild(option);
+      }
+      const inputs=[catalogFilter,catalogOrigin,catalogAuthor,catalogSearch,catalogOrder,catalogReset,catalogClear,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,catalogCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -1678,6 +1702,7 @@
       }
       catalogFilter.addEventListener("change",updateCatalog);
       catalogOrigin.addEventListener("change",updateCatalog);
+      catalogAuthor.addEventListener("change",updateCatalog);
       catalogSearch.addEventListener("input",updateCatalog);
       catalogOrder.addEventListener("change",()=>{sortCatalog();updateCatalog();});
       catalogReset.addEventListener("click",resetCatalog);

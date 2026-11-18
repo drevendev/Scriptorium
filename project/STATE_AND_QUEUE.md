@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 551
+STATE_REVISION: 552
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-17
-LAST_RESULT: #567 merged as 9e865cd0c3d94715412a58ea4eb4b13fffd4a113; author sort is in master and all three push workflows succeeded. Independent author-facet navigation proposed for later-run acceptance.
-LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
+LAST_COMMITTED_RUN_AT: 2026-11-18
+LAST_RESULT: #568 merged as 993416361bce4f690c1155c4e750d94bf449d06a; author facet and three push workflows passed. New contextual two-edition comparison is a PR candidate, not in master.
+LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-AUTHOR-FACET-V1
-ISSUE: #283 — exact-author facet for Russian Reader catalogue
-STATUS: PR_CANDIDATE; exact-head CI and later independent acceptance required; Pages unchanged until merge
-BRANCH: scrip-reader-author-facet-20261118
-BASE: 9e865cd0c3d94715412a58ea4eb4b13fffd4a113
+UNIT_ID: SCRIP-SITE-CATALOG-PAIR-CTA-V1
+ISSUE: #283 — source-bound comparison action for exactly two filtered, measured Reader editions
+STATUS: PR_CANDIDATE; exact-head CI, browser acceptance and later independent review required
+BRANCH: scrip-reader-context-pair-20261118
+BASE: 993416361bce4f690c1155c4e750d94bf449d06a
 
-ACCEPTANCE: choose authors from validated metadata only; retain measured/pending distinctions across all 13 cards, combine with existing status/origin/search/order, share exact allow-listed author links, reject unknown names, reset catalogue-only params, leave static/no-JS catalogue intact. Node positive/negative and real desktop/mobile Chromium checks.
+ACCEPTANCE: show one contextual pair action only for exactly two measured editions with compatible profiles and shared observed dialogue metric; link to functioning existing pair controls with exact keys; hide for pending, one/three/zero results, missing/incompatible metric/profile and failed snapshot validation. Preserve static no-JS links, safe textContent, desktop/mobile focus and no parity claims.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: browse source-backed Reader works by exact validated author, including measured and research-only editions, without overstating scientific readiness.
+Milestone: from verified Reader filters, immediately compare the actual two selected measured editions with transparent scientific limitations.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Reader author facet PR | Exact-head CI; validated author names, combined filters, mobile/keyboard, share/reset/no-JS regression | Later-run independent acceptance |
+| P1 | #283 contextual pair link | Exact-head Node/Chromium + safe missingness and live deployment | Later-run independent acceptance |
 | P2 | #563 public tag profiles | Real verified curator/rights evidence; no synthetic public tags | New genuine source attestations |
-| P3 | #562 rights-cleared lexical comparison in Reader | Verified real-work source-free aggregate comparison, no fabricated word scores | New independent source and rights clearance |
-| P4 | #511 Trusov translation pair | Complete source-verified body before profile pairing | Unresolved historical Page 2/148–151 semantics |
-| P5 | #282 AOT noun/cardinal ambiguity | Independent source-bound POS evidence, no fabricated true POS | New executable diagnostic evidence |
+| P3 | #562 rights-cleared lexical comparison in Reader | Verified real-work source-free aggregate comparison | New independent source and rights clearance |
+| P4 | #511 Trusov translation pair | Complete source-verified body before profile pairing | Historical Page 2/148–151 semantics |
+| P5 | #282 AOT noun/cardinal ambiguity | Independent source-bound POS evidence | New executable diagnostic evidence |
 
 ## Retained scientific and operational boundaries
 

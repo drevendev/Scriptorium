@@ -420,6 +420,13 @@ footer a { color:#ffdaa3; }
 .catalog-tools .catalog-clear:hover:not(:disabled) { background:#dbeae0; }
 .catalog-tools .catalog-clear:disabled { opacity:.65; }
 .catalog-tools p { flex-basis:100%; margin:0; font-size:.8rem; color:var(--subtle); }
+.catalog-tools .catalog-pair-prompt { flex:1 1 100%; display:flex; flex-wrap:wrap; align-items:center; gap:.3rem .9rem;
+  padding:.75rem 1rem; border:1px solid var(--line); border-left:4px solid var(--green);
+  border-radius:6px; background:var(--wash); min-width:0; }
+.catalog-tools .catalog-pair-prompt[hidden] { display:none !important; }
+.catalog-pair-prompt a { display:inline-flex; align-items:center; min-height:44px; max-width:100%;
+  overflow-wrap:anywhere; font-size:.86rem; font-weight:750; }
+.catalog-pair-prompt span { flex:1 1 15rem; color:var(--subtle); font-size:.77rem; line-height:1.55; }
 .catalog-tools .catalog-share a { display:inline-flex; align-items:center; min-height:44px; font-weight:750; }
 .catalog-tools .catalog-share a[hidden] { display:none; }
 .catalog-tools .catalog-share button { min-height:44px; margin:.25rem .4rem; padding:.45rem .75rem;

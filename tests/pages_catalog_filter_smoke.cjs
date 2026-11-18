@@ -9,16 +9,17 @@ const css=fs.readFileSync(path.join(root,"assets/pages-reader.css"),"utf8");
 const cards0=[...html.matchAll(/<article class="book(?: book-research)?" data-status="(measured|pending)" data-catalog-key="([a-z]+)">/g)];
 assert.equal(cards0.length,13);
 assert.deepEqual(cards0.map(m=>m[2]),data.books.map(b=>b.key));
-const cards=cards0.map(m=>({dataset:{status:m[1],catalogKey:m[2]},hidden:false}));
+const cards=cards0.map(m=>({dataset:{status:m[1],catalogKey:m[2]},hidden:false,
+  focused:false,focus(){this.focused=true;}}));
 const domOrder=[...cards];
-const catalogGrid={appendChild(card){
+const catalogGrid={get children(){return domOrder;},appendChild(card){
   const previous=domOrder.indexOf(card);
   assert.notEqual(previous,-1,"Cannot reorder a foreign catalogue card");
   domOrder.splice(previous,1);
   domOrder.push(card);
 }};
 const filter={value:"all"},origin={value:"all"},author={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
-const empty={hidden:true},sortStatus={textContent:""};
+const empty={hidden:true},sortStatus={textContent:""},jump={hidden:true,disabled:true};
 const pairPrompt={hidden:true},pairLink={href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
 }};
@@ -34,18 +35,18 @@ const browser={location,isSecureContext:true,navigator:{clipboard:{
 }}};
 const s=js.indexOf("  let catalogCopyAttempt=0;"),e=js.indexOf("  function updateSingle() {",s);
 assert.ok(s>=0&&e>s);
-const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog,sortCatalog,verifiedCatalogShareUrl,copyCatalogShareUrl};";
+const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog,sortCatalog,jumpToFirstCatalogResult,verifiedCatalogShareUrl,copyCatalogShareUrl};";
 const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogAuthor","catalogSearch","catalogOrder",
-  "catalogGrid","lookup","isNumeric","el","window","catalogCopyButton",code)(
+  "catalogGrid","lookup","isNumeric","el","window","catalogCopyButton","catalogJump",code)(
   d,cards,filter,origin,author,search,order,catalogGrid,
   (book,id)=>book.metrics.find(m=>m.id===id),
   value=>typeof value==="number"&&Number.isFinite(value),
   id=>id==="share-catalog"?share:id==="catalog-empty"?empty:
     id==="catalog-sort-status"?sortStatus:id==="catalog-pair-prompt"?pairPrompt:
     id==="catalog-pair-link"?pairLink:id==="copy-catalog-feedback"?feedback:status,
-  browser,copyButton);
+  browser,copyButton,jump);
 const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog,sortCatalog,
-  verifiedCatalogShareUrl,copyCatalogShareUrl}=make(data);
+  jumpToFirstCatalogResult,verifiedCatalogShareUrl,copyCatalogShareUrl}=make(data);
 for(const [mode,keys,measured,pending] of [
  ["all",data.books.map(b=>b.key),11,2],
  ["measured",["anna","waves","silver","karamazov","hyperboloid","beketova","resurrection","road","oblomov","humiliated","shishmareva"],11,0],
@@ -145,6 +146,19 @@ for(const [q,mode,keys] of [
 search.value="";filter.value="all";run();
 assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(share.href,"?catalog=all#books");
+// Explicit focus jump follows real filtered/sorted DOM; zero matches disable it.
+author.value="Лев Толстой";order.value="author";sortCatalog();run();
+assert.equal(jump.hidden,false);assert.equal(jump.disabled,false);
+const firstResult=domOrder.find(card=>!card.hidden);
+assert.equal(firstResult.dataset.catalogKey,"anna");
+jumpToFirstCatalogResult();
+assert.equal(firstResult.focused,true);assert.equal(firstResult.tabIndex,-1);
+search.value="несуществующая редакция";run();
+assert.equal(jump.hidden,true);assert.equal(jump.disabled,true);
+const focusedBefore=cards.filter(card=>card.focused).length;
+jumpToFirstCatalogResult();
+assert.equal(cards.filter(card=>card.focused).length,focusedBefore);
+search.value="";author.value="all";order.value="catalog";sortCatalog();run();
 // Coverage sorting uses verified observed metric counts, not a guessed quality score.
 order.value="coverage";run();sortCatalog();
 const expectedCoverage=[...data.books].map((book,i)=>({book,i})).sort((a,b)=>{
@@ -256,7 +270,7 @@ assert.match(html,/id="catalog-empty" class="catalog-empty" hidden/);
 assert.match(html,/id="catalog-reset" type="button" disabled/);
 assert.match(html,/id="catalog-clear" class="catalog-clear" type="button" disabled/);
 assert.match(js,/catalogClear.addEventListener\("click",resetCatalog\)/);
-assert.match(js,/catalogReset,catalogClear,one,search,out/);
+assert.match(js,/catalogReset,catalogClear,catalogJump,one,search,out/);
 assert.match(css,/\.catalog-tools \.catalog-clear \{ min-height:44px/);
 assert.match(html,/Показано 13 из 13 книг/);
 assert.match(js,/catalogReset.addEventListener\("click",resetCatalog\)/);

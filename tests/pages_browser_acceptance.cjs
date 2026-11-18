@@ -250,6 +250,8 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
     null, { timeout: 20000 });
   assert.equal(await page.locator("#catalog-order").inputValue(), "length");
   assert.equal(await page.locator("#books .book:visible").count(), 0);
+  assert.equal(await page.locator("#catalog-jump").isVisible(),false,
+    tag + ": no result jump for an empty catalogue intersection");
   await page.locator("#catalog-reset").click();
   assert.equal(await page.locator("#catalog-order").inputValue(), "catalog");
   assert.equal(await page.locator("#books .book:visible").count(), 13);
@@ -330,6 +332,15 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
     cards.map(card=>card.dataset.catalogKey)), sourceOrder);
   // A source-derived author facet retains a pending edition without counting it as analyzed.
   await page.locator("#catalog-author").selectOption("Андрей Белый");
+  assert.equal(await page.locator("#catalog-jump").isEnabled(),true);
+  await page.locator("#catalog-jump").click();
+  assert.equal(await page.locator("#books .book:visible").first().evaluate(card =>
+    card === document.activeElement && card.tabIndex === -1),true,
+    tag + ": jump must focus first visible source-backed book");
+  await page.keyboard.press("Tab");
+  assert.equal(await page.locator("#books .book:visible").first().locator("a").evaluate(link =>
+    link === document.activeElement),true,
+    tag + ": Tab after jump must reach its evidence link");
   assert.deepEqual(await page.locator("#books .book:visible").evaluateAll(cards =>
     cards.map(card=>card.dataset.catalogKey)), ["silver","petersburg"]);
   assert.match(await page.locator("#catalog-filter-status").innerText(), /1 измерено, 1 в подготовке/);

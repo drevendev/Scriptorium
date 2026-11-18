@@ -378,7 +378,11 @@
     const terms=query ? query.split(/\s+/u) : [];
     let shown=0, measured=0, pending=0;
     const matchingMeasured=[];
-    for (const card of catalogCards) {
+    // Filter and build contextual comparison in the visible DOM order, not
+    // the frozen source array order. A signed right-minus-left delta must
+    // follow the books the reader actually sees after sorting.
+    for (const card of catalogGrid.children) {
+      if (!catalogCards.includes(card)) continue;
       const book=data.books.find(b=>b.key===card.dataset.catalogKey);
       if (!book) throw Error("Нет проверенного источника для карточки");
       const isMeasured=book.text_status==="measured";
@@ -539,6 +543,8 @@
     catalogAuthor.value=state.author;
     catalogSearch.value=state.query;
     catalogOrder.value=state.order;
+    // Restore the URL order before building the contextual two-book link.
+    sortCatalog();
     updateCatalog();
   }
 
@@ -1748,7 +1754,6 @@
       catalogClear.addEventListener("click",resetCatalog);
       catalogJump.addEventListener("click",jumpToFirstCatalogResult);
       restoreCatalogFromUrl();
-      sortCatalog();
       el("catalog-tools").hidden=false;
       catalogCopyButton.hidden=false;
       catalogCopyButton.addEventListener("click",copyCatalogShareUrl);
@@ -1757,7 +1762,6 @@
       one.addEventListener("change",()=>selectBook(one.value,true));
       window.addEventListener("popstate",()=>{
         restoreCatalogFromUrl();
-        sortCatalog();
         restoreChartFromUrl();
         selectBook(bookFromUrl());
         const [left,right] = pairFromUrl();

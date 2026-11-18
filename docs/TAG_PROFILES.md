@@ -10,6 +10,14 @@ From a repository checkout with Python 3.13+, provide the existing source-free e
 scriptorium tags --snapshot scriptorium/data/evidence-snapshot.json --curation private-tags.json --output private-tag-profiles.json
 ```
 
+For a **private, self-contained and printable HTML report** of the same confirmed curator-declared tags and five numeric metrics, run:
+
+```console
+scriptorium tags --snapshot scriptorium/data/evidence-snapshot.json --curation private-tags.json --format html --output private-tags.html
+```
+
+The HTML has labelled tables, observed/missing counts, exact units, honest zero-/one-work states, work hashes and curator evidence as inert text (no external links/scripts). It is **not a public tag page or an independently verified permission**. JSON remains the default for machine-readable replay.
+
 The tool will not download or ingest texts. The output destination is exclusive-create; it never overwrites a previous report. It includes measured numeric scalars, work/source hashes and evidence URLs, but no manuscript text or word forms. The curation file must not be committed before independent rights and label review.
 
 `private-tags.json` has this exact shape (field **names** only; not a real work/tag assertion):

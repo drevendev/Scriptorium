@@ -226,6 +226,9 @@ never uploaded. The production POS mapping and M2 0/5 are unchanged.
 
 ## Source-free N sensitivity in readable FantLab-shaped units
 
+`scriptorium n-evidence --root . --format html --output native-n.html` also renders the exact retained native witness as a local, self-contained, no-JavaScript HTML report, with accessible tables and print styles. It uses the same source-free observed counts, per-cell conditional bounds and explicitly labelled denominators as Markdown/CSV. The HTML renderer does **not** execute pylem or claim a new measurement, source-matched FantLab parity or recovered noun/cardinal tags. Its create-only output avoids overwriting an earlier report.
+
+
 The checked-in `scriptorium n-evidence --root . --format json` command now
 re-expresses the **already measured** N-only count envelopes with explicit
 denominators: noun/cardinal bucket percentage of *conditionally defined*

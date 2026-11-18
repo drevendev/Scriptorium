@@ -15,6 +15,23 @@ scriptorium distinctives left.txt right.txt \
   --format json --output private-contrast.json
 ```
 
+For a spreadsheet-friendly **source-free, create-only CSV** (fixed four-column
+`section,field,value,unit` rows; no words or word-level hashes):
+
+```console
+scriptorium distinctives left.txt right.txt \
+  --left-edition edition-A --right-edition edition-B \
+  --format csv --output private-contrast.csv
+```
+
+This local CSV includes normalized source digests, declared edition and translator
+metadata, explicit units, method/profile evidence, and aggregate observations. A missing
+aggregate is `NOT_RUN`, never numeric zero; optional unknown metadata are `UNKNOWN`.
+Potential spreadsheet formulas in untrusted text labels are prefixed with an apostrophe;
+CSV quoting alone is not a formula defense. **Never publish** private comparisons on
+Pages without independent rights and provenance review. CSV adds an output format,
+not a new FantLab compatibility profile or clearance.
+
 To produce a **readable standalone local HTML report** (no scripts, remote fonts, images, network calls or source words):
 
 ```console

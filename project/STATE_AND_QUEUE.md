@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 550
+STATE_REVISION: 551
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-17
-LAST_RESULT: #566 merged as 81a72470a55bbbd1f473abf917465f94a28d8766; coverage sort now in master, Pages push deployment succeeded. #283 author-first navigation proposed for later-run acceptance.
+LAST_RESULT: #567 merged as 9e865cd0c3d94715412a58ea4eb4b13fffd4a113; author sort is in master and all three push workflows succeeded. Independent author-facet navigation proposed for later-run acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads and separate incomplete 145-Page Trusov projected excerpt; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-AUTHOR-SORT-V1
-ISSUE: #283 — author-first Russian Reader catalogue navigation
-STATUS: PR_CANDIDATE; exact-head CI, real Chromium desktop/mobile/keyboard and later-run acceptance required; not yet published
-BRANCH: scrip-reader-author-order-20261118
-BASE: 81a72470a55bbbd1f473abf917465f94a28d8766
+UNIT_ID: SCRIP-SITE-AUTHOR-FACET-V1
+ISSUE: #283 — exact-author facet for Russian Reader catalogue
+STATUS: PR_CANDIDATE; exact-head CI and later independent acceptance required; Pages unchanged until merge
+BRANCH: scrip-reader-author-facet-20261118
+BASE: 9e865cd0c3d94715412a58ea4eb4b13fffd4a113
 
-ACCEPTANCE: order all 13 source-backed edition cards by recorded author, then Russian title, including two clearly unmeasured leads without upgrading them; stable tie resolution, allow-listed author permalink, DOM/keyboard order and reset, no-JavaScript source order. Positive/negative Node and real Chromium checks.
+ACCEPTANCE: choose authors from validated metadata only; retain measured/pending distinctions across all 13 cards, combine with existing status/origin/search/order, share exact allow-listed author links, reject unknown names, reset catalogue-only params, leave static/no-JS catalogue intact. Node positive/negative and real desktop/mobile Chromium checks.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make the source-backed Reader easy to browse by author without misrepresenting measured versus research-only editions; independently accept after exact-head CI and browser checks.
+Milestone: browse source-backed Reader works by exact validated author, including measured and research-only editions, without overstating scientific readiness.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 Reader author-first sorting PR | Exact-head CI; actual author/title ordering, mobile/keyboard, permalink and no-JS regression | Later-run independent acceptance |
+| P1 | #283 Reader author facet PR | Exact-head CI; validated author names, combined filters, mobile/keyboard, share/reset/no-JS regression | Later-run independent acceptance |
 | P2 | #563 public tag profiles | Real verified curator/rights evidence; no synthetic public tags | New genuine source attestations |
 | P3 | #562 rights-cleared lexical comparison in Reader | Verified real-work source-free aggregate comparison, no fabricated word scores | New independent source and rights clearance |
 | P4 | #511 Trusov translation pair | Complete source-verified body before profile pairing | Unresolved historical Page 2/148–151 semantics |

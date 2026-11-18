@@ -19,6 +19,9 @@ const catalogGrid={appendChild(card){
 }};
 const filter={value:"all"},origin={value:"all"},author={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
 const empty={hidden:true},sortStatus={textContent:""};
+const pairPrompt={hidden:true},pairLink={href:"",textContent:"",removeAttribute(name){
+  assert.equal(name,"href");this.href="";
+}};
 const share={hidden:false,href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
 },getAttribute(name){assert.equal(name,"href");return this.href||null;}};
@@ -38,7 +41,8 @@ const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin"
   (book,id)=>book.metrics.find(m=>m.id===id),
   value=>typeof value==="number"&&Number.isFinite(value),
   id=>id==="share-catalog"?share:id==="catalog-empty"?empty:
-    id==="catalog-sort-status"?sortStatus:id==="copy-catalog-feedback"?feedback:status,
+    id==="catalog-sort-status"?sortStatus:id==="catalog-pair-prompt"?pairPrompt:
+    id==="catalog-pair-link"?pairLink:id==="copy-catalog-feedback"?feedback:status,
   browser,copyButton);
 const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog,sortCatalog,
   verifiedCatalogShareUrl,copyCatalogShareUrl}=make(data);
@@ -76,6 +80,15 @@ for(const [name,keys,measured,pending] of [
   assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),keys,name);
   assert.match(status.textContent,new RegExp(measured+" измерено, "+pending+" в подготовке"));
   assert.equal(share.href,"?catalog=all&author="+encodeURIComponent(name)+"#books");
+  if(name==="Лев Толстой"){
+    assert.equal(pairPrompt.hidden,false,"two measured Tolstoy editions must enable real comparison");
+    assert.equal(pairLink.href,
+      "?left=anna&right=resurrection&pair_metric=fantlab.dialogue.share_percent#pairs");
+    assert.match(pairLink.textContent,/Анна Каренина.*Воскресение/);
+  } else {
+    assert.equal(pairPrompt.hidden,true,"unmeasured or one-book facet must not offer pair");
+    assert.equal(pairLink.href,"","stale actionable pair links must be removed");
+  }
 }
 author.value="Андрей Белый";origin.value="ru";filter.value="measured";run();
 assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),["silver"]);
@@ -86,6 +99,20 @@ location.search="?catalog=all&author="+encodeURIComponent("Неизвестны�
 restore();assert.equal(author.value,"all");
 assert.equal(cards.filter(c=>!c.hidden).length,13);
 author.value="all";location.search="";
+const broken=structuredClone(data);
+broken.books.find(book=>book.key==="resurrection").profiles.metrics="incompatible-test-profile";
+author.value="Лев Толстой";origin.value="all";filter.value="all";search.value="";
+make(broken).updateCatalog();
+assert.equal(pairPrompt.hidden,true,"incompatible measured profiles cannot be compared");
+assert.equal(pairLink.href,"");
+const noMetric=structuredClone(data);
+const dialogue=noMetric.books.find(book=>book.key==="resurrection").metrics
+  .find(metric=>metric.id==="fantlab.dialogue.share_percent");
+dialogue.actual=null;dialogue.status="not_run";
+make(noMetric).updateCatalog();
+assert.equal(pairPrompt.hidden,true,"missing metric cannot enable a comparison");
+assert.equal(pairLink.href,"");
+author.value="all";run();
 origin.value="en";filter.value="measured";search.value="Дефо";run();
 assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),["shishmareva"]);
 origin.value="fr";filter.value="pending";search.value="";run();
@@ -240,6 +267,8 @@ assert.match(html,/id="catalog-filter" disabled/);
 assert.match(html,/id="catalog-origin" aria-describedby="catalog-origin-help" disabled/);
 assert.match(html,/id="catalog-origin-help"/);
 assert.match(html,/id="catalog-author" aria-describedby="catalog-author-help" disabled/);
+assert.match(html,/id="catalog-pair-prompt" class="catalog-pair-prompt" hidden/);
+assert.match(html,/id="catalog-pair-link" href="#pairs"/);
 assert.match(js,/catalogAuthor.addEventListener\("change",updateCatalog\)/);
 assert.match(js,/option\.textContent=name\+" \("/);
 assert.match(js,/catalogOrigin.addEventListener\("change",updateCatalog\)/);

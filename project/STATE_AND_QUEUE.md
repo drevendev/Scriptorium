@@ -1,29 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 554
+STATE_REVISION: 555
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-18
-LAST_RESULT: #570 merged at c69dbdaecf67d1fbb29854d6c005a6254a5611be; its previous candidate status is superseded by native GitHub merge evidence. Reader keyboard access #283 is the new proposed unit.
+LAST_RESULT: #571 merged at 0e76ece3c30974413d5b2670fde93f3e43c220fc; master Pages/Reader workflows successful on exact SHA; new source-free native N HTML report is a separate PR candidate.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-CATALOG-RESULT-JUMP
-ISSUE: #283 — explicit focus jump to a real filtered source-backed book
-STATUS: PR_CANDIDATE; later-run exact-head CI/browser acceptance required
-BRANCH: scrip-reader-catalog-result-jump-20261118
-BASE: c69dbdaecf67d1fbb29854d6c005a6254a5611be
+UNIT_ID: SCRIP-MORPH-N-HTML
+ISSUE: #282 — printable source-free pinned AOT N evidence for researchers
+STATUS: PR_CANDIDATE; later-run exact-head CI/HTML inspection required
+BRANCH: scrip-native-n-html-report-20261118
+BASE: 0e76ece3c30974413d5b2670fde93f3e43c220fc
 
-ACCEPTANCE: Once the pinned JSON verifies, «К первой найденной книге» focuses the first visible article in actual sorted DOM order upon explicit activation. Next Tab enters that article's original evidence link. Zero results hide/disable jump; failed JSON and no-JS leave it hidden. Filtering itself never steals focus. Require Node/Python positive and empty-result regressions and real desktop/mobile keyboard acceptance. No scientific/rights/profile changes.
+ACCEPTANCE: Verified retained pylem==0.0.18 witness renders as standalone local HTML (no source prose, JavaScript or external resources) with accessible observed/conditional/native-control tables, exact units, provenance, M2 0/5 and explicit unresolved N/FantLab boundaries; hostile title is escaped and create-only output never overwrites. Python tests and exact-head CI pass; visual inspection is separate. Does not rerun native morphology or change production mapping.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: improve the public Reader's keyboard/mobile journey, preserving evidence-first measured/research separation.
+Milestone: readable, source-free native AOT diagnostic for researchers while Reader's verified book navigation remains published.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 first-result keyboard navigation | Exact-head CI/desktop/mobile keyboard acceptance; eligible later-run merge/publish | Candidate PR |
-| P2 | #282 native AOT noun/cardinal controls | One source-bound pinned-pylem measurement with explicit ambiguity | Native runtime/evidence |
+| P1 | #282 offline native N HTML evidence | Exact-head tests, self-contained HTML, escaping and later-run acceptance | Candidate PR |
+| P2 | #282 further source-bound native AOT controls | One independent frozen-work measurement with explicit N-mixed limits | Native runtime/evidence |
 | P3 | #562 lexical contrast public evidence | One independently rights-reviewed source-free artifact; offline HTML already merged | Edition/rights basis |
 | P4 | #563 public tag profile | A real provenance-bound curator/rights proof; never invent labels | Rights proof |
 | P5 | #511 Trusov translation pair | Full verified source body before side-by-side measured comparison | Historical Page semantics |

@@ -10,6 +10,7 @@ import tempfile
 import unittest
 
 from scriptorium.cli import main
+from scriptorium.native_n_html import render_native_n_html
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -123,6 +124,41 @@ class NativeNRetainedCliTests(unittest.TestCase):
                          ("172635", "DERIVED_CONDITIONAL"))
         self.assertTrue(all(row["observed"] == "" for row in rows
                             if row["evidence_status"] == "CONDITIONAL_N_ONLY"))
+
+    def test_html_is_accessible_source_free_and_safe_to_print(self):
+        page = self.invoke("--format", "html")
+        self.assertTrue(page.startswith("<!doctype html>"))
+        self.assertIn('lang="ru"', page)
+        self.assertIn('<caption>Условные интервалы POS-биграмм</caption>', page)
+        self.assertIn('role="region" tabindex="0"', page)
+        self.assertIn("55", page)
+        self.assertIn("19670", page)
+        self.assertIn("8402", page)
+        self.assertIn("9992", page)
+        self.assertIn("только диагностика".lower(), page.lower())
+        self.assertIn("0/5", page)
+        self.assertIn("на 1000 слов-токенов", page)
+        self.assertIn("@media print", page)
+        self.assertNotIn("<script", page.lower())
+        self.assertNotIn('<link rel="stylesheet"', page.lower())
+        self.assertNotIn("normalized_text", page)
+        report = json.loads(self.invoke("--format", "json"))
+        report["witness"]["work"]["title"] = '<img src=x onerror="alert(1)">'
+        escaped = render_native_n_html(report)
+        self.assertNotIn("<img", escaped)
+        self.assertIn("&lt;img", escaped)
+
+    def test_html_create_only_no_overwrite(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "native-n.html"
+            self.assertEqual(main(["n-evidence", "--root", str(ROOT),
+                                   "--format", "html", "--output", str(path)]), 0)
+            first = path.read_bytes()
+            self.assertTrue(first.startswith(b"<!doctype html>"))
+            with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                main(["n-evidence", "--root", str(ROOT),
+                      "--format", "html", "--output", str(path)])
+            self.assertEqual(path.read_bytes(), first)
 
     def test_create_only_and_private_path_redaction(self):
         with tempfile.TemporaryDirectory() as folder:

@@ -17,6 +17,7 @@ from .csv_safety import safe_csv_text
 from .frozen_diagnostic_report import _unique_keys
 from .n_uncertainty_publication import validate_n_summary
 from .native_n_units import normalized_n_bounds
+from .native_n_html import render_native_n_html
 
 SCHEMA = "scriptorium-native-n-cli-evidence-v4"
 RETAINED_PATH = Path("assets/n-uncertainty-anna.json")
@@ -54,6 +55,8 @@ def render_native_n_report(report: dict[str, object], kind: str) -> str:
     """Show native counts and separately conditional, not joint, N-only bounds."""
     if kind == "json":
         return json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False) + "\n"
+    if kind == "html":
+        return render_native_n_html(report)
     witness = report["witness"]
     counts = witness["counts"]
     evidence = witness["evidence"]
@@ -169,7 +172,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Read pinned native AOT/pylem N-collision evidence without downloading text")
     parser.add_argument("--root", type=Path, default=Path("."),
                         help="Repository checkout containing assets/n-uncertainty-anna.json")
-    parser.add_argument("--format", choices=("markdown", "json", "csv"), default="markdown")
+    parser.add_argument("--format", choices=("markdown", "json", "csv", "html"), default="markdown")
     parser.add_argument("--output", type=Path, help="Create-only report path")
     args = parser.parse_args(argv)
     try:

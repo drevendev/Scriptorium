@@ -53,6 +53,7 @@
   const catalogGrid = document.querySelector("#books .book-grid");
   const catalogReset = el("catalog-reset");
   const catalogClear = el("catalog-clear");
+  const catalogJump = el("catalog-jump");
   const catalogCopyButton = el("copy-catalog-link");
   const catalogCsvButton = el("catalog-export-csv");
   const one = el("choose-book");
@@ -400,6 +401,9 @@
       }
     }
     el("catalog-empty").hidden=shown!==0;
+    // Filtering never steals keyboard focus; moving to a result is explicit.
+    catalogJump.hidden=shown===0;
+    catalogJump.disabled=shown===0;
     el("catalog-export-csv").disabled=measured===0;
     el("catalog-filter-status").textContent=shown
       ? "Показано "+shown+" из "+catalogCards.length+" книг: "+
@@ -450,6 +454,16 @@
       (author==="all"?"":"&author="+encodeURIComponent(author))+
       (raw?"&q="+encodeURIComponent(raw):"")+
       (order==="catalog"?"":"&catalog_order="+encodeURIComponent(order))+"#books";
+  }
+
+  // Use current sorted DOM order, never the original catalogue array order.
+  // Programmatic article focus does not alter normal Tab order; its next link remains tabbable.
+  function jumpToFirstCatalogResult() {
+    if (catalogJump.disabled) return;
+    const card=[...catalogGrid.children].find(item=>catalogCards.includes(item) && !item.hidden);
+    if (!card) return;
+    card.tabIndex=-1;
+    card.focus();
   }
 
   // A full empty-state reset restores DOM/keyboard order while preserving unrelated pair links.
@@ -1708,7 +1722,7 @@
         option.textContent=name+" ("+data.books.filter(book=>book.display_author===name).length+")";
         catalogAuthor.appendChild(option);
       }
-      const inputs=[catalogFilter,catalogOrigin,catalogAuthor,catalogSearch,catalogOrder,catalogReset,catalogClear,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,catalogCsvButton,...chartButtons];
+      const inputs=[catalogFilter,catalogOrigin,catalogAuthor,catalogSearch,catalogOrder,catalogReset,catalogClear,catalogJump,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,catalogCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
@@ -1732,6 +1746,7 @@
       catalogOrder.addEventListener("change",()=>{sortCatalog();updateCatalog();});
       catalogReset.addEventListener("click",resetCatalog);
       catalogClear.addEventListener("click",resetCatalog);
+      catalogJump.addEventListener("click",jumpToFirstCatalogResult);
       restoreCatalogFromUrl();
       sortCatalog();
       el("catalog-tools").hidden=false;

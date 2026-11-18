@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 558
+STATE_REVISION: 559
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-18
-LAST_RESULT: #574 merged at 9a082f42ba9ac5ce9bd97a4f54c59ffa9cec70ba; full-work Resurrection native N diagnostics accepted, FantLab input identity still UNKNOWN.
+LAST_RESULT: #575 merged at 81aa1636e5318d5b506a861c74e358fe524e085f; visible Reader pair ordering verified in native PR, live Pages readback still UNKNOWN.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-SORTED-CONTEXT-PAIR
-ISSUE: #283 — contextual two-book comparison follows the sorted Reader catalogue
-STATUS: PR_CANDIDATE; later-run exact-head CI and browser acceptance required
-BRANCH: scrip-reader-sorted-context-pair-20261118
-BASE: 9a082f42ba9ac5ce9bd97a4f54c59ffa9cec70ba
+UNIT_ID: SCRIP-LEXICAL-CONTRAST-CSV-001
+ISSUE: #562 — private source-free lexical aggregate CSV export
+STATUS: PR_CANDIDATE; later-run exact-head tests/checks and review required
+BRANCH: scrip-lexical-contrast-csv-20261118
+BASE: 81aa1636e5318d5b506a861c74e358fe524e085f
 
-ACCEPTANCE: For exactly two verified measured editions, produce the same left/right pair order readers see after sorting. Preserve signed right-minus-left metrics when reopening shareable sorted catalog URLs, keep pending/incompatible editions disabled, and test source-order, length-order, URL restoration, desktop/mobile interactions and no-JS fallback. Scientific claims and source hashes unchanged.
+ACCEPTANCE: Installed distinctives CLI emits deterministic four-column source-free CSV with explicit units, input hashes, method/profile evidence and NOT_RUN versus measured zero. Neutralize formula-like untrusted labels; preserve existing JSON/Markdown/HTML and create-only output. Positive/negative CLI tests and exact-head CI required before merge. Publication rights remain unverified; no public corpus promotion or FantLab parity.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: source-backed, accessible Reader comparison with reliable sorting and public rights-reviewed source-free extensions.
+Milestone: source-backed, accessible Reader comparisons plus reproducible rights-safe local lexical exports; public lexical/tag views only after independently verified rights.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 sorted contextual Reader comparison | Matching visible/linked left/right direction; Node/Chromium PASS | Exact-head CI, later acceptance |
-| P2 | #562 public lexical comparison | Rights-reviewed source-free evidence and methodology | Edition-specific publication rights |
-| P3 | #563 evidenced tag profiles | Curated source identity, validated tag groups | Curator/source rights |
-| P4 | #282 AOT N resolution beyond two native witnesses | New quantitative consequence, not repeated known experiment | FantLab unpublished policy |
-| P5 | #511 Trusov translation pair | Frozen complete body and measured second translation | Historical Pages |
+| P1 | #562 private lexical CSV | Source-free fixed-unit CSV, formula-safe identities, NOT_RUN, CLI regressions | Later-run exact-head CI/review |
+| P2 | #283 Reader visual acceptance | Real desktop/mobile/keyboard/print evidence on built site | Browser/screenshot access |
+| P3 | #562 public lexical comparison | Rights-reviewed edition-pinned source-free evidence | Edition-specific publication rights |
+| P4 | #563 evidenced tag profiles | Curated source identity, validated tag groups | Curator/source rights |
+| P5 | #511 Trusov translation pair / #282 AOT diagnostics | Complete source-verified second translation or new independent N consequence | Historical Pages / FantLab policy |
 
 ## Retained scientific and operational boundaries
 

@@ -11,6 +11,7 @@ from collections.abc import Iterable, Mapping, Sequence
 import json
 from pathlib import Path
 
+from .analyze import _write_new
 from .morphology import FANTLAB_POS_BUCKETS, MAX_POSITION, _sentence_bucket_rows, resolve_runtime_pos
 from .morphology_diagnostic import classify_runtime_candidates
 from .pylem_provider import PYLEM_VERSION, PYLEM_RUNTIME_PROFILE
@@ -254,11 +255,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         load(args.request), load(args.response), load(args.manifest),
         scriptorium_revision=args.scriptorium_revision,
     )
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(artifact, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    rendered = json.dumps(artifact, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+    # A native witness is evidence: never replace an earlier receipt, input,
+    # or symlink target, including in concurrent CLI invocations.
+    try:
+        _write_new(args.output, rendered)
+    except FileExistsError:
+        parser.error("N-only diagnostic output already exists; choose another destination")
+    except OSError:
+        parser.error("N-only diagnostic output destination unavailable")
     return 0
 
 

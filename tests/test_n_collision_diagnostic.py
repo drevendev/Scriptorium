@@ -157,5 +157,58 @@ class NOnlyImpactTests(unittest.TestCase):
             build_frozen_n_only_diagnostic(request, response, manifest, scriptorium_revision="test")
 
 
+    def test_cli_create_only_does_not_replace_receipt_inputs_or_symlink(self):
+        """An N-only artifact must never overwrite previously captured evidence."""
+        import contextlib
+        import io
+        from pathlib import Path
+        import tempfile
+        from scriptorium.n_collision_diagnostic import main
+
+        request, response, manifest = fixture()
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            inputs = {}
+            for name, document in (("request", request), ("response", response),
+                                   ("manifest", manifest)):
+                path = root / (name + ".json")
+                path.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
+                inputs[name] = path
+            output = root / "native-n.json"
+            args = [
+                "--manifest", str(inputs["manifest"]), "--request", str(inputs["request"]),
+                "--response", str(inputs["response"]), "--scriptorium-revision", "test",
+                "--output", str(output),
+            ]
+            self.assertEqual(main(args), 0)
+            saved = output.read_bytes()
+            artifact = json.loads(saved)
+            self.assertEqual(artifact["schema_version"], SCHEMA)
+            self.assertFalse(artifact["source_text_included"])
+            self.assertNotIn("normalized_text", saved.decode("utf-8"))
+
+            def assert_rejected(destination):
+                stderr = io.StringIO()
+                with contextlib.redirect_stderr(stderr), self.assertRaises(SystemExit) as caught:
+                    main([*args[:-1], str(destination)])
+                self.assertEqual(caught.exception.code, 2)
+                self.assertIn("already exists", stderr.getvalue())
+                self.assertNotIn(str(root), stderr.getvalue())
+
+            assert_rejected(output)
+            self.assertEqual(output.read_bytes(), saved)
+            original_request = inputs["request"].read_bytes()
+            assert_rejected(inputs["request"])
+            self.assertEqual(inputs["request"].read_bytes(), original_request)
+            alias = root / "alias.json"
+            try:
+                alias.symlink_to(output)
+            except (OSError, NotImplementedError):
+                return  # Some hosts prohibit symlink creation.
+            assert_rejected(alias)
+            self.assertTrue(alias.is_symlink())
+            self.assertEqual(output.read_bytes(), saved)
+
+
 if __name__ == "__main__":
     unittest.main()

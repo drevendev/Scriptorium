@@ -309,6 +309,36 @@ def replay_manifest(
     }
 
 
+def replay_manifest_text(
+    manifest: Mapping[str, object],
+    *,
+    fetcher: Callable[[Iterable[Mapping[str, object]]], dict[str, str]] = fetch_pinned_chapter_revisions,
+) -> str:
+    """Return ephemeral verified Resurrection prose for a local analyzer.
+
+    Check every pinned chapter and the full body hash before releasing text.
+    Callers must delete source-bearing sidecar transport files; only derived
+    source-free results may be retained.
+    """
+    identities = _validate_manifest(manifest)
+    titles = {str(row["title"]) for row in identities}
+    captured: dict[str, str] = {}
+
+    def capture(rows: Iterable[Mapping[str, object]]) -> dict[str, str]:
+        records = fetcher(rows)
+        if (not isinstance(records, dict) or set(records) != titles
+                or any(not isinstance(value, str) for value in records.values())):
+            raise ValueError("Resurrection pinned replay inventory mismatch")
+        captured.update(records)
+        return records
+
+    replay_manifest(manifest, fetcher=capture)
+    return "\n\n".join(
+        extract_resurrection_body(captured[str(row["title"])])
+        for row in identities
+    )
+
+
 def _write_json(path: Path, value: Mapping[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(

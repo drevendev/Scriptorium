@@ -337,6 +337,25 @@ FantLab's dictionary or its homonym decisions**. Frozen full-book conditional
 bounds remain separate, and production mapping, M1/M2 acceptance and corpus
 status remain unchanged. Native CI for #560 passed on 2026-11-17; this verifies the bounded native observation, not source AOT POS enums or FantLab parity.
 
+
+### Independent full-work AOT control: Resurrection (PR candidate, 2026-11-18)
+
+An independent frozen public-domain Russian transcription of Tolstoy's
+*Resurrection* (129 pinned Wikisource revisions, 890,835 characters including
+spaces, raw/normalized SHA-256
+`2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0`)
+is an additional pinned `pylem==0.0.18` N-only diagnostic target. The
+source-specific extractor handles two verified chapter shapes; applying the
+Anna packed-manifest renderer would violate input identity. The CI job checks
+all pinned revisions and full body hash before tokenization, runs the Python
+3.9 AOT sidecar, and reports native N-only/N-mixed and per-cell conditional
+POS, bigram and sentence-position bounds. Ephemeral requests/responses are
+removed; only source-free summaries are uploaded.
+
+This is an independent source-bound diagnostic, not recovered noun/cardinal
+labels or a FantLab edition match. Native results are NOT_RUN until the
+exact-head job succeeds. Anna's retained evidence remains unchanged; M2 0/5.
+
 ## Primary sources
 
 - https://pypi.org/project/pylem/

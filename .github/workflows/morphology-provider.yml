@@ -454,3 +454,104 @@ jobs:
           path: build/morph/work270306-pylem-n-only-impact.json
           if-no-files-found: error
           retention-days: 7
+
+  resurrection-native-n:
+    name: Replay pinned Resurrection N-only impact through pylem 0.0.18
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up contract runtime
+        id: py313
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Verify 129 pinned chapters and prepare ephemeral request
+        run: |
+          set -euo pipefail
+          mkdir -p build/morph
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.pylem_transport prepare \
+            --manifest corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json \
+            --request build/morph/resurrection-pylem-request.json
+
+      - name: Set up legacy AOT runtime
+        id: py39
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.9"
+
+      - name: Install hash-pinned pylem 0.0.18
+        env:
+          CMAKE_ARGS: "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+        run: |
+          set -euo pipefail
+          "${{ steps.py39.outputs.python-path }}" -m pip install --disable-pip-version-check \
+            --no-deps --require-hashes -r requirements/pylem-0.0.18.txt
+
+      - name: Measure exact Scriptorium tokens through pinned sidecar
+        run: |
+          set -euo pipefail
+          "${{ steps.py39.outputs.python-path }}" tools/pylem_sidecar.py \
+            --request build/morph/resurrection-pylem-request.json \
+            --response build/morph/resurrection-pylem-response.json
+
+      - name: Verify source-free N-only envelope and fixed body hash
+        env:
+          SCRIPTORIUM_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.n_collision_diagnostic \
+            --manifest corpus/candidates/source-edition-traces/tolstoy-resurrection-ru.revisions.json \
+            --request build/morph/resurrection-pylem-request.json \
+            --response build/morph/resurrection-pylem-response.json \
+            --scriptorium-revision "$SCRIPTORIUM_REVISION" \
+            --output build/morph/resurrection-pylem-n-only-impact.json
+          "${{ steps.py313.outputs.python-path }}" - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("build/morph/resurrection-pylem-n-only-impact.json").read_text(encoding="utf-8"))
+          assert report["schema_version"] == "scriptorium-pylem-n-only-impact-v3"
+          assert report["candidate_id"] == "tolstoy-resurrection-ru"
+          assert report["normalized_sha256"] == "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0"
+          assert report["provider"]["version"] == "0.0.18"
+          assert report["provider"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
+          assert report["source_text_included"] is False
+          assert report["impact"]["status"] == "diagnostic_only"
+          assert report["impact"]["word_count"] > 0
+          assert report["impact"]["boundary"]["m2_parity_admissible"] is False
+          assert report["impact"]["boundary"]["n_mixed_recovered"] is False
+          assert report["impact"]["boundary"]["production_pos_mapping_changed"] is False
+          assert report["impact"]["conditional_defined_token_count"] == (
+              report["impact"]["baseline_defined_token_count"] + report["impact"]["n_only_token_count"]
+          )
+          assert all(row["conditional_min_raw_count"] <= row["conditional_max_raw_count"]
+                     for row in report["impact"]["bigram_conditional_envelopes"])
+          serialized = json.dumps(report, ensure_ascii=False)
+          assert "normalized_text" not in serialized
+          print(json.dumps({
+              "candidate_id": report["candidate_id"],
+              "normalized_sha256": report["normalized_sha256"],
+              "runtime_analysis_sha256": report["runtime_analysis_sha256"],
+              "n_only": report["impact"]["n_only_token_count"],
+              "n_mixed_excluded": report["impact"]["n_mixed_token_count_excluded"],
+              "status": "diagnostic_only", "m2_parity_admissible": False,
+          }, sort_keys=True))
+          PY
+
+      - name: Remove ephemeral source-bearing transport files
+        if: always()
+        run: rm -f build/morph/resurrection-pylem-request.json build/morph/resurrection-pylem-response.json
+
+      - name: Upload source-free Resurrection N-only impact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-resurrection-pylem-n-only-impact
+          path: build/morph/resurrection-pylem-n-only-impact.json
+          if-no-files-found: error
+          retention-days: 7

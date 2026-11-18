@@ -343,6 +343,24 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   await page.locator("#catalog-clear").click();
   assert.equal(await page.locator("#catalog-author").inputValue(),"all");
   assert.equal(await page.locator("#books .book:visible").count(),13);
+  assert.equal(await page.locator("#catalog-pair-prompt").isVisible(),false,
+    tag + ": full catalogue must not invent a comparison shortcut");
+  await page.locator("#catalog-author").selectOption("Лев Толстой");
+  assert.equal(await page.locator("#catalog-pair-prompt").isVisible(),true,
+    tag + ": two source-verified measured editions enable a comparison");
+  const contextualHref=await page.locator("#catalog-pair-link").getAttribute("href");
+  assert.equal(contextualHref,
+    "?left=anna&right=resurrection&pair_metric=fantlab.dialogue.share_percent#pairs");
+  await page.locator("#catalog-pair-link").click();
+  await page.waitForFunction(() => !document.querySelector("#pair-export").disabled,
+    null, {timeout:20000});
+  assert.equal(await page.locator("#pair-left").inputValue(),"anna");
+  assert.equal(await page.locator("#pair-right").inputValue(),"resurrection");
+  assert.match(await page.locator("#pair-status").innerText(),/измерен|диагност|доступн/i);
+  await page.locator("#catalog-author").selectOption("Андрей Белый");
+  assert.equal(await page.locator("#catalog-pair-prompt").isVisible(),false,
+    tag + ": pending Petersburg is not a comparable measured edition");
+  await page.locator("#catalog-clear").click();
   await page.screenshot({ path: path.join(evidenceDir, tag + "-reader.png"),
     fullPage: true, animations: "disabled" });
   assert.deepEqual(errors, [], tag + ": browser JavaScript errors");

@@ -176,4 +176,4 @@ code{font-size:.87em}footer{margin-top:2rem;border-top:1px solid #aebcb6;padding
 ''' + "\n".join(content) + '''
 <footer>Local report only · no scripts, network assets, manuscript text or automatic publication.</footer>
 </main></body></html>
-'''\n
+'''

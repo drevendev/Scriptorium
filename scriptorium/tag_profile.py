@@ -215,7 +215,9 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Source-free private curated tag profiles (M2 0/5; not public-ready)")
     parser.add_argument("--snapshot", required=True, type=Path, help="source-free measured-edition snapshot JSON")
     parser.add_argument("--curation", required=True, type=Path, help="explicit rights and tag evidence catalog JSON")
-    parser.add_argument("--output", type=Path, help="create a new local JSON report; never overwrite")
+    parser.add_argument("--format", choices=("json", "html"), default="json",
+                         help="private derived report format; JSON remains the default")
+    parser.add_argument("--output", type=Path, help="create a new local report; never overwrite")
     args = parser.parse_args(argv)
     try:
         raw = _read_bounded_regular_file(args.snapshot, MAX_ANALYSIS_BYTES, "snapshot")
@@ -223,7 +225,11 @@ def main(argv=None):
         snapshot = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_keys)
         curation = json.loads(curated.decode("utf-8"), object_pairs_hook=_unique_keys)
         result = build_tag_profiles(snapshot, curation, snapshot_sha256=sha256(raw).hexdigest())
-        rendered = json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False) + "\n"
+        if args.format == "html":
+            from .tag_profile_html import render_tag_profiles_html
+            rendered = render_tag_profiles_html(result)
+        else:
+            rendered = json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False) + "\n"
         if args.output is None:
             print(rendered, end="")
         else:

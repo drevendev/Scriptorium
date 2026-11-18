@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 560
+STATE_REVISION: 561
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-18
-LAST_RESULT: #576 merged at 309fb46c2836c5a92268e7bf853f84447e678f9a. Archived Chromium mobile gallery screenshot from successful Pages run 44363698775 exposed ivory exact-table text on inherited pale header/even-row fills; CSS fix proposed, live Pages still UNKNOWN.
+LAST_COMMITTED_RUN_AT: 2026-11-19
+LAST_RESULT: #577 merged at b5fb5014d2c4fda0432c15faa89f421814138dc3; #283 independently closed after actual live Reader acceptance. Next bounded independent #563 private HTML tag curation candidate.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-DEMO-TABLE-CONTRAST-001
-ISSUE: #283 — real-gallery exact-value table contrast
-STATUS: PR_CANDIDATE; later-run independent exact-head CI, generated-site browser and screenshot acceptance required
-BRANCH: scrip-site-demo-table-contrast-20261118
-BASE: 309fb46c2836c5a92268e7bf853f84447e678f9a
+UNIT_ID: SCRIP-TAGS-PRIVATE-HTML-001
+ISSUE: #563 — private source-free curated tag profile HTML
+STATUS: PR_CANDIDATE; later independent exact-head CI/CLI acceptance and review required
+BRANCH: scrip-tags-private-html-20261119
+BASE: b5fb5014d2c4fda0432c15faa89f421814138dc3
 
-ACCEPTANCE: The actual mobile and desktop Pages gallery has legible exact-value headers and alternating rows. Specific local CSS overrides the shared light table header/stripe backgrounds inside the dark demo panel without weakening site-wide themes or print contrast. Positive/negative CSS luminance regression, deterministic site rebuild and Chromium screenshot comparison on the exact PR head are required. Existing source-free numbers and M2 claims unchanged.
+ACCEPTANCE: `scriptorium tags --format html` renders verified-schema, curator-declared source-free tag summaries as standalone print- and keyboard-friendly private HTML, escaping user labels and showing all five metric units, missingness and edition hashes. Scientific/publication gates stay fail-closed; default JSON and create-only output remain unchanged. Regression tests cover numeric, empty/single, malicious and invalid inputs. No public tag publication.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make the actual evidence gallery visually accessible while preserving reader-first source-backed comparisons and rights-safe offline exports.
+Milestone: make legitimate researcher-oriented source-free previews useful without weakening rights, and continue source-backed Reader comparisons.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #283 fix dark-panel table contrast | Pale table text remains legible against ink on desktop/mobile; white-paper print works | Later-run CI + screenshot inspection |
-| P2 | #283 wider Reader visual acceptance | Inspect real desktop/mobile/keyboard/print evidence on exact built site | Browser artifact inspection; live readback separate |
-| P3 | #562 public lexical comparison | Rights-reviewed edition-pinned source-free evidence | Edition-specific publication rights |
-| P4 | #563 evidenced tag profiles | Curated source identity, validated tag groups | Curator/source rights |
-| P5 | #511 Trusov translation pair / #282 AOT diagnostics | Independently complete verified translation or new N consequence | Historical Pages / FantLab policy |
+| P1 | #563 private tag profile HTML | Tested offline accessible tables and safe CLI | Later exact-head CI/PR acceptance |
+| P2 | #562 source-bound public lexical comparison | Rights-reviewed pinned derived evidence only | Edition-specific publication rights |
+| P3 | #511 Trusov translation pair | Independent full-text body, size and evidence | Historical Page completeness |
+| P4 | #282 native AOT uncertainty consequence | New measured discriminatory evidence | Pinned backend / exact source |
+| P5 | Reader iterative functionality | A real sourced comparison/measurement enhancement | Distinct ready Reader issue |
 
 ## Retained scientific and operational boundaries
 

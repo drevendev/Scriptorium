@@ -14,7 +14,7 @@ STATUS: PR_CANDIDATE; exact-head CI, later independent review, Pages readback pe
 BRANCH: scrip-reader-metric-evidence-lens-20261119
 BASE: 837b84fe8d4b4a46a0eb66d292c6b4a73279517a
 
-ACCEPTANCE: The verified seven-metric catalogue facet exposes each visible measured book's numeric observation and unit next to existing coverage copy, plus the min/max of only visible observed editions. Zero remains observed. Pending, NOT_RUN, hidden and invalid values do not contribute. Clearing/resetting the metric removes stale annotations/range and restores static coverage. No source text, corpus/parity claim or ranking. Positive/negative Node and structural regression; browser/mobile acceptance after PR.
+ACCEPTANCE: The verified seven-metric catalogue facet exposes each visible measured book's source-derived value and unit with explicit display rounding (no false zero for a small nonzero), plus the min/max of only visible observed editions. Zero remains observed. Pending, NOT_RUN, hidden and invalid values do not contribute. Clearing/resetting the metric removes stale annotations/range and restores static coverage. No source text, corpus/parity claim or ranking. Positive/negative Node and structural regression; browser/mobile acceptance after PR.
 
 ## Next user-visible milestone and compact queue
 

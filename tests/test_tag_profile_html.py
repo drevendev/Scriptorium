@@ -101,6 +101,41 @@ class TagProfileHtmlTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "hash"):
             render_tag_profiles_html(r)
 
+    def test_means_and_population_dispersion_respect_observed_extrema(self):
+        for mutation, reason in (
+            (lambda m: m.update(mean_per_work=4.8), "mean"),
+            (lambda m: m.update(population_stddev_between_works=0.1), "dispersion"),
+            (lambda m: m.update(population_stddev_between_works=0.6), "dispersion"),
+        ):
+            with self.subTest(reason=reason):
+                r = report()
+                mutation(r["tags"][0]["metrics"][0])
+                with self.assertRaisesRegex(ValueError, reason):
+                    render_tag_profiles_html(r)
+
+    def test_six_decimal_rounding_accepts_real_extrema_but_not_false_single_values(self):
+        r = report()
+        metric = r["tags"][0]["metrics"][0]
+        # One measured edition, another explicitly missing. The mean is
+        # rounded to six places; extrema retain source measurement precision.
+        metric.update(observed_count=1, missing_count=1, mean_per_work=4.7,
+                      minimum=4.7000003, maximum=4.7000003,
+                      population_stddev_between_works=None)
+        self.assertIn("4.7000003", render_tag_profiles_html(r))
+        metric["maximum"] = 4.7000004
+        with self.assertRaisesRegex(ValueError, "single-observation"):
+            render_tag_profiles_html(r)
+        metric["maximum"] = 4.7000003
+        metric["minimum"] = 4.700002
+        metric["maximum"] = 4.700002
+        with self.assertRaisesRegex(ValueError, "mean"):
+            render_tag_profiles_html(r)
+        # For two observations the rounded mean can be just below both raw
+        # extrema, with zero dispersion; reject only impossible statistics.
+        metric.update(observed_count=2, missing_count=0, minimum=4.7000003,
+                      maximum=4.7000003, population_stddev_between_works=0)
+        self.assertIn("4.7000003", render_tag_profiles_html(r))
+
     def test_tampered_method_and_profile_identity_fail_closed(self):
         for field, bad in (
             ("aggregation", "weighted"),

@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 563
+STATE_REVISION: 564
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-19
-LAST_RESULT: #579 merged at 93bce4e97b39a6a1031033cd988b8dd5b0940771. Current bounded #563 renderer integrity gate rejects tampered private tag methodology/provenance without public release.
+LAST_RESULT: #580 merged at c6d1940ee6e1f1d47c70228f01487a29250537fd. Next bounded #563 numeric integrity gate rejects mathematically impossible offline tag statistics without changing valid results.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TAGS-REPORT-INTEGRITY-003
-ISSUE: #563 — reject misleading or source-bearing private report payloads
+UNIT_ID: SCRIP-TAGS-REPORT-NUMERIC-INTEGRITY-004
+ISSUE: #563 — reject impossible displayed tag means and dispersion
 STATUS: PR_CANDIDATE; later independent exact-head CI/CLI acceptance required
-BRANCH: scrip-tags-html-evidence-integrity-20261119
-BASE: 93bce4e97b39a6a1031033cd988b8dd5b0940771
+BRANCH: scrip-tags-profile-statistical-integrity-20261119
+BASE: c6d1940ee6e1f1d47c70228f01487a29250537fd
 
-ACCEPTANCE: Fail closed on tampered tag-report aggregation, source profile identity, duplicate work/body IDs, invalid evidence/rights declarations or unexpected source-bearing fields. Preserve zero-work previews, exact measurement tables and five unit-specific charts. Negative/positive regressions plus later exact-head suite; scientific and public-release gates unchanged.
+ACCEPTANCE: Validate observed means and population SD against min/max and sample count with the actual six-decimal rounding tolerance. Accept valid near-boundary builder results, including one measured + one missing; reject impossible ranges or SD. Keep charts/tables/privacy and science gates unchanged.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: make legitimate researcher-oriented source-free previews useful witho
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #563 private tag HTML integrity | Rejected corrupted evidence/metadata; preserve valid zero-work charts and tables | Later exact-head CI/PR acceptance |
+| P1 | #563 private tag numeric integrity | Reject impossible means/dispersion without false rejection of rounded observations | Later exact-head CI/PR acceptance |
 | P2 | #562 source-bound public lexical comparison | Rights-reviewed pinned derived evidence only | Edition-specific publication rights |
 | P3 | #511 Trusov translation pair | Independent full-text body, size and evidence | Historical Page completeness |
 | P4 | #282 native AOT uncertainty consequence | New measured discriminatory evidence | Pinned backend / exact source |

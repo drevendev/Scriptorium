@@ -40,7 +40,7 @@ const pairMetric={options:[...optionHtml.matchAll(/<option value="([^"]+)">/g)].
 const metrics=Object.fromEntries(pairMetric.options.map(option=>[option.value,["name","unit",2]]));
 const s=js.indexOf("  let catalogCopyAttempt=0;"),e=js.indexOf("  function updateSingle() {",s);
 assert.ok(s>=0&&e>s);
-const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog,sortCatalog,jumpToFirstCatalogResult,verifiedCatalogShareUrl,copyCatalogShareUrl};";
+const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog,sortCatalog,jumpToFirstCatalogResult,verifiedCatalogShareUrl,copyCatalogShareUrl,observedMedian};";
 const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogAuthor","catalogMetric","catalogSearch","catalogOrder",
   "catalogGrid","lookup","isNumeric","el","window","catalogCopyButton","catalogJump","pairMetric","metrics",code)(
   d,cards,filter,origin,author,metric,search,order,catalogGrid,
@@ -51,7 +51,13 @@ const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin"
     id==="catalog-pair-link"?pairLink:id==="copy-catalog-feedback"?feedback:status,
   browser,copyButton,jump,pairMetric,metrics);
 const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog,sortCatalog,
-  jumpToFirstCatalogResult,verifiedCatalogShareUrl,copyCatalogShareUrl}=make(data);
+  jumpToFirstCatalogResult,verifiedCatalogShareUrl,copyCatalogShareUrl,observedMedian}=make(data);
+assert.equal(observedMedian([]),null,"no observed values means unknown median");
+assert.equal(observedMedian([0]),0,"measured zero is a valid one-edition median");
+assert.equal(observedMedian([0,10]),5,"two-edition median is an average, not either endpoint");
+assert.equal(observedMedian([9,0,4]),4,"median must sort the values without mutating their order");
+assert.throws(()=>observedMedian([0,null]),/непроверенные/,"NOT_RUN cannot become zero");
+assert.throws(()=>observedMedian([0,Infinity]),/непроверенные/,"invalid numeric evidence fails closed");
 for(const [mode,keys,measured,pending] of [
  ["all",data.books.map(b=>b.key),11,2],
  ["measured",["anna","waves","silver","karamazov","hyperboloid","beketova","resurrection","road","oblomov","humiliated","shishmareva"],11,0],
@@ -85,6 +91,7 @@ assert.deepEqual(cards.filter(card=>!card.hidden).map(card=>card.dataset.catalog
 assert.equal(cards.filter(card=>!card.hidden && card.dataset.status==="pending").length,0);
 assert.equal(range.hidden,false,"selected metric shows a range");
 assert.match(range.textContent,/Диапазон.*измеренных редакций.*не паритет FantLab/);
+assert.match(range.textContent,/Медиана .*unit/,"visible measured subset reports median with unit");
 const noteAnna=cards.find(card=>card.dataset.catalogKey==="anna").metricNote;
 const measuredAnna=data.books.find(book=>book.key==="anna").metrics.find(row=>row.id===availabilityId);
 assert.match(noteAnna.textContent,/name: ≈?[0-9]+(?:,[0-9]{1,2})? unit/,"rounded measured value with explicit approximation");
@@ -109,6 +116,7 @@ make(zeroData).updateCatalog();
 assert.equal(cards.find(card=>card.dataset.catalogKey==="anna").hidden,false,"measured zero remains observed");
 assert.match(noteAnna.textContent,/name: 0 unit/,"zero is shown as measured");
 assert.match(range.textContent,/от 0 до /,"range includes an observed zero");
+assert.match(range.textContent,/Медиана /,"zero-valued observation participates in median");
 const tinyData=structuredClone(data);
 tinyData.books.find(book=>book.key==="anna").metrics.find(row=>row.id===availabilityId).actual=0.0001;
 make(tinyData).updateCatalog();

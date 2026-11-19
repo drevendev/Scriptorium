@@ -375,6 +375,17 @@
     return ["catalog","title","author","dialogue","length","coverage"].includes(value) ||
       (availableMetric!=="all" && ["metric_desc","metric_asc"].includes(value));
   }
+  // Descriptive median for the visible, actually observed edition subset.
+  // Never impute NOT_RUN; sorting a copy preserves catalogue and DOM order.
+  function observedMedian(values) {
+    if (!Array.isArray(values) || !values.every(isNumeric))
+      throw Error("Медиана: непроверенные наблюдения");
+    if (!values.length) return null;
+    const sorted=[...values].sort((a,b)=>a-b);
+    const middle=Math.floor(sorted.length/2);
+    return values.length%2 ? sorted[middle] :
+      sorted[middle-1]/2+sorted[middle]/2;
+  }
   function updateCatalog() {
     catalogCopyAttempt++;
     el("copy-catalog-feedback").textContent="";
@@ -459,12 +470,14 @@
     // Only the currently visible measured editions contribute to this
     // descriptive range; neither ranking nor source-matched FantLab parity.
     const range=el("catalog-metric-range");
+    const median=observedMedian(observedMetricValues);
     range.hidden=observedMetricValues.length===0;
     range.textContent=observedMetricValues.length===0 ? "" :
       "Диапазон «"+metrics[availableMetric][0]+"» для "+
       observedMetricValues.length+" показанных измеренных редакций: от "+
       compactMetricValue(Math.min(...observedMetricValues))+" до "+
       compactMetricValue(Math.max(...observedMetricValues))+" "+
+      metrics[availableMetric][1]+". Медиана "+compactMetricValue(median)+" "+
       metrics[availableMetric][1]+". Округлено для просмотра (≈ или < для малых ненулевых); исходные значения в JSON. Не рейтинг и не паритет FantLab.";
     // Offer a real comparison only for exactly two visible, measured, distinct
     // editions with compatible profiles and an observed shared starting metric.

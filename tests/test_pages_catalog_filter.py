@@ -45,6 +45,8 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn(".catalog-tools .catalog-metric-range[hidden]",css)
         self.assertIn("@media print { .catalog-tools { display:none !important; } }",css)
         js=(ROOT/"assets/pages-reader.js").read_text(encoding="utf-8")
+        self.assertIn('observedMedian(observedMetricValues)',js)
+        self.assertIn('Медиана: непроверенные наблюдения',js)
         self.assertIn('matchingMeasured.length===2',js)
         self.assertIn('pairPrompt.hidden=!pairReady;',js)
         self.assertIn("installCatalogComparisonActions();",js)

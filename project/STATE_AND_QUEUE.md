@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 564
+STATE_REVISION: 565
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-19
-LAST_RESULT: #580 merged at c6d1940ee6e1f1d47c70228f01487a29250537fd. Next bounded #563 numeric integrity gate rejects mathematically impossible offline tag statistics without changing valid results.
+LAST_RESULT: #581 merged at 7b1fe71915fc06ca6c8fe537d1a301f8a47e6edd; #563 private tag CSV replay selected as an independent research export.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TAGS-REPORT-NUMERIC-INTEGRITY-004
-ISSUE: #563 — reject impossible displayed tag means and dispersion
-STATUS: PR_CANDIDATE; later independent exact-head CI/CLI acceptance required
-BRANCH: scrip-tags-profile-statistical-integrity-20261119
-BASE: c6d1940ee6e1f1d47c70228f01487a29250537fd
+UNIT_ID: SCRIP-TAGS-PRIVATE-CSV-005
+ISSUE: #563 — expose validated source-free curator profiles to offline CSV workflows
+STATUS: PR_CANDIDATE; independent exact-head CI/CLI acceptance required
+BRANCH: scrip-tags-private-csv-export-20261119
+BASE: 7b1fe71915fc06ca6c8fe537d1a301f8a47e6edd
 
-ACCEPTANCE: Validate observed means and population SD against min/max and sample count with the actual six-decimal rounding tolerance. Accept valid near-boundary builder results, including one measured + one missing; reject impossible ranges or SD. Keep charts/tables/privacy and science gates unchanged.
+ACCEPTANCE: Installed `scriptorium tags --format csv` writes a new private, stable four-column profile replay with tag/metric units, missingness, derived statistics, edition/source hashes and curator-declared evidence; scientific boundary remains visible. Formula-like labels neutralized, tampering rejected through existing HTML numeric gate; JSON remains default, no text/publication, deterministic and create-only.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: make legitimate researcher-oriented source-free previews useful witho
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #563 private tag numeric integrity | Reject impossible means/dispersion without false rejection of rounded observations | Later exact-head CI/PR acceptance |
+| P1 | #563 private tag CSV replay | Export validated, spreadsheet-safe offline metrics and provenance via installed CLI | Later exact-head CI/PR acceptance |
 | P2 | #562 source-bound public lexical comparison | Rights-reviewed pinned derived evidence only | Edition-specific publication rights |
 | P3 | #511 Trusov translation pair | Independent full-text body, size and evidence | Historical Page completeness |
 | P4 | #282 native AOT uncertainty consequence | New measured discriminatory evidence | Pinned backend / exact source |

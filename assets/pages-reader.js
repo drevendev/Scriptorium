@@ -534,6 +534,9 @@
     } else {
       share.removeAttribute("href");
     }
+    // Clear or refresh chart highlights as catalogue filters change. Values
+    // and the chart's all-edition baseline are never modified by this update.
+    if (typeof updateChart==="function" && el("chart-series")) updateChart();
   }
 
   function catalogShareHref(mode,origin,raw,order,author="all",availableMetric="all") {
@@ -894,13 +897,31 @@
     }
   }
 
+  // Highlight only verified, visible catalogue editions when the original
+  // catalogue-to-chart route selects the same observed metric. This is purely
+  // visual context: chart values, distribution and CSV retain all 11 editions.
+  function chartCatalogSelection(id,search,activeMetric,cards) {
+    const params=new URLSearchParams(search);
+    if (params.getAll("catalog").length!==1 ||
+        params.getAll("metric").length!==1 ||
+        params.getAll("available_metric").length!==1 ||
+        !["all","measured","pending","translated"].includes(params.get("catalog")) ||
+        params.get("metric")!==id || params.get("available_metric")!==id ||
+        activeMetric!==id) return null;
+    return new Set(cards.filter(card=>!card.hidden &&
+      card.dataset.status==="measured").map(card=>card.dataset.catalogKey));
+  }
+
   // The frozen editions do not share every measured field; missing is not zero.
   function updateChart() {
     const conf=metrics[currentChart];
     if (!conf) throw Error("Показатель диаграммы не разрешён");
+    const selection=chartCatalogSelection(currentChart,window.location.search,
+      catalogMetric.value,catalogCards);
     const rows=data.books.filter(b=>b.text_status==="measured").map((b,ordinal)=>{
       const item=lookup(b,currentChart);
-      return {title:b.display_title,evidenceUrl:b.evidence_url,value:item&&isNumeric(item.actual)?item.actual:null,ordinal};
+      return {key:b.key,title:b.display_title,evidenceUrl:b.evidence_url,
+        value:item&&isNumeric(item.actual)?item.actual:null,ordinal};
     });
     // Presentation-only ordering; ties stay in catalog order and unknown is not zero.
     if (sortChart) rows.sort((a,b)=>{
@@ -922,12 +943,17 @@
       ", медиана "+formatValue(median)+", максимум "+formatValue(values.at(-1))+
       ". Описательный диапазон этой выборки — не норма и не доказательство авторства." :
       "Для выбранного показателя нет измеренных значений: минимум, медиана и максимум не рассчитываются. «Нет данных» не равно нулю.";
+    if (selection!==null) el("chart-summary").textContent+=
+      " В текущем отборе выделено "+selection.size+" из "+rows.length+
+      " измеренных редакций; остальные остаются для контекста. Ссылка на диаграмму и CSV включают полный набор без выделения.";
     const nodes=document.createDocumentFragment();
     const tableNodes=document.createDocumentFragment();
     for (const row of rows) {
+      const highlighted=selection!==null && selection.has(row.key);
       const container=document.createElement("div");
-      container.className="chart-row"+(row.value===null?" chart-missing":"");
-      insertText(container,"span",row.title);
+      container.className="chart-row"+(row.value===null?" chart-missing":"")+
+        (highlighted?" chart-selected":"");
+      insertText(container,"span",row.title+(highlighted?" · в выборке":""));
       const track=insertText(container,"div","");
       track.className="bar-track";track.setAttribute("aria-hidden","true");
       if (row.value!==null) {
@@ -938,11 +964,13 @@
                  pretty(row.value,conf[2])+(conf[1]==="%"?"%":""));
       nodes.appendChild(container);
       const tableRow=document.createElement("tr");
+      if (highlighted) tableRow.className="chart-selected";
       const titleCell=insertText(tableRow,"th","");
       titleCell.scope="row";
       const sourceLink=insertText(titleCell,"a",row.title);
       sourceLink.href=row.evidenceUrl;
       sourceLink.setAttribute("aria-label","Свидетельство: "+row.title);
+      if (highlighted) insertText(titleCell,"span"," · в выборке","chart-selection-label");
       insertText(tableRow,"td",row.value===null?"нет данных":exact(row.value));
       insertText(tableRow,"td",conf[1]);
       tableNodes.appendChild(tableRow);

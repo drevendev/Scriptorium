@@ -6,9 +6,11 @@ const path=require("node:path");
 const root=path.resolve(__dirname,"..");
 const source=fs.readFileSync(path.join(root,"assets/pages-reader.js"),"utf8");
 const catalog=JSON.parse(fs.readFileSync(path.join(root,"assets/evidence-snapshot.json"),"utf8"));
+const selectStart=source.indexOf("  function chartCatalogSelection(");
 const start=source.indexOf("  function updateChart() {");
 const end=source.indexOf("  const pairedIds =",start);
-assert.ok(start>=0&&end>start,"Shipped chart function not found");
+assert.ok(selectStart>=0&&start>selectStart&&end>start,"Shipped chart selection and renderer not found");
+const chartCatalogSelection=new Function(source.slice(selectStart,start)+"return chartCatalogSelection;")();
 const metrics=new Function(source.slice(source.indexOf("  const metrics ="),source.indexOf("  const names ="))+"return metrics;")();
 const ids=Object.keys(metrics);
 assert.equal(ids.length,9);
@@ -20,8 +22,9 @@ const chartSortButton=node("button");
 const document={createElement:node,createDocumentFragment:()=>node("fragment")};
 const insertText=(parent,tag,v,cls)=>{const n=node(tag);n.textContent=v;if(cls)n.className=cls;parent.appendChild(n);return n;};
 const buttons=ids.map(id=>({dataset:{chart:id},attrs:{},setAttribute(k,v){this.attrs[k]=v;}}));
-const action=new Function("data","metrics","currentChart","lookup","isNumeric","document","el","insertText","pretty","chartButtons","exact","sortChart","chartSortButton",source.slice(start,end)+"return updateChart();");
-const render=(id,data=catalog,sorted=false)=>action(data,metrics,id,(book,key)=>book.metrics.find(row=>row.id===key),n=>typeof n==="number"&&Number.isFinite(n),document,key=>elements[key],insertText,(n,p)=>new Intl.NumberFormat("ru-RU",{maximumFractionDigits:p}).format(n),buttons,n=>n===null?"UNKNOWN":String(n),sorted,chartSortButton);
+const browser={location:{search:""}},catalogMetric={value:"all"},catalogCards=[];
+const action=new Function("data","metrics","currentChart","lookup","isNumeric","document","el","insertText","pretty","chartButtons","exact","sortChart","chartSortButton","chartCatalogSelection","window","catalogMetric","catalogCards",source.slice(start,end)+"return updateChart();");
+const render=(id,data=catalog,sorted=false)=>action(data,metrics,id,(book,key)=>book.metrics.find(row=>row.id===key),n=>typeof n==="number"&&Number.isFinite(n),document,key=>elements[key],insertText,(n,p)=>new Intl.NumberFormat("ru-RU",{maximumFractionDigits:p}).format(n),buttons,n=>n===null?"UNKNOWN":String(n),sorted,chartSortButton,chartCatalogSelection,browser,catalogMetric,catalogCards);
 for(const id of ids){
   render(id);
   const rows=elements["chart-series"].children;
@@ -60,6 +63,34 @@ for(const id of ids){
   assert.equal(missing.length,11-expected,id);
   for(const row of missing){assert.equal(row.children[2].textContent,"нет данных");assert.equal(row.children[1].children.length,0);}
 }
+// The catalogue-to-chart route highlights the selected source-verified subset
+// without narrowing or altering the all-edition chart and exact-value table.
+const highlightedMetric="fantlab.dialogue.share_percent";
+const highlightedUrl="?catalog=all&author="+encodeURIComponent("Лев Толстой")+
+  "&available_metric="+encodeURIComponent(highlightedMetric)+
+  "&metric="+encodeURIComponent(highlightedMetric);
+browser.location.search=highlightedUrl;
+catalogMetric.value=highlightedMetric;
+catalogCards.push(...["anna","resurrection"].map(key=>({
+  dataset:{catalogKey:key,status:"measured"},hidden:false
+})));
+render(highlightedMetric);
+assert.equal(elements["chart-series"].children.length,11);
+assert.equal(elements["chart-table-rows"].children.length,11);
+assert.deepEqual(elements["chart-series"].children.filter(row=>row.className.includes("chart-selected"))
+  .map(row=>row.children[0].textContent),["Анна Каренина · в выборке","Воскресение · в выборке"]);
+assert.equal(elements["chart-table-rows"].children.filter(row=>row.className.includes("chart-selected")).length,2);
+assert.match(elements["chart-summary"].textContent,/В текущем отборе выделено 2 из 11/);
+assert.ok(chartCatalogSelection(highlightedMetric,highlightedUrl,highlightedMetric,catalogCards).has("anna"));
+assert.equal(chartCatalogSelection(highlightedMetric,highlightedUrl+"&metric="+
+  encodeURIComponent(highlightedMetric),highlightedMetric,catalogCards),null,
+  "duplicate metric URL cannot activate misleading highlighting");
+catalogMetric.value="all";
+render(highlightedMetric);
+assert.equal(elements["chart-series"].children.filter(row=>row.className.includes("chart-selected")).length,0,
+  "resetting the facet clears the contextual highlight");
+assert.equal(chartCatalogSelection(highlightedMetric,highlightedUrl,"all",catalogCards),null);
+browser.location.search="";
 render("fantlab.dialogue.mean_dialogue_sentence_length_chars");
 assert.equal(elements["chart-series"].children[5].children[2].textContent,"нет данных");
 assert.equal(elements["chart-table-rows"].children[5].children[1].textContent,"нет данных");

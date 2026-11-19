@@ -9,7 +9,7 @@ from html import escape
 from math import isfinite
 import re
 
-from .tag_profile import FEATURES, VERSION
+from .tag_profile import FEATURES, VERSION, _ID, _url
 
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
 _BOUNDARY = {
@@ -20,6 +20,14 @@ _BOUNDARY = {
     "m2_source_matched": 0,
     "no_source_text": True,
 }
+_AGGREGATION = "unweighted per independently observed edition; population dispersion across works only"
+_REPORT_FIELDS = {"schema_version", "taxonomy_version", "source_snapshot_sha256",
+                  "source_metric_profiles", "aggregation", "scientific_boundary", "tags"}
+_TAG_FIELDS = {"tag_id", "label", "confirmed_work_count", "sample_warning", "works", "metrics"}
+_WORK_FIELDS = {"key", "candidate_id", "edition_id", "source_sha256", "rights_basis",
+                "rights_evidence_url", "tag_authority", "tag_evidence_url"}
+_METRIC_FIELDS = {"id", "unit", "observed_count", "missing_count", "mean_per_work",
+                  "population_stddev_between_works", "minimum", "maximum"}
 _LABELS = {
     "fantlab.general.mean_word_length_chars": "Mean word length",
     "fantlab.general.mean_sentence_length_chars": "Mean sentence length",
@@ -39,8 +47,16 @@ def _number(value: object, *, minimum: float = 0, maximum: float | None = None) 
 
 
 def _validated(report: dict) -> list[dict]:
-    if type(report) is not dict or report.get("schema_version") != VERSION:
+    if (type(report) is not dict or report.get("schema_version") != VERSION
+            or set(report) != _REPORT_FIELDS):
         raise ValueError("unsupported tag profile schema")
+    if report["aggregation"] != _AGGREGATION:
+        raise ValueError("unknown tag aggregation method")
+    profiles = report["source_metric_profiles"]
+    if profiles is not None and (type(profiles) is not dict or not profiles
+            or any(type(key) is not str or type(value) is not str
+                   for key, value in profiles.items())):
+        raise ValueError("invalid source metric profiles")
     boundary = report.get("scientific_boundary")
     if (type(boundary) is not dict or set(boundary) != set(_BOUNDARY)
             or any(type(boundary[k]) is not type(v) or boundary[k] != v
@@ -48,14 +64,16 @@ def _validated(report: dict) -> list[dict]:
         raise ValueError("private scientific/publication boundary must be preserved")
     if type(report.get("source_snapshot_sha256")) is not str or not _SHA.fullmatch(report["source_snapshot_sha256"]):
         raise ValueError("invalid source snapshot identity")
-    if type(report.get("taxonomy_version")) is not str or not report["taxonomy_version"]:
+    if type(report.get("taxonomy_version")) is not str or not _ID.fullmatch(report["taxonomy_version"]):
         raise ValueError("missing taxonomy identity")
     tags = report.get("tags")
     if type(tags) is not list or not tags:
         raise ValueError("missing curated tag summaries")
     seen_tags = set()
     for tag in tags:
-        if type(tag) is not dict or type(tag.get("tag_id")) is not str or tag["tag_id"] in seen_tags:
+        if (type(tag) is not dict or set(tag) != _TAG_FIELDS
+                or type(tag.get("tag_id")) is not str or not _ID.fullmatch(tag["tag_id"])
+                or tag["tag_id"] in seen_tags):
             raise ValueError("invalid/duplicate tag")
         seen_tags.add(tag["tag_id"])
         if type(tag.get("label")) is not str or not tag["label"].strip():
@@ -67,19 +85,33 @@ def _validated(report: dict) -> list[dict]:
         warning = "NO_CONFIRMED_WORKS" if count == 0 else "SINGLE_WORK" if count == 1 else "DESCRIPTIVE_ONLY"
         if tag.get("sample_warning") != warning:
             raise ValueError("inconsistent sample warning")
+        seen_keys, seen_sources, seen_candidates = set(), set(), set()
         for work in works:
-            if type(work) is not dict or any(type(work.get(k)) is not str for k in
-                    ("key", "edition_id", "candidate_id", "source_sha256", "rights_basis",
-                     "rights_evidence_url", "tag_authority", "tag_evidence_url")):
+            if (type(work) is not dict or set(work) != _WORK_FIELDS
+                    or any(type(work.get(k)) is not str or not work[k]
+                           for k in _WORK_FIELDS)):
                 raise ValueError("invalid edition provenance")
             if _SHA.fullmatch(work["source_sha256"]) is None:
                 raise ValueError("invalid edition hash")
+            if (work["key"] in seen_keys or work["source_sha256"] in seen_sources
+                    or work["candidate_id"] in seen_candidates):
+                raise ValueError("duplicate edition/work provenance")
+            seen_keys.add(work["key"])
+            seen_sources.add(work["source_sha256"])
+            seen_candidates.add(work["candidate_id"])
+            if work["rights_basis"] not in ("public_domain", "open_license", "explicit_permission"):
+                raise ValueError("invalid edition rights basis")
+            if work["tag_authority"] not in ("human_curator", "documented_source"):
+                raise ValueError("invalid tag authority")
+            _url(work["rights_evidence_url"])
+            _url(work["tag_evidence_url"])
         metrics = tag.get("metrics")
         if type(metrics) is not list or len(metrics) != len(FEATURES):
             raise ValueError("invalid metric coverage")
         seen_metrics = set()
         for row in metrics:
-            if type(row) is not dict or row.get("id") not in FEATURES or row["id"] in seen_metrics:
+            if (type(row) is not dict or set(row) != _METRIC_FIELDS
+                    or row.get("id") not in FEATURES or row["id"] in seen_metrics):
                 raise ValueError("unknown/duplicate tag metric")
             key = row["id"]
             seen_metrics.add(key)
@@ -103,6 +135,8 @@ def _validated(report: dict) -> list[dict]:
                     raise ValueError("invalid observed dispersion")
         if seen_metrics != set(FEATURES):
             raise ValueError("missing tag metrics")
+    if any(tag["confirmed_work_count"] for tag in tags) and profiles is None:
+        raise ValueError("missing source metric profiles for confirmed works")
     return tags
 
 

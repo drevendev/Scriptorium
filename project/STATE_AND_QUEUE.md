@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 562
+STATE_REVISION: 563
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-19
-LAST_RESULT: #578 independently merged at 0b233f0eaff47c33e1d96a0f4a153c307ff99681. Current bounded #563 private chart comparison extends the existing HTML without public release.
+LAST_RESULT: #579 merged at 93bce4e97b39a6a1031033cd988b8dd5b0940771. Current bounded #563 renderer integrity gate rejects tampered private tag methodology/provenance without public release.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TAGS-PRIVATE-VIZ-002
-ISSUE: #563 — private per-metric tag comparison charts
-STATUS: PR_CANDIDATE; later independent exact-head CI/CLI acceptance and review required
-BRANCH: scrip-tags-private-comparison-charts-20261119
-BASE: 0b233f0eaff47c33e1d96a0f4a153c307ff99681
+UNIT_ID: SCRIP-TAGS-REPORT-INTEGRITY-003
+ISSUE: #563 — reject misleading or source-bearing private report payloads
+STATUS: PR_CANDIDATE; later independent exact-head CI/CLI acceptance required
+BRANCH: scrip-tags-html-evidence-integrity-20261119
+BASE: 93bce4e97b39a6a1031033cd988b8dd5b0940771
 
-ACCEPTANCE: Add five readable, accessible source-free metric-specific charts to the existing local tag HTML report. For each metric, display honest units/domain, observed/missing sample counts and exact table/text alternative; never plot unknown as zero or mix unit scales. Percent uses fixed 0–100; other bars use an explicitly observed maximum or labelled zero-only display domain. Keep report offline, print-safe, inert and fail-closed. Positive, zero, missing and hostile-label regressions; later exact-head CI + visual acceptance.
+ACCEPTANCE: Fail closed on tampered tag-report aggregation, source profile identity, duplicate work/body IDs, invalid evidence/rights declarations or unexpected source-bearing fields. Preserve zero-work previews, exact measurement tables and five unit-specific charts. Negative/positive regressions plus later exact-head suite; scientific and public-release gates unchanged.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: make legitimate researcher-oriented source-free previews useful witho
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #563 private comparative tag charts | Verified five unit-specific charts and accessible numeric alternatives | Later exact-head CI/PR acceptance |
+| P1 | #563 private tag HTML integrity | Rejected corrupted evidence/metadata; preserve valid zero-work charts and tables | Later exact-head CI/PR acceptance |
 | P2 | #562 source-bound public lexical comparison | Rights-reviewed pinned derived evidence only | Edition-specific publication rights |
 | P3 | #511 Trusov translation pair | Independent full-text body, size and evidence | Historical Page completeness |
 | P4 | #282 native AOT uncertainty consequence | New measured discriminatory evidence | Pinned backend / exact source |

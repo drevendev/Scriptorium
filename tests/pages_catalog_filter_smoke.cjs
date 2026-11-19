@@ -18,7 +18,7 @@ const catalogGrid={get children(){return domOrder;},appendChild(card){
   domOrder.splice(previous,1);
   domOrder.push(card);
 }};
-const filter={value:"all"},origin={value:"all"},author={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
+const filter={value:"all"},origin={value:"all"},author={value:"all"},metric={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
 const empty={hidden:true},sortStatus={textContent:""},jump={hidden:true,disabled:true};
 const pairPrompt={hidden:true},pairLink={href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
@@ -33,18 +33,21 @@ const browser={location,isSecureContext:true,navigator:{clipboard:{
 }},history:{replaceState(_state,_title,url){
   location.href=String(url);location.search=new URL(location.href).search;
 }}};
+const optionHtml=html.split('<select id="pair-metric" disabled>',2)[1].split("</select>",1)[0];
+const pairMetric={options:[...optionHtml.matchAll(/<option value="([^"]+)">/g)].map(m=>({value:m[1]}))};
+const metrics=Object.fromEntries(pairMetric.options.map(option=>[option.value,["name","unit",2]]));
 const s=js.indexOf("  let catalogCopyAttempt=0;"),e=js.indexOf("  function updateSingle() {",s);
 assert.ok(s>=0&&e>s);
 const code=js.slice(s,e)+"return {updateCatalog,restoreCatalogFromUrl,resetCatalog,sortCatalog,jumpToFirstCatalogResult,verifiedCatalogShareUrl,copyCatalogShareUrl};";
-const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogAuthor","catalogSearch","catalogOrder",
-  "catalogGrid","lookup","isNumeric","el","window","catalogCopyButton","catalogJump",code)(
-  d,cards,filter,origin,author,search,order,catalogGrid,
+const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin","catalogAuthor","catalogMetric","catalogSearch","catalogOrder",
+  "catalogGrid","lookup","isNumeric","el","window","catalogCopyButton","catalogJump","pairMetric","metrics",code)(
+  d,cards,filter,origin,author,metric,search,order,catalogGrid,
   (book,id)=>book.metrics.find(m=>m.id===id),
   value=>typeof value==="number"&&Number.isFinite(value),
   id=>id==="share-catalog"?share:id==="catalog-empty"?empty:
     id==="catalog-sort-status"?sortStatus:id==="catalog-pair-prompt"?pairPrompt:
     id==="catalog-pair-link"?pairLink:id==="copy-catalog-feedback"?feedback:status,
-  browser,copyButton,jump);
+  browser,copyButton,jump,pairMetric,metrics);
 const {updateCatalog:run,restoreCatalogFromUrl:restore,resetCatalog,sortCatalog,
   jumpToFirstCatalogResult,verifiedCatalogShareUrl,copyCatalogShareUrl}=make(data);
 for(const [mode,keys,measured,pending] of [
@@ -70,6 +73,33 @@ for(const [language,keys,measured,pending] of [
  assert.deepEqual(cards.filter(c=>!c.hidden).map(c=>c.dataset.catalogKey),keys,language);
  assert.match(status.textContent,new RegExp(measured+" измерено, "+pending+" в подготовке"));
 }
+// Metric availability is sourced from the measured numeric field, not the title.
+const availabilityId="fantlab.dialogue.mean_dialogue_sentence_length_chars";
+metric.value=availabilityId;origin.value="all";filter.value="all";author.value="all";search.value="";run();
+const availableKeys=data.books.filter(book=>book.text_status==="measured" &&
+  book.metrics.some(row=>row.id===availabilityId && row.status==="measured" &&
+  typeof row.actual==="number" && Number.isFinite(row.actual))).map(book=>book.key);
+assert.deepEqual(cards.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),availableKeys);
+assert.equal(cards.filter(card=>!card.hidden && card.dataset.status==="pending").length,0);
+assert.equal(share.href,"?catalog=all&available_metric="+encodeURIComponent(availabilityId)+"#books");
+location.search="?catalog=all&available_metric="+encodeURIComponent(availabilityId);
+restore();assert.equal(metric.value,availabilityId);
+location.search="?catalog=all&available_metric=__proto__";
+restore();assert.equal(metric.value,"all");
+assert.equal(cards.filter(card=>!card.hidden).length,13);
+metric.value=availabilityId;author.value="Лев Толстой";run();
+assert.equal(pairPrompt.hidden,false);
+assert.equal(pairLink.href,"?left=anna&right=resurrection&pair_metric="+encodeURIComponent(availabilityId)+"#pairs");
+const missingData=structuredClone(data);
+const missingRow=missingData.books.find(book=>book.key==="anna").metrics.find(row=>row.id===availabilityId);
+missingRow.actual=null;missingRow.status="not_run";
+author.value="all";make(missingData).updateCatalog();
+assert.equal(cards.find(card=>card.dataset.catalogKey==="anna").hidden,true,"NOT_RUN is not observed");
+const zeroData=structuredClone(data);
+zeroData.books.find(book=>book.key==="anna").metrics.find(row=>row.id===availabilityId).actual=0;
+make(zeroData).updateCatalog();
+assert.equal(cards.find(card=>card.dataset.catalogKey==="anna").hidden,false,"measured zero remains observed");
+metric.value="all";location.search="";run();
 // Authorship facet uses exact checked names; names are NOT inferred from tokens.
 for(const [name,keys,measured,pending] of [
   ["Лев Толстой",["anna","resurrection"],2,0],
@@ -248,7 +278,7 @@ assert.equal(order.value,"catalog","Reset must restore the visible sort control"
 assert.deepEqual(domOrder.map(c=>c.dataset.catalogKey),data.books.map(b=>b.key),
   "Reset must restore actual DOM/keyboard order, not just the sort label");
 assert.match(sortStatus.textContent,/Исходный порядок каталога/);
-assert.equal(search.value,"");assert.equal(filter.value,"all");assert.equal(origin.value,"all");assert.equal(author.value,"all");
+assert.equal(search.value,"");assert.equal(filter.value,"all");assert.equal(origin.value,"all");assert.equal(author.value,"all");assert.equal(metric.value,"all");
 assert.equal(cards.filter(c=>!c.hidden).length,13);
 assert.equal(search.focused,true);
 const clean=new URL(location.href);
@@ -256,6 +286,7 @@ assert.equal(clean.searchParams.has("catalog"),false);
 assert.equal(clean.searchParams.has("q"),false);
 assert.equal(clean.searchParams.has("original"),false);
 assert.equal(clean.searchParams.has("author"),false);
+assert.equal(clean.searchParams.has("available_metric"),false);
 assert.equal(clean.searchParams.has("catalog_order"),false,
   "Reset must not leave a stale sorted catalogue permalink");
 assert.equal(clean.searchParams.get("left"),"anna");
@@ -307,6 +338,8 @@ assert.match(html,/id="catalog-author" aria-describedby="catalog-author-help" di
 assert.match(html,/id="catalog-pair-prompt" class="catalog-pair-prompt" hidden/);
 assert.match(html,/id="catalog-pair-link" href="#pairs"/);
 assert.match(js,/catalogAuthor.addEventListener\("change",updateCatalog\)/);
+assert.match(js,/catalogMetric.addEventListener\("change",updateCatalog\)/);
+assert.match(html,/id="catalog-metric" aria-describedby="catalog-metric-help" disabled/);
 assert.match(js,/option\.textContent=name\+" \("/);
 assert.match(js,/catalogOrigin.addEventListener\("change",updateCatalog\)/);
 assert.match(html,/id="catalog-search" type="search" autocomplete="off"[^>]*disabled/);

@@ -383,7 +383,7 @@ assert.match(html,/id="catalog-author" aria-describedby="catalog-author-help" di
 assert.match(html,/id="catalog-pair-prompt" class="catalog-pair-prompt" hidden/);
 assert.match(html,/id="catalog-pair-link" href="#pairs"/);
 assert.match(js,/catalogAuthor.addEventListener\("change",updateCatalog\)/);
-assert.match(js,/catalogMetric.addEventListener\("change",updateCatalog\)/);
+assert.match(js,/catalogMetric.addEventListener\("change",\(\)=>\{sortCatalog\(\);updateCatalog\(\);\}\)/);
 assert.match(html,/id="catalog-metric" aria-describedby="catalog-metric-help" disabled/);
 assert.match(js,/option\.textContent=name\+" \("/);
 assert.match(js,/catalogOrigin.addEventListener\("change",updateCatalog\)/);

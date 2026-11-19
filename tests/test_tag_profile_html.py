@@ -98,6 +98,39 @@ class TagProfileHtmlTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "hash"):
             render_tag_profiles_html(r)
 
+    def test_metric_specific_bars_show_real_means_zero_and_missing(self):
+        r = report()
+        # Same metric across tags shares one scale; different metrics never mix units.
+        r["tags"][0]["metrics"][2].update(
+            observed_count=2, missing_count=0, mean_per_work=25.0,
+            minimum=0.0, maximum=50.0, population_stddev_between_works=25.0)
+        r["tags"][0]["metrics"][3].update(
+            observed_count=2, missing_count=0, mean_per_work=0.0,
+            minimum=0.0, maximum=0.0, population_stddev_between_works=0.0)
+        html = render_tag_profiles_html(r)
+        self.assertEqual(html.count('class="metric-chart"'), 5)
+        self.assertIn("Fixed domain 0–100 %", html)
+        self.assertIn("highest observed tag mean", html)
+        self.assertIn("all observed means are zero", html)
+        self.assertIn("NOT_RUN for every tag", html)
+        self.assertIn('style="width:100.00%"', html)  # 4.7 character mean vs observed maximum
+        self.assertIn('style="width:25.00%"', html)   # 25% on fixed 0..100 domain
+        self.assertIn('style="width:0.00%"', html)    # measured zero is not missing
+        self.assertIn('aria-hidden="true"', html)  # decorative bars; exact table/labels remain
+        self.assertIn("0.0 per 1000 words · 2 observed / 0 missing", html)
+        self.assertIn("NOT_RUN · 0 observed / 0 missing", html)
+        self.assertNotIn("<script", html.lower())
+
+    def test_chart_escapes_hostile_labels_without_untrusted_styles(self):
+        r = report()
+        r["tags"][0]["label"] = '<svg onload="alert(1)">'
+        html = render_tag_profiles_html(r)
+        self.assertNotIn("<svg", html)
+        self.assertIn('&lt;svg onload=&quot;alert(1)&quot;&gt;', html)
+        self.assertEqual(html.count('style="width:'), 1)
+        self.assertEqual(html.count('class="metric-chart"'), len(FEATURES))
+
+
     def test_cli_html_is_create_only_and_json_remains_default(self):
         # Synthetic curation only. No actual book/tag admission is implied.
         snap = {"schema": "scriptorium-ru-reader-v2", "scientific_claim": "DIAGNOSTIC_ONLY",

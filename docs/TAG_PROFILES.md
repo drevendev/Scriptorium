@@ -16,7 +16,7 @@ For a **private, self-contained and printable HTML report** of the same confirme
 scriptorium tags --snapshot scriptorium/data/evidence-snapshot.json --curation private-tags.json --format html --output private-tags.html
 ```
 
-The HTML has labelled tables, observed/missing counts, exact units, honest zero-/one-work states, work hashes and curator evidence as inert text (no external links/scripts). It is **not a public tag page or an independently verified permission**. JSON remains the default for machine-readable replay.
+The HTML has **five metric-specific horizontal bar comparisons** across curator-declared tags, plus labelled numeric tables, observed/missing counts, exact units, honest zero-/one-work states, work hashes and curator evidence as inert text (no external links/scripts). A percent share uses a fixed 0–100% scale; other metrics use the highest observed tag mean **for that metric only** (or a clearly labelled 0–1 display domain for measured all-zero values). Each chart states its axis/domain and observed/missing counts; an unmeasured metric is **NOT_RUN and is not plotted as zero**. Decorative bars have accessible text/table equivalents and remain readable in print. Comparisons are descriptive, not independent confidence estimates or effect sizes. It is **not a public tag page or an independently verified permission**. JSON remains the default for machine-readable replay.
 
 The tool will not download or ingest texts. The output destination is exclusive-create; it never overwrites a previous report. It includes measured numeric scalars, work/source hashes and evidence URLs, but no manuscript text or word forms. The curation file must not be committed before independent rights and label review.
 

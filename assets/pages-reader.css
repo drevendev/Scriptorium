@@ -425,6 +425,11 @@ footer a { color:#ffdaa3; }
 .catalog-tools .catalog-jump[hidden] { display:none !important; }
 .book:focus-visible { outline:3px solid var(--focus); outline-offset:4px; }
 .catalog-tools p { flex-basis:100%; margin:0; font-size:.8rem; color:var(--subtle); }
+/* Evidenced values: legible at mobile and print widths, and hidden offline. */
+.catalog-tools .catalog-metric-range { padding:.7rem .9rem; border:1px solid var(--line);
+  border-left:4px solid var(--green); border-radius:5px; background:var(--surface);
+  color:var(--ink); font-size:.85rem; line-height:1.55; overflow-wrap:anywhere; }
+.catalog-tools .catalog-metric-range[hidden] { display:none !important; }
 .catalog-tools .catalog-pair-prompt { flex:1 1 100%; display:flex; flex-wrap:wrap; align-items:center; gap:.3rem .9rem;
   padding:.75rem 1rem; border:1px solid var(--line); border-left:4px solid var(--green);
   border-radius:6px; background:var(--wash); min-width:0; }

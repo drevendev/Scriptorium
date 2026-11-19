@@ -115,6 +115,14 @@ assert.equal(chartLink.href,"?catalog=all&author="+encodeURIComponent("Лев Т
   "&available_metric="+encodeURIComponent(availabilityId)+"&metric="+encodeURIComponent(availabilityId)+"#charts",
   "the chart route keeps the catalogue facet for return navigation");
 assert.equal(pairLink.href,"?left=anna&right=resurrection&pair_metric="+encodeURIComponent(availabilityId)+"#pairs");
+search.value="Анна";run();
+assert.match(chartLink.href,/&q=/,"search remains in the chart return URL");
+search.value="___no_matching_edition___";run();
+assert.equal(empty.hidden,false,"no result is an honest empty catalogue");
+assert.equal(chartAction.hidden,true,"no measured observations means no chart action");
+assert.equal(chartLink.href,"","clear stale chart href on empty subset");
+search.value="";run();
+assert.equal(chartAction.hidden,false,"chart action returns after restoring observed results");
 const missingData=structuredClone(data);
 const missingRow=missingData.books.find(book=>book.key==="anna").metrics.find(row=>row.id===availabilityId);
 missingRow.actual=null;missingRow.status="not_run";

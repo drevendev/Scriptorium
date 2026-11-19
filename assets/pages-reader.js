@@ -386,6 +386,7 @@
     const terms=query ? query.split(/\s+/u) : [];
     let shown=0, measured=0, pending=0;
     const matchingMeasured=[];
+    const observedMetricValues=[];
     // Filter and build contextual comparison in the visible DOM order, not
     // the frozen source array order. A signed right-minus-left delta must
     // follow the books the reader actually sees after sorting.
@@ -411,6 +412,20 @@
         (author==="all" || book.display_author===author) &&
         terms.every(term=>text.includes(term));
       card.hidden=!visible;
+      // Show verified numbers on visible measured cards and preserve the
+      // original static coverage text when the metric facet is cleared.
+      const note=card.querySelector?.(".availability");
+      if (note && isMeasured) {
+        if (!Object.prototype.hasOwnProperty.call(note.dataset,"baseText"))
+          note.dataset.baseText=note.textContent;
+        note.textContent=note.dataset.baseText+
+          (visible && availableMetric!=="all" && available
+            ? " · "+metrics[availableMetric][0]+": "+
+              String(selectedObservation.actual).replace(".",",")+" "+metrics[availableMetric][1]
+            : "");
+      }
+      if (visible && availableMetric!=="all" && available)
+        observedMetricValues.push(selectedObservation.actual);
       if (visible) {
         shown++;
         if (isMeasured) { measured++; matchingMeasured.push(book); } else pending++;
@@ -425,6 +440,16 @@
       ? "Показано "+shown+" из "+catalogCards.length+" книг: "+
         measured+" измерено, "+pending+" в подготовке. Переводы — отдельные редакции."
       : "Книг не найдено. Очистите поиск или измените фильтр.";
+    // Only the currently visible measured editions contribute to this
+    // descriptive range; neither ranking nor source-matched FantLab parity.
+    const range=el("catalog-metric-range");
+    range.hidden=observedMetricValues.length===0;
+    range.textContent=observedMetricValues.length===0 ? "" :
+      "Диапазон «"+metrics[availableMetric][0]+"» для "+
+      observedMetricValues.length+" показанных измеренных редакций: от "+
+      String(Math.min(...observedMetricValues)).replace(".",",")+" до "+
+      String(Math.max(...observedMetricValues)).replace(".",",")+" "+
+      metrics[availableMetric][1]+". Диагностические значения из проверенного JSON; не рейтинг и не паритет FantLab.";
     // Offer a real comparison only for exactly two visible, measured, distinct
     // editions with compatible profiles and an observed shared starting metric.
     // A pending source is never promoted to an analyzed book by a filter.

@@ -350,6 +350,29 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#catalog-metric").inputValue(),metricId);
   assert.deepEqual(await page.locator("#books .book:visible").evaluateAll(cards=>
     cards.map(card=>card.dataset.catalogKey)),expectedAsc);
+  // Exercise the real source-backed chart route, not an in-memory mockup:
+  // selection is highlighted but the global 11-edition plot remains intact.
+  await page.locator("#catalog-author").selectOption("Лев Толстой");
+  assert.equal(await page.locator("#books .book:visible").count(),2);
+  const scopedChartHref=await page.locator("#catalog-chart-link").getAttribute("href");
+  assert.match(scopedChartHref,/&metric=/);
+  await page.goto(origin+"/"+scopedChartHref,{waitUntil:"networkidle"});
+  await page.waitForFunction(()=>!document.querySelector("#chart-sort").disabled,
+    null,{timeout:20000});
+  assert.equal(await page.locator("#chart-series .chart-row").count(),11);
+  assert.equal(await page.locator("#chart-table-rows tr").count(),11);
+  assert.equal(await page.locator("#chart-series .chart-selected").count(),2);
+  assert.equal(await page.locator("#chart-table-rows tr.chart-selected").count(),2);
+  assert.match(await page.locator("#chart-summary").innerText(),/В текущем отборе выделено 2 из 11/);
+  assert.deepEqual(await page.locator("#chart-series .chart-selected").evaluateAll(rows=>
+    rows.map(row=>row.querySelector("span").textContent)),
+    ["Анна Каренина · в выборке","Воскресение · в выборке"]);
+  await page.locator("#charts").screenshot({
+    path:path.join(output,tag+"-catalog-chart-highlight.png"),animations:"disabled"});
+  await page.locator("#catalog-clear").click();
+  assert.equal(await page.locator("#chart-series .chart-selected").count(),0,
+    tag+": reset clears highlight without removing books from chart");
+  assert.equal(await page.locator("#chart-series .chart-row").count(),11);
   await page.locator("#catalog-metric").selectOption("all");
   assert.equal(await page.locator("#catalog-order").inputValue(),"catalog");
   assert.equal(await rankOption.isDisabled(),true);

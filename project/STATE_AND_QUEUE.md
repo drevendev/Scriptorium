@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 570
+STATE_REVISION: 571
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-19
-LAST_RESULT: #586 confirmed merged at 60d170fb6894b4ad19b64dc951f48b0eb5e0c665; source-backed catalogue-to-chart navigation prepared for later acceptance.
-LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
+LAST_RESULT: #587 confirmed merged at bd9d1124f8205b7ac53ac2eaadcb3309dbe3a605; contextual Reader chart highlights prepared for independent acceptance.
+LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-CATALOG-CHART-NAV-005
-ISSUE: Contextual catalogue-to-chart navigation (independent scoped Reader UX slice; related closed #354 and #387)
-STATUS: PR_CANDIDATE; exact-head CI, later independent acceptance and live Pages readback pending
-BRANCH: scrip-reader-catalog-chart-link-20261119
-BASE: 60d170fb6894b4ad19b64dc951f48b0eb5e0c665
+UNIT_ID: SCRIP-READER-CHART-SUBSET-HIGHLIGHT-006
+ISSUE: Reader chart subset visibility; follows merged #587 catalogue-to-chart navigation
+STATUS: PR_CANDIDATE; exact-head CI and later independent review/browser/Pages acceptance pending
+BRANCH: scrip-reader-chart-subset-highlight-20261119
+BASE: bd9d1124f8205b7ac53ac2eaadcb3309dbe3a605
 
-ACCEPTANCE: A validated selected observed-metric facet with at least one real observation offers an accessible chart action. It navigates to the existing exact-value/labelled chart for that allow-listed metric while preserving catalogue facets in the URL for return, explicitly warning that the chart covers all measured editions rather than the filtered subset. Clearing the facet, zero visible observations and invalid metric links fail closed. No new source data, fabricated comparisons, changed scientific gates or manuscript text. Verify positive/negative Node, Python structural, CI and later browser/site acceptance.
+ACCEPTANCE: The catalogue-to-chart permalink visibly identifies measured editions in the validated *current* catalogue subset in both chart bars and the exact-value table, including on mobile and in print. The chart still displays every measured edition, retains 11-edition baseline/CSV, and explicitly distinguishes the all-edition data from the highlighted subset. Empty, mismatched, forged duplicate query parameters and reset never imply a subset. No changed source data, metric definitions, corpus admission, manuscript text or parity claims. Require positive/negative Node and desktop/mobile Chromium tests, fresh exact-head CI, and later independent acceptance.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Readers can move from a filtered source-backed catalogue observation to the corresponding real chart and exact-value table without mistaking the chart's global sample for their filter.
+Milestone: A reader can follow a filtered measured-book catalogue to a real chart, immediately distinguish selected books from the full evidence-backed distribution, and inspect their exact source-bound values.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Contextual catalogue-to-chart link | Exact-head Node/Python/CI; later merge, desktop/mobile browser | Fresh review/check acceptance |
-| P2 | Reader production deployment verification | Pages deployment/version and real interactions verified | Network/Pages access |
-| P3 | #562 source-bound lexical comparison | Rights-reviewed pinned derived evidence | Edition-specific publication rights |
-| P4 | #511 Trusov translation pair | Independent full-text body and evidence | Historical Page completeness |
-| P5 | #282 native AOT ambiguity | New measured discrimination | Pinned backend / exact source |
+| P1 | Contextual chart selection highlighting | Fresh CI + later independent browser review/merge | PR head/checks |
+| P2 | Verify live Reader release | Exact Pages deployment + actual public route and interactions | DNS/network availability |
+| P3 | #562 source-bound lexical comparison | Rights-reviewed, pinned derived evidence | Edition-specific publication rights |
+| P4 | #511 Trusov translation pair | Independent complete body and evidence | Historical Page completeness |
+| P5 | #282 native AOT ambiguity | Measured discrimination on frozen inputs | Pinned backend/source |
 
 ## Retained scientific and operational boundaries
 

@@ -6,7 +6,7 @@ publishes anything and never upgrades curator claims into verified rights.
 from __future__ import annotations
 
 from html import escape
-from math import isfinite
+from math import isfinite, sqrt
 import re
 
 from .tag_profile import FEATURES, VERSION, _ID, _url
@@ -21,6 +21,8 @@ _BOUNDARY = {
     "no_source_text": True,
 }
 _AGGREGATION = "unweighted per independently observed edition; population dispersion across works only"
+# The builder rounds mean and population SD to 6 places, but keeps raw extrema.
+_STAT_ROUND_TOL = 0.5e-6 + 1e-12
 _REPORT_FIELDS = {"schema_version", "taxonomy_version", "source_snapshot_sha256",
                   "source_metric_profiles", "aggregation", "scientific_boundary", "tags"}
 _TAG_FIELDS = {"tag_id", "label", "confirmed_work_count", "sample_warning", "works", "metrics"}
@@ -127,12 +129,26 @@ def _validated(report: dict) -> list[dict]:
                 if any(v is not None for v in vals) or std is not None:
                     raise ValueError("unobserved metric cannot have numeric values")
             else:
-                if not all(_number(v, maximum=maximum) for v in vals) or not vals[1] <= vals[0] <= vals[2]:
+                if not all(_number(v, maximum=maximum) for v in vals):
                     raise ValueError("invalid observed metric range")
-                if observed == 1 and std is not None:
-                    raise ValueError("single-work dispersion must be NOT_RUN")
-                if observed > 1 and not _number(std):
-                    raise ValueError("invalid observed dispersion")
+                mean, low, high = vals
+                width = high - low
+                # Every observed group includes the extrema; the builder rounds
+                # its mean/SD to 6 decimals and preserves unrounded min/max.
+                mean_low = low + width / observed
+                mean_high = high - width / observed
+                if not mean_low - _STAT_ROUND_TOL <= mean <= mean_high + _STAT_ROUND_TOL:
+                    raise ValueError("inconsistent observed mean and range")
+                if observed == 1:
+                    if std is not None or low != high:
+                        raise ValueError("inconsistent single-observation statistics")
+                else:
+                    # Pop. SD for n observations containing both extrema must
+                    # lie within [range/sqrt(2n), range/2], after rounding.
+                    if (not _number(std)
+                            or std < width / sqrt(2 * observed) - _STAT_ROUND_TOL
+                            or std > width / 2 + _STAT_ROUND_TOL):
+                        raise ValueError("impossible population dispersion for observed range")
         if seen_metrics != set(FEATURES):
             raise ValueError("missing tag metrics")
     if any(tag["confirmed_work_count"] for tag in tags) and profiles is None:

@@ -53,7 +53,7 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn("doc.books.some(book=>{",js)
         self.assertIn('catalogSearch.addEventListener("input",updateCatalog)',js)
         self.assertIn('catalogAuthor.addEventListener("change",updateCatalog)',js)
-        self.assertIn('catalogMetric.addEventListener("change",updateCatalog)',js)
+        self.assertIn('catalogMetric.addEventListener("change",()=>{sortCatalog();updateCatalog();})',js)
         self.assertIn('url.searchParams.delete("available_metric")',js)
         self.assertIn('url.searchParams.delete("author")',js)
         self.assertIn('allowedCatalogAuthor(requestedAuthor)',js)

@@ -51,6 +51,7 @@ def render_tag_profiles_csv(report: dict) -> str:
     def add(section: str, field: str, value: object, unit: str = "") -> None:
         writer.writerow((section, field, _cell(value), unit))
 
+    add("report", "csv_schema", "scriptorium-private-tag-csv-v1")
     for field in ("schema_version", "taxonomy_version", "source_snapshot_sha256",
                   "aggregation"):
         add("report", field, report[field])

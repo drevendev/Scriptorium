@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 567
+STATE_REVISION: 568
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-19
-LAST_RESULT: #583 merged at 837b84fe8d4b4a46a0eb66d292c6b4a73279517a; verified Reader metric-value lens prepared for later independent acceptance.
+LAST_RESULT: #584 merged at a4e2d3b4e27875e863f1c7ed0f29652b2fef3409; Reader metric-specific ordering prepared for later independent acceptance.
 LAST_VERIFIED_PROGRESS: 11 complete measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-METRIC-EVIDENCE-LENS-002
-ISSUE: Reader observed metric preview (no matching open/closed issue or PR)
-STATUS: PR_CANDIDATE; exact-head CI, later independent review, Pages readback pending
-BRANCH: scrip-reader-metric-evidence-lens-20261119
-BASE: 837b84fe8d4b4a46a0eb66d292c6b4a73279517a
+UNIT_ID: SCRIP-READER-SELECTED-METRIC-ORDER-003
+ISSUE: Reader order by selected evidence-bound metric (new scoped slice; #283 is prior related work)
+STATUS: PR_CANDIDATE; exact-head CI, later independent acceptance, Pages readback pending
+BRANCH: scrip-reader-selected-metric-order-20261119
+BASE: a4e2d3b4e27875e863f1c7ed0f29652b2fef3409
 
-ACCEPTANCE: The verified seven-metric catalogue facet exposes each visible measured book's source-derived value and unit with explicit display rounding (no false zero for a small nonzero), plus the min/max of only visible observed editions. Zero remains observed. Pending, NOT_RUN, hidden and invalid values do not contribute. Clearing/resetting the metric removes stale annotations/range and restores static coverage. No source text, corpus/parity claim or ranking. Positive/negative Node and structural regression; browser/mobile acceptance after PR.
+ACCEPTANCE: After choosing a verified comparison metric, Reader sorts observed editions ascending/descending by unrounded actual values, stable ties, zero distinguished from NOT_RUN, and matching real DOM/keyboard order. Source-backed share links safely restore the selected metric and direction; invalid or cleared metric falls back to catalogue order. Positive/negative Node, structural and actual desktop/mobile Chromium regressions. No unlicensed text, quality score or FantLab parity claim.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: show readers real measured numbers while browsing, not only whether a field exists.
+Milestone: browse real measured numbers and sort by any supported observation, rather than a fixed indicator.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Reader observed metric value lens | Exact-head CI, browser interaction, later merge and live readback | Fresh check and independent acceptance |
+| P1 | Sort by the selected measured Reader metric | Exact-head CI, browser interaction, later merge and live readback | Fresh check and independent acceptance |
 | P2 | #562 source-bound lexical comparison | Rights-reviewed pinned derived evidence | Edition-specific publication rights |
 | P3 | #511 Trusov translation pair | Independent full-text body and evidence | Historical Page completeness |
 | P4 | #282 native AOT ambiguity | New measured discrimination | Pinned backend / exact source |

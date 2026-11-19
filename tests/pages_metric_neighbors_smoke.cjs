@@ -124,7 +124,17 @@ const catalogGrid={appendChild(card){
 }};
 slots["catalog-sort-status"]=new Node("p");
 slots["share-work"]=new Node("a");
-const sortSelection={value:"catalog"};
+const sortSelection={value:"catalog",options:[
+  {value:"metric_desc",disabled:true},{value:"metric_asc",disabled:true}]};
+const catalogMetric={value:"all"};
+// Startup must execute the production allow-list and sort guard with real
+// metric options, rather than silently replacing the new dependencies.
+const optionHtml=html.split('<select id="pair-metric" disabled>',2)[1].split("</select>",1)[0];
+const pairMetric={options:[...optionHtml.matchAll(/<option value="([^"]+)"/g)].map(m=>({value:m[1]}))};
+const metrics=Object.fromEntries(pairMetric.options.map(option=>[option.value,["name","unit",2]]));
+const sorterGuards=source.slice(source.indexOf("  function allowedCatalogMetric("),
+  source.indexOf("  function updateCatalog() {"));
+assert.match(sorterGuards,/function validCatalogOrder/);
 const bookSelection={value:""};
 const metricSearch={value:""};
 let singleRenders=0;
@@ -134,12 +144,12 @@ assert.equal(measuredOnlyBook("petersburg"),undefined);
 assert.equal(measuredOnlyBook("darwin"),undefined);
 const startup=new Function("data","catalogCards","catalogOrder","catalogGrid",
   "lookup","isNumeric","el","document","insertText","pretty","getBook",
-  "one","search","updateSingle","window",
-  source.slice(sortStart,begin)+source.slice(begin,end)+source.slice(routeStart,routeEnd)+
+  "one","search","updateSingle","window","catalogMetric","pairMetric","metrics",
+  sorterGuards+source.slice(sortStart,begin)+source.slice(begin,end)+source.slice(routeStart,routeEnd)+
   "\nreturn {sortCatalog,bookFromUrl,selectBook};"
 )(data,realCards,sortSelection,catalogGrid,lookup,isNumeric,el,document,insertText,
   pretty,measuredOnlyBook,bookSelection,metricSearch,()=>{singleRenders++;},
-  {location:{search:"?book=anna"}});
+  {location:{search:"?book=anna"}},catalogMetric,pairMetric,metrics);
 startup.sortCatalog();
 assert.deepEqual(cardOrder.map(card=>card.dataset.catalogKey),data.books.map(book=>book.key));
 startup.selectBook(startup.bookFromUrl());

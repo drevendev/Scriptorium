@@ -99,7 +99,7 @@
 <select id="catalog-metric" aria-describedby="catalog-metric-help" disabled>
 <option value="all">Любой набор измерений</option>
 </select>
-<p id="catalog-metric-help">После проверки данных доступны семь показателей для сравнения. Только реальные числовые наблюдения: ноль остаётся измерением, NOT_RUN и незавершённые источники исключаются. Ссылка сохраняет выбор.</p>
+<p id="catalog-metric-help">После проверки данных доступны семь показателей для сравнения. Только реальные числовые наблюдения: ноль остаётся измерением, NOT_RUN и незавершённые источники исключаются. Выберите показатель, затем упорядочите книги по его точному значению (по возрастанию или убыванию); порядок сохраняется в ссылке. Это не оценка качества.</p>
 <label for="catalog-order">Упорядочить книги</label>
 <select id="catalog-order" disabled>
 <option value="catalog">Порядок каталога</option>
@@ -108,6 +108,8 @@
 <option value="dialogue">Доля диалогов: по убыванию</option>
 <option value="length">Объём текста (символы с пробелами): по убыванию</option>
 <option value="coverage">Измеренные поля: по убыванию</option>
+<option value="metric_desc" disabled>Выбранный показатель: по убыванию</option>
+<option value="metric_asc" disabled>Выбранный показатель: по возрастанию</option>
 </select>
 <label for="catalog-search">Найти книгу, автора или переводчика</label>
 <input id="catalog-search" type="search" autocomplete="off" maxlength="120" placeholder="Например, Верн Бекетова" aria-describedby="catalog-shortcut-help" disabled>

@@ -370,6 +370,11 @@
       Object.prototype.hasOwnProperty.call(metrics,value) &&
       [...pairMetric.options].some(option=>option.value===value));
   }
+  // Share and restore metric ordering only alongside an allow-listed observation.
+  function validCatalogOrder(value,availableMetric) {
+    return ["catalog","title","author","dialogue","length","coverage"].includes(value) ||
+      (availableMetric!=="all" && ["metric_desc","metric_asc"].includes(value));
+  }
   function updateCatalog() {
     catalogCopyAttempt++;
     el("copy-catalog-feedback").textContent="";
@@ -493,7 +498,7 @@
     share.hidden=!safeCatalogQuery(raw);
     catalogCopyButton.disabled=share.hidden;
     if (!share.hidden) {
-      const order=["catalog","title","author","dialogue","length","coverage"].includes(catalogOrder.value)
+      const order=validCatalogOrder(catalogOrder.value,availableMetric)
         ? catalogOrder.value : "catalog";
       share.href=catalogShareHref(mode,origin,raw,order,author,availableMetric);
       share.textContent=raw ? "Ссылка на этот поиск ↗" : "Ссылка на выбранный список ↗";
@@ -586,7 +591,8 @@
     const availableMetric=allowedCatalogMetric(params.get("available_metric")) ? params.get("available_metric") : "all";
     const raw=params.get("q")||"";
     const requestedOrder=params.get("catalog_order");
-    const order=["title","author","dialogue","length","coverage"].includes(requestedOrder)
+    const order=requestedOrder!=="catalog" &&
+      validCatalogOrder(requestedOrder,availableMetric)
       ? requestedOrder : "catalog";
     return {mode,origin,author,availableMetric,query:safeCatalogQuery(raw)?raw:"",order};
   }
@@ -607,7 +613,14 @@
   // and screen-reader traversal must match the visible catalogue sequence.
   // The default, no-JS catalogue stays in source order.
   function sortCatalog() {
-    const selected=["catalog","title","author","dialogue","length","coverage"].includes(catalogOrder.value)
+    const availableMetric=allowedCatalogMetric(catalogMetric.value) ? catalogMetric.value : "all";
+    const metricActive=availableMetric!=="all";
+    // Disable unavailable ranking actions until the verified metric facet is set.
+    for (const option of catalogOrder.options) {
+      if (option.value==="metric_desc" || option.value==="metric_asc")
+        option.disabled=!metricActive;
+    }
+    const selected=validCatalogOrder(catalogOrder.value,availableMetric)
       ? catalogOrder.value : "catalog";
     if (catalogOrder.value!==selected) catalogOrder.value=selected;
     const collator=new Intl.Collator("ru",{sensitivity:"base",numeric:true});
@@ -620,7 +633,11 @@
         ? lookup(book,"fantlab.dialogue.share_percent") : null;
       const lengthField=book.text_status==="measured"
         ? lookup(book,"fantlab.general.characters") : null;
+      const selectedField=metricActive && book.text_status==="measured"
+        ? lookup(book,availableMetric) : null;
       return {card,ordinal,title:book.display_title,author:book.display_author,
+        selectedValue:selectedField?.status==="measured" && isNumeric(selectedField.actual)
+          ? selectedField.actual : null,
         coverage:book.text_status==="measured" && Number.isSafeInteger(book.measured) && book.measured>=0
           ? book.measured : null,
         dialogue:book.text_status==="measured"&&field&&isNumeric(field.actual)
@@ -648,14 +665,24 @@
       if (b.coverage===null) return -1;
       return b.coverage-a.coverage||a.ordinal-b.ordinal;
     });
+    if (selected==="metric_desc" || selected==="metric_asc") entries.sort((a,b)=>{
+      if (a.selectedValue===null) return b.selectedValue===null?a.ordinal-b.ordinal:1;
+      if (b.selectedValue===null) return -1;
+      return (selected==="metric_asc" ? a.selectedValue-b.selectedValue :
+        b.selectedValue-a.selectedValue)||a.ordinal-b.ordinal;
+    });
     for (const item of entries) catalogGrid.appendChild(item.card);
+    const selectedLabel=metricActive ? metrics[availableMetric][0] : "не выбрана";
+    const selectedUnit=metricActive ? metrics[availableMetric][1] : "";
     const descriptions={
       catalog:"Исходный порядок каталога.",
       title:"Книги упорядочены по русским названиям.",
       author:"По имени автора в проверенном каталоге, затем по названию книги. Переводы остаются отдельными редакциями; это навигация, не оценка языка.",
       dialogue:"По доле диалогов в измеренных текстах, от большей к меньшей; без измерений — в конце. Ноль не означает отсутствие данных.",
       length:"По измеренному объёму нормализованного текста в символах с пробелами, от большего к меньшему; без измерений — в конце. Ноль не означает отсутствие данных.",
-      coverage:"По числу измеренных полей, от большего к меньшему; без измерений — в конце. Разные редакции имеют разные наборы полей: это не процент полноты, оценка качества или паритет с FantLab."
+      coverage:"По числу измеренных полей, от большего к меньшему; без измерений — в конце. Разные редакции имеют разные наборы полей: это не процент полноты, оценка качества или паритет с FantLab.",
+      metric_desc:"«"+selectedLabel+"» ("+selectedUnit+"): по убыванию точного измерения; NOT_RUN после измеренных. Не рейтинг качества и не паритет FantLab.",
+      metric_asc:"«"+selectedLabel+"» ("+selectedUnit+"): по возрастанию точного измерения; NOT_RUN после измеренных. Не рейтинг качества и не паритет FantLab."
     };
     el("catalog-sort-status").textContent=descriptions[selected]+
       " Порядок клавиатуры совпадает с экранным; ссылка на поиск сохраняет выбранную сортировку.";
@@ -674,7 +701,7 @@
       ?catalogOrigin.value:"all";
     const author=allowedCatalogAuthor(catalogAuthor.value)?catalogAuthor.value:"all";
     const availableMetric=allowedCatalogMetric(catalogMetric.value)?catalogMetric.value:"all";
-    const order=["catalog","title","author","dialogue","length","coverage"].includes(catalogOrder.value)
+    const order=validCatalogOrder(catalogOrder.value,availableMetric)
       ?catalogOrder.value:"catalog";
     if (href!==catalogShareHref(mode,origin,raw,order,author,availableMetric)) return null;
     try {
@@ -1813,7 +1840,7 @@
       catalogFilter.addEventListener("change",updateCatalog);
       catalogOrigin.addEventListener("change",updateCatalog);
       catalogAuthor.addEventListener("change",updateCatalog);
-      catalogMetric.addEventListener("change",updateCatalog);
+      catalogMetric.addEventListener("change",()=>{sortCatalog();updateCatalog();});
       catalogSearch.addEventListener("input",updateCatalog);
       catalogOrder.addEventListener("change",()=>{sortCatalog();updateCatalog();});
       catalogReset.addEventListener("click",resetCatalog);

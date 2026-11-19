@@ -20,7 +20,7 @@ const catalogGrid={get children(){return domOrder;},appendChild(card){
   domOrder.splice(previous,1);
   domOrder.push(card);
 }};
-const filter={value:"all"},origin={value:"all"},author={value:"all"},metric={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
+const filter={value:"all"},origin={value:"all"},author={value:"all"},metric={value:"all"},order={value:"catalog",options:[{value:"metric_desc",disabled:true},{value:"metric_asc",disabled:true}]},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
 const empty={hidden:true},sortStatus={textContent:""},range={hidden:true,textContent:""},jump={hidden:true,disabled:true};
 const pairPrompt={hidden:true},pairLink={href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
@@ -113,7 +113,36 @@ const tinyData=structuredClone(data);
 tinyData.books.find(book=>book.key==="anna").metrics.find(row=>row.id===availabilityId).actual=0.0001;
 make(tinyData).updateCatalog();
 assert.match(noteAnna.textContent,/name: <0,01 unit/,"tiny nonzero is not printed as a measured zero");
-metric.value="all";location.search="";run();
+// Rank by the exact selected observation, not by rounded text or a fixed metric.
+order.value="metric_desc";sortCatalog();run();
+assert.equal(order.options[0].disabled,false);
+const rankedValues=data.books.map((book,i)=>({book,i,
+  value:book.text_status==="measured" ? book.metrics.find(m=>m.id===availabilityId)?.actual??null : null
+})).sort((a,b)=>{
+  if(a.value===null)return b.value===null?a.i-b.i:1;
+  if(b.value===null)return -1;
+  return b.value-a.value||a.i-b.i;
+}).filter(row=>row.value!==null).map(row=>row.book.key);
+assert.deepEqual(domOrder.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),rankedValues);
+assert.match(sortStatus.textContent,/по убыванию точного измерения/);
+assert.equal(share.href,"?catalog=all&available_metric="+encodeURIComponent(availabilityId)+"&catalog_order=metric_desc#books");
+order.value="metric_asc";sortCatalog();run();
+const ascendingValues=data.books.map((book,i)=>({book,i,
+  value:book.text_status==="measured" ? book.metrics.find(m=>m.id===availabilityId)?.actual??null : null
+})).filter(row=>row.value!==null).sort((a,b)=>a.value-b.value||a.i-b.i)
+  .map(row=>row.book.key);
+assert.deepEqual(domOrder.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),ascendingValues);
+location.search="?catalog=all&available_metric="+encodeURIComponent(availabilityId)+"&catalog_order=metric_desc";
+restore();assert.equal(order.value,"metric_desc");
+assert.deepEqual(domOrder.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),rankedValues);
+location.search="?catalog=all&catalog_order=metric_desc";
+restore();assert.equal(order.value,"catalog","metric ranking without a selected metric fails closed");
+location.search="?catalog=all&available_metric=__proto__&catalog_order=metric_asc";
+restore();assert.equal(order.value,"catalog");assert.equal(metric.value,"all");
+metric.value=availabilityId;order.value="metric_desc";sortCatalog();run();
+metric.value="all";sortCatalog();location.search="";run();
+assert.equal(order.value,"catalog","clearing the metric removes the stale metric ordering");
+assert.equal(order.options[0].disabled,true);
 assert.equal(range.hidden,true,"cleared metric hides range");
 assert.equal(noteAnna.textContent,"Статические сведения об измерениях","clearing restores static copy");
 // Authorship facet uses exact checked names; names are NOT inferred from tokens.
@@ -354,7 +383,7 @@ assert.match(html,/id="catalog-author" aria-describedby="catalog-author-help" di
 assert.match(html,/id="catalog-pair-prompt" class="catalog-pair-prompt" hidden/);
 assert.match(html,/id="catalog-pair-link" href="#pairs"/);
 assert.match(js,/catalogAuthor.addEventListener\("change",updateCatalog\)/);
-assert.match(js,/catalogMetric.addEventListener\("change",updateCatalog\)/);
+assert.match(js,/catalogMetric.addEventListener\("change",\(\)=>\{sortCatalog\(\);updateCatalog\(\);\}\)/);
 assert.match(html,/id="catalog-metric" aria-describedby="catalog-metric-help" disabled/);
 assert.match(js,/option\.textContent=name\+" \("/);
 assert.match(js,/catalogOrigin.addEventListener\("change",updateCatalog\)/);

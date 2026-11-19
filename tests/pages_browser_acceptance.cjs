@@ -312,6 +312,49 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#catalog-order").inputValue(), "catalog");
   assert.deepEqual(await page.locator("#books .book").evaluateAll(cards =>
     cards.map(card => card.dataset.catalogKey)), sourceOrder);
+  // Exact observed metric ranking: real desktop/mobile DOM, share-link and reset.
+  const metricId="fantlab.dialogue.mean_dialogue_sentence_length_chars";
+  const rankOption=page.locator('#catalog-order option[value="metric_desc"]');
+  assert.equal(await rankOption.isDisabled(),true,
+    tag + ": no value ranking without a selected metric");
+  await page.locator("#catalog-metric").selectOption(metricId);
+  assert.equal(await rankOption.isEnabled(),true);
+  await page.locator("#catalog-order").selectOption("metric_desc");
+  const verifiedSnapshot=JSON.parse(fs.readFileSync(
+    path.join(root,"assets/evidence-snapshot.json"),"utf8"));
+  const expectedObserved=verifiedSnapshot.books.map((book,i)=>({book,i,
+    value:book.text_status==="measured"
+      ? book.metrics.find(row=>row.id===metricId)?.actual??null : null
+  })).filter(row=>row.value!==null).sort((a,b)=>b.value-a.value||a.i-b.i)
+    .map(row=>row.book.key);
+  assert.deepEqual(await page.locator("#books .book:visible").evaluateAll(cards=>
+    cards.map(card=>card.dataset.catalogKey)),expectedObserved,
+    tag + ": exact metric sorting cannot rank NOT_RUN or pending");
+  assert.match(await page.locator("#catalog-metric-range").innerText(),/Диапазон/);
+  assert.match(await page.locator("#catalog-sort-status").innerText(),/по убыванию точного измерения/);
+  await page.locator("#books").screenshot({path:path.join(output,tag+"-metric-ranked.png")});
+  await page.locator("#catalog-order").selectOption("metric_asc");
+  const expectedAsc=verifiedSnapshot.books.map((book,i)=>({book,i,
+    value:book.text_status==="measured"
+      ? book.metrics.find(row=>row.id===metricId)?.actual??null : null
+  })).filter(row=>row.value!==null).sort((a,b)=>a.value-b.value||a.i-b.i)
+    .map(row=>row.book.key);
+  assert.deepEqual(await page.locator("#books .book:visible").evaluateAll(cards=>
+    cards.map(card=>card.dataset.catalogKey)),expectedAsc);
+  const metricHref=await page.locator("#share-catalog").getAttribute("href");
+  assert.match(metricHref,/catalog_order=metric_asc/);
+  await page.goto(origin+"/"+metricHref,{waitUntil:"networkidle"});
+  await page.waitForFunction(()=>!document.querySelector("#catalog-order").disabled,
+    null,{timeout:20000});
+  assert.equal(await page.locator("#catalog-order").inputValue(),"metric_asc");
+  assert.equal(await page.locator("#catalog-metric").inputValue(),metricId);
+  assert.deepEqual(await page.locator("#books .book:visible").evaluateAll(cards=>
+    cards.map(card=>card.dataset.catalogKey)),expectedAsc);
+  await page.locator("#catalog-metric").selectOption("all");
+  assert.equal(await page.locator("#catalog-order").inputValue(),"catalog");
+  assert.equal(await rankOption.isDisabled(),true);
+  assert.equal(await page.locator("#books .book:visible").count(),13);
+  await page.locator("#catalog-clear").click();
   // A real author-first view groups source-backed names without upgrading pending leads.
   await page.locator("#catalog-order").selectOption("author");
   const authorOrder = await page.locator("#books .book").evaluateAll(cards =>

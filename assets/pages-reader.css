@@ -430,6 +430,14 @@ footer a { color:#ffdaa3; }
   border-left:4px solid var(--green); border-radius:5px; background:var(--surface);
   color:var(--ink); font-size:.85rem; line-height:1.55; overflow-wrap:anywhere; }
 .catalog-tools .catalog-metric-range[hidden] { display:none !important; }
+.catalog-tools .catalog-chart-action { display:flex; flex-wrap:wrap; align-items:center;
+  gap:.4rem 1rem; padding:.65rem .9rem; border:1px solid var(--line);
+  border-radius:5px; background:var(--surface); min-width:0; }
+.catalog-tools .catalog-chart-action[hidden] { display:none !important; }
+.catalog-chart-action a { display:inline-flex; align-items:center; min-height:44px;
+  font-size:.85rem; font-weight:750; overflow-wrap:anywhere; }
+.catalog-chart-action a:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+.catalog-chart-action span { flex:1 1 13rem; font-size:.77rem; line-height:1.5; color:var(--subtle); }
 .catalog-tools .catalog-pair-prompt { flex:1 1 100%; display:flex; flex-wrap:wrap; align-items:center; gap:.3rem .9rem;
   padding:.75rem 1rem; border:1px solid var(--line); border-left:4px solid var(--green);
   border-radius:6px; background:var(--wash); min-width:0; }

@@ -479,6 +479,22 @@
       compactMetricValue(Math.max(...observedMetricValues))+" "+
       metrics[availableMetric][1]+". Медиана "+compactMetricValue(median)+" "+
       metrics[availableMetric][1]+". Округлено для просмотра (≈ или < для малых ненулевых); исходные значения в JSON. Не рейтинг и не паритет FantLab.";
+    // Bridge the filtered catalogue to the existing real all-edition chart.
+    // Preserve catalogue facets in the URL while stating the chart's wider scope.
+    const chartAction=el("catalog-chart-action"), chartLink=el("catalog-chart-link");
+    chartAction.hidden=observedMetricValues.length===0;
+    if (!chartAction.hidden) {
+      const rawQuery=catalogSearch.value.trim();
+      const safeQuery=safeCatalogQuery(rawQuery) ? rawQuery : "";
+      const selectedOrder=validCatalogOrder(catalogOrder.value,availableMetric)
+        ? catalogOrder.value : "catalog";
+      chartLink.href=catalogShareHref(mode,origin,safeQuery,selectedOrder,author,availableMetric)
+        .replace(/#books$/,"")+"&metric="+encodeURIComponent(availableMetric)+"#charts";
+      chartLink.textContent="Открыть диаграмму «"+metrics[availableMetric][0]+"» ↗";
+    } else {
+      chartLink.removeAttribute("href");
+      chartLink.textContent="Открыть диаграмму выбранного показателя";
+    }
     // Offer a real comparison only for exactly two visible, measured, distinct
     // editions with compatible profiles and an observed shared starting metric.
     // A pending source is never promoted to an analyzed book by a filter.

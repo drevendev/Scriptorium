@@ -215,7 +215,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Source-free private curated tag profiles (M2 0/5; not public-ready)")
     parser.add_argument("--snapshot", required=True, type=Path, help="source-free measured-edition snapshot JSON")
     parser.add_argument("--curation", required=True, type=Path, help="explicit rights and tag evidence catalog JSON")
-    parser.add_argument("--format", choices=("json", "html"), default="json",
+    parser.add_argument("--format", choices=("json", "html", "csv"), default="json",
                          help="private derived report format; JSON remains the default")
     parser.add_argument("--output", type=Path, help="create a new local report; never overwrite")
     args = parser.parse_args(argv)
@@ -228,6 +228,9 @@ def main(argv=None):
         if args.format == "html":
             from .tag_profile_html import render_tag_profiles_html
             rendered = render_tag_profiles_html(result)
+        elif args.format == "csv":
+            from .tag_profile_csv import render_tag_profiles_csv
+            rendered = render_tag_profiles_csv(result)
         else:
             rendered = json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False) + "\n"
         if args.output is None:

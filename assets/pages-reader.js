@@ -387,6 +387,17 @@
     let shown=0, measured=0, pending=0;
     const matchingMeasured=[];
     const observedMetricValues=[];
+    // Display is rounded for a five-column/mobile catalogue, never the source data.
+    // Prefix approximations and distinguish small nonzero observations from zero.
+    function compactMetricValue(value) {
+      const places=metrics[availableMetric]?.[2] ?? 2;
+      const scale=10**places;
+      const rounded=Math.round(value*scale)/scale;
+      const number=new Intl.NumberFormat("ru-RU",{maximumFractionDigits:places});
+      if (value!==0 && rounded===0)
+        return (value<0?"−":"")+"<"+number.format(1/scale);
+      return (rounded===value?"":"≈")+number.format(value);
+    }
     // Filter and build contextual comparison in the visible DOM order, not
     // the frozen source array order. A signed right-minus-left delta must
     // follow the books the reader actually sees after sorting.
@@ -421,7 +432,7 @@
         note.textContent=note.dataset.baseText+
           (visible && availableMetric!=="all" && available
             ? " · "+metrics[availableMetric][0]+": "+
-              String(selectedObservation.actual).replace(".",",")+" "+metrics[availableMetric][1]
+              compactMetricValue(selectedObservation.actual)+" "+metrics[availableMetric][1]
             : "");
       }
       if (visible && availableMetric!=="all" && available)
@@ -447,9 +458,9 @@
     range.textContent=observedMetricValues.length===0 ? "" :
       "Диапазон «"+metrics[availableMetric][0]+"» для "+
       observedMetricValues.length+" показанных измеренных редакций: от "+
-      String(Math.min(...observedMetricValues)).replace(".",",")+" до "+
-      String(Math.max(...observedMetricValues)).replace(".",",")+" "+
-      metrics[availableMetric][1]+". Диагностические значения из проверенного JSON; не рейтинг и не паритет FantLab.";
+      compactMetricValue(Math.min(...observedMetricValues))+" до "+
+      compactMetricValue(Math.max(...observedMetricValues))+" "+
+      metrics[availableMetric][1]+". Округлено для просмотра (≈ или < для малых ненулевых); исходные значения в JSON. Не рейтинг и не паритет FantLab.";
     // Offer a real comparison only for exactly two visible, measured, distinct
     // editions with compatible profiles and an observed shared starting metric.
     // A pending source is never promoted to an analyzed book by a filter.

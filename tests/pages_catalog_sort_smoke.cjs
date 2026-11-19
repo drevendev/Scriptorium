@@ -8,7 +8,14 @@ const catalog=JSON.parse(fs.readFileSync(path.join(root,"assets/evidence-snapsho
 const start=source.indexOf("  function sortCatalog() {");
 const end=source.indexOf("  function updateSingle() {",start);
 assert.ok(start>=0&&end>start,"Ship the actual catalogue sorter");
-const sortCode=source.slice(start,end)+"return sortCatalog;";
+// Exercise the shipped sort guards, not a duplicated test-only policy.
+const guards=source.slice(source.indexOf("  function allowedCatalogMetric("),
+  source.indexOf("  function updateCatalog() {"));
+assert.match(guards,/function validCatalogOrder/);
+const sortCode=guards+source.slice(start,end)+"return sortCatalog;";
+const optionHtml=html.split('<select id="pair-metric" disabled>',2)[1].split("</select>",1)[0];
+const pairMetric={options:[...optionHtml.matchAll(/<option value="([^"]+)"/g)].map(m=>({value:m[1]}))};
+const metrics=Object.fromEntries(pairMetric.options.map(option=>[option.value,["name","unit",2]]));
 assert.doesNotMatch(sortCode,/const\s+book\s*=\s*getBook\(/,
   "The catalogue must not use the measured-only reader lookup for pending cards");
 const keys=catalog.books.map(b=>b.key);
@@ -21,15 +28,18 @@ function harness(doc){
     nodes.splice(current,1);
     nodes.push(card);
   }};
-  const selection={value:"catalog"};
+  const selection={value:"catalog",options:[
+    {value:"metric_desc",disabled:true},{value:"metric_asc",disabled:true}]};
+  const metric={value:"all"};
   const status={textContent:""};
   const sorter=new Function("catalogCards","catalogOrder","catalogGrid","data",
-    "lookup","isNumeric","el",sortCode)(
+    "lookup","isNumeric","el","catalogMetric","pairMetric","metrics",sortCode)(
     cards,selection,grid,doc,
     (book,id)=>book.metrics.find(m=>m.id===id),
     x=>typeof x==="number"&&Number.isFinite(x),
-    id=>{assert.equal(id,"catalog-sort-status");return status;});
-  return {sorter,selection,status,order:()=>nodes.map(c=>c.dataset.catalogKey)};
+    id=>{assert.equal(id,"catalog-sort-status");return status;},
+    metric,pairMetric,metrics);
+  return {sorter,selection,metric,status,order:()=>nodes.map(c=>c.dataset.catalogKey)};
 }
 const h=harness(catalog);
 h.sorter();

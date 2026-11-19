@@ -24,6 +24,7 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn("Показано 13 из 13 книг.",html)
         self.assertIn('id="catalog-filter" disabled',html)
         self.assertIn('id="catalog-order" disabled',html)
+        self.assertIn('id="catalog-metric" aria-describedby="catalog-metric-help" disabled',html)
         self.assertIn('id="catalog-author" aria-describedby="catalog-author-help" disabled',html)
         self.assertIn('id="catalog-pair-prompt" class="catalog-pair-prompt" hidden',html)
         self.assertIn('id="catalog-pair-link" href="#pairs"',html)
@@ -48,6 +49,8 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn("doc.books.some(book=>{",js)
         self.assertIn('catalogSearch.addEventListener("input",updateCatalog)',js)
         self.assertIn('catalogAuthor.addEventListener("change",updateCatalog)',js)
+        self.assertIn('catalogMetric.addEventListener("change",updateCatalog)',js)
+        self.assertIn('url.searchParams.delete("available_metric")',js)
         self.assertIn('url.searchParams.delete("author")',js)
         self.assertIn('allowedCatalogAuthor(requestedAuthor)',js)
         self.assertIn('catalogOrder.addEventListener("change",()=>{sortCatalog();updateCatalog();})',js)
@@ -72,8 +75,8 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn('window.addEventListener("popstate",()=>{\n        restoreCatalogFromUrl();',js)
         # Canonical URL building is shared by the visible link and the
         # verified clipboard action; preserve all five allow-listed facets.
-        self.assertIn('share.href=catalogShareHref(mode,origin,raw,order,author);',js)
-        self.assertIn('function catalogShareHref(mode,origin,raw,order,author="all")',js)
+        self.assertIn('share.href=catalogShareHref(mode,origin,raw,order,author,availableMetric);',js)
+        self.assertIn('function catalogShareHref(mode,origin,raw,order,author="all",availableMetric="all")',js)
         self.assertIn('return "?catalog="+encodeURIComponent(mode)+',js)
         self.assertIn('copyCatalogShareUrl',js)
         self.assertIn('verifiedCatalogShareUrl',js)

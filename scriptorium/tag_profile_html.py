@@ -106,10 +106,55 @@ def _validated(report: dict) -> list[dict]:
     return tags
 
 
+
+def _chart_overview(tags: list[dict]) -> str:
+    """Compare like-unit tag means; absent observations are visibly unplotted."""
+    parts = ['<section class="overview" aria-labelledby="overview-title">',
+             '<h2 id="overview-title">Compare curated tags</h2>',
+             '<p>Five separate metric scales. Bars show only observed, unweighted tag means; '
+             'labels, sample counts and the tables below provide the accessible numeric alternative. '
+             'These are curator-declared descriptive extensions, not verified public profiles.</p>']
+    for index, (metric, unit) in enumerate(FEATURES.items(), 1):
+        rows = [(tag, next(row for row in tag["metrics"] if row["id"] == metric)) for tag in tags]
+        observed = [row["mean_per_work"] for _, row in rows if row["mean_per_work"] is not None]
+        parts.append(f'<section class="metric-chart" aria-labelledby="chart-{index}">'
+                     f'<h3 id="chart-{index}">{_esc(_LABELS[metric])}</h3>')
+        if not observed:
+            parts.append('<p class="no-data">NOT_RUN for every tag: no measured editions for this metric.</p></section>')
+            continue
+        if unit == "%":
+            ceiling = 100.0
+            scale = "Fixed domain 0–100 %"
+        elif max(observed) > 0:
+            ceiling = max(observed)
+            scale = f"Domain 0–{_esc(ceiling)} {_esc(unit)}; upper bound is the highest observed tag mean"
+        else:
+            ceiling = 1.0
+            scale = f"Display-only domain 0–1 {_esc(unit)}; all observed means are zero"
+        parts.append(f'<p class="chart-scale">{scale}. Different metrics use different units/scales.</p>'
+                     '<ul class="bar-list">')
+        for tag, row in rows:
+            label = _esc(tag["label"])
+            value = row["mean_per_work"]
+            if value is None:
+                parts.append(f'<li><div class="bar-line"><strong>{label}</strong>'
+                             f'<span>NOT_RUN · {row["observed_count"]} observed / '
+                             f'{row["missing_count"]} missing</span></div></li>')
+            else:
+                width = min(100.0, 100.0 * value / ceiling)
+                parts.append(f'<li><div class="bar-line"><strong>{label}</strong>'
+                             f'<span>{_esc(value)} {_esc(unit)} · {row["observed_count"]} observed / '
+                             f'{row["missing_count"]} missing</span></div>'
+                             f'<div class="bar-track" aria-hidden="true">'
+                             f'<span class="bar-fill" style="width:{width:.2f}%"></span></div></li>')
+        parts.append('</ul></section>')
+    return "\n".join(parts + ['</section>'])
+
+
 def render_tag_profiles_html(report: dict) -> str:
     """Make a self-contained print-friendly research report with no manuscript prose."""
     tags = _validated(report)
-    content = []
+    content = [_chart_overview(tags)]
     for tag in tags:
         count = tag["confirmed_work_count"]
         content.append('<section class="tag" aria-label="Tag profile">')
@@ -160,6 +205,13 @@ def render_tag_profiles_html(report: dict) -> str:
 *{box-sizing:border-box}body{margin:0}main{max-width:66rem;margin:auto;padding:clamp(1rem,4vw,3rem)}
 h1,h2{line-height:1.15}h1{font-size:clamp(1.85rem,5vw,3rem)}h2{font-size:1.45rem}small{font-size:.75em;font-weight:normal}
 .intro,.size{line-height:1.65}.caution{padding:.7rem 1rem;border-left:4px solid #9d662a;background:#f4e8d2}
+.overview{margin:2rem 0;padding:1.25rem;background:#eaf2ec;border:1px solid #aebcb6;border-radius:.6rem}
+.metric-chart{margin:1.5rem 0;padding:1rem;background:white;border:1px solid #bdccc4;border-radius:.4rem}
+.metric-chart h3{margin:.2rem 0}.chart-scale{font-size:.91rem;line-height:1.5}
+.bar-list{list-style:none;margin:0;padding:0}.bar-list li{margin:.9rem 0}
+.bar-line{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;flex-wrap:wrap;overflow-wrap:anywhere}
+.bar-track{height:.65rem;margin-top:.3rem;border-radius:.25rem;background:#e2ede8;overflow:hidden}
+.bar-fill{display:block;height:100%;background:#156f61}
 .tag{margin:2rem 0;padding:1.25rem;background:white;border:1px solid #aebcb6;border-radius:.6rem}
 .scroll{max-width:100%;overflow-x:auto} .scroll:focus-visible{outline:3px solid #156f61;outline-offset:2px}
 table{border-collapse:collapse;width:100%;min-width:42rem;font-size:.96rem}caption{text-align:left;padding:.8rem 0}
@@ -167,8 +219,8 @@ th,td{text-align:left;padding:.6rem .55rem;border-bottom:1px solid #a5b5b0;verti
 thead{background:#e2ede8}tbody tr:nth-child(even){background:#f0f5f2}
 .evidence{padding-left:1.2rem;line-height:1.6}.evidence li{margin:.8rem 0;overflow-wrap:anywhere}
 code{font-size:.87em}footer{margin-top:2rem;border-top:1px solid #aebcb6;padding-top:1rem}
-@media(max-width:40rem){.tag{padding:.8rem}table{font-size:.86rem}}
-@media print{*{background:white!important;color:black!important}main{padding:0}.tag{break-inside:avoid;border:1px solid #777}.scroll{overflow:visible}table{min-width:0;font-size:9pt}.caution{border:1px solid #777}}
+@media(max-width:40rem){.overview,.tag{padding:.8rem}.metric-chart{padding:.75rem}table{font-size:.86rem}}
+@media print{*{background:white!important;color:black!important}main{padding:0}.overview,.metric-chart,.tag{break-inside:avoid;border:1px solid #777}.bar-fill{background:#333!important}.bar-track{border:1px solid #777}.scroll{overflow:visible}table{min-width:0;font-size:9pt}.caution{border:1px solid #777}}
 </style></head><body><main>
 <h1>Private curated tag profiles</h1>
 <p class="intro"><strong>Descriptive extension only.</strong> This is an offline, source-free report for curator review, not a public Reader release, a verified rights clearance, an author fingerprint or FantLab parity. Edition and tag evidence is curator-declared. M2: 0/5.</p>

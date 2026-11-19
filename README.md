@@ -10,6 +10,8 @@
 
 **Reader metric availability:** select **«Есть измерение показателя»** to show only measured editions with a real numeric observation for one of the seven comparable Reader metrics. Zero is included; `NOT_RUN`, null and pending books are not. The facet combines with author, language, search and sorting, persists in safe `available_metric` links, and contextual two-book comparisons open on the chosen metric. This is source-backed navigation, **not** FantLab parity or a literary-quality ranking.
 
+**Reader metric values:** after choosing an available comparison metric, the verified Reader shows the actual numeric observation and unit on each visible measured card, plus the min–max range for the **currently displayed** measured editions. Clearing the facet restores the original static coverage copy. The range is diagnostic navigation, not a literary-quality ranking, uncertainty estimate or FantLab parity claim. `NOT_RUN` cannot become zero.
+
 **Reader catalogue CSV:** filter, search and sort the public catalogue, then choose **«Скачать метрики показанных книг (CSV)»**. The download contains only measured editions in the current visible order, with source hashes and evidence labels. Unmeasured research leads yield no CSV rows; the original 298-row offline CSV remains available unchanged.
 
 **Vocabulary measurements in Reader/CSV:** unique, dictionary and out-of-dictionary word-form totals use **words**; UASZ-3,000/10,000/100,000 uses **unique dictionary forms per window**. They are different units, not interchangeable counts or rates. Missing dictionary-dependent observations stay unavailable, never zero. The unit names follow the installed 29-metric catalogue; neither label implies FantLab parity.

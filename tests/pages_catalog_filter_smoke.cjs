@@ -127,7 +127,11 @@ assert.deepEqual(domOrder.filter(card=>!card.hidden).map(card=>card.dataset.cata
 assert.match(sortStatus.textContent,/по убыванию точного измерения/);
 assert.equal(share.href,"?catalog=all&available_metric="+encodeURIComponent(availabilityId)+"&catalog_order=metric_desc#books");
 order.value="metric_asc";sortCatalog();run();
-assert.deepEqual(domOrder.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),rankedValues.toReversed());
+const ascendingValues=data.books.map((book,i)=>({book,i,
+  value:book.text_status==="measured" ? book.metrics.find(m=>m.id===availabilityId)?.actual??null : null
+})).filter(row=>row.value!==null).sort((a,b)=>a.value-b.value||a.i-b.i)
+  .map(row=>row.book.key);
+assert.deepEqual(domOrder.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),ascendingValues);
 location.search="?catalog=all&available_metric="+encodeURIComponent(availabilityId)+"&catalog_order=metric_desc";
 restore();assert.equal(order.value,"metric_desc");
 assert.deepEqual(domOrder.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),rankedValues);

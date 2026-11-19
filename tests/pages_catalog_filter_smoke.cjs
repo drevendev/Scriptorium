@@ -22,6 +22,9 @@ const catalogGrid={get children(){return domOrder;},appendChild(card){
 }};
 const filter={value:"all"},origin={value:"all"},author={value:"all"},metric={value:"all"},order={value:"catalog",options:[{value:"metric_desc",disabled:true},{value:"metric_asc",disabled:true}]},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
 const empty={hidden:true},sortStatus={textContent:""},range={hidden:true,textContent:""},jump={hidden:true,disabled:true};
+const chartAction={hidden:true},chartLink={href:"",textContent:"",removeAttribute(name){
+  assert.equal(name,"href");this.href="";
+}};
 const pairPrompt={hidden:true},pairLink={href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
 }};
@@ -47,6 +50,7 @@ const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin"
   (book,id)=>book.metrics.find(m=>m.id===id),
   value=>typeof value==="number"&&Number.isFinite(value),
   id=>id==="share-catalog"?share:id==="catalog-empty"?empty:id==="catalog-metric-range"?range:
+    id==="catalog-chart-action"?chartAction:id==="catalog-chart-link"?chartLink:
     id==="catalog-sort-status"?sortStatus:id==="catalog-pair-prompt"?pairPrompt:
     id==="catalog-pair-link"?pairLink:id==="copy-catalog-feedback"?feedback:status,
   browser,copyButton,jump,pairMetric,metrics);
@@ -90,6 +94,10 @@ const availableKeys=data.books.filter(book=>book.text_status==="measured" &&
 assert.deepEqual(cards.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),availableKeys);
 assert.equal(cards.filter(card=>!card.hidden && card.dataset.status==="pending").length,0);
 assert.equal(range.hidden,false,"selected metric shows a range");
+assert.equal(chartAction.hidden,false,"only a selected measured metric exposes the chart action");
+assert.equal(chartLink.href,"?catalog=all&available_metric="+encodeURIComponent(availabilityId)+
+  "&metric="+encodeURIComponent(availabilityId)+"#charts",
+  "the chart route reuses the selected evidence-backed metric");
 assert.match(range.textContent,/Диапазон.*измеренных редакций.*не паритет FantLab/);
 assert.match(range.textContent,/Медиана .*unit/,"visible measured subset reports median with unit");
 const noteAnna=cards.find(card=>card.dataset.catalogKey==="anna").metricNote;
@@ -103,6 +111,9 @@ restore();assert.equal(metric.value,"all");
 assert.equal(cards.filter(card=>!card.hidden).length,13);
 metric.value=availabilityId;author.value="Лев Толстой";run();
 assert.equal(pairPrompt.hidden,false);
+assert.equal(chartLink.href,"?catalog=all&author="+encodeURIComponent("Лев Толстой")+
+  "&available_metric="+encodeURIComponent(availabilityId)+"&metric="+encodeURIComponent(availabilityId)+"#charts",
+  "the chart route keeps the catalogue facet for return navigation");
 assert.equal(pairLink.href,"?left=anna&right=resurrection&pair_metric="+encodeURIComponent(availabilityId)+"#pairs");
 const missingData=structuredClone(data);
 const missingRow=missingData.books.find(book=>book.key==="anna").metrics.find(row=>row.id===availabilityId);
@@ -152,6 +163,8 @@ metric.value="all";sortCatalog();location.search="";run();
 assert.equal(order.value,"catalog","clearing the metric removes the stale metric ordering");
 assert.equal(order.options[0].disabled,true);
 assert.equal(range.hidden,true,"cleared metric hides range");
+assert.equal(chartAction.hidden,true,"no selected metric means no chart action");
+assert.equal(chartLink.href,"","stale chart href must be cleared");
 assert.equal(noteAnna.textContent,"Статические сведения об измерениях","clearing restores static copy");
 // Authorship facet uses exact checked names; names are NOT inferred from tokens.
 for(const [name,keys,measured,pending] of [

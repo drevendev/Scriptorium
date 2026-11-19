@@ -34,7 +34,7 @@ def report():
              "sample_warning": "NO_CONFIRMED_WORKS", "works": [], "metrics": metric_rows(0)}]
     return {"schema_version": VERSION, "taxonomy_version": "curation-v1",
             "source_snapshot_sha256": "f" * 64, "source_metric_profiles": {"metrics": "v1"},
-            "aggregation": "unweighted", "scientific_boundary": {
+            "aggregation": "unweighted per independently observed edition; population dispersion across works only", "scientific_boundary": {
                 "class": "private_curator_declared_descriptive_extension",
                 "public_release_ready": False, "rights_independently_verified": False,
                 "fantlab_parity": False, "m2_source_matched": 0, "no_source_text": True},
@@ -97,6 +97,47 @@ class TagProfileHtmlTests(unittest.TestCase):
         r["tags"][0]["works"][0]["source_sha256"] = "unknown"
         with self.assertRaisesRegex(ValueError, "hash"):
             render_tag_profiles_html(r)
+
+    def test_tampered_method_and_profile_identity_fail_closed(self):
+        for field, bad in (
+            ("aggregation", "weighted"),
+            ("aggregation", None),
+            ("source_metric_profiles", ["metrics-v1"]),
+            ("source_metric_profiles", {"metrics": True}),
+            ("source_metric_profiles", None),
+        ):
+            with self.subTest(field=field, bad=bad):
+                candidate = report()
+                candidate[field] = bad
+                with self.assertRaisesRegex(ValueError, "aggregation|profiles"):
+                    render_tag_profiles_html(candidate)
+        candidate = report()
+        candidate["source_text"] = "PRIVATE MANUSCRIPT"
+        with self.assertRaisesRegex(ValueError, "schema"):
+            render_tag_profiles_html(candidate)
+        # A taxonomy without confirmed works legitimately has no profiles.
+        candidate = report()
+        candidate["tags"] = [candidate["tags"][1]]
+        candidate["source_metric_profiles"] = None
+        self.assertIn("No confirmed editions", render_tag_profiles_html(candidate))
+
+    def test_tampered_work_provenance_and_metric_shapes_fail_closed(self):
+        for mutation, reason in (
+            (lambda r: r["tags"][0]["works"][1].update(key="a"), "duplicate"),
+            (lambda r: r["tags"][0]["works"][1].update(candidate_id="candidate-a"), "duplicate"),
+            (lambda r: r["tags"][0]["works"][1].update(source_sha256="a" * 64), "duplicate"),
+            (lambda r: r["tags"][0]["works"][0].update(rights_basis="web_accessible"), "rights"),
+            (lambda r: r["tags"][0]["works"][0].update(rights_evidence_url="http://example.org"), "HTTPS"),
+            (lambda r: r["tags"][0]["works"][0].update(tag_authority="inferred"), "authority"),
+            (lambda r: r["tags"][0]["works"][0].update(source_text="SECRET"), "provenance"),
+            (lambda r: r["tags"][0]["metrics"][0].update(raw_word="SECRET"), "metric"),
+            (lambda r: r["tags"][0].update(tag_id=""), "tag"),
+        ):
+            with self.subTest(reason=reason):
+                candidate = report()
+                mutation(candidate)
+                with self.assertRaisesRegex(ValueError, reason):
+                    render_tag_profiles_html(candidate)
 
     def test_metric_specific_bars_show_real_means_zero_and_missing(self):
         r = report()

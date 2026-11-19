@@ -90,7 +90,10 @@ class TagProfileCsvTests(unittest.TestCase):
         self.assertEqual(data["edition/historical/1", "source_sha256"]["value"], "a" * 64)
         self.assertEqual(data["edition/historical/2", "tag_evidence_url"]["value"],
                          "https://example.org/tags/b")
-        self.assertNotIn("source_text", render_tag_profiles_csv(report))
+        # The explicit no_source_text=true publication boundary must remain.
+        # Assert absence of actual prose, not the required boundary field name.
+        self.assertEqual(data["scientific_boundary", "no_source_text"]["value"], "true")
+        self.assertNotIn("PRIVATE MANUSCRIPT", render_tag_profiles_csv(report))
 
     def test_order_independent_and_spreadsheet_formula_safe(self):
         report = self.report()

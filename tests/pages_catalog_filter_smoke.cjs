@@ -10,6 +10,8 @@ const cards0=[...html.matchAll(/<article class="book(?: book-research)?" data-st
 assert.equal(cards0.length,13);
 assert.deepEqual(cards0.map(m=>m[2]),data.books.map(b=>b.key));
 const cards=cards0.map(m=>({dataset:{status:m[1],catalogKey:m[2]},hidden:false,
+  metricNote:m[1]==="measured"?{dataset:{},textContent:"Статические сведения об измерениях"}:null,
+  querySelector(selector){assert.equal(selector,".availability");return this.metricNote;},
   focused:false,focus(){this.focused=true;}}));
 const domOrder=[...cards];
 const catalogGrid={get children(){return domOrder;},appendChild(card){
@@ -19,7 +21,7 @@ const catalogGrid={get children(){return domOrder;},appendChild(card){
   domOrder.push(card);
 }};
 const filter={value:"all"},origin={value:"all"},author={value:"all"},metric={value:"all"},order={value:"catalog"},search={value:"",focused:false,focus(){this.focused=true;}},status={textContent:""};
-const empty={hidden:true},sortStatus={textContent:""},jump={hidden:true,disabled:true};
+const empty={hidden:true},sortStatus={textContent:""},range={hidden:true,textContent:""},jump={hidden:true,disabled:true};
 const pairPrompt={hidden:true},pairLink={href:"",textContent:"",removeAttribute(name){
   assert.equal(name,"href");this.href="";
 }};
@@ -44,7 +46,7 @@ const make=d=>new Function("data","catalogCards","catalogFilter","catalogOrigin"
   d,cards,filter,origin,author,metric,search,order,catalogGrid,
   (book,id)=>book.metrics.find(m=>m.id===id),
   value=>typeof value==="number"&&Number.isFinite(value),
-  id=>id==="share-catalog"?share:id==="catalog-empty"?empty:
+  id=>id==="share-catalog"?share:id==="catalog-empty"?empty:id==="catalog-metric-range"?range:
     id==="catalog-sort-status"?sortStatus:id==="catalog-pair-prompt"?pairPrompt:
     id==="catalog-pair-link"?pairLink:id==="copy-catalog-feedback"?feedback:status,
   browser,copyButton,jump,pairMetric,metrics);
@@ -81,6 +83,11 @@ const availableKeys=data.books.filter(book=>book.text_status==="measured" &&
   typeof row.actual==="number" && Number.isFinite(row.actual))).map(book=>book.key);
 assert.deepEqual(cards.filter(card=>!card.hidden).map(card=>card.dataset.catalogKey),availableKeys);
 assert.equal(cards.filter(card=>!card.hidden && card.dataset.status==="pending").length,0);
+assert.equal(range.hidden,false,"selected metric shows a range");
+assert.match(range.textContent,/Диапазон.*измеренных редакций.*не паритет FantLab/);
+const noteAnna=cards.find(card=>card.dataset.catalogKey==="anna").metricNote;
+const measuredAnna=data.books.find(book=>book.key==="anna").metrics.find(row=>row.id===availabilityId);
+assert.match(noteAnna.textContent,/name: ≈?[0-9]+(?:,[0-9]{1,2})? unit/,"rounded measured value with explicit approximation");
 assert.equal(share.href,"?catalog=all&available_metric="+encodeURIComponent(availabilityId)+"#books");
 location.search="?catalog=all&available_metric="+encodeURIComponent(availabilityId);
 restore();assert.equal(metric.value,availabilityId);
@@ -95,11 +102,20 @@ const missingRow=missingData.books.find(book=>book.key==="anna").metrics.find(ro
 missingRow.actual=null;missingRow.status="not_run";
 author.value="all";make(missingData).updateCatalog();
 assert.equal(cards.find(card=>card.dataset.catalogKey==="anna").hidden,true,"NOT_RUN is not observed");
+assert.equal(noteAnna.textContent,"Статические сведения об измерениях","missing value removes stale annotation");
 const zeroData=structuredClone(data);
 zeroData.books.find(book=>book.key==="anna").metrics.find(row=>row.id===availabilityId).actual=0;
 make(zeroData).updateCatalog();
 assert.equal(cards.find(card=>card.dataset.catalogKey==="anna").hidden,false,"measured zero remains observed");
+assert.match(noteAnna.textContent,/name: 0 unit/,"zero is shown as measured");
+assert.match(range.textContent,/от 0 до /,"range includes an observed zero");
+const tinyData=structuredClone(data);
+tinyData.books.find(book=>book.key==="anna").metrics.find(row=>row.id===availabilityId).actual=0.0001;
+make(tinyData).updateCatalog();
+assert.match(noteAnna.textContent,/name: <0,01 unit/,"tiny nonzero is not printed as a measured zero");
 metric.value="all";location.search="";run();
+assert.equal(range.hidden,true,"cleared metric hides range");
+assert.equal(noteAnna.textContent,"Статические сведения об измерениях","clearing restores static copy");
 // Authorship facet uses exact checked names; names are NOT inferred from tokens.
 for(const [name,keys,measured,pending] of [
   ["Лев Толстой",["anna","resurrection"],2,0],

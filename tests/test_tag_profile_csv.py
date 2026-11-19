@@ -69,6 +69,7 @@ class TagProfileCsvTests(unittest.TestCase):
     def test_tidy_numeric_units_missing_zero_and_edition_identity(self):
         report = self.report()
         data = records(render_tag_profiles_csv(report))
+        self.assertEqual(data["report", "csv_schema"]["value"], "scriptorium-private-tag-csv-v1")
         self.assertEqual(data["report", "source_snapshot_sha256"]["value"], "f" * 64)
         self.assertEqual(data["scientific_boundary", "public_release_ready"]["value"], "false")
         self.assertEqual(data["scientific_boundary", "m2_source_matched"]["value"], "0")

@@ -63,7 +63,6 @@ class TagProfileHtmlTests(unittest.TestCase):
     def test_html_escaping_and_source_free(self):
         r = report()
         r["tags"][0]["label"] = '<img src=x onerror=alert(1)>'
-        r["taxonomy_version"] = 'curation<script>alert(1)</script>'
         r["tags"][0]["works"][0]["edition_id"] = 'edition</li><script>bad()</script>'
         html = render_tag_profiles_html(r)
         self.assertIn('&lt;img src=x onerror=alert(1)&gt;', html)
@@ -71,6 +70,10 @@ class TagProfileHtmlTests(unittest.TestCase):
         self.assertNotIn('<script>', html)
         self.assertNotIn('<img ', html)
         self.assertNotIn('PRIVATE MANUSCRIPT', html)
+        r = report()
+        r["taxonomy_version"] = 'curation<script>alert(1)</script>'
+        with self.assertRaisesRegex(ValueError, "taxonomy"):
+            render_tag_profiles_html(r)
 
     def test_rejects_false_scientific_gate_and_corrupt_numbers(self):
         r = report()

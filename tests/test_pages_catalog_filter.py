@@ -37,6 +37,8 @@ class CatalogueFilterTests(unittest.TestCase):
         self.assertIn('id="share-catalog" href="?catalog=all#books"',html)
         self.assertIn('id="catalog-filter-status" role="status" aria-live="polite"',html)
         self.assertIn('id="catalog-metric-range" class="catalog-metric-range" hidden',html)
+        self.assertIn('<option value="metric_desc" disabled>',html)
+        self.assertIn('<option value="metric_asc" disabled>',html)
         css=(ROOT/"assets/pages-reader.css").read_text(encoding="utf-8")
         self.assertIn(".book[hidden] { display:none !important; }",css)
         self.assertIn(".book .book-compare",css)

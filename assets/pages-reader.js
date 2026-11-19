@@ -935,17 +935,30 @@
     // Calculate over available values only; a real zero must not disappear.
     const values=known.map(row=>row.value).sort((a,b)=>a-b);
     const formatValue=n=>pretty(n,conf[2])+(conf[1]==="%"?"%":" "+conf[1]);
-    const middle=Math.floor(values.length/2);
-    const median=values.length%2 ? values[middle] :
-      values.length ? values[middle-1]/2+values[middle]/2 : null;
+    const medianOf=sorted=>{
+      const middle=Math.floor(sorted.length/2);
+      return sorted.length%2 ? sorted[middle] :
+        sorted.length ? sorted[middle-1]/2+sorted[middle]/2 : null;
+    };
+    const median=medianOf(values);
     el("chart-summary").textContent=values.length ?
       "По "+values.length+" измеренным редакциям: минимум "+formatValue(values[0])+
       ", медиана "+formatValue(median)+", максимум "+formatValue(values.at(-1))+
       ". Описательный диапазон этой выборки — не норма и не доказательство авторства." :
       "Для выбранного показателя нет измеренных значений: минимум, медиана и максимум не рассчитываются. «Нет данных» не равно нулю.";
-    if (selection!==null) el("chart-summary").textContent+=
-      " В текущем отборе выделено "+selection.size+" из "+rows.length+
-      " измеренных редакций; остальные остаются для контекста. Ссылка на диаграмму и CSV включают полный набор без выделения.";
+    if (selection!==null) {
+      const subset=rows.filter(row=>selection.has(row.key)&&row.value!==null)
+        .map(row=>row.value).sort((a,b)=>a-b);
+      el("chart-summary").textContent+=
+        " В текущем отборе выделено "+selection.size+" из "+rows.length+
+        " измеренных редакций; остальные остаются для контекста. Ссылка на диаграмму и CSV включают полный набор без выделения.";
+      el("chart-summary").textContent+=subset.length ?
+        " Для выделенных редакций ("+subset.length+" из "+selection.size+
+        " со значением): минимум "+formatValue(subset[0])+", медиана "+
+        formatValue(medianOf(subset))+", максимум "+formatValue(subset.at(-1))+
+        ". Это описательная статистика отбора, а не рейтинг и не изменение полного графика." :
+        " Для выделенных редакций нет измеренных значений: минимум, медиана и максимум не рассчитываются.";
+    }
     const nodes=document.createDocumentFragment();
     const tableNodes=document.createDocumentFragment();
     for (const row of rows) {

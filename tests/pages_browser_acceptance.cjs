@@ -363,7 +363,10 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#chart-table-rows tr").count(),11);
   assert.equal(await page.locator("#chart-series .chart-selected").count(),2);
   assert.equal(await page.locator("#chart-table-rows tr.chart-selected").count(),2);
-  assert.match(await page.locator("#chart-summary").innerText(),/В текущем отборе выделено 2 из 11/);
+  const scopedSummary=await page.locator("#chart-summary").innerText();
+  assert.match(scopedSummary,/В текущем отборе выделено 2 из 11/);
+  assert.match(scopedSummary,/Для выделенных редакций \(2 из 2 со значением\): минимум/);
+  assert.match(scopedSummary,/медиана .* максимум/);
   assert.deepEqual(await page.locator("#chart-series .chart-selected").evaluateAll(rows=>
     rows.map(row=>row.querySelector("span").textContent)),
     ["Анна Каренина · в выборке","Воскресение · в выборке"]);
@@ -373,6 +376,7 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#chart-series .chart-selected").count(),0,
     tag+": reset clears highlight without removing books from chart");
   assert.equal(await page.locator("#chart-series .chart-row").count(),11);
+  assert.doesNotMatch(await page.locator("#chart-summary").innerText(),/Для выделенных редакций/);
   await page.locator("#catalog-metric").selectOption("all");
   assert.equal(await page.locator("#catalog-order").inputValue(),"catalog");
   assert.equal(await rankOption.isDisabled(),true);

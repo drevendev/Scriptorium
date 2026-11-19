@@ -81,15 +81,39 @@ assert.deepEqual(elements["chart-series"].children.filter(row=>row.className.inc
   .map(row=>row.children[0].textContent),["Анна Каренина · в выборке","Воскресение · в выборке"]);
 assert.equal(elements["chart-table-rows"].children.filter(row=>row.className.includes("chart-selected")).length,2);
 assert.match(elements["chart-summary"].textContent,/В текущем отборе выделено 2 из 11/);
+const selectedData=measured.filter(book=>["anna","resurrection"].includes(book.key))
+  .map(book=>book.metrics.find(m=>m.id===highlightedMetric).actual).sort((a,b)=>a-b);
+const selectedMedian=selectedData[0]/2+selectedData[1]/2;
+const selectedDisplay=n=>new Intl.NumberFormat("ru-RU",{maximumFractionDigits:metrics[highlightedMetric][2]}).format(n)+"%";
+assert.match(elements["chart-summary"].textContent,/Для выделенных редакций \(2 из 2 со значением\)/);
+assert.ok(elements["chart-summary"].textContent.includes("минимум "+selectedDisplay(selectedData[0])));
+assert.ok(elements["chart-summary"].textContent.includes("медиана "+selectedDisplay(selectedMedian)));
+assert.ok(elements["chart-summary"].textContent.includes("максимум "+selectedDisplay(selectedData[1])));
 assert.ok(chartCatalogSelection(highlightedMetric,highlightedUrl,highlightedMetric,catalogCards).has("anna"));
 assert.equal(chartCatalogSelection(highlightedMetric,highlightedUrl+"&metric="+
   encodeURIComponent(highlightedMetric),highlightedMetric,catalogCards),null,
   "duplicate metric URL cannot activate misleading highlighting");
+// True zero is observed; missing partner is excluded from the subset median.
+const oneSelected=structuredClone(catalog);
+oneSelected.books.find(book=>book.key==="anna").metrics.find(m=>m.id===highlightedMetric).actual=0;
+oneSelected.books.find(book=>book.key==="resurrection").metrics.find(m=>m.id===highlightedMetric).actual=null;
+render(highlightedMetric,oneSelected);
+assert.match(elements["chart-summary"].textContent,/Для выделенных редакций \(1 из 2 со значением\): минимум 0%/);
+assert.match(elements["chart-summary"].textContent,/медиана 0%, максимум 0%/);
+assert.equal(elements["chart-series"].children.length,11);
+const noneSelected=structuredClone(oneSelected);
+noneSelected.books.find(book=>book.key==="anna").metrics.find(m=>m.id===highlightedMetric).actual=null;
+render(highlightedMetric,noneSelected);
+assert.match(elements["chart-summary"].textContent,/Для выделенных редакций нет измеренных значений/);
+assert.equal(elements["chart-table-rows"].children.length,11);
+render(highlightedMetric);
 catalogMetric.value="all";
 render(highlightedMetric);
 assert.equal(elements["chart-series"].children.filter(row=>row.className.includes("chart-selected")).length,0,
   "resetting the facet clears the contextual highlight");
 assert.equal(chartCatalogSelection(highlightedMetric,highlightedUrl,"all",catalogCards),null);
+assert.doesNotMatch(elements["chart-summary"].textContent,/Для выделенных редакций/,
+  "reset removes selected statistics, preserving the global chart");
 browser.location.search="";
 render("fantlab.dialogue.mean_dialogue_sentence_length_chars");
 assert.equal(elements["chart-series"].children[5].children[2].textContent,"нет данных");

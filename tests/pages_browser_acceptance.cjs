@@ -366,7 +366,9 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   const globalSummary=await page.locator("#chart-summary").innerText();
   const scopedSummary=await page.locator("#chart-selection-summary").innerText();
   assert.doesNotMatch(globalSummary,/В текущем отборе/);
-  assert.match(globalSummary,/По 11 измеренным редакциям: минимум/);
+  const availableOnChart=await page.locator("#chart-series .chart-row:not(.chart-missing)").count();
+  assert.match(globalSummary,new RegExp("По "+availableOnChart+" измеренным редакциям: минимум"),
+    "global summary counts available values, not missing measurements");
   assert.equal(await page.locator("#chart-selection-panel").isVisible(),true);
   assert.match(scopedSummary,/В текущем отборе выделено 2 из 11/);
   assert.match(scopedSummary,/Для выделенных редакций \(2 из 2 со значением\): минимум/);

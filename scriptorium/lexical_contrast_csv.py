@@ -114,6 +114,21 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
     method = report.get("method")
     if type(left) is not dict or type(right) is not dict or type(method) is not dict:
         raise ValueError("incomplete lexical contrast report")
+    # Stored reports may be replayed without source text. Method descriptions
+    # are fixed evidence labels, not free-form manuscript or user input.
+    from .lexical_contrast import _METHOD
+    optional_method_fields = {
+        "type_overlap_profile", "type_overlap",
+        "token_overlap_profile", "token_overlap",
+    }
+    if (set(method) - set(_METHOD) or
+            any(key not in method or type(method[key]) is not type(value) or
+                method[key] != value for key, value in _METHOD.items()
+                if key not in optional_method_fields) or
+            any(type(method[key]) is not type(_METHOD[key]) or
+                method[key] != _METHOD[key] for key in optional_method_fields
+                if key in method)):
+        raise ValueError("invalid lexical method metadata")
     with_overlap = "type_overlap_profile" in method
     if ("type_overlap" in method) != with_overlap or (
         with_overlap and (

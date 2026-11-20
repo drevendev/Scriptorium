@@ -1,9 +1,9 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 583
+STATE_REVISION: 584
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-20
-LAST_RESULT: #599 confirmed merged at ee66ed024a4c92a7a0d0ff8f6e9b229b993adb27; private lexical HTML/Markdown report validation proposed as a scoped #562 follow-on.
+LAST_RESULT: #599 confirmed merged at ee66ed024a4c92a7a0d0ff8f6e9b229b993adb27; #600 addresses scoped #562 stored-report trust boundaries, including fixed method descriptions, subject to fresh CI and later acceptance.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
@@ -14,7 +14,7 @@ STATUS: PR_CANDIDATE; exact-head CI and later independent acceptance pending
 BRANCH: scrip-lexical-human-report-guard-20261120
 BASE: ee66ed024a4c92a7a0d0ff8f6e9b229b993adb27
 
-ACCEPTANCE: Re-rendered source-free lexical HTML/Markdown must reject forged text in numeric fields, nonfinite/overrange measurements, inconsistent type overlap, bad method profile IDs, incomplete witness fields and contradictory token warnings before emitting a readable report. Direct HTML entry also validates. Preserve valid old v1 reports, the original CSV byte output, empty/NOT_RUN cases, all compatibility metrics, rights, corpus and M2 0/5. Require hosted exact-head tests and later independent acceptance. Local/browser/live verification remains separate.
+ACCEPTANCE: Re-rendered source-free lexical HTML/Markdown must reject forged text in numeric fields, nonfinite/overrange measurements, inconsistent type overlap, forged method tags/descriptions, incomplete witness fields and contradictory token warnings before emitting a readable report. Direct HTML entry also validates. Preserve valid old v1 reports, the original CSV byte output, empty/NOT_RUN cases, all compatibility metrics, rights, corpus and M2 0/5. Require hosted exact-head tests and later independent acceptance. Local/browser/live verification remains separate.
 
 ## Next user-visible milestone and compact queue
 

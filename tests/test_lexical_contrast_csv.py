@@ -270,6 +270,43 @@ class LexicalContrastCsvTests(unittest.TestCase):
         self.assertIn("Eligible shared-pool types", render_lexical_contrast(legacy, "markdown"))
         self.assertEqual(baseline, render_lexical_contrast(legacy, "csv"))
 
+    def test_stored_method_metadata_cannot_inject_unreviewed_text(self):
+        from scriptorium.lexical_contrast_html import render_lexical_contrast_html
+
+        report = sample()
+        methods = (
+            ("forged denominator", {**report["method"],
+                                    "denominator": "PRIVATE_SOURCE_PASSAGE"}),
+            ("forged overlap description", {**report["method"],
+                                             "token_overlap": "PRIVATE_SOURCE_PASSAGE"}),
+            ("boolean threshold", {**report["method"], "min_pooled_occurrences": True}),
+            ("forged dependency", {**report["method"],
+                                   "dictionary_dependency": "PRIVATE_SOURCE_PASSAGE"}),
+            ("missing base field", {k: v for k, v in report["method"].items()
+                                    if k != "divergence"}),
+            ("unexpected excerpt", {**report["method"],
+                                     "manuscript_excerpt": "PRIVATE_SOURCE_PASSAGE"}),
+        )
+        for name, method in methods:
+            forged = {**report, "method": method}
+            for kind in ("csv", "markdown", "html"):
+                with self.subTest(name=name, kind=kind), self.assertRaises(ValueError):
+                    render_lexical_contrast(forged, kind)
+            with self.subTest(name=name, kind="direct html"), self.assertRaises(ValueError):
+                render_lexical_contrast_html(forged)
+
+        # Additive overlap method families remain optional for historical v1.
+        legacy = {**report, "method": {k: v for k, v in report["method"].items()
+                  if k not in ("type_overlap_profile", "type_overlap",
+                               "token_overlap_profile", "token_overlap")}}
+        legacy["aggregate"] = {k: v for k, v in report["aggregate"].items()
+                               if k not in ("shared_form_count", "left_only_form_count",
+                                            "right_only_form_count", "type_jaccard_percent",
+                                            "token_distribution_overlap_percent")}
+        for kind in ("csv", "markdown", "html"):
+            with self.subTest(kind=kind):
+                self.assertTrue(render_lexical_contrast(legacy, kind))
+
     def test_stored_status_and_disclaimer_must_match_measurement_evidence(self):
         from scriptorium.lexical_contrast_html import render_lexical_contrast_html
 

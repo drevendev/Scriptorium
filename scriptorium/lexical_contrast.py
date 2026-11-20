@@ -33,6 +33,21 @@ _ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_./:-]{0,159}\Z")
 _LANG = re.compile(r"[a-z]{2,3}\Z")
 
 
+_METHOD: dict[str, object] = {
+    "lexical_identity": "NFC + casefold; surface word tokens; no lemmatization or yo/e fold",
+    "denominator": "all word tokens in each normalized text",
+    "min_pooled_occurrences": MIN_POOLED_OCCURRENCES,
+    "smoothing": "Jeffreys +0.5 per pooled type for dominance only",
+    "dominance_cutoff": ">=2x normalized smoothed relative frequency",
+    "divergence": "empirical Jensen-Shannon; base-2 bits, no smoothing",
+    "dictionary_dependency": None,
+    "type_overlap_profile": TYPE_OVERLAP_PROFILE,
+    "type_overlap": "intersection / union of distinct casefolded surface forms; no rarity filter or smoothing",
+    "token_overlap_profile": TOKEN_OVERLAP_PROFILE,
+    "token_overlap": "sum of minima of unsmoothed per-text token shares; all surface forms, including rare",
+}
+
+
 def _id(value: str | None, name: str, *, required: bool = True) -> str | None:
     if value is None and not required:
         return None
@@ -193,19 +208,7 @@ def build_lexical_contrast(
         "compatibility_status": "extension",
         "left": left, "right": right,
         "status": status,
-        "method": {
-            "lexical_identity": "NFC + casefold; surface word tokens; no lemmatization or yo/e fold",
-            "denominator": "all word tokens in each normalized text",
-            "min_pooled_occurrences": MIN_POOLED_OCCURRENCES,
-            "smoothing": "Jeffreys +0.5 per pooled type for dominance only",
-            "dominance_cutoff": ">=2x normalized smoothed relative frequency",
-            "divergence": "empirical Jensen-Shannon; base-2 bits, no smoothing",
-            "dictionary_dependency": None,
-            "type_overlap_profile": TYPE_OVERLAP_PROFILE,
-            "type_overlap": "intersection / union of distinct casefolded surface forms; no rarity filter or smoothing",
-            "token_overlap_profile": TOKEN_OVERLAP_PROFILE,
-            "token_overlap": "sum of minima of unsmoothed per-text token shares; all surface forms, including rare",
-        },
+        "method": dict(_METHOD),
         "length_ratio_max_over_min": ratio,
         "length_imbalance_warning": ratio is not None and ratio >= 2,
         "word_token_ratio_max_over_min": token_ratio,

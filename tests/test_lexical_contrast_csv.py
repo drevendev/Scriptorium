@@ -366,6 +366,54 @@ class LexicalContrastCsvTests(unittest.TestCase):
             with self.subTest(forged=name, kind="direct html"), self.assertRaises(ValueError):
                 render_lexical_contrast_html(forged)
 
+    def test_stored_dominance_and_eligible_partitions_fail_closed(self):
+        from scriptorium.lexical_contrast_html import render_lexical_contrast_html
+
+        original = sample()
+        aggregate = original["aggregate"]
+        # Current v1 and pre-overlap legacy v1 both partition eligible types.
+        legacy = {**original, "method": {
+            key: value for key, value in original["method"].items()
+            if key not in ("type_overlap_profile", "type_overlap",
+                           "token_overlap_profile", "token_overlap")
+        }, "aggregate": {
+            key: value for key, value in aggregate.items()
+            if key not in ("shared_form_count", "left_only_form_count",
+                           "right_only_form_count", "type_jaccard_percent",
+                           "token_distribution_overlap_percent")
+        }}
+        for name, report in (("current", original), ("legacy", legacy)):
+            for kind in ("csv", "markdown", "html"):
+                with self.subTest(valid=name, format=kind):
+                    self.assertTrue(render_lexical_contrast(report, kind))
+            self.assertIn("Lexical contrast", render_lexical_contrast_html(report))
+
+        for name, changes in (
+            ("dominance exceeds eligible", {
+                "left_dominant_form_count": aggregate["eligible_form_count"] + 1
+            }),
+            ("dominance partition exceeds eligible", {
+                "balanced_form_count": aggregate["balanced_form_count"] + 1
+            }),
+            ("excluded rare count breaks pooled union", {
+                "excluded_rare_form_count": aggregate["excluded_rare_form_count"] + 1
+            }),
+        ):
+            forged = {**original, "aggregate": {**aggregate, **changes}}
+            for kind in ("csv", "markdown", "html"):
+                with self.subTest(forged=name, format=kind), self.assertRaises(ValueError):
+                    render_lexical_contrast(forged, kind)
+            with self.subTest(forged=name, format="direct_html"), self.assertRaises(ValueError):
+                render_lexical_contrast_html(forged)
+
+        # A pre-overlap report must still fail an impossible dominance split.
+        forged_legacy = {**legacy, "aggregate": {
+            **legacy["aggregate"], "left_dominant_form_count":
+                legacy["aggregate"]["eligible_form_count"] + 1
+        }}
+        with self.assertRaises(ValueError):
+            render_lexical_contrast(forged_legacy, "markdown")
+
     def test_cli_offline_csv_and_create_only_destination(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

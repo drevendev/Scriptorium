@@ -414,6 +414,86 @@ class LexicalContrastCsvTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             render_lexical_contrast(forged_legacy, "markdown")
 
+    def test_replayed_identical_text_and_zero_dominance_invariants(self):
+        from scriptorium.lexical_contrast_html import render_lexical_contrast_html
+
+        identical = sample("кот " * 6, "кот " * 6)
+        self.assertEqual(identical["status"], "IDENTICAL_NORMALIZED_TEXT")
+        aggregate = identical["aggregate"]
+        self.assertEqual(aggregate["jensen_shannon_divergence_bits"], 0)
+        self.assertEqual(aggregate["type_jaccard_percent"], 100)
+        self.assertEqual(aggregate["token_distribution_overlap_percent"], 100)
+
+        # Historical pre-overlap v1 retains its original measurement contract.
+        legacy = {**identical, "method": {
+            key: value for key, value in identical["method"].items()
+            if key not in ("type_overlap_profile", "type_overlap",
+                           "token_overlap_profile", "token_overlap")
+        }, "aggregate": {
+            key: value for key, value in aggregate.items()
+            if key not in ("shared_form_count", "left_only_form_count",
+                           "right_only_form_count", "type_jaccard_percent",
+                           "token_distribution_overlap_percent")
+        }}
+        for name, report in (("current", identical), ("legacy", legacy)):
+            for kind in ("csv", "markdown", "html"):
+                with self.subTest(valid=name, kind=kind):
+                    self.assertTrue(render_lexical_contrast(report, kind))
+            self.assertIn("Lexical contrast", render_lexical_contrast_html(report))
+
+        # All aggregates below have individually valid numeric types/ranges.
+        # Without cross-field invariants they would silently mislead readers.
+        altered = (
+            ("nonzero identical divergence", {**identical, "aggregate": {
+                **aggregate, "jensen_shannon_divergence_bits": 0.5
+            }}),
+            ("nonzero legacy identical divergence", {**legacy, "aggregate": {
+                **legacy["aggregate"], "jensen_shannon_divergence_bits": 0.5
+            }}),
+            ("nonfull identical token overlap", {**identical, "aggregate": {
+                **aggregate, "token_distribution_overlap_percent": 90
+            }}),
+            # Keep the forged Jaccard and union arithmetic internally consistent:
+            # matching digests, not only per-field bounds, make this impossible.
+            ("nonfull identical type overlap", {**identical, "aggregate": {
+                **aggregate, "shared_form_count": 0,
+                "left_only_form_count": 1, "right_only_form_count": 1,
+                "type_jaccard_percent": 0, "excluded_rare_form_count": 1
+            }}),
+            ("nonzero share for absent left class", {**identical, "aggregate": {
+                **aggregate, "left_dominant_token_share_percent": 25
+            }}),
+            ("nonzero share for absent right class", {**identical, "aggregate": {
+                **aggregate, "right_dominant_token_share_percent": 25
+            }}),
+        )
+
+        # Also exercise the zero-form rule independently of identical-text
+        # status, with a valid non-identical comparison and intact partitions.
+        different = sample("кот " * 6, "пёс " * 6)
+        different_aggregate = different["aggregate"]
+        self.assertEqual(different["status"], "COMPARABLE")
+        for side in ("left", "right"):
+            count_key = side + "_dominant_form_count"
+            share_key = side + "_dominant_token_share_percent"
+            self.assertGreater(different_aggregate[count_key], 0)
+            self.assertGreater(different_aggregate[share_key], 0)
+            broken = {**different_aggregate, count_key: 0,
+                      "balanced_form_count": (
+                          different_aggregate["balanced_form_count"] +
+                          different_aggregate[count_key]
+                      )}
+            altered += (("nonidentical absent " + side + " class", {
+                **different, "aggregate": broken
+            }),)
+
+        for label, report in altered:
+            for kind in ("csv", "markdown", "html"):
+                with self.subTest(forged=label, kind=kind), self.assertRaises(ValueError):
+                    render_lexical_contrast(report, kind)
+            with self.subTest(forged=label, kind="direct_html"), self.assertRaises(ValueError):
+                render_lexical_contrast_html(report)
+
     def test_cli_offline_csv_and_create_only_destination(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

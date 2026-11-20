@@ -56,6 +56,8 @@ class CanonicalTwoWorkRouteTests(unittest.TestCase):
         page = page_path.read_text()
         for link in ("href='../../'", "measurements.json", "measurements.csv"):
             self.assertIn(link, page)
+        self.assertIn("id='signed-differences'", page)
+        self.assertEqual(page.count("data-metric-id='"), 7)
         data = json.loads((page_path.parent / "measurements.json").read_text())
         self.assertEqual(len(data["measurements"]), 10)
         self.assertFalse(data["scientific_boundary"]["m2_parity_admissible"])

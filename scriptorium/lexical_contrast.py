@@ -107,8 +107,17 @@ def build_lexical_contrast(
                        left_language, left_translator)
     right, b = _witness(right_text, right_edition_id, right_original_work_id,
                         right_language, right_translator)
-    if left_edition_id == right_edition_id and left["normalized_sha256"] != right["normalized_sha256"]:
-        raise ValueError("one edition ID cannot identify two different normalized texts")
+    if left_edition_id == right_edition_id:
+        if left["normalized_sha256"] != right["normalized_sha256"]:
+            raise ValueError("one edition ID cannot identify two different normalized texts")
+        # A stable edition ID cannot refer to contradictory declared identities,
+        # even when two files happen to contain the same normalized bytes.
+        if any(left[key] != right[key] for key in (
+            "original_work_id", "language", "translator"
+        )):
+            raise ValueError("one edition ID cannot identify conflicting provenance")
+        if translation_pair:
+            raise ValueError("a translation pair requires two distinct edition IDs")
     na, nb = left["word_tokens"], right["word_tokens"]
     lengths = (left["characters_including_spaces"], right["characters_including_spaces"])
     ratio = round(max(lengths) / min(lengths), 6) if min(lengths) > 0 else None

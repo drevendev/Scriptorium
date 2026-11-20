@@ -79,4 +79,13 @@ assert.throws(()=>serialize({...doc,scientific_claim:"PARITY"},"fantlab.dialogue
 assert.throws(()=>serialize(doc,"constructor",false),/не разрешён/);
 const damaged=JSON.parse(JSON.stringify(doc));damaged.books[0].source_sha256="bad";
 assert.throws(()=>serialize(damaged,"fantlab.dialogue.share_percent",false),/редакция/);
-console.log("9 metrics × 2 orders, 11 actual editions, zero/missing, safety/provenance: PASS");
+for (const metric of ["fantlab.punctuation.colon.per_1000_words",
+                     "fantlab.punctuation.semicolon.per_1000_words"]) {
+  const rows=parse(serialize(doc,metric,false));
+  assert.equal(rows.filter(row=>row.status==="measured").length,10);
+  assert.equal(rows[5].book_key,"beketova");
+  assert.equal(rows[5].actual,"");
+  assert.equal(rows[5].status,"not_recorded");
+  assert.equal(rows[0].unit,"на 1000 слов");
+}
+console.log("11 metrics × 2 orders, 11 actual editions, zero/missing, safety/provenance: PASS");

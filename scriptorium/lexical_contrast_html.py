@@ -32,6 +32,10 @@ def render_lexical_contrast_html(report: dict[str, object]) -> str:
     schema. All user-provided edition and translator labels are HTML escaped.
     No scripts, remote assets, tracking or outgoing links are included.
     """
+    # Direct HTML callers must uphold the same source-free measurement contract
+    # as the CLI and CSV view: escaped strings are not valid numeric evidence.
+    from .lexical_contrast_csv import render_lexical_contrast_csv
+    render_lexical_contrast_csv(report)
     if report.get("schema_version") != _SCHEMA:
         raise ValueError("unsupported lexical contrast schema")
     left, right = report.get("left"), report.get("right")

@@ -225,6 +225,12 @@ def render_lexical_contrast(report: dict[str, object], kind: str = "json") -> st
     if kind == "csv":
         from .lexical_contrast_csv import render_lexical_contrast_csv
         return render_lexical_contrast_csv(report)
+    if kind in ("html", "markdown"):
+        # Private reports may be re-rendered from stored JSON instead of built
+        # locally. Validate all numeric aggregates, method tags and witnesses
+        # before a human-readable formatter can emit untrusted field values.
+        from .lexical_contrast_csv import render_lexical_contrast_csv
+        render_lexical_contrast_csv(report)
     if kind == "html":
         from .lexical_contrast_html import render_lexical_contrast_html
         return render_lexical_contrast_html(report)

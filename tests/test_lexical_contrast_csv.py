@@ -178,6 +178,42 @@ class LexicalContrastCsvTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     render_lexical_contrast(report, "csv")
 
+    def test_human_readable_reports_reject_forged_measurements(self):
+        report = sample()
+        cases = (
+            ("manuscript word in count", {**report, "aggregate": {
+                **report["aggregate"], "eligible_form_count": "кот"
+            }}),
+            ("nonfinite divergence", {**report, "aggregate": {
+                **report["aggregate"], "jensen_shannon_divergence_bits": float("nan")
+            }}),
+            ("impossible percentage", {**report, "aggregate": {
+                **report["aggregate"], "token_distribution_overlap_percent": 101
+            }}),
+            ("inconsistent type totals", {**report, "aggregate": {
+                **report["aggregate"],
+                "shared_form_count": report["aggregate"]["shared_form_count"] + 1
+            }}),
+            ("forged method", {**report, "method": {
+                **report["method"], "token_overlap_profile": "unreviewed"
+            }}),
+            ("missing witness", {**report, "left": {"edition_id": "edition-left"}}),
+            ("contradictory token warning", {**report,
+                "word_token_imbalance_warning": True}),
+        )
+        from scriptorium.lexical_contrast_html import render_lexical_contrast_html
+        for label, forged in cases:
+            for kind in ("html", "markdown"):
+                with self.subTest(label=label, kind=kind), self.assertRaises(ValueError):
+                    render_lexical_contrast(forged, kind)
+            with self.subTest(label=label, kind="direct html"), self.assertRaises(ValueError):
+                render_lexical_contrast_html(forged)
+        for kind in ("html", "markdown"):
+            with self.subTest(kind=kind):
+                self.assertIn("Token-distribution overlap",
+                              render_lexical_contrast(report, kind))
+                self.assertIn("NOT_RUN", render_lexical_contrast(sample("", "кот"), kind))
+
     def test_cli_offline_csv_and_create_only_destination(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

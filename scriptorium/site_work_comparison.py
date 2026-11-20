@@ -135,6 +135,7 @@ _RU_COPY = (
      "<th scope='col'>Верн · перевод Бекетовой</th>"),
     ("<th scope='col'>Verne − Grin</th>",
      "<th scope='col'>Верн − Грин</th>"),
+    ("aria-label='Reader navigation'", "aria-label='Навигация по результатам'"),
     ("← All published analyses", "← Все опубликованные результаты"),
     ("Download verified values (JSON)", "Скачать измерения (JSON)"),
     ("Download metric table (CSV)", "Скачать таблицу метрик (CSV)"),

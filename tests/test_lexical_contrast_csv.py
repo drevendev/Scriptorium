@@ -270,6 +270,65 @@ class LexicalContrastCsvTests(unittest.TestCase):
         self.assertIn("Eligible shared-pool types", render_lexical_contrast(legacy, "markdown"))
         self.assertEqual(baseline, render_lexical_contrast(legacy, "csv"))
 
+    def test_stored_status_and_disclaimer_must_match_measurement_evidence(self):
+        from scriptorium.lexical_contrast_html import render_lexical_contrast_html
+
+        measured = sample()
+        empty = sample("", "кот")
+        cross_language = sample(right_language="en")
+        bad_lineage = sample(left_original_work_id="first", right_original_work_id="second",
+                             translation_pair=True)
+        identical = sample("кот " * 6, "кот " * 6)
+        self.assertEqual(empty["status"], "NOT_RUN_EMPTY")
+        self.assertEqual(cross_language["status"], "INCOMPARABLE_LANGUAGE")
+        self.assertEqual(bad_lineage["status"], "INCOMPARABLE_TRANSLATION_LINEAGE")
+        self.assertEqual(identical["status"], "IDENTICAL_NORMALIZED_TEXT")
+        legacy = {key: value for key, value in measured.items()
+                  if key not in ("word_token_ratio_max_over_min",
+                                 "word_token_imbalance_warning")}
+        legacy["method"] = {key: value for key, value in measured["method"].items()
+                            if key not in ("type_overlap_profile", "type_overlap",
+                                           "token_overlap_profile", "token_overlap")}
+        legacy["aggregate"] = {key: value for key, value in measured["aggregate"].items()
+                               if key not in ("shared_form_count", "left_only_form_count",
+                                              "right_only_form_count", "type_jaccard_percent",
+                                              "token_distribution_overlap_percent")}
+        baseline_csv, _ = rows(measured)
+        for name, report in (("measured", measured), ("empty", empty),
+                             ("language", cross_language), ("lineage", bad_lineage),
+                             ("identical", identical), ("legacy", legacy)):
+            for kind in ("csv", "markdown", "html"):
+                with self.subTest(valid=name, kind=kind):
+                    self.assertTrue(render_lexical_contrast(report, kind))
+            self.assertIn("Lexical contrast", render_lexical_contrast_html(report))
+        self.assertEqual(rows(measured)[0], baseline_csv)
+
+        for name, forged in (
+            ("status manuscript", {**measured, "status": "PRIVATE_SOURCE_PASSAGE"}),
+            ("status non-string", {**measured, "status": True}),
+            ("disclaimer manuscript", {**measured,
+                "scientific_boundary": "PRIVATE_SOURCE_PASSAGE_SHOULD_NOT_APPEAR"}),
+            ("public verification claim", {**measured, "status": "PUBLICLY_VERIFIED"}),
+            ("fake no-run", {**measured, "status": "NOT_RUN_EMPTY"}),
+            ("fake identical", {**measured, "status": "IDENTICAL_NORMALIZED_TEXT"}),
+            ("fake measured empty", {**empty, "status": "COMPARABLE"}),
+            ("fake unavailable measured", {**measured, "aggregate": None}),
+            ("fake available language", {**cross_language, "status": "COMPARABLE",
+                                        "aggregate": measured["aggregate"]}),
+            ("fake lineage with matching origin", {**sample(
+                left_original_work_id="same", right_original_work_id="same"),
+                "status": "INCOMPARABLE_TRANSLATION_LINEAGE", "aggregate": None}),
+            ("fake comparison despite lineage", {**bad_lineage,
+                "status": "COMPARABLE"}),
+            ("conflicting same edition", {**measured, "right": {
+                **measured["right"], "edition_id": measured["left"]["edition_id"]}}),
+        ):
+            for kind in ("csv", "markdown", "html"):
+                with self.subTest(forged=name, kind=kind), self.assertRaises(ValueError):
+                    render_lexical_contrast(forged, kind)
+            with self.subTest(forged=name, kind="direct html"), self.assertRaises(ValueError):
+                render_lexical_contrast_html(forged)
+
     def test_cli_offline_csv_and_create_only_destination(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

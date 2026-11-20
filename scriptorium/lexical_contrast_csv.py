@@ -268,6 +268,14 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
                 raise ValueError("invalid lexical aggregate measurement")
         add("aggregate", key, value, unit)
 
+    if aggregate is not None:
+        # Every eligible pooled form has exactly one dominance classification.
+        # Check the invariant even for historical v1 reports without overlap.
+        if (aggregate["left_dominant_form_count"] +
+                aggregate["right_dominant_form_count"] +
+                aggregate["balanced_form_count"] != aggregate["eligible_form_count"]):
+            raise ValueError("inconsistent lexical dominance partition")
+
     if aggregate is not None and with_overlap:
         shared = aggregate["shared_form_count"]
         left_only = aggregate["left_only_form_count"]
@@ -276,7 +284,9 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
         if (shared + left_only != left["distinct_forms"] or
                 shared + right_only != right["distinct_forms"] or
                 union == 0 or
-                aggregate["type_jaccard_percent"] != round(100 * shared / union, 6)):
+                aggregate["type_jaccard_percent"] != round(100 * shared / union, 6) or
+                aggregate["eligible_form_count"] +
+                aggregate["excluded_rare_form_count"] != union):
             raise ValueError("inconsistent lexical type-overlap measurements")
 
     return output.getvalue()

@@ -66,6 +66,41 @@ class LexicalContrastCsvTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             rows({**report, "word_token_imbalance_warning": False})
 
+    def test_type_overlap_rows_and_pre_overlap_v1_artifacts(self):
+        report = sample("кот кот пёс", "пёс мышь мышь")
+        _, data = rows(report)
+        self.assertEqual(data["aggregate", "shared_form_count"]["value"], "1")
+        self.assertEqual(data["aggregate", "left_only_form_count"]["value"], "1")
+        self.assertEqual(data["aggregate", "right_only_form_count"]["value"], "1")
+        self.assertEqual(data["aggregate", "type_jaccard_percent"]["value"], "33.333333")
+        self.assertEqual(data["aggregate", "type_jaccard_percent"]["unit"], "% of pooled types")
+        self.assertEqual(data["method", "type_overlap_profile"]["value"],
+                         "scriptorium-lexical-type-overlap-v1")
+        _, absent = rows(sample("", "кот"))
+        self.assertEqual(absent["aggregate", "type_jaccard_percent"]["value"], "NOT_RUN")
+        old = {**report, "method": {
+            k: v for k, v in report["method"].items()
+            if k not in ("type_overlap_profile", "type_overlap")
+        }, "aggregate": {
+            k: v for k, v in report["aggregate"].items()
+            if k not in ("shared_form_count", "left_only_form_count",
+                         "right_only_form_count", "type_jaccard_percent")
+        }}
+        _, legacy = rows(old)
+        self.assertNotIn(("aggregate", "type_jaccard_percent"), legacy)
+        self.assertIn("Eligible pooled forms", render_lexical_contrast(old, "html"))
+        self.assertNotIn("Type Jaccard similarity", render_lexical_contrast(old, "markdown"))
+        for malformed in (
+            {**report, "aggregate": {k: v for k, v in report["aggregate"].items()
+                                    if k != "right_only_form_count"}},
+            {**report, "aggregate": {**report["aggregate"], "shared_form_count": 2}},
+            {**report, "aggregate": {**report["aggregate"], "type_jaccard_percent": 120}},
+            {**report, "method": {**report["method"], "type_overlap_profile": "forged"}},
+        ):
+            with self.subTest(malformed=malformed["aggregate"]):
+                with self.assertRaises(ValueError):
+                    rows(malformed)
+
     def test_unavailable_is_not_zero_and_true_zero_is_preserved(self):
         _, empty = rows(sample("", "кот"))
         self.assertEqual(empty["comparison", "status"]["value"], "NOT_RUN_EMPTY")

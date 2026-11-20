@@ -80,6 +80,29 @@ class LexicalContrastTests(unittest.TestCase):
         self.assertFalse(empty["word_token_imbalance_warning"])
         self.assertIn("**UNKNOWN**", render_lexical_contrast(empty, "markdown"))
 
+    def test_type_overlap_counts_include_rare_forms_without_leaking_words(self):
+        report = contrast("кот " * 8 + "пёс " * 2, "пёс " * 9 + "кот")
+        self.assertEqual(report["method"]["type_overlap_profile"],
+                         "scriptorium-lexical-type-overlap-v1")
+        self.assertEqual(report["aggregate"]["shared_form_count"], 2)
+        self.assertEqual(report["aggregate"]["left_only_form_count"], 0)
+        self.assertEqual(report["aggregate"]["right_only_form_count"], 0)
+        self.assertEqual(report["aggregate"]["type_jaccard_percent"], 100)
+        partial = contrast("кот кот пёс", "пёс мышь мышь")
+        self.assertEqual(partial["aggregate"]["shared_form_count"], 1)
+        self.assertEqual(partial["aggregate"]["left_only_form_count"], 1)
+        self.assertEqual(partial["aggregate"]["right_only_form_count"], 1)
+        self.assertEqual(partial["aggregate"]["type_jaccard_percent"], 33.333333)
+        self.assertEqual(partial["aggregate"]["eligible_form_count"], 0)
+        self.assertEqual(contrast("кот кот", "пёс пёс")["aggregate"]["type_jaccard_percent"], 0)
+        self.assertIsNone(contrast("", "кот")["aggregate"])
+        for fmt in ("json", "markdown", "html", "csv"):
+            rendered = render_lexical_contrast(partial, fmt)
+            self.assertNotIn("мышь", rendered)
+            self.assertNotIn("кот кот", rendered)
+        self.assertIn("Type Jaccard similarity", render_lexical_contrast(partial, "html"))
+        self.assertIn("Type Jaccard similarity", render_lexical_contrast(partial, "markdown"))
+
     def test_disjoint_vocabulary_has_one_bit_divergence(self):
         result = contrast("кот " * 5, "пёс " * 5)
         self.assertEqual(result["aggregate"]["jensen_shannon_divergence_bits"], 1)

@@ -17,7 +17,7 @@ assert.equal(ids.length,9);
 const measured=catalog.books.filter(b=>b.text_status==="measured");
 assert.equal(measured.length,11);
 const node=tag=>({tag,children:[],style:{},attrs:{},className:"",textContent:"",appendChild(n){this.children.push(n);return n;},setAttribute(k,v){this.attrs[k]=v;},replaceChildren(f){this.children=f.children;}});
-const elements={"chart-series":node("div"),"chart-unit":node("p"),"chart-summary":node("p"),"chart-table-rows":node("tbody"),"chart-table-caption":node("caption")};
+const elements={"chart-series":node("div"),"chart-unit":node("p"),"chart-summary":node("p"),"chart-selection-panel":node("section"),"chart-selection-summary":node("p"),"chart-table-rows":node("tbody"),"chart-table-caption":node("caption")};
 const chartSortButton=node("button");
 const document={createElement:node,createDocumentFragment:()=>node("fragment")};
 const insertText=(parent,tag,v,cls)=>{const n=node(tag);n.textContent=v;if(cls)n.className=cls;parent.appendChild(n);return n;};
@@ -58,6 +58,8 @@ for(const id of ids){
   assert.ok(summary.includes("медиана "+rendered(median)),id);
   assert.ok(summary.includes("максимум "+rendered(actualValues.at(-1))),id);
   assert.ok(summary.includes("не доказательство авторства"),id);
+  assert.equal(elements["chart-selection-panel"].hidden,true,id);
+  assert.equal(elements["chart-selection-summary"].textContent,"",id);
   assert.equal(buttons.filter(btn=>btn.attrs["aria-pressed"]==="true").length,1,id);
   const missing=rows.filter(row=>row.className.includes("chart-missing"));
   assert.equal(missing.length,11-expected,id);
@@ -80,15 +82,17 @@ assert.equal(elements["chart-table-rows"].children.length,11);
 assert.deepEqual(elements["chart-series"].children.filter(row=>row.className.includes("chart-selected"))
   .map(row=>row.children[0].textContent),["Анна Каренина · в выборке","Воскресение · в выборке"]);
 assert.equal(elements["chart-table-rows"].children.filter(row=>row.className.includes("chart-selected")).length,2);
-assert.match(elements["chart-summary"].textContent,/В текущем отборе выделено 2 из 11/);
+assert.equal(elements["chart-selection-panel"].hidden,false);
+assert.doesNotMatch(elements["chart-summary"].textContent,/В текущем отборе выделено/);
+assert.match(elements["chart-selection-summary"].textContent,/В текущем отборе выделено 2 из 11/);
 const selectedData=measured.filter(book=>["anna","resurrection"].includes(book.key))
   .map(book=>book.metrics.find(m=>m.id===highlightedMetric).actual).sort((a,b)=>a-b);
 const selectedMedian=selectedData[0]/2+selectedData[1]/2;
 const selectedDisplay=n=>new Intl.NumberFormat("ru-RU",{maximumFractionDigits:metrics[highlightedMetric][2]}).format(n)+"%";
-assert.match(elements["chart-summary"].textContent,/Для выделенных редакций \(2 из 2 со значением\)/);
-assert.ok(elements["chart-summary"].textContent.includes("минимум "+selectedDisplay(selectedData[0])));
-assert.ok(elements["chart-summary"].textContent.includes("медиана "+selectedDisplay(selectedMedian)));
-assert.ok(elements["chart-summary"].textContent.includes("максимум "+selectedDisplay(selectedData[1])));
+assert.match(elements["chart-selection-summary"].textContent,/Для выделенных редакций \(2 из 2 со значением\)/);
+assert.ok(elements["chart-selection-summary"].textContent.includes("минимум "+selectedDisplay(selectedData[0])));
+assert.ok(elements["chart-selection-summary"].textContent.includes("медиана "+selectedDisplay(selectedMedian)));
+assert.ok(elements["chart-selection-summary"].textContent.includes("максимум "+selectedDisplay(selectedData[1])));
 assert.ok(chartCatalogSelection(highlightedMetric,highlightedUrl,highlightedMetric,catalogCards).has("anna"));
 assert.equal(chartCatalogSelection(highlightedMetric,highlightedUrl+"&metric="+
   encodeURIComponent(highlightedMetric),highlightedMetric,catalogCards),null,
@@ -98,13 +102,13 @@ const oneSelected=structuredClone(catalog);
 oneSelected.books.find(book=>book.key==="anna").metrics.find(m=>m.id===highlightedMetric).actual=0;
 oneSelected.books.find(book=>book.key==="resurrection").metrics.find(m=>m.id===highlightedMetric).actual=null;
 render(highlightedMetric,oneSelected);
-assert.match(elements["chart-summary"].textContent,/Для выделенных редакций \(1 из 2 со значением\): минимум 0%/);
-assert.match(elements["chart-summary"].textContent,/медиана 0%, максимум 0%/);
+assert.match(elements["chart-selection-summary"].textContent,/Для выделенных редакций \(1 из 2 со значением\): минимум 0%/);
+assert.match(elements["chart-selection-summary"].textContent,/медиана 0%, максимум 0%/);
 assert.equal(elements["chart-series"].children.length,11);
 const noneSelected=structuredClone(oneSelected);
 noneSelected.books.find(book=>book.key==="anna").metrics.find(m=>m.id===highlightedMetric).actual=null;
 render(highlightedMetric,noneSelected);
-assert.match(elements["chart-summary"].textContent,/Для выделенных редакций нет измеренных значений/);
+assert.match(elements["chart-selection-summary"].textContent,/Для выделенных редакций нет измеренных значений/);
 assert.equal(elements["chart-table-rows"].children.length,11);
 render(highlightedMetric);
 catalogMetric.value="all";
@@ -112,7 +116,8 @@ render(highlightedMetric);
 assert.equal(elements["chart-series"].children.filter(row=>row.className.includes("chart-selected")).length,0,
   "resetting the facet clears the contextual highlight");
 assert.equal(chartCatalogSelection(highlightedMetric,highlightedUrl,"all",catalogCards),null);
-assert.doesNotMatch(elements["chart-summary"].textContent,/Для выделенных редакций/,
+assert.equal(elements["chart-selection-panel"].hidden,true);
+assert.equal(elements["chart-selection-summary"].textContent,"",
   "reset removes selected statistics, preserving the global chart");
 browser.location.search="";
 render("fantlab.dialogue.mean_dialogue_sentence_length_chars");

@@ -363,10 +363,24 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#chart-table-rows tr").count(),11);
   assert.equal(await page.locator("#chart-series .chart-selected").count(),2);
   assert.equal(await page.locator("#chart-table-rows tr.chart-selected").count(),2);
-  const scopedSummary=await page.locator("#chart-summary").innerText();
+  const globalSummary=await page.locator("#chart-summary").innerText();
+  const scopedSummary=await page.locator("#chart-selection-summary").innerText();
+  assert.doesNotMatch(globalSummary,/В текущем отборе/);
+  const availableOnChart=await page.locator("#chart-series .chart-row:not(.chart-missing)").count();
+  assert.match(globalSummary,new RegExp("По "+availableOnChart+" измеренным редакциям: минимум"),
+    "global summary counts available values, not missing measurements");
+  assert.equal(await page.locator("#chart-selection-panel").isVisible(),true);
   assert.match(scopedSummary,/В текущем отборе выделено 2 из 11/);
   assert.match(scopedSummary,/Для выделенных редакций \(2 из 2 со значением\): минимум/);
   assert.match(scopedSummary,/медиана .* максимум/);
+  const statPanels=await page.locator(".chart-stat-panel:visible").evaluateAll(cards=>cards.map(card=>({
+    left:card.getBoundingClientRect().left,right:card.getBoundingClientRect().right,
+    top:card.getBoundingClientRect().top,bottom:card.getBoundingClientRect().bottom
+  })));
+  assert.equal(statPanels.length,2,"global and selected statistics have distinct cards");
+  assert.ok(statPanels.every(rect=>rect.right<=page.viewportSize().width+1),"summary cards do not overflow viewport");
+  if(tag.includes("mobile"))
+    assert.ok(statPanels[1].top>=statPanels[0].bottom,"mobile statistics stack vertically");
   assert.deepEqual(await page.locator("#chart-series .chart-selected").evaluateAll(rows=>
     rows.map(row=>row.querySelector("span").textContent)),
     ["Анна Каренина · в выборке","Воскресение · в выборке"]);
@@ -376,7 +390,8 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.equal(await page.locator("#chart-series .chart-selected").count(),0,
     tag+": reset clears highlight without removing books from chart");
   assert.equal(await page.locator("#chart-series .chart-row").count(),11);
-  assert.doesNotMatch(await page.locator("#chart-summary").innerText(),/Для выделенных редакций/);
+  assert.equal(await page.locator("#chart-selection-panel").isHidden(),true);
+  assert.equal(await page.locator("#chart-selection-summary").innerText(),"");
   await page.locator("#catalog-metric").selectOption("all");
   assert.equal(await page.locator("#catalog-order").inputValue(),"catalog");
   assert.equal(await rankOption.isDisabled(),true);

@@ -946,18 +946,22 @@
       ", медиана "+formatValue(median)+", максимум "+formatValue(values.at(-1))+
       ". Описательный диапазон этой выборки — не норма и не доказательство авторства." :
       "Для выбранного показателя нет измеренных значений: минимум, медиана и максимум не рассчитываются. «Нет данных» не равно нулю.";
+    el("chart-selection-panel").hidden=selection===null;
     if (selection!==null) {
       const subset=rows.filter(row=>selection.has(row.key)&&row.value!==null)
         .map(row=>row.value).sort((a,b)=>a-b);
-      el("chart-summary").textContent+=
-        " В текущем отборе выделено "+selection.size+" из "+rows.length+
-        " измеренных редакций; остальные остаются для контекста. Ссылка на диаграмму и CSV включают полный набор без выделения.";
-      el("chart-summary").textContent+=subset.length ?
-        " Для выделенных редакций ("+subset.length+" из "+selection.size+
-        " со значением): минимум "+formatValue(subset[0])+", медиана "+
-        formatValue(medianOf(subset))+", максимум "+formatValue(subset.at(-1))+
-        ". Это описательная статистика отбора, а не рейтинг и не изменение полного графика." :
-        " Для выделенных редакций нет измеренных значений: минимум, медиана и максимум не рассчитываются.";
+      el("chart-selection-summary").textContent=
+        "В текущем отборе выделено "+selection.size+" из "+rows.length+
+        " измеренных редакций; остальные остаются для контекста. "+
+        (subset.length ?
+          "Для выделенных редакций ("+subset.length+" из "+selection.size+
+          " со значением): минимум "+formatValue(subset[0])+", медиана "+
+          formatValue(medianOf(subset))+", максимум "+formatValue(subset.at(-1))+
+          ". Это описательная статистика отбора, а не рейтинг и не изменение полного графика." :
+          "Для выделенных редакций нет измеренных значений: минимум, медиана и максимум не рассчитываются.")+
+        " Ссылка на диаграмму и CSV включают полный набор без выделения.";
+    } else {
+      el("chart-selection-summary").textContent="";
     }
     const nodes=document.createDocumentFragment();
     const tableNodes=document.createDocumentFragment();

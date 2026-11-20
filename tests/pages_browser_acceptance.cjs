@@ -239,6 +239,13 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   await page.locator('[data-chart="fantlab.punctuation.question.per_1000_words"]').click();
   assert.equal(await page.locator('[data-chart="fantlab.punctuation.question.per_1000_words"]')
     .getAttribute("aria-pressed"), "true");
+  // Native <details> hides table rows from Chromium innerText until opened.
+  // Open it as a reader would, inspect the visible exact-value evidence,
+  // then return the disclosure to its original closed state.
+  const chartDetails = page.locator(".chart-table");
+  await chartDetails.locator("summary").click();
+  assert.equal(await chartDetails.evaluate(node => node.open), true,
+    tag + ": chart exact-value disclosure opens");
   // Both additional punctuation charts use the actual ten observed editions,
   // not a fictitious zero for Beketova; exact-value table and CSV stay complete.
   for (const metric of ["fantlab.punctuation.colon.per_1000_words",
@@ -251,6 +258,9 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
     assert.match(await page.locator("#chart-table-rows tr:nth-child(6)").innerText(),/нет данных/);
     assert.equal(await page.locator("#chart-series .chart-missing").count(),1);
   }
+  await chartDetails.locator("summary").click();
+  assert.equal(await chartDetails.evaluate(node => node.open), false,
+    tag + ": chart disclosure closes after inspecting values");
   // Real browser: a deep-linked ranked catalogue with zero results must
   // reset the actual DOM/keyboard sequence and retain unrelated pair links.
   const query = new URLSearchParams({

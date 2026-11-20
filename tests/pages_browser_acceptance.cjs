@@ -370,6 +370,18 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
   assert.match(globalSummary,new RegExp("По "+availableOnChart+" измеренным редакциям: минимум"),
     "global summary counts available values, not missing measurements");
   assert.equal(await page.locator("#chart-selection-panel").isVisible(),true);
+  assert.equal(await page.locator("#chart-export-selected-csv").isVisible(),true);
+  assert.equal(await page.locator("#chart-export-selected-csv").isEnabled(),true);
+  const downloadEvent=page.waitForEvent("download");
+  await page.locator("#chart-export-selected-csv").click();
+  const download=await downloadEvent;
+  assert.match(download.suggestedFilename(),/chart-.*-subset\.csv$/);
+  const downloadedCsv=fs.readFileSync(await download.path(),"utf8");
+  assert.ok(downloadedCsv.startsWith("\uFEFFschema,selection_scope,"));
+  assert.match(downloadedCsv,/scriptorium-ru-chart-subset-csv-v1/);
+  assert.match(downloadedCsv,/catalog_highlight/);
+  assert.equal(downloadedCsv.trimEnd().split("\r\n").length,3,
+    tag+": selected CSV has two source-backed editions, not eleven");
   assert.match(scopedSummary,/В текущем отборе выделено 2 из 11/);
   assert.match(scopedSummary,/Для выделенных редакций \(2 из 2 со значением\): минимум/);
   assert.match(scopedSummary,/медиана .* максимум/);
@@ -391,6 +403,7 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
     tag+": reset clears highlight without removing books from chart");
   assert.equal(await page.locator("#chart-series .chart-row").count(),11);
   assert.equal(await page.locator("#chart-selection-panel").isHidden(),true);
+  assert.equal(await page.locator("#chart-export-selected-csv").isHidden(),true);
   assert.equal(await page.locator("#chart-selection-summary").innerText(),"");
   await page.locator("#catalog-metric").selectOption("all");
   assert.equal(await page.locator("#catalog-order").inputValue(),"catalog");

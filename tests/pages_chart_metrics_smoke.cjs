@@ -19,12 +19,13 @@ assert.equal(measured.length,11);
 const node=tag=>({tag,children:[],style:{},attrs:{},className:"",textContent:"",appendChild(n){this.children.push(n);return n;},setAttribute(k,v){this.attrs[k]=v;},replaceChildren(f){this.children=f.children;}});
 const elements={"chart-series":node("div"),"chart-unit":node("p"),"chart-summary":node("p"),"chart-selection-panel":node("section"),"chart-selection-summary":node("p"),"chart-table-rows":node("tbody"),"chart-table-caption":node("caption")};
 const chartSortButton=node("button");
+const chartSelectedCsvButton={hidden:true,disabled:true};
 const document={createElement:node,createDocumentFragment:()=>node("fragment")};
 const insertText=(parent,tag,v,cls)=>{const n=node(tag);n.textContent=v;if(cls)n.className=cls;parent.appendChild(n);return n;};
 const buttons=ids.map(id=>({dataset:{chart:id},attrs:{},setAttribute(k,v){this.attrs[k]=v;}}));
 const browser={location:{search:""}},catalogMetric={value:"all"},catalogCards=[];
-const action=new Function("data","metrics","currentChart","lookup","isNumeric","document","el","insertText","pretty","chartButtons","exact","sortChart","chartSortButton","chartCatalogSelection","window","catalogMetric","catalogCards",source.slice(start,end)+"return updateChart();");
-const render=(id,data=catalog,sorted=false)=>action(data,metrics,id,(book,key)=>book.metrics.find(row=>row.id===key),n=>typeof n==="number"&&Number.isFinite(n),document,key=>elements[key],insertText,(n,p)=>new Intl.NumberFormat("ru-RU",{maximumFractionDigits:p}).format(n),buttons,n=>n===null?"UNKNOWN":String(n),sorted,chartSortButton,chartCatalogSelection,browser,catalogMetric,catalogCards);
+const action=new Function("data","metrics","currentChart","lookup","isNumeric","document","el","insertText","pretty","chartButtons","exact","sortChart","chartSortButton","chartSelectedCsvButton","chartCatalogSelection","window","catalogMetric","catalogCards",source.slice(start,end)+"return updateChart();");
+const render=(id,data=catalog,sorted=false)=>action(data,metrics,id,(book,key)=>book.metrics.find(row=>row.id===key),n=>typeof n==="number"&&Number.isFinite(n),document,key=>elements[key],insertText,(n,p)=>new Intl.NumberFormat("ru-RU",{maximumFractionDigits:p}).format(n),buttons,n=>n===null?"UNKNOWN":String(n),sorted,chartSortButton,chartSelectedCsvButton,chartCatalogSelection,browser,catalogMetric,catalogCards);
 for(const id of ids){
   render(id);
   const rows=elements["chart-series"].children;
@@ -83,6 +84,8 @@ assert.deepEqual(elements["chart-series"].children.filter(row=>row.className.inc
   .map(row=>row.children[0].textContent),["Анна Каренина · в выборке","Воскресение · в выборке"]);
 assert.equal(elements["chart-table-rows"].children.filter(row=>row.className.includes("chart-selected")).length,2);
 assert.equal(elements["chart-selection-panel"].hidden,false);
+assert.equal(chartSelectedCsvButton.hidden,false);
+assert.equal(chartSelectedCsvButton.disabled,false);
 assert.doesNotMatch(elements["chart-summary"].textContent,/В текущем отборе выделено/);
 assert.match(elements["chart-selection-summary"].textContent,/В текущем отборе выделено 2 из 11/);
 const selectedData=measured.filter(book=>["anna","resurrection"].includes(book.key))
@@ -116,6 +119,8 @@ render(highlightedMetric);
 assert.equal(elements["chart-series"].children.filter(row=>row.className.includes("chart-selected")).length,0,
   "resetting the facet clears the contextual highlight");
 assert.equal(chartCatalogSelection(highlightedMetric,highlightedUrl,"all",catalogCards),null);
+assert.equal(chartSelectedCsvButton.hidden,true);
+assert.equal(chartSelectedCsvButton.disabled,true);
 assert.equal(elements["chart-selection-panel"].hidden,true);
 assert.equal(elements["chart-selection-summary"].textContent,"",
   "reset removes selected statistics, preserving the global chart");

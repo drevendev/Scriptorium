@@ -22,6 +22,14 @@ _METRICS = (
     ("right_dominant_token_share_percent", "% of right tokens"),
     ("jensen_shannon_divergence_bits", "bits (0-1)"),
 )
+# An additive extension: pre-overlap v1 artifacts remain readable.
+_OVERLAP_METRICS = (
+    ("shared_form_count", "forms"),
+    ("left_only_form_count", "forms"),
+    ("right_only_form_count", "forms"),
+    ("type_jaccard_percent", "% of pooled types"),
+)
+_TYPE_OVERLAP_PROFILE = "scriptorium-lexical-type-overlap-v1"
 _WITNESS_FIELDS = (
     ("edition_id", ""),
     ("original_work_id", ""),
@@ -63,8 +71,17 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
     method = report.get("method")
     if type(left) is not dict or type(right) is not dict or type(method) is not dict:
         raise ValueError("incomplete lexical contrast report")
+    with_overlap = "type_overlap_profile" in method
+    if ("type_overlap" in method) != with_overlap or (
+        with_overlap and (
+            method["type_overlap_profile"] != _TYPE_OVERLAP_PROFILE or
+            type(method["type_overlap"]) is not str
+        )
+    ):
+        raise ValueError("invalid lexical type-overlap method")
+    metrics = _METRICS + (_OVERLAP_METRICS if with_overlap else ())
     if aggregate is not None and (
-        type(aggregate) is not dict or set(aggregate) != {key for key, _ in _METRICS}
+        type(aggregate) is not dict or set(aggregate) != {key for key, _ in metrics}
     ):
         raise ValueError("invalid lexical aggregate")
 
@@ -109,8 +126,11 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
         if key not in method:
             raise ValueError("incomplete lexical method")
         add("method", key, method[key])
+    if with_overlap:
+        for key in ("type_overlap_profile", "type_overlap"):
+            add("method", key, method[key])
 
-    for key, unit in _METRICS:
+    for key, unit in metrics:
         value = "NOT_RUN" if aggregate is None else aggregate[key]
         if aggregate is not None:
             if (type(value) not in (int, float) or not isfinite(value)
@@ -119,5 +139,16 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
                     or (unit == "forms" and type(value) is not int)):
                 raise ValueError("invalid lexical aggregate measurement")
         add("aggregate", key, value, unit)
+
+    if aggregate is not None and with_overlap:
+        shared = aggregate["shared_form_count"]
+        left_only = aggregate["left_only_form_count"]
+        right_only = aggregate["right_only_form_count"]
+        union = shared + left_only + right_only
+        if (shared + left_only != left["distinct_forms"] or
+                shared + right_only != right["distinct_forms"] or
+                union == 0 or
+                aggregate["type_jaccard_percent"] != round(100 * shared / union, 6)):
+            raise ValueError("inconsistent lexical type-overlap measurements")
 
     return output.getvalue()

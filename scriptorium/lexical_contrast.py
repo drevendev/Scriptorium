@@ -18,6 +18,7 @@ from .text import NORMALIZATION_PROFILE, normalize_text
 from .vocabulary import VOCABULARY_PROFILE, vocabulary_lexemes
 
 PROFILE = "scriptorium-lexical-aggregate-contrast-v1"
+TYPE_OVERLAP_PROFILE = "scriptorium-lexical-type-overlap-v1"
 SCHEMA = "scriptorium-private-lexical-contrast-v1"
 MIN_POOLED_OCCURRENCES = 5
 PSEUDOCOUNT = 0.5
@@ -128,6 +129,11 @@ def build_lexical_contrast(
                   left["normalized_sha256"] == right["normalized_sha256"]
                   else "COMPARABLE")
         vocabulary = set(a) | set(b)
+        # Overlap includes rare surface forms excluded from dominance only.
+        shared_forms = len(a.keys() & b.keys())
+        left_only_forms = len(a) - shared_forms
+        right_only_forms = len(b) - shared_forms
+        type_jaccard = round(100 * shared_forms / len(vocabulary), 6)
         eligible = [w for w in vocabulary if a[w] + b[w] >= MIN_POOLED_OCCURRENCES]
         left_favored = right_favored = balanced = 0
         left_favored_tokens = right_favored_tokens = 0
@@ -150,6 +156,10 @@ def build_lexical_contrast(
         stats = {
             "eligible_form_count": len(eligible),
             "excluded_rare_form_count": len(vocabulary) - len(eligible),
+            "shared_form_count": shared_forms,
+            "left_only_form_count": left_only_forms,
+            "right_only_form_count": right_only_forms,
+            "type_jaccard_percent": type_jaccard,
             "left_dominant_form_count": left_favored,
             "right_dominant_form_count": right_favored,
             "balanced_form_count": balanced,
@@ -170,6 +180,8 @@ def build_lexical_contrast(
             "dominance_cutoff": ">=2x normalized smoothed relative frequency",
             "divergence": "empirical Jensen-Shannon; base-2 bits, no smoothing",
             "dictionary_dependency": None,
+            "type_overlap_profile": TYPE_OVERLAP_PROFILE,
+            "type_overlap": "intersection / union of distinct casefolded surface forms; no rarity filter or smoothing",
         },
         "length_ratio_max_over_min": ratio,
         "length_imbalance_warning": ratio is not None and ratio >= 2,
@@ -220,8 +232,17 @@ def render_lexical_contrast(report: dict[str, object], kind: str = "json") -> st
     if a is None:
         lines.append("| Lexical comparison | NOT_RUN / INCOMPARABLE | — |")
     else:
+        overlap_fields = {"shared_form_count", "left_only_form_count",
+                          "right_only_form_count", "type_jaccard_percent"}
+        present = overlap_fields.intersection(a)
+        if present and present != overlap_fields:
+            raise ValueError("incomplete type-overlap measurements")
         for label, key, unit in (
             ("Eligible shared-pool types", "eligible_form_count", "forms"),
+            ("Shared surface forms", "shared_form_count", "forms"),
+            ("Left-only surface forms", "left_only_form_count", "forms"),
+            ("Right-only surface forms", "right_only_form_count", "forms"),
+            ("Type Jaccard similarity", "type_jaccard_percent", "% of pooled types"),
             ("Excluded rare types", "excluded_rare_form_count", "forms"),
             ("Left-dominant types", "left_dominant_form_count", "forms"),
             ("Right-dominant types", "right_dominant_form_count", "forms"),
@@ -230,6 +251,8 @@ def render_lexical_contrast(report: dict[str, object], kind: str = "json") -> st
             ("Right-dominant token share", "right_dominant_token_share_percent", "% of right tokens"),
             ("Jensen–Shannon divergence", "jensen_shannon_divergence_bits", "bits (0–1)"),
         ):
+            if key in overlap_fields and not present:
+                continue  # Existing v1 reports without this additive extension.
             lines.append(f"| {label} | {a[key]} | {unit} |")
     lines.extend(["", report["scientific_boundary"],
                   "No word forms, rare-word hashes or source text are included.", ""])

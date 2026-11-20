@@ -7,6 +7,10 @@ _SCHEMA = "scriptorium-private-lexical-contrast-v1"
 _ROWS = (
     ("Eligible pooled forms", "eligible_form_count", "forms"),
     ("Excluded rare forms", "excluded_rare_form_count", "forms"),
+    ("Shared surface forms", "shared_form_count", "forms"),
+    ("Left-only surface forms", "left_only_form_count", "forms"),
+    ("Right-only surface forms", "right_only_form_count", "forms"),
+    ("Type Jaccard similarity", "type_jaccard_percent", "% of pooled types"),
     ("Left-dominant forms", "left_dominant_form_count", "forms"),
     ("Right-dominant forms", "right_dominant_form_count", "forms"),
     ("Balanced forms", "balanced_form_count", "forms"),
@@ -41,7 +45,14 @@ def render_lexical_contrast_html(report: dict[str, object]) -> str:
         rows.append('<tr><th scope="row">Lexical comparison</th>'
                     '<td>NOT_RUN / INCOMPARABLE</td><td>—</td></tr>')
     else:
+        overlap_fields = {"shared_form_count", "left_only_form_count",
+                          "right_only_form_count", "type_jaccard_percent"}
+        present = overlap_fields.intersection(aggregate)
+        if present and present != overlap_fields:
+            raise ValueError("incomplete lexical type-overlap aggregate")
         for label, key, unit in _ROWS:
+            if key in overlap_fields and not present:
+                continue  # Older v1 aggregate remains renderable.
             if key not in aggregate:
                 raise ValueError("incomplete lexical aggregate")
             rows.append(f'<tr><th scope="row">{_cell(label)}</th>'
@@ -71,6 +82,12 @@ def render_lexical_contrast_html(report: dict[str, object]) -> str:
         '<p class="caution">Word-token counts differ by at least 2×. '
         'The lexical frequency denominators differ even if character lengths match.</p>'
         if report.get("word_token_imbalance_warning") is True else ""
+    )
+    overlap_note = (
+        '<p>Type overlap counts all distinct surface forms, including rare forms; '
+        'Jaccard similarity is 100 × shared / pooled forms. '
+        'It is descriptive, not a significance test.</p>'
+        if isinstance(aggregate, dict) and "type_jaccard_percent" in aggregate else ""
     )
     short = (
         '<p class="caution">At least one input is below 300,000 characters '
@@ -116,6 +133,7 @@ Only aggregate counts and user-declared metadata are shown. No source text, dist
 <p>Surface word forms: NFC + casefold, no lemmatization or ё/е fold. Types occurring at least five times across both inputs
 are considered for 2× dominance using a Jeffreys +0.5 prior. Jensen–Shannon divergence uses unsmoothed token frequencies,
 base-2 logarithms, and is reported in bits from 0 to 1.</p>
+{overlap_note}
 <p>{_cell(report.get("scientific_boundary"))}</p>
 <p><strong>Corpus admission:</strong> {_cell(report.get("corpus_admission"))}.
 <strong>Public release ready:</strong> {_cell(report.get("public_release_ready"))}.

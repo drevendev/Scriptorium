@@ -21,8 +21,7 @@ The canonical site now also registers this comparison explicitly at
 `build/site/works/two-full-work-differences/index.html`. The publication manifest
 allows exactly two pinned source-free diagnostic records, and the existing gallery
 validates their Git blob hashes, status and measurement profiles before site staging.
-The route provides exact `measurements.json` (with decimal differences) and
-`measurements.csv` (two independently labelled works). Invalid inputs fail closed
+The route now shows seven rate/mean metrics in an accessible signed-difference table alongside the existing comparison charts and exact-value table. Each delta is **Verne minus Grin**, with a leading `+` for positive values; percent measurements use **percentage points**, not percent change. Raw book totals are intentionally excluded from the signed table because the works differ considerably in length. These descriptive deltas do not identify an author, translator or FantLab effect. The route continues to provide exact `measurements.json` (all ten decimal differences) and unchanged `measurements.csv` (two independently labelled works). Invalid inputs fail closed
 without replacing a previous successful site. A build is not proof of live Pages
 deployment, and no administrative Pages setting changes here.
 See the [roadmap](../project/ROADMAP.md).

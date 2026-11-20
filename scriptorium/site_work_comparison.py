@@ -6,6 +6,7 @@ manuscripts, discovers artifacts, or promotes diagnostic metrics to parity.
 from __future__ import annotations
 
 from decimal import Decimal
+from html import escape
 import json
 from pathlib import Path
 from typing import Any
@@ -45,6 +46,40 @@ def validate_entry(entry: object) -> None:
 
 def _decimal_delta(a: int | float, b: int | float) -> str:
     return format(Decimal(str(b)) - Decimal(str(a)), "f")
+
+
+
+def _render_signed_differences(measurements: list[dict[str, Any]]) -> str:
+    """Expose only rate/mean deltas from the pinned source-free comparison."""
+    rows = []
+    for item in measurements:
+        if not item["normalized_for_visual_comparison"]:
+            continue
+        delta = item["right_minus_left_decimal"]
+        signed_delta = ("+" if Decimal(delta) > 0 else "") + delta
+        rows.append(
+            f"<tr data-metric-id='{escape(item['metric_id'], quote=True)}'>"
+            f"<th scope='row'>{escape(item['label'])}</th>"
+            f"<td>{escape(str(item['left']))}</td>"
+            f"<td>{escape(str(item['right']))}</td>"
+            f"<td>{escape(signed_delta)} {escape(item['difference_unit'])}</td></tr>"
+        )
+    if len(rows) != 7:
+        raise ComparisonBuildError("unexpected comparable metric count")
+    return (
+        "<section aria-labelledby='signed-differences'>"
+        "<h2 id='signed-differences'>Observed differences</h2>"
+        "<p>Verne minus Grin (right minus left), calculated from the exact pinned "
+        "measurements. A plus or minus sign gives direction, not literary quality. "
+        "Percentages are subtracted in percentage points. The two books differ in "
+        "length; these descriptive differences cannot isolate author or translator effects.</p>"
+        "<div class='scroll' tabindex='0' role='region' "
+        "aria-label='Signed differences across seven rate and mean metrics'>"
+        "<table><caption>Seven measured rate/mean comparisons and signed deltas</caption>"
+        "<thead><tr><th scope='col'>Metric</th><th scope='col'>Grin</th>"
+        "<th scope='col'>Verne · Beketova</th><th scope='col'>Verne − Grin</th>"
+        "</tr></thead><tbody>" + "".join(rows) + "</tbody></table></div></section>"
+    )
 
 
 def build(root: Path) -> dict[str, Any]:
@@ -107,10 +142,13 @@ def build(root: Path) -> dict[str, Any]:
                                sort_keys=True, allow_nan=False) + "\n"
         csv_text = gallery.render_csv(records)
         html_text = gallery.render_html(records)
+        delta_section = _render_signed_differences(measurements)
     except (gallery.GalleryError, ValueError, TypeError, KeyError, ArithmeticError) as exc:
         raise ComparisonBuildError("frozen comparison export failed validation") from exc
     marker = "<main id='main' class='wrap'>"
-    if html_text.count(marker) != 1 or html_text.count("</header>") != 1:
+    values_marker = "<section aria-labelledby='values'>"
+    if (html_text.count(marker) != 1 or html_text.count("</header>") != 1 or
+            html_text.count(values_marker) != 1):
         raise ComparisonBuildError("gallery HTML integration markers drifted")
     html_text = html_text.replace(
         marker,
@@ -124,7 +162,7 @@ def build(root: Path) -> dict[str, Any]:
         "<a href='measurements.csv' download>Download metric table (CSV)"
         "</a></p></header>",
         1,
-    )
+    ).replace(values_marker, delta_section + values_marker, 1)
     return {
         "html": html_text,
         "json": json_text,

@@ -1,6 +1,8 @@
 """Positive/negative tests on real pinned, source-free derived evidence."""
 from __future__ import annotations
 
+from decimal import Decimal
+
 import copy
 import hashlib
 import json
@@ -30,6 +32,35 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
         self.assertEqual(metrics["fantlab.dialogue.share_percent"]["difference_unit"], "percentage points")
         self.assertEqual(metrics["fantlab.general.words"]["difference_unit"], "words")
         self.assertIn("right_minus_left", rendered["json"])
+
+
+    def test_visible_signed_differences_match_exact_json_without_export_drift(self):
+        rendered = subject.build(REPO)
+        page = rendered["html"]
+        metrics = json.loads(rendered["json"])["measurements"]
+        self.assertIn("id='signed-differences'", page)
+        self.assertIn("right minus left", page)
+        self.assertIn("percentage points", page)
+        self.assertEqual(page.count("data-metric-id='"), 7)
+        for item in metrics:
+            marker = "data-metric-id='" + item["metric_id"] + "'"
+            if not item["normalized_for_visual_comparison"]:
+                self.assertNotIn(marker, page)
+                continue
+            self.assertIn(marker, page)
+            value = item["right_minus_left_decimal"]
+            signed = ("+" if Decimal(value) > 0 else "") + value
+            self.assertIn(">" + signed + " " + item["difference_unit"] + "</td>", page)
+        self.assertNotIn("data-metric-id='fantlab.general.characters'", page)
+        self.assertIn("right_minus_left", rendered["json"])
+        from scriptorium import full_work_gallery
+        self.assertEqual(rendered["csv"], full_work_gallery.render_csv(
+            full_work_gallery.load_gallery(REPO)
+        ))
+
+    def test_signed_differences_refuse_unexpected_metric_coverage(self):
+        with self.assertRaises(subject.ComparisonBuildError):
+            subject._render_signed_differences([])
 
     def test_links_accessibility_and_no_scripts(self):
         page = subject.build(REPO)["html"]

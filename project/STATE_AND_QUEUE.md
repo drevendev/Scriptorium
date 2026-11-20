@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 575
+STATE_REVISION: 576
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-20
-LAST_RESULT: #591 merged at bf8944b7b1f664c0f60180849e7c70e85d7362d2; two additional source-bound punctuation chart views proposed.
+LAST_RESULT: #592 merged at 6fe44f5475372af69026b2d94b76cafe86aee3a9; private lexical word-token imbalance diagnostic proposed against exact master.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-PUNCTUATION-CHARTS-010
-ISSUE: Reader exploratory punctuation chart coverage (#283 follow-on)
-STATUS: PR_CANDIDATE; exact-head CI, independent later review and live Pages verification pending
-BRANCH: scrip-reader-colon-semicolon-charts-20261120
-BASE: bf8944b7b1f664c0f60180849e7c70e85d7362d2
+UNIT_ID: SCRIP-LEXICAL-TOKEN-BALANCE-011
+ISSUE: #562 source-free lexical comparison follow-on
+STATUS: PR_CANDIDATE; exact-head hosted CI and later independent acceptance pending
+BRANCH: scrip-lexical-word-token-imbalance-20261120
+BASE: 6fe44f5475372af69026b2d94b76cafe86aee3a9
 
-ACCEPTANCE: Chart, source-backed exact table, catalogue metric facet, and both CSV forms expose colon and semicolon rates per 1,000 words for 10 measured editions, with Beketova explicitly unavailable (not a fabricated zero). Preserve all 11 edition rows and original nine metric exports unchanged. Test missing values, numeric precision, chart order and real desktop/mobile behavior before later acceptance. No metric formula/source/corpus/parity change.
+ACCEPTANCE: Offline lexical contrast reports a separate max/min word-token ratio and >=2× caution even when normalized character lengths match. JSON, Markdown, HTML, and CSV remain source-free and distinguish empty input UNKNOWN from measured zero. Preserve existing character ratio, original statistical methods, old v1 CSV readability and all FantLab metrics. Verify fixtures before later acceptance; no corpus rights or public release promotion.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Readers can explore two additional punctuation rhythms with exact units, accessible tables and honest incomplete coverage.
+Milestone: Private readers can recognize lexical frequency comparisons dominated by different word-token sample sizes, without seeing or publishing manuscript words.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Colon and semicolon Reader charts | Two verified 10/11 chart views, correct CSV, browser checks, later merge | Exact-head PR CI and review |
-| P2 | Live Reader release verification | Public route and deployed script bytes confirmed independently | Network/DNS availability |
-| P3 | #562 source-bound lexical comparison | Rights-reviewed, pinned derived evidence | Edition-specific publication rights |
-| P4 | #511 Trusov translation pair | Independently complete literary body | Historical Page completeness |
+| P1 | #562 lexical token-size diagnostics | Both size dimensions, real CLI outputs, positive/negative regressions, later merge | Exact-head PR CI and later acceptance |
+| P2 | #592 Reader live release verification | Site response and deployed Reader bytes match validated source | External network/DNS availability |
+| P3 | #562 rights-reviewed published lexical comparison | Edition-specific source-free distributions and lawful release evidence | Independent edition-level rights and replay identities |
+| P4 | #511 Trusov translation pair | Independently complete historical literary body | Historical Page completeness |
 | P5 | #282 native AOT ambiguity | Measured discrimination on frozen inputs | Pinned backend/source |
 
 ## Retained scientific and operational boundaries

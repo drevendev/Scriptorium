@@ -48,6 +48,24 @@ class LexicalContrastCsvTests(unittest.TestCase):
         self.assertNotIn("кот", rendered)
         self.assertNotIn("пёс", rendered)
 
+    def test_token_ratio_csv_is_typed_and_old_v1_artifacts_remain_readable(self):
+        report = sample("кот " * 10, "а б " * 10)
+        _, data = rows(report)
+        self.assertEqual(data["comparison", "length_imbalance_warning"]["value"], "false")
+        self.assertEqual(data["comparison", "word_token_ratio_max_over_min"]["value"], "2.0")
+        self.assertEqual(data["comparison", "word_token_ratio_max_over_min"]["unit"], "ratio")
+        self.assertEqual(data["comparison", "word_token_imbalance_warning"]["value"], "true")
+        _, unavailable = rows(sample("", "кот"))
+        self.assertEqual(unavailable["comparison", "word_token_ratio_max_over_min"]["value"], "UNKNOWN")
+        legacy = {key: value for key, value in report.items()
+                  if key not in ("word_token_ratio_max_over_min", "word_token_imbalance_warning")}
+        _, old = rows(legacy)
+        self.assertNotIn(("comparison", "word_token_ratio_max_over_min"), old)
+        with self.assertRaises(ValueError):
+            rows({**legacy, "word_token_ratio_max_over_min": 2})
+        with self.assertRaises(ValueError):
+            rows({**report, "word_token_imbalance_warning": False})
+
     def test_unavailable_is_not_zero_and_true_zero_is_preserved(self):
         _, empty = rows(sample("", "кот"))
         self.assertEqual(empty["comparison", "status"]["value"], "NOT_RUN_EMPTY")

@@ -82,6 +82,22 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
             raise ValueError("incomplete lexical contrast metadata")
         add("comparison", key, report[key])
 
+    # Additive v1 metadata: old saved reports remain readable, but a partial
+    # pair or contradictory warning cannot masquerade as measured evidence.
+    has_ratio = "word_token_ratio_max_over_min" in report
+    has_warning = "word_token_imbalance_warning" in report
+    if has_ratio != has_warning:
+        raise ValueError("incomplete word-token balance metadata")
+    if has_ratio:
+        ratio = report["word_token_ratio_max_over_min"]
+        warning = report["word_token_imbalance_warning"]
+        if (ratio is not None and (
+            type(ratio) not in (int, float) or not isfinite(ratio) or ratio < 1
+        )) or type(warning) is not bool or warning != (ratio is not None and ratio >= 2):
+            raise ValueError("invalid word-token balance metadata")
+        add("comparison", "word_token_ratio_max_over_min", ratio, "ratio")
+        add("comparison", "word_token_imbalance_warning", warning, "boolean")
+
     for side, witness in (("left", left), ("right", right)):
         for key, unit in _WITNESS_FIELDS:
             if key not in witness:

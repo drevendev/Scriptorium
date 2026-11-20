@@ -111,6 +111,9 @@ def build_lexical_contrast(
     na, nb = left["word_tokens"], right["word_tokens"]
     lengths = (left["characters_including_spaces"], right["characters_including_spaces"])
     ratio = round(max(lengths) / min(lengths), 6) if min(lengths) > 0 else None
+    # Lexical frequencies use word-token denominators, which can diverge even
+    # when the two texts have identical normalized character lengths.
+    token_ratio = round(max(na, nb) / min(na, nb), 6) if min(na, nb) > 0 else None
     stats = None
     if not na or not nb:
         status = "NOT_RUN_EMPTY"
@@ -170,6 +173,8 @@ def build_lexical_contrast(
         },
         "length_ratio_max_over_min": ratio,
         "length_imbalance_warning": ratio is not None and ratio >= 2,
+        "word_token_ratio_max_over_min": token_ratio,
+        "word_token_imbalance_warning": token_ratio is not None and token_ratio >= 2,
         "corpus_admission": "NOT_VERIFIED",
         "public_release_ready": False,
         "scientific_boundary": (
@@ -195,10 +200,20 @@ def render_lexical_contrast(report: dict[str, object], kind: str = "json") -> st
         return render_lexical_contrast_html(report)
     if kind != "markdown":
         raise ValueError("unsupported lexical contrast format")
+    token_ratio = report.get("word_token_ratio_max_over_min")
+    token_ratio_label = "UNKNOWN" if token_ratio is None else str(token_ratio)
+    token_note = (
+        "**Caution:** Word-token counts differ by at least 2×."
+        if report.get("word_token_imbalance_warning") is True else
+        ("Word-token count imbalance: UNKNOWN (one or both inputs have no words)."
+         if token_ratio is None else "Word-token count imbalance below 2×.")
+    )
     lines = [
         "# Scriptorium · local lexical contrast", "",
         "**Extension preview — not FantLab parity, a copyright clearance, or an author fingerprint.**",
         "", f"Status: **{report['status']}**. Comparison inputs are user-declared, not verified.",
+        "", f"Word-token count ratio (larger/smaller): **{token_ratio_label}**.",
+        token_note,
         "", "| Observation | Value | Unit |", "| --- | ---: | --- |",
     ]
     a = report["aggregate"]

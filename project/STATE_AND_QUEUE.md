@@ -1,33 +1,33 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 580
+STATE_REVISION: 581
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-20
-LAST_RESULT: #596 merged at ad80303abce905e036cc7aff7fddc8c7fe3fe8dc; signed source-backed Reader comparison prepared from exact master.
+LAST_RESULT: #597 merged at df1a207a1476c7848455a145ac9acbf33fd0db20; Russian pinned-comparison Reader presentation prepared for later independent acceptance.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-SIGNED-DIFFERENCES-015
-ISSUE: #277/#283 completed comparison and accessibility follow-on
-STATUS: PR_CANDIDATE; exact-head CI and later independent acceptance pending
-BRANCH: scrip-reader-signed-deltas-20261120
-BASE: ad80303abce905e036cc7aff7fddc8c7fe3fe8dc
+UNIT_ID: SCRIP-READER-RUSSIAN-FROZEN-PAIR-016
+ISSUE: #277/#283 follow-on for the existing source-pinned two-work Reader
+STATUS: PR_CANDIDATE; exact-head CI, visual verification and later independent acceptance pending
+BRANCH: scrip-reader-russian-frozen-pair-20261120
+BASE: df1a207a1476c7848455a145ac9acbf33fd0db20
 
-ACCEPTANCE: Show seven existing, source-pinned rate/mean comparison deltas on the published two-book Reader route; signed Verne-minus-Grin values and percentage-point units match the ten-row JSON export. Preserve legacy CSV and gallery, translation identity, no-source-text policy and M2 0/5. Add deterministic route tests; require separate CI/visual evidence and later-run acceptance.
+ACCEPTANCE: Give the existing two-book comparison one coherent Russian-language HTML route: actual ru document language, preserved labels for both editions and translator, ten evidence-backed metric names/units, seven signed differences, source identities, downloads, navigation and scientific caveats. Keep the underlying machine JSON/CSV byte-stable, source hashes untouched, full-work-gallery CLI unchanged, no added text or network calls and M2 0/5. Require regression checks, canonical site build and separate desktop/mobile/live acceptance.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Readers can see signed, source-pinned differences between two real analyzed books with explicit units and scientific caveats.
+Milestone: Russian readers can inspect the previously published frozen two-book comparison without mixed-language navigation, while numerical exports and scientific warnings stay exactly reproducible.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #277/#283 signed comparison deltas | Seven exact rate/mean differences in real Reader, accessible table and negative tests | PR CI, independent visual/review acceptance |
-| P2 | #285 Reader live release verification | Public route and deployed Reader bytes match validated source | External network/DNS availability |
-| P3 | #562 legally published lexical comparison | Edition-specific source-free distributions and explicit rights/replay evidence | Rights and edition identities |
-| P4 | #511 Trusov translation pair | Independently complete historical literary body | Historical Page completeness |
-| P5 | #282 pinned native AOT collision | Reproducible measured noun/cardinal bounds | Python 3.9/pylem native sidecar and source |
+| P1 | #277/#283 pinned comparison Russian route | All 10 observed metrics + seven signed deltas and proof/units in Russian, exact preserved machine exports | PR CI; later review and browser acceptance |
+| P2 | #562 legally publishable lexical comparison | Only edition-verified rights-cleared, source-free aggregate distributions and explicit replay identity | Rights and edition identities |
+| P3 | #511 Trusov translation pair | Independently complete historical literary body | Historical Page completeness |
+| P4 | #282 pinned native AOT collision | Reproducible measured noun/cardinal bounds | Python 3.9/pylem native sidecar and source |
+| P5 | #284 license/attribution release gate | Explicit software license and source/data rights publication checks | Rights holder evidence |
 
 ## Retained scientific and operational boundaries
 
-M0 closed; M1 open; M2 0/5; M3/M4/M5 open. Eleven measured editions; two research leads. Holdout/ablation and within-sample tests are exploratory, NOT external validation. Admission/author/parity requires >=300,000 characters INCLUDING spaces and reuse rights. No manuscripts in public artifacts; translation identities separate. AOT/pylem==0.0.18 noun/cardinal N collision unresolved. Source-unmatched resemblance is DIAGNOSTIC only; UNKNOWN is not zero, NOT_RUN is not PASS. #284 rights, Trusov EOF #436 and #265 controls remain scoped. Do not mutate hourly scheduler.
+M0 closed; M1 open; M2 0/5; M3/M4/M5 open. Eleven measured editions; two research leads. Holdout/ablation and within-sample tests are exploratory, NOT external validation. Admission/author/parity requires >=300,000 characters INCLUDING spaces and reuse rights. No manuscripts in public artifacts; translation identities separate. AOT/pylem==0.0.18 noun/cardinal N collision unresolved. Source-unmatched resemblance is DIAGNOSTIC only; UNKNOWN is not zero, NOT_RUN is not PASS. Trusov EOF #436 and #265 controls remain scoped. Do not mutate hourly scheduler.

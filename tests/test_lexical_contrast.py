@@ -59,6 +59,27 @@ class LexicalContrastTests(unittest.TestCase):
         self.assertTrue(result["length_imbalance_warning"])
         self.assertEqual(result["length_ratio_max_over_min"], 10)
 
+    def test_word_token_imbalance_with_equal_character_lengths(self):
+        # Both inputs have 40 characters, but 10 versus 20 word tokens.
+        report = contrast("кот " * 10, "а б " * 10)
+        self.assertEqual(report["left"]["characters_including_spaces"],
+                         report["right"]["characters_including_spaces"])
+        self.assertEqual(report["length_ratio_max_over_min"], 1)
+        self.assertFalse(report["length_imbalance_warning"])
+        self.assertEqual(report["word_token_ratio_max_over_min"], 2)
+        self.assertTrue(report["word_token_imbalance_warning"])
+        self.assertIn("Word-token counts differ by at least 2",
+                      render_lexical_contrast(report, "html"))
+        self.assertIn("Word-token count ratio (larger/smaller): **2.0**",
+                      render_lexical_contrast(report, "markdown"))
+        balanced = contrast("кот " * 10, "пёс " * 10)
+        self.assertEqual(balanced["word_token_ratio_max_over_min"], 1)
+        self.assertFalse(balanced["word_token_imbalance_warning"])
+        empty = contrast("", "кот")
+        self.assertIsNone(empty["word_token_ratio_max_over_min"])
+        self.assertFalse(empty["word_token_imbalance_warning"])
+        self.assertIn("**UNKNOWN**", render_lexical_contrast(empty, "markdown"))
+
     def test_disjoint_vocabulary_has_one_bit_divergence(self):
         result = contrast("кот " * 5, "пёс " * 5)
         self.assertEqual(result["aggregate"]["jensen_shannon_divergence_bits"], 1)

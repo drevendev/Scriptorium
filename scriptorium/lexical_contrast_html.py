@@ -67,6 +67,11 @@ def render_lexical_contrast_html(report: dict[str, object]) -> str:
         'Lexical contrast is descriptive and strongly length-sensitive.</p>'
         if report.get("length_imbalance_warning") is True else ""
     )
+    token_imbalance = (
+        '<p class="caution">Word-token counts differ by at least 2×. '
+        'The lexical frequency denominators differ even if character lengths match.</p>'
+        if report.get("word_token_imbalance_warning") is True else ""
+    )
     short = (
         '<p class="caution">At least one input is below 300,000 characters '
         'including spaces: this is a nonrepresentative private preview.</p>'
@@ -96,7 +101,9 @@ th{{font-weight:700}}thead{{background:#e7eee4}}tbody tr:nth-child(even){{backgr
 <p class="notice"><strong>Not FantLab parity, copyright clearance or an author fingerprint.</strong>
 Only aggregate counts and user-declared metadata are shown. No source text, distinctive words or rare-word hashes are embedded.</p>
 <p><strong>Status:</strong> {_cell(report.get("status"))}. <strong>Profile:</strong> <code>{_cell(report.get("profile"))}</code>.</p>
-{imbalance}{short}
+<p><strong>Word-token count ratio (larger/smaller):</strong>
+{_cell(report.get("word_token_ratio_max_over_min"))}. UNKNOWN means at least one input has no word tokens.</p>
+{imbalance}{token_imbalance}{short}
 <section aria-labelledby="metrics-title"><h2 id="metrics-title">Aggregate measurements</h2><div class="table-scroll"><table>
 <caption>Source-free lexical differences; unavailable is never zero</caption>
 <thead><tr><th scope="col">Observation</th><th scope="col">Value</th><th scope="col">Unit</th></tr></thead>

@@ -70,6 +70,9 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
         self.assertIn("Семь измерений с разностями со знаком", page)
         self.assertIn("href='measurements.json'", page)
         self.assertIn("Скачать таблицу метрик (CSV)", page)
+        self.assertIn("<nav aria-label='Навигация по результатам'>", page)
+        self.assertEqual(page.count("<nav "), 1)
+        self.assertNotIn("aria-label='Reader navigation'", page)
         self.assertEqual(page.count("<th scope='row'>"), 17)
         self.assertEqual(page.count("<h3>"), 7)
         for metric_id, _, unit, normalized in subject.gallery.METRICS:

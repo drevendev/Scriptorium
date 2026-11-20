@@ -18,7 +18,7 @@ ACCEPTANCE: Show seven existing, source-pinned rate/mean comparison deltas on th
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Private readers can distinguish shared word-form types from the proportions in which their words occur.
+Milestone: Readers can see signed, source-pinned differences between two real analyzed books with explicit units and scientific caveats.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |

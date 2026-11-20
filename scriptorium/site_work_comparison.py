@@ -48,7 +48,6 @@ def _decimal_delta(a: int | float, b: int | float) -> str:
     return format(Decimal(str(b)) - Decimal(str(a)), "f")
 
 
-
 def _render_signed_differences(measurements: list[dict[str, Any]]) -> str:
     """Expose only rate/mean deltas from the pinned source-free comparison."""
     rows = []
@@ -59,7 +58,8 @@ def _render_signed_differences(measurements: list[dict[str, Any]]) -> str:
         signed_delta = ("+" if Decimal(delta) > 0 else "") + delta
         rows.append(
             f"<tr data-metric-id='{escape(item['metric_id'], quote=True)}'>"
-            f"<th scope='row'>{escape(item['label'])}</th>"
+            f"<th scope='row'>{escape(item['label'])} "
+            f"<small>{escape(item['unit'])}</small></th>"
             f"<td>{escape(str(item['left']))}</td>"
             f"<td>{escape(str(item['right']))}</td>"
             f"<td>{escape(signed_delta)} {escape(item['difference_unit'])}</td></tr>"

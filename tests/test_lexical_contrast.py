@@ -151,6 +151,40 @@ class LexicalContrastTests(unittest.TestCase):
                                       right_edition_id="same")
         self.assertEqual(same["status"], "IDENTICAL_NORMALIZED_TEXT")
 
+    def test_same_edition_rejects_conflicting_declared_provenance(self):
+        base = {"left_edition_id": "same", "right_edition_id": "same"}
+        for conflict in (
+            {"right_language": "en"},
+            {"left_original_work_id": "work-a", "right_original_work_id": "work-b"},
+            {"left_translator": "Translator A", "right_translator": "Translator B"},
+            {"left_translator": "Translator A"},
+        ):
+            with self.subTest(conflict=conflict), self.assertRaisesRegex(
+                ValueError, "one edition ID.*conflicting provenance"
+            ):
+                build_lexical_contrast("кот", "кот", **base, **conflict)
+
+        # Identical edition identities may legitimately be compared to themselves.
+        same = build_lexical_contrast(
+            "кот", "кот", **base, left_original_work_id="work-a",
+            right_original_work_id="work-a", left_translator="Translator A",
+            right_translator="Translator A",
+        )
+        self.assertEqual(same["status"], "IDENTICAL_NORMALIZED_TEXT")
+        with self.assertRaisesRegex(ValueError, "distinct edition IDs"):
+            build_lexical_contrast(
+                "кот", "кот", **base, left_original_work_id="work-a",
+                right_original_work_id="work-a", translation_pair=True,
+            )
+
+    def test_translation_pair_distinct_editions_can_share_identical_bytes(self):
+        same_bytes = contrast(
+            "кот", "кот", left_original_work_id="work-a",
+            right_original_work_id="work-a", left_translator="Translator A",
+            right_translator="Translator B", translation_pair=True,
+        )
+        self.assertEqual(same_bytes["status"], "IDENTICAL_NORMALIZED_TEXT")
+
     def test_unicode_normalization_and_casefold_are_shared_with_vocabulary(self):
         value = contrast("Ёж " * 6, "е\u0308ж " * 6)
         self.assertEqual(value["status"], "COMPARABLE")

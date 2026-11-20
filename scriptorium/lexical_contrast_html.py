@@ -11,6 +11,7 @@ _ROWS = (
     ("Left-only surface forms", "left_only_form_count", "forms"),
     ("Right-only surface forms", "right_only_form_count", "forms"),
     ("Type Jaccard similarity", "type_jaccard_percent", "% of pooled types"),
+    ("Token-distribution overlap", "token_distribution_overlap_percent", "% of token mass"),
     ("Left-dominant forms", "left_dominant_form_count", "forms"),
     ("Right-dominant forms", "right_dominant_form_count", "forms"),
     ("Balanced forms", "balanced_form_count", "forms"),
@@ -50,8 +51,13 @@ def render_lexical_contrast_html(report: dict[str, object]) -> str:
         present = overlap_fields.intersection(aggregate)
         if present and present != overlap_fields:
             raise ValueError("incomplete lexical type-overlap aggregate")
+        has_token_overlap = "token_overlap_profile" in report.get("method", {})
+        if ("token_distribution_overlap_percent" in aggregate) != has_token_overlap:
+            raise ValueError("incomplete lexical token-overlap aggregate")
         for label, key, unit in _ROWS:
             if key in overlap_fields and not present:
+                continue  # Older v1 aggregate remains renderable.
+            if key == "token_distribution_overlap_percent" and not has_token_overlap:
                 continue  # Older v1 aggregate remains renderable.
             if key not in aggregate:
                 raise ValueError("incomplete lexical aggregate")
@@ -88,6 +94,13 @@ def render_lexical_contrast_html(report: dict[str, object]) -> str:
         'Jaccard similarity is 100 × shared / pooled forms. '
         'It is descriptive, not a significance test.</p>'
         if isinstance(aggregate, dict) and "type_jaccard_percent" in aggregate else ""
+    )
+    token_overlap_note = (
+        '<p>Token-distribution overlap sums the smaller of the two observed '
+        'token-frequency shares for every surface form, including rare forms. '
+        '100% means identical distributions, not identical texts.</p>'
+        if isinstance(aggregate, dict) and
+           "token_distribution_overlap_percent" in aggregate else ""
     )
     short = (
         '<p class="caution">At least one input is below 300,000 characters '
@@ -133,7 +146,7 @@ Only aggregate counts and user-declared metadata are shown. No source text, dist
 <p>Surface word forms: NFC + casefold, no lemmatization or ё/е fold. Types occurring at least five times across both inputs
 are considered for 2× dominance using a Jeffreys +0.5 prior. Jensen–Shannon divergence uses unsmoothed token frequencies,
 base-2 logarithms, and is reported in bits from 0 to 1.</p>
-{overlap_note}
+{overlap_note}{token_overlap_note}
 <p>{_cell(report.get("scientific_boundary"))}</p>
 <p><strong>Corpus admission:</strong> {_cell(report.get("corpus_admission"))}.
 <strong>Public release ready:</strong> {_cell(report.get("public_release_ready"))}.

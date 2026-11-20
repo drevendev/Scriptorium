@@ -101,6 +101,47 @@ class LexicalContrastCsvTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     rows(malformed)
 
+    def test_token_overlap_is_versioned_numeric_and_old_reports_still_render(self):
+        report = sample("кот " * 9 + "пёс ", "кот " + "пёс " * 9)
+        _, data = rows(report)
+        self.assertEqual(data["aggregate", "token_distribution_overlap_percent"]["value"], "20.0")
+        self.assertEqual(data["aggregate", "token_distribution_overlap_percent"]["unit"],
+                         "% of token mass")
+        self.assertEqual(data["method", "token_overlap_profile"]["value"],
+                         "scriptorium-lexical-token-overlap-v1")
+        _, unavailable = rows(sample("", "кот"))
+        self.assertEqual(unavailable["aggregate", "token_distribution_overlap_percent"]["value"],
+                         "NOT_RUN")
+        legacy = {**report, "method": {
+            k: v for k, v in report["method"].items()
+            if k not in ("token_overlap_profile", "token_overlap")
+        }, "aggregate": {
+            k: v for k, v in report["aggregate"].items()
+            if k != "token_distribution_overlap_percent"
+        }}
+        _, older = rows(legacy)
+        self.assertNotIn(("aggregate", "token_distribution_overlap_percent"), older)
+        self.assertNotIn("Token-distribution overlap", render_lexical_contrast(legacy, "html"))
+        self.assertNotIn("Token-distribution overlap", render_lexical_contrast(legacy, "markdown"))
+        for forged in (
+            {**report, "method": {k: v for k, v in report["method"].items()
+                                  if k != "token_overlap"}},
+            {**report, "aggregate": {k: v for k, v in report["aggregate"].items()
+                                     if k != "token_distribution_overlap_percent"}},
+            {**report, "aggregate": {**report["aggregate"],
+                                     "token_distribution_overlap_percent": 101}},
+            {**report, "aggregate": {**report["aggregate"],
+                                     "token_distribution_overlap_percent": "20"}},
+        ):
+            with self.subTest(forged=forged.get("method")):
+                with self.assertRaises(ValueError):
+                    rows(forged)
+        with self.assertRaises(ValueError):
+            render_lexical_contrast({**report, "aggregate": {
+                k: v for k, v in report["aggregate"].items()
+                if k != "token_distribution_overlap_percent"
+            }}, "html")
+
     def test_unavailable_is_not_zero_and_true_zero_is_preserved(self):
         _, empty = rows(sample("", "кот"))
         self.assertEqual(empty["comparison", "status"]["value"], "NOT_RUN_EMPTY")

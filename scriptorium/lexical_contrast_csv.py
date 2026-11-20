@@ -30,6 +30,9 @@ _OVERLAP_METRICS = (
     ("type_jaccard_percent", "% of pooled types"),
 )
 _TYPE_OVERLAP_PROFILE = "scriptorium-lexical-type-overlap-v1"
+# Token-frequency overlap is independent of type Jaccard and uses all types.
+_TOKEN_METRICS = (("token_distribution_overlap_percent", "% of token mass"),)
+_TOKEN_OVERLAP_PROFILE = "scriptorium-lexical-token-overlap-v1"
 _WITNESS_FIELDS = (
     ("edition_id", ""),
     ("original_work_id", ""),
@@ -79,7 +82,16 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
         )
     ):
         raise ValueError("invalid lexical type-overlap method")
-    metrics = _METRICS + (_OVERLAP_METRICS if with_overlap else ())
+    with_token_overlap = "token_overlap_profile" in method
+    if ("token_overlap" in method) != with_token_overlap or (
+        with_token_overlap and (
+            method["token_overlap_profile"] != _TOKEN_OVERLAP_PROFILE or
+            type(method["token_overlap"]) is not str
+        )
+    ):
+        raise ValueError("invalid lexical token-overlap method")
+    metrics = (_METRICS + (_OVERLAP_METRICS if with_overlap else ()) +
+               (_TOKEN_METRICS if with_token_overlap else ()))
     if aggregate is not None and (
         type(aggregate) is not dict or set(aggregate) != {key for key, _ in metrics}
     ):
@@ -128,6 +140,9 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
         add("method", key, method[key])
     if with_overlap:
         for key in ("type_overlap_profile", "type_overlap"):
+            add("method", key, method[key])
+    if with_token_overlap:
+        for key in ("token_overlap_profile", "token_overlap"):
             add("method", key, method[key])
 
     for key, unit in metrics:

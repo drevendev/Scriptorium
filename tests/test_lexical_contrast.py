@@ -192,6 +192,29 @@ class LexicalContrastTests(unittest.TestCase):
         # vocabulary contrast itself uses casefolded NFC lexical identities.
         self.assertEqual(value["aggregate"]["jensen_shannon_divergence_bits"], 0)
 
+    def test_token_distribution_overlap_distinguishes_frequency_from_types(self):
+        opposite = contrast("кот " * 9 + "пёс ", "кот " + "пёс " * 9)
+        self.assertEqual(opposite["aggregate"]["type_jaccard_percent"], 100.0)
+        self.assertEqual(opposite["aggregate"]["token_distribution_overlap_percent"], 20.0)
+        self.assertEqual(opposite["method"]["token_overlap_profile"],
+                         "scriptorium-lexical-token-overlap-v1")
+        self.assertGreater(opposite["aggregate"]["jensen_shannon_divergence_bits"], 0)
+        for kind in ("markdown", "html"):
+            rendered = render_lexical_contrast(opposite, kind)
+            self.assertIn("Token-distribution overlap", rendered)
+            self.assertNotIn("кот", rendered)
+            self.assertNotIn("пёс", rendered)
+
+        same_distribution = contrast("кот пёс", ("КОТ ПЁС " * 20))
+        self.assertEqual(same_distribution["aggregate"]["token_distribution_overlap_percent"], 100)
+        disjoint = contrast("кот " * 6, "пёс " * 6)
+        self.assertEqual(disjoint["aggregate"]["token_distribution_overlap_percent"], 0)
+        self.assertEqual(disjoint["aggregate"]["type_jaccard_percent"], 0)
+        no_words = contrast("", "кот")
+        self.assertEqual(no_words["status"], "NOT_RUN_EMPTY")
+        self.assertIsNone(no_words["aggregate"])
+        self.assertNotIn("0.0", render_lexical_contrast(no_words, "markdown"))
+
     def test_bounded_unverified_fixture_not_corpus_admission(self):
         short = contrast("кот", "пёс")
         self.assertFalse(short["left"]["meets_300000_character_floor"])

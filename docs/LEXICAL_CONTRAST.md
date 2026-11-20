@@ -54,7 +54,7 @@ scriptorium distinctives left.txt right.txt \
   --translation-pair
 ```
 
-A missing or different original-work ID in translation-pair mode yields `INCOMPARABLE_TRANSLATION_LINEAGE`, with **null** aggregate fields; differing declared languages yield `INCOMPARABLE_LANGUAGE`. These checks prevent a falsely labeled translation comparison, but cannot authenticate the user-supplied lineage. General, non-translation comparisons need not share an original.
+A missing or different original-work ID in translation-pair mode yields `INCOMPARABLE_TRANSLATION_LINEAGE`, with **null** aggregate fields; differing declared languages yield `INCOMPARABLE_LANGUAGE`. These checks prevent a falsely labeled translation comparison, but cannot authenticate the user-supplied lineage. The two translations must have **distinct edition IDs**, even if their normalized text happens to match. Reusing one edition ID for both sides is allowed only for a self-comparison with the same normalized bytes, declared language, original-work ID and translator; contradictory declarations are rejected instead of producing misleading numeric evidence. General, non-translation comparisons need not share an original.
 
 ## Fixed, inspectable method
 

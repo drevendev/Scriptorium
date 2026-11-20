@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 577
+STATE_REVISION: 578
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-20
-LAST_RESULT: #593 merged at 3866d6ac1c028878e41bb1f08deb3c3bc5ca495c; source-free lexical type-overlap extension proposed against exact master.
+LAST_RESULT: #594 merged at f87d8507d808737f0096c8e8905d5b5d2a9e20b4; same-edition lexical provenance consistency fix proposed from exact master.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-LEXICAL-TYPE-OVERLAP-012
-ISSUE: #562 source-free lexical comparison follow-on
-STATUS: PR_CANDIDATE; exact-head hosted CI and later independent acceptance pending
-BRANCH: scrip-lexical-type-overlap-20261120
-BASE: 3866d6ac1c028878e41bb1f08deb3c3bc5ca495c
+UNIT_ID: SCRIP-LEXICAL-EDITION-INTEGRITY-013
+ISSUE: #562 private lexical comparison follow-on
+STATUS: PR_CANDIDATE; exact-head CI and later independent acceptance pending
+BRANCH: scrip-lexical-edition-identity-20261120
+BASE: f87d8507d808737f0096c8e8905d5b5d2a9e20b4
 
-ACCEPTANCE: Offline lexical contrast reports shared, left-only and right-only distinct form counts plus versioned Jaccard type overlap in JSON, Markdown, HTML and CSV. Rare forms count as types but are never exposed. Preserve existing JS divergence/dominance, nonrepresentative warnings, NOT_RUN, old v1 report readability and FantLab metrics. Positive/negative regressions and later independent acceptance required; no source rights/public release promotion.
+ACCEPTANCE: Reused edition IDs reject contradictory declared language, original-work ID or translator even when normalized bytes match; translation-pair mode requires two distinct edition IDs. Valid same-edition self-comparisons and separately identified translations still work. Tests cover each conflict, positive controls and source-free outputs. No historical metric, text or licensing change.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Private readers can inspect the overlap and differences in lexical type sets without revealing any manuscript words.
+Milestone: Private lexical comparisons must preserve edition/translator identity, not merely matching source hashes.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 source-free lexical type overlap | Exact type-set counts and Jaccard in four formats; negative regressions; later merge | Exact-head PR CI and later acceptance |
-| P2 | #592 Reader live release verification | Site response and deployed Reader bytes match validated source | External network/DNS availability |
-| P3 | #562 rights-reviewed published lexical comparison | Edition-specific source-free distributions and lawful release evidence | Independent edition-level rights and replay identities |
+| P1 | #562 edition-ID provenance guard | Reject contradictory identities; positive/negative regressions; later merge | Exact-head PR CI and later acceptance |
+| P2 | #592 Reader live release verification | Public route and deployed Reader bytes match validated source | External network/DNS availability |
+| P3 | #562 legally published lexical comparison | Edition-specific source-free distributions and explicit rights/replay evidence | Rights and edition identities |
 | P4 | #511 Trusov translation pair | Independently complete historical literary body | Historical Page completeness |
-| P5 | #282 native AOT ambiguity | Measured discrimination on frozen inputs | Pinned backend/source |
+| P5 | #282 pinned native AOT collision | Reproducible measured noun/cardinal bounds | Python 3.9/pylem native sidecar and source |
 
 ## Retained scientific and operational boundaries
 

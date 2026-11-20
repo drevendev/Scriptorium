@@ -9,11 +9,11 @@ const csvText=new Function(source.slice(source.indexOf("  function csvText(value
 const start=source.indexOf("  function serializeChartCsv("),end=source.indexOf("  function exportChartCsv(",start);
 assert(start>0&&end>start);
 const serialize=new Function("metrics","lookup","isNumeric","csvText",source.slice(start,end)+"return serializeChartCsv;")(metrics,(b,id)=>b.metrics.find(m=>m.id===id),n=>typeof n==="number"&&Number.isFinite(n),csvText);
-const parse=csv=>{
+const parse=(csv,expectedCount=11)=>{
   assert(csv.startsWith("\uFEFF"));
   const [head,...lines]=csv.slice(1).trimEnd().split("\r\n");
   const labels=head.split(",");
-  assert.equal(lines.length,11);
+  assert.equal(lines.length,expectedCount);
   return lines.map(line=>{
     const cells=[...line.matchAll(/"((?:[^"]|"")*)"(?:,|$)/g)].map(m=>m[1].replaceAll('""','"'));
     assert.equal(cells.length,labels.length);
@@ -51,6 +51,28 @@ const zero=JSON.parse(JSON.stringify(doc));
 zero.books[0].metrics.find(m=>m.id==="fantlab.dialogue.share_percent").actual=0;
 const zr=parse(serialize(zero,"fantlab.dialogue.share_percent",false))[0];
 assert.equal(zr.actual,"0");assert.equal(zr.status,"measured");
+// Scoped single-metric exports must be distinct from full-chart exports.
+const selectedKeys=new Set(["anna","resurrection"]);
+const selected=parse(serialize(doc,"fantlab.dialogue.share_percent",false,selectedKeys),2);
+assert.deepEqual(selected.map(r=>r.book_key),["anna","resurrection"]);
+assert.deepEqual(selected.map(r=>r.position),["1","2"]);
+assert.ok(selected.every(r=>r.schema==="scriptorium-ru-chart-subset-csv-v1" &&
+  r.selection_scope==="catalog_highlight" && r.scientific_claim==="DIAGNOSTIC_ONLY" &&
+  r.fantlab_input_identity==="UNKNOWN" && r.m2_source_matched==="0"));
+assert.deepEqual(selected.map(r=>r.source_sha256),
+  measured.filter(b=>selectedKeys.has(b.key)).map(b=>b.source_sha256));
+const rankedSelected=parse(serialize(doc,"fantlab.dialogue.share_percent",true,selectedKeys),2);
+assert.deepEqual(rankedSelected.map(r=>r.book_key),["anna","resurrection"]);
+assert.ok(rankedSelected.every(r=>r.sort_order==="value_desc"));
+const selectedZero=parse(serialize(zero,"fantlab.dialogue.share_percent",false,new Set(["anna"])),1);
+assert.equal(selectedZero[0].actual,"0");assert.equal(selectedZero[0].status,"measured");
+const selectedMissing=parse(serialize(doc,id,false,new Set(["beketova"])),1);
+assert.equal(selectedMissing[0].actual,"");assert.equal(selectedMissing[0].status,"not_recorded");
+assert.equal(parse(serialize(doc,"fantlab.dialogue.share_percent",false))[0].schema,
+  "scriptorium-ru-chart-csv-v1");
+for(const bad of [new Set(),new Set(["missing"]),new Set(["anna","pending"]),["anna"],"anna"]){
+  assert.throws(()=>serialize(doc,"fantlab.dialogue.share_percent",false,bad),/выбор книг/);
+}
 const injected=JSON.parse(JSON.stringify(doc));injected.books[0].display_title="=1+2";
 assert.equal(parse(serialize(injected,"fantlab.dialogue.share_percent",false))[0].title,"'=1+2");
 assert.throws(()=>serialize({...doc,scientific_claim:"PARITY"},"fantlab.dialogue.share_percent",false),/научный статус/);

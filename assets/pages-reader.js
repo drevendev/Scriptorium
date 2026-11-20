@@ -42,6 +42,7 @@
   const chartButtons = [...document.querySelectorAll("[data-chart]")];
   const chartSortButton = el("chart-sort");
   const chartCsvButton = el("chart-export-csv");
+  const chartSelectedCsvButton = el("chart-export-selected-csv");
   const chartCopyButton = el("copy-chart-link");
   const bookLinks = [...document.querySelectorAll("[data-book]")];
   const catalogCards = [...document.querySelectorAll("#books .book[data-catalog-key]")];
@@ -947,6 +948,8 @@
       ". Описательный диапазон этой выборки — не норма и не доказательство авторства." :
       "Для выбранного показателя нет измеренных значений: минимум, медиана и максимум не рассчитываются. «Нет данных» не равно нулю.";
     el("chart-selection-panel").hidden=selection===null;
+    chartSelectedCsvButton.hidden=selection===null || selection.size===0;
+    chartSelectedCsvButton.disabled=chartSelectedCsvButton.hidden;
     if (selection!==null) {
       const subset=rows.filter(row=>selection.has(row.key)&&row.value!==null)
         .map(row=>row.value).sort((a,b)=>a-b);
@@ -1363,7 +1366,7 @@
 
 
   // Exact values behind a chart; absent field != NOT_RUN != numeric zero.
-  function serializeChartCsv(doc, id, sorted) {
+  function serializeChartCsv(doc, id, sorted, selectedKeys=null) {
     if (!Object.prototype.hasOwnProperty.call(metrics,id))
       throw Error("Показатель CSV не разрешён");
     if (!doc || doc.schema!=="scriptorium-ru-reader-v2" ||
@@ -1374,6 +1377,12 @@
       throw Error("Не подтверждён научный статус диаграммы");
     const measured=doc.books.filter(book=>book.text_status==="measured");
     if (measured.length!==11) throw Error("Неполный измеренный каталог");
+    // Contextual exports accept only verified, measured edition keys.
+    // The existing unscoped chart CSV must remain byte-identical.
+    const subsetMode=selectedKeys!==null;
+    if (subsetMode && (!(selectedKeys instanceof Set) || selectedKeys.size===0 ||
+        [...selectedKeys].some(key=>!measured.some(book=>book.key===key))))
+      throw Error("CSV: неподтверждённый выбор книг");
     const profiles=["metrics","normalization","dialogue","punctuation"];
     const baseline=measured[0].profiles;
     const rows=measured.map((book,ordinal)=>{
@@ -1402,8 +1411,11 @@
       "title","author","original_language","analysis_language","translator_id",
       "translator","edition_id","source_sha256","evidence_url","actual","status",
       "metrics_profile","normalization_profile","dialogue_profile","punctuation_profile"];
-    const lines=rows.map(({book,value,status},i)=>{
-      const cells=["scriptorium-ru-chart-csv-v1",doc.scientific_claim,
+    if (subsetMode) header.splice(1,0,"selection_scope");
+    const exportRows=subsetMode ? rows.filter(row=>selectedKeys.has(row.book.key)) : rows;
+    const lines=exportRows.map(({book,value,status},i)=>{
+      const cells=[subsetMode?"scriptorium-ru-chart-subset-csv-v1":"scriptorium-ru-chart-csv-v1",
+        ...(subsetMode?["catalog_highlight"]:[]),doc.scientific_claim,
         doc.fantlab_input_identity,doc.counts.m2_source_matched,id,
         metrics[id][0],metrics[id][1],sorted?"value_desc":"catalog",i+1,
         book.key,book.display_title,book.display_author,
@@ -1425,6 +1437,15 @@
     link.download="scriptorium-chart-"+currentChart+(sortChart?"-ranked":"")+".csv";
     document.body.appendChild(link);link.click();link.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
+  function exportSelectedChartCsv() {
+    // Re-read the validated visible selection at download time.
+    const selected=chartCatalogSelection(currentChart,window.location.search,
+      catalogMetric.value,catalogCards);
+    if (!selected || !selected.size) return;
+    downloadLibraryCsv(serializeChartCsv(data,currentChart,sortChart,selected),
+      "scriptorium-chart-"+currentChart+(sortChart?"-ranked":"")+"-subset.csv");
   }
 
   function pairEditionDescription(book, side) {
@@ -1894,13 +1915,14 @@
         option.textContent=label(option.value)+" · "+unit(option.value);
         catalogMetric.appendChild(option);
       }
-      const inputs=[catalogFilter,catalogOrigin,catalogAuthor,catalogMetric,catalogSearch,catalogOrder,catalogReset,catalogClear,catalogJump,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,catalogCsvButton,...chartButtons];
+      const inputs=[catalogFilter,catalogOrigin,catalogAuthor,catalogMetric,catalogSearch,catalogOrder,catalogReset,catalogClear,catalogJump,one,search,out,singleMarkdownButton,leftSelect,rightSelect,pairSwapButton,pairMetric,pairOnlyShared,pairExportButton,pairCsvButton,pairMarkdownButton,libraryCsvButton,chartSortButton,chartCsvButton,chartSelectedCsvButton,catalogCsvButton,...chartButtons];
       for(const input of inputs)input.disabled=false;
       for(const btn of chartButtons) {
         btn.addEventListener("click",()=>selectChart(btn.dataset.chart,true));
       }
       chartSortButton.addEventListener("click",()=>{sortChart=!sortChart;selectChart(currentChart,true);});
       chartCsvButton.addEventListener("click",exportChartCsv);
+      chartSelectedCsvButton.addEventListener("click",exportSelectedChartCsv);
       for(const anchor of bookLinks) {
         anchor.addEventListener("click",event=>{
           // Modified click still opens the source JSON, even without site JS.

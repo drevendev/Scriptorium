@@ -39,8 +39,8 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
         page = rendered["html"]
         metrics = json.loads(rendered["json"])["measurements"]
         self.assertIn("id='signed-differences'", page)
-        self.assertIn("right minus left", page)
-        self.assertIn("percentage points", page)
+        self.assertIn("правая книга минус левая", page)
+        self.assertIn("процентных пунктах", page)
         self.assertEqual(page.count("data-metric-id='"), 7)
         for item in metrics:
             marker = "data-metric-id='" + item["metric_id"] + "'"
@@ -50,13 +50,49 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
             self.assertIn(marker, page)
             value = item["right_minus_left_decimal"]
             signed = ("+" if Decimal(value) > 0 else "") + value
-            self.assertIn(">" + signed + " " + item["difference_unit"] + "</td>", page)
+            self.assertIn(">" + signed + " " + subject._RU_UNITS[item["difference_unit"]] + "</td>", page)
         self.assertNotIn("data-metric-id='fantlab.general.characters'", page)
         self.assertIn("right_minus_left", rendered["json"])
         from scriptorium import full_work_gallery
         self.assertEqual(rendered["csv"], full_work_gallery.render_csv(
             full_work_gallery.load_gallery(REPO)
         ))
+
+    def test_russian_pinned_reader_has_one_language_and_reviewed_units(self):
+        rendered = subject.build(REPO)
+        page = rendered["html"]
+        self.assertIn("<html lang='ru'>", page)
+        self.assertIn("Две книги. Разный ритм.", page)
+        self.assertIn("«Бегущая по волнам»", page)
+        self.assertIn("«Дети капитана Гранта»", page)
+        self.assertIn("перевод А. А. Бекетовой", page)
+        self.assertIn("Научная граница: M2 — 0/5", page)
+        self.assertIn("Семь измерений с разностями со знаком", page)
+        self.assertIn("href='measurements.json'", page)
+        self.assertIn("Скачать таблицу метрик (CSV)", page)
+        self.assertEqual(page.count("<th scope='row'>"), 17)
+        self.assertEqual(page.count("<h3>"), 7)
+        for metric_id, _, unit, normalized in subject.gallery.METRICS:
+            label = subject.METRIC_LABELS_RU[metric_id]
+            pretty_unit = subject._RU_UNITS[unit]
+            self.assertEqual(
+                page.count(f"{label} <small>{pretty_unit}</small>"),
+                3 if normalized else 1,
+            )
+        for english in ("Two books. Different rhythms.",
+                        "No manuscript text", "Seven normalized measures",
+                        "Observed differences", "Percentage points"):
+            self.assertNotIn(english, page)
+        self.assertNotIn("<script", page)
+        # Human copy changes only: stable machine and CSV contracts.
+        data = json.loads(rendered["json"])
+        self.assertEqual(data["schema_version"], "scriptorium-work-comparison-export-v1")
+        self.assertEqual(data["measurements"][0]["label"], "Characters including spaces")
+        self.assertIn("Characters including spaces", rendered["csv"])
+
+    def test_russian_reader_refuses_unexpected_gallery_markup(self):
+        with self.assertRaisesRegex(subject.ComparisonBuildError, "drift"):
+            subject._russian_reader_html("<html lang='en'></html>")
 
     def test_signed_differences_refuse_unexpected_metric_coverage(self):
         with self.assertRaises(subject.ComparisonBuildError):
@@ -66,7 +102,7 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
         page = subject.build(REPO)["html"]
         for piece in ("href='../../'", "href='measurements.json'",
                       "href='measurements.csv'", "href='#main'", "<table>",
-                      "No manuscript text"):
+                      "Сами произведения здесь не опубликованы"):
             self.assertIn(piece, page)
         self.assertNotIn("<script", page)
 

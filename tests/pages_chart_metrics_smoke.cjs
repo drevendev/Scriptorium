@@ -13,7 +13,7 @@ assert.ok(selectStart>=0&&start>selectStart&&end>start,"Shipped chart selection 
 const chartCatalogSelection=new Function(source.slice(selectStart,start)+"return chartCatalogSelection;")();
 const metrics=new Function(source.slice(source.indexOf("  const metrics ="),source.indexOf("  const names ="))+"return metrics;")();
 const ids=Object.keys(metrics);
-assert.equal(ids.length,9);
+assert.equal(ids.length,11);
 const measured=catalog.books.filter(b=>b.text_status==="measured");
 assert.equal(measured.length,11);
 const node=tag=>({tag,children:[],style:{},attrs:{},className:"",textContent:"",appendChild(n){this.children.push(n);return n;},setAttribute(k,v){this.attrs[k]=v;},replaceChildren(f){this.children=f.children;}});
@@ -44,7 +44,8 @@ for(const id of ids){
     assert.equal(tab[i].children[1].textContent,field&&Number.isFinite(field.actual)?String(field.actual):"нет данных",id);
   }
   const expected=measured.filter(book=>book.metrics.some(m=>m.id===id&&Number.isFinite(m.actual))).length;
-  assert.equal(expected,id.includes("mean_dialogue_sentence")||id.includes("mean_narration_sentence")?10:11,id);
+  assert.equal(expected,["mean_dialogue_sentence","mean_narration_sentence",
+    "punctuation.colon","punctuation.semicolon"].some(name=>id.includes(name))?10:11,id);
   assert.ok(elements["chart-unit"].textContent.includes(expected+" из 11"),id);
   const actualValues=measured.map(b=>b.metrics.find(m=>m.id===id)?.actual)
     .filter(v=>typeof v==="number"&&Number.isFinite(v)).sort((a,b)=>a-b);
@@ -130,6 +131,17 @@ assert.equal(elements["chart-series"].children[5].children[2].textContent,"не�
 assert.equal(elements["chart-table-rows"].children[5].children[1].textContent,"нет данных");
 render("fantlab.dialogue.share_percent");
 assert.equal(elements["chart-series"].children[5].children[2].textContent,"32,47%");
+// The two extra punctuation rates are source-backed for 10 editions; Beketova is
+// explicitly unavailable rather than silently zero or invented.
+for (const id of ["fantlab.punctuation.colon.per_1000_words",
+                  "fantlab.punctuation.semicolon.per_1000_words"]) {
+  render(id);
+  assert.equal(elements["chart-table-rows"].children.length,11);
+  assert.match(elements["chart-unit"].textContent,/10 из 11/);
+  assert.equal(elements["chart-table-rows"].children[5].children[1].textContent,"нет данных");
+  assert.equal(elements["chart-series"].children[5].children[2].textContent,"нет данных");
+  assert.ok(elements["chart-table-rows"].children[0].children[1].textContent.includes("."));
+}
 // Questions are a measured, language-dependent descriptive rate, not an author classifier.
 const questionId="fantlab.punctuation.question.per_1000_words";
 render(questionId);

@@ -1,29 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 574
+STATE_REVISION: 575
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-20
-LAST_RESULT: #590 merged at dcacba533d9820e6a80bc6146f317839d111d169; post-merge Pages workflows 44648988005 and 44648986677 succeeded. Scoped chart CSV prepared for independent acceptance.
+LAST_RESULT: #591 merged at bf8944b7b1f664c0f60180849e7c70e85d7362d2; two additional source-bound punctuation chart views proposed.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-CHART-SUBSET-CSV-009
-ISSUE: Reader contextual chart export (#283 public experience follow-on)
-STATUS: PR_CANDIDATE; exact-head CI, later independent review and live Pages verification pending
-BRANCH: scrip-reader-selected-chart-csv-20261120
-BASE: dcacba533d9820e6a80bc6146f317839d111d169
+UNIT_ID: SCRIP-READER-PUNCTUATION-CHARTS-010
+ISSUE: Reader exploratory punctuation chart coverage (#283 follow-on)
+STATUS: PR_CANDIDATE; exact-head CI, independent later review and live Pages verification pending
+BRANCH: scrip-reader-colon-semicolon-charts-20261120
+BASE: bf8944b7b1f664c0f60180849e7c70e85d7362d2
 
-ACCEPTANCE: A source-backed chart reached from a validated filtered catalogue exposes a selected-only one-metric CSV. Preserve complete 11-row chart CSV byte-for-byte, source hashes, edition/translator/profile evidence, true zeros and unavailable statuses. Scope/schema explicit; unknown, empty or unmeasured keys fail closed. Hide control outside valid selection. Exercise actual desktop/mobile download and fresh exact-head CI before later merge. Scientific metrics and M2 unchanged.
+ACCEPTANCE: Chart, source-backed exact table, catalogue metric facet, and both CSV forms expose colon and semicolon rates per 1,000 words for 10 measured editions, with Beketova explicitly unavailable (not a fabricated zero). Preserve all 11 edition rows and original nine metric exports unchanged. Test missing values, numeric precision, chart order and real desktop/mobile behavior before later acceptance. No metric formula/source/corpus/parity change.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Filtered readers can export their highlighted measurements without confusing them with the full distribution.
+Milestone: Readers can explore two additional punctuation rhythms with exact units, accessible tables and honest incomplete coverage.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Contextual chart CSV export | Verified subset, scoped evidence, browser tests, later merge | PR head/checks |
-| P2 | Live Reader release verification | Successful Pages workflows observed; public route remains unverified | DNS/network availability |
+| P1 | Colon and semicolon Reader charts | Two verified 10/11 chart views, correct CSV, browser checks, later merge | Exact-head PR CI and review |
+| P2 | Live Reader release verification | Public route and deployed script bytes confirmed independently | Network/DNS availability |
 | P3 | #562 source-bound lexical comparison | Rights-reviewed, pinned derived evidence | Edition-specific publication rights |
 | P4 | #511 Trusov translation pair | Independently complete literary body | Historical Page completeness |
 | P5 | #282 native AOT ambiguity | Measured discrimination on frozen inputs | Pinned backend/source |

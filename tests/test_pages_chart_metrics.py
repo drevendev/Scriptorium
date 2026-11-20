@@ -14,6 +14,8 @@ IDS = (
     "fantlab.punctuation.comma.per_1000_words",
     "fantlab.punctuation.question.per_1000_words",
     "fantlab.punctuation.dash.per_1000_words",
+    "fantlab.punctuation.colon.per_1000_words",
+    "fantlab.punctuation.semicolon.per_1000_words",
     "fantlab.general.mean_word_length_chars",
     "fantlab.dialogue.author_text_inside_dialogue_percent",
     "fantlab.dialogue.mean_dialogue_sentence_length_chars",
@@ -108,8 +110,15 @@ class ExpandedChartTests(unittest.TestCase):
             with self.subTest(metric=metric_id):
                 actual = [next((row["actual"] for row in b["metrics"] if row["id"] == metric_id), None) for b in books]
                 present = sum(type(v) in (int, float) for v in actual)
-                self.assertEqual(present, 10 if metric_id in IDS[-2:] else 11)
-                if metric_id in IDS[-2:]: self.assertIsNone(actual[5])  # Beketova translation
+                missing_in_beketova = metric_id in {
+                    "fantlab.punctuation.colon.per_1000_words",
+                    "fantlab.punctuation.semicolon.per_1000_words",
+                    "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+                    "fantlab.dialogue.mean_narration_sentence_length_chars",
+                }
+                self.assertEqual(present, 10 if missing_in_beketova else 11)
+                if missing_in_beketova:
+                    self.assertIsNone(actual[5])  # Beketova translation
 
     def test_render_fail_closed_and_no_synthetic_zeros(self):
         js = (ROOT / "assets/pages-reader.js").read_text(encoding="utf-8")

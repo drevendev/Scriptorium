@@ -20,6 +20,11 @@ from .vocabulary import VOCABULARY_PROFILE, vocabulary_lexemes
 PROFILE = "scriptorium-lexical-aggregate-contrast-v1"
 TYPE_OVERLAP_PROFILE = "scriptorium-lexical-type-overlap-v1"
 TOKEN_OVERLAP_PROFILE = "scriptorium-lexical-token-overlap-v1"
+SCIENTIFIC_BOUNDARY = (
+    "Local descriptive extension only; neither edition, translation lineage nor "
+    "reuse rights are independently verified. No author fingerprint or FantLab "
+    "parity (M2 0/5). Short texts remain nonrepresentative for corpus profiles."
+)
 SCHEMA = "scriptorium-private-lexical-contrast-v1"
 MIN_POOLED_OCCURRENCES = 5
 PSEUDOCOUNT = 0.5
@@ -207,11 +212,7 @@ def build_lexical_contrast(
         "word_token_imbalance_warning": token_ratio is not None and token_ratio >= 2,
         "corpus_admission": "NOT_VERIFIED",
         "public_release_ready": False,
-        "scientific_boundary": (
-            "Local descriptive extension only; neither edition, translation lineage nor "
-            "reuse rights are independently verified. No author fingerprint or FantLab "
-            "parity (M2 0/5). Short texts remain nonrepresentative for corpus profiles."
-        ),
+        "scientific_boundary": SCIENTIFIC_BOUNDARY,
         "aggregate": stats,
     }
 

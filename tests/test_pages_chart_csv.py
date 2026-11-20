@@ -14,7 +14,7 @@ class TestChartCsv(unittest.TestCase):
         css = (ROOT / "assets/pages-reader.css").read_text(encoding="utf-8")
         self.assertIn('id="chart-export-csv" disabled', html)
         self.assertIn('id="chart-export-selected-csv" hidden disabled', html)
-        self.assertIn("chartCsvButton,catalogCsvButton,...chartButtons", js)
+        self.assertIn("chartCsvButton,chartSelectedCsvButton,catalogCsvButton,...chartButtons", js)
         self.assertIn('catalogCsvButton.addEventListener("click",exportCatalogCsv)', js)
         self.assertIn('chartCsvButton.addEventListener("click",exportChartCsv)', js)
         self.assertIn('chartSelectedCsvButton.addEventListener("click",exportSelectedChartCsv)', js)

@@ -6,6 +6,7 @@ This does not grant publication rights or embed manuscript tokens.
 from __future__ import annotations
 
 import csv
+import re
 from io import StringIO
 from math import isfinite
 
@@ -62,6 +63,45 @@ def _cell(value: object) -> str:
     raise ValueError("invalid lexical CSV value")
 
 
+
+def _validate_witness(witness: dict[str, object]) -> None:
+    """Validate declared replay evidence, not the truth of the source claim."""
+    # Reuse the builder's identity rules so re-rendered JSON cannot smuggle
+    # arbitrary text into numeric/provenance cells.
+    from .lexical_contrast import _id, _LANG, _translator
+    from .analyze import REPRESENTATIVE_CHARACTERS
+    from .text import NORMALIZATION_PROFILE
+    from .vocabulary import VOCABULARY_PROFILE
+
+    _id(witness["edition_id"], "edition")
+    _id(witness["original_work_id"], "original work", required=False)
+    translator = witness["translator"]
+    if _translator(translator) != translator:
+        raise ValueError("invalid lexical translator attribution")
+    language = witness["language"]
+    if type(language) is not str or _LANG.fullmatch(language) is None:
+        raise ValueError("invalid lexical language identity")
+    if (witness["normalization_profile"] != NORMALIZATION_PROFILE or
+            witness["vocabulary_profile"] != VOCABULARY_PROFILE):
+        raise ValueError("invalid lexical witness profile")
+    digest = witness["normalized_sha256"]
+    if type(digest) is not str or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+        raise ValueError("invalid lexical normalized digest")
+    counts = ("characters_including_spaces", "word_tokens", "distinct_forms")
+    if any(type(witness[key]) is not int or witness[key] < 0 for key in counts):
+        raise ValueError("invalid lexical witness counts")
+    chars, tokens, forms = (witness[key] for key in counts)
+    if forms > tokens or tokens > chars:
+        raise ValueError("inconsistent lexical witness counts")
+    if (type(witness["meets_300000_character_floor"]) is not bool or
+            witness["meets_300000_character_floor"] !=
+            (chars >= REPRESENTATIVE_CHARACTERS)):
+        raise ValueError("invalid lexical size-floor witness")
+    if (witness["source_text_embedded"] is not False or
+            witness["metadata_verified"] is not False):
+        raise ValueError("invalid lexical source-free witness flags")
+
+
 def render_lexical_contrast_csv(report: dict[str, object]) -> str:
     """Return a tidy, UTF-8-compatible four-column table with explicit units.
 
@@ -97,6 +137,27 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
     ):
         raise ValueError("invalid lexical aggregate")
 
+
+    for witness in (left, right):
+        if any(key not in witness for key, _ in _WITNESS_FIELDS):
+            raise ValueError("incomplete lexical witness")
+        _validate_witness(witness)
+
+    lengths = (left["characters_including_spaces"], right["characters_including_spaces"])
+    expected_length_ratio = (round(max(lengths) / min(lengths), 6)
+                             if min(lengths) else None)
+    if (type(report.get("length_imbalance_warning")) is not bool or
+            report.get("length_ratio_max_over_min") != expected_length_ratio or
+            report["length_imbalance_warning"] !=
+            (expected_length_ratio is not None and expected_length_ratio >= 2)):
+        raise ValueError("invalid lexical length-balance evidence")
+
+    if (report.get("profile") != "scriptorium-lexical-aggregate-contrast-v1" or
+            report.get("compatibility_status") != "extension" or
+            report.get("corpus_admission") != "NOT_VERIFIED" or
+            report.get("public_release_ready") is not False):
+        raise ValueError("invalid lexical source-free comparison boundary")
+
     output = StringIO(newline="")
     writer = csv.writer(output, lineterminator="\n")
     writer.writerow(("section", "field", "value", "unit"))
@@ -124,6 +185,11 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
             type(ratio) not in (int, float) or not isfinite(ratio) or ratio < 1
         )) or type(warning) is not bool or warning != (ratio is not None and ratio >= 2):
             raise ValueError("invalid word-token balance metadata")
+        tokens = (left["word_tokens"], right["word_tokens"])
+        expected_token_ratio = (round(max(tokens) / min(tokens), 6)
+                                if min(tokens) else None)
+        if ratio != expected_token_ratio:
+            raise ValueError("inconsistent lexical word-token ratio")
         add("comparison", "word_token_ratio_max_over_min", ratio, "ratio")
         add("comparison", "word_token_imbalance_warning", warning, "boolean")
 

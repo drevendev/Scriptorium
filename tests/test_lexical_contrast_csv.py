@@ -214,6 +214,62 @@ class LexicalContrastCsvTests(unittest.TestCase):
                               render_lexical_contrast(report, kind))
                 self.assertIn("NOT_RUN", render_lexical_contrast(sample("", "кот"), kind))
 
+
+    def test_stored_witness_and_fixed_boundaries_fail_closed(self):
+        original = sample()
+        invalid_witness = (
+            ("word token text", "word_tokens", "кот"),
+            ("word token string", "word_tokens", "10"),
+            ("boolean count", "word_tokens", True),
+            ("negative count", "distinct_forms", -1),
+            ("impossible distinct count", "distinct_forms", 100),
+            ("character count text", "characters_including_spaces", "кот"),
+            ("forged true floor", "meets_300000_character_floor", "true"),
+            ("forged false floor", "meets_300000_character_floor", True),
+            ("embedded manuscript", "source_text_embedded", True),
+            ("forged metadata verification", "metadata_verified", True),
+            ("non-hex digest", "normalized_sha256", "кот" * 32),
+            ("invalid edition", "edition_id", "raw manuscript words"),
+            ("invalid language", "language", "ru manuscript"),
+            ("bad normalization", "normalization_profile", "unreviewed"),
+            ("bad vocabulary", "vocabulary_profile", "unreviewed"),
+        )
+        from scriptorium.lexical_contrast_html import render_lexical_contrast_html
+        for label, key, value in invalid_witness:
+            report = {**original, "left": {**original["left"], key: value}}
+            for kind in ("html", "markdown", "csv"):
+                with self.subTest(case=label, kind=kind), self.assertRaises(ValueError):
+                    render_lexical_contrast(report, kind)
+            with self.subTest(case=label, kind="direct html"), self.assertRaises(ValueError):
+                render_lexical_contrast_html(report)
+
+        for field, value in (
+            ("length_ratio_max_over_min", " кот"),
+            ("length_imbalance_warning", True),
+            ("word_token_ratio_max_over_min", 999),
+            ("profile", "unreviewed"),
+            ("public_release_ready", True),
+            ("corpus_admission", "ADMITTED"),
+        ):
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                render_lexical_contrast({**original, field: value}, "html")
+
+        # Prior v1 reports without either optional overlap family or token
+        # imbalance metadata remain renderable, with the same CSV bytes.
+        legacy = {key: value for key, value in original.items()
+                  if key not in ("word_token_ratio_max_over_min", "word_token_imbalance_warning")}
+        legacy["method"] = {k: v for k, v in original["method"].items()
+                            if k not in ("type_overlap_profile", "type_overlap",
+                                         "token_overlap_profile", "token_overlap")}
+        legacy["aggregate"] = {k: v for k, v in original["aggregate"].items()
+                               if k not in ("shared_form_count", "left_only_form_count",
+                                            "right_only_form_count", "type_jaccard_percent",
+                                            "token_distribution_overlap_percent")}
+        baseline, _ = rows(legacy)
+        self.assertIn("Edition ID", render_lexical_contrast(legacy, "html"))
+        self.assertIn("Eligible shared-pool types", render_lexical_contrast(legacy, "markdown"))
+        self.assertEqual(baseline, render_lexical_contrast(legacy, "csv"))
+
     def test_cli_offline_csv_and_create_only_destination(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

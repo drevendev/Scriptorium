@@ -275,6 +275,24 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
                 aggregate["right_dominant_form_count"] +
                 aggregate["balanced_form_count"] != aggregate["eligible_form_count"]):
             raise ValueError("inconsistent lexical dominance partition")
+        # A dominance class with no forms cannot own any observed tokens.
+        # These source-independent identities apply even to pre-overlap v1.
+        for count_key, share_key in (
+            ("left_dominant_form_count", "left_dominant_token_share_percent"),
+            ("right_dominant_form_count", "right_dominant_token_share_percent"),
+        ):
+            if aggregate[count_key] == 0 and aggregate[share_key] != 0:
+                raise ValueError("inconsistent lexical dominance token share")
+        # Matching normalized digests identify one empirical distribution.
+        # No manuscript bytes are needed to reject contradictory summaries.
+        if status == "IDENTICAL_NORMALIZED_TEXT" and (
+            aggregate["jensen_shannon_divergence_bits"] != 0 or
+            aggregate["left_dominant_form_count"] != 0 or
+            aggregate["right_dominant_form_count"] != 0 or
+            (with_overlap and aggregate["type_jaccard_percent"] != 100) or
+            (with_token_overlap and aggregate["token_distribution_overlap_percent"] != 100)
+        ):
+            raise ValueError("inconsistent identical-text lexical measurements")
 
     if aggregate is not None and with_overlap:
         shared = aggregate["shared_form_count"]

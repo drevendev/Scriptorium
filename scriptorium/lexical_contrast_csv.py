@@ -158,6 +158,38 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
             report.get("public_release_ready") is not False):
         raise ValueError("invalid lexical source-free comparison boundary")
 
+    # Stored source-free reports are untrusted input: human-readable outputs
+    # must not repeat arbitrary prose in the status or scientific disclaimer.
+    from .lexical_contrast import SCIENTIFIC_BOUNDARY
+    if report.get("scientific_boundary") != SCIENTIFIC_BOUNDARY:
+        raise ValueError("invalid lexical scientific boundary")
+
+    if left["edition_id"] == right["edition_id"] and any(
+        left[key] != right[key] for key in (
+            "normalized_sha256", "original_work_id", "language", "translator"
+        )
+    ):
+        raise ValueError("conflicting identity for one lexical edition")
+
+    # Translation-pair intent was not serialized in historical v1 reports.
+    # With missing/different original-work IDs, either an ordinary comparison
+    # or explicit translation-lineage incomparability can be genuine.
+    if not left["word_tokens"] or not right["word_tokens"]:
+        admissible = {"NOT_RUN_EMPTY"}
+    elif left["language"] != right["language"]:
+        admissible = {"INCOMPARABLE_LANGUAGE"}
+    else:
+        same_text = left["normalized_sha256"] == right["normalized_sha256"]
+        admissible = {"IDENTICAL_NORMALIZED_TEXT" if same_text else "COMPARABLE"}
+        if (left["original_work_id"] is None or
+                left["original_work_id"] != right["original_work_id"]):
+            admissible.add("INCOMPARABLE_TRANSLATION_LINEAGE")
+    status = report.get("status")
+    measured = status in ("COMPARABLE", "IDENTICAL_NORMALIZED_TEXT")
+    if (type(status) is not str or status not in admissible or
+            measured != (aggregate is not None)):
+        raise ValueError("inconsistent lexical comparison status")
+
     output = StringIO(newline="")
     writer = csv.writer(output, lineterminator="\n")
     writer.writerow(("section", "field", "value", "unit"))

@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 588
+STATE_REVISION: 589
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-21
-LAST_RESULT: #604 merged at 9f55c90916675ffa327eed698e67140f4b210256; independently pinned Anna/Resurrection native N comparison authored for later acceptance.
+LAST_RESULT: #605 merged at fff3e93dda4a4a9a61bb346e178862a1843ff79a; follow-on mixed-N/any-N interpretation candidate authored for later acceptance.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-NATIVE-N-CROSSWORK-022
-ISSUE: #282; independent full-work AOT/pylem evidence first accepted in #574
+UNIT_ID: SCRIP-MORPH-NATIVE-N-ANYN-CROSSWORK-023
+ISSUE: #282; follow-on to merged #605 and earlier measured independent native witnesses
 STATUS: PR_CANDIDATE; exact-head CI, later independent acceptance and live Pages proof pending
-BRANCH: scrip-native-n-two-work-comparison-20261121
-BASE: 9f55c90916675ffa327eed698e67140f4b210256
+BRANCH: scrip-native-n-crosswork-anyn-20261121
+BASE: fff3e93dda4a4a9a61bb346e178862a1843ff79a
 
-ACCEPTANCE: Publish a source-free, pinned, scriptless cross-work comparison for Anna Karenina and Resurrection using independently observed native pylem==0.0.18 N-only/mixed token counts. Bind Resurrection's SHA-256/CI artifact/commit to the retained compact record, reuse verified Anna evidence and reject forged counts or provider identities. Distinguish the observed 2.84 percentage-point N-only rate difference from noun/cardinal disambiguation, sampling inference or FantLab parity. Add negative tests and retain M2 0/5. No source prose or production POS mapping changes.
+ACCEPTANCE: Keep the source-bound Reader cross-work comparison from concealing mixed N: compute per-book mixed-N and any-N percentages from the two already-verified disjoint count groups and show each with the correct token denominator. Show the descriptive +2.56 percentage-point any-N difference separately from the +2.84 percentage-point N-only difference. Reject forged native receipts, preserve independent identity checks, no inferred noun/cardinal POS, no new native measurement, no source prose, M2 0/5.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Make the two independently measured full-work native N ambiguity results inspectable and reproducible on the public Reader, with transparent provenance and no false noun/cardinal or FantLab claims.
+Milestone: Make the independently measured two-book native N uncertainty transparent across *both* N-only and mixed-N candidate populations, preserving the scientific limits and the exact frozen witnesses.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 native N cross-work Reader comparison | Both pinned native observations, validation, tests and accessible no-script table | Fresh CI; later independent PR acceptance |
+| P1 | #282 cross-work mixed N and any-N coverage | Exact rates, denominators, readable table, negative regressions, separate uncertainty claims | Fresh CI; later independent PR acceptance |
 | P2 | #282 third independent native N control or contrast | New measured evidence resolving a concrete ambiguity; no repeated existing probes | Pinned Python 3.9/pylem sidecar |
 | P3 | #562 legally publishable lexical comparison | Independently rights-cleared edition aggregates, no private manuscripts | Rights and edition identities |
 | P4 | #511 Trusov complete literary body | Independently verified opening/ending and body metrics | Historical page completeness |

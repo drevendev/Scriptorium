@@ -49,6 +49,29 @@ class NativeNCrossworkTests(unittest.TestCase):
                 (fake[group] if group else fake)[key] = invalid
                 with self.assertRaises(ValueError):
                     compare_pinned_native_n(anna, fake)
+        # The previously accepted Anna witness must stay bound to *all*
+        # source, native-runtime, provider and artifact identities, not just
+        # valid-looking SHA strings and the observed count vector.
+        anna_identity_tampering = (
+            ("work", "candidate_id", "other-work"),
+            ("work", "title", "Wrong edition"),
+            ("evidence", "workflow_url", "https://example.com/other-run"),
+            ("evidence", "artifact_id", 12876751228),
+            ("evidence", "artifact_json_sha256", "0" * 64),
+            ("evidence", "native_control_artifact_sha256", "0" * 64),
+            ("evidence", "scriptorium_revision", "0" * 40),
+            ("evidence", "normalized_sha256", "0" * 64),
+            ("evidence", "runtime_analysis_sha256", "0" * 64),
+            ("evidence", "pylem_version", "0.0.19"),
+            ("evidence", "runtime_profile", "unknown-sidecar"),
+            ("evidence", "pylem_sdist_sha256", "0" * 64),
+        )
+        for group, key, invalid in anna_identity_tampering:
+            with self.subTest(anna_group=group, anna_key=key):
+                fake = copy.deepcopy(anna)
+                fake[group][key] = invalid
+                with self.assertRaises(ValueError):
+                    compare_pinned_native_n(fake, resurrection)
         forged = copy.deepcopy(anna)
         forged["counts"]["n_only"] += 1
         with self.assertRaises(ValueError):

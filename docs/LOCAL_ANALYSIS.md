@@ -184,8 +184,9 @@ The outputs give **counts and denominators** for three disjoint/combined
 candidate groups: exclusively N, mixed N plus other runtime POS candidates,
 and their sum (any N). Every share is per observed word token; signed deltas
 are **Resurrection minus Anna Karenina**, in percentage points. Native
-source/edition hashes and native-run links appear in the JSON/Markdown
-outputs. CSV and Markdown use six/two decimal places only for presentation;
+source/edition candidate IDs, normalized/runtime-analysis SHA-256 digests and
+native-workflow URLs are included for **both works in every format**, including
+standalone CSV rows. CSV and Markdown use six/two decimal places only for presentation;
 those are not FantLab's rounding or a parity threshold.
 
 Before deriving values, the reader checks the **exact reviewed Git blob bytes**

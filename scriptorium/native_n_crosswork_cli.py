@@ -102,14 +102,22 @@ def render_crosswork_report(report: dict[str, object], kind: str) -> str:
         writer.writerow(("measure_id", "anna_count", "anna_word_tokens",
                          "anna_percent_of_word_tokens", "resurrection_count",
                          "resurrection_word_tokens", "resurrection_percent_of_word_tokens",
-                         "resurrection_minus_anna_percentage_points", "status"))
+                         "resurrection_minus_anna_percentage_points", "status",
+                         "anna_candidate_id", "anna_normalized_sha256",
+                         "anna_runtime_analysis_sha256", "anna_native_workflow",
+                         "resurrection_candidate_id", "resurrection_normalized_sha256",
+                         "resurrection_runtime_analysis_sha256", "resurrection_native_workflow"))
         for row in report["rows"]:
             writer.writerow((safe_csv_text(row["measure_id"]), row["anna_count"],
                              left["word_tokens"], f'{row["anna_percent_of_word_tokens"]:.6f}',
                              row["resurrection_count"], right["word_tokens"],
                              f'{row["resurrection_percent_of_word_tokens"]:.6f}',
                              f'{row["resurrection_minus_anna_percentage_points"]:+.6f}',
-                             "diagnostic_only"))
+                             "diagnostic_only",
+                             safe_csv_text(left["candidate_id"]), left["normalized_sha256"],
+                             left["runtime_analysis_sha256"], safe_csv_text(left["native_workflow"]),
+                             safe_csv_text(right["candidate_id"]), right["normalized_sha256"],
+                             right["runtime_analysis_sha256"], safe_csv_text(right["native_workflow"])))
         return stream.getvalue()
     if kind != "markdown":
         raise ValueError("unsupported cross-work report format")
@@ -133,9 +141,13 @@ def render_crosswork_report(report: dict[str, object], kind: str) -> str:
         "Числа округлены только для показа, это не правила округления FantLab.",
         "Разница между книгами описательная: не точность распознавания частей речи "
         "и не восстановленный выбор омонимов.", "",
-        "Подтверждения независимых запусков:", "",
-        f'- Анна Каренина: {left["native_workflow"]}',
-        f'- Воскресение: {right["native_workflow"]}', "",
+        "Подтверждения независимых запусков и SHA-256 идентичностей:", "",
+        f'- Анна Каренина ({left["candidate_id"]}): {left["native_workflow"]}',
+        f'  - Нормализованный текст · SHA-256: \`{left["normalized_sha256"]}\`',
+        f'  - Нативный анализ · SHA-256: \`{left["runtime_analysis_sha256"]}\`',
+        f'- Воскресение ({right["candidate_id"]}): {right["native_workflow"]}',
+        f'  - Нормализованный текст · SHA-256: \`{right["normalized_sha256"]}\`',
+        f'  - Нативный анализ · SHA-256: \`{right["runtime_analysis_sha256"]}\`', "",
     ]
     return "\n".join(lines)
 

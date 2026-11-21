@@ -224,7 +224,7 @@ class LexicalContrastCsvTests(unittest.TestCase):
         self.assertEqual(serialized, json.dumps(
             report, ensure_ascii=False, sort_keys=True, indent=2,
             allow_nan=False,
-        ) + "\\n")
+        ) + "\n")
 
         legacy = {key: value for key, value in report.items()
                   if key not in ("word_token_ratio_max_over_min",

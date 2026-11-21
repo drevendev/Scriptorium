@@ -177,6 +177,7 @@ AOT/pylem 0.0.18 receipts, not a new native experiment.
 scriptorium n-compare --root . --format markdown
 scriptorium n-compare --root . --format json --output n-compare.json
 scriptorium n-compare --root . --format csv --output n-compare.csv
+scriptorium n-compare --root . --format html --output n-compare.html
 python -m scriptorium.native_n_crosswork_cli --root . --format markdown
 ```
 
@@ -186,7 +187,7 @@ and their sum (any N). Every share is per observed word token; signed deltas
 are **Resurrection minus Anna Karenina**, in percentage points. Native
 source/edition candidate IDs, normalized/runtime-analysis SHA-256 digests and
 native-workflow URLs are included for **both works in every format**, including
-standalone CSV rows. CSV and Markdown use six/two decimal places only for presentation;
+standalone CSV rows. The self-contained, no-JavaScript **HTML** report provides a\nresponsive, keyboard-scrollable table, print layout, decorative percentage bars with\nnumeric alternatives, and source hashes/workflow links for both books. HTML and\nMarkdown display two decimal places; CSV displays six, only for presentation;
 those are not FantLab's rounding or a parity threshold.
 
 Before deriving values, the reader checks the **exact reviewed Git blob bytes**

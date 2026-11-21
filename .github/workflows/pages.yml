@@ -129,6 +129,7 @@ jobs:
           test -s build/branch-root-preview/metrics.html
           test -s build/branch-root-preview/assets/evidence-snapshot.json
           test -s build/branch-root-preview/assets/n-uncertainty-anna.json
+          test -s build/branch-root-preview/assets/n-uncertainty-resurrection-summary.json
           test -s build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           test -s build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           test -s build/branch-root-preview/assets/voice-preview.json

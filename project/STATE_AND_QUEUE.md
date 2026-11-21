@@ -1,31 +1,31 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 587
+STATE_REVISION: 588
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-21
-LAST_RESULT: #603 merged at a744586c3dc4ce03ca8f7e5a28f9a863e6d911df. Reader availability now reports observed / NOT_RUN / absent; a follow-on strict finite-number regression is proposed for later review.
+LAST_RESULT: #604 merged at 9f55c90916675ffa327eed698e67140f4b210256; independently pinned Anna/Resurrection native N comparison authored for later acceptance.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-FROZEN-PAIR-FINITE-GUARD-021
-ISSUE: #283/#603 post-merge evidence-integrity regression on the frozen two-work comparison
-STATUS: PR_CANDIDATE; exact-head CI, independent acceptance and live publication pending
-BRANCH: scrip-reader-coverage-finite-20261121
-BASE: a744586c3dc4ce03ca8f7e5a28f9a863e6d911df
+UNIT_ID: SCRIP-MORPH-NATIVE-N-CROSSWORK-022
+ISSUE: #282; independent full-work AOT/pylem evidence first accepted in #574
+STATUS: PR_CANDIDATE; exact-head CI, later independent acceptance and live Pages proof pending
+BRANCH: scrip-native-n-two-work-comparison-20261121
+BASE: 9f55c90916675ffa327eed698e67140f4b210256
 
-ACCEPTANCE: Never count non-finite NaN/Infinity Python float values as observed measurements on the source-bound Reader coverage panel; reject them before publication. Preserve genuine zero as measured, explicit NOT_RUN and absent separately, the fixed 23/4/2 and 11/0/18 observations, frozen input hashes and exact JSON/CSV. Positive/negative tests and later independent exact-head CI required; no M2 claim.
+ACCEPTANCE: Publish a source-free, pinned, scriptless cross-work comparison for Anna Karenina and Resurrection using independently observed native pylem==0.0.18 N-only/mixed token counts. Bind Resurrection's SHA-256/CI artifact/commit to the retained compact record, reuse verified Anna evidence and reject forged counts or provider identities. Distinguish the observed 2.84 percentage-point N-only rate difference from noun/cardinal disambiguation, sampling inference or FantLab parity. Add negative tests and retain M2 0/5. No source prose or production POS mapping changes.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Keep the delivered source-pinned Reader comparison scientifically honest: measured, NOT_RUN and absent coverage must reject non-finite numerical corruption, with all published source hashes and exports unchanged.
+Milestone: Make the two independently measured full-work native N ambiguity results inspectable and reproducible on the public Reader, with transparent provenance and no false noun/cardinal or FantLab claims.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Reader non-finite coverage regression | Reject NaN/Infinity; preserve genuine zero and source-backed 29-field coverage | Exact-head hosted CI; later acceptance |
-| P2 | #282 pinned native AOT noun/cardinal N | Reproducible collision bounds and versioned evidence | Python 3.9/pylem pinned sidecar |
-| P3 | #562 legally publishable lexical comparison | Independently rights-cleared complete-edition aggregates only, no source words or manuscripts | Rights and edition identities; not a blocker for Reader |
-| P4 | #511 Trusov full literary body | Independently verified opening/ending pages and full-body metrics | Historical Page completeness |
+| P1 | #282 native N cross-work Reader comparison | Both pinned native observations, validation, tests and accessible no-script table | Fresh CI; later independent PR acceptance |
+| P2 | #282 third independent native N control or contrast | New measured evidence resolving a concrete ambiguity; no repeated existing probes | Pinned Python 3.9/pylem sidecar |
+| P3 | #562 legally publishable lexical comparison | Independently rights-cleared edition aggregates, no private manuscripts | Rights and edition identities |
+| P4 | #511 Trusov complete literary body | Independently verified opening/ending and body metrics | Historical page completeness |
 | P5 | #284 explicit software license / attribution | Rights holder evidence and truthful release notices | Legal evidence from owner/rights holders |
 
 ## Retained scientific and operational boundaries

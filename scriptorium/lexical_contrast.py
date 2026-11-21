@@ -224,6 +224,23 @@ def render_lexical_contrast(report: dict[str, object], kind: str = "json") -> st
     if report.get("schema_version") != SCHEMA:
         raise ValueError("unsupported lexical contrast schema")
     if kind == "json":
+        # JSON is also a re-rendering/export boundary. The source-free CSV
+        # contract rejects forged aggregates, witnesses and methodology; an
+        # exact JSON field allow-list additionally prevents hidden source text
+        # from escaping inside arbitrary stored-report keys.
+        from .lexical_contrast_csv import _WITNESS_FIELDS, render_lexical_contrast_csv
+        render_lexical_contrast_csv(report)
+        required = {
+            "schema_version", "profile", "compatibility_status", "left", "right",
+            "status", "method", "length_ratio_max_over_min",
+            "length_imbalance_warning", "corpus_admission", "public_release_ready",
+            "scientific_boundary", "aggregate",
+        }
+        optional = {"word_token_ratio_max_over_min", "word_token_imbalance_warning"}
+        witness_fields = {key for key, _ in _WITNESS_FIELDS}
+        if (not required.issubset(report) or set(report) - required - optional or
+                any(set(report[side]) != witness_fields for side in ("left", "right"))):
+            raise ValueError("unexpected lexical JSON fields")
         return json.dumps(report, ensure_ascii=False, sort_keys=True,
                           indent=2, allow_nan=False) + "\n"
     if kind == "csv":

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import contextlib
 import csv
+import json
 from io import StringIO
 from pathlib import Path
 import tempfile
@@ -214,6 +215,53 @@ class LexicalContrastCsvTests(unittest.TestCase):
                               render_lexical_contrast(report, kind))
                 self.assertIn("NOT_RUN", render_lexical_contrast(sample("", "кот"), kind))
 
+
+    def test_json_replay_rejects_forged_evidence_and_hidden_source_fields(self):
+        report = sample()
+        serialized = render_lexical_contrast(report, "json")
+        self.assertEqual(json.loads(serialized), report)
+        # The verified JSON envelope is byte-identical to the earlier format.
+        self.assertEqual(serialized, json.dumps(
+            report, ensure_ascii=False, sort_keys=True, indent=2,
+            allow_nan=False,
+        ) + "\n")
+
+        legacy = {key: value for key, value in report.items()
+                  if key not in ("word_token_ratio_max_over_min",
+                                 "word_token_imbalance_warning")}
+        legacy["method"] = {key: value for key, value in report["method"].items()
+                            if key not in ("type_overlap_profile", "type_overlap",
+                                           "token_overlap_profile", "token_overlap")}
+        legacy["aggregate"] = {key: value for key, value in report["aggregate"].items()
+                               if key not in ("shared_form_count", "left_only_form_count",
+                                              "right_only_form_count", "type_jaccard_percent",
+                                              "token_distribution_overlap_percent")}
+        self.assertEqual(json.loads(render_lexical_contrast(legacy, "json")), legacy)
+        self.assertIsNone(json.loads(render_lexical_contrast(sample("", "кот"), "json"))[
+            "aggregate"])
+
+        for name, forged in (
+            ("extra top-level manuscript", {**report, "source_text": "PRIVATE_SOURCE_PASSAGE"}),
+            ("extra witness manuscript", {**report, "left": {
+                **report["left"], "source_excerpt": "PRIVATE_SOURCE_PASSAGE"
+            }}),
+            ("forged method description", {**report, "method": {
+                **report["method"], "denominator": "PRIVATE_SOURCE_PASSAGE"
+            }}),
+            ("forged numeric count", {**report, "aggregate": {
+                **report["aggregate"], "eligible_form_count": "PRIVATE_SOURCE_PASSAGE"
+            }}),
+            ("invalid numeric divergence", {**report, "aggregate": {
+                **report["aggregate"], "jensen_shannon_divergence_bits": float("nan")
+            }}),
+            ("inconsistent token warning", {**report, "word_token_imbalance_warning": True}),
+            ("partial optional witness", {**report,
+                "word_token_ratio_max_over_min": None}),
+            ("missing required field", {key: value for key, value in report.items()
+                                        if key != "scientific_boundary"}),
+        ):
+            with self.subTest(case=name), self.assertRaises(ValueError):
+                render_lexical_contrast(forged, "json")
 
     def test_stored_witness_and_fixed_boundaries_fail_closed(self):
         original = sample()

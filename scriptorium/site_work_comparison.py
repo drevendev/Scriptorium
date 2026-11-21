@@ -16,6 +16,9 @@ from .metric_labels import METRIC_LABELS_RU
 
 SLUG = "two-full-work-differences"
 TITLE = "Running on Waves × The Children of Captain Grant — measured differences"
+# The generated gallery bundle and the branch-root Reader are separate outputs.
+# Point to the published root Reader guide; build/site does not package metrics.html.
+GUIDE_URL = "https://drevendev.github.io/Scriptorium/metrics.html"
 SOURCE_PATHS = tuple(
     "corpus/candidates/diagnostics/" + candidate + ".json"
     for candidate, *_ in gallery.SOURCES
@@ -157,10 +160,16 @@ def _russian_reader_html(page: str) -> str:
             if page.count(source) != count:
                 raise ComparisonBuildError("frozen comparison metric markup drift")
             if count:
-                page = page.replace(
-                    source,
-                    f"{tag}{escape(russian_label)} <small>{escape(russian_unit)}</small>",
+                # Follow the same per-metric glossary anchors as the main Reader.
+                # This nested route is two directories below the Pages root.
+                label = f"{escape(russian_label)} <small>{escape(russian_unit)}</small>"
+                link = (
+                    f"<a href='{GUIDE_URL}#metric-{escape(metric_id, quote=True)}' "
+                    f"aria-label='Методика: {escape(russian_label, quote=True)} — "
+                    f"{escape(russian_unit, quote=True)}'>"
+                    f"{label}</a>"
                 )
+                page = page.replace(source, f"{tag}{link}")
     for english, russian in _RU_COPY:
         if english not in page:
             raise ComparisonBuildError("frozen comparison language markup drift")
@@ -283,7 +292,8 @@ def build(root: Path) -> dict[str, Any]:
     html_text = html_text.replace(
         marker,
         marker + "<nav aria-label='Reader navigation'>"
-        "<a href='../../'>← All published analyses</a></nav>",
+        "<a href='../../'>← All published analyses</a>"
+        f"<a href='{GUIDE_URL}'>Как читать показатели</a></nav>",
         1,
     ).replace(
         "</header>",

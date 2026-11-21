@@ -58,6 +58,73 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
             full_work_gallery.load_gallery(REPO)
         ))
 
+    def test_standalone_comparison_explains_every_metric_via_real_guide(self):
+        page = subject.build(REPO)["html"]
+        guide = (REPO / "metrics.html").read_text(encoding="utf-8")
+        self.assertEqual(page.count(f"href='{subject.GUIDE_URL}'>"), 1)
+        self.assertIn(f"href='{subject.GUIDE_URL}'>Как читать показатели</a>", page)
+        total = 0
+        for metric_id, _, _, normalized in subject.gallery.METRICS:
+            anchor = f"metric-{metric_id}"
+            self.assertIn(f'id="{anchor}"', guide)  # no broken methodology links
+            count = 3 if normalized else 1  # rate chart + exact + signed table
+            self.assertEqual(page.count(f"href='{subject.GUIDE_URL}#{anchor}'"), count)
+            self.assertEqual(
+                page.count(
+                    f"aria-label='Методика: {subject.METRIC_LABELS_RU[metric_id]} — "
+                    f"{subject._RU_UNITS[next(unit for key, _, unit, _ in subject.gallery.METRICS if key == metric_id)]}'"
+                ),
+                count,
+            )
+            total += count
+        self.assertEqual(total, 24)
+        self.assertEqual(page.count(f"href='{subject.GUIDE_URL}#metric-"), total)
+        self.assertNotIn("<script", page)
+        # Source-derived canonical downloads must remain byte-for-byte unchanged.
+        from scriptorium import full_work_gallery
+        self.assertEqual(subject.build(REPO)["csv"],
+                         full_work_gallery.render_csv(full_work_gallery.load_gallery(REPO)))
+
+    def test_metric_links_announce_units_to_assistive_technology(self):
+        # aria-label takes precedence over child <small>, so inspect the actual
+        # accessible-name attribute rather than only the visible text.
+        from html.parser import HTMLParser
+
+        class GuideLinkNames(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.names = {}
+
+            def handle_starttag(self, tag, attrs):
+                if tag != "a":
+                    return
+                attributes = dict(attrs)
+                prefix = subject.GUIDE_URL + "#metric-"
+                href = attributes.get("href", "")
+                if href.startswith(prefix):
+                    self.names.setdefault(href.removeprefix(prefix), []).append(
+                        attributes.get("aria-label")
+                    )
+
+        names = GuideLinkNames()
+        names.feed(subject.build(REPO)["html"])
+        for normalized in (False, True):
+            metric_id, _, unit, _ = next(
+                row for row in subject.gallery.METRICS if row[3] is normalized
+            )
+            expected = (
+                f"Методика: {subject.METRIC_LABELS_RU[metric_id]} — "
+                f"{subject._RU_UNITS[unit]}"
+            )
+            self.assertEqual(names.names[metric_id], [expected] * (3 if normalized else 1))
+
+    def test_missing_russian_glossary_label_fails_closed(self):
+        from unittest.mock import patch
+        labels = {**subject.METRIC_LABELS_RU, "fantlab.general.words": ""}
+        with patch.object(subject, "METRIC_LABELS_RU", labels):
+            with self.assertRaisesRegex(subject.ComparisonBuildError, "label or unit"):
+                subject.build(REPO)
+
     def test_russian_pinned_reader_has_one_language_and_reviewed_units(self):
         rendered = subject.build(REPO)
         page = rendered["html"]

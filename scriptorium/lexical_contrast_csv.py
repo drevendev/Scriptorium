@@ -6,6 +6,7 @@ This does not grant publication rights or embed manuscript tokens.
 from __future__ import annotations
 
 import csv
+import re
 from io import StringIO
 from math import isfinite
 
@@ -62,6 +63,45 @@ def _cell(value: object) -> str:
     raise ValueError("invalid lexical CSV value")
 
 
+
+def _validate_witness(witness: dict[str, object]) -> None:
+    """Validate declared replay evidence, not the truth of the source claim."""
+    # Reuse the builder's identity rules so re-rendered JSON cannot smuggle
+    # arbitrary text into numeric/provenance cells.
+    from .lexical_contrast import _id, _LANG, _translator
+    from .analyze import REPRESENTATIVE_CHARACTERS
+    from .text import NORMALIZATION_PROFILE
+    from .vocabulary import VOCABULARY_PROFILE
+
+    _id(witness["edition_id"], "edition")
+    _id(witness["original_work_id"], "original work", required=False)
+    translator = witness["translator"]
+    if _translator(translator) != translator:
+        raise ValueError("invalid lexical translator attribution")
+    language = witness["language"]
+    if type(language) is not str or _LANG.fullmatch(language) is None:
+        raise ValueError("invalid lexical language identity")
+    if (witness["normalization_profile"] != NORMALIZATION_PROFILE or
+            witness["vocabulary_profile"] != VOCABULARY_PROFILE):
+        raise ValueError("invalid lexical witness profile")
+    digest = witness["normalized_sha256"]
+    if type(digest) is not str or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+        raise ValueError("invalid lexical normalized digest")
+    counts = ("characters_including_spaces", "word_tokens", "distinct_forms")
+    if any(type(witness[key]) is not int or witness[key] < 0 for key in counts):
+        raise ValueError("invalid lexical witness counts")
+    chars, tokens, forms = (witness[key] for key in counts)
+    if forms > tokens or tokens > chars:
+        raise ValueError("inconsistent lexical witness counts")
+    if (type(witness["meets_300000_character_floor"]) is not bool or
+            witness["meets_300000_character_floor"] !=
+            (chars >= REPRESENTATIVE_CHARACTERS)):
+        raise ValueError("invalid lexical size-floor witness")
+    if (witness["source_text_embedded"] is not False or
+            witness["metadata_verified"] is not False):
+        raise ValueError("invalid lexical source-free witness flags")
+
+
 def render_lexical_contrast_csv(report: dict[str, object]) -> str:
     """Return a tidy, UTF-8-compatible four-column table with explicit units.
 
@@ -74,6 +114,21 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
     method = report.get("method")
     if type(left) is not dict or type(right) is not dict or type(method) is not dict:
         raise ValueError("incomplete lexical contrast report")
+    # Stored reports may be replayed without source text. Method descriptions
+    # are fixed evidence labels, not free-form manuscript or user input.
+    from .lexical_contrast import _METHOD
+    optional_method_fields = {
+        "type_overlap_profile", "type_overlap",
+        "token_overlap_profile", "token_overlap",
+    }
+    if (set(method) - set(_METHOD) or
+            any(key not in method or type(method[key]) is not type(value) or
+                method[key] != value for key, value in _METHOD.items()
+                if key not in optional_method_fields) or
+            any(type(method[key]) is not type(_METHOD[key]) or
+                method[key] != _METHOD[key] for key in optional_method_fields
+                if key in method)):
+        raise ValueError("invalid lexical method metadata")
     with_overlap = "type_overlap_profile" in method
     if ("type_overlap" in method) != with_overlap or (
         with_overlap and (
@@ -96,6 +151,72 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
         type(aggregate) is not dict or set(aggregate) != {key for key, _ in metrics}
     ):
         raise ValueError("invalid lexical aggregate")
+
+
+    for witness in (left, right):
+        if any(key not in witness for key, _ in _WITNESS_FIELDS):
+            raise ValueError("incomplete lexical witness")
+        _validate_witness(witness)
+
+    # Equal normalized digests identify the same tokenized source, regardless
+    # of edition metadata or whether optional historical metrics are present.
+    if left["normalized_sha256"] == right["normalized_sha256"] and any(
+        left[key] != right[key] for key in (
+            "characters_including_spaces", "word_tokens", "distinct_forms"
+        )
+    ):
+        raise ValueError("inconsistent same-digest lexical witness counts")
+
+    lengths = (left["characters_including_spaces"], right["characters_including_spaces"])
+    expected_length_ratio = (round(max(lengths) / min(lengths), 6)
+                             if min(lengths) else None)
+    length_ratio = report.get("length_ratio_max_over_min")
+    if (length_ratio is not None and
+            (type(length_ratio) not in (int, float) or not isfinite(length_ratio))):
+        raise ValueError("invalid lexical character-length ratio")
+    if (type(report.get("length_imbalance_warning")) is not bool or
+            length_ratio != expected_length_ratio or
+            report["length_imbalance_warning"] !=
+            (expected_length_ratio is not None and expected_length_ratio >= 2)):
+        raise ValueError("invalid lexical length-balance evidence")
+
+    if (report.get("profile") != "scriptorium-lexical-aggregate-contrast-v1" or
+            report.get("compatibility_status") != "extension" or
+            report.get("corpus_admission") != "NOT_VERIFIED" or
+            report.get("public_release_ready") is not False):
+        raise ValueError("invalid lexical source-free comparison boundary")
+
+    # Stored source-free reports are untrusted input: human-readable outputs
+    # must not repeat arbitrary prose in the status or scientific disclaimer.
+    from .lexical_contrast import SCIENTIFIC_BOUNDARY
+    if report.get("scientific_boundary") != SCIENTIFIC_BOUNDARY:
+        raise ValueError("invalid lexical scientific boundary")
+
+    if left["edition_id"] == right["edition_id"] and any(
+        left[key] != right[key] for key in (
+            "normalized_sha256", "original_work_id", "language", "translator"
+        )
+    ):
+        raise ValueError("conflicting identity for one lexical edition")
+
+    # Translation-pair intent was not serialized in historical v1 reports.
+    # With missing/different original-work IDs, either an ordinary comparison
+    # or explicit translation-lineage incomparability can be genuine.
+    if not left["word_tokens"] or not right["word_tokens"]:
+        admissible = {"NOT_RUN_EMPTY"}
+    elif left["language"] != right["language"]:
+        admissible = {"INCOMPARABLE_LANGUAGE"}
+    else:
+        same_text = left["normalized_sha256"] == right["normalized_sha256"]
+        admissible = {"IDENTICAL_NORMALIZED_TEXT" if same_text else "COMPARABLE"}
+        if (left["original_work_id"] is None or
+                left["original_work_id"] != right["original_work_id"]):
+            admissible.add("INCOMPARABLE_TRANSLATION_LINEAGE")
+    status = report.get("status")
+    measured = status in ("COMPARABLE", "IDENTICAL_NORMALIZED_TEXT")
+    if (type(status) is not str or status not in admissible or
+            measured != (aggregate is not None)):
+        raise ValueError("inconsistent lexical comparison status")
 
     output = StringIO(newline="")
     writer = csv.writer(output, lineterminator="\n")
@@ -124,6 +245,11 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
             type(ratio) not in (int, float) or not isfinite(ratio) or ratio < 1
         )) or type(warning) is not bool or warning != (ratio is not None and ratio >= 2):
             raise ValueError("invalid word-token balance metadata")
+        tokens = (left["word_tokens"], right["word_tokens"])
+        expected_token_ratio = (round(max(tokens) / min(tokens), 6)
+                                if min(tokens) else None)
+        if ratio != expected_token_ratio:
+            raise ValueError("inconsistent lexical word-token ratio")
         add("comparison", "word_token_ratio_max_over_min", ratio, "ratio")
         add("comparison", "word_token_imbalance_warning", warning, "boolean")
 
@@ -155,6 +281,32 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
                 raise ValueError("invalid lexical aggregate measurement")
         add("aggregate", key, value, unit)
 
+    if aggregate is not None:
+        # Every eligible pooled form has exactly one dominance classification.
+        # Check the invariant even for historical v1 reports without overlap.
+        if (aggregate["left_dominant_form_count"] +
+                aggregate["right_dominant_form_count"] +
+                aggregate["balanced_form_count"] != aggregate["eligible_form_count"]):
+            raise ValueError("inconsistent lexical dominance partition")
+        # A dominance class with no forms cannot own any observed tokens.
+        # These source-independent identities apply even to pre-overlap v1.
+        for count_key, share_key in (
+            ("left_dominant_form_count", "left_dominant_token_share_percent"),
+            ("right_dominant_form_count", "right_dominant_token_share_percent"),
+        ):
+            if aggregate[count_key] == 0 and aggregate[share_key] != 0:
+                raise ValueError("inconsistent lexical dominance token share")
+        # Matching normalized digests identify one empirical distribution.
+        # No manuscript bytes are needed to reject contradictory summaries.
+        if status == "IDENTICAL_NORMALIZED_TEXT" and (
+            aggregate["jensen_shannon_divergence_bits"] != 0 or
+            aggregate["left_dominant_form_count"] != 0 or
+            aggregate["right_dominant_form_count"] != 0 or
+            (with_overlap and aggregate["type_jaccard_percent"] != 100) or
+            (with_token_overlap and aggregate["token_distribution_overlap_percent"] != 100)
+        ):
+            raise ValueError("inconsistent identical-text lexical measurements")
+
     if aggregate is not None and with_overlap:
         shared = aggregate["shared_form_count"]
         left_only = aggregate["left_only_form_count"]
@@ -163,7 +315,9 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
         if (shared + left_only != left["distinct_forms"] or
                 shared + right_only != right["distinct_forms"] or
                 union == 0 or
-                aggregate["type_jaccard_percent"] != round(100 * shared / union, 6)):
+                aggregate["type_jaccard_percent"] != round(100 * shared / union, 6) or
+                aggregate["eligible_form_count"] +
+                aggregate["excluded_rare_form_count"] != union):
             raise ValueError("inconsistent lexical type-overlap measurements")
 
     return output.getvalue()

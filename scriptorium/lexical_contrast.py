@@ -20,12 +20,32 @@ from .vocabulary import VOCABULARY_PROFILE, vocabulary_lexemes
 PROFILE = "scriptorium-lexical-aggregate-contrast-v1"
 TYPE_OVERLAP_PROFILE = "scriptorium-lexical-type-overlap-v1"
 TOKEN_OVERLAP_PROFILE = "scriptorium-lexical-token-overlap-v1"
+SCIENTIFIC_BOUNDARY = (
+    "Local descriptive extension only; neither edition, translation lineage nor "
+    "reuse rights are independently verified. No author fingerprint or FantLab "
+    "parity (M2 0/5). Short texts remain nonrepresentative for corpus profiles."
+)
 SCHEMA = "scriptorium-private-lexical-contrast-v1"
 MIN_POOLED_OCCURRENCES = 5
 PSEUDOCOUNT = 0.5
 DOMINANCE_RATIO = 2.0
 _ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_./:-]{0,159}\Z")
 _LANG = re.compile(r"[a-z]{2,3}\Z")
+
+
+_METHOD: dict[str, object] = {
+    "lexical_identity": "NFC + casefold; surface word tokens; no lemmatization or yo/e fold",
+    "denominator": "all word tokens in each normalized text",
+    "min_pooled_occurrences": MIN_POOLED_OCCURRENCES,
+    "smoothing": "Jeffreys +0.5 per pooled type for dominance only",
+    "dominance_cutoff": ">=2x normalized smoothed relative frequency",
+    "divergence": "empirical Jensen-Shannon; base-2 bits, no smoothing",
+    "dictionary_dependency": None,
+    "type_overlap_profile": TYPE_OVERLAP_PROFILE,
+    "type_overlap": "intersection / union of distinct casefolded surface forms; no rarity filter or smoothing",
+    "token_overlap_profile": TOKEN_OVERLAP_PROFILE,
+    "token_overlap": "sum of minima of unsmoothed per-text token shares; all surface forms, including rare",
+}
 
 
 def _id(value: str | None, name: str, *, required: bool = True) -> str | None:
@@ -188,30 +208,14 @@ def build_lexical_contrast(
         "compatibility_status": "extension",
         "left": left, "right": right,
         "status": status,
-        "method": {
-            "lexical_identity": "NFC + casefold; surface word tokens; no lemmatization or yo/e fold",
-            "denominator": "all word tokens in each normalized text",
-            "min_pooled_occurrences": MIN_POOLED_OCCURRENCES,
-            "smoothing": "Jeffreys +0.5 per pooled type for dominance only",
-            "dominance_cutoff": ">=2x normalized smoothed relative frequency",
-            "divergence": "empirical Jensen-Shannon; base-2 bits, no smoothing",
-            "dictionary_dependency": None,
-            "type_overlap_profile": TYPE_OVERLAP_PROFILE,
-            "type_overlap": "intersection / union of distinct casefolded surface forms; no rarity filter or smoothing",
-            "token_overlap_profile": TOKEN_OVERLAP_PROFILE,
-            "token_overlap": "sum of minima of unsmoothed per-text token shares; all surface forms, including rare",
-        },
+        "method": dict(_METHOD),
         "length_ratio_max_over_min": ratio,
         "length_imbalance_warning": ratio is not None and ratio >= 2,
         "word_token_ratio_max_over_min": token_ratio,
         "word_token_imbalance_warning": token_ratio is not None and token_ratio >= 2,
         "corpus_admission": "NOT_VERIFIED",
         "public_release_ready": False,
-        "scientific_boundary": (
-            "Local descriptive extension only; neither edition, translation lineage nor "
-            "reuse rights are independently verified. No author fingerprint or FantLab "
-            "parity (M2 0/5). Short texts remain nonrepresentative for corpus profiles."
-        ),
+        "scientific_boundary": SCIENTIFIC_BOUNDARY,
         "aggregate": stats,
     }
 
@@ -225,6 +229,12 @@ def render_lexical_contrast(report: dict[str, object], kind: str = "json") -> st
     if kind == "csv":
         from .lexical_contrast_csv import render_lexical_contrast_csv
         return render_lexical_contrast_csv(report)
+    if kind in ("html", "markdown"):
+        # Private reports may be re-rendered from stored JSON instead of built
+        # locally. Validate all numeric aggregates, method tags and witnesses
+        # before a human-readable formatter can emit untrusted field values.
+        from .lexical_contrast_csv import render_lexical_contrast_csv
+        render_lexical_contrast_csv(report)
     if kind == "html":
         from .lexical_contrast_html import render_lexical_contrast_html
         return render_lexical_contrast_html(report)

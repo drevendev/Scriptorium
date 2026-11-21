@@ -75,6 +75,20 @@ class NativeNCrossworkOfflineTests(unittest.TestCase):
         self.assertEqual(rows[2]["anna_count"], "74751")
         self.assertEqual(rows[2]["resurrection_count"], "41263")
         self.assertEqual(rows[1]["status"], "diagnostic_only")
+        # Each standalone format must retain both native observations' identities.
+        for prefix, work in zip(("anna", "resurrection"), report["works"]):
+            for field in ("candidate_id", "normalized_sha256",
+                          "runtime_analysis_sha256", "native_workflow"):
+                self.assertIn(work[field], json_text)
+                self.assertIn(work[field], markdown)
+                for csv_row in rows:
+                    self.assertEqual(csv_row[f"{prefix}_{field}"], work[field])
+        # Do not emit a CSV/Markdown provenance-less export if a witness field is missing.
+        without_provenance = json.loads(json_text)
+        del without_provenance["works"][1]["runtime_analysis_sha256"]
+        for output_format in ("csv", "markdown"):
+            with self.assertRaises(KeyError):
+                render_crosswork_report(without_provenance, output_format)
         for text in (json_text, markdown, csv_text):
             self.assertNotIn("private manuscript", text)
             self.assertNotIn("normalized_text", text)

@@ -32,7 +32,10 @@ class NativeNCrossworkTests(unittest.TestCase):
         anna, resurrection = fixtures()
         cases = (
             ("counts", "n_only", 31709),
+            ("counts", "n_only", 31708.0),
             ("counts", "word_count", True),
+            ("evidence", "artifact_id", 14429917083.0),
+            ("evidence", "run_id", 44309635723.0),
             ("evidence", "artifact_json_sha256", "0" * 64),
             ("evidence", "normalized_sha256", "0" * 64),
             ("evidence", "head_sha", "0" * 40),

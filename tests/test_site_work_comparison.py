@@ -58,6 +58,48 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
             full_work_gallery.load_gallery(REPO)
         ))
 
+    def test_source_bound_metric_availability_is_explicit_and_accessible(self):
+        page = subject.build(REPO)["html"]
+        self.assertEqual(page.count("<section aria-labelledby='availability'>"), 1)
+        self.assertLess(page.index("id='availability'"), page.index("id='comparison'"))
+        self.assertIn("10 из 29 зарегистрированных показателей", page)
+        self.assertIn("семь относительных и средних", page)
+        self.assertIn("три абсолютных", page)
+        self.assertIn("aria-label='Полнота измерений для двух произведений'", page)
+        self.assertIn(
+            "<tr><th scope='row'>«Бегущая по волнам»</th>"
+            "<td>23</td><td>4</td><td>2</td></tr>", page
+        )
+        self.assertIn(
+            "<tr><th scope='row'>«Дети капитана Гранта» · Бекетова</th>"
+            "<td>11</td><td>0</td><td>18</td></tr>", page
+        )
+        self.assertIn("Последние два состояния — не ноль", page)
+        self.assertIn("M2 — 0/5", page)
+        self.assertEqual(page.count("<th scope='row'>"), 19)
+        self.assertEqual(page.count("data-metric-id='"), 7)
+        self.assertNotIn("<script", page)
+
+    def test_coverage_refuses_unregistered_invalid_or_missing_shared_measurement(self):
+        original = subject.gallery.load_gallery(REPO)
+        def copied():
+            return tuple({**r, "values": dict(r["values"])} for r in original)
+
+        unknown = copied()
+        unknown[0]["values"]["manuscript_raw_text"] = 1
+        with self.assertRaisesRegex(subject.ComparisonBuildError, "unregistered"):
+            subject._render_metric_availability(unknown)
+
+        corrupt = copied()
+        corrupt[0]["values"]["fantlab.general.words"] = True
+        with self.assertRaisesRegex(subject.ComparisonBuildError, "invalid"):
+            subject._render_metric_availability(corrupt)
+
+        missing = copied()
+        missing[1]["values"]["fantlab.general.words"] = None
+        with self.assertRaisesRegex(subject.ComparisonBuildError, "shared"):
+            subject._render_metric_availability(missing)
+
     def test_standalone_comparison_explains_every_metric_via_real_guide(self):
         page = subject.build(REPO)["html"]
         guide = (REPO / "metrics.html").read_text(encoding="utf-8")
@@ -140,7 +182,8 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
         self.assertIn("<nav aria-label='Навигация по результатам'>", page)
         self.assertEqual(page.count("<nav "), 1)
         self.assertNotIn("aria-label='Reader navigation'", page)
-        self.assertEqual(page.count("<th scope='row'>"), 17)
+        # Ten shared-value rows, seven signed deltas and two source-coverage rows.
+        self.assertEqual(page.count("<th scope='row'>"), 10 + 7 + 2)
         self.assertEqual(page.count("<h3>"), 7)
         for metric_id, _, unit, normalized in subject.gallery.METRICS:
             label = subject.METRIC_LABELS_RU[metric_id]

@@ -1,32 +1,32 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 585
+STATE_REVISION: 586
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-21
-LAST_RESULT: #600 merged at bf05131d5ae07a01b1c0bb10e45856827da5039d; #601 merged at 06b9867a51edda6ebada0c8eafa556b1b601c682. New scoped #562 JSON replay validation PR candidate; do not count authorship as acceptance.
+LAST_RESULT: #602 merged at cbbd96312175f5e06669eff325fe4cbe0700e1cd. Frozen-pair Reader availability explanation proposed separately for later acceptance.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-LEXICAL-JSON-REPLAY-GUARD-019
-ISSUE: #562 versioned source-free private lexical comparison
-STATUS: PR_CANDIDATE; exact-head CI and later independent acceptance pending
-BRANCH: scrip-lexical-json-replay-guard-20261121
-BASE: 06b9867a51edda6ebada0c8eafa556b1b601c682
+UNIT_ID: SCRIP-READER-FROZEN-PAIR-AVAILABILITY-020
+ISSUE: completed #283 accessibility/readability follow-on; existing frozen two-work comparison
+STATUS: PR_CANDIDATE; exact-head CI, independent acceptance and live publication pending
+BRANCH: scrip-reader-frozen-pair-availability-20261121
+BASE: cbbd96312175f5e06669eff325fe4cbe0700e1cd
 
-ACCEPTANCE: Re-serializing stored private JSON must validate the same fixed numeric, method, provenance and scientific boundary as CSV/HTML/Markdown. Only known top-level and witness fields may be exported; extra manuscript-bearing keys fail closed. Keep original bytes for valid current reports, readable pre-overlap v1, empty/NOT_RUN and all current format outputs. No source uploads, corpus admission, FantLab parity or profile change. Verify hosted exact-head tests and later independent acceptance; local/browser/live status remains separate.
+ACCEPTANCE: On the canonical Russian two-book route, count source-verified numeric, explicit NOT_RUN and absent registered metrics separately for each frozen edition (Grin 23/4/2; Beketova 11/0/18 across 29 installed definitions). Explain that only ten overlap numerically, seven have rate/mean deltas and three have absolute values. Never convert missing to zero or claim FantLab parity. Preserve frozen manuscript hashes and exact JSON/CSV bytes; fail closed on unknown or spoofed coverage; add positive/negative and built-route regressions.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Source-free offline lexical results are safe to replay across JSON and human-readable formats, while the source-backed Russian Reader explains real-work comparisons.
+Milestone: The source-pinned Russian Reader explains not only the compared values but which full-work measurements are unavailable and why, without sacrificing honest methodology or machine exports.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 private lexical JSON replay boundary | Reject undeclared text and forged measurements; exact current JSON bytes and legacy v1; hosted tests | Later-run PR acceptance |
-| P2 | Reader two-work comparison: explain evidence and missing measurements at point of use | Source-backed, accessible, responsive guidance without changing 29-field values or inventing scores | Frozen Reader comparison, no new corpus required |
-| P3 | #562 public lexical comparison | Only independently rights-cleared full-edition aggregate evidence; no manuscript/form text | Rights and edition identities; does not block P2 |
-| P4 | #282 pinned native AOT noun/cardinal collision | Reproducible measured noun/cardinal bounds and versions | Python 3.9/pylem native sidecar |
-| P5 | #511 complete Trusov literary body | Separately verified full translation with source-free metrics and coverage | Historical opening/closing Page completeness |
+| P1 | Frozen two-book Reader evidence/availability | Measured vs NOT_RUN vs absent and cross-work intersection visible, responsive, accessible | Exact-head hosted CI; later acceptance |
+| P2 | #562 legally publishable lexical comparison | Independently rights-cleared complete-edition aggregates only, no source words or manuscripts | Rights and edition identities; not a blocker for Reader |
+| P3 | #282 pinned native AOT noun/cardinal N | Reproducible collision bounds and versioned evidence | Python 3.9/pylem pinned sidecar |
+| P4 | #511 Trusov full literary body | Independently verified opening/ending pages and full-body metrics | Historical Page completeness |
+| P5 | #284 explicit software license / attribution | Rights holder evidence and truthful release notices | Legal evidence from owner/rights holders |
 
 ## Retained scientific and operational boundaries
 

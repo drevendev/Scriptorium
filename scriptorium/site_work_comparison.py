@@ -157,10 +157,15 @@ def _russian_reader_html(page: str) -> str:
             if page.count(source) != count:
                 raise ComparisonBuildError("frozen comparison metric markup drift")
             if count:
-                page = page.replace(
-                    source,
-                    f"{tag}{escape(russian_label)} <small>{escape(russian_unit)}</small>",
+                # Follow the same per-metric glossary anchors as the main Reader.
+                # This nested route is two directories below the Pages root.
+                label = f"{escape(russian_label)} <small>{escape(russian_unit)}</small>"
+                link = (
+                    f"<a href='../../metrics.html#metric-{escape(metric_id, quote=True)}' "
+                    f"aria-label='Методика: {escape(russian_label, quote=True)}'>"
+                    f"{label}</a>"
                 )
+                page = page.replace(source, f"{tag}{link}")
     for english, russian in _RU_COPY:
         if english not in page:
             raise ComparisonBuildError("frozen comparison language markup drift")
@@ -283,7 +288,8 @@ def build(root: Path) -> dict[str, Any]:
     html_text = html_text.replace(
         marker,
         marker + "<nav aria-label='Reader navigation'>"
-        "<a href='../../'>← All published analyses</a></nav>",
+        "<a href='../../'>← All published analyses</a>"
+        "<a href='../../metrics.html'>Как читать показатели</a></nav>",
         1,
     ).replace(
         "</header>",

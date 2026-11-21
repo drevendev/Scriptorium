@@ -1,30 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 589
+STATE_REVISION: 590
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-21
-LAST_RESULT: #605 merged at fff3e93dda4a4a9a61bb346e178862a1843ff79a; follow-on mixed-N/any-N interpretation candidate authored for later acceptance.
+LAST_RESULT: #606 merged at d21f15e3f8aa2c9c340aeb4ee0d83ca26629f2c3; prepared reproducible offline two-work native N comparison for later acceptance.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-NATIVE-N-ANYN-CROSSWORK-023
-ISSUE: #282; follow-on to merged #605 and earlier measured independent native witnesses
-STATUS: PR_CANDIDATE; exact-head CI, later independent acceptance and live Pages proof pending
-BRANCH: scrip-native-n-crosswork-anyn-20261121
-BASE: fff3e93dda4a4a9a61bb346e178862a1843ff79a
+UNIT_ID: SCRIP-MORPH-NATIVE-N-OFFLINE-REPLAY-024
+ISSUE: #282; follow-on to independently merged #606, reusing two pinned native witnesses
+STATUS: PR_CANDIDATE; full CI and later independent acceptance pending
+BRANCH: scrip-native-n-crosswork-offline-cli-20261121
+BASE: d21f15e3f8aa2c9c340aeb4ee0d83ca26629f2c3
 
-ACCEPTANCE: Keep the source-bound Reader cross-work comparison from concealing mixed N: compute per-book mixed-N and any-N percentages from the two already-verified disjoint count groups and show each with the correct token denominator. Show the descriptive +2.56 percentage-point any-N difference separately from the +2.84 percentage-point N-only difference. Reject forged native receipts, preserve independent identity checks, no inferred noun/cardinal POS, no new native measurement, no source prose, M2 0/5.
+ACCEPTANCE: `scriptorium n-compare --root .` replays the source-free Anna/Resurrection N-only, mixed-N and any-N count/rate differences in Markdown/CSV/JSON with exact observed denominators, signed percentage-point units and native evidence URLs. Both frozen Git blob identities and witness metadata fail closed; no provider rerun, private prose, POS disambiguation, changed metric profiles, or M2 parity claim. Add negative/positive CLI regression checks and document the offline flow.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Make the independently measured two-book native N uncertainty transparent across *both* N-only and mixed-N candidate populations, preserving the scientific limits and the exact frozen witnesses.
+Milestone: Make the published two-book N comparison independently reproducible offline while leaving the unresolved AOT noun/cardinal selection scientifically explicit.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 cross-work mixed N and any-N coverage | Exact rates, denominators, readable table, negative regressions, separate uncertainty claims | Fresh CI; later independent PR acceptance |
-| P2 | #282 third independent native N control or contrast | New measured evidence resolving a concrete ambiguity; no repeated existing probes | Pinned Python 3.9/pylem sidecar |
-| P3 | #562 legally publishable lexical comparison | Independently rights-cleared edition aggregates, no private manuscripts | Rights and edition identities |
+| P1 | #282 offline N cross-work replay | Exact pinned witnesses; runnable CLI in three formats; altered source rejected; CI acceptance | Later independent review of this PR |
+| P2 | #282 third independent native N contrast | New measured evidence on pinned Python 3.9/pylem sidecar; new consequence for N collision | Hosted native provider |
+| P3 | #562 legally publishable lexical comparison | Independently rights-cleared edition aggregates; no private manuscripts | Rights and edition identities |
 | P4 | #511 Trusov complete literary body | Independently verified opening/ending and body metrics | Historical page completeness |
 | P5 | #284 explicit software license / attribution | Rights holder evidence and truthful release notices | Legal evidence from owner/rights holders |
 

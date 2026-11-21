@@ -90,12 +90,23 @@ def compare_pinned_native_n(anna: Mapping[str, object], resurrection: Mapping[st
         raise ValueError("Resurrection native provider mismatch")
     anna_n = ac["n_only"] * 100 / ac["word_count"]
     resurrection_n = _COUNTS["n_only"] * 100 / _COUNTS["word_count"]
+    # N-only and mixed-N are disjoint observed populations. Including both
+    # describes candidate coverage, never noun/cardinal POS assignment.
+    anna_mixed = ac["n_mixed_excluded"] * 100 / ac["word_count"]
+    resurrection_mixed = _COUNTS["n_mixed_excluded"] * 100 / _COUNTS["word_count"]
+    anna_any = (ac["n_only"] + ac["n_mixed_excluded"]) * 100 / ac["word_count"]
+    resurrection_any = (_COUNTS["n_only"] + _COUNTS["n_mixed_excluded"]) * 100 / _COUNTS["word_count"]
     return {
         "status": "diagnostic_only",
         "unit": "percentage_points_of_word_tokens",
         "anna_n_only_percent": anna_n,
         "resurrection_n_only_percent": resurrection_n,
         "resurrection_minus_anna_pp": resurrection_n - anna_n,
+        "anna_n_mixed_percent": anna_mixed,
+        "resurrection_n_mixed_percent": resurrection_mixed,
+        "anna_any_n_percent": anna_any,
+        "resurrection_any_n_percent": resurrection_any,
+        "resurrection_minus_anna_any_n_pp": resurrection_any - anna_any,
         "inference": "descriptive_cross_work_difference_not_noun_cardinal_disambiguation",
         "m2_parity_admissible": False,
     }

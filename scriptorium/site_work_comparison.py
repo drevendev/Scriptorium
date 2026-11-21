@@ -177,6 +177,57 @@ def _russian_reader_html(page: str) -> str:
     return page
 
 
+def _render_metric_availability(records: tuple[dict[str, Any], ...]) -> str:
+    """Count measured, explicit NOT_RUN and absent fields without treating absence as zero."""
+    registered = set(METRIC_LABELS_RU)
+    selected = {metric_id for metric_id, *_ in gallery.METRICS}
+    if len(registered) != 29 or len(selected) != 10 or len(records) != 2:
+        raise ComparisonBuildError("frozen metric availability registry drift")
+    available_sets = []
+    rows = []
+    titles = ("«Бегущая по волнам»", "«Дети капитана Гранта» · Бекетова")
+    for record, title in zip(records, titles):
+        values = record["values"]
+        if not isinstance(values, dict) or set(values) - registered:
+            raise ComparisonBuildError("unregistered metric in source availability")
+        if any(value is not None and type(value) not in (int, float)
+               for value in values.values()):
+            raise ComparisonBuildError("invalid source availability value")
+        measured = {metric_id for metric_id, value in values.items()
+                    if type(value) in (int, float)}
+        not_run = sum(value is None for value in values.values())
+        absent = len(registered) - len(values)
+        available_sets.append(measured)
+        rows.append(
+            f"<tr><th scope='row'>{escape(title)}</th><td>{len(measured)}</td>"
+            f"<td>{not_run}</td><td>{absent}</td></tr>"
+        )
+    if available_sets[0] & available_sets[1] != selected:
+        raise ComparisonBuildError("frozen shared metric availability drift")
+    return (
+        "<section aria-labelledby='availability'>"
+        "<h2 id='availability'>Какие измерения доступны</h2>"
+        f"<p>В обоих закреплённых отчётах численно доступны {len(selected)} "
+        f"из {len(registered)} зарегистрированных показателей. "
+        "Здесь сравниваются именно эти десять: семь относительных и средних "
+        "с разностями, три абсолютных — только с исходными значениями. "
+        "Это покрытие сравнения, а не оценка произведений или точности FantLab.</p>"
+        "<div class='scroll' tabindex='0' role='region' "
+        "aria-label='Полнота измерений для двух произведений'>"
+        "<table><caption>Наличие чисел в закреплённых источниках</caption>"
+        "<thead><tr><th scope='col'>Произведение</th>"
+        "<th scope='col'>Измерено</th><th scope='col'>NOT_RUN</th>"
+        "<th scope='col'>Нет записи</th></tr></thead><tbody>"
+        + "".join(rows) + "</tbody></table></div>"
+        "<p>«Измерено» включает настоящий ноль; «NOT_RUN» означает, что расчёт "
+        "не выполнен (например, без словаря); «Нет записи» означает, что поле "
+        "не содержится в закреплённом отчёте. Последние два состояния — не ноль. "
+        "Данные Грина — диагностическое сопоставление без идентичного источника "
+        "FantLab; данные перевода Бекетовой — самостоятельные измерения Scriptorium. "
+        "Совпадение с FantLab не подтверждено (M2 — 0/5).</p></section>"
+    )
+
+
 def validate_entry(entry: object) -> None:
     """Only the exact reviewed pair and scientific boundaries may be published."""
     if not isinstance(entry, dict) or entry != EXPECTED_ENTRY:
@@ -282,12 +333,15 @@ def build(root: Path) -> dict[str, Any]:
         csv_text = gallery.render_csv(records)
         html_text = gallery.render_html(records)
         delta_section = _render_signed_differences(measurements)
+        availability_section = _render_metric_availability(records)
     except (gallery.GalleryError, ValueError, TypeError, KeyError, ArithmeticError) as exc:
         raise ComparisonBuildError("frozen comparison export failed validation") from exc
     marker = "<main id='main' class='wrap'>"
     values_marker = "<section aria-labelledby='values'>"
+    comparison_marker = "<section aria-labelledby='comparison'>"
     if (html_text.count(marker) != 1 or html_text.count("</header>") != 1 or
-            html_text.count(values_marker) != 1):
+            html_text.count(values_marker) != 1 or
+            html_text.count(comparison_marker) != 1):
         raise ComparisonBuildError("gallery HTML integration markers drifted")
     html_text = html_text.replace(
         marker,
@@ -302,7 +356,9 @@ def build(root: Path) -> dict[str, Any]:
         "<a href='measurements.csv' download>Download metric table (CSV)"
         "</a></p></header>",
         1,
-    ).replace(values_marker, delta_section + values_marker, 1)
+    ).replace(values_marker, delta_section + values_marker, 1).replace(
+        comparison_marker, availability_section + comparison_marker, 1
+    )
     html_text = _russian_reader_html(html_text)
     return {
         "html": html_text,

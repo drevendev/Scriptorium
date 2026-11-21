@@ -19,6 +19,7 @@
 .n-table{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
 .n-table table{width:100%;min-width:540px;border-collapse:collapse;font-variant-numeric:tabular-nums}
 #n-bigram-table{min-width:810px}
+#n-two-work-table{min-width:800px}
 .n-table caption{text-align:left;padding:.9rem 1rem;color:var(--subtle);font-size:.85rem}
 .n-table th,.n-table td{text-align:left;padding:.8rem 1rem;border-bottom:1px solid #bcc9bf}
 .n-table th{font-weight:700}.n-table thead{background:#e9efe7}.n-table tr:last-child td,.n-table tr:last-child th{border-bottom:none}
@@ -51,10 +52,11 @@
 <section class="n-panel" aria-labelledby="n-two-work"><h2 id="n-two-work">Два произведения, один источник неопределённости</h2>
 <p>Закреплённый <code>pylem==0.0.18</code> независимо проанализировал две полные русскоязычные редакции Толстого. Доля словоформ с <em>исключительно N</em> отличается между ними на <strong>2,84 процентного пункта</strong>. Это наблюдаемая разница между разными текстами, не оценка точности классификации и <strong>не является проверкой выбора омонимов</strong> в FantLab.</p>
 <div class="n-table" role="region" tabindex="0" aria-label="Наблюдаемая неоднозначность N в двух книгах"><table id="n-two-work-table"><caption>Независимые полные тексты; N-only и смешанные N — разные, непересекающиеся группы</caption>
-<thead><tr><th scope="col">Произведение</th><th scope="col">Только N</th><th scope="col">Все словоформы</th><th scope="col">Только N, %</th><th scope="col">N со смешанными тегами</th></tr></thead><tbody>
-<tr data-n-crosswork="anna"><th scope="row">Анна Каренина</th><td>55 081</td><td>269 358</td><td>20,45%</td><td>19 670</td></tr>
-<tr data-n-crosswork="resurrection"><th scope="row">Воскресение</th><td>31 708</td><td>136 129</td><td>23,29%</td><td>9 555</td></tr>
+<thead><tr><th scope="col">Произведение</th><th scope="col">Только N</th><th scope="col">Все словоформы</th><th scope="col">Только N, %</th><th scope="col">N со смешанными тегами</th><th scope="col">Смешанные N, %</th><th scope="col">Любой N, %</th></tr></thead><tbody>
+<tr data-n-crosswork="anna"><th scope="row">Анна Каренина</th><td>55 081</td><td>269 358</td><td>20,45%</td><td>19 670</td><td>7,30%</td><td>27,75%</td></tr>
+<tr data-n-crosswork="resurrection"><th scope="row">Воскресение</th><td>31 708</td><td>136 129</td><td>23,29%</td><td>9 555</td><td>7,02%</td><td>30,31%</td></tr>
 </tbody></table></div>
+<p>Если учитывать и словоформы, у которых N встречается <em>вместе с другими тегами</em>, доля всех словоформ с хотя бы одним N-кандидатом составляет <strong>27,75%</strong> в «Анне Карениной» и <strong>30,31%</strong> в «Воскресении» (разница <strong>+2,56 процентного пункта</strong>). Группы «только N» и «смешанные N» не пересекаются: это только кандидаты, не установленные части речи. Смешанные случаи по-прежнему исключены из условных границ существительных и числительных.</p>
 <p class="n-meta">«Воскресение»: 129 закреплённых глав, 890 835 символов с пробелами, нормализованный SHA-256 <code>2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0</code>. <a href="./assets/n-uncertainty-resurrection-summary.json">Проверяемая сводка без исходного текста ↗</a> · <a href="https://github.com/drevendev/Scriptorium/actions/runs/44309635723">Нативный CI и исходный производный артефакт ↗</a>. Обе оценки описательные, обе редакции не сопоставлены с точным входом FantLab; <strong>M2: 0/5</strong>. Артефакт CI может истечь, поэтому в репозитории закреплены его SHA-256 и сводные наблюдения.</p>
 </section>
 <section class="n-panel" aria-labelledby="n-share"><h2 id="n-share">Где теряется определённость</h2>

@@ -182,7 +182,8 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
         self.assertIn("<nav aria-label='Навигация по результатам'>", page)
         self.assertEqual(page.count("<nav "), 1)
         self.assertNotIn("aria-label='Reader navigation'", page)
-        self.assertEqual(page.count("<th scope='row'>"), 17)
+        # Ten shared-value rows, seven signed deltas and two source-coverage rows.
+        self.assertEqual(page.count("<th scope='row'>"), 10 + 7 + 2)
         self.assertEqual(page.count("<h3>"), 7)
         for metric_id, _, unit, normalized in subject.gallery.METRICS:
             label = subject.METRIC_LABELS_RU[metric_id]

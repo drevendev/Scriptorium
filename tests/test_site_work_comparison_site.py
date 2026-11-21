@@ -58,6 +58,13 @@ class CanonicalTwoWorkRouteTests(unittest.TestCase):
             self.assertIn(link, page)
         self.assertIn("id='signed-differences'", page)
         self.assertEqual(page.count("data-metric-id='"), 7)
+        # Validate the built route, not only the in-memory renderer.
+        self.assertEqual(page.count("<section aria-labelledby='availability'>"), 1)
+        self.assertIn("10 из 29 зарегистрированных показателей", page)
+        self.assertIn("«Бегущая по волнам»</th><td>23</td><td>4</td><td>2</td>", page)
+        self.assertIn("«Дети капитана Гранта» · Бекетова</th><td>11</td><td>0</td><td>18</td>", page)
+        self.assertIn("Последние два состояния — не ноль", page)
+        self.assertIn("aria-label='Полнота измерений для двух произведений'", page)
         # The Actions gallery is a separate bundle from the branch-root Reader.
         # Avoid broken local links to a guide absent from isolated site builds.
         from scriptorium.site_work_comparison import GUIDE_URL

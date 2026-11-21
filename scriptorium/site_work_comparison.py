@@ -8,6 +8,7 @@ from __future__ import annotations
 from decimal import Decimal
 from html import escape
 import json
+from math import isfinite
 from pathlib import Path
 from typing import Any
 
@@ -190,7 +191,12 @@ def _render_metric_availability(records: tuple[dict[str, Any], ...]) -> str:
         values = record["values"]
         if not isinstance(values, dict) or set(values) - registered:
             raise ComparisonBuildError("unregistered metric in source availability")
-        if any(value is not None and type(value) not in (int, float)
+        # A NaN/Infinity float is not a measurement, even when its Python
+        # type is numeric. Reject it rather than advertising missing evidence
+        # as observed coverage (or relying on a downstream JSON failure).
+        if any(value is not None and (
+                type(value) not in (int, float) or
+                (type(value) is float and not isfinite(value)))
                for value in values.values()):
             raise ComparisonBuildError("invalid source availability value")
         measured = {metric_id for metric_id, value in values.items()

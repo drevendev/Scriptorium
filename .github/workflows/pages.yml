@@ -140,6 +140,7 @@ jobs:
           cmp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
           cmp n-uncertainty.html build/branch-root-preview/n-uncertainty.html
           cmp assets/n-uncertainty-anna.json build/branch-root-preview/assets/n-uncertainty-anna.json
+          cmp assets/n-uncertainty-resurrection-summary.json build/branch-root-preview/assets/n-uncertainty-resurrection-summary.json
           cmp metrics.html build/branch-root-preview/metrics.html
           cmp voice/index.html build/branch-root-preview/voice/index.html
           cmp voice/holdout-three.csv build/branch-root-preview/voice/holdout-three.csv

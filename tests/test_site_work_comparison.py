@@ -61,21 +61,21 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
     def test_standalone_comparison_explains_every_metric_via_real_guide(self):
         page = subject.build(REPO)["html"]
         guide = (REPO / "metrics.html").read_text(encoding="utf-8")
-        self.assertEqual(page.count("href='../../metrics.html'>"), 1)
-        self.assertIn("href='../../metrics.html'>Как читать показатели</a>", page)
+        self.assertEqual(page.count(f"href='{subject.GUIDE_URL}'>"), 1)
+        self.assertIn(f"href='{subject.GUIDE_URL}'>Как читать показатели</a>", page)
         total = 0
         for metric_id, _, _, normalized in subject.gallery.METRICS:
             anchor = f"metric-{metric_id}"
             self.assertIn(f'id="{anchor}"', guide)  # no broken methodology links
             count = 3 if normalized else 1  # rate chart + exact + signed table
-            self.assertEqual(page.count(f"href='../../metrics.html#{anchor}'"), count)
+            self.assertEqual(page.count(f"href='{subject.GUIDE_URL}#{anchor}'"), count)
             self.assertEqual(
                 page.count(f"aria-label='Методика: {subject.METRIC_LABELS_RU[metric_id]}'"),
                 count,
             )
             total += count
         self.assertEqual(total, 24)
-        self.assertEqual(page.count("href='../../metrics.html#metric-"), total)
+        self.assertEqual(page.count(f"href='{subject.GUIDE_URL}#metric-"), total)
         self.assertNotIn("<script", page)
         # Source-derived canonical downloads must remain byte-for-byte unchanged.
         from scriptorium import full_work_gallery

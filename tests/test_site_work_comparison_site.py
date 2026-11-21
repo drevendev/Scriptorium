@@ -58,6 +58,12 @@ class CanonicalTwoWorkRouteTests(unittest.TestCase):
             self.assertIn(link, page)
         self.assertIn("id='signed-differences'", page)
         self.assertEqual(page.count("data-metric-id='"), 7)
+        # The Actions gallery is a separate bundle from the branch-root Reader.
+        # Avoid broken local links to a guide absent from isolated site builds.
+        from scriptorium.site_work_comparison import GUIDE_URL
+        self.assertEqual(page.count(f"href='{GUIDE_URL}'>"), 1)
+        self.assertEqual(page.count(f"href='{GUIDE_URL}#metric-"), 24)
+        self.assertNotIn("href='../../metrics.html", page)
         data = json.loads((page_path.parent / "measurements.json").read_text())
         self.assertEqual(len(data["measurements"]), 10)
         self.assertFalse(data["scientific_boundary"]["m2_parity_admissible"])

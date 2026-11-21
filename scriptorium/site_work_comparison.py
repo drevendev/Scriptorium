@@ -16,6 +16,9 @@ from .metric_labels import METRIC_LABELS_RU
 
 SLUG = "two-full-work-differences"
 TITLE = "Running on Waves × The Children of Captain Grant — measured differences"
+# The generated gallery bundle and the branch-root Reader are separate outputs.
+# Point to the published root Reader guide; build/site does not package metrics.html.
+GUIDE_URL = "https://drevendev.github.io/Scriptorium/metrics.html"
 SOURCE_PATHS = tuple(
     "corpus/candidates/diagnostics/" + candidate + ".json"
     for candidate, *_ in gallery.SOURCES
@@ -161,7 +164,7 @@ def _russian_reader_html(page: str) -> str:
                 # This nested route is two directories below the Pages root.
                 label = f"{escape(russian_label)} <small>{escape(russian_unit)}</small>"
                 link = (
-                    f"<a href='../../metrics.html#metric-{escape(metric_id, quote=True)}' "
+                    f"<a href='{GUIDE_URL}#metric-{escape(metric_id, quote=True)}' "
                     f"aria-label='Методика: {escape(russian_label, quote=True)}'>"
                     f"{label}</a>"
                 )
@@ -289,7 +292,7 @@ def build(root: Path) -> dict[str, Any]:
         marker,
         marker + "<nav aria-label='Reader navigation'>"
         "<a href='../../'>← All published analyses</a>"
-        "<a href='../../metrics.html'>Как читать показатели</a></nav>",
+        f"<a href='{GUIDE_URL}'>Как читать показатели</a></nav>",
         1,
     ).replace(
         "</header>",

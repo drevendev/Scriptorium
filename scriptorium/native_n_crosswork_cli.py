@@ -95,6 +95,9 @@ def render_crosswork_report(report: dict[str, object], kind: str) -> str:
     if kind == "json":
         return json.dumps(report, ensure_ascii=False, sort_keys=True,
                           indent=2, allow_nan=False) + "\n"
+    if kind == "html":
+        from .native_n_crosswork_html import render_crosswork_html
+        return render_crosswork_html(report)
     left, right = report["works"]
     if kind == "csv":
         stream = StringIO(newline="")
@@ -157,7 +160,7 @@ def main(argv: list[str] | None = None) -> int:
         description="Replay frozen source-free native N observations from two books (M2 0/5)")
     parser.add_argument("--root", type=Path, default=Path("."),
                         help="Repository checkout with two pinned assets/n-uncertainty JSON receipts")
-    parser.add_argument("--format", choices=("markdown", "csv", "json"), default="markdown")
+    parser.add_argument("--format", choices=("markdown", "csv", "json", "html"), default="markdown")
     parser.add_argument("--output", type=Path, help="Create-only offline report path")
     args = parser.parse_args(argv)
     try:

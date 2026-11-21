@@ -93,7 +93,7 @@ class NativeNCrossworkOfflineTests(unittest.TestCase):
             self.assertNotIn("private manuscript", text)
             self.assertNotIn("normalized_text", text)
         with self.assertRaises(ValueError):
-            render_crosswork_report(report, "html")
+            render_crosswork_report(report, "xml")
 
     def test_witness_byte_drift_and_source_injection_fail_closed(self):
         with tempfile.TemporaryDirectory() as tmp:

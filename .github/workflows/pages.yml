@@ -117,6 +117,7 @@ jobs:
           cp assets/pages-reader.js build/branch-root-preview/assets/pages-reader.js
           cp assets/evidence-snapshot.json build/branch-root-preview/assets/evidence-snapshot.json
           cp assets/n-uncertainty-anna.json build/branch-root-preview/assets/n-uncertainty-anna.json
+          cp assets/n-uncertainty-resurrection-summary.json build/branch-root-preview/assets/n-uncertainty-resurrection-summary.json
           cp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           cp assets/trusov-1775-interior-metrics.csv build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           cp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json

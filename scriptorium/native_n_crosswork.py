@@ -51,9 +51,19 @@ def compare_pinned_native_n(anna: Mapping[str, object], resurrection: Mapping[st
             or resurrection["source_text_included"] is not False
             or resurrection["m2_parity_admissible"] is not False):
         raise ValueError("Resurrection evidence boundary mismatch")
-    if resurrection["evidence"] != _RESURRECTION_PIN:
+    # JSON booleans and floats can compare equal to Python integers. Counts
+    # and run IDs must keep their actual type, not only their numeric value.
+    evidence = resurrection["evidence"]
+    counts = resurrection["counts"]
+    if (not isinstance(evidence, dict)
+            or any(type(evidence.get(key)) is not int for key in ("run_id", "artifact_id"))
+            or evidence != _RESURRECTION_PIN):
         raise ValueError("Resurrection native artifact identity mismatch")
-    if resurrection["counts"] != _COUNTS:
+    if (not isinstance(counts, dict)
+            or set(counts) != set(_COUNTS)
+            or any(type(counts[key]) is not int for key in _COUNTS)):
+        raise ValueError("Resurrection native counts must be JSON integers")
+    if counts != _COUNTS:
         raise ValueError("Resurrection native counts mismatch")
     if resurrection["provider"] != {
         "distribution": "pylem", "version": "0.0.18",

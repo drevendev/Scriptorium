@@ -11,6 +11,25 @@ from collections.abc import Mapping
 from .n_uncertainty_publication import validate_n_summary
 
 SCHEMA = "scriptorium-native-n-resurrection-summary-v1"
+_ANNA_WORK = {
+    "candidate_id": "tolstoy-anna-karenina-ru",
+    "title": "Анна Каренина",
+    "language": "ru",
+}
+# An independent pinned native witness: syntactically valid hashes alone do
+# not establish the frozen input, runtime or provider used for this comparison.
+_ANNA_EVIDENCE = {
+    "workflow_url": "https://github.com/drevendev/Scriptorium/actions/runs/40825478901",
+    "artifact_id": 12876751227,
+    "artifact_json_sha256": "6da40b4723cafc0288fea530a35f8d910b76e7ccffd60f754e6aa899412e5554",
+    "native_control_artifact_sha256": "083a92a0cc381f4c06cf3e606a1af2ad6187c936cd7dc21c53d7df95344c5e63",
+    "scriptorium_revision": "17a38f6e1dd372ca5eb4b51127d18e4ffb29b8e8",
+    "normalized_sha256": "1dcf2af815f6288099f77a038d873690fb0dc72edf81d2094fd29f3d5a30c205",
+    "runtime_analysis_sha256": "00cb365eeb6e187362cb1cb54acc6718c230791df18013702907dfee6446d69d",
+    "pylem_version": "0.0.18",
+    "runtime_profile": "pylem-0.0.18-python39-sidecar-v1",
+    "pylem_sdist_sha256": "66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515",
+}
 _RESURRECTION_PIN = {
     "candidate_id": "tolstoy-resurrection-ru",
     "normalized_sha256": "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0",
@@ -35,10 +54,8 @@ def compare_pinned_native_n(anna: Mapping[str, object], resurrection: Mapping[st
     if not isinstance(anna, dict) or not isinstance(resurrection, dict):
         raise ValueError("native N comparison requires two JSON objects")
     validate_n_summary(anna)
-    if (anna["work"]["candidate_id"] != "tolstoy-anna-karenina-ru"
-            or anna["evidence"]["artifact_json_sha256"] !=
-            "6da40b4723cafc0288fea530a35f8d910b76e7ccffd60f754e6aa899412e5554"):
-        raise ValueError("Anna frozen source identity mismatch")
+    if (anna["work"] != _ANNA_WORK or anna["evidence"] != _ANNA_EVIDENCE):
+        raise ValueError("Anna frozen source/provider identity mismatch")
     ac = anna["counts"]
     if ac != {"word_count": 269358, "sentence_count": 21228,
               "baseline_defined": 117554, "n_only": 55081,

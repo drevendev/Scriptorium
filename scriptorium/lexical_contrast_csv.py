@@ -158,11 +158,24 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
             raise ValueError("incomplete lexical witness")
         _validate_witness(witness)
 
+    # Equal normalized digests identify the same tokenized source, regardless
+    # of edition metadata or whether optional historical metrics are present.
+    if left["normalized_sha256"] == right["normalized_sha256"] and any(
+        left[key] != right[key] for key in (
+            "characters_including_spaces", "word_tokens", "distinct_forms"
+        )
+    ):
+        raise ValueError("inconsistent same-digest lexical witness counts")
+
     lengths = (left["characters_including_spaces"], right["characters_including_spaces"])
     expected_length_ratio = (round(max(lengths) / min(lengths), 6)
                              if min(lengths) else None)
+    length_ratio = report.get("length_ratio_max_over_min")
+    if (length_ratio is not None and
+            (type(length_ratio) not in (int, float) or not isfinite(length_ratio))):
+        raise ValueError("invalid lexical character-length ratio")
     if (type(report.get("length_imbalance_warning")) is not bool or
-            report.get("length_ratio_max_over_min") != expected_length_ratio or
+            length_ratio != expected_length_ratio or
             report["length_imbalance_warning"] !=
             (expected_length_ratio is not None and expected_length_ratio >= 2)):
         raise ValueError("invalid lexical length-balance evidence")

@@ -143,11 +143,11 @@ def render_crosswork_report(report: dict[str, object], kind: str) -> str:
         "и не восстановленный выбор омонимов.", "",
         "Подтверждения независимых запусков и SHA-256 идентичностей:", "",
         f'- Анна Каренина ({left["candidate_id"]}): {left["native_workflow"]}',
-        f'  - Нормализованный текст · SHA-256: \`{left["normalized_sha256"]}\`',
-        f'  - Нативный анализ · SHA-256: \`{left["runtime_analysis_sha256"]}\`',
+        f'  - Нормализованный текст · SHA-256: `{left["normalized_sha256"]}`',
+        f'  - Нативный анализ · SHA-256: `{left["runtime_analysis_sha256"]}`',
         f'- Воскресение ({right["candidate_id"]}): {right["native_workflow"]}',
-        f'  - Нормализованный текст · SHA-256: \`{right["normalized_sha256"]}\`',
-        f'  - Нативный анализ · SHA-256: \`{right["runtime_analysis_sha256"]}\`', "",
+        f'  - Нормализованный текст · SHA-256: `{right["normalized_sha256"]}`',
+        f'  - Нативный анализ · SHA-256: `{right["runtime_analysis_sha256"]}`', "",
     ]
     return "\n".join(lines)
 

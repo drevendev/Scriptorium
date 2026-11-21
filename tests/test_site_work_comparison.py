@@ -58,6 +58,37 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
             full_work_gallery.load_gallery(REPO)
         ))
 
+    def test_standalone_comparison_explains_every_metric_via_real_guide(self):
+        page = subject.build(REPO)["html"]
+        guide = (REPO / "metrics.html").read_text(encoding="utf-8")
+        self.assertEqual(page.count("href='../../metrics.html'>"), 1)
+        self.assertIn("href='../../metrics.html'>Как читать показатели</a>", page)
+        total = 0
+        for metric_id, _, _, normalized in subject.gallery.METRICS:
+            anchor = f"metric-{metric_id}"
+            self.assertIn(f'id="{anchor}"', guide)  # no broken methodology links
+            count = 3 if normalized else 1  # rate chart + exact + signed table
+            self.assertEqual(page.count(f"href='../../metrics.html#{anchor}'"), count)
+            self.assertEqual(
+                page.count(f"aria-label='Методика: {subject.METRIC_LABELS_RU[metric_id]}'"),
+                count,
+            )
+            total += count
+        self.assertEqual(total, 24)
+        self.assertEqual(page.count("href='../../metrics.html#metric-"), total)
+        self.assertNotIn("<script", page)
+        # Source-derived canonical downloads must remain byte-for-byte unchanged.
+        from scriptorium import full_work_gallery
+        self.assertEqual(subject.build(REPO)["csv"],
+                         full_work_gallery.render_csv(full_work_gallery.load_gallery(REPO)))
+
+    def test_missing_russian_glossary_label_fails_closed(self):
+        from unittest.mock import patch
+        labels = {**subject.METRIC_LABELS_RU, "fantlab.general.words": ""}
+        with patch.object(subject, "METRIC_LABELS_RU", labels):
+            with self.assertRaisesRegex(subject.ComparisonBuildError, "label or unit"):
+                subject.build(REPO)
+
     def test_russian_pinned_reader_has_one_language_and_reviewed_units(self):
         rendered = subject.build(REPO)
         page = rendered["html"]

@@ -187,7 +187,10 @@ and their sum (any N). Every share is per observed word token; signed deltas
 are **Resurrection minus Anna Karenina**, in percentage points. Native
 source/edition candidate IDs, normalized/runtime-analysis SHA-256 digests and
 native-workflow URLs are included for **both works in every format**, including
-standalone CSV rows. The self-contained, no-JavaScript **HTML** report provides a\nresponsive, keyboard-scrollable table, print layout, decorative percentage bars with\nnumeric alternatives, and source hashes/workflow links for both books. HTML and\nMarkdown display two decimal places; CSV displays six, only for presentation;
+standalone CSV rows. The self-contained, no-JavaScript **HTML** report provides a
+responsive, keyboard-scrollable table, print layout, decorative percentage bars with
+numeric alternatives, and source hashes/workflow links for both books. HTML and
+Markdown display two decimal places; CSV displays six, only for presentation;
 those are not FantLab's rounding or a parity threshold.
 
 Before deriving values, the reader checks the **exact reviewed Git blob bytes**

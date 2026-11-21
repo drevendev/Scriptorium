@@ -166,3 +166,39 @@ html = render_html(artifact, title="Local analysis")
 Run focused checks with `python -m unittest discover -s tests -p 'test_analyze*.py' -v`.
 Tests exercise the real engine, deterministic output, Unicode normalization, dictionary
 limits, privacy, output aliases, failed publication and empty inputs.
+
+## Replay the pinned two-book native N diagnostic offline
+
+Run from a complete repository checkout; no manuscript download, morphology
+installation or network is required. This **reuses** two previously measured
+AOT/pylem 0.0.18 receipts, not a new native experiment.
+
+```bash
+scriptorium n-compare --root . --format markdown
+scriptorium n-compare --root . --format json --output n-compare.json
+scriptorium n-compare --root . --format csv --output n-compare.csv
+python -m scriptorium.native_n_crosswork_cli --root . --format markdown
+```
+
+The outputs give **counts and denominators** for three disjoint/combined
+candidate groups: exclusively N, mixed N plus other runtime POS candidates,
+and their sum (any N). Every share is per observed word token; signed deltas
+are **Resurrection minus Anna Karenina**, in percentage points. Native
+source/edition candidate IDs, normalized/runtime-analysis SHA-256 digests and
+native-workflow URLs are included for **both works in every format**, including
+standalone CSV rows. CSV and Markdown use six/two decimal places only for presentation;
+those are not FantLab's rounding or a parity threshold.
+
+Before deriving values, the reader checks the **exact reviewed Git blob bytes**
+of both `assets/n-uncertainty-anna.json` and
+`assets/n-uncertainty-resurrection-summary.json`, as well as their pinned
+provider/input/artifact identities and consistent counters. Changed, missing,
+oversized, symlinked or malformed receipts fail closed. `--output` never
+overwrites an existing file. Output contains only source-free aggregates.
+
+The runtime tag `N` collapses noun/cardinal representations; it is **not**
+a recovered noun frequency, classifier accuracy, individual-word decision or
+FantLab's unpublished homonym policy. Different works are not a controlled
+morphology intervention. Corpus and source-matched parity gates do not move:
+**M2 remains 0/5**. For the full retained Anna-only conditional interval and
+bigram/position evidence use `scriptorium n-evidence --root .`.

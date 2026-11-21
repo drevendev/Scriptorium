@@ -27,6 +27,7 @@ REQUIRED_ASSETS = (
     "assets/voice-preview.json",
     "assets/scriptorium-ru-measured-metrics.csv",
     "assets/n-uncertainty-anna.json",
+    "assets/n-uncertainty-resurrection-summary.json",
     "voice/holdout-three.csv",
 )
 

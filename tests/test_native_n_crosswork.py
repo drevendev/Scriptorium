@@ -23,6 +23,14 @@ class NativeNCrossworkTests(unittest.TestCase):
         self.assertAlmostEqual(delta["anna_n_only_percent"], 55081 / 269358 * 100)
         self.assertAlmostEqual(delta["resurrection_n_only_percent"], 31708 / 136129 * 100)
         self.assertAlmostEqual(delta["resurrection_minus_anna_pp"], 2.8436186218769173)
+        self.assertAlmostEqual(delta["anna_n_mixed_percent"], 19670 / 269358 * 100)
+        self.assertAlmostEqual(delta["resurrection_n_mixed_percent"], 9555 / 136129 * 100)
+        self.assertAlmostEqual(delta["anna_any_n_percent"], (55081 + 19670) / 269358 * 100)
+        self.assertAlmostEqual(delta["resurrection_any_n_percent"], (31708 + 9555) / 136129 * 100)
+        self.assertAlmostEqual(
+            delta["resurrection_minus_anna_any_n_pp"],
+            (31708 + 9555) / 136129 * 100 - (55081 + 19670) / 269358 * 100,
+        )
         self.assertEqual(resurrection["counts"]["n_mixed_excluded"], 9555)
         self.assertFalse(delta["m2_parity_admissible"])
         self.assertFalse(resurrection["source_text_included"])
@@ -32,6 +40,7 @@ class NativeNCrossworkTests(unittest.TestCase):
         anna, resurrection = fixtures()
         cases = (
             ("counts", "n_only", 31709),
+            ("counts", "n_mixed_excluded", 9556),
             ("counts", "n_only", 31708.0),
             ("counts", "word_count", True),
             ("evidence", "artifact_id", 14429917083.0),
@@ -72,10 +81,11 @@ class NativeNCrossworkTests(unittest.TestCase):
                 fake[group][key] = invalid
                 with self.assertRaises(ValueError):
                     compare_pinned_native_n(fake, resurrection)
-        forged = copy.deepcopy(anna)
-        forged["counts"]["n_only"] += 1
-        with self.assertRaises(ValueError):
-            compare_pinned_native_n(forged, resurrection)
+        for field in ("n_only", "n_mixed_excluded"):
+            forged = copy.deepcopy(anna)
+            forged["counts"][field] += 1
+            with self.assertRaises(ValueError):
+                compare_pinned_native_n(forged, resurrection)
         forged = copy.deepcopy(resurrection)
         forged["source_text"] = "private manuscript"
         with self.assertRaises(ValueError):
@@ -93,12 +103,18 @@ class NativeNCrossworkTests(unittest.TestCase):
             ("resurrection", "Воскресение", 31708, 136129, 9555),
         ):
             ratio = summary["anna_n_only_percent" if key == "anna" else "resurrection_n_only_percent"]
+            mixed_ratio = summary["anna_n_mixed_percent" if key == "anna" else "resurrection_n_mixed_percent"]
+            any_ratio = summary["anna_any_n_percent" if key == "anna" else "resurrection_any_n_percent"]
             row = (f'<tr data-n-crosswork="{key}"><th scope="row">{label}</th>'
                    f'<td>{count:,}</td><td>{denom:,}</td>'
-                   f'<td>{ratio:.2f}%</td><td>{mixed:,}</td></tr>')
+                   f'<td>{ratio:.2f}%</td><td>{mixed:,}</td>'
+                   f'<td>{mixed_ratio:.2f}%</td><td>{any_ratio:.2f}%</td></tr>')
             self.assertIn(row.replace(",", " ").replace(".", ","), page)
         signed_delta = f'{summary["resurrection_minus_anna_pp"]:.2f}'.replace(".", ",") + " процентного пункта"
         self.assertIn(signed_delta, page)
+        any_delta = f'{summary["resurrection_minus_anna_any_n_pp"]:.2f}'.replace(".", ",") + " процентного пункта"
+        self.assertIn(any_delta, page)
+        self.assertIn("только кандидаты, не установленные части речи", page)
         self.assertIn("не является проверкой выбора омонимов", page)
         self.assertIn("M2: 0/5", page)
         self.assertNotIn("normalized_text", page)

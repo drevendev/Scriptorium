@@ -74,12 +74,13 @@ class NativeNCrossworkTests(unittest.TestCase):
                    f'<td>{count:,}</td><td>{denom:,}</td>'
                    f'<td>{ratio:.2f}%</td><td>{mixed:,}</td></tr>')
             self.assertIn(row.replace(",", " ").replace(".", ","), page)
-        self.assertIn("2,84 процентного пункта", page)
+        signed_delta = f'{summary["resurrection_minus_anna_pp"]:.2f}'.replace(".", ",") + " процентного пункта"
+        self.assertIn(signed_delta, page)
         self.assertIn("не является проверкой выбора омонимов", page)
         self.assertIn("M2: 0/5", page)
         self.assertNotIn("normalized_text", page)
-        changed = page.replace("2,84 процентного пункта", "2,85 процентного пункта", 1)
-        self.assertNotIn("2,84 процентного пункта", changed)
+        changed = page.replace(signed_delta, "2,85 процентного пункта", 1)
+        self.assertNotIn(signed_delta, changed)
 
 
 if __name__ == "__main__":

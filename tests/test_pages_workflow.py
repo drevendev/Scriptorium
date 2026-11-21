@@ -176,6 +176,11 @@ class PagesWorkflowContractTests(unittest.TestCase):
         )
         self.assertIn("assets/scriptorium-ru-measured-metrics.csv", referenced)
         referenced.add("assets/evidence-snapshot.json")  # fetched by Reader JS
+        native_html = (ROOT / "n-uncertainty.html").read_text(encoding="utf-8")
+        referenced.update(
+            re.findall(r'(?:href|src)="\./(assets/[A-Za-z0-9_.-]+)"', native_html)
+        )
+        self.assertIn("assets/n-uncertainty-resurrection-summary.json", referenced)
 
         def missing(workflow: str) -> set[str]:
             return {

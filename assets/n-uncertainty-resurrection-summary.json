@@ -1,0 +1,29 @@
+{
+  "schema_version": "scriptorium-native-n-resurrection-summary-v1",
+  "status": "diagnostic_only",
+  "source_text_included": false,
+  "m2_parity_admissible": false,
+  "provider": {
+    "distribution": "pylem",
+    "version": "0.0.18",
+    "runtime_profile": "pylem-0.0.18-python39-sidecar-v1",
+    "sdist_sha256": "66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515"
+  },
+  "evidence": {
+    "candidate_id": "tolstoy-resurrection-ru",
+    "normalized_sha256": "2725a60a810d8aae4beff9dbc73ff85cf6da066b1c5272aaebf21addbe4ccaa0",
+    "runtime_analysis_sha256": "13c318f2af1da439f8e204a26da39ee57cbf6c06f7a9fc17d99fc9a4ac7112c2",
+    "artifact_json_sha256": "8feb3f7d2d53a5fdafb2d7bce1b52bfce2a96503ca6dbedbdaca3afb121946f6",
+    "head_sha": "73310bd251094395c21e7075b3f4f1df4edd0737",
+    "run_id": 44309635723,
+    "artifact_id": 14429917083
+  },
+  "counts": {
+    "word_count": 136129,
+    "sentence_count": 9600,
+    "baseline_defined": 57868,
+    "n_only": 31708,
+    "n_mixed_excluded": 9555,
+    "conditional_defined": 89576
+  }
+}

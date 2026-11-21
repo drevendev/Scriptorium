@@ -494,6 +494,51 @@ class LexicalContrastCsvTests(unittest.TestCase):
             with self.subTest(forged=label, kind="direct_html"), self.assertRaises(ValueError):
                 render_lexical_contrast_html(report)
 
+    def test_stored_length_ratio_type_and_identical_witness_counts_fail_closed(self):
+        from scriptorium.lexical_contrast_html import render_lexical_contrast_html
+
+        original = sample("кот " * 6, "кот " * 6)
+        self.assertEqual(original["status"], "IDENTICAL_NORMALIZED_TEXT")
+        # Old pre-overlap v1 still renders, even with no optional token ratio.
+        legacy = {key: value for key, value in original.items()
+                  if key not in ("word_token_ratio_max_over_min",
+                                 "word_token_imbalance_warning")}
+        legacy["method"] = {key: value for key, value in original["method"].items()
+                            if key not in ("type_overlap_profile", "type_overlap",
+                                           "token_overlap_profile", "token_overlap")}
+        legacy["aggregate"] = {key: value for key, value in original["aggregate"].items()
+                               if key not in ("shared_form_count", "left_only_form_count",
+                                              "right_only_form_count", "type_jaccard_percent",
+                                              "token_distribution_overlap_percent")}
+        for name, report in (("current", original), ("legacy", legacy)):
+            for kind in ("csv", "markdown", "html"):
+                with self.subTest(valid=name, kind=kind):
+                    self.assertTrue(render_lexical_contrast(report, kind))
+            self.assertIn("Lexical contrast", render_lexical_contrast_html(report))
+
+        forged_reports = [
+            ("boolean character ratio", {**original, "length_ratio_max_over_min": True}),
+            ("string character ratio", {**original, "length_ratio_max_over_min": "1.0"}),
+        ]
+        for field in ("characters_including_spaces", "word_tokens", "distinct_forms"):
+            changed = {**legacy["right"], field: legacy["right"][field] + 1}
+            forged = {**legacy, "right": changed}
+            if field == "characters_including_spaces":
+                counts = (legacy["left"][field], changed[field])
+                forged["length_ratio_max_over_min"] = round(
+                    max(counts) / min(counts), 6
+                )
+            # Legacy format has no word-token ratio or type-overlap fields to
+            # catch the contradiction incidentally; SHA identity must catch it.
+            forged_reports.append(("identical SHA with forged " + field, forged))
+
+        for name, report in forged_reports:
+            for kind in ("csv", "markdown", "html"):
+                with self.subTest(forged=name, kind=kind), self.assertRaises(ValueError):
+                    render_lexical_contrast(report, kind)
+            with self.subTest(forged=name, kind="direct_html"), self.assertRaises(ValueError):
+                render_lexical_contrast_html(report)
+
     def test_cli_offline_csv_and_create_only_destination(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

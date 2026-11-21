@@ -165,7 +165,8 @@ def _russian_reader_html(page: str) -> str:
                 label = f"{escape(russian_label)} <small>{escape(russian_unit)}</small>"
                 link = (
                     f"<a href='{GUIDE_URL}#metric-{escape(metric_id, quote=True)}' "
-                    f"aria-label='Методика: {escape(russian_label, quote=True)}'>"
+                    f"aria-label='Методика: {escape(russian_label, quote=True)} — "
+                    f"{escape(russian_unit, quote=True)}'>"
                     f"{label}</a>"
                 )
                 page = page.replace(source, f"{tag}{link}")

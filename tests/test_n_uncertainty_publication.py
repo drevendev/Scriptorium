@@ -48,7 +48,12 @@ class NativeNPublicationTests(unittest.TestCase):
         self.assertIn(f"74 751 токен ({any_n}%)", html)
         self.assertIn("Группы не пересекаются", html)
         self.assertIn("Смешанные случаи не включены", html)
-        self.assertNotIn(f"74 751 токен ({any_n}%)", html.replace(any_n + "%", "27,76%", 1))
+        # Mutate this exact source-bound figure, not the first identical
+        # percentage in the newer cross-work table above.
+        original = f"<strong>74 751 токен ({any_n}%)</strong>"
+        tampered = html.replace(original, "<strong>74 751 токен (27,76%)</strong>", 1)
+        self.assertNotEqual(tampered, html)
+        self.assertNotIn(original, tampered)
 
     def test_frozen_native_record_matches_independent_expected_values(self):
         """Detect self-consistent but false edits to the frozen published numbers."""

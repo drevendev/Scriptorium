@@ -175,7 +175,7 @@ AOT/pylem 0.0.18 receipts, not a new native experiment.
 
 ```bash
 scriptorium n-compare --root . --format markdown
-scriptorium n-compare --root . --format json > /tmp/n-compare.json
+scriptorium n-compare --root . --format json --output n-compare.json
 scriptorium n-compare --root . --format csv --output n-compare.csv
 python -m scriptorium.native_n_crosswork_cli --root . --format markdown
 ```

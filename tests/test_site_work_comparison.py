@@ -95,6 +95,20 @@ class FrozenComparisonPublicationTests(unittest.TestCase):
         with self.assertRaisesRegex(subject.ComparisonBuildError, "invalid"):
             subject._render_metric_availability(corrupt)
 
+        # Non-finite floats must not be counted as completed measurements.
+        for number in (float("nan"), float("inf"), float("-inf")):
+            with self.subTest(nonfinite=repr(number)):
+                corrupt = copied()
+                corrupt[0]["values"]["fantlab.general.words"] = number
+                with self.assertRaisesRegex(subject.ComparisonBuildError, "invalid"):
+                    subject._render_metric_availability(corrupt)
+
+        # A real measured zero still counts as measured, not NOT_RUN.
+        zero = copied()
+        zero[0]["values"]["fantlab.general.words"] = 0
+        self.assertIn("<td>23</td><td>4</td><td>2</td>",
+                      subject._render_metric_availability(zero))
+
         missing = copied()
         missing[1]["values"]["fantlab.general.words"] = None
         with self.assertRaisesRegex(subject.ComparisonBuildError, "shared"):

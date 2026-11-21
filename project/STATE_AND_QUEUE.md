@@ -1,30 +1,30 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 586
+STATE_REVISION: 587
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-21
-LAST_RESULT: #602 merged at cbbd96312175f5e06669eff325fe4cbe0700e1cd. Frozen-pair Reader availability explanation proposed separately for later acceptance.
+LAST_RESULT: #603 merged at a744586c3dc4ce03ca8f7e5a28f9a863e6d911df. Reader availability now reports observed / NOT_RUN / absent; a follow-on strict finite-number regression is proposed for later review.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-FROZEN-PAIR-AVAILABILITY-020
-ISSUE: completed #283 accessibility/readability follow-on; existing frozen two-work comparison
+UNIT_ID: SCRIP-READER-FROZEN-PAIR-FINITE-GUARD-021
+ISSUE: #283/#603 post-merge evidence-integrity regression on the frozen two-work comparison
 STATUS: PR_CANDIDATE; exact-head CI, independent acceptance and live publication pending
-BRANCH: scrip-reader-frozen-pair-availability-20261121
-BASE: cbbd96312175f5e06669eff325fe4cbe0700e1cd
+BRANCH: scrip-reader-coverage-finite-20261121
+BASE: a744586c3dc4ce03ca8f7e5a28f9a863e6d911df
 
-ACCEPTANCE: On the canonical Russian two-book route, count source-verified numeric, explicit NOT_RUN and absent registered metrics separately for each frozen edition (Grin 23/4/2; Beketova 11/0/18 across 29 installed definitions). Explain that only ten overlap numerically, seven have rate/mean deltas and three have absolute values. Never convert missing to zero or claim FantLab parity. Preserve frozen manuscript hashes and exact JSON/CSV bytes; fail closed on unknown or spoofed coverage; add positive/negative and built-route regressions.
+ACCEPTANCE: Never count non-finite NaN/Infinity Python float values as observed measurements on the source-bound Reader coverage panel; reject them before publication. Preserve genuine zero as measured, explicit NOT_RUN and absent separately, the fixed 23/4/2 and 11/0/18 observations, frozen input hashes and exact JSON/CSV. Positive/negative tests and later independent exact-head CI required; no M2 claim.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: The source-pinned Russian Reader explains not only the compared values but which full-work measurements are unavailable and why, without sacrificing honest methodology or machine exports.
+Milestone: Keep the delivered source-pinned Reader comparison scientifically honest: measured, NOT_RUN and absent coverage must reject non-finite numerical corruption, with all published source hashes and exports unchanged.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | Frozen two-book Reader evidence/availability | Measured vs NOT_RUN vs absent and cross-work intersection visible, responsive, accessible | Exact-head hosted CI; later acceptance |
-| P2 | #562 legally publishable lexical comparison | Independently rights-cleared complete-edition aggregates only, no source words or manuscripts | Rights and edition identities; not a blocker for Reader |
-| P3 | #282 pinned native AOT noun/cardinal N | Reproducible collision bounds and versioned evidence | Python 3.9/pylem pinned sidecar |
+| P1 | Reader non-finite coverage regression | Reject NaN/Infinity; preserve genuine zero and source-backed 29-field coverage | Exact-head hosted CI; later acceptance |
+| P2 | #282 pinned native AOT noun/cardinal N | Reproducible collision bounds and versioned evidence | Python 3.9/pylem pinned sidecar |
+| P3 | #562 legally publishable lexical comparison | Independently rights-cleared complete-edition aggregates only, no source words or manuscripts | Rights and edition identities; not a blocker for Reader |
 | P4 | #511 Trusov full literary body | Independently verified opening/ending pages and full-body metrics | Historical Page completeness |
 | P5 | #284 explicit software license / attribution | Rights holder evidence and truthful release notices | Legal evidence from owner/rights holders |
 

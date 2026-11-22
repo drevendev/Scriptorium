@@ -36,6 +36,17 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media(forced-colors:active){.n-track{border:1px solid CanvasText}.n-track>span{background:Highlight}}
 @media print{.n-hero,.n-panel,.n-stat,.n-table{background:white!important;color:black!important;box-shadow:none}.n-hero a{color:black}.n-track{display:none}.n-panel,.n-stat{break-inside:avoid}}
+
+.n-compare-legend{display:flex;flex-wrap:wrap;gap:.5rem 1rem;font-size:.9rem;margin:1rem 0;color:var(--subtle)}
+.n-compare-legend span{display:flex;align-items:center;gap:.45rem}.n-compare-legend i{width:1.1rem;height:.7rem;border:1px solid #6a8072;border-radius:.1rem}
+.n-key-only,.n-compare-only{background:#265b4b}.n-key-mixed,.n-compare-mixed{background:#b47b30}.n-key-other{background:#e1e6dd}
+.n-compare-figure{margin:1.25rem 0 1.5rem}.n-compare-figure figcaption{font-size:.88rem;color:var(--subtle);line-height:1.6;margin-bottom:.9rem}
+.n-compare-bars{display:grid;gap:1rem}.n-compare-bar{display:grid;grid-template-columns:minmax(9rem,12rem) minmax(0,1fr);align-items:center;gap:.8rem}
+.n-compare-bar strong{font-size:.94rem}.n-compare-track{display:flex;height:1.4rem;background:#e1e6dd;border:1px solid #738879;border-radius:.35rem;overflow:hidden}
+.n-compare-track span{height:100%;flex:none}#n-three-work-table{min-width:750px}
+@media(max-width:650px){.n-compare-bar{grid-template-columns:1fr;gap:.3rem}}
+@media(forced-colors:active){.n-compare-track{border:2px solid CanvasText}.n-compare-only{background:Highlight}.n-compare-mixed{background:GrayText}}
+@media print{.n-compare-track{print-color-adjust:exact;-webkit-print-color-adjust:exact}.n-compare-bar{break-inside:avoid}}
 </style>
 </head><body>
 <nav class="skip-links" aria-label="Быстрый переход"><a class="skip-link" href="#main">Перейти к данным</a></nav>
@@ -45,10 +56,28 @@
 <section class="n-hero" aria-labelledby="n-title"><p class="eyebrow">ИЗМЕРЕННОЕ ОГРАНИЧЕНИЕ · РУССКАЯ МОРФОЛОГИЯ</p>
 <h1 id="n-title">Что скрывает <em>N</em>?</h1>
 <p>В закреплённом AOT/pylem 0.0.18 обозначение <strong>N</strong> может относиться и к существительному, и к количественному числительному. Мы измерили масштаб этой неопределённости на полной зафиксированной русской редакции «Анны Карениной», не угадывая правильный разбор каждого слова.</p>
-<p><a href="./#method">К методологии проекта ↗</a> · <a href="./assets/n-uncertainty-anna.json">Скачать проверяемые производные данные ↗</a></p></section>
+<p><a href="#n-three-work">Сравнить три книги ↓</a> · <a href="./#method">К методологии проекта ↗</a> · <a href="./assets/n-uncertainty-anna.json">Скачать проверяемые производные данные ↗</a></p></section>
 <div class="n-stats" aria-label="Основные измерения"><div class="n-stat"><strong>55 081</strong><span>токенов с исключительно N среди кандидатов; распределить на существительные и числительные нельзя</span></div>
 <div class="n-stat"><strong>20,45%</strong><span>от 269 358 словоформ Scriptorium; это неопределённость, а не доля существительных</span></div>
 <div class="n-stat"><strong>19 670</strong><span>смешанных N + другие теги (7,30% всех словоформ) — исключены из условных границ</span></div></div>
+
+<section class="n-panel" aria-labelledby="n-three-work"><h2 id="n-three-work">Три книги: сколько словоформ допускают N?</h2>
+<p>К двум независимо измеренным романам Толстого добавлена «Бегущая по волнам» Александра Грина: третий полный текст, измеренный на закреплённом Python 3.9 / <code>pylem==0.0.18</code>. Ни метка N, ни её доля не определяют, было ли слово существительным или числительным; у трёх книг разные редакции и размеры.</p>
+<div class="n-compare-legend" aria-label="Легенда"><span><i class="n-key-only" aria-hidden="true"></i>Только N</span><span><i class="n-key-mixed" aria-hidden="true"></i>N с другими тегами</span><span><i class="n-key-other" aria-hidden="true"></i>Без кандидата N</span></div>
+<figure class="n-compare-figure"><figcaption>Наблюдаемые доли от всех словоформ каждой книги; ширина полосы равна 100%. Точные числа в таблице ниже.</figcaption><div class="n-compare-bars">
+<div class="n-compare-bar" data-n-bar="anna"><strong>Анна Каренина</strong><div class="n-compare-track" role="img" aria-label="Анна Каренина: только N 20,45%, смешанные N 7,30%, без N 72,25%"><span class="n-compare-only" aria-hidden="true" style="width:20.448994%"></span><span class="n-compare-mixed" aria-hidden="true" style="width:7.302549%"></span></div></div>
+<div class="n-compare-bar" data-n-bar="resurrection"><strong>Воскресение</strong><div class="n-compare-track" role="img" aria-label="Воскресение: только N 23,29%, смешанные N 7,02%, без N 69,69%"><span class="n-compare-only" aria-hidden="true" style="width:23.292612%"></span><span class="n-compare-mixed" aria-hidden="true" style="width:7.019077%"></span></div></div>
+<div class="n-compare-bar" data-n-bar="grin"><strong>Бегущая по волнам</strong><div class="n-compare-track" role="img" aria-label="Бегущая по волнам: только N 22,81%, смешанные N 6,73%, без N 70,46%"><span class="n-compare-only" aria-hidden="true" style="width:22.811861%"></span><span class="n-compare-mixed" aria-hidden="true" style="width:6.730252%"></span></div></div>
+</div></figure>
+<div class="n-table" role="region" tabindex="0" aria-label="Сравнение нативных N-кандидатов по трём книгам"><table id="n-three-work-table"><caption>Независимые полнотекстовые измерения · целые счётчики и доли всех словоформ, %</caption><thead><tr><th scope="col">Произведение</th><th scope="col">Всего словоформ</th><th scope="col">Только N</th><th scope="col">Смешанные N</th><th scope="col">Любой N</th></tr></thead><tbody>
+<tr data-n-threework="anna"><th scope="row">Анна Каренина</th><td>269 358</td><td>55 081 · 20,45%</td><td>19 670 · 7,30%</td><td>74 751 · 27,75%</td></tr>
+<tr data-n-threework="resurrection"><th scope="row">Воскресение</th><td>136 129</td><td>31 708 · 23,29%</td><td>9 555 · 7,02%</td><td>41 263 · 30,31%</td></tr>
+<tr data-n-threework="grin"><th scope="row">Бегущая по волнам</th><td>55 778</td><td>12 724 · 22,81%</td><td>3 754 · 6,73%</td><td>16 478 · 29,54%</td></tr>
+</tbody></table></div>
+<p>Для Грина доля «только N» на <strong>2,36 процентного пункта</strong> выше, чем у «Анны Карениной», и на <strong>0,48 процентного пункта</strong> ниже, чем у «Воскресения». «Любой N» — сумма двух непересекающихся групп. Это <strong>не восстановленная частота существительных</strong> или числительных, не точность морфологии и не доказательство сходства авторов.</p>
+<p class="n-meta"><strong>Грин:</strong> 36 закреплённых страниц, 363 819 символов с пробелами; normalized SHA-256 <code>41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc</code>; native-analysis SHA-256 <code>429a22deec17b943598abc83abaf914916c82224e4befb3ab4b9bed4a2d2f58d</code>. <a href="./assets/n-uncertainty-grin-summary.json">Производная сводка без прозы ↗</a> · <a href="https://github.com/drevendev/Scriptorium/actions/runs/44978278220">Нативный CI ↗</a> · <a href="https://github.com/drevendev/Scriptorium/pull/610#issuecomment-7073245431">Исходный артефакт, хеши и независимая проверка ↗</a>. Архив CI хранится временно; эта сводка не является исходным JSON/ZIP.</p>
+<p class="n-alert"><strong>DIAGNOSTIC_ONLY · M2: 0/5.</strong> Нативная метка N сохраняет неоднозначность между существительными и количественными числительными; смешанные случаи не перераспределены. Вход, словарь и выбор омонимов FantLab неизвестны. Ни одна из трёх книг не подтверждает source-matched parity.</p>
+</section>
 <section class="n-panel" aria-labelledby="n-two-work"><h2 id="n-two-work">Два произведения, один источник неопределённости</h2>
 <p>Закреплённый <code>pylem==0.0.18</code> независимо проанализировал две полные русскоязычные редакции Толстого. Доля словоформ с <em>исключительно N</em> отличается между ними на <strong>2,84 процентного пункта</strong>. Это наблюдаемая разница между разными текстами, не оценка точности классификации и <strong>не является проверкой выбора омонимов</strong> в FantLab.</p>
 <div class="n-table" role="region" tabindex="0" aria-label="Наблюдаемая неоднозначность N в двух книгах"><table id="n-two-work-table"><caption>Независимые полные тексты; N-only и смешанные N — разные, непересекающиеся группы</caption>

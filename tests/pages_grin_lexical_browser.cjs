@@ -59,10 +59,30 @@ async function inspect(browser, origin, tag, width, height) {
     await skip.focus();
     assert.ok((await skip.boundingBox()).y>=-1,tag+": visible keyboard skip link");
     const table = page.locator(".lex-table-scroll");
+    const hint = page.locator("#lex-table-help");
+    assert.equal(await hint.count(),1,tag+": scroll instruction exists");
+    assert.match(await hint.innerText(),/прокрутите таблицу вправо/);
+    assert.equal(await table.getAttribute("aria-describedby"),"lex-table-help");
     await table.focus();
     assert.equal(await table.evaluate(e=>e===document.activeElement),true);
+    if(tag==="mobile"){
+      const size=await table.evaluate(e=>({visible:e.clientWidth,content:e.scrollWidth}));
+      assert.ok(size.content > size.visible+100,tag+": second book requires horizontal scroll");
+      await table.press("ArrowRight");
+      await page.waitForFunction(()=>document.querySelector(".lex-table-scroll").scrollLeft>0,null,{timeout:3000});
+      await table.evaluate(e=>{e.scrollLeft=e.scrollWidth;});
+      const lastVisible=await table.evaluate(e=>{
+        const box=e.getBoundingClientRect();
+        const last=e.querySelector("thead th:last-child").getBoundingClientRect();
+        return last.left>=box.left-2 && last.right<=box.right+2;
+      });
+      assert.ok(lastVisible,tag+": third column can be revealed after horizontal scroll");
+      await page.screenshot({path:path.join(screenshots,"lexical-grin-mobile-third-column.png"),animations:"disabled"});
+    }
     if(tag==="desktop"){
       await page.emulateMedia({media:"print"});
+      const printTable=await table.evaluate(e=>({width:e.clientWidth,content:e.scrollWidth}));
+      assert.ok(printTable.content<=printTable.width+2,"Print table must fit its region without horizontal clipping");
       const printColors = await page.locator(".lex-hero h1").evaluate(e => ({
         color: getComputedStyle(e).color,
         background: getComputedStyle(e.parentElement).backgroundColor,

@@ -336,21 +336,25 @@ class LexicalContrastTests(unittest.TestCase):
             modified["manuscript_excerpt"] = "кот пёс"
             forged = json.loads(baseline)
             forged["aggregate"]["eligible_form_count"] = -1
+            witness_injection = json.loads(baseline)
+            witness_injection["left"]["manuscript_excerpt"] = "кот пёс"
             for payload in (
                 '{"schema_version":"a","schema_version":"b"}',
                 '{"aggregate":NaN}',
                 '[]',
                 json.dumps(modified, ensure_ascii=False),
+                json.dumps(witness_injection, ensure_ascii=False),
                 json.dumps(forged, ensure_ascii=False),
                 '{"schema_version": ',
             ):
                 source.write_text(payload, encoding="utf-8")
-                with self.subTest(payload=payload[:45]), contextlib.redirect_stderr(
-                    io.StringIO()
-                ), self.assertRaises(SystemExit):
-                    cli.main(["distinctives", "--report", str(source),
-                              "--format", "html", "--output", str(output)])
-                self.assertFalse(output.exists())
+                for kind in ("json", "csv", "markdown", "html"):
+                    with self.subTest(payload=payload[:45], kind=kind), contextlib.redirect_stderr(
+                        io.StringIO()
+                    ), self.assertRaises(SystemExit):
+                        cli.main(["distinctives", "--report", str(source),
+                                  "--format", kind, "--output", str(output)])
+                    self.assertFalse(output.exists())
             source.write_text(baseline, encoding="utf-8")
             for extra in (["left.txt"], ["--left-edition", "fake"],
                           ["--left-language", "ru"], ["--translation-pair"]):

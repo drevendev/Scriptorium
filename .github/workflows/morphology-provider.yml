@@ -729,3 +729,114 @@ jobs:
           path: build/morph/grin-pylem-n-only-impact.json
           if-no-files-found: error
           retention-days: 7
+
+  fourth-road-nowhere-native-n:
+    name: Measure independent frozen Road to Nowhere N ambiguity
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up verified source runtime
+        id: py313
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Replay pinned alternate Road literary body to ephemeral request
+        run: |
+          set -euo pipefail
+          mkdir -p build/morph
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.road_nowhere_native_n prepare \
+            --revision corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-revision.json \
+            --body corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-body.json \
+            --request build/morph/road-pylem-request.json
+
+      - name: Set up original native pylem runtime
+        id: py39
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.9"
+
+      - name: Install hash-pinned pylem 0.0.18
+        env:
+          CMAKE_ARGS: "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+        run: |
+          set -euo pipefail
+          "${{ steps.py39.outputs.python-path }}" -m pip install --disable-pip-version-check \
+            --no-deps --require-hashes -r requirements/pylem-0.0.18.txt
+
+      - name: Run source-bound sidecar without storing literary prose
+        run: |
+          set -euo pipefail
+          "${{ steps.py39.outputs.python-path }}" tools/pylem_sidecar.py \
+            --request build/morph/road-pylem-request.json \
+            --response build/morph/road-pylem-response.json
+
+      - name: Verify source-free fourth full-work POS, bigram and position bounds
+        env:
+          SCRIPTORIUM_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.road_nowhere_native_n finalize \
+            --revision corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-revision.json \
+            --body corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-body.json \
+            --request build/morph/road-pylem-request.json \
+            --response build/morph/road-pylem-response.json \
+            --scriptorium-revision "$SCRIPTORIUM_REVISION" \
+            --output build/morph/road-pylem-n-only-impact.json
+          "${{ steps.py313.outputs.python-path }}" - <<'PY'
+          import json
+          from pathlib import Path
+          doc = json.loads(Path("build/morph/road-pylem-n-only-impact.json").read_text(encoding="utf-8"))
+          assert doc["schema_version"] == "scriptorium-pylem-n-only-impact-v3"
+          assert doc["candidate_id"] == "grin-road-nowhere-ru"
+          assert doc["source_text_included"] is False
+          assert doc["source_identity"]["revision_id"] == 5585836
+          assert doc["source_identity"]["fantlab_source_edition_match"] == "unknown"
+          assert doc["normalized_sha256"] == "e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee"
+          assert doc["provider"]["version"] == "0.0.18"
+          assert doc["provider"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
+          impact = doc["impact"]
+          assert impact["status"] == "diagnostic_only"
+          assert impact["word_count"] > 1000
+          assert impact["n_only_token_count"] + impact["n_mixed_token_count_excluded"] <= impact["word_count"]
+          assert impact["conditional_defined_token_count"] == (
+              impact["baseline_defined_token_count"] + impact["n_only_token_count"]
+          )
+          assert impact["boundary"]["n_mixed_recovered"] is False
+          assert impact["boundary"]["production_pos_mapping_changed"] is False
+          assert impact["boundary"]["m2_parity_admissible"] is False
+          assert all(row["conditional_min_raw_count"] <= row["conditional_max_raw_count"]
+                     for row in impact["bigram_conditional_envelopes"])
+          assert all(row["conditional_min_raw_count"] <= row["conditional_max_raw_count"]
+                     for row in impact["position_conditional_envelopes"])
+          serialized = json.dumps(doc, ensure_ascii=False)
+          assert "normalized_text" not in serialized
+          assert "tokens" not in doc
+          print(json.dumps({
+              "candidate_id": doc["candidate_id"],
+              "normalized_sha256": doc["normalized_sha256"],
+              "runtime_analysis_sha256": doc["runtime_analysis_sha256"],
+              "word_count": impact["word_count"],
+              "n_only": impact["n_only_token_count"],
+              "n_mixed_excluded": impact["n_mixed_token_count_excluded"],
+              "m2_parity_admissible": False,
+          }, sort_keys=True))
+          PY
+
+      - name: Remove ephemeral source-bearing native transport
+        if: always()
+        run: rm -f build/morph/road-pylem-request.json build/morph/road-pylem-response.json
+
+      - name: Upload only fourth-work source-free N bounds
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-road-pylem-n-only-impact
+          path: build/morph/road-pylem-n-only-impact.json
+          if-no-files-found: error
+          retention-days: 7

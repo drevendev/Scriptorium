@@ -213,10 +213,15 @@ class GrinLexicalReaderTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
         self.assertIn('href="./lexical-grin.html"', index)
         self.assertIn("lexical-grin.html", readme)
-        self.assertIn(
-            "is not implied.\n\n**Replay the Tolstoy AOT/pylem N comparison offline:**",
-            readme,
+        replay = "**Replay the Tolstoy AOT/pylem N comparison offline:**"
+        boundary = (
+            r"\*\*\[Two real Grin novels: lexical comparison[^\n]*\n\n"
+            r"\*\*Replay the Tolstoy AOT/pylem N comparison offline:\*\*"
         )
+        self.assertRegex(readme, boundary)
+        joined = readme.replace("\n\n" + replay, "\n" + replay, 1)
+        self.assertNotEqual(joined, readme)
+        self.assertNotRegex(joined, boundary)
         self.assertNotIn(
             r"\n\n**Replay the Tolstoy AOT/pylem N comparison offline:**",
             readme,

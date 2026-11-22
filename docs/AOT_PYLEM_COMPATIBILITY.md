@@ -192,6 +192,28 @@ lane, not alteration of immutable upstream source. This verifies provider execut
 it does **not** establish FantLab dictionary identity, token-level parity, homonym
 selection parity, noun/cardinal recovery, or M2 benchmark admissibility.
 
+## Independent inflected-form native control (PR candidate, not yet measured)
+
+A separate source-free probe, `tools/pylem_inflection_probe.py`, uses nine
+**new curated lexical forms**: three oblique-case noun examples, three
+inflected-cardinal examples and three unrelated conjunction controls. It runs
+under the existing Python 3.9 / hash-pinned `pylem==0.0.18` native lane.
+The versioned receipt stores SHA-256 of each lexical fixture (not its original
+spelling), *all* observed runtime POS candidates, disjoint N-only/mixed-N
+counts, denominators and a digest of the native observations. A conditional
+cross-role N observation requires an N-only candidate in both annotated roles
+and at least two separately analyzed, N-free conjunction controls. Missing
+analyses and all-N backends do not qualify as clean negative controls.
+
+This test is independent of the earlier citation-form/ADJ/ADV/VERB sample;
+neither sample can recover the original AOT source POS from a shared runtime
+`N` string. The new native outcomes remain **NOT_RUN** until the exact-head
+hosted job completes and its artifact is inspected. It is a lexical-control
+experiment, **not** a third full-work measurement, a FantLab homonym-policy
+experiment or M2 parity evidence. No production POS mapping changes. After
+execution, preserve the actual output, toolchain and run link before drawing
+conclusions rather than assuming all nine tokens behave as annotated.
+
 ## Conditional noun/cardinal N-only impact
 
 The pinned native pylem 0.0.18 Anna replay also emits a source-free

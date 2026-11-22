@@ -18,6 +18,7 @@ PAGES = (
     "metrics.html",
     "word-density.html",
     "n-uncertainty.html",
+    "lexical-grin.html",
     "voice/index.html",
 )
 REQUIRED_ASSETS = (
@@ -29,6 +30,7 @@ REQUIRED_ASSETS = (
     "assets/n-uncertainty-anna.json",
     "assets/n-uncertainty-resurrection-summary.json",
     "assets/n-uncertainty-grin-summary.json",
+    "assets/grin-lexical-diagnostic.json",
     "voice/holdout-three.csv",
 )
 

@@ -121,3 +121,28 @@ lexical report intentionally retains `public_release_ready=false` and
 `corpus_admission=NOT_VERIFIED`; its wrapper records verified source replay,
 rights evidence and the separate, still-required public Reader review.
 **Do not publish the CI artifact on Pages before exact-head acceptance.**
+
+## Reviewed public diagnostic projection (Reader candidate)
+
+The separately reviewed #613 full-text CI result is frozen at GitHub Actions run
+[45009800452](https://github.com/drevendev/Scriptorium/actions/runs/45009800452),
+artifact ZIP SHA-256
+`6c8ab5c170024554e0d92ba116acf0cf028d3bb6abba49e2fb8a86d99a7e2117`
+and JSON SHA-256
+`90b80850c4a3c7f376bdb4c8deb704c8eac495b3c26b89a5a3c767ae0fbc5d36`.
+The public-facing `lexical-grin.html` page and
+`assets/grin-lexical-diagnostic.json` are a **new, strictly numeric projection**,
+not a publication of the original private JSON or HTML. The original local
+`public_release_ready=false`, `metadata_verified=false` and
+`corpus_admission=NOT_VERIFIED` claims are **not** changed into a corpus
+admission, licensed-source grant, FantLab parity or author fingerprint.
+
+The underlying literary originals by Alexander Grin (1930, 1928) are identified as
+public domain on the exact Russian Wikisource works; the first witness is frozen at
+oldid 5585836 (az.lib family) and the second at 36 frozen 1965-family chapter
+revisions. The new page publishes only aggregate integers/floats, source hashes
+and attribution links, no original prose or individual word forms/hashes. Other
+edition content, scanner material and unrelated manuscripts are not licensed by
+this diagnostic. The page's independent acceptance requires browser desktop,
+mobile, keyboard, print and exact Pages-route checks, separate from CI build
+or any deployed/live claim. M2 stays **0/5**.

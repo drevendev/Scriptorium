@@ -6,6 +6,7 @@ on:
       - "index.html"
       - "word-density.html"
       - "n-uncertainty.html"
+      - "lexical-grin.html"
       - "metrics.html"
       - "assets/**"
       - "voice/**"
@@ -25,6 +26,7 @@ on:
       - "index.html"
       - "word-density.html"
       - "n-uncertainty.html"
+      - "lexical-grin.html"
       - "metrics.html"
       - "assets/**"
       - "voice/**"
@@ -112,6 +114,7 @@ jobs:
           cp index.html build/branch-root-preview/index.html
           cp word-density.html build/branch-root-preview/word-density.html
           cp n-uncertainty.html build/branch-root-preview/n-uncertainty.html
+          cp lexical-grin.html build/branch-root-preview/lexical-grin.html
           cp metrics.html build/branch-root-preview/metrics.html
           cp assets/pages-reader.css build/branch-root-preview/assets/pages-reader.css
           cp assets/pages-reader.js build/branch-root-preview/assets/pages-reader.js
@@ -119,6 +122,7 @@ jobs:
           cp assets/n-uncertainty-anna.json build/branch-root-preview/assets/n-uncertainty-anna.json
           cp assets/n-uncertainty-resurrection-summary.json build/branch-root-preview/assets/n-uncertainty-resurrection-summary.json
           cp assets/n-uncertainty-grin-summary.json build/branch-root-preview/assets/n-uncertainty-grin-summary.json
+          cp assets/grin-lexical-diagnostic.json build/branch-root-preview/assets/grin-lexical-diagnostic.json
           cp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           cp assets/trusov-1775-interior-metrics.csv build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           cp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
@@ -127,11 +131,13 @@ jobs:
           test -s build/branch-root-preview/index.html
           test -s build/branch-root-preview/word-density.html
           test -s build/branch-root-preview/n-uncertainty.html
+          test -s build/branch-root-preview/lexical-grin.html
           test -s build/branch-root-preview/metrics.html
           test -s build/branch-root-preview/assets/evidence-snapshot.json
           test -s build/branch-root-preview/assets/n-uncertainty-anna.json
           test -s build/branch-root-preview/assets/n-uncertainty-resurrection-summary.json
           test -s build/branch-root-preview/assets/n-uncertainty-grin-summary.json
+          test -s build/branch-root-preview/assets/grin-lexical-diagnostic.json
           test -s build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           test -s build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           test -s build/branch-root-preview/assets/voice-preview.json
@@ -141,9 +147,11 @@ jobs:
           cmp assets/trusov-1775-interior-metrics.csv build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           cmp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
           cmp n-uncertainty.html build/branch-root-preview/n-uncertainty.html
+          cmp lexical-grin.html build/branch-root-preview/lexical-grin.html
           cmp assets/n-uncertainty-anna.json build/branch-root-preview/assets/n-uncertainty-anna.json
           cmp assets/n-uncertainty-resurrection-summary.json build/branch-root-preview/assets/n-uncertainty-resurrection-summary.json
           cmp assets/n-uncertainty-grin-summary.json build/branch-root-preview/assets/n-uncertainty-grin-summary.json
+          cmp assets/grin-lexical-diagnostic.json build/branch-root-preview/assets/grin-lexical-diagnostic.json
           cmp metrics.html build/branch-root-preview/metrics.html
           cmp voice/index.html build/branch-root-preview/voice/index.html
           cmp voice/holdout-three.csv build/branch-root-preview/voice/holdout-three.csv
@@ -168,6 +176,9 @@ jobs:
 
       - name: Exercise Reader on desktop, mobile, keyboard and A4
         run: node tests/pages_browser_acceptance.cjs
+
+      - name: Exercise source-free Grin lexical Reader in real Chromium
+        run: node tests/pages_grin_lexical_browser.cjs
 
       - name: Exercise generated evidence gallery in real Chromium
         run: node tests/pages_gallery_browser_acceptance.cjs

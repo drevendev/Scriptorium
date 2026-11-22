@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Два проверенных полнотекстовых романа Александра Грина: реальное сходство словарей, перекрытие частот и методология без публикации текста.">
+<title>Два романа Грина · лексическое сравнение · Scriptorium</title>
+<link rel="stylesheet" href="./assets/pages-reader.css">
+<style>
+.lex-wrap{max-width:1060px;margin:auto;padding:clamp(1.5rem,4vw,3rem) 0 4rem}
+.lex-hero{background:var(--green-deep);color:#fff9ea;padding:clamp(1.35rem,5vw,3.2rem);border-radius:12px}
+.lex-hero .eyebrow{color:#f2c985}.lex-hero h1{color:#fff9ea;font:500 clamp(2.1rem,5.3vw,4.6rem)/1.1 Georgia,serif;max-width:20ch;margin:.4rem 0 1rem}
+.lex-hero h1 em{color:#f2c985}.lex-hero p{max-width:72ch;line-height:1.75}.lex-hero a{color:#ffddad}
+.lex-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem;margin:1.5rem 0 2rem}
+.lex-stat,.lex-panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:clamp(1rem,3vw,1.7rem)}
+.lex-stat strong{font:500 clamp(1.75rem,3.7vw,2.9rem)/1.15 Georgia,serif;display:block;font-variant-numeric:tabular-nums}
+.lex-stat span{color:var(--subtle);display:block;margin-top:.5rem}
+.lex-panel{margin:1.5rem 0}.lex-panel p{line-height:1.7;max-width:86ch}
+.lex-panel h2{font-size:clamp(1.55rem,3vw,2.4rem);margin:.05rem 0 1rem}
+.lex-track{display:flex;height:2rem;width:100%;overflow:hidden;border:1px solid #5d746a;border-radius:6px;background:#e4e9e1}
+.lex-track span{display:block;height:100%;flex:none}
+.lex-left{background:#386b58}.lex-shared{background:#d79b51}.lex-right{background:#788fa5}
+.lex-legend{display:flex;flex-wrap:wrap;gap:.65rem 1.2rem;margin:.75rem 0 1.1rem}
+.lex-legend span{display:flex;align-items:center;gap:.45rem}
+.lex-legend i{display:inline-block;width:1.05rem;height:.85rem;border:1px solid #576d63;border-radius:2px}
+.lex-measure{margin:1.5rem 0}.lex-measure figcaption{font-weight:650;margin-bottom:.65rem}
+.lex-meter{height:1.4rem;border:1px solid #738879;border-radius:6px;background:#e4e9e1;overflow:hidden}
+.lex-meter span{height:100%;display:block;background:#386b58}
+.lex-table-scroll{max-width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.lex-table-scroll:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.lex-table{width:100%;min-width:620px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.lex-table caption{text-align:left;padding:.85rem;color:var(--subtle);font-size:.9rem}
+.lex-table th,.lex-table td{border-bottom:1px solid #c4cec4;text-align:left;padding:.65rem .85rem}
+.lex-table th{font-weight:700}.lex-table thead{background:var(--wash)}
+.lex-table tr:last-child td,.lex-table tr:last-child th{border-bottom:0}
+.lex-callout{border-left:5px solid #a36c2d;background:#f5ead6;padding:1rem 1.3rem;margin:1.6rem 0}
+.lex-sources{overflow-wrap:anywhere}.lex-sources code{overflow-wrap:anywhere}
+.lex-actions{display:flex;gap:1rem;flex-wrap:wrap}.lex-actions a{min-height:44px;display:inline-flex;align-items:center;font-weight:700}
+.lex-foot{font-size:.9rem;color:var(--subtle)}
+@media(max-width:720px){.lex-stats{grid-template-columns:1fr}.lex-wrap{padding:1.5rem 0 3rem}}
+@media(forced-colors:active){.lex-track,.lex-meter{border:2px solid CanvasText}.lex-left,.lex-shared,.lex-right,.lex-meter span{background:Highlight}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.lex-hero,.lex-panel,.lex-stat,.lex-callout{background:white!important;color:black!important;box-shadow:none;break-inside:avoid}.lex-hero a{color:black}.lex-track,.lex-meter{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+</style></head>
+<body><nav class="skip-links" aria-label="Быстрый переход"><a class="skip-link" href="#main">К данным</a></nav>
+<header class="site-top"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a><nav aria-label="Навигация"><a href="./#books">Библиотека</a><a href="./#pairs">Сравнить книги</a><a href="./n-uncertainty.html#n-three-work">Морфология N</a><a href="./#method">Метод</a></nav></header>
+<main id="main" tabindex="-1"><div class="lex-wrap">
+<section class="lex-hero" aria-labelledby="lex-title">
+<p class="eyebrow">ДВА ПОЛНЫХ РОМАНА · ПРОВЕРЕННЫЕ ЧИСЛА</p>
+<h1 id="lex-title">Грин и Грин: <em>похож ли словарь?</em></h1>
+<p>Что общего у «Дороги в никуда» и «Бегущей по волнам»? Сравниваем реальные словоформы двух закреплённых русских редакций: где совпадает словарь, а где расходятся частоты. Без исходной прозы, рейтингов качества и выдуманной «похожести авторов».</p>
+<p><a href="#lexical-data">Смотреть измерения ↓</a> · <a href="#methodology">Как считали ↓</a> · <a href="./assets/grin-lexical-diagnostic.json">Скачать исходные числовые агрегаты ↗</a></p>
+</section>
+<section class="lex-stats" aria-label="Главные результаты">
+<div class="lex-stat"><strong>23,19%</strong><span>совпадение уникальных словоформ (Jaccard)</span></div>
+<div class="lex-stat"><strong>59,84%</strong><span>перекрытие частотного распределения токенов</span></div>
+<div class="lex-stat"><strong>0,29</strong><span>расхождение Jensen–Shannon, бит (0 = одинаковые распределения)</span></div>
+</section>
+<section class="lex-panel" aria-labelledby="lexical-data"><h2 id="lexical-data">Одни слова — разная частота</h2>
+<p>У двух книг <strong>5 901</strong> общих словоформ. Но частотное перекрытие заметно выше простого совпадения типов: распространённые слова могут встречаться в обоих текстах гораздо чаще редких.</p>
+<figure class="lex-measure"><figcaption>Уникальные словоформы: доли от объединённого словаря (25 449 форм, %)</figcaption>
+<div id="lex-type-chart" class="lex-track" role="img" aria-label="Только «Дорога в никуда»: 43,39%; общие словоформы: 23,19%; только «Бегущая по волнам»: 33,42%">
+<span class="lex-left" aria-hidden="true" style="width:43.392668%"></span><span class="lex-shared" aria-hidden="true" style="width:23.187552%"></span><span class="lex-right" aria-hidden="true" style="width:33.419781%"></span></div>
+<div class="lex-legend" aria-label="Легенда диаграммы"><span><i class="lex-left" aria-hidden="true"></i>Только «Дорога»: 11 043</span><span><i class="lex-shared" aria-hidden="true"></i>Общие: 5 901</span><span><i class="lex-right" aria-hidden="true"></i>Только «Бегущая»: 8 505</span></div></figure>
+<figure class="lex-measure"><figcaption>Перекрытие частот всех словоформ: 59,84% (100% = одинаковые распределения)</figcaption>
+<div id="lex-token-chart" class="lex-meter" role="img" aria-label="Перекрытие токенов 59,84%; неперекрытая часть 40,16%"><span style="width:59.843147%"></span></div></figure>
+<p>Совпадение словарей и частотное перекрытие — разные величины; ни одна не означает вероятность общего авторства.</p>
+<div class="lex-table-scroll" role="region" aria-label="Точные лексические измерения" tabindex="0"><table class="lex-table" id="lex-exact-table"><caption>Воспроизводимые числа · обе закреплённые редакции</caption>
+<thead><tr><th scope="col">Показатель</th><th scope="col">«Дорога в никуда»</th><th scope="col">«Бегущая по волнам»</th></tr></thead>
+<tbody><tr><th scope="row">Символов, с пробелами</th><td>442 656</td><td>363 819</td></tr>
+<tr><th scope="row">Словоформ (токенов)</th><td>65 072</td><td>55 778</td></tr>
+<tr><th scope="row">Уникальных словоформ</th><td>16 944</td><td>14 406</td></tr>
+<tr><th scope="row">Форм только в одной книге</th><td>11 043</td><td>8 505</td></tr>
+<tr><th scope="row">Доминирующие формы¹</th><td>769</td><td>606</td></tr>
+</tbody></table></div>
+<p class="lex-foot">¹ Среди форм с суммарной частотой не ниже пяти; частота как минимум вдвое выше по сглаженному относительному показателю. Общих форм 5 901; форм без выраженного преобладания 1 719 в этом пороговом подмножестве.</p>
+</section>
+<section class="lex-callout" role="note" aria-label="Научные ограничения"><strong>Диагностическое сравнение, не воспроизведение FantLab.</strong> Две книги одного автора — не два независимых автора. Различаются объём, источники транскрипции, орфография и редакционная история. Корпусный допуск ещё <code>NOT_VERIFIED</code>; точная редакция исходного анализа FantLab неизвестна. M2: <strong>0/5</strong>. Ни один показатель не является оценкой литературного качества.</section>
+<section class="lex-panel" id="methodology" aria-labelledby="lex-method-title"><h2 id="lex-method-title">Как получены значения?</h2>
+<p>Сравниваем регистронезависимые поверхностные словоформы после NFC-нормализации. Лемматизации, замены «ё» на «е» и морфологических догадок нет. Jaccard: пересечение уникальных форм / объединение; перекрытие токенов: сумма минимумов относительных частот. Jensen–Shannon: эмпирическая дивергенция с основанием логарифма 2 (биты), без сглаживания. Для определения преобладающих форм используется сглаживание Jeffreys +0,5 только при пороге ≥5 совместных употреблений.</p>
+<p>Расчёт повторён в Python для двух юридически допустимых оригиналов Грина (1930 и 1928). Источники закреплены по ревизии и SHA-256; литературный текст обрабатывался временно и не сохранялся в Reader. Здесь опубликованы только десятичные агрегаты и ссылки на свидетелей. Сравнение — расширение Scriptorium v1, не профиль AOT.</p>
+<div class="lex-actions"><a href="./assets/grin-lexical-diagnostic.json" download>Скачать JSON-измерения</a><a href="https://github.com/drevendev/Scriptorium/actions/runs/45009800452">Проверить CI и артефакт</a><a href="https://github.com/drevendev/Scriptorium/blob/master/docs/LEXICAL_CONTRAST.md">Полная методология</a></div>
+</section>
+<section class="lex-panel lex-sources" aria-labelledby="lex-sources-title"><h2 id="lex-sources-title">Редакции и проверяемость</h2>
+<p>«Дорога в никуда» — <a href="https://ru.wikisource.org/w/index.php?title=Дорога_в_никуда_(Грин)&amp;oldid=5585836">Викитека, oldid 5585836, az.lib-семейство</a>, 442 656 символов. «Бегущая по волнам» — <a href="https://ru.wikisource.org/wiki/Бегущая_по_волнам_(Грин)">Викитека, 36 закреплённых страниц из семейства издания 1965 года</a>, 363 819 символов. Указание на 1965 год — библиографическая характеристика, а не доказательство совпадения с экземпляром FantLab.</p>
+<p>SHA-256 нормализованных литературных тел: <code>e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee</code> и <code>41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc</code>. SHA-256 исходного source-free JSON CI: <code>90b80850c4a3c7f376bdb4c8deb704c8eac495b3c26b89a5a3c767ae0fbc5d36</code>. Архив: <code>6c8ab5c170024554e0d92ba116acf0cf028d3bb6abba49e2fb8a86d99a7e2117</code>.</p>
+<p>Оригинальные русские произведения находятся в общественном достоянии; прозу и индивидуальные словоформы мы не распространяем. Отдельные права на подготовку транскрипции и распространение других материалов не предполагаются автоматически. <a href="https://github.com/drevendev/Scriptorium/issues/562">История исследования #562</a>.</p></section>
+<p class="lex-foot">Scriptorium · доступная статическая страница · без JavaScript, аналитики и запросов к исходным книгам.</p>
+</div></main></body></html>

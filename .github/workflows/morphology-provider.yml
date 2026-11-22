@@ -24,6 +24,10 @@ on:
       - "tests/test_pylem_transport.py"
       - "tools/pylem_runtime_probe.py"
       - "tools/pylem_inflection_probe.py"
+      - "scriptorium/running_waves_native_n.py"
+      - "tests/test_running_waves_native_n.py"
+      - "corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json"
+      - "corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json"
       - "tests/test_pylem_inflection_probe.py"
       - "tools/pylem_sidecar.py"
       - "benchmarks/fantlab/work270306.json"
@@ -616,5 +620,112 @@ jobs:
         with:
           name: scriptorium-resurrection-pylem-n-only-impact
           path: build/morph/resurrection-pylem-n-only-impact.json
+          if-no-files-found: error
+          retention-days: 7
+
+  third-running-waves-native-n:
+    name: Measure third frozen full-work N ambiguity (Grin)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Set up modern source verification runtime
+        id: py313
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Replay 36 pinned literary pages and prepare ephemeral request
+        run: |
+          set -euo pipefail
+          mkdir -p build/morph
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.running_waves_native_n \
+            --source-manifest corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json \
+            --body-manifest corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json \
+            --request build/morph/grin-pylem-request.json
+
+      - name: Set up legacy native pylem runtime
+        id: py39
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.9"
+
+      - name: Install exact hash-pinned pylem 0.0.18
+        env:
+          CMAKE_ARGS: "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+        run: |
+          set -euo pipefail
+          "${{ steps.py39.outputs.python-path }}" -m pip install --disable-pip-version-check \
+            --no-deps --require-hashes -r requirements/pylem-0.0.18.txt
+
+      - name: Execute source-bound sidecar without publishing input
+        run: |
+          set -euo pipefail
+          "${{ steps.py39.outputs.python-path }}" tools/pylem_sidecar.py \
+            --request build/morph/grin-pylem-request.json \
+            --response build/morph/grin-pylem-response.json
+
+      - name: Verify third full-work source-free N bounds
+        env:
+          SCRIPTORIUM_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          "${{ steps.py313.outputs.python-path }}" -m scriptorium.n_collision_diagnostic \
+            --manifest corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json \
+            --request build/morph/grin-pylem-request.json \
+            --response build/morph/grin-pylem-response.json \
+            --scriptorium-revision "$SCRIPTORIUM_REVISION" \
+            --output build/morph/grin-pylem-n-only-impact.json
+          "${{ steps.py313.outputs.python-path }}" - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("build/morph/grin-pylem-n-only-impact.json").read_text(encoding="utf-8"))
+          assert report["schema_version"] == "scriptorium-pylem-n-only-impact-v3"
+          assert report["candidate_id"] == "grin-running-on-waves-ru"
+          assert report["normalized_sha256"] == "41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc"
+          assert report["provider"]["version"] == "0.0.18"
+          assert report["provider"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
+          assert report["source_text_included"] is False
+          assert report["impact"]["status"] == "diagnostic_only"
+          impact = report["impact"]
+          assert impact["word_count"] > 1000
+          assert impact["n_only_token_count"] + impact["n_mixed_token_count_excluded"] <= impact["word_count"]
+          assert impact["conditional_defined_token_count"] == (
+              impact["baseline_defined_token_count"] + impact["n_only_token_count"]
+          )
+          assert impact["boundary"]["n_mixed_recovered"] is False
+          assert impact["boundary"]["production_pos_mapping_changed"] is False
+          assert impact["boundary"]["m2_parity_admissible"] is False
+          assert all(row["conditional_min_raw_count"] <= row["conditional_max_raw_count"]
+                     for row in impact["bigram_conditional_envelopes"])
+          serialized = json.dumps(report, ensure_ascii=False)
+          assert "normalized_text" not in serialized
+          assert "tokens" not in report
+          print(json.dumps({
+              "candidate_id": report["candidate_id"],
+              "normalized_sha256": report["normalized_sha256"],
+              "runtime_analysis_sha256": report["runtime_analysis_sha256"],
+              "n_only": impact["n_only_token_count"],
+              "n_mixed_excluded": impact["n_mixed_token_count_excluded"],
+              "word_count": impact["word_count"],
+              "status": "diagnostic_only",
+              "m2_parity_admissible": False,
+          }, ensure_ascii=False, sort_keys=True))
+          PY
+
+      - name: Remove source-bearing ephemeral transport
+        if: always()
+        run: rm -f build/morph/grin-pylem-request.json build/morph/grin-pylem-response.json
+
+      - name: Upload source-free third full-work N contrast
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-grin-pylem-n-only-impact
+          path: build/morph/grin-pylem-n-only-impact.json
           if-no-files-found: error
           retention-days: 7

@@ -1,0 +1,71 @@
+{
+  "schema_version": "scriptorium-grin-lexical-reader-diagnostic-v1",
+  "status": "DIAGNOSTIC_ONLY",
+  "source_text_included": false,
+  "per_form_data_included": false,
+  "corpus_admission": "NOT_VERIFIED",
+  "m2_parity_admissible": false,
+  "fantlab_analyzer_input_match": "UNKNOWN",
+  "compatibility_status": "extension",
+  "publication_scope": "public numeric aggregates only; original local contrast is NOT public-release-ready",
+  "provenance": {
+    "source_pr": 613,
+    "source_commit": "f8b445fc1754906dd3a135740212a3ddb31717fe",
+    "reviewed_merge_commit": "13350f47986d942e6998181320ed0c89ac8489e9",
+    "ci_run_id": 45009800452,
+    "ci_artifact_id": 14749396260,
+    "ci_zip_sha256": "6c8ab5c170024554e0d92ba116acf0cf028d3bb6abba49e2fb8a86d99a7e2117",
+    "ci_json_sha256": "90b80850c4a3c7f376bdb4c8deb704c8eac495b3c26b89a5a3c767ae0fbc5d36",
+    "rights_basis": "Public-domain original Russian works; no literary text, individual word forms or per-form hashes published"
+  },
+  "works": [
+    {
+      "id": "grin-road-nowhere",
+      "title": "Дорога в никуда",
+      "author": "Александр Грин",
+      "edition_id": "grin-road-nowhere-azlib-oldid-5585836",
+      "source_url": "https://ru.wikisource.org/w/index.php?title=Дорога_в_никуда_(Грин)&oldid=5585836",
+      "normalized_sha256": "e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee",
+      "characters_including_spaces": 442656,
+      "word_tokens": 65072,
+      "distinct_forms": 16944,
+      "language": "ru"
+    },
+    {
+      "id": "grin-running-waves",
+      "title": "Бегущая по волнам",
+      "author": "Александр Грин",
+      "edition_id": "grin-running-waves-detlit-1965-revision-composite",
+      "source_url": "https://ru.wikisource.org/wiki/Бегущая_по_волнам_(Грин)",
+      "normalized_sha256": "41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc",
+      "characters_including_spaces": 363819,
+      "word_tokens": 55778,
+      "distinct_forms": 14406,
+      "literary_page_revisions": 36,
+      "language": "ru"
+    }
+  ],
+  "aggregate": {
+    "shared_form_count": 5901,
+    "left_only_form_count": 11043,
+    "right_only_form_count": 8505,
+    "eligible_form_count": 3094,
+    "excluded_rare_form_count": 22355,
+    "balanced_form_count": 1719,
+    "left_dominant_form_count": 769,
+    "right_dominant_form_count": 606,
+    "type_jaccard_percent": 23.187552,
+    "token_distribution_overlap_percent": 59.843147,
+    "jensen_shannon_divergence_bits": 0.293793
+  },
+  "methodology": {
+    "version": "scriptorium-lexical-aggregate-contrast-v1",
+    "vocabulary_profile": "scriptorium-vocabulary-v1",
+    "normalization_profile": "scriptorium-text-v1",
+    "identity": "NFC + Unicode casefold; word surface forms, no lemmatization, no ё/е folding",
+    "jaccard": "intersection / union of distinct word forms",
+    "token_overlap": "100 * sum(min(relative frequency in each work)) over all forms",
+    "divergence": "empirical Jensen-Shannon, base-2 bits, unsmoothed",
+    "dominance": "at least 5 combined occurrences; Jeffreys +0.5 smoothing for at least 2x dominance"
+  }
+}

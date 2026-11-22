@@ -203,6 +203,14 @@ class GrinLexicalReaderTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
         self.assertIn('href="./lexical-grin.html"', index)
         self.assertIn("lexical-grin.html", readme)
+        self.assertIn(
+            "is not implied.\n\n**Replay the Tolstoy AOT/pylem N comparison offline:**",
+            readme,
+        )
+        self.assertNotIn(
+            r"\n\n**Replay the Tolstoy AOT/pylem N comparison offline:**",
+            readme,
+        )
         self.assertIn('"lexical-grin.html"', audit)
         self.assertIn('"assets/grin-lexical-diagnostic.json"', audit)
         for file in ("lexical-grin.html", "assets/grin-lexical-diagnostic.json"):

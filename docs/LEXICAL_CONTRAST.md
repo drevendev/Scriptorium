@@ -15,6 +15,27 @@ scriptorium distinctives left.txt right.txt \
   --format json --output private-contrast.json
 ```
 
+## Re-render an existing private report (no manuscript needed)
+
+After creating `private-contrast.json` above, make an accessible offline HTML,
+CSV or Markdown view **without reopening either source text**:
+
+```console
+scriptorium distinctives --report private-contrast.json \
+  --format html --output private-contrast.html
+scriptorium distinctives --report private-contrast.json --format csv
+```
+
+The replay accepts only a bounded regular UTF-8 JSON file. It rejects duplicate
+JSON keys, NaN/Infinity, unexpected source-bearing fields, contradictory
+counts/metadata, and incompatible profiles through the same strict source-free
+renderer validation as a freshly analyzed report. Source files/edition flags
+cannot be mixed with `--report`; outputs remain create-only. The saved JSON
+contains normalized input SHA-256 hashes and user-declared metadata, **not**
+word forms or manuscript text. Replay verifies artifact structure and internal
+consistency, not independently verified edition rights, source identity or
+FantLab parity. Keep the report private unless separately cleared for release.
+
 For a spreadsheet-friendly **source-free, create-only CSV** (fixed four-column
 `section,field,value,unit` rows; no words or word-level hashes):
 

@@ -300,5 +300,70 @@ class LexicalContrastTests(unittest.TestCase):
 
 
 
+    def test_replay_saved_source_free_json_in_all_formats_without_text_files(self):
+        report = contrast("кот " * 8 + "пёс " * 2, "пёс " * 9 + "кот")
+        with tempfile.TemporaryDirectory() as tmp:
+            report_path = Path(tmp) / "aggregate.json"
+            report_path.write_text(render_lexical_contrast(report, "json"), encoding="utf-8")
+            for kind in ("json", "csv", "markdown", "html"):
+                with self.subTest(kind=kind), contextlib.redirect_stdout(io.StringIO()) as out:
+                    self.assertEqual(cli.main([
+                        "distinctives", "--report", str(report_path), "--format", kind,
+                    ]), 0)
+                self.assertEqual(out.getvalue(), render_lexical_contrast(report, kind))
+                self.assertNotIn("кот", out.getvalue())
+                self.assertNotIn("пёс", out.getvalue())
+            destination = Path(tmp) / "private.html"
+            self.assertEqual(cli.main([
+                "distinctives", "--report", str(report_path),
+                "--format", "html", "--output", str(destination),
+            ]), 0)
+            self.assertEqual(destination.read_text(encoding="utf-8"),
+                             render_lexical_contrast(report, "html"))
+            with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                cli.main(["distinctives", "--report", str(report_path),
+                          "--output", str(destination)])
+            self.assertEqual(destination.read_text(encoding="utf-8"),
+                             render_lexical_contrast(report, "html"))
+
+    def test_replay_rejects_malformed_or_text_bearing_reports_and_mixed_inputs(self):
+        report = contrast("кот " * 8, "пёс " * 9)
+        baseline = render_lexical_contrast(report, "json")
+        with tempfile.TemporaryDirectory() as tmp:
+            source = Path(tmp) / "report.json"
+            output = Path(tmp) / "should-not-exist.html"
+            modified = json.loads(baseline)
+            modified["manuscript_excerpt"] = "кот пёс"
+            forged = json.loads(baseline)
+            forged["aggregate"]["eligible_form_count"] = -1
+            witness_injection = json.loads(baseline)
+            witness_injection["left"]["manuscript_excerpt"] = "кот пёс"
+            for payload in (
+                '{"schema_version":"a","schema_version":"b"}',
+                '{"aggregate":NaN}',
+                '[]',
+                json.dumps(modified, ensure_ascii=False),
+                json.dumps(witness_injection, ensure_ascii=False),
+                json.dumps(forged, ensure_ascii=False),
+                '{"schema_version": ',
+            ):
+                source.write_text(payload, encoding="utf-8")
+                for kind in ("json", "csv", "markdown", "html"):
+                    with self.subTest(payload=payload[:45], kind=kind), contextlib.redirect_stderr(
+                        io.StringIO()
+                    ), self.assertRaises(SystemExit):
+                        cli.main(["distinctives", "--report", str(source),
+                                  "--format", kind, "--output", str(output)])
+                    self.assertFalse(output.exists())
+            source.write_text(baseline, encoding="utf-8")
+            for extra in (["left.txt"], ["--left-edition", "fake"],
+                          ["--left-language", "ru"], ["--translation-pair"]):
+                with self.subTest(extra=extra), contextlib.redirect_stderr(
+                    io.StringIO()
+                ), self.assertRaises(SystemExit):
+                    cli.main(["distinctives", "--report", str(source), *extra])
+            with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                cli.main(["distinctives", "--left-edition", "x"])
+
 if __name__ == "__main__":
     unittest.main()

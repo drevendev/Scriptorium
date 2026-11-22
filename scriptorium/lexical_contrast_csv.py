@@ -110,6 +110,21 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
     """
     if type(report) is not dict or report.get("schema_version") != _SCHEMA:
         raise ValueError("unsupported lexical contrast schema")
+    # All output formats share the same fail-closed source-free field allow-list.
+    # CSV/HTML/Markdown must not bypass the JSON export boundary and silently
+    # accept hidden manuscript excerpts in discarded unrecognized keys.
+    required_fields = {
+        "schema_version", "profile", "compatibility_status", "left", "right",
+        "status", "method", "length_ratio_max_over_min",
+        "length_imbalance_warning", "corpus_admission",
+        "public_release_ready", "scientific_boundary", "aggregate",
+    }
+    optional_fields = {
+        "word_token_ratio_max_over_min", "word_token_imbalance_warning",
+    }
+    if (not required_fields.issubset(report) or
+            set(report) - required_fields - optional_fields):
+        raise ValueError("unexpected lexical report fields")
     left, right, aggregate = report.get("left"), report.get("right"), report.get("aggregate")
     method = report.get("method")
     if type(left) is not dict or type(right) is not dict or type(method) is not dict:
@@ -153,9 +168,10 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
         raise ValueError("invalid lexical aggregate")
 
 
+    allowed_witness_fields = {key for key, _ in _WITNESS_FIELDS}
     for witness in (left, right):
-        if any(key not in witness for key, _ in _WITNESS_FIELDS):
-            raise ValueError("incomplete lexical witness")
+        if set(witness) != allowed_witness_fields:
+            raise ValueError("unexpected or missing lexical witness fields")
         _validate_witness(witness)
 
     # Equal normalized digests identify the same tokenized source, regardless

@@ -314,33 +314,75 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Compare local lexical aggregates without emitting any source words"
     )
-    parser.add_argument("left", type=Path)
-    parser.add_argument("right", type=Path)
-    parser.add_argument("--left-edition", required=True)
-    parser.add_argument("--right-edition", required=True)
+    parser.add_argument("left", nargs="?", type=Path)
+    parser.add_argument("right", nargs="?", type=Path)
+    parser.add_argument("--report", type=Path,
+                        help="Replay an existing source-free lexical JSON report")
+    parser.add_argument("--left-edition")
+    parser.add_argument("--right-edition")
     parser.add_argument("--left-original")
     parser.add_argument("--right-original")
     parser.add_argument("--left-translator")
     parser.add_argument("--right-translator")
-    parser.add_argument("--left-language", default="ru")
-    parser.add_argument("--right-language", default="ru")
+    parser.add_argument("--left-language")
+    parser.add_argument("--right-language")
     parser.add_argument("--translation-pair", action="store_true")
     parser.add_argument("--format", choices=("json", "markdown", "html", "csv"), default="json")
     parser.add_argument("--output", type=Path, help="New local output file; never overwrite")
     args = parser.parse_args(argv)
+    if args.report is None:
+        if (args.left is None or args.right is None or
+                args.left_edition is None or args.right_edition is None):
+            parser.error("two local files and both edition IDs are required without --report")
+    elif (args.left is not None or args.right is not None or args.translation_pair or
+          any(value is not None for value in (
+              args.left_edition, args.right_edition, args.left_original,
+              args.right_original, args.left_translator, args.right_translator,
+              args.left_language, args.right_language,
+          ))):
+        parser.error("--report cannot be combined with source files or identity flags")
     try:
-        left = _read_bounded_regular_file(args.left, MAX_ANALYSIS_BYTES, "left text").decode("utf-8")
-        right = _read_bounded_regular_file(args.right, MAX_ANALYSIS_BYTES, "right text").decode("utf-8")
-        result = build_lexical_contrast(
-            left, right, left_edition_id=args.left_edition,
-            right_edition_id=args.right_edition,
-            left_original_work_id=args.left_original,
-            right_original_work_id=args.right_original,
-            left_translator=args.left_translator,
-            right_translator=args.right_translator,
-            left_language=args.left_language, right_language=args.right_language,
-            translation_pair=args.translation_pair,
-        )
+        if args.report is not None:
+            # Reject JSON duplicate keys and non-standard NaN/Infinity before
+            # asking the existing source-free renderer to validate all evidence.
+            def unique_keys(pairs: list[tuple[str, object]]) -> dict[str, object]:
+                result: dict[str, object] = {}
+                for key, value in pairs:
+                    if key in result:
+                        raise ValueError("duplicate JSON key")
+                    result[key] = value
+                return result
+
+            def reject_constant(value: str) -> None:
+                raise ValueError("non-finite JSON constant")
+
+            raw = _read_bounded_regular_file(
+                args.report, MAX_ANALYSIS_BYTES, "lexical report"
+            )
+            result = json.loads(
+                raw.decode("utf-8"), object_pairs_hook=unique_keys,
+                parse_constant=reject_constant,
+            )
+            if type(result) is not dict:
+                raise ValueError("lexical report must be an object")
+        else:
+            left = _read_bounded_regular_file(
+                args.left, MAX_ANALYSIS_BYTES, "left text"
+            ).decode("utf-8")
+            right = _read_bounded_regular_file(
+                args.right, MAX_ANALYSIS_BYTES, "right text"
+            ).decode("utf-8")
+            result = build_lexical_contrast(
+                left, right, left_edition_id=args.left_edition,
+                right_edition_id=args.right_edition,
+                left_original_work_id=args.left_original,
+                right_original_work_id=args.right_original,
+                left_translator=args.left_translator,
+                right_translator=args.right_translator,
+                left_language=args.left_language or "ru",
+                right_language=args.right_language or "ru",
+                translation_pair=args.translation_pair,
+            )
         rendered = render_lexical_contrast(result, args.format)
         if args.output is None:
             print(rendered, end="")
@@ -349,7 +391,7 @@ def main(argv: list[str] | None = None) -> int:
                 destination.write(rendered)
     except FileExistsError:
         parser.error("output already exists; choose another filename")
-    except (OSError, UnicodeError, ValueError, TypeError, OverflowError):
+    except (OSError, UnicodeError, ValueError, TypeError, OverflowError, RecursionError):
         parser.error("local text, identity or destination invalid; no source text uploaded")
     return 0
 

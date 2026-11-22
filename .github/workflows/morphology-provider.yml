@@ -23,6 +23,8 @@ on:
       - "tests/test_pylem_n_contrast.py"
       - "tests/test_pylem_transport.py"
       - "tools/pylem_runtime_probe.py"
+      - "tools/pylem_inflection_probe.py"
+      - "tests/test_pylem_inflection_probe.py"
       - "tools/pylem_sidecar.py"
       - "benchmarks/fantlab/work270306.json"
       - "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json"
@@ -221,6 +223,67 @@ jobs:
         with:
           name: scriptorium-pylem-runtime-receipt
           path: build/morph/pylem-runtime-receipt.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Measure fresh inflected N controls with pinned native dictionary
+        run: |
+          set -euo pipefail
+          python tools/pylem_inflection_probe.py --receipt build/morph/pylem-inflected-n-receipt.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from tools.pylem_inflection_probe import CONTROL_GROUPS, SCHEMA, _digest
+          doc = json.loads(Path("build/morph/pylem-inflected-n-receipt.json").read_text(encoding="utf-8"))
+          assert doc["schema_version"] == SCHEMA
+          assert doc["source_text_included"] is False
+          assert doc["m2_parity_admissible"] is False
+          assert doc["production_pos_mapping_changed"] is False
+          assert doc["noun_cardinal_source_pos"] == "unresolved"
+          assert doc["fantlab_homonym_selection"] == "unresolved"
+          assert doc["provider"]["version"] == "0.0.18"
+          assert doc["provider"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
+          assert set(doc["groups"]) == {role for role, _ in CONTROL_GROUPS}
+          assert all(len(doc[key]) == 64 for key in ("fixture_manifest_sha256", "runtime_observations_sha256"))
+          for role, words in CONTROL_GROUPS:
+              group = doc["groups"][role]
+              rows = group["tokens"]
+              assert group["token_count"] == len(rows) == len(words) == 3
+              assert [row["token_sha256"] for row in rows] == [_digest(word) for word in words]
+              assert group["n_only_count"] == sum(row["n_only"] for row in rows)
+              assert group["n_present_count"] == sum(row["n_present"] for row in rows)
+              assert group["n_mixed_count"] == sum(row["n_mixed"] for row in rows)
+              assert group["n_only_count"] + group["n_mixed_count"] == group["n_present_count"]
+              for row in rows:
+                  assert row["candidate_count"] == len(row["runtime_pos"])
+                  assert row["n_present"] is ("N" in row["runtime_pos"])
+                  assert row["n_only"] is (bool(row["runtime_pos"]) and set(row["runtime_pos"]) == {"N"})
+                  assert row["n_mixed"] is (row["n_present"] and not row["n_only"])
+          negatives = doc["groups"]["unrelated_conjunction_controls"]["tokens"]
+          usable = sum(row["candidate_count"] > 0 and not row["n_present"] for row in negatives)
+          assert doc["negative_controls_usable"] == usable
+          assert doc["negative_controls_required"] == 2
+          positive = (doc["groups"]["noun_oblique_examples"]["n_only_count"] > 0
+                      and doc["groups"]["cardinal_oblique_examples"]["n_only_count"] > 0)
+          assert doc["cross_role_n_only_observed"] is positive
+          assert doc["qualified_cross_role_n_observation"] is (positive and usable >= 2)
+          print(json.dumps({
+              "schema": SCHEMA,
+              "n_only_by_role": {role: doc["groups"][role]["n_only_count"] for role, _ in CONTROL_GROUPS},
+              "n_mixed_by_role": {role: doc["groups"][role]["n_mixed_count"] for role, _ in CONTROL_GROUPS},
+              "negative_controls_usable": usable,
+              "qualified": doc["qualified_cross_role_n_observation"],
+              "fixture_manifest_sha256": doc["fixture_manifest_sha256"],
+              "runtime_observations_sha256": doc["runtime_observations_sha256"],
+              "m2_parity_admissible": False,
+          }, sort_keys=True))
+          PY
+
+      - name: Upload source-free inflected N-control receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-pylem-inflected-n-controls
+          path: build/morph/pylem-inflected-n-receipt.json
           if-no-files-found: error
           retention-days: 7
 

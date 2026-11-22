@@ -63,6 +63,12 @@ async function inspect(browser, origin, tag, width, height) {
     assert.equal(await table.evaluate(e=>e===document.activeElement),true);
     if(tag==="desktop"){
       await page.emulateMedia({media:"print"});
+      const printColors = await page.locator(".lex-hero h1").evaluate(e => ({
+        color: getComputedStyle(e).color,
+        background: getComputedStyle(e.parentElement).backgroundColor,
+      }));
+      assert.equal(printColors.color, "rgb(0, 0, 0)",
+        "Print must render the literary hero heading in readable ink");
       const pdf=await page.pdf({path:path.join(screenshots,"lexical-grin-a4.pdf"),format:"A4",printBackground:true});
       assert.ok(pdf.length>2000,"nonempty printable evidence page");
       await page.emulateMedia({media:"screen"});

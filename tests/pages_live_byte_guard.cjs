@@ -9,9 +9,11 @@ const path = require("node:path");
 const PUBLISHED = Object.freeze([
   "index.html",
   "metrics.html",
+  "lexical-grin.html",
   "assets/pages-reader.css",
   "assets/pages-reader.js",
   "assets/evidence-snapshot.json",
+  "assets/grin-lexical-diagnostic.json",
   "assets/scriptorium-ru-measured-metrics.csv",
   "assets/trusov-1775-interior-metrics.csv",
   "voice/index.html",
@@ -75,6 +77,22 @@ async function selfTest() {
       verifyLiveBytes(csvResponse(csvBytes + "stale"), ...csvArgs),
       /trusov-1775-interior-metrics.csv: published bytes differ/,
     );
+    // Passing the homepage is insufficient for the published Grin lexical Reader.
+    // Reject stale/missing HTML and aggregate JSON independently.
+    for (const [relative, content] of [
+      ["lexical-grin.html", "<main>Grin lexical diagnostic</main>"],
+      ["assets/grin-lexical-diagnostic.json", '{"status":"DIAGNOSTIC_ONLY"}'],
+    ]) {
+      const local = path.join(root, relative);
+      fs.mkdirSync(path.dirname(local), { recursive: true });
+      fs.writeFileSync(local, content);
+      const routeArgs = [root, BASE, "test", [relative]];
+      assert.deepEqual((await verifyLiveBytes(fake(content), ...routeArgs))
+        .map(row => row.path), [relative]);
+      await assert.rejects(verifyLiveBytes(fake(content + " stale"), ...routeArgs),
+        /published bytes differ/);
+      await assert.rejects(verifyLiveBytes(fake("", 404), ...routeArgs), /HTTP 404/);
+    }
     await assert.rejects(verifyLiveBytes(fake("", 404), ...args), /HTTP 404/);
     await assert.rejects(verifyLiveBytes(fake("exact published Reader", 200,
       "https://example.com/"), ...args), /redirect target/);

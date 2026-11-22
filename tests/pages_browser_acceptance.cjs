@@ -516,6 +516,38 @@ async function inspectHome(page, origin, tag, evidenceDir = output) {
 }
 
 
+// This checks the actual public branch Pages route, not an Actions preview.
+// JavaScript is intentionally disabled: charts, numeric table and status stand alone.
+async function inspectLiveLexical(browser, origin, evidenceDir) {
+  for (const [name, width, height] of [
+    ["desktop", 1440, 900], ["mobile", 390, 844],
+  ]) {
+    const page = await browser.newPage({
+      viewport: { width, height }, javaScriptEnabled: false,
+    });
+    try {
+      const response = await page.goto(origin + "/lexical-grin.html",
+        { waitUntil: "networkidle" });
+      assert.equal(response.status(), 200, name + ": public Grin lexical page");
+      assert.match(await page.locator("h1").innerText(), /Грин/);
+      assert.equal(await page.locator("#lex-exact-table tbody tr").count(), 5);
+      assert.equal(await page.locator("#lex-type-chart span").count(), 3);
+      assert.match(await page.locator(".lex-stats").innerText(), /23,19%/);
+      assert.match(await page.locator(".lex-stats").innerText(), /59,84%/);
+      assert.match(await page.locator(".lex-callout").innerText(), /M2: 0\/5/);
+      const dimensions = await page.evaluate(() => ({
+        scroll: document.documentElement.scrollWidth, width: window.innerWidth,
+      }));
+      assert.ok(dimensions.scroll <= dimensions.width + 2,
+        name + ": public lexical Reader horizontal overflow");
+      await page.screenshot({
+        path: path.join(evidenceDir, "live-lexical-grin-" + name + ".png"),
+        fullPage: true, animations: "disabled",
+      });
+    } finally { await page.close(); }
+  }
+}
+
 async function inspectLive() {
   const { BASE, verifyLiveBytes } = require("./pages_live_byte_guard.cjs");
   const evidenceDir = path.resolve(__dirname, "../build/reader-live-readback");
@@ -541,6 +573,7 @@ async function inspectLive() {
     }
     if (!receipt) throw lastError;
     const origin = BASE.slice(0, -1);
+    await inspectLiveLexical(browser, origin, evidenceDir);
     const desktop = await context.newPage();
     await inspectHome(desktop, origin, "live-desktop", evidenceDir);
     await desktop.emulateMedia({ media: "print" });
@@ -580,7 +613,7 @@ async function inspectLive() {
     receipt = await verifyLiveBytes(context.request, repoRoot, BASE, revision);
     fs.writeFileSync(path.join(evidenceDir, "status.json"), JSON.stringify({
       status: "LIVE_VERIFIED", checkout_sha: revision, exact_routes: receipt,
-      checks: "desktop/mobile/keyboard/glossary/voice/CSV/A4",
+      checks: "desktop/mobile/lexical-Grin/no-JS/keyboard/glossary/voice/CSV/A4",
     }, null, 2) + "\n");
     console.log("LIVE_VERIFIED: exact master bytes on " + receipt.length +
       " public routes; real desktop/mobile/keyboard/print acceptance. SHA=" + revision);

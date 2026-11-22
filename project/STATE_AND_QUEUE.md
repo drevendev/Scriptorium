@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 597
+STATE_REVISION: 598
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-22
-LAST_RESULT: #613 merged at 13350f47986d942e6998181320ed0c89ac8489e9; independently verified source-free two-Grin lexical replay now exists on master.
+LAST_RESULT: #614 merged at 5422e22b35614c547e878fc78e3c7ecf5cc6e748; live branch Pages deployed successfully but the 9-route byte guard did not yet cover lexical-grin.html or its aggregate JSON.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; three full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-GRIN-LEXICAL-031
+UNIT_ID: SCRIP-SITE-GRIN-LIVE-032
 ISSUE: #562
-STATUS: PR_CANDIDATE; later independent exact-head acceptance and actual Pages publication verification required
-BRANCH: scrip-grin-lexical-reader-20261122
-BASE: 13350f47986d942e6998181320ed0c89ac8489e9
+STATUS: PR_CANDIDATE; later exact-head acceptance and subsequent master live-readback required
+BRANCH: scrip-grin-live-readback-20261122
+BASE: 5422e22b35614c547e878fc78e3c7ecf5cc6e748
 
-ACCEPTANCE: An accessible source-free, no-JavaScript Russian Reader page must show actual pinned two-Grin lexical Jaccard/overlap/JSD, accurate shares, exact-count table, edition/revision citations, CI SHA-256 and limitations. Publish only a strict numeric public projection of the verified #613 original CI JSON; retain its private report's public_release_ready=false and corpus_admission=NOT_VERIFIED. Source-literary rights and provenance independently reviewed; no full prose, rare-form identities or hashes. Validate link audit, exact branch-root staging, desktop/mobile/keyboard/print Chromium, full Python suite and later fresh review before merge; independent live Pages check remains separate.
+ACCEPTANCE: GitHub-managed branch Pages deploy #45029816360 succeeded at 5422e22b. The push-run #45029816983 independently recorded LIVE_VERIFIED for nine unchanged public routes; lexical HTML and derived JSON were omitted from that check, so publication of those specific bytes remains unverified. Extend the guard to both with stale/404 negatives; exercise actual public Grin lexical desktop/mobile with JavaScript disabled, exact numeric table, no overflow and archived screenshots. Later independent exact-head review/merge, then require fresh master live readback covering eleven exact-byte routes. Preserve DIAGNOSTIC_ONLY, corpus NOT_VERIFIED and M2=0/5.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Add a genuinely measured, rights-attributed lexical comparison of two full Russian Grin novels to the public Reader without implying FantLab parity or corpus admission.
+Milestone: Verify the real publicly deployed Grin lexical Reader and its derived JSON end to end, not just the rest of the site.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 public numeric-only Grin lexical Reader | Exact-head tests, browser screenshots, provenance review, merge and live readback | This PR; public source-free projection and approved source rights |
+| P1 | #562 exact-live Grin lexical Reader guard | Exact-byte HTML+JSON, stale/404 tests, live no-JS desktop/mobile, later merge/live readback | This focused PR; already merged #614 |
 | P2 | #282 AOT noun/cardinal N ambiguity | New native dictionary-level evidence resolving count/bigram/position effects, not repeating known collision | Pinned dictionary semantics |
 | P3 | #511 Trusov full-work boundary | Complete opening/ending identity and measured whole-body report | Missing historical page coverage |
 | P4 | #284 code/data licensing and attribution | Rights-holder-approved notice/license guidance, no unilateral relicensing | Owner/holder approval |

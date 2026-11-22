@@ -408,3 +408,26 @@ has completed and the uploaded bytes have been independently inspected. This
 does **not** identify N as noun vs cardinal, prove FantLab's input/dictionary
 identity or advance the M2 0/5 parity gate. Scientific acceptance and the
 eventual public Reader comparison are separate from preparing this run.
+
+### Fourth full-work N witness: Grin's *Road to Nowhere* (PR candidate, 2026-11-22)
+
+This **independent, not-yet-executed** native experiment reuses the existing
+public-domain single-page alternate transcription, Wikisource oldid 5585836,
+442,656 literary characters including spaces, normalized SHA-256
+`e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`.
+It is the az.lib-derived alternate edition, not the incomplete primary
+Pravda-1965 route or FantLab's disclosed analyzer input.
+
+`scriptorium.road_nowhere_native_n` first enforces the frozen legal and
+single-revision identities, replays the full literary body, and binds a
+temporary native request to its exact normalized digest. The existing
+hash-pinned Python 3.9 / pylem 0.0.18 sidecar then produces a response
+consumed through the validated transport and the established N-only conditional
+POS/bigram/sentence-position calculation. CI uploads only a source-free JSON
+receipt; the source-bearing request/response are removed on all exits.
+
+The fourth-work measurement is **NOT_RUN** until exact-head hosted CI completes
+and an independently read-back artifact confirms actual counts. The native N
+collision, unknown FantLab homonym policy and M2 **0/5** gate are unchanged.
+A completed fourth receipt can support comparisons *within* one author as well
+as across authors, but not a claim that noun and cardinal were disambiguated.

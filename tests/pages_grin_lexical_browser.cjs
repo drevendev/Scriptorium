@@ -69,14 +69,27 @@ async function inspect(browser, origin, tag, width, height) {
       const size=await table.evaluate(e=>({visible:e.clientWidth,content:e.scrollWidth}));
       assert.ok(size.content > size.visible+100,tag+": second book requires horizontal scroll");
       await table.press("ArrowRight");
-      await page.waitForFunction(()=>document.querySelector(".lex-table-scroll").scrollLeft>0,null,{timeout:3000});
-      await table.evaluate(e=>{e.scrollLeft=e.scrollWidth;});
-      const lastVisible=await table.evaluate(e=>{
-        const box=e.getBoundingClientRect();
-        const last=e.querySelector("thead th:last-child").getBoundingClientRect();
-        return last.left>=box.left-2 && last.right<=box.right+2;
-      });
-      assert.ok(lastVisible,tag+": third column can be revealed after horizontal scroll");
+      // Poll from the Node runner: waitForFunction can stall in a no-JS context
+      // while native keyboard scrolling continues asynchronously.
+      let keyboardMoved=false;
+      for(let poll=0;poll<30;poll++){
+        const left=await table.evaluate(e=>e.scrollLeft);
+        if(left>0){keyboardMoved=true;break;}
+        await new Promise(resolve=>setTimeout(resolve,80));
+      }
+      assert.ok(keyboardMoved,tag+": ArrowRight must move the native scroll region");
+      let lastVisible=false;
+      for(let step=0;step<20;step++){
+        lastVisible=await table.evaluate(e=>{
+          const box=e.getBoundingClientRect();
+          const last=e.querySelector("thead th:last-child").getBoundingClientRect();
+          return last.left>=box.left-2 && last.right<=box.right+2;
+        });
+        if(lastVisible)break;
+        await table.press("ArrowRight");
+        await new Promise(resolve=>setTimeout(resolve,80));
+      }
+      assert.ok(lastVisible,tag+": keyboard arrows must reveal the third column");
       await page.screenshot({path:path.join(screenshots,"lexical-grin-mobile-third-column.png"),animations:"disabled"});
     }
     if(tag==="desktop"){

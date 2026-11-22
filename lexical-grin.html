@@ -23,6 +23,8 @@
 .lex-measure{margin:1.5rem 0}.lex-measure figcaption{font-weight:650;margin-bottom:.65rem}
 .lex-meter{height:1.4rem;border:1px solid #738879;border-radius:6px;background:#e4e9e1;overflow:hidden}
 .lex-meter span{height:100%;display:block;background:#386b58}
+.lex-table-help{margin:.6rem 0 .65rem;color:var(--subtle);font-size:.92rem;line-height:1.6}
+.lex-table-help strong{color:var(--ink)}
 .lex-table-scroll{max-width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:8px}
 .lex-table-scroll:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .lex-table{width:100%;min-width:620px;border-collapse:collapse;font-variant-numeric:tabular-nums}
@@ -37,7 +39,7 @@
 @media(max-width:720px){.lex-stats{grid-template-columns:1fr}.lex-wrap{padding:1.5rem 0 3rem}}
 @media(forced-colors:active){.lex-track,.lex-meter{border:2px solid CanvasText}.lex-left,.lex-shared,.lex-right,.lex-meter span{background:Highlight}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-@media print{.lex-hero,.lex-panel,.lex-stat,.lex-callout{background:white!important;color:black!important;box-shadow:none;break-inside:avoid}.lex-hero h1,.lex-hero h1 em,.lex-hero .eyebrow,.lex-hero a{color:black!important}.lex-track,.lex-meter{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+@media print{.lex-hero,.lex-panel,.lex-stat,.lex-callout{background:white!important;color:black!important;box-shadow:none;break-inside:avoid}.lex-hero h1,.lex-hero h1 em,.lex-hero .eyebrow,.lex-hero a{color:black!important}.lex-track,.lex-meter{print-color-adjust:exact;-webkit-print-color-adjust:exact}.lex-table-help{display:none}.lex-table-scroll{overflow:visible;border:0}.lex-table{min-width:0;table-layout:fixed;font-size:.82rem}.lex-table th,.lex-table td{padding:.35rem .45rem;overflow-wrap:anywhere}}
 </style></head>
 <body><nav class="skip-links" aria-label="Быстрый переход"><a class="skip-link" href="#main">К данным</a></nav>
 <header class="site-top"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S</span><span>Scriptorium</span></a><nav aria-label="Навигация"><a href="./#books">Библиотека</a><a href="./#pairs">Сравнить книги</a><a href="./n-uncertainty.html#n-three-work">Морфология N</a><a href="./#method">Метод</a></nav></header>
@@ -62,7 +64,8 @@
 <figure class="lex-measure"><figcaption>Перекрытие частот всех словоформ: 59,84% (100% = одинаковые распределения)</figcaption>
 <div id="lex-token-chart" class="lex-meter" role="img" aria-label="Перекрытие токенов 59,84%; неперекрытая часть 40,16%"><span style="width:59.843147%"></span></div></figure>
 <p>Совпадение словарей и частотное перекрытие — разные величины; ни одна не означает вероятность общего авторства.</p>
-<div class="lex-table-scroll" role="region" aria-label="Точные лексические измерения" tabindex="0"><table class="lex-table" id="lex-exact-table"><caption>Воспроизводимые числа · обе закреплённые редакции</caption>
+<p id="lex-table-help" class="lex-table-help"><strong>Таблица из трёх столбцов.</strong> На узком экране прокрутите таблицу вправо, чтобы увидеть значения «Бегущей по волнам». С клавиатуры: Tab для перехода к таблице, затем стрелки ← и →.</p>
+<div class="lex-table-scroll" role="region" aria-label="Точные лексические измерения" aria-describedby="lex-table-help" tabindex="0"><table class="lex-table" id="lex-exact-table"><caption>Воспроизводимые числа · обе закреплённые редакции</caption>
 <thead><tr><th scope="col">Показатель</th><th scope="col">«Дорога в никуда»</th><th scope="col">«Бегущая по волнам»</th></tr></thead>
 <tbody><tr><th scope="row">Символов, с пробелами</th><td>442 656</td><td>363 819</td></tr>
 <tr><th scope="row">Словоформ (токенов)</th><td>65 072</td><td>55 778</td></tr>

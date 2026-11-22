@@ -196,6 +196,16 @@ class GrinLexicalReaderTests(unittest.TestCase):
         self.assertIn("./#books", parsed.links)
         self.assertIn("#methodology", parsed.links)
 
+    def test_scroll_help_is_bound_to_native_table_and_print_fits(self):
+        text = self.html
+        self.assertIn('id="lex-table-help" class="lex-table-help"', text)
+        self.assertIn('aria-describedby="lex-table-help" tabindex="0"', text)
+        self.assertIn("прокрутите таблицу вправо", text)
+        self.assertIn("стрелки ← и →", text)
+        self.assertIn(".lex-table{min-width:0;table-layout:fixed", text)
+        self.assertIn(".lex-table-scroll{overflow:visible;border:0}", text)
+        self.assertLess(text.index('id="lex-table-help"'), text.index('id="lex-exact-table"'))
+
     def test_branch_pages_and_reader_discovery(self):
         index = (ROOT / "index.html").read_text(encoding="utf-8")
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -203,10 +213,15 @@ class GrinLexicalReaderTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
         self.assertIn('href="./lexical-grin.html"', index)
         self.assertIn("lexical-grin.html", readme)
-        self.assertIn(
-            "is not implied.\n\n**Replay the Tolstoy AOT/pylem N comparison offline:**",
-            readme,
+        replay = "**Replay the Tolstoy AOT/pylem N comparison offline:**"
+        boundary = (
+            r"\*\*\[Two real Grin novels: lexical comparison[^\n]*\n\n"
+            r"\*\*Replay the Tolstoy AOT/pylem N comparison offline:\*\*"
         )
+        self.assertRegex(readme, boundary)
+        joined = readme.replace("\n\n" + replay, "\n" + replay, 1)
+        self.assertNotEqual(joined, readme)
+        self.assertNotRegex(joined, boundary)
         self.assertNotIn(
             r"\n\n**Replay the Tolstoy AOT/pylem N comparison offline:**",
             readme,

@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 598
+STATE_REVISION: 599
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-22
-LAST_RESULT: #614 merged at 5422e22b35614c547e878fc78e3c7ecf5cc6e748; live branch Pages deployed successfully but the 9-route byte guard did not yet cover lexical-grin.html or its aggregate JSON.
+LAST_RESULT: #615 merged at e41371ea3f4d32600efe7e9318473947a0dae2ce; managed Pages deploy #45040496780 SUCCESS and independent Chromium #45040497521 LIVE_VERIFIED all 11 exact master routes, including lexical-grin.html and aggregate JSON. Mobile full-page review exposed an undiscoverable off-screen third table column.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; three full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-SITE-GRIN-LIVE-032
+UNIT_ID: SCRIP-SITE-GRIN-TABLE-A11Y-033
 ISSUE: #562
-STATUS: PR_CANDIDATE; later exact-head acceptance and subsequent master live-readback required
-BRANCH: scrip-grin-live-readback-20261122
-BASE: 5422e22b35614c547e878fc78e3c7ecf5cc6e748
+STATUS: PR_CANDIDATE; later exact-head CI and independent acceptance required
+BRANCH: scrip-grin-mobile-table-a11y-20261122
+BASE: e41371ea3f4d32600efe7e9318473947a0dae2ce
 
-ACCEPTANCE: GitHub-managed branch Pages deploy #45029816360 succeeded at 5422e22b. The push-run #45029816983 independently recorded LIVE_VERIFIED for nine unchanged public routes; lexical HTML and derived JSON were omitted from that check, so publication of those specific bytes remains unverified. Extend the guard to both with stale/404 negatives; exercise actual public Grin lexical desktop/mobile with JavaScript disabled, exact numeric table, no overflow and archived screenshots. Later independent exact-head review/merge, then require fresh master live readback covering eleven exact-byte routes. Preserve DIAGNOSTIC_ONLY, corpus NOT_VERIFIED and M2=0/5.
+ACCEPTANCE: Existing #615 public byte-identity and no-JS browser readback are LIVE_VERIFIED (11/11 routes). On 390px live screenshot the third table column is offscreen without a scroll cue. Add visible touch/keyboard guidance bound via aria-describedby to the native focusable scroll region; verify real keyboard horizontal navigation reveals the right-hand book; keep A4 table readable without horizontal clipping, preserve existing numerical source artifacts and fail-closed privacy/science labels. Independent later-run PR acceptance/merge and fresh post-merge public readback required.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Verify the real publicly deployed Grin lexical Reader and its derived JSON end to end, not just the rest of the site.
+Milestone: Make the already-live Grin lexical Reader fully usable on narrow screens and in A4 print, without changing measured values.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 exact-live Grin lexical Reader guard | Exact-byte HTML+JSON, stale/404 tests, live no-JS desktop/mobile, later merge/live readback | This focused PR; already merged #614 |
+| P1 | #562 Grin table mobile/print discoverability | Visible scroll hint, keyboard reveals right-hand book, print table fits; real browser evidence and later acceptance | #615 live 11/11 verified; mobile overflow is confined to table region |
 | P2 | #282 AOT noun/cardinal N ambiguity | New native dictionary-level evidence resolving count/bigram/position effects, not repeating known collision | Pinned dictionary semantics |
 | P3 | #511 Trusov full-work boundary | Complete opening/ending identity and measured whole-body report | Missing historical page coverage |
 | P4 | #284 code/data licensing and attribution | Rights-holder-approved notice/license guidance, no unilateral relicensing | Owner/holder approval |

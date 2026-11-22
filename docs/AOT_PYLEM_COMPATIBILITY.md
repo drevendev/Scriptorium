@@ -387,3 +387,24 @@ exact-head job succeeds. Anna's retained evidence remains unchanged; M2 0/5.
 - https://github.com/sokirko74/aot/blob/ee2c370c65b01fd78b3f366ed23aa1c2ed2d7c93/Source/www/wwwroot/concor.html
 - https://fantlab.ru/article374
 - https://fantlab.ru/work12625/lp
+
+### Third full-work native N contrast: Grin (PR candidate, 2026-11-22)
+
+The existing 36-page, source-verified public-domain *Running on Waves* (1965
+edition) literary-body witness has **363,819 characters including spaces** and
+normalized SHA-256
+`41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`.
+It is independent of the two already retained Tolstoy pylem full-work runs.
+The new `scriptorium.running_waves_native_n` preparation path checks every
+pinned Wikisource page, exact composite identity and normalized request before
+allowing the existing hash-pinned Python 3.9/pylem 0.0.18 sidecar to run.
+
+The `third-running-waves-native-n` GitHub Actions job writes an ephemeral
+source-bearing request/response, validates per-token native identities through
+`scriptorium.n_collision_diagnostic`, deletes both source-bearing transports
+and uploads **only** a source-free N-only/mixed-N POS/bigram/position envelope.
+An artifact and its measured numbers are NOT_RUN until that exact-head workflow
+has completed and the uploaded bytes have been independently inspected. This
+does **not** identify N as noun vs cardinal, prove FantLab's input/dictionary
+identity or advance the M2 0/5 parity gate. Scientific acceptance and the
+eventual public Reader comparison are separate from preparing this run.

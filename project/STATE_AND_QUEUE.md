@@ -1,29 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 591
+STATE_REVISION: 592
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-22
-LAST_RESULT: #607 merged at 9a7ccf75b3636d50cf5a4e047ff22e3da282106b; prepared a readable offline two-work N diagnostic with no new morphology run.
+LAST_RESULT: #608 merged at b5b16bcb7dfaf3ef58482761ec99ea750814ce58; prepare a fresh pinned native inflected N control (no new measurements accepted yet).
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; M2 0/5, FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-NATIVE-N-HTML-025
-ISSUE: #282 (independent presentation follow-on to already merged #607)
-STATUS: PR_CANDIDATE; later independent acceptance and exact-head CI required
-BRANCH: scrip-native-n-crosswork-html-20261122
-BASE: 9a7ccf75b3636d50cf5a4e047ff22e3da282106b
+UNIT_ID: SCRIP-MORPH-N-OBLIQUE-CONTROLS-026
+ISSUE: #282
+STATUS: PR_CANDIDATE; native execution and later independent exact-head acceptance pending
+BRANCH: scrip-morph-009-oblique-controls-20261122
+BASE: b5b16bcb7dfaf3ef58482761ec99ea750814ce58
 
-ACCEPTANCE: `scriptorium n-compare --root . --format html --output n-compare.html` creates a source-free, no-JavaScript Russian HTML report from the already byte-pinned two-book AOT/pylem receipts. Display observed N-only/mixed/any-N counts, shares, signed percentage-point deltas, source digest/workflow links and M2 0/5 scientific caveat. Use readable/print-friendly layout, semantic table with numeric alternatives to decorative bars, safe escaped text and source-bound positive/negative tests; refuse overwrite, invalid observations and unsupported links. No new native run, source text or POS recovery.
+ACCEPTANCE: Run a genuinely new, source-free nine-form oblique noun/cardinal/conjunction control with the **existing pinned** Python 3.9 / pylem 0.0.18 native runner. Hash fixture identities and all native observations; measure N-only, mixed-N and clean negatives, reject missing/invalid tags and false positive conclusions. Archive the receipt with actual run/head and recheck CI before a later merge. No new full-work claims, POS mapping, corpus admission or M2 parity.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Make the reviewed native two-book N diagnostic readable offline, then obtain a genuinely independent third native-control observation without mistaking book differences for a FantLab disambiguation policy.
+Milestone: Produce a third **lexical-control** native N observation with exact pinned-provider evidence. Then obtain a separately controlled third full-work N contrast, without treating different books as proof of a FantLab disambiguation policy.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 readable offline two-work N report | HTML accessible table, complete SHA/workflow evidence, create-only output and CI | This PR: later fresh review |
-| P2 | #282 third independent native N contrast | New pinned Python 3.9 / pylem observation and source-free evidence with positive/negative controls | Hosted native provider |
+| P1 | #282 independent oblique N lexical-control receipt | New 9-form N and negative results, immutable manifest/observations, exact-head native CI and later review | This PR; hosted pylem runner |
+| P2 | #282 third independent full-work native N contrast | Legally frozen third complete edition, native token results and source-free receipt with own revision/runner | Source/edition + hosted native provider |
 | P3 | #562 rights-cleared lexical comparison | Two independently permitted edition aggregates; no private text | Rights and edition identities |
 | P4 | #511 Trusov complete literary body | Opening/ending proof and full-work measurements | Historical page completeness |
 | P5 | #284 source-code license / attribution | Holder-backed legal evidence and release notice | Rights holder evidence |

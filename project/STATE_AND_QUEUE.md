@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 595
+STATE_REVISION: 596
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-22
-LAST_RESULT: #611 independently merged at 964e902c7dbe6fa62a699c64b41f65c25aa9f2b9; three-book native N Reader merged, live Pages verification separate.
+LAST_RESULT: #612 independently merged at 466df05a53a61f50a77387447b4ea13ab2cd298f; saved lexical report replay available on master.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; three full-work native N witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-METRIC-LEXICAL-REPLAY-029
+UNIT_ID: SCRIP-METRIC-GRIN-PINNED-LEXICAL-030
 ISSUE: #562
-STATUS: PR_CANDIDATE; fresh exact-head CI and later independent acceptance pending
-BRANCH: scrip-lexical-stored-report-replay-20261122
-BASE: 964e902c7dbe6fa62a699c64b41f65c25aa9f2b9
+STATUS: PR_CANDIDATE; actual frozen-source CI and later independent review pending
+BRANCH: scrip-grin-pinned-lexical-pair-20261122
+BASE: 466df05a53a61f50a77387447b4ea13ab2cd298f
 
-ACCEPTANCE: Let an installed CLI re-render a saved private source-free lexical JSON report to HTML, CSV, Markdown or JSON without access to the original texts. Reject malformed/duplicate/nonfinite/spoofed or source-bearing artifacts, disallow mixed input modes, never overwrite reports. Retain private rights/edition and FantLab-parity boundaries. Exercise positive/negative regressions.
+ACCEPTANCE: Replay two distinct public-domain, >300k frozen Grin literary bodies by exact revision/source hashes; emit only source-free lexical JSON and accessible offline HTML with explicit unverified publication gate. Positive/negative tests, pinned CI artifact, later independent acceptance. No FantLab parity or immediate Pages release.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: Readers can browse the three full-work native N diagnostic; local lex
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 stored private lexical report replay | Full Python exact-head CI, later independent review/merge, create-only installed CLI | This focused PR; no Pages change |
-| P2 | #562 rights-cleared lexical showcase | Two permitted frozen source-bound full-work aggregates, source-free validation and viewer | Independently verified rights, editions and source text availability |
+| P1 | #562 two frozen Grin full-work lexical witnesses | Actual exact-source CI replay, source-free JSON/HTML, later review/merge | Dedicated pinned Grin pair PR; public Reader later |
+| P2 | #562 Reader lexical showcase | Accept measured JSON/HTML, independently verify rights and stage responsive Reader comparison | P1 exact-head derived witness and visual QA |
 | P3 | #511 Trusov complete literary body | Opening/ending proof, full-work analysis | Historical page completeness |
 | P4 | #282 noun/cardinal ambiguity | Native evidence for exact POS/bigram/position semantics | AOT compatibility evidence |
 | P5 | #284 code/data license and attribution | Holder-backed legal evidence and notice | Owner legal authority |

@@ -1,0 +1,79 @@
+name: Two frozen Grin books lexical contrast
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/grin-lexical-pair.yml'
+      - 'scriptorium/grin_lexical_pair.py'
+      - 'scriptorium/lexical_contrast.py'
+      - 'scriptorium/lexical_contrast_csv.py'
+      - 'scriptorium/lexical_contrast_html.py'
+      - 'scriptorium/road_nowhere_freeze.py'
+      - 'scriptorium/running_waves_body.py'
+      - 'tests/test_grin_lexical_pair.py'
+      - 'corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-revision.json'
+      - 'corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-body.json'
+      - 'corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json'
+      - 'corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Run source-free lexical tests
+        run: |
+          python -m unittest tests.test_grin_lexical_pair -v
+          python -m unittest discover -s tests -p 'test_lexical_contrast*.py' -v
+      - name: Replay exact frozen texts transiently
+        run: |
+          python -m scriptorium.grin_lexical_pair \
+            --road-revision corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-revision.json \
+            --road-body corpus/candidates/source-edition-traces/grin-road-nowhere-ru.alternate-body.json \
+            --waves-source corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json \
+            --waves-body corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json \
+            --output /tmp/grin-two-work-lexical.json \
+            --html-output /tmp/grin-two-work-lexical.html
+      - name: Check source-free identities and limitations
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.lexical_contrast import render_lexical_contrast
+          data = json.loads(Path('/tmp/grin-two-work-lexical.json').read_text(encoding='utf-8'))
+          assert data['schema_version'] == 'scriptorium-grin-frozen-lexical-pair-v1'
+          assert data['source_text_included'] is False
+          assert data['m2_parity_admissible'] is False
+          assert data['public_reader_release'] == 'REQUIRES_SEPARATE_REVIEW'
+          assert data['source_evidence']['left']['normalized_sha256'] == 'e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee'
+          assert data['source_evidence']['right']['normalized_sha256'] == '41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc'
+          report = data['lexical_contrast']
+          assert report['left']['characters_including_spaces'] == 442656
+          assert report['right']['characters_including_spaces'] == 363819
+          assert report['public_release_ready'] is False
+          assert report['corpus_admission'] == 'NOT_VERIFIED'
+          assert report['status'] == 'COMPARABLE'
+          assert report['aggregate'] is not None
+          assert Path('/tmp/grin-two-work-lexical.html').read_text(encoding='utf-8') == render_lexical_contrast(report, 'html')
+          print('FROZEN_GRIN_LEXICAL_SOURCE_FREE=PASS; M2=0')
+          PY
+      - name: Upload derived JSON and HTML only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: grin-two-work-lexical-source-free
+          path: |
+            /tmp/grin-two-work-lexical.json
+            /tmp/grin-two-work-lexical.html
+          if-no-files-found: error
+          retention-days: 7

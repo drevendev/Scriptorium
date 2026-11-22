@@ -99,3 +99,25 @@ Every local artifact has `corpus_admission: NOT_VERIFIED`, `public_release_ready
 Type overlap is an unweighted surface-form presence comparison: a frequent word and a one-off rare form each count as one type. It complements, but must not be confused with, token-frequency Jensen–Shannon divergence or the five-occurrence dominance threshold. Sharing an aggregate report does **not** imply permission to publish its source text or add it to the corpus.
 
 This extension is descriptive, highly sensitive to length, orthography, vocabulary topic, editions, translations and normalization. It does not produce significance tests, author voice/fingerprint claims, semantic tags, FantLab unpublished scores or M2 parity (**0/5**). No licensed manuscript or private original should be uploaded merely to run or share this extension.
+
+## Frozen two-book experiment (candidate, not published)
+
+The dedicated `python -m scriptorium.grin_lexical_pair` runner replays **two already
+frozen, public-domain Russian original works** by Alexander Grin: *Road to Nowhere*
+(az.lib-derived Wikisource oldid 5585836, 442,656 characters, SHA-256
+`e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee`)
+and *Running on Waves* (36 exact pinned literary revisions, 363,819 characters,
+SHA-256 `41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc`).
+
+It reuses the separate fail-closed revision/body replay validators and the v1
+aggregate lexical CLI; source text exists transiently only during execution.
+The GitHub workflow emits reviewed **source-free** JSON and offline HTML as
+short-lived CI artifacts, with no prose, form lists or hashes of individual rare
+forms. Each work exceeds the 300,000-character calibration floor; that alone does
+not prove a source-matched FantLab input, a printable-edition collation, or an
+author-fingerprint model. The two editions come from distinct transcription
+families; the comparison is descriptive and orthography-sensitive. The v1
+lexical report intentionally retains `public_release_ready=false` and
+`corpus_admission=NOT_VERIFIED`; its wrapper records verified source replay,
+rights evidence and the separate, still-required public Reader review.
+**Do not publish the CI artifact on Pages before exact-head acceptance.**

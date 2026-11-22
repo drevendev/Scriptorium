@@ -637,7 +637,22 @@ async function checkNativeNPage(browser, origin) {
       assert.equal(await page.locator(
         '.n-panel[aria-labelledby="n-survey"] a[href*="actions/runs/44068624527"]'
       ).count(), 1, tag + ": native CI provenance link");
-      const witness = await page.request.get(origin + "/assets/n-uncertainty-anna.json");
+      const three = page.locator("#n-three-work-table tr[data-n-threework]");
+       assert.equal(await three.count(), 3, tag + ": 3 native full-work receipts");
+       assert.equal(await page.locator(".n-compare-track").count(), 3, tag + ": 3 accessible chart bars");
+       const grinRow = await page.locator('#n-three-work-table tr[data-n-threework="grin"]').innerText();
+       assert.match(grinRow, /55 778/);
+       assert.match(grinRow, /12 724/);
+       assert.match(grinRow, /3 754/);
+       assert.match(grinRow, /29,54%/);
+       const grinResource = await page.request.get(origin + "/assets/n-uncertainty-grin-summary.json");
+       assert.equal(grinResource.status(), 200, tag + ": public source-free Grin receipt");
+       const grinData = await grinResource.json();
+       assert.equal(grinData.source_text_included, false);
+       assert.equal(grinData.m2_parity_admissible, false);
+       assert.equal(grinData.counts.word_count, 55778);
+       assert.equal(grinData.counts.n_only, 12724);
+       const witness = await page.request.get(origin + "/assets/n-uncertainty-anna.json");
       assert.equal(witness.status(), 200, tag + ": exact frozen witness exists");
       assert.equal((await witness.json()).m2_parity_admissible, false);
       // The skip link is visually hidden until keyboard focus, not permanently

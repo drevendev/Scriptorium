@@ -118,6 +118,7 @@ jobs:
           cp assets/evidence-snapshot.json build/branch-root-preview/assets/evidence-snapshot.json
           cp assets/n-uncertainty-anna.json build/branch-root-preview/assets/n-uncertainty-anna.json
           cp assets/n-uncertainty-resurrection-summary.json build/branch-root-preview/assets/n-uncertainty-resurrection-summary.json
+          cp assets/n-uncertainty-grin-summary.json build/branch-root-preview/assets/n-uncertainty-grin-summary.json
           cp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           cp assets/trusov-1775-interior-metrics.csv build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           cp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
@@ -130,6 +131,7 @@ jobs:
           test -s build/branch-root-preview/assets/evidence-snapshot.json
           test -s build/branch-root-preview/assets/n-uncertainty-anna.json
           test -s build/branch-root-preview/assets/n-uncertainty-resurrection-summary.json
+          test -s build/branch-root-preview/assets/n-uncertainty-grin-summary.json
           test -s build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           test -s build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           test -s build/branch-root-preview/assets/voice-preview.json
@@ -141,6 +143,7 @@ jobs:
           cmp n-uncertainty.html build/branch-root-preview/n-uncertainty.html
           cmp assets/n-uncertainty-anna.json build/branch-root-preview/assets/n-uncertainty-anna.json
           cmp assets/n-uncertainty-resurrection-summary.json build/branch-root-preview/assets/n-uncertainty-resurrection-summary.json
+          cmp assets/n-uncertainty-grin-summary.json build/branch-root-preview/assets/n-uncertainty-grin-summary.json
           cmp metrics.html build/branch-root-preview/metrics.html
           cmp voice/index.html build/branch-root-preview/voice/index.html
           cmp voice/holdout-three.csv build/branch-root-preview/voice/holdout-three.csv

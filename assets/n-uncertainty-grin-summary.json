@@ -1,0 +1,40 @@
+{
+  "schema_version": "scriptorium-native-n-grin-public-summary-v1",
+  "status": "diagnostic_only",
+  "source_text_included": false,
+  "m2_parity_admissible": false,
+  "work": {
+    "candidate_id": "grin-running-on-waves-ru",
+    "title": "Бегущая по волнам",
+    "author": "Александр Грин",
+    "language": "ru",
+    "edition": "Детская литература, 1965 · frozen Wikisource transcription",
+    "literary_page_revisions": 36,
+    "characters_including_spaces": 363819
+  },
+  "provider": {
+    "distribution": "pylem",
+    "version": "0.0.18",
+    "runtime_profile": "pylem-0.0.18-python39-sidecar-v1",
+    "sdist_sha256": "66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515"
+  },
+  "evidence": {
+    "normalized_sha256": "41a1ada3caabea2909976372ca6312fb8a478f2d0d87c088f304fcb30c52fdbc",
+    "runtime_analysis_sha256": "429a22deec17b943598abc83abaf914916c82224e4befb3ab4b9bed4a2d2f58d",
+    "artifact_json_sha256": "4d33425af45b9036ef435442ca0ecfdc47f84e617b9173a27e058237005a6dbf",
+    "artifact_zip_sha256": "071ea19a89f192c60b2060c70da72083e22bca86aff2f7894976f90236d715f0",
+    "head_sha": "81f6cecb2c62f90cdaef76e3019680021eab7ae9",
+    "run_id": 44978278220,
+    "artifact_id": 14735759621,
+    "receipt_url": "https://github.com/drevendev/Scriptorium/pull/610#issuecomment-7073245431"
+  },
+  "counts": {
+    "word_count": 55778,
+    "sentence_count": 4928,
+    "baseline_defined": 25390,
+    "n_only": 12724,
+    "n_mixed_excluded": 3754,
+    "conditional_defined": 38114
+  },
+  "note": "Source-free projection of independently inspected PR #610 native CI evidence. artifact_json_sha256 identifies the original CI JSON, not this projection. N candidates are not noun/cardinal assignments; FantLab edition/input identity and M2 parity remain unknown."
+}

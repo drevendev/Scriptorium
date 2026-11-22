@@ -133,8 +133,9 @@ class ThreeWorkReaderTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         name = "assets/n-uncertainty-grin-summary.json"
         self.assertIn(f'"{name}"', audit)
-        for prefix in ("cp", "test -s", "cmp"):
-            self.assertIn(f"{prefix} {name}", workflow)
+        self.assertIn(f"cp {name} build/branch-root-preview/{name}", workflow)
+        self.assertIn(f"test -s build/branch-root-preview/{name}", workflow)
+        self.assertIn(f"cmp {name} build/branch-root-preview/{name}", workflow)
         self.assertIn("n-uncertainty.html#n-three-work", readme)
         self.assertIn("M2 0/5", readme)
 

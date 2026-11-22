@@ -32,9 +32,6 @@ class FourthFullWorkNTests(unittest.TestCase):
             patch.object(pinned, "FROZEN_BODY_CHARACTERS", identity["character_count_including_spaces"]),
             patch.object(pinned, "FROZEN_BODY_SHA256", identity["raw_sha256"]),
             patch.object(pinned, "FROZEN_WIKITEXT_SHA256", self.revision["source_identity"]["wikitext_sha256"]),
-            # _validate_pins was imported into the native module; patch its globals too.
-            patch.object(native._validate_pins.__globals__["__builtins__"] if False else pinned,
-                         "FANTLAB_REFERENCES", pinned.FANTLAB_REFERENCES),
         )
 
     def test_real_pins_are_still_source_matched_only_for_diagnostics(self):

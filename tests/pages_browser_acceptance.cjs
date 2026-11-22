@@ -671,8 +671,8 @@ async function checkNativeNPage(browser, origin) {
         '.n-panel[aria-labelledby="n-survey"] a[href*="actions/runs/44068624527"]'
       ).count(), 1, tag + ": native CI provenance link");
       const three = page.locator("#n-three-work-table tr[data-n-threework]");
-       assert.equal(await three.count(), 3, tag + ": 3 native full-work receipts");
-       assert.equal(await page.locator(".n-compare-track").count(), 3, tag + ": 3 accessible chart bars");
+       assert.equal(await three.count(), 4, tag + ": 4 native full-work receipts");
+       assert.equal(await page.locator(".n-compare-track").count(), 4, tag + ": 4 accessible chart bars");
        const grinRow = await page.locator('#n-three-work-table tr[data-n-threework="grin"]').innerText();
        assert.match(grinRow, /55 778/);
        assert.match(grinRow, /12 724/);
@@ -685,6 +685,18 @@ async function checkNativeNPage(browser, origin) {
        assert.equal(grinData.m2_parity_admissible, false);
        assert.equal(grinData.counts.word_count, 55778);
        assert.equal(grinData.counts.n_only, 12724);
+       const roadRow = await page.locator('#n-three-work-table tr[data-n-threework="road"]').innerText();
+       assert.match(roadRow, /65 072/);
+       assert.match(roadRow, /17 352/);
+       assert.match(roadRow, /4 469/);
+       assert.match(roadRow, /33,53%/);
+       const roadSource = await page.request.get(origin + "/assets/n-uncertainty-road-summary.json");
+       assert.equal(roadSource.status(), 200, tag + ": fourth native public JSON");
+       const roadData = await roadSource.json();
+       assert.equal(roadData.source_text_included, false);
+       assert.equal(roadData.m2_parity_admissible, false);
+       assert.equal(roadData.evidence.artifact_json_sha256, "358134587e6981dd538c047aa8bc88d4d9ebb50c09e9f82cf45ded9292ac606a");
+       assert.deepEqual([roadData.counts.word_count,roadData.counts.n_only,roadData.counts.n_mixed_excluded], [65072,17352,4469]);
        const witness = await page.request.get(origin + "/assets/n-uncertainty-anna.json");
       assert.equal(witness.status(), 200, tag + ": exact frozen witness exists");
       assert.equal((await witness.json()).m2_parity_admissible, false);

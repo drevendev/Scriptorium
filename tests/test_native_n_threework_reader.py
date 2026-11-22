@@ -115,7 +115,7 @@ class ThreeWorkReaderTests(unittest.TestCase):
             self.assertIn(f'data-n-bar="{key}"', self.page)
             self.assertIn(f'style="width:{100*only/total:.6f}%"', self.page)
             self.assertIn(f'style="width:{100*mixed/total:.6f}%"', self.page)
-        self.assertEqual(self.page.count('class="n-compare-track"'), 3)
+        self.assertEqual(self.page.count('class="n-compare-track"'), 4)
         self.assertIn('id="n-three-work-table"', self.page)
         self.assertIn("<figcaption>", self.page)
         self.assertIn('tabindex="0"', self.page)

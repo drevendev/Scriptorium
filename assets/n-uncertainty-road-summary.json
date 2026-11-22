@@ -1,0 +1,40 @@
+{
+  "schema_version": "scriptorium-native-n-road-public-summary-v1",
+  "status": "diagnostic_only",
+  "source_text_included": false,
+  "m2_parity_admissible": false,
+  "work": {
+    "candidate_id": "grin-road-nowhere-ru",
+    "title": "Дорога в никуда",
+    "author": "Александр Грин",
+    "language": "ru",
+    "wikisource_revision_id": 5585836,
+    "characters_including_spaces": 442656
+  },
+  "provider": {
+    "distribution": "pylem",
+    "version": "0.0.18",
+    "runtime_profile": "pylem-0.0.18-python39-sidecar-v1",
+    "sdist_sha256": "66c0d13414006a803f200979540fcee9653738701c14496a418db67542b26515"
+  },
+  "evidence": {
+    "normalized_sha256": "e33a28b8dcdb3ac339147c6587b27c182dd910784122b367db41bc93dfc2dbee",
+    "wikitext_sha256": "f47b9b05d06dc2f5c6e2642d0822e6db68128386e4f1374b9188206a69fef11b",
+    "runtime_analysis_sha256": "f3d3bbdb730b950e3819c79fbef63e2f192c5139cd8b2dc7c6e9c1a20c43d5be",
+    "artifact_json_sha256": "358134587e6981dd538c047aa8bc88d4d9ebb50c09e9f82cf45ded9292ac606a",
+    "artifact_zip_sha256": "25c9148a4f70d99dc94d32485f334ed5dafd44863dd331acfde59e21cf82dfb0",
+    "head_sha": "b876f16544d5bff83c8f3d0510468cbc7494b042",
+    "run_id": 45074193614,
+    "artifact_id": 14774267987,
+    "receipt_url": "https://github.com/drevendev/Scriptorium/pull/617#issuecomment-7086364319"
+  },
+  "counts": {
+    "word_count": 65072,
+    "sentence_count": 6521,
+    "baseline_defined": 27916,
+    "n_only": 17352,
+    "n_mixed_excluded": 4469,
+    "conditional_defined": 45268
+  },
+  "note": "Source-free projection of independently inspected PR #617 native CI JSON; not the original artifact. N candidates are not noun/cardinal assignments. Mixed N excluded from conditional bounds; FantLab input unknown and M2 parity not established."
+}

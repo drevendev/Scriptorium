@@ -362,7 +362,7 @@ jobs:
       - name: Inspect native N Python source-POS field exposure
         run: |
           set -euo pipefail
-          python tools/pylem_n_source_pos_probe.py --receipt build/morph/pylem-n-source-pos-surface.json
+          python -m tools.pylem_n_source_pos_probe --receipt build/morph/pylem-n-source-pos-surface.json
           python - <<'PY'
           import json
           from pathlib import Path

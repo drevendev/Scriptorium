@@ -455,3 +455,30 @@ treated as a discriminator: the native source POS, FantLab dictionary identity,
 homonym selection and M2 parity remain unresolved (0/5). No claimed counts
 before exact-head native CI artifact inspection.
 
+
+
+## Native Python N source-POS field-surface feasibility (PR candidate)
+
+The next #282 experiment inspects the **public instance field names** exposed by
+the already pinned pylem 0.0.18 `LemmaInfo` objects, using the nine previously
+curated noun/cardinal/preposition genitive controls. It does **not** reclassify
+tokens or repeat the earlier dictionary-attestation inference. The
+`tools/pylem_n_source_pos_probe.py` receipt records only allowlisted attribute
+names, per-token SHA-256, N candidate counts, coverage of likely original-POS
+fields, and a source-free observation hash. It never writes attribute values:
+lemmas, grammemes, raw `morphInfo`, fixture spellings and manuscripts stay out
+of CI artifacts.
+
+Three disjoint outcomes are defined: no N candidates inspected (no inference);
+N candidates without an explicit original-POS field in the inspected Python
+instances (no observed discriminator); or a *possible* source-POS field name
+that requires separate original-enum semantic validation. Even an attribute
+named `source_pos_slot` is **not** accepted as proof without demonstrating its
+AOT meaning. This limited field-surface probe cannot establish absence from
+the C++ source, a patched binding, or future providers. It cannot validate
+FantLab's homonym policy or input editions. Production POS mapping stays
+unchanged, the noun/cardinal collision remains unresolved, M2 stays 0/5.
+
+The Python 3.9 native CI receipt and full Python suite are **NOT_RUN** until
+the exact PR HEAD finishes. Only after independent artifact readback may the
+observed field names and feasibility outcome be reported.

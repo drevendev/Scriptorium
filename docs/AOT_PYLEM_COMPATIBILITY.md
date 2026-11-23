@@ -431,3 +431,27 @@ and an independently read-back artifact confirms actual counts. The native N
 collision, unknown FantLab homonym policy and M2 **0/5** gate are unchanged.
 A completed fourth receipt can support comparisons *within* one author as well
 as across authors, but not a claim that noun and cardinal were disambiguated.
+
+## Dictionary-attestation test of N candidates (pending native CI)
+
+Issue #282 adds an **independent source-free diagnostic**, not a morphology remap.
+The Python 3.9 pinned-native workflow runs
+`python tools/pylem_n_attestation_probe.py --receipt build/morph/pylem-n-attestation.json`
+on nine newly selected genitive examples: three annotated nouns, three annotated
+cardinals and three unrelated preposition controls. It records the runtime POS
+candidates alongside `LemmaInfo.predicted` booleans, and reports N-only,
+N-mixed, **dictionary-attested N** (at least one N candidate was not predicted),
+and **predicted-only N** counts. The prediction flag comes from pylem's
+`found` field; it does **not** restore AOT's original noun/cardinal enum.
+
+The receipt contains only fixture hashes, candidate POS tags, prediction booleans,
+aggregates, native package/version hash and observation SHA-256; no fixture words,
+lemmas, manuscript text or token sequences leave the workflow. The three role
+labels describe curated examples only, not ground-truth classifier performance
+or a representative sample. A qualified collision requires dictionary-attested
+N-only candidates in *both* annotated noun and cardinal groups and at least two
+non-N, nonempty negative controls. That observation is intentionally **not**
+treated as a discriminator: the native source POS, FantLab dictionary identity,
+homonym selection and M2 parity remain unresolved (0/5). No claimed counts
+before exact-head native CI artifact inspection.
+

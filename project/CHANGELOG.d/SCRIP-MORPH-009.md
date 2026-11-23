@@ -26,3 +26,15 @@
 - Preserve immutable native witness bytes and versioned artifact semantics; lexical
   annotations are not recovered AOT grammatical classes or classifier accuracy.
 - No native rerun, source-text publication, production POS change or FantLab parity.
+
+## 2026-11-23 — Dictionary-backed N controls (PR candidate)
+
+- Add new pinned Python 3.9 pylem 0.0.18 native genitive-form experiment
+  distinguishing attested versus predicted runtime N candidates across annotated
+  noun/cardinal groups and independent preposition negatives.
+- The source-free receipt carries fixture/observation SHA-256, POS/prediction
+  flags and strict negative-control count; five isolated positive/negative
+  Python tests pass locally. Real native receipt and exact-head CI NOT_RUN.
+- Dictionary attestation is not original AOT source POS or FantLab homonym
+  selection. Production mapping unchanged; M2 remains 0/5.
+

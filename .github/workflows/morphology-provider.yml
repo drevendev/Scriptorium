@@ -24,11 +24,13 @@ on:
       - "tests/test_pylem_transport.py"
       - "tools/pylem_runtime_probe.py"
       - "tools/pylem_inflection_probe.py"
+      - "tools/pylem_n_attestation_probe.py"
       - "scriptorium/running_waves_native_n.py"
       - "tests/test_running_waves_native_n.py"
       - "corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json"
       - "corpus/candidates/source-edition-traces/grin-running-on-waves-ru.source-revisions.json"
       - "tests/test_pylem_inflection_probe.py"
+      - "tests/test_pylem_n_attestation_probe.py"
       - "tools/pylem_sidecar.py"
       - "benchmarks/fantlab/work270306.json"
       - "corpus/candidates/source-edition-traces/tolstoy-anna-karenina-ru.revisions.json"
@@ -288,6 +290,70 @@ jobs:
         with:
           name: scriptorium-pylem-inflected-n-controls
           path: build/morph/pylem-inflected-n-receipt.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Measure dictionary-attested N on fresh genitive-form controls
+        run: |
+          set -euo pipefail
+          python tools/pylem_n_attestation_probe.py --receipt build/morph/pylem-n-attestation.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from tools.pylem_n_attestation_probe import CONTROLS, SCHEMA, _digest
+          doc = json.loads(Path("build/morph/pylem-n-attestation.json").read_text(encoding="utf-8"))
+          assert doc["schema_version"] == SCHEMA
+          assert doc["status"] == "diagnostic_only"
+          assert doc["source_text_included"] is False
+          assert doc["m2_parity_admissible"] is False
+          assert doc["production_pos_mapping_changed"] is False
+          assert doc["noun_cardinal_source_pos"] == "unresolved"
+          assert doc["fantlab_homonym_selection"] == "unresolved"
+          assert doc["dictionary_attested_is_not_source_pos"] is True
+          assert doc["provider"]["version"] == "0.0.18"
+          assert doc["provider"]["runtime_profile"] == "pylem-0.0.18-python39-sidecar-v1"
+          assert set(doc["groups"]) == {role for role, _ in CONTROLS}
+          assert all(len(doc[key]) == 64 for key in ("fixture_manifest_sha256", "runtime_observations_sha256"))
+          for role, words in CONTROLS:
+              group = doc["groups"][role]
+              rows = group["tokens"]
+              assert len(rows) == group["token_count"] == len(words) == 3
+              assert [r["token_sha256"] for r in rows] == [_digest(w) for w in words]
+              assert group["n_attested_count"] == sum(r["n_attested"] for r in rows)
+              assert group["n_predicted_only_count"] == sum(r["n_predicted_only"] for r in rows)
+              assert group["n_only_attested_count"] == sum(r["n_only_attested"] for r in rows)
+              assert group["n_mixed_count"] == sum(r["n_mixed"] for r in rows)
+              for r in rows:
+                  assert r["candidate_count"] == len(r["runtime_pos"]) == len(r["prediction_flags"])
+                  n_flags = [pred for tag, pred in zip(r["runtime_pos"], r["prediction_flags"]) if tag == "N"]
+                  assert r["n_attested"] is any(pred is False for pred in n_flags)
+                  assert r["n_predicted_only"] is (bool(n_flags) and all(n_flags))
+                  assert r["n_only"] is (bool(r["runtime_pos"]) and set(r["runtime_pos"]) == {"N"})
+                  assert r["n_only_attested"] is (r["n_only"] and r["n_attested"])
+          negative_rows = doc["groups"]["unrelated_preposition_controls"]["tokens"]
+          usable = sum(r["candidate_count"] > 0 and "N" not in r["runtime_pos"] for r in negative_rows)
+          assert doc["usable_negative_controls"] == usable
+          assert doc["required_negative_controls"] == 2
+          positive = (doc["groups"]["noun_genitive_annotations"]["n_only_attested_count"] > 0
+                      and doc["groups"]["cardinal_genitive_annotations"]["n_only_attested_count"] > 0)
+          assert doc["cross_role_attested_n_only_observed"] is positive
+          assert doc["qualified_cross_role_attestation_observed"] is (positive and usable >= 2)
+          print(json.dumps({
+              "schema": SCHEMA,
+              "n_only_attested": {role: doc["groups"][role]["n_only_attested_count"] for role, _ in CONTROLS},
+              "n_predicted_only": {role: doc["groups"][role]["n_predicted_only_count"] for role, _ in CONTROLS},
+              "usable_negatives": usable,
+              "qualified": doc["qualified_cross_role_attestation_observed"],
+              "runtime_observations_sha256": doc["runtime_observations_sha256"],
+              "m2_parity_admissible": False,
+          }, sort_keys=True))
+          PY
+
+      - name: Upload source-free N dictionary-attestation receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-pylem-n-dictionary-attestation
+          path: build/morph/pylem-n-attestation.json
           if-no-files-found: error
           retention-days: 7
 

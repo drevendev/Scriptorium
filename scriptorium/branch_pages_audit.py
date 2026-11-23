@@ -30,6 +30,7 @@ REQUIRED_ASSETS = (
     "assets/n-uncertainty-anna.json",
     "assets/n-uncertainty-resurrection-summary.json",
     "assets/n-uncertainty-grin-summary.json",
+    "assets/n-uncertainty-road-summary.json",
     "assets/grin-lexical-diagnostic.json",
     "voice/holdout-three.csv",
 )

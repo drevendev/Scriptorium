@@ -1,29 +1,29 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 603
+STATE_REVISION: 604
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-23
-LAST_RESULT: #619 merged at 9e5254689d7aefc9d17da5cae27433f4a1ad85ee; new pinned native N dictionary-attestation experiment is a PR candidate awaiting exact-head CI.
+LAST_RESULT: #620 independently accepted and merged at b32ba5090b95a0a8bf7708126f2e0d876fca188b; next source-POS exposure experiment prepared for exact-head checks.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-MORPH-N-ATTESTATION-037
+UNIT_ID: SCRIP-MORPH-N-SOURCE-SURFACE-038
 ISSUE: #282
-STATUS: PR_CANDIDATE; five isolated local Python tests PASS; native pylem / full suite NOT_RUN
-BRANCH: scrip-morph-n-attested-genitive-20261123
-BASE: 9e5254689d7aefc9d17da5cae27433f4a1ad85ee
+STATUS: PR_CANDIDATE; five isolated synthetic regression tests PASS (native and full suite NOT_RUN)
+BRANCH: scrip-morph-282-source-pos-surface-20261123
+BASE: b32ba5090b95a0a8bf7708126f2e0d876fca188b
 
-ACCEPTANCE: Run pinned pylem==0.0.18 on independently curated genitive noun/cardinal/preposition controls, distinguish dictionary-attested versus predicted N-only/mixed candidates with exact role counts, immutable fixture/runtime hashes, positive/negative regressions and source-free CI receipt. Do not infer AOT noun/cardinal source POS or FantLab behavior. Later exact-head acceptance, no same-run merge.
+ACCEPTANCE: Audit exact pinned pylem 0.0.18 Python N candidate field availability on existing curated source-free fixture roles. Keep lexical content/attribute values out of receipts; require immutable fixture hashes, valid positive/negative/empty controls, exact-head complete Python and native workflow, artifact readback and independent later acceptance. Observing or not observing a field is NOT evidence of original AOT POS or FantLab homonym selection; no production mapping change.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: Qualify dictionary-attested native N collision evidence without guessing a noun/cardinal mapping.
+Milestone: Distinguish what pinned Python runtime exposes from what the underlying AOT source might still encode; advance evidence without guessing noun/cardinal tags.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #282 native N dictionary-attestation controls | Exact-head Python 3.9 pylem receipt, hash checks and review; later qualifying merge | This PR; native CI NOT_RUN |
-| P2 | #282 source-POS discriminator feasibility | Validate exposed AOT source POS against native N candidates without guessing, preserve unresolved when absent | Pinned upstream binding surface |
+| P1 | #282 pinned source-POS Python surface audit | Native source-free receipt, exact HEAD tests, independent review/merge | New PR; native CI NOT_RUN |
+| P2 | #282 original AOT POS discriminator feasibility | Only if P1 exposes a credible public field or pinned C++ binding evidence; verify semantics against independent controls | P1 and pinned binding source |
 | P3 | #511 Trusov whole-body boundary | Verifiable opening/ending identities and full-body measurements | Historical page coverage |
 | P4 | #284 licensing/attribution | Rights-holder-approved guidance, no unilateral relicensing | Owner/rights holder |
 | P5 | #563 source-bound tag profiles | Evidence/versioned profiles without invented tags | Curated rights-cleared tag evidence |

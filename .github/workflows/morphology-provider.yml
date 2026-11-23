@@ -25,6 +25,8 @@ on:
       - "tools/pylem_runtime_probe.py"
       - "tools/pylem_inflection_probe.py"
       - "tools/pylem_n_attestation_probe.py"
+      - "tools/pylem_n_source_pos_probe.py"
+      - "tests/test_pylem_n_source_pos_probe.py"
       - "scriptorium/running_waves_native_n.py"
       - "tests/test_running_waves_native_n.py"
       - "corpus/candidates/source-edition-traces/grin-running-on-waves-ru.literary-body.json"
@@ -354,6 +356,77 @@ jobs:
         with:
           name: scriptorium-pylem-n-dictionary-attestation
           path: build/morph/pylem-n-attestation.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Inspect native N Python source-POS field exposure
+        run: |
+          set -euo pipefail
+          python -m tools.pylem_n_source_pos_probe --receipt build/morph/pylem-n-source-pos-surface.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from tools.pylem_n_attestation_probe import CONTROLS
+          from tools.pylem_n_source_pos_probe import (
+              SCHEMA, INSPECTED_FIELDS, EXPLICIT_SOURCE_FIELDS, _digest,
+          )
+          doc = json.loads(Path("build/morph/pylem-n-source-pos-surface.json").read_text(encoding="utf-8"))
+          assert doc["schema_version"] == SCHEMA
+          assert doc["status"] == "diagnostic_only"
+          assert doc["source_text_included"] is False
+          assert doc["original_aot_enum_verified"] is False
+          assert doc["noun_cardinal_source_pos"] == "unresolved"
+          assert doc["fantlab_homonym_selection"] == "unresolved"
+          assert doc["production_pos_mapping_changed"] is False
+          assert doc["m2_parity_admissible"] is False
+          assert doc["provider"]["version"] == "0.0.18"
+          assert doc["fixture_manifest_sha256"] == _digest("\n".join(
+              role + ":" + _digest(word) for role, words in CONTROLS for word in words))
+          assert len(doc["observation_sha256"]) == 64
+          assert set(doc["groups"]) == {role for role, _ in CONTROLS}
+          assert set(doc["explicit_source_field_presence_counts"]) == EXPLICIT_SOURCE_FIELDS
+          field_counts = {name: 0 for name in EXPLICIT_SOURCE_FIELDS}
+          observed = set()
+          total = 0
+          for role, words in CONTROLS:
+              group = doc["groups"][role]
+              rows = group["tokens"]
+              assert group["token_count"] == len(rows) == len(words)
+              assert [row["token_sha256"] for row in rows] == [_digest(w) for w in words]
+              assert group["n_candidate_count"] == sum(row["n_candidate_count"] for row in rows)
+              for row in rows:
+                  assert 0 <= row["n_candidate_count"] <= row["candidate_count"]
+                  assert len(row["n_public_field_names"]) == row["n_candidate_count"]
+                  for names in row["n_public_field_names"]:
+                      assert names == sorted(set(names))
+                      assert set(names) <= set(INSPECTED_FIELDS)
+                      observed.update(names)
+                      for name in names:
+                          if name in field_counts:
+                              field_counts[name] += 1
+                  total += row["n_candidate_count"]
+          assert doc["n_candidate_count"] == total
+          assert doc["n_public_field_names_observed"] == sorted(observed)
+          assert doc["explicit_source_field_presence_counts"] == field_counts
+          negatives = doc["groups"]["unrelated_preposition_controls"]["tokens"]
+          assert doc["clean_negative_control_count"] == sum(
+              row["candidate_count"] > 0 and row["n_candidate_count"] == 0 for row in negatives)
+          decision = ("possible_field_needs_semantic_validation" if any(field_counts.values()) else
+                      "no_explicit_field_in_examined_n_analyses" if total else
+                      "no_n_analyses_observed")
+          assert doc["runtime_field_surface_decision"] == decision
+          assert doc["runtime_fields_are_not_source_pos_proof"] is True
+          print(json.dumps({"schema": SCHEMA, "n_candidates": total,
+              "observed_public_fields": sorted(observed),
+              "explicit_source_field_presence_counts": field_counts,
+              "decision": decision, "m2_parity_admissible": False}, sort_keys=True))
+          PY
+
+      - name: Upload source-free N source-POS surface receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-pylem-n-source-pos-surface
+          path: build/morph/pylem-n-source-pos-surface.json
           if-no-files-found: error
           retention-days: 7
 

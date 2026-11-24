@@ -210,21 +210,45 @@ def _unique_keys(pairs):
     return out
 
 
-def main(argv=None):
+def _reject_constant(value):
+    raise ValueError("non-finite JSON constant")
+
+
+def _read_json_object(path, description):
     from .analyze import MAX_ANALYSIS_BYTES, _read_bounded_regular_file
+    raw = _read_bounded_regular_file(path, MAX_ANALYSIS_BYTES, description)
+    doc = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_keys,
+                     parse_constant=_reject_constant)
+    if type(doc) is not dict:
+        raise ValueError("expected JSON object")
+    return raw, doc
+
+
+def main(argv=None):
     parser = argparse.ArgumentParser(description="Source-free private curated tag profiles (M2 0/5; not public-ready)")
-    parser.add_argument("--snapshot", required=True, type=Path, help="source-free measured-edition snapshot JSON")
-    parser.add_argument("--curation", required=True, type=Path, help="explicit rights and tag evidence catalog JSON")
+    parser.add_argument("--snapshot", type=Path, help="source-free measured-edition snapshot JSON")
+    parser.add_argument("--curation", type=Path, help="explicit rights and tag evidence catalog JSON")
+    parser.add_argument("--report", type=Path, help="replay a saved private tag profile JSON; no snapshot or curation required")
     parser.add_argument("--format", choices=("json", "html", "csv"), default="json",
                          help="private derived report format; JSON remains the default")
     parser.add_argument("--output", type=Path, help="create a new local report; never overwrite")
     args = parser.parse_args(argv)
+    if args.report is not None:
+        if args.snapshot is not None or args.curation is not None:
+            parser.error("--report cannot be combined with --snapshot or --curation")
+    elif args.snapshot is None or args.curation is None:
+        parser.error("provide --report or both --snapshot and --curation")
     try:
-        raw = _read_bounded_regular_file(args.snapshot, MAX_ANALYSIS_BYTES, "snapshot")
-        curated = _read_bounded_regular_file(args.curation, MAX_ANALYSIS_BYTES, "curation")
-        snapshot = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_keys)
-        curation = json.loads(curated.decode("utf-8"), object_pairs_hook=_unique_keys)
-        result = build_tag_profiles(snapshot, curation, snapshot_sha256=sha256(raw).hexdigest())
+        if args.report is not None:
+            from .tag_profile_html import _validated
+            _, result = _read_json_object(args.report, "private tag report")
+            # Validate even JSON-to-JSON replay; this is internal consistency,
+            # not recomputation, rights verification or publication clearance.
+            _validated(result)
+        else:
+            raw, snapshot = _read_json_object(args.snapshot, "snapshot")
+            _, curation = _read_json_object(args.curation, "curation")
+            result = build_tag_profiles(snapshot, curation, snapshot_sha256=sha256(raw).hexdigest())
         if args.format == "html":
             from .tag_profile_html import render_tag_profiles_html
             rendered = render_tag_profiles_html(result)

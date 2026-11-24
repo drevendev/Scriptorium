@@ -22,6 +22,24 @@ For an offline **spreadsheet/CSV replay** of the same curator-declared, source-f
 scriptorium tags --snapshot scriptorium/data/evidence-snapshot.json --curation private-tags.json --format csv --output private-tags.csv
 ```
 
+## Replay a saved private profile
+
+After generating the canonical JSON, you can export it on another machine without
+the original snapshot, curation catalog or any book text:
+
+```console
+scriptorium tags --report private-tag-profiles.json --format html --output private-tags.html
+scriptorium tags --report private-tag-profiles.json --format csv --output private-tags.csv
+```
+
+The default JSON format also supports replay. Supply either `--report` or both
+`--snapshot` and `--curation`, never both modes. Replay reads only a bounded regular
+UTF-8 JSON file, rejects duplicate keys, non-finite constants and malformed report
+structure, and applies the existing report consistency validator even for JSON output.
+It preserves the stored numeric values and source snapshot digest; it does not
+recompute those values from source measurements, establish authenticity, verify rights,
+or enable publication. The existing destination remains exclusive-create.
+
 CSV uses version `scriptorium-private-tag-csv-v1` and the stable four-column layout `section,field,value,unit`. Filter `metric/<tag-id>/<metric-id>` rows for measurements; `tag/<tag-id>`, `edition/<tag-id>/<ordinal>`, `source_profile`, `report` and `scientific_boundary` preserve provenance and private-release caveats. Empty measurements are exactly `NOT_RUN` (not numeric zero); a measured zero remains `0.0`. Output is deterministic even if curated input rows are reordered. User-provided strings are CSV-quoted and spreadsheet-formula neutralized as a best-effort defense, not a guarantee about every spreadsheet application's import/reopen behavior. The exporter reuses the HTML report's structural and numeric acceptance gate; **neither export authenticates curator rights, enables public tag publication nor contains book prose**. JSON remains the canonical machine-readable report.
 
 The HTML has **five metric-specific horizontal bar comparisons** across curator-declared tags, plus labelled numeric tables, observed/missing counts, exact units, honest zero-/one-work states, work hashes and curator evidence as inert text (no external links/scripts). A percent share uses a fixed 0–100% scale; other metrics use the highest observed tag mean **for that metric only** (or a clearly labelled 0–1 display domain for measured all-zero values). Each chart states its axis/domain and observed/missing counts; an unmeasured metric is **NOT_RUN and is not plotted as zero**. Decorative bars have accessible text/table equivalents and remain readable in print. Comparisons are descriptive, not independent confidence estimates or effect sizes. It is **not a public tag page or an independently verified permission**. JSON remains the default for machine-readable replay.

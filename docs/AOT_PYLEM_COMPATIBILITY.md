@@ -482,3 +482,34 @@ unchanged, the noun/cardinal collision remains unresolved, M2 stays 0/5.
 The Python 3.9 native CI receipt and full Python suite are **NOT_RUN** until
 the exact PR HEAD finishes. Only after independent artifact readback may the
 observed field names and feasibility outcome be reported.
+
+
+## Native raw JSON boundary (PR candidate, 2026-11-24)
+
+The [independent acceptance of #621](https://github.com/drevendev/Scriptorium/pull/621#issuecomment-7095980311)
+observed 10 native N analyses across nine curated forms; none exposed an
+explicit source-POS field from its Python instance allowlist. The exact native
+receipt was inspected; this is not an absence claim about the underlying JSON.
+
+The pinned upstream [binding](https://github.com/sokirko74/pylem/blob/68d62ce5452b6b80f2c2ef3345b4160c09e24bdf/pylem/binding/main.cpp)
+(Git blob 0ad5756f7c5d8e062a618d476a6328d6a8b2154a) calls the holder's JSON
+renderer after choosing non-national constants. The pinned
+[Python wrapper](https://github.com/sokirko74/pylem/blob/68d62ce5452b6b80f2c2ef3345b4160c09e24bdf/pylem/__init__.py)
+(Git blob e6e25788a2a0569329be7aaf5c187fe15d08091f) parses a subset of that
+JSON and takes the POS prefix of morphInfo. These source observations motivate
+measuring the **raw public JSON boundary**, not another Python instance audit.
+The Git revision is not cryptographic proof of PyPI sdist origin.
+
+The new probe calls lemmatize_json(word, False) and lemmatize(word) for the
+same nine pinned controls, fails closed if candidate POS sequences disagree,
+and records only allowlisted key names of N rows, counts of unrecognized keys
+(not their names or values), fixture hashes and a digest. The native CI step
+also checks per-token counts against the previous Python probe from the same
+run. Unknown key counts explicitly require source review; an explicit
+source-like key requires independent enum validation, never automatic
+classification. Zero N rows cannot establish absence.
+
+No raw JSON, values, lexical forms, paradigms or book text enter the artifact.
+Native execution and the complete exact-head suite remain NOT_RUN until
+hosted CI and independent receipt readback. The package pin, production mapping,
+noun/cardinal uncertainty, FantLab input identity and M2 0/5 remain unchanged.

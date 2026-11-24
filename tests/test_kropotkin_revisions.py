@@ -1,4 +1,5 @@
 import unittest
+from urllib.parse import urlencode
 from scriptorium import kropotkin_revisions as k
 
 
@@ -15,7 +16,9 @@ def provider(params):
     if "revids" in params:
         pages = [page(k.SCAN_TITLE, k.SCAN_ID), page(k.TITLE, k.INDEX_ID)]
     else:
-        pages = [page(t, i + 1) for i, t in enumerate((*k.ROUTES, k.ADVERTISED_III))][::-1]
+        requested = params["titles"].split("|")
+        ids = {t: i + 1 for i, t in enumerate((*k.ROUTES, k.ADVERTISED_III))}
+        pages = [page(t, ids[t]) for t in reversed(requested)]
     return {"query": {"pages": pages}}
 
 
@@ -90,4 +93,25 @@ class KropotkinRevisionsTests(unittest.TestCase):
                         link["title"] = k.MODERN_III
             return result
         with self.assertRaisesRegex(ValueError, "Приложение/3/ДО"):
+            k.capture(changed)
+
+    def test_bounded_get_requests_cover_all_routes(self):
+        batches = []
+        def bounded(params):
+            if "titles" in params:
+                encoded = urlencode({**params, "maxlag": "5", "format": "json", "formatversion": "2"})
+                self.assertLessEqual(len("https://ru.wikisource.org/w/api.php?" + encoded), 1800)
+                batches.append(params["titles"].split("|"))
+            return provider(params)
+        self.assertEqual(k.capture(bounded), k.capture(provider))
+        self.assertEqual([t for batch in batches for t in batch], [*k.ROUTES, k.ADVERTISED_III])
+        self.assertGreater(len(batches), 1)
+
+    def test_duplicate_revision_across_batches_rejected(self):
+        def changed(params):
+            result = provider(params)
+            if "titles" in params and k.ROUTES[-1] in params["titles"].split("|"):
+                result["query"]["pages"][0]["revisions"][0]["revid"] = 1
+            return result
+        with self.assertRaisesRegex(ValueError, "duplicate identity across anchors and routes"):
             k.capture(changed)

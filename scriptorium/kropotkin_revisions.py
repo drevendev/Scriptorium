@@ -14,6 +14,11 @@ SCAN_TITLE = f"Индекс:{TITLE}.pdf"
 SUFFIXES = ("Предисловие", "Введение", *(str(i) for i in range(1, 9)),
             "Заключение", *(f"Приложение/{i}" for i in range(1, 19)))
 ROUTES = tuple(f"{TITLE}/{suffix}" for suffix in SUFFIXES)
+# The pinned modern index links appendix III to the pre-reform variant.
+# Keep the advertised target distinct from the modern route selected for analysis.
+MODERN_III = f"{TITLE}/Приложение/3"
+ADVERTISED_III = f"{MODERN_III}/ДО"
+ADVERTISED_ROUTES = tuple(ADVERTISED_III if title == MODERN_III else title for title in ROUTES)
 EXCLUDED = f"{TITLE}/Алфавитный указатель"
 
 
@@ -46,28 +51,41 @@ def _identities(payload, expected):
     return [rows[title] for title in expected]
 
 
-def capture(query):
-    """Read index anchors and 29 current route revisions, never prose or page content."""
-    parsed = query({"action": "parse", "oldid": str(INDEX_ID), "prop": "links|revid"}).get("parse", {})
+def _pinned_links(query, revision_id):
+    parsed = query({"action": "parse", "oldid": str(revision_id), "prop": "links|revid"}).get("parse", {})
     links = parsed.get("links")
-    if parsed.get("revid") != INDEX_ID or not isinstance(links, list):
-        raise ValueError("pinned work index not returned")
-    titles = {row.get("title") for row in links if row.get("ns") == 0}
-    if not set((*ROUTES, EXCLUDED)).issubset(titles):
-        raise ValueError("pinned work index missing advertised routes")
+    if parsed.get("revid") != revision_id or not isinstance(links, list):
+        raise ValueError("pinned link inventory not returned")
+    return {row.get("title") for row in links if row.get("ns") == 0}
+
+
+def capture(query):
+    """Capture 29 modern routes and separately identify the advertised historical variant."""
+    titles = _pinned_links(query, INDEX_ID)
+    missing = [title.removeprefix(TITLE + "/") for title in (*ADVERTISED_ROUTES, EXCLUDED)
+               if title not in titles]
+    if missing:
+        raise ValueError("pinned work index missing advertised routes: " + ", ".join(missing))
     anchors = _identities(query({"action": "query", "prop": "revisions",
                                 "revids": f"{INDEX_ID}|{SCAN_ID}",
                                 "rvprop": "ids|timestamp|sha1"}),
                           {TITLE: INDEX_ID, SCAN_TITLE: SCAN_ID})
     rows = _identities(query({"action": "query", "prop": "revisions",
-                             "titles": "|".join(ROUTES), "rvprop": "ids|timestamp|sha1"}),
-                       dict.fromkeys(ROUTES))
+                             "titles": "|".join((*ROUTES, ADVERTISED_III)), "rvprop": "ids|timestamp|sha1"}),
+                       dict.fromkeys((*ROUTES, ADVERTISED_III)))
     if len({row["revision_id"] for row in anchors + rows}) != len(anchors + rows):
         raise ValueError("duplicate identity across anchors and routes")
-    return {"schema": "scriptorium-kropotkin-route-identities-v1",
+    modern = next(row for row in rows if row["title"] == MODERN_III)
+    historical = rows.pop()
+    if ADVERTISED_III not in _pinned_links(query, modern["revision_id"]):
+        raise ValueError("modern appendix III lacks link to the advertised historical variant")
+    return {"schema": "scriptorium-kropotkin-route-identities-v2",
             "candidate_id": "kropotkin-mutual-aid-baturinsky-1907-ru",
             "edition": "St Petersburg, Znanie, 1907; V. Baturinsky; modern orthography surface",
             "anchors": anchors, "routes": rows, "excluded_route": EXCLUDED,
+            "index_route_exception": {"selected_modern_title": MODERN_III,
+                                      "advertised_historical_identity": historical,
+                                      "modern_revision_links_to_historical": True},
             "body_frozen": False, "transclusion_dependencies_frozen": False,
             "body_characters": None, "source_text_retained": False,
             "fantlab_input_identity": "unknown", "m2_parity_admissible": False}

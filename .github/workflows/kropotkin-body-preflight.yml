@@ -1,0 +1,39 @@
+name: Kropotkin pinned body preflight
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/kropotkin-body-preflight.yml"
+      - "scriptorium/kropotkin_body_preflight.py"
+      - "scriptorium/kropotkin_revisions.py"
+      - "scriptorium/wikisource_freeze.py"
+      - "scriptorium/mediawiki_api.py"
+      - "tests/test_kropotkin_body_preflight.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - run: python -m unittest discover -s tests -p test_kropotkin_body_preflight.py -v
+      - name: Inspect pinned route sources without retaining prose
+        run: |
+          mkdir -p build/repro
+          python -m scriptorium.kropotkin_body_preflight --output build/repro/kropotkin-body-preflight.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: kropotkin-body-preflight
+          path: build/repro/kropotkin-body-preflight.json
+          if-no-files-found: error
+          retention-days: 7

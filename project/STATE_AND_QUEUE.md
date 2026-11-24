@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 613
+STATE_REVISION: 614
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-24
-LAST_RESULT: #629 merged at adeada822; 29 route sources verified, three simple ranges and 26 unresolved tags; zero bodies. Implement literal selector candidates; no new measurements.
+LAST_RESULT: #630 merged at 3486e703; 27/29 literal route candidates, 325 unique scans (23–347), two unresolved routes. Capture partial Page revision witnesses and lexical markers; no new measurements.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-KROPOTKIN-PAGE-SELECTORS-001
+UNIT_ID: SCRIP-KROPOTKIN-PAGE-WITNESSES-001
 ISSUE: #627
 STATUS: PR_CANDIDATE; exact-head CI and independent acceptance required
-BRANCH: scrip-kropotkin-page-selectors-20261124
-BASE: adeada822227052b348b57cb752bf03f2d6cc45b
+BRANCH: scrip-kropotkin-page-identities-20261124
+BASE: 3486e703c13e9d86ab986222e1a5d409fd38fd67
 
-ACCEPTANCE: Classify literal Page selectors on the same 29 pinned routes; emit candidate scan numbers and exact section-label digests, reject unsupported forms, retain legacy range fields and all false body/dependency/parity gates. Dedicated provider CI and later independent acceptance required.
+ACCEPTANCE: Capture exact title/namespace coverage of 325 accepted candidate Pages, globally unique current revision IDs and verified UTF-8 source SHA-1, source-free lexical marker digests. CI and later independent acceptance; partial inventory only, two routes unresolved.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #627 Kropotkin 1907 literal Page selectors | Accept actual candidate selector receipt; then pin Page identities and resolve section markers, templates and notes/body boundaries | New PR; provider capture pending |
+| P1 | #627 Kropotkin 1907 partial Page witnesses | Accept actual 325 Page identities and lexical marker receipt; resolve remaining preface/introduction selector syntax, then verify effective section boundaries | Provider capture pending; no complete graph/body claim |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |
 | P3 | #511 Trusov whole-body boundary | Verifiable opening/ending identities and full-body measurements | Historical page coverage |
 | P4 | #284 licensing/attribution | Rights-holder-approved guidance, no unilateral relicensing | Owner/rights holder |

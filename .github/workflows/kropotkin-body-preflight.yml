@@ -9,6 +9,8 @@ on:
       - "scriptorium/wikisource_freeze.py"
       - "scriptorium/mediawiki_api.py"
       - "tests/test_kropotkin_body_preflight.py"
+      - "scriptorium/kropotkin_page_witnesses.py"
+      - "tests/test_kropotkin_page_witnesses.py"
   workflow_dispatch:
 
 permissions:
@@ -17,7 +19,7 @@ permissions:
 jobs:
   preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -35,5 +37,14 @@ jobs:
         with:
           name: kropotkin-body-preflight
           path: build/repro/kropotkin-body-preflight.json
+          if-no-files-found: error
+          retention-days: 7
+      - run: python -m unittest discover -s tests -p test_kropotkin_page_witnesses.py -v
+      - name: Capture partial Page witnesses without retaining prose
+        run: python -m scriptorium.kropotkin_page_witnesses --output build/repro/kropotkin-page-witnesses.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: kropotkin-page-witnesses
+          path: build/repro/kropotkin-page-witnesses.json
           if-no-files-found: error
           retention-days: 7

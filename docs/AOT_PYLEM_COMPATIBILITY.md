@@ -513,3 +513,41 @@ No raw JSON, values, lexical forms, paradigms or book text enter the artifact.
 Native execution and the complete exact-head suite remain NOT_RUN until
 hosted CI and independent receipt readback. The package pin, production mapping,
 noun/cardinal uncertainty, FantLab input identity and M2 0/5 remain unchanged.
+
+
+## Isolated national-label rendering experiment (PR candidate, 2026-11-24)
+
+[PR #622](https://github.com/drevendev/Scriptorium/pull/622) is merged at
+`047f5d8838369e1f0429a11b9ebd8a3b44892f10`. Its native raw-JSON receipt
+observed ten N candidates without an explicit source-POS field in the inspected
+allowlist. Repeating that Python/JSON surface audit cannot reveal earlier labels.
+
+The pinned [C++ binding](https://github.com/sokirko74/pylem/blob/68d62ce5452b6b80f2c2ef3345b4160c09e24bdf/pylem/binding/main.cpp)
+(blob `0ad5756f7c5d8e062a618d476a6328d6a8b2154a`) explicitly switches
+`SetUseNationalConstants(false)` after loading morphology. The existing
+contract already records two different Cyrillic labels for the colliding
+Latin N. This motivates a controlled native experiment rather than another
+lexical guess. The Git snapshot is not proof of sdist origin.
+
+The native workflow first captures the unmodified, hash-pinned baseline.
+It then downloads the same hash-pinned sdist, checks its SHA-256 before
+extracting regular files, and requires exactly one binding flag occurrence.
+Only that flag is changed to true, in a temporary build directory and
+separate virtual environment. The production provider and dependency pin
+remain unmodified. No patched distribution is published or retained.
+
+The experiment compares all POS candidate multiplicities for each of the
+same nine fixture hashes after folding Cyrillic labels through the existing
+contract. It records sequence agreement separately; matching multiplicities
+do not prove candidate identity. Distinct noun/cardinal labels must be
+observed in their annotated roles with three clean non-N controls before
+reporting fixture-level feasibility. A failed or incomplete build is not
+evidence of label recovery. Only the source-free JSON receipt, including
+before/after binding hashes and the contract digest, is uploaded.
+
+Five focused synthetic tests pass locally. Native modified-build execution,
+full CI and independent acceptance are NOT_RUN at authorship. Even a positive
+result does not verify the original numeric enum, individual candidate identity,
+FantLab homonym selection, dictionary equivalence or M2 parity. Production
+N remains unresolved. A subsequent separately reviewed native experiment can
+test candidate identity/enum exposure if the label experiment succeeds.

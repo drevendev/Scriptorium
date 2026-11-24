@@ -27,6 +27,8 @@ on:
       - "tools/pylem_n_attestation_probe.py"
       - "tools/pylem_n_source_pos_probe.py"
       - "tools/pylem_n_raw_json_probe.py"
+      - "tools/pylem_n_national_probe.py"
+      - "tests/test_pylem_n_national_probe.py"
       - "tests/test_pylem_n_raw_json_probe.py"
       - "tests/test_pylem_n_source_pos_probe.py"
       - "scriptorium/running_waves_native_n.py"
@@ -76,7 +78,7 @@ jobs:
   native-pylem-smoke:
     name: Build and execute pinned pylem 0.0.18
     runs-on: ubuntu-22.04
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - name: Checkout pull-request head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -488,6 +490,33 @@ jobs:
         with:
           name: scriptorium-pylem-n-raw-json-surface
           path: build/morph/pylem-n-raw-json.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Compare isolated national-label build with unmodified provider
+        env:
+          CMAKE_ARGS: "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+        run: |
+          set -euo pipefail
+          mkdir -p build/morph/national-download
+          python -m tools.pylem_n_national_probe capture latin build/morph/national-latin.json
+          python -m pip download --disable-pip-version-check --no-deps --no-binary=pylem --require-hashes \
+            -r requirements/pylem-0.0.18.txt -d build/morph/national-download
+          python -m tools.pylem_n_national_probe prepare \
+            build/morph/national-download/pylem-0.0.18.tar.gz build/morph/national-source \
+            build/morph/national-patch.json
+          python -m venv build/morph/national-venv
+          build/morph/national-venv/bin/python -m pip install --disable-pip-version-check --no-deps --no-cache-dir \
+            build/morph/national-source/pylem-0.0.18
+          build/morph/national-venv/bin/python -m tools.pylem_n_national_probe capture national build/morph/national-cyrillic.json
+          python -m tools.pylem_n_national_probe compare build/morph/national-latin.json \
+            build/morph/national-cyrillic.json build/morph/national-patch.json build/morph/pylem-n-national-labels.json
+
+      - name: Upload only source-free national-label receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-pylem-n-national-labels
+          path: build/morph/pylem-n-national-labels.json
           if-no-files-found: error
           retention-days: 7
 

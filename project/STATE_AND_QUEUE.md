@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 609
+STATE_REVISION: 610
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-24
-LAST_RESULT: #625 merged at d048535452b9fe67c445524fc98fdd787289d5c6; public Grin lexical CSV accepted. Add exact offline replay and byte-check CLI; no new measurements.
+LAST_RESULT: #626 merged at bdeaebb1e5fee74750d95641a838124d0b593151; exact offline lexical CSV replay accepted. Prepare nonfiction source-route identity capture for Baturinsky's 1907 Mutual Aid translation; no new measurements.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-GRIN-LEXICAL-OFFLINE-CSV-001
-ISSUE: #562
-STATUS: PR_CANDIDATE; later exact-head CI and independent acceptance required
-BRANCH: scrip-grin-lexical-offline-csv-20261124
-BASE: d048535452b9fe67c445524fc98fdd787289d5c6
+UNIT_ID: SCRIP-KROPOTKIN-ROUTE-IDENTITIES-001
+ISSUE: #627
+STATUS: PR_CANDIDATE; exact-head CI and independent acceptance required
+BRANCH: scrip-kropotkin-route-identities-20261124
+BASE: bdeaebb1e5fee74750d95641a838124d0b593151
 
-ACCEPTANCE: Offline replay of exact approved JSON into byte-identical 59-row public CSV; reject all changed input bytes, stale CSV checks and overwrites. No source fetching, new measurements or public artifact changes.
+ACCEPTANCE: Source-free capture of two pinned index anchors and 29 advertised prose routes; reject missing, duplicate or invalid identities. Five offline tests pass; provider capture pending. No frozen body, size measurement or admission.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make reviewed lexical comparison exports reproducible offline; then extend source-backed measured-work coverage.
+Milestone: extend source-backed measured-work coverage, prioritizing a legally traced nonfiction translation and the historical Robinson translation.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 offline Grin lexical CSV replay | Exact pinned JSON SHA-256, byte-identical CSV, create-only export/check, independent CI/PR acceptance | New PR |
+| P1 | #627 Kropotkin 1907 route capture | Exact provider identity artifact and independent acceptance; then transclusion/body boundaries and size measurement | New PR; live capture pending |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |
 | P3 | #511 Trusov whole-body boundary | Verifiable opening/ending identities and full-body measurements | Historical page coverage |
 | P4 | #284 licensing/attribution | Rights-holder-approved guidance, no unilateral relicensing | Owner/rights holder |

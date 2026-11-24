@@ -146,3 +146,25 @@ edition content, scanner material and unrelated manuscripts are not licensed by
 this diagnostic. The page's independent acceptance requires browser desktop,
 mobile, keyboard, print and exact Pages-route checks, separate from CI build
 or any deployed/live claim. M2 stays **0/5**.
+
+## Reproduce the reviewed public CSV offline
+
+From an installed checkout, regenerate the 59-row (including header) public
+Grin CSV from the exact reviewed public JSON, without fetching either book:
+
+```console
+python -m scriptorium.grin_lexical_csv assets/grin-lexical-diagnostic.json --output replay.csv
+python -m scriptorium.grin_lexical_csv assets/grin-lexical-diagnostic.json --check assets/grin-lexical-diagnostic.csv
+```
+
+Without either option, the command writes the same CSV to stdout. The
+`--check` mode performs byte comparison and never writes; `--output` is
+create-only. The input is pinned by SHA-256
+`d4b158f4249d10a961e0122df05ddeb368f5774e7fa92ce73121e0647255bcb6`
+(the reviewed JSON Git blob is `9d4cf11667bc5dba076ccb29d99a7c3650f1cd56`).
+Even whitespace changes or newly inserted metadata are refused before
+parsing. This is intentionally not a general private-report converter:
+use `scriptorium distinctives --report` for that separate local format.
+The source-free public JSON/CSV, original book identities, measurements and
+scientific scope are unchanged; corpus admission remains NOT_VERIFIED and
+M2 remains 0/5.

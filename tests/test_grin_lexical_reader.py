@@ -1,6 +1,7 @@
 """Public numeric-only Grin Reader: exact frozen CI evidence and no source prose."""
 from __future__ import annotations
 import copy
+import csv
 from html.parser import HTMLParser
 import json
 from pathlib import Path
@@ -9,6 +10,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "assets/grin-lexical-diagnostic.json"
 PAGE = ROOT / "lexical-grin.html"
+CSV = ROOT / "assets/grin-lexical-diagnostic.csv"
 AGG = {
     "shared_form_count": 5901,
     "left_only_form_count": 11043,
@@ -147,6 +149,43 @@ class GrinLexicalReaderTests(unittest.TestCase):
         self.assertNotIn('"source_text":', DATA.read_text(encoding="utf-8"))
         self.assertNotIn('"word_forms":', DATA.read_text(encoding="utf-8"))
 
+    def test_csv_exactly_replays_reviewed_public_projection(self):
+        d = validate(self.doc)
+        def value(v):
+            return str(v).lower() if type(v) is bool else str(v)
+        def unit(k):
+            if k.endswith("_percent"):
+                return "percent"
+            if k.endswith("_bits"):
+                return "bits"
+            if k == "characters_including_spaces":
+                return "characters"
+            if k == "word_tokens":
+                return "tokens"
+            if k == "literary_page_revisions":
+                return "pages"
+            if k.endswith("_form_count") or k == "distinct_forms":
+                return "forms"
+            return ""
+        expected = [
+            ["section", "field", "value", "unit"],
+            ["export", "schema_version", "scriptorium-grin-lexical-reader-csv-v1", ""],
+        ]
+        expected.extend(["report", k, value(v), ""] for k, v in d.items()
+                        if k not in {"provenance", "works", "aggregate", "methodology"})
+        for section, obj in (("provenance", d["provenance"]), ("left", d["works"][0]),
+                             ("right", d["works"][1]), ("aggregate", d["aggregate"]),
+                             ("methodology", d["methodology"])):
+            expected.extend([section, k, value(v), unit(k)] for k, v in obj.items())
+        with CSV.open(encoding="utf-8", newline="") as source:
+            actual = list(csv.reader(source, strict=True))
+        self.assertEqual(actual, expected)
+        self.assertEqual(len({(row[0], row[1]) for row in actual}), len(actual))
+        self.assertTrue(all(len(row) == 4 and not any(
+            cell.startswith(("=", "+", "-", "@", "\\t", "\\r", "\\n")) for cell in row
+        ) for row in actual))
+        self.assertIn('href="./assets/grin-lexical-diagnostic.csv" download', self.html)
+
     def test_tamper_and_leakage_are_rejected(self):
         for section, name, value in (
             ("aggregate", "shared_form_count", 5902),
@@ -228,7 +267,9 @@ class GrinLexicalReaderTests(unittest.TestCase):
         )
         self.assertIn('"lexical-grin.html"', audit)
         self.assertIn('"assets/grin-lexical-diagnostic.json"', audit)
-        for file in ("lexical-grin.html", "assets/grin-lexical-diagnostic.json"):
+        self.assertIn('"assets/grin-lexical-diagnostic.csv"', audit)
+        for file in ("lexical-grin.html", "assets/grin-lexical-diagnostic.json",
+                     "assets/grin-lexical-diagnostic.csv"):
             self.assertIn(f"cp {file} build/branch-root-preview/{file}", workflow)
             self.assertIn(f"test -s build/branch-root-preview/{file}", workflow)
             self.assertIn(f"cmp {file} build/branch-root-preview/{file}", workflow)

@@ -56,7 +56,7 @@ def main(argv: list[str] | None = None) -> int:
         print("  batch       Explicit UTF-8 manifest -> private JSON/HTML reports and index")
         print("  compare     Two private JSON reports, --texts or --epubs -> HTML/JSON/CSV/Markdown")
         print("  distinctives Two private UTF-8 texts or --report saved.json -> source-free lexical contrast")
-        print("  tags        Curated measured-edition tags -> private source-free descriptive profiles")
+        print("  tags        Curated measured-edition tags or --report saved.json -> private profiles")
         print("  metrics     Look up the 29 installed metric IDs, units and evidence (text/JSON)")
         print("  diagnostic  Curated historical diagnostic -> offline HTML")
         print("  evidence    Source-free FantLab metric deltas (requires repository checkout; M2 0/5)")

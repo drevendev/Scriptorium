@@ -151,5 +151,90 @@ class TagProfileCsvTests(unittest.TestCase):
             self.assertEqual(written, dest.read_text(encoding="utf-8"))
 
 
+    def test_saved_report_replays_all_formats_without_original_inputs(self):
+        snapshot, curation = sample()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            snap, cur, saved = (root / name for name in
+                                ("snapshot.json", "curation.json", "saved.json"))
+            snap.write_text(json.dumps(snapshot), encoding="utf-8")
+            cur.write_text(json.dumps(curation), encoding="utf-8")
+            build = ["tags", "--snapshot", str(snap), "--curation", str(cur)]
+            expected = {}
+            for fmt in ("json", "html", "csv"):
+                with contextlib.redirect_stdout(StringIO()) as stdout:
+                    self.assertEqual(cli.main(build + ["--format", fmt]), 0)
+                expected[fmt] = stdout.getvalue()
+            saved.write_text(expected["json"], encoding="utf-8")
+            snap.unlink()
+            cur.unlink()
+            for fmt, value in expected.items():
+                with self.subTest(fmt=fmt), contextlib.redirect_stdout(StringIO()) as stdout:
+                    self.assertEqual(cli.main(["tags", "--report", str(saved), "--format", fmt]), 0)
+                    self.assertEqual(stdout.getvalue(), value)
+            dest = root / "replayed.html"
+            args = ["tags", "--report", str(saved), "--format", "html", "--output", str(dest)]
+            self.assertEqual(cli.main(args), 0)
+            self.assertEqual(dest.read_text(encoding="utf-8"), expected["html"])
+            with contextlib.redirect_stderr(StringIO()), self.assertRaises(SystemExit) as err:
+                cli.main(args)
+            self.assertEqual(err.exception.code, 2)
+            self.assertEqual(dest.read_text(encoding="utf-8"), expected["html"])
+            with contextlib.redirect_stderr(StringIO()), self.assertRaises(SystemExit):
+                cli.main(["tags", "--report", str(saved), "--output", str(saved)])
+            self.assertEqual(saved.read_text(encoding="utf-8"), expected["json"])
+
+    def test_saved_report_rejects_mixed_and_incomplete_modes(self):
+        for args in (
+            [],
+            ["--snapshot", "snapshot.json"],
+            ["--curation", "curation.json"],
+            ["--report", "saved.json", "--snapshot", "snapshot.json"],
+            ["--report", "saved.json", "--curation", "curation.json"],
+            ["--report", "saved.json", "--snapshot", "snapshot.json", "--curation", "curation.json"],
+        ):
+            with self.subTest(args=args), contextlib.redirect_stderr(StringIO()) as stderr:
+                with self.assertRaises(SystemExit) as err:
+                    cli.main(["tags"] + args)
+                self.assertEqual(err.exception.code, 2)
+                self.assertIn("--report", stderr.getvalue())
+
+    def test_saved_report_rejects_tampering_even_for_json(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            saved, dest = root / "saved.json", root / "out.json"
+            docs = ["[]", "null", '{"x": 1, "x": 2}', '{"x": NaN}', '{"x": Infinity}']
+            for mutate in (
+                lambda r: r["scientific_boundary"].update(public_release_ready=True),
+                lambda r: r["tags"][0]["works"][0].update(source_text="PRIVATE MANUSCRIPT"),
+                lambda r: r["tags"][0]["metrics"][0].update(observed_count=99),
+                lambda r: r["tags"][0]["metrics"][0].update(mean_per_work=float("nan")),
+                lambda r: r.update(source_snapshot_sha256="bad"),
+                lambda r: r.update(aggregation="weighted"),
+            ):
+                report = self.report()
+                mutate(report)
+                docs.append(json.dumps(report))
+            for i, value in enumerate(docs):
+                saved.write_text(value, encoding="utf-8")
+                with self.subTest(case=i), contextlib.redirect_stderr(StringIO()) as stderr:
+                    with self.assertRaises(SystemExit) as err:
+                        cli.main(["tags", "--report", str(saved), "--output", str(dest)])
+                    self.assertEqual(err.exception.code, 2)
+                    self.assertFalse(dest.exists())
+                    self.assertNotIn("PRIVATE MANUSCRIPT", stderr.getvalue())
+
+    def test_saved_report_missing_or_invalid_utf8_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            saved = Path(tmp) / "saved.json"
+            for payload in (None, b"\xff"):
+                if payload is not None:
+                    saved.write_bytes(payload)
+                with self.subTest(payload=payload), contextlib.redirect_stderr(StringIO()):
+                    with self.assertRaises(SystemExit) as err:
+                        cli.main(["tags", "--report", str(saved)])
+                    self.assertEqual(err.exception.code, 2)
+
+
 if __name__ == "__main__":
     unittest.main()

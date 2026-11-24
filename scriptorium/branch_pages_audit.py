@@ -32,6 +32,7 @@ REQUIRED_ASSETS = (
     "assets/n-uncertainty-grin-summary.json",
     "assets/n-uncertainty-road-summary.json",
     "assets/grin-lexical-diagnostic.json",
+    "assets/grin-lexical-diagnostic.csv",
     "voice/holdout-three.csv",
 )
 

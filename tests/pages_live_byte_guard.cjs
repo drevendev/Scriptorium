@@ -15,6 +15,7 @@ const PUBLISHED = Object.freeze([
   "assets/pages-reader.js",
   "assets/evidence-snapshot.json",
   "assets/grin-lexical-diagnostic.json",
+  "assets/grin-lexical-diagnostic.csv",
   "assets/n-uncertainty-road-summary.json",
   "assets/scriptorium-ru-measured-metrics.csv",
   "assets/trusov-1775-interior-metrics.csv",
@@ -84,6 +85,7 @@ async function selfTest() {
     for (const [relative, content] of [
       ["lexical-grin.html", "<main>Grin lexical diagnostic</main>"],
       ["assets/grin-lexical-diagnostic.json", '{"status":"DIAGNOSTIC_ONLY"}'],
+      ["assets/grin-lexical-diagnostic.csv", "section,field,value,unit\naggregate,type_jaccard_percent,23.187552,percent\n"],
     ]) {
       const local = path.join(root, relative);
       fs.mkdirSync(path.dirname(local), { recursive: true });

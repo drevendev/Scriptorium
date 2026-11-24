@@ -16,6 +16,7 @@ function server() {
         res.writeHead(404).end();return;
       }
       const type = file.endsWith(".json") ? "application/json" :
+        file.endsWith(".csv") ? "text/csv" :
         file.endsWith(".css") ? "text/css" : "text/html";
       res.writeHead(200,{"Content-Type":type+"; charset=utf-8","X-Content-Type-Options":"nosniff","Cache-Control":"no-store"});
       fs.createReadStream(file).pipe(res);
@@ -50,6 +51,18 @@ async function inspect(browser, origin, tag, width, height) {
     assert.equal(data.aggregate.shared_form_count,5901);
     assert.equal(data.aggregate.token_distribution_overlap_percent,59.843147);
     assert.equal(data.provenance.ci_run_id,45009800452);
+    const csvRel="assets/grin-lexical-diagnostic.csv";
+    const csvResource=await page.request.get(origin+"/"+csvRel);
+    assert.equal(csvResource.status(),200,tag+": CSV route");
+    const expectedCsv=fs.readFileSync(path.join(root,csvRel));
+    assert.deepEqual(await csvResource.body(),expectedCsv);
+    const link=page.locator('a[download][href="./'+csvRel+'"]');
+    assert.equal(await link.count(),1);
+    const downloadPromise=page.waitForEvent("download");
+    await link.click();
+    const download=await downloadPromise;
+    assert.equal(download.suggestedFilename(),"grin-lexical-diagnostic.csv");
+    assert.deepEqual(fs.readFileSync(await download.path()),expectedCsv);
     assert.deepEqual(errors,[]);
     assert.deepEqual(external,[],tag+": no external tracking/fonts/manuscript requests");
     const dims = await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:innerWidth}));

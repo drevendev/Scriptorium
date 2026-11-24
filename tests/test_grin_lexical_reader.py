@@ -182,7 +182,7 @@ class GrinLexicalReaderTests(unittest.TestCase):
         self.assertEqual(actual, expected)
         self.assertEqual(len({(row[0], row[1]) for row in actual}), len(actual))
         self.assertTrue(all(len(row) == 4 and not any(
-            cell.startswith(("=", "+", "-", "@", "\\t", "\\r", "\\n")) for cell in row
+            cell.startswith(("=", "+", "-", "@", "\t", "\r", "\n")) for cell in row
         ) for row in actual))
         self.assertIn('href="./assets/grin-lexical-diagnostic.csv" download', self.html)
 

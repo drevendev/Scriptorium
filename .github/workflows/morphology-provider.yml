@@ -26,6 +26,8 @@ on:
       - "tools/pylem_inflection_probe.py"
       - "tools/pylem_n_attestation_probe.py"
       - "tools/pylem_n_source_pos_probe.py"
+      - "tools/pylem_n_raw_json_probe.py"
+      - "tests/test_pylem_n_raw_json_probe.py"
       - "tests/test_pylem_n_source_pos_probe.py"
       - "scriptorium/running_waves_native_n.py"
       - "tests/test_running_waves_native_n.py"
@@ -427,6 +429,65 @@ jobs:
         with:
           name: scriptorium-pylem-n-source-pos-surface
           path: build/morph/pylem-n-source-pos-surface.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Inspect raw native JSON before Python POS conversion
+        run: |
+          set -euo pipefail
+          python -m tools.pylem_n_raw_json_probe --receipt build/morph/pylem-n-raw-json.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from tools.pylem_n_raw_json_probe import SCHEMA, KNOWN_KEYS, SOURCE_KEYS, digest
+          from tools.pylem_n_attestation_probe import CONTROLS
+          doc = json.loads(Path("build/morph/pylem-n-raw-json.json").read_text())
+          prior = json.loads(Path("build/morph/pylem-n-source-pos-surface.json").read_text())
+          assert doc["schema_version"] == SCHEMA
+          assert doc["provider"] == prior["provider"]
+          assert doc["fixture_manifest_sha256"] == prior["fixture_manifest_sha256"]
+          assert doc["n_candidate_count"] == prior["n_candidate_count"]
+          assert doc["clean_negative_control_count"] == prior["clean_negative_control_count"]
+          assert doc["raw_and_wrapper_pos_sequences_match"] is True
+          assert doc["source_text_included"] is False
+          assert doc["original_aot_enum_verified"] is False
+          assert doc["production_pos_mapping_changed"] is False
+          assert doc["m2_parity_admissible"] is False
+          assert doc["noun_cardinal_source_pos"] == "unresolved"
+          counts = dict.fromkeys(SOURCE_KEYS, 0)
+          unknown = total = 0
+          for role, words in CONTROLS:
+              rows = doc["groups"][role]
+              assert len(rows) == len(words)
+              for row, word, previous in zip(rows, words, prior["groups"][role]["tokens"]):
+                  assert row["token_sha256"] == digest(word)
+                  assert row["candidate_count"] == previous["candidate_count"]
+                  assert row["n_candidate_count"] == previous["n_candidate_count"] == len(row["n_surfaces"])
+                  for surface in row["n_surfaces"]:
+                      keys = surface["known_keys"]
+                      assert set(keys) <= KNOWN_KEYS
+                      assert keys == sorted(set(keys))
+                      assert "morphInfo" in keys
+                      assert type(surface["unrecognized_key_count"]) is int
+                      assert surface["unrecognized_key_count"] >= 0
+                      unknown += surface["unrecognized_key_count"]
+                      total += 1
+                      for key in SOURCE_KEYS.intersection(keys):
+                          counts[key] += 1
+          assert counts == doc["explicit_source_key_counts"]
+          assert unknown == doc["unrecognized_n_key_count"]
+          assert total == doc["n_candidate_count"]
+          assert doc["observation_sha256"] == digest(json.dumps(doc["groups"], sort_keys=True, separators=(",", ":")))
+          print(json.dumps({"schema": SCHEMA, "n_candidates": total,
+              "explicit_source_key_counts": counts, "unrecognized_key_count": unknown,
+              "decision": doc["decision"], "m2_parity_admissible": False}, sort_keys=True))
+          PY
+
+      - name: Upload source-free raw native JSON surface receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: scriptorium-pylem-n-raw-json-surface
+          path: build/morph/pylem-n-raw-json.json
           if-no-files-found: error
           retention-days: 7
 

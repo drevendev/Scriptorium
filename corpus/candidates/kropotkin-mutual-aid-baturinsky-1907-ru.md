@@ -1,6 +1,6 @@
 # Kropotkin — Mutual Aid, Baturinsky translation (1907)
 
-Status: traced candidate; route identity capture independently accepted in #628; pinned body preflight PR candidate. Issue #627.
+Status: traced candidate; route identity capture independently accepted in #628; pinned body preflight independently accepted in #629; literal selector plan PR candidate. Issue #627.
 
 ## Edition and reuse
 
@@ -19,3 +19,9 @@ Route identity is not transcluded Page/template identity: pin those dependencies
 ## Pinned route body/dependency preflight
 
 Run `python -m scriptorium.kropotkin_body_preflight --output build/repro/kropotkin-body-preflight.json` after creating the output directory. The 29 exact revision IDs come from the [accepted #628 receipt](https://github.com/drevendev/Scriptorium/pull/628#issuecomment-7138275523), never current-title selection. Source bytes are verified against the returned MediaWiki SHA-1 and held only in memory. The source-free receipt records route digests, literal simple ProofreadPage ranges, unresolved tag counts, raw template/ref/nowiki indicators and the existing extractor's candidate-only results. Literal markup is not an effective dependency closure; comments, templates and section selectors can affect rendering. See [ProofreadPage documentation](https://www.mediawiki.org/wiki/Extension:Proofread_Page). No total body length or admission is emitted, and authorial notes and body boundaries remain unverified. Dedicated PR CI must execute the provider capture and later acceptance must inspect the artifact before choosing extraction or Page dependency freezing.
+
+## Literal Page selector plan (v2)
+
+The accepted #629 provider receipt showed exactly one raw pages opening per modern route, three simple literal ranges and 26 previously unresolved tags. All 29 bodies remained NOT_RUN_DEPENDENCIES. See the [independent acceptance](https://github.com/drevendev/Scriptorium/pull/629#issuecomment-7141211209).
+
+The same preflight command now produces v2, retaining the earlier conservative simple-range fields and adding per-tag classifications. Based on [ProofreadPage pages tag documentation](https://www.mediawiki.org/wiki/Help:Extension:ProofreadPage/Pages_tag), bounded literal scan ranges and steps can yield an ordered **candidate** scan list. Literal section labels are represented only by SHA-256 of the HTML-parser-decoded UTF-8 value; exact matching against pinned Page section markers is still required. Known presentation attributes are recorded by name only; they may introduce further template dependencies. Unknown/duplicate attributes, include/exclude, mixed selectors, invalid ranges and dynamic labels remain unresolved. The aggregate union includes only routes with one raw and one observed candidate tag and no raw nowiki opening; it is not coverage of the complete book, an effective graph, or evidence of notes completeness. Shared boundary scans must not be counted twice as literary content. No Page identities or body bytes are frozen by this step. CI must inspect all actual selector classifications before selecting the next dependency capture.

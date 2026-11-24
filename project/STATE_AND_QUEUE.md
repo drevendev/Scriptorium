@@ -1,4 +1,4 @@
-| P1 | #627 Kropotkin 1907 partial Page witnesses | Accept actual 325 Page identities and lexical marker receipt; resolve remaining preface/introduction selector syntax, then verify effective section boundaries | Provider capture pending; no complete graph/body claim |
+# STATE_AND_QUEUE — Scriptorium
 
 STATE_REVISION: 614
 PHASE: M1 — Deterministic FantLab surface
@@ -22,7 +22,7 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #627 Kropotkin 1907 literal Page selectors | Accept actual candidate selector receipt; then pin Page identities and resolve section markers, templates and notes/body boundaries | New PR; provider capture pending |
+| P1 | #627 Kropotkin 1907 partial Page witnesses | Accept actual 325 Page identities and lexical marker receipt; resolve remaining preface/introduction selector syntax, then verify effective section boundaries | Provider capture pending; no complete graph/body claim |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |
 | P3 | #511 Trusov whole-body boundary | Verifiable opening/ending identities and full-body measurements | Historical page coverage |
 | P4 | #284 licensing/attribution | Rights-holder-approved guidance, no unilateral relicensing | Owner/rights holder |

@@ -20,6 +20,8 @@ MODERN_III = f"{TITLE}/Приложение/3"
 ADVERTISED_III = f"{MODERN_III}/ДО"
 ADVERTISED_ROUTES = tuple(ADVERTISED_III if title == MODERN_III else title for title in ROUTES)
 EXCLUDED = f"{TITLE}/Алфавитный указатель"
+# Cyrillic titles expand substantially in the shared GET transport.
+ROUTE_BATCH_SIZE = 4
 
 
 def _identities(payload, expected):
@@ -70,9 +72,13 @@ def capture(query):
                                 "revids": f"{INDEX_ID}|{SCAN_ID}",
                                 "rvprop": "ids|timestamp|sha1"}),
                           {TITLE: INDEX_ID, SCAN_TITLE: SCAN_ID})
-    rows = _identities(query({"action": "query", "prop": "revisions",
-                             "titles": "|".join((*ROUTES, ADVERTISED_III)), "rvprop": "ids|timestamp|sha1"}),
-                       dict.fromkeys((*ROUTES, ADVERTISED_III)))
+    route_titles = (*ROUTES, ADVERTISED_III)
+    rows = []
+    for offset in range(0, len(route_titles), ROUTE_BATCH_SIZE):
+        batch = route_titles[offset:offset + ROUTE_BATCH_SIZE]
+        rows.extend(_identities(query({"action": "query", "prop": "revisions",
+                                       "titles": "|".join(batch), "rvprop": "ids|timestamp|sha1"}),
+                                dict.fromkeys(batch)))
     if len({row["revision_id"] for row in anchors + rows}) != len(anchors + rows):
         raise ValueError("duplicate identity across anchors and routes")
     modern = next(row for row in rows if row["title"] == MODERN_III)

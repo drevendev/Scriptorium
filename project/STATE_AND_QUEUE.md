@@ -1,28 +1,28 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 608
+STATE_REVISION: 609
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-24
-LAST_RESULT: #624 merged at 5ca7e45d77d8b3525952d23ac7abbc49a035b628; saved private tag reports can be replayed. Prepare public Grin lexical CSV from the already reviewed projection.
+LAST_RESULT: #625 merged at d048535452b9fe67c445524fc98fdd787289d5c6; public Grin lexical CSV accepted. Add exact offline replay and byte-check CLI; no new measurements.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-GRIN-LEXICAL-PUBLIC-CSV-001
+UNIT_ID: SCRIP-GRIN-LEXICAL-OFFLINE-CSV-001
 ISSUE: #562
-STATUS: PR_CANDIDATE; later exact-head CI, browser and independent acceptance required
-BRANCH: scrip-grin-lexical-csv-20261124
-BASE: 5ca7e45d77d8b3525952d23ac7abbc49a035b628
+STATUS: PR_CANDIDATE; later exact-head CI and independent acceptance required
+BRANCH: scrip-grin-lexical-offline-csv-20261124
+BASE: d048535452b9fe67c445524fc98fdd787289d5c6
 
-ACCEPTANCE: Exact source-free public CSV with explicit units, source/CI identities and diagnostic boundaries; match the existing reviewed JSON, provide a working no-JS download, stage and protect exact live bytes. No new measurements, tags, corpus admission or parity claims.
+ACCEPTANCE: Offline replay of exact approved JSON into byte-identical 59-row public CSV; reject all changed input bytes, stale CSV checks and overwrites. No source fetching, new measurements or public artifact changes.
 
 ## Next user-visible milestone and compact queue
 
-Milestone: make measured lexical comparisons reusable in spreadsheets without retrieving original literary text.
+Milestone: make reviewed lexical comparison exports reproducible offline; then extend source-backed measured-work coverage.
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 public Grin lexical CSV | Exact JSON-derived rows, actual download and independent CI/PR acceptance | New PR |
+| P1 | #562 offline Grin lexical CSV replay | Exact pinned JSON SHA-256, byte-identical CSV, create-only export/check, independent CI/PR acceptance | New PR |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |
 | P3 | #511 Trusov whole-body boundary | Verifiable opening/ending identities and full-body measurements | Historical page coverage |
 | P4 | #284 licensing/attribution | Rights-holder-approved guidance, no unilateral relicensing | Owner/rights holder |

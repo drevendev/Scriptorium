@@ -23,7 +23,63 @@ REVISION_IDS = (
 )
 EXPECTED = dict(zip(ROUTES, REVISION_IDS, strict=True))
 SCAN = SCAN_TITLE.removeprefix("Индекс:")
-SCHEMA = "scriptorium-kropotkin-body-preflight-v1"
+SCHEMA = "scriptorium-kropotkin-body-preflight-v2"
+
+
+# Literal selector plan only, not a claim about effective MediaWiki expansion.
+# The hash of a decoded label allows matching exact section markers later without
+# retaining arbitrary attribute values (which may themselves contain source text).
+_SECTION = {"fromsection", "tosection", "onlysection"}
+_PRESENTATION = {"header", "current", "prev", "next"}
+_KNOWN = {"index", "from", "to", "step", "include", "exclude"} | _SECTION | _PRESENTATION
+
+
+def classify_pages(attrs):
+    fields = dict(attrs)
+    names = set(fields)
+    result = {
+        "known_attributes": sorted(names & _KNOWN),
+        "unknown_attribute_count": len(names - _KNOWN),
+        "duplicate_attribute_count": len(attrs) - len(fields),
+        "section_label_sha256": {},
+        "candidate_scan_pages": [],
+        "status": "UNRESOLVED",
+        "reason": None,
+    }
+    def reject(reason):
+        result["reason"] = reason
+        return result
+
+    if result["duplicate_attribute_count"]:
+        return reject("DUPLICATE_ATTRIBUTE")
+    if names - _KNOWN:
+        return reject("UNKNOWN_ATTRIBUTE")
+    if fields.get("index") != SCAN:
+        return reject("INDEX_MISMATCH")
+    # Do not infer the semantics of mixed include/exclude/range expressions.
+    if names & {"include", "exclude"}:
+        return reject("INCLUDE_EXCLUDE_UNSUPPORTED")
+    if "onlysection" in names and names & {"fromsection", "tosection"}:
+        return reject("MIXED_SECTION_SELECTORS")
+    first, last, step = (fields.get("from"), fields.get("to"), fields.get("step", "1"))
+    if not all(isinstance(v, str) and re.fullmatch(r"[0-9]{1,4}", v)
+               for v in (first, last, step)):
+        return reject("NON_LITERAL_NUMERIC_RANGE")
+    first, last, step = int(first), int(last), int(step)
+    if not 1 <= first <= last <= 4000 or not 1 <= step <= 4000:
+        return reject("INVALID_RANGE_OR_STEP")
+    labels = {}
+    for key in sorted(names & _SECTION):
+        label = fields[key]
+        if (not isinstance(label, str) or not label.strip() or len(label) > 256
+                or any(c in label for c in "{}<>|")
+                or any(ord(c) < 32 for c in label)):
+            return reject("NON_LITERAL_SECTION_LABEL")
+        labels[key] = sha256(label.encode("utf-8")).hexdigest()
+    result["section_label_sha256"] = labels
+    result["candidate_scan_pages"] = list(range(first, last + 1, step))
+    result["status"] = "LITERAL_CANDIDATE"
+    return result
 
 
 class _PagesProbe(HTMLParser):
@@ -33,10 +89,12 @@ class _PagesProbe(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.ranges = []
         self.unresolved = 0
+        self.selectors = []
 
     def handle_starttag(self, tag, attrs):
         if tag != "pages":
             return
+        self.selectors.append(classify_pages(attrs))
         fields = dict(attrs)
         first, last = fields.get("from"), fields.get("to")
         if (len(fields) != len(attrs) or set(fields) != {"index", "from", "to"}
@@ -67,6 +125,7 @@ def observe(source):
         "wikitext_utf8_bytes": len(raw),
         "literal_pages_ranges": probe.ranges,
         "unresolved_pages_tags": probe.unresolved,
+        "literal_page_selectors": probe.selectors,
         "raw_pages_openings": len(re.findall(r"<\s*pages\b", source, re.I)),
         "raw_template_openings": source.count("{{"),
         "raw_ref_openings": len(re.findall(r"<\s*ref\b", source, re.I)),
@@ -106,10 +165,19 @@ def capture(query=_api_query):
             if sha1(source.encode("utf-8")).hexdigest() != identity["mediawiki_sha1"]:
                 raise ValueError("pinned route source digest mismatch")
             rows.append({**identity, **observe(source)})
+    selector_routes = [r for r in rows if r["raw_pages_openings"] == 1
+                       and len(r["literal_page_selectors"]) == 1
+                       and not r["raw_nowiki_openings"]
+                       and r["literal_page_selectors"][0]["status"] == "LITERAL_CANDIDATE"]
+    candidate_pages = sorted({p for r in selector_routes
+                              for p in r["literal_page_selectors"][0]["candidate_scan_pages"]})
     return {
         "schema": SCHEMA, "candidate_id": "kropotkin-mutual-aid-baturinsky-1907-ru",
         "route_identity_acceptance_pr": 628,
         "routes": rows, "route_count": len(rows),
+        "literal_selector_route_count": len(selector_routes),
+        "candidate_scan_page_union": candidate_pages,
+        "effective_page_graph_verified": False,
         "candidate_route_count": sum(r["extraction_status"] == "CANDIDATE_ONLY" for r in rows),
         "body_frozen": False, "body_characters": None,
         "transclusion_dependencies_frozen": False, "notes_boundary_verified": False,

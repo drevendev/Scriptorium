@@ -587,6 +587,53 @@ class LexicalContrastCsvTests(unittest.TestCase):
             with self.subTest(forged=name, kind="direct_html"), self.assertRaises(ValueError):
                 render_lexical_contrast_html(report)
 
+    def test_pooled_occurrence_feasibility_and_disjoint_replay(self):
+        short = sample("кот кот пёс", "пёс мышь мышь")
+        shared = sample("кот кот пёс мышь", "кот пёс пёс")
+        disjoint = sample("кот " * 5, "пёс " * 5)
+
+        def legacy(report):
+            return {**report, "method": {
+                k: v for k, v in report["method"].items()
+                if k not in ("type_overlap_profile", "type_overlap",
+                             "token_overlap_profile", "token_overlap")
+            }, "aggregate": {
+                k: v for k, v in report["aggregate"].items()
+                if k not in ("shared_form_count", "left_only_form_count",
+                             "right_only_form_count", "type_jaccard_percent",
+                             "token_distribution_overlap_percent")
+            }}
+
+        for valid in (short, shared, disjoint, sample("кот " * 4, "пёс " * 4),
+                      sample("кот " * 50, "КОТ " * 50), sample("", "кот")):
+            for kind in ("json", "csv", "html", "markdown"):
+                with self.subTest(valid=valid["status"], kind=kind):
+                    self.assertTrue(render_lexical_contrast(valid, kind))
+                    if valid["aggregate"] is not None:
+                        self.assertTrue(render_lexical_contrast(legacy(valid), kind))
+
+        cases = (
+            (short, {"eligible_form_count": 1, "excluded_rare_form_count": 2,
+                     "balanced_form_count": 1}, "pooled occurrence"),
+            (shared, {"eligible_form_count": 1, "excluded_rare_form_count": 2,
+                      "balanced_form_count": 1}, "pooled occurrence"),
+            (disjoint, {"eligible_form_count": 0, "excluded_rare_form_count": 2,
+                        "left_dominant_form_count": 0, "right_dominant_form_count": 0,
+                        "left_dominant_token_share_percent": 0,
+                        "right_dominant_token_share_percent": 0}, "pooled occurrence"),
+            (legacy(disjoint), {"excluded_rare_form_count": 1}, "pooled occurrence"),
+            (disjoint, {"jensen_shannon_divergence_bits": 0.5}, "disjoint"),
+            (legacy(disjoint), {"jensen_shannon_divergence_bits": 0.5}, "disjoint"),
+            (disjoint, {"token_distribution_overlap_percent": 5}, "disjoint"),
+        )
+        for report, changes, reason in cases:
+            forged = {**report, "aggregate": {**report["aggregate"], **changes}}
+            for kind in ("json", "csv", "html", "markdown"):
+                with self.subTest(changes=changes, kind=kind), self.assertRaisesRegex(
+                    ValueError, reason
+                ):
+                    render_lexical_contrast(forged, kind)
+
     def test_cli_offline_csv_and_create_only_destination(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

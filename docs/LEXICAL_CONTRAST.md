@@ -176,3 +176,29 @@ use `scriptorium distinctives --report` for that separate local format.
 The source-free public JSON/CSV, original book identities, measurements and
 scientific scope are unchanged; corpus admission remains NOT_VERIFIED and
 M2 remains 0/5.
+
+## Independent cross-author pair (CI candidate)
+
+The second frozen pair compares Andrei Bely's *The Silver Dove* (Wikisource
+oldid 5588003, 1990 transcription, 563,125 characters) with Alexei Tolstoy's
+*The Hyperboloid of Engineer Garin* (oldid 5014458, az.lib transcription,
+499,066 characters; exact print edition unresolved). Both retained source
+manifests identify the original Russian works as public domain. The runner
+checks their independent canonical body pins and legal flags before either
+network request, replays both source validators, then emits only the existing
+source-free lexical aggregates.
+
+```console
+python -m scriptorium.bely_tolstoy_lexical_pair \
+  --dove-manifest corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json \
+  --garin-revision corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json \
+  --garin-body corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.body.json \
+  --output bely-tolstoy-lexical.json --html-output bely-tolstoy-lexical.html
+```
+
+The dedicated CI replay uploads only derived JSON and HTML. A later independent
+review must inspect the actual measurements and rights/provenance before a
+public numeric projection is prepared. This is a distinct cross-author,
+cross-work observation, not an author-identification model or controlled
+genre experiment; comparison to the Grin pair is descriptive only. No new
+corpus admission, FantLab parity, or public score is asserted.

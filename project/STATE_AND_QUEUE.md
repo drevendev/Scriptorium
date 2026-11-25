@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 625
+STATE_REVISION: 626
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-25
-LAST_RESULT: #642 merged at dc36b9a0; local PDF preflight accepted. Add optional known-carrier digest gate before Poppler; no new corpus measurements.
+LAST_RESULT: #643 merged at b8a382e7; PDF carrier pin accepted. Independent lexical replay correctness slice; no new corpus measurements.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-CORPUS-PDF-CARRIER-PIN-001
-ISSUE: #641
+UNIT_ID: SCRIP-METRIC-LEXICAL-POOLED-FEASIBILITY-001
+ISSUE: #562
 STATUS: PR_CANDIDATE; exact-head CI and independent acceptance required
-BRANCH: scrip-pdf-carrier-pin-20261125
-BASE: dc36b9a0dcd9f840c5cc11fe6e0a51a800f9d564
+BRANCH: scrip-lexical-pooled-feasibility-20261125
+BASE: b8a382e707196830fc88a9baac8bb8734fc03009
 
-ACCEPTANCE: Optional --expect-sha256 checks a previously pinned local carrier before invoking PDF tools; malformed or mismatched digests produce no receipt and no path disclosure. Matching pins preserve the v1 receipt. Eight focused local tests passed on exact base blobs; real 1922 scan NOT_RUN. Later exact-head CI and acceptance.
+ACCEPTANCE: All private lexical output formats reject impossible pooled occurrence counts and disjoint distribution endpoints, including historical v1 reports. Preserve valid old/current reports and all existing definitions. Independent arithmetic check of 15,376 small count pairs passed; integrated tests NOT_RUN at authorship because local Git DNS failed. No public or corpus change.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,9 +22,11 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
+| P1 | #562 accept lexical replay feasibility | Exact-head CI and independent acceptance; preserve source-free historical results | Candidate PR |
+| P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |
+| P2 | #562 next public diagnostic expansion | Use a distinct already frozen and rights-cleared pair, with actual replay and separate publication review | Source replay access; no invented scores |
 | P3 | #511 Trusov whole-body boundary | Verifiable opening/ending identities and full-body measurements | Historical page coverage |
 | P4 | #284 licensing/attribution | Rights-holder-approved guidance, no unilateral relicensing | Owner/rights holder |
 | P5 | #563 public tag profiles | Evidence/versioned profiles without invented tags | Curated rights-cleared tag evidence |

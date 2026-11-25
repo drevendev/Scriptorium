@@ -139,3 +139,54 @@ class KropotkinPageWitnessTests(unittest.TestCase):
             receipt["pages"][0]["wikitext_utf8_bytes"] += 1
             with self.assertRaisesRegex(ValueError, "differs from accepted"):
                 k.serialize_receipt(receipt, require_accepted=True)
+
+    def test_frontmatter_exact_pins_and_privacy(self):
+        by_id = dict(zip(k.FRONT_IDS, k.FRONT_PAGES, strict=True))
+        seen = []
+
+        def exact(params):
+            self.assertNotIn("titles", params)
+            ids = [int(x) for x in params["revids"].split("|")]
+            self.assertLessEqual(len(ids), 4)
+            seen.extend(ids)
+            result = provider({"titles": "|".join(f"Страница:{k.SCAN}/{by_id[rid]}" for rid in ids)})
+            for page in result["query"]["pages"]:
+                scan = int(page["title"].rsplit("/", 1)[1])
+                page["revisions"][0]["revid"] = dict(zip(k.FRONT_PAGES, k.FRONT_IDS))[scan]
+            return result
+
+        receipt = k.capture_frontmatter(exact)
+        self.assertEqual(seen, list(k.FRONT_IDS))
+        self.assertEqual(receipt["page_count"], 13)
+        self.assertEqual(receipt["combined_candidate_scan_count"], 338)
+        self.assertEqual(receipt["candidate_scan_pages"], [5, *range(11, 23)])
+        self.assertEqual([p["scan_page"] for p in receipt["pages"]], list(k.FRONT_PAGES))
+        self.assertEqual([p["revision_id"] for p in receipt["pages"]], seen)
+        self.assertEqual(receipt["partial_receipt_sha256"], k.ACCEPTED_RECEIPT_SHA256)
+        self.assertFalse(receipt["effective_page_graph_verified"])
+        self.assertFalse(receipt["body_frozen"])
+        self.assertIsNone(receipt["body_characters"])
+        self.assertNotIn("Private prose", k.serialize_receipt(receipt))
+        self.assertNotIn("private", k.serialize_receipt(receipt))
+        self.assertEqual(receipt, k.capture_frontmatter(exact))
+
+        def drift(params):
+            result = exact(params)
+            result["query"]["pages"][0]["revisions"][0]["revid"] += 1
+            return result
+
+        with self.assertRaises(ValueError):
+            k.capture_frontmatter(drift)
+
+    def test_frontmatter_rejects_cross_inventory_collision(self):
+        ids = (k.PINNED_PAGE_IDS[0], *k.FRONT_IDS[1:])
+
+        def exact(params):
+            result = provider({"titles": "|".join(f"Страница:{k.SCAN}/{n}" for n in k.FRONT_PAGES[:4])})
+            by_scan = dict(zip(k.FRONT_PAGES, ids))
+            for page in result["query"]["pages"]:
+                page["revisions"][0]["revid"] = by_scan[int(page["title"].rsplit("/", 1)[1])]
+            return result
+
+        with patch.object(k, "FRONT_IDS", ids), self.assertRaisesRegex(ValueError, "duplicate Page revision"):
+            k.capture_frontmatter(exact)

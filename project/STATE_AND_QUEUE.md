@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 621
+STATE_REVISION: 622
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-25
-LAST_RESULT: #637 merged at b9085f86; 0/2 exact adjacent orthography controls, XIII projection review-only. Independent private comparison integrity slice; no new corpus measurements.
+LAST_RESULT: #638 merged at 1b6362d7; private dialogue integrity accepted. Current vocabulary presence and sole-window integrity slice; no new corpus measurements.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-PRIVATE-DIALOGUE-CONTRACT-001
-ISSUE: none; concrete comparison integrity regression
+UNIT_ID: SCRIP-PRIVATE-VOCABULARY-PRESENCE-001
+ISSUE: none; concrete vocabulary comparison integrity regression
 STATUS: PR_CANDIDATE; exact-head CI and independent acceptance required
-BRANCH: scrip-private-dialogue-contract-20261125
-BASE: b9085f864288901dbf31c70e916f7a97b133f836
+BRANCH: scrip-private-vocabulary-presence-20261125
+BASE: 1b6362d7d959db15ba59b45af90f34d5e3982398
 
-ACCEPTANCE: Reject impossible dialogue/narration presence, undefined remark rates and out-of-range means in current-profile private reports; preserve genuine empty, punctuation-only, dialogue-only and mixed reports. Unknown profiles remain incomparable. Later exact-head CI and acceptance.
+ACCEPTANCE: Reject zero distinct vocabulary despite observed words, zero rolling dictionary mean despite observed dictionary lexemes, and inconsistent sole-window means under current profiles in both Python and browser comparison; preserve genuine zero, fractional and single-window evidence. Later exact-head CI and acceptance.
 
 ## Next user-visible milestone and compact queue
 

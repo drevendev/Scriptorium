@@ -177,6 +177,51 @@ class TagProfileHtmlTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, reason):
                     render_tag_profiles_html(candidate)
 
+    def test_shared_work_keeps_one_provenance_across_tags(self):
+        from scriptorium.tag_profile_csv import render_tag_profiles_csv
+
+        r = report()
+        second = deepcopy(r["tags"][0])
+        second.update(tag_id="another", label="Another tag")
+        second["works"][0].update(tag_authority="human_curator",
+                                  tag_evidence_url="https://example.org/another/a")
+        r["tags"].append(second)
+        # One edition can legitimately have distinct evidence for each tag.
+        self.assertIn("Another tag", render_tag_profiles_html(r))
+        self.assertIn("another", render_tag_profiles_csv(r))
+
+        for changes in (
+            {"edition_id": "different-edition"},
+            {"candidate_id": "different-candidate"},
+            {"source_sha256": "c" * 64},
+            {"key": "different-key", "candidate_id": "different-candidate"},
+            {"key": "different-key", "source_sha256": "c" * 64},
+            {"rights_basis": "open_license"},
+            {"rights_evidence_url": "https://example.org/different-rights"},
+        ):
+            with self.subTest(changes=changes):
+                candidate = deepcopy(r)
+                candidate["tags"][2]["works"][0].update(changes)
+                for render in (render_tag_profiles_html, render_tag_profiles_csv):
+                    with self.assertRaisesRegex(ValueError, "cross-tag edition provenance"):
+                        render(candidate)
+
+    def test_json_replay_rejects_cross_tag_provenance_before_output(self):
+        r = report()
+        second = deepcopy(r["tags"][0])
+        second.update(tag_id="another", label="Another tag")
+        second["works"][0]["source_sha256"] = "c" * 64
+        r["tags"].append(second)
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "report.json"
+            output = Path(temp) / "replayed.json"
+            source.write_text(json.dumps(r), encoding="utf-8")
+            with contextlib.redirect_stderr(StringIO()):
+                with self.assertRaises(SystemExit) as exc:
+                    main(["--report", str(source), "--output", str(output)])
+            self.assertEqual(exc.exception.code, 2)
+            self.assertFalse(output.exists())
+
     def test_metric_specific_bars_show_real_means_zero_and_missing(self):
         r = report()
         # Same metric across tags shares one scale; different metrics never mix units.

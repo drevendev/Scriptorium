@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 622
+STATE_REVISION: 623
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-25
-LAST_RESULT: #638 merged at 1b6362d7; private dialogue integrity accepted. Current vocabulary presence and sole-window integrity slice; no new corpus measurements.
+LAST_RESULT: #639 merged at 9e706896; private vocabulary integrity accepted. Current cross-tag provenance consistency slice; no new corpus measurements.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-PRIVATE-VOCABULARY-PRESENCE-001
-ISSUE: none; concrete vocabulary comparison integrity regression
+UNIT_ID: SCRIP-TAGS-CROSS-PROVENANCE-001
+ISSUE: #563
 STATUS: PR_CANDIDATE; exact-head CI and independent acceptance required
-BRANCH: scrip-private-vocabulary-presence-20261125
-BASE: 1b6362d7d959db15ba59b45af90f34d5e3982398
+BRANCH: scrip-tag-cross-provenance-20261125
+BASE: 9e70689693ce7a1c9a76c11af870c699a94ae9e7
 
-ACCEPTANCE: Reject zero distinct vocabulary despite observed words, zero rolling dictionary mean despite observed dictionary lexemes, and inconsistent sole-window means under current profiles in both Python and browser comparison; preserve genuine zero, fractional and single-window evidence. Later exact-head CI and acceptance.
+ACCEPTANCE: Reuse a confirmed work across tags with distinct tag evidence, but reject contradictory edition/source/rights bindings in all replay formats. Preserve private boundaries and legitimate multi-label curation. Later exact-head CI and acceptance.
 
 ## Next user-visible milestone and compact queue
 

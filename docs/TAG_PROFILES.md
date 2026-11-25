@@ -36,6 +36,9 @@ The default JSON format also supports replay. Supply either `--report` or both
 `--snapshot` and `--curation`, never both modes. Replay reads only a bounded regular
 UTF-8 JSON file, rejects duplicate keys, non-finite constants and malformed report
 structure, and applies the existing report consistency validator even for JSON output.
+A work may appear under several tags with distinct tag evidence, but its edition key,
+work identity, edition ID, source hash and curator-declared rights must agree across
+all groups. Contradictory cross-tag bindings are rejected in JSON, HTML and CSV replay.
 It preserves the stored numeric values and source snapshot digest; it does not
 recompute those values from source measurements, establish authenticity, verify rights,
 or enable publication. The existing destination remains exclusive-create.

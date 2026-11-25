@@ -34,7 +34,15 @@ cannot be mixed with `--report`; outputs remain create-only. The saved JSON
 contains normalized input SHA-256 hashes and user-declared metadata, **not**
 word forms or manuscript text. Replay verifies artifact structure and internal
 consistency, not independently verified edition rights, source identity or
-FantLab parity. Keep the report private unless separately cleared for release.
+FantLab parity. Replay also checks pooled occurrence feasibility from the
+two witnesses: the pooled union must agree with the possible shared type count,
+each eligible form needs at least five tokens, each excluded rare form needs
+at least one (two if shared), and an all-rare pool cannot average more than
+four occurrences per form. Disjoint nonempty type sets require exactly one
+bit of divergence and, when present, zero token-distribution overlap. These
+necessary checks also apply to historical pre-overlap v1 reports; they do not
+authenticate the underlying distributions. Keep the report private unless
+separately cleared for release.
 
 For a spreadsheet-friendly **source-free, create-only CSV** (fixed four-column
 `section,field,value,unit` rows; no words or word-level hashes):

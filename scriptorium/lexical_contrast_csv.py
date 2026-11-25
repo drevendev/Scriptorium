@@ -298,6 +298,32 @@ def render_lexical_contrast_csv(report: dict[str, object]) -> str:
         add("aggregate", key, value, unit)
 
     if aggregate is not None:
+        # Every pooled form occurs at least once; shared forms occur on both
+        # sides. The union and shared count are derivable even in legacy v1
+        # reports without explicit overlap fields.
+        eligible = aggregate["eligible_form_count"]
+        rare = aggregate["excluded_rare_form_count"]
+        union = eligible + rare
+        left_forms, right_forms = left["distinct_forms"], right["distinct_forms"]
+        shared = left_forms + right_forms - union
+        total = left["word_tokens"] + right["word_tokens"]
+        threshold = method["min_pooled_occurrences"]
+        # At most eligible shared forms are already covered by the threshold.
+        # Every remaining shared rare form needs a second token.
+        minimum = threshold * eligible + rare + max(0, shared - eligible)
+        if (not 0 <= shared <= min(left_forms, right_forms) or
+                total < minimum or
+                (eligible == 0 and total > (threshold - 1) * rare)):
+            raise ValueError("inconsistent lexical pooled occurrence counts")
+        # Disjoint nonempty empirical distributions have exactly one bit of
+        # Jensen-Shannon divergence and zero shared probability mass. Do not
+        # enforce the converse: rounded values can conceal tiny shared mass.
+        if shared == 0 and (
+            aggregate["jensen_shannon_divergence_bits"] != 1 or
+            (with_token_overlap and aggregate["token_distribution_overlap_percent"] != 0)
+        ):
+            raise ValueError("inconsistent disjoint lexical distributions")
+
         # Every eligible pooled form has exactly one dominance classification.
         # Check the invariant even for historical v1 reports without overlap.
         if (aggregate["left_dominant_form_count"] +

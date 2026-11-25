@@ -64,10 +64,13 @@ jobs:
               assert witness['revision_id'] == revision
               assert witness['normalized_sha256'] == report[side]['normalized_sha256'] == digest
               assert witness['characters_including_spaces'] == report[side]['characters_including_spaces'] == count
+              # Metadata trust is a per-edition witness property, not a report field.
+              assert report[side]['metadata_verified'] is False
+              assert report[side]['source_text_embedded'] is False
+              assert report[side]['meets_300000_character_floor'] is True
           assert report['status'] == 'COMPARABLE'
           assert report['aggregate'] is not None
           assert report['public_release_ready'] is False
-          assert report['metadata_verified'] is False
           assert report['corpus_admission'] == 'NOT_VERIFIED'
           assert Path('/tmp/bely-tolstoy-lexical.html').read_text(encoding='utf-8') == render_lexical_contrast(report, 'html')
           print('BELY_TOLSTOY_SOURCE_FREE_PAIR=PASS; M2=0')

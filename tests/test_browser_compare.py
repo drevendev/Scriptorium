@@ -1,4 +1,4 @@
-"""Actual Reader JSON vs browser comparison: 256-case Python/Node differential.
+"""Actual Reader JSON vs browser comparison: 262-case Python/Node differential.
 
 Runs against real build_local_analysis() reports and the canonical installed Python
 comparison contract; no analyzer stub, private source upload or browser network.
@@ -192,12 +192,30 @@ class BrowserCompareTests(unittest.TestCase):
                                           dictionary_profile="test-lexicon-v1")
         impossible["metrics"]["fantlab.vocabulary.uasz_3000"]["value"] = 2
         samples.append((json.dumps(impossible, ensure_ascii=False), json.dumps(right, ensure_ascii=False)))
-        self.assertEqual(len(samples), 256)
-        self.assertEqual(len(set(samples)), 256)
+        # Current vocabulary presence and sole-window identities, including
+        # a legitimate fractional mean and a complete zero-dictionary window.
+        for text, dictionary, forged in (
+            ("пёс " * 3000, ["кот"], None),
+            ("кот " * 2999 + "пёс", ["кот", "пёс"], None),
+            ("кот " + "заяц " * 3000, ["кот"], None),
+            ("кот " * 2999 + "пёс", ["кот", "пёс"], 1.0),
+            ("кот " + "заяц " * 3000, ["кот"], 0.0),
+        ):
+            report = build_local_analysis(text.encode("utf-8"), dictionary_words=dictionary,
+                                          dictionary_profile="test-presence-v1")
+            if forged is not None:
+                report["metrics"]["fantlab.vocabulary.uasz_3000"]["value"] = forged
+            encoded = json.dumps(report, ensure_ascii=False)
+            samples.append((encoded, encoded if forged is None else json.dumps(right, ensure_ascii=False)))
+        report = build_local_analysis("кот".encode("utf-8"))
+        report["metrics"]["fantlab.vocabulary.unique_words"]["value"] = 0
+        samples.append((json.dumps(report, ensure_ascii=False), json.dumps(right, ensure_ascii=False)))
+        self.assertEqual(len(samples), 262)
+        self.assertEqual(len(set(samples)), 262)
         return samples
 
     @unittest.skipUnless(shutil.which('node'), 'Node is needed for genuine JS/Python differential')
-    def test_256_real_python_vs_browser_differential(self):
+    def test_262_real_python_vs_browser_differential(self):
         cases = self._case_data()
         harness = r'''
 const fs=require('fs');
@@ -220,9 +238,9 @@ process.stdout.write(JSON.stringify(result));
                 text=True, capture_output=True, check=True, timeout=90,
             )
             browser = json.loads(command.stdout)
-            self.assertEqual(len(browser), 256)
+            self.assertEqual(len(browser), 262)
             self.assertEqual([row['accepted'] for row in browser[234:]],
-                             [True] * 8 + [False] * 11 + [True, False, False])
+                             [True] * 8 + [False] * 11 + [True, False, False] + [True] * 3 + [False] * 3)
             accepted = 0
             for index, ((left, right), actual) in enumerate(zip(cases, browser)):
                 a_path = root / 'a.json'; b_path = root / 'b.json'

@@ -198,6 +198,10 @@ def validate_report(report: object) -> None:
     unique = rows["fantlab.vocabulary.unique_words"]["value"]
     if words > length or unique > words or sentences > length:
         raise CompareError("inconsistent source/word/sentence statistics")
+    current_vocabulary = all(profiles[key] == canonical["profiles"][key]
+                             for key in ("normalization", "metrics", "vocabulary"))
+    if current_vocabulary and (unique == 0) != (words == 0):
+        raise CompareError("distinct-word presence contradicts word count")
     # The canonical deterministic engine computes these means from nonempty,
     # non-overlapping word/sentence spans. An imported null with a positive
     # denominator, or an impossible character budget, is not an unavailable
@@ -287,6 +291,14 @@ def validate_report(report: object) -> None:
             # even when the supplied dictionary itself is much larger.
             if derived is not None and derived > min(window_size, active_dictionary):
                 raise CompareError("dictionary diversity exceeds active vocabulary")
+            if current_vocabulary and derived is not None:
+                # Complete step-1 windows cover every token. If any dictionary
+                # lexeme occurs, at least one window contains it. A sole
+                # complete window contains the entire observed vocabulary.
+                if (derived == 0) != (active_dictionary == 0):
+                    raise CompareError("dictionary window contradicts vocabulary presence")
+                if words == window_size and derived != active_dictionary:
+                    raise CompareError("single dictionary window contradicts active vocabulary")
 
 
 def _digest_metadata(report: dict[str, object]) -> dict[str, object]:

@@ -66,3 +66,33 @@ jobs:
           path: build/repro/kropotkin-page-witnesses.json
           if-no-files-found: error
           retention-days: 7
+      - name: Capture exact front-matter Page witnesses without retaining prose
+        run: python -m scriptorium.kropotkin_page_witnesses --frontmatter --output build/repro/kropotkin-frontmatter-witnesses.json
+      - name: Verify supplemental coverage and separation from accepted replay
+        run: |
+          python - <<'PY'
+          import json
+          from hashlib import sha256
+          from pathlib import Path
+          from scriptorium.kropotkin_page_witnesses import FRONT_IDS
+          root = Path("build/repro")
+          partial = (root / "kropotkin-page-witnesses.json").read_bytes()
+          selectors = (root / "kropotkin-body-preflight.json").read_bytes()
+          front = json.loads((root / "kropotkin-frontmatter-witnesses.json").read_bytes())
+          old = json.loads(partial)
+          assert front["selector_receipt_sha256"] == sha256(selectors).hexdigest()
+          assert front["partial_receipt_sha256"] == sha256(partial).hexdigest()
+          assert [r["revision_id"] for r in front["pages"]] == list(FRONT_IDS)
+          assert [r["scan_page"] for r in front["pages"]] == [5, *range(11, 23)]
+          assert front["page_count"] == 13
+          assert sorted(front["candidate_scan_pages"] + old["candidate_scan_pages"]) == json.loads(selectors)["candidate_scan_page_union"]
+          assert len({r["revision_id"] for r in front["pages"] + old["pages"]}) == 338
+          assert not front["body_frozen"] and not front["source_text_retained"]
+          assert not front["effective_page_graph_verified"]
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: kropotkin-frontmatter-witnesses
+          path: build/repro/kropotkin-frontmatter-witnesses.json
+          if-no-files-found: error
+          retention-days: 7

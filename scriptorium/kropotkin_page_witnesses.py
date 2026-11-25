@@ -58,6 +58,13 @@ PINNED_PAGE_IDS = (
 )
 
 
+# #633 accepted candidate additions; public Page permanent links observed 2026-11-25.
+FRONT_PAGES = (5, *range(11, 23))
+FRONT_IDS = (3479106, 5825141, 3479109, 3479110, 3374274, 3374275,
+             3374276, 3374277, 3374278, 3374324, 3374325, 3374326, 3374327)
+FRONT_SELECTOR_SHA256 = "b5a5900fd912365e6ff6f52e6cbbf62d047465ed52f34661a7f27611ad2c7348"
+
+
 class _Markers(HTMLParser):
     """Lexical observation only, not proof of effective section transclusion."""
 
@@ -100,18 +107,17 @@ def observe(source):
     }
 
 
-def capture(query=_api_query, *, pinned=False):
-    pins = dict(zip(PAGES, PINNED_PAGE_IDS, strict=True)) if pinned else {}
-    if pinned and len(set(pins.values())) != len(PAGES):
-        raise ValueError("duplicate pinned Page revision identity")
+def _capture_rows(query, scans, pins, reserved):
+    if pins and (set(pins) != set(scans) or len(set(pins.values())) != len(scans)):
+        raise ValueError("invalid pinned Page revision inventory")
     rows = []
-    seen = set(REVISION_IDS)
-    for offset in range(0, len(PAGES), BATCH_SIZE):
+    seen = set(reserved)
+    for offset in range(0, len(scans), BATCH_SIZE):
         expected = {f"Страница:{SCAN}/{n}": n
-                    for n in PAGES[offset:offset + BATCH_SIZE]}
+                    for n in scans[offset:offset + BATCH_SIZE]}
         revisions = {title: pins.get(n) for title, n in expected.items()}
         selector = ({"revids": "|".join(map(str, revisions.values()))}
-                    if pinned else {"titles": "|".join(expected)})
+                    if pins else {"titles": "|".join(expected)})
         payload = query({"action": "query", "prop": "revisions", **selector,
                          "rvprop": "ids|timestamp|sha1|content", "rvslots": "main"})
         identities = _identities(payload, revisions)
@@ -131,6 +137,12 @@ def capture(query=_api_query, *, pinned=False):
             if sha1(source.encode("utf-8")).hexdigest() != row["mediawiki_sha1"]:
                 raise ValueError("Page source digest mismatch")
             rows.append({**row, "scan_page": expected[row["title"]], **observe(source)})
+    return rows
+
+
+def capture(query=_api_query, *, pinned=False):
+    pins = dict(zip(PAGES, PINNED_PAGE_IDS, strict=True)) if pinned else {}
+    rows = _capture_rows(query, PAGES, pins, REVISION_IDS)
     return {
         "schema": SCHEMA,
         "candidate_id": "kropotkin-mutual-aid-baturinsky-1907-ru",
@@ -152,6 +164,33 @@ def capture(query=_api_query, *, pinned=False):
     }
 
 
+def capture_frontmatter(query=_api_query):
+    """Capture the 13 public-link pins separately; never alter the accepted v1 receipt."""
+    pins = dict(zip(FRONT_PAGES, FRONT_IDS, strict=True))
+    if set(FRONT_PAGES) & set(PAGES) or sorted((*FRONT_PAGES, *PAGES)) != [5, *range(11, 348)]:
+        raise ValueError("front-matter inventory differs from accepted v3 selectors")
+    rows = _capture_rows(query, FRONT_PAGES, pins, (*REVISION_IDS, *PINNED_PAGE_IDS))
+    return {
+        "schema": "scriptorium-kropotkin-frontmatter-witnesses-v1",
+        "candidate_id": "kropotkin-mutual-aid-baturinsky-1907-ru",
+        "selector_acceptance_pr": 633,
+        "selector_receipt_sha256": FRONT_SELECTOR_SHA256,
+        "partial_receipt_sha256": ACCEPTED_RECEIPT_SHA256,
+        "candidate_scan_pages": list(FRONT_PAGES),
+        "page_count": len(rows),
+        "pages": rows,
+        "combined_candidate_scan_count": len(FRONT_PAGES) + len(PAGES),
+        "effective_page_graph_verified": False,
+        "transclusion_dependencies_frozen": False,
+        "notes_boundary_verified": False,
+        "body_frozen": False,
+        "body_characters": None,
+        "source_text_retained": False,
+        "fantlab_input_identity": "unknown",
+        "m2_parity_admissible": False,
+    }
+
+
 def serialize_receipt(result, *, require_accepted=False):
     serialized = json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
     if require_accepted and sha256(serialized.encode("utf-8")).hexdigest() != ACCEPTED_RECEIPT_SHA256:
@@ -162,11 +201,14 @@ def serialize_receipt(result, *, require_accepted=False):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--replay", action="store_true",
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--frontmatter", action="store_true",
+                      help="Fetch exact front-matter Page pins and emit a separate receipt")
+    mode.add_argument("--replay", action="store_true",
                         help="Fetch exact accepted revisions and require the accepted receipt digest")
     args = parser.parse_args(argv)
     try:
-        result = capture(pinned=args.replay)
+        result = capture_frontmatter() if args.frontmatter else capture(pinned=args.replay)
         serialized = serialize_receipt(result, require_accepted=args.replay)
         with args.output.open("x", encoding="utf-8", newline="\n") as stream:
             stream.write(serialized)

@@ -1,6 +1,6 @@
 # Kropotkin — Mutual Aid, Baturinsky translation (1907)
 
-Status: traced candidate; route identity capture independently accepted in #628; pinned body preflight independently accepted in #629; literal selector plan independently accepted in #630; partial Page witness capture independently accepted in #631; exact-revision replay independently accepted in #632; compact selector correction independently accepted in #633; supplemental Page pins PR candidate. Issue #627.
+Status: traced candidate; route identity capture independently accepted in #628; pinned body preflight independently accepted in #629; literal selector plan independently accepted in #630; partial Page witness capture independently accepted in #631; exact-revision replay independently accepted in #632; compact selector correction independently accepted in #633; supplemental Page pins independently accepted in #634; rendered diagnostic PR candidate. Issue #627.
 
 ## Edition and reuse
 
@@ -61,3 +61,9 @@ The [#633 acceptance](https://github.com/drevendev/Scriptorium/pull/633#issuecom
 | 22 | [3374327](https://ru.wikisource.org/w/index.php?oldid=3374327) |
 
 These are observed revision identifiers, not yet accepted raw-byte witnesses. Run `python -m scriptorium.kropotkin_page_witnesses --frontmatter --output build/repro/kropotkin-frontmatter-witnesses.json` with an existing output directory. It uses only exact revision IDs and the existing verified SHA-1, namespace, title and lexical-marker checks, reserving all prior Page/route IDs. Separate receipt retains only metadata/hashes and requires later independent CI acceptance; the previous 325-Page receipt and replay digest are unchanged. CI checks both source receipt hashes, the disjoint union and all 338 distinct revision IDs. The rendered Page views expose old and modern orthography and footnotes; selecting the actual modern body and handling notes remains a separate gate. No body, size, admission or parity claim.
+
+## Rendered modern-route candidate (diagnostic only)
+
+The MediaWiki [parse API](https://www.mediawiki.org/wiki/API:Parsing_wikitext) supports exact route oldids, HTML and template inventories, but does not freeze the revisions of transcluded dependencies. The ProofreadPage [output container and separate reference-list behavior](https://phabricator.wikimedia.org/T305792) motivate a bounded extraction experiment. The public modern introduction has a separate notes list. Do not equate rendered oldid HTML with the 338 accepted Page revisions.
+
+The new CI step requests all 29 modern routes, extracts text inside one `prp-pages-output` container and separately observes Cite note items, omitting known reference markers/navigation. It emits only hashes, character counts including spaces (with normalized whitespace and newline separators), historical-letter counts, reported Page dependency differences against the accepted v3 literal selectors, and fixed status codes. Missing/ambiguous containers are explicit; no partial composite is reported as complete. HTML/notes boundaries, template versions, orthography and effective graph require later review. The 300k threshold flag is diagnostic, not admission. No source prose is saved or logged. Exact-head CI and actual provider results remain required.

@@ -11,6 +11,8 @@ on:
       - "tests/test_kropotkin_body_preflight.py"
       - "scriptorium/kropotkin_page_witnesses.py"
       - "tests/test_kropotkin_page_witnesses.py"
+      - "scriptorium/kropotkin_rendered.py"
+      - "tests/test_kropotkin_rendered.py"
   workflow_dispatch:
 
 permissions:
@@ -94,5 +96,27 @@ jobs:
         with:
           name: kropotkin-frontmatter-witnesses
           path: build/repro/kropotkin-frontmatter-witnesses.json
+          if-no-files-found: error
+          retention-days: 7
+      - run: python -m unittest discover -s tests -p test_kropotkin_rendered.py -v
+      - name: Extract modern rendered route candidates in memory
+        run: python -m scriptorium.kropotkin_rendered --selectors build/repro/kropotkin-body-preflight.json --output build/repro/kropotkin-rendered-diagnostic.json
+      - name: Verify diagnostic envelope without claiming body acceptance
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.kropotkin_body_preflight import REVISION_IDS
+          r = json.loads(Path("build/repro/kropotkin-rendered-diagnostic.json").read_text())
+          assert r["route_count"] == 29
+          assert [x["revision_id"] for x in r["routes"]] == list(REVISION_IDS)
+          assert not r["body_frozen"] and not r["source_text_retained"]
+          assert not r["m2_parity_admissible"]
+          assert (r["candidate_composite_characters"] is not None) == (r["extracted_route_count"] == 29)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: kropotkin-rendered-diagnostic
+          path: build/repro/kropotkin-rendered-diagnostic.json
           if-no-files-found: error
           retention-days: 7

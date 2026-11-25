@@ -214,6 +214,30 @@ def validate_report(report: object) -> None:
         elif (mean is None or mean < 1
               or mean * Decimal(denominator) > Decimal(length + 1)):
             raise CompareError("mean contradicts word/sentence source budget")
+    # Dialogue-v1 partitions all nonblank paragraphs into narration/dialogue.
+    # Its non-whitespace denominator is empty exactly when text-v1 emits no
+    # sentence spans. A positive share requires at least one dialogue sentence
+    # and a defined author-remark rate (including genuine zero).
+    # Do not apply these inferred relationships to unknown future profiles.
+    if all(profiles[key] == canonical["profiles"][key]
+           for key in ("normalization", "metrics", "dialogue")):
+        def dialogue_value(name):
+            return _number(rows["fantlab.dialogue." + name]["value"], name)
+
+        share = dialogue_value("share_percent")
+        remarks = dialogue_value("author_text_inside_dialogue_percent")
+        dialogue_mean = dialogue_value("mean_dialogue_sentence_length_chars")
+        narration_mean = dialogue_value("mean_narration_sentence_length_chars")
+        if (share is None) != (sentences == 0):
+            raise CompareError("dialogue share contradicts sentence presence")
+        has_dialogue = share is not None and share > 0
+        has_narration = share is not None and share < 100
+        if (remarks is not None) != has_dialogue:
+            raise CompareError("author-remark rate contradicts dialogue presence")
+        for mean, present in ((dialogue_mean, has_dialogue), (narration_mean, has_narration)):
+            if (mean is not None) != present or (mean is not None and not 1 <= mean <= length):
+                raise CompareError("dialogue or narration mean contradicts source coverage")
+
     # Punctuation rates are exact deterministic derivatives of the same
     # exported raw event counts and word denominator (metrics-v4).  A valid
     # JSON schema/hash declaration alone does not prove this relationship.

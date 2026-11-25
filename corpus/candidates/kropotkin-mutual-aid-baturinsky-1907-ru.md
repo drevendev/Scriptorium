@@ -1,6 +1,6 @@
 # Kropotkin — Mutual Aid, Baturinsky translation (1907)
 
-Status: traced candidate; route identity capture independently accepted in #628; pinned body preflight independently accepted in #629; literal selector plan independently accepted in #630; partial Page witness capture independently accepted in #631; exact-revision replay independently accepted in #632; compact selector correction PR candidate. Issue #627.
+Status: traced candidate; route identity capture independently accepted in #628; pinned body preflight independently accepted in #629; literal selector plan independently accepted in #630; partial Page witness capture independently accepted in #631; exact-revision replay independently accepted in #632; compact selector correction independently accepted in #633; supplemental Page pins PR candidate. Issue #627.
 
 ## Edition and reuse
 
@@ -39,3 +39,25 @@ The [#631 acceptance](https://github.com/drevendev/Scriptorium/pull/631#issuecom
 ## Compact front-matter selectors (v3)
 
 On 2026-11-25 the public source views of [preface](https://ru.wikisource.org/wiki/Взаимная_помощь_как_фактор_эволюции_(Кропоткин_1907)/Предисловие) (oldid 5712799) and [introduction](https://ru.wikisource.org/wiki/Взаимная_помощь_как_фактор_эволюции_(Кропоткин_1907)/Введение) (oldid 3485537) showed compact unquoted terminal numeric selectors: preface scan 5 and introduction scans 11–22. Their public dependency lists agree. Python HTMLParser consumes the terminal slash as part of the unquoted numeric attribute, although MediaWiki accepts the compact spelling. Correct only the raw terminal numeric attribute of a pages tag, when the parsed final pair agrees; do not strip quoted, entity-encoded, interior or repeated slashes. The v3 candidate receipt has a new schema; the accepted #630 v2 digest and #632 partial Page replay stay unchanged. Dedicated CI checks the two exact revision IDs, all 29 candidate routes and the predicted union of 338 scans (5 and 11–347); no coverage of omitted front matter or end matter is inferred. The 13 additional Page identities are not pinned yet. Effective graph, orthography conversion, notes/body/size/admission and parity remain unverified. Public source views are evidence for the fix, not a substitute for exact-revision API acceptance.
+
+## Supplemental front-matter revision pins
+
+The [#633 acceptance](https://github.com/drevendev/Scriptorium/pull/633#issuecomment-7152309743) establishes the v3 literal candidate union (338 scans), not the effective graph. On 2026-11-25, the public Page permanent-link footers were inspected for all 13 additions. Scan-to-oldid mapping:
+
+| Scan | Permanent revision |
+| --- | --- |
+| 5 | [3479106](https://ru.wikisource.org/w/index.php?oldid=3479106) |
+| 11 | [5825141](https://ru.wikisource.org/w/index.php?oldid=5825141) |
+| 12 | [3479109](https://ru.wikisource.org/w/index.php?oldid=3479109) |
+| 13 | [3479110](https://ru.wikisource.org/w/index.php?oldid=3479110) |
+| 14 | [3374274](https://ru.wikisource.org/w/index.php?oldid=3374274) |
+| 15 | [3374275](https://ru.wikisource.org/w/index.php?oldid=3374275) |
+| 16 | [3374276](https://ru.wikisource.org/w/index.php?oldid=3374276) |
+| 17 | [3374277](https://ru.wikisource.org/w/index.php?oldid=3374277) |
+| 18 | [3374278](https://ru.wikisource.org/w/index.php?oldid=3374278) |
+| 19 | [3374324](https://ru.wikisource.org/w/index.php?oldid=3374324) |
+| 20 | [3374325](https://ru.wikisource.org/w/index.php?oldid=3374325) |
+| 21 | [3374326](https://ru.wikisource.org/w/index.php?oldid=3374326) |
+| 22 | [3374327](https://ru.wikisource.org/w/index.php?oldid=3374327) |
+
+These are observed revision identifiers, not yet accepted raw-byte witnesses. Run `python -m scriptorium.kropotkin_page_witnesses --frontmatter --output build/repro/kropotkin-frontmatter-witnesses.json` with an existing output directory. It uses only exact revision IDs and the existing verified SHA-1, namespace, title and lexical-marker checks, reserving all prior Page/route IDs. Separate receipt retains only metadata/hashes and requires later independent CI acceptance; the previous 325-Page receipt and replay digest are unchanged. CI checks both source receipt hashes, the disjoint union and all 338 distinct revision IDs. The rendered Page views expose old and modern orthography and footnotes; selecting the actual modern body and handling notes remains a separate gate. No body, size, admission or parity claim.

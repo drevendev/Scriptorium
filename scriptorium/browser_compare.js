@@ -251,6 +251,9 @@
     const sentences = integer(rows['scriptorium.general.sentences'].value, 'sentences');
     const unique = integer(rows['fantlab.vocabulary.unique_words'].value, 'unique words');
     if (words > length || unique > words || sentences > length) fail('Inconsistent word/sentence statistics');
+    const currentVocabulary = ['normalization', 'metrics', 'vocabulary']
+      .every(key => profiles[key] === snapshot.profiles[key]);
+    if (currentVocabulary && (unique === 0) !== (words === 0)) fail('Distinct-word presence mismatch');
     for (const [id, denominator] of [
       ['fantlab.general.mean_word_length_chars', words],
       ['fantlab.general.mean_sentence_length_chars', sentences]
@@ -305,6 +308,14 @@
         if ((measured === null) !== (words < windowSize) ||
             (measured !== null && compareNumbers(measured, new NumberToken(String(Math.min(windowSize, active)))) > 0)) {
           fail('Dictionary window contradicts counts');
+        }
+        if (currentVocabulary && measured !== null) {
+          if ((compareNumbers(measured, new NumberToken('0')) === 0) !== (active === 0)) {
+            fail('Dictionary window contradicts vocabulary presence');
+          }
+          if (words === windowSize && compareNumbers(measured, new NumberToken(String(active))) !== 0) {
+            fail('Single dictionary window contradicts active vocabulary');
+          }
         }
       }
     }

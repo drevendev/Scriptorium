@@ -261,9 +261,30 @@
            compareNumbers({coefficient: mean.coefficient * BigInt(denominator), exponent: mean.exponent},
              new NumberToken(String(length + 1))) > 0)) fail('Mean contradicts source budget');
     }
+    // Match the current Python dialogue-v1 partition, not unknown profiles.
+    if (['normalization', 'metrics', 'dialogue'].every(key => profiles[key] === snapshot.profiles[key])) {
+      const dialogueValue = name => decimal(rows['fantlab.dialogue.' + name].value, name);
+      const share = dialogueValue('share_percent');
+      const remarks = dialogueValue('author_text_inside_dialogue_percent');
+      const dialogueMean = dialogueValue('mean_dialogue_sentence_length_chars');
+      const narrationMean = dialogueValue('mean_narration_sentence_length_chars');
+      if ((share === null) !== (sentences === 0)) fail('Dialogue share contradicts sentence presence');
+      const hasDialogue = share !== null && compareNumbers(share, new NumberToken('0')) > 0;
+      const hasNarration = share !== null && compareNumbers(share, new NumberToken('100')) < 0;
+      if ((remarks !== null) !== hasDialogue) fail('Author-remark rate contradicts dialogue presence');
+      for (const [mean, present] of [[dialogueMean, hasDialogue], [narrationMean, hasNarration]]) {
+        if ((mean !== null) !== present || (mean !== null &&
+            (compareNumbers(mean, new NumberToken('1')) < 0 ||
+             compareNumbers(mean, new NumberToken(String(length))) > 0))) {
+          fail('Dialogue or narration mean contradicts source coverage');
+        }
+      }
+    }
+    let punctuationEvents = 0;
     for (const [id, row] of Object.entries(rows)) {
       if (!id.startsWith('fantlab.punctuation.')) continue;
       const count = integer(row.raw_count, 'punctuation count');
+      punctuationEvents += count;
       if (count > length) fail('Punctuation count exceeds characters');
       const rate = decimal(row.value, id);
       // Python metrics._per_1000 uses binary64 arithmetic. Its shortest
@@ -271,6 +292,7 @@
       const expected = words === 0 ? null : new NumberToken(String(count * 1000.0 / words));
       if (!sameNumber(rate, expected)) fail('Punctuation rate contradicts raw count');
     }
+    if (words + punctuationEvents > length) fail('Word and punctuation events exceed source');
     if (dictionary === null) {
       if ([...DICTIONARY_IDS].some(id => rows[id].value !== null)) fail('Dictionary value without dependency');
     } else {
@@ -281,7 +303,7 @@
       for (const windowSize of [3000, 10000, 100000]) {
         const measured = decimal(rows['fantlab.vocabulary.uasz_' + windowSize].value, 'dictionary window');
         if ((measured === null) !== (words < windowSize) ||
-            (measured !== null && compareNumbers(measured, new NumberToken(String(Math.min(windowSize, lexemes)))) > 0)) {
+            (measured !== null && compareNumbers(measured, new NumberToken(String(Math.min(windowSize, active)))) > 0)) {
           fail('Dictionary window contradicts counts');
         }
       }

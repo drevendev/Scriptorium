@@ -15,6 +15,8 @@ on:
       - "tests/test_kropotkin_rendered.py"
       - "scriptorium/kropotkin_appendix_gap.py"
       - "tests/test_kropotkin_appendix_gap.py"
+      - "scriptorium/kropotkin_orthography_controls.py"
+      - "tests/test_kropotkin_orthography_controls.py"
   workflow_dispatch:
 
 permissions:
@@ -141,5 +143,31 @@ jobs:
         with:
           name: kropotkin-appendix-gap
           path: build/repro/kropotkin-appendix-gap.json
+          if-no-files-found: error
+          retention-days: 7
+      - run: python -m unittest discover -s tests -p test_kropotkin_orthography_controls.py -v
+      - name: Test partial orthography preview against adjacent controls
+        run: python -m scriptorium.kropotkin_orthography_controls --selectors build/repro/kropotkin-body-preflight.json --gap build/repro/kropotkin-appendix-gap.json --rendered build/repro/kropotkin-rendered-diagnostic.json --output build/repro/kropotkin-orthography-controls.json
+      - name: Verify candidate-only diagnostic envelope
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("build/repro/kropotkin-orthography-controls.json").read_text())
+          assert [x["appendix"] for x in r["rows"]] == [12, 13, 14]
+          assert r["control_count"] == 2
+          assert r["candidate_for_review_only"]
+          assert not any(r[k] for k in ("scan_collation_verified", "corpus_normalization_accepted", "composite_constructed", "body_frozen", "source_text_retained", "m2_parity_admissible", "effective_page_graph_verified"))
+          assert r["body_characters"] is None
+          gap = r["rows"][1]
+          assert gap["historical_identity"]["revision_id"] == 3485499
+          assert gap["status"] == "PARTIAL_ORTHOGRAPHY_PREVIEW"
+          assert gap["projection"]["historical_characters"] == 676
+          assert gap["projection"]["exact_candidate_equals_modern"] is None
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: kropotkin-orthography-controls
+          path: build/repro/kropotkin-orthography-controls.json
           if-no-files-found: error
           retention-days: 7

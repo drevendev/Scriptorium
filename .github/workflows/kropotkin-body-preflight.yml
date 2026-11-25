@@ -40,8 +40,8 @@ jobs:
           if-no-files-found: error
           retention-days: 7
       - run: python -m unittest discover -s tests -p test_kropotkin_page_witnesses.py -v
-      - name: Capture partial Page witnesses without retaining prose
-        run: python -m scriptorium.kropotkin_page_witnesses --output build/repro/kropotkin-page-witnesses.json
+      - name: Replay accepted partial Page witnesses without retaining prose
+        run: python -m scriptorium.kropotkin_page_witnesses --replay --output build/repro/kropotkin-page-witnesses.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: kropotkin-page-witnesses

@@ -1,6 +1,7 @@
 import json
 from hashlib import sha1, sha256
 import unittest
+from unittest.mock import patch
 
 from scriptorium import kropotkin_page_witnesses as k
 
@@ -100,3 +101,41 @@ class KropotkinPageWitnessTests(unittest.TestCase):
             return result
         with self.assertRaisesRegex(ValueError, "duplicate Page revision"):
             k.capture(changed)
+
+    def test_pinned_replay_exact_ids_and_order(self):
+        by_id = dict(zip(k.PINNED_PAGE_IDS, k.PAGES, strict=True))
+        self.assertEqual(len(by_id), 325)
+        seen = []
+
+        def exact(params):
+            self.assertNotIn("titles", params)
+            ids = [int(x) for x in params["revids"].split("|")]
+            seen.extend(ids)
+            scans = [by_id[rid] for rid in ids]
+            result = provider({"titles": "|".join(f"Страница:{k.SCAN}/{n}" for n in scans)})
+            for page in result["query"]["pages"]:
+                n = int(page["title"].rsplit("/", 1)[1])
+                page["revisions"][0]["revid"] = k.PINNED_PAGE_IDS[n - 23]
+            return result
+
+        receipt = k.capture(exact, pinned=True)
+        self.assertEqual(seen, list(k.PINNED_PAGE_IDS))
+        self.assertEqual([p["revision_id"] for p in receipt["pages"]], seen)
+        self.assertFalse(receipt["body_frozen"])
+
+        def drift(params):
+            result = exact(params)
+            result["query"]["pages"][0]["revisions"][0]["revid"] = 99999999
+            return result
+
+        with self.assertRaises(ValueError):
+            k.capture(drift, pinned=True)
+
+    def test_receipt_digest_rejects_any_drift(self):
+        receipt = k.capture(provider)
+        original = k.serialize_receipt(receipt)
+        with patch.object(k, "ACCEPTED_RECEIPT_SHA256", sha256(original.encode()).hexdigest()):
+            self.assertEqual(k.serialize_receipt(receipt, require_accepted=True), original)
+            receipt["pages"][0]["wikitext_utf8_bytes"] += 1
+            with self.assertRaisesRegex(ValueError, "differs from accepted"):
+                k.serialize_receipt(receipt, require_accepted=True)

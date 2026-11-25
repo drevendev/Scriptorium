@@ -33,6 +33,24 @@ jobs:
         run: |
           mkdir -p build/repro
           python -m scriptorium.kropotkin_body_preflight --output build/repro/kropotkin-body-preflight.json
+      - name: Verify all pinned literal routes and front-matter scan candidates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("build/repro/kropotkin-body-preflight.json").read_text())
+          assert report["schema"] == "scriptorium-kropotkin-body-preflight-v3"
+          assert report["route_count"] == report["literal_selector_route_count"] == 29
+          assert report["routes"][0]["revision_id"] == 5712799
+          assert report["routes"][1]["revision_id"] == 3485537
+          assert report["routes"][0]["literal_page_selectors"][0]["candidate_scan_pages"] == [5]
+          assert report["routes"][1]["literal_page_selectors"][0]["candidate_scan_pages"] == list(range(11, 23))
+          assert report["candidate_scan_page_union"] == [5, *range(11, 348)]
+          assert not report["effective_page_graph_verified"]
+          assert not report["body_frozen"]
+          assert not report["notes_boundary_verified"]
+          assert report["body_characters"] is None
+          PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: kropotkin-body-preflight

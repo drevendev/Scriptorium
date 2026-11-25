@@ -103,6 +103,43 @@ class LocalComparisonTests(unittest.TestCase):
             with self.assertRaises(compare.CompareError):
                 compare.validate_report(invalid)
 
+    def test_dialogue_presence_contract_accepts_real_edge_cases(self):
+        for text in ("", "  \n\t", "!", "— Да.", "— !", "Кот.\n— Да.",
+                     "— Да? — сказал он.", "— Да.\n— Нет."):
+            with self.subTest(text=text):
+                report = build_local_analysis(text.encode("utf-8"))
+                compare.validate_report(report)
+                compare.build_comparison(report, report)
+
+    def test_imported_dialogue_presence_and_means_are_consistent(self):
+        cases = (
+            ("", "share_percent", 0),
+            ("Кот.", "share_percent", None),
+            ("Кот.", "author_text_inside_dialogue_percent", 0),
+            ("Кот.", "mean_dialogue_sentence_length_chars", 1),
+            ("Кот.", "mean_narration_sentence_length_chars", None),
+            ("— Да.", "share_percent", 0),
+            ("— Да.", "author_text_inside_dialogue_percent", None),
+            ("— Да.", "mean_dialogue_sentence_length_chars", None),
+            ("— Да.", "mean_narration_sentence_length_chars", 1),
+            ("Кот.\n— Да.", "mean_dialogue_sentence_length_chars", 0),
+            ("Кот.\n— Да.", "mean_narration_sentence_length_chars", 1000),
+        )
+        for text, metric, value in cases:
+            with self.subTest(text=text, metric=metric, value=value):
+                report = build_local_analysis(text.encode("utf-8"))
+                report["metrics"]["fantlab.dialogue." + metric]["value"] = value
+                with self.assertRaises(compare.CompareError):
+                    compare.validate_report(report)
+
+    def test_unknown_dialogue_profile_does_not_inherit_presence_rules(self):
+        report = build_local_analysis("Кот.".encode("utf-8"))
+        report["analyzer"]["profiles"]["dialogue"] = "candidate-v99"
+        report["metrics"]["fantlab.dialogue.share_percent"]["value"] = None
+        result = compare.build_comparison(self.a, report)
+        self.assertTrue(all(row["comparison_status"] == "incomparable"
+                            for row in result["metrics"]))
+
     def test_changed_dictionary_cannot_hide_same_text_dialogue_drift(self):
         # Both are genuine Reader artifacts from identical bytes. Their only
         # declared analysis dependency change is the optional lexicon.

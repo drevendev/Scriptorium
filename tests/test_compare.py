@@ -416,6 +416,33 @@ class LocalComparisonTests(unittest.TestCase):
                 with self.assertRaises(compare.CompareError):
                     compare.build_comparison(actual, forged)
 
+    def test_vocabulary_presence_and_single_window_contract(self):
+        for text in ("", "!", "кот", "кот кот"):
+            report = build_local_analysis(text.encode("utf-8"))
+            compare.validate_report(report)
+        invalid = build_local_analysis("кот".encode("utf-8"))
+        invalid["metrics"]["fantlab.vocabulary.unique_words"]["value"] = 0
+        with self.assertRaisesRegex(compare.CompareError, "distinct-word presence"):
+            compare.validate_report(invalid)
+        window = "fantlab.vocabulary.uasz_3000"
+        for text, expected in (
+            ("пёс " * 3000, 0.0),
+            ("кот " * 2999 + "пёс", 2.0),
+            ("кот " + "заяц " * 3000, 0.5),
+        ):
+            # Use no matching words for the zero witness.
+            dictionary = ["кот"] if expected != 2.0 else ["кот", "пёс"]
+            report = build_local_analysis(text.encode("utf-8"), dictionary_words=dictionary,
+                                          dictionary_profile="test-presence-v1")
+            self.assertEqual(report["metrics"][window]["value"], expected)
+            compare.validate_report(report)
+            if expected:
+                for forged_value in ([0.0, 1.0] if expected == 2.0 else [0.0]):
+                    invalid = copy.deepcopy(report)
+                    invalid["metrics"][window]["value"] = forged_value
+                    with self.assertRaises(compare.CompareError):
+                        compare.validate_report(invalid)
+
     def test_punctuation_rates_are_unavailable_without_words(self):
         punctuation_only = build_local_analysis("?! ... —".encode("utf-8"))
         self.assertEqual(punctuation_only["metrics"]["fantlab.general.words"]["value"], 0)

@@ -51,7 +51,15 @@ def _version(tool: str) -> str:
     return match.group(1)
 
 
-def preflight(path: Path, pages: list[int]) -> dict:
+def preflight(
+    path: Path, pages: list[int], *, expected_sha256: str | None = None
+) -> dict:
+    """Inspect a local carrier, optionally requiring a previously pinned SHA-256."""
+    if expected_sha256 is not None and (
+        not isinstance(expected_sha256, str)
+        or re.fullmatch(r"[0-9a-fA-F]{64}", expected_sha256) is None
+    ):
+        raise ValueError("expected SHA-256 must contain exactly 64 hexadecimal digits")
     path = path.resolve(strict=True)
     if not path.is_file():
         raise ValueError("input must be a regular PDF")
@@ -60,6 +68,8 @@ def preflight(path: Path, pages: list[int]) -> dict:
             or len(set(pages)) != len(pages)):
         raise ValueError("provide 1–32 unique positive physical page numbers")
     identity = file_identity(path)
+    if expected_sha256 is not None and identity["sha256"] != expected_sha256.lower():
+        raise ValueError("PDF SHA-256 does not match the expected carrier")
     versions = {name: _version(name) for name in ("pdfinfo", "pdftotext")}
     info = _run(["pdfinfo", str(path)])
     matches = re.findall(r"(?m)^Pages:[ \t]*([1-9][0-9]*)[ \t]*$", info)
@@ -99,9 +109,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("pdf", type=Path)
     parser.add_argument("--pages", type=int, nargs="+", required=True)
+    parser.add_argument("--expect-sha256", help="Require the previously pinned PDF SHA-256 before invoking Poppler")
     args = parser.parse_args(argv)
     try:
-        receipt = preflight(args.pdf, args.pages)
+        receipt = preflight(args.pdf, args.pages, expected_sha256=args.expect_sha256)
     except (OSError, ValueError):
         parser.exit(2, "PDF preflight failed; no receipt generated.\n")
     print(json.dumps(receipt, ensure_ascii=False, sort_keys=True))

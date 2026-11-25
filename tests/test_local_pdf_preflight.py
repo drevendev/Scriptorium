@@ -1,10 +1,12 @@
 """Local PDF preflight regressions using synthetic provider responses."""
+from contextlib import redirect_stderr, redirect_stdout
+from io import StringIO
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
 
-from scriptorium.local_pdf_preflight import file_identity, preflight
+from scriptorium.local_pdf_preflight import file_identity, main, preflight
 
 
 class LocalPdfPreflightTests(unittest.TestCase):
@@ -67,3 +69,29 @@ class LocalPdfPreflightTests(unittest.TestCase):
         with patch("scriptorium.local_pdf_preflight._run", side_effect=ambiguous):
             with self.assertRaisesRegex(ValueError, "ambiguous"):
                 preflight(self.path, [1])
+
+    def test_expected_digest_preserves_receipt(self):
+        expected = file_identity(self.path)["sha256"]
+        with patch("scriptorium.local_pdf_preflight._run", side_effect=self.fake_run):
+            unpinned = preflight(self.path, [1])
+            pinned = preflight(self.path, [1], expected_sha256=expected.upper())
+        self.assertEqual(pinned, unpinned)
+
+    def test_bad_digest_rejected_before_pdf_tools(self):
+        for expected in ("0" * 64, "", "g" * 64, "a" * 63, "a" * 64 + "\n", True):
+            with self.subTest(expected=expected):
+                with patch("scriptorium.local_pdf_preflight._run") as run:
+                    with self.assertRaises(ValueError):
+                        preflight(self.path, [1], expected_sha256=expected)
+                    run.assert_not_called()
+
+    def test_cli_wrong_carrier_emits_no_receipt(self):
+        stdout, stderr = StringIO(), StringIO()
+        with patch("scriptorium.local_pdf_preflight._run") as run:
+            with redirect_stdout(stdout), redirect_stderr(stderr):
+                with self.assertRaises(SystemExit) as failure:
+                    main([str(self.path), "--pages", "1", "--expect-sha256", "0" * 64])
+            run.assert_not_called()
+        self.assertEqual(failure.exception.code, 2)
+        self.assertEqual(stdout.getvalue(), "")
+        self.assertNotIn(str(self.path), stderr.getvalue())

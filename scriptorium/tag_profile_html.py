@@ -72,6 +72,9 @@ def _validated(report: dict) -> list[dict]:
     if type(tags) is not list or not tags:
         raise ValueError("missing curated tag summaries")
     seen_tags = set()
+    # A confirmed edition may belong to multiple tags, but its source and
+    # curator-declared rights must agree throughout the same snapshot.
+    edition_bindings = {field: {} for field in ("key", "candidate_id", "source_sha256")}
     for tag in tags:
         if (type(tag) is not dict or set(tag) != _TAG_FIELDS
                 or type(tag.get("tag_id")) is not str or not _ID.fullmatch(tag["tag_id"])
@@ -107,6 +110,13 @@ def _validated(report: dict) -> list[dict]:
                 raise ValueError("invalid tag authority")
             _url(work["rights_evidence_url"])
             _url(work["tag_evidence_url"])
+            identity = tuple(work[field] for field in (
+                "key", "candidate_id", "edition_id", "source_sha256",
+                "rights_basis", "rights_evidence_url",
+            ))
+            for field, bindings in edition_bindings.items():
+                if bindings.setdefault(work[field], identity) != identity:
+                    raise ValueError("inconsistent cross-tag edition provenance")
         metrics = tag.get("metrics")
         if type(metrics) is not list or len(metrics) != len(FEATURES):
             raise ValueError("invalid metric coverage")

@@ -1,0 +1,83 @@
+name: Frozen Bely and Tolstoy lexical contrast
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/bely-tolstoy-lexical-pair.yml'
+      - 'scriptorium/bely_tolstoy_lexical_pair.py'
+      - 'scriptorium/lexical_contrast*.py'
+      - 'scriptorium/silver_dove*.py'
+      - 'scriptorium/hyperboloid*.py'
+      - 'scriptorium/wikisource_replay.py'
+      - 'scriptorium/text.py'
+      - 'scriptorium/vocabulary.py'
+      - 'tests/test_bely_tolstoy_lexical_pair.py'
+      - 'corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json'
+      - 'corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.*.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Test lexical pair and common replay
+        run: |
+          python -m unittest tests.test_bely_tolstoy_lexical_pair -v
+          python -m unittest discover -s tests -p 'test_lexical_contrast*.py' -v
+      - name: Replay the two exact sources transiently
+        run: |
+          python -m scriptorium.bely_tolstoy_lexical_pair \
+            --dove-manifest corpus/candidates/source-edition-traces/bely-silver-dove-ru.revisions.json \
+            --garin-revision corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.revision.json \
+            --garin-body corpus/candidates/source-edition-traces/tolstoy-hyperboloid-garin-wikisource-ru.body.json \
+            --output /tmp/bely-tolstoy-lexical.json \
+            --html-output /tmp/bely-tolstoy-lexical.html
+      - name: Verify source-free report and scientific limits
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scriptorium.lexical_contrast import render_lexical_contrast
+          data = json.loads(Path('/tmp/bely-tolstoy-lexical.json').read_text(encoding='utf-8'))
+          assert data['schema_version'] == 'scriptorium-bely-tolstoy-frozen-lexical-pair-v1'
+          assert data['source_text_included'] is False
+          assert data['m2_parity_admissible'] is False
+          assert data['fantlab_analyzer_input_match'] == 'UNKNOWN'
+          assert data['public_reader_release'] == 'REQUIRES_SEPARATE_REVIEW'
+          report = data['lexical_contrast']
+          for side, revision, count, digest in (
+              ('left', 5588003, 563125, '496dad8aadaca13f3ce6ef8560b53bcd32c75b5b03f28f13f7735303bb4f7183'),
+              ('right', 5014458, 499066, 'a01c5eadef53b2437eff3abe6052bb7f7bf6f95737641558343363628da7f513'),
+          ):
+              witness = data['source_evidence'][side]
+              assert witness['revision_id'] == revision
+              assert witness['normalized_sha256'] == report[side]['normalized_sha256'] == digest
+              assert witness['characters_including_spaces'] == report[side]['characters_including_spaces'] == count
+          assert report['status'] == 'COMPARABLE'
+          assert report['aggregate'] is not None
+          assert report['public_release_ready'] is False
+          assert report['metadata_verified'] is False
+          assert report['corpus_admission'] == 'NOT_VERIFIED'
+          assert Path('/tmp/bely-tolstoy-lexical.html').read_text(encoding='utf-8') == render_lexical_contrast(report, 'html')
+          print('BELY_TOLSTOY_SOURCE_FREE_PAIR=PASS; M2=0')
+          PY
+      - name: Upload derived report only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: bely-tolstoy-lexical-source-free
+          path: |
+            /tmp/bely-tolstoy-lexical.json
+            /tmp/bely-tolstoy-lexical.html
+          if-no-files-found: error
+          retention-days: 7

@@ -13,6 +13,8 @@ on:
       - "tests/test_kropotkin_page_witnesses.py"
       - "scriptorium/kropotkin_rendered.py"
       - "tests/test_kropotkin_rendered.py"
+      - "scriptorium/kropotkin_appendix_gap.py"
+      - "tests/test_kropotkin_appendix_gap.py"
   workflow_dispatch:
 
 permissions:
@@ -118,5 +120,26 @@ jobs:
         with:
           name: kropotkin-rendered-diagnostic
           path: build/repro/kropotkin-rendered-diagnostic.json
+          if-no-files-found: error
+          retention-days: 7
+      - run: python -m unittest discover -s tests -p test_kropotkin_appendix_gap.py -v
+      - name: Diagnose exact Appendix XIII variants without substituting prose
+        run: python -m scriptorium.kropotkin_appendix_gap --selectors build/repro/kropotkin-body-preflight.json --witnesses build/repro/kropotkin-page-witnesses.json --output build/repro/kropotkin-appendix-gap.json
+      - name: Verify separate variant and provenance envelope
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("build/repro/kropotkin-appendix-gap.json").read_text())
+          assert [x["revision_id"] for x in r["identities"]] == [3485514, 3485499, 5800299]
+          assert [x["variant"] for x in r["variants"]] == ["modern", "historical"]
+          assert r["accepted_page_and_modern_route_replayed"]
+          assert not any(r[k] for k in ("normalization_performed", "body_frozen", "source_text_retained", "m2_parity_admissible", "effective_page_graph_verified"))
+          assert r["body_characters"] is None
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: kropotkin-appendix-gap
+          path: build/repro/kropotkin-appendix-gap.json
           if-no-files-found: error
           retention-days: 7

@@ -1,4 +1,4 @@
-"""Actual Reader JSON vs browser comparison: 234-case Python/Node differential.
+"""Actual Reader JSON vs browser comparison: 256-case Python/Node differential.
 
 Runs against real build_local_analysis() reports and the canonical installed Python
 comparison contract; no analyzer stub, private source upload or browser network.
@@ -155,11 +155,49 @@ class BrowserCompareTests(unittest.TestCase):
         # Exactly 234 cases: include the tail parser probes, not just the
         # first 234 (which accidentally omitted all duplicate-key attacks).
         self.assertEqual(len(samples), 234)
-        self.assertEqual(len(set(samples)), 234)
+        # Explicit acceptance/rejection witnesses, in addition to the original
+        # broad mutation matrix. All positive reports come from the real engine.
+        for text in ("", "  \n\t", "!", "— Да.", "— !", "Кот.\n— Да.",
+                     "— Да? — сказал он.", "— Да.\n— Нет."):
+            report = build_local_analysis(text.encode("utf-8"))
+            encoded = json.dumps(report, ensure_ascii=False)
+            samples.append((encoded, encoded))
+        for text, metric, value in (
+            ("", "share_percent", 0),
+            ("Кот.", "share_percent", None),
+            ("Кот.", "author_text_inside_dialogue_percent", 0),
+            ("Кот.", "mean_dialogue_sentence_length_chars", 1),
+            ("Кот.", "mean_narration_sentence_length_chars", None),
+            ("— Да.", "share_percent", 0),
+            ("— Да.", "author_text_inside_dialogue_percent", None),
+            ("— Да.", "mean_dialogue_sentence_length_chars", None),
+            ("— Да.", "mean_narration_sentence_length_chars", 1),
+            ("Кот.\n— Да.", "mean_dialogue_sentence_length_chars", 0),
+            ("Кот.\n— Да.", "mean_narration_sentence_length_chars", 1000),
+        ):
+            report = build_local_analysis(text.encode("utf-8"))
+            report["metrics"]["fantlab.dialogue." + metric]["value"] = value
+            samples.append((json.dumps(report, ensure_ascii=False), json.dumps(right, ensure_ascii=False)))
+        future = build_local_analysis("Кот.".encode("utf-8"))
+        future["analyzer"]["profiles"]["dialogue"] = "candidate-v99"
+        future["metrics"]["fantlab.dialogue.share_percent"]["value"] = None
+        samples.append((json.dumps(future, ensure_ascii=False), json.dumps(right, ensure_ascii=False)))
+        # Two already-enforced Python bounds were missing in the JS validator.
+        impossible = build_local_analysis("Кот.".encode("utf-8"))
+        row = impossible["metrics"]["fantlab.punctuation.comma.per_1000_words"]
+        row.update(raw_count=4, value=4000.0)
+        samples.append((json.dumps(impossible, ensure_ascii=False), json.dumps(right, ensure_ascii=False)))
+        impossible = build_local_analysis(("кот " * 3000).encode("utf-8"),
+                                          dictionary_words=["кот", "пёс"],
+                                          dictionary_profile="test-lexicon-v1")
+        impossible["metrics"]["fantlab.vocabulary.uasz_3000"]["value"] = 2
+        samples.append((json.dumps(impossible, ensure_ascii=False), json.dumps(right, ensure_ascii=False)))
+        self.assertEqual(len(samples), 256)
+        self.assertEqual(len(set(samples)), 256)
         return samples
 
     @unittest.skipUnless(shutil.which('node'), 'Node is needed for genuine JS/Python differential')
-    def test_234_real_python_vs_browser_differential(self):
+    def test_256_real_python_vs_browser_differential(self):
         cases = self._case_data()
         harness = r'''
 const fs=require('fs');
@@ -182,7 +220,9 @@ process.stdout.write(JSON.stringify(result));
                 text=True, capture_output=True, check=True, timeout=90,
             )
             browser = json.loads(command.stdout)
-            self.assertEqual(len(browser), 234)
+            self.assertEqual(len(browser), 256)
+            self.assertEqual([row['accepted'] for row in browser[234:]],
+                             [True] * 8 + [False] * 11 + [True, False, False])
             accepted = 0
             for index, ((left, right), actual) in enumerate(zip(cases, browser)):
                 a_path = root / 'a.json'; b_path = root / 'b.json'

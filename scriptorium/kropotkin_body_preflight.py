@@ -23,7 +23,7 @@ REVISION_IDS = (
 )
 EXPECTED = dict(zip(ROUTES, REVISION_IDS, strict=True))
 SCAN = SCAN_TITLE.removeprefix("Индекс:")
-SCHEMA = "scriptorium-kropotkin-body-preflight-v2"
+SCHEMA = "scriptorium-kropotkin-body-preflight-v3"
 
 
 # Literal selector plan only, not a claim about effective MediaWiki expansion.
@@ -94,6 +94,16 @@ class _PagesProbe(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag != "pages":
             return
+        # HTMLParser treats the slash in an unquoted final numeric attribute
+        # followed immediately by "/>" as part of its value. ProofreadPage
+        # accepts this compact MediaWiki spelling. Check the raw spelling and
+        # the final parsed pair; never strip a quoted or entity-encoded slash.
+        raw = self.get_starttag_text()
+        compact = re.search(r"\s(from|to|step)\s*=\s*([0-9]{1,4})/>$", raw, re.I)
+        if compact:
+            key, number = compact.group(1).lower(), compact.group(2)
+            if attrs and attrs[-1] == (key, number + "/"):
+                attrs = [*attrs[:-1], (key, number)]
         self.selectors.append(classify_pages(attrs))
         fields = dict(attrs)
         first, last = fields.get("from"), fields.get("to")

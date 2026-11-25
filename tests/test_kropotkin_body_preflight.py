@@ -127,6 +127,31 @@ class KropotkinBodyPreflightTests(unittest.TestCase):
         self.assertEqual(k.observe('<pages index="wrong.pdf" from=2 to=7 />')
                          ["literal_page_selectors"][0]["reason"], "INDEX_MISMATCH")
 
+    def test_compact_mediawiki_numeric_terminator(self):
+        for first, last in ((5, 5), (11, 22)):
+            with self.subTest(first=first, last=last):
+                compact = k.observe(f'<pages index="{k.SCAN}" from={first} to={last}/>')
+                spaced = k.observe(f'<pages index="{k.SCAN}" from={first} to={last} />')
+                self.assertEqual(compact["literal_page_selectors"], spaced["literal_page_selectors"])
+                self.assertEqual(compact["literal_pages_ranges"], spaced["literal_pages_ranges"])
+                self.assertEqual(compact["literal_page_selectors"][0]["candidate_scan_pages"],
+                                 list(range(first, last + 1)))
+                self.assertEqual(compact["extraction_status"], "NOT_RUN_DEPENDENCIES")
+        row = k.observe(f'<pages index="{k.SCAN}" from=2 to=7 step=2/>')
+        self.assertEqual(row["literal_page_selectors"][0]["candidate_scan_pages"], [2, 4, 6])
+
+    def test_compact_correction_does_not_strip_literal_slashes(self):
+        for tail in ('to="5/" />', 'to=5&#47;>', 'to=5/ >', 'to=5//>',
+                     'to=5/ header=1>', 'to=5&#47;/>'):
+            with self.subTest(tail=tail):
+                row = k.observe(f'<pages index="{k.SCAN}" from=2 {tail}')
+                self.assertEqual(row["literal_page_selectors"][0]["status"], "UNRESOLVED")
+        row = k.observe(f'<pages index="{k.SCAN}" from=2 to=5 fromsection="A/"/>')
+        self.assertEqual(row["literal_page_selectors"][0]["section_label_sha256"],
+                         {"fromsection": sha256(b"A/").hexdigest()})
+        duplicate = k.observe(f'<pages index="{k.SCAN}" from=2 to=3 to=5/>')
+        self.assertEqual(duplicate["literal_page_selectors"][0]["reason"], "DUPLICATE_ATTRIBUTE")
+
     def test_capture_reports_candidate_union_not_verified_graph(self):
         def selected(params):
             payload = provider(params)
@@ -141,7 +166,7 @@ class KropotkinBodyPreflightTests(unittest.TestCase):
                 rev["sha1"] = sha1(source.encode()).hexdigest()
             return payload
         receipt = k.capture(selected)
-        self.assertEqual(receipt["schema"], "scriptorium-kropotkin-body-preflight-v2")
+        self.assertEqual(receipt["schema"], "scriptorium-kropotkin-body-preflight-v3")
         self.assertEqual(receipt["literal_selector_route_count"], 28)
         self.assertEqual(receipt["candidate_scan_page_union"], list(range(1, 30)))
         self.assertFalse(receipt["effective_page_graph_verified"])

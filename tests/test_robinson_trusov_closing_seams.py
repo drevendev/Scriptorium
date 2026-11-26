@@ -157,6 +157,38 @@ class ClosingSeamTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "structural refusal"):
             diagnose_pages(raws)
 
+    def test_page151_diagnose_retains_actual_reason_with_matching_signatures(self):
+        original = special_page151()
+        cases = (
+            (original.replace("<!--PRIVATE_LEFT--> Final", " PRIVATE_GAP<!--PRIVATE_LEFT--> Final"),
+             "PAGE151_COMMENT_ADJACENCY", 0),
+            (original.replace("<!--PRIVATE_RIGHT-->", "PRIVATE_GAP<!--PRIVATE_RIGHT-->"),
+             "PAGE151_COMMENT_ADJACENCY", 1),
+            (original.replace("<noinclude>ing</noinclude>", "<noinclude>123</noinclude>", 1),
+             "PAGE151_EDGE_SCOPE", 0),
+            (original.replace("<!--PRIVATE_RIGHT--><noinclude>ing</noinclude>",
+                              "<!--PRIVATE_RIGHT--><noinclude>123</noinclude>"),
+             "PAGE151_EDGE_SCOPE", 1),
+        )
+        for invalid, reason, index in cases:
+            with self.subTest(reason=reason, index=index):
+                self.assertEqual(wrapper_signature(invalid), wrapper_signature(original))
+                self.assertEqual(wrapper_signature(transclusion_input(invalid)),
+                                 wrapper_signature(transclusion_input(original)))
+                raws = fixture()
+                raws[151] = invalid
+                with self.assertRaisesRegex(ValueError, "structural refusal") as caught:
+                    diagnose_pages(raws)
+                message = str(caught.exception)
+                self.assertNotIn("PRIVATE", message)
+                self.assertNotIn("123", message)
+                row, = json.loads(message.split(": ", 1)[1])
+                self.assertEqual((row["page_sequence"], row["revision_id"]), (151, PINS[151]))
+                self.assertEqual(row["raw_structure"]["literal_var_matches"], 0)
+                self.assertEqual(row["reason"], reason)
+                self.assertEqual(row["page151_reason"], reason)
+                self.assertEqual(row["branch_index"], index)
+
     def test_exact_pins_and_preflight_tamper(self):
         raw = fixture()
         raw[151] = special_page151()

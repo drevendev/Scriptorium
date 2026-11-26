@@ -55,6 +55,29 @@ class ClosingSeamTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "punctuation"):
             diagnose_pages(raw)
 
+    def test_refusals_locate_all_pinned_pages_without_source(self):
+        raw = fixture()
+        raw[148] = page("PRIVATE_MARKER {{other|x}}", "plain")
+        raw[151] = page("one", "two") + "PRIVATE_OUTER"
+        with self.assertRaisesRegex(ValueError, "structural refusal") as caught:
+            diagnose_pages(dict(reversed(list(raw.items()))))
+        message = str(caught.exception)
+        self.assertNotIn("PRIVATE_MARKER", message)
+        self.assertNotIn("PRIVATE_OUTER", message)
+        self.assertNotIn("other", message)
+        rows = json.loads(message.split(": ", 1)[1])
+        self.assertEqual([(x["page_sequence"], x["revision_id"], x["reason"])
+                          for x in rows], [
+            (148, PINS[148], "VAR_MATCH_COUNT"),
+            (151, PINS[151], "OUTER_SCOPE_OR_INCLUSION_REFUSED"),
+        ])
+        self.assertEqual(rows[0]["raw_structure"]["var_starts"], 1)
+        self.assertEqual(rows[0]["raw_structure"]["template_opens"], 2)
+        self.assertEqual(rows[0]["raw_structure"]["literal_var_matches"], 0)
+        self.assertEqual(rows[1]["transclusion_structure"]["literal_var_matches"], 1)
+        self.assertTrue(all(x["transclusion_structure"]["noinclude_opens"] == 0
+                            for x in rows))
+
     def test_exact_pins_and_preflight_tamper(self):
         raw = fixture()
         graph, prior, rows = {"pages": []}, {"pages": [], "source_page_graph_sha256": "a"*64}, []

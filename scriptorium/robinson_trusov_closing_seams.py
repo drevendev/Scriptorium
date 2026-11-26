@@ -126,6 +126,74 @@ def diagnose(left, right, *, edge, letters):
             "owner_matches": True, "duplicate_at_other_boundary": False}
 
 
+
+# The pinned Page 151 has a noncanonical VAR opener and exactly two
+# delimiter-free branch comments, in opposite order around the leading
+# noinclude spans. This is a local seam experiment, not a VAR renderer.
+_PAGE151_VAR = re.compile(
+    r"(?P<opener>\{\{[ \t\r\n]*[Вв][Аа][Рр][ \t\r\n]*\|)"
+    r"(?P<left>[^{}|]*)\|(?P<right>[^{}|]*)\}\}"
+)
+_PAGE151_COMMENT = re.compile(r"<!--[^{}|<>]*?-->")
+_PAGE151_COMMENT_EVENT = {"kind": "COMMENT", "braces": 0, "pipes": 0}
+_PAGE151_RAW_EVENTS = [
+    "NOINCLUDE_OPEN", "NOINCLUDE_CLOSE", "VAR_OPEN_NONEXACT",
+    "NOINCLUDE_OPEN", "NOINCLUDE_CLOSE", _PAGE151_COMMENT_EVENT,
+    "PIPE", _PAGE151_COMMENT_EVENT, "NOINCLUDE_OPEN", "NOINCLUDE_CLOSE",
+    "CLOSE", "NOINCLUDE_OPEN", _PAGE151_COMMENT_EVENT, "NOINCLUDE_CLOSE",
+]
+_PAGE151_SCOPED_EVENTS = [
+    "VAR_OPEN_NONEXACT", _PAGE151_COMMENT_EVENT, "PIPE",
+    _PAGE151_COMMENT_EVENT, "CLOSE",
+]
+
+
+def page151_branches(raw):
+    """Candidate seam-only projection of the observed pinned leaf shape.
+
+    Capture checks the original bytes first. Inspect the actual bounded
+    opener token at runtime: only case and ASCII whitespace may differ.
+    Remove one comment at each branch's leading continuation boundary,
+    never arbitrary interior comments or general template markup.
+    """
+    if wrapper_signature(raw) != {"events": _PAGE151_RAW_EVENTS, "truncated": False}:
+        raise ValueError("Page 151 wrapper order differs")
+    scoped = transclusion_input(raw)
+    if wrapper_signature(scoped) != {"events": _PAGE151_SCOPED_EVENTS, "truncated": False}:
+        raise ValueError("Page 151 transclusion order differs")
+    matches = list(_PAGE151_VAR.finditer(raw))
+    if len(matches) != 1:
+        raise ValueError("Page 151 opener grammar differs")
+    match = matches[0]
+    opener = match.group("opener")
+    if opener == "{{ВАР|" or len(opener) > 32:
+        raise ValueError("Page 151 opener not the bounded nonexact variant")
+    if scoped.strip() != transclusion_input(match.group()).strip():
+        raise ValueError("Page 151 unaccounted outer scope")
+    cleaned = []
+    for i, branch in enumerate((match.group("left"), match.group("right"))):
+        comments = list(_PAGE151_COMMENT.finditer(branch))
+        if len(comments) != 1:
+            raise ValueError("Page 151 comment is not a single plain comment")
+        comment = comments[0]
+        if i == 0:
+            leading = LEADING.match(branch)
+            if leading is None or branch[leading.end():comment.start()].strip() or comment.start() < leading.end():
+                raise ValueError("Page 151 left comment not adjacent to leading scope")
+        else:
+            if branch[:comment.start()].strip() or not LEADING.match(branch[comment.end():]):
+                raise ValueError("Page 151 right comment not adjacent to leading scope")
+        candidate = branch[:comment.start()] + branch[comment.end():]
+        # Validate all other markup and continuation rules independently.
+        edge_scope(candidate, "leading")
+        if transclusion_input(candidate) != (
+            transclusion_input(branch).replace(comment.group(), "", 1)
+        ):
+            raise ValueError("Page 151 comment removal changes other scope")
+        cleaned.append(candidate)
+    return tuple(cleaned), opener
+
+
 def diagnose_pages(raws):
     if set(raws) != set(PINS):
         raise ValueError("closing Page coverage incomplete")
@@ -133,7 +201,12 @@ def diagnose_pages(raws):
     for n in sorted(raws):
         raw = raws[n]
         try:
-            branches[n] = literal_branches(raw)
+            try:
+                branches[n] = literal_branches(raw)
+            except ValueError:
+                if n != 151:
+                    raise
+                branches[n], _ = page151_branches(raw)
         except ValueError:
             # Report only fixed structural counts from already pinned inputs.
             # Never log literal arguments, template names other than VAR, or
@@ -229,7 +302,7 @@ def capture(graph, preflight, *, query=_api_query):
                            "wikitext_sha256": digest(raw),
                            "transclusion_input_sha256": digest(candidate)})
     seams, endings = diagnose_pages(raws)
-    return {"schema_version": SCHEMA, "source_page_graph_sha256": preflight["source_page_graph_sha256"],
+    report = {"schema_version": SCHEMA, "source_page_graph_sha256": preflight["source_page_graph_sha256"],
             "pages": sorted(identities, key=lambda p: p["page_sequence"]),
             "seams": seams, "final_branch_observations": endings,
             "printed_ending_scope": "MANUAL_SCAN_OBSERVATION_ONLY",
@@ -237,6 +310,12 @@ def capture(graph, preflight, *, query=_api_query):
             "historical_render_equivalence_proven": False,
             "full_literary_body": "NOT_VERIFIED", "source_text_committed": False,
             "corpus_admitted": False, "m2_parity_admissible": False}
+    # Report only the exact bounded syntax token, never comment or prose.
+    if wrapper_signature(raws[151]) == {"events": _PAGE151_RAW_EVENTS, "truncated": False}:
+        _, opener = page151_branches(raws[151])
+        report["page151_var_opener"] = opener
+        report["page151_branch_comments_removed"] = 2
+    return report
 
 
 def main():

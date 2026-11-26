@@ -160,10 +160,18 @@ class ClosingSeamTests(unittest.TestCase):
     def test_page151_diagnose_retains_actual_reason_with_matching_signatures(self):
         original = special_page151()
         cases = (
+            (original.replace("{{ вар |", "{{ вар |PRIVATE_PREFIX"),
+             "PAGE151_LEADING_PREFIX_NONSPACE", 0),
+            (original.replace("<noinclude>ing</noinclude>", "<noinclude >ing</noinclude>", 1),
+             "PAGE151_LEADING_TAG_VARIANT", 0),
+            (original.replace("<noinclude>ing</noinclude>", "<noinclude><b>ing</b></noinclude>", 1),
+             "PAGE151_LEADING_BODY_MARKUP", 0),
+            (original.replace("<!--PRIVATE_RIGHT--><noinclude>", "<!--PRIVATE_RIGHT-->PRIVATE_PREFIX<noinclude>"),
+             "PAGE151_LEADING_PREFIX_NONSPACE", 1),
             (original.replace("<!--PRIVATE_LEFT--> Final", " PRIVATE_GAP<!--PRIVATE_LEFT--> Final"),
-             "PAGE151_COMMENT_ADJACENCY", 0),
+             "PAGE151_COMMENT_GAP", 0),
             (original.replace("<!--PRIVATE_RIGHT-->", "PRIVATE_GAP<!--PRIVATE_RIGHT-->"),
-             "PAGE151_COMMENT_ADJACENCY", 1),
+             "PAGE151_COMMENT_PREFIX_NONSPACE", 1),
             (original.replace("<noinclude>ing</noinclude>", "<noinclude>123</noinclude>", 1),
              "PAGE151_EDGE_SCOPE", 0),
             (original.replace("<!--PRIVATE_RIGHT--><noinclude>ing</noinclude>",
@@ -188,6 +196,17 @@ class ClosingSeamTests(unittest.TestCase):
                 self.assertEqual(row["reason"], reason)
                 self.assertEqual(row["page151_reason"], reason)
                 self.assertEqual(row["branch_index"], index)
+                if reason in ("PAGE151_LEADING_PREFIX_NONSPACE",
+                              "PAGE151_COMMENT_GAP", "PAGE151_COMMENT_PREFIX_NONSPACE",
+                              "PAGE151_LEADING_BODY_MARKUP"):
+                    self.assertEqual(set(row["fragment_counts"]), {
+                        "whitespace", "letters", "digits", "apostrophes",
+                        "angle_brackets", "other",
+                    })
+                    self.assertGreater(row["fragment_counts"]["letters"], 0)
+                    self.assertTrue(all(type(n) is int for n in row["fragment_counts"].values()))
+                else:
+                    self.assertNotIn("fragment_counts", row)
 
     def test_exact_pins_and_preflight_tamper(self):
         raw = fixture()

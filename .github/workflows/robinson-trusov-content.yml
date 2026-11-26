@@ -60,7 +60,8 @@ jobs:
             --output build/repro/trusov-1775.projection.json \
             --interior-output build/repro/trusov-1775.interior-metrics.json \
             --seam-output build/repro/trusov-1775.seam-sensitivity.json \
-            --full-candidate-output build/repro/trusov-1775.full-projection-candidate.json
+            --full-candidate-output build/repro/trusov-1775.full-projection-candidate.json \
+            --boundary-render-output build/repro/trusov-1775.boundary-render.json
       - name: Validate source-free output and preserve unknown scientific gates
         run: |
           python - <<'PY'
@@ -175,16 +176,16 @@ jobs:
           PY
       - name: Observe current Page-view parser on five excluded boundaries and two controls
         run: |
-          python -m scriptorium.robinson_trusov_boundary_render \
-            --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
-            --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
-            --projection build/repro/trusov-1775.projection.json \
-            --output build/repro/trusov-1775.boundary-render.json
           python - <<'PY'
           import json
           from pathlib import Path
           r = json.loads(Path("build/repro/trusov-1775.boundary-render.json").read_text())
           assert [p["page_sequence"] for p in r["pages"]] == [2,3,147,148,149,150,151]
+          assert r["schema_version"] == "scriptorium-trusov-boundary-render-v2"
+          controls = [p for p in r["pages"] if "whitespace_control" in p]
+          assert [p["page_sequence"] for p in controls] == [3,147]
+          assert all(p["whitespace_control"]["classification"] in {"COLLAPSED_EQUAL", "NONSPACE_EQUAL_ONLY", "NONSPACE_DIFFERS", "RENDER_REFUSED"} for p in controls)
+          print("Whitespace controls:", [(p["page_sequence"], p["whitespace_control"]["classification"]) for p in controls])
           assert r["full_literary_body"] == "NOT_VERIFIED"
           assert not r["historical_dependencies_pinned"] and not r["corpus_admitted"]
           assert not r["m2_parity_admissible"] and not r["source_text_committed"]

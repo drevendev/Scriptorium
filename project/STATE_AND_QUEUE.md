@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 629
+STATE_REVISION: 630
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-26
-LAST_RESULT: #646 merged at cbafc690; two-pair preview accepted, native deployment reported green but live readback omitted the new page and JSON. Extend existing exact-byte and browser release checks; public two-pair route remains LIVE_NOT_VERIFIED.
+LAST_RESULT: #647 merged at c3bf82dc; public two-pair page LIVE_VERIFIED via hosted run 45751232800 and independent artifact receipt in #562. #511 now tests current-parser Page views of the five excluded boundaries plus two controls; no historical equivalence claim.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-READER-LEXICAL-LIVE-READBACK-001
-ISSUE: #562
-STATUS: PR_CANDIDATE; exact-head CI and independent acceptance required
-BRANCH: scrip-lexical-pairs-live-readback-20261126
-BASE: cbafc6909e37b3b65573255e1973d989578cd22a
+UNIT_ID: SCRIP-TRUSOV-BOUNDARY-RENDER-001
+ISSUE: #511
+STATUS: PR_CANDIDATE; exact-head source-free replay and later independent acceptance required
+BRANCH: scrip-trusov-boundary-render-controls-20261126
+BASE: c3bf82dc1d28384f95cc68f049461c069944927e
 
-ACCEPTANCE: Require exact public bytes of both lexical pages and JSON receipts before and after browser checks; navigate from Grin to two-pair page on desktop/mobile without JS, compare six displayed values and both downloaded JSON files with checkout, save actual screenshots. Offline guard passes; exact-head CI and live execution require later acceptance. No corpus/parity or author-identification claim.
+ACCEPTANCE: Observe current MediaWiki parser Page views for exact oldids of Pages 2, 148–151 and adjacent controls 3/147. Require exact graph/projection identities, seven source-free statuses and candidate digests only when a unique nonempty Page-view container passes structural guards. Inspect actual artifact and compare controls before deciding further collation; no historical rendering or full-body claim.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,11 +22,11 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 accept two-pair live readback coverage | Exact-head CI, then post-merge public bytes, discovery, six values and both downloads | Candidate PR; live network unavailable locally |
+| P1 | #511 boundary Page-view experiment | Seven exact-oldid observations, two controls and refusal classes, source-free artifact | Candidate PR; actual parser evidence pending |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |
-| P2 | #511 Trusov whole-body boundary | Verify opening Page 2 and ending Pages 148–151; preserve established 303,882-character interior and 29-metric CSV | Historical page coverage; no admission on interior alone |
+| P2 | #511 Trusov whole-body boundary | Collate opening Page 2 and ending Pages 148–151 against scans and resolve historical dependencies; preserve 303,882-character interior and 29-metric CSV | Current parser observations do not prove historical rendering or body coverage |
 | P4 | #284 licensing/attribution | Rights-holder-approved guidance, no unilateral relicensing | Owner/rights holder |
 | P5 | #563 public tag profiles | Evidence/versioned profiles without invented tags | Curated rights-cleared tag evidence |
 

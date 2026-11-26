@@ -132,6 +132,32 @@ async function inspect(browser, origin, tag, width, height) {
     const origin="http://127.0.0.1:"+s.address().port;
     await inspect(browser,origin,"desktop",1440,900);
     await inspect(browser,origin,"mobile",390,844);
+    for(const [tag,width,height] of [["desktop",1440,900],["mobile",390,844]]){
+      const ctx=await browser.newContext({javaScriptEnabled:false,viewport:{width,height}});
+      const page=await ctx.newPage(), external=[];
+      page.on("request",r=>{if(!r.url().startsWith(origin+"/"))external.push(r.url());});
+      try{
+        assert.equal((await page.goto(origin+"/lexical-grin.html")).status(),200);
+        await page.locator('a[href="./lexical-pairs.html"]').click();
+        assert.match(page.url(),/lexical-pairs\.html$/);
+        assert.equal(await page.locator("[data-metric]").count(),6);
+        for(const [pair,asset] of [["grin","grin-lexical-diagnostic.json"],["cross","bely-tolstoy-lexical-diagnostic.json"]]){
+          const response=await page.request.get(origin+"/assets/"+asset);
+          assert.equal(response.status(),200);
+          const d=await response.json();
+          for(const key of ["type_jaccard_percent","token_distribution_overlap_percent","jensen_shannon_divergence_bits"]){
+            const value=page.locator('[data-pair="'+pair+'"][data-metric="'+key+'"]');
+            assert.equal(Number(await value.getAttribute("data-value")),d.aggregate[key]);
+          }
+        }
+        assert.equal(await page.locator("#cross-table tbody tr").count(),5);
+        assert.deepEqual(external,[]);
+        assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+        await page.locator(".lex-table-scroll").focus();
+        assert.equal(await page.locator(".lex-table-scroll").evaluate(e=>e===document.activeElement),true);
+        await page.screenshot({path:path.join(screenshots,"lexical-pairs-"+tag+".png"),fullPage:true});
+      }finally{await ctx.close();}
+    }
     console.log("Grin lexical branch-root Chromium PASS: desktop/mobile/no-JS, exact data, keyboard, print; LIVE_NOT_VERIFIED.");
   } finally {if(browser)await browser.close();await new Promise(ok=>s.close(ok));}
 })().catch(e=>{console.error(e);process.exitCode=1;});

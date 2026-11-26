@@ -3,6 +3,7 @@ import unittest
 
 from scriptorium.robinson_trusov_closing_seams import (
     PINS, capture, diagnose, diagnose_pages, digest, literal_branches,
+    wrapper_signature,
 )
 from scriptorium.robinson_trusov_content import transclusion_input
 
@@ -77,6 +78,35 @@ class ClosingSeamTests(unittest.TestCase):
         self.assertEqual(rows[1]["transclusion_structure"]["literal_var_matches"], 1)
         self.assertTrue(all(x["transclusion_structure"]["noinclude_opens"] == 0
                             for x in rows))
+
+    def test_page151_signature_distinguishes_comment_and_delimiter_order(self):
+        raw = fixture()
+        raw[151] = page("PRIVATE_A<!--PRIVATE_COMMENT {-->",
+                        "PRIVATE_B<!--PRIVATE_OTHER }-->")
+        with self.assertRaisesRegex(ValueError, "structural refusal") as caught:
+            diagnose_pages(raw)
+        message = str(caught.exception)
+        self.assertNotIn("PRIVATE", message)
+        row, = json.loads(message.split(": ", 1)[1])
+        self.assertEqual(row["page_sequence"], 151)
+        expected = ["VAR_OPEN_EXACT", {"kind": "COMMENT", "braces": 1, "pipes": 0},
+                    "PIPE", {"kind": "COMMENT", "braces": 1, "pipes": 0}, "CLOSE"]
+        self.assertEqual(row["transclusion_wrapper_signature"],
+                         {"events": expected, "truncated": False})
+        self.assertEqual(row["raw_wrapper_signature"]["events"],
+                         ["NOINCLUDE_OPEN", "NOINCLUDE_CLOSE", *expected,
+                          "NOINCLUDE_OPEN", "NOINCLUDE_CLOSE"])
+        # The observation is not permission to accept the previously refused wrapper.
+        with self.assertRaises(ValueError):
+            literal_branches(raw[151])
+
+    def test_wrapper_signature_nonexact_open_and_bounded_events(self):
+        self.assertEqual(wrapper_signature("{{ ВАР |one|two}}}")["events"],
+                         ["VAR_OPEN_NONEXACT", "PIPE", "CLOSE", "RIGHT_BRACE"])
+        self.assertEqual(wrapper_signature("|" * 33),
+                         {"events": ["PIPE"] * 32, "truncated": True})
+        with self.assertRaises(ValueError):
+            literal_branches("{{ ВАР |one|two}}")
 
     def test_exact_pins_and_preflight_tamper(self):
         raw = fixture()

@@ -10,11 +10,13 @@ const PUBLISHED = Object.freeze([
   "index.html",
   "metrics.html",
   "lexical-grin.html",
+  "lexical-pairs.html",
   "n-uncertainty.html",
   "assets/pages-reader.css",
   "assets/pages-reader.js",
   "assets/evidence-snapshot.json",
   "assets/grin-lexical-diagnostic.json",
+  "assets/bely-tolstoy-lexical-diagnostic.json",
   "assets/grin-lexical-diagnostic.csv",
   "assets/n-uncertainty-road-summary.json",
   "assets/scriptorium-ru-measured-metrics.csv",
@@ -80,10 +82,16 @@ async function selfTest() {
       verifyLiveBytes(csvResponse(csvBytes + "stale"), ...csvArgs),
       /trusov-1775-interior-metrics.csv: published bytes differ/,
     );
-    // Passing the homepage is insufficient for the published Grin lexical Reader.
+    // Passing the homepage or Grin page is insufficient for the two-pair Reader.
     // Reject stale/missing HTML and aggregate JSON independently.
+    for (const relative of ["lexical-grin.html", "lexical-pairs.html",
+      "assets/grin-lexical-diagnostic.json", "assets/bely-tolstoy-lexical-diagnostic.json"]) {
+      assert.ok(PUBLISHED.includes(relative), relative + ": mandatory default live route");
+    }
     for (const [relative, content] of [
       ["lexical-grin.html", "<main>Grin lexical diagnostic</main>"],
+      ["lexical-pairs.html", "<main>Two lexical pairs</main>"],
+      ["assets/bely-tolstoy-lexical-diagnostic.json", '{"status":"DIAGNOSTIC_ONLY","source_pr":645}'],
       ["assets/grin-lexical-diagnostic.json", '{"status":"DIAGNOSTIC_ONLY"}'],
       ["assets/grin-lexical-diagnostic.csv", "section,field,value,unit\naggregate,type_jaccard_percent,23.187552,percent\n"],
     ]) {

@@ -209,7 +209,8 @@ jobs:
             --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
             --preflight build/repro/trusov-1775.content-preflight.json \
             --preflight-receipt corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json \
-            --output build/repro/trusov-1775.opening-seam.json
+            --output build/repro/trusov-1775.opening-seam.json \
+            --layout-output build/repro/trusov-1775.opening-layout.json
           python - <<'PY'
           import json
           from pathlib import Path
@@ -231,6 +232,25 @@ jobs:
           assert d["rendered_changed_unicode_categories"]["P"] == seam["excluded_punctuation"]
           assert r["full_literary_body"] == "NOT_VERIFIED"
           assert not any(r[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible", "historical_render_equivalence_proven"))
+          layout = json.loads(Path("build/repro/trusov-1775.opening-layout.json").read_text())
+          assert layout["schema_version"] == "scriptorium-trusov-opening-layout-v1"
+          assert layout["source_page_graph_sha256"] == r["source_page_graph_sha256"]
+          assert layout["page"] == r["pages"][0]
+          counts = layout["layout"]
+          assert counts["classification"] == "TITLE_PREFIX_PARTITION_CANDIDATE"
+          assert counts["heading_calls"] == 4 and counts["spacing_calls"] == 2
+          assert counts["input_characters_including_spaces"] == counts["layout_prefix_characters"] + counts["body_candidate_characters_including_spaces"] + counts["body_edge_whitespace_characters"]
+          preflight = json.loads(Path("build/repro/trusov-1775.content-preflight.json").read_text())
+          p2 = next(p for p in preflight["pages"] if p["page_sequence"] == 2)
+          assert counts["input_characters_including_spaces"] == p2["transclusion_input_characters_including_spaces"]
+          assert counts["body_candidate_nonspace_characters"] > 0
+          target = layout["spacing_target"]
+          assert [p["revision_id"] for p in target["target_revisions"]] == [4937800, 5183352]
+          assert target["target_bytes_equal"] and target["historical_redirect_bytes"] == "NOT_VERIFIED"
+          assert not target["historical_render_equivalence_proven"]
+          assert layout["full_literary_body"] == "NOT_VERIFIED"
+          assert not any(layout[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible", "historical_render_equivalence_proven"))
+          print("Opening layout counts:", counts, "; target bytes equal; old redirect NOT_VERIFIED")
           PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -245,5 +265,6 @@ jobs:
             build/repro/trusov-1775.full-projection-candidate.json
             build/repro/trusov-1775.boundary-render.json
             build/repro/trusov-1775.opening-seam.json
+            build/repro/trusov-1775.opening-layout.json
           if-no-files-found: error
           retention-days: 7

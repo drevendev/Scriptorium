@@ -3,7 +3,7 @@ import unittest
 
 from scriptorium.robinson_trusov_closing_seams import (
     PINS, capture, diagnose, diagnose_pages, digest, literal_branches,
-    wrapper_signature,
+    wrapper_signature, page151_branches,
 )
 from scriptorium.robinson_trusov_content import transclusion_input
 
@@ -21,6 +21,14 @@ def fixture():
         151: page("<noinclude>ing</noinclude> Final sentence.",
                   "<noinclude>ing</noinclude> Last sentence."),
     }
+
+
+
+def special_page151():
+    return ("<noinclude>header</noinclude>{{ вар |"
+            "<noinclude>ing</noinclude><!--PRIVATE_LEFT--> Final sentence.|"
+            "<!--PRIVATE_RIGHT--><noinclude>ing</noinclude> Last sentence."
+            "}}<noinclude><!--PRIVATE_FOOTER-->footer</noinclude>")
 
 
 class ClosingSeamTests(unittest.TestCase):
@@ -108,8 +116,50 @@ class ClosingSeamTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             literal_branches("{{ ВАР |one|two}}")
 
+
+    def test_pinned_leaf_candidate_preserves_both_seam_owners(self):
+        raws = fixture()
+        raws[151] = special_page151()
+        branches, opener = page151_branches(raws[151])
+        self.assertEqual(opener, "{{ вар |")
+        self.assertEqual(branches, ("<noinclude>ing</noinclude> Final sentence.",
+                                    "<noinclude>ing</noinclude> Last sentence."))
+        seams, endings = diagnose_pages(raws)
+        self.assertEqual([x["excluded_letters"] for x in seams], [3, 2, 6, 6, 3, 3])
+        self.assertTrue(all(x["owner_matches"] for x in seams))
+        self.assertTrue(all(x["ends_in_sentence_punctuation"] for x in endings))
+        self.assertNotIn("PRIVATE", json.dumps([seams, endings]))
+        with self.assertRaises(ValueError):
+            literal_branches(raws[151])
+
+    def test_pinned_leaf_candidate_refuses_unobserved_shapes(self):
+        original = special_page151()
+        for raw in (
+            original.replace("PRIVATE_LEFT", "PRIVATE_LEFT|"),
+            original.replace("PRIVATE_RIGHT", "PRIVATE_RIGHT{"),
+            original.replace("<!--PRIVATE_LEFT-->", "<!--PRIVATE_LEFT--><!--extra-->"),
+            original.replace("<noinclude>ing</noinclude><!--PRIVATE_LEFT-->",
+                             "<!--PRIVATE_LEFT--><noinclude>ing</noinclude>"),
+            original.replace("<!--PRIVATE_LEFT--> Final", " Final<!--PRIVATE_LEFT-->"),
+            original.replace("{{ вар |", "{{ OTHER |"),
+            original.replace("{{ вар |", "{{ВАР|"),
+            original.replace("footer</noinclude>", "footer</noinclude>extra"),
+        ):
+            with self.subTest(case=raw.count("<!--")):
+                with self.assertRaises(ValueError):
+                    page151_branches(raw)
+        raws = fixture()
+        raws[151] = original.replace("<noinclude>ing</noinclude>", "<noinclude>bad</noinclude>", 1)
+        with self.assertRaisesRegex(ValueError, "ownership"):
+            diagnose_pages(raws)
+        raws = fixture()
+        raws[150] = original
+        with self.assertRaisesRegex(ValueError, "structural refusal"):
+            diagnose_pages(raws)
+
     def test_exact_pins_and_preflight_tamper(self):
         raw = fixture()
+        raw[151] = special_page151()
         graph, prior, rows = {"pages": []}, {"pages": [], "source_page_graph_sha256": "a"*64}, []
         for n, rid in PINS.items():
             pin = {"page_sequence": n, "revision_id": rid, "page_id": n,
@@ -131,6 +181,9 @@ class ClosingSeamTests(unittest.TestCase):
         result = capture(graph, prior, query=query)
         self.assertEqual([p["revision_id"] for p in result["pages"]], list(PINS.values()))
         self.assertEqual(len(result["seams"]), 6)
+        self.assertEqual(result["page151_var_opener"], "{{ вар |")
+        self.assertEqual(result["page151_branch_comments_removed"], 2)
+        self.assertNotIn("PRIVATE", json.dumps(result))
         self.assertFalse(result["corpus_admitted"])
         self.assertEqual(result["facing_errata_excluded_by_full_collation"], "NOT_VERIFIED")
         prior["pages"][0]["wikitext_sha256"] = "0"*64

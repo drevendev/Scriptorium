@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class BranchPagesAuditTests(unittest.TestCase):
     def test_real_reader_links_assets_and_fragments_resolve(self):
         pages, links = audit_site(ROOT)
-        self.assertEqual(pages, 6)
+        self.assertEqual(pages, 7)
         self.assertGreaterEqual(links, 40)
 
     def _run(self, html, *, voice=None, files=()):

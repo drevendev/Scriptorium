@@ -24,6 +24,35 @@ FIRST_WORD = re.compile(r"\A\s*([^\W\d_]+)")
 LAST_WORD = re.compile(r"([^\W\d_]+)[^\w]*\Z")
 
 
+_WRAPPER_TOKENS = re.compile(
+    r"<!--[\s\S]*?-->|<!--|-->|{{\s*ВАР\s*\||"
+    r"</?noinclude\b[^>]*>|{{|}}|[{}|]", re.I
+)
+
+
+def wrapper_signature(value):
+    """Bounded delimiter/comment order only; no literal text or span hashes."""
+    events = []
+    for match in _WRAPPER_TOKENS.finditer(value):
+        if len(events) == 32:
+            return {"events": events, "truncated": True}
+        token = match.group()
+        if token.startswith("<!--") and token.endswith("-->"):
+            events.append({"kind": "COMMENT", "braces": token.count("{") + token.count("}"),
+                           "pipes": token.count("|")})
+        elif token.startswith("{{") and token.endswith("|"):
+            events.append("VAR_OPEN_EXACT" if token == "{{ВАР|" else "VAR_OPEN_NONEXACT")
+        elif token.lower().startswith("<noinclude"):
+            events.append("NOINCLUDE_OPEN")
+        elif token.lower().startswith("</noinclude"):
+            events.append("NOINCLUDE_CLOSE")
+        else:
+            events.append({"{{": "OTHER_OPEN", "}}": "CLOSE", "{": "LEFT_BRACE",
+                           "}": "RIGHT_BRACE", "|": "PIPE", "<!--": "COMMENT_OPEN",
+                           "-->": "COMMENT_CLOSE"}[token])
+    return {"events": events, "truncated": False}
+
+
 def digest(text):
     return sha256(text.encode("utf-8")).hexdigest()
 
@@ -128,6 +157,11 @@ def diagnose_pages(raws):
                 "raw_structure": counts(raw),
                 "transclusion_structure": counts(scoped),
             })
+            # Page 151 is the only observed refusal on the prior exact head.
+            # Do not interpret or remove comments or repair delimiters here.
+            if n == 151:
+                refusals[-1]["raw_wrapper_signature"] = wrapper_signature(raw)
+                refusals[-1]["transclusion_wrapper_signature"] = wrapper_signature(scoped)
     if refusals:
         raise ValueError("closing Page structural refusal: " +
                          json.dumps(refusals, sort_keys=True))

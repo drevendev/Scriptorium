@@ -544,6 +544,51 @@ async function inspectLiveLexical(browser, origin, evidenceDir) {
         path: path.join(evidenceDir, "live-lexical-grin-" + name + ".png"),
         fullPage: true, animations: "disabled",
       });
+      const pairsLink = page.locator('a[href="./lexical-pairs.html"]');
+      assert.equal(await pairsLink.count(), 1, name + ": discover comparison from Grin");
+      await pairsLink.click();
+      assert.equal(page.url(), origin + "/lexical-pairs.html");
+      assert.equal(await page.locator("[data-metric]").count(), 6);
+      assert.equal(await page.locator("#cross-table tbody tr").count(), 5);
+      for (const [pair, asset] of [
+        ["grin", "grin-lexical-diagnostic.json"],
+        ["cross", "bely-tolstoy-lexical-diagnostic.json"],
+      ]) {
+        const relative = "assets/" + asset;
+        const expected = fs.readFileSync(path.resolve(__dirname, "..", relative));
+        const resource = await page.request.get(origin + "/" + relative);
+        assert.equal(resource.status(), 200);
+        assert.equal(resource.url(), origin + "/" + relative);
+        assert.deepEqual(await resource.body(), expected);
+        const data = JSON.parse(expected.toString("utf8"));
+        assert.equal(data.status, "DIAGNOSTIC_ONLY");
+        assert.equal(data.source_text_included, false);
+        assert.equal(data.per_form_data_included, false);
+        assert.equal(data.m2_parity_admissible, false);
+        for (const key of ["type_jaccard_percent", "token_distribution_overlap_percent",
+          "jensen_shannon_divergence_bits"]) {
+          const value = page.locator('[data-pair="' + pair + '"][data-metric="' + key + '"]');
+          assert.equal(await value.count(), 1);
+          assert.equal(Number(await value.getAttribute("data-value")), data.aggregate[key]);
+          const decimals = key === "jensen_shannon_divergence_bits" ? 4 : 2;
+          const suffix = decimals === 4 ? "" : "%";
+          assert.equal((await value.innerText()).trim(),
+            data.aggregate[key].toFixed(decimals).replace(".", ",") + suffix);
+        }
+        const link = page.locator('a[download][href="./' + relative + '"]');
+        assert.equal(await link.count(), 1);
+        const downloadReady = page.waitForEvent("download");
+        await link.click();
+        const download = await downloadReady;
+        assert.equal(download.suggestedFilename(), asset);
+        assert.deepEqual(fs.readFileSync(await download.path()), expected);
+      }
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2),
+        name + ": public two-pair Reader horizontal overflow");
+      await page.screenshot({
+        path: path.join(evidenceDir, "live-lexical-pairs-" + name + ".png"),
+        fullPage: true, animations: "disabled",
+      });
     } finally { await page.close(); }
   }
 }
@@ -613,7 +658,7 @@ async function inspectLive() {
     receipt = await verifyLiveBytes(context.request, repoRoot, BASE, revision);
     fs.writeFileSync(path.join(evidenceDir, "status.json"), JSON.stringify({
       status: "LIVE_VERIFIED", checkout_sha: revision, exact_routes: receipt,
-      checks: "desktop/mobile/lexical-Grin/no-JS/keyboard/glossary/voice/CSV/A4",
+      checks: "desktop/mobile/lexical-Grin/two-lexical-pairs/both-JSON-downloads/no-JS/keyboard/glossary/voice/CSV/A4",
     }, null, 2) + "\n");
     console.log("LIVE_VERIFIED: exact master bytes on " + receipt.length +
       " public routes; real desktop/mobile/keyboard/print acceptance. SHA=" + revision);

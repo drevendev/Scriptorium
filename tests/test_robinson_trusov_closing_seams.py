@@ -1,0 +1,89 @@
+import json
+import unittest
+
+from scriptorium.robinson_trusov_closing_seams import (
+    PINS, capture, diagnose, diagnose_pages, digest, literal_branches,
+)
+from scriptorium.robinson_trusov_content import transclusion_input
+
+
+def page(a, b):
+    return "<noinclude>header</noinclude>{{ВАР|" + a + "|" + b + "}}<noinclude>footer</noinclude>"
+
+
+def fixture():
+    return {
+        148: page("First. <noinclude>the</noinclude>", "First. <noinclude>an</noinclude>"),
+        149: page("the beginning unfinished.", "an introduction unfinished."),
+        150: page("<noinclude>nished</noinclude> Next ending.",
+                  "<noinclude>nished</noinclude> More ending."),
+        151: page("<noinclude>ing</noinclude> Final sentence.",
+                  "<noinclude>ing</noinclude> Last sentence."),
+    }
+
+
+class ClosingSeamTests(unittest.TestCase):
+    def test_six_literal_seams_and_source_free_endings(self):
+        seams, endings = diagnose_pages(fixture())
+        self.assertEqual([x["excluded_letters"] for x in seams], [3, 2, 6, 6, 3, 3])
+        self.assertEqual([x["owner"] for x in seams], ["right"] * 2 + ["left"] * 4)
+        self.assertTrue(all(x["ends_in_sentence_punctuation"] for x in endings))
+        self.assertNotIn("unfinished", json.dumps([seams, endings]))
+        self.assertNotIn("Final sentence", json.dumps([seams, endings]))
+
+    def test_refuse_wrong_owner_duplicate_and_unrelated_note(self):
+        for left, right, edge, count in (
+            ("First <noinclude>the</noinclude>", "other words.", "trailing", 3),
+            ("First the <noinclude>the</noinclude>", "the rest.", "trailing", 3),
+            ("First <noinclude>the</noinclude>", "there.", "trailing", 3),
+            ("unfinished.", "<noinclude>nished</noinclude> nished again.", "leading", 6),
+            ("nished.", "<noinclude>nished</noinclude> other.", "leading", 6),
+            ("unfinished.", "<noinclude>nished</noinclude> other <noinclude>note</noinclude>.", "leading", 6),
+            ("unfinished.", "<noinclude>note 1</noinclude> other.", "leading", 6),
+        ):
+            with self.subTest(edge=edge, count=count):
+                with self.assertRaises(ValueError):
+                    diagnose(left, right, edge=edge, letters=count)
+
+    def test_refuse_unexpected_var_shape_and_end(self):
+        for raw in ("plain", page("a", "b") + "extra body",
+                    page("a", "b") + "{{ВАР|c|d}}", page("a|extra", "b")):
+            with self.assertRaises(ValueError):
+                literal_branches(raw)
+        raw = fixture()
+        raw[151] = raw[151].replace("Final sentence.", "Final sentence")
+        with self.assertRaisesRegex(ValueError, "punctuation"):
+            diagnose_pages(raw)
+
+    def test_exact_pins_and_preflight_tamper(self):
+        raw = fixture()
+        graph, prior, rows = {"pages": []}, {"pages": [], "source_page_graph_sha256": "a"*64}, []
+        for n, rid in PINS.items():
+            pin = {"page_sequence": n, "revision_id": rid, "page_id": n,
+                   "title": str(n), "timestamp_utc": "2023-08-17T00:00:00Z",
+                   "mediawiki_sha1": "b"*40}
+            graph["pages"].append(pin)
+            source = raw[n]
+            candidate = transclusion_input(source)
+            prior["pages"].append({"page_sequence": n, "revision_id": rid,
+                "wikitext_sha256": digest(source), "wikitext_utf8_bytes": len(source.encode()),
+                "transclusion_input_sha256": digest(candidate),
+                "transclusion_input_characters_including_spaces": len(candidate)})
+            rows.append({"pageid": n, "title": str(n), "revisions": [{
+                "revid": rid, "timestamp": pin["timestamp_utc"], "sha1": pin["mediawiki_sha1"],
+                "slots": {"main": {"content": source}}}]})
+        def query(params):
+            self.assertEqual(params["revids"], "|".join(map(str, PINS.values())))
+            return {"query": {"pages": list(reversed(rows))}}
+        result = capture(graph, prior, query=query)
+        self.assertEqual([p["revision_id"] for p in result["pages"]], list(PINS.values()))
+        self.assertEqual(len(result["seams"]), 6)
+        self.assertFalse(result["corpus_admitted"])
+        self.assertEqual(result["facing_errata_excluded_by_full_collation"], "NOT_VERIFIED")
+        prior["pages"][0]["wikitext_sha256"] = "0"*64
+        with self.assertRaisesRegex(ValueError, "byte drift"):
+            capture(graph, prior, query=query)
+
+
+if __name__ == "__main__":
+    unittest.main()

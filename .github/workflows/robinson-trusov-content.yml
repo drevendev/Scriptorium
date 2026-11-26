@@ -16,6 +16,8 @@ on:
       - "tests/test_robinson_trusov_full_candidate.py"
       - "scriptorium/robinson_trusov_boundary_render.py"
       - "tests/test_robinson_trusov_boundary_render.py"
+      - "scriptorium/robinson_trusov_opening_seam.py"
+      - "tests/test_robinson_trusov_opening_seam.py"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.interior-measured.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
@@ -49,6 +51,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_robinson_trusov_interior.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_full_candidate.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_boundary_render.py' -v
+          python -m unittest discover -s tests -p 'test_robinson_trusov_opening_seam.py' -v
       - name: Capture pinned Page contents with bounded MediaWiki requests
         run: |
           mkdir -p build/repro
@@ -199,6 +202,36 @@ jobs:
           assert not r["m2_parity_admissible"] and not r["source_text_committed"]
           print([(p["page_sequence"], p["status"], p["candidate_characters"]) for p in r["pages"]])
           PY
+      - name: Replay exact opening Page scope and compare the accepted control
+        run: |
+          python -m scriptorium.robinson_trusov_opening_seam \
+            --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+            --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
+            --preflight build/repro/trusov-1775.content-preflight.json \
+            --preflight-receipt corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json \
+            --output build/repro/trusov-1775.opening-seam.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("build/repro/trusov-1775.opening-seam.json").read_text())
+          b = json.loads(Path("build/repro/trusov-1775.boundary-render.json").read_text())
+          assert r["schema_version"] == "scriptorium-trusov-opening-seam-v1"
+          assert r["source_page_graph_sha256"] == b["source_page_graph_sha256"]
+          assert [p["revision_id"] for p in r["pages"]] == [4958669, 4958680]
+          seam = r["seam"]
+          assert seam == {"classification": "PAGE_BOUNDARY_CONTINUATION_NOINCLUDE",
+                          "excluded_letters": 4, "excluded_punctuation": 1,
+                          "left_suffix_matches": True, "right_prefix_repeats": False}
+          control = next(p for p in b["pages"] if p["page_sequence"] == 3)
+          d = control["whitespace_control"]["nonspace_edit_summary"]
+          assert d["status"] == "ALIGNED"
+          assert d["edit_runs"]["insert"] == 1
+          assert d["edit_runs"]["delete"] == d["edit_runs"]["replace"] == 0
+          assert d["rendered_changed_unicode_categories"]["L"] == seam["excluded_letters"]
+          assert d["rendered_changed_unicode_categories"]["P"] == seam["excluded_punctuation"]
+          assert r["full_literary_body"] == "NOT_VERIFIED"
+          assert not any(r[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible", "historical_render_equivalence_proven"))
+          PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -211,5 +244,6 @@ jobs:
             build/repro/trusov-1775.seam-sensitivity.json
             build/repro/trusov-1775.full-projection-candidate.json
             build/repro/trusov-1775.boundary-render.json
+            build/repro/trusov-1775.opening-seam.json
           if-no-files-found: error
           retention-days: 7

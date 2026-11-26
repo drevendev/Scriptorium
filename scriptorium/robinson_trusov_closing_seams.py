@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 from hashlib import sha256
+from enum import Enum
 import json
 from pathlib import Path
 import re
@@ -148,6 +149,26 @@ _PAGE151_SCOPED_EVENTS = [
 ]
 
 
+class _Page151Reason(str, Enum):
+    RAW_ORDER = "PAGE151_RAW_ORDER"
+    SCOPED_ORDER = "PAGE151_SCOPED_ORDER"
+    OPENER_GRAMMAR = "PAGE151_OPENER_GRAMMAR"
+    OPENER_VARIANT = "PAGE151_OPENER_VARIANT"
+    OUTER_SCOPE = "PAGE151_OUTER_SCOPE"
+    COMMENT_SHAPE = "PAGE151_COMMENT_SHAPE"
+    COMMENT_ADJACENCY = "PAGE151_COMMENT_ADJACENCY"
+    EDGE_SCOPE = "PAGE151_EDGE_SCOPE"
+    COMMENT_PROJECTION = "PAGE151_COMMENT_PROJECTION"
+
+
+class _Page151Refusal(ValueError):
+    """Only fixed reason codes and a literal branch index may escape."""
+    def __init__(self, reason: _Page151Reason, branch_index=None):
+        self.reason = reason
+        self.branch_index = branch_index
+        super().__init__(reason.value)
+
+
 def page151_branches(raw):
     """Candidate seam-only projection of the observed pinned leaf shape.
 
@@ -157,39 +178,46 @@ def page151_branches(raw):
     never arbitrary interior comments or general template markup.
     """
     if wrapper_signature(raw) != {"events": _PAGE151_RAW_EVENTS, "truncated": False}:
-        raise ValueError("Page 151 wrapper order differs")
+        raise _Page151Refusal(_Page151Reason.RAW_ORDER)
     scoped = transclusion_input(raw)
     if wrapper_signature(scoped) != {"events": _PAGE151_SCOPED_EVENTS, "truncated": False}:
-        raise ValueError("Page 151 transclusion order differs")
+        raise _Page151Refusal(_Page151Reason.SCOPED_ORDER)
     matches = list(_PAGE151_VAR.finditer(raw))
     if len(matches) != 1:
-        raise ValueError("Page 151 opener grammar differs")
+        raise _Page151Refusal(_Page151Reason.OPENER_GRAMMAR)
     match = matches[0]
     opener = match.group("opener")
     if opener == "{{ВАР|" or len(opener) > 32:
-        raise ValueError("Page 151 opener not the bounded nonexact variant")
+        raise _Page151Refusal(_Page151Reason.OPENER_VARIANT)
     if scoped.strip() != transclusion_input(match.group()).strip():
-        raise ValueError("Page 151 unaccounted outer scope")
+        raise _Page151Refusal(_Page151Reason.OUTER_SCOPE)
     cleaned = []
     for i, branch in enumerate((match.group("left"), match.group("right"))):
         comments = list(_PAGE151_COMMENT.finditer(branch))
         if len(comments) != 1:
-            raise ValueError("Page 151 comment is not a single plain comment")
+            raise _Page151Refusal(_Page151Reason.COMMENT_SHAPE, i)
         comment = comments[0]
         if i == 0:
             leading = LEADING.match(branch)
             if leading is None or branch[leading.end():comment.start()].strip() or comment.start() < leading.end():
-                raise ValueError("Page 151 left comment not adjacent to leading scope")
+                raise _Page151Refusal(_Page151Reason.COMMENT_ADJACENCY, i)
         else:
             if branch[:comment.start()].strip() or not LEADING.match(branch[comment.end():]):
-                raise ValueError("Page 151 right comment not adjacent to leading scope")
+                raise _Page151Refusal(_Page151Reason.COMMENT_ADJACENCY, i)
         candidate = branch[:comment.start()] + branch[comment.end():]
         # Validate all other markup and continuation rules independently.
-        edge_scope(candidate, "leading")
-        if transclusion_input(candidate) != (
-            transclusion_input(branch).replace(comment.group(), "", 1)
-        ):
-            raise ValueError("Page 151 comment removal changes other scope")
+        try:
+            edge_scope(candidate, "leading")
+        except ValueError:
+            raise _Page151Refusal(_Page151Reason.EDGE_SCOPE, i) from None
+        try:
+            same_projection = transclusion_input(candidate) == (
+                transclusion_input(branch).replace(comment.group(), "", 1)
+            )
+        except ValueError:
+            raise _Page151Refusal(_Page151Reason.COMMENT_PROJECTION, i) from None
+        if not same_projection:
+            raise _Page151Refusal(_Page151Reason.COMMENT_PROJECTION, i)
         cleaned.append(candidate)
     return tuple(cleaned), opener
 
@@ -207,7 +235,7 @@ def diagnose_pages(raws):
                 if n != 151:
                     raise
                 branches[n], _ = page151_branches(raw)
-        except ValueError:
+        except ValueError as refusal:
             # Report only fixed structural counts from already pinned inputs.
             # Never log literal arguments, template names other than VAR, or
             # short-span digests. A refusal still fails the hosted replay.
@@ -235,6 +263,13 @@ def diagnose_pages(raws):
             if n == 151:
                 refusals[-1]["raw_wrapper_signature"] = wrapper_signature(raw)
                 refusals[-1]["transclusion_wrapper_signature"] = wrapper_signature(scoped)
+                # A noncanonical opener necessarily misses the strict regex;
+                # retain the actual specialized failure instead of relabeling it.
+                if isinstance(refusal, _Page151Refusal):
+                    refusals[-1]["page151_reason"] = refusal.reason.value
+                    refusals[-1]["branch_index"] = refusal.branch_index
+                    if "VAR_OPEN_NONEXACT" in refusals[-1]["raw_wrapper_signature"]["events"]:
+                        refusals[-1]["reason"] = refusal.reason.value
     if refusals:
         raise ValueError("closing Page structural refusal: " +
                          json.dumps(refusals, sort_keys=True))

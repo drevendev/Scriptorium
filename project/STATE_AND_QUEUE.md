@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 632
+STATE_REVISION: 633
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-26
-LAST_RESULT: #649 merged at c9671b18; Page 3 NONSPACE_DIFFERS, Page 147 COLLAPSED_EQUAL. Five historical boundaries still unresolved. Prepare complete two-pair public numerical table and replayable CSV from #562's reviewed live projections.
+LAST_RESULT: #650 merged at 94f9d5a6; full two-pair Reader/CSV verified on PR preview, live exact-byte readback still pending. Prepare source-free edit-category and skipped-scope diagnosis for Trusov Page 3 with Page 147 control.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-LEXICAL-PAIRS-EXPORT-001
-ISSUE: #562
-STATUS: PR_CANDIDATE; later independent acceptance and public readback required
-BRANCH: scrip-lexical-pairs-complete-export-20261126
-BASE: c9671b186b2dcf98c4e8c69945e273374237eba8
+UNIT_ID: SCRIP-TRUSOV-CONTROL-SCOPE-001
+ISSUE: #511
+STATUS: PR_CANDIDATE; later independent replay acceptance required
+BRANCH: scrip-trusov-control-scope-20261126
+BASE: 94f9d5a6c670aa11d35393c80ee3a0c1dfdf416b
 
-ACCEPTANCE: Exact reviewed JSON identities, all 13 aggregate fields with explicit missingness, three precision-aware signed differences, deterministic CSV replay, accessible no-JS Reader table and exact route/download coverage. No source/admission/parity upgrade.
+ACCEPTANCE: Bounded aggregate nonspace edit-category alignment and parser-excluded scope counts for the two pinned controls; verify conservation and no excerpts, positions or span hashes. Not a scan collation or a historical normalization decision; retain five boundary blockers.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 complete two-pair Reader/export | Verify exact source-free CSV/table and browser/readback; retain scientific limits | Candidate PR; later acceptance |
+| P1 | #562 complete two-pair Reader/export | Verify exact source-free CSV/table and browser/readback; retain scientific limits | Merged #650; exact live readback pending |
 | P1 | #511 control Page 3 markup/scope collation | Explain nonspace divergence against historical projection and scan anchors | #649 merged; Page 147 whitespace-only; no automatic substitution |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |

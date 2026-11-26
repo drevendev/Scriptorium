@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 630
+STATE_REVISION: 631
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-26
-LAST_RESULT: #647 merged at c3bf82dc; public two-pair page LIVE_VERIFIED via hosted run 45751232800 and independent artifact receipt in #562. #511 now tests current-parser Page views of the five excluded boundaries plus two controls; no historical equivalence claim.
+LAST_RESULT: #648 merged at 1cd99617; all seven current Page render candidates observed; both interior controls differ in raw count/hash. Five historical boundaries remain unresolved. New replay distinguishes whitespace-only drift without treating either surface as historical truth.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-BOUNDARY-RENDER-001
+UNIT_ID: SCRIP-TRUSOV-CONTROL-WHITESPACE-001
 ISSUE: #511
 STATUS: PR_CANDIDATE; exact-head source-free replay and later independent acceptance required
-BRANCH: scrip-trusov-boundary-render-controls-20261126
-BASE: c3bf82dc1d28384f95cc68f049461c069944927e
+BRANCH: scrip-trusov-control-whitespace-20261126
+BASE: 1cd9961717af730e3461bfcf1ff3fb40f1a5d8de
 
-ACCEPTANCE: Observe current MediaWiki parser Page views for exact oldids of Pages 2, 148–151 and adjacent controls 3/147. Require exact graph/projection identities, seven source-free statuses and candidate digests only when a unique nonempty Page-view container passes structural guards. Inspect actual artifact and compare controls before deciding further collation; no historical rendering or full-body claim.
+ACCEPTANCE: Compare transient pinned projections of controls 3/147 with current Page renders under collapsed and removed whitespace, preserving raw hashes and separate v2 receipt. Require both exact control identities, no residual unresolved calls, source-free classifications and independent replay acceptance. No markup removal, spelling conversion, scan collation or historical equivalence claim.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 boundary Page-view experiment | Seven exact-oldid observations, two controls and refusal classes, source-free artifact | Candidate PR; actual parser evidence pending |
+| P1 | #511 control whitespace comparison | Two exact-revision controls classified under explicit whitespace-only hypotheses; seven render observations | Candidate PR; actual replay pending |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |

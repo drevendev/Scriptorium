@@ -156,17 +156,55 @@ class _Page151Reason(str, Enum):
     OPENER_VARIANT = "PAGE151_OPENER_VARIANT"
     OUTER_SCOPE = "PAGE151_OUTER_SCOPE"
     COMMENT_SHAPE = "PAGE151_COMMENT_SHAPE"
-    COMMENT_ADJACENCY = "PAGE151_COMMENT_ADJACENCY"
+    LEADING_UNCLASSIFIED = "PAGE151_LEADING_UNCLASSIFIED"
+    LEADING_PREFIX_NONSPACE = "PAGE151_LEADING_PREFIX_NONSPACE"
+    LEADING_TAG_VARIANT = "PAGE151_LEADING_TAG_VARIANT"
+    LEADING_BODY_MARKUP = "PAGE151_LEADING_BODY_MARKUP"
+    COMMENT_OVERLAP = "PAGE151_COMMENT_OVERLAP"
+    COMMENT_GAP = "PAGE151_COMMENT_GAP"
+    COMMENT_PREFIX_NONSPACE = "PAGE151_COMMENT_PREFIX_NONSPACE"
     EDGE_SCOPE = "PAGE151_EDGE_SCOPE"
     COMMENT_PROJECTION = "PAGE151_COMMENT_PROJECTION"
 
 
 class _Page151Refusal(ValueError):
     """Only fixed reason codes and a literal branch index may escape."""
-    def __init__(self, reason: _Page151Reason, branch_index=None):
+    def __init__(self, reason: _Page151Reason, branch_index=None, *, fragment=None):
         self.reason = reason
         self.branch_index = branch_index
+        # Fixed character categories only; never preserve the fragment.
+        self.fragment_counts = None if fragment is None else {
+            "whitespace": sum(c.isspace() for c in fragment),
+            "letters": sum(c.isalpha() for c in fragment),
+            "digits": sum(c.isdigit() for c in fragment),
+            "apostrophes": fragment.count("'"),
+            "angle_brackets": fragment.count("<") + fragment.count(">"),
+            "other": sum(not (c.isspace() or c.isalpha() or c.isdigit()
+                              or c in "'<>") for c in fragment),
+        }
         super().__init__(reason.value)
+
+
+def _page151_leading_refusal(branch, index):
+    """Classify a strict leading miss without accepting alternative markup."""
+    observed = re.search(
+        r"(?P<open><noinclude\b[^>]*>)(?P<body>.*?)"
+        r"(?P<close></noinclude\b[^>]*>)", branch, re.I | re.S,
+    )
+    if observed is None:
+        return _Page151Refusal(_Page151Reason.LEADING_UNCLASSIFIED, index)
+    prefix = branch[:observed.start()]
+    if prefix.strip():
+        return _Page151Refusal(_Page151Reason.LEADING_PREFIX_NONSPACE, index,
+                               fragment=prefix)
+    if (observed.group("open").lower() != "<noinclude>"
+            or observed.group("close").lower() != "</noinclude>"):
+        return _Page151Refusal(_Page151Reason.LEADING_TAG_VARIANT, index)
+    body = observed.group("body")
+    if "<" in body or ">" in body:
+        return _Page151Refusal(_Page151Reason.LEADING_BODY_MARKUP, index,
+                               fragment=body)
+    return _Page151Refusal(_Page151Reason.LEADING_UNCLASSIFIED, index)
 
 
 def page151_branches(raw):
@@ -199,11 +237,21 @@ def page151_branches(raw):
         comment = comments[0]
         if i == 0:
             leading = LEADING.match(branch)
-            if leading is None or branch[leading.end():comment.start()].strip() or comment.start() < leading.end():
-                raise _Page151Refusal(_Page151Reason.COMMENT_ADJACENCY, i)
+            if leading is None:
+                raise _page151_leading_refusal(branch, i)
+            if comment.start() < leading.end():
+                raise _Page151Refusal(_Page151Reason.COMMENT_OVERLAP, i)
+            gap = branch[leading.end():comment.start()]
+            if gap.strip():
+                raise _Page151Refusal(_Page151Reason.COMMENT_GAP, i, fragment=gap)
         else:
-            if branch[:comment.start()].strip() or not LEADING.match(branch[comment.end():]):
-                raise _Page151Refusal(_Page151Reason.COMMENT_ADJACENCY, i)
+            prefix = branch[:comment.start()]
+            if prefix.strip():
+                raise _Page151Refusal(_Page151Reason.COMMENT_PREFIX_NONSPACE, i,
+                                      fragment=prefix)
+            tail = branch[comment.end():]
+            if LEADING.match(tail) is None:
+                raise _page151_leading_refusal(tail, i)
         candidate = branch[:comment.start()] + branch[comment.end():]
         # Validate all other markup and continuation rules independently.
         try:
@@ -268,6 +316,8 @@ def diagnose_pages(raws):
                 if isinstance(refusal, _Page151Refusal):
                     refusals[-1]["page151_reason"] = refusal.reason.value
                     refusals[-1]["branch_index"] = refusal.branch_index
+                    if refusal.fragment_counts is not None:
+                        refusals[-1]["fragment_counts"] = refusal.fragment_counts
                     if "VAR_OPEN_NONEXACT" in refusals[-1]["raw_wrapper_signature"]["events"]:
                         refusals[-1]["reason"] = refusal.reason.value
     if refusals:

@@ -2,7 +2,7 @@ import json
 import unittest
 
 from scriptorium.robinson_trusov_boundary_render import (
-    capture, digest, observe, SELECTED,
+    capture, compare_control, digest, observe, SELECTED,
 )
 
 
@@ -67,6 +67,45 @@ class BoundaryRenderTests(unittest.TestCase):
         self.assertNotIn("private", json.dumps(result))
         self.assertNotIn("Template:secret", json.dumps(result))
         self.assertEqual(result["full_literary_body"], "NOT_VERIFIED")
+
+    def test_whitespace_control_distinguishes_three_cases_and_refusal(self):
+        projected = "Alpha\n beta"
+        prior = {"projected_wikitext_sha256": digest(projected),
+                 "projected_wikitext_characters_including_spaces": len(projected),
+                 "unresolved_invocations": 0, "unclassified_openers": 0}
+        for candidate, expected in [
+            ("Alpha beta", "COLLAPSED_EQUAL"),
+            ("Alphabeta", "NONSPACE_EQUAL_ONLY"),
+            ("AlphA beta", "NONSPACE_DIFFERS"),
+            (None, "RENDER_REFUSED"),
+        ]:
+            with self.subTest(expected=expected):
+                row = compare_control(projected, prior, candidate)
+                self.assertEqual(row["classification"], expected)
+                self.assertNotIn("Alpha", json.dumps(row))
+        for key, value in [("projected_wikitext_sha256", "0"*64),
+                           ("projected_wikitext_characters_including_spaces", 1),
+                           ("unresolved_invocations", 1), ("unclassified_openers", 1)]:
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                compare_control(projected, {**prior, key: value}, "Alpha beta")
+
+    def test_control_capture_keeps_source_free_v2_separate(self):
+        for row in self.projection["pages"]:
+            row.update(projected_wikitext_sha256=digest("private"),
+                       projected_wikitext_characters_including_spaces=7,
+                       unresolved_invocations=0, unclassified_openers=0)
+        result = capture(self.graph, self.projection, graph_sha256="b"*64,
+                         query=self.query, projected_controls={3: "private", 147: "private"})
+        self.assertEqual(result["schema_version"], "scriptorium-trusov-boundary-render-v2")
+        rows = [p for p in result["pages"] if "whitespace_control" in p]
+        self.assertEqual([p["page_sequence"] for p in rows], [3, 147])
+        self.assertTrue(all(p["whitespace_control"]["classification"] ==
+                            "COLLAPSED_EQUAL" for p in rows))
+        self.assertNotIn("private", json.dumps(result))
+        self.assertFalse(result["historical_dependencies_pinned"])
+        with self.assertRaises(ValueError):
+            capture(self.graph, self.projection, graph_sha256="b"*64,
+                    query=self.query, projected_controls={3: "private"})
 
     def test_projection_drift_fails_before_request(self):
         self.projection["pages"][-1]["revision_id"] += 1

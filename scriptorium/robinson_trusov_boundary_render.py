@@ -75,7 +75,7 @@ class PageView(HTMLParser):
             self.parts.append(data)
 
 
-def observe(html):
+def _observe(html):
     if not isinstance(html, str) or len(html.encode("utf-8")) > 1_000_000:
         raise ValueError("missing or oversized Page render")
     p = PageView()
@@ -94,14 +94,50 @@ def observe(html):
         status = "UNEXPANDED_BRACES"
     else:
         status = "PAGE_VIEW_CANDIDATE"
-    return {"status": status, "html_sha256": digest(html),
+    row = {"status": status, "html_sha256": digest(html),
             "html_utf8_bytes": len(html.encode("utf-8")),
             "pagetext_containers": p.containers, "parser_error_elements": p.errors,
             "candidate_sha256": digest(text) if status == "PAGE_VIEW_CANDIDATE" else None,
             "candidate_characters": len(text) if status == "PAGE_VIEW_CANDIDATE" else None}
+    return row, text if status == "PAGE_VIEW_CANDIDATE" else None
 
 
-def capture(graph, projection, *, graph_sha256, query=_api_query):
+def observe(html):
+    return _observe(html)[0]
+
+
+def compare_control(projected, prior, candidate):
+    """Distinguish whitespace-only drift without stripping markup or spelling."""
+    if (digest(projected) != prior["projected_wikitext_sha256"] or
+            len(projected) != prior["projected_wikitext_characters_including_spaces"] or
+            prior["unresolved_invocations"] != 0 or prior["unclassified_openers"] != 0):
+        raise ValueError("control projection identity or unresolved markup drift")
+    collapsed = " ".join(projected.split())
+    nonspace = "".join(projected.split())
+    result = {
+        "projected_collapsed_sha256": digest(collapsed),
+        "projected_collapsed_characters": len(collapsed),
+        "projected_nonspace_sha256": digest(nonspace),
+        "projected_nonspace_characters": len(nonspace),
+        "rendered_nonspace_sha256": None,
+        "rendered_nonspace_characters": None,
+        "classification": "RENDER_REFUSED",
+    }
+    if candidate is not None:
+        rendered = "".join(candidate.split())
+        result.update(rendered_nonspace_sha256=digest(rendered),
+                      rendered_nonspace_characters=len(rendered))
+        result["classification"] = (
+            "COLLAPSED_EQUAL" if collapsed == candidate else
+            "NONSPACE_EQUAL_ONLY" if nonspace == rendered else
+            "NONSPACE_DIFFERS")
+    return result
+
+
+def capture(graph, projection, *, graph_sha256, query=_api_query,
+            projected_controls=None):
+    if projected_controls is not None and set(projected_controls) != set(CONTROLS):
+        raise ValueError("exactly two projected controls required")
     if projection.get("source_page_graph_sha256") != graph_sha256:
         raise ValueError("projection graph identity drift")
     pages = graph["pages"]
@@ -116,7 +152,7 @@ def capture(graph, projection, *, graph_sha256, query=_api_query):
         if identity != (prior["page_sequence"], prior["revision_id"],
                         prior["source_mediawiki_sha1"]):
             raise ValueError("projection Page identity drift")
-    for p in pages:
+    for p, prior in zip(pages, projected, strict=True):
         seq = p["page_sequence"]
         if seq not in SELECTED:
             continue
@@ -133,7 +169,9 @@ def capture(graph, projection, *, graph_sha256, query=_api_query):
         ):
             raise ValueError("invalid dependency metadata")
         deps_key = sorted((d["ns"], d["title"]) for d in deps)
-        obs = observe(result.get("text"))
+        obs, candidate = _observe(result.get("text"))
+        if projected_controls is not None and seq in CONTROLS:
+            obs["whitespace_control"] = compare_control(projected_controls[seq], prior, candidate)
         rows.append({"page_sequence": seq, "revision_id": p["revision_id"],
                      "source_mediawiki_sha1": p["mediawiki_sha1"],
                      "role": "BOUNDARY" if seq in BOUNDARIES else "INTERIOR_CONTROL",
@@ -141,7 +179,9 @@ def capture(graph, projection, *, graph_sha256, query=_api_query):
                      "template_dependency_names_sha256": digest(
                          json.dumps(deps_key, ensure_ascii=False, separators=(",", ":"))),
                      **obs})
-    return {"schema_version": SCHEMA, "scope": "CURRENT_PARSER_PINNED_PAGE_VIEW_ONLY",
+    return {"schema_version": SCHEMA if projected_controls is None else
+            "scriptorium-trusov-boundary-render-v2",
+            "scope": "CURRENT_PARSER_PINNED_PAGE_VIEW_ONLY",
             "source_page_graph_sha256": graph_sha256, "pages": rows,
             "historical_dependencies_pinned": False, "scan_collation_verified": False,
             "full_literary_body": "NOT_VERIFIED", "corpus_admitted": False,

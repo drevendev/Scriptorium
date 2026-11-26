@@ -100,7 +100,37 @@ def diagnose(left, right, *, edge, letters):
 def diagnose_pages(raws):
     if set(raws) != set(PINS):
         raise ValueError("closing Page coverage incomplete")
-    branches = {n: literal_branches(raw) for n, raw in raws.items()}
+    branches, refusals = {}, []
+    for n in sorted(raws):
+        raw = raws[n]
+        try:
+            branches[n] = literal_branches(raw)
+        except ValueError:
+            # Report only fixed structural counts from already pinned inputs.
+            # Never log literal arguments, template names other than VAR, or
+            # short-span digests. A refusal still fails the hosted replay.
+            scoped = transclusion_input(raw)
+            def counts(value):
+                return {
+                    "var_starts": len(re.findall(r"\{\{\s*ВАР\s*\|", value)),
+                    "literal_var_matches": len(list(VAR.finditer(value))),
+                    "template_opens": value.count("{{"),
+                    "template_closes": value.count("}}"),
+                    "pipes": value.count("|"),
+                    "noinclude_opens": len(re.findall(r"<noinclude\b", value, re.I)),
+                    "includeonly_opens": len(re.findall(r"<includeonly\b", value, re.I)),
+                    "html_comments": value.count("<!--"),
+                }
+            refusals.append({
+                "page_sequence": n, "revision_id": PINS[n],
+                "reason": ("VAR_MATCH_COUNT" if len(list(VAR.finditer(raw))) != 1
+                           else "OUTER_SCOPE_OR_INCLUSION_REFUSED"),
+                "raw_structure": counts(raw),
+                "transclusion_structure": counts(scoped),
+            })
+    if refusals:
+        raise ValueError("closing Page structural refusal: " +
+                         json.dumps(refusals, sort_keys=True))
     results = []
     for left, right, edge, counts in ((148, 149, "trailing", (3, 2)),
                                      (149, 150, "leading", (6, 6)),

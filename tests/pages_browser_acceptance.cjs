@@ -550,6 +550,17 @@ async function inspectLiveLexical(browser, origin, evidenceDir) {
       assert.equal(page.url(), origin + "/lexical-pairs.html");
       assert.equal(await page.locator("[data-metric]").count(), 6);
       assert.equal(await page.locator("#cross-table tbody tr").count(), 5);
+       assert.equal(await page.locator("#pair-aggregates tbody tr").count(), 13);
+       const pairCsv = "assets/lexical-pairs.csv";
+       const expectedPairCsv = fs.readFileSync(path.resolve(__dirname, "..", pairCsv));
+       const pairCsvResponse = await page.request.get(origin + "/" + pairCsv);
+       assert.equal(pairCsvResponse.status(), 200);
+       assert.deepEqual(await pairCsvResponse.body(), expectedPairCsv);
+       const pairDownloadPromise = page.waitForEvent("download");
+       await page.locator('a[href="./assets/lexical-pairs.csv"][download]').click();
+       const pairDownload = await pairDownloadPromise;
+       assert.equal(pairDownload.suggestedFilename(), "lexical-pairs.csv");
+       assert.deepEqual(fs.readFileSync(await pairDownload.path()), expectedPairCsv);
       for (const [pair, asset] of [
         ["grin", "grin-lexical-diagnostic.json"],
         ["cross", "bely-tolstoy-lexical-diagnostic.json"],

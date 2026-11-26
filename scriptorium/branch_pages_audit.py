@@ -35,6 +35,7 @@ REQUIRED_ASSETS = (
     "assets/grin-lexical-diagnostic.json",
     "assets/bely-tolstoy-lexical-diagnostic.json",
     "assets/grin-lexical-diagnostic.csv",
+    "assets/lexical-pairs.csv",
     "voice/holdout-three.csv",
 )
 

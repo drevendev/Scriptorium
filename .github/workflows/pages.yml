@@ -78,6 +78,9 @@ jobs:
       - name: Verify frozen source-bound author preview
         run: python -m scriptorium.voice_profile --check assets/voice-preview.json
 
+      - name: Verify exact two-pair lexical CSV replay
+        run: python -m scriptorium.lexical_pairs_csv assets/grin-lexical-diagnostic.json assets/bely-tolstoy-lexical-diagnostic.json --check assets/lexical-pairs.csv
+
       - name: Check root Reader JavaScript syntax
         run: node --check assets/pages-reader.js
 
@@ -129,6 +132,7 @@ jobs:
           cp assets/grin-lexical-diagnostic.json build/branch-root-preview/assets/grin-lexical-diagnostic.json
           cp assets/bely-tolstoy-lexical-diagnostic.json build/branch-root-preview/assets/bely-tolstoy-lexical-diagnostic.json
           cp assets/grin-lexical-diagnostic.csv build/branch-root-preview/assets/grin-lexical-diagnostic.csv
+          cp assets/lexical-pairs.csv build/branch-root-preview/assets/lexical-pairs.csv
           cp assets/scriptorium-ru-measured-metrics.csv build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           cp assets/trusov-1775-interior-metrics.csv build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           cp assets/voice-preview.json build/branch-root-preview/assets/voice-preview.json
@@ -148,6 +152,7 @@ jobs:
           test -s build/branch-root-preview/assets/grin-lexical-diagnostic.json
           test -s build/branch-root-preview/assets/bely-tolstoy-lexical-diagnostic.json
           test -s build/branch-root-preview/assets/grin-lexical-diagnostic.csv
+          test -s build/branch-root-preview/assets/lexical-pairs.csv
           test -s build/branch-root-preview/assets/scriptorium-ru-measured-metrics.csv
           test -s build/branch-root-preview/assets/trusov-1775-interior-metrics.csv
           test -s build/branch-root-preview/assets/voice-preview.json
@@ -166,6 +171,7 @@ jobs:
           cmp assets/grin-lexical-diagnostic.json build/branch-root-preview/assets/grin-lexical-diagnostic.json
           cmp assets/bely-tolstoy-lexical-diagnostic.json build/branch-root-preview/assets/bely-tolstoy-lexical-diagnostic.json
           cmp assets/grin-lexical-diagnostic.csv build/branch-root-preview/assets/grin-lexical-diagnostic.csv
+          cmp assets/lexical-pairs.csv build/branch-root-preview/assets/lexical-pairs.csv
           cmp metrics.html build/branch-root-preview/metrics.html
           cmp voice/index.html build/branch-root-preview/voice/index.html
           cmp voice/holdout-three.csv build/branch-root-preview/voice/holdout-three.csv

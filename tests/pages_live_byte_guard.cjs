@@ -18,6 +18,7 @@ const PUBLISHED = Object.freeze([
   "assets/grin-lexical-diagnostic.json",
   "assets/bely-tolstoy-lexical-diagnostic.json",
   "assets/grin-lexical-diagnostic.csv",
+  "assets/lexical-pairs.csv",
   "assets/n-uncertainty-road-summary.json",
   "assets/scriptorium-ru-measured-metrics.csv",
   "assets/trusov-1775-interior-metrics.csv",
@@ -94,6 +95,7 @@ async function selfTest() {
       ["assets/bely-tolstoy-lexical-diagnostic.json", '{"status":"DIAGNOSTIC_ONLY","source_pr":645}'],
       ["assets/grin-lexical-diagnostic.json", '{"status":"DIAGNOSTIC_ONLY"}'],
       ["assets/grin-lexical-diagnostic.csv", "section,field,value,unit\naggregate,type_jaccard_percent,23.187552,percent\n"],
+      ["assets/lexical-pairs.csv", "pair,section,field,value,unit,status\n"],
     ]) {
       const local = path.join(root, relative);
       fs.mkdirSync(path.dirname(local), { recursive: true });

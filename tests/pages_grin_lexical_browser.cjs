@@ -151,10 +151,21 @@ async function inspect(browser, origin, tag, width, height) {
           }
         }
         assert.equal(await page.locator("#cross-table tbody tr").count(),5);
+        assert.equal(await page.locator("#pair-aggregates tbody tr").count(),13);
+        const pairCsv = "assets/lexical-pairs.csv";
+        const pairCsvExpected = fs.readFileSync(path.join(root,pairCsv));
+        const pairCsvResponse = await page.request.get(origin+"/"+pairCsv);
+        assert.equal(pairCsvResponse.status(),200);
+        assert.deepEqual(await pairCsvResponse.body(),pairCsvExpected);
+        const pairDownloadPromise = page.waitForEvent("download");
+        await page.locator('a[href="./assets/lexical-pairs.csv"][download]').click();
+        const pairDownload = await pairDownloadPromise;
+        assert.equal(pairDownload.suggestedFilename(),"lexical-pairs.csv");
+        assert.deepEqual(fs.readFileSync(await pairDownload.path()),pairCsvExpected);
         assert.deepEqual(external,[]);
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
-        await page.locator(".lex-table-scroll").focus();
-        assert.equal(await page.locator(".lex-table-scroll").evaluate(e=>e===document.activeElement),true);
+        await page.locator('[aria-label="Полная таблица двух пар"]').focus();
+        assert.equal(await page.locator('[aria-label="Полная таблица двух пар"]').evaluate(e=>e===document.activeElement),true);
         await page.screenshot({path:path.join(screenshots,"lexical-pairs-"+tag+".png"),fullPage:true});
       }finally{await ctx.close();}
     }

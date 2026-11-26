@@ -202,3 +202,15 @@ public numeric projection is prepared. This is a distinct cross-author,
 cross-work observation, not an author-identification model or controlled
 genre experiment; comparison to the Grin pair is descriptive only. No new
 corpus admission, FantLab parity, or public score is asserted.
+
+## Reviewed two-pair Reader and complete CSV
+
+The two-pair numeric projection was independently accepted and published in #646/#647; see the [live acceptance receipt](https://github.com/drevendev/Scriptorium/issues/562#issuecomment-7182930584). The original local artifacts remain private and their release/admission flags remain unchanged. The complete table adds 13 aggregate fields, explicitly labels the two absent Grin token-share fields NOT_RETAINED (not zero), and reports cross-minus-Grin differences only for common normalized metrics: percentage points for Jaccard and overlap; bits for JSD, rounded to four decimal places to respect the cross-author receipt. Counts are not compared as rates. No statistical effect, author classification, new corpus admission or FantLab parity is implied.
+
+Replay the combined source-free CSV from the exact accepted projections (no downloads of books):
+
+```console
+python -m scriptorium.lexical_pairs_csv assets/grin-lexical-diagnostic.json assets/bely-tolstoy-lexical-diagnostic.json --check assets/lexical-pairs.csv
+```
+
+Use `--output` for a new file or omit it to write stdout. The fixed schema `scriptorium-reviewed-lexical-pairs-csv-v1` includes pair, section, field, value, unit and status. Both receipt digests are checked before parsing. The export is deterministic and carries the original source identities, exact retained precision, review receipts, methodology and scientific boundaries, not prose or per-form data. Actual publication of this added table/export requires separate exact-head browser and live verification.

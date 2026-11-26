@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 631
+STATE_REVISION: 632
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-26
-LAST_RESULT: #648 merged at 1cd99617; all seven current Page render candidates observed; both interior controls differ in raw count/hash. Five historical boundaries remain unresolved. New replay distinguishes whitespace-only drift without treating either surface as historical truth.
+LAST_RESULT: #649 merged at c9671b18; Page 3 NONSPACE_DIFFERS, Page 147 COLLAPSED_EQUAL. Five historical boundaries still unresolved. Prepare complete two-pair public numerical table and replayable CSV from #562's reviewed live projections.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-CONTROL-WHITESPACE-001
-ISSUE: #511
-STATUS: PR_CANDIDATE; exact-head source-free replay and later independent acceptance required
-BRANCH: scrip-trusov-control-whitespace-20261126
-BASE: 1cd9961717af730e3461bfcf1ff3fb40f1a5d8de
+UNIT_ID: SCRIP-LEXICAL-PAIRS-EXPORT-001
+ISSUE: #562
+STATUS: PR_CANDIDATE; later independent acceptance and public readback required
+BRANCH: scrip-lexical-pairs-complete-export-20261126
+BASE: c9671b186b2dcf98c4e8c69945e273374237eba8
 
-ACCEPTANCE: Compare transient pinned projections of controls 3/147 with current Page renders under collapsed and removed whitespace, preserving raw hashes and separate v2 receipt. Require both exact control identities, no residual unresolved calls, source-free classifications and independent replay acceptance. No markup removal, spelling conversion, scan collation or historical equivalence claim.
+ACCEPTANCE: Exact reviewed JSON identities, all 13 aggregate fields with explicit missingness, three precision-aware signed differences, deterministic CSV replay, accessible no-JS Reader table and exact route/download coverage. No source/admission/parity upgrade.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,8 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 control whitespace comparison | Two exact-revision controls classified under explicit whitespace-only hypotheses; seven render observations | Candidate PR; actual replay pending |
+| P1 | #562 complete two-pair Reader/export | Verify exact source-free CSV/table and browser/readback; retain scientific limits | Candidate PR; later acceptance |
+| P1 | #511 control Page 3 markup/scope collation | Explain nonspace divergence against historical projection and scan anchors | #649 merged; Page 147 whitespace-only; no automatic substitution |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |

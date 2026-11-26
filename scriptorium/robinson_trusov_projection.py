@@ -516,6 +516,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                         help="Optional source-free join-sensitivity experiment (requires --interior-output)")
     parser.add_argument("--full-candidate-output", type=Path,
                         help="Fail-closed 150-Page projected metrics or explicit source-free blockers")
+    parser.add_argument("--boundary-render-output", type=Path,
+                        help="Current Page views plus transient whitespace-only control comparison")
     parser.add_argument("--delay", type=float, default=0.75)
     args = parser.parse_args(argv)
     if args.seam_output is not None and args.interior_output is None:
@@ -525,6 +527,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     ) + ((args.seam_output,) if args.seam_output else ()) + (
         (args.full_candidate_output,) if args.full_candidate_output else ()
     )
+    if args.boundary_render_output is not None:
+        outs += (args.boundary_render_output,)
     if len({x.resolve() for x in outs}) != len(outs) or any(
             x.exists() or x.resolve() in (args.graph.resolve(), args.receipt.resolve()) for x in outs):
         parser.error("outputs must be distinct, new, and outside frozen inputs")
@@ -541,7 +545,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         from .robinson_trusov_full_candidate import FullCandidateCollector
         full_collector = FullCandidateCollector()
 
+    boundary_controls = {}
+
     def transient_observer(identity: dict, projected: str, unresolved: int, residual: int) -> None:
+        if args.boundary_render_output is not None and identity["page_sequence"] in (3, 147):
+            boundary_controls[identity["page_sequence"]] = projected
         if collector is not None:
             collector.observe(identity, projected, unresolved, residual)
         if full_collector is not None:
@@ -551,7 +559,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     report = capture_projection(graph, graph_sha256, delay=args.delay,
                                 preflight_output=preflight, shapes_output=shapes,
                                 page_observer=transient_observer if
-                                collector is not None or full_collector is not None else None)
+                                collector is not None or full_collector is not None or
+                                args.boundary_render_output is not None else None)
     if collector is not None:
         interior = collector.build(graph, graph_sha256, report)
         if args.seam_output is not None:
@@ -565,6 +574,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     if full_collector is not None:
         full_candidate = full_collector.build(graph, graph_sha256, report)
         outputs.append((args.full_candidate_output, full_candidate))
+    if args.boundary_render_output is not None:
+        from .robinson_trusov_boundary_render import capture
+        boundary = capture(graph, report, graph_sha256=graph_sha256,
+                           projected_controls=boundary_controls)
+        outputs.append((args.boundary_render_output, boundary))
     for output, data in outputs:
         output.parent.mkdir(parents=True, exist_ok=True)
         with output.open("x", encoding="utf-8") as writer:

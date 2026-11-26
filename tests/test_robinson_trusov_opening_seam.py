@@ -2,7 +2,9 @@ import json
 import unittest
 
 from scriptorium.robinson_trusov_content import transclusion_input
-from scriptorium.robinson_trusov_opening_seam import capture, diagnose, digest
+from scriptorium.robinson_trusov_opening_seam import (
+    capture, diagnose, digest, opening_layout, spacing_target_observation,
+)
 
 
 class OpeningSeamTests(unittest.TestCase):
@@ -71,6 +73,53 @@ class OpeningSeamTests(unittest.TestCase):
         rows[0]["revisions"][0]["sha1"] = "0"*40
         with self.assertRaisesRegex(ValueError, "identity drift"):
             capture(graph, preflight, query=query)
+
+
+    def test_layout_partition_preserves_count_and_excludes_title(self):
+        prefix = "{{^}}\n{{heading|36|TITLE}} {{heading|36|A}}\n" \
+                 "{{heading|36|B}} {{heading|38|C D}}\n{{^}}"
+        body = "Private narrative.\nSecond paragraph."
+        result = opening_layout(prefix + "\n" + body + " ")
+        self.assertEqual(result["heading_calls"], 4)
+        self.assertEqual(result["spacing_calls"], 2)
+        self.assertEqual(result["title_nonspace_characters"], 9)
+        self.assertEqual(result["body_candidate_characters_including_spaces"], len(body))
+        self.assertEqual(result["input_characters_including_spaces"],
+                         result["layout_prefix_characters"]
+                         + result["body_candidate_characters_including_spaces"]
+                         + result["body_edge_whitespace_characters"])
+        self.assertNotIn("Private", json.dumps(result))
+        for changed in (prefix.replace("{{^}}", "{{^|1em}}", 1),
+                        prefix.replace("heading|38", "heading|36"),
+                        prefix.replace("TITLE", "lower"),
+                        prefix + "{{unknown}}"):
+            with self.assertRaises(ValueError):
+                opening_layout(changed + body)
+        with self.assertRaises(ValueError):
+            opening_layout(prefix)
+
+    def test_spacing_target_revisions_and_refusal(self):
+        raw = "<div style=margin-top:{{#if:{{{1|}}}|{{{1}}}|2em}}></div><noinclude>doc</noinclude>"
+        revisions = [
+            {"revid": rid, "timestamp": timestamp, "sha1": "a"*40,
+             "slots": {"main": {"content": raw}}}
+            for rid, timestamp in ((4937800, "2023-07-23T15:49:01Z"),
+                                   (5183352, "2024-10-03T16:40:01Z"))]
+        def query(params):
+            self.assertEqual(params["revids"], "4937800|5183352")
+            return {"query": {"pages": [{"title": "Шаблон:^", "pageid": 123,
+                                        "revisions": list(reversed(revisions))}]}}
+        result = spacing_target_observation(query=query)
+        self.assertTrue(result["target_bytes_equal"])
+        self.assertEqual(result["historical_redirect_bytes"], "NOT_VERIFIED")
+        self.assertFalse(result["historical_render_equivalence_proven"])
+        self.assertNotIn("<div", json.dumps(result))
+        revisions[1]["slots"]["main"]["content"] = raw.replace("doc", "other")
+        with self.assertRaisesRegex(ValueError, "bytes differ"):
+            spacing_target_observation(query=query)
+        revisions[1]["slots"]["main"]["content"] = raw.replace("2em", "3em")
+        with self.assertRaisesRegex(ValueError, "surface differs"):
+            spacing_target_observation(query=query)
 
 
 if __name__ == "__main__":

@@ -181,11 +181,19 @@ jobs:
           from pathlib import Path
           r = json.loads(Path("build/repro/trusov-1775.boundary-render.json").read_text())
           assert [p["page_sequence"] for p in r["pages"]] == [2,3,147,148,149,150,151]
-          assert r["schema_version"] == "scriptorium-trusov-boundary-render-v2"
+          assert r["schema_version"] == "scriptorium-trusov-boundary-render-v3"
           controls = [p for p in r["pages"] if "whitespace_control" in p]
           assert [p["page_sequence"] for p in controls] == [3,147]
           assert all(p["whitespace_control"]["classification"] in {"COLLAPSED_EQUAL", "NONSPACE_EQUAL_ONLY", "NONSPACE_DIFFERS", "RENDER_REFUSED"} for p in controls)
-          print("Whitespace controls:", [(p["page_sequence"], p["whitespace_control"]["classification"]) for p in controls])
+          for p in controls:
+              w = p["whitespace_control"]
+              d = w["nonspace_edit_summary"]
+              assert p["skipped_body_nonspace_characters"] >= 0
+              assert d["status"] in {"ALIGNED", "RENDER_REFUSED", "SIZE_LIMIT"}
+              if d["status"] == "ALIGNED":
+                  assert d["matching_characters"] + sum(d["projected_changed_unicode_categories"].values()) == w["projected_nonspace_characters"]
+                  assert d["matching_characters"] + sum(d["rendered_changed_unicode_categories"].values()) == w["rendered_nonspace_characters"]
+              print("Control", p["page_sequence"], w["classification"], d, "skipped nonspace", p["skipped_body_nonspace_characters"])
           assert r["full_literary_body"] == "NOT_VERIFIED"
           assert not r["historical_dependencies_pinned"] and not r["corpus_admitted"]
           assert not r["m2_parity_admissible"] and not r["source_text_committed"]

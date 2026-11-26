@@ -18,6 +18,8 @@ on:
       - "tests/test_robinson_trusov_boundary_render.py"
       - "scriptorium/robinson_trusov_opening_seam.py"
       - "tests/test_robinson_trusov_opening_seam.py"
+      - "scriptorium/robinson_trusov_closing_seams.py"
+      - "tests/test_robinson_trusov_closing_seams.py"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.interior-measured.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
@@ -52,6 +54,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_robinson_trusov_full_candidate.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_boundary_render.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_opening_seam.py' -v
+          python -m unittest discover -s tests -p 'test_robinson_trusov_closing_seams.py' -v
       - name: Capture pinned Page contents with bounded MediaWiki requests
         run: |
           mkdir -p build/repro
@@ -252,6 +255,31 @@ jobs:
           assert not any(layout[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible", "historical_render_equivalence_proven"))
           print("Opening layout counts:", counts, "; target bytes equal; old redirect NOT_VERIFIED")
           PY
+      - name: Replay the three pinned closing seams in both literal VAR branches
+        run: |
+          python -m scriptorium.robinson_trusov_closing_seams \
+            --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+            --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
+            --preflight build/repro/trusov-1775.content-preflight.json \
+            --preflight-receipt corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json \
+            --output build/repro/trusov-1775.closing-seams.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("build/repro/trusov-1775.closing-seams.json").read_text())
+          p = json.loads(Path("build/repro/trusov-1775.content-preflight.json").read_text())
+          assert r["schema_version"] == "scriptorium-trusov-closing-seams-v1"
+          assert r["source_page_graph_sha256"] == p["source_page_graph_sha256"]
+          assert [x["revision_id"] for x in r["pages"]] == [4958660,4958661,4958663,4958664]
+          assert [x["excluded_letters"] for x in r["seams"]] == [3,2,6,6,3,3]
+          assert [x["owner"] for x in r["seams"]] == ["right"]*2 + ["left"]*4
+          assert all(x["owner_matches"] and not x["duplicate_at_other_boundary"] for x in r["seams"])
+          assert len(r["final_branch_observations"]) == 2
+          assert all(x["ends_in_sentence_punctuation"] for x in r["final_branch_observations"])
+          assert r["facing_errata_excluded_by_full_collation"] == "NOT_VERIFIED"
+          assert r["full_literary_body"] == "NOT_VERIFIED"
+          assert not any(r[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible", "historical_render_equivalence_proven"))
+          PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -266,5 +294,6 @@ jobs:
             build/repro/trusov-1775.boundary-render.json
             build/repro/trusov-1775.opening-seam.json
             build/repro/trusov-1775.opening-layout.json
+            build/repro/trusov-1775.closing-seams.json
           if-no-files-found: error
           retention-days: 7

@@ -135,6 +135,61 @@ class MissingFolioTests(unittest.TestCase):
         self.assertIsNone(report["current_render_edge_joins"]["left"]["selected"])
         self.assertIsNone(report["lanes"]["rendered"]["left_edge_matches"])
 
+    def test_pinned_left_hyphen_retained_only_carrier_omits(self):
+        middle = "ложение продолжается.\n\nСледующая фраза, "
+        tail = "которая закончилась."
+        raw = WRAPPERS[0] + middle + WRAPPERS[1] + tail
+        body = transclusion_input(raw)
+        left = "Это пред-"
+        left_raw = "<noinclude>header</noinclude>" + left + "<noinclude>footer</noinclude>"
+        right = "Дальше."
+        rendered = "Это пред" + body + " " + right
+        report = compare(raw, body, body, left, right, rendered,
+                         pinned_left_source=(left_raw, left))
+        self.assertEqual(report["current_render_edge_joins"]["left"], {
+            "matches": {"DIRECT": 0, "SPACE": 0, "HYPHEN_OMITTED_DIRECT": 1,
+                        "HYPHEN_OMITTED_SPACE": 0}, "selected": "HYPHEN_OMITTED_DIRECT"})
+        self.assertTrue(report["pinned_left_hyphen"]["projected_retained"])
+        self.assertEqual(report["left_edge_comparison"], "SOURCE_LITERAL_CARRIER_OMISSION")
+        for lane in ("transclusion", "projected", "rendered"):
+            self.assertEqual(report["lanes"][lane]["left_edge_matches"], 1)
+        self.assertEqual(transclusion_input(left_raw), left)
+        self.assertNotIn(middle, str(report))
+        self.assertIsNone(compare(raw, body, body, left, right, rendered)
+                          ["current_render_edge_joins"]["left"]["selected"])
+
+    def test_pinned_left_hyphen_refuses_wrong_scope_or_shape(self):
+        middle = "ложение.\n\nНачало, "
+        raw = WRAPPERS[0] + middle + WRAPPERS[1] + "которое завершилось."
+        body = transclusion_input(raw)
+        for left_raw, scoped, left in (
+            ("Это пред-", "Это пред-", "Это пред-"),
+            ("Это пред--<noinclude>footer</noinclude>", "Это пред--", "Это пред--"),
+            ("Это пред<noinclude>-</noinclude>", "Это пред", "Это пред-"),
+            ("Это пред-<noinclude>footer</noinclude>", "Это пред-", "Это пред"),
+        ):
+            with self.subTest(case=left_raw):
+                with self.assertRaises(ValueError):
+                    compare(raw, body, body, left, "Дальше.", "Это пред" + body,
+                            pinned_left_source=(left_raw, scoped))
+
+    def test_pinned_left_hyphen_wrong_separator_or_ambiguity(self):
+        middle = "ложение продолжается, "
+        raw = WRAPPERS[0] + middle + WRAPPERS[1] + "которое завершилось."
+        body = transclusion_input(raw)
+        left = "Это пред-"
+        left_raw = left + "<noinclude>footer</noinclude>"
+        right = "Дальше."
+        good = "Это пред" + body + " " + right
+        for carrier in ("Это пред " + body + " " + right,
+                        good + " " + good,
+                        good + " " + left + body,
+                        good + " " + left + " " + body):
+            report = compare(raw, body, body, left, right, carrier,
+                             pinned_left_source=(left_raw, left))
+            self.assertIsNone(report["current_render_edge_joins"]["left"]["selected"])
+            self.assertIsNone(report["lanes"]["rendered"]["left_edge_matches"])
+
     def test_no_prose_in_report(self):
         r = compare(self.raw, self.body, self.body, self.left, self.right, self.rendered)
         self.assertNotIn(self.middle, str(r))

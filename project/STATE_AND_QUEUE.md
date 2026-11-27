@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 635
+STATE_REVISION: 636
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-26
-LAST_RESULT: #654 merged at 17cac934; exact opening seam replay accepts the excluded five-character continuation only. Page 2 has two caret spacing calls bracketing four title headings; the 2023 template move/2024 redirect overwrite requires explicit dependency limits.
+LAST_RESULT: #655 merged at 06db522b; exact opening layout receipt accepted, historical redirect unverified. #511 scan observation 7199703312 specifies three closing seams across Pages 148–151; prepare exact replay, not a full-body claim.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-OPENING-LAYOUT-001
+UNIT_ID: SCRIP-TRUSOV-CLOSING-SEAMS-001
 ISSUE: #511
 STATUS: PR_CANDIDATE; later independent replay acceptance required
-BRANCH: scrip-trusov-opening-layout-20261126
-BASE: 17cac934e93090aa24fd82b8600cff1b7e9304d0
+BRANCH: scrip-trusov-closing-seams-20261126
+BASE: 06db522b6eb51170d31c5815de197b0cfb4c0154
 
-ACCEPTANCE: Compare exact Page 2 preflight bytes and partition the observed six-call opening layout from narrative; inspect pinned spacing target revisions 4937800/5183352 and record the overwritten 2023 redirect as NOT_VERIFIED. Retain source-free counts and all five boundary blockers; no historical renderer or body admission.
+ACCEPTANCE: Replay four pinned closing oldids and preflight hashes, require six exact literal-branch seam ownership observations (3/2, 6/6, 3/3 excluded letters), refuse wrong scope/duplicates and retain source-free counts. Final punctuation is not full scan collation or historical renderer equivalence. All five boundaries remain excluded from measured body.
 
 ## Next user-visible milestone and compact queue
 
@@ -23,7 +23,7 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
 | P1 | #562 complete two-pair Reader/export | Verify exact source-free CSV/table and browser/readback; retain scientific limits | Merged #650; exact live readback pending |
-| P1 | #511 opening title/layout scope | Reproduce the six-call title prefix partition and compare exact spacing target bytes; preserve the unverified historical redirect | #654 merged; source-free candidate only |
+| P1 | #511 closing seam replay | Verify three observed joins in both literal orthographies; reject wrong ownership; final punctuation only | #655 merged; four pinned closing revisions; full scan/renderer not verified |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |

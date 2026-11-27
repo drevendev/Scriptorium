@@ -145,18 +145,49 @@ def paragraph_intersections(rendered, spans, middle):
     }, pieces
 
 
-def edge_candidates(left, right, rendered):
+def pinned_left_hyphen(raw, scoped, projected, right):
+    """Verify the literal /106 edge, after capture has checked all Page pins."""
+    footer = raw.rfind("<noinclude>")
+    if footer < 0 or not raw.rstrip().endswith("</noinclude>"):
+        raise ValueError("PAGE106_TERMINAL_FOOTER_MISSING")
+    prefix = raw[:footer].rstrip()
+    match = re.search(r"([^\W\d_]+)-\Z", prefix)
+    if not match or not match.group(1).isalpha():
+        raise ValueError("PAGE106_LITERAL_HYPHEN_MISSING")
+    fragment = match.group()
+    if (transclusion_input(raw) != scoped or
+            not all(v.rstrip().endswith(fragment) for v in (scoped, projected)) or
+            normalized(scoped).split()[-1] != normalized(projected).split()[-1]):
+        raise ValueError("PAGE106_HYPHEN_SCOPE_DRIFT")
+    if not right or not right[0].isalpha() or not right[0].islower():
+        raise ValueError("PAGE107_CONTINUATION_SHAPE")
+    return {"left_revision_id": PINS[106], "right_revision_id": PINS[107],
+            "terminal_ascii_hyphen_count": 1, "raw_before_terminal_noinclude": True,
+            "scoped_retained": True, "projected_retained": True}
+
+
+def edge_candidates(left, right, rendered, *, allow_terminal_hyphen_omission=False):
     # A physical page edge can bisect a word. Test both literal joins against
     # the current carrier, never infer historical whitespace from the winner.
     variants = {"DIRECT": left + right, "SPACE": left + " " + right}
+    if allow_terminal_hyphen_omission:
+        if (len(left) < 2 or not left.endswith("-") or not left[-2].isalpha()
+                or not right or not right[0].islower()):
+            raise ValueError("INVALID_TERMINAL_HYPHEN_COMPARISON")
+        variants["HYPHEN_OMITTED_DIRECT"] = left[:-1] + right
+        # Negative control: a space would split the continued word.
+        variants["HYPHEN_OMITTED_SPACE"] = left[:-1] + " " + right
     counts = {key: occurrences(rendered, needle) for key, needle in variants.items()}
     winners = [key for key, count in counts.items() if count == 1]
     selected = (winners[0] if len(winners) == 1 and sum(counts.values()) == 1
                 else None)
+    if selected == "HYPHEN_OMITTED_SPACE":
+        selected = None
     return {"matches": counts, "selected": selected}, variants.get(selected)
 
 
-def compare(raw, scoped, projected, left, right, rendered, *, paragraph_spans=None):
+def compare(raw, scoped, projected, left, right, rendered, *, paragraph_spans=None,
+            pinned_left_source=None):
     middle, tail = partition(raw)
     if scoped != middle + tail or projected != scoped:
         raise ValueError("projection changed pinned plain body")
@@ -171,7 +202,14 @@ def compare(raw, scoped, projected, left, right, rendered, *, paragraph_spans=No
     r = " ".join(normalized(right).split()[:8])
     l_body = " ".join(body.split()[:8])
     r_body = " ".join(body.split()[-8:])
-    left_join, left_needle = edge_candidates(l, l_body, render_window)
+    left_hyphen = (pinned_left_hyphen(*pinned_left_source, left, l_body)
+                   if pinned_left_source is not None else None)
+    left_join, left_needle = edge_candidates(
+        l, l_body, render_window, allow_terminal_hyphen_omission=left_hyphen is not None)
+    omission = left_join["selected"] == "HYPHEN_OMITTED_DIRECT"
+    # Source lanes compare the literal, retained hyphen. Only the current
+    # carrier comparison window may omit the one verified terminal character.
+    source_left_needle = l + l_body if omission else left_needle
     right_join, right_needle = edge_candidates(r_body, r, render_window)
     continuation = " ".join(normalized(middle).split()[-8:] + normalized(tail).split()[:8])
     lanes = {"raw": raw, "transclusion": scoped, "projected": projected,
@@ -182,15 +220,18 @@ def compare(raw, scoped, projected, left, right, rendered, *, paragraph_spans=No
         if name in ("transclusion", "projected"):
             # Use the explicitly observed current-render join, not a guessed
             # universal separator. Unknown joins stay unknown in all lanes.
-            sep_l = "" if left_join["selected"] == "DIRECT" else " "
+            sep_l = "" if left_join["selected"] in ("DIRECT", "HYPHEN_OMITTED_DIRECT") else " "
             sep_r = "" if right_join["selected"] == "DIRECT" else " "
             window = normalized(left) + sep_l + window + sep_r + normalized(right)
+        lane_left_needle = (source_left_needle if name in ("transclusion", "projected")
+                            else left_needle)
         out[name] = {
             "marker_counts": markers(text),
             "paragraph_matches": [occurrences(window, p) for p in paragraphs],
             "rendered_intersection_matches": [occurrences(window, p) for p in intersections],
             "whole_page_matches": occurrences(window, body),
-            "left_edge_matches": occurrences(window, left_needle) if name != "raw" and left_needle else None,
+            "left_edge_matches": (occurrences(window, lane_left_needle)
+                                  if name != "raw" and lane_left_needle else None),
             "right_edge_matches": occurrences(window, right_needle) if name != "raw" and right_needle else None,
             "second_marker_continuation_matches": occurrences(window, continuation),
         }
@@ -198,6 +239,9 @@ def compare(raw, scoped, projected, left, right, rendered, *, paragraph_spans=No
             "raw_lf_break_runs": breaks,
             "rendered_paragraphs": html_paragraphs,
             "current_render_edge_joins": {"left": left_join, "right": right_join},
+            "pinned_left_hyphen": left_hyphen,
+            "left_edge_comparison": ("SOURCE_LITERAL_CARRIER_OMISSION" if omission
+                                     else "SAME_LITERAL_WINDOW"),
             "middle_characters_including_spaces": len(middle),
             "middle_sha256": digest(middle),
             "projected_body_sha256": digest(projected),
@@ -307,8 +351,9 @@ def capture(graph, preflight, projection, *, query=_api_query):
     if view.bad or view.stack or view.errors or view.containers != 1:
         raise ValueError("unverified rendered carrier structure")
     evidence = compare(*sources[107], sources[106][2], sources[108][2],
-                       "".join(view.parts), paragraph_spans=view.paragraph_spans())
-    return {"schema_version": "scriptorium-trusov-missing-folios-v2",
+                       "".join(view.parts), paragraph_spans=view.paragraph_spans(),
+                       pinned_left_source=sources[106][:2])
+    return {"schema_version": "scriptorium-trusov-missing-folios-v3",
             "source_page_graph_sha256": preflight["source_page_graph_sha256"],
             "pages": sorted(identities, key=lambda p: p["page_sequence"]),
             "carrier_revision_id": 5041937, "carrier_html_sha256": digest(html),

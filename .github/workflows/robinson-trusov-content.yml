@@ -20,6 +20,8 @@ on:
       - "tests/test_robinson_trusov_opening_seam.py"
       - "scriptorium/robinson_trusov_closing_seams.py"
       - "tests/test_robinson_trusov_closing_seams.py"
+      - "scriptorium/robinson_trusov_errata.py"
+      - "tests/test_robinson_trusov_errata.py"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.interior-measured.json"
       - "corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json"
@@ -55,6 +57,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_robinson_trusov_boundary_render.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_opening_seam.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_closing_seams.py' -v
+          python -m unittest discover -s tests -p 'test_robinson_trusov_errata.py' -v
       - name: Capture pinned Page contents with bounded MediaWiki requests
         run: |
           mkdir -p build/repro
@@ -340,6 +343,31 @@ jobs:
           assert c["full_literary_body"] == "NOT_VERIFIED"
           assert not any(c[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible", "historical_render_equivalence_proven", "scan_collation_verified"))
           PY
+      - name: Replay three scan-derived errata controls without editing text
+        run: |
+          python -m scriptorium.robinson_trusov_errata \
+            --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+            --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
+            --preflight build/repro/trusov-1775.content-preflight.json \
+            --preflight-receipt corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json \
+            --projection build/repro/trusov-1775.projection.json \
+            --output build/repro/trusov-1775.errata-controls.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("build/repro/trusov-1775.errata-controls.json").read_text())
+          assert r["schema_version"] == "scriptorium-trusov-errata-controls-v1"
+          assert [p["revision_id"] for p in r["pages"]] == [4958671, 4958715]
+          assert [p["control"] for p in r["controls"]] == ["p38_l17", "p116_l19", "p116_l20"]
+          assert r["all_three_raw_corrected"] and r["all_three_projected_corrected"]
+          assert all(p[scope] == {"printed_matches": 0, "corrected_matches": 1,
+                                  "classification": "CORRECTED_READING_PRESENT"}
+                     for p in r["controls"] for scope in ("raw", "projected"))
+          assert r["full_errata_coverage"] == "UNKNOWN"
+          assert r["full_literary_body"] == "NOT_VERIFIED"
+          assert not any(r[k] for k in ("source_text_committed", "corpus_admitted",
+                                        "m2_parity_admissible", "historical_render_equivalence_proven"))
+          PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -355,5 +383,6 @@ jobs:
             build/repro/trusov-1775.opening-seam.json
             build/repro/trusov-1775.opening-layout.json
             build/repro/trusov-1775.closing-seams.json
+            build/repro/trusov-1775.errata-controls.json
           if-no-files-found: error
           retention-days: 7

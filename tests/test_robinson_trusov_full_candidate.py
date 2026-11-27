@@ -6,6 +6,7 @@ import unittest
 from test_robinson_trusov_content import fixture, mock_query, PRIVATE_SOURCE
 from scriptorium.robinson_trusov_full_candidate import (
     BLOCKED, READY, FullCandidateCollector, measure_full_candidate,
+    assemble_boundary_metrics, BOUNDARY_PAGES,
 )
 from scriptorium.robinson_trusov_projection import capture_projection
 
@@ -28,6 +29,41 @@ class TrusovFullCandidateTests(unittest.TestCase):
         else:
             text = (PRIVATE_SOURCE + " проверка! ") * 60
         page["revisions"][0]["slots"]["main"]["content"] = text
+
+    def test_boundary_assembly_preserves_frozen_interior_and_refuses_bad_inputs(self):
+        from scriptorium.robinson_trusov_interior import InteriorCollector
+        graph, digest = fixture()
+        collector = InteriorCollector()
+        projection = capture_projection(
+            graph, digest, query=mock_query(graph, self.blocked_edges),
+            page_observer=collector.observe)
+        baseline = collector.build(graph, digest, projection)
+        before = copy.deepcopy(baseline)
+        boundaries = {n: PRIVATE_SOURCE + " начало!" for n in BOUNDARY_PAGES}
+        report = assemble_boundary_metrics(collector, baseline, boundaries)
+        self.assertEqual(baseline, before)
+        self.assertEqual(report["page_interval"]["count"], 150)
+        self.assertEqual(len(report["metric_rows"]), 29)
+        self.assertEqual(report["raw_joined_characters"],
+                         baseline["join"]["joined_projected_wikitext_characters_including_spaces"]
+                         + sum(map(len, boundaries.values())) + 5)
+        self.assertFalse(report["corpus_admitted"])
+        self.assertEqual(report["full_literary_body"], "NOT_VERIFIED")
+        self.assertNotIn(PRIVATE_SOURCE, json.dumps(report, ensure_ascii=False))
+        incomplete = dict(boundaries)
+        incomplete.pop(151)
+        with self.assertRaisesRegex(ValueError, "incomplete"):
+            assemble_boundary_metrics(collector, baseline, incomplete)
+        with self.assertRaisesRegex(ValueError, "markup"):
+            assemble_boundary_metrics(collector, baseline, dict(boundaries, **{}) | {151: "{{unknown}}"})
+        corrupt = copy.deepcopy(baseline)
+        corrupt["normalized_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "identity drift"):
+            assemble_boundary_metrics(collector, corrupt, boundaries)
+        corrupt = copy.deepcopy(baseline)
+        next(r for r in corrupt["metric_rows"] if r["metric_id"] == "fantlab.general.characters")["actual"] += 1
+        with self.assertRaisesRegex(ValueError, "reference drift"):
+            assemble_boundary_metrics(collector, corrupt, boundaries)
 
     def test_150_safe_pages_compute_inferred_metrics_but_never_admit_book(self):
         graph, digest = fixture()

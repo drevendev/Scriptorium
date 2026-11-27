@@ -307,6 +307,28 @@ jobs:
               print("Closing Page", p["page_sequence"], p["render_status"],
                     [(b["literal_branch"], b["transcluded_scope"]["classification"],
                       b["standalone_scope"]["classification"]) for b in p["branches"]])
+          for p in c["pages"]:
+              for scope, combined in p["combined_branches"].items():
+                  assert scope in {"standalone_scope", "transcluded_scope"}
+                  assert combined["branch_nonspace_characters"] == [
+                      b[scope]["literal_nonspace_characters"] for b in p["branches"]]
+                  assert combined["rendered_nonspace_characters"] == p["branches"][0][scope]["rendered_nonspace_characters"]
+                  if combined["classification"] == "UNIQUE_ORDERED_PLACEMENT":
+                      assert combined["placement_count_capped"] == 1
+                      assert combined["order"] in {"PRE_REFORM_THEN_MODERN", "MODERN_THEN_PRE_REFORM"}
+                      regions = combined["residual_regions"]
+                      assert [x["region"] for x in regions] == ["prefix", "between", "suffix"]
+                      assert all(sum(x["unicode_categories"].values()) == x["nonspace_characters"] for x in regions)
+                      assert sum(combined["branch_nonspace_characters"]) + sum(x["nonspace_characters"] for x in regions) == combined["rendered_nonspace_characters"]
+                  else:
+                      assert combined["classification"] in {"RENDER_REFUSED", "SIZE_LIMIT", "EMPTY_BRANCH", "AMBIGUOUS_PLACEMENT", "NO_ORDERED_DISJOINT_PLACEMENT"}
+                      assert combined["residual_regions"] is None and combined["order"] is None
+                  print("Combined Page", p["page_sequence"], scope, combined)
+          assert c["combined_residual_layout_identity"] == "NOT_VERIFIED"
+          for scope, status in c["combined_residual_cross_page_equality"].items():
+              unique = all(p["combined_branches"][scope]["classification"] == "UNIQUE_ORDERED_PLACEMENT" for p in c["pages"])
+              assert (status in {"ALL_FOUR_REGION_STRINGS_EQUAL", "REGION_STRINGS_DIFFER"}) if unique else status == "NOT_ESTABLISHED"
+          print("Cross-Page residual equality:", c["combined_residual_cross_page_equality"])
           assert c["full_literary_body"] == "NOT_VERIFIED"
           assert not any(c[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible", "historical_render_equivalence_proven", "scan_collation_verified"))
           PY

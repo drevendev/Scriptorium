@@ -671,12 +671,76 @@ def compare_render_candidate(literal, rendered):
     return row
 
 
+def _combined_view(first, second, rendered):
+    """Exact nonspace placement, not subsequence alignment or a VAR renderer.
+
+    Enumerate both orders, requiring two disjoint contiguous occurrences.
+    Saturate at two placements; ambiguous matches never yield a residual.
+    The second return value stays in memory only for cross-Page equality.
+    """
+    a, b = ("".join(x.split()) for x in (first, second))
+    row = {"classification": "RENDER_REFUSED", "order": None,
+           "branch_nonspace_characters": [len(a), len(b)],
+           "rendered_nonspace_characters": None, "placement_count_capped": None,
+           "residual_regions": None}
+    if rendered is None:
+        return row, None
+    view = "".join(rendered.split())
+    row["rendered_nonspace_characters"] = len(view)
+    if max(len(a), len(b), len(view)) > 8192:
+        row["classification"] = "SIZE_LIMIT"
+        return row, None
+    if not a or not b:
+        row["classification"] = "EMPTY_BRANCH"
+        return row, None
+    placements = []
+    for order, x, y in (("PRE_REFORM_THEN_MODERN", a, b),
+                        ("MODERN_THEN_PRE_REFORM", b, a)):
+        start = view.find(x)
+        while start != -1:
+            end = start + len(x)
+            other = view.find(y, end)
+            while other != -1:
+                placements.append((order, start, end, other, other + len(y)))
+                if len(placements) == 2:
+                    row.update(classification="AMBIGUOUS_PLACEMENT",
+                               placement_count_capped=2)
+                    return row, None
+                other = view.find(y, other + 1)
+            start = view.find(x, start + 1)
+    row["placement_count_capped"] = len(placements)
+    if not placements:
+        row["classification"] = "NO_ORDERED_DISJOINT_PLACEMENT"
+        return row, None
+    order, start, end, other, finish = placements[0]
+    residual = (view[:start], view[end:other], view[finish:])
+    regions = []
+    for name, value in zip(("prefix", "between", "suffix"), residual, strict=True):
+        counts = dict.fromkeys("LMNPSZC", 0)
+        for char in value:
+            counts[unicodedata.category(char)[0]] += 1
+        regions.append({"region": name, "nonspace_characters": len(value),
+                        "unicode_categories": counts})
+    row.update(classification="UNIQUE_ORDERED_PLACEMENT", order=order,
+               residual_regions=regions)
+    return row, residual
+
+
+def _residual_equality(residuals):
+    """Compare actual region strings in memory, never publish text or hashes."""
+    if len(residuals) != len(PINS) or any(x is None for x in residuals):
+        return "NOT_ESTABLISHED"
+    return ("ALL_FOUR_REGION_STRINGS_EQUAL" if all(x == residuals[0] for x in residuals)
+            else "REGION_STRINGS_DIFFER")
+
+
 def compare_current_closing_views(selected, candidates, *, query):
     """Compare both literal branches against current pinned Page views."""
     from .robinson_trusov_boundary_render import _observe
     if set(candidates) != {(n, i) for n in PINS for i in (0, 1)}:
         raise ValueError("closing comparison candidate coverage incomplete")
     rows = []
+    residuals = {"transcluded_scope": [], "standalone_scope": []}
     for pin in sorted(selected, key=lambda p: p["page_sequence"]):
         n = pin["page_sequence"]
         result = query({"action": "parse", "oldid": str(pin["revision_id"]),
@@ -685,7 +749,13 @@ def compare_current_closing_views(selected, candidates, *, query):
                 pin["revision_id"], pin["page_id"], pin["title"]):
             raise ValueError("closing Page render identity drift")
         observation, rendered = _observe(result.get("text"), scope_counts=True)
+        combined = {}
+        for index, scope in enumerate(residuals):
+            combined[scope], residual = _combined_view(
+                candidates[n, 0][index], candidates[n, 1][index], rendered)
+            residuals[scope].append(residual)
         rows.append({
+            "combined_branches": combined,
             "page_sequence": n, "revision_id": pin["revision_id"],
             "source_mediawiki_sha1": pin["mediawiki_sha1"],
             "render_status": observation["status"],
@@ -699,7 +769,10 @@ def compare_current_closing_views(selected, candidates, *, query):
             ],
         })
     return {"scope": "CURRENT_PAGE_VIEW_VS_LITERAL_CLOSING_SCOPE_DIAGNOSTIC",
-            "pages": rows, "historical_render_equivalence_proven": False,
+            "pages": rows, "combined_residual_cross_page_equality": {
+                scope: _residual_equality(values) for scope, values in residuals.items()},
+            "combined_residual_layout_identity": "NOT_VERIFIED",
+            "historical_render_equivalence_proven": False,
             "scan_collation_verified": False, "full_literary_body": "NOT_VERIFIED",
             "corpus_admitted": False, "m2_parity_admissible": False,
             "source_text_committed": False}

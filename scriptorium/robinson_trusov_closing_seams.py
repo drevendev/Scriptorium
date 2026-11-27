@@ -11,6 +11,7 @@ from enum import Enum
 import json
 from pathlib import Path
 import re
+import unicodedata
 
 from .robinson_trusov_content import transclusion_input, verify_receipt
 from .robinson_trusov_pages import verify_frozen_graph
@@ -161,7 +162,7 @@ class _Page151Reason(str, Enum):
     LEADING_TAG_VARIANT = "PAGE151_LEADING_TAG_VARIANT"
     LEADING_BODY_MARKUP = "PAGE151_LEADING_BODY_MARKUP"
     COMMENT_OVERLAP = "PAGE151_COMMENT_OVERLAP"
-    COMMENT_GAP = "PAGE151_COMMENT_GAP"
+    COMMENT_TOKEN_JOIN = "PAGE151_COMMENT_TOKEN_JOIN"
     COMMENT_PREFIX_NONSPACE = "PAGE151_COMMENT_PREFIX_NONSPACE"
     EDGE_SCOPE = "PAGE151_EDGE_SCOPE"
     COMMENT_PROJECTION = "PAGE151_COMMENT_PROJECTION"
@@ -212,8 +213,9 @@ def page151_branches(raw):
 
     Capture checks the original bytes first. Inspect the actual bounded
     opener token at runtime: only case and ASCII whitespace may differ.
-    Remove one comment at each branch's leading continuation boundary,
-    never arbitrary interior comments or general template markup.
+    Remove only the two recognized comments in this pinned leaf shape.
+    Preserve the complete literal gap after branch zero's leading span;
+    refuse a comment cut that would join lexical tokens.
     """
     if wrapper_signature(raw) != {"events": _PAGE151_RAW_EVENTS, "truncated": False}:
         raise _Page151Refusal(_Page151Reason.RAW_ORDER)
@@ -241,9 +243,15 @@ def page151_branches(raw):
                 raise _page151_leading_refusal(branch, i)
             if comment.start() < leading.end():
                 raise _Page151Refusal(_Page151Reason.COMMENT_OVERLAP, i)
+            # The pinned replay observed a nonempty literal gap here.
+            # Keep it byte-for-byte; only the recognized comment is removed.
             gap = branch[leading.end():comment.start()]
-            if gap.strip():
-                raise _Page151Refusal(_Page151Reason.COMMENT_GAP, i, fragment=gap)
+            suffix = branch[comment.end():]
+            def word_edge(c):
+                return (unicodedata.category(c)[0] in "LMN"
+                        or unicodedata.category(c) == "Pd" or c in "_'’")
+            if gap and suffix and word_edge(gap[-1]) and word_edge(suffix[0]):
+                raise _Page151Refusal(_Page151Reason.COMMENT_TOKEN_JOIN, i)
         else:
             prefix = branch[:comment.start()]
             if prefix.strip():

@@ -132,6 +132,31 @@ class ClosingSeamTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             literal_branches(raws[151])
 
+    def test_pinned_leaf_preserves_literal_gap_and_whitespace(self):
+        original = special_page151()
+        for gap in (" First clause,\n  second clause.  ", " First clause."):
+            with self.subTest(gap=gap):
+                raws = fixture()
+                raws[151] = original.replace("<!--PRIVATE_LEFT-->", gap + "<!--PRIVATE_LEFT-->")
+                branches, _ = page151_branches(raws[151])
+                expected = "<noinclude>ing</noinclude>" + gap + " Final sentence."
+                self.assertEqual(branches[0].encode("utf-8"), expected.encode("utf-8"))
+                self.assertEqual(transclusion_input(branches[0]), gap + " Final sentence.")
+                seams, endings = diagnose_pages(raws)
+                self.assertEqual([x["excluded_letters"] for x in seams], [3, 2, 6, 6, 3, 3])
+                self.assertEqual(endings[0]["candidate_characters_including_spaces"],
+                                 len((gap + " Final sentence.").strip()))
+                self.assertNotIn("First clause", json.dumps([seams, endings]))
+
+    def test_pinned_leaf_refuses_lexical_join_across_comment(self):
+        for left, right in (("word", "word"), ("a", "\u0301"), ("word-", "word"),
+                            ("word'", "word")):
+            raw = special_page151().replace("<!--PRIVATE_LEFT--> Final",
+                                             " " + left + "<!--PRIVATE_LEFT-->" + right)
+            with self.subTest(left=left, right=right):
+                with self.assertRaisesRegex(ValueError, "PAGE151_COMMENT_TOKEN_JOIN"):
+                    page151_branches(raw)
+
     def test_pinned_leaf_candidate_refuses_unobserved_shapes(self):
         original = special_page151()
         for raw in (
@@ -140,7 +165,8 @@ class ClosingSeamTests(unittest.TestCase):
             original.replace("<!--PRIVATE_LEFT-->", "<!--PRIVATE_LEFT--><!--extra-->"),
             original.replace("<noinclude>ing</noinclude><!--PRIVATE_LEFT-->",
                              "<!--PRIVATE_LEFT--><noinclude>ing</noinclude>"),
-            original.replace("<!--PRIVATE_LEFT--> Final", " Final<!--PRIVATE_LEFT-->"),
+            original.replace("<!--PRIVATE_LEFT--> Final", " Final<!--PRIVATE_LEFT-->word"),
+            original.replace("<!--PRIVATE_LEFT-->", " <b>gap</b><!--PRIVATE_LEFT-->"),
             original.replace("{{ вар |", "{{ OTHER |"),
             original.replace("{{ вар |", "{{ВАР|"),
             original.replace("footer</noinclude>", "footer</noinclude>extra"),
@@ -168,8 +194,8 @@ class ClosingSeamTests(unittest.TestCase):
              "PAGE151_LEADING_BODY_MARKUP", 0),
             (original.replace("<!--PRIVATE_RIGHT--><noinclude>", "<!--PRIVATE_RIGHT-->PRIVATE_PREFIX<noinclude>"),
              "PAGE151_LEADING_PREFIX_NONSPACE", 1),
-            (original.replace("<!--PRIVATE_LEFT--> Final", " PRIVATE_GAP<!--PRIVATE_LEFT--> Final"),
-             "PAGE151_COMMENT_GAP", 0),
+            (original.replace("<!--PRIVATE_LEFT--> Final", " PRIVATE_GAP<!--PRIVATE_LEFT-->Final"),
+             "PAGE151_COMMENT_TOKEN_JOIN", 0),
             (original.replace("<!--PRIVATE_RIGHT-->", "PRIVATE_GAP<!--PRIVATE_RIGHT-->"),
              "PAGE151_COMMENT_PREFIX_NONSPACE", 1),
             (original.replace("<noinclude>ing</noinclude>", "<noinclude>123</noinclude>", 1),
@@ -197,7 +223,7 @@ class ClosingSeamTests(unittest.TestCase):
                 self.assertEqual(row["page151_reason"], reason)
                 self.assertEqual(row["branch_index"], index)
                 if reason in ("PAGE151_LEADING_PREFIX_NONSPACE",
-                              "PAGE151_COMMENT_GAP", "PAGE151_COMMENT_PREFIX_NONSPACE",
+                              "PAGE151_COMMENT_PREFIX_NONSPACE",
                               "PAGE151_LEADING_BODY_MARKUP"):
                     self.assertEqual(set(row["fragment_counts"]), {
                         "whitespace", "letters", "digits", "apostrophes",
@@ -210,7 +236,7 @@ class ClosingSeamTests(unittest.TestCase):
 
     def test_exact_pins_and_preflight_tamper(self):
         raw = fixture()
-        raw[151] = special_page151()
+        raw[151] = special_page151().replace("<!--PRIVATE_LEFT-->", " A clause.  <!--PRIVATE_LEFT-->")
         graph, prior, rows = {"pages": []}, {"pages": [], "source_page_graph_sha256": "a"*64}, []
         for n, rid in PINS.items():
             pin = {"page_sequence": n, "revision_id": rid, "page_id": n,

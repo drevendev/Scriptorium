@@ -420,6 +420,85 @@ def _formatting_candidate(page, index, branch):
     return candidate, report
 
 
+
+# Page 149 has no noinclude scope. The prior pinned run refused both
+# traversals at plain_branch, after all four adjacent blank edge comments
+# had been verified. Inspect the same literal branch once for both joins.
+_PAGE149_TOKEN = re.compile(
+    r"<!--[\s\S]*?-->|<[^<>]*>|[<>]|'{2,}|[\[\]{}]+"
+)
+
+
+def _page149_candidate(index, branch):
+    """Bounded observation and strictly verified blank-edge candidate only."""
+    report = {"page_sequence": 149, "revision_id": PINS[149],
+              "branch_index": index, "classification": "NO_RESIDUAL_TOKEN",
+              "shared_by_joins": [[148, 149], [149, 150]],
+              "token_count": 0, "tokens": [], "removed_characters": 0}
+    matches = list(_PAGE149_TOKEN.finditer(branch))
+    report["token_count"] = len(matches)
+    if not matches:
+        return branch, report
+    report["classification"] = "UNSUPPORTED_PAGE149_MARKUP"
+    # Lexical positions are relative to literal text, excluding the
+    # observed tokens (including any letters inside comments/tags).
+    fragments = []
+    cursor = 0
+    for match in matches:
+        fragments.append(branch[cursor:match.start()])
+        cursor = match.end()
+    fragments.append(branch[cursor:])
+    lexical = [any(c.isalpha() or c.isdigit() for c in x) for x in fragments]
+    for i, match in enumerate(matches[:8]):
+        token = match.group()
+        if _BLANK_COMMENT.fullmatch(token):
+            kind = "BLANK_COMMENT"
+        elif token.startswith("<!--"):
+            kind = "OTHER_COMMENT"
+        elif re.fullmatch(r"</?noinclude\b[^>]*>", token, re.I):
+            kind = "NOINCLUDE"
+        elif re.fullmatch(r"<br\s*/?>", token, re.I):
+            kind = "BREAK_TAG"
+        elif token.startswith("<") or token == ">":
+            kind = "OTHER_ANGLE_MARKUP"
+        elif token.startswith("'"):
+            kind = "APOSTROPHE_RUN"
+        else:
+            kind = "BRACKET_OR_BRACE"
+        before, after = any(lexical[:i+1]), any(lexical[i+1:])
+        position = ("INTERIOR" if before and after else "END" if before
+                    else "START" if after else "NO_LEXICAL_TEXT")
+        report["tokens"].append({"kind": kind, "characters": len(token),
+                                 "position": position})
+    report["truncated"] = len(matches) > 8
+    # The adjacent leaves proved eight-character blank comments.
+    # Accept this exact class only if the current pinned bytes independently
+    # prove one such token at an outer edge of the otherwise plain branch.
+    if len(matches) != 1:
+        return branch, report
+    match = matches[0]
+    token = match.group()
+    if len(token) != 8 or not _BLANK_COMMENT.fullmatch(token):
+        return branch, report
+    prefix, suffix = branch[:match.start()], branch[match.end():]
+    if not (all(c in " \t\r\n" for c in prefix)
+            or all(c in " \t\r\n" for c in suffix)):
+        return branch, report
+    candidate = prefix + suffix
+    try:
+        plain_branch(candidate)
+        original = transclusion_input(branch)
+        if original != branch or transclusion_input(candidate) != candidate:
+            return branch, report
+        if original.count(token) != 1 or original.replace(token, "", 1) != candidate:
+            return branch, report
+    except ValueError:
+        return branch, report
+    report["classification"] = "VERIFIED_PAGE149_BLANK_EDGE_COMMENT"
+    report["removed_characters"] = len(token)
+    return candidate, report
+
+
 # Only fixed reason codes may reach a hosted log; unexpected ValueErrors
 # remain refusals and their original message is never propagated.
 _SEAM_REASONS = {
@@ -511,6 +590,13 @@ def diagnose_pages(raws):
             cleaned.append(candidate)
             formatting.append(observation)
         branches[n] = tuple(cleaned)
+    page149 = []
+    cleaned = []
+    for i, branch in enumerate(branches[149]):
+        candidate, observation = _page149_candidate(i, branch)
+        cleaned.append(candidate)
+        page149.append(observation)
+    branches[149] = tuple(cleaned)
     results, seam_refusals = [], []
     for left, right, edge, counts in ((148, 149, "trailing", (3, 2)),
                                      (149, 150, "leading", (6, 6)),
@@ -531,7 +617,8 @@ def diagnose_pages(raws):
         raise ValueError("closing seam ownership or structure refusal: " +
                          json.dumps({"refusals": seam_refusals,
                                      "successful_assertions": len(results),
-                                     "formatting_observations": formatting},
+                                     "formatting_observations": formatting,
+                                     "page149_observations": page149},
                                     sort_keys=True))
     # Only a terminal punctuation observation, not independent scan collation.
     endings = []
@@ -600,6 +687,10 @@ def capture(graph, preflight, *, query=_api_query):
         _formatting_candidate(n, i, branch)[1]
         for n in (148, 150)
         for i, branch in enumerate(literal_branches(raws[n]))
+    ]
+    report["page149_observations"] = [
+        _page149_candidate(i, branch)[1]
+        for i, branch in enumerate(literal_branches(raws[149]))
     ]
     # Report only the exact bounded syntax token, never comment or prose.
     if wrapper_signature(raws[151]) == {"events": _PAGE151_RAW_EVENTS, "truncated": False}:

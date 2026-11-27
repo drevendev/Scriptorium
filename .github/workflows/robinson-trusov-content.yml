@@ -20,6 +20,8 @@ on:
       - "tests/test_robinson_trusov_opening_seam.py"
       - "scriptorium/robinson_trusov_closing_seams.py"
       - "tests/test_robinson_trusov_closing_seams.py"
+      - "scriptorium/robinson_trusov_missing_folios.py"
+      - "tests/test_robinson_trusov_missing_folios.py"
       - "scriptorium/robinson_trusov_errata.py"
       - "tests/test_robinson_trusov_errata.py"
       - "corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.template-shapes-summary.json"
@@ -58,6 +60,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_robinson_trusov_opening_seam.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_closing_seams.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_errata.py' -v
+          python -m unittest discover -s tests -p 'test_robinson_trusov_missing_folios.py' -v
       - name: Capture pinned Page contents with bounded MediaWiki requests
         run: |
           mkdir -p build/repro
@@ -368,6 +371,30 @@ jobs:
           assert not any(r[k] for k in ("source_text_committed", "corpus_admitted",
                                         "m2_parity_admissible", "historical_render_equivalence_proven"))
           PY
+      - name: Replay missing printed folios 210–211 without prose
+        run: |
+          python -m scriptorium.robinson_trusov_missing_folios \
+            --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
+            --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
+            --preflight build/repro/trusov-1775.content-preflight.json \
+            --preflight-receipt corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json \
+            --projection build/repro/trusov-1775.projection.json \
+            --output build/repro/trusov-1775.missing-folios.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("build/repro/trusov-1775.missing-folios.json").read_text())
+          assert r["six_paragraphs"] == 6 and r["scope_projection_byte_equal"]
+          assert r["lanes"]["raw"]["marker_counts"] == [1, 1]
+          for lane in ("transclusion", "projected", "rendered"):
+              row = r["lanes"][lane]
+              assert row["marker_counts"] == [0, 0]
+              assert row["paragraph_matches"] == [1] * 6
+              assert all(row[k] == 1 for k in ("whole_page_matches", "left_edge_matches",
+                         "right_edge_matches", "second_marker_continuation_matches"))
+          assert r["physical_scan_collation"] == "NOT_VERIFIED"
+          assert not any(r[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible"))
+          PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -384,5 +411,6 @@ jobs:
             build/repro/trusov-1775.opening-layout.json
             build/repro/trusov-1775.closing-seams.json
             build/repro/trusov-1775.errata-controls.json
+            build/repro/trusov-1775.missing-folios.json
           if-no-files-found: error
           retention-days: 7

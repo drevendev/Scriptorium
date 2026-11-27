@@ -180,6 +180,33 @@ class TrusovInteriorTests(unittest.TestCase):
             collector.seam_sensitivity(baseline)
 
 
+    def test_pinned_folio_variant_changes_one_seam_only(self):
+        from scriptorium.robinson_trusov_interior import folio_join_variants
+        pages = ["Синтетическая строка."] * 145
+        i = 106 - FIRST
+        pages[i] = "начало слова пере-\n "
+        pages[i + 1] = "\tход. конец"
+        literal, omitted, edits = folio_join_variants(pages)
+        expected = pages[:i] + ["начало слова пере-ход. конец"] + pages[i + 2:]
+        self.assertEqual(literal, "\n".join(expected))
+        expected[i] = "начало слова переход. конец"
+        self.assertEqual(omitted, "\n".join(expected))
+        self.assertEqual(edits, {"left_edge_whitespace_removed": 2,
+                                 "right_edge_whitespace_removed": 1,
+                                 "synthetic_LF_removed": 1, "ascii_hyphen_removed": 1})
+        for left, right in (("пере", "ход"), ("пере--", "ход"), ("пере-", "Ход")):
+            invalid = pages.copy()
+            invalid[i:i + 2] = [left, right]
+            with self.assertRaises(ValueError):
+                folio_join_variants(invalid)
+        with self.assertRaises(ValueError):
+            folio_join_variants(pages[:-1])
+
+    def test_folio_metrics_refuse_missing_proof(self):
+        from scriptorium.robinson_trusov_interior import folio_metric_sensitivity
+        with self.assertRaisesRegex(ValueError, "unverified pinned folio join evidence"):
+            folio_metric_sensitivity(InteriorCollector(), {}, {})
+
 
 if __name__ == "__main__":
     unittest.main()

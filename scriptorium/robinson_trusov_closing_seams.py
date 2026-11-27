@@ -529,7 +529,7 @@ def _seam_observation(left, right, i, edge, letters, branches, refusal):
     }
 
 
-def diagnose_pages(raws):
+def diagnose_pages(raws, *, body_observer=None):
     if set(raws) != set(PINS):
         raise ValueError("closing Page coverage incomplete")
     branches, refusals = {}, []
@@ -629,10 +629,83 @@ def diagnose_pages(raws):
         endings.append({"literal_branch": orthography,
                         "candidate_characters_including_spaces": len(final.strip()),
                         "ends_in_sentence_punctuation": True})
+    if body_observer is not None:
+        # Only after every ownership assertion and terminal check passed.
+        for n in sorted(branches):
+            for i, branch in enumerate(branches[n]):
+                if n == 149:
+                    scoped = standalone = plain_branch(branch)
+                else:
+                    edge = "trailing" if n == 148 else "leading"
+                    _, scoped = edge_scope(branch, edge)
+                    match = (TRAILING if edge == "trailing" else LEADING).search(branch)
+                    # Standalone retains the continuation; only the exact tags
+                    # are removed. This is a literal candidate, not rendering.
+                    # Scope patterns allow case variants. Use the actual
+                    # matched span to preserve surrounding whitespace.
+                    standalone = (branch[:match.start()] +
+                                  re.sub(r"</?noinclude>", "", match.group(), flags=re.I) +
+                                  branch[match.end():])
+                body_observer(n, i, scoped, standalone)
     return results, endings
 
 
-def capture(graph, preflight, *, query=_api_query):
+def compare_render_candidate(literal, rendered):
+    """Counts-only comparison; alignment is diagnostic, never collation."""
+    from .robinson_trusov_boundary_render import nonspace_edit_summary
+    left = "".join(literal.split())
+    row = {"literal_characters": len(literal),
+           "literal_nonspace_characters": len(left),
+           "rendered_nonspace_characters": None,
+           "classification": "RENDER_REFUSED",
+           "nonspace_edit_summary": {"status": "RENDER_REFUSED"}}
+    if rendered is not None:
+        right = "".join(rendered.split())
+        row.update(
+            rendered_nonspace_characters=len(right),
+            classification=("COLLAPSED_EQUAL" if literal.split() == rendered.split()
+                            else "NONSPACE_EQUAL_ONLY" if left == right
+                            else "NONSPACE_DIFFERS"),
+            nonspace_edit_summary=nonspace_edit_summary(literal, rendered),
+        )
+    return row
+
+
+def compare_current_closing_views(selected, candidates, *, query):
+    """Compare both literal branches against current pinned Page views."""
+    from .robinson_trusov_boundary_render import _observe
+    if set(candidates) != {(n, i) for n in PINS for i in (0, 1)}:
+        raise ValueError("closing comparison candidate coverage incomplete")
+    rows = []
+    for pin in sorted(selected, key=lambda p: p["page_sequence"]):
+        n = pin["page_sequence"]
+        result = query({"action": "parse", "oldid": str(pin["revision_id"]),
+                        "prop": "text|revid", "disableeditsection": "1"}).get("parse", {})
+        if (result.get("revid"), result.get("pageid"), result.get("title")) != (
+                pin["revision_id"], pin["page_id"], pin["title"]):
+            raise ValueError("closing Page render identity drift")
+        observation, rendered = _observe(result.get("text"), scope_counts=True)
+        rows.append({
+            "page_sequence": n, "revision_id": pin["revision_id"],
+            "source_mediawiki_sha1": pin["mediawiki_sha1"],
+            "render_status": observation["status"],
+            "rendered_characters": observation["candidate_characters"],
+            "skipped_body_nonspace_characters": observation["skipped_body_nonspace_characters"],
+            "branches": [
+                {"literal_branch": name,
+                 "transcluded_scope": compare_render_candidate(candidates[n, i][0], rendered),
+                 "standalone_scope": compare_render_candidate(candidates[n, i][1], rendered)}
+                for i, name in enumerate(("pre_reform", "modern"))
+            ],
+        })
+    return {"scope": "CURRENT_PAGE_VIEW_VS_LITERAL_CLOSING_SCOPE_DIAGNOSTIC",
+            "pages": rows, "historical_render_equivalence_proven": False,
+            "scan_collation_verified": False, "full_literary_body": "NOT_VERIFIED",
+            "corpus_admitted": False, "m2_parity_admissible": False,
+            "source_text_committed": False}
+
+
+def capture(graph, preflight, *, query=_api_query, compare_current=False):
     selected = [p for p in graph["pages"] if p["page_sequence"] in PINS]
     if {p["page_sequence"]: p["revision_id"] for p in selected} != PINS or len(selected) != 4:
         raise ValueError("closing Page graph identity drift")
@@ -674,7 +747,10 @@ def capture(graph, preflight, *, query=_api_query):
                            "source_mediawiki_sha1": pin["mediawiki_sha1"],
                            "wikitext_sha256": digest(raw),
                            "transclusion_input_sha256": digest(candidate)})
-    seams, endings = diagnose_pages(raws)
+    candidates = {}
+    def observe(n, i, scoped, standalone):
+        candidates[n, i] = (scoped, standalone)
+    seams, endings = diagnose_pages(raws, body_observer=observe if compare_current else None)
     report = {"schema_version": SCHEMA, "source_page_graph_sha256": preflight["source_page_graph_sha256"],
             "pages": sorted(identities, key=lambda p: p["page_sequence"]),
             "seams": seams, "final_branch_observations": endings,
@@ -697,6 +773,9 @@ def capture(graph, preflight, *, query=_api_query):
         _, opener = page151_branches(raws[151])
         report["page151_var_opener"] = opener
         report["page151_branch_comments_removed"] = 2
+    if compare_current:
+        report["current_page_view_comparison"] = compare_current_closing_views(
+            selected, candidates, query=query)
     return report
 
 
@@ -704,6 +783,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("graph", "receipt", "preflight", "preflight-receipt", "output"):
         parser.add_argument("--" + name, required=True, type=Path)
+    parser.add_argument("--compare-current", action="store_true")
     args = parser.parse_args()
     if args.output.exists() or args.output.resolve() in {
             p.resolve() for p in (args.graph, args.receipt, args.preflight, args.preflight_receipt)}:
@@ -712,7 +792,7 @@ def main():
     preflight = verify_receipt(args.preflight, args.preflight_receipt, graph)
     if sha256(args.graph.read_bytes()).hexdigest() != preflight["source_page_graph_sha256"]:
         raise ValueError("closing Page graph digest drift")
-    report = capture(graph, preflight)
+    report = capture(graph, preflight, compare_current=args.compare_current)
     with args.output.open("x", encoding="utf-8") as out:
         json.dump(report, out, ensure_ascii=False, sort_keys=True, indent=2)
         out.write("\n")

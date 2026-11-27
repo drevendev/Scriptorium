@@ -424,3 +424,58 @@ class ClosingSeamTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ClosingViewComparisonTests(unittest.TestCase):
+    def test_observer_retains_standalone_continuation_only(self):
+        values = {}
+        diagnose_pages(fixture(), body_observer=lambda n, i, a, b: values.update({(n, i): (a, b)}))
+        self.assertEqual(len(values), 8)
+        self.assertEqual(values[148, 0][0].strip(), "First.")
+        self.assertEqual(values[148, 0][1].strip(), "First. the")
+        self.assertEqual(values[150, 0][0].strip(), "Next ending.")
+        self.assertEqual(values[150, 0][1].strip(), "nished Next ending.")
+        self.assertEqual(values[149, 0][0], values[149, 0][1])
+
+    def test_no_observer_on_refused_seam(self):
+        raws = fixture()
+        raws[149] = page("wrong unfinished.", "an introduction unfinished.")
+        calls = []
+        with self.assertRaises(ValueError):
+            diagnose_pages(raws, body_observer=lambda *args: calls.append(args))
+        self.assertEqual(calls, [])
+
+    def test_comparison_distinguishes_missing_and_lexical_drift(self):
+        from scriptorium.robinson_trusov_closing_seams import compare_render_candidate
+        for a, b, status in (
+            ("PRIVATE word", "PRIVATE  word", "COLLAPSED_EQUAL"),
+            ("PRIVATE word", "PRIVATEword", "NONSPACE_EQUAL_ONLY"),
+            ("PRIVATE word", "PRIVATE!", "NONSPACE_DIFFERS"),
+            ("PRIVATE word", None, "RENDER_REFUSED"),
+        ):
+            row = compare_render_candidate(a, b)
+            self.assertEqual(row["classification"], status)
+            self.assertNotIn("PRIVATE", json.dumps(row))
+        self.assertIsNone(compare_render_candidate("a", None)["rendered_nonspace_characters"])
+
+    def test_render_identity_and_full_branch_coverage(self):
+        from scriptorium.robinson_trusov_closing_seams import compare_current_closing_views
+        values = {}
+        diagnose_pages(fixture(), body_observer=lambda n, i, a, b: values.update({(n, i): (a, b)}))
+        selected = [{"page_sequence": n, "revision_id": rid, "page_id": n,
+                     "title": str(n), "mediawiki_sha1": "pinned"} for n, rid in PINS.items()]
+        def query(params):
+            pin = next(p for p in selected if p["revision_id"] == int(params["oldid"]))
+            n = pin["page_sequence"]
+            return {"parse": {"revid": pin["revision_id"], "pageid": n, "title": str(n),
+                              "text": '<div class="pagetext">' + values[n, 0][1] + '</div>'}}
+        report = compare_current_closing_views(selected, values, query=query)
+        self.assertEqual(len(report["pages"]), 4)
+        for row in report["pages"]:
+            self.assertEqual(row["branches"][0]["standalone_scope"]["classification"], "COLLAPSED_EQUAL")
+        self.assertFalse(report["corpus_admitted"])
+        self.assertNotIn("unfinished", json.dumps(report))
+        with self.assertRaisesRegex(ValueError, "identity drift"):
+            compare_current_closing_views(selected, values, query=lambda _: {"parse": {}})
+        with self.assertRaisesRegex(ValueError, "coverage incomplete"):
+            compare_current_closing_views(selected, {}, query=query)

@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 636
+STATE_REVISION: 637
 PHASE: M1 — Deterministic FantLab surface
-LAST_COMMITTED_RUN_AT: 2026-11-26
-LAST_RESULT: #655 merged at 06db522b; exact opening layout receipt accepted, historical redirect unverified. #511 scan observation 7199703312 specifies three closing seams across Pages 148–151; prepare exact replay, not a full-body claim.
+LAST_COMMITTED_RUN_AT: 2026-11-27
+LAST_RESULT: #656 merged at 201a7c6e; six closing seam ownership assertions passed. Exact artifact 15169829964 ZIP SHA-256 9130087d058f56a0af6d27d913e203b67435bfc787b069a074326c4ec6023f51; counts 3/2, 6/6, 3/3; no duplicate.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-CLOSING-SEAMS-001
+UNIT_ID: SCRIP-TRUSOV-CLOSING-VIEW-CONTROLS-001
 ISSUE: #511
 STATUS: PR_CANDIDATE; later independent replay acceptance required
-BRANCH: scrip-trusov-closing-seams-20261126
-BASE: 06db522b6eb51170d31c5815de197b0cfb4c0154
+BRANCH: scrip-trusov-closing-render-controls-20261127
+BASE: 201a7c6ea734204cd3f375df790512cd81edeef9
 
-ACCEPTANCE: Replay four pinned closing oldids and preflight hashes, require six exact literal-branch seam ownership observations (3/2, 6/6, 3/3 excluded letters), refuse wrong scope/duplicates and retain source-free counts. Final punctuation is not full scan collation or historical renderer equivalence. All five boundaries remain excluded from measured body.
+ACCEPTANCE: Compare four pinned closing Page views with both literal orthographies and both standalone/transcluded scopes after six exact ownership assertions. Retain aggregate alignment counts only; no scan, historical renderer, full-body or corpus claim.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 complete two-pair Reader/export | Verify exact source-free CSV/table and browser/readback; retain scientific limits | Merged #650; exact live readback pending |
-| P1 | #511 closing seam replay | Verify three observed joins in both literal orthographies; reject wrong ownership; final punctuation only | #655 merged; four pinned closing revisions; full scan/renderer not verified |
+| P1 | #562 complete two-pair Reader/export | Verify exact source-free CSV/table and browser/readback; retain scientific limits | Merged #650; exact live readback verified previously |
+| P1 | #511 closing Page scope comparison | Compare both literal scopes and orthographies with current pinned Page views, then target remaining scan discrepancies | #656 merged; six ownership assertions PASS; historical renderer and facing errata unverified |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |

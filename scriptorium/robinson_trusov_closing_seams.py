@@ -334,6 +334,92 @@ def _edge_observation(branch, edge):
             "truncated": len(matches) > len(pairs)}
 
 
+
+# The previous pinned replay observed one additional angle pair in each
+# branch of Pages 148 and 150. A whitespace-only HTML comment is a candidate
+# explanation, not a fact inferred from counts. Verify the token and its
+# position at runtime after capture has bound the original bytes.
+_FORMATTING_SIDES = {(148, 0): "after", (148, 1): "before",
+                     (150, 0): "after", (150, 1): "before"}
+_BLANK_COMMENT = re.compile(r"<!--[ \t\r\n]{0,2}-->")
+_RESIDUAL_TOKEN = re.compile(r"<!--[\s\S]*?-->|<[^<>]*>|[<>]")
+
+
+def _formatting_candidate(page, index, branch):
+    """Remove only one verified blank edge comment; never normalize prose."""
+    report = {"page_sequence": page, "revision_id": PINS[page],
+              "branch_index": index, "classification": "NOT_APPLICABLE",
+              "tokens": [], "removed_characters": 0}
+    side = _FORMATTING_SIDES.get((page, index))
+    if side is None:
+        return branch, report
+    pairs = list(_OBSERVED_NOINCLUDE.finditer(branch))
+    if len(pairs) != 1:
+        report["classification"] = "NO_UNIQUE_EDGE_PAIR"
+        return branch, report
+    pair = pairs[0]
+    fragments = (("before", branch[:pair.start()], 0),
+                 ("after", branch[pair.end():], pair.end()))
+    tokens = []
+    for where, fragment, offset in fragments:
+        for match in _RESIDUAL_TOKEN.finditer(fragment):
+            token = match.group()
+            before = not fragment[:match.start()].strip()
+            after = not fragment[match.end():].strip()
+            kind = ("BLANK_COMMENT" if _BLANK_COMMENT.fullmatch(token)
+                    else "OTHER_COMMENT" if token.startswith("<!--")
+                    else "OTHER_ANGLE_MARKUP")
+            position = ("ONLY" if before and after else "START" if before
+                        else "END" if after else "INTERIOR")
+            tokens.append((offset + match.start(), offset + match.end(),
+                           {"side": where, "position": position, "kind": kind,
+                            "characters": len(token)}))
+            if len(tokens) > 4:
+                report["classification"] = "TOO_MANY_TOKENS"
+                report["tokens"] = [item[2] for item in tokens[:4]]
+                return branch, report
+    report["tokens"] = [item[2] for item in tokens]
+    if not tokens:
+        report["classification"] = "NO_RESIDUAL_TOKEN"
+        return branch, report
+    report["classification"] = "UNSUPPORTED_FORMATTING"
+    if len(tokens) != 1:
+        return branch, report
+    start, end, observed = tokens[0]
+    if observed["kind"] != "BLANK_COMMENT" or observed["side"] != side:
+        return branch, report
+    # The two short fragments were entirely nonliterary in the exact
+    # preceding replay (9 and 8 characters respectively). Require the
+    # entire side to be this single blank comment plus ASCII whitespace.
+    short_side = {(148, 0): 9, (150, 1): 8}.get((page, index))
+    if short_side is not None:
+        fragment = next(value for where, value, _ in fragments if where == side)
+        if len(fragment) != short_side or observed["position"] != "ONLY":
+            return branch, report
+        if any(c not in " \t\r\n" for c in fragment.replace(branch[start:end], "", 1)):
+            return branch, report
+    elif observed["position"] == "INTERIOR":
+        # An in-body token requires its own independently justified scope.
+        return branch, report
+    candidate = branch[:start] + branch[end:]
+    try:
+        # All existing lexical, noinclude and residual-markup rules still
+        # apply to the candidate. Compare the two projections exactly.
+        edge = "trailing" if page == 148 else "leading"
+        edge_scope(candidate, edge)
+        projected = transclusion_input(branch)
+        token = branch[start:end]
+        if projected.count(token) != 1:
+            return branch, report
+        if transclusion_input(candidate) != projected.replace(token, "", 1):
+            return branch, report
+    except ValueError:
+        return branch, report
+    report["classification"] = "VERIFIED_BLANK_EDGE_COMMENT"
+    report["removed_characters"] = end - start
+    return candidate, report
+
+
 # Only fixed reason codes may reach a hosted log; unexpected ValueErrors
 # remain refusals and their original message is never propagated.
 _SEAM_REASONS = {
@@ -417,6 +503,14 @@ def diagnose_pages(raws):
     if refusals:
         raise ValueError("closing Page structural refusal: " +
                          json.dumps(refusals, sort_keys=True))
+    formatting = []
+    for n in (148, 150):
+        cleaned = []
+        for i, branch in enumerate(branches[n]):
+            candidate, observation = _formatting_candidate(n, i, branch)
+            cleaned.append(candidate)
+            formatting.append(observation)
+        branches[n] = tuple(cleaned)
     results, seam_refusals = [], []
     for left, right, edge, counts in ((148, 149, "trailing", (3, 2)),
                                      (149, 150, "leading", (6, 6)),
@@ -436,7 +530,8 @@ def diagnose_pages(raws):
     if seam_refusals:
         raise ValueError("closing seam ownership or structure refusal: " +
                          json.dumps({"refusals": seam_refusals,
-                                     "successful_assertions": len(results)},
+                                     "successful_assertions": len(results),
+                                     "formatting_observations": formatting},
                                     sort_keys=True))
     # Only a terminal punctuation observation, not independent scan collation.
     endings = []
@@ -501,6 +596,11 @@ def capture(graph, preflight, *, query=_api_query):
             "historical_render_equivalence_proven": False,
             "full_literary_body": "NOT_VERIFIED", "source_text_committed": False,
             "corpus_admitted": False, "m2_parity_admissible": False}
+    report["formatting_observations"] = [
+        _formatting_candidate(n, i, branch)[1]
+        for n in (148, 150)
+        for i, branch in enumerate(literal_branches(raws[n]))
+    ]
     # Report only the exact bounded syntax token, never comment or prose.
     if wrapper_signature(raws[151]) == {"events": _PAGE151_RAW_EVENTS, "truncated": False}:
         _, opener = page151_branches(raws[151])

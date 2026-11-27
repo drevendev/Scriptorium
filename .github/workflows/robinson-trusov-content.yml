@@ -73,7 +73,9 @@ jobs:
             --interior-output build/repro/trusov-1775.interior-metrics.json \
             --seam-output build/repro/trusov-1775.seam-sensitivity.json \
             --full-candidate-output build/repro/trusov-1775.full-projection-candidate.json \
-            --boundary-render-output build/repro/trusov-1775.boundary-render.json
+            --boundary-render-output build/repro/trusov-1775.boundary-render.json \
+            --missing-folios-output build/repro/trusov-1775.missing-folios.json \
+            --folio-metric-output build/repro/trusov-1775.folio-join-metrics.json
       - name: Validate source-free output and preserve unknown scientific gates
         run: |
           python - <<'PY'
@@ -373,13 +375,6 @@ jobs:
           PY
       - name: Replay missing printed folios 210–211 without prose
         run: |
-          python -m scriptorium.robinson_trusov_missing_folios \
-            --graph corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph.json \
-            --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
-            --preflight build/repro/trusov-1775.content-preflight.json \
-            --preflight-receipt corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json \
-            --projection build/repro/trusov-1775.projection.json \
-            --output build/repro/trusov-1775.missing-folios.json
           python - <<'PY'
           import json
           from pathlib import Path
@@ -411,6 +406,15 @@ jobs:
               assert all(row[k] == 1 for k in ("whole_page_matches", "left_edge_matches",
                          "right_edge_matches", "second_marker_continuation_matches"))
           assert r["physical_scan_collation"] == "NOT_VERIFIED"
+          m = json.loads(Path("build/repro/trusov-1775.folio-join-metrics.json").read_text())
+          interior = json.loads(Path("build/repro/trusov-1775.interior-metrics.json").read_text())
+          assert m["scope"] == "INCOMPLETE_INTERIOR_SINGLE_SEAM_SENSITIVITY_ONLY"
+          assert m["baseline_normalized_sha256"] == interior["normalized_sha256"]
+          assert m["source_page_graph_sha256"] == r["source_page_graph_sha256"]
+          assert len(m["metric_rows"]) == 29
+          assert m["edits"]["ascii_hyphen_removed"] == 1
+          assert all(not m[k] for k in ("historical_page_join_verified", "corpus_admitted", "m2_parity_admissible", "source_text_committed"))
+          print("Single seam metric deltas:", [(row["metric_id"], row["delta_join_only"], row["delta_hyphen_only"]) for row in m["metric_rows"]])
           assert not any(r[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible"))
           PY
       - name: Upload only derived diagnostic identities
@@ -430,5 +434,6 @@ jobs:
             build/repro/trusov-1775.closing-seams.json
             build/repro/trusov-1775.errata-controls.json
             build/repro/trusov-1775.missing-folios.json
+            build/repro/trusov-1775.folio-join-metrics.json
           if-no-files-found: error
           retention-days: 7

@@ -518,10 +518,17 @@ def main(argv: Sequence[str] | None = None) -> int:
                         help="Fail-closed 150-Page projected metrics or explicit source-free blockers")
     parser.add_argument("--boundary-render-output", type=Path,
                         help="Current Page views plus transient whitespace-only control comparison")
+    parser.add_argument("--folio-metric-output", type=Path,
+                        help="Single pinned interior seam diagnostic; requires --interior-output and --missing-folios-output")
+    parser.add_argument("--missing-folios-output", type=Path,
+                        help="Fresh source-bound carrier evidence for the folio diagnostic")
     parser.add_argument("--delay", type=float, default=0.75)
     args = parser.parse_args(argv)
     if args.seam_output is not None and args.interior_output is None:
         parser.error("--seam-output requires --interior-output")
+    if (args.folio_metric_output is not None or args.missing_folios_output is not None) and (
+            args.folio_metric_output is None or args.missing_folios_output is None or args.interior_output is None):
+        parser.error("folio diagnostic requires both new outputs and --interior-output")
     outs = (args.output, args.preflight_output, args.shapes_output) + (
         (args.interior_output,) if args.interior_output else ()
     ) + ((args.seam_output,) if args.seam_output else ()) + (
@@ -529,6 +536,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     if args.boundary_render_output is not None:
         outs += (args.boundary_render_output,)
+    if args.folio_metric_output is not None:
+        outs += (args.folio_metric_output, args.missing_folios_output)
     if len({x.resolve() for x in outs}) != len(outs) or any(
             x.exists() or x.resolve() in (args.graph.resolve(), args.receipt.resolve()) for x in outs):
         parser.error("outputs must be distinct, new, and outside frozen inputs")
@@ -579,6 +588,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         boundary = capture(graph, report, graph_sha256=graph_sha256,
                            projected_controls=boundary_controls)
         outputs.append((args.boundary_render_output, boundary))
+    if args.folio_metric_output is not None:
+        from .robinson_trusov_missing_folios import capture as capture_folios
+        from .robinson_trusov_interior import folio_metric_sensitivity
+        proof = capture_folios(graph, preflight, report)
+        folio_metrics = folio_metric_sensitivity(collector, interior, proof)
+        outputs.extend([(args.missing_folios_output, proof), (args.folio_metric_output, folio_metrics)])
     for output, data in outputs:
         output.parent.mkdir(parents=True, exist_ok=True)
         with output.open("x", encoding="utf-8") as writer:

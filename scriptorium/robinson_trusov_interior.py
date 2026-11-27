@@ -282,6 +282,100 @@ class InteriorCollector:
         }
 
 
+def folio_join_variants(chunks: Sequence[str]) -> tuple[str, str, dict[str, int]]:
+    """Change only the /106→107 edge; retain all other synthetic LF joins."""
+    if len(chunks) != LAST - FIRST + 1:
+        raise ValueError("folio sensitivity requires all interior Pages")
+    i = 106 - FIRST
+    left, right = chunks[i], chunks[i + 1]
+    # Preserve and account for edge whitespace separately from the one hyphen.
+    a, b = left.rstrip(), right.lstrip()
+    if (len(a) < 2 or not a.endswith("-") or not a[-2].isalpha()
+            or not b or not b[0].isalpha() or not b[0].islower()):
+        raise ValueError("pinned folio edge shape drift")
+    prefix = "\n".join(chunks[:i]) + "\n"
+    suffix = "\n" + "\n".join(chunks[i + 2:])
+    literal = prefix + a + b + suffix
+    omitted = prefix + a[:-1] + b + suffix
+    return literal, omitted, {"left_edge_whitespace_removed": len(left) - len(a),
+                              "right_edge_whitespace_removed": len(right) - len(b),
+                              "synthetic_LF_removed": 1, "ascii_hyphen_removed": 1}
+
+
+def folio_metric_sensitivity(collector, baseline, proof):
+    """Measure an observed carrier-only join hypothesis, not a new text edition."""
+    from .robinson_trusov_missing_folios import PINS
+    if (proof.get("schema_version") != "scriptorium-trusov-missing-folios-v3"
+            or proof.get("source_page_graph_sha256") != baseline["source_page_graph_sha256"]
+            or proof.get("carrier_revision_id") != 5041937
+            or proof.get("left_edge_comparison") != "SOURCE_LITERAL_CARRIER_OMISSION"
+            or proof.get("scope_projection_byte_equal") is not True
+            or proof.get("current_render_edge_joins", {}).get("left") != {
+                "matches": {"DIRECT": 0, "SPACE": 0, "HYPHEN_OMITTED_DIRECT": 1,
+                            "HYPHEN_OMITTED_SPACE": 0}, "selected": "HYPHEN_OMITTED_DIRECT"}
+            or proof.get("pinned_left_hyphen") != {
+                "left_revision_id": PINS[106], "right_revision_id": PINS[107],
+                "terminal_ascii_hyphen_count": 1, "raw_before_terminal_noinclude": True,
+                "scoped_retained": True, "projected_retained": True}):
+        raise ValueError("unverified pinned folio join evidence")
+    selected = collector.selected
+    if set(selected) != set(range(FIRST, LAST + 1)):
+        raise ValueError("incomplete interior")
+    expected = [{"page_sequence": n, "revision_id": PINS[n],
+                 "projected_sha256": sha256(selected[n][1].encode("utf-8")).hexdigest()}
+                for n in sorted(PINS)]
+    actual = [{k: row[k] for k in ("page_sequence", "revision_id", "projected_sha256")}
+              for row in proof["pages"]]
+    if actual != expected or any(selected[n][0]["revision_id"] != PINS[n] for n in PINS):
+        raise ValueError("folio receipt/source identity mismatch")
+    chunks = [selected[n][1] for n in range(FIRST, LAST + 1)]
+    original = "\n".join(chunks)
+    if (baseline["status"] != "INCOMPLETE_INTERIOR_EXCERPT_NOT_CORPUS_OR_PARITY"
+            or baseline["join"]["joined_projected_wikitext_sha256"] != sha256(original.encode("utf-8")).hexdigest()
+            or baseline["normalized_sha256"] != sha256(normalize_text(original).encode("utf-8")).hexdigest()):
+        raise ValueError("folio baseline identity mismatch")
+    literal, omitted, edits = folio_join_variants(chunks)
+    if len(original) - len(literal) != 1 + edits["left_edge_whitespace_removed"] + edits["right_edge_whitespace_removed"] or len(literal) - len(omitted) != 1:
+        raise ValueError("folio character accounting mismatch")
+    values = [analyze_deterministic_metrics(t) for t in (original, literal, omitted)]
+    prior = {row["metric_id"]: row for row in baseline["metric_rows"]}
+    if len(prior) != 29 or len(baseline["metric_rows"]) != 29:
+        raise ValueError("invalid baseline metric surface")
+    for result, txt in zip(values, (original, literal, omitted)):
+        if (result["schema_version"] != SCHEMA_VERSION
+                or result["metric_contract_id"] != METRIC_CONTRACT_ID
+                or result["normalized_sha256"] != sha256(normalize_text(txt).encode("utf-8")).hexdigest()
+                or set(result["metrics"]) != set(prior)
+                or result["dependencies"].get("vocabulary_dictionary") is not None):
+            raise ValueError("folio metric contract drift")
+    rows = []
+    for key in sorted(prior):
+        metrics = [v["metrics"][key] for v in values]
+        a, b, c = (m["value"] for m in metrics)
+        if (type(a) is not type(prior[key]["actual"]) or a != prior[key]["actual"]
+                or any(m["unit"] != prior[key]["unit"] for m in metrics)
+                or any(v is not None and (type(v) not in (int, float) or not isfinite(v))
+                       for v in (a, b, c))
+                or key in _UNBOUND and any(v is not None for v in (a, b, c))):
+            raise ValueError("folio metric baseline drift")
+        rows.append({"metric_id": key, "unit": prior[key]["unit"],
+                     "baseline_one_LF": a, "literal_direct": b, "carrier_omission_direct": c,
+                     "delta_join_only": b - a if a is not None and b is not None else None,
+                     "delta_hyphen_only": c - b if b is not None and c is not None else None,
+                     "delta_total": c - a if a is not None and c is not None else None})
+    return {"schema_version": "scriptorium-trusov-folio-join-metrics-v1",
+            "scope": "INCOMPLETE_INTERIOR_SINGLE_SEAM_SENSITIVITY_ONLY",
+            "source_page_graph_sha256": baseline["source_page_graph_sha256"],
+            "baseline_normalized_sha256": baseline["normalized_sha256"],
+            "proof_pages": expected, "edge": [106, 107], "edits": edits,
+            "normalized_sha256": [v["normalized_sha256"] for v in values],
+            "normalized_characters_including_spaces": [len(normalize_text(t)) for t in (original, literal, omitted)],
+            "metric_rows": rows,
+            "full_literary_body": "NOT_VERIFIED", "print_collation": "NOT_VERIFIED",
+            "historical_page_join_verified": False, "corpus_admitted": False,
+            "m2_parity_admissible": False, "source_text_committed": False}
+
+
 def measure_interior(graph: Mapping[str, object], graph_sha256: str, *,
                      query: Callable[..., dict], delay: float = 0) -> dict[str, object]:
     """Source-verified one-pass standalone diagnostic, never a corpus admission."""

@@ -324,7 +324,15 @@ jobs:
                       assert combined["classification"] in {"RENDER_REFUSED", "SIZE_LIMIT", "EMPTY_BRANCH", "AMBIGUOUS_PLACEMENT", "NO_ORDERED_DISJOINT_PLACEMENT"}
                       assert combined["residual_regions"] is None and combined["order"] is None
                   print("Combined Page", p["page_sequence"], scope, combined)
-          assert c["combined_residual_layout_identity"] == "NOT_VERIFIED"
+          assert c["layout_module"]["revision_id"] == 5721277
+          assert c["layout_module"]["page_id"] > 0
+          assert c["layout_module"]["nonspace_characters"] == 32
+          for p in c["pages"]:
+              expected = {148: [3,2],149: [0,0],150: [6,6],151: [3,3]}[p["page_sequence"]]
+              assert p["layout_identity"]["continuation_nonspace_characters"] == expected
+              print("Closing layout identity", p["page_sequence"], p["layout_identity"])
+          assert c["combined_residual_layout_identity"] == "ALL_FOUR_STANDALONE_MATCH_MODULE_LABEL"
+          assert c["transcluded_residual_layout_identity"] == "ALL_FOUR_MATCH_LABEL_AND_CONTINUATIONS"
           for scope, status in c["combined_residual_cross_page_equality"].items():
               unique = all(p["combined_branches"][scope]["classification"] == "UNIQUE_ORDERED_PLACEMENT" for p in c["pages"])
               assert (status in {"ALL_FOUR_REGION_STRINGS_EQUAL", "REGION_STRINGS_DIFFER"}) if unique else status == "NOT_ESTABLISHED"

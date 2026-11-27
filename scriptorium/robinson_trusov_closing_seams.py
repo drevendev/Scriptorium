@@ -734,12 +734,88 @@ def _residual_equality(residuals):
             else "REGION_STRINGS_DIFFER")
 
 
-def compare_current_closing_views(selected, candidates, *, query):
+MODULE_TITLE = "Модуль:Дореформенная орфография"
+MODULE_REVISION = 5721277
+MODULE_LABEL = "Тот же текст в современной орфографии"
+
+
+def _layout_label(query):
+    """Read a pinned public module, not a presumed historical dependency."""
+    result = query({"action": "query", "prop": "revisions",
+                    "revids": str(MODULE_REVISION),
+                    "rvprop": "ids|sha1|content", "rvslots": "main"})
+    pages = result.get("query", {}).get("pages")
+    if not isinstance(pages, list) or len(pages) != 1:
+        raise ValueError("closing layout module response incomplete")
+    page = pages[0]
+    revisions = page.get("revisions")
+    if (page.get("title") != MODULE_TITLE or type(page.get("pageid")) is not int
+            or page["pageid"] <= 0 or not isinstance(revisions, list)
+            or len(revisions) != 1):
+        raise ValueError("closing layout module identity drift")
+    rev = revisions[0]
+    main = rev.get("slots", {}).get("main", {})
+    raw = main.get("content")
+    if (rev.get("revid") != MODULE_REVISION or main.get("contentmodel") != "Scribunto"
+            or not re.fullmatch(r"[0-9a-f]{40}", rev.get("sha1") or "")
+            or not isinstance(raw, str) or len(raw.encode("utf-8")) > 200_000):
+        raise ValueError("closing layout module revision drift")
+    labels = re.findall(r'<div class="newspell"[^<>]*>([^<>]+)</div>', raw)
+    if len(labels) != 1 or labels[0].split() != MODULE_LABEL.split():
+        raise ValueError("closing layout module label drift")
+    label = "".join(labels[0].split())
+    return label, {"revision_id": MODULE_REVISION, "page_id": page["pageid"],
+                   "nonspace_characters": len(label)}
+
+
+def _layout_residuals(n, values, standalone, transcluded, label):
+    """Exact region identity; no residual strings or short-span hashes escape.
+
+    The two scopes differ only by their already verified continuation at
+    the declared edge. Do not use length subtraction as identity proof.
+    """
+    expected = {148: (3, 2), 149: (0, 0), 150: (6, 6), 151: (3, 3)}[n]
+    leading, trailing = [], []
+    for (scoped, whole), count in zip(values, expected, strict=True):
+        scoped, whole = ("".join(x.split()) for x in (scoped, whole))
+        if not scoped or len(whole) - len(scoped) != count:
+            raise ValueError("closing layout continuation count drift")
+        if n == 148:
+            if not whole.startswith(scoped):
+                raise ValueError("closing layout trailing continuation drift")
+            leading.append("")
+            trailing.append(whole[len(scoped):])
+        elif n in (150, 151):
+            if not whole.endswith(scoped):
+                raise ValueError("closing layout leading continuation drift")
+            leading.append(whole[:count])
+            trailing.append("")
+        else:
+            if whole != scoped:
+                raise ValueError("closing layout plain scope drift")
+            leading.append("")
+            trailing.append("")
+        if any(not ch.isalpha() for ch in leading[-1] + trailing[-1]):
+            raise ValueError("closing layout nonletter continuation")
+    def status(observed, target):
+        if observed is None:
+            return "NOT_ESTABLISHED"
+        return "MATCH" if observed == target else "MISMATCH"
+    return {
+        "standalone_module_label": status(standalone, ("", label, "")),
+        "transcluded_label_and_continuations": status(
+            transcluded, (leading[0], trailing[0] + label + leading[1], trailing[1])),
+        "continuation_nonspace_characters": list(expected),
+    }
+
+
+def compare_current_closing_views(selected, candidates, *, query, verify_layout=False):
     """Compare both literal branches against current pinned Page views."""
     from .robinson_trusov_boundary_render import _observe
     if set(candidates) != {(n, i) for n in PINS for i in (0, 1)}:
         raise ValueError("closing comparison candidate coverage incomplete")
     rows = []
+    label, module = _layout_label(query) if verify_layout else (None, None)
     residuals = {"transcluded_scope": [], "standalone_scope": []}
     for pin in sorted(selected, key=lambda p: p["page_sequence"]):
         n = pin["page_sequence"]
@@ -754,7 +830,16 @@ def compare_current_closing_views(selected, candidates, *, query):
             combined[scope], residual = _combined_view(
                 candidates[n, 0][index], candidates[n, 1][index], rendered)
             residuals[scope].append(residual)
+        layout = None
+        if verify_layout:
+            # Only the known branch order supports the declared edge equation.
+            layout = _layout_residuals(
+                n, [candidates[n, i] for i in (0, 1)],
+                residuals["standalone_scope"][-1] if combined["standalone_scope"]["order"] == "PRE_REFORM_THEN_MODERN" else None,
+                residuals["transcluded_scope"][-1] if combined["transcluded_scope"]["order"] == "PRE_REFORM_THEN_MODERN" else None,
+                label)
         rows.append({
+            "layout_identity": layout,
             "combined_branches": combined,
             "page_sequence": n, "revision_id": pin["revision_id"],
             "source_mediawiki_sha1": pin["mediawiki_sha1"],
@@ -771,7 +856,17 @@ def compare_current_closing_views(selected, candidates, *, query):
     return {"scope": "CURRENT_PAGE_VIEW_VS_LITERAL_CLOSING_SCOPE_DIAGNOSTIC",
             "pages": rows, "combined_residual_cross_page_equality": {
                 scope: _residual_equality(values) for scope, values in residuals.items()},
-            "combined_residual_layout_identity": "NOT_VERIFIED",
+            "layout_module": module,
+            "combined_residual_layout_identity": (
+                "ALL_FOUR_STANDALONE_MATCH_MODULE_LABEL"
+                if verify_layout and len(rows) == len(PINS) and all(
+                    p["layout_identity"]["standalone_module_label"] == "MATCH" for p in rows)
+                else "NOT_VERIFIED"),
+            "transcluded_residual_layout_identity": (
+                "ALL_FOUR_MATCH_LABEL_AND_CONTINUATIONS"
+                if verify_layout and len(rows) == len(PINS) and all(
+                    p["layout_identity"]["transcluded_label_and_continuations"] == "MATCH" for p in rows)
+                else "NOT_VERIFIED"),
             "historical_render_equivalence_proven": False,
             "scan_collation_verified": False, "full_literary_body": "NOT_VERIFIED",
             "corpus_admitted": False, "m2_parity_admissible": False,
@@ -848,7 +943,7 @@ def capture(graph, preflight, *, query=_api_query, compare_current=False):
         report["page151_branch_comments_removed"] = 2
     if compare_current:
         report["current_page_view_comparison"] = compare_current_closing_views(
-            selected, candidates, query=query)
+            selected, candidates, query=query, verify_layout=True)
     return report
 
 

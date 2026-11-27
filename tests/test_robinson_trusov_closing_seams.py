@@ -529,3 +529,85 @@ class CombinedViewTests(unittest.TestCase):
                          "REGION_STRINGS_DIFFER")
         self.assertEqual(_residual_equality([same]*3 + [None]), "NOT_ESTABLISHED")
         self.assertEqual(_residual_equality([same]*3), "NOT_ESTABLISHED")
+
+class ClosingLayoutIdentityTests(unittest.TestCase):
+    @staticmethod
+    def module_response(label="Тот же текст в современной орфографии", revision=5721277):
+        return {"query": {"pages": [{"title": "Модуль:Дореформенная орфография",
+            "pageid": 123, "revisions": [{"revid": revision, "sha1": "a"*40,
+                "slots": {"main": {"contentmodel": "Scribunto",
+                    "content": '<div class="newspell" style="color: inherit;">' + label + " </div>"}}}]}]}}
+
+    def test_pinned_module_label_refuses_identity_and_equal_length_drift(self):
+        from scriptorium.robinson_trusov_closing_seams import _layout_label
+        def query(params):
+            self.assertEqual(params["revids"], "5721277")
+            return self.module_response()
+        label, receipt = _layout_label(query)
+        self.assertEqual(len(label), 32)
+        self.assertEqual(receipt, {"revision_id": 5721277, "page_id": 123,
+                                  "nonspace_characters": 32})
+        self.assertNotIn(label, json.dumps(receipt, ensure_ascii=False))
+        for response in (
+            self.module_response(revision=5721278),
+            self.module_response(label="Вот же текст в современной орфографии"),
+            self.module_response(label="Тотже текст в современной орфографии"),
+            {"query": {"pages": []}},
+        ):
+            with self.assertRaises(ValueError):
+                _layout_label(lambda _: response)
+
+    def test_exact_label_and_continuations_not_counts(self):
+        from scriptorium.robinson_trusov_closing_seams import _layout_residuals
+        label = "LABEL"
+        for page, values, transcluded in (
+            (148, [("alpha", "alpha xyz"), ("beta", "beta uv")], ("", "xyzLABEL", "uv")),
+            (149, [("alpha", "alpha"), ("beta", "beta")], ("", "LABEL", "")),
+            (150, [("alpha", "abcdef alpha"), ("beta", "uvwxyz beta")], ("abcdef", "LABELuvwxyz", "")),
+            (151, [("alpha", "abc alpha"), ("beta", "uvw beta")], ("abc", "LABELuvw", "")),
+        ):
+            with self.subTest(page=page):
+                row = _layout_residuals(page, values, ("", label, ""), transcluded, label)
+                self.assertEqual(row["standalone_module_label"], "MATCH")
+                self.assertEqual(row["transcluded_label_and_continuations"], "MATCH")
+                wrong = _layout_residuals(page, values, ("", "LABEX", ""),
+                    (transcluded[0], transcluded[1].replace("LABEL", "LABEX"), transcluded[2]), label)
+                self.assertEqual(wrong["standalone_module_label"], "MISMATCH")
+                self.assertEqual(wrong["transcluded_label_and_continuations"], "MISMATCH")
+                self.assertNotIn(label, json.dumps(row))
+                missing = _layout_residuals(page, values, None, None, label)
+                self.assertEqual(missing["standalone_module_label"], "NOT_ESTABLISHED")
+                self.assertEqual(missing["transcluded_label_and_continuations"], "NOT_ESTABLISHED")
+        for values in (
+            [("alpha", "xyz alpha"), ("beta", "beta uv")],
+            [("alpha", "alpha x!z"), ("beta", "beta uv")],
+            [("alpha", "alpha xy"), ("beta", "beta uv")],
+        ):
+            with self.assertRaises(ValueError):
+                _layout_residuals(148, values, None, None, label)
+
+    def test_four_page_integration_reports_no_residual_strings(self):
+        from scriptorium.robinson_trusov_closing_seams import compare_current_closing_views
+        label = "Тот же текст в современной орфографии"
+        selected = [{"page_sequence": n, "revision_id": rid, "page_id": n,
+                     "title": str(n), "mediawiki_sha1": "pinned"} for n, rid in PINS.items()]
+        values = {(n, i): (v, v + " " + edge if n == 148 else edge + " " + v)
+                  for n, edges in ((148, ("xyz", "uv")), (149, ("", "")),
+                                   (150, ("abcdef", "uvwxyz")), (151, ("abc", "uvw")))
+                  for i, (v, edge) in enumerate(zip(("ALPHA", "BETA"), edges))}
+        def query(params):
+            if params["action"] == "query":
+                return self.module_response()
+            pin = next(p for p in selected if p["revision_id"] == int(params["oldid"]))
+            n = pin["page_sequence"]
+            html = '<div class="pagetext">' + values[n, 0][1] + ' <div class="newspell">' + label + '</div> ' + values[n, 1][1] + '</div>'
+            return {"parse": {"revid": pin["revision_id"], "pageid": n,
+                              "title": str(n), "text": html}}
+        report = compare_current_closing_views(selected, values, query=query, verify_layout=True)
+        self.assertEqual(report["combined_residual_layout_identity"], "ALL_FOUR_STANDALONE_MATCH_MODULE_LABEL")
+        self.assertEqual(report["transcluded_residual_layout_identity"], "ALL_FOUR_MATCH_LABEL_AND_CONTINUATIONS")
+        self.assertFalse(report["historical_render_equivalence_proven"])
+        self.assertFalse(report["corpus_admitted"])
+        self.assertNotIn(label, json.dumps(report, ensure_ascii=False))
+        self.assertNotIn("ALPHA", json.dumps(report))
+

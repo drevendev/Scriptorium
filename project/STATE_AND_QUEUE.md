@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 640
+STATE_REVISION: 641
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-27
-LAST_RESULT: #659 merged at 817738b1; exact layout module label and owned continuations confirmed across four closing Pages. #511 comment 7217506928 records three manually corrected readings on leaves 21 and 60; exact-byte errata replay candidate follows, not yet accepted.
+LAST_RESULT: #660 merged at f5a2ebcd; three pinned corrected errata controls verified in raw and projected scope. Missing printed pp. 210–211 are electronically represented on Page 107; exact replay candidate is next.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-ERRATA-CONTROLS-001
+UNIT_ID: SCRIP-TRUSOV-MISSING-FOLIOS-001
 ISSUE: #511
 STATUS: PR_CANDIDATE; later independent replay acceptance required
-BRANCH: scrip-trusov-errata-controls-20261127
-BASE: 817738b1bc1d796fd9211a1c17ef16568ebff947
+BRANCH: scrip-trusov-missing-folios-20261127
+BASE: f5a2ebcda80d013633eb29f8a7302a3b9d67a46e
 
-ACCEPTANCE: Re-fetch leaves 21/60 at pinned oldids, bind raw and transclusion bytes to the accepted preflight and projected bytes to the replay projection. Classify three independently scan-derived exact token-window witnesses as printed/corrected/neither/ambiguous; require unique corrected matches in both raw and projected scope, no replacement and no source prose. Full errata coverage and leaf 152 remain unknown. Preserve six exact seams, five excluded boundaries and all scientific gates.
+ACCEPTANCE: Bind Pages 106–108 to frozen bytes; verify two exact noinclude markers, the complete marker-bounded slice once, four raw pieces and four rendered paragraph intersections (two partial edges), continuous second marker sentence and both neighbor edges in projected and current pinned-carrier view. The /106 terminal literal hyphen must remain in raw/scoped/projected bytes; only one uniquely matching current-carrier comparison window may omit it. Retain only digests/counts. Physical scan collation, full body and metric effects remain unverified until separately established.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 exact errata control replay | Three corrected readings independently bound to frozen raw/projected bytes, counts only | #659 merged; manual scan controls recorded; later exact-head acceptance required |
+| P1 | #511 missing printed folios replay | Exact noinclude scope, unique slice, measured paragraph coverage and both edges; literal source hyphen retained | #660 merged; Page 107 pins established; physical pp. 210–211 unavailable in this carrier |
 | P2 | #511 closing print and facing errata | Resolve remaining physical leaf 152 and editorial coverage; distinguish corrected witness from diplomatic print | Three sampled controls do not establish full errata coverage; leaf 152 inaccessible in prior browser run |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |

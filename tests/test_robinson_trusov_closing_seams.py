@@ -3,7 +3,7 @@ import unittest
 
 from scriptorium.robinson_trusov_closing_seams import (
     PINS, capture, diagnose, diagnose_pages, digest, literal_branches,
-    wrapper_signature, page151_branches,
+    wrapper_signature, page151_branches, _formatting_candidate,
 )
 from scriptorium.robinson_trusov_content import transclusion_input
 
@@ -39,6 +39,56 @@ class ClosingSeamTests(unittest.TestCase):
         self.assertTrue(all(x["ends_in_sentence_punctuation"] for x in endings))
         self.assertNotIn("unfinished", json.dumps([seams, endings]))
         self.assertNotIn("Final sentence", json.dumps([seams, endings]))
+
+
+    def test_blank_edge_comment_projection_preserves_all_six_owners(self):
+        raws = fixture()
+        raws[148] = page("First. <noinclude>the</noinclude><!-- -->\n",
+                         "<!-- --> First. <noinclude>an</noinclude>")
+        raws[150] = page("<noinclude>nished</noinclude> Next ending.<!-- -->",
+                         "<!-- --><noinclude>nished</noinclude> More ending.")
+        for n in (148, 150):
+            for i, branch in enumerate(literal_branches(raws[n])):
+                candidate, observed = _formatting_candidate(n, i, branch)
+                self.assertEqual(observed["classification"], "VERIFIED_BLANK_EDGE_COMMENT")
+                self.assertEqual(candidate, branch.replace("<!-- -->", "", 1))
+                self.assertEqual(observed["removed_characters"], 8)
+                self.assertEqual(observed["tokens"][0]["kind"], "BLANK_COMMENT")
+        seams, endings = diagnose_pages(raws)
+        self.assertEqual([x["excluded_letters"] for x in seams], [3, 2, 6, 6, 3, 3])
+        self.assertTrue(all(x["owner_matches"] for x in seams))
+
+    def test_blank_edge_comment_refuses_unobserved_scope_and_token(self):
+        for n, i, branch in (
+            (148, 0, "First. <noinclude>the</noinclude><!--x--> "),
+            (148, 0, "First. <noinclude>the</noinclude><!-- -->"),
+            (148, 0, "First. <noinclude>the</noinclude><br /> "),
+            (148, 0, "First. <noinclude>the</noinclude><!-- -->\nX"),
+            (148, 1, "First<!-- -->word. <noinclude>an</noinclude>"),
+            (148, 1, "First. <noinclude>an</noinclude><!-- -->"),
+            (150, 0, "<noinclude>nished</noinclude> Next<!-- -->word."),
+            (150, 1, "<!-- --> <noinclude>nished</noinclude> More ending."),
+            (150, 1, "<!-- --><noinclude>nished</noinclude> More<!-- --> ending."),
+            (149, 0, "<!-- -->body"),
+        ):
+            with self.subTest(page=n, index=i):
+                candidate, observed = _formatting_candidate(n, i, branch)
+                self.assertEqual(candidate, branch)
+                self.assertNotEqual(observed["classification"], "VERIFIED_BLANK_EDGE_COMMENT")
+                self.assertNotIn(branch, json.dumps(observed))
+
+    def test_formatting_refusal_reports_token_kind_without_content(self):
+        raws = fixture()
+        raws[148] = page("First. <noinclude>the</noinclude><!--PRIVATE-->",
+                         "First. <noinclude>an</noinclude>")
+        with self.assertRaisesRegex(ValueError, "closing seam ownership") as caught:
+            diagnose_pages(raws)
+        self.assertNotIn("PRIVATE", str(caught.exception))
+        report = json.loads(str(caught.exception).split(": ", 1)[1])
+        row = report["formatting_observations"][0]
+        self.assertEqual(row["classification"], "UNSUPPORTED_FORMATTING")
+        self.assertEqual(row["tokens"], [{"side": "after", "position": "ONLY",
+                                        "kind": "OTHER_COMMENT", "characters": 14}])
 
     def test_refuse_wrong_owner_duplicate_and_unrelated_note(self):
         for left, right, edge, count in (

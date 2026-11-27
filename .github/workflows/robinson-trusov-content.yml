@@ -384,6 +384,7 @@ jobs:
           import json
           from pathlib import Path
           r = json.loads(Path("build/repro/trusov-1775.missing-folios.json").read_text())
+          print(json.dumps(r, ensure_ascii=True, sort_keys=True))
           assert r["six_paragraphs"] == 6 and r["scope_projection_byte_equal"]
           assert r["lanes"]["raw"]["marker_counts"] == [1, 1]
           for lane in ("transclusion", "projected", "rendered"):

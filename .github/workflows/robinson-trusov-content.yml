@@ -385,12 +385,20 @@ jobs:
           from pathlib import Path
           r = json.loads(Path("build/repro/trusov-1775.missing-folios.json").read_text())
           print(json.dumps(r, ensure_ascii=True, sort_keys=True))
-          assert r["six_paragraphs"] == 6 and r["scope_projection_byte_equal"]
+          assert r["schema_version"] == "scriptorium-trusov-missing-folios-v2"
+          assert r["scope_projection_byte_equal"] and r["raw_blank_line_pieces"] > 0
+          p = r["rendered_paragraphs"]
+          assert p["status"] == "COVERED" and p["intersected_count"] > 0
+          assert len(p["intersection_characters"]) == p["intersected_count"]
+          assert all(x["selected"] in ("DIRECT", "SPACE") for x in r["current_render_edge_joins"].values())
+          assert r["lanes"]["raw"]["paragraph_matches"] == [1] * r["raw_blank_line_pieces"]
+          assert r["lanes"]["raw"]["rendered_intersection_matches"] == [1] * p["intersected_count"]
           assert r["lanes"]["raw"]["marker_counts"] == [1, 1]
           for lane in ("transclusion", "projected", "rendered"):
               row = r["lanes"][lane]
               assert row["marker_counts"] == [0, 0]
-              assert row["paragraph_matches"] == [1] * 6
+              assert row["paragraph_matches"] == [1] * r["raw_blank_line_pieces"]
+              assert row["rendered_intersection_matches"] == [1] * p["intersected_count"]
               assert all(row[k] == 1 for k in ("whole_page_matches", "left_edge_matches",
                          "right_edge_matches", "second_marker_continuation_matches"))
           assert r["physical_scan_collation"] == "NOT_VERIFIED"

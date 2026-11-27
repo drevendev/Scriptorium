@@ -3,7 +3,7 @@ import unittest
 
 from scriptorium.robinson_trusov_closing_seams import (
     PINS, capture, diagnose, diagnose_pages, digest, literal_branches,
-    wrapper_signature, page151_branches, _formatting_candidate,
+    wrapper_signature, page151_branches, _formatting_candidate, _page149_candidate,
 )
 from scriptorium.robinson_trusov_content import transclusion_input
 
@@ -89,6 +89,60 @@ class ClosingSeamTests(unittest.TestCase):
         self.assertEqual(row["classification"], "UNSUPPORTED_FORMATTING")
         self.assertEqual(row["tokens"], [{"side": "after", "position": "ONLY",
                                         "kind": "OTHER_COMMENT", "characters": 14}])
+
+    def test_page149_blank_edges_shared_by_both_joins(self):
+        raws = fixture()
+        original = literal_branches(raws[149])
+        variants = ("<!-- -->" + original[0], original[1] + "\n<!-- -->")
+        raws[149] = page(*variants)
+        for i, value in enumerate(variants):
+            candidate, report = _page149_candidate(i, value)
+            self.assertEqual(candidate, value.replace("<!-- -->", "", 1))
+            self.assertEqual(report["classification"], "VERIFIED_PAGE149_BLANK_EDGE_COMMENT")
+            self.assertEqual(report["shared_by_joins"], [[148, 149], [149, 150]])
+            self.assertEqual(report["removed_characters"], 8)
+            self.assertEqual(report["tokens"][0]["position"], ("START", "END")[i])
+        seams, _ = diagnose_pages(raws)
+        self.assertEqual([row["excluded_letters"] for row in seams], [3, 2, 6, 6, 3, 3])
+        self.assertTrue(all(row["owner_matches"] for row in seams))
+
+    def test_page149_unknown_and_nonedge_tokens_remain_refused(self):
+        for branch, kind, position in (
+            ("<!--PRIVATE_SECRET--> the unfinished.", "OTHER_COMMENT", "START"),
+            ("the <!-- --> unfinished.", "BLANK_COMMENT", "INTERIOR"),
+            ("the unfinished.<br />", "BREAK_TAG", "END"),
+            ("the ''PRIVATE_SECRET'' unfinished.", "APOSTROPHE_RUN", "INTERIOR"),
+            ("the [PRIVATE_SECRET] unfinished.", "BRACKET_OR_BRACE", "INTERIOR"),
+            ("<!-- -->the unfinished.<!-- -->", "BLANK_COMMENT", "START"),
+            ("the unfinished.<!--  -->", "BLANK_COMMENT", "END"),
+            ("the <noinclude>PRIVATE_SECRET</noinclude> unfinished.", "NOINCLUDE", "INTERIOR"),
+        ):
+            with self.subTest(kind=kind, position=position):
+                candidate, row = _page149_candidate(0, branch)
+                self.assertEqual(candidate, branch)
+                self.assertEqual(row["classification"], "UNSUPPORTED_PAGE149_MARKUP")
+                self.assertEqual(row["removed_characters"], 0)
+                self.assertEqual(row["tokens"][0]["kind"], kind)
+                self.assertEqual(row["tokens"][0]["position"], position)
+                self.assertNotIn("PRIVATE_SECRET", json.dumps(row))
+        _, row = _page149_candidate(0, "the " + "<br />" * 10 + " unfinished.")
+        self.assertEqual(row["token_count"], 10)
+        self.assertEqual(len(row["tokens"]), 8)
+        self.assertTrue(row["truncated"])
+
+    def test_page149_refusal_shared_and_other_join_still_passes(self):
+        raws = fixture()
+        raws[149] = page("the <br /> unfinished.", "an ''PRIVATE_SECRET'' unfinished.")
+        with self.assertRaisesRegex(ValueError, "closing seam ownership") as caught:
+            diagnose_pages(raws)
+        report = json.loads(str(caught.exception).split(": ", 1)[1])
+        self.assertNotIn("PRIVATE_SECRET", str(caught.exception))
+        self.assertEqual(report["successful_assertions"], 2)
+        self.assertEqual(len(report["refusals"]), 4)
+        self.assertEqual([row["revision_id"] for row in report["page149_observations"]],
+                         [4958661, 4958661])
+        self.assertEqual([row["tokens"][0]["kind"] for row in report["page149_observations"]],
+                         ["BREAK_TAG", "APOSTROPHE_RUN"])
 
     def test_refuse_wrong_owner_duplicate_and_unrelated_note(self):
         for left, right, edge, count in (

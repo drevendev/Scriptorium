@@ -279,7 +279,7 @@ def assemble_boundary_metrics(collector, baseline, boundaries):
         "schema_version": "scriptorium-trusov-boundary-assembly-v1",
         "scope": "INFERRED_150_PAGE_HISTORICAL_BRANCH_ASSEMBLY_DIAGNOSTIC",
         "source_page_graph_sha256": baseline["source_page_graph_sha256"],
-        "source_revision_list_sha256": baseline["source_revision_list_sha256"],
+        "interior_source_revision_list_sha256": baseline["source_revision_list_sha256"],
         "baseline_normalized_sha256": baseline["normalized_sha256"],
         "page_interval": {"from": 2, "to": 151, "count": 150},
         "boundary_pages": [{"page_sequence": n, "characters": len(boundaries[n]),

@@ -278,6 +278,92 @@ def page151_branches(raw):
     return tuple(cleaned), opener
 
 
+
+# Observation only: broader tag matching never authorizes a continuation.
+_OBSERVED_NOINCLUDE = re.compile(
+    r"(?P<open><noinclude\b[^>]*>)(?P<body>.*?)"
+    r"(?P<close></noinclude\b[^>]*>)", re.I | re.S,
+)
+
+
+def _fragment_counts(value):
+    return {
+        "characters": len(value),
+        "whitespace": sum(c.isspace() for c in value),
+        "letters": sum(c.isalpha() for c in value),
+        "digits": sum(c.isdigit() for c in value),
+        "angle_brackets": value.count("<") + value.count(">"),
+        "apostrophes": value.count("'"),
+        "other": sum(not (c.isspace() or c.isalpha() or c.isdigit()
+                          or c in "<>'") for c in value),
+    }
+
+
+def _edge_observation(branch, edge):
+    """Summarize a failed edge's shape without accepting or logging prose."""
+    strict = (LEADING if edge == "leading" else TRAILING).search(branch)
+    opens = len(re.findall(r"<noinclude\b", branch, re.I))
+    closes = len(re.findall(r"</noinclude\b", branch, re.I))
+    matches = list(_OBSERVED_NOINCLUDE.finditer(branch))
+    pairs = []
+    for match in matches[:4]:
+        prefix, body, suffix = (branch[:match.start()], match.group("body"),
+                                branch[match.end():])
+        pairs.append({
+            "exact_tags": (match.group("open").lower() == "<noinclude>"
+                           and match.group("close").lower() == "</noinclude>"),
+            "body_counts": _fragment_counts(body),
+            "prefix_counts": _fragment_counts(prefix),
+            "suffix_counts": _fragment_counts(suffix),
+            "at_expected_edge": not (prefix if edge == "leading" else suffix).strip(),
+            "letter_only_body": bool(body.strip()) and body.strip().isalpha(),
+        })
+    if strict is not None:
+        shape = "STRICT_MATCH"
+    elif not opens and not closes:
+        shape = "ABSENT"
+    elif not matches or opens != closes or len(matches) != opens:
+        shape = "UNPAIRED_OR_NESTED"
+    elif any(p["exact_tags"] and p["body_counts"]["angle_brackets"] == 0
+             for p in pairs):
+        shape = "ADDITIONAL_EDGE_STRUCTURE"
+    else:
+        shape = "NONLITERAL_SCOPE"
+    return {"shape": shape, "opens": opens, "closes": closes,
+            "pair_count": len(matches), "pairs": pairs,
+            "truncated": len(matches) > len(pairs)}
+
+
+# Only fixed reason codes may reach a hosted log; unexpected ValueErrors
+# remain refusals and their original message is never propagated.
+_SEAM_REASONS = {
+    "expected closing edge noinclude missing": "EDGE_NOINCLUDE_MISSING",
+    "closing edge is not a short letter-only continuation": "EDGE_TOKEN_NOT_LITERAL",
+    "additional closing edge scope": "ADDITIONAL_EDGE_SCOPE",
+    "additional closing noinclude span": "ADDITIONAL_NOINCLUDE",
+    "closing branch has unresolved markup": "UNRESOLVED_EDGE_MARKUP",
+    "unexpected closing branch markup": "UNEXPECTED_BRANCH_MARKUP",
+    "unknown closing seam direction": "UNKNOWN_DIRECTION",
+    "closing seam has no lexical boundary": "MISSING_LEXICAL_BOUNDARY",
+    "closing seam count or ownership differs from scan observation": "COUNT_OR_OWNERSHIP",
+}
+
+
+def _seam_observation(left, right, i, edge, letters, branches, refusal):
+    expected_page = left if edge == "trailing" else right
+    return {
+        "left_page": left, "right_page": right,
+        "branch_index": i, "expected_edge": edge,
+        "expected_letters": letters, "expected_edge_page": expected_page,
+        "expected_edge_revision": PINS[expected_page],
+        "reason": _SEAM_REASONS.get(str(refusal), "UNCLASSIFIED_REFUSAL"),
+        "left_trailing": _edge_observation(branches[left][i], "trailing"),
+        "left_leading": _edge_observation(branches[left][i], "leading"),
+        "right_leading": _edge_observation(branches[right][i], "leading"),
+        "right_trailing": _edge_observation(branches[right][i], "trailing"),
+    }
+
+
 def diagnose_pages(raws):
     if set(raws) != set(PINS):
         raise ValueError("closing Page coverage incomplete")
@@ -331,15 +417,27 @@ def diagnose_pages(raws):
     if refusals:
         raise ValueError("closing Page structural refusal: " +
                          json.dumps(refusals, sort_keys=True))
-    results = []
+    results, seam_refusals = [], []
     for left, right, edge, counts in ((148, 149, "trailing", (3, 2)),
                                      (149, 150, "leading", (6, 6)),
                                      (150, 151, "leading", (3, 3))):
         for i, orthography in enumerate(("pre_reform", "modern")):
-            result = diagnose(branches[left][i], branches[right][i],
-                              edge=edge, letters=counts[i])
+            try:
+                result = diagnose(branches[left][i], branches[right][i],
+                                  edge=edge, letters=counts[i])
+            except ValueError as refusal:
+                seam_refusals.append(_seam_observation(
+                    left, right, i, edge, counts[i], branches, refusal))
+                continue
             results.append({"left_page": left, "right_page": right,
                             "literal_branch": orthography, **result})
+    # Inspect all six independent assertions on the same pinned bytes, but
+    # never return a partial report or admit a body if any assertion failed.
+    if seam_refusals:
+        raise ValueError("closing seam ownership or structure refusal: " +
+                         json.dumps({"refusals": seam_refusals,
+                                     "successful_assertions": len(results)},
+                                    sort_keys=True))
     # Only a terminal punctuation observation, not independent scan collation.
     endings = []
     for i, orthography in enumerate(("pre_reform", "modern")):

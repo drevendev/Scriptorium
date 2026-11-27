@@ -220,3 +220,106 @@ def measure_full_candidate(graph: Mapping[str, object], graph_sha256: str, *,
     projection = capture_projection(graph, graph_sha256, query=query, delay=delay,
                                     page_observer=collector.observe)
     return collector.build(graph, graph_sha256, projection)
+
+
+BOUNDARY_PAGES = (2, 148, 149, 150, 151)
+
+
+def assemble_boundary_metrics(collector, baseline, boundaries):
+    """Separate historical-branch diagnostic; never replace the frozen interior.
+
+    The caller supplies only boundary strings from the pinned scope replays.
+    One synthetic LF per Page is retained, including the /106→107 hyphen.
+    """
+    if (set(boundaries) != set(BOUNDARY_PAGES)
+            or set(collector.selected) != set(range(3, 148))
+            or baseline.get("status") != "INCOMPLETE_INTERIOR_EXCERPT_NOT_CORPUS_OR_PARITY"):
+        raise ValueError("incomplete boundary assembly")
+    chunks = {n: value[1] for n, value in collector.selected.items()}
+    if any(not isinstance(t, str) or not t.strip() or _UNRENDERED_MARKUP.search(t)
+           or any(c in t for c in "{}<>[]") or "''" in t
+           for t in boundaries.values()):
+        raise ValueError("unresolved boundary assembly markup")
+    interior = "\n".join(chunks[n] for n in range(3, 148))
+    if (sha256(interior.encode("utf-8")).hexdigest()
+            != baseline["join"]["joined_projected_wikitext_sha256"]
+            or sha256(normalize_text(interior).encode("utf-8")).hexdigest()
+            != baseline["normalized_sha256"]):
+        raise ValueError("boundary assembly interior identity drift")
+    chunks.update(boundaries)
+    assembled = "\n".join(chunks[n] for n in PAGE_NUMBERS)
+    if len(assembled) != len(interior) + sum(map(len, boundaries.values())) + 5:
+        raise ValueError("boundary assembly character accounting drift")
+    reference = {r["metric_id"]: r for r in baseline["metric_rows"]}
+    if len(reference) != 29 or len(baseline["metric_rows"]) != 29:
+        raise ValueError("invalid boundary metric reference")
+    prior, current = (analyze_deterministic_metrics(t) for t in (interior, assembled))
+    normalized = normalize_text(assembled)
+    for result, txt in ((prior, interior), (current, assembled)):
+        if (result["schema_version"] != SCHEMA_VERSION
+                or result["metric_contract_id"] != METRIC_CONTRACT_ID
+                or result["normalized_sha256"] != sha256(normalize_text(txt).encode("utf-8")).hexdigest()
+                or result["dependencies"].get("vocabulary_dictionary") is not None
+                or set(result["metrics"]) != set(reference)):
+            raise ValueError("boundary metric contract drift")
+    rows = []
+    for key, ref in sorted(reference.items()):
+        old, new = prior["metrics"][key], current["metrics"][key]
+        a, v = old["value"], new["value"]
+        if (type(a) is not type(ref["actual"]) or a != ref["actual"]
+                or old["unit"] != ref["unit"] or new["unit"] != ref["unit"]
+                or any(x is not None and (type(x) not in (int, float) or not isfinite(x))
+                       for x in (a, v))
+                or key in _UNBOUND and v is not None):
+            raise ValueError("boundary metric reference drift")
+        rows.append({"metric_id": key, "unit": ref["unit"],
+                     "interior_value": a, "assembly_value": v,
+                     "delta": v - a if v is not None and a is not None else None})
+    return {
+        "schema_version": "scriptorium-trusov-boundary-assembly-v1",
+        "scope": "INFERRED_150_PAGE_HISTORICAL_BRANCH_ASSEMBLY_DIAGNOSTIC",
+        "source_page_graph_sha256": baseline["source_page_graph_sha256"],
+        "source_revision_list_sha256": baseline["source_revision_list_sha256"],
+        "baseline_normalized_sha256": baseline["normalized_sha256"],
+        "page_interval": {"from": 2, "to": 151, "count": 150},
+        "boundary_pages": [{"page_sequence": n, "characters": len(boundaries[n]),
+                            "sha256": sha256(boundaries[n].encode("utf-8")).hexdigest()}
+                           for n in BOUNDARY_PAGES],
+        "join_profile": "one_LF_between_projected_Page_inputs_diagnostic_only",
+        "raw_joined_characters": len(assembled),
+        "raw_joined_sha256": sha256(assembled.encode("utf-8")).hexdigest(),
+        "normalized_characters_including_spaces": len(normalized),
+        "normalized_sha256": current["normalized_sha256"],
+        "metric_rows": rows,
+        "numeric_metric_count": sum(r["assembly_value"] is not None for r in rows),
+        "unavailable_metric_count": sum(r["assembly_value"] is None for r in rows),
+        "full_literary_body": "NOT_VERIFIED", "print_collation": "NOT_VERIFIED",
+        "historical_render_equivalence_proven": False,
+        "historical_page_join_verified": False, "corpus_admitted": False,
+        "m2_parity_admissible": False, "source_text_committed": False,
+    }
+
+
+def capture_boundary_assembly(collector, baseline, graph, preflight, *, query):
+    """Use the exact-byte opening and closing replays; never store boundary prose."""
+    from .robinson_trusov_opening_seam import capture as opening
+    from .robinson_trusov_closing_seams import capture as closing
+    if preflight["source_page_graph_sha256"] != baseline["source_page_graph_sha256"]:
+        raise ValueError("boundary assembly graph drift")
+    boundaries = {}
+    def observe(n, text):
+        if n in boundaries or n not in BOUNDARY_PAGES:
+            raise ValueError("duplicate/unexpected boundary observation")
+        boundaries[n] = text
+    layout = {}
+    opened = opening(graph, preflight, query=query, layout_output=layout,
+                     body_observer=observe)
+    closed = closing(graph, preflight, query=query, compare_current=True,
+                     body_observer=observe)
+    result = assemble_boundary_metrics(collector, baseline, boundaries)
+    result["boundary_source_identities"] = [
+        row for row in opened["pages"] + closed["pages"]
+        if row["page_sequence"] in BOUNDARY_PAGES]
+    result["opening_layout"] = layout["layout"]
+    result["closing_scope"] = "SIX_LITERAL_SEAMS_AND_CURRENT_LAYOUT_VERIFIED"
+    return result

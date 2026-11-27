@@ -1,7 +1,8 @@
 """Synthetic missing-folio marker and preservation checks."""
 import unittest
+from html import escape
 
-from scriptorium.robinson_trusov_missing_folios import compare, partition, marker_shape, LABELS, WRAPPERS
+from scriptorium.robinson_trusov_missing_folios import compare, partition, marker_shape, LABELS, WRAPPERS, CarrierView
 from scriptorium.robinson_trusov_content import transclusion_input
 
 
@@ -80,6 +81,59 @@ class MissingFolioTests(unittest.TestCase):
     def test_duplicate_rendered_passage_reported(self):
         r = compare(self.raw, self.body, self.body, self.left, self.right, self.rendered + " " + self.body)
         self.assertEqual(r["lanes"]["rendered"]["whole_page_matches"], 2)
+
+    def test_rendered_intersections_distinguish_partial_paragraphs(self):
+        # One raw line-break run can represent several actual HTML paragraphs.
+        middle = "хвост слова.\nНовый абзац.\nНачало фразы, "
+        tail = "которая продолжается."
+        raw = WRAPPERS[0] + middle + WRAPPERS[1] + tail
+        body = transclusion_input(raw)
+        left, right = "Это пред", "Дальше."
+        html = ('<div class="mw-parser-output"><p>Это предхвост слова.</p>'
+                '<p>Новый абзац.</p><p>Начало фразы, которая продолжается. Дальше.</p></div>')
+        view = CarrierView()
+        view.feed(html)
+        view.close()
+        report = compare(raw, body, body, left, right, "".join(view.parts),
+                         paragraph_spans=view.paragraph_spans())
+        self.assertEqual(report["raw_blank_line_pieces"], 1)
+        self.assertEqual(report["raw_lf_break_runs"], [1, 1])
+        self.assertEqual(report["rendered_paragraphs"]["status"], "COVERED")
+        self.assertEqual(report["rendered_paragraphs"]["intersected_count"], 3)
+        self.assertEqual(report["rendered_paragraphs"]["complete_count"], 1)
+        self.assertTrue(report["rendered_paragraphs"]["leading_partial"])
+        self.assertTrue(report["rendered_paragraphs"]["trailing_partial"])
+        self.assertEqual(report["current_render_edge_joins"]["left"]["selected"], "DIRECT")
+        self.assertEqual(report["current_render_edge_joins"]["right"]["selected"], "SPACE")
+        for lane in ("raw", "transclusion", "projected", "rendered"):
+            self.assertEqual(report["lanes"][lane]["rendered_intersection_matches"], [1, 1, 1])
+        for lane in ("transclusion", "projected", "rendered"):
+            self.assertEqual(report["lanes"][lane]["whole_page_matches"], 1)
+            self.assertEqual(report["lanes"][lane]["left_edge_matches"], 1)
+            self.assertEqual(report["lanes"][lane]["right_edge_matches"], 1)
+            self.assertEqual(report["lanes"][lane]["second_marker_continuation_matches"], 1)
+
+    def test_rendered_paragraph_coverage_and_duplicate_refused(self):
+        for tag, repetitions, expected in (
+            ("div", 1, "INCOMPLETE_PARAGRAPH_COVERAGE"),
+            ("p", 2, "SLICE_NOT_UNIQUE"),
+        ):
+            with self.subTest(tag=tag, repetitions=repetitions):
+                view = CarrierView()
+                html = '<div class="mw-parser-output">' + (
+                    f"<{tag}>" + escape(self.body) + f"</{tag}>"
+                ) * repetitions + "</div>"
+                view.feed(html)
+                view.close()
+                report = compare(self.raw, self.body, self.body, self.left, self.right,
+                                 "".join(view.parts), paragraph_spans=view.paragraph_spans())
+                self.assertEqual(report["rendered_paragraphs"]["status"], expected)
+
+    def test_ambiguous_edge_join_stays_unknown(self):
+        rendered = self.rendered + " " + self.left + self.body
+        report = compare(self.raw, self.body, self.body, self.left, self.right, rendered)
+        self.assertIsNone(report["current_render_edge_joins"]["left"]["selected"])
+        self.assertIsNone(report["lanes"]["rendered"]["left_edge_matches"])
 
     def test_no_prose_in_report(self):
         r = compare(self.raw, self.body, self.body, self.left, self.right, self.rendered)

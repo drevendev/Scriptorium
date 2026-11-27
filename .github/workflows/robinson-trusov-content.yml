@@ -385,12 +385,21 @@ jobs:
           from pathlib import Path
           r = json.loads(Path("build/repro/trusov-1775.missing-folios.json").read_text())
           print(json.dumps(r, ensure_ascii=True, sort_keys=True))
-          assert r["schema_version"] == "scriptorium-trusov-missing-folios-v2"
+          assert r["schema_version"] == "scriptorium-trusov-missing-folios-v3"
           assert r["scope_projection_byte_equal"] and r["raw_blank_line_pieces"] > 0
           p = r["rendered_paragraphs"]
           assert p["status"] == "COVERED" and p["intersected_count"] > 0
           assert len(p["intersection_characters"]) == p["intersected_count"]
-          assert all(x["selected"] in ("DIRECT", "SPACE") for x in r["current_render_edge_joins"].values())
+          joins = r["current_render_edge_joins"]
+          assert joins["left"] == {"matches": {"DIRECT": 0, "SPACE": 0,
+              "HYPHEN_OMITTED_DIRECT": 1, "HYPHEN_OMITTED_SPACE": 0},
+              "selected": "HYPHEN_OMITTED_DIRECT"}
+          assert joins["right"] == {"matches": {"DIRECT": 0, "SPACE": 1}, "selected": "SPACE"}
+          assert r["pinned_left_hyphen"] == {"left_revision_id": 4958613,
+              "right_revision_id": 4958614, "terminal_ascii_hyphen_count": 1,
+              "raw_before_terminal_noinclude": True, "scoped_retained": True,
+              "projected_retained": True}
+          assert r["left_edge_comparison"] == "SOURCE_LITERAL_CARRIER_OMISSION"
           assert r["lanes"]["raw"]["paragraph_matches"] == [1] * r["raw_blank_line_pieces"]
           assert r["lanes"]["raw"]["rendered_intersection_matches"] == [1] * p["intersected_count"]
           assert r["lanes"]["raw"]["marker_counts"] == [1, 1]

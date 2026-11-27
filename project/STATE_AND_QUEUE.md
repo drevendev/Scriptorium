@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 638
+STATE_REVISION: 639
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-27
-LAST_RESULT: #657 merged at 8ad2f2c0; exact run 45948000823, artifact 15175218192 SHA-256 86213b5124609397604a184221547312573a1a0882cdde23047b7a53c6364b4d. Six closing seams PASS (3/2, 6/6, 3/3); all 16 individual scope alignments insertion-only. Each standalone branch-pair sum is 32 nonspace characters below current view; not combined rendering proof.
+LAST_RESULT: #658 merged at 061ffa7e; exact run 45960783788 / artifact 15180383591 SHA-256 e841e0b5d59b48e4bfa97b97c8019852b1f69dc5bf825f1b6ff379b4a3e416e8. Eight unique PRE_REFORM_THEN_MODERN placements; standalone residuals identical (0,32,0); transcluded residual counts (0,35,2), (0,32,0), (6,38,0), (3,35,0). Layout identity not yet verified by accepted harness.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-COMBINED-VIEW-001
+UNIT_ID: SCRIP-TRUSOV-CLOSING-LABEL-001
 ISSUE: #511
 STATUS: PR_CANDIDATE; later independent replay acceptance required
-BRANCH: scrip-trusov-combined-view-20261127
-BASE: 8ad2f2c0b42efc12e888fb657fdbb9c6fef59152
+BRANCH: scrip-trusov-closing-label-20261127
+BASE: 061ffa7e8669d263a50a3027e2c392c2c61ba7a1
 
-ACCEPTANCE: Test both orthography orders and both scopes as exact disjoint contiguous nonspace placements in four current pinned Page views. Report unique/ambiguous/absent placements, residual region counts and exact cross-Page equality without publishing text or residual hashes; layout identity remains NOT_VERIFIED. Retain all six ownership assertions and five excluded boundaries.
+ACCEPTANCE: Fetch pinned public Scribunto module oldid 5721277 and verify actual normalized standalone residual equals its unique new-spelling label, not merely length. Independently verify transcluded residuals equal the same label plus exact already-owned continuation at declared edges. Require eight matches on four pinned Page revisions; only aggregate evidence, no historical rendering or body admission. Preserve six seams and five excluded boundaries.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 combined closing Page view | Verify eight combined scope placements and residual equality; attribute layout only with separate template/DOM evidence | #657 merged; exact independent replay of candidate required |
-| P2 | #511 closing layout and facing errata | Identify actual residual scope independently and collate print boundary | Historical rendering, facing errata and complete body unverified |
+| P1 | #511 closing layout identity | Exact pinned label and continuation identity in both scopes on four Pages | #658 merged; exact hosted replay and later acceptance of new candidate required |
+| P2 | #511 closing print and facing errata | Independently collate final narrative boundary and facing errata against scan | Current Page residual identity alone cannot establish historical rendering or print completeness |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |

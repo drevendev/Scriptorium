@@ -14,7 +14,7 @@ STATUS: PR_CANDIDATE; later independent replay acceptance required
 BRANCH: scrip-trusov-missing-folios-20261127
 BASE: f5a2ebcda80d013633eb29f8a7302a3b9d67a46e
 
-ACCEPTANCE: Bind Pages 106–108 to frozen bytes; verify two exact noinclude markers, six intervening paragraphs once, continuous second marker sentence and both neighbor edges in projected and current pinned-carrier view. Retain only digests/counts. Physical scan collation, full body and metric effects remain unverified until separately established.
+ACCEPTANCE: Bind Pages 106–108 to frozen bytes; verify two exact noinclude markers, the complete marker-bounded slice once, four raw pieces and four rendered paragraph intersections (two partial edges), continuous second marker sentence and both neighbor edges in projected and current pinned-carrier view. The /106 terminal literal hyphen must remain in raw/scoped/projected bytes; only one uniquely matching current-carrier comparison window may omit it. Retain only digests/counts. Physical scan collation, full body and metric effects remain unverified until separately established.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 missing printed folios replay | Exact noinclude scope, six passages once and both edges in projection/current carrier | #660 merged; Page 107 pins established; physical pp. 210–211 unavailable in this carrier |
+| P1 | #511 missing printed folios replay | Exact noinclude scope, unique slice, measured paragraph coverage and both edges; literal source hyphen retained | #660 merged; Page 107 pins established; physical pp. 210–211 unavailable in this carrier |
 | P2 | #511 closing print and facing errata | Resolve remaining physical leaf 152 and editorial coverage; distinguish corrected witness from diplomatic print | Three sampled controls do not establish full errata coverage; leaf 152 inaccessible in prior browser run |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |

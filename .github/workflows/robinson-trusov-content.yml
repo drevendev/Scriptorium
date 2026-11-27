@@ -262,7 +262,7 @@ jobs:
             --receipt corpus/candidates/source-edition-traces/defoe-robinson-crusoe-trusov-1775-ru.page-graph-receipt.json \
             --preflight build/repro/trusov-1775.content-preflight.json \
             --preflight-receipt corpus/candidates/diagnostics/defoe-robinson-crusoe-trusov-1775-ru.content-preflight-receipt.json \
-            --output build/repro/trusov-1775.closing-seams.json
+            --output build/repro/trusov-1775.closing-seams.json --compare-current
           python - <<'PY'
           import json
           from pathlib import Path
@@ -279,6 +279,36 @@ jobs:
           assert r["facing_errata_excluded_by_full_collation"] == "NOT_VERIFIED"
           assert r["full_literary_body"] == "NOT_VERIFIED"
           assert not any(r[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible", "historical_render_equivalence_proven"))
+          PY
+      - name: Validate closing scope versus current Page-view counts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path("build/repro/trusov-1775.closing-seams.json").read_text())
+          c = r["current_page_view_comparison"]
+          assert c["scope"] == "CURRENT_PAGE_VIEW_VS_LITERAL_CLOSING_SCOPE_DIAGNOSTIC"
+          assert [p["page_sequence"] for p in c["pages"]] == [148,149,150,151]
+          assert [p["revision_id"] for p in c["pages"]] == [4958660,4958661,4958663,4958664]
+          for p, pin in zip(c["pages"], r["pages"], strict=True):
+              assert p["source_mediawiki_sha1"] == pin["source_mediawiki_sha1"]
+              assert [b["literal_branch"] for b in p["branches"]] == ["pre_reform", "modern"]
+              for b in p["branches"]:
+                  for scope in ("transcluded_scope", "standalone_scope"):
+                      a = b[scope]
+                      d = a["nonspace_edit_summary"]
+                      if d["status"] == "ALIGNED":
+                          assert d["matching_characters"] + sum(d["projected_changed_unicode_categories"].values()) == a["literal_nonspace_characters"]
+                          assert d["matching_characters"] + sum(d["rendered_changed_unicode_categories"].values()) == a["rendered_nonspace_characters"]
+                  # Only the proven continuation may differ in nonspace count.
+                  expected = {148: (3,2),149: (0,0),150: (6,6),151: (3,3)}[p["page_sequence"]]
+                  i = 0 if b["literal_branch"] == "pre_reform" else 1
+                  assert b["standalone_scope"]["literal_nonspace_characters"] - b["transcluded_scope"]["literal_nonspace_characters"] == expected[i]
+              print("Closing Page", p["page_sequence"], p["render_status"],
+                    [(b["literal_branch"], b["transcluded_scope"]["classification"],
+                      b["standalone_scope"]["classification"]) for b in p["branches"]])
+          assert c["full_literary_body"] == "NOT_VERIFIED"
+          assert not any(c[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible", "historical_render_equivalence_proven", "scan_collation_verified"))
           PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

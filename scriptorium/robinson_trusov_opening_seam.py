@@ -137,7 +137,7 @@ def spacing_target_observation(*, query=_api_query):
     }
 
 
-def capture(graph, preflight, *, query=_api_query, layout_output=None):
+def capture(graph, preflight, *, query=_api_query, layout_output=None, body_observer=None):
     """One additional two-oldid request; compare raw and candidate bytes to
     the previously verified preflight before inspecting a literal seam.
     """
@@ -181,6 +181,8 @@ def capture(graph, preflight, *, query=_api_query, layout_output=None):
                            "source_mediawiki_sha1": pin["mediawiki_sha1"],
                            "wikitext_sha256": digest(raw),
                            "transclusion_input_sha256": digest(candidate)})
+    if body_observer is not None and layout_output is None:
+        raise ValueError("opening body observation requires layout proof")
     if layout_output is not None:
         page = next(p for p in identities if p["page_sequence"] == 2)
         layout_output.update({
@@ -193,6 +195,18 @@ def capture(graph, preflight, *, query=_api_query, layout_output=None):
             "historical_render_equivalence_proven": False,
             "source_text_committed": False, "m2_parity_admissible": False,
         })
+    if body_observer is not None:
+        seam = diagnose(texts[2], texts[3])
+        if (seam != {"classification": "PAGE_BOUNDARY_CONTINUATION_NOINCLUDE",
+                     "excluded_letters": 4, "excluded_punctuation": 1,
+                     "left_suffix_matches": True, "right_prefix_repeats": False}
+                or [p["revision_id"] for p in selected] != [4958669, 4958680]):
+            raise ValueError("opening body seam proof differs")
+        layout = layout_output["layout"]
+        body = transclusion_input(texts[2])[layout["layout_prefix_characters"]:].strip()
+        if len(body) != layout["body_candidate_characters_including_spaces"]:
+            raise ValueError("opening body partition drift")
+        body_observer(2, body)
     return {"schema_version": SCHEMA,
             "source_page_graph_sha256": preflight["source_page_graph_sha256"],
             "pages": sorted(identities, key=lambda p: p["page_sequence"]),

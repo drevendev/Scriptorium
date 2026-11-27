@@ -54,6 +54,56 @@ class ClosingSeamTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     diagnose(left, right, edge=edge, letters=count)
 
+    def test_closing_seam_refusals_cover_both_branches_and_later_joins(self):
+        raws = fixture()
+        raws[148] = page("First. <noinclude>the</noinclude>PRIVATE_SUFFIX",
+                         "First.")
+        raws[150] = page("<noinclude>broken</noinclude> Next ending.",
+                         "<noinclude>nished</noinclude> More ending.")
+        with self.assertRaisesRegex(ValueError, "closing seam ownership") as caught:
+            diagnose_pages(raws)
+        message = str(caught.exception)
+        self.assertNotIn("PRIVATE_SUFFIX", message)
+        self.assertNotIn("broken", message)
+        self.assertNotIn("unfinished", message)
+        report = json.loads(message.split(": ", 1)[1])
+        self.assertEqual(report["successful_assertions"], 3)
+        rows = report["refusals"]
+        self.assertEqual([(r["left_page"], r["right_page"], r["branch_index"],
+                           r["expected_edge_page"], r["expected_edge_revision"],
+                           r["reason"]) for r in rows], [
+            (148, 149, 0, 148, PINS[148], "EDGE_NOINCLUDE_MISSING"),
+            (148, 149, 1, 148, PINS[148], "EDGE_NOINCLUDE_MISSING"),
+            (149, 150, 0, 150, PINS[150], "COUNT_OR_OWNERSHIP"),
+        ])
+        first = rows[0]["left_trailing"]
+        self.assertEqual(first["shape"], "ADDITIONAL_EDGE_STRUCTURE")
+        self.assertEqual(first["pair_count"], 1)
+        pair, = first["pairs"]
+        self.assertTrue(pair["exact_tags"])
+        self.assertTrue(pair["letter_only_body"])
+        self.assertFalse(pair["at_expected_edge"])
+        self.assertEqual(pair["suffix_counts"]["characters"], len("PRIVATE_SUFFIX"))
+        self.assertEqual(pair["suffix_counts"]["letters"], len("PRIVATESUFFIX"))
+        self.assertEqual(rows[1]["left_trailing"]["shape"], "ABSENT")
+        self.assertEqual(rows[2]["right_leading"]["shape"], "STRICT_MATCH")
+
+    def test_closing_seam_nonliteral_scope_still_refused(self):
+        for markup in ("<noinclude >the</noinclude>",
+                       "<noinclude><b>the</b></noinclude>"):
+            with self.subTest(markup=markup):
+                raws = fixture()
+                raws[148] = page("First. " + markup,
+                                 "First. <noinclude>an</noinclude>")
+                with self.assertRaisesRegex(ValueError, "closing seam ownership") as caught:
+                    diagnose_pages(raws)
+                report = json.loads(str(caught.exception).split(": ", 1)[1])
+                self.assertEqual(report["successful_assertions"], 5)
+                row, = report["refusals"]
+                self.assertEqual(row["reason"], "EDGE_NOINCLUDE_MISSING")
+                self.assertEqual(row["left_trailing"]["shape"], "NONLITERAL_SCOPE")
+                self.assertNotIn(markup, str(caught.exception))
+
     def test_refuse_unexpected_var_shape_and_end(self):
         for raw in ("plain", page("a", "b") + "extra body",
                     page("a", "b") + "{{ВАР|c|d}}", page("a|extra", "b")):

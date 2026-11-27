@@ -75,7 +75,8 @@ jobs:
             --full-candidate-output build/repro/trusov-1775.full-projection-candidate.json \
             --boundary-render-output build/repro/trusov-1775.boundary-render.json \
             --missing-folios-output build/repro/trusov-1775.missing-folios.json \
-            --folio-metric-output build/repro/trusov-1775.folio-join-metrics.json
+            --folio-metric-output build/repro/trusov-1775.folio-join-metrics.json \
+            --boundary-assembly-output build/repro/trusov-1775.boundary-assembly.json
       - name: Validate source-free output and preserve unknown scientific gates
         run: |
           python - <<'PY'
@@ -417,6 +418,37 @@ jobs:
           print("Single seam metric deltas:", [(row["metric_id"], row["delta_join_only"], row["delta_hyphen_only"]) for row in m["metric_rows"]])
           assert not any(r[k] for k in ("source_text_committed", "corpus_admitted", "m2_parity_admissible"))
           PY
+      - name: Validate separate 150-Page historical-branch diagnostic
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          def read(name):
+              return json.loads(Path("build/repro/trusov-1775." + name + ".json").read_text())
+          a, i, p = read("boundary-assembly"), read("interior-metrics"), read("content-preflight")
+          assert a["scope"] == "INFERRED_150_PAGE_HISTORICAL_BRANCH_ASSEMBLY_DIAGNOSTIC"
+          assert a["source_page_graph_sha256"] == i["source_page_graph_sha256"] == p["source_page_graph_sha256"]
+          assert a["baseline_normalized_sha256"] == i["normalized_sha256"]
+          assert a["page_interval"] == {"from": 2, "to": 151, "count": 150}
+          assert [x["page_sequence"] for x in a["boundary_pages"]] == [2,148,149,150,151]
+          assert [x["revision_id"] for x in a["boundary_source_identities"]] == [4958669,4958660,4958661,4958663,4958664]
+          pins = {x["page_sequence"]: x for x in p["pages"]}
+          for x in a["boundary_source_identities"]:
+              assert x["wikitext_sha256"] == pins[x["page_sequence"]]["wikitext_sha256"]
+              assert x["transclusion_input_sha256"] == pins[x["page_sequence"]]["transclusion_input_sha256"]
+          assert a["opening_layout"]["body_candidate_characters_including_spaces"] == a["boundary_pages"][0]["characters"]
+          assert a["raw_joined_characters"] == i["join"]["joined_projected_wikitext_characters_including_spaces"] + sum(x["characters"] for x in a["boundary_pages"]) + 5
+          assert len(a["metric_rows"]) == 29
+          assert a["numeric_metric_count"] + a["unavailable_metric_count"] == 29
+          for x, y in zip(a["metric_rows"], i["metric_rows"], strict=True):
+              assert (x["metric_id"], x["unit"], x["interior_value"]) == (y["metric_id"], y["unit"], y["actual"])
+              v, w = x["assembly_value"], x["interior_value"]
+              assert x["delta"] == (v-w if v is not None and w is not None else None)
+          assert next(x["assembly_value"] for x in a["metric_rows"] if x["metric_id"] == "fantlab.general.characters") == a["normalized_characters_including_spaces"]
+          assert a["full_literary_body"] == a["print_collation"] == "NOT_VERIFIED"
+          assert not any(a[k] for k in ("historical_render_equivalence_proven", "historical_page_join_verified", "corpus_admitted", "m2_parity_admissible", "source_text_committed"))
+          print("Inferred 150-Page assembly:", a["normalized_characters_including_spaces"], "chars;", a["numeric_metric_count"], "/29 numeric; not corpus admission")
+          PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -435,5 +467,6 @@ jobs:
             build/repro/trusov-1775.errata-controls.json
             build/repro/trusov-1775.missing-folios.json
             build/repro/trusov-1775.folio-join-metrics.json
+            build/repro/trusov-1775.boundary-assembly.json
           if-no-files-found: error
           retention-days: 7

@@ -28,11 +28,52 @@ def markers(text):
     return [text.count(label) for label in LABELS]
 
 
+# Marker whitespace is layout inside an exact, attribute-free noinclude block.
+# Do not normalize any of the surrounding narrative or the marker label itself.
+_MARKER_PATTERNS = tuple(
+    re.compile(r"<noinclude>[ \t\r\n]*;[ \t]*" + re.escape(label)
+               + r"[ \t\r\n]*</noinclude>")
+    for label in LABELS
+)
+_PLAIN_NOINCLUDE = re.compile(r"<noinclude>([^<>]*)</noinclude>")
+
+
+def marker_shape(raw):
+    """Bounded structural evidence only; never include text or excerpts."""
+    def classes(value):
+        return {"characters": len(value), "space": value.count(" "),
+                "tab": value.count("\t"), "lf": value.count("\n"),
+                "cr": value.count("\r"), "semicolon": value.count(";"),
+                "other": sum(c not in " \t\r\n;" for c in value)}
+
+    blocks = _PLAIN_NOINCLUDE.findall(raw)
+    result = {"page_sequence": 107, "revision_id": PINS[107],
+              "exact_open_count": raw.count("<noinclude>"),
+              "exact_close_count": raw.count("</noinclude>"),
+              "plain_block_count": len(blocks),
+              "label_counts": markers(raw), "labels": []}
+    for label, pattern in zip(LABELS, _MARKER_PATTERNS):
+        containing = [b for b in blocks if label in b]
+        row = {"exact_block_matches": len(list(pattern.finditer(raw))),
+               "plain_blocks_containing_label": len(containing)}
+        if len(containing) == 1 and containing[0].count(label) == 1:
+            prefix, suffix = containing[0].split(label)
+            row.update(prefix=classes(prefix), suffix=classes(suffix))
+        result["labels"].append(row)
+    return result
+
+
 def partition(raw):
-    if markers(raw) != [1, 1] or any(raw.count(w) != 1 for w in WRAPPERS):
-        raise ValueError("missing-folio marker shape drift")
-    before, rest = raw.split(WRAPPERS[0])
-    middle, after = rest.split(WRAPPERS[1])
+    matches = [list(pattern.finditer(raw)) for pattern in _MARKER_PATTERNS]
+    if markers(raw) != [1, 1] or any(len(group) != 1 for group in matches):
+        raise ValueError("missing-folio marker shape drift: "
+                         + json.dumps(marker_shape(raw), sort_keys=True))
+    first, second = (group[0] for group in matches)
+    if first.end() > second.start():
+        raise ValueError("missing-folio marker order drift")
+    before = raw[:first.start()]
+    middle = raw[first.end():second.start()]
+    after = raw[second.end():]
     if transclusion_input(before + "X") != "X":
         raise ValueError("unexpected narrative before first marker")
     tail = transclusion_input(after)
@@ -95,7 +136,8 @@ def compare(raw, scoped, projected, left, right, rendered):
             "middle_characters_including_spaces": len(middle),
             "middle_sha256": digest(middle),
             "projected_body_sha256": digest(projected),
-            "scope_projection_byte_equal": True}
+            "scope_projection_byte_equal": True,
+            "marker_shape": marker_shape(raw)}
 
 
 class CarrierView(PageView):

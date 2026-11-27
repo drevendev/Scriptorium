@@ -873,7 +873,7 @@ def compare_current_closing_views(selected, candidates, *, query, verify_layout=
             "source_text_committed": False}
 
 
-def capture(graph, preflight, *, query=_api_query, compare_current=False):
+def capture(graph, preflight, *, query=_api_query, compare_current=False, body_observer=None):
     selected = [p for p in graph["pages"] if p["page_sequence"] in PINS]
     if {p["page_sequence"]: p["revision_id"] for p in selected} != PINS or len(selected) != 4:
         raise ValueError("closing Page graph identity drift")
@@ -915,6 +915,8 @@ def capture(graph, preflight, *, query=_api_query, compare_current=False):
                            "source_mediawiki_sha1": pin["mediawiki_sha1"],
                            "wikitext_sha256": digest(raw),
                            "transclusion_input_sha256": digest(candidate)})
+    if body_observer is not None and not compare_current:
+        raise ValueError("closing body observation requires current layout proof")
     candidates = {}
     def observe(n, i, scoped, standalone):
         candidates[n, i] = (scoped, standalone)
@@ -944,6 +946,15 @@ def capture(graph, preflight, *, query=_api_query, compare_current=False):
     if compare_current:
         report["current_page_view_comparison"] = compare_current_closing_views(
             selected, candidates, query=query, verify_layout=True)
+    if body_observer is not None:
+        comparison = report["current_page_view_comparison"]
+        if (comparison["combined_residual_layout_identity"] !=
+                "ALL_FOUR_STANDALONE_MATCH_MODULE_LABEL"
+                or comparison["transcluded_residual_layout_identity"] !=
+                "ALL_FOUR_MATCH_LABEL_AND_CONTINUATIONS"):
+            raise ValueError("closing body layout proof differs")
+        for n in sorted(PINS):
+            body_observer(n, candidates[n, 0][0])
     return report
 
 

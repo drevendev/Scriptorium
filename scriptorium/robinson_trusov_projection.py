@@ -522,8 +522,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                         help="Single pinned interior seam diagnostic; requires --interior-output and --missing-folios-output")
     parser.add_argument("--missing-folios-output", type=Path,
                         help="Fresh source-bound carrier evidence for the folio diagnostic")
+    parser.add_argument("--boundary-assembly-output", type=Path,
+                        help="Separate inferred 150-Page historical branch metrics; requires --interior-output")
     parser.add_argument("--delay", type=float, default=0.75)
     args = parser.parse_args(argv)
+    if args.boundary_assembly_output is not None and args.interior_output is None:
+        parser.error("--boundary-assembly-output requires --interior-output")
     if args.seam_output is not None and args.interior_output is None:
         parser.error("--seam-output requires --interior-output")
     if (args.folio_metric_output is not None or args.missing_folios_output is not None) and (
@@ -538,6 +542,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         outs += (args.boundary_render_output,)
     if args.folio_metric_output is not None:
         outs += (args.folio_metric_output, args.missing_folios_output)
+    if args.boundary_assembly_output is not None:
+        outs += (args.boundary_assembly_output,)
     if len({x.resolve() for x in outs}) != len(outs) or any(
             x.exists() or x.resolve() in (args.graph.resolve(), args.receipt.resolve()) for x in outs):
         parser.error("outputs must be distinct, new, and outside frozen inputs")
@@ -594,6 +600,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         proof = capture_folios(graph, preflight, report)
         folio_metrics = folio_metric_sensitivity(collector, interior, proof)
         outputs.extend([(args.missing_folios_output, proof), (args.folio_metric_output, folio_metrics)])
+    if args.boundary_assembly_output is not None:
+        from .robinson_trusov_full_candidate import capture_boundary_assembly
+        assembly = capture_boundary_assembly(collector, interior, graph, preflight,
+                                             query=_api_query)
+        outputs.append((args.boundary_assembly_output, assembly))
     for output, data in outputs:
         output.parent.mkdir(parents=True, exist_ok=True)
         with output.open("x", encoding="utf-8") as writer:

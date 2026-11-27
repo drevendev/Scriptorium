@@ -207,6 +207,59 @@ class TrusovInteriorTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unverified pinned folio join evidence"):
             folio_metric_sensitivity(InteriorCollector(), {}, {})
 
+    def test_folio_metric_rows_bind_proof_and_replay_baseline(self):
+        from hashlib import sha256
+        from scriptorium.robinson_trusov_interior import folio_metric_sensitivity
+        from scriptorium.robinson_trusov_missing_folios import PINS
+        from scriptorium.metrics import analyze_deterministic_metrics
+        from scriptorium.text import normalize_text
+
+        def digest(text):
+            return sha256(text.encode("utf-8")).hexdigest()
+
+        collector = InteriorCollector()
+        for n in range(FIRST, LAST + 1):
+            value = "Синтетическая строка. "
+            if n == 106:
+                value = "Слово пере- "
+            elif n == 107:
+                value = "ход. Конец."
+            collector.selected[n] = ({"revision_id": PINS.get(n, n)}, value)
+        original = "\n".join(collector.selected[n][1] for n in range(FIRST, LAST + 1))
+        measured = analyze_deterministic_metrics(original)
+        baseline = {"source_page_graph_sha256": "a" * 64,
+                    "status": "INCOMPLETE_INTERIOR_EXCERPT_NOT_CORPUS_OR_PARITY",
+                    "join": {"joined_projected_wikitext_sha256": digest(original)},
+                    "normalized_sha256": digest(normalize_text(original)),
+                    "metric_rows": [{"metric_id": k, "actual": m["value"], "unit": m["unit"]}
+                                    for k, m in measured["metrics"].items()]}
+        proof = {"schema_version": "scriptorium-trusov-missing-folios-v3",
+                 "source_page_graph_sha256": "a" * 64, "carrier_revision_id": 5041937,
+                 "left_edge_comparison": "SOURCE_LITERAL_CARRIER_OMISSION",
+                 "scope_projection_byte_equal": True,
+                 "current_render_edge_joins": {"left": {
+                     "matches": {"DIRECT": 0, "SPACE": 0, "HYPHEN_OMITTED_DIRECT": 1,
+                                 "HYPHEN_OMITTED_SPACE": 0}, "selected": "HYPHEN_OMITTED_DIRECT"}},
+                 "pinned_left_hyphen": {"left_revision_id": PINS[106], "right_revision_id": PINS[107],
+                     "terminal_ascii_hyphen_count": 1, "raw_before_terminal_noinclude": True,
+                     "scoped_retained": True, "projected_retained": True},
+                 "pages": [{"page_sequence": n, "revision_id": PINS[n],
+                            "projected_sha256": digest(collector.selected[n][1])} for n in sorted(PINS)]}
+        result = folio_metric_sensitivity(collector, baseline, proof)
+        self.assertEqual(len(result["metric_rows"]), 29)
+        chars = next(row for row in result["metric_rows"] if row["metric_id"] == "fantlab.general.characters")
+        self.assertEqual((chars["delta_join_only"], chars["delta_hyphen_only"], chars["delta_total"]), (-2, -1, -3))
+        self.assertFalse(result["corpus_admitted"])
+        self.assertNotIn("Синтетическая", json.dumps(result, ensure_ascii=False))
+        broken = copy.deepcopy(proof)
+        broken["pages"][0]["projected_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "receipt/source identity mismatch"):
+            folio_metric_sensitivity(collector, baseline, broken)
+        broken = copy.deepcopy(baseline)
+        next(row for row in broken["metric_rows"] if row["metric_id"] == "fantlab.general.characters")["actual"] += 1
+        with self.assertRaisesRegex(ValueError, "baseline drift"):
+            folio_metric_sensitivity(collector, broken, proof)
+
 
 if __name__ == "__main__":
     unittest.main()

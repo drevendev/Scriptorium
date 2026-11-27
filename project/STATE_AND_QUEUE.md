@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 637
+STATE_REVISION: 638
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-27
-LAST_RESULT: #656 merged at 201a7c6e; six closing seam ownership assertions passed. Exact artifact 15169829964 ZIP SHA-256 9130087d058f56a0af6d27d913e203b67435bfc787b069a074326c4ec6023f51; counts 3/2, 6/6, 3/3; no duplicate.
+LAST_RESULT: #657 merged at 8ad2f2c0; exact run 45948000823, artifact 15175218192 SHA-256 86213b5124609397604a184221547312573a1a0882cdde23047b7a53c6364b4d. Six closing seams PASS (3/2, 6/6, 3/3); all 16 individual scope alignments insertion-only. Each standalone branch-pair sum is 32 nonspace characters below current view; not combined rendering proof.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-TRUSOV-CLOSING-VIEW-CONTROLS-001
+UNIT_ID: SCRIP-TRUSOV-COMBINED-VIEW-001
 ISSUE: #511
 STATUS: PR_CANDIDATE; later independent replay acceptance required
-BRANCH: scrip-trusov-closing-render-controls-20261127
-BASE: 201a7c6ea734204cd3f375df790512cd81edeef9
+BRANCH: scrip-trusov-combined-view-20261127
+BASE: 8ad2f2c0b42efc12e888fb657fdbb9c6fef59152
 
-ACCEPTANCE: Compare four pinned closing Page views with both literal orthographies and both standalone/transcluded scopes after six exact ownership assertions. Retain aggregate alignment counts only; no scan, historical renderer, full-body or corpus claim.
+ACCEPTANCE: Test both orthography orders and both scopes as exact disjoint contiguous nonspace placements in four current pinned Page views. Report unique/ambiguous/absent placements, residual region counts and exact cross-Page equality without publishing text or residual hashes; layout identity remains NOT_VERIFIED. Retain all six ownership assertions and five excluded boundaries.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,8 +22,8 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #562 complete two-pair Reader/export | Verify exact source-free CSV/table and browser/readback; retain scientific limits | Merged #650; exact live readback verified previously |
-| P1 | #511 closing Page scope comparison | Compare both literal scopes and orthographies with current pinned Page views, then target remaining scan discrepancies | #656 merged; six ownership assertions PASS; historical renderer and facing errata unverified |
+| P1 | #511 combined closing Page view | Verify eight combined scope placements and residual equality; attribute layout only with separate template/DOM evidence | #657 merged; exact independent replay of candidate required |
+| P2 | #511 closing layout and facing errata | Identify actual residual scope independently and collate print boundary | Historical rendering, facing errata and complete body unverified |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |
 | P2 | #282 candidate identity/enum feasibility | New independent control evidence before another native experiment | Strict national-label qualification false; no repeated unchanged probe |

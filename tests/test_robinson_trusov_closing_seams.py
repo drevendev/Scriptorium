@@ -474,8 +474,58 @@ class ClosingViewComparisonTests(unittest.TestCase):
         for row in report["pages"]:
             self.assertEqual(row["branches"][0]["standalone_scope"]["classification"], "COLLAPSED_EQUAL")
         self.assertFalse(report["corpus_admitted"])
+        self.assertEqual(report["combined_residual_layout_identity"], "NOT_VERIFIED")
+        self.assertEqual(set(report["combined_residual_cross_page_equality"]), {"transcluded_scope", "standalone_scope"})
+        self.assertTrue(all(set(p["combined_branches"]) == {"transcluded_scope", "standalone_scope"} for p in report["pages"]))
         self.assertNotIn("unfinished", json.dumps(report))
         with self.assertRaisesRegex(ValueError, "identity drift"):
             compare_current_closing_views(selected, values, query=lambda _: {"parse": {}})
         with self.assertRaisesRegex(ValueError, "coverage incomplete"):
             compare_current_closing_views(selected, {}, query=query)
+
+
+class CombinedViewTests(unittest.TestCase):
+    def test_exact_both_orders_and_regions(self):
+        from scriptorium.robinson_trusov_closing_seams import _combined_view
+        for view, order in (
+            ("! PRIVATE one : PRIVATE two ?", "PRE_REFORM_THEN_MODERN"),
+            ("! PRIVATE two : PRIVATE one ?", "MODERN_THEN_PRE_REFORM"),
+        ):
+            row, residual = _combined_view("PRIVATE one", "PRIVATE two", view)
+            self.assertEqual(row["classification"], "UNIQUE_ORDERED_PLACEMENT")
+            self.assertEqual(row["order"], order)
+            self.assertEqual(row["placement_count_capped"], 1)
+            self.assertEqual(residual, ("!", ":", "?"))
+            self.assertEqual([x["nonspace_characters"] for x in row["residual_regions"]], [1, 1, 1])
+            self.assertEqual(sum(x["unicode_categories"]["P"] for x in row["residual_regions"]), 3)
+            self.assertNotIn("PRIVATE", json.dumps(row))
+            self.assertEqual(sum(row["branch_nonspace_characters"]) + 3,
+                             row["rendered_nonspace_characters"])
+
+    def test_refusal_ambiguity_overlap_and_limits(self):
+        from scriptorium.robinson_trusov_closing_seams import _combined_view
+        for a, b, view, expected in (
+            ("abc", "bcd", "abcd", "NO_ORDERED_DISJOINT_PLACEMENT"),
+            ("abc", "xyz", "ab!cxyz", "NO_ORDERED_DISJOINT_PLACEMENT"),
+            ("abc", "xyz", "abcxyzabc", "AMBIGUOUS_PLACEMENT"),
+            ("abc", "abc", "abcabc", "AMBIGUOUS_PLACEMENT"),
+            ("abc", "xyz", "abcabcxyz", "AMBIGUOUS_PLACEMENT"),
+            ("abc", "xyz", None, "RENDER_REFUSED"),
+            (" ", "xyz", "xyz", "EMPTY_BRANCH"),
+            ("abc", "xyz", "a"*8193, "SIZE_LIMIT"),
+        ):
+            with self.subTest(expected=expected):
+                row, residual = _combined_view(a, b, view)
+                self.assertEqual(row["classification"], expected)
+                self.assertIsNone(residual)
+                self.assertIsNone(row["residual_regions"])
+                self.assertIsNone(row["order"])
+
+    def test_equal_counts_do_not_prove_equal_residual(self):
+        from scriptorium.robinson_trusov_closing_seams import _residual_equality
+        same = ("!", ":", "?")
+        self.assertEqual(_residual_equality([same]*4), "ALL_FOUR_REGION_STRINGS_EQUAL")
+        self.assertEqual(_residual_equality([same]*3 + [("?", ":", "!")]),
+                         "REGION_STRINGS_DIFFER")
+        self.assertEqual(_residual_equality([same]*3 + [None]), "NOT_ESTABLISHED")
+        self.assertEqual(_residual_equality([same]*3), "NOT_ESTABLISHED")

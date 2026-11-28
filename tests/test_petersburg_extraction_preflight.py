@@ -69,8 +69,27 @@ class PetersburgExtractionPreflightTests(unittest.TestCase):
         page = CANDIDATE_PAGE.read_text(encoding="utf-8")
         self.assertIn("Extraction-strategy preflight", page)
         self.assertIn(EXPECTED_PHYSICAL_SHA256, page)
-        self.assertIn("embedded text layer remains **unverified**", page)
+        # Keep the original visual preflight caveat while requiring the later measured result.
         self.assertIn("does not prove that the PDF lacks a hidden text layer", page)
+        self.assertIn("Poppler 24.02.0: zero extracted code points, zero non-whitespace pages", page)
+        self.assertIn("all 632 physical pages of the exact PDF", page)
+        self.assertIn("https://github.com/drevendev/Scriptorium/issues/651#issuecomment-7236203713", page)
+        self.assertIn("not absence of every possible PDF text representation", page)
+        self.assertIn("Decision: **bounded OCR experiment**", page)
+
+    def test_public_candidate_keeps_ocr_and_admission_holds(self) -> None:
+        page = CANDIDATE_PAGE.read_text(encoding="utf-8")
+        # A sample is not a verified transcription, page selection or admission.
+        self.assertIn("Agreement does not establish accuracy", page)
+        self.assertIn("Whole-volume OCR remains held until independently scan-checked representative references", page)
+        self.assertIn("remaining sampled page scopes require independent classification", page)
+        self.assertIn("marks the work public domain", page)
+        self.assertIn("Literary-page selection, rasterizer identity/settings, OCR engine/language-data/settings, and raw/normalized body outputs deliberately remain **unbound**", page)
+        self.assertIn("300,000-character", page)
+        self.assertIn("fantlab_source_edition_match=unknown", page)
+        self.assertIn("diagnostic_ready=false", page)
+        self.assertIn("gate_ready=false", page)
+        self.assertIn("m2_parity_admissible=false", page)
 
 
 if __name__ == "__main__":

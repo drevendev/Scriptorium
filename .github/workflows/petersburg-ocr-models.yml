@@ -1,0 +1,72 @@
+name: Petersburg 1916 matched OCR models
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/petersburg-ocr-models.yml"
+      - "scriptorium/petersburg_ocr_models.py"
+      - "scriptorium/petersburg_ocr_sample.py"
+      - "scriptorium/petersburg_ocr_contract.py"
+      - "tests/test_petersburg_ocr_models.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  comparison:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Offline model comparison regressions
+        run: python -m unittest tests.test_petersburg_ocr_models -v
+      - name: Install required OCR tools
+        run: |
+          set -euo pipefail
+          sudo apt-get install -y --no-install-recommends poppler-utils tesseract-ocr tesseract-ocr-rus
+          test -f /usr/share/tesseract-ocr/5/tessdata/rus.traineddata
+      - name: Compare pinned models on identical real rasters
+        run: |
+          set -euo pipefail
+          temp="$(mktemp -d)"
+          trap 'rm -rf "$temp"' EXIT
+          curl --fail --silent --show-error --location --max-redirs 3 --proto '=https' --max-time 120 --max-filesize 3621459 --user-agent 'Scriptorium research (https://github.com/drevendev/Scriptorium)' 'https://upload.wikimedia.org/wikipedia/commons/3/3c/%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B9_%D0%91%D0%B5%D0%BB%D1%8B%D0%B9._%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3_%281916%29.pdf' -o "$temp/carrier.pdf"
+          curl --fail --silent --show-error --location --max-redirs 3 --proto '=https' --max-time 120 --max-filesize 11786045 'https://raw.githubusercontent.com/AButon-8/iskra_ocr/02f34dc42af9f78d022848e83e103b182c9af134/orus.traineddata' -o "$temp/orus.traineddata"
+          python -m scriptorium.petersburg_ocr_models "$temp/carrier.pdf" --stock-tessdata /usr/share/tesseract-ocr/5/tessdata --iskra-tessdata "$temp" > "$temp/receipt.json"
+          python - "$temp/receipt.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          assert r["source_free"] and r["accuracy_status"] == "NOT_RUN"
+          assert r["settings"]["psm"] == 6 and r["settings"]["dpi"] == 300
+          assert r["models"]["orus"]["git_blob"] == "4c5f96a3cfde2d74e6a5c414611d14b16e965ab1"
+          assert r["models"]["orus"]["byte_count"] == 11786045
+          assert [p["physical_page"] for p in r["pages"]] == [1, 21, 22, 160, 320, 480, 600]
+          for p in r["pages"]:
+              assert p["reference_status"] == "NOT_RUN"
+              assert [v["language"] for v in p["variants"]] == ["rus", "orus"]
+              for v in p["variants"]:
+                  assert v["reference_errors"] is None
+                  assert set(v["glyph_counts"]) == set("ѣѢіІѳѲѵѴ")
+                  assert 0 <= sum(v["glyph_counts"].values()) <= v["canonical_codepoints"]
+          for key in ("whole_volume_ocr_authorized_by_sample", "literary_body_frozen",
+                      "minimum_300k_proved_from_frozen_body", "admitted_for_calibration", "m2_parity_admissible"):
+              assert r[key] is False
+          assert r["fantlab_source_edition_match"] == "unknown"
+          PY
+          mkdir -p build/repro
+          cp "$temp/receipt.json" build/repro/bely-petersburg-1916-ru.ocr-models.json
+      - name: Upload source-free model comparison
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: petersburg-1916-ocr-models
+          path: build/repro/bely-petersburg-1916-ru.ocr-models.json
+          if-no-files-found: error
+          retention-days: 7

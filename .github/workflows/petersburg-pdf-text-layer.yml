@@ -1,0 +1,83 @@
+name: Petersburg 1916 complete PDF text layer
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/petersburg-pdf-text-layer.yml"
+      - "scriptorium/local_pdf_preflight.py"
+      - "tests/test_local_pdf_preflight.py"
+      - "corpus/candidates/source-edition-traces/bely-petersburg-1916-ru.scan-identity.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  complete-text-layer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Set up Python 3.13
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Run focused preflight regressions
+        run: python -m unittest tests.test_local_pdf_preflight -v
+      - name: Ensure Poppler is available
+        run: |
+          set -euo pipefail
+          if ! command -v pdfinfo || ! command -v pdftotext; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends poppler-utils
+          fi
+      - name: Inspect all 632 exact carrier pages without publishing source
+        run: |
+          set -euo pipefail
+          temp="$(mktemp -d)"
+          trap 'rm -rf "$temp"' EXIT
+          mkdir -p build/repro
+          curl --fail --silent --show-error --location --max-redirs 3 --proto '=https' --max-time 120 --max-filesize 3621459 \
+            --user-agent 'Scriptorium research (https://github.com/drevendev/Scriptorium)' \
+            'https://upload.wikimedia.org/wikipedia/commons/3/3c/%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B9_%D0%91%D0%B5%D0%BB%D1%8B%D0%B9._%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3_%281916%29.pdf' \
+            -o "$temp/carrier.pdf"
+          test "$(wc -c < "$temp/carrier.pdf")" = 3621459
+          python -m scriptorium.local_pdf_preflight "$temp/carrier.pdf" --all-pages --expect-page-count 632 \
+            --expect-sha256 b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5 \
+            > "$temp/receipt.json"
+          python - "$temp/receipt.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          rows = r["sampled_text_layer"]
+          assert r["source_free"] is True
+          assert r["coverage"] == "ALL_PHYSICAL_PAGES"
+          assert r["physical_page_count"] == 632
+          assert [x["physical_page"] for x in rows] == list(range(1, 633))
+          assert all(set(x) == {"physical_page", "extracted_codepoints_including_whitespace",
+                                "non_whitespace_codepoints"} for x in rows)
+          assert all(0 <= x["non_whitespace_codepoints"] <= x["extracted_codepoints_including_whitespace"] for x in rows)
+          assert r["pages_with_non_whitespace"] == sum(x["non_whitespace_codepoints"] > 0 for x in rows)
+          assert r["pages_without_non_whitespace"] + r["pages_with_non_whitespace"] == 632
+          assert r["total_extracted_codepoints"] == sum(x["extracted_codepoints_including_whitespace"] for x in rows)
+          assert r["total_non_whitespace_codepoints"] == sum(x["non_whitespace_codepoints"] for x in rows)
+          assert r["carrier"]["sha256"] == "b08820ad1339894c6d20fbaa2367c11385492bf376d199f8de23c859ef6ddef5"
+          for key in ("literary_body_frozen", "minimum_300k_proved_from_frozen_body",
+                      "admitted_for_calibration", "m2_parity_admissible", "ocr_correctness_verified"):
+              assert r[key] is False
+          assert r["fantlab_source_edition_match"] == "unknown"
+          print(json.dumps({k: r[k] for k in ("physical_page_count", "pages_with_non_whitespace",
+               "total_extracted_codepoints", "output_sha256", "tool_versions", "extraction_strategy")}, sort_keys=True))
+          PY
+          cp "$temp/receipt.json" build/repro/bely-petersburg-1916-ru.pdf-text-layer.json
+      - name: Upload source-free receipt only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: petersburg-1916-pdf-text-layer
+          path: build/repro/bely-petersburg-1916-ru.pdf-text-layer.json
+          if-no-files-found: error
+          retention-days: 7

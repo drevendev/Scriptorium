@@ -58,6 +58,44 @@ Merged #667 established a seven-page stock Russian OCR baseline, not scan-checke
 
 Optional `--private-references` uses the same full-page raster-bound reference mapping as the previous sample. For independently scan-checked references, the harness reports character/word edit numerators and reference denominators and case-sensitive per-glyph reference and matched counts under a deterministic minimum-edit alignment. Unmatched output counts are not glyph retention. No references available in the hosted replay: accuracy remains NOT_RUN and zero reference occurrences are not inferred. The title control is not a body sample. Representative manual reference collation (including typography, historical letters actually present and page boundaries), layout, literary-body and all admission/parity gates remain open.
 
+
+## Private region-matched reference evaluation (candidate)
+
+Merged #668 compared seven identical full-page PNG rasters; no scan-checked accuracy
+was measured. A short transcription must **not** be compared to a whole-page OCR output.
+The separate region harness now makes a lossless grayscale PGM crop from the pinned PDF
+at 300 DPI (different encoding from the full-page PNG diagnostic). Both models receive
+the exact same crop, OEM 1 and PSM 7 for a single line or PSM 6 for a block. Physical page 1
+is strictly a title control. Other sampled page scopes are caller classifications, not
+independently established literary-body boundaries.
+
+Private preparation example (coordinates are illustrative, not verified scan positions):
+
+```sh
+python -m scriptorium.petersburg_ocr_regions /private/carrier.pdf prepare --page 21 --box 100 200 900 100 --private-crop /private/line.pgm
+```
+
+Open the private crop and transcribe **all and only** the visible text independently of
+OCR, retaining case, punctuation and pre-reform spelling. Choose complete nonoverlapping
+lines or blocks, including difficult typography and historical glyphs; exclude clipped
+letters. For evaluation, create a private JSON list from each preparation receipt:
+keep `physical_page`, `box`, `page_sha256`, and `crop_sha256`; remove `dpi`; add
+`scope` (BODY_LINE, BODY_BLOCK or TITLE_CONTROL) and `transcription`.
+Never commit or upload these references/crops. Then run:
+
+```sh
+python -m scriptorium.petersburg_ocr_regions /private/carrier.pdf compare --stock-tessdata /usr/share/tesseract-ocr/5/tessdata --iskra-tessdata /private/iskra --private-references /private/regions.json
+```
+
+The tool refuses drift in the exact carrier, full PGM or crop bytes before OCR, rejects
+invalid/out-of-bounds regions and duplicate region identities, and emits only hashes,
+coordinates, segmentation, tool/model identities and aligned error/glyph counts.
+It reports each region separately, not a pooled score over potentially overlapping crops.
+A zero reference occurrence is not evidence of retention; the caller's transcription
+and scope remain unverified by the program. Actual scan-checked reference accuracy is
+NOT_RUN until independent manual evidence is available. No admission, body freeze, rights
+or FantLab parity gate changes.
+
 ## What is still open
 
 Defining the promotion contract does **not** freeze the literary text. Scriptorium still needs an independently evidenced bound contract version with exact literary-page selection and reproducible rasterizer/OCR identities/settings, then a frozen extracted body with character count and raw/normalized digests and proof that that frozen body itself clears the **300,000-character** corpus threshold.

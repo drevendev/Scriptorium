@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 644
+STATE_REVISION: 645
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-28
-LAST_RESULT: #663 merged at e5a8d139; exact hosted job 140753515159 confirmed 310,554 chars and 22/29 numeric in separate inferred boundary assembly. Generic full projection remains blocked. Frozen interior unchanged.
+LAST_RESULT: #664 merged at 1953cb22; exact hosted job 140792529573 and retained artifact 15239125105 verified 29 fields, 22 jointly numeric. Inferred body and scientific holds unchanged.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-ROBINSON-PAIR-DIAGNOSTIC-001
+UNIT_ID: SCRIP-ROBINSON-PAIR-READER-001
 ISSUE: #511
 STATUS: PR_CANDIDATE; later independent replay acceptance required
-BRANCH: scrip-robinson-pair-diagnostic-20261128
-BASE: e5a8d139c557d64ee96835202282c2b7ea4a6765
+BRANCH: scrip-reader-robinson-diagnostic-20261128
+BASE: 1953cb22929c82a8a8c90141befd8e0dff2daa15
 
-ACCEPTANCE: Compare freshly replayed inferred 150-Page assembly against the frozen 1935 Shishmareva receipt using shared metric profiles, exact 29 field identities, signed differences and explicit unavailable values. Source-free HTML/JSON preview, not a public deployment or aligned translation comparison. Later exact-head acceptance and preview inspection; do not promote print/body/corpus/parity gates.
+ACCEPTANCE: Retain exact accepted #664 JSON (SHA-256 36fc43f4651bec044c9febab1ebacc688751c2b7b4a5f17586c97641cfe65a1b), linked branch-root Reader with five charts, full 29 rows, no-JS desktop/mobile keyboard/download verification and separate exact live readback. Do not promote print/body/corpus/parity gates.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,6 @@ Milestone: extend source-backed measured-work coverage, prioritizing a legally t
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #511 unaligned edition comparison | 29 exact fields, readable preview, source identities and unknown statuses | Later acceptance; no aligned coverage or translator-effect claim |
 | P1 | #511 public diagnostic preview | Retain exact validated source-free pair receipt and publish accessible Reader route | Requires accepted pair data, structural/browser checks and deployment readback |
 | P2 | #511 closing print and facing errata | Resolve remaining physical leaf 152 and editorial coverage; distinguish corrected witness from diplomatic print | Three sampled controls do not establish full errata coverage; leaf 152 inaccessible in prior browser run |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |

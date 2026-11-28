@@ -1,0 +1,272 @@
+{
+  "corpus_admitted": false,
+  "fantlab_input_identity": "UNKNOWN",
+  "joint_numeric_count": 22,
+  "limitations": [
+    "Trusov: 1775 volume 1, translated via French; inferred historical spelling Page 2–151 assembly with synthetic LF joins, not a verified complete body.",
+    "Shishmareva: ACADEMIA 1935 volume 1, first narrative, Russian translation; electronic body replayed but printed edition not collated.",
+    "Coverage and abridgement are not aligned. Orthography, chronology, intermediary language, editorial choices and length confound differences.",
+    "No translator-effect or author-attribution inference, corpus admission or FantLab parity. Missing observations are not zero."
+  ],
+  "m2_parity_admissible": false,
+  "metric_rows": [
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": null,
+      "metric_id": "fantlab.dialogue.author_text_inside_dialogue_percent",
+      "shishmareva": 40.853658536585364,
+      "trusov": null,
+      "unit": "percent"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": null,
+      "metric_id": "fantlab.dialogue.mean_dialogue_sentence_length_chars",
+      "shishmareva": 125.0,
+      "trusov": null,
+      "unit": "characters/sentence"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": 46.46734305159683,
+      "metric_id": "fantlab.dialogue.mean_narration_sentence_length_chars",
+      "shishmareva": 128.74357224118316,
+      "trusov": 175.21091529278,
+      "unit": "characters/sentence"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -0.2405145502922629,
+      "metric_id": "fantlab.dialogue.share_percent",
+      "shishmareva": 0.2405145502922629,
+      "trusov": 0.0,
+      "unit": "percent"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -262033,
+      "metric_id": "fantlab.general.characters",
+      "shishmareva": 572587,
+      "trusov": 310554,
+      "unit": "characters"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": 60.187510350685415,
+      "metric_id": "fantlab.general.mean_sentence_length_chars",
+      "shishmareva": 129.45025102692836,
+      "trusov": 189.63776137761377,
+      "unit": "characters/sentence"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": 0.22977080244382364,
+      "metric_id": "fantlab.general.mean_word_length_chars",
+      "shishmareva": 4.892469905233502,
+      "trusov": 5.122240707677325,
+      "unit": "characters/word"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -44416,
+      "metric_id": "fantlab.general.words",
+      "shishmareva": 93704,
+      "trusov": 49288,
+      "unit": "words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -2.2635173846807084,
+      "metric_id": "fantlab.punctuation.colon.per_1000_words",
+      "shishmareva": 5.7734995304362675,
+      "trusov": 3.509982145755559,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -13.330010591322434,
+      "metric_id": "fantlab.punctuation.comma.per_1000_words",
+      "shishmareva": 126.44070690685562,
+      "trusov": 113.11069631553319,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -5.816750097933461,
+      "metric_id": "fantlab.punctuation.dash.per_1000_words",
+      "shishmareva": 6.648595577563391,
+      "trusov": 0.8318454796299302,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -0.11844582504137496,
+      "metric_id": "fantlab.punctuation.ellipsis.per_1000_words",
+      "shishmareva": 0.13873473917869034,
+      "trusov": 0.020288914137315373,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -0.43587821111343183,
+      "metric_id": "fantlab.punctuation.exclamation.per_1000_words",
+      "shishmareva": 1.430035003841885,
+      "trusov": 0.9941567927284531,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -0.010671903013745411,
+      "metric_id": "fantlab.punctuation.exclamation_ellipsis.per_1000_words",
+      "shishmareva": 0.010671903013745411,
+      "trusov": 0.0,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -1.7629737810483437,
+      "metric_id": "fantlab.punctuation.parentheses.per_1000_words",
+      "shishmareva": 1.8035516093229744,
+      "trusov": 0.040577828274630745,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -13.054510590927507,
+      "metric_id": "fantlab.punctuation.period.per_1000_words",
+      "shishmareva": 43.690770938273715,
+      "trusov": 30.63626034734621,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -0.15276532096920148,
+      "metric_id": "fantlab.punctuation.question.per_1000_words",
+      "shishmareva": 1.6541449671305388,
+      "trusov": 1.5013796461613373,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -0.010671903013745411,
+      "metric_id": "fantlab.punctuation.question_ellipsis.per_1000_words",
+      "shishmareva": 0.010671903013745411,
+      "trusov": 0.0,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": 0.0,
+      "metric_id": "fantlab.punctuation.question_exclamation.per_1000_words",
+      "shishmareva": 0.0,
+      "trusov": 0.0,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -4.226513564773404,
+      "metric_id": "fantlab.punctuation.quote.per_1000_words",
+      "shishmareva": 5.261248185776488,
+      "trusov": 1.0347346210030839,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": 6.808228954927578,
+      "metric_id": "fantlab.punctuation.semicolon.per_1000_words",
+      "shishmareva": 6.541876547425937,
+      "trusov": 13.350105502353514,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": 0.0,
+      "metric_id": "fantlab.punctuation.triple_exclamation.per_1000_words",
+      "shishmareva": 0.0,
+      "trusov": 0.0,
+      "unit": "occurrences/1000_words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": null,
+      "metric_id": "fantlab.vocabulary.active_dictionary",
+      "shishmareva": null,
+      "trusov": null,
+      "unit": "words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": null,
+      "metric_id": "fantlab.vocabulary.active_nondictionary",
+      "shishmareva": null,
+      "trusov": null,
+      "unit": "words"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": null,
+      "metric_id": "fantlab.vocabulary.uasz_10000",
+      "shishmareva": null,
+      "trusov": null,
+      "unit": "unique_dictionary_words/window"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": null,
+      "metric_id": "fantlab.vocabulary.uasz_100000",
+      "shishmareva": null,
+      "trusov": null,
+      "unit": "unique_dictionary_words/window"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": null,
+      "metric_id": "fantlab.vocabulary.uasz_3000",
+      "shishmareva": null,
+      "trusov": null,
+      "unit": "unique_dictionary_words/window"
+    },
+    {
+      "compatibility_status": "inferred",
+      "delta_trusov_minus_shishmareva": -6518,
+      "metric_id": "fantlab.vocabulary.unique_words",
+      "shishmareva": 16739,
+      "trusov": 10221,
+      "unit": "words"
+    },
+    {
+      "compatibility_status": "extension",
+      "delta_trusov_minus_shishmareva": -2756,
+      "metric_id": "scriptorium.general.sentences",
+      "shishmareva": 4382,
+      "trusov": 1626,
+      "unit": "sentences"
+    }
+  ],
+  "schema_version": "scriptorium-robinson-translation-diagnostic-v1",
+  "scope": "UNALIGNED_EDITION_DIAGNOSTIC_ONLY",
+  "scriptorium": {
+    "metric_contract_id": "fantlab-2022-v1",
+    "profiles": {
+      "dialogue": "scriptorium-dialogue-v1",
+      "metrics": "scriptorium-metrics-v4",
+      "normalization": "scriptorium-text-v1",
+      "punctuation": "scriptorium-punctuation-v2",
+      "vocabulary": "scriptorium-vocabulary-v1"
+    },
+    "schema_version": "scriptorium-deterministic-metrics-v4",
+    "vocabulary_dictionary_dependency": null
+  },
+  "shishmareva": {
+    "normalized_sha256": "61e63ea9ca9329808073a04044e00d98ef8ccaf5f5f38b3beaab52ffd237be2f",
+    "receipt_git_blob": "0afd42fe5825b7eb6b07ca209aef963e006f333b",
+    "revision_id": 5634933
+  },
+  "translation_coverage_alignment": "NOT_RUN",
+  "trusov": {
+    "assembly_receipt_sha256": "9de2330e14f0662c30ddb11a172ec8c03a894c427cb7f6b91bd540a5230dcf3d",
+    "carrier_revision_id": 5041937,
+    "normalized_sha256": "6ee8e34082fc5e2f04e7008935f5ce2e24fe7b375731567c8e39ebd9426db002",
+    "source_page_graph_sha256": "d2104ad33fc15ddb8479c13b9fdbe0abf94f8418e76c02261a803b79130ebaa4"
+  }
+}

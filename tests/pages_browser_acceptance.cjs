@@ -600,6 +600,7 @@ async function inspectLiveLexical(browser, origin, evidenceDir) {
         path: path.join(evidenceDir, "live-lexical-pairs-" + name + ".png"),
         fullPage: true, animations: "disabled",
       });
+        await require("./pages_robinson_pair_check.cjs").inspectRobinson(page,origin,evidenceDir,name);
     } finally { await page.close(); }
   }
 }

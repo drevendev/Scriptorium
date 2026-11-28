@@ -167,6 +167,7 @@ async function inspect(browser, origin, tag, width, height) {
         await page.locator('[aria-label="Полная таблица двух пар"]').focus();
         assert.equal(await page.locator('[aria-label="Полная таблица двух пар"]').evaluate(e=>e===document.activeElement),true);
         await page.screenshot({path:path.join(screenshots,"lexical-pairs-"+tag+".png"),fullPage:true});
+        await require("./pages_robinson_pair_check.cjs").inspectRobinson(page,origin,screenshots,tag);
       }finally{await ctx.close();}
     }
     console.log("Grin lexical branch-root Chromium PASS: desktop/mobile/no-JS, exact data, keyboard, print; LIVE_NOT_VERIFIED.");

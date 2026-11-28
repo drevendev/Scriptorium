@@ -8,6 +8,7 @@ on:
       - "n-uncertainty.html"
       - "lexical-grin.html"
       - "lexical-pairs.html"
+      - "robinson-pair.html"
       - "metrics.html"
       - "assets/**"
       - "voice/**"
@@ -29,6 +30,7 @@ on:
       - "n-uncertainty.html"
       - "lexical-grin.html"
       - "lexical-pairs.html"
+      - "robinson-pair.html"
       - "metrics.html"
       - "assets/**"
       - "voice/**"
@@ -121,6 +123,8 @@ jobs:
           cp n-uncertainty.html build/branch-root-preview/n-uncertainty.html
           cp lexical-grin.html build/branch-root-preview/lexical-grin.html
           cp lexical-pairs.html build/branch-root-preview/lexical-pairs.html
+          cp robinson-pair.html build/branch-root-preview/robinson-pair.html
+          cp assets/robinson-pair.json build/branch-root-preview/assets/robinson-pair.json
           cp metrics.html build/branch-root-preview/metrics.html
           cp assets/pages-reader.css build/branch-root-preview/assets/pages-reader.css
           cp assets/pages-reader.js build/branch-root-preview/assets/pages-reader.js
@@ -164,6 +168,8 @@ jobs:
           cmp n-uncertainty.html build/branch-root-preview/n-uncertainty.html
           cmp lexical-grin.html build/branch-root-preview/lexical-grin.html
           cmp lexical-pairs.html build/branch-root-preview/lexical-pairs.html
+          cmp robinson-pair.html build/branch-root-preview/robinson-pair.html
+          cmp assets/robinson-pair.json build/branch-root-preview/assets/robinson-pair.json
           cmp assets/n-uncertainty-anna.json build/branch-root-preview/assets/n-uncertainty-anna.json
           cmp assets/n-uncertainty-resurrection-summary.json build/branch-root-preview/assets/n-uncertainty-resurrection-summary.json
           cmp assets/n-uncertainty-grin-summary.json build/branch-root-preview/assets/n-uncertainty-grin-summary.json

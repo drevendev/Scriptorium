@@ -20,6 +20,7 @@ PAGES = (
     "n-uncertainty.html",
     "lexical-grin.html",
     "lexical-pairs.html",
+    "robinson-pair.html",
     "voice/index.html",
 )
 REQUIRED_ASSETS = (
@@ -36,6 +37,7 @@ REQUIRED_ASSETS = (
     "assets/bely-tolstoy-lexical-diagnostic.json",
     "assets/grin-lexical-diagnostic.csv",
     "assets/lexical-pairs.csv",
+    "assets/robinson-pair.json",
     "voice/holdout-three.csv",
 )
 

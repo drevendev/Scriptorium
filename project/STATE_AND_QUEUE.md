@@ -1,20 +1,20 @@
 # STATE_AND_QUEUE — Scriptorium
 
-STATE_REVISION: 648
+STATE_REVISION: 649
 PHASE: M1 — Deterministic FantLab surface
 LAST_COMMITTED_RUN_AT: 2026-11-28
-LAST_RESULT: #667 merged at 9d7f52e6; seven real scan pages processed under stock rus PSM 3/6, neither mode emitted historical glyphs; accuracy NOT_RUN.
+LAST_RESULT: #668 merged at 1741948b; seven matched rasters, stock rus 0 and Iskra orus 124 historical glyph occurrences; accuracy NOT_RUN.
 LAST_VERIFIED_PROGRESS: 11 measured editions / 2 research leads; four independently accepted full-work native N witnesses; two frozen Grin lexical witnesses; M2 0/5; FantLab analyzer-input identity UNKNOWN.
 
 ## Current delivery and acceptance
 
-UNIT_ID: SCRIP-PETERSBURG-OCR-MODELS-001
+UNIT_ID: SCRIP-PETERSBURG-OCR-REGIONS-001
 ISSUE: #651
 STATUS: PR_CANDIDATE; later independent exact-head acceptance required
-BRANCH: scrip-petersburg-ocr-model-651
-BASE: 9d7f52e6c4e04f1bde939d58787927d3cfca9475
+BRANCH: scrip-petersburg-ocr-regions-651
+BASE: 1741948bf8cc25f38b58d42962b6f1baef8f66b4
 
-ACCEPTANCE: Same seven exact rasters and PSM 6 for stock rus and pinned Iskra orus; source-free model hashes, per-glyph counts, disagreement and optional aligned private reference errors. Accuracy NOT_RUN without scan-checked reference; later exact-head review required.
+ACCEPTANCE: Lossless bounded PGM region cropping, exact full-page and crop hashes, identical model inputs and matched PSM, private region references, source-free aligned metrics; tests and later independent exact-head acceptance. Real scan-checked accuracy remains NOT_RUN.
 
 ## Next user-visible milestone and compact queue
 
@@ -22,7 +22,7 @@ Milestone: extend source-backed measured-work coverage with modernist fiction an
 
 | Priority | Executable unit | Acceptance | Scoped dependency |
 | --- | --- | --- | --- |
-| P1 | #651 Petersburg 1916 matched OCR models | Compare stock rus and pinned Iskra orus on the same seven pages; check representative scan transcriptions, layout, CER/WER and matched historical glyphs before full-volume work | Hosted comparison pending; independent manual references not available |
+| P1 | #651 Petersburg 1916 region OCR accuracy | Compare matched line/block crops to independent diplomatic references; report CER/WER denominators, per-glyph matches and layout limits before whole-volume work | Exact PDF unavailable locally (DNS); independent manual references still missing; region harness candidate |
 | P2 | #511 closing print and facing errata | Resolve remaining physical leaf 152 and editorial coverage; distinguish corrected witness from diplomatic print | Three sampled controls do not establish full errata coverage; leaf 152 inaccessible in prior browser run |
 | P1 held | #641 separate 1922 Kropotkin intake | Exact carrier, title/imprint and physical body/index boundary; verify rights and count separately | Regional PDF 180860382 bytes exceeds web fetch cap; local DNS failed; RSL catalogue exposes an interactive viewer but no static scan link in the retrieved HTML; 322-page USFEU record not interchangeable |
 | P1 held | #627 Kropotkin XIII source gap | New scan-backed independent editorial evidence; partial preview rejected by 0/2 controls | Modern upstream gap; no mixed body; unchanged blocker excluded |

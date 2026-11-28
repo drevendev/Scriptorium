@@ -12,6 +12,9 @@ on:
       - "tests/test_robinson_trusov_projection.py"
       - "scriptorium/robinson_trusov_interior.py"
       - "tests/test_robinson_trusov_interior.py"
+      - "scriptorium/robinson_pair_diagnostic.py"
+      - "tests/test_robinson_pair_diagnostic.py"
+      - "corpus/candidates/diagnostics/defoe-robinson-crusoe-shishmareva-1935-ru.measured.json"
       - "scriptorium/robinson_trusov_full_candidate.py"
       - "tests/test_robinson_trusov_full_candidate.py"
       - "scriptorium/robinson_trusov_boundary_render.py"
@@ -55,6 +58,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_robinson_trusov_template_shapes.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_projection.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_interior.py' -v
+          python -m unittest discover -s tests -p 'test_robinson_pair_diagnostic.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_full_candidate.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_boundary_render.py' -v
           python -m unittest discover -s tests -p 'test_robinson_trusov_opening_seam.py' -v
@@ -449,6 +453,25 @@ jobs:
           assert not any(a[k] for k in ("historical_render_equivalence_proven", "historical_page_join_verified", "corpus_admitted", "m2_parity_admissible", "source_text_committed"))
           print("Inferred 150-Page assembly:", a["normalized_characters_including_spaces"], "chars;", a["numeric_metric_count"], "/29 numeric; not corpus admission")
           PY
+      - name: Produce unaligned edition comparison from verified fresh replay
+        run: |
+          python -m scriptorium.robinson_pair_diagnostic --assembly build/repro/trusov-1775.boundary-assembly.json --output-dir build/repro
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a = json.loads(Path("build/repro/trusov-1775.boundary-assembly.json").read_text())
+          s = json.loads(Path("corpus/candidates/diagnostics/defoe-robinson-crusoe-shishmareva-1935-ru.measured.json").read_text())
+          r = json.loads(Path("build/repro/robinson-pair.json").read_text())
+          assert len(r["metric_rows"]) == 29
+          for row, x, y in zip(r["metric_rows"], a["metric_rows"], s["metric_rows"], strict=True):
+              assert row["metric_id"] == x["metric_id"] == y["metric_id"]
+              assert row["trusov"] == x["assembly_value"] and row["shishmareva"] == y["actual"]
+              print(row["metric_id"], row["trusov"], row["shishmareva"], row["delta_trusov_minus_shishmareva"])
+          assert r["scope"] == "UNALIGNED_EDITION_DIAGNOSTIC_ONLY"
+          assert r["translation_coverage_alignment"] == "NOT_RUN"
+          assert not r["corpus_admitted"] and not r["m2_parity_admissible"]
+          assert Path("build/repro/robinson-pair.html").read_text().count("<tr>") == 30
+          PY
       - name: Upload only derived diagnostic identities
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -468,5 +491,7 @@ jobs:
             build/repro/trusov-1775.missing-folios.json
             build/repro/trusov-1775.folio-join-metrics.json
             build/repro/trusov-1775.boundary-assembly.json
+            build/repro/robinson-pair.json
+            build/repro/robinson-pair.html
           if-no-files-found: error
           retention-days: 7

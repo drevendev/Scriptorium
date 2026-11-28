@@ -34,9 +34,21 @@ The retained Commons file description identifies the facsimile as the first 1916
 
 Two provider PDF screenshots were inspected directly: the title-page surface at carrier page 1 and a prose surface at carrier page 21, where printed folio 19 is visible. Those previews visibly look like facsimile page imagery, but that fact **does not prove that the PDF lacks a hidden text layer**. Conversely, the provider metadata does not prove that a usable embedded text layer exists.
 
-Therefore the embedded text layer remains **unverified**. Scriptorium does not yet choose either direct PDF text extraction or raster OCR. The next bounded evidence is an exact-carrier, version-recorded text-layer probe that retains only aggregate counts, an output digest and page-segment coverage; any extracted text remains transient. Even a non-empty text layer will still require separate correctness and literary-page-selection evidence before body promotion.
+That historical preflight did not choose an extraction method. On 28 November, merged #666 independently measured all 632 physical pages of the exact PDF using Poppler 24.02.0: zero extracted code points, zero non-whitespace pages. The [accepted receipt](https://github.com/drevendev/Scriptorium/issues/651#issuecomment-7236203713) establishes this tool's extraction outcome, not absence of every possible PDF text representation. Decision: **bounded OCR experiment**.
 
 Canonical source-free evidence: [`source-edition-traces/bely-petersburg-1916-ru.extraction-preflight.json`](source-edition-traces/bely-petersburg-1916-ru.extraction-preflight.json), physical SHA-256 **`093f251cb8d03846a5158a1ac29d4b66e1796a7cc2bc65a77ade3d9e3cebcff1`**.
+
+## Bounded OCR sample (candidate)
+
+The new sample compares Russian Tesseract PSM 3 (automatic layout) and 6 (single block), OEM 1, on grayscale 300 DPI rasters of physical pages 1, 21, 22, 160, 320, 480 and 600. Page 1 is a title control; remaining sampled page scopes require independent classification. The receipt records tool and language-model hashes, raster hashes, OCR counts and inter-mode edit distances, not recognized text. Agreement does not establish accuracy. Private reference input is optional, raster-hash-bound and never uploaded by the workflow. CER/WER numerators and denominators retain historical spelling, case and punctuation after NFC and whitespace collapse; caller-supplied references are not independently verified by the program. References must be full-page transcriptions of the rendered region. Whole-volume OCR remains held until independently scan-checked representative references and layout quality evidence exist.
+
+Local command (requires Poppler, Tesseract and Russian language data):
+
+```sh
+python -m scriptorium.petersburg_ocr_sample /private/carrier.pdf --tessdata /usr/share/tesseract-ocr/5/tessdata
+```
+
+Optional `--private-references` accepts a private JSON object keyed by physical page number, each value containing `raster_sha256` and `transcription`. Keep this input outside the repository. The v1 body promotion contract remains unchanged.
 
 ## What is still open
 

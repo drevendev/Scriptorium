@@ -11,6 +11,8 @@ const PUBLISHED = Object.freeze([
   "metrics.html",
   "lexical-grin.html",
   "lexical-pairs.html",
+  "robinson-pair.html",
+  "assets/robinson-pair.json",
   "n-uncertainty.html",
   "assets/pages-reader.css",
   "assets/pages-reader.js",

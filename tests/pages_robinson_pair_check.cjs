@@ -1,0 +1,46 @@
+"use strict";
+const assert = require("node:assert/strict");
+const fs = require("node:fs"), path = require("node:path");
+async function inspectRobinson(page,origin,screenshots,tag){
+  assert.equal((await page.goto(origin+"/#translations")).status(),200);
+  await page.locator('a[href="./robinson-pair.html"]').click();
+  assert.match(page.url(),/robinson-pair\.html$/);
+  const rr=await page.request.get(origin+"/assets/robinson-pair.json");
+  assert.equal(rr.status(),200);
+  const expected=fs.readFileSync(path.resolve(__dirname,"../assets/robinson-pair.json"));
+  assert.deepEqual(await rr.body(),expected);
+  const r=JSON.parse(expected);
+  assert.equal(r.joint_numeric_count,22);
+  assert.equal(r.translation_coverage_alignment,"NOT_RUN");
+  assert.equal(await page.locator(".rp-table tbody tr").count(),29);
+  for(const row of r.metric_rows){
+    const tr=page.locator('tr[data-metric="'+row.metric_id+'"]');
+    assert.equal(await tr.count(),1);
+    for(const key of ["trusov","shishmareva","delta_trusov_minus_shishmareva"]){
+      const td=tr.locator('[data-field="'+key+'"]');
+      assert.equal(await td.getAttribute("data-value"),String(row[key]));
+      const displayed=(await td.innerText()).replaceAll(" ","").replace(",",".");
+      if(row[key]===null)assert.equal(displayed,"Нет данных");
+      else assert.equal(Number(displayed),Number(row[key].toPrecision(8)));
+    }
+  }
+  assert.equal(await page.locator("[data-chart]").count(),5);
+  for(const chart of await page.locator("[data-chart]").all()){
+    const key=await chart.getAttribute("data-chart");
+    const actual=r.metric_rows.find(x=>x.metric_id===key);
+    for(const ed of ["trusov","shishmareva"]){
+      const value=chart.locator('[data-edition="'+ed+'"]');
+      assert.equal(Number(await value.getAttribute("data-value")),actual[ed]);
+      assert.equal(Number((await value.innerText()).replaceAll(" ","").replace(",",".")),Number(actual[ed].toPrecision(8)));
+    }
+  }
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+  await page.locator("#rp-table-region").focus();
+  assert.ok(await page.locator("#rp-table-region").evaluate(e=>e===document.activeElement));
+  const downloadReady=page.waitForEvent("download");
+  await page.locator('a[download][href="./assets/robinson-pair.json"]').click();
+  const download=await downloadReady;
+  assert.deepEqual(fs.readFileSync(await download.path()),expected);
+  await page.screenshot({path:path.join(screenshots,"robinson-pair-"+tag+".png"),fullPage:true,animations:"disabled"});
+}
+module.exports={inspectRobinson};

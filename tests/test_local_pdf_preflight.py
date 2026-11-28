@@ -2,6 +2,7 @@
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from pathlib import Path
+import hashlib
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -95,3 +96,51 @@ class LocalPdfPreflightTests(unittest.TestCase):
         self.assertEqual(failure.exception.code, 2)
         self.assertEqual(stdout.getvalue(), "")
         self.assertNotIn(str(self.path), stderr.getvalue())
+
+    def test_complete_inventory_and_framed_digest(self):
+        expected = file_identity(self.path)["sha256"]
+        with patch("scriptorium.local_pdf_preflight._run", side_effect=self.fake_run):
+            report = preflight(self.path, None, expected_sha256=expected, expected_page_count=3)
+        chunks = [b"private words\n", b" \n", b" \n"]
+        digest = hashlib.sha256(b"".join(len(c).to_bytes(8, "big") + c for c in chunks)).hexdigest()
+        self.assertEqual(report["output_sha256"], digest)
+        self.assertEqual(report["output_utf8_bytes"], 18)
+        self.assertEqual(report["total_extracted_codepoints"], 18)
+        self.assertEqual(report["total_non_whitespace_codepoints"], 12)
+        self.assertEqual(report["pages_with_non_whitespace"], 1)
+        self.assertEqual(report["pages_without_non_whitespace"], 2)
+        self.assertEqual(report["coverage"], "ALL_PHYSICAL_PAGES")
+        self.assertEqual(report["extraction_strategy"], "MIXED_LAYER_REQUIRES_COLLATION")
+        self.assertEqual([row["physical_page"] for row in report["sampled_text_layer"]], [1, 2, 3])
+        self.assertNotIn("private words", str(report))
+        self.assertFalse(report["literary_body_frozen"])
+        self.assertFalse(report["m2_parity_admissible"])
+
+    def test_complete_requires_pins_and_refuses_count_drift(self):
+        expected = file_identity(self.path)["sha256"]
+        for sha, count in [(None, 3), (expected, None), (expected, 0),
+                           (expected, True), (expected, 1025), ("0" * 64, 3)]:
+            with self.subTest(sha=sha, count=count):
+                with patch("scriptorium.local_pdf_preflight._run") as run:
+                    with self.assertRaises(ValueError):
+                        preflight(self.path, None, expected_sha256=sha, expected_page_count=count)
+                    run.assert_not_called()
+        with patch("scriptorium.local_pdf_preflight._run", side_effect=self.fake_run) as run:
+            with self.assertRaisesRegex(ValueError, "page count"):
+                preflight(self.path, None, expected_sha256=expected, expected_page_count=4)
+            self.assertFalse(any(call.args[0][0] == "pdftotext" and "-f" in call.args[0]
+                                 for call in run.call_args_list))
+
+    def test_complete_refuses_partial_extraction(self):
+        expected = file_identity(self.path)["sha256"]
+        def fail_middle(args, **kwargs):
+            if args[0] == "pdftotext" and "-f" in args and args[2] == "2":
+                raise ValueError("tool failure")
+            return self.fake_run(args, **kwargs)
+        with patch("scriptorium.local_pdf_preflight._run", side_effect=fail_middle):
+            with redirect_stdout(StringIO()) as stdout, redirect_stderr(StringIO()):
+                with self.assertRaises(SystemExit) as failure:
+                    main([str(self.path), "--all-pages", "--expect-page-count", "3",
+                          "--expect-sha256", expected])
+            self.assertEqual(failure.exception.code, 2)
+            self.assertEqual(stdout.getvalue(), "")
